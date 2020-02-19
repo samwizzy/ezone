@@ -2,36 +2,36 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
-  Avatar,
-  AppBar,
   Box,
   Grid,
   IconButton,
   Tabs,
   Tab,
-  Toolbar,
   Typography,
   Paper,
-  Button,
   TextField
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import classNames from 'classnames'
 import Add from '@material-ui/icons/Add';
-import SettingsVoice from '@material-ui/icons/SettingsVoice';
-import Send from '@material-ui/icons/Send';
-import VideoCam from '@material-ui/icons/VideoCam';
-import Phone from '@material-ui/icons/Phone';
-import AttachFile from '@material-ui/icons/AttachFile';
 import * as Actions from '../actions';
-import ChatIcon from '../../../images/chatIcon.svg';
-// import ChatBox from './ChatBox';
-import UserChat from './components/UserChat'
+import UserChat from './components/UserChat' 
+import NoAvailableChats from './components/NoAvailableChats' 
+import ChatHeader from './components/ChatHeader' 
+import ChatFooter from './components/ChatFooter'
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
+    color: console.log(theme, "Theme")
+  },
+  messageRow: {
+    '&.me': {},
+    '&.contact': {},
+    '&.first-of-group': {}, 
+    '&.last-of-group': {}, 
   },
   avatar: {
     width: theme.spacing(12),
@@ -55,9 +55,7 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
   },
   textField: {
-    width: theme.spacing(50),
-    padding: theme.spacing(0),
-    borderRadius: '20px',
+    width: '100%'
   },
   button: {
     margin: theme.spacing(4),
@@ -65,7 +63,8 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '50px',
   },
   input: {
-    height: 40,
+    // height: 40,
+    borderRadius: theme.shape.borderRadius * 5
   },
   appBar: {
     flexGrow: 1,
@@ -86,6 +85,25 @@ const useStyles = makeStyles(theme => ({
         minWidth: 'inherit'
       },
     }
+  },
+  chatPane: {
+    display: 'flex',
+    position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: theme.palette.primary.main,
+    padding: theme.spacing(1, 12, 1, 2),
+    borderRadius: '0 20px 20px 20px',
+    whiteSpace: 'pre-wrap',
+    color: theme.palette.common.white
+  },
+  msgBody: {
+    position: 'relative',
+    backgroundColor: '#efefef',
+    minHeight: '200px',
+    height: '728px',
+    overflow: 'auto',
+    padding: theme.spacing(3, 5)
   }
 }));
 
@@ -120,6 +138,7 @@ function a11yProps(index) {
 }
 
 const ChatTab = props => {
+  // const { } = props;
   const classes = useStyles();
   const [status, setStatus] = React.useState(false);
 
@@ -137,45 +156,29 @@ const ChatTab = props => {
     setValue(newValue);
   };
 
-  const { openEditColorDialog, openEditCompanyDialog } = props;
+  const isFirstMessageOfGroup = (item, i) => {
+    // return (i === 0 || (props.chat.dialog[i - 1] && props.chat.dialog[i - 1].who !== item.who));
+  };
+
+  const isLastMessageOfGroup = (item, i) => {
+    // return (i === props.chat.dialog.length - 1 || (props.chat.dialog[i + 1] && props.chat.dialog[i + 1].who !== item.who));
+  };
+
   return (
     <React.Fragment>
       <div>
         {!status === false ? (
-          <Grid
-            justify="center"
-            alignItems="center"
-            container
-            className={classes.grid}
-          >
-            <Grid item style={{ border: '1px solid #dcdcdc', padding: '10px' }}>
-              <Box my={2}>
-                <img src={ChatIcon} title="ChatIcon" />
-              </Box>
-              <Typography variant="subtitle1" component="h1">
-                You currently have no chat
-              </Typography>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-              >
-                Start New Chat
-              </Button>
-            </Grid>
-          </Grid>
+          <NoAvailableChats />
         ) : (
           <Grid justify="center" container>
             <Grid item xs={12} md={4} style={{ backgroundColor: '#efefef' }}>
               <Paper square>
                 <div
-                  item
-                  xs={12}
                   style={{
-                    border: '1px solid #efefef',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
+                    padding: '3px 7px'
                   }}
                 >
                   <TextField
@@ -186,8 +189,8 @@ const ChatTab = props => {
                     id="chat"
                     label="Search Chat"
                     placeholder="Is the work done?"
-                    multiline
                     name="chat"
+                    size="small"
                     InputProps={{
                       className: classes.input,
                     }}
@@ -227,105 +230,29 @@ const ChatTab = props => {
             <Grid item xs={12} md={8} component={Paper}>
               <Grid container justify="center">
                 <Grid item xs={12}>
-                  <div className={classes.appBar}>
-                    <AppBar position="relative" color="inherit">
-                      <Toolbar>
-                        <Avatar
-                          alt="Remy Sharp"
-                          src="/static/images/avatar/1.jpg"
-                        />
-                        <Typography variant="h6" className={classes.title}>
-                          Christian
-                        </Typography>
-
-                        <div>
-                          <IconButton
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleMenu}
-                            color="inherit"
-                          >
-                            <VideoCam />
-                          </IconButton>
-                          <IconButton
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleMenu}
-                            color="inherit"
-                          >
-                            <Phone />
-                          </IconButton>
-                        </div>
-                      </Toolbar>
-                    </AppBar>
-                  </div>
+                  <ChatHeader />
                 </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  style={{
-                    backgroundColor: '#efefef',
-                    padding: '10px', 
-                    minHeight: '200px',
-                    height: '728px',
-                    overflow: 'auto',
-                    border: '1px solid #ccc'
-                  }}
-                >
-                  <Paper style={{display: 'inline-block', padding: '8px 20px', borderRadius: '0 8px 8px 8px'}}>Hi brother</Paper>
-                </Grid>
-
                 <Grid item xs={12}>
-                  <AppBar
-                    position="relative"
-                    color="inherit"
-                    style={{ position: 'bottom: 0' }}
-                  >
-                    <Toolbar>
-                      <IconButton
-                        aria-label="account of current user"
-                        aria-controls="menu-appbar"
-                        aria-haspopup="true"
-                        color="inherit"
-                      >
-                        <AttachFile />
-                      </IconButton>
-                      <TextField
-                        id="filled-full-width"
-                        label="Message"
-                        style={{ margin: 8 }}
-                        placeholder="Hi, how you doing?"
-                        fullWidth
-                        size="small"
-                        margin="normal"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        variant="outlined"
-                      />
+                  <div className={classes.msgBody}>
+                    <div className={classNames(
+                      classes.messageRow,
+                      {'me': 'item.id' === 'user.id'},
+                      {'contact': 'item.id' !== 'user.id'},
+                      {'first-of-group': isFirstMessageOfGroup('item', 'i')},
+                      {'last-of-group': isLastMessageOfGroup('item', 'i')},
+                    )} 
+                    style={{border: '1px solid #efefef', display: 'flex', justifyContent: 'justify-end', alignItems: 'flex-start'}}
+                    >
+                      <Paper className={classes.chatPane}>
+                        <Typography variant="subtitle1">
+                          How you doing brother?
+                        </Typography>
+                        <Typography variant="caption" style={{position: 'absolute', right: 12, bottom: 0}}>05:56 am</Typography>
+                      </Paper>
+                    </div>
 
-                      <div className={classes.grow} />
-                      <IconButton
-                        aria-label="account of current user"
-                        aria-controls="menu-appbar"
-                        aria-haspopup="true"
-                        color="inherit"
-                      >
-                        <SettingsVoice />
-                      </IconButton>
-
-                      <IconButton
-                        aria-label="account of current user"
-                        aria-controls="menu-appbar"
-                        aria-haspopup="true"
-                        color="inherit"
-                      >
-                        <Send />
-                      </IconButton>
-                    </Toolbar>
-                  </AppBar>
+                    <ChatFooter />
+                  </div>
                 </Grid>
               </Grid>
             </Grid>
@@ -337,8 +264,7 @@ const ChatTab = props => {
 };
 
 ChatTab.propTypes = {
-  openEditColorDialog: PropTypes.func,
-  openEditCompanyDialog: PropTypes.func,
+  // openEditCompanyDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -347,8 +273,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openEditCompanyDialog: evt => dispatch(Actions.openEditCompanyDialog(evt)),
-    openEditColorDialog: evt => dispatch(Actions.openEditColorDialog(evt)),
+    // openEditCompanyDialog: evt => dispatch(Actions.openEditCompanyDialog(evt)),
   };
 }
 

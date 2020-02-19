@@ -35,9 +35,7 @@ function FileUploadDialog(props) {
       >
         {/* <DialogTitle id="alert-dialog-slide-title"></DialogTitle> */}
         <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description" style={{display: 'flex'}}>
-            <DropZone />
-          </DialogContentText>
+          <DropZone />
         </DialogContent>
         <DialogActions>
           <Button onClick={closeFileUploadDialog} color="primary">

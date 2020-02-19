@@ -93,30 +93,30 @@ const EmployeeList = props => {
   const datas = [
     {
       id: '1',
-      name: 'Joe James',
+      name: 'Teslim Andulafeez',
       company: 'Test Corp',
-      city: 'Yonkers',
-      state: 'NY',
+      city: 'Ikeja',
+      state: 'Lagos State',
     },
     {
       id: '2',
-      name: 'John Walsh',
+      name: 'Christ okeme',
       company: 'Test Corp',
-      city: 'Hartford',
-      state: 'CT',
+      city: 'Cross River',
+      state: 'Calabar',
     },
     {
       id: '3',
-      name: 'Bob Herm',
+      name: 'Joel Johnson',
       company: 'Test Corp',
-      city: 'Tampa',
-      state: 'FL',
+      city: 'Abuja',
+      state: 'FCT',
     },
     {
-      name: 'James Houston',
+      name: 'Kelechi Chinanka',
       company: 'Test Corp',
-      city: 'Dallas',
-      state: 'TX',
+      city: 'Ikeja',
+      state: 'Lagos State',
     },
   ];
 

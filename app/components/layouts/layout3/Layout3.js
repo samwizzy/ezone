@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core';
 import {
   createMuiTheme,
   makeStyles,
-  ThemeProvider,
+  ThemeProvider
 } from '@material-ui/core/styles';
 import Header from '../../Header';
 import Footer from '../../Footer';
@@ -27,7 +27,6 @@ class Layout3 extends React.Component {
             <Sidebar
               content={this.props.children}
             />
-            {/* {this.props.children} */}
           </ThemeProvider>
         </React.Fragment>
     );

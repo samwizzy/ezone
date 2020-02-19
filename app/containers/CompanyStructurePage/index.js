@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -20,15 +20,27 @@ import TabsPage from './components/TabsPage';
 import PartyDialog from './components/PartyDialog';
 import SubPartyDialog from './components/SubPartyDialog';
 
-export function CompanyStructurePage() {
+import * as Actions from './actions';
+
+export function CompanyStructurePage(props) {
+  const { dispatchGetAllUsersAction, getPartyGroup } = props;
+
   useInjectReducer({ key: 'companyStructurePage', reducer });
   useInjectSaga({ key: 'companyStructurePage', saga });
+
+  useEffect(() => {
+    getPartyGroup();
+    dispatchGetAllUsersAction();
+  }, []);
 
   return (
     <div>
       <Helmet>
         <title>Company Structure Page</title>
-        <meta name="description" content="Description of CompanyStructurePage" />
+        <meta
+          name="description"
+          content="Description of CompanyStructurePage"
+        />
       </Helmet>
       <TabsPage />
 
@@ -39,7 +51,8 @@ export function CompanyStructurePage() {
 }
 
 CompanyStructurePage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  getPartyGroup: PropTypes.func,
+  dispatchGetAllUsersAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -48,7 +61,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    getPartyGroup: () => dispatch(Actions.getPartyGroupAction()),
+    dispatchGetAllUsersAction: () => dispatch(Actions.getAllUsers()),
   };
 }
 

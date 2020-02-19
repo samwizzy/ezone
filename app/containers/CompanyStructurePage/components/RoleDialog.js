@@ -5,7 +5,6 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { makeStyles } from '@material-ui/core/styles' 
 import {
-  Divider,
   TextField,
   Button,
   Dialog,
@@ -34,38 +33,21 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const heads = [
-  {
-    label: 'Joel Johnson',
-    value: 'joel johnson',
-  },
-  {
-    label: 'Fela Brown',
-    value: 'fela brown',
-  },
-  {
-    label: 'Charles Brooks',
-    value: 'charles brooks',
-  },
-  {
-    label: 'Tom Cruise',
-    value: 'tom cruise',
-  },
-];
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const PartyDialog = props => {
-  const { partyDialog, closeNewPartyDialog } = props;
+const RoleDialog = props => {
+  const { roleDialog, closeNewRoleDialog } = props;
 
   const classes = useStyles();
   const [currency, setCurrency] = React.useState('EUR');
   const [values, setValues] = React.useState({
-    name: '',
-    description: '',
+    roleName: '',
+    description: ''
   });
+
+  console.log(roleDialog, "Pary dialog...")
 
   const handleSelectChange = event => {
     setCurrency(event.target.value);
@@ -76,126 +58,117 @@ const PartyDialog = props => {
   };
 
   const closeComposeDialog = () => {
-    partyDialog.type === 'new'
-      ? closeNewPartyDialog()
+    roleDialog.type === 'new'
+      ? closeNewRoleDialog()
       : null;
   };
 
   return (
     <div>
       <Dialog
-        {...partyDialog.props}
+        {...roleDialog.props}
         TransitionComponent={Transition}
-        onClose={closeNewPartyDialog}
+        onClose={closeNewRoleDialog}
         keepMounted
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {partyDialog.type === 'new' ? 'New Party' : 'Edit Party'}
+          {roleDialog.type === 'new' ? 'New Role' : 'Edit Role'}
         </DialogTitle>
 
-        <Divider />
-
         <DialogContent>
-          {partyDialog.type === 'new' ? (
+          {roleDialog.type === 'new' ? (
             <div>
               <TextField
-                id="party-group"
-                label="Party Group"
+                id="role-name"
+                label="Role Name"
                 className={classes.textField}
-                value={values.name}
-                onChange={handleChange('name')}
+                value={values.roleName}
+                onChange={handleChange('roleName')}
                 margin="normal"
                 variant="outlined"
                 size="small"
                 fullWidth
               />
-
               <TextField
                 id="description"
                 label="Description"
                 className={classes.textField}
                 value={values.description}
-                variant="outlined"
                 onChange={handleChange('description')}
                 margin="normal"
+                variant="outlined"
+                size="small"
                 fullWidth
                 multiline
                 rows="3"
               />
-              {/* <TextField
-                id="select-head"
-                select
-                fullWidth
-                className={classes.textField}
-                variant="outlined"
-                size="small"
-                label="Select Head"
-                value={currency}
-                onChange={handleSelectChange}
-              >
-                {heads.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                id="standard-select-state"
-                select
-                fullWidth
-                className={classes.textField}
-                variant="outlined"
-                size="small"
-                label="Select Assistant"
-                value={currency}
-                onChange={handleSelectChange}
-              >
-                {heads.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField> */}
             </div>
-          ) : null }
+          ) : (
+            <div>
+              <TextField
+                id="role-name"
+                label="Role Name"
+                className={classes.textField}
+                value={values.roleName}
+                onChange={handleChange('roleName')}
+                margin="normal"
+                variant="outlined"
+                size="small"
+                fullWidth
+              />
+              <TextField
+                id="description"
+                label="Description"
+                className={classes.textField}
+                value={values.description}
+                onChange={handleChange('description')}
+                margin="normal"
+                variant="outlined"
+                size="small"
+                fullWidth
+                multiline
+                rows="3"
+              />
+            </div>
+          )}
         </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                closeComposeDialog();
-              }}
-              color="primary"
-              variant="contained"
-            >
-              {partyDialog.type === 'new' ? 'Save' : 'Update'}
-            </Button>
-            <Button
-              onClick={() => closeNewPartyDialog()}
-              color="primary"
-              variant="contained"
-            >
-              Cancel
-            </Button>
-          </DialogActions>
+        
+        <DialogActions>
+          <Button
+            onClick={() => {
+              closeComposeDialog();
+            }}
+            color="primary"
+            variant="contained"
+          >
+            {roleDialog.type === 'new' ? 'Save' : 'Update'}
+          </Button>
+          <Button
+            onClick={() => closeNewRoleDialog()}
+            color="primary"
+            variant="contained"
+          >
+            Cancel
+          </Button>
+        </DialogActions>
       </Dialog>
     </div>
   );
 };
 
-PartyDialog.propTypes = {
-  closeNewPartyDialog: PropTypes.func,
-  partyDialog: PropTypes.object,
+RoleDialog.propTypes = {
+  closeNewRoleDialog: PropTypes.func,
+  roleDialog: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
-  partyDialog: Selectors.makeSelectPartyDialog(),
+  roleDialog: Selectors.makeSelectRoleDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeNewPartyDialog: () => dispatch(Actions.closeNewPartyDialog()),
-    createNewPartyGroupAction: evt => dispatch(Actions.createNewPartyGroupAction(evt)),
+    closeNewRoleDialog: () => dispatch(Actions.closeNewRoleDialog()),
     dispatch,
   };
 }
@@ -208,4 +181,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(PartyDialog);
+)(RoleDialog);

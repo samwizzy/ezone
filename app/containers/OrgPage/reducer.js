@@ -9,6 +9,9 @@ import * as Constants from './constants';
 export const initialState = {
   loading: false,
   error: false,
+  companyInfo: false,
+  updateCompanyInfoData: false,
+  message: false,
   colorDialog: {
     type: 'new',
     props: {
@@ -36,20 +39,6 @@ export const initialState = {
       open: false,
     },
     data: null,
-  },
-  partyDialog: {
-    type: 'new',
-    props: {
-      open: false,
-    },
-    data: null
-  },
-  subPartyDialog: {
-    type: 'new',
-    props: {
-      open: false,
-    },
-    data: null
   },
 };
 
@@ -201,53 +190,49 @@ const orgPageReducer = (state = initialState, action) =>
           },
         };
       }
-      case Constants.OPEN_NEW_PARTY_DIALOG: {
-        console.log("I have just hit the reducer for new party dialog")
+      case Constants.GET_COMPANY_INFO: {
         return {
           ...state,
-          partyDialog: {
-            type: 'new',
-            props: {
-              open: true,
-            },
-            data: null
-          },
+          loading: true,
+          error: false,
         };
       }
-      case Constants.CLOSE_NEW_PARTY_DIALOG: {
+      case Constants.GET_COMPANY_INFO_SUCCESS: {
         return {
           ...state,
-          partyDialog: {
-            type: 'new',
-            props: {
-              open: false,
-            },
-            data: null,
-          },
+          loading: false,
+          error: false,
+          companyInfo: action.payload,
         };
       }
-      case Constants.OPEN_NEW_SUB_PARTY_DIALOG: {
+      case Constants.GET_COMPANY_INFO_ERROR: {
         return {
           ...state,
-          subPartyDialog: {
-            type: 'new',
-            props: {
-              open: true,
-            },
-            data: null,
-          },
+          loading: false,
+          error: action.payload,
         };
       }
-      case Constants.CLOSE_NEW_SUB_PARTY_DIALOG: {
+      case Constants.UPDATE_COMPANY_INFO: {
         return {
           ...state,
-          subPartyDialog: {
-            type: 'new',
-            props: {
-              open: false,
-            },
-            data: null,
-          },
+          loading: true,
+          error: false,
+          updateCompanyInfoData: action.payload,
+        };
+      }
+      case Constants.UPDATE_COMPANY_INFO_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          message: action.payload,
+        };
+      }
+      case Constants.UPDATE_COMPANY_INFO_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
         };
       }
     }

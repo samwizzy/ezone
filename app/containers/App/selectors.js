@@ -24,43 +24,40 @@ const makeSelectError = () =>
 const makeSelectLoginDetails = () =>
   createSelector(
     selectGlobal,
-    subState => subState.loginDetails,
+    globalState => globalState.loginDetails,
   );
 
-const tok = localStorage.getItem('token');
-console.log(tok, 'toktoktoktok');
-
-const makeSelectUserToken = () =>
+const makeSelectAccessToken = () =>
   createSelector(
     selectGlobal,
-    globalState => globalState.tokens,
+    globalState => globalState.accessToken,
   );
 
 const makeSelectCurrentUser = () =>
   createSelector(
     selectGlobal,
-    globalState => globalState.userData.user,
+    globalState => globalState.user,
   );
 
-// const makeSelectRepos = () =>
-//   createSelector(
-//     selectGlobal,
-//     globalState => globalState.userData.repositories,
-//   );
-
-const makeSelectLocation = () =>
+const makeSelectSnackBar = () =>
   createSelector(
-    selectRouter,
-    routerState => routerState.location,
+    selectGlobal,
+    globalState => globalState.messageDialog,
   );
+
+// const makeSelectLocation = () =>
+//   createSelector(
+//     selectRouter,
+//     routerState => routerState.location,
+//   );
 
 export {
   selectGlobal,
-  makeSelectLoginDetails,
-  makeSelectUserToken,
   makeSelectCurrentUser,
   makeSelectLoading,
   makeSelectError,
-  // makeSelectRepos,
-  makeSelectLocation,
+  // makeSelectLocation,
+  makeSelectLoginDetails,
+  makeSelectAccessToken,
+  makeSelectSnackBar,
 };

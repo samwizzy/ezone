@@ -82,29 +82,43 @@ export function closeEditDepartmentDialog() {
   };
 }
 
-export function openNewPartyDialog() {
-  console.log("I have just clicked on the party dialog action")
+export function getCompanyInfo() {
   return {
-    type: Constants.OPEN_NEW_PARTY_DIALOG,
+    type: Constants.GET_COMPANY_INFO,
   };
 }
 
-export function closeNewPartyDialog() {
+export function getCompanyInfoSuccess(data) {
   return {
-    type: Constants.CLOSE_NEW_PARTY_DIALOG,
+    type: Constants.GET_COMPANY_INFO_SUCCESS,
+    payload: data,
   };
 }
 
-export function openNewSubGroupDialog() {
-  console.log('openSubGroupDialog');
+export function getCompanyInfoError(data) {
   return {
-    type: Constants.OPEN_NEW_SUB_PARTY_DIALOG,
+    type: Constants.GET_COMPANY_INFO_ERROR,
+    payload: data,
   };
 }
 
-export function closeNewSubGroupDialog() {
-  console.log('closeSubGroupDialog');
+export function updateCompanyInfo(data) {
   return {
-    type: Constants.CLOSE_NEW_SUB_PARTY_DIALOG,
+    type: Constants.UPDATE_COMPANY_INFO,
+    payload: data,
+  };
+}
+
+export function updateCompanyInfoSuccess(data) {
+  return {
+    type: Constants.UPDATE_COMPANY_INFO_SUCCESS,
+    payload: data,
+  };
+}
+
+export function updateCompanyInfoError(data) {
+  return {
+    type: Constants.UPDATE_COMPANY_INFO_ERROR,
+    payload: data,
   };
 }

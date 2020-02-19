@@ -45,6 +45,48 @@ const makeSelectSubPartyDialog = () =>
     subState => subState.subPartyDialog,
   );
 
+const makeSelectRoleDialog = () =>
+  createSelector(
+    selectCompanyStructurePageDomain,
+    subState => subState.roleDialog,
+  );
+
+const makeSelectParty = () =>
+  createSelector(
+    selectCompanyStructurePageDomain,
+    subState => subState.party,
+  );
+
+const makeSelectPartyGroupData = () =>
+  createSelector(
+    selectCompanyStructurePageDomain,
+    subState => subState.partyGroupData,
+  );
+
+const makeSelectSelectedPartyGroupData = () =>
+  createSelector(
+    selectCompanyStructurePageDomain,
+    subState => subState.selectedPartyGroupData,
+  );
+
+const createNewPartyGroupData = () =>
+  createSelector(
+    selectCompanyStructurePageDomain,
+    subState => subState.createNewPartyGroupData,
+  );
+
+const makeSelectAllUsersData = () =>
+  createSelector(
+    selectCompanyStructurePageDomain,
+    subState => subState.getAllUsersData,
+  );
+
+const makeSelectCreateNewPartyData = () =>
+  createSelector(
+    selectCompanyStructurePageDomain,
+    subState => subState.createNewPartyData,
+  );
+
 export default makeSelectCompanyStructurePage;
 export {
   selectCompanyStructurePageDomain,
@@ -52,4 +94,11 @@ export {
   makeSelectError,
   makeSelectPartyDialog,
   makeSelectSubPartyDialog,
+  makeSelectRoleDialog,
+  makeSelectParty,
+  makeSelectPartyGroupData,
+  makeSelectSelectedPartyGroupData,
+  createNewPartyGroupData,
+  makeSelectAllUsersData,
+  makeSelectCreateNewPartyData,
 };

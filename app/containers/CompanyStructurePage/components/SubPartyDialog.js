@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';  // eslint-disable-next-line no-unused-expressions
+import React, { memo, useEffect } from 'react'; // eslint-disable-next-line no-unused-expressions
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -14,7 +14,7 @@ import {
   DialogActions,
   Typography,
   MenuItem,
-  Slide
+  Slide,
 } from '@material-ui/core';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
@@ -59,31 +59,41 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const SubPartyDialog = props => {
-  const { subPartyDialog, closeNewSubGroupDialog, closeEditBranchDialogAction } = props;
+  const {
+    partyGroupData,
+    subPartyDialog,
+    closeNewSubGroupDialog,
+    // closeEditBranchDialogAction,
+    AllUserData,
+    dispatchCreateNewPartyAction,
+  } = props;
 
   const classes = useStyles();
   const [currency, setCurrency] = React.useState('EUR');
   const [values, setValues] = React.useState({
-    group: '',
-    subgroup: '',
+    partyGroupId: '',
+    partyHead: { id: '' },
+    assistantPartyHead: { id: '' },
+    name: '',
     description: '',
-    head: '',
-    assistant: ''
   });
 
-  console.log(subPartyDialog, "subPartyDialog props ...")
+  console.log(AllUserData, 'AllUserData AllUserData');
+  // console.log(subPartyDialog, 'subPartyDialog props ...');
 
-  const handleSelectChange = event => {
-    setCurrency(event.target.value);
+  const handleSelectChange = name => event => {
+    setValues({ ...values, [name]: { id: event.target.value } });
   };
+
   const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
+    setValues({
+      ...values,
+      [name]: event.target.value,
+    });
   };
 
   const closeComposeDialog = () => {
-    subPartyDialog.type === 'new'
-      ? closeNewSubGroupDialog()
-      : null
+    subPartyDialog.type === 'new' ? closeNewSubGroupDialog() : null;
   };
 
   return (
@@ -96,7 +106,7 @@ const SubPartyDialog = props => {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {subPartyDialog.type === 'new' ? 'New Sub-Group' : 'Edit Sub-Group'}
+          {subPartyDialog.type === 'new' ? 'New Party' : 'Edit Party'}
         </DialogTitle>
 
         <Divider />
@@ -111,23 +121,25 @@ const SubPartyDialog = props => {
                 className={classes.textField}
                 variant="outlined"
                 label="Select Group"
-                value={currency}
-                onChange={handleSelectChange}
+                value={values.partyGroupId}
+                name="partyGroupId"
+                onChange={handleChange('partyGroupId')}
               >
-                {heads.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
+                {partyGroupData &&
+                  partyGroupData.map(option => (
+                    <MenuItem key={option.id} value={option.id}>
+                      {option.name}
+                    </MenuItem>
+                  ))}
               </TextField>
 
               <TextField
                 id="subgroup-name"
-                label="SubGroup Name"
+                label="Name"
                 className={classes.textField}
-                value={values.subgroup}
+                value={values.name}
                 variant="outlined"
-                onChange={handleChange('subgroup')}
+                onChange={handleChange('name')}
                 margin="normal"
                 fullWidth
               />
@@ -143,7 +155,7 @@ const SubPartyDialog = props => {
                 multiline
                 rows="3"
               />
-              
+
               <TextField
                 id="select-head"
                 select
@@ -151,14 +163,15 @@ const SubPartyDialog = props => {
                 variant="outlined"
                 label="Select Head"
                 className={classes.textField}
-                value={currency}
-                onChange={handleSelectChange}
+                value={values.partyHead.id}
+                onChange={handleSelectChange('partyHead')}
               >
-                {heads.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
+                {AllUserData &&
+                  AllUserData.map(option => (
+                    <MenuItem key={option.id} value={option.id}>
+                      {option.emailAddress} {option.lastName}
+                    </MenuItem>
+                  ))}
               </TextField>
               <TextField
                 id="select-assistant"
@@ -167,24 +180,24 @@ const SubPartyDialog = props => {
                 variant="outlined"
                 className={classes.textField}
                 label="Select Assistant"
-                value={currency}
-                onChange={handleSelectChange}
+                value={values.assistantPartyHead.id}
+                onChange={handleSelectChange('assistantPartyHead')}
               >
-                {heads.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
+                {AllUserData &&
+                  AllUserData.map(option => (
+                    <MenuItem key={option.id} value={option.id}>
+                      {option.emailAddress} {option.lastName}
+                    </MenuItem>
+                  ))}
               </TextField>
-              
             </div>
           ) : null}
         </DialogContent>
-        
+
         <DialogActions>
           <Button
             onClick={() => {
-              // dispatchUpdatePostAction(values);
+              dispatchCreateNewPartyAction(values);
               closeComposeDialog();
             }}
             color="primary"
@@ -206,20 +219,23 @@ const SubPartyDialog = props => {
 };
 
 SubPartyDialog.propTypes = {
-  // dispatchNewPostAction: PropTypes.func,
   closeNewSubGroupDialog: PropTypes.func,
   subPartyDialog: PropTypes.object,
+  partyGroupData: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  AllUserData: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  dispatchCreateNewPartyAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   subPartyDialog: Selectors.makeSelectSubPartyDialog(),
+  partyGroupData: Selectors.makeSelectPartyGroupData(),
+  AllUserData: Selectors.makeSelectAllUsersData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     closeNewSubGroupDialog: () => dispatch(Actions.closeNewSubGroupDialog()),
-    // dispatchUpdatePostAction: evt => dispatch(Actions.updatePost(evt)),
-    // dispatchNewPostAction: evt => dispatch(Actions.saveNewPost(evt)),
+    dispatchCreateNewPartyAction: evt => dispatch(Actions.createNewParty(evt)),
     dispatch,
   };
 }

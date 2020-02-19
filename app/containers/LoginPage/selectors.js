@@ -21,28 +21,49 @@ const makeSelectLoginPage = () =>
     substate => substate,
   );
 
-const makeSelectLoading = () =>
-  createSelector(
-    selectLoginPageDomain,
-    subState => subState.loading,
-  );
+// const makeSelectLoading = () =>
+//   createSelector(
+//     selectLoginPageDomain,
+//     subState => subState.loading,
+//   );
 
-const makeSelectError = () =>
-  createSelector(
-    selectLoginPageDomain,
-    subState => subState.error,
-  );
+// const makeSelectError = () =>
+//   createSelector(
+//     selectLoginPageDomain,
+//     subState => subState.error,
+//   );
 
-const makeSelectLoginDetails = () =>
-  createSelector(
-    selectLoginPageDomain,
-    subState => subState.loginDetails,
-  );
+// const makeSelectLoginDetails = () =>
+//   createSelector(
+//     selectLoginPageDomain,
+//     subState => subState.loginDetails,
+//   );
+
+// const makeSelectAccessToken = () =>
+//   createSelector(
+//     selectLoginPageDomain,
+//     subState => subState.accessToken,
+//   );
+
+// const makeSelectSaveToken = () =>
+//   createSelector(
+//     selectLoginPageDomain,
+//     subState => subState.saveToken,
+//   );
+
+// const makeSelectGetSaveToken = () =>
+//   createSelector(
+//     selectLoginPageDomain,
+//     subState => subState.getSaveToken,
+//   );
 
 export default makeSelectLoginPage;
 export {
   selectLoginPageDomain,
-  makeSelectLoading,
-  makeSelectError,
-  makeSelectLoginDetails,
+  // makeSelectLoading,
+  // makeSelectError,
+  // makeSelectLoginDetails,
+  // makeSelectAccessToken,
+  // makeSelectSaveToken,
+  // makeSelectGetSaveToken,
 };

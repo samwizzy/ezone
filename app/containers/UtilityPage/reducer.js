@@ -5,6 +5,14 @@
  */
 import produce from 'immer';
 import {
+  CREATE_UTILITY_TASKS,
+  GET_UTILITY_TASKS,
+  CREATE_UTILITY_TASKS_SUCCESS,
+  GET_UTILITY_TASKS_ERROR,
+  GET_UTILITY_FILES,
+  CREATE_UTILITY_FILES,
+  CREATE_UTILITY_FILES_SUCCESS,
+  GET_UTILITY_FILES_ERROR,
   OPEN_FILE_UPLOAD_DIALOG,
   CLOSE_FILE_UPLOAD_DIALOG,
   OPEN_SHARE_FILE_DIALOG,
@@ -77,8 +85,13 @@ export const initialState = {
     props: {
       open: false,
     },
-    data: null,
+    data: null
   },
+  tasks: [],
+  task: {},
+  files: [],
+  file: {},
+  error: { success: "", message: "" }
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -95,6 +108,54 @@ const utilityPageReducer = (state = initialState, action) =>
             },
             data: action.payload
           },
+        };
+      }
+      case CREATE_UTILITY_TASKS: {
+        return {
+          ...state,
+          task: action.payload
+        };
+      }
+      case GET_UTILITY_TASKS: {
+        return {
+          ...state,
+          tasks: action.payload
+        };
+      }
+      case CREATE_UTILITY_TASKS_SUCCESS: {
+        return {
+          ...state,
+          task: action.payload
+        };
+      }
+      case GET_UTILITY_TASKS_ERROR: {
+        return {
+          ...state,
+          error: action.payload
+        };
+      }
+      case CREATE_UTILITY_FILES: {
+        return {
+          ...state,
+          task: action.payload
+        };
+      }
+      case CREATE_UTILITY_FILES_SUCCESS: {
+        return {
+          ...state,
+          file: action.payload
+        };
+      }
+      case GET_UTILITY_FILES: {
+        return {
+          ...state,
+          files: action.payload
+        };
+      }
+      case GET_UTILITY_FILES_ERROR: {
+        return {
+          ...state,
+          error: action.payload
         };
       }
       case CLOSE_FILE_UPLOAD_DIALOG: {

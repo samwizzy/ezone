@@ -24,9 +24,9 @@ import {
   fade,
   lighten,
 } from '@material-ui/core/styles/colorManipulator';
-import * as Selectors from '../selectors';
+import * as Selectors from '../../App/selectors';
 import LoadingIndicator from '../../../components/LoadingIndicator';
-import * as Actions from '../actions';
+import * as Actions from '../../App/actions';
 import logo from '../../../images/logo.svg';
 import banner from '../../../images/banner.svg';
 
@@ -56,16 +56,20 @@ const useStyles = makeStyles(theme => ({
     overflow: 'hidden',
   },
   image: {
-    width: '50%',
-    height: '100vh',
-    backgroundImage: `url(${banner})`,
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    position: 'absolute',
+    [theme.breakpoints.up('md')]: {
+      width: '55%',
+      height: '100vh',
+      backgroundImage: `url(${banner})`,
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center right',
+      position: 'absolute',
+      top: 0,
+      bottom: 0
+    }
   },
   paper: {
-    margin: theme.spacing(8, 4),
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
     borderRadius: theme.spacing(5),
@@ -117,9 +121,9 @@ const LoginForm = props => {
       <div className={classes.image} />
 
       <div className={classes.root}>
-        <Grid container component={Paper} className={classes.grid}>
-          <Grid item xs={false} sm={4} md={7} />
-          <Grid item xs={12} sm={8} md={5} style={{ border: '1px soid red' }}>
+        <Grid container component={Paper} className={classes.grid} justify="center">
+          <Grid item xs={0} sm={0} md={7} />
+          <Grid item xs={12} sm={10} md={5} style={{display: 'flex'}}>
             <div className={classes.paper}>
               <Box className={classes.avatar}>
                 <img src={logo} alt="" />

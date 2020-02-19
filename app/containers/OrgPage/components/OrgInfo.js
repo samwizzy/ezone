@@ -19,8 +19,10 @@ import { connect } from 'react-redux';
 import { withRouter, Redirect } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import classNames from 'classnames';
-import EditOutlined from '@material-ui/icons/EditOutlined'
+import EditOutlined from '@material-ui/icons/EditOutlined';
+import LoadingIndicator from '../../../components/LoadingIndicator';
 import * as Actions from '../actions';
+import * as Selectors from '../selectors';
 import download6 from '../../../images/download(6).svg';
 import user from '../../../images/user.svg';
 import msg from '../../../images/msg.svg';
@@ -64,9 +66,18 @@ const useStyles = makeStyles(theme => ({
 
 const OrgInfo = props => {
   const classes = useStyles();
-  const { history } = props;
+  const {
+    companyInfo,
+    loading,
+    openEditColorDialog,
+    openEditCompanyDialog,
+    history,
+  } = props;
 
-  const { openEditColorDialog, openEditCompanyDialog } = props;
+  console.log(companyInfo, 'companyInfo');
+  if (loading) {
+    return <LoadingIndicator />;
+  }
   return (
     <React.Fragment>
       <Paper className={classes.root}>
@@ -86,8 +97,8 @@ const OrgInfo = props => {
                 </ListItemAvatar>
                 <ListItemText
                   primary={
-                    <Typography variant="h6" color="default">
-                      Octiver Communications
+                    <Typography variant="h6" color="inherit">
+                      {companyInfo && companyInfo.companyName}
                     </Typography>
                   }
                   secondary={
@@ -98,7 +109,7 @@ const OrgInfo = props => {
                         className={classes.inline}
                         color="textPrimary"
                       >
-                        Telecommunications
+                        {companyInfo && companyInfo.companyName}
                       </Typography>
                     </React.Fragment>
                   }
@@ -113,7 +124,12 @@ const OrgInfo = props => {
               style={{ height: '100%', textAlign: 'right' }}
             >
               <Grid item xs={12}>
-                <Link href="#" variant="body2" color="inherit">
+                <Link
+                  href="#"
+                  variant="body2"
+                  color="inherit"
+                  onClick={openEditColorDialog}
+                >
                   Edit Logo and Color <EditOutlined />
                 </Link>
               </Grid>
@@ -122,7 +138,7 @@ const OrgInfo = props => {
                   variant="contained"
                   color="primary"
                   className={classes.button}
-                  onClick={openEditCompanyDialog}
+                  onClick={() => openEditCompanyDialog(companyInfo)}
                 >
                   Edit Profile
                 </Button>
@@ -131,7 +147,9 @@ const OrgInfo = props => {
                   variant="contained"
                   color="inherit"
                   className={classNames(classes.button, classes.editButton)}
-                  onClick={() => history.push('/organization/company/structure')}
+                  onClick={() =>
+                    history.push('/organization/company/structure')
+                  }
                 >
                   Company Structure
                 </Button>
@@ -144,7 +162,7 @@ const OrgInfo = props => {
       <Paper className={classes.paper} variant="outlined">
         <Grid container spacing={2}>
           <Grid item xs={12} md={12} sm={12}>
-            <Typography variant="h6">Company Information</Typography>
+            <Typography variant="h6">Company Information...</Typography>
           </Grid>
           <Grid item xs={12} md={6}>
             <List>
@@ -152,32 +170,36 @@ const OrgInfo = props => {
                 <ListItemIcon>
                   <img alt="" src={user} />
                 </ListItemIcon>
-                <ListItemText primary="Joy Essien" />
+                <ListItemText
+                  primary={companyInfo && companyInfo.companyName}
+                />
               </ListItem>
               <ListItem className={classes.listFormat}>
                 <ListItemIcon>
                   <img alt="" src={msg} />
                 </ListItemIcon>
-                <ListItemText primary="joy.essien@octiver.ng" />
+                <ListItemText
+                  primary={companyInfo && companyInfo.email_address}
+                />
               </ListItem>
               <ListItem className={classes.listFormat}>
                 <ListItemIcon>
                   <img alt="" src={phone2} />
                 </ListItemIcon>
-                <ListItemText primary="+234 097 637 7383" />
+                <ListItemText primary={companyInfo && companyInfo.phone} />
               </ListItem>
               <ListItem className={classes.listFormat}>
                 <ListItemIcon>
                   <img alt="" src={phone} />
                 </ListItemIcon>
-                <ListItemText primary="+234 097 637 7383" />
+                <ListItemText primary={companyInfo && companyInfo.contactPersonEmail} />
               </ListItem>
-              <ListItem className={classes.listFormat}>
+              {/* <ListItem className={classes.listFormat}>
                 <ListItemIcon>
                   <img alt="" src={web} />
                 </ListItemIcon>
-                <ListItemText primary="www.octivercommunications .org" />
-              </ListItem>
+                <ListItemText primary="www.octivercommunications.org" />
+              </ListItem> */}
             </List>
           </Grid>
           <Grid item xs={12} md={6}>
@@ -186,7 +208,7 @@ const OrgInfo = props => {
                 <ListItemIcon>
                   <img alt="" src={web} />
                 </ListItemIcon>
-                <ListItemText primary="Mandilas House, Marina Lagos Nigeria" />
+                <ListItemText primary={companyInfo && companyInfo.address} />
               </ListItem>
               <ListItem className={classes.listFormat}>
                 <ListItemIcon>
@@ -216,32 +238,32 @@ const OrgInfo = props => {
                 <ListItemIcon>
                   <img alt="" src={user} />
                 </ListItemIcon>
-                <ListItemText primary="Joy Essien" />
+                <ListItemText primary={companyInfo && companyInfo.contactPersonName} />
               </ListItem>
               <ListItem className={classes.listFormat}>
                 <ListItemIcon>
                   <img alt="" src={msg} />
                 </ListItemIcon>
-                <ListItemText primary="joy.essien@octiver.ng" />
+                <ListItemText primary={companyInfo && companyInfo.contactPersonEmail} />
               </ListItem>
               <ListItem className={classes.listFormat}>
                 <ListItemIcon>
                   <img alt="" src={phone2} />
                 </ListItemIcon>
-                <ListItemText primary="+234 097 637 7383" />
+                <ListItemText primary={companyInfo && companyInfo.contactPersonPhone} />
               </ListItem>
               <ListItem className={classes.listFormat}>
                 <ListItemIcon>
                   <img alt="" src={phone} />
                 </ListItemIcon>
-                <ListItemText primary="+234 097 637 7383" />
+                <ListItemText primary={companyInfo && companyInfo.contactPersonTel} />
               </ListItem>
-              <ListItem className={classes.listFormat}>
+              {/* <ListItem className={classes.listFormat}>
                 <ListItemIcon>
                   <img alt="" src={web} />
                 </ListItemIcon>
                 <ListItemText primary="www.octivercommunications .org" />
-              </ListItem>
+              </ListItem> */}
             </List>
           </Grid>
           <Grid item xs={12} md={6}>
@@ -275,10 +297,13 @@ const OrgInfo = props => {
 OrgInfo.propTypes = {
   openEditColorDialog: PropTypes.func,
   openEditCompanyDialog: PropTypes.func,
+  companyInfo: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+  loading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
-  // loginPage: makeSelectLoginPage(),
+  loading: Selectors.makeSelectLoading(),
+  companyInfo: Selectors.makeSelectCompanyInfo(),
 });
 
 function mapDispatchToProps(dispatch) {

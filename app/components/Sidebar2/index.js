@@ -19,31 +19,22 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import Apps from '@material-ui/icons/Apps';
 import Dashboard from '@material-ui/icons/Dashboard';
-import Person from '@material-ui/icons/Person';
-import Group from '@material-ui/icons/Group';
+import DashboardTwoTone from '@material-ui/icons/DashboardTwoTone';
+import Home from '@material-ui/icons/Home';
 import BusinessCenter from '@material-ui/icons/BusinessCenter';
 import TabMenu from '../TabMenu';
 import SideBanner from '../../images/sidebanner.svg';
 
 const drawerWidth = 240;
 
-const navigation = [
-  { id: 1, name: 'Dashboard', link: '/dashboard' },
-  { id: 2, name: 'Organization', link: '/organization' },
-  { id: 3, name: 'Employee', link: '/employee' },
-];
-
 const links = [
-  'Dashboard',
-  'Organization',
-  'Applications',
-  'Employees',
-  'Groups',
+  'Home',
+  'Dashboard'
 ];
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
+    display: 'flex'
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -72,6 +63,7 @@ const useStyles = makeStyles(theme => ({
     flexShrink: 0,
     whiteSpace: 'nowrap',
     marginTop: '80px',
+    zIndex: 1099
   },
   drawerOpen: {
     width: drawerWidth,
@@ -96,15 +88,14 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
-    ...theme.mixins.toolbar,
+    // ...theme.mixins.toolbar,
   },
   content: {
     flexGrow: 1,
-    // padding: theme.spacing(3),
   },
 }));
 
-const MiniDrawer = props => {
+function MiniDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -115,10 +106,6 @@ const MiniDrawer = props => {
 
   const handleDrawerClose = () => {
     setOpen(false);
-  };
-
-  const handleClick = link => {
-    props.history.push(link);
   };
 
   return (
@@ -149,30 +136,46 @@ const MiniDrawer = props => {
         </div>
         <Divider />
         <List>
-          {navigation.map(text => {
-            <ListItem
-            button
-            key={text.id}
-            onClick={() => handleClick(text.link)}
-          >
-              <ListItemIcon>
-                <Dashboard />
-              </ListItemIcon>
-              <ListItemText
-                primary={text.name}
-                onClick={() => handleClick(text.link)}
-              />
-            </ListItem>
+          {links.map((text, index) => {
+            switch (text) {
+              case 'Home':
+                return (
+                  <ListItem button key={index} component="a" href="/">
+                    <ListItemIcon>
+                      <Home />
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItem>
+                );
+                break;
+              case 'Dashboard':
+                return (
+                  <ListItem
+                    button
+                    key={index}
+                    component="a"
+                    href="/organization"
+                  >
+                    <ListItemIcon>
+                      <DashboardTwoTone />
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItem>
+                );
+                break; 
+              default:
+                return null
+            }
           })}
         </List>
         <Divider />
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <TabMenu />
+        {props.content}
       </main>
     </div>
   );
-};
+}
 
 export default withRouter(MiniDrawer);

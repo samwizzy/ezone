@@ -4,16 +4,10 @@
  *
  */
 import produce from 'immer';
-import {
-  OPEN_NEW_EMPLOYEE_DIALOG,
-  CLOSE_NEW_EMPLOYEE_DIALOG,
-  OPEN_EDIT_EMPLOYEE_DIALOG,
-  CLOSE_EDIT_EMPLOYEE_DIALOG,
-  OPEN_VIEW_EMPLOYEE_DIALOG,
-  CLOSE_VIEW_EMPLOYEE_DIALOG,
-} from './constants';
+import * as Constants from './constants';
 
 export const initialState = {
+  createNewEmployeeData: false,
   loading: false,
   error: false,
   employeeDialog: {
@@ -29,7 +23,7 @@ export const initialState = {
 const employeePageReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
-      case OPEN_NEW_EMPLOYEE_DIALOG: {
+      case Constants.OPEN_NEW_EMPLOYEE_DIALOG: {
         return {
           ...state,
           employeeDialog: {
@@ -41,7 +35,7 @@ const employeePageReducer = (state = initialState, action) =>
           },
         };
       }
-      case CLOSE_NEW_EMPLOYEE_DIALOG: {
+      case Constants.CLOSE_NEW_EMPLOYEE_DIALOG: {
         return {
           ...state,
           employeeDialog: {
@@ -53,7 +47,7 @@ const employeePageReducer = (state = initialState, action) =>
           },
         };
       }
-      case OPEN_EDIT_EMPLOYEE_DIALOG: {
+      case Constants.OPEN_EDIT_EMPLOYEE_DIALOG: {
         return {
           ...state,
           employeeDialog: {
@@ -65,7 +59,7 @@ const employeePageReducer = (state = initialState, action) =>
           },
         };
       }
-      case CLOSE_EDIT_EMPLOYEE_DIALOG: {
+      case Constants.CLOSE_EDIT_EMPLOYEE_DIALOG: {
         return {
           ...state,
           employeeDialog: {
@@ -77,7 +71,7 @@ const employeePageReducer = (state = initialState, action) =>
           },
         };
       }
-      case OPEN_VIEW_EMPLOYEE_DIALOG: {
+      case Constants.OPEN_VIEW_EMPLOYEE_DIALOG: {
         return {
           ...state,
           employeeDialog: {
@@ -89,7 +83,7 @@ const employeePageReducer = (state = initialState, action) =>
           },
         };
       }
-      case CLOSE_VIEW_EMPLOYEE_DIALOG: {
+      case Constants.CLOSE_VIEW_EMPLOYEE_DIALOG: {
         return {
           ...state,
           employeeDialog: {
@@ -99,6 +93,29 @@ const employeePageReducer = (state = initialState, action) =>
             },
             data: action.payload,
           },
+        };
+      }
+      case Constants.CREATE_NEW_EMPLOYEE: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          createNewEmployeeData: action.payload,
+        };
+      }
+      case Constants.CREATE_NEW_EMPLOYEE_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          // getAllUsersData: action.payload,
+        };
+      }
+      case Constants.CREATE_NEW_EMPLOYEE_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
         };
       }
     }

@@ -1,88 +1,118 @@
-/*
- * AppReducer
- *
- * The reducer takes care of our data. Using actions, we can
- * update our application state. To add a new action,
- * add it to the switch statement in the reducer function
- *
- */
-
 import produce from 'immer';
-import {
-  LOGIN,
-  LOGIN_SUCCESS,
-  LOGIN_ERROR,
-  // LOAD_REPOS_SUCCESS,
-  // LOAD_REPOS,
-  // LOAD_REPOS_ERROR,
-  // LOAD_USER_STATUS,
-} from './constants';
+import * as Constants from './constants';
+import moment from 'moment';
 
-// The initial state of the App
+const getToken = () => {
+  const expiresIn = localStorage.getItem('expires_in');
+  const accessToken = localStorage.getItem('access_token');
+  if (
+    accessToken(
+      !expiresIn || moment.unix(Number(expiresIn)).diff(moment(), 'minute') > 1,
+    )
+  ) {
+    return accessToken;
+  }
+  return refreshToken();
+}
+
+let userActive;
+if (!JSON.parse(localStorage.getItem('user'))) {
+  userActive = false;
+} else {
+  userActive = JSON.parse(localStorage.getItem('user'));
+}
+
+let userToken;
+if (!localStorage.getItem('access_token')) {
+  userToken = false;
+} else {
+  userToken = localStorage.getItem('access_token');
+}
+
 export const initialState = {
   loading: false,
   error: false,
-  currentUser: false,
+  // user: userActive,
+  user: userActive,
   loginDetails: {},
-  tokens: false,
-  userData: {
-    user: '',
+  // accessToken: false,
+  accessToken: userToken,
+  saveToken: false,
+  getSaveToken: {},
+  messageDialog: {
+    data: { open: false, message: false, status: false },
   },
 };
 
 /* eslint-disable default-case, no-param-reassign */
 const appReducer = (state = initialState, action) =>
-  produce(state, draft => {
+  produce(state, (/* draft */) => {
     switch (action.type) {
-      case LOGIN: {
+      case Constants.LOGIN: {
         return {
           loading: true,
           error: false,
           loginDetails: action.payload,
         };
       }
-      case LOGIN_SUCCESS: {
-        localStorage.setItem('tokens', JSON.stringify(action.payload));
+      case Constants.LOGIN_SUCCESS: {
         return {
           loading: false,
           error: false,
-          tokens: action.payload,
+          // user: action.payload,
         };
       }
-      case LOGIN_ERROR: {
+      case Constants.LOGIN_ERROR: {
         return {
           loading: false,
           error: true,
         };
       }
-      // case LOAD_USER_STATUS: {
-      //   return {
-      //     // ...state,
-      //     // loading: false,
-      //     // error: false,
-      //     userStatus: action.payload,
-      //   };
-      // }
-      // case LOAD_USER_STATUS:
-      // draft.userStatus = 'guest';
-      // break;
-
-      // case LOAD_REPOS:
-      //   draft.loading = true;
-      //   draft.error = false;
-      //   draft.userData.repositories = false;
-      //   break;
-
-      // case LOAD_REPOS_SUCCESS:
-      //   draft.userData.repositories = action.repos;
-      //   draft.loading = false;
-      //   draft.currentUser = action.username;
-      //   break;
-
-      // case LOAD_REPOS_ERROR:
-      //   draft.error = action.error;
-      //   draft.loading = false;
-      //   break;
+      case Constants.GET_USER_PROFILE: {
+        localStorage.setItem('access_token', action.payload.access_token);
+        localStorage.setItem('refresh_token', action.payload.refresh_token);
+        localStorage.setItem('expires_in', action.payload.expires_in);
+        return {
+          loading: true,
+          error: false,
+          accessToken: localStorage.getItem('access_token'),
+        };
+      }
+      case Constants.GET_USER_PROFILE_SUCCESS: {
+        localStorage.setItem('user', JSON.stringify(action.payload));
+        return {
+          loading: false,
+          error: false,
+          user: JSON.parse(localStorage.getItem('user')),
+          accessToken: localStorage.getItem('access_token'),
+        };
+      }
+      case Constants.GET_USER_PROFILE_ERROR: {
+        return {
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.OPEN_SNACKBAR: {
+        return {
+          messageDialog: {
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_SNACKBAR: {
+        return {
+          messageDialog: {
+            data: { open: false },
+          },
+        };
+      }
+      case Constants.LOG_OUT: {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('expires_in');
+        return {};
+      }
     }
   });
 

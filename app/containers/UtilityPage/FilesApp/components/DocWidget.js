@@ -117,14 +117,18 @@ function DocWidget() {
         setValue(newValue);
     };
 
+    const handleSubmit = (event, newValue) => {
+        setValue(newValue);
+    };
+
     return (
         <Paper className={classes.root}>
             <Grid container justify='flex-end'>
                 <Grid item>
-                    <Button className={classes.button} variant="outlined" onClick={''} color="primary">
+                    <Button className={classes.button} variant="outlined" onClick={handleSubmit} color="primary">
                         Cancel
                     </Button>
-                    <Button className={classes.button} variant="outlined" onClick={''} color="primary">
+                    <Button className={classes.button} variant="outlined" onClick={handleSubmit} color="primary">
                         Send
                     </Button>
                 </Grid>

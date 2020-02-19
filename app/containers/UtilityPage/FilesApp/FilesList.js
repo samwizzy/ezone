@@ -17,6 +17,7 @@ import ShareFileDialog from './components/ShareFileDialog'
 import AddFileDialog from './components/AddFileDialog'
 import AddSignature from './components/AddSignature'
 import DocWidget from './components/DocWidget'
+import NoFilesList from './components/NoFilesList'
 
 const ITEM_HEIGHT = 48;
 
@@ -44,35 +45,17 @@ function ListItemLink(props) {
   return <ListItem button component="a" {...props} />;
 }
 
-const NoFileList = props => {
-  const classes = useStyles();
-
-  return (
-    <React.Fragment>
-      <Grid container justify='center' alignItems='center' className={classes.root}>
-        <Grid item>
-          <Box my={4}>
-            <img src={tasksIcon} />
-          </Box>
-          <Box>
-            <Typography variant='h6'>No file yet</Typography>
-
-            <Button variant="contained" color="primary" className={classes.button} disableElevation>
-              Upload a file
-            </Button>
-          </Box>
-        </Grid>
-      </Grid>
-    </React.Fragment>
-  )
-}
-
-
 const FilesList = props => {
   const classes = useStyles();
-  const { loading, data, openFileUploadDialog, openShareFileDialog, openNewTaskDialog } = props
+  const { loading, files, getUtilityFiles, openFileUploadDialog, openShareFileDialog, openNewTaskDialog } = props
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+
+  console.log(files, "Files")
+
+  // React.useEffect(() => {
+  //   getUtilityFiles()
+  // }, []);
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -185,10 +168,10 @@ const FilesList = props => {
     return <List component={LoadingIndicator} />;
   }
 
-  if(!data){
-    // return <NoFileList /> 
+  if(files && files.length === 0){
+    return <NoFilesList /> 
     // return <AddSignature /> 
-    return <DocWidget /> 
+    // return <DocWidget /> 
   }
 
   return (
@@ -215,7 +198,7 @@ const FilesList = props => {
         <Grid item xs={10} md={10}>
           <MUIDataTable
             title="Files List"
-            data={data}
+            data={files}
             columns={columns}
             options={options}
           />
@@ -239,7 +222,7 @@ FilesList.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  data: Selectors.makeSelectData(),
+  files: Selectors.makeSelectFiles(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -247,6 +230,7 @@ function mapDispatchToProps(dispatch) {
     openFileUploadDialog: ev => dispatch(Actions.openFileUploadDialog(ev)),
     openShareFileDialog: ev => dispatch(Actions.openShareFileDialog(ev)),
     openNewTaskDialog: ev => dispatch(Actions.openNewTaskDialog(ev)),
+    getUtilityFiles: ev => dispatch(Actions.getUtilityFiles(ev)),
   };
 }
 

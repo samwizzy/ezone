@@ -67,8 +67,8 @@ const useStyles = makeStyles(theme => ({
 
 const TopSection = props => {
   const classes = useStyles();
-
-  const { openEditColorDialog, openEditCompanyDialog } = props;
+  // const { } = props; 
+  
   return (
     <React.Fragment>
         <div>
@@ -145,18 +145,15 @@ const TopSection = props => {
 };
 
 TopSection.propTypes = {
-  openEditColorDialog: PropTypes.func,
-  openEditCompanyDialog: PropTypes.func,
+  // openEditCompanyDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  // loginPage: makeSelectLoginPage(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openEditCompanyDialog: evt => dispatch(Actions.openEditCompanyDialog(evt)),
-    openEditColorDialog: evt => dispatch(Actions.openEditColorDialog(evt)),
+    // openEditCompanyDialog: evt => dispatch(Actions.openEditCompanyDialog(evt)),
   };
 }
 

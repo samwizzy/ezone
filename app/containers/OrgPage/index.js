@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -14,6 +14,7 @@ import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectOrgPage from './selectors';
+import * as Actions from './actions';
 import reducer from './reducer';
 import saga from './saga';
 import TabsPage from './components/TabsPage';
@@ -22,9 +23,14 @@ import CompanyDialog from './components/CompanyDialog';
 import BranchDialog from './components/BranchDialog';
 import DepartmentDialog from './components/DepartmentDialog';
 
-export function OrgPage() {
+export function OrgPage(props) {
   useInjectReducer({ key: 'orgPage', reducer });
   useInjectSaga({ key: 'orgPage', saga });
+
+  const { getCompanyInfoAction } = props;
+  useEffect(() => {
+    getCompanyInfoAction();
+  }, []);
 
   return (
     <div>
@@ -42,7 +48,7 @@ export function OrgPage() {
 }
 
 OrgPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  getCompanyInfoAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -51,7 +57,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    getCompanyInfoAction: () => dispatch(Actions.getCompanyInfo()),
   };
 }
 

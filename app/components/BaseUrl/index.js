@@ -1,3 +1,3 @@
 module.exports = {
-  BaseUrl: 'http://198.20.127.183:31889',
+  BaseUrl: 'http://64.20.51.173/gateway',
 };

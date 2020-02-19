@@ -14,6 +14,7 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import AddTaskDialog from './components/AddTaskDialog'
 import TaskPreviewDialog from './components/TaskPreviewDialog'
+import NoTasksList from './components/NoTasksList'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,31 +33,15 @@ function ListItemLink(props) {
   return <ListItem button component="a" {...props} />;
 }
 
-const NoTaskList = props => {
-  const classes = useStyles();
-
-  return (
-    <Grid container justify='center' alignItems='center' className={classes.root}>
-      <Grid item>
-        <Box my={4}>
-          <img src={tasksIcon} />
-        </Box>
-        <Box>
-          <Typography variant='h6'>No file yet</Typography>
-
-          <Button variant="contained" color="primary" className={classes.button} disableElevation>
-            Upload a file
-          </Button>
-        </Box>
-      </Grid>
-    </Grid>
-  )
-}
-
-
 const TasksList = props => {
   const classes = useStyles();
-  const { loading, data, openNewTaskDialog } = props;
+  const { loading, openNewTaskDialog, getUtilityTasks, tasks } = props;
+
+  console.log(tasks, "Get tasks")
+
+  // React.useEffect(() => {
+  //   getUtilityTasks()
+  // }, []);
 
   const columns = [
     {
@@ -122,8 +107,8 @@ const TasksList = props => {
     return <List component={LoadingIndicator} />;
   }
 
-  if(!data){
-    return <NoTaskList />
+  if(tasks && tasks.length === 0){
+    return <NoTasksList />
   }
 
   return (
@@ -148,7 +133,7 @@ const TasksList = props => {
         <Grid item xs={10} md={10}>
           <MUIDataTable
             title="Task List"
-            data={data}
+            data={tasks}
             columns={columns}
             options={options}
           />
@@ -168,12 +153,13 @@ TasksList.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  data: Selectors.makeSelectTaskData(),
+  tasks: Selectors.makeSelectTasks(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openNewTaskDialog: () => dispatch(Actions.openNewTaskDialog()),
+    getUtilityTasks: () => dispatch(Actions.getUtilityTasks()),
   };
 }
 

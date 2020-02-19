@@ -18,7 +18,7 @@ import {
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import * as Actions from '../../App/actions';
+// import * as Actions from '../../App/actions';
 import logo from '../../../images/logo.svg';
 import banner from '../../../images/banner.svg';
 
@@ -174,7 +174,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    loginAction: evt => dispatch(Actions.loginAction(evt)),
+    // loginAction: evt => dispatch(Actions.loginAction(evt)),
   };
 }
 

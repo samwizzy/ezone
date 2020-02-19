@@ -24,7 +24,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function SharedFileDialog(props) {
   const classes = useStyles()
-  const { closeSharedFileDialog, data } = props
+  const { closeShareFileDialog, data } = props
   const [form, setForm] = React.useState({email: '', comment: ''})
 
   const handleChange = () => {}
@@ -37,7 +37,7 @@ function SharedFileDialog(props) {
         {...data.props}
         TransitionComponent={Transition}
         keepMounted
-        onClose={closeSharedFileDialog}
+        onClose={closeShareFileDialog}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
@@ -71,10 +71,10 @@ function SharedFileDialog(props) {
           </form>
         </DialogContent>
         <DialogActions>
-          <Button variant="outlined" onClick={closeSharedFileDialog} color="primary">
+          <Button variant="outlined" onClick={closeShareFileDialog} color="primary">
             Cancel
           </Button>
-          <Button variant="outlined" onClick={closeSharedFileDialog} color="primary">
+          <Button variant="outlined" onClick={closeShareFileDialog} color="primary">
             Share
           </Button>
         </DialogActions>
@@ -85,18 +85,18 @@ function SharedFileDialog(props) {
 
 
 SharedFileDialog.propTypes = {
-  openSharedFileDialog: PropTypes.func,
-  closeSharedFileDialog: PropTypes.func,
+  openShareFileDialog: PropTypes.func,
+  closeShareFileDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  data: Selectors.makeSelectSharedFileDialog()
+  data: Selectors.makeSelectShareFileDialog()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openSharedFileDialog: ev => dispatch(Actions.openSharedFileDialog(ev)),
-    closeSharedFileDialog: () => dispatch(Actions.closeSharedFileDialog()),
+    openShareFileDialog: ev => dispatch(Actions.openShareFileDialog(ev)),
+    closeShareFileDialog: () => dispatch(Actions.closeShareFileDialog()),
     dispatch,
   };
 }

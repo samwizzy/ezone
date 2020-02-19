@@ -56,13 +56,11 @@ const currencies = [
 
 const BranchDialog = props => {
   const {
-    partyDialog,
     branchDialog,
     closeNewBranchDialogAction,
     closeEditBranchDialogAction,
   } = props;
 
-  console.log(partyDialog, 'partyDialog');
   console.log(branchDialog, 'branchDialog');
   const classes = useStyles();
   const [currency, setCurrency] = React.useState('EUR');
@@ -369,13 +367,11 @@ BranchDialog.propTypes = {
   // dispatchNewPostAction: PropTypes.func,
   closeNewBranchDialogAction: PropTypes.func,
   closeEditBranchDialogAction: PropTypes.func,
-  branchDialog: PropTypes.object,
-  partyDialog: PropTypes.object,
+  branchDialog: PropTypes.object
 };
 
 const mapStateToProps = createStructuredSelector({
-  branchDialog: Selectors.makeSelectBranchDialog(),
-  partyDialog: Selectors.makeSelectPartyDialog(),
+  branchDialog: Selectors.makeSelectBranchDialog()
 });
 
 function mapDispatchToProps(dispatch) {

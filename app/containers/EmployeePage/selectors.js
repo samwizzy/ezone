@@ -39,10 +39,17 @@ const makeSelectEmployeeDialog = () =>
     subState => subState.employeeDialog,
   );
 
+const makeSelectCreateNewEmployeeData = () =>
+  createSelector(
+    selectEmployeePageDomain,
+    subState => subState.createNewEmployeeData,
+  );
+
 export default makeSelectEmployeePage;
 export {
   selectEmployeePageDomain,
   makeSelectLoading,
   makeSelectError,
   makeSelectEmployeeDialog,
+  makeSelectCreateNewEmployeeData,
 };

@@ -4,13 +4,12 @@
  *
  */
 
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 // import ColorPicker from 'material-ui-color-picker';
-
 import {
   TextField,
   makeStyles,
@@ -22,8 +21,10 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
+import ColorPicker from 'material-ui-color-picker';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
+import ColorDropZone from './DropZone';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -50,17 +51,17 @@ const ColorDialog = props => {
   } = props;
   const classes = useStyles();
 
-  const [values, setValues] = React.useState({
-    title: '',
-    // desc: '',
-    content: '',
+  const [values, setValues] = useState({
+    color: '',
+    logo: '',
   });
 
   const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
+    console.log(name, event, 'name, event');
+    setValues({ ...event });
   };
 
-  console.log(colorDialog, 'colorDialog');
+  // console.log(colorDialog, 'colorDialog');
 
   // useEffect(() => {
   //   setValues({
@@ -96,25 +97,16 @@ const ColorDialog = props => {
               <div />
             ) : (
               <div>
-                <TextField
-                  id="standard-title"
-                  label="Description"
+                <ColorDropZone handleChange={handleChange} logo={values.logo} />
+                <ColorPicker
+                  name="color"
+                  defaultValue="#000"
+                  value={values.color}
+                  onChange={evt => handleChange(evt)}
+                  label="Choose Company Color"
                   className={classes.textField}
-                  value={values.desc}
-                  onChange={handleChange('desc')}
                   margin="normal"
                   fullWidth
-                />
-                <TextField
-                  id="standard-description"
-                  label="Content"
-                  className={classes.textField}
-                  value={values.content}
-                  onChange={handleChange('content')}
-                  margin="normal"
-                  fullWidth
-                  multiline
-                  rows="4"
                 />
               </div>
             )}

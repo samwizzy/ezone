@@ -1,19 +1,21 @@
-FROM node
+# FROM containership/alpine-node-yarn
+FROM kewaii/alpine-node-npminstall
+# FROM node:10-alpine
 
-# Create app directory
-WORKDIR /usr/src/
+COPY internals/scripts ezone/internals/scripts
+COPY package.json ezone/package.json
+# COPY yarn.lock ezone/yarn.lock
+COPY build ezone/build
+COPY server ezone/server
 
-# Install app dependencies
-# Ensure both package.json AND package-lock.json are copied
-COPY package*.json ./
-COPY ./internals/ ./internals/
+WORKDIR /home/ezone
 
-RUN npm install --no-progress --ignore-optional
-# Confirm that the build:dll has completed
-RUN npm run build:dll
+ENV NODE_ENV production
 
-# We don't copy over any other source files since we're
-# using volumes in development (specified in compose file)
+RUN npm install --production
+# RUN yarn install --production
 
 EXPOSE 3000
-CMD npm run start
+
+ENTRYPOINT ["npm", "run", "start:prod"]
+# ENTRYPOINT ["yarn", "run", "start:prod"]

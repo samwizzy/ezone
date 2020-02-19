@@ -113,16 +113,17 @@ const EmployeeDialog = props => {
     employeeDialog,
     closeNewEmployeeDialogAction,
     closeEditEmployeeDialogAction,
-    dispatchUpdatePostAction,
+    dispatchCreateNewEmployeeAction,
   } = props;
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [expanded, setExpanded] = React.useState('panel1');
   const [currency, setCurrency] = React.useState('EUR');
   const [values, setValues] = React.useState({
-    title: '',
-    // desc: '',
-    content: '',
+    firstName: '',
+    lastName: '',
+    emailAddress: '',
+    address: '',
   });
 
   const handleChangeTab = (event, newValue) => {
@@ -219,7 +220,7 @@ const EmployeeDialog = props => {
                       <ExpansionPanelDetails>
                         <div>
                           <TextField
-                            id="standard-title"
+                            id="standard-First-Name"
                             label="First Name"
                             className={classes.textField}
                             value={values.desc}
@@ -228,7 +229,7 @@ const EmployeeDialog = props => {
                             fullWidth
                           />
                           <TextField
-                            id="standard-title"
+                            id="standard-Last-Name"
                             label="Last Name"
                             className={classes.textField}
                             value={values.desc}
@@ -237,7 +238,7 @@ const EmployeeDialog = props => {
                             fullWidth
                           />
                           <TextField
-                            id="standard-title"
+                            id="standard-email"
                             label="Email"
                             type="email"
                             className={classes.textField}
@@ -573,7 +574,7 @@ const EmployeeDialog = props => {
                             fullWidth
                           />
                         </div>
-                        
+
                       </ExpansionPanelDetails>
                     </ExpansionPanel>
                   </div>
@@ -697,7 +698,7 @@ const EmployeeDialog = props => {
                 <DialogActions>
                   <Button
                     onClick={() => {
-                      dispatchUpdatePostAction(values);
+                      dispatchCreateNewEmployeeAction(values);
                       closeComposeDialog();
                     }}
                     color="primary"
@@ -748,6 +749,7 @@ EmployeeDialog.propTypes = {
   closeNewEmployeeDialogAction: PropTypes.func,
   closeEditEmployeeDialogAction: PropTypes.func,
   employeeDialog: PropTypes.object,
+  dispatchCreateNewEmployeeAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -756,7 +758,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    // dispatchNewPostAction: evt => dispatch(Actions.saveNewPost(evt)),
+    dispatchCreateNewEmployeeAction: evt => dispatch(Actions.createNewEmployee(evt)),
     closeNewEmployeeDialogAction: () =>
       dispatch(Actions.closeNewEmployeeDialog()),
     closeEditEmployeeDialogAction: () =>

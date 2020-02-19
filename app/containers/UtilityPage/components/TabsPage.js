@@ -13,7 +13,7 @@ import {
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import * as Actions from '../../App/actions';
+import * as Actions from '../actions';
 import HomeTab from './HomeTab';
 import ChatTab from './../ChatApp/ChatTab';
 import TasksList from './../TasksApp/TasksList';
@@ -74,7 +74,7 @@ function a11yProps(index) {
   };
 }
 
-function TabsPage() {
+function TabsPage(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -139,7 +139,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    loginAction: evt => dispatch(Actions.loginAction(evt)),
+    getUtilityTasks: evt => dispatch(Actions.getUtilityTasks(evt)),
   };
 }
 

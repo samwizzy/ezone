@@ -7,7 +7,7 @@ import {
   AppBar,
   Tabs,
   Tab,
-  Toolbar,
+  Toolbar
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -15,8 +15,9 @@ import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import CompanyStructure from './CompanyStructure';
 import UserMenu from '../../../components/layouts/shared-components/UserMenu';
-import PartyDialog from './PartyDialog'
-import SubPartyDialog from './SubPartyDialog'
+import PartyDialog from './PartyDialog';
+import SubPartyDialog from './SubPartyDialog';
+import RoleDialog from './RoleDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -100,6 +101,7 @@ function TabsPage() {
 
       <PartyDialog />
       <SubPartyDialog />
+      <RoleDialog />
     </div>
   );
 }
@@ -110,14 +112,10 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({
-  // loginPage: makeSelectLoginPage(),
-});
+const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
-  return {
-    loginAction: evt => dispatch(Actions.loginAction(evt)),
-  };
+  return {};
 }
 
 const withConnect = connect(

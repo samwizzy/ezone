@@ -5,6 +5,14 @@
  */
 
 import {
+  CREATE_UTILITY_TASKS_SUCCESS,
+  GET_UTILITY_TASKS,
+  CREATE_UTILITY_TASKS,
+  GET_UTILITY_TASKS_ERROR,
+  GET_UTILITY_FILES,
+  CREATE_UTILITY_FILES,
+  CREATE_UTILITY_FILES_SUCCESS,
+  GET_UTILITY_FILES_ERROR,
   OPEN_FILE_UPLOAD_DIALOG,
   CLOSE_FILE_UPLOAD_DIALOG,
   OPEN_SHARE_FILE_DIALOG,
@@ -22,8 +30,64 @@ import {
   OPEN_NEW_DEPARTMENT_DIALOG,
   CLOSE_NEW_DEPARTMENT_DIALOG,
   OPEN_EDIT_DEPARTMENT_DIALOG,
-  CLOSE_EDIT_DEPARTMENT_DIALOG,
+  CLOSE_EDIT_DEPARTMENT_DIALOG
 } from './constants';
+
+export function getUtilityFiles(data) {
+  return {
+    type: GET_UTILITY_FILES,
+    payload: data
+  };
+}
+
+export function getUtilityFilesError(err) {
+  return {
+    type: GET_UTILITY_FILES_ERROR,
+    payload: err
+  };
+}
+
+export function createUtilityFile(data) {
+  return {
+    type: CREATE_UTILITY_FILES,
+    payload: data
+  };
+}
+
+export function createUtilityFileSuccess(data) {
+  return {
+    type: CREATE_UTILITY_FILES_SUCCESS,
+    payload: data
+  };
+}
+
+export function createUtilityTask(data) {
+  return {
+    type: CREATE_UTILITY_TASKS,
+    payload: data
+  };
+}
+
+export function createUtilityTaskSuccess(data) {
+  return {
+    type: CREATE_UTILITY_TASKS_SUCCESS,
+    payload: data
+  };
+}
+
+export function getUtilityTasks(data) {
+  return {
+    type: GET_UTILITY_TASKS,
+    payload: data
+  };
+}
+
+export function getUtilityTasksError(err) {
+  return {
+    type: GET_UTILITY_TASKS_ERROR,
+    payload: err
+  };
+}
 
 export function openFileUploadDialog(data) {
   return {
@@ -45,7 +109,7 @@ export function openShareFileDialog(data) {
   };
 }
 
-export function closeSharedFileDialog() {
+export function closeShareFileDialog() {
   return {
     type: CLOSE_SHARE_FILE_DIALOG,
   };

@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import {
+  makeStyles,
   Avatar,
   Button,
   TextField,
@@ -11,8 +12,7 @@ import {
   Box,
   Grid,
   Link,
-  Paper,
-  makeStyles,
+  Paper
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -41,29 +41,36 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     padding: '30px',
     height: '100vh',
+    overflow: 'auto'
   },
   grid: {
-    height: '100%',
+    height: '100vh',
     backgroundColor: theme.palette.grey[50],
     borderRadius: theme.spacing(5),
-    overflow: 'hidden',
+    padding: theme.spacing(2, 0)
   },
   image: {
-    width: '50%',
-    height: '100vh',
-    backgroundImage: `url(${banner})`,
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    position: 'absolute',
+    [theme.breakpoints.up('md')]: {
+      width: '55%',
+      maxWidth: '100%',
+      height: '100%',
+      backgroundImage: `url(${banner})`,
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center right',
+      position: 'absolute',
+      top: 0,
+      bottom: 0
+    }
   },
   paper: {
-    margin: theme.spacing(8, 4),
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'center',
     borderRadius: theme.spacing(5),
     padding: theme.spacing(2),
-    margin: theme.spacing(4),
+    margin: theme.spacing(0, 4),
     border: '1px solid #F1F5F8',
     backgroundColor: '#FFFFFF',
   },
@@ -125,12 +132,12 @@ const RegistrationForm = props => {
 
   return (
     <div>
-      <div className={classes.image} />
+      <div className={classes.image}></div>
 
       <div className={classes.root}>
-        <Grid container component={Paper} className={classes.grid}>
-          <Grid item xs={false} sm={4} md={7} />
-          <Grid item xs={12} sm={8} md={5}>
+        <Grid container component={Paper} className={classes.grid} justify="center">
+          <Grid item xs={0} sm={0} md={7} />
+          <Grid item xs={12} sm={10} md={5} style={{display: 'flex'}}>
             <div className={classes.paper}>
               <Box className={classes.avatar}>
                 <img src={logo} alt="" />

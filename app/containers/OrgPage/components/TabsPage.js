@@ -7,7 +7,7 @@ import {
   AppBar,
   Tabs,
   Tab,
-  Toolbar,
+  Toolbar
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
