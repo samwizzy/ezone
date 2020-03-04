@@ -60,7 +60,7 @@ const workOrderPageReducer = (state = initialState, action) =>
         console.log('openVendorDialog reducer');
         return {
           ...state,
-          workOrderDialog: {
+          vendorDialog: {
             type: 'new',
             props: {
               open: true,
@@ -73,7 +73,7 @@ const workOrderPageReducer = (state = initialState, action) =>
       case Constants.CLOSE_VENDOR_DIALOG: {
         return {
           ...state,
-          workOrderDialog: {
+          vendorDialog: {
             type: 'new',
             props: {
               open: false,

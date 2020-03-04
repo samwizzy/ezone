@@ -18,6 +18,7 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 // import LoadingIndicator from '../../../../components/LoadingIndicator';
 import { AddButton } from './AddButton';
+import { AddVendor } from './AddVendor';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -87,6 +88,7 @@ const WorkOrderList = props => {
   const {
     loading,
     openNewWorkOrderDialogAction,
+    openVendorDialogAction,
   } = props;
 
   // console.log(getAllEmployees, 'getAllEmployees');
@@ -216,7 +218,8 @@ const WorkOrderList = props => {
     responsive: 'scrollMaxHeight',
     selectableRows: 'none',
     customToolbar: () => (
-      <AddButton openNewWorkOrderDialogAction={openNewWorkOrderDialogAction} />
+      <AddButton openNewWorkOrderDialogAction={openNewWorkOrderDialogAction} openVendorDialogAction={openVendorDialogAction} />
+      // <AddVendor />
     ),
   };
 
@@ -248,6 +251,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewWorkOrderDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
+    openVendorDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
   };
 }
 
