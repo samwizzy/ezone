@@ -28,7 +28,6 @@ import ChatFooter from './components/ChatFooter';
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-    color: console.log(theme, 'Theme'),
   },
   messageRow: {
     '&.me': {},
@@ -194,7 +193,8 @@ const ChatTab = props => {
     <React.Fragment>
       <div>
         {!status === false ? (
-          <NoAvailableChats />
+          // <NoAvailableChats />
+          <div />
         ) : (
           <Grid justify="center" container>
             <Grid item xs={12} md={4} style={{ backgroundColor: '#efefef' }}>
@@ -207,7 +207,7 @@ const ChatTab = props => {
                     padding: '3px 7px',
                   }}
                 >
-                  <Autocomplete
+                  {/* <Autocomplete
                     id="combo-box-demo"
                     options={allEmployees}
                     getOptionLabel={option => option.firstName}
@@ -222,7 +222,7 @@ const ChatTab = props => {
                         fullWidth
                       />
                     )}
-                  />
+                  /> */}
                   {/* <TextField
                       variant="outlined"
                       margin="normal"
