@@ -18,7 +18,6 @@ export function closeCreateWorkOrderDialog() {
   };
 }
 
-
 export function openVendorDialog() {
   console.log('openVendorDialog action');
   return {

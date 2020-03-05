@@ -19,6 +19,7 @@ import classNames from 'classnames';
 import Add from '@material-ui/icons/Add';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
+import * as AppSelectors from '../../App/selectors';
 import UserChat from './components/UserChat';
 import NoAvailableChats from './components/NoAvailableChats';
 import ChatHeader from './components/ChatHeader';
@@ -145,13 +146,15 @@ const ChatTab = props => {
     dispatchGetAllUsersChat,
     allEmployees,
     allUsersChat,
+    currentUser,
   } = props;
   useEffect(() => {
     dispatchGetAllEmployees();
     dispatchGetAllUsersChat();
   }, []);
 
-  console.log(allUsersChat, 'allUsersChat');
+  let tempChat = [];
+  console.log(currentUser, allUsersChat, 'allUsersChat');
   const classes = useStyles();
   const [status, setStatus] = React.useState(false);
 
@@ -178,14 +181,13 @@ const ChatTab = props => {
   };
 
   const handleEmployeeChange = (event, vl) => {
-    console.log(vl, 'value');
     const newChat = {
-      initiator: '',
-      initiatorName: '',
-      ipAddress: '',
-      responder: '',
-      responderName: '',
+      initiator: currentUser.uuId,
+      initiatorName: currentUser.firstName,
+      responder: vl.uuId,
+      responderName: vl.firstName,
     };
+    tempChat.push(newChat);
   };
 
   return (
@@ -194,34 +196,34 @@ const ChatTab = props => {
         {!status === false ? (
           <NoAvailableChats />
         ) : (
-            <Grid justify="center" container>
-              <Grid item xs={12} md={4} style={{ backgroundColor: '#efefef' }}>
-                <Paper square>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: '3px 7px',
-                    }}
-                  >
-                    <Autocomplete
-                      id="combo-box-demo"
-                      options={allEmployees}
-                      getOptionLabel={option => option.firstName}
-                      style={{ width: 800 }}
-                      onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          label="Search contacts"
-                          variant="outlined"
-                          placeholder="Search Contacts"
-                          fullWidth
-                        />
-                      )}
-                    />
-                    {/* <TextField
+          <Grid justify="center" container>
+            <Grid item xs={12} md={4} style={{ backgroundColor: '#efefef' }}>
+              <Paper square>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    padding: '3px 7px',
+                  }}
+                >
+                  <Autocomplete
+                    id="combo-box-demo"
+                    options={allEmployees}
+                    getOptionLabel={option => option.firstName}
+                    style={{ width: 800 }}
+                    onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        label="Search contacts"
+                        variant="outlined"
+                        placeholder="Search Contacts"
+                        fullWidth
+                      />
+                    )}
+                  />
+                  {/* <TextField
                       variant="outlined"
                       margin="normal"
                       required
@@ -238,83 +240,79 @@ const ChatTab = props => {
                         shrink: true,
                       }}
                     /> */}
-                    <IconButton>
-                      <Add />
-                    </IconButton>
-                  </div>
+                  <IconButton>
+                    <Add />
+                  </IconButton>
+                </div>
 
-                  <Tabs
-                    variant="fullWidth"
-                    value={value}
-                    indicatorColor="primary"
-                    textColor="primary"
-                    onChange={handleChange}
-                    aria-label="disabled tabs example"
-                    className={classes.tabs}
-                  >
-                    <Tab label="Active" {...a11yProps(1)} />
-                    <Tab label="Group" {...a11yProps(1)} />
-                    <Tab label="Archive" {...a11yProps(1)} />
-                    <Tab label="Contact" {...a11yProps(1)} />
-                  </Tabs>
-                </Paper>
-                <TabPanel value={value} index={0}>
-                  <UserChat allUsersChat={allUsersChat} />
-                </TabPanel>
-                <TabPanel value={value} index={1}>
-                  <UserChat />
-                </TabPanel>
-                <TabPanel value={value} index={2}>
-                  <UserChat />
-                </TabPanel>
-                <TabPanel value={value} index={3}>
-                  <UserChat />
-                </TabPanel>
-              </Grid>
-              <Grid item xs={12} md={8} component={Paper}>
-                <Grid container justify="center">
-                  <Grid item xs={12}>
-                    <ChatHeader />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <div className={classes.msgBody}>
-                      <div
-                        className={classNames(
-                          classes.messageRow,
-                          { me: 'item.id' === 'user.id' },
-                          { contact: 'item.id' !== 'user.id' },
-                          {
-                            'first-of-group': isFirstMessageOfGroup('item', 'i'),
-                          },
-                          { 'last-of-group': isLastMessageOfGroup('item', 'i') },
-                        )}
-                        style={{
-                          border: '1px solid #efefef',
-                          display: 'flex',
-                          justifyContent: 'justify-end',
-                          alignItems: 'flex-start',
-                        }}
-                      >
-                        <Paper className={classes.chatPane}>
-                          <Typography variant="subtitle1">
+                <Tabs
+                  variant="fullWidth"
+                  value={value}
+                  indicatorColor="primary"
+                  textColor="primary"
+                  onChange={handleChange}
+                  aria-label="disabled tabs example"
+                  className={classes.tabs}
+                >
+                  <Tab label="Active" {...a11yProps(1)} />
+                  <Tab label="Group" {...a11yProps(1)} />
+                  <Tab label="Archive" {...a11yProps(1)} />
+                </Tabs>
+              </Paper>
+              <TabPanel value={value} index={0}>
+                <UserChat allUsersChat={allUsersChat} tempChat={tempChat} />
+              </TabPanel>
+              <TabPanel value={value} index={1}>
+                <UserChat />
+              </TabPanel>
+              <TabPanel value={value} index={2}>
+                <UserChat />
+              </TabPanel>
+            </Grid>
+            <Grid item xs={12} md={8} component={Paper}>
+              <Grid container justify="center">
+                <Grid item xs={12}>
+                  <ChatHeader />
+                </Grid>
+                <Grid item xs={12}>
+                  <div className={classes.msgBody}>
+                    <div
+                      className={classNames(
+                        classes.messageRow,
+                        { me: 'item.id' === 'user.id' },
+                        { contact: 'item.id' !== 'user.id' },
+                        {
+                          'first-of-group': isFirstMessageOfGroup('item', 'i'),
+                        },
+                        { 'last-of-group': isLastMessageOfGroup('item', 'i') },
+                      )}
+                      style={{
+                        border: '1px solid #efefef',
+                        display: 'flex',
+                        justifyContent: 'justify-end',
+                        alignItems: 'flex-start',
+                      }}
+                    >
+                      <Paper className={classes.chatPane}>
+                        <Typography variant="subtitle1">
                             How you doing brother?
                         </Typography>
-                          <Typography
-                            variant="caption"
-                            style={{ position: 'absolute', right: 12, bottom: 0 }}
-                          >
+                        <Typography
+                          variant="caption"
+                          style={{ position: 'absolute', right: 12, bottom: 0 }}
+                        >
                             05:56 am
                         </Typography>
-                        </Paper>
-                      </div>
-
-                      <ChatFooter />
+                      </Paper>
                     </div>
-                  </Grid>
+
+                    <ChatFooter />
+                  </div>
                 </Grid>
               </Grid>
             </Grid>
-          )}
+          </Grid>
+        )}
       </div>
     </React.Fragment>
   );
@@ -325,11 +323,13 @@ ChatTab.propTypes = {
   dispatchGetAllUsersChat: PropTypes.func,
   allEmployees: PropTypes.array,
   allUsersChat: PropTypes.array,
+  currentUser: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
   allEmployees: Selectors.makeSelectAllEmployees(),
   allUsersChat: Selectors.makeSelectAllUsersChat(),
+  currentUser: AppSelectors.makeSelectCurrentUser(),
 });
 
 function mapDispatchToProps(dispatch) {

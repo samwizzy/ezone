@@ -28,14 +28,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UserChat = props => {
-  const { allUsersChat } = props;
+  const { allUsersChat, tempChat } = props;
   const classes = useStyles();
 
+  console.log(tempChat, 'tempChat')
   return (
     <List className={classes.list}>
       {allUsersChat &&
         allUsersChat.map(userChat => (
-          <ListItem alignItems="flex-start" component={Paper}>
+          <ListItem alignItems="flex-start" component={Paper} key={userChat.id}>
             <ListItemAvatar>
               <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
             </ListItemAvatar>

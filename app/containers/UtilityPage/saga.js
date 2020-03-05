@@ -207,8 +207,7 @@ export function* getAllUsersChat() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
-  console.log(currentUser, 'currentUser');
-  const requestURL = `${BaseUrl}${Endpoints.GetUsersChatApi}/${
+  const requestURL = `${BaseUrl}${Endpoints.GetUsersChatApi}/?userUid=${
     currentUser.uuId
   }`;
 
@@ -221,7 +220,6 @@ export function* getAllUsersChat() {
       }),
     });
 
-    console.log(getAllUsersChatResponse, 'getAllUsersChatResponse');
     yield put(Actions.getAllUsersChatSuccess(getAllUsersChatResponse));
   } catch (err) {
     yield put(Actions.getAllUsersChatError(err));
