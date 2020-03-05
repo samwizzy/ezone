@@ -24,6 +24,7 @@ import moment from 'moment'
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import DeleteRounded from '@material-ui/icons/DeleteRounded';
+import InsertDriveFile from '@material-ui/icons/InsertDriveFile';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -103,6 +104,13 @@ const FilesList = props => {
       options: {
         filter: true,
         sort: true,
+        customBodyRender: docName => {
+          return  (
+            <Typography variant="inherit" color="textSecondary">
+              <InsertDriveFile /> &nbsp; {docName}
+            </Typography>
+          )
+        }
       },
     },
     {
@@ -114,7 +122,8 @@ const FilesList = props => {
         customBodyRender: id => {
           const selectedFile = files && files.find(file => file.id === id)
           return (
-            selectedFile.dateUpdated? moment(selectedFile.dateUpdated).format('lll') : moment(selectedFile.dateCreated).format('lll')
+            selectedFile.dateUpdated? 
+            moment(selectedFile.dateUpdated).format('lll') : moment(selectedFile.dateCreated).format('lll')
           )
         }
       },
