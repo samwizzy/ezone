@@ -103,7 +103,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     backgroundColor: '#efefef',
     minHeight: '200px',
-    height: '728px',
+    height: '400px',
     overflow: 'auto',
     padding: theme.spacing(3, 5),
   },
@@ -152,7 +152,6 @@ const ChatTab = props => {
     dispatchGetAllUsersChat();
   }, []);
 
-  console.log(currentUser, allUsersChat, 'allUsersChat');
   const classes = useStyles();
   const [status, setStatus] = React.useState(false);
 
@@ -181,9 +180,9 @@ const ChatTab = props => {
   const handleEmployeeChange = (event, vl) => {
     const initNewChat = {
       initiator: currentUser.uuId,
-      initiatorName: currentUser.firstName,
+      initiatorName: (currentUser.firstName, currentUser.lastName),
       responder: vl.uuId,
-      responderName: vl.firstName,
+      responderName: (vl.firstName, vl.lastName),
     };
     setNewChat([initNewChat]);
   };
@@ -206,7 +205,7 @@ const ChatTab = props => {
                     padding: '3px 7px',
                   }}
                 >
-                  {/* <Autocomplete
+                  <Autocomplete
                     id="combo-box-demo"
                     options={allEmployees}
                     getOptionLabel={option => option.firstName}
@@ -221,24 +220,7 @@ const ChatTab = props => {
                         fullWidth
                       />
                     )}
-                  /> */}
-                  {/* <TextField
-                      variant="outlined"
-                      margin="normal"
-                      required
-                      fullWidth
-                      id="chat"
-                      label="Search Chat"
-                      placeholder="Is the work done?"
-                      name="chat"
-                      size="small"
-                      InputProps={{
-                        className: classes.input,
-                      }}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    /> */}
+                  />
                   <IconButton>
                     <Add />
                   </IconButton>

@@ -31,7 +31,6 @@ const UserChat = props => {
   const { allUsersChat, newChat } = props;
   const classes = useStyles();
 
-  console.log(newChat, 'newChat');
   return (
     <List className={classes.list}>
       {newChat &&
@@ -41,7 +40,7 @@ const UserChat = props => {
               <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
             </ListItemAvatar>
             <ListItemText
-              primary={chat.name}
+              primary={chat.responderName}
               secondary={
                 <React.Fragment key={chat.id}>
                   <Typography
@@ -50,7 +49,7 @@ const UserChat = props => {
                     className={classes.inline}
                     color="textPrimary"
                   >
-                    Is the work done?
+                    {chat.responderName}
                   </Typography>
                 </React.Fragment>
               }
@@ -64,7 +63,7 @@ const UserChat = props => {
               <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
             </ListItemAvatar>
             <ListItemText
-              primary={userChat.name}
+              primary={(userChat.firstName, userChat.lastName)}
               secondary={
                 <React.Fragment>
                   <Typography
