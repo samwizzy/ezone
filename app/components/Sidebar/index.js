@@ -28,7 +28,7 @@ const links = [
   'Organization',
   'Applications',
   'Employees',
-  'Groups',
+  'WorkOrder',
   'Security',
   'Settings',
 ];
@@ -222,7 +222,7 @@ export default function MiniDrawer(props) {
                 );
               case 'Security':
                 return (
-                  <ListItem button key={index} component="a" href="/groups">
+                  <ListItem button key={index} component="a" href="/workorder">
                     <ListItemIcon>
                       <Tooltip title={text} arrow placement="right-end">
                         <Security />

@@ -31,7 +31,6 @@ const emailConfigReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_EMAIL_CONFIG_SUCCESS: {
-        console.log('action.payload: ', action.payload);
         return {
           ...state,
           loading: false,

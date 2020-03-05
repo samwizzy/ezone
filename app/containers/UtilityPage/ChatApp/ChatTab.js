@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -103,7 +103,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     backgroundColor: '#efefef',
     minHeight: '200px',
-    height: '728px',
+    height: '400px',
     overflow: 'auto',
     padding: theme.spacing(3, 5),
   },
@@ -152,13 +152,11 @@ const ChatTab = props => {
     dispatchGetAllUsersChat();
   }, []);
 
-  let tempChat = [];
-  console.log(currentUser, allUsersChat, 'allUsersChat');
   const classes = useStyles();
   const [status, setStatus] = React.useState(false);
 
   const [value, setValue] = React.useState(0);
-
+  const [newChat, setNewChat] = useState([]);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -180,13 +178,13 @@ const ChatTab = props => {
   };
 
   const handleEmployeeChange = (event, vl) => {
-    const newChat = {
+    const initNewChat = {
       initiator: currentUser.uuId,
-      initiatorName: currentUser.firstName,
+      initiatorName: (currentUser.firstName, currentUser.lastName),
       responder: vl.uuId,
-      responderName: vl.firstName,
+      responderName: (vl.firstName, vl.lastName),
     };
-    tempChat.push(newChat);
+    setNewChat([initNewChat]);
   };
 
   return (
@@ -207,7 +205,7 @@ const ChatTab = props => {
                     padding: '3px 7px',
                   }}
                 >
-                  {/* <Autocomplete
+                  <Autocomplete
                     id="combo-box-demo"
                     options={allEmployees}
                     getOptionLabel={option => option.firstName}
@@ -222,24 +220,7 @@ const ChatTab = props => {
                         fullWidth
                       />
                     )}
-                  /> */}
-                  {/* <TextField
-                      variant="outlined"
-                      margin="normal"
-                      required
-                      fullWidth
-                      id="chat"
-                      label="Search Chat"
-                      placeholder="Is the work done?"
-                      name="chat"
-                      size="small"
-                      InputProps={{
-                        className: classes.input,
-                      }}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    /> */}
+                  />
                   <IconButton>
                     <Add />
                   </IconButton>
@@ -260,7 +241,7 @@ const ChatTab = props => {
                 </Tabs>
               </Paper>
               <TabPanel value={value} index={0}>
-                <UserChat allUsersChat={allUsersChat} tempChat={tempChat} />
+                <UserChat allUsersChat={allUsersChat} newChat={newChat} />
               </TabPanel>
               <TabPanel value={value} index={1}>
                 <UserChat />
