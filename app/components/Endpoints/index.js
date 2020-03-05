@@ -39,6 +39,8 @@ export const CreateUtilityTasksApi = '/utilityserv/api/v1/task';
 
 // Chat Api
 export const GetUsersChatApi = '/utilityserv/api/v1/chat/get_user_chat';
+export const GetUserChatDataApi = '/utilityserv/api/v1/message/get_messages_for_chat';
+export const SendMessageApi = '/utilityserv/api/v1/message/send_message';
 
 // User 
 export const GetEmployeesApi = '/authserv/api/v1/users';

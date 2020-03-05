@@ -1,18 +1,15 @@
-import { call, put, all, take, select, takeLatest } from 'redux-saga/effects';
-import qs from 'query-string';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 import request from '../../utils/request';
 
 import { BaseUrl } from '../../components/BaseUrl';
-// import {AppSelectors.makeSelectAccessToken, AppSelectors.makeSelectCurrentUser} from "../App/selectors";
-import * as AppSelectors from '../App/selectors';
-// import * as Selectors from './selectors';
-import * as Actions from './actions';
 import * as AppActions from '../App/actions';
+import * as AppSelectors from '../App/selectors';
+import * as Selectors from './selectors';
+import * as Actions from './actions';
 import * as Constants from './constants';
 import * as Endpoints from '../../components/Endpoints';
 
-export function* addUtilityFile({type, payload}) {
-  console.log(payload, "checking data from saga")
+export function* addUtilityFile({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${BaseUrl}${Endpoints.CreateUtilityFileApi}`;
@@ -53,7 +50,7 @@ export function* addUtilityTasks({ type, payload }) {
     });
 
     console.log(createdTasksResponse, 'createdTasksResponse');
-    yield put({type: Constants.GET_UTILITY_TASKS});
+    yield put({ type: Constants.GET_UTILITY_TASKS });
     yield put(
       AppActions.openSnackBar({
         open: true,
@@ -92,7 +89,7 @@ export function* getUtilityTasks() {
   }
 }
 
-export function* getUtilityTask({type, payload}) {
+export function* getUtilityTask({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${BaseUrl}${Endpoints.GetUtilityTaskApi}/${payload}`;
 
@@ -105,16 +102,16 @@ export function* getUtilityTask({type, payload}) {
       }),
     });
 
-    console.log(utilityTaskResponse, "utilityTaskResponse")
+    console.log(utilityTaskResponse, 'utilityTaskResponse');
 
     yield put(Actions.getUtilityTaskSuccess(utilityTaskResponse));
   } catch (err) {
     // yield put(Actions.getUtilityTasksError(err));
-    console.error(err, "I got the error")
+    console.error(err, 'I got the error');
   }
 }
 
-export function* getUserByUUID({type, payload}) {
+export function* getUserByUUID({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${BaseUrl}${Endpoints.GetUserByUUIDApi}/${payload}`;
 
@@ -127,16 +124,16 @@ export function* getUserByUUID({type, payload}) {
       }),
     });
 
-    console.log(userResponse, "userResponse")
+    console.log(userResponse, 'userResponse');
 
     yield put(Actions.getUserByUUIDSuccess(userResponse));
   } catch (err) {
     // yield put(Actions.getUserByUUIDError(err));
-    console.error(err, "I got the error")
+    console.error(err, 'I got the error');
   }
 }
 
-export function* getAssignedToByUUID({type, payload}) {
+export function* getAssignedToByUUID({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${BaseUrl}${Endpoints.GetUserByUUIDApi}/${payload}`;
 
@@ -149,19 +146,21 @@ export function* getAssignedToByUUID({type, payload}) {
       }),
     });
 
-    console.log(userResponse, "userResponse")
+    console.log(userResponse, 'userResponse');
 
     yield put(Actions.getAssignedToByUUIDSuccess(userResponse));
   } catch (err) {
     // yield put(Actions.getUserByUUIDError(err));
-    console.error(err, "I got the error")
+    console.error(err, 'I got the error');
   }
 }
 
 export function* getUtilityFiles() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${BaseUrl}${Endpoints.GetUtilityFilesApi}/${user.organisation.orgId}`;
+  const requestURL = `${BaseUrl}${Endpoints.GetUtilityFilesApi}/${
+    user.organisation.orgId
+  }`;
 
   try {
     const utilityFilesResponse = yield call(request, requestURL, {
@@ -242,7 +241,62 @@ export function* getEmployees() {
     yield put(Actions.getEmployeesSuccess(employeesResponse));
   } catch (err) {
     // yield put(Actions.getUtilityTasksError(err));
-    console.error(err, "I got the error")
+    console.error(err, 'I got the error');
+  }
+}
+
+export function* getUserChatData() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+
+  const userChatDetails = yield select(Selectors.makeSelectGetUserChatData());
+
+  console.log(userChatDetails, 'userChatDetails');
+  const requestURL = `${BaseUrl}${Endpoints.GetUserChatDataApi}/?chatId=${
+    userChatDetails.initiator
+  }&limit=${10}&start=${10}`;
+
+  try {
+    const userChatDataResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getUserChatDataSuccess(userChatDataResponse));
+  } catch (err) {
+    yield put(Actions.getUserChatDataError(err));
+  }
+}
+
+export function* postMsg() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+
+  const userChatData = yield select(Selectors.makeSelectGetUserChatData());
+  const postMsgDetails = yield select(Selectors.makeSelectPostMsg());
+  postMsgDetails.recipientId = userChatData.responder;
+  postMsgDetails.recipientName = userChatData.responderName;
+  postMsgDetails.senderId = userChatData.initiator;
+  postMsgDetails.senderName = userChatData.initiatorName;
+
+  console.log(userChatData, 'userChatData');
+  console.log(postMsgDetails, 'postMsgDetails');
+  const requestURL = `${BaseUrl}${Endpoints.SendMessageApi}`;
+
+  try {
+    const postMsgResponse = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(postMsgDetails),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.postMsgSuccess(postMsgResponse));
+  } catch (err) {
+    yield put(Actions.postMsgError(err));
   }
 }
 
@@ -259,4 +313,6 @@ export default function* UtilityPageSaga() {
   yield takeLatest(Constants.CREATE_UTILITY_FILES, addUtilityFile);
   yield takeLatest(Constants.GET_ALL_USERS, getAllUsers);
   yield takeLatest(Constants.GET_ALL_USERS_CHAT, getAllUsersChat);
+  yield takeLatest(Constants.GET_USER_CHAT_DATA, getUserChatData);
+  yield takeLatest(Constants.POST_MSG, postMsg);
 }

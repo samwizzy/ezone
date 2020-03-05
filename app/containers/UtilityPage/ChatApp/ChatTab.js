@@ -146,17 +146,21 @@ const ChatTab = props => {
     allEmployees,
     allUsersChat,
     currentUser,
+    getAllUserChatData,
+    userChatData,
   } = props;
   useEffect(() => {
     dispatchGetAllEmployees();
     dispatchGetAllUsersChat();
   }, []);
 
+  console.log(userChatData, 'userChatData');
+  // console.log(getAllUserChatData, 'getAllUserChatData');
   const classes = useStyles();
   const [status, setStatus] = React.useState(false);
 
   const [value, setValue] = React.useState(0);
-  const [newChat, setNewChat] = useState([]);
+  const [newChat, setNewChat] = useState();
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -184,7 +188,8 @@ const ChatTab = props => {
       responder: vl.uuId,
       responderName: (vl.firstName, vl.lastName),
     };
-    setNewChat([initNewChat]);
+    setNewChat(initNewChat);
+    // setNewChat([initNewChat]);
   };
 
   return (
@@ -251,46 +256,60 @@ const ChatTab = props => {
               </TabPanel>
             </Grid>
             <Grid item xs={12} md={8} component={Paper}>
-              <Grid container justify="center">
-                <Grid item xs={12}>
-                  <ChatHeader />
+              {/* {getAllUserChatData && getAllUserChatData.length > 0 ? ( */}
+                <Grid container justify="center">
+                  <Grid item xs={12}>
+                    <ChatHeader userChatData={userChatData} />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <div className={classes.msgBody}>
+                      <div
+                        className={classNames(
+                          classes.messageRow,
+                          { me: 'item.id' === 'user.id' },
+                          { contact: 'item.id' !== 'user.id' },
+                          {
+                            'first-of-group': isFirstMessageOfGroup('item', 'i'),
+                          },
+                          { 'last-of-group': isLastMessageOfGroup('item', 'i') },
+                        )}
+                        style={{
+                          border: '1px solid #efefef',
+                          display: 'flex',
+                          justifyContent: 'justify-end',
+                          alignItems: 'flex-start',
+                        }}
+                      >
+                        <Paper className={classes.chatPane}>
+                          <Typography variant="subtitle1">
+                            How you doing brother?
+                          </Typography>
+                          <Typography
+                            variant="caption"
+                            style={{ position: 'absolute', right: 12, bottom: 0 }}
+                          >
+                            05:56 am
+                          </Typography>
+                        </Paper>
+                      </div>
+
+                      <ChatFooter />
+                    </div>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                  <div className={classes.msgBody}>
-                    <div
-                      className={classNames(
-                        classes.messageRow,
-                        { me: 'item.id' === 'user.id' },
-                        { contact: 'item.id' !== 'user.id' },
-                        {
-                          'first-of-group': isFirstMessageOfGroup('item', 'i'),
-                        },
-                        { 'last-of-group': isLastMessageOfGroup('item', 'i') },
-                      )}
-                      style={{
-                        border: '1px solid #efefef',
-                        display: 'flex',
-                        justifyContent: 'justify-end',
-                        alignItems: 'flex-start',
-                      }}
-                    >
+              {/* ) : (
+                <Grid container justify="center">
+                  <Grid item xs={12}>
+                    <div className={classes.msgBody}>
                       <Paper className={classes.chatPane}>
                         <Typography variant="subtitle1">
-                            How you doing brother?
-                        </Typography>
-                        <Typography
-                          variant="caption"
-                          style={{ position: 'absolute', right: 12, bottom: 0 }}
-                        >
-                            05:56 am
+                          Start a new conversation
                         </Typography>
                       </Paper>
                     </div>
-
-                    <ChatFooter />
-                  </div>
+                  </Grid>
                 </Grid>
-              </Grid>
+              )} */}
             </Grid>
           </Grid>
         )}
@@ -305,9 +324,13 @@ ChatTab.propTypes = {
   allEmployees: PropTypes.array,
   allUsersChat: PropTypes.array,
   currentUser: PropTypes.object,
+  getAllUserChatData: PropTypes.array,
+  userChatData: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
+  userChatData: Selectors.makeSelectGetUserChatData(),
+  getAllUserChatData: Selectors.makeSelectGetAllUserChatData(),
   allEmployees: Selectors.makeSelectAllEmployees(),
   allUsersChat: Selectors.makeSelectAllUsersChat(),
   currentUser: AppSelectors.makeSelectCurrentUser(),
