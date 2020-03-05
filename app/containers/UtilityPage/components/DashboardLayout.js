@@ -102,9 +102,7 @@ function TabsPage(props) {
             </IconButton>
 
             <Button
-              className={classNames(
-                {'active': pathname == '/dashboard/projects/'}
-              )}
+              className={classNames(classes.navList, {'active': pathname === '/dashboard'})}
               component="button"
               onClick={() => {
                 history.push('/dashboard')
@@ -113,9 +111,7 @@ function TabsPage(props) {
               Project
             </Button>
             <Button
-              className={classNames(
-                {'active': pathname == '/dashboard/chats/'}
-              )}
+              className={classNames(classes.navList, {'active': pathname === '/dashboard/chats'})}
               component="button"
               onClick={() => {
                 history.push('/dashboard/chats')
@@ -133,6 +129,7 @@ function TabsPage(props) {
               Tasks
             </Button>
             <Button
+              className={classNames(classes.navList, {'active': pathname === '/dashboard/files'})}
               component="button"
               onClick={() => {
                 history.push('/dashboard/files')

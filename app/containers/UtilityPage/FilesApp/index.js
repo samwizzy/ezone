@@ -39,7 +39,7 @@ const FilesApp = props => {
     return (
         <DashboardLayout>
             { params.id? 
-                <FilesList /> : <FileList />
+                <FileList /> : <FilesList />
             }
         </DashboardLayout>
     );

@@ -35,6 +35,13 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '20px',
     margin: theme.spacing(5, 0),
     padding: theme.spacing(1, 15),
+  },
+  status: {
+    width: 20,
+    height: 20,
+    'approved': { color: 'blue'},
+    'inProgress': { color: 'orange'},
+    'done': { color: 'green'},
   }
 }));
 
@@ -138,7 +145,11 @@ const TasksList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          return <Button><Icon color='primary' fontSize='small'>lens</Icon> {value} </Button>
+          return (
+            <Typography variant="inherit" color="textSecondary">
+              <Lens className={classes.status} /> {value}
+            </Typography>
+          )
         }
       },
     }
