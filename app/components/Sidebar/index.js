@@ -210,7 +210,7 @@ export default function MiniDrawer(props) {
                     <ListItemText primary={text} />
                   </ListItem>
                 );
-              case 'Security':
+              case 'WorkOrder':
                 return (
                   <ListItem button key={index} component="a" href="/workorder">
                     <ListItemIcon>
