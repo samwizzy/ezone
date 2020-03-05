@@ -103,7 +103,7 @@ const App = () => {
                 <PrivateRoute exact path="/dashboard/tasks" component={TasksPage} />
                 <PrivateRoute exact path="/dashboard/task/:id" component={TasksPage} />
                 <PrivateRoute exact path="/dashboard/files" component={FilesApp} />
-                <PrivateRoute exact path="/dashboard/file/:id" component={TasksPage} />
+                <PrivateRoute exact path="/dashboard/file/:id" component={FilesApp} />
                 <PrivateRoute exact path="/email" component={EmailConfig} />
                 <PrivateRoute
                   path="/email/configuration"

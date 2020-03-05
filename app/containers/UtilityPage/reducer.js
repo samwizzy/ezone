@@ -81,8 +81,13 @@ export const initialState = {
     data: null,
   },
   users: [],
+  user: {},
   tasks: [],
-  task: {},
+  task: {
+    data: {},
+    assignedTo: {},
+    createdBy: {}
+  },
   files: [],
   file: {},
   error: { success: '', message: '' },
@@ -110,6 +115,24 @@ const utilityPageReducer = (state = initialState, action) =>
           users: action.payload,
         };
       }
+      case Constants.GET_USER_BY_UUID_SUCCESS: {
+        return {
+          ...state,
+          task: {
+            ...state.task,
+            createdBy: action.payload
+          },
+        };
+      }
+      case Constants.GET_ASSIGNEDTO_BY_UUID_SUCCESS: {
+        return {
+          ...state,
+          task: {
+            ...state.task,
+            assignedTo: action.payload
+          },
+        };
+      }
       case Constants.CREATE_UTILITY_TASKS: {
         return {
           ...state,
@@ -119,7 +142,10 @@ const utilityPageReducer = (state = initialState, action) =>
       case Constants.GET_UTILITY_TASK_SUCCESS: {
         return {
           ...state,
-          task: action.payload,
+          task: {
+            ...state.task,
+            data: action.payload
+          },
         };
       }
       case Constants.GET_UTILITY_TASKS_SUCCESS: {

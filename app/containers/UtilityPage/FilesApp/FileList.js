@@ -83,24 +83,24 @@ const tileData = [
     },
 ];
 
-const TaskList = props => {
+const FileList = props => {
   const classes = useStyles();
-  const { loading, openNewTaskDialog, getUtilityTasks, tasks, task, users, container } = props;
+  const { loading, openNewTaskDialog, getUtilityFiles, files, file, users, container } = props;
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  console.log(tasks, "tasks from tasklist single")
+  console.log(files, "tasks from tasklist single")
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleTaskClick = (id) => {
+  const handleFileClick = (id) => {
     console.log(id, "id")
   }
 
   React.useEffect(() => {
-    getUtilityTasks()
+    getUtilityFiles()
   }, []);
 
   const drawer = (
@@ -112,10 +112,10 @@ const TaskList = props => {
           </ListSubheader>
         }
       >
-        {tasks && tasks.map((task, index) => (
-          <ListItem button key={task.id} onClick={() => handleTaskClick(task.id)}>
+        {files && files.map((file, index) => (
+          <ListItem button key={file.id} onClick={() => handleFileClick(file.id)}>
             <ListItemIcon><AssignmentTurnedIn /></ListItemIcon>
-            <ListItemText primary={task.title} />
+            <ListItemText primary={file.title} />
           </ListItem>
         ))}
       </List>
@@ -146,7 +146,7 @@ const TaskList = props => {
         </Grid>
         <Grid item md={7}>
           <Typography variant="subtitle2">Task Details</Typography>
-          {task && task.description}
+          {file && file.description}
         </Grid>
         <Grid item md={3}>
           <Typography variant="subtitle2">Task Preview</Typography>
@@ -177,22 +177,22 @@ const TaskList = props => {
   );
 };
 
-TaskList.propTypes = {
+FileList.propTypes = {
   loading: PropTypes.bool,
   openNewTaskDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  tasks: Selectors.makeSelectTasks(),
-  task : Selectors.makeSelectTask(),
+  files: Selectors.makeSelectFiles(),
+  file : Selectors.makeSelectFile(),
   users: Selectors.makeSelectEmployees(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openNewTaskDialog: () => dispatch(Actions.openNewTaskDialog()),
-    getUtilityTasks: () => dispatch(Actions.getUtilityTasks()),
+    getUtilityFiles: () => dispatch(Actions.getUtilityFiles()),
     getEmployees: () => dispatch(Actions.getEmployees()),
   };
 }
@@ -206,4 +206,4 @@ export default withRouter(
   compose(
     withConnect,
     memo,
-)(TaskList));
+)(FileList));

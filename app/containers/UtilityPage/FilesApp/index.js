@@ -13,6 +13,7 @@ import reducer from './../reducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import FilesList from './FilesList'
+import FileList from './FileList'
 import DashboardLayout from '../components/DashboardLayout' 
 
 const useStyles = makeStyles(theme => ({
@@ -29,13 +30,17 @@ const FilesApp = props => {
     const { loading, openNewTaskDialog, getUtilityFiles, tasks, users, match } = props;
     const { params } = match
 
+    console.log(params, "params")
+
     React.useEffect(() => {
         getUtilityFiles()
     }, []);
 
     return (
         <DashboardLayout>
-            <FilesList />
+            { params.id? 
+                <FilesList /> : <FileList />
+            }
         </DashboardLayout>
     );
 };

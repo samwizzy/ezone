@@ -64,7 +64,7 @@ const useStyles = makeStyles(theme => ({
     flexShrink: 0,
     whiteSpace: 'nowrap',
     marginTop: '80px',
-    zIndex: 1099,
+    // zIndex: 1099,
   },
   drawerOpen: {
     width: drawerWidth,
@@ -127,13 +127,23 @@ export default function MiniDrawer(props) {
         }}
       >
         <div className={classes.toolbar}>
+          {/* <IconButton onClick={handleDrawerClose}> */}
+          {open?
           <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'rtl' ? (
+              <ChevronLeftIcon />
+            ) : (
+              <ChevronLeftIcon />
+            )}
+          </IconButton> :
+          <IconButton onClick={handleDrawerOpen}>
             {theme.direction === 'rtl' ? (
               <ChevronRightIcon />
             ) : (
               <ChevronLeftIcon />
             )}
           </IconButton>
+          }
         </div>
         <Divider />
         <List className={classes.list}>
