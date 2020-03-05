@@ -28,12 +28,34 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UserChat = props => {
-  const { allUsersChat, tempChat } = props;
+  const { allUsersChat, newChat } = props;
   const classes = useStyles();
 
-  console.log(tempChat, 'tempChat')
   return (
     <List className={classes.list}>
+      {newChat &&
+        newChat.map(chat => (
+          <ListItem alignItems="flex-start" component={Paper} key={chat.id}>
+            <ListItemAvatar>
+              <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+            </ListItemAvatar>
+            <ListItemText
+              primary={chat.responderName}
+              secondary={
+                <React.Fragment key={chat.id}>
+                  <Typography
+                    component="span"
+                    variant="body2"
+                    className={classes.inline}
+                    color="textPrimary"
+                  >
+                    {chat.responderName}
+                  </Typography>
+                </React.Fragment>
+              }
+            />
+          </ListItem>
+        ))}
       {allUsersChat &&
         allUsersChat.map(userChat => (
           <ListItem alignItems="flex-start" component={Paper} key={userChat.id}>
@@ -41,7 +63,7 @@ const UserChat = props => {
               <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
             </ListItemAvatar>
             <ListItemText
-              primary={userChat.name}
+              primary={(userChat.firstName, userChat.lastName)}
               secondary={
                 <React.Fragment>
                   <Typography

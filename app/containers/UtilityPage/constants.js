@@ -50,14 +50,14 @@ export const GET_UTILITY_APPS_SUCCESS =
 export const GET_UTILITY_APPS_ERROR = 'app/UtilityPage/GET UTILITY APPS ERROR';
 
 export const GET_UTILITY_TASK = 'app/UtilityPage/GET UTILITY TASK';
+export const GET_UTILITY_TASK_SUCCESS = 'app/UtilityPage/GET UTILITY TASK SUCCESS';
 export const GET_UTILITY_TASKS = 'app/UtilityPage/GET UTILITY TASKS';
-export const GET_UTILITY_TASKS_SUCCESS =
-  'app/UtilityPage/GET ALL UTILITY TASKS SUCCESS';
+export const GET_UTILITY_TASKS_SUCCESS = 'app/UtilityPage/GET ALL UTILITY TASKS SUCCESS';
 export const CREATE_UTILITY_TASKS = 'app/UtilityPage/CREATE UTILITY TASKS';
-export const CREATE_UTILITY_TASKS_SUCCESS =
-  'app/UtilityPage/CREATE UTILITY TASKS SUCCESS';
-export const GET_UTILITY_TASKS_ERROR =
-  'app/UtilityPage/GET UTILITY TASKS ERROR';
+export const CREATE_UTILITY_TASKS_SUCCESS = 'app/UtilityPage/CREATE UTILITY TASKS SUCCESS';
+export const GET_UTILITY_TASKS_ERROR = 'app/UtilityPage/GET UTILITY TASKS ERROR';
+export const GET_ASSIGNEDTO_BY_UUID = 'app/UtilityPage/GET ASSIGNEDTO BY UUID';
+export const GET_ASSIGNEDTO_BY_UUID_SUCCESS = 'app/UtilityPage/GET ASSIGNEDTO BY UUID SUCCESS';
 
 export const GET_UTILITY_FILES = 'app/UtilityPage/GET UTILITY FILES';
 export const GET_UTILITY_FILES_SUCCESS = 'app/UtilityPage/GET UTILITY FILES SUCCESS';
@@ -80,6 +80,9 @@ export const GET_UTILITY_CHATS_ERROR =
 export const GET_ALL_USERS = 'app/UtilityPage/GET_ALL_USERS';
 export const GET_ALL_USERS_SUCCESS = 'app/UtilityPage/GET_ALL_USERS_SUCCESS';
 export const GET_ALL_USERS_ERROR = 'app/UtilityPage/GET_ALL_USERS_ERROR';
+
+export const GET_USER_BY_UUID = 'app/UtilityPage/GET USER BY UUID';
+export const GET_USER_BY_UUID_SUCCESS = 'app/UtilityPage/GET USER BY UUID SUCCESS';
 
 export const GET_ALL_USERS_CHAT = 'app/UtilityPage/GET_ALL_USERS_CHAT';
 export const GET_ALL_USERS_CHAT_SUCCESS =

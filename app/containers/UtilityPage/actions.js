@@ -54,9 +54,10 @@ export function createUtilityTaskSuccess(data) {
   };
 }
 
-export function getUtilityTask() {
+export function getUtilityTask(taskId) {
   return {
-    type: Constants.GET_UTILITY_TASKS,
+    type: Constants.GET_UTILITY_TASK,
+    payload: taskId
   };
 }
 
@@ -79,6 +80,34 @@ export function getEmployeesSuccess(data) {
   };
 }
 
+export function getAssignedToByUUID(uuid) {
+  return {
+    type: Constants.GET_ASSIGNEDTO_BY_UUID,
+    payload: uuid
+  };
+}
+
+export function getAssignedToByUUIDSuccess(data) {
+  return {
+    type: Constants.GET_ASSIGNEDTO_BY_UUID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getUserByUUID(uuid) {
+  return {
+    type: Constants.GET_USER_BY_UUID,
+    payload: uuid
+  };
+}
+
+export function getUserByUUIDSuccess(data) {
+  return {
+    type: Constants.GET_USER_BY_UUID_SUCCESS,
+    payload: data,
+  };
+}
+
 export function getUtilityTaskSuccess(data) {
   return {
     type: Constants.GET_UTILITY_TASK_SUCCESS,
@@ -97,6 +126,19 @@ export function getUtilityTasksError(err) {
   return {
     type: Constants.GET_UTILITY_TASKS_ERROR,
     payload: err,
+  };
+}
+
+export function openFilePreviewDialog(data) {
+  return {
+    type: Constants.OPEN_FILE_UPLOAD_DIALOG,
+    payload: data,
+  };
+}
+
+export function closeFilePreviewDialog() {
+  return {
+    type: Constants.CLOSE_FILE_UPLOAD_DIALOG,
   };
 }
 

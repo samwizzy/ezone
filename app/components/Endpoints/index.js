@@ -29,10 +29,12 @@ export const GetAllEmployeesApi = '/authserv/api/v1/users/get_by_orgid';
 // File Api
 export const CreateUtilityFileApi = '/utilityserv/api/v1/upload_document';
 export const GetUtilityFilesApi = '/utilityserv/api/v1/get_document_by_orgid';
+export const GetUtilityFileApi = '/utilityserv/api/v1/get_document_by_id';
 export const ShareUtilityFilesApi = '/utilityserv/api/v1/share_document';
 
 // Task Api
 export const GetUtilityTasksApi = '/utilityserv/api/v1/get_tasks_by_orgid';
+export const GetUtilityTaskApi = '/utilityserv/api/v1/task';
 export const CreateUtilityTasksApi = '/utilityserv/api/v1/task';
 
 // Chat Api
@@ -40,6 +42,7 @@ export const GetUsersChatApi = '/utilityserv/api/v1/chat/get_user_chat';
 
 // User 
 export const GetEmployeesApi = '/authserv/api/v1/users';
+export const GetUserByUUIDApi = '/authserv/api/v1/users/get_by_uuid';
 
 // App Api
 export const GetOrgAppsApi = '/utilityserv/api/v1/organisation/orgApps';

@@ -29,6 +29,8 @@ import UserMenu from '../layouts/shared-components/UserMenu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
+const drawerWidth = 50;
+
 const links = [
   'Dashboard',
   'Organization', 
@@ -47,7 +49,9 @@ const styles = theme => ({
     overflow: 'hidden',
   },
   appBar: {
-    boxShadow: theme.shadows[0]
+    boxShadow: theme.shadows[0],
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
   },
   text: {
     fontSize: 50,

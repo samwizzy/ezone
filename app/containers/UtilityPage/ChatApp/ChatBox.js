@@ -8,11 +8,13 @@ class App extends React.Component {
       messageList: []
     };
   }
+
   onMessageWasSent = message => {
     this.setState({
       messageList: [...this.state.messageList, message]
     });
   };
+
   sendMessage = text => {
     if (text.length > 0) {
       this.setState({
@@ -27,6 +29,7 @@ class App extends React.Component {
       });
     }
   };
+  
   render() {
     return (
       <div>

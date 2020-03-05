@@ -25,20 +25,15 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
-    padding: '10px 25px',
-    borderRadius: '20px 20px 0 0',
-    '&:hover': {
-      backgroundColor: theme.palette.common.white,
-      color: theme.palette.primary.main
+  navList: {
+    '&.active': { 
+      backgroundColor: fade(theme.palette.common.white, 0.5), 
+      color: fade(theme.palette.common.white, 0.5)
     }
   },
-  sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(2)
   },
   toolbar: {
     display: 'flex',
@@ -59,13 +54,7 @@ const useStyles = makeStyles(theme => ({
         }
       }
     },
-  },
-  navList: {
-    '&.active': { 
-      backgroundColor: fade(theme.palette.common.white, 0.5), 
-      color: fade(theme.palette.common.white, 0.5)
-    }
-  },
+  }
 }));
 
 function TabPanel(props) {
@@ -156,7 +145,7 @@ function TabsPage(props) {
           <UserMenu />
         </Toolbar>
       </AppBar>
-      <main>
+      <main className={classes.content}>
         {props.children}
       </main>
     </div>

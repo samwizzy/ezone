@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles'
+import { withRouter } from 'react-router-dom'
 import { Button, Box, Grid, Menu, MenuItem, List, ListItem, ListItemText, FormControlLabel, Icon, IconButton, Typography } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
@@ -61,6 +62,14 @@ const FilesList = props => {
   };
 
   const columns = [
+    {
+      name: 'id',
+      label: 'Id',
+      options: {
+        display: 'excluded',
+        filter: true,
+      },
+    },
     {
       name: 'docName',
       label: 'Name',
@@ -183,7 +192,12 @@ const FilesList = props => {
     filterType: 'checkbox',
     responsive: 'scrollMaxHeight',
     selectableRows: 'none',
-    customToolbar: () => <AddFile openFileDialog={openFileUploadDialog} />
+    customToolbar: () => <AddFile openFileDialog={openFileUploadDialog} />,
+    rowsPerPage: 25,
+    rowsPerPageOptions: [25,50,100],
+    onRowClick: (rowData, rowState) => {
+      props.history.push('/dashboard/file/' + rowData[0])
+    },
   };
 
   if (loading) {
@@ -261,7 +275,9 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(
-  withConnect,
-  memo,
-)(FilesList);
+export default withRouter(
+  compose(
+    withConnect,
+    memo,
+  )(FilesList));
+

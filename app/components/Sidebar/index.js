@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
+import Link from '@material-ui/core/Link';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
@@ -17,6 +18,7 @@ import Person from '@material-ui/icons/Person';
 import Settings from '@material-ui/icons/Settings';
 import Security from '@material-ui/icons/Security';
 import BusinessCenter from '@material-ui/icons/BusinessCenter';
+import Logo from '../../images/logo.svg';
 
 const drawerWidth = 240;
 
@@ -63,8 +65,7 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
-    marginTop: '80px',
-    zIndex: 1099,
+    // zIndex: 1099,
   },
   drawerOpen: {
     width: drawerWidth,
@@ -94,6 +95,14 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
   },
+  logo: {
+    color: '#1F70C1',
+    maxHeight: '30px',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
+      marginRight: '10px',
+    },
+  },
 }));
 
 export default function MiniDrawer(props) {
@@ -115,6 +124,7 @@ export default function MiniDrawer(props) {
 
       <Drawer
         variant="permanent"
+        style={{backgroundColor: 'red'}}
         className={clsx(classes.drawer, {
           [classes.drawerOpen]: open,
           [classes.drawerClose]: !open,
@@ -127,13 +137,25 @@ export default function MiniDrawer(props) {
         }}
       >
         <div className={classes.toolbar}>
+          <Link href='#'>
+            <img src={Logo} className={classes.logo} />
+          </Link>
+          {open?
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? (
               <ChevronRightIcon />
             ) : (
               <ChevronLeftIcon />
             )}
+          </IconButton> :
+          <IconButton onClick={handleDrawerOpen}>
+            {theme.direction === 'rtl' ? (
+              <ChevronLeftIcon />
+            ) : (
+              <ChevronRightIcon />
+            )}
           </IconButton>
+          }
         </div>
         <Divider />
         <List className={classes.list}>

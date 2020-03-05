@@ -12,8 +12,7 @@ import saga from './../saga';
 import reducer from './../reducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import FilesList from './FilesList'
-import FileList from './FileList'
+import ChatTab from './ChatTab'
 import DashboardLayout from '../components/DashboardLayout' 
 
 const useStyles = makeStyles(theme => ({
@@ -22,46 +21,39 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const FilesApp = props => {
+const ChatsApp = props => {
     useInjectReducer({ key: 'utilityPage', reducer });
     useInjectSaga({ key: 'utilityPage', saga });
 
     const classes = useStyles();
-    const { loading, openNewTaskDialog, getUtilityFiles, tasks, users, match } = props;
+    const { loading, chats, match } = props;
     const { params } = match
 
-    console.log(params, "params")
-
     React.useEffect(() => {
-        getUtilityFiles()
+      // getUtilityChats()
     }, []);
 
     return (
         <DashboardLayout>
-            { params.id? 
-                <FilesList /> : <FileList />
-            }
+            <ChatTab />
         </DashboardLayout>
     );
 };
 
-FilesApp.propTypes = {
+ChatsApp.propTypes = {
   loading: PropTypes.bool,
-  files: PropTypes.array,
-  getUtilityFiles: PropTypes.func,
+  chats: PropTypes.array,
+  // getUtilityChats: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
     loading: Selectors.makeSelectLoading(),
-    files: Selectors.makeSelectFiles(),
+    chats: Selectors.makeSelectAllUsersChat(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openFileUploadDialog: ev => dispatch(Actions.openFileUploadDialog(ev)),
-    openShareFileDialog: ev => dispatch(Actions.openShareFileDialog(ev)),
-    // openNewTaskDialog: ev => dispatch(Actions.openNewTaskDialog(ev)),
-    getUtilityFiles: ev => dispatch(Actions.getUtilityFiles(ev)),
+    // getUtilityChats: ev => dispatch(() => {}),
   };
 }
 
@@ -74,4 +66,4 @@ export default withRouter(
   compose(
     withConnect,
     memo,
-)(FilesApp));
+)(ChatsApp));
