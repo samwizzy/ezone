@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -153,13 +153,12 @@ const ChatTab = props => {
     dispatchGetAllUsersChat();
   }, []);
 
-  let tempChat = [];
   console.log(currentUser, allUsersChat, 'allUsersChat');
   const classes = useStyles();
   const [status, setStatus] = React.useState(false);
 
   const [value, setValue] = React.useState(0);
-
+  const [newChat, setNewChat] = useState([]);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -181,13 +180,13 @@ const ChatTab = props => {
   };
 
   const handleEmployeeChange = (event, vl) => {
-    const newChat = {
+    const initNewChat = {
       initiator: currentUser.uuId,
       initiatorName: currentUser.firstName,
       responder: vl.uuId,
       responderName: vl.firstName,
     };
-    tempChat.push(newChat);
+    setNewChat([initNewChat]);
   };
 
   return (
@@ -260,7 +259,7 @@ const ChatTab = props => {
                 </Tabs>
               </Paper>
               <TabPanel value={value} index={0}>
-                <UserChat allUsersChat={allUsersChat} tempChat={tempChat} />
+                <UserChat allUsersChat={allUsersChat} newChat={newChat} />
               </TabPanel>
               <TabPanel value={value} index={1}>
                 <UserChat />
