@@ -53,3 +53,7 @@ export const SaveEmailConfigApi = '/messagingserv/api/v1/emailConfig';
 export const TestConnectionApi = '/messagingserv/api/v1/test_email_config';
 export const GetSmsProviderApi = '/messagingserv/api/v1/get_all_sms_providers';
 export const GetSmsConfigApi = '/messagingserv/api/v1/get_sms_config_by_orgId';
+
+// Work order Api
+export const SaveVendorApi = '/utilityserv/api/v1/add_vendor';
+export const GetListOfVendorsApi = '/utilityserv/api/v1/find_all_vendors';

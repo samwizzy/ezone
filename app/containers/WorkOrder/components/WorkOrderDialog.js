@@ -4,6 +4,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import { Autocomplete } from '@material-ui/lab';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+
+import Modal from '@material-ui/core/Modal';
 
 import {
   withStyles,
@@ -28,6 +38,11 @@ import {
   DialogTitle,
   Divider,
   Slide,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
+  FormControl,
+  FormLabel
 } from '@material-ui/core';
 
 import * as Selectors from '../selectors';
@@ -48,6 +63,14 @@ const useStyles = makeStyles(theme => ({
   menu: {
     width: 200,
   },
+  paper: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
 }));
 
 const gender = [
@@ -65,47 +88,104 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
+function rand() {
+  return Math.round(Math.random() * 20) - 10;
+}
+
+function getModalStyle() {
+  const top = 50 + rand();
+  const left = 50 + rand();
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+
+
 const WorkOrderDialog = props => {
   const {
     loading,
     workOrderDialog,
     closeWorkOrderDialogAction,
+    listOfVendorsData,
+    getListOfVendorsAction
   } = props;
 
   const classes = useStyles();
+  // const [values, setValues] = React.useState({
+  //   firstName: '',
+  //   lastName: '',
+  //   emailAddress: '',
+  //   employeeId: '',
+  //   phoneNumber: '',
+  //   address: '',
+  //   gender: '',
+  //   password: '',
+  // });
+
   const [values, setValues] = React.useState({
-    firstName: '',
-    lastName: '',
-    emailAddress: '',
-    employeeId: '',
-    phoneNumber: '',
-    address: '',
-    gender: '',
-    password: '',
+    id: "",
+    addedBy: "",
+    amountBal: "",
+    amountPaid: "",
+    approved: "",
+    cost: "",
+    date: "",
+    dateAdded: "",
+    dateCreated: "",
+    dateUpdated: "",
+    description: "",
+    expectedCompletionDate: "",
+    "id": 0,
+  "items": [
+    {
+      "addedBy": "string",
+      "amount": 0,
+      "amountForOneUnit": 0,
+      "date": "2020-03-05T12:18:32.015Z",
+      "dateCreated": "2020-03-05T12:18:32.015Z",
+      "dateUpdated": "2020-03-05T12:18:32.015Z",
+      "description": "string",
+      "id": 0,
+      "name": "string",
+      "orgId": "string",
+      "updatedBy": "string"
+    }
+  ],
+  "memo": "string",
+  "number": "string",
+  "orgId": 0,
+  "paymentDate": "2020-03-05T12:18:32.015Z",
+  "priority": "string",
+  "status": "string",
+  "updatedBy": "string",
   });
 
-  const canBeSubmitted = () => {
-    const {
-      firstName,
-      lastName,
-      emailAddress,
-      employeeId,
-      phoneNumber,
-      address,
-      gender,
-      password,
-    } = values;
-    return (
-      firstName !== '' &&
-      lastName !== '' &&
-      emailAddress !== '' &&
-      employeeId !== '' &&
-      phoneNumber !== '' &&
-      address !== '' &&
-      gender !== '' &&
-      password !== ''
-    );
-  };
+  
+  // const canBeSubmitted = () => {
+  //   const {
+  //     firstName,
+  //     lastName,
+  //     emailAddress,
+  //     employeeId,
+  //     phoneNumber,
+  //     address,
+  //     gender,
+  //     password,
+  //   } = values;
+  //   return (
+  //     firstName !== '' &&
+  //     lastName !== '' &&
+  //     emailAddress !== '' &&
+  //     employeeId !== '' &&
+  //     phoneNumber !== '' &&
+  //     address !== '' &&
+  //     gender !== '' &&
+  //     password !== ''
+  //   );
+  // };
 
   const handleSelectChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
@@ -114,6 +194,33 @@ const WorkOrderDialog = props => {
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
+
+  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {
+    console.log("useEffect");
+    getListOfVendorsAction();
+  }, []);
+
+  console.log('VendorsData --> ', listOfVendorsData);
+
+  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+
+  const handleDateChange = date => {
+    setSelectedDate(date);
+  };
+
+  // getModalStyle is not a pure function, we roll the style only on the first render
+  const [modalStyle] = React.useState(getModalStyle);
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
 
   return (
     <div>
@@ -125,7 +232,7 @@ const WorkOrderDialog = props => {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {workOrderDialog.type === 'new' ? 'New Employee' : 'Edit Employee'}
+          {workOrderDialog.type === 'new' ? 'Work Order' : 'Edit Work Order'}
         </DialogTitle>
 
         <Divider />
@@ -133,26 +240,122 @@ const WorkOrderDialog = props => {
         <DialogContent>
           {workOrderDialog.type === 'new' ? (
             <div>
+              <Autocomplete
+                id="combo-box-demo"
+                options={listOfVendorsData}
+                getOptionLabel={option => option.description}
+                // style={{ width: 800 }}
+                fullWidth
+                onChange={(evt) => handleSelectChange(evt)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Search Vendors"
+                    variant="outlined"
+                    placeholder="Vendors"
+                    fullWidth
+                  />
+                )}
+              />
               <TextField
-                id="standard-First-Name"
-                label="First Name"
+                id="standard-amountBal"
+                label="Amount Balance"
                 variant="outlined"
                 className={classes.textField}
-                value={values.firstName}
-                onChange={handleChange('firstName')}
+                value={values.amountBal}
+                onChange={handleChange('amountBal')}
                 margin="normal"
                 fullWidth
               />
               <TextField
-                id="standard-Last-Name"
-                label="Last Name"
+                id="standard-amountPaid"
+                label="Amount Paid"
                 variant="outlined"
                 className={classes.textField}
-                value={values.lastName}
-                onChange={handleChange('lastName')}
+                value={values.amountPaid}
+                onChange={handleChange('amountPaid')}
                 margin="normal"
                 fullWidth
               />
+              <FormControl component="fieldset">
+                <FormLabel component="legend">Approve Order.</FormLabel>
+                <br />
+                <FormGroup aria-label="position" row>
+                  <FormControlLabel
+                    value={values.approved}
+                    onChange={handleChange('approved')}
+                    control={<Checkbox color="primary" />}
+                    label="Yes"
+                    labelPlacement="top"
+                  />
+                  <FormControlLabel
+                    value="start"
+                    control={<Checkbox color="primary" />}
+                    label="No"
+                    labelPlacement="top"
+                  />
+                </FormGroup>
+              </FormControl>
+              <TextField
+                id="standard-cost"
+                label="Cost"
+                variant="outlined"
+                className={classes.textField}
+                value={values.cost}
+                onChange={handleChange('cost')}
+                margin="normal"
+                fullWidth
+              />
+
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <Grid container justify="space-around">
+                  <KeyboardDatePicker
+                    margin="normal"
+                    id="date-picker-dialog"
+                    label="Expected Completion Date"
+                    format="MM/dd/yyyy"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
+                  />
+                  <KeyboardDatePicker
+                    margin="normal"
+                    id="date-picker-dialog"
+                    label="Payment Date"
+                    format="MM/dd/yyyy"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
+                  />
+                </Grid>
+              </MuiPickersUtilsProvider>
+
+              <div>
+              <button type="button" onClick={handleOpen}>
+                Open Modal
+              </button>
+              <Modal
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+                open={open}
+                onClose={handleClose}
+              >
+                <div style={modalStyle} className={classes.paper}>
+                  <h2 id="simple-modal-title">Text in a modal</h2>
+                  <p id="simple-modal-description">
+                    Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+                  </p>
+                  {/* <SimpleModal /> */}
+                </div>
+              </Modal>
+          </div>
+
+    
+              
               <TextField
                 id="standard-email"
                 label="Email"
@@ -239,7 +442,7 @@ const WorkOrderDialog = props => {
               }}
               color="primary"
               variant="contained"
-              disabled={!canBeSubmitted()}
+              // disabled={!canBeSubmitted()}
             >
               Save
             </Button>
@@ -263,14 +466,16 @@ WorkOrderDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-//   loading: Selectors.makeSelectLoading(),
+//   loading: Selectors.makeSelectLoading(), 
   workOrderDialog: Selectors.makeSelectWorkOrderDialog(),
+  listOfVendorsData: Selectors.makeSelectGetListOfVendorsData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openCreateWorkOrderDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
     closeWorkOrderDialogAction: () => dispatch(Actions.closeCreateWorkOrderDialog()),
+    getListOfVendorsAction: evt => dispatch(Actions.getAllVendorsAction(evt)),
     dispatch,
   };
 }

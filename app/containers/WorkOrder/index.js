@@ -20,6 +20,7 @@ import saga from './saga';
 import messages from './messages';
 import WorkOrderList from './components/WorkOrderList';
 import WorkOrderDialog from './components/WorkOrderDialog';
+import AddVendorDialog from './components/AddVendorDialog';
 
 export function WorkOrderPage() {
   useInjectReducer({ key: 'workOrderPage', reducer });
@@ -33,6 +34,7 @@ export function WorkOrderPage() {
       </Helmet>
       <WorkOrderList />
       <WorkOrderDialog />
+      <AddVendorDialog />
     </div>
   );
 }
