@@ -18,7 +18,7 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 // import LoadingIndicator from '../../../../components/LoadingIndicator';
 import { AddButton } from './AddButton';
-import { AddVendor } from './AddVendor';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -251,7 +251,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewWorkOrderDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
-    openVendorDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
+    openVendorDialogAction: () => dispatch(Actions.openVendorDialog()),
   };
 }
 

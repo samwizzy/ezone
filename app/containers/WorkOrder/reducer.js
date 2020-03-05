@@ -8,6 +8,8 @@ import * as Constants from './constants';
 
 
 export const initialState = {
+  vendorPostData: false,
+  getListOfVendorsData: false,
   loading: false,
   error: false,
   workOrderDialog: {
@@ -30,6 +32,7 @@ export const initialState = {
 const workOrderPageReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
+      // Open dialog for workorder
       case Constants.OPEN_NEW_WORKORDER_DIALOG: {
         return {
           ...state,
@@ -42,7 +45,6 @@ const workOrderPageReducer = (state = initialState, action) =>
           },
         };
       }
-
       case Constants.CLOSE_NEW_WORKORDER_DIALOG: {
         return {
           ...state,
@@ -51,13 +53,13 @@ const workOrderPageReducer = (state = initialState, action) =>
             props: {
               open: false,
             },
-            data: action.payload,
+            data: null,
           },
         };
       }
-      
+
+      // Open dialog for vendor
       case Constants.OPEN_VENDOR_DIALOG: {
-        console.log('openVendorDialog reducer');
         return {
           ...state,
           vendorDialog: {
@@ -65,11 +67,10 @@ const workOrderPageReducer = (state = initialState, action) =>
             props: {
               open: true,
             },
-            data: action.payload,
+            data: null,
           },
         };
       }
-
       case Constants.CLOSE_VENDOR_DIALOG: {
         return {
           ...state,
@@ -83,6 +84,54 @@ const workOrderPageReducer = (state = initialState, action) =>
         };
       }
 
+      // Save vendor
+      case Constants.SAVE_VENDOR_CONFIG: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          vendorPostData: action.payload
+        };
+      }
+      case Constants.SAVE_VENDOR_CONFIG_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.SAVE_VENDOR_CONFIG_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+
+      // Get a list of vendors
+      case Constants.GET_ALL_VENDORS: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          getListOfVendorsData: action.payload,
+        };
+      }
+      case Constants.GET_ALL_VENDORS_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getListOfVendorsData: action.payload,
+        };
+      }
+      case Constants.GET_ALL_VENDORS_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
     }
   });
 
