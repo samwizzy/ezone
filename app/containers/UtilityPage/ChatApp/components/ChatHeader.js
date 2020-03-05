@@ -26,6 +26,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ChatHeader = props => {
+  const { userChatData } = props;
     const classes = useStyles();
 
     const handleMenu = () => {}
@@ -40,7 +41,7 @@ const ChatHeader = props => {
                             src="/static/images/avatar/1.jpg"
                         />
                         <Typography variant="h6" className={classes.title}>
-                            Christian
+                            {userChatData.responderName}
                         </Typography>
 
                         <div>

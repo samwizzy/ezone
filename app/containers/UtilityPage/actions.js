@@ -8,7 +8,7 @@ import * as Constants from './constants';
 
 export function getUtilityFiles() {
   return {
-    type: Constants.GET_UTILITY_FILES
+    type: Constants.GET_UTILITY_FILES,
   };
 }
 
@@ -71,7 +71,7 @@ export function createUtilityTaskSuccess(data) {
 export function getUtilityTask(taskId) {
   return {
     type: Constants.GET_UTILITY_TASK,
-    payload: taskId
+    payload: taskId,
   };
 }
 
@@ -97,7 +97,7 @@ export function getEmployeesSuccess(data) {
 export function getAssignedToByUUID(uuid) {
   return {
     type: Constants.GET_ASSIGNEDTO_BY_UUID,
-    payload: uuid
+    payload: uuid,
   };
 }
 
@@ -125,7 +125,7 @@ export function getCreatedByUUIDSuccess(data) {
 export function getUserByUUID(uuid) {
   return {
     type: Constants.GET_USER_BY_UUID,
-    payload: uuid
+    payload: uuid,
   };
 }
 
@@ -323,6 +323,48 @@ export function getAllUsersChatSuccess(data) {
 export function getAllUsersChatError(data) {
   return {
     type: Constants.GET_ALL_USERS_CHAT_ERROR,
+    payload: data,
+  };
+}
+
+export function getUserChatData(data) {
+  return {
+    type: Constants.GET_USER_CHAT_DATA,
+    payload: data,
+  };
+}
+
+export function getUserChatDataSuccess(data) {
+  return {
+    type: Constants.GET_USER_CHAT_DATA_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getUserChatDataError(data) {
+  return {
+    type: Constants.GET_USER_CHAT_DATA_ERROR,
+    payload: data,
+  };
+}
+
+export function postMsg(data) {
+  return {
+    type: Constants.POST_MSG,
+    payload: data,
+  };
+}
+
+export function postMsgSuccess(data) {
+  return {
+    type: Constants.POST_MSG_SUCCESS,
+    payload: data,
+  };
+}
+
+export function postMsgError(data) {
+  return {
+    type: Constants.POST_MSG_ERROR,
     payload: data,
   };
 }

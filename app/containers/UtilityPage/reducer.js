@@ -6,6 +6,10 @@
 import produce from 'immer';
 import * as Constants from './constants';
 export const initialState = {
+  postMsg: false,
+  getPostMsg: false,
+  getAllUserChatData: false,
+  getUserChatData: false,
   getAllUsersChat: [],
   getAllEmployees: [],
   loading: false,
@@ -453,6 +457,52 @@ const utilityPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_ALL_USERS_CHAT_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_USER_CHAT_DATA: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          getUserChatData: action.payload,
+        };
+      }
+      case Constants.GET_USER_CHAT_DATA_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getAllUserChatData: action.payload,
+        };
+      }
+      case Constants.GET_USER_CHAT_DATA_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.POST_MSG: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          postMsg: action.payload,
+        };
+      }
+      case Constants.POST_MSG_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getPostMsg: action.payload,
+        };
+      }
+      case Constants.POST_MSG_ERROR: {
         return {
           ...state,
           loading: false,

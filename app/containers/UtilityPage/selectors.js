@@ -135,6 +135,30 @@ const makeSelectAllUsersChat = () =>
     subState => subState.getAllUsersChat,
   );
 
+const makeSelectGetUserChatData = () =>
+  createSelector(
+    selectUtilityPageDomain,
+    subState => subState.getUserChatData,
+  );
+
+const makeSelectGetAllUserChatData = () =>
+  createSelector(
+    selectUtilityPageDomain,
+    subState => subState.getAllUserChatData,
+  );
+
+const makeSelectPostMsg = () =>
+  createSelector(
+    selectUtilityPageDomain,
+    subState => subState.postMsg,
+  );
+
+const makeSelectGetPostMsg = () =>
+  createSelector(
+    selectUtilityPageDomain,
+    subState => subState.getPostMsg,
+  );
+
 export default makeSelectUtilityPage;
 export {
   selectUtilityPageDomain,
@@ -157,4 +181,8 @@ export {
   makeSelectDepartmentDialog,
   makeSelectAllEmployees,
   makeSelectAllUsersChat,
+  makeSelectGetUserChatData,
+  makeSelectGetAllUserChatData,
+  makeSelectGetPostMsg,
+  makeSelectPostMsg,
 };
