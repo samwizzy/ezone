@@ -15,7 +15,7 @@ const defaultToolbarStyles = {
 
 // eslint-disable-next-line react/prop-types
 export function AddButton(props) {
-  const { classes, openNewWorkOrderDialogAction, openVendorDialogAction} = props;
+  const { classes, openNewWorkOrderDialogAction, openVendorDialogAction } = props;
 
   return (
     <React.Fragment>
@@ -54,8 +54,9 @@ function mapDispatchToProps(dispatch) {
   console.log('mapDispatchToProps');
   console.log(`dispatch ${dispatch}`);
   return {
-    openNewWorkOrderDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
-    openVendorDialogAction: () => dispatch(Actions.openVendorDialog()),
+    // openNewWorkOrderDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
+    // df: () => dispatch(Actions.openCreateWorkOrderDialog()),
+    // openVendorDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
     dispatch,
   };
 }

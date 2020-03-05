@@ -45,11 +45,16 @@ const useStyles = makeStyles(theme => ({
 
 const EmailConfigs = props => {
   const classes = useStyles();
-  const { currentUser } = props
 
-  console.log("currentUser: ", currentUser);
-  console.log(currentUser, 'currentUser.organisation.orgId')
-  // const orgId = currentUser.organisation.orgId
+  const { 
+    dispatchUpdateEmailConfigAction, 
+    dispatchGetEmailConfigAction, 
+    dispatchTestEmailConfigConnectionAction,
+    emailConfigData,
+    testEmailConfigConnectionData,
+    loading,
+    currentUser
+  } = props;
 
   const [values, setValues] = React.useState({
     orgId: currentUser.organisation.orgId,
@@ -65,23 +70,6 @@ const EmailConfigs = props => {
   const handleChange = event => {
     setValues({ ...values, [event.target.name]: event.target.type === 'checkbox'? event.target.checked : event.target.value });
   }
-
-  // const canSubmitForm = () => {
-  //   const { host, port, username, password, tls, tlsRequired, authenticate } = values
-    // return host.length > 0 && port.length > 0 && username.length > 0 && password.length > 0 && tls === true && tlsRequired === true && authenticate === true
-  // } 
-
-  const { 
-    dispatchUpdateEmailConfigAction, 
-    dispatchGetEmailConfigAction, 
-    dispatchTestEmailConfigConnectionAction,
-    emailConfigData,
-    testEmailConfigConnectionData,
-    loading,
-  } = props;
-
-  console.log('emailConfigData form view: ', emailConfigData);
-  console.log('testEmailConfigConnectionData : ', testEmailConfigConnectionData)
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {

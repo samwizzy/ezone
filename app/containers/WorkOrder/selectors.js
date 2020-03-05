@@ -32,11 +32,26 @@ const makeSelectVendorDialog = () =>
     selectWorkOrderPageDomain,
     substate => substate.vendorDialog
   );
+  
+const makeSelectVendorPostData = () =>
+  createSelector(
+    selectWorkOrderPageDomain,
+    substate => substate.vendorPostData
+  );
+
+const makeSelectGetListOfVendorsData = () =>
+  createSelector(
+    selectWorkOrderPageDomain,
+    substate => substate.getListOfVendorsData
+  );
+  
 
 export default makeSelectWorkOrderPage;
 
 export { 
   selectWorkOrderPageDomain,
   makeSelectWorkOrderDialog,
-  makeSelectVendorDialog
+  makeSelectVendorDialog,
+  makeSelectVendorPostData,
+  makeSelectGetListOfVendorsData
 };

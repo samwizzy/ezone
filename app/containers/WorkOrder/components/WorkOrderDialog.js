@@ -70,6 +70,8 @@ const WorkOrderDialog = props => {
     loading,
     workOrderDialog,
     closeWorkOrderDialogAction,
+    listOfVendorsData,
+    getListOfVendorsAction
   } = props;
 
   const classes = useStyles();
@@ -115,6 +117,14 @@ const WorkOrderDialog = props => {
     setValues({ ...values, [name]: event.target.value });
   };
 
+  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {
+    console.log("useEffect");
+    getListOfVendorsAction();
+  }, []);
+
+  console.log('VendorsData ---> ', listOfVendorsData);
+
   return (
     <div>
       <Dialog
@@ -125,7 +135,7 @@ const WorkOrderDialog = props => {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {workOrderDialog.type === 'new' ? 'New Employee' : 'Edit Employee'}
+          {workOrderDialog.type === 'new' ? 'Work Order' : 'Edit Work Order'}
         </DialogTitle>
 
         <Divider />
@@ -263,14 +273,16 @@ WorkOrderDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-//   loading: Selectors.makeSelectLoading(),
+//   loading: Selectors.makeSelectLoading(), 
   workOrderDialog: Selectors.makeSelectWorkOrderDialog(),
+  listOfVendorsData: Selectors.makeSelectGetListOfVendorsData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openCreateWorkOrderDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
     closeWorkOrderDialogAction: () => dispatch(Actions.closeCreateWorkOrderDialog()),
+    getListOfVendorsAction: evt => dispatch(Actions.getAllVendorsAction(evt)),
     dispatch,
   };
 }
