@@ -1,111 +1,70 @@
-import React, {memo} from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles'
-import { createStructuredSelector } from 'reselect';
-import { compose } from 'redux';
-import {Avatar, Button, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, List, ListItem, ListItemText, ListItemAvatar, Slide, Typography, Table, TableBody, TableRow, TableCell } from '@material-ui/core';
-import * as Selectors from '../../selectors';
-import * as Actions from '../../actions';
-import FolderIcon from '@material-ui/icons/Folder';
-import { blue, deepPurple } from '@material-ui/core/colors';
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItem from '@material-ui/core/ListItem';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import CloseIcon from '@material-ui/icons/Close';
+import Slide from '@material-ui/core/Slide';
+import * as Actions from '../../actions' 
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1, 0)
-    }
+  appBar: {
+    position: 'relative',
   },
-  table: {
-    '& tr, td': {
-      border: 0
-    }
+  title: {
+    marginLeft: theme.spacing(2),
+    flex: 1,
   },
-  blue: {
-    color: theme.palette.getContrastText(blue[500]),
-    backgroundColor: blue[500]
-  },
-  ongoing: {
-    color: theme.palette.getContrastText(blue[500]),
-    backgroundColor: theme.status.ongoing
-  },
-  purple: {
-    color: theme.palette.getContrastText(deepPurple[500]),
-    backgroundColor: deepPurple[500],
-  }
 }));
-
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function FilePreviewDialog(props) {
+export default function FilePreviewDialog() {
   const classes = useStyles();
-  const { closeTaskPreviewDialog, data } = props;
+  const [open, setOpen] = React.useState(false);
 
-  console.log(data, 'checking preview task...')
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <div>
-      <Dialog
-        {...data.props}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={closeTaskPreviewDialog}
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle id="alert-dialog-slide-title">Invoicing</DialogTitle>
-        <Divider />
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud            
-          </DialogContentText>
-          <DialogContentText id="alert-dialog-slide-description">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          </DialogContentText>
-
-          <Grid container>
-            <Grid item xs={12}><Typography variant='h6'>Assigned To:</Typography></Grid>
-            <Grid item xs={12}>
-              <List dense={true} style={{display: 'flex'}}>
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar className={classes.blue}>
-                      <FolderIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary="Christian"
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar className={classes.purple}>
-                      <FolderIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary="Christian"
-                  />
-                </ListItem>
-              </List>
-            </Grid>
-
-            <Grid item xs={12} md={7}>
-              <Table className={classes.table}>
-                <TableBody>
-                  <TableRow>
-                    <TableCell><Typography variant="subtitle2">Mark as:</Typography></TableCell>
-                    <TableCell align="right"><Chip className={classes.ongoing} label="Ongoing" /></TableCell>
-                    <TableCell align="right"><Chip color="default" label="Completed" /></TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </Grid>
-          </Grid>
-        </DialogContent>
+      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+        Open full-screen dialog
+      </Button>
+      <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
+        <AppBar className={classes.appBar}>
+          <Toolbar>
+            <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
+              <CloseIcon />
+            </IconButton>
+            <Typography variant="h6" className={classes.title}>
+              Sound
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <List>
+          <ListItem button>
+            <ListItemText primary="Phone ringtone" secondary="Titania" />
+          </ListItem>
+          <Divider />
+          <ListItem button>
+            <ListItemText primary="Default notification ringtone" secondary="Tethys" />
+          </ListItem>
+        </List>
       </Dialog>
     </div>
   );
@@ -123,8 +82,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openTaskPreviewDialog: ev => dispatch(Actions.openTaskPreviewDialog(ev)),
-    closeTaskPreviewDialog: () => dispatch(Actions.closeTaskPreviewDialog()),
+    openFilePreviewDialog: ev => dispatch(Actions.openFilePreviewDialog(ev)),
+    closeFilePreviewDialog: () => dispatch(Actions.closeFilePreviewDialog()),
     dispatch,
   };
 }

@@ -19,6 +19,20 @@ export function getUtilityFilesSuccess(data) {
   };
 }
 
+export function getUtilityFile(fileId) {
+  return {
+    type: Constants.GET_UTILITY_FILE,
+    payload: fileId
+  };
+}
+
+export function getUtilityFileSuccess(data) {
+  return {
+    type: Constants.GET_UTILITY_FILE_SUCCESS,
+    payload: data,
+  };
+}
+
 export function getUtilityFilesError(err) {
   return {
     type: Constants.GET_UTILITY_FILES_ERROR,
@@ -94,6 +108,20 @@ export function getAssignedToByUUIDSuccess(data) {
   };
 }
 
+export function getCreatedByUUID(uuid) {
+  return {
+    type: Constants.GET_CREATEDBY_BY_UUID,
+    payload: uuid
+  };
+}
+
+export function getCreatedByUUIDSuccess(data) {
+  return {
+    type: Constants.GET_CREATEDBY_BY_UUID_SUCCESS,
+    payload: data,
+  };
+}
+
 export function getUserByUUID(uuid) {
   return {
     type: Constants.GET_USER_BY_UUID,
@@ -131,14 +159,14 @@ export function getUtilityTasksError(err) {
 
 export function openFilePreviewDialog(data) {
   return {
-    type: Constants.OPEN_FILE_UPLOAD_DIALOG,
+    type: Constants.OPEN_PREVIEW_FILE_DIALOG,
     payload: data,
   };
 }
 
 export function closeFilePreviewDialog() {
   return {
-    type: Constants.CLOSE_FILE_UPLOAD_DIALOG,
+    type: Constants.CLOSE_PREVIEW_FILE_DIALOG,
   };
 }
 

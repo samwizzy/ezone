@@ -1,8 +1,9 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Button, Grid, GridList, GridListTile, GridListTileBar, Divider, Menu, MenuItem, List, ListItem, ListSubheader, ListItemText, ListItemIcon, FormControlLabel, Icon, IconButton, Typography, Toolbar, Hidden, Drawer } from '@material-ui/core';
+import { Avatar, Button, Card, CardHeader, CardContent, CardMedia, CardActions, CardActionArea, Grid, Divider, List, ListItem, ListSubheader, ListItemText, ListItemIcon, Icon, IconButton, Typography, Hidden, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -10,6 +11,10 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import AssignmentTurnedIn from '@material-ui/icons/AssignmentTurnedIn';
 import InfoIcon from '@material-ui/icons/Info';
+import MoreVert from '@material-ui/icons/MoreVert';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import Favorite from '@material-ui/icons/Favorite';
+import Share from '@material-ui/icons/Share';
 
 const drawerWidth = '100%';
 
@@ -54,11 +59,27 @@ const useStyles = makeStyles(theme => ({
   icon: {
     color: 'rgba(255, 255, 255, 0.54)',
   },
+  cardRoot: {
+    maxWidth: 345,
+  },
+  media: {
+    height: 0,
+    paddingTop: '56.25%', // 16:9
+  },
+  expand: {
+    transform: 'rotate(0deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: 'rotate(180deg)',
+  },
+  avatar: {
+    backgroundColor: theme.palette.primary.main,
+  },
 }));
-
-function ListItemLink(props) {
-  return <ListItem button component="a" {...props} />;
-}
 
 const tileData = [
     {
@@ -86,21 +107,21 @@ const tileData = [
 const FileList = props => {
   const classes = useStyles();
   const { loading, openNewTaskDialog, getUtilityFiles, files, file, users, container } = props;
-  const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(false);
 
-  console.log(files, "tasks from tasklist single")
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+  console.log(files, "all files")
 
   const handleFileClick = (id) => {
     console.log(id, "id")
   }
 
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
   React.useEffect(() => {
-    getUtilityFiles()
+    // getUtilityFiles()
   }, []);
 
   const drawer = (
@@ -115,7 +136,7 @@ const FileList = props => {
         {files && files.map((file, index) => (
           <ListItem button key={file.id} onClick={() => handleFileClick(file.id)}>
             <ListItemIcon><AssignmentTurnedIn /></ListItemIcon>
-            <ListItemText primary={file.title} />
+            <ListItemText primary={file.docName} secondary={file.description} />
           </ListItem>
         ))}
       </List>
@@ -145,32 +166,72 @@ const FileList = props => {
           </nav>
         </Grid>
         <Grid item md={7}>
-          <Typography variant="subtitle2">Task Details</Typography>
+          <div className={classes.content}>
+          <Typography variant="subtitle2">Document Details</Typography>
           {file && file.description}
+          <Card className={classes.cardRoot}>
+            <CardHeader
+              avatar={
+                <Avatar aria-label="recipe" className={classes.avatar}>
+                  R
+                </Avatar>
+              }
+              action={
+                <IconButton aria-label="settings">
+                  <MoreVert />
+                </IconButton>
+              }
+              title="Shrimp and Chorizo Paella"
+              subheader="September 14, 2016"
+            />
+            <CardMedia
+              className={classes.media}
+              image={file.fileUrl}
+              title="Paella dish"
+            />
+            <CardContent>
+              <Typography variant="body2" color="textSecondary" component="p">
+                This impressive paella is a perfect party dish and a fun meal to cook together with your
+                guests. Add 1 cup of frozen peas along with the mussels, if you like.
+              </Typography>
+            </CardContent>
+            <CardActions disableSpacing>
+              <IconButton aria-label="add to favorites">
+                <Favorite />
+              </IconButton>
+              <IconButton aria-label="share">
+                <Share />
+              </IconButton>
+              <IconButton
+                className={clsx(classes.expand, {
+                  [classes.expandOpen]: expanded,
+                })}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="show more"
+              >
+                <ExpandMore />
+              </IconButton>
+            </CardActions>
+          </Card>
+          </div>
         </Grid>
         <Grid item md={3}>
-          <Typography variant="subtitle2">Task Preview</Typography>
-          <div className={classes.gridRoot}>
-            <GridList cellHeight={180} className={classes.gridList}>
-              <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-                <ListSubheader component="div">December</ListSubheader>
-              </GridListTile>
-              {tileData.map(tile => (
-                <GridListTile key={tile.img}>
-                  <img src={tile.img} alt={tile.title} />
-                  <GridListTileBar
-                    title={tile.title}
-                    subtitle={<span>by: {tile.author}</span>}
-                    actionIcon={
-                      <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
-                        <InfoIcon />
-                      </IconButton>
-                    }
-                  />
-                </GridListTile>
-              ))}
-            </GridList>
-          </div>
+          <Typography variant="subtitle2">Document Info</Typography>
+          <TableContainer component={Paper}>
+            <Table className={classes.table} size="small" aria-label="a dense table">
+              <TableBody>
+                {file && Object.keys(file).map(key => (
+                  <TableRow key={file.docName}>
+                    <TableCell component="th" scope="row">
+                      Document Name
+                    </TableCell>
+                    <TableCell align="right">{file[key]}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Grid>
       </Grid>
     </div>

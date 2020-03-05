@@ -58,13 +58,12 @@ const useStyles = makeStyles(theme => ({
   },
   buttonGroup: {
     marginBottom: theme.spacing(1),
-    border: '1px solid #cdcdcd'
+    border: '1px solid #ededed',
+    '& .MuiButtonGroup-root:last-child': {
+      marginLeft: '10px'
+    }
   }
 }));
-
-function ListItemLink(props) {
-  return <ListItem button component="a" {...props} />;
-}
 
 const tileData = [
     {
@@ -244,7 +243,7 @@ const TaskList = props => {
           </div>
         </Grid>
         <Grid item md={3}>
-          <Typography variant="subtitle2">Task Preview</Typography>
+          <Typography variant="subtitle2">Attachment Preview</Typography>
           <div className={classes.gridRoot}>
             <GridList cellHeight={180} className={classes.gridList}>
               <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>

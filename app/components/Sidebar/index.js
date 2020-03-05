@@ -7,6 +7,7 @@ import Link from '@material-ui/core/Link';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
@@ -164,8 +165,11 @@ export default function MiniDrawer(props) {
               case 'Dashboard':
                 return (
                   <ListItem button key={index} component="a" href="/dashboard">
+                    
                     <ListItemIcon>
-                      <Dashboard />
+                      <Tooltip title={text} arrow placement="right-end">
+                        <Dashboard />
+                      </Tooltip>
                     </ListItemIcon>
                     <ListItemText primary={text} />
                   </ListItem>
@@ -180,7 +184,9 @@ export default function MiniDrawer(props) {
                     href="/organization"
                   >
                     <ListItemIcon>
-                      <BusinessCenter />
+                      <Tooltip title={text} arrow placement="right-end">
+                        <BusinessCenter />
+                      </Tooltip>
                     </ListItemIcon>
                     <ListItemText primary={text} />
                   </ListItem>
@@ -195,7 +201,9 @@ export default function MiniDrawer(props) {
                     href="/users/employees"
                   >
                     <ListItemIcon>
-                      <Person />
+                      <Tooltip title={text} arrow placement="right-end">
+                        <Person />
+                      </Tooltip>
                     </ListItemIcon>
                     <ListItemText primary={text} />
                   </ListItem>
@@ -205,7 +213,9 @@ export default function MiniDrawer(props) {
                 return (
                   <ListItem button key={index} component="a" href="/utility">
                     <ListItemIcon>
-                      <Apps />
+                      <Tooltip title={text} arrow placement="right-end">
+                        <Apps />
+                      </Tooltip>
                     </ListItemIcon>
                     <ListItemText primary={text} />
                   </ListItem>
@@ -214,7 +224,9 @@ export default function MiniDrawer(props) {
                 return (
                   <ListItem button key={index} component="a" href="/groups">
                     <ListItemIcon>
-                      <Security />
+                      <Tooltip title={text} arrow placement="right-end">
+                        <Security />
+                      </Tooltip>
                     </ListItemIcon>
                     <ListItemText primary={text} />
                   </ListItem>
@@ -224,7 +236,9 @@ export default function MiniDrawer(props) {
                 return (
                   <ListItem button key={index} component="a" href="/email">
                     <ListItemIcon>
-                      <Settings />
+                      <Tooltip title={text} arrow placement="right-end">
+                        <Settings />
+                      </Tooltip>
                     </ListItemIcon>
                     <ListItemText primary={text} />
                   </ListItem>

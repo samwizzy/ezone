@@ -89,7 +89,10 @@ export const initialState = {
     createdBy: {}
   },
   files: [],
-  file: {},
+  file: {
+    data: {},
+    createdBy: {}
+  },
   error: { success: '', message: '' },
 };
 
@@ -176,6 +179,24 @@ const utilityPageReducer = (state = initialState, action) =>
         return {
           ...state,
           file: action.payload,
+        };
+      }
+      case Constants.GET_UTILITY_FILE_SUCCESS: {
+        return {
+          ...state,
+          file: {
+            ...state.file,
+            data: action.payload
+          },
+        };
+      }
+      case Constants.GET_CREATEDBY_BY_UUID_SUCCESS: {
+        return {
+          ...state,
+          file: {
+            ...state.file,
+            createdBy: action.payload
+          },
         };
       }
       case Constants.GET_UTILITY_FILES_SUCCESS: {
