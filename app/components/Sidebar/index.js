@@ -209,7 +209,7 @@ export default function MiniDrawer(props) {
                   </ListItem>
                 );
                 break;
-              case 'Applications':
+              case 'Applications':Security
                 return (
                   <ListItem button key={index} component="a" href="/utility">
                     <ListItemIcon>
