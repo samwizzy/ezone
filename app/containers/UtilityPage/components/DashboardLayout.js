@@ -17,7 +17,7 @@ import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import * as Actions from '../actions';
-import Autorenew from '@material-ui/icons/Autorenew'
+import RefreshSharp from '@material-ui/icons/RefreshSharp'
 import UserMenu from '../../../components/layouts/shared-components/UserMenu'
 
 const useStyles = makeStyles(theme => ({
@@ -98,13 +98,11 @@ function TabsPage(props) {
 
           <div>
             <IconButton aria-label="delete" onClick={refreshPage}>
-              <Autorenew />
+              <RefreshSharp />
             </IconButton>
 
             <Button
-              className={classNames(
-                {'active': pathname == '/dashboard/projects/'}
-              )}
+              className={classNames(classes.navList, {'active': pathname === '/dashboard'})}
               component="button"
               onClick={() => {
                 history.push('/dashboard')
@@ -113,9 +111,7 @@ function TabsPage(props) {
               Project
             </Button>
             <Button
-              className={classNames(
-                {'active': pathname == '/dashboard/chats/'}
-              )}
+              className={classNames(classes.navList, {'active': pathname === '/dashboard/chats'})}
               component="button"
               onClick={() => {
                 history.push('/dashboard/chats')
@@ -133,6 +129,7 @@ function TabsPage(props) {
               Tasks
             </Button>
             <Button
+              className={classNames(classes.navList, {'active': pathname === '/dashboard/files'})}
               component="button"
               onClick={() => {
                 history.push('/dashboard/files')

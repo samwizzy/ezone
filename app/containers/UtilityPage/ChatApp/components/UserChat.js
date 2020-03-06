@@ -13,6 +13,7 @@ import {
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import * as Actions from '../../actions';
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -28,51 +29,62 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UserChat = props => {
-  const { allUsersChat, newChat } = props;
+  const { dispatchGetUserChatData, allUsersChat, newChat } = props;
   const classes = useStyles();
 
   return (
     <List className={classes.list}>
       {newChat &&
-        newChat.map(chat => (
-          <ListItem alignItems="flex-start" component={Paper} key={chat.id}>
+        // newChat.map(User => (
+          <ListItem
+            alignItems="flex-start"
+            component={Paper}
+            key={newChat.id}
+            onClick={() => dispatchGetUserChatData(newChat)}
+          >
             <ListItemAvatar>
               <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
             </ListItemAvatar>
             <ListItemText
-              primary={chat.responderName}
+              primary={newChat.responderName}
               secondary={
-                <React.Fragment key={chat.id}>
+                <React.Fragment key={newChat.id}>
                   <Typography
                     component="span"
                     variant="body2"
                     className={classes.inline}
                     color="textPrimary"
                   >
-                    {chat.responderName}
+                    {newChat.responderName}
                   </Typography>
                 </React.Fragment>
               }
             />
           </ListItem>
-        ))}
+        // ))
+        }
       {allUsersChat &&
-        allUsersChat.map(userChat => (
-          <ListItem alignItems="flex-start" component={Paper} key={userChat.id}>
+        allUsersChat.map(user => (
+          <ListItem
+            alignItems="flex-start"
+            component={Paper}
+            key={user.id}
+            onClick={() => dispatchGetUserChatData(user)}
+          >
             <ListItemAvatar>
               <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
             </ListItemAvatar>
             <ListItemText
-              primary={(userChat.firstName, userChat.lastName)}
+              primary={user.responderName}
               secondary={
-                <React.Fragment>
+                <React.Fragment key={user.id}>
                   <Typography
                     component="span"
                     variant="body2"
                     className={classes.inline}
                     color="textPrimary"
                   >
-                    Is the work done?
+                    {user.responderName}
                   </Typography>
                 </React.Fragment>
               }
@@ -83,12 +95,16 @@ const UserChat = props => {
   );
 };
 
-UserChat.propTypes = {};
+UserChat.propTypes = {
+  dispatchGetUserChatData: PropTypes.func,
+};
 
 const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    dispatchGetUserChatData: evt => dispatch(Actions.getUserChatData(evt)),
+  };
 }
 
 const withConnect = connect(

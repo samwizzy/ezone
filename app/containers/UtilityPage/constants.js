@@ -10,10 +10,13 @@ export const CLOSE_FILE_UPLOAD_DIALOG =
   'app/UtilityPage/CLOSE_FILE_UPLOAD_DIALOG';
 
 export const OPEN_SHARE_FILE_DIALOG = 'app/UtilityPage/OPEN_SHARE_FILE_DIALOG';
-export const CLOSE_SHARE_FILE_DIALOG = 'app/UtilityPage/CLOSE_SHARE_FILE_DIALOG';
+export const CLOSE_SHARE_FILE_DIALOG =
+  'app/UtilityPage/CLOSE_SHARE_FILE_DIALOG';
 
-export const OPEN_PREVIEW_FILE_DIALOG = 'app/UtilityPage/OPEN_PREVIEW_FILE_DIALOG';
-export const CLOSE_PREVIEW_FILE_DIALOG = 'app/UtilityPage/CLOSE_PREVIEW_FILE_DIALOG';
+export const OPEN_PREVIEW_FILE_DIALOG =
+  'app/UtilityPage/OPEN_PREVIEW_FILE_DIALOG';
+export const CLOSE_PREVIEW_FILE_DIALOG =
+  'app/UtilityPage/CLOSE_PREVIEW_FILE_DIALOG';
 
 export const OPEN_NEW_TASK_DIALOG = 'app/UtilityPage/OPEN_NEW_TASK_DIALOG';
 export const CLOSE_NEW_TASK_DIALOG = 'app/UtilityPage/CLOSE_NEW_TASK_DIALOG';
@@ -50,22 +53,34 @@ export const GET_UTILITY_APPS_SUCCESS =
 export const GET_UTILITY_APPS_ERROR = 'app/UtilityPage/GET UTILITY APPS ERROR';
 
 export const GET_UTILITY_TASK = 'app/UtilityPage/GET UTILITY TASK';
-export const GET_UTILITY_TASK_SUCCESS = 'app/UtilityPage/GET UTILITY TASK SUCCESS';
+export const GET_UTILITY_TASK_SUCCESS =
+  'app/UtilityPage/GET UTILITY TASK SUCCESS';
 export const GET_UTILITY_TASKS = 'app/UtilityPage/GET UTILITY TASKS';
 export const GET_UTILITY_TASKS_SUCCESS = 'app/UtilityPage/GET ALL UTILITY TASKS SUCCESS';
+export const GET_UTILITY_TASKS_BY_STATUS = 'app/UtilityPage/GET UTILITY TASKS BY STATUS';
+export const GET_UTILITY_TASKS_BY_STATUS_SUCCESS = 'app/UtilityPage/GET ALL UTILITY TASKS BY STATUS SUCCESS';
 export const CREATE_UTILITY_TASKS = 'app/UtilityPage/CREATE UTILITY TASKS';
-export const CREATE_UTILITY_TASKS_SUCCESS = 'app/UtilityPage/CREATE UTILITY TASKS SUCCESS';
-export const GET_UTILITY_TASKS_ERROR = 'app/UtilityPage/GET UTILITY TASKS ERROR';
+export const CREATE_UTILITY_TASKS_SUCCESS =
+  'app/UtilityPage/CREATE UTILITY TASKS SUCCESS';
+export const GET_UTILITY_TASKS_ERROR =
+  'app/UtilityPage/GET UTILITY TASKS ERROR';
 export const GET_ASSIGNEDTO_BY_UUID = 'app/UtilityPage/GET ASSIGNEDTO BY UUID';
-export const GET_ASSIGNEDTO_BY_UUID_SUCCESS = 'app/UtilityPage/GET ASSIGNEDTO BY UUID SUCCESS';
+export const GET_ASSIGNEDTO_BY_UUID_SUCCESS =
+  'app/UtilityPage/GET ASSIGNEDTO BY UUID SUCCESS';
 
+export const GET_UTILITY_FILE = 'app/UtilityPage/GET UTILITY FILE';
+export const GET_UTILITY_FILE_SUCCESS = 'app/UtilityPage/GET UTILITY FILE SUCCESS';
 export const GET_UTILITY_FILES = 'app/UtilityPage/GET UTILITY FILES';
 export const GET_UTILITY_FILES_SUCCESS = 'app/UtilityPage/GET UTILITY FILES SUCCESS';
+export const GET_CREATEDBY_BY_UUID = 'app/UtilityPage/GET CREATEDBY BY UUID';
+export const GET_CREATEDBY_BY_UUID_SUCCESS = 'app/UtilityPage/GET CREATEDBY BY UUID SUCCESS';
+export const FAVORITE_FILE_BY_DOC_ID = 'app/UtilityPage/FAVORITE FILE BY DOC ID';
+export const FAVORITE_FILE_BY_DOC_ID_SUCCESS = 'app/UtilityPage/FAVORITE FILE BY DOC ID SUCCESS';
+export const UNFAVORITE_FILE_BY_DOC_ID = 'app/UtilityPage/UNFAVORITE FILE BY DOC ID';
+export const UNFAVORITE_FILE_BY_DOC_ID_SUCCESS = 'app/UtilityPage/UNFAVORITE FILE BY DOC ID SUCCESS';
 export const CREATE_UTILITY_FILES = 'app/UtilityPage/CREATE UTILITY FILES';
-export const CREATE_UTILITY_FILES_SUCCESS =
-  'app/UtilityPage/CREATE UTILITY FILES SUCCESS';
-export const GET_UTILITY_FILES_ERROR =
-  'app/UtilityPage/GET UTILITY FILES ERROR';
+export const CREATE_UTILITY_FILES_SUCCESS = 'app/UtilityPage/CREATE UTILITY FILES SUCCESS';
+export const GET_UTILITY_FILES_ERROR = 'app/UtilityPage/GET UTILITY FILES ERROR';
 
 export const GET_EMPLOYEES = 'app/UtilityPage/GET EMPLOYEES';
 export const GET_EMPLOYEES_SUCCESS = 'app/UtilityPage/GET EMPLOYEES SUCCESS';
@@ -82,10 +97,21 @@ export const GET_ALL_USERS_SUCCESS = 'app/UtilityPage/GET_ALL_USERS_SUCCESS';
 export const GET_ALL_USERS_ERROR = 'app/UtilityPage/GET_ALL_USERS_ERROR';
 
 export const GET_USER_BY_UUID = 'app/UtilityPage/GET USER BY UUID';
-export const GET_USER_BY_UUID_SUCCESS = 'app/UtilityPage/GET USER BY UUID SUCCESS';
+export const GET_USER_BY_UUID_SUCCESS =
+  'app/UtilityPage/GET USER BY UUID SUCCESS';
 
 export const GET_ALL_USERS_CHAT = 'app/UtilityPage/GET_ALL_USERS_CHAT';
 export const GET_ALL_USERS_CHAT_SUCCESS =
   'app/UtilityPage/GET_ALL_USERS_CHAT_SUCCESS';
 export const GET_ALL_USERS_CHAT_ERROR =
   'app/UtilityPage/GET_ALL_USERS_CHAT_ERROR';
+
+export const GET_USER_CHAT_DATA = 'app/UtilityPage/GET_USER_CHAT_DATA';
+export const GET_USER_CHAT_DATA_SUCCESS =
+  'app/UtilityPage/GET_USER_CHAT_DATA_SUCCESS';
+export const GET_USER_CHAT_DATA_ERROR =
+  'app/UtilityPage/GET_USER_CHAT_DATA_ERROR';
+
+export const POST_MSG = 'app/UtilityPage/POST_MSG';
+export const POST_MSG_SUCCESS = 'app/UtilityPage/POST_MSG_SUCCESS';
+export const POST_MSG_ERROR = 'app/UtilityPage/POST_MSG_ERROR';

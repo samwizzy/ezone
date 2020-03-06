@@ -7,7 +7,7 @@ import {
   IconButton,
   Paper,
   TextField,
-  Toolbar
+  Toolbar,
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -22,94 +22,129 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
-    marginLeft: theme.spacing(1)
+    marginLeft: theme.spacing(1),
   },
   textField: {
-    width: '100%'
+    width: '100%',
   },
   grow: {
     flexGrow: 1,
   },
   bootstrapFormLabel: {
-    color: theme.palette.text.secondary
-  }
+    color: theme.palette.text.secondary,
+  },
 }));
 
 const ChatFooter = props => {
-    const classes = useStyles();
+  const classes = useStyles();
 
-    return (
-        <React.Fragment>
-          <div className={classes.root}>
-            <AppBar
-              position="absolute"
+  const { dispatchPostMessage } = props;
+  const [values, setValues] = React.useState({
+    message: '',
+    recipientId: '',
+    recipientName: '',
+    senderId: '',
+    senderName: '',
+  });
+
+  const handleChange = name => event => {
+    setValues({
+      ...values,
+      [name]: event.target.value,
+    });
+  };
+
+  return (
+    <React.Fragment>
+      <div className={classes.root}>
+        <AppBar
+          position="absolute"
+          color="inherit"
+          style={{ bottom: 0, top: 'inherit', backgroundColor: 'transparent' }}
+        >
+          <Toolbar style={{ border: '1px solid blue' }}>
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
               color="inherit"
-              style={{ bottom: 0, top: 'inherit', backgroundColor: 'transparent'}}
             >
-              <Toolbar style={{border: '1px solid blue'}}>
-                <IconButton
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  color="inherit"
-                >
-                  <AttachFile />
-                </IconButton>
-                <Paper style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', margin: 0, padding: 0, borderRadius: '50px'}}>
-                  <TextField
-                    autoFocus={false}
-                    id="filled-full-width"
-                    style={{ margin: 8 }}
-                    fullWidth
-                    size="small"
-                    margin="normal"
-                    InputProps={{
-                      disableUnderline: true,
-                      classes         : {
-                          root : classes.textField,
-                          input: ""
-                      },
-                      placeholder: "Type your message"
-                    }}
-                    InputLabelProps={{
-                        shrink   : false,
-                        className: classes.bootstrapFormLabel
-                    }}
-                  />
-                </Paper>
+              <AttachFile />
+            </IconButton>
+            <Paper
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100%',
+                margin: 0,
+                padding: 0,
+                borderRadius: '50px',
+              }}
+            >
+              {/* <form> */}
+              <TextField
+                autoFocus={false}
+                id="filled-full-width"
+                style={{ margin: 8 }}
+                fullWidth
+                value={values.message}
+                onChange={handleChange('message')}
+                size="small"
+                margin="normal"
+                InputProps={{
+                  disableUnderline: true,
+                  classes: {
+                    root: classes.textField,
+                    input: '',
+                  },
+                  placeholder: 'Type your message',
+                }}
+                InputLabelProps={{
+                  shrink: false,
+                  className: classes.bootstrapFormLabel,
+                }}
+              />
+              {/* </form> */}
+            </Paper>
 
-                <div className={classes.grow} />
-                <IconButton
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  color="inherit"
-                >
-                  <SettingsVoice />
-                </IconButton>
+            <div className={classes.grow} />
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <SettingsVoice />
+            </IconButton>
 
-                <IconButton
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  color="inherit"
-                  type="submit"
-                >
-                  <Icon color="action">send</Icon>
-                </IconButton>
-              </Toolbar>
-            </AppBar>
-          </div>
-        </React.Fragment>
-    );
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              color="inherit"
+              type="submit"
+              onClick={() => dispatchPostMessage(values)}
+            >
+              <Icon color="action">send</Icon>
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+      </div>
+    </React.Fragment>
+  );
 };
 
-ChatFooter.propTypes = {};
+ChatFooter.propTypes = {
+  dispatchPostMessage: PropTypes.func,
+};
 
 const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    dispatchPostMessage: evt => dispatch(Actions.postMsg(evt)),
+  };
 }
 
 const withConnect = connect(

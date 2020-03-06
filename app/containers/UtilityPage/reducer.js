@@ -6,6 +6,10 @@
 import produce from 'immer';
 import * as Constants from './constants';
 export const initialState = {
+  postMsg: false,
+  getPostMsg: false,
+  getAllUserChatData: false,
+  getUserChatData: false,
   getAllUsersChat: [],
   getAllEmployees: [],
   loading: false,
@@ -37,6 +41,10 @@ export const initialState = {
       open: false,
     },
     data: null,
+  },
+  filePreviewDialog: {
+    open: false,
+    data: {}
   },
   fileUploadDialog: {
     type: 'new',
@@ -89,7 +97,11 @@ export const initialState = {
     createdBy: {}
   },
   files: [],
-  file: {},
+  file: {
+    data: {},
+    createdBy: {},
+    modifiedBy: {},
+  },
   error: { success: '', message: '' },
 };
 
@@ -154,6 +166,12 @@ const utilityPageReducer = (state = initialState, action) =>
           tasks: action.payload,
         };
       }
+      case Constants.GET_UTILITY_TASKS_BY_STATUS_SUCCESS: {
+        return {
+          ...state,
+          tasks: action.payload,
+        };
+      }
       case Constants.CREATE_UTILITY_TASKS_SUCCESS: {
         return {
           ...state,
@@ -176,6 +194,24 @@ const utilityPageReducer = (state = initialState, action) =>
         return {
           ...state,
           file: action.payload,
+        };
+      }
+      case Constants.GET_UTILITY_FILE_SUCCESS: {
+        return {
+          ...state,
+          file: {
+            ...state.file,
+            data: action.payload
+          },
+        };
+      }
+      case Constants.GET_CREATEDBY_BY_UUID_SUCCESS: {
+        return {
+          ...state,
+          file: {
+            ...state.file,
+            createdBy: action.payload
+          },
         };
       }
       case Constants.GET_UTILITY_FILES_SUCCESS: {
@@ -272,6 +308,24 @@ const utilityPageReducer = (state = initialState, action) =>
             },
             data: null,
           },
+        };
+      }
+      case Constants.OPEN_PREVIEW_FILE_DIALOG: {
+        return {
+          ...state,
+          filePreviewDialog: {
+            open: true,
+            data: action.payload
+          }
+        };
+      }
+      case Constants.CLOSE_PREVIEW_FILE_DIALOG: {
+        return {
+          ...state,
+          filePreviewDialog: {
+            open: false,
+            data: {}
+          }
         };
       }
       case Constants.OPEN_NEW_FILE_DIALOG: {
@@ -432,6 +486,52 @@ const utilityPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_ALL_USERS_CHAT_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_USER_CHAT_DATA: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          getUserChatData: action.payload,
+        };
+      }
+      case Constants.GET_USER_CHAT_DATA_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getAllUserChatData: action.payload,
+        };
+      }
+      case Constants.GET_USER_CHAT_DATA_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.POST_MSG: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          postMsg: action.payload,
+        };
+      }
+      case Constants.POST_MSG_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getPostMsg: action.payload,
+        };
+      }
+      case Constants.POST_MSG_ERROR: {
         return {
           ...state,
           loading: false,

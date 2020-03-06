@@ -8,13 +8,27 @@ import * as Constants from './constants';
 
 export function getUtilityFiles() {
   return {
-    type: Constants.GET_UTILITY_FILES
+    type: Constants.GET_UTILITY_FILES,
   };
 }
 
 export function getUtilityFilesSuccess(data) {
   return {
     type: Constants.GET_UTILITY_FILES_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getUtilityFile(fileId) {
+  return {
+    type: Constants.GET_UTILITY_FILE,
+    payload: fileId
+  };
+}
+
+export function getUtilityFileSuccess(data) {
+  return {
+    type: Constants.GET_UTILITY_FILE_SUCCESS,
     payload: data,
   };
 }
@@ -57,13 +71,20 @@ export function createUtilityTaskSuccess(data) {
 export function getUtilityTask(taskId) {
   return {
     type: Constants.GET_UTILITY_TASK,
-    payload: taskId
+    payload: taskId,
   };
 }
 
 export function getUtilityTasks() {
   return {
     type: Constants.GET_UTILITY_TASKS,
+  };
+}
+
+export function getUtilityTasksByStatus(status) {
+  return {
+    type: Constants.GET_UTILITY_TASKS_BY_STATUS,
+    payload: status
   };
 }
 
@@ -83,7 +104,7 @@ export function getEmployeesSuccess(data) {
 export function getAssignedToByUUID(uuid) {
   return {
     type: Constants.GET_ASSIGNEDTO_BY_UUID,
-    payload: uuid
+    payload: uuid,
   };
 }
 
@@ -94,10 +115,38 @@ export function getAssignedToByUUIDSuccess(data) {
   };
 }
 
+export function favoriteDocument(docId) {
+  return {
+    type: Constants.FAVORITE_FILE_BY_DOC_ID,
+    payload: docId
+  };
+}
+
+export function favoriteDocumentSuccess(data) {
+  return {
+    type: Constants.FAVORITE_FILE_BY_DOC_ID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getCreatedByUUID(uuid) {
+  return {
+    type: Constants.GET_CREATEDBY_BY_UUID,
+    payload: uuid
+  };
+}
+
+export function getCreatedByUUIDSuccess(data) {
+  return {
+    type: Constants.GET_CREATEDBY_BY_UUID_SUCCESS,
+    payload: data,
+  };
+}
+
 export function getUserByUUID(uuid) {
   return {
     type: Constants.GET_USER_BY_UUID,
-    payload: uuid
+    payload: uuid,
   };
 }
 
@@ -122,6 +171,13 @@ export function getUtilityTasksSuccess(data) {
   };
 }
 
+export function getUtilityTasksByStatusSuccess(data) {
+  return {
+    type: Constants.GET_UTILITY_TASKS_BY_STATUS_SUCCESS,
+    payload: data,
+  };
+}
+
 export function getUtilityTasksError(err) {
   return {
     type: Constants.GET_UTILITY_TASKS_ERROR,
@@ -129,16 +185,17 @@ export function getUtilityTasksError(err) {
   };
 }
 
-export function openFilePreviewDialog(data) {
+export function openFilePreviewDialog(selectedFile) {
+  console.log(selectedFile, "selectedFile")
   return {
-    type: Constants.OPEN_FILE_UPLOAD_DIALOG,
-    payload: data,
+    type: Constants.OPEN_PREVIEW_FILE_DIALOG,
+    payload: selectedFile
   };
 }
 
 export function closeFilePreviewDialog() {
   return {
-    type: Constants.CLOSE_FILE_UPLOAD_DIALOG,
+    type: Constants.CLOSE_PREVIEW_FILE_DIALOG,
   };
 }
 
@@ -295,6 +352,48 @@ export function getAllUsersChatSuccess(data) {
 export function getAllUsersChatError(data) {
   return {
     type: Constants.GET_ALL_USERS_CHAT_ERROR,
+    payload: data,
+  };
+}
+
+export function getUserChatData(data) {
+  return {
+    type: Constants.GET_USER_CHAT_DATA,
+    payload: data,
+  };
+}
+
+export function getUserChatDataSuccess(data) {
+  return {
+    type: Constants.GET_USER_CHAT_DATA_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getUserChatDataError(data) {
+  return {
+    type: Constants.GET_USER_CHAT_DATA_ERROR,
+    payload: data,
+  };
+}
+
+export function postMsg(data) {
+  return {
+    type: Constants.POST_MSG,
+    payload: data,
+  };
+}
+
+export function postMsgSuccess(data) {
+  return {
+    type: Constants.POST_MSG_SUCCESS,
+    payload: data,
+  };
+}
+
+export function postMsgError(data) {
+  return {
+    type: Constants.POST_MSG_ERROR,
     payload: data,
   };
 }

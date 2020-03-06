@@ -1,40 +1,29 @@
-import React, {memo} from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles'
-import { createStructuredSelector } from 'reselect';
+import { withRouter } from 'react-router-dom'
 import { compose } from 'redux';
-import {Avatar, Button, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, List, ListItem, ListItemText, ListItemAvatar, Slide, Typography, Table, TableBody, TableRow, TableCell } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { makeStyles } from '@material-ui/core/styles';
+import Dialog from '@material-ui/core/Dialog';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import CloseIcon from '@material-ui/icons/Close';
+import Slide from '@material-ui/core/Slide';
+import * as Actions from '../../actions'
 import * as Selectors from '../../selectors';
-import * as Actions from '../../actions';
-import FolderIcon from '@material-ui/icons/Folder';
-import { blue, deepPurple } from '@material-ui/core/colors';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1, 0)
-    }
+  appBar: {
+    position: 'relative',
   },
-  table: {
-    '& tr, td': {
-      border: 0
-    }
+  title: {
+    marginLeft: theme.spacing(2),
+    flex: 1,
   },
-  blue: {
-    color: theme.palette.getContrastText(blue[500]),
-    backgroundColor: blue[500]
-  },
-  ongoing: {
-    color: theme.palette.getContrastText(blue[500]),
-    backgroundColor: theme.status.ongoing
-  },
-  purple: {
-    color: theme.palette.getContrastText(deepPurple[500]),
-    backgroundColor: deepPurple[500],
-  }
 }));
-
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -42,70 +31,29 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function FilePreviewDialog(props) {
   const classes = useStyles();
-  const { closeTaskPreviewDialog, data } = props;
-
-  console.log(data, 'checking preview task...')
+  const { filePreviewDialog, closeFilePreviewDialog } = props
 
   return (
     <div>
-      <Dialog
-        {...data.props}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={closeTaskPreviewDialog}
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle id="alert-dialog-slide-title">Invoicing</DialogTitle>
-        <Divider />
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud            
-          </DialogContentText>
-          <DialogContentText id="alert-dialog-slide-description">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          </DialogContentText>
-
-          <Grid container>
-            <Grid item xs={12}><Typography variant='h6'>Assigned To:</Typography></Grid>
-            <Grid item xs={12}>
-              <List dense={true} style={{display: 'flex'}}>
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar className={classes.blue}>
-                      <FolderIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary="Christian"
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar className={classes.purple}>
-                      <FolderIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary="Christian"
-                  />
-                </ListItem>
-              </List>
-            </Grid>
-
-            <Grid item xs={12} md={7}>
-              <Table className={classes.table}>
-                <TableBody>
-                  <TableRow>
-                    <TableCell><Typography variant="subtitle2">Mark as:</Typography></TableCell>
-                    <TableCell align="right"><Chip className={classes.ongoing} label="Ongoing" /></TableCell>
-                    <TableCell align="right"><Chip color="default" label="Completed" /></TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </Grid>
-          </Grid>
-        </DialogContent>
+      <Dialog fullScreen open={filePreviewDialog.open} onClose={closeFilePreviewDialog} TransitionComponent={Transition}>
+        <AppBar className={classes.appBar}>
+          <Toolbar>
+            <IconButton edge="start" color="inherit" onClick={closeFilePreviewDialog} aria-label="close">
+              <CloseIcon />
+            </IconButton>
+            {filePreviewDialog.data &&
+              <Typography variant="h6" className={classes.title}>
+                {filePreviewDialog.data.docName}
+              </Typography>
+            }
+          </Toolbar>
+        </AppBar>
+        
+        {filePreviewDialog.data &&
+          <div>
+            <img src={filePreviewDialog.data.fileUrl} alt={filePreviewDialog.data.docName} />
+          </div>
+        }
       </Dialog>
     </div>
   );
@@ -113,18 +61,18 @@ function FilePreviewDialog(props) {
 
 
 FilePreviewDialog.propTypes = {
-  openTaskPreviewDialog: PropTypes.func,
-  closeTaskPreviewDialog: PropTypes.func
+  openFilePreviewDialog: PropTypes.func,
+  closeFilePreviewDialog: PropTypes.func
 };
 
 const mapStateToProps = createStructuredSelector({
-  data: Selectors.makeSelectPreviewTaskDialog()
+  filePreviewDialog: Selectors.makeSelectFilePreviewDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openTaskPreviewDialog: ev => dispatch(Actions.openTaskPreviewDialog(ev)),
-    closeTaskPreviewDialog: () => dispatch(Actions.closeTaskPreviewDialog()),
+    openFilePreviewDialog: ev => dispatch(Actions.openFilePreviewDialog(ev)),
+    closeFilePreviewDialog: () => dispatch(Actions.closeFilePreviewDialog()),
     dispatch,
   };
 }

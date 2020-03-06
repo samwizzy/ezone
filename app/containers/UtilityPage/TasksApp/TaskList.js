@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Button, ButtonGroup, TableContainer, Table, TableRow, TableCell, TableBody, TableFooter, TablePagination, Grid, GridList, GridListTile, GridListTileBar, Divider, Menu, MenuItem, Paper, List, ListItem, ListSubheader, ListItemText, ListItemIcon, FormControlLabel, Icon, IconButton, Typography, Toolbar, Hidden, Drawer } from '@material-ui/core';
+import { Button, ButtonGroup, TableContainer, Table, TableRow, TableCell, TableBody, TableFooter, TextField, Grid, GridList, GridListTile, GridListTileBar, Divider, Menu, MenuItem, Paper, List, ListItem, ListSubheader, ListItemText, ListItemIcon, FormControlLabel, Icon, IconButton, Typography, Toolbar, Hidden, Drawer } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -11,7 +11,8 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import AssignmentTurnedIn from '@material-ui/icons/AssignmentTurnedIn';
 import InfoIcon from '@material-ui/icons/Info';
-import TablePaginationActions from './components/TablePaginationActions'
+import Create from '@material-ui/icons/Create';
+import ReactDropZone from './components/ReactDropZone'
 
 const drawerWidth = '100%';
 
@@ -33,6 +34,9 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('sm')]: {
       display: 'none',
     },
+  },
+  submitButton: {
+    marginTop: theme.spacing(2),
   },
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
@@ -58,56 +62,12 @@ const useStyles = makeStyles(theme => ({
   },
   buttonGroup: {
     marginBottom: theme.spacing(1),
-    border: '1px solid #cdcdcd'
+    border: '1px solid #ededed',
+    '& .MuiButtonGroup-root:last-child': {
+      marginLeft: '10px'
+    }
   }
 }));
-
-function ListItemLink(props) {
-  return <ListItem button component="a" {...props} />;
-}
-
-const tileData = [
-    {
-      img: 'https://via.placeholder.com/150',
-      title: 'Task One',
-      author: 'author',
-    },
-    {
-      img: 'https://via.placeholder.com/150',
-      title: 'Image',
-      author: 'author',
-    },
-    {
-      img: 'https://via.placeholder.com/150',
-      title: 'Task Two',
-      author: 'author',
-    },
-    {
-      img: 'https://via.placeholder.com/150',
-      title: 'Task Three',
-      author: 'author',
-    },
-];
-
-function createData(name, calories, fat) {
-  return { name, calories, fat };
-}
-
-const rows = [
-  createData('Cupcake', 305, 3.7),
-  createData('Donut', 452, 25.0),
-  createData('Eclair', 262, 16.0),
-  createData('Frozen yoghurt', 159, 6.0),
-  createData('Gingerbread', 356, 16.0),
-  createData('Honeycomb', 408, 3.2),
-  createData('Ice cream sandwich', 237, 9.0),
-  createData('Jelly Bean', 375, 0.0),
-  createData('KitKat', 518, 26.0),
-  createData('Lollipop', 392, 0.2),
-  createData('Marshmallow', 318, 0),
-  createData('Nougat', 360, 19.0),
-  createData('Oreo', 437, 18.0),
-].sort((a, b) => (a.calories < b.calories ? -1 : 1));
 
 const TaskList = props => {
   const classes = useStyles();
@@ -174,13 +134,13 @@ const TaskList = props => {
             <Typography variant="subtitle1">Details</Typography>
             <div className={classes.buttonGroup}>
               <ButtonGroup size="small" aria-label="small outlined button group">
-                <Button>Edit</Button>
-                <Button>Assign</Button>
+                <Button><Icon>create</Icon>Edit</Button>
+                <Button><Icon>assignment</Icon>Assign</Button>
               </ButtonGroup>
               <ButtonGroup size="small" aria-label="small outlined button group">
-                <Button>To do</Button>
-                <Button>In Progress</Button>
-                <Button>Done</Button>
+                <Button><Icon>lens</Icon> To do</Button>
+                <Button><Icon>lens</Icon>In Progress</Button>
+                <Button><Icon>lens</Icon>Done</Button>
               </ButtonGroup>
             </div>
             
@@ -239,16 +199,39 @@ const TaskList = props => {
                   </TableRow>
                 </TableBody>
               </Table>
+
+              <Table>
+                <TableBody>  
+                  <TableRow key={0}>
+                    <TableCell component="th" scope="row">
+                      <TextField
+                        id="outlined-multiline-static"
+                        label="Comment"
+                        multiline
+                        fullWidth
+                        rows="4"
+                        rowsMax="4"
+                        value={""}
+                        onChange={() => {}}
+                        variant="outlined"
+                      />
+
+                      <Button className={classes.submitButton} variant="outlined" onClick={()=>{}} color="primary">
+                        Send
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
             </TableContainer>
 
           </div>
         </Grid>
         <Grid item md={3}>
-          <Typography variant="subtitle2">Task Preview</Typography>
           <div className={classes.gridRoot}>
             <GridList cellHeight={180} className={classes.gridList}>
               <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-                <ListSubheader component="div">December</ListSubheader>
+                <ListSubheader component="div">Attachment Preview</ListSubheader>
               </GridListTile>
               {task.data.documents && task.data.documents.map((tile, index) => (
                 <GridListTile key={index}>
@@ -265,6 +248,10 @@ const TaskList = props => {
                 </GridListTile>
               ))}
             </GridList>
+          </div>
+
+          <div>
+            <ReactDropZone />
           </div>
         </Grid>
       </Grid>
