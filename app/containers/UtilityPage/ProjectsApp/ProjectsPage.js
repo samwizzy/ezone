@@ -16,7 +16,7 @@ import AppIcon1 from '../../../images/app-2.svg';
 import AcctIcon from '../../../images/acctIcon.svg';
 import StoreIcon from '../../../images/storeIcon.svg';
 import CRMIcon from '../../../images/crmIcon.svg';
-import ChatBox from './../ChatApp/ChatBox';
+// import ChatBox from './../ChatApp/ChatBox';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -132,7 +132,7 @@ const ProjectsApp = props => {
 
             <Grid item xs={12} md={4}>
               {/* <Calendar /> */}
-              <ChatBox />
+              {/* <ChatBox /> */}
             </Grid>
 
           </Grid>
