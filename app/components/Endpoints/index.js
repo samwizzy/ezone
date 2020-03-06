@@ -30,10 +30,14 @@ export const GetAllEmployeesApi = '/authserv/api/v1/users/get_by_orgid';
 export const CreateUtilityFileApi = '/utilityserv/api/v1/upload_document';
 export const GetUtilityFilesApi = '/utilityserv/api/v1/get_document_by_orgid';
 export const GetUtilityFileApi = '/utilityserv/api/v1/get_document_by_id';
+export const FavoriteDocumentApi = '/utilityserv/api/v1/favourite_document';
+export const UnfavoriteDocumentApi = '/utilityserv/api/v1/unfavourite_document';
+export const ShareDocumentApi = '/utilityserv/api/v1/share_document';
 export const ShareUtilityFilesApi = '/utilityserv/api/v1/share_document';
 
 // Task Api
 export const GetUtilityTasksApi = '/utilityserv/api/v1/get_tasks_by_orgid';
+export const GetUtilityTasksByStatusApi = '/utilityserv/api/v1/get_by_orgid_and_status';
 export const GetUtilityTaskApi = '/utilityserv/api/v1/task';
 export const CreateUtilityTasksApi = '/utilityserv/api/v1/task';
 

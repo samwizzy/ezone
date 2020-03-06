@@ -89,6 +89,29 @@ export function* getUtilityTasks() {
   }
 }
 
+export function* getUtilityTasksByStatus({type, payload}) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${BaseUrl}${Endpoints.GetUtilityTasksByStatusApi}?orgId=${user.organisation.orgId}&status=${payload}`;
+
+  try {
+    const utilityTasksResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(utilityTasksResponse, 'utilityTasksResponse');
+
+    yield put(Actions.getUtilityTasksByStatusSuccess(utilityTasksResponse));
+  } catch (err) {
+    // yield put(Actions.getUtilityTasksError(err));
+    console.error(err, 'I got the error');
+  }
+}
+
 export function* getUtilityTask({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${BaseUrl}${Endpoints.GetUtilityTaskApi}/${payload}`;
@@ -346,11 +369,11 @@ export function* postMsg() {
 
 // Individual exports for testing
 export default function* UtilityPageSaga() {
-  // yield all([getUtilityTasks()])
   yield takeLatest(Constants.GET_EMPLOYEES, getEmployees);
   yield takeLatest(Constants.GET_USER_BY_UUID, getUserByUUID);
   yield takeLatest(Constants.GET_CREATEDBY_BY_UUID, getCreatedByUUID);
   yield takeLatest(Constants.GET_ASSIGNEDTO_BY_UUID, getAssignedToByUUID);
+  yield takeLatest(Constants.GET_UTILITY_TASKS_BY_STATUS, getUtilityTasksByStatus);
   yield takeLatest(Constants.GET_UTILITY_TASKS, getUtilityTasks);
   yield takeLatest(Constants.GET_UTILITY_TASK, getUtilityTask);
   yield takeLatest(Constants.GET_UTILITY_FILE, getUtilityFile);

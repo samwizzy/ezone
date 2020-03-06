@@ -1,14 +1,16 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import classNames from 'classnames';
 import { makeStyles } from '@material-ui/core/styles'
-import { Button, Box, Grid, Menu, MenuItem, List, ListItem, ListItemText, FormControlLabel, Icon, IconButton, Typography } from '@material-ui/core';
+import { green, orange } from '@material-ui/core/colors'
+import { Button, Box, Grid, Menu, MenuItem, List, ListItem, ListItemText, ListSubheader, FormControlLabel, Icon, IconButton, Typography } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { fade } from '@material-ui/core/styles/colorManipulator';
-// import LoadingIndicator from '../../../../components/LoadingIndicator';
+import LoadingIndicator from '../../../components/LoadingIndicator';
 import moment from 'moment'
 import Lens from '@material-ui/icons/Lens'
 import tasksIcon from '../../../images/tasksIcon.svg'
@@ -26,8 +28,8 @@ const useStyles = makeStyles(theme => ({
   },
   datatable: {
     flexGrow: 1,
+    boxShadow: 0,
     '& .MuiTableRow-root:hover': {
-      // backgroundColor: theme.palette.primary.main,
       cursor: 'pointer'
     }
   },
@@ -37,23 +39,18 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(1, 15),
   },
   status: {
-    width: 20,
-    height: 20,
-    'approved': { color: 'blue'},
-    'inProgress': { color: 'orange'},
-    'done': { color: 'green'},
+    width: 14,
+    height: 14,
+    '&.approved': { color: theme.palette.primary.main},
+    '&.inProgress': { color: orange[500]},
+    '&.done': { color: green[500]},
   }
 }));
 
-function ListItemLink(props) {
-  return <ListItem button component="a" {...props} />;
-}
-
 const TasksList = props => {
   const classes = useStyles();
-  const { loading, openNewTaskDialog, getUtilityTasks, getEmployees, tasks, users } = props;
+  const { loading, getUtilityTasksByStatus, openNewTaskDialog, getUtilityTasks, getEmployees, tasks, users } = props;
 
-  console.log(props, "Get props")
   console.log(users, "Get users")
 
   React.useEffect(() => {
@@ -147,7 +144,7 @@ const TasksList = props => {
         customBodyRender: value => {
           return (
             <Typography variant="inherit" color="textSecondary">
-              <Lens className={classes.status} /> {value}
+              <Lens className={classNames(classes.status, {'approved': true})} /> {value}
             </Typography>
           )
         }
@@ -164,8 +161,6 @@ const TasksList = props => {
     rowsPerPage: 25,
     rowsPerPageOptions: [25,50,100],
     onRowClick: (rowData, rowState) => {
-      // console.log(rowData, rowState);
-      console.log(props, "this.props")
       props.history.push('/dashboard/task/' + rowData[0])
     },
     isRowSelectable: (dataIndex, selectedRows) => {
@@ -174,7 +169,8 @@ const TasksList = props => {
       //prevents selection of row with title "Attorney"
       return tasks[dataIndex][1] != "Attorney";
     },
-    selectableRowsHeader: false
+    selectableRowsHeader: false,
+    elevation: 0
   };
 
   // if (loading) {
@@ -189,18 +185,29 @@ const TasksList = props => {
     <React.Fragment>
       <Grid container justify='center'>
         <Grid item xs={12} md={2}>
-          <List component="nav" aria-label="secondary mailbox folders">
+          <List 
+            component="nav" 
+            aria-label="secondary mailbox folders"
+            subheader={
+              <ListSubheader component="div" id="nested-list-subheader">
+                Status
+              </ListSubheader>
+            }
+          >
             <ListItem button>
               <ListItemText primary="All" />
             </ListItem>
-            <ListItem button>
-              <ListItemText primary="Ongoing" />
+            <ListItem button onClick={() => getUtilityTasksByStatus('PENDING')}>
+              <ListItemText primary="Pending" />
             </ListItem>
-            <ListItemLink href="#simple-list">
+            <ListItem button onClick={() => getUtilityTasksByStatus('INPROGRESS')}>
+              <ListItemText primary="In-Progress" />
+            </ListItem>
+            <ListItem button onClick={() => getUtilityTasksByStatus('EXPIRED')}>
               <ListItemText primary="Due" />
-            </ListItemLink>
-            <ListItem button>
-              <ListItemText primary="Expired" />
+            </ListItem>
+            <ListItem button onClick={() => getUtilityTasksByStatus('COMPLETED')}>
+              <ListItemText primary="Completed" />
             </ListItem>
           </List>
         </Grid>
@@ -237,6 +244,7 @@ function mapDispatchToProps(dispatch) {
     openNewTaskDialog: () => dispatch(Actions.openNewTaskDialog()),
     getUtilityTasks: () => dispatch(Actions.getUtilityTasks()),
     getEmployees: () => dispatch(Actions.getEmployees()),
+    getUtilityTasksByStatus: (status) => dispatch(Actions.getUtilityTasksByStatus(status)),
   };
 }
 

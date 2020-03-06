@@ -81,6 +81,13 @@ export function getUtilityTasks() {
   };
 }
 
+export function getUtilityTasksByStatus(status) {
+  return {
+    type: Constants.GET_UTILITY_TASKS_BY_STATUS,
+    payload: status
+  };
+}
+
 export function getEmployees() {
   return {
     type: Constants.GET_EMPLOYEES,
@@ -104,6 +111,20 @@ export function getAssignedToByUUID(uuid) {
 export function getAssignedToByUUIDSuccess(data) {
   return {
     type: Constants.GET_ASSIGNEDTO_BY_UUID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function favoriteDocument(docId) {
+  return {
+    type: Constants.FAVORITE_FILE_BY_DOC_ID,
+    payload: docId
+  };
+}
+
+export function favoriteDocumentSuccess(data) {
+  return {
+    type: Constants.FAVORITE_FILE_BY_DOC_ID_SUCCESS,
     payload: data,
   };
 }
@@ -150,6 +171,13 @@ export function getUtilityTasksSuccess(data) {
   };
 }
 
+export function getUtilityTasksByStatusSuccess(data) {
+  return {
+    type: Constants.GET_UTILITY_TASKS_BY_STATUS_SUCCESS,
+    payload: data,
+  };
+}
+
 export function getUtilityTasksError(err) {
   return {
     type: Constants.GET_UTILITY_TASKS_ERROR,
@@ -157,10 +185,11 @@ export function getUtilityTasksError(err) {
   };
 }
 
-export function openFilePreviewDialog(data) {
+export function openFilePreviewDialog(selectedFile) {
+  console.log(selectedFile, "selectedFile")
   return {
     type: Constants.OPEN_PREVIEW_FILE_DIALOG,
-    payload: data,
+    payload: selectedFile
   };
 }
 
