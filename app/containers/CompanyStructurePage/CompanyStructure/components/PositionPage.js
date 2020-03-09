@@ -316,10 +316,12 @@ PositionPage.propTypes = {
   dispatchOpenNewPartyGroupAction: PropTypes.func,
   dispatchOpenAddEmployeeToPositionDialogAction: PropTypes.func,
   openNewRoleDialog: PropTypes.func,
-  partyGroupData: PropTypes.oneOfType(PropTypes.array),
+  partyGroupData: PropTypes.array,
   DispatchgetSelectedPartyGroupAction: PropTypes.func,
-  selectedPartyGroupData: PropTypes.oneOfType(PropTypes.object, PropTypes.bool),
-  allPositions: PropTypes.oneOfType(PropTypes.object, PropTypes.bool),
+  selectedPartyGroupData: PropTypes.object,
+  allPositions: PropTypes.object,
+  // selectedPartyGroupData: PropTypes.oneOfType(PropTypes.object, PropTypes.bool),
+  // allPositions: PropTypes.oneOfType(PropTypes.object, PropTypes.bool),
 };
 
 const mapStateToProps = createStructuredSelector({

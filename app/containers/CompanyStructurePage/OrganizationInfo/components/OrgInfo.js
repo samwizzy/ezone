@@ -23,7 +23,7 @@ import EditOutlined from '@material-ui/icons/EditOutlined';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
-import download6 from '../../../../images/download(6).svg';
+import firstmarine from '../../../../images/firstmarine.svg';
 import user from '../../../../images/user.svg';
 import msg from '../../../../images/msg.svg';
 import phone2 from '../../../../images/phone2.svg';
@@ -90,7 +90,7 @@ const OrgInfo = props => {
                 <ListItemAvatar>
                   <Avatar
                     alt="Company Logo"
-                    src={download6}
+                    src={firstmarine}
                     className={classes.avatar}
                   />
                 </ListItemAvatar>
