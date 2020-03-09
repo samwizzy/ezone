@@ -10,8 +10,9 @@ import moment from 'moment'
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import AssignmentTurnedIn from '@material-ui/icons/AssignmentTurnedIn';
-import InfoIcon from '@material-ui/icons/Info';
-import Create from '@material-ui/icons/Create';
+import EditSharp from '@material-ui/icons/EditSharp';
+import Assignment from '@material-ui/icons/Assignment';
+import Lens from '@material-ui/icons/Lens';
 import ReactDropZone from './components/ReactDropZone'
 
 const drawerWidth = '100%';
@@ -58,7 +59,9 @@ const useStyles = makeStyles(theme => ({
     height: 250,
   },
   icon: {
-    color: 'rgba(255, 255, 255, 0.54)',
+    width: 16,
+    height: 16,
+    color: theme.palette.grey[800],
   },
   buttonGroup: {
     marginBottom: theme.spacing(1),
@@ -131,16 +134,16 @@ const TaskList = props => {
         </Grid>
         <Grid item md={7}>
           <div className={classes.content}>
-            <Typography variant="subtitle1">Details</Typography>
+            <Typography variant="h6">Details</Typography>
             <div className={classes.buttonGroup}>
               <ButtonGroup size="small" aria-label="small outlined button group">
-                <Button><Icon>create</Icon>Edit</Button>
-                <Button><Icon>assignment</Icon>Assign</Button>
+                <Button><EditSharp className={classes.icon} />Edit</Button>
+                <Button><Assignment className={classes.icon} />Assign</Button>
               </ButtonGroup>
               <ButtonGroup size="small" aria-label="small outlined button group">
-                <Button><Icon>lens</Icon> To do</Button>
-                <Button><Icon>lens</Icon>In Progress</Button>
-                <Button><Icon>lens</Icon>Done</Button>
+                <Button><Lens className={classes.icon} /> To do</Button>
+                <Button><Lens className={classes.icon} />In Progress</Button>
+                <Button><Lens className={classes.icon} />Done</Button>
               </ButtonGroup>
             </div>
             
@@ -239,11 +242,6 @@ const TaskList = props => {
                   <GridListTileBar
                     title={tile.docName}
                     subtitle={<span>{tile.description}</span>}
-                    actionIcon={
-                      <IconButton aria-label={`info about ${tile.docName}`} className={classes.icon}>
-                        <InfoIcon />
-                      </IconButton>
-                    }
                   />
                 </GridListTile>
               ))}

@@ -224,6 +224,52 @@ export function* getUtilityFile({type, payload}) {
   }
 }
 
+export function* favoriteUtilityFile({type, payload}) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${BaseUrl}${Endpoints.FavoriteDocumentApi}`;
+
+  try {
+    const favDocResponse = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(favDocResponse, 'favDocResponse');
+
+    yield put(Actions.favoriteDocumentSuccess(favDocResponse));
+  } catch (err) {
+    // yield put(Actions.getUtilityFileError(err));
+  }
+}
+
+export function* unfavoriteUtilityFile({type, payload}) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${BaseUrl}${Endpoints.FavoriteDocumentApi}`;
+
+  try {
+    const favDocResponse = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(favDocResponse, 'favDocResponse');
+
+    yield put(Actions.favoriteDocumentSuccess(favDocResponse));
+  } catch (err) {
+    // yield put(Actions.getUtilityFileError(err));
+  }
+}
+
 export function* getCreatedByUUID({type, payload}) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${BaseUrl}${Endpoints.GetUserByUUIDApi}/${payload}`;
@@ -378,6 +424,7 @@ export default function* UtilityPageSaga() {
   yield takeLatest(Constants.GET_UTILITY_TASK, getUtilityTask);
   yield takeLatest(Constants.GET_UTILITY_FILE, getUtilityFile);
   yield takeLatest(Constants.GET_UTILITY_FILES, getUtilityFiles);
+  yield takeLatest(Constants.FAVORITE_FILE_BY_DOC_ID, favoriteUtilityFile);
   yield takeLatest(Constants.CREATE_UTILITY_TASKS, addUtilityTasks);
   yield takeLatest(Constants.CREATE_UTILITY_FILES, addUtilityFile);
   yield takeLatest(Constants.GET_ALL_USERS, getAllUsers);

@@ -214,6 +214,15 @@ const utilityPageReducer = (state = initialState, action) =>
           },
         };
       }
+      case Constants.FAVORITE_FILE_BY_DOC_ID_SUCCESS: {
+        return {
+          ...state,
+          file: {
+            ...state.file,
+            data: action.payload
+          },
+        };
+      }
       case Constants.GET_UTILITY_FILES_SUCCESS: {
         return {
           ...state,

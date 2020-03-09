@@ -72,7 +72,7 @@ function ListItemLink(props) {
 
 const FilesList = props => {
   const classes = useStyles();
-  const { loading, files, file, getUtilityFile, getCreatedByUUID, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog, openNewTaskDialog } = props
+  const { loading, files, file, getUtilityFile, favoriteDocument, getCreatedByUUID, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog, openNewTaskDialog } = props
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const [isOpen, setOpen] = React.useState(true);
@@ -131,8 +131,8 @@ const FilesList = props => {
         sort: true,
         customBodyRender: id => {
           return  (
-            <IconButton className={classes.iconButton} aria-label="favorite" color="inherit">
-              <StarBorderOutlined className={classNames(classes.iconButton, {'favorite': true})} />
+            <IconButton onClick={() => favoriteDocument(id)} className={classes.iconButton} aria-label="favorite" color="inherit">
+              <StarOutlined className={classNames(classes.iconButton, {'favorite': true})} />
             </IconButton>
           )
         }
@@ -381,6 +381,7 @@ FilesList.propTypes = {
   openFileUploadDialog: PropTypes.func,
   openShareFileDialog: PropTypes.func,
   openFilePreviewDialog: PropTypes.func,
+  favoriteDocument: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -396,6 +397,7 @@ function mapDispatchToProps(dispatch) {
     openNewTaskDialog: ev => dispatch(Actions.openNewTaskDialog(ev)),
     getUtilityFiles: () => dispatch(Actions.getUtilityFiles()),
     getUtilityFile: id => dispatch(Actions.getUtilityFile(id)),
+    favoriteDocument: docId => dispatch(Actions.favoriteDocument(docId)),
     getCreatedByUUID: id => dispatch(Actions.getCreatedByUUID(id)),
     openFilePreviewDialog: (data) => dispatch(Actions.openFilePreviewDialog(data)),
   };
