@@ -7,13 +7,12 @@ import * as AppSelectors from '../App/selectors';
 import * as Constants from './constants';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
-import { BaseUrl } from '../../components/BaseUrl/index';
 import * as EndPoints from '../../components/Endpoints';
 
 export function* signup() {
   const signupReqData = yield select(Selectors.makeSelectSignupReqData());
 
-  const requestURL = `${BaseUrl}${EndPoints.RegistrationUrl}`;
+  const requestURL = `${EndPoints.RegistrationUrl}`;
   try {
     const signupRes = yield call(request, requestURL, {
       method: 'POST',
@@ -60,7 +59,7 @@ export function* login() {
 
   const { username, password } = loginDetails;
   const newData = { username, password, grant_type: 'password' };
-  const requestURL = `${BaseUrl}${EndPoints.LoginUrl}`;
+  const requestURL = `${EndPoints.LoginUrl}`;
 
   const decode = decodeURIComponent(qs.stringify(newData));
 
@@ -106,7 +105,7 @@ export function* login() {
 export function* userProfile() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
 
-  const requestURL = `${BaseUrl}${EndPoints.UserProfileUrl}`;
+  const requestURL = `${EndPoints.UserProfileUrl}`;
 
   try {
     const userProfileResponse = yield call(request, requestURL, {

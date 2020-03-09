@@ -1,6 +1,5 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
 import request from '../../utils/request';
-import { BaseUrl } from '../../components/BaseUrl';
 import * as Endpoints from '../../components/Endpoints';
 import * as AppSelectors from '../App/selectors';
 import * as AppActions from '../App/actions';
@@ -9,11 +8,10 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 
 export function* getAllEmployees() {
-  console.log('saga called')
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
-  const requestURL = `${BaseUrl}${Endpoints.GetAllEmployeesApi}/${
+  const requestURL = `${Endpoints.GetAllEmployeesApi}/${
     currentUser.organisation.orgId
   }`;
 
@@ -48,7 +46,7 @@ export function* createNewEmployee() {
     Selectors.makeSelectCreateNewEmployeeData(),
   );
 
-  const requestURL = `${BaseUrl}${Endpoints.CreateNewEmployeeApi}`;
+  const requestURL = `${Endpoints.CreateNewEmployeeApi}`;
 
   try {
     const createNewEmployeeResponse = yield call(request, requestURL, {

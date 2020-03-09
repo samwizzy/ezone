@@ -12,7 +12,7 @@ import * as Endpoints from '../../components/Endpoints';
 export function* addUtilityFile({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${BaseUrl}${Endpoints.CreateUtilityFileApi}`;
+  const requestURL = `${Endpoints.CreateUtilityFileApi}`;
   payload.orgId = user.organisation.orgId;
 
   try {
@@ -37,7 +37,7 @@ export function* addUtilityFile({ type, payload }) {
 export function* addUtilityTasks({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${BaseUrl}${Endpoints.CreateUtilityTasksApi}`;
+  const requestURL = `${Endpoints.CreateUtilityTasksApi}`;
   payload.orgId = user.organisation.orgId;
   try {
     const createdTasksResponse = yield call(request, requestURL, {
@@ -67,7 +67,7 @@ export function* addUtilityTasks({ type, payload }) {
 export function* getUtilityTasks() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${BaseUrl}${Endpoints.GetUtilityTasksApi}/${
+  const requestURL = `${Endpoints.GetUtilityTasksApi}/${
     user.organisation.orgId
   }`;
 
@@ -91,7 +91,7 @@ export function* getUtilityTasks() {
 
 export function* getUtilityTask({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${BaseUrl}${Endpoints.GetUtilityTaskApi}/${payload}`;
+  const requestURL = `${Endpoints.GetUtilityTaskApi}/${payload}`;
 
   try {
     const utilityTaskResponse = yield call(request, requestURL, {
@@ -113,7 +113,7 @@ export function* getUtilityTask({ type, payload }) {
 
 export function* getUserByUUID({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${BaseUrl}${Endpoints.GetUserByUUIDApi}/${payload}`;
+  const requestURL = `${Endpoints.GetUserByUUIDApi}/${payload}`;
 
   try {
     const userResponse = yield call(request, requestURL, {
@@ -135,7 +135,7 @@ export function* getUserByUUID({ type, payload }) {
 
 export function* getAssignedToByUUID({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${BaseUrl}${Endpoints.GetUserByUUIDApi}/${payload}`;
+  const requestURL = `${Endpoints.GetUserByUUIDApi}/${payload}`;
 
   try {
     const userResponse = yield call(request, requestURL, {
@@ -158,7 +158,7 @@ export function* getAssignedToByUUID({ type, payload }) {
 export function* getUtilityFiles() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${BaseUrl}${Endpoints.GetUtilityFilesApi}/${
+  const requestURL = `${Endpoints.GetUtilityFilesApi}/${
     user.organisation.orgId
   }`;
 
@@ -182,7 +182,7 @@ export function* getUtilityFiles() {
 export function* getUtilityFile({type, payload}) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${BaseUrl}${Endpoints.GetUtilityFileApi}/${payload}`;
+  const requestURL = `${Endpoints.GetUtilityFileApi}/${payload}`;
 
   try {
     const utilityFileResponse = yield call(request, requestURL, {
@@ -203,7 +203,7 @@ export function* getUtilityFile({type, payload}) {
 
 export function* getCreatedByUUID({type, payload}) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${BaseUrl}${Endpoints.GetUserByUUIDApi}/${payload}`;
+  const requestURL = `${Endpoints.GetUserByUUIDApi}/${payload}`;
 
   try {
     const userResponse = yield call(request, requestURL, {
@@ -227,7 +227,7 @@ export function* getAllUsers() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
-  const requestURL = `${BaseUrl}${Endpoints.GetAllUsersApi}/${
+  const requestURL = `${Endpoints.GetAllUsersApi}/${
     currentUser.organisation.orgId
   }`;
 
@@ -250,7 +250,7 @@ export function* getAllUsersChat() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
-  const requestURL = `${BaseUrl}${Endpoints.GetUsersChatApi}/?userUid=${
+  const requestURL = `${Endpoints.GetUsersChatApi}/?userUid=${
     currentUser.uuId
   }`;
 
@@ -271,7 +271,7 @@ export function* getAllUsersChat() {
 
 export function* getEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${BaseUrl}${Endpoints.GetEmployeesApi}`;
+  const requestURL = `${Endpoints.GetEmployeesApi}`;
 
   try {
     const employeesResponse = yield call(request, requestURL, {
@@ -295,7 +295,7 @@ export function* getUserChatData() {
   const userChatDetails = yield select(Selectors.makeSelectGetUserChatData());
 
   console.log(userChatDetails, 'userChatDetails');
-  const requestURL = `${BaseUrl}${Endpoints.GetUserChatDataApi}/?chatId=${
+  const requestURL = `${Endpoints.GetUserChatDataApi}/?chatId=${
     userChatDetails.initiator
   }&limit=${10}&start=${10}`;
 
@@ -326,7 +326,7 @@ export function* postMsg() {
 
   console.log(userChatData, 'userChatData');
   console.log(postMsgDetails, 'postMsgDetails');
-  const requestURL = `${BaseUrl}${Endpoints.SendMessageApi}`;
+  const requestURL = `${Endpoints.SendMessageApi}`;
 
   try {
     const postMsgResponse = yield call(request, requestURL, {
