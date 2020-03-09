@@ -115,14 +115,12 @@ const UserMenu = props => {
             )} */}
           {currentUser && (
             <React.Fragment>
-              <Link href="/login">
-                <MenuItem onClick={() => logoutAction()}>
-                  <ListItemIcon>
-                    <Icon>exit_to_app</Icon>
-                  </ListItemIcon>
-                  <ListItemText className="pl-0" primary="Logout" />
-                </MenuItem>
-              </Link>
+              <MenuItem component={Link} to="/login" onClick={() => logoutAction()}>
+                <ListItemIcon>
+                  <Icon>exit_to_app</Icon>
+                </ListItemIcon>
+                <ListItemText className="pl-0" primary="Logout" />
+              </MenuItem>
             </React.Fragment>
           )}
           {/* {user.data.role.name === 'guest' ? (

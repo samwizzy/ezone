@@ -1,4 +1,5 @@
 import produce from 'immer';
+import history from '../../utils/history'
 import * as Constants from './constants';
 import moment from 'moment';
 
@@ -111,6 +112,10 @@ const appReducer = (state = initialState, action) =>
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('expires_in');
+
+        history.push({
+          pathname: '/login'
+        });
         return {};
       }
     }
