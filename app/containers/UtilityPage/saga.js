@@ -87,10 +87,12 @@ export function* getUtilityTasks() {
   }
 }
 
-export function* getUtilityTasksByStatus({type, payload}) {
+export function* getUtilityTasksByStatus({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetUtilityTasksByStatusApi}?orgId=${user.organisation.orgId}&status=${payload}`;
+  const requestURL = `${Endpoints.GetUtilityTasksByStatusApi}?orgId=${
+    user.organisation.orgId
+  }&status=${payload}`;
 
   try {
     const utilityTasksResponse = yield call(request, requestURL, {
@@ -200,7 +202,7 @@ export function* getUtilityFiles() {
   }
 }
 
-export function* getUtilityFile({type, payload}) {
+export function* getUtilityFile({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetUtilityFileApi}/${payload}`;
@@ -222,7 +224,7 @@ export function* getUtilityFile({type, payload}) {
   }
 }
 
-export function* getCreatedByUUID({type, payload}) {
+export function* getCreatedByUUID({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.GetUserByUUIDApi}/${payload}`;
 
@@ -235,12 +237,12 @@ export function* getCreatedByUUID({type, payload}) {
       }),
     });
 
-    console.log(userResponse, "userResponse")
+    console.log(userResponse, 'userResponse');
 
     yield put(Actions.getCreatedByUUIDSuccess(userResponse));
   } catch (err) {
     // yield put(Actions.getUserByUUIDError(err));
-    console.error(err, "I got the error")
+    console.error(err, 'I got the error');
   }
 }
 
@@ -371,7 +373,10 @@ export default function* UtilityPageSaga() {
   yield takeLatest(Constants.GET_USER_BY_UUID, getUserByUUID);
   yield takeLatest(Constants.GET_CREATEDBY_BY_UUID, getCreatedByUUID);
   yield takeLatest(Constants.GET_ASSIGNEDTO_BY_UUID, getAssignedToByUUID);
-  yield takeLatest(Constants.GET_UTILITY_TASKS_BY_STATUS, getUtilityTasksByStatus);
+  yield takeLatest(
+    Constants.GET_UTILITY_TASKS_BY_STATUS,
+    getUtilityTasksByStatus,
+  );
   yield takeLatest(Constants.GET_UTILITY_TASKS, getUtilityTasks);
   yield takeLatest(Constants.GET_UTILITY_TASK, getUtilityTask);
   yield takeLatest(Constants.GET_UTILITY_FILE, getUtilityFile);

@@ -40,7 +40,7 @@ import Layout3 from '../../components/layouts/layout3/Layout3';
 import PrivateRoute from '../AuthProvider/PrivateRoute';
 import Snackbar from './components/Snackbar';
 // import { AppContext } from '../context/AppContext';
-// import WorkOrderPage from '../WorkOrder/Loadable';
+import WorkOrderPage from '../WorkOrder/Loadable';
 
 // import { makeSelectGetSaveToken } from './selectors';
 
@@ -101,11 +101,31 @@ const App = () => {
                   component={CompanyStructurePosition}
                 />
                 <PrivateRoute exact path="/dashboard" component={UtilityPage} />
-                <PrivateRoute exact path="/dashboard/tasks" component={TasksPage} />
-                <PrivateRoute exact path="/dashboard/task/:id" component={TasksPage} />
-                <PrivateRoute exact path="/dashboard/files" component={FilesApp} />
-                <PrivateRoute exact path="/dashboard/file/:id" component={FilesApp} />
-                <PrivateRoute exact path="/dashboard/chats" component={ChatApp} />
+                <PrivateRoute
+                  exact
+                  path="/dashboard/tasks"
+                  component={TasksPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/dashboard/task/:id"
+                  component={TasksPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/dashboard/files"
+                  component={FilesApp}
+                />
+                <PrivateRoute
+                  exact
+                  path="/dashboard/file/:id"
+                  component={FilesApp}
+                />
+                <PrivateRoute
+                  exact
+                  path="/dashboard/chats"
+                  component={ChatApp}
+                />
 
                 <PrivateRoute exact path="/email" component={EmailConfig} />
                 <PrivateRoute
@@ -121,10 +141,7 @@ const App = () => {
                   component={EmailPasswordTemplate}
                 />
                 <PrivateRoute exact path="/home" component={HomePage} />
-                {/* <PrivateRoute
-                  path="/WorkOrder"
-                  component={WorkOrderPage}
-                /> */}
+                <PrivateRoute path="/WorkOrder" component={WorkOrderPage} />
               </Layout3>
               <Route path="" component={NotFoundPage} />
             </Switch>
