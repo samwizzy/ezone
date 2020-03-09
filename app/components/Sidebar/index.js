@@ -28,6 +28,7 @@ const links = [
   'Organization',
   'Applications',
   'Employees',
+  'User Profile',
   'WorkOrder',
   'Security',
   'Settings',
@@ -125,7 +126,7 @@ export default function MiniDrawer(props) {
 
       <Drawer
         variant="permanent"
-        style={{backgroundColor: 'red'}}
+        style={{ backgroundColor: 'red' }}
         className={clsx(classes.drawer, {
           [classes.drawerOpen]: open,
           [classes.drawerClose]: !open,
@@ -138,25 +139,26 @@ export default function MiniDrawer(props) {
         }}
       >
         <div className={classes.toolbar}>
-          <Link href='#'>
+          <Link href="#">
             <img src={Logo} className={classes.logo} />
           </Link>
-          {open?
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton> :
-          <IconButton onClick={handleDrawerOpen}>
-            {theme.direction === 'rtl' ? (
-              <ChevronLeftIcon />
-            ) : (
-              <ChevronRightIcon />
-            )}
-          </IconButton>
-          }
+          {open ? (
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === 'rtl' ? (
+                <ChevronRightIcon />
+              ) : (
+                <ChevronLeftIcon />
+              )}
+            </IconButton>
+          ) : (
+            <IconButton onClick={handleDrawerOpen}>
+              {theme.direction === 'rtl' ? (
+                <ChevronLeftIcon />
+              ) : (
+                <ChevronRightIcon />
+              )}
+            </IconButton>
+          )}
         </div>
         <Divider />
         <List className={classes.list}>
@@ -165,7 +167,6 @@ export default function MiniDrawer(props) {
               case 'Dashboard':
                 return (
                   <ListItem button key={index} component="a" href="/dashboard">
-                    
                     <ListItemIcon>
                       <Tooltip title={text} arrow placement="right-end">
                         <Dashboard />
@@ -209,7 +210,25 @@ export default function MiniDrawer(props) {
                   </ListItem>
                 );
                 break;
-              case 'Applications':Security
+              case 'User Profile':
+                return (
+                  <ListItem
+                    button
+                    key={index}
+                    component="a"
+                    href="/users/profile"
+                  >
+                    <ListItemIcon>
+                      <Tooltip title={text} arrow placement="right-end">
+                        <Person />
+                      </Tooltip>
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItem>
+                );
+                break;
+              case 'Applications':
+                Security;
                 return (
                   <ListItem button key={index} component="a" href="/utility">
                     <ListItemIcon>
