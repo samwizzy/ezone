@@ -65,14 +65,41 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const gender = [
+const status = [
   {
-    value: 'Male',
-    label: 'Male',
+    value: 'NOT_STARTED',
+    label: 'NOT STARTED',
   },
   {
-    value: 'Female',
-    label: 'Female',
+    value: 'STARTED',
+    label: 'STARTED',
+  },
+  {
+    value: 'COMPLETED',
+    label: 'COMPLETED',
+  },
+  {
+    value: 'CANCELED',
+    label: 'CANCELED',
+  },
+];
+
+const priority = [
+  {
+    value: 'Low',
+    label: 'Low',
+  },
+  {
+    value: 'Medium',
+    label: 'Medium (Normal)',
+  },
+  {
+    value: 'High',
+    label: 'High',
+  },
+  {
+    value: 'Critical',
+    label: 'Critical',
   },
 ];
 
@@ -343,17 +370,34 @@ const WorkOrderDialog = props => {
                 fullWidth
               />
               <TextField
-                id="standard-select-gender"
-                label="Select Gender"
+                id="standard-status"
+                label="Status"
                 variant="outlined"
                 className={classes.textField}
                 margin="normal"
-                value={values.gender ? values.gender : ''}
-                onChange={handleSelectChange('gender')}
+                value={values.status ? values.status : ''}
+                onChange={handleSelectChange('status')}
                 select
                 fullWidth
               >
-                {gender.map(option => (
+                {status.map(option => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                id="standard-priority"
+                label="Urgency Level"
+                variant="outlined"
+                className={classes.textField}
+                margin="normal"
+                value={values.priority ? values.priority : ''}
+                onChange={handleSelectChange('priority')}
+                select
+                fullWidth
+              >
+                {priority.map(option => (
                   <MenuItem key={option.value} value={option.value}>
                     {option.label}
                   </MenuItem>
