@@ -31,6 +31,7 @@ export function closeVendorDialog() {
 }
 
 export function openAddItemDialog() {
+  console.log('action come here');
   return {
     type: Constants.OPEN_ADDITEM_DIALOG,
   };

@@ -20,6 +20,7 @@ import saga from './saga';
 import messages from './messages';
 import WorkOrderList from './components/WorkOrderList';
 import WorkOrderDialog from './components/WorkOrderDialog';
+import AddItemDialog from './components/AddItemDialog';
 import AddVendorDialog from './components/AddVendorDialog';
 
 export function WorkOrderPage() {
@@ -35,12 +36,13 @@ export function WorkOrderPage() {
       <WorkOrderList />
       <WorkOrderDialog />
       <AddVendorDialog />
+      <AddItemDialog />
     </div>
   );
 }
 
 WorkOrderPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  dispatch: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({

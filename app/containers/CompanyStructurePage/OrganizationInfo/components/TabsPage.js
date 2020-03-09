@@ -7,7 +7,7 @@ import {
   AppBar,
   Tabs,
   Tab,
-  Toolbar
+  Toolbar,
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -85,7 +85,10 @@ function TabsPage() {
             indicatorColor="primary"
             centered
           >
-            <Tab label="Octiver Info" {...a11yProps(0)} />
+            <Tab
+              label="First Marine And Engineering Services"
+              {...a11yProps(0)}
+            />
           </Tabs>
 
           <UserMenu />

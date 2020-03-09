@@ -76,8 +76,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const AddItemDialog = props => {
   const {
     loading,
-    workOrderDialog,
-    closeWorkOrderDialogAction,
+    addItemDialog,
+    closeAddItemDialogAction,
     listOfVendorsData,
   } = props;
 
@@ -112,20 +112,20 @@ const AddItemDialog = props => {
   return (
     <div>
       <Dialog
-        {...workOrderDialog.props}
-        onClose={closeWorkOrderDialogAction}
+        {...addItemDialog.props}
+        onClose={closeAddItemDialogAction}
         keepMounted
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {workOrderDialog.type === 'new' ? 'Work Order' : 'Edit Work Order'}
+          {addItemDialog.type === 'new' ? 'Work Order' : 'Edit Work Order'}
         </DialogTitle>
 
         <Divider />
 
         <DialogContent>
-          {workOrderDialog.type === 'new' ? (
+          {addItemDialog.type === 'new' ? (
             <div>
               <Autocomplete
                 id="combo-box-demo"
@@ -286,7 +286,7 @@ const AddItemDialog = props => {
             </Button>
           )}
           <Button
-            onClick={() => closeWorkOrderDialogAction()}
+            onClick={() => closeAddItemDialogAction()}
             color="primary"
             variant="contained"
           >
@@ -305,14 +305,14 @@ AddItemDialog.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(), 
-  workOrderDialog: Selectors.makeSelectWorkOrderDialog(),
+  addItemDialog: Selectors.makeSelectItemDialog(),
   listOfVendorsData: Selectors.makeSelectGetListOfVendorsData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openCreateWorkOrderDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
-    closeWorkOrderDialogAction: () => dispatch(Actions.closeCreateWorkOrderDialog()),
+    closeAddItemDialogAction: () => dispatch(Actions.closeAddItemDialog()),
     getListOfVendorsAction: evt => dispatch(Actions.getAllVendorsAction(evt)),
     dispatch,
   };
