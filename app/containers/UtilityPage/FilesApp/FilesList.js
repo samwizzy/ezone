@@ -1,8 +1,10 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles'
+import { orange } from '@material-ui/core/colors'
 import { withRouter } from 'react-router-dom'
-import { Button, Box, Grid, Menu, MenuItem, List, ListItem, ListItemText, ListItemIcon, Collapse, Icon, IconButton, Typography, TableContainer, Table, TableBody, TableRow, TableCell, Paper } from '@material-ui/core';
+import classNames from 'classnames'
+import { Button, Box, Grid, Menu, MenuItem, List, ListItem, ListSubheader, ListItemText, ListItemIcon, Collapse, Icon, IconButton, Typography, TableContainer, Table, TableBody, TableRow, TableCell, Paper } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -10,13 +12,13 @@ import { createStructuredSelector } from 'reselect';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import MoreVertRounded from '@material-ui/icons/MoreVertRounded'
 import Description from '@material-ui/icons/Description'
-import tasksIcon from '../../../images/tasksIcon.svg'
-import {AddTask, AddFile} from './../components/AddButton';
+import {AddFile} from './../components/AddButton';
 import * as Actions from '../actions';
 import * as Selectors from './../selectors';
 import FileUploadDialog from './components/FileUploadDialog'
 import ShareFileDialog from './components/ShareFileDialog'
 import AddFileDialog from './components/AddFileDialog'
+import FilePreviewDialog from './components/FilePreviewDialog'
 import AddSignature from './components/AddSignature'
 import DocWidget from './components/DocWidget'
 import NoFilesList from './components/NoFilesList'
@@ -24,6 +26,13 @@ import moment from 'moment'
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import DeleteRounded from '@material-ui/icons/DeleteRounded';
+import InsertDriveFile from '@material-ui/icons/InsertDriveFile';  
+import Delete from '@material-ui/icons/Delete';  
+import Share from '@material-ui/icons/Share';  
+import CloudDownload from '@material-ui/icons/CloudDownload';  
+import Visibility from '@material-ui/icons/Visibility';  
+import StarBorderOutlined from '@material-ui/icons/StarBorderOutlined';  
+import StarOutlined from '@material-ui/icons/StarOutlined';  
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -52,6 +61,8 @@ const useStyles = makeStyles(theme => ({
     width: 24,
     height: 24,
     padding: 0,
+    '&.favorite': { color: orange[300]},
+    '&.shared': { color: orange[500]},
   }
 }));
 
@@ -61,7 +72,7 @@ function ListItemLink(props) {
 
 const FilesList = props => {
   const classes = useStyles();
-  const { loading, files, file, getUtilityFile, getCreatedByUUID, openFileUploadDialog, openShareFileDialog, openNewTaskDialog } = props
+  const { loading, files, file, getUtilityFile, getCreatedByUUID, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog, openNewTaskDialog } = props
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const [isOpen, setOpen] = React.useState(true);
@@ -103,6 +114,28 @@ const FilesList = props => {
       options: {
         filter: true,
         sort: true,
+        customBodyRender: docName => {
+          return  (
+            <Typography variant="inherit" color="textSecondary">
+              <InsertDriveFile /> &nbsp; {docName}
+            </Typography>
+          )
+        }
+      },
+    },
+    {
+      name: 'id',
+      label: ' ',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: id => {
+          return  (
+            <IconButton className={classes.iconButton} aria-label="favorite" color="inherit">
+              <StarBorderOutlined className={classNames(classes.iconButton, {'favorite': true})} />
+            </IconButton>
+          )
+        }
       },
     },
     {
@@ -114,7 +147,8 @@ const FilesList = props => {
         customBodyRender: id => {
           const selectedFile = files && files.find(file => file.id === id)
           return (
-            selectedFile.dateUpdated? moment(selectedFile.dateUpdated).format('lll') : moment(selectedFile.dateCreated).format('lll')
+            selectedFile.dateUpdated? 
+            moment(selectedFile.dateUpdated).format('lll') : moment(selectedFile.dateCreated).format('lll')
           )
         }
       },
@@ -126,7 +160,8 @@ const FilesList = props => {
         filter: true,
         sort: false,
         customBodyRender: id => {
-          const options = ['View', 'Signature', 'Download', 'Share', 'Delete']
+          const options = ['View', 'Download', 'Share', 'Delete']
+          
           return (
             <div>
               <IconButton
@@ -145,11 +180,38 @@ const FilesList = props => {
                 open={open}
                 onClose={handleClose}
               >
-                {options.map(option => (
-                  <MenuItem key={option} onClick={openNewTaskDialog}>
-                    {option}
+                  <MenuItem key={0} onClick={() => console.log(id)}>
+                    <ListItemIcon>
+                      <Visibility fontSize="small" />
+                    </ListItemIcon>
+                    <Typography variant="inherit" noWrap>
+                      View
+                    </Typography>
                   </MenuItem>
-                ))}
+                  <MenuItem key={1} onClick={() => openFilePreviewDialog(id)}>
+                    <ListItemIcon>
+                      <CloudDownload fontSize="small" />
+                    </ListItemIcon>
+                    <Typography variant="inherit" noWrap>
+                      Download
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem key={2} onClick={() => openFilePreviewDialog(id)}>
+                    <ListItemIcon>
+                      <Share fontSize="small" />
+                    </ListItemIcon>
+                    <Typography variant="inherit" noWrap>
+                      Share
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem key={3} onClick={() => openFilePreviewDialog(id)}>
+                    <ListItemIcon>
+                      <Delete fontSize="small" />
+                    </ListItemIcon>
+                    <Typography variant="inherit" noWrap>
+                      Delete
+                    </Typography>
+                  </MenuItem>
               </Menu>
             </div>
           )
@@ -162,12 +224,17 @@ const FilesList = props => {
     filterType: 'checkbox',
     responsive: 'scrollMaxHeight',
     selectableRows: 'none',
+    print: false,
+    download: true,
+    viewColumns: false,
+    filter: false,
     customToolbar: () => <AddFile openFileDialog={openFileUploadDialog} />,
     rowsPerPage: 25,
     rowsPerPageOptions: [25,50,100],
     onRowClick: (rowData, rowState) => {
       getUtilityFile(rowData[0])
     },
+    elevation: 0
   };
 
   if (loading) {
@@ -185,7 +252,15 @@ const FilesList = props => {
       <Grid container justify='space-evenly' spacing={2}>
         <Grid item xs={2} md={2}>
           <div className={classes.sideMenu}>
-            <List component="nav" aria-label="secondary mailbox folders">
+            <List 
+              component="nav" 
+              aria-label="secondary mailbox folders"
+              subheader={
+                <ListSubheader component="div" id="nested-list-subheader">
+                  Status
+                </ListSubheader>
+              }
+            >
               <ListItem button>
                 <ListItemText primary="All" />
               </ListItem>
@@ -210,7 +285,7 @@ const FilesList = props => {
           />
         </Grid>
         <Grid item md={3}>
-          <Typography variant="subtitle1">Document Details</Typography>
+          <Typography variant="subtitle2" color="textSecondary">Document Details</Typography>
           {file.data && Object.keys(file.data).length > 0 &&
           <div>
           <TableContainer component="div">
@@ -295,6 +370,7 @@ const FilesList = props => {
       <FileUploadDialog />
       <ShareFileDialog />
       <AddFileDialog />
+      <FilePreviewDialog />
 
     </div>
   );
@@ -304,7 +380,7 @@ FilesList.propTypes = {
   loading: PropTypes.bool,
   openFileUploadDialog: PropTypes.func,
   openShareFileDialog: PropTypes.func,
-  openNewTaskDialog: PropTypes.func,
+  openFilePreviewDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -321,6 +397,7 @@ function mapDispatchToProps(dispatch) {
     getUtilityFiles: () => dispatch(Actions.getUtilityFiles()),
     getUtilityFile: id => dispatch(Actions.getUtilityFile(id)),
     getCreatedByUUID: id => dispatch(Actions.getCreatedByUUID(id)),
+    openFilePreviewDialog: (data) => dispatch(Actions.openFilePreviewDialog(data)),
   };
 }
 

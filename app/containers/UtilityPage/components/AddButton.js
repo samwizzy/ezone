@@ -1,17 +1,15 @@
-import React, { memo } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { compose } from 'redux';
-
 import { Button, IconButton, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { withStyles } from '@material-ui/styles';
 import { Add } from '@material-ui/icons';
-import * as Actions from '../actions';
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
 
-const useStyles = (theme => ({
-  iconButton: {}
+const useStyles = makeStyles(theme => ({
+  iconButton: {
+    color: theme.palette.primary.main
+  },
+  icon: {}
 }));
 
 
@@ -27,7 +25,7 @@ export function AddTask(props) {
           className={classes.iconButton}
           onClick={openNewTaskDialog}
         >
-          <Add className={classes.deleteIcon} /> Add Task
+          <Add className={classes.icon} /> Add Task
         </Button>
       </Tooltip>
     </React.Fragment>
@@ -46,7 +44,7 @@ export function AddFile(props) {
           className={classes.iconButton}
           onClick={openFileDialog}
         >
-          <Add className={classes.deleteIcon} /> Upload File
+          <PhotoCamera className={classes.icon} />
         </Button>
       </Tooltip>
     </React.Fragment>

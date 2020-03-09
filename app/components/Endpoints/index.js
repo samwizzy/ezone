@@ -43,15 +43,19 @@ export const GetUtilityFilesApi = `${BaseUrl}/utilityserv/api/v1/get_document_by
 export const GetUtilityFileApi = `${BaseUrl}/utilityserv/api/v1/get_document_by_id`;
 export const ShareUtilityFilesApi = `${BaseUrl}/utilityserv/api/v1/share_document`;
 
+export const FavoriteDocumentApi = '/utilityserv/api/v1/favourite_document';
+export const UnfavoriteDocumentApi = '/utilityserv/api/v1/unfavourite_document';
+export const ShareDocumentApi = '/utilityserv/api/v1/share_document';
+
 // Task Api
 export const GetUtilityTasksApi = `${BaseUrl}/utilityserv/api/v1/get_tasks_by_orgid`;
 export const GetUtilityTaskApi = `${BaseUrl}/utilityserv/api/v1/task`;
 export const CreateUtilityTasksApi = `${BaseUrl}/utilityserv/api/v1/task`;
+export const GetUtilityTasksByStatusApi = `${BaseUrl}/utilityserv/api/v1/get_by_orgid_and_status`;
 
 // Chat Api
 export const GetUsersChatApi = `${BaseUrl}/utilityserv/api/v1/chat/get_user_chat`;
-export const GetUserChatDataApi =
-  `${BaseUrl}/utilityserv/api/v1/message/get_messages_for_chat`;
+export const GetUserChatDataApi = `${BaseUrl}/utilityserv/api/v1/message/get_messages_for_chat`;
 export const SendMessageApi = `${BaseUrl}/utilityserv/api/v1/message/send_message`;
 
 // User
@@ -67,10 +71,10 @@ export const GetOrgAppsApi = '/utilityserv/api/v1/organisation/orgApps';
 
 export const GetEmailConfigApi =
   '/messagingserv/api/v1/get_email_config_by_orgId';
-export const SaveEmailConfigApi = '/messagingserv/api/v1/emailConfig';
-export const TestConnectionApi = '/messagingserv/api/v1/test_email_config';
-export const GetSmsProviderApi = '/messagingserv/api/v1/get_all_sms_providers';
-export const GetSmsConfigApi = '/messagingserv/api/v1/get_sms_config_by_orgId';
+export const SaveEmailConfigApi = `${BaseUrl}/messagingserv/api/v1/emailConfig`;
+export const TestConnectionApi = `${BaseUrl}/messagingserv/api/v1/test_email_config`;
+export const GetSmsProviderApi = `${BaseUrl}/messagingserv/api/v1/get_all_sms_providers`;
+export const GetSmsConfigApi = `${BaseUrl}/messagingserv/api/v1/get_sms_config_by_orgId`;
 
 // Work order Api
 export const SaveVendorApi = '/utilityserv/api/v1/add_vendor';

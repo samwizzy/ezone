@@ -16,8 +16,8 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
 import { fade } from '@material-ui/core/styles/colorManipulator';
+import RefreshSharp from '@material-ui/icons/RefreshSharp';
 import * as Actions from '../actions';
-import Autorenew from '@material-ui/icons/Autorenew';
 import UserMenu from '../../../components/layouts/shared-components/UserMenu';
 
 const useStyles = makeStyles(theme => ({
@@ -97,7 +97,7 @@ function TabsPage(props) {
         <Toolbar variant="dense" className={classes.toolbar}>
           <div>
             <IconButton aria-label="delete" onClick={refreshPage}>
-              <Autorenew />
+              <RefreshSharp />
             </IconButton>
 
             <Button

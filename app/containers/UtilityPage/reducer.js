@@ -42,6 +42,10 @@ export const initialState = {
     },
     data: null,
   },
+  filePreviewDialog: {
+    open: false,
+    data: {}
+  },
   fileUploadDialog: {
     type: 'new',
     props: {
@@ -95,7 +99,8 @@ export const initialState = {
   files: [],
   file: {
     data: {},
-    createdBy: {}
+    createdBy: {},
+    modifiedBy: {},
   },
   error: { success: '', message: '' },
 };
@@ -156,6 +161,12 @@ const utilityPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_UTILITY_TASKS_SUCCESS: {
+        return {
+          ...state,
+          tasks: action.payload,
+        };
+      }
+      case Constants.GET_UTILITY_TASKS_BY_STATUS_SUCCESS: {
         return {
           ...state,
           tasks: action.payload,
@@ -297,6 +308,24 @@ const utilityPageReducer = (state = initialState, action) =>
             },
             data: null,
           },
+        };
+      }
+      case Constants.OPEN_PREVIEW_FILE_DIALOG: {
+        return {
+          ...state,
+          filePreviewDialog: {
+            open: true,
+            data: action.payload
+          }
+        };
+      }
+      case Constants.CLOSE_PREVIEW_FILE_DIALOG: {
+        return {
+          ...state,
+          filePreviewDialog: {
+            open: false,
+            data: {}
+          }
         };
       }
       case Constants.OPEN_NEW_FILE_DIALOG: {

@@ -1,7 +1,5 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import request from '../../utils/request';
-
-import { BaseUrl } from '../../components/BaseUrl';
 import * as AppActions from '../App/actions';
 import * as AppSelectors from '../App/selectors';
 import * as Selectors from './selectors';
@@ -83,6 +81,29 @@ export function* getUtilityTasks() {
     console.log(utilityTasksResponse, 'utilityTasksResponse');
 
     yield put(Actions.getUtilityTasksSuccess(utilityTasksResponse));
+  } catch (err) {
+    // yield put(Actions.getUtilityTasksError(err));
+    console.error(err, 'I got the error');
+  }
+}
+
+export function* getUtilityTasksByStatus({type, payload}) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetUtilityTasksByStatusApi}?orgId=${user.organisation.orgId}&status=${payload}`;
+
+  try {
+    const utilityTasksResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(utilityTasksResponse, 'utilityTasksResponse');
+
+    yield put(Actions.getUtilityTasksByStatusSuccess(utilityTasksResponse));
   } catch (err) {
     // yield put(Actions.getUtilityTasksError(err));
     console.error(err, 'I got the error');
@@ -346,11 +367,11 @@ export function* postMsg() {
 
 // Individual exports for testing
 export default function* UtilityPageSaga() {
-  // yield all([getUtilityTasks()])
   yield takeLatest(Constants.GET_EMPLOYEES, getEmployees);
   yield takeLatest(Constants.GET_USER_BY_UUID, getUserByUUID);
   yield takeLatest(Constants.GET_CREATEDBY_BY_UUID, getCreatedByUUID);
   yield takeLatest(Constants.GET_ASSIGNEDTO_BY_UUID, getAssignedToByUUID);
+  yield takeLatest(Constants.GET_UTILITY_TASKS_BY_STATUS, getUtilityTasksByStatus);
   yield takeLatest(Constants.GET_UTILITY_TASKS, getUtilityTasks);
   yield takeLatest(Constants.GET_UTILITY_TASK, getUtilityTask);
   yield takeLatest(Constants.GET_UTILITY_FILE, getUtilityFile);

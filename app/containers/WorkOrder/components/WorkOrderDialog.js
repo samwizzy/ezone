@@ -47,7 +47,7 @@ import {
 
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
-// import LoadingIndicator from '../../../../components/LoadingIndicator';
+import LoadingIndicator from '../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -139,28 +139,28 @@ const WorkOrderDialog = props => {
     description: "",
     expectedCompletionDate: "",
     "id": 0,
-  "items": [
-    {
-      "addedBy": "string",
-      "amount": 0,
-      "amountForOneUnit": 0,
-      "date": "2020-03-05T12:18:32.015Z",
-      "dateCreated": "2020-03-05T12:18:32.015Z",
-      "dateUpdated": "2020-03-05T12:18:32.015Z",
-      "description": "string",
-      "id": 0,
-      "name": "string",
-      "orgId": "string",
-      "updatedBy": "string"
-    }
-  ],
-  "memo": "string",
-  "number": "string",
-  "orgId": 0,
-  "paymentDate": "2020-03-05T12:18:32.015Z",
-  "priority": "string",
-  "status": "string",
-  "updatedBy": "string",
+    "items": [
+      {
+        "addedBy": "string",
+        "amount": 0,
+        "amountForOneUnit": 0,
+        "date": "2020-03-05T12:18:32.015Z",
+        "dateCreated": "2020-03-05T12:18:32.015Z",
+        "dateUpdated": "2020-03-05T12:18:32.015Z",
+        "description": "string",
+        "id": 0,
+        "name": "string",
+        "orgId": "string",
+        "updatedBy": "string"
+      }
+    ],
+    "memo": "string",
+    "number": "string",
+    "orgId": 0,
+    "paymentDate": "2020-03-05T12:18:32.015Z",
+    "priority": "string",
+    "status": "string",
+    "updatedBy": "string",
   });
 
   
@@ -466,7 +466,7 @@ WorkOrderDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-//   loading: Selectors.makeSelectLoading(), 
+  loading: Selectors.makeSelectLoading(), 
   workOrderDialog: Selectors.makeSelectWorkOrderDialog(),
   listOfVendorsData: Selectors.makeSelectGetListOfVendorsData(),
 });
