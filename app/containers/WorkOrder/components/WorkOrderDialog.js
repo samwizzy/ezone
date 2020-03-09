@@ -180,7 +180,6 @@ const WorkOrderDialog = props => {
 
   return (
     <div>
-      <AddItemDialog />
       <Dialog
         {...workOrderDialog.props}
         onClose={closeWorkOrderDialogAction}
