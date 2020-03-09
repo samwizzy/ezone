@@ -118,7 +118,7 @@ export function getAssignedToByUUIDSuccess(data) {
 export function favoriteDocument(docId) {
   return {
     type: Constants.FAVORITE_FILE_BY_DOC_ID,
-    payload: docId
+    payload: { docId }
   };
 }
 

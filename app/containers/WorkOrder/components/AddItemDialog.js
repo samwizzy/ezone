@@ -5,15 +5,6 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
-import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-
-import AddItemDialog from './AddItemDialog';
 
 import {
   withStyles,
@@ -77,22 +68,21 @@ const gender = [
 ];
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="down" ref={ref} {...props} />;
+  return <Slide direction="up" ref={ref} {...props} />;
 });
 
 
-const WorkOrderDialog = props => {
+
+const AddItemDialog = props => {
   const {
     loading,
     workOrderDialog,
-    addItemDialog,
-    openAddItemDialogAction,
     closeWorkOrderDialogAction,
     listOfVendorsData,
-    getListOfVendorsAction
   } = props;
 
   const classes = useStyles();
+
 
   const [values, setValues] = React.useState({
     id: "",
@@ -107,54 +97,8 @@ const WorkOrderDialog = props => {
     dateUpdated: "",
     description: "",
     expectedCompletionDate: "",
-    "id": 0,
-    "items": [
-      {
-        "addedBy": "string",
-        "amount": 0,
-        "amountForOneUnit": 0,
-        "date": "2020-03-05T12:18:32.015Z",
-        "dateCreated": "2020-03-05T12:18:32.015Z",
-        "dateUpdated": "2020-03-05T12:18:32.015Z",
-        "description": "string",
-        "id": 0,
-        "name": "string",
-        "orgId": "string",
-        "updatedBy": "string"
-      }
-    ],
-    "memo": "string",
-    "number": "string",
-    "orgId": 0,
-    "paymentDate": "2020-03-05T12:18:32.015Z",
-    "priority": "string",
-    "status": "string",
-    "updatedBy": "string",
   });
 
-  
-  // const canBeSubmitted = () => {
-  //   const {
-  //     firstName,
-  //     lastName,
-  //     emailAddress,
-  //     employeeId,
-  //     phoneNumber,
-  //     address,
-  //     gender,
-  //     password,
-  //   } = values;
-  //   return (
-  //     firstName !== '' &&
-  //     lastName !== '' &&
-  //     emailAddress !== '' &&
-  //     employeeId !== '' &&
-  //     phoneNumber !== '' &&
-  //     address !== '' &&
-  //     gender !== '' &&
-  //     password !== ''
-  //   );
-  // };
 
   const handleSelectChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
@@ -164,23 +108,9 @@ const WorkOrderDialog = props => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  // Similar to componentDidMount and componentDidUpdate:
-  useEffect(() => {
-    getListOfVendorsAction();
-  }, []);
-
-  console.log('VendorsData --> ', listOfVendorsData);
-
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
-
-  const handleDateChange = date => {
-    setSelectedDate(date);
-  };
-
 
   return (
     <div>
-      <AddItemDialog />
       <Dialog
         {...workOrderDialog.props}
         onClose={closeWorkOrderDialogAction}
@@ -264,41 +194,6 @@ const WorkOrderDialog = props => {
                 fullWidth
               />
 
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <Grid container justify="space-around">
-                  <KeyboardDatePicker
-                    margin="normal"
-                    id="date-picker-dialog"
-                    label="Expected Completion Date"
-                    format="MM/dd/yyyy"
-                    value={selectedDate}
-                    onChange={handleDateChange}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date',
-                    }}
-                  />
-                  <KeyboardDatePicker
-                    margin="normal"
-                    id="date-picker-dialog"
-                    label="Payment Date"
-                    format="MM/dd/yyyy"
-                    value={selectedDate}
-                    onChange={handleDateChange}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date',
-                    }}
-                  />
-                </Grid>
-              </MuiPickersUtilsProvider>
-              
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => openAddItemDialogAction()}
-              >
-                Add Item
-              </Button>
-             
               <TextField
                 id="standard-email"
                 label="Email"
@@ -387,7 +282,7 @@ const WorkOrderDialog = props => {
               variant="contained"
               // disabled={!canBeSubmitted()}
             >
-              Save
+              Save Item
             </Button>
           )}
           <Button
@@ -395,7 +290,7 @@ const WorkOrderDialog = props => {
             color="primary"
             variant="contained"
           >
-            Cancel
+            Cancel item
           </Button>
         </DialogActions>
       </Dialog>
@@ -403,16 +298,14 @@ const WorkOrderDialog = props => {
   );
 };
 
-WorkOrderDialog.propTypes = {
+AddItemDialog.propTypes = {
   loading: PropTypes.bool,
-  workOrderDialog: PropTypes.object,
-  addItemDialog: PropTypes.object,
+  AddItemDialog: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(), 
-  workOrderDialog: Selectors.makeSelectWorkOrderDialog(), 
-  addItemDialog: Selectors.makeSelectItemDialog(),
+  workOrderDialog: Selectors.makeSelectWorkOrderDialog(),
   listOfVendorsData: Selectors.makeSelectGetListOfVendorsData(),
 });
 
@@ -420,8 +313,6 @@ function mapDispatchToProps(dispatch) {
   return {
     openCreateWorkOrderDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
     closeWorkOrderDialogAction: () => dispatch(Actions.closeCreateWorkOrderDialog()),
-    openAddItemDialogAction: () => dispatch(Actions.openAddItemDialog()),
-    closeAddItemDialogAction: () => dispatch(Actions.closeAddItemDialog()),
     getListOfVendorsAction: evt => dispatch(Actions.getAllVendorsAction(evt)),
     dispatch,
   };
@@ -435,4 +326,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(WorkOrderDialog);
+)(AddItemDialog);

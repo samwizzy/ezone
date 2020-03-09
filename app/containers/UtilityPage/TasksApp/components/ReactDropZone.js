@@ -95,12 +95,12 @@ function PaperDropzone(props) {
         preview: URL.createObjectURL(file)
       })));
       
-      setForm(_.set(form, "fileName", acceptedFiles[0].name))
-      setForm(_.set(form, "format", acceptedFiles[0].type))
-      setForm(_.set(form, "size", acceptedFiles[0].size))
-      getBase64(acceptedFiles[0], (result) => setForm(_.set(form, "file", result)))
-      uploadFileAction(form)
-      console.log(form, "Set Form inside onDrop")
+      // setForm(_.set(form, "fileName", acceptedFiles[0].name))
+      // setForm(_.set(form, "format", acceptedFiles[0].type))
+      // setForm(_.set(form, "size", acceptedFiles[0].size))
+      // getBase64(acceptedFiles[0], (result) => setForm(_.set(form, "file", result)))
+      // uploadFileAction(form)
+      // console.log(form, "Set Form inside onDrop")
     },
   });
 
