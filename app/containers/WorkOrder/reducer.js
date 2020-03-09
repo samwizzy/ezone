@@ -26,6 +26,13 @@ export const initialState = {
     },
     data: null,
   },
+  itemDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -75,6 +82,34 @@ const workOrderPageReducer = (state = initialState, action) =>
         return {
           ...state,
           vendorDialog: {
+            type: 'new',
+            props: {
+              open: false,
+            },
+            data: action.payload,
+          },
+        };
+      }
+
+      // Open dialog for add item on workorder dialog
+      case Constants.OPEN_ADDITEM_DIALOG: {
+        console.log('reducer come here')
+        return {
+          ...state,
+          itemDialog: {
+            type: 'new',
+            props: {
+              open: true,
+            },
+            data: null,
+          },
+        };
+      }
+
+      case Constants.CLOSE_ADDITEM_DIALOG: {
+        return {
+          ...state,
+          itemDialog: {
             type: 'new',
             props: {
               open: false,

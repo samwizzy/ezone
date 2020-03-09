@@ -30,6 +30,18 @@ export function closeVendorDialog() {
   };
 }
 
+export function openAddItemDialog() {
+  return {
+    type: Constants.OPEN_ADDITEM_DIALOG,
+  };
+}
+
+export function closeAddItemDialog() {
+  return {
+    type: Constants.CLOSE_ADDITEM_DIALOG,
+  };
+}
+
 // Save vendor details
 export function saveVendorConfigAction(data) {
   return {

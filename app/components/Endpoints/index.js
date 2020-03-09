@@ -69,13 +69,12 @@ export const GetOrgAppsApi = '/utilityserv/api/v1/organisation/orgApps';
  * Messages endpoint
  ******************************************************************* */
 
-export const GetEmailConfigApi =
-  '/messagingserv/api/v1/get_email_config_by_orgId';
+export const GetEmailConfigApi = `${BaseUrl}/messagingserv/api/v1/get_email_config_by_orgId`;
 export const SaveEmailConfigApi = `${BaseUrl}/messagingserv/api/v1/emailConfig`;
 export const TestConnectionApi = `${BaseUrl}/messagingserv/api/v1/test_email_config`;
 export const GetSmsProviderApi = `${BaseUrl}/messagingserv/api/v1/get_all_sms_providers`;
 export const GetSmsConfigApi = `${BaseUrl}/messagingserv/api/v1/get_sms_config_by_orgId`;
 
 // Work order Api
-export const SaveVendorApi = '/utilityserv/api/v1/add_vendor';
-export const GetListOfVendorsApi = '/utilityserv/api/v1/find_all_vendors';
+export const SaveVendorApi = `${BaseUrl}/utilityserv/api/v1/add_vendor`;
+export const GetListOfVendorsApi = `${BaseUrl}/utilityserv/api/v1/find_all_vendors`;
