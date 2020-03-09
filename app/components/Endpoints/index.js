@@ -1,62 +1,80 @@
+import { BaseUrl } from '../BaseUrl';
+
+/** *****************************************************************
+ * Authentication endpoint
+ ******************************************************************* */
+
 // Authentication Apis
-export const RegistrationUrl = '/authserv/api/v1/register';
-export const LoginUrl = '/authserv/oauth/token';
-export const UserProfileUrl = '/authserv/api/v1/users/profile';
+export const RegistrationUrl = `${BaseUrl}/authserv/api/v1/register`;
+export const LoginUrl = `${BaseUrl}/authserv/oauth/token`;
+export const UserProfileUrl = `${BaseUrl}/authserv/api/v1/users/profile`;
 
 /** *****************************************************************
  * Organization and Company structure endpoint
  ******************************************************************* */
 
 // Company structure Apis
-export const CompanyInfoUrl = '/authserv/api/v1/organisation';
-export const UpdateCompanyInfoUrl = '/authserv/api/v1/update_organization';
-export const GetPartyGroup = '/authserv/api/v1/organisation/partygroups';
-export const CreateNewPartyGroup = '/authserv/api/v1/partygroup';
-export const GetAllUsersApi = '/authserv/api/v1/users/get_by_orgid';
-export const CreateNewPartyApi =
-  '/authserv/api/v1/party/create_and_add_to_group';
-export const CreateNewPartiesApi =
-  '/authserv/api/v1/party/create_and_add_to_party';
-export const CreateNewPositionApi = '/authserv/api/v1/position';
-export const GetAllPositionsApi =
-  '/authserv/api/v1/position/get_position_by_orgId';
-export const AddNewEmployeeToPositionApi =
-  '/authserv/api/v1/user/add_to_position';
-export const CreateNewEmployeeApi = '/authserv/api/v1/user';
-export const GetAllEmployeesApi = '/authserv/api/v1/users/get_by_orgid';
+export const CompanyInfoUrl = `${BaseUrl}/authserv/api/v1/organisation`;
+export const UpdateCompanyInfoUrl = `${BaseUrl}/authserv/api/v1/update_organization`;
+export const GetPartyGroup = `${BaseUrl}/authserv/api/v1/organisation/partygroups`;
+export const CreateNewPartyGroup = `${BaseUrl}/authserv/api/v1/partygroup`;
+export const GetAllUsersApi = `${BaseUrl}/authserv/api/v1/users/get_by_orgid`;
+export const CreateNewPartyApi = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_group`;
+export const CreateNewPartiesApi = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_party`;
+export const CreateNewPositionApi = `${BaseUrl}/authserv/api/v1/position`;
+export const GetAllPositionsApi = `${BaseUrl}/authserv/api/v1/position/get_position_by_orgId`;
+export const AddNewEmployeeToPositionApi = `${BaseUrl}/authserv/api/v1/user/add_to_position`;
+
+/** *****************************************************************
+ * Employee endpoint
+ ******************************************************************* */
+
+export const CreateNewEmployeeApi = `${BaseUrl}/authserv/api/v1/user`;
+export const GetAllEmployeesApi = `${BaseUrl}/authserv/api/v1/users/get_by_orgid`;
+
+/** *****************************************************************
+ * Utility endpoint
+ ******************************************************************* */
 
 // Utility Apis
 // File Api
-export const CreateUtilityFileApi = '/utilityserv/api/v1/upload_document';
-export const GetUtilityFilesApi = '/utilityserv/api/v1/get_document_by_orgid';
-export const GetUtilityFileApi = '/utilityserv/api/v1/get_document_by_id';
+export const CreateUtilityFileApi = `${BaseUrl}/utilityserv/api/v1/upload_document`;
+export const GetUtilityFilesApi = `${BaseUrl}/utilityserv/api/v1/get_document_by_orgid`;
+export const GetUtilityFileApi = `${BaseUrl}/utilityserv/api/v1/get_document_by_id`;
+export const ShareUtilityFilesApi = `${BaseUrl}/utilityserv/api/v1/share_document`;
+
 export const FavoriteDocumentApi = '/utilityserv/api/v1/favourite_document';
 export const UnfavoriteDocumentApi = '/utilityserv/api/v1/unfavourite_document';
 export const ShareDocumentApi = '/utilityserv/api/v1/share_document';
-export const ShareUtilityFilesApi = '/utilityserv/api/v1/share_document';
 
 // Task Api
-export const GetUtilityTasksApi = '/utilityserv/api/v1/get_tasks_by_orgid';
-export const GetUtilityTasksByStatusApi = '/utilityserv/api/v1/get_by_orgid_and_status';
-export const GetUtilityTaskApi = '/utilityserv/api/v1/task';
-export const CreateUtilityTasksApi = '/utilityserv/api/v1/task';
+export const GetUtilityTasksApi = `${BaseUrl}/utilityserv/api/v1/get_tasks_by_orgid`;
+export const GetUtilityTaskApi = `${BaseUrl}/utilityserv/api/v1/task`;
+export const CreateUtilityTasksApi = `${BaseUrl}/utilityserv/api/v1/task`;
+export const GetUtilityTasksByStatusApi = `${BaseUrl}/utilityserv/api/v1/get_by_orgid_and_status`;
 
 // Chat Api
-export const GetUsersChatApi = '/utilityserv/api/v1/chat/get_user_chat';
-export const GetUserChatDataApi = '/utilityserv/api/v1/message/get_messages_for_chat';
-export const SendMessageApi = '/utilityserv/api/v1/message/send_message';
+export const GetUsersChatApi = `${BaseUrl}/utilityserv/api/v1/chat/get_user_chat`;
+export const GetUserChatDataApi = `${BaseUrl}/utilityserv/api/v1/message/get_messages_for_chat`;
+export const SendMessageApi = `${BaseUrl}/utilityserv/api/v1/message/send_message`;
 
-// User 
-export const GetEmployeesApi = '/authserv/api/v1/users';
-export const GetUserByUUIDApi = '/authserv/api/v1/users/get_by_uuid';
+// User
+export const GetEmployeesApi = `${BaseUrl}/authserv/api/v1/users`;
+export const GetUserByUUIDApi = `${BaseUrl}/authserv/api/v1/users/get_by_uuid`;
 
 // App Api
 export const GetOrgAppsApi = '/utilityserv/api/v1/organisation/orgApps';
-export const GetEmailConfigApi = '/messagingserv/api/v1/get_email_config_by_orgId';
-export const SaveEmailConfigApi = '/messagingserv/api/v1/emailConfig';
-export const TestConnectionApi = '/messagingserv/api/v1/test_email_config';
-export const GetSmsProviderApi = '/messagingserv/api/v1/get_all_sms_providers';
-export const GetSmsConfigApi = '/messagingserv/api/v1/get_sms_config_by_orgId';
+
+/** *****************************************************************
+ * Messages endpoint
+ ******************************************************************* */
+
+export const GetEmailConfigApi =
+  '/messagingserv/api/v1/get_email_config_by_orgId';
+export const SaveEmailConfigApi = `${BaseUrl}/messagingserv/api/v1/emailConfig`;
+export const TestConnectionApi = `${BaseUrl}/messagingserv/api/v1/test_email_config`;
+export const GetSmsProviderApi = `${BaseUrl}/messagingserv/api/v1/get_all_sms_providers`;
+export const GetSmsConfigApi = `${BaseUrl}/messagingserv/api/v1/get_sms_config_by_orgId`;
 
 // Work order Api
 export const SaveVendorApi = '/utilityserv/api/v1/add_vendor';

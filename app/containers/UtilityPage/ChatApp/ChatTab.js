@@ -141,8 +141,6 @@ function a11yProps(index) {
 
 const ChatTab = props => {
   const {
-    dispatchGetAllEmployees,
-    dispatchGetAllUsersChat,
     allEmployees,
     allUsersChat,
     currentUser,
@@ -150,8 +148,8 @@ const ChatTab = props => {
     userChatData,
   } = props;
   useEffect(() => {
-    dispatchGetAllEmployees();
-    dispatchGetAllUsersChat();
+    // dispatchGetAllEmployees();
+    // dispatchGetUserChats();
   }, []);
 
   console.log(userChatData, 'userChatData');
@@ -320,7 +318,6 @@ const ChatTab = props => {
 
 ChatTab.propTypes = {
   dispatchGetAllEmployees: PropTypes.func,
-  dispatchGetAllUsersChat: PropTypes.func,
   allEmployees: PropTypes.array,
   allUsersChat: PropTypes.array,
   currentUser: PropTypes.object,
@@ -338,8 +335,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchGetAllEmployees: () => dispatch(Actions.getAllUsers()),
-    dispatchGetAllUsersChat: () => dispatch(Actions.getAllUsersChat()),
+    dispatch,
   };
 }
 

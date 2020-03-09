@@ -4,21 +4,21 @@ import {
   Button,
   IconButton,
   Typography,
-  Box, 
+  Box,
   Link,
   makeStyles,
   AppBar,
-  Toolbar
+  Toolbar,
 } from '@material-ui/core';
 import { compose } from 'redux';
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
 import { fade } from '@material-ui/core/styles/colorManipulator';
+import RefreshSharp from '@material-ui/icons/RefreshSharp';
 import * as Actions from '../actions';
-import RefreshSharp from '@material-ui/icons/RefreshSharp'
-import UserMenu from '../../../components/layouts/shared-components/UserMenu'
+import UserMenu from '../../../components/layouts/shared-components/UserMenu';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,14 +26,14 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
   },
   navList: {
-    '&.active': { 
-      backgroundColor: fade(theme.palette.common.white, 0.5), 
-      color: fade(theme.palette.common.white, 0.5)
-    }
+    '&.active': {
+      backgroundColor: fade(theme.palette.common.white, 0.5),
+      color: fade(theme.palette.common.white, 0.5),
+    },
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
   },
   toolbar: {
     display: 'flex',
@@ -50,11 +50,11 @@ const useStyles = makeStyles(theme => ({
         borderRadius: 0,
         textDecoration: 'none',
         '& :hover': {
-          color: fade(theme.palette.common.white, 0.5)
-        }
-      }
+          color: fade(theme.palette.common.white, 0.5),
+        },
+      },
     },
-  }
+  },
 }));
 
 function TabPanel(props) {
@@ -84,55 +84,62 @@ function a11yProps(index) {
 function TabsPage(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const { match, history, location } = props
-  const { pathname } = location
+  const { match, history, location } = props;
+  const { pathname } = location;
 
   const refreshPage = () => {
     window.location.reload(false);
-  }
+  };
 
   return (
     <div className={classes.root}>
-      <AppBar position="relative" color='secondary'>
+      <AppBar position="relative" color="secondary">
         <Toolbar variant="dense" className={classes.toolbar}>
-
           <div>
             <IconButton aria-label="delete" onClick={refreshPage}>
               <RefreshSharp />
             </IconButton>
 
             <Button
-              className={classNames(classes.navList, {'active': pathname === '/dashboard'})}
+              className={classNames(classes.navList, {
+                active: pathname === '/dashboard',
+              })}
               component="button"
               onClick={() => {
-                history.push('/dashboard')
+                history.push('/dashboard');
               }}
             >
               Project
             </Button>
             <Button
-              className={classNames(classes.navList, {'active': pathname === '/dashboard/chats'})}
+              className={classNames(classes.navList, {
+                active: pathname === '/dashboard/chats',
+              })}
               component="button"
               onClick={() => {
-                history.push('/dashboard/chats')
+                history.push('/dashboard/chats');
               }}
             >
               Chats
             </Button>
             <Button
-              className={classNames(classes.navList, {'active': pathname === '/dashboard/tasks'})}
+              className={classNames(classes.navList, {
+                active: pathname === '/dashboard/tasks',
+              })}
               component="button"
               onClick={() => {
-                history.push('/dashboard/tasks')
+                history.push('/dashboard/tasks');
               }}
             >
               Tasks
             </Button>
             <Button
-              className={classNames(classes.navList, {'active': pathname === '/dashboard/files'})}
+              className={classNames(classes.navList, {
+                active: pathname === '/dashboard/files',
+              })}
               component="button"
               onClick={() => {
-                history.push('/dashboard/files')
+                history.push('/dashboard/files');
               }}
             >
               Files
@@ -142,9 +149,7 @@ function TabsPage(props) {
           <UserMenu />
         </Toolbar>
       </AppBar>
-      <main className={classes.content}>
-        {props.children}
-      </main>
+      <main className={classes.content}>{props.children}</main>
     </div>
   );
 }
@@ -174,5 +179,5 @@ export default withRouter(
   compose(
     withConnect,
     memo,
-  )(TabsPage));
-
+  )(TabsPage),
+);

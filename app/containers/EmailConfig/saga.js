@@ -44,7 +44,7 @@ export function* saveEmailConfigSaga() {
   );
   console.log("updateUserEmailConfigPostData: ", updateUserEmailConfigPostData);
 
-  const requestURL = `${BaseUrl}${Endpoints.SaveEmailConfigApi}`;
+  const requestURL = `${Endpoints.SaveEmailConfigApi}`;
   console.log('postURL --> ', requestURL);
 
   try {
@@ -75,7 +75,7 @@ export function* testConnectionSaga() {
   );
   console.log("testEmailConnectionData: ", testEmailConnectionData);
 
-  const requestURL = `${BaseUrl}${Endpoints.TestConnectionApi}`;
+  const requestURL = `${Endpoints.TestConnectionApi}`;
   console.log('postURL --> ', requestURL);
 
   try {
@@ -116,7 +116,7 @@ export function* testConnectionSaga() {
 
 export function* getSmsProviderSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${BaseUrl}${Endpoints.GetSmsProviderApi}`;
+  const requestURL = `${Endpoints.GetSmsProviderApi}`;
 
   try {
     const smsProviderResponse = yield call(request, requestURL, {
@@ -140,7 +140,7 @@ export function* getSmsConfigSaga() {
   
   console.log(`currentUser.organisation.orgId-> ${currentUser.organisation.orgId}`)
 
-  const requestURL = `${BaseUrl}${Endpoints.GetSmsConfigApi}/${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetSmsConfigApi}/${currentUser.organisation.orgId}`;
   console.log('getSmsConfigSaga requestURL --> ', requestURL);
 
   try {

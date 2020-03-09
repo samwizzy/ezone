@@ -2,7 +2,6 @@ import { takeLatest, call, put, select } from 'redux-saga/effects';
 import * as AppActions from '../App/actions';
 import * as AppSelectors from '../App/selectors';
 import * as Selectors from './selectors';
-import { BaseUrl } from '../../components/BaseUrl';
 import request from '../../utils/request';
 import * as Endpoints from '../../components/Endpoints';
 import * as Actions from './actions';
@@ -12,7 +11,7 @@ export function* getPartyGroupSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
-  const requestURL = `${BaseUrl}${Endpoints.GetPartyGroup}?orgId=${
+  const requestURL = `${Endpoints.GetPartyGroup}?orgId=${
     currentUser.organisation.orgId
   }`;
 
@@ -48,7 +47,7 @@ export function* createNewPartyGroupSaga() {
     // organisation: { orgId: currentUser.organisation.orgId }, // TODO: user object clear from store
   };
 
-  const requestURL = `${BaseUrl}${Endpoints.CreateNewPartyGroup}`;
+  const requestURL = `${Endpoints.CreateNewPartyGroup}`;
 
   try {
     const createPartyGroupResponse = yield call(request, requestURL, {
@@ -88,7 +87,7 @@ export function* getAllUsers() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
-  const requestURL = `${BaseUrl}${Endpoints.GetAllUsersApi}/${
+  const requestURL = `${Endpoints.GetAllUsersApi}/${
     currentUser.organisation.orgId
   }`;
 
@@ -117,7 +116,7 @@ export function* createNewParty() {
   );
 
   createNewPartyData.partyGroupId = selectedPartyGroupData.id;
-  const requestURL = `${BaseUrl}${Endpoints.CreateNewPartyApi}`;
+  const requestURL = `${Endpoints.CreateNewPartyApi}`;
 
   try {
     const createNewPartyResponse = yield call(request, requestURL, {
@@ -157,7 +156,7 @@ export function* createNewParties() {
     Selectors.makeSelectCreateNewPartiesData(),
   );
 
-  const requestURL = `${BaseUrl}${Endpoints.CreateNewPartiesApi}`;
+  const requestURL = `${Endpoints.CreateNewPartiesApi}`;
 
   try {
     const createNewPartiesResponse = yield call(request, requestURL, {
@@ -197,7 +196,7 @@ export function* createNewPosition() {
     Selectors.makeSelectCreateNewPositionData(),
   );
 
-  const requestURL = `${BaseUrl}${Endpoints.CreateNewPositionApi}`;
+  const requestURL = `${Endpoints.CreateNewPositionApi}`;
 
   try {
     const createNewPositionResponse = yield call(request, requestURL, {
@@ -239,7 +238,7 @@ export function* getAllPosition() {
     Selectors.makeSelectCreateNewPositionData(),
   );
 
-  const requestURL = `${BaseUrl}${Endpoints.GetAllPositionsApi}/${
+  const requestURL = `${Endpoints.GetAllPositionsApi}/${
     currentUser.organisation.orgId
   }`;
 
@@ -278,7 +277,7 @@ export function* AddEmployeeToPosition() {
     Selectors.makeSelectAddEmployeeToPositionData(),
   );
 
-  const requestURL = `${BaseUrl}${Endpoints.AddNewEmployeeToPositionApi}`;
+  const requestURL = `${Endpoints.AddNewEmployeeToPositionApi}`;
 
   try {
     const AddEmployeeToPositionResponse = yield call(request, requestURL, {
@@ -323,7 +322,7 @@ export function* companyDetail() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
-  const requestURL = `${BaseUrl}${Endpoints.CompanyInfoUrl}/${
+  const requestURL = `${Endpoints.CompanyInfoUrl}/${
     currentUser.organisation.orgId
   }`;
 
@@ -347,7 +346,7 @@ export function* updateCompanyDetail() {
   const updateCompanyInfoData = yield select(
     Selectors.makeSelectUpdateCompanyInfoData(),
   );
-  const requestURL = `${BaseUrl}${Endpoints.UpdateCompanyInfoUrl}`;
+  const requestURL = `${Endpoints.UpdateCompanyInfoUrl}`;
 
   try {
     const companyDetailResponse = yield call(request, requestURL, {

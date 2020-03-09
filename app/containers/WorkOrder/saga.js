@@ -16,7 +16,7 @@ export function* saveVendorConfigSaga() {
 
   console.log("vendorPostData: ", vendorPostData);
 
-  const requestURL = `${BaseUrl}${Endpoints.SaveVendorApi}`;
+  const requestURL = `${Endpoints.SaveVendorApi}`;
   console.log('vendor postURL --> ', requestURL);
 
   try {
@@ -41,7 +41,7 @@ export function* saveVendorConfigSaga() {
 export function* getListOfVendorsSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
 
-  const requestURL = `${BaseUrl}${Endpoints.GetListOfVendorsApi}`;
+  const requestURL = `${Endpoints.GetListOfVendorsApi}`;
   console.log('requestURL --> ', requestURL);
 
   try {

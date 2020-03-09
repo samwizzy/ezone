@@ -44,11 +44,18 @@ const makeSelectGetListOfVendorsData = () =>
     selectWorkOrderPageDomain,
     substate => substate.getListOfVendorsData
   );
+
+const makeSelectLoading = () =>
+  createSelector(
+    selectWorkOrderPageDomain,
+    subState => subState.loading,
+  );
   
 
 export default makeSelectWorkOrderPage;
 
 export { 
+  makeSelectLoading,
   selectWorkOrderPageDomain,
   makeSelectWorkOrderDialog,
   makeSelectVendorDialog,

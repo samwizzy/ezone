@@ -1,24 +1,24 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Avatar,
   Button,
-  CssBaseline,
+  IconButton,
   TextField,
-  FormControlLabel,
+  Tooltip,
   Checkbox,
   Typography,
   Box,
   Grid,
   Link,
   Paper,
-  Container,
   makeStyles,
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import classNames from 'classnames';
+import VisibilityOutlined from '@material-ui/icons/VisibilityOutlined'
+import VisibilityOffOutlined from '@material-ui/icons/VisibilityOffOutlined'
 import {
   darken,
   fade,
@@ -101,16 +101,29 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.primary.main,
     color: '#fff',
   },
+  iconButton: {
+    width: 40,
+    height: 40,
+    padding: 0,
+    '&:hover': {
+      backgroundColor: theme.palette.grey[50]
+    }
+  }
 }));
 
 const LoginForm = props => {
   const { loginAction, loading } = props;
   const classes = useStyles();
+  const [visibility, setVisibility] = React.useState(false)
 
   const [values, setValues] = React.useState({
     username: '',
     password: '',
   });
+
+  const handleVisibility = () => {
+    setVisibility(!visibility)
+  }
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
@@ -132,7 +145,7 @@ const LoginForm = props => {
           className={classes.grid}
           justify="center"
         >
-          <Grid item xs={0} sm={0} md={7} />
+          <Grid item xs={false} sm={false} md={7} />
           <Grid item xs={12} sm={10} md={5} style={{ display: 'flex' }}>
             <div className={classes.paper}>
               <Box className={classes.avatar}>
@@ -172,10 +185,17 @@ const LoginForm = props => {
                 fullWidth
                 name="password"
                 label="Password"
-                type="password"
+                type={visibility?"text":"password"}
                 id="password"
                 InputProps={{
                   className: classes.input,
+                  endAdornment: (
+                    <Tooltip title={visibility?"hide password":"show password"} arrow>
+                      <IconButton className={classes.iconButton} onClick={handleVisibility}>
+                        {visibility?<VisibilityOffOutlined />:<VisibilityOutlined />}
+                      </IconButton>
+                    </Tooltip>
+                  )
                 }}
                 InputLabelProps={{
                   shrink: true,
@@ -188,7 +208,7 @@ const LoginForm = props => {
                   label="Remember me"
                 /> */}
               <Grid container>
-                <Grid item xs>
+                <Grid item xs={true}>
                   <Link href="/forgot-password" variant="body2">
                     Forgot password?
                   </Link>
