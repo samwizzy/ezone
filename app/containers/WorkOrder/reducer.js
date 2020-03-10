@@ -9,6 +9,7 @@ import * as Constants from './constants';
 
 export const initialState = {
   vendorPostData: false,
+  savedItemData: false,
   getListOfVendorsData: false,
   loading: false,
   error: false,
@@ -93,7 +94,7 @@ const workOrderPageReducer = (state = initialState, action) =>
 
       // Open dialog for add item on workorder dialog
       case Constants.OPEN_ADDITEM_DIALOG: {
-        console.log('reducer come here')
+        console.log('OPEN_ADDITEM_DIALOG');
         return {
           ...state,
           itemDialog: {
@@ -107,6 +108,7 @@ const workOrderPageReducer = (state = initialState, action) =>
       }
 
       case Constants.CLOSE_ADDITEM_DIALOG: {
+        console.log('CLOSE_ADDITEM_DIALOG');
         return {
           ...state,
           itemDialog: {
@@ -116,6 +118,13 @@ const workOrderPageReducer = (state = initialState, action) =>
             },
             data: action.payload,
           },
+        };
+      }
+
+      case Constants.SAVE_ADDITEM_DIALOG_CONTENTS: {
+        return {
+          ...state,
+          savedItemData: action.payload
         };
       }
 

@@ -52,23 +52,13 @@ const useStyles = makeStyles(theme => ({
     marginTop: 19,
   },
   menu: {
-    width: 200,
+    width: 100,
   },
 }));
 
-const gender = [
-  {
-    value: 'Male',
-    label: 'Male',
-  },
-  {
-    value: 'Female',
-    label: 'Female',
-  },
-];
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction="right" ref={ref} {...props} />;
 });
 
 
@@ -77,32 +67,24 @@ const AddItemDialog = props => {
   const {
     loading,
     addItemDialog,
+    openAddItemDialogAction,
     closeAddItemDialogAction,
-    listOfVendorsData,
+    saveAddItemContentsAction
   } = props;
 
+
   const classes = useStyles();
-
-
+  
   const [values, setValues] = React.useState({
-    id: "",
     addedBy: "",
-    amountBal: "",
-    amountPaid: "",
-    approved: "",
-    cost: "",
-    date: "",
-    dateAdded: "",
-    dateCreated: "",
-    dateUpdated: "",
+    amount: "",
+    amountForOneUnit: "",
     description: "",
-    expectedCompletionDate: "",
+    id: "",
+    name: "",
+    orgId: "",
+    updatedBy: ""
   });
-
-
-  const handleSelectChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
-  };
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
@@ -116,10 +98,11 @@ const AddItemDialog = props => {
         onClose={closeAddItemDialogAction}
         keepMounted
         TransitionComponent={Transition}
+        maxWidth={"xs"}
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {addItemDialog.type === 'new' ? 'Work Order' : 'Edit Work Order'}
+          {addItemDialog.type === 'new' ? 'Add Item' : 'Edit Item'}
         </DialogTitle>
 
         <Divider />
@@ -127,144 +110,37 @@ const AddItemDialog = props => {
         <DialogContent>
           {addItemDialog.type === 'new' ? (
             <div>
-              <Autocomplete
-                id="combo-box-demo"
-                options={listOfVendorsData}
-                getOptionLabel={option => option.description}
-                // style={{ width: 800 }}
-                fullWidth
-                onChange={(evt) => handleSelectChange(evt)}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label="Search Vendors"
-                    variant="outlined"
-                    placeholder="Vendors"
-                    fullWidth
-                  />
-                )}
-              />
               <TextField
-                id="standard-amountBal"
-                label="Amount Balance"
-                variant="outlined"
-                className={classes.textField}
-                value={values.amountBal}
-                onChange={handleChange('amountBal')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-amountPaid"
-                label="Amount Paid"
-                variant="outlined"
-                className={classes.textField}
-                value={values.amountPaid}
-                onChange={handleChange('amountPaid')}
-                margin="normal"
-                fullWidth
-              />
-              <FormControl component="fieldset">
-                <FormLabel component="legend">Approve Order.</FormLabel>
-                <br />
-                <FormGroup aria-label="position" row>
-                  <FormControlLabel
-                    value={values.approved}
-                    onChange={handleChange('approved')}
-                    control={<Checkbox color="primary" />}
-                    label="Yes"
-                    labelPlacement="top"
-                  />
-                  <FormControlLabel
-                    value="start"
-                    control={<Checkbox color="primary" />}
-                    label="No"
-                    labelPlacement="top"
-                  />
-                </FormGroup>
-              </FormControl>
-              <TextField
-                id="standard-cost"
-                label="Cost"
-                variant="outlined"
-                className={classes.textField}
-                value={values.cost}
-                onChange={handleChange('cost')}
-                margin="normal"
-                fullWidth
-              />
-
-              <TextField
-                id="standard-email"
-                label="Email"
-                type="email"
-                variant="outlined"
-                className={classes.textField}
-                value={values.emailAddress}
-                onChange={handleChange('emailAddress')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-phone-number"
-                label="Phone Number"
+                id="standard-amount"
+                label="Amount"
                 type="number"
                 variant="outlined"
                 className={classes.textField}
-                value={values.phoneNumber}
-                onChange={handleChange('phoneNumber')}
+                value={values.amount}
+                onChange={handleChange('amount')}
                 margin="normal"
                 fullWidth
               />
               <TextField
-                id="standard-employeeID"
-                label="Employee ID"
+                id="standard-amountForOneUnit"
+                label="Amount for one unit"
+                type="number"
                 variant="outlined"
                 className={classes.textField}
-                value={values.employeeId}
-                onChange={handleChange('employeeId')}
+                value={values.amountForOneUnit}
+                onChange={handleChange('amountForOneUnit')}
                 margin="normal"
                 fullWidth
               />
               <TextField
-                id="standard-password"
-                label="Password"
+                id="standard-name"
+                label="Item"
                 variant="outlined"
                 className={classes.textField}
-                value={values.password}
-                type="password"
-                onChange={handleChange('password')}
+                value={values.name}
+                onChange={handleChange('name')}
                 margin="normal"
                 fullWidth
-              />
-              <TextField
-                id="standard-select-gender"
-                label="Select Gender"
-                variant="outlined"
-                className={classes.textField}
-                margin="normal"
-                value={values.gender ? values.gender : ''}
-                onChange={handleSelectChange('gender')}
-                select
-                fullWidth
-              >
-                {gender.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                id="standard-address"
-                label="Address"
-                variant="outlined"
-                className={classes.textField}
-                value={values.address}
-                onChange={handleChange('address')}
-                margin="normal"
-                fullWidth
-                rows={2}
-                multiline
               />
             </div>
           ) : null}
@@ -275,9 +151,7 @@ const AddItemDialog = props => {
             <LoadingIndicator />
           ) : (
             <Button
-              onClick={() => {
-                openCreateWorkOrderDialogAction(values);
-              }}
+              onClick={() => { saveAddItemContentsAction(values), closeAddItemDialog()}}
               color="primary"
               variant="contained"
               // disabled={!canBeSubmitted()}
@@ -306,14 +180,13 @@ AddItemDialog.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(), 
   addItemDialog: Selectors.makeSelectItemDialog(),
-  listOfVendorsData: Selectors.makeSelectGetListOfVendorsData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openCreateWorkOrderDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
     closeAddItemDialogAction: () => dispatch(Actions.closeAddItemDialog()),
-    getListOfVendorsAction: evt => dispatch(Actions.getAllVendorsAction(evt)),
+    openAddItemDialogAction: () => dispatch(Actions.openAddItemDialog()),
+    saveAddItemContentsAction: evt => dispatch(Actions.saveAddItemContents(evt)),
     dispatch,
   };
 }

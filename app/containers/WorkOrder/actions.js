@@ -43,6 +43,13 @@ export function closeAddItemDialog() {
   };
 }
 
+export function saveAddItemContents(data) {
+  return {
+    type: Constants.SAVE_ADDITEM_DIALOG_CONTENTS,
+    payload: data,
+  };
+}
+
 // Save vendor details
 export function saveVendorConfigAction(data) {
   return {

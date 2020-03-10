@@ -42,8 +42,23 @@ import {
   FormGroup,
   FormControlLabel,
   FormControl,
-  FormLabel
+  FormLabel,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TableSortLabel,
+  Paper,
+  IconButton,
+  Tooltip,
+  DeleteIcon
 } from '@material-ui/core';
+
+import clsx from 'clsx';
+import { lighten } from '@material-ui/core/styles';
 
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
@@ -63,16 +78,46 @@ const useStyles = makeStyles(theme => ({
   menu: {
     width: 200,
   },
+  table: {
+    minWidth: 650,
+  },
 }));
 
-const gender = [
+const status = [
   {
-    value: 'Male',
-    label: 'Male',
+    value: 'NOT_STARTED',
+    label: 'NOT STARTED',
   },
   {
-    value: 'Female',
-    label: 'Female',
+    value: 'STARTED',
+    label: 'STARTED',
+  },
+  {
+    value: 'COMPLETED',
+    label: 'COMPLETED',
+  },
+  {
+    value: 'CANCELED',
+    label: 'CANCELED',
+  },
+];
+
+const priority = [
+  {
+    value: 'Low',
+    label: 'Low',
+  },
+  {
+    value: 'Medium',
+    label: 'Medium (Normal)',
+  },
+  {
+    value: 'High',
+    label: 'High',
+  },
+  {
+    value: 'Critical',
+    label: 'Critical',
   },
 ];
 
@@ -89,7 +134,8 @@ const WorkOrderDialog = props => {
     openAddItemDialogAction,
     closeWorkOrderDialogAction,
     listOfVendorsData,
-    getListOfVendorsAction
+    getListOfVendorsAction,
+    savedItemData
   } = props;
 
   const classes = useStyles();
@@ -170,12 +216,28 @@ const WorkOrderDialog = props => {
   }, []);
 
   console.log('VendorsData --> ', listOfVendorsData);
+  
+  console.log('savedItemData --> ', savedItemData);
 
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
   const handleDateChange = date => {
     setSelectedDate(date);
   };
+
+
+  function createData(name, calories, fat, carbs, protein) {
+    return { name, calories, fat, carbs, protein };
+  }
+  
+  const rows = [
+    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+    createData('Eclair', 262, 16.0, 24, 6.0),
+    createData('Cupcake', 305, 3.7, 67, 4.3),
+    createData('Gingerbread', 356, 16.0, 49, 3.9),
+  ];
+
 
 
   return (
@@ -289,6 +351,36 @@ const WorkOrderDialog = props => {
                   />
                 </Grid>
               </MuiPickersUtilsProvider>
+
+              <TableContainer component={Paper}>
+      <Table className={classes.table} size="small" aria-label="a dense table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Dessert (100g serving)</TableCell>
+            <TableCell align="right">Calories</TableCell>
+            <TableCell align="right">Fat&nbsp;(g)</TableCell>
+            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map(row => (
+            <TableRow key={row.name}>
+              <TableCell component="th" scope="row">
+                {row.name}
+              </TableCell>
+              <TableCell align="right">{row.calories}</TableCell>
+              <TableCell align="right">{row.fat}</TableCell>
+              <TableCell align="right">{row.carbs}</TableCell>
+              <TableCell align="right">{row.protein}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+
+
+
               
               <Button
                 variant="outlined"
@@ -342,18 +434,35 @@ const WorkOrderDialog = props => {
                 fullWidth
               />
               <TextField
-                id="standard-select-gender"
-                label="Select Gender"
+                id="standard-status"
+                label="Status"
                 variant="outlined"
                 className={classes.textField}
                 margin="normal"
-                value={values.gender ? values.gender : ''}
-                onChange={handleSelectChange('gender')}
+                value={values.status ? values.status : ''}
+                onChange={handleSelectChange('status')}
                 select
                 fullWidth
               >
-                {gender.map(option => (
+                {status.map(option => (
                   <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                id="standard-priority"
+                label="Urgency Level"
+                variant="outlined"
+                className={classes.textField}
+                margin="normal"
+                value={values.priority ? values.priority : ''}
+                onChange={handleSelectChange('priority')}
+                select
+                fullWidth
+              >
+                {priority.map(option => (
+                  <MenuItem key={option.label} value={option.value}>
                     {option.label}
                   </MenuItem>
                 ))}
@@ -413,6 +522,7 @@ const mapStateToProps = createStructuredSelector({
   workOrderDialog: Selectors.makeSelectWorkOrderDialog(), 
   addItemDialog: Selectors.makeSelectItemDialog(),
   listOfVendorsData: Selectors.makeSelectGetListOfVendorsData(),
+  savedItemData: Selectors.makeSelectSavedItemData(),
 });
 
 function mapDispatchToProps(dispatch) {
