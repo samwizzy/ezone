@@ -17,7 +17,7 @@ import makeSelectEmployeePage from '../selectors';
 import * as Actions from '../actions';
 import reducer from '../reducer';
 import saga from '../saga';
-import EmployeeDialog from './components/EmployeeDialog';
+import SignatureDialog from './components/SignatureDialog';
 import UserProfile from './components/UserProfile';
 
 export function EmployeePage(props) {
@@ -37,7 +37,7 @@ export function EmployeePage(props) {
         <meta name="description" content="Description of EmployeePage" />
       </Helmet>
       <UserProfile />
-      <EmployeeDialog />
+      <SignatureDialog />
     </div>
   );
 }
