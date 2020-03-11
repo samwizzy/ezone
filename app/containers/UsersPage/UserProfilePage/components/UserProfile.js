@@ -22,6 +22,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
+import * as AppSelectors from '../../../App/selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import Vector from '../../../../images/Vector.svg';
 import Vector1 from '../../../../images/Vector1.svg';
@@ -99,11 +100,11 @@ const UserProfile = props => {
     setValue(newValue);
   };
 
-  const { loading } = props;
+  const { currentUser, openEditUserProfileDialogAction, loading } = props;
 
-  // if (loading) {
-  //   return <LoadingIndicator />;
-  // }
+  if (loading) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <div className={classes.root}>
@@ -166,7 +167,9 @@ const UserProfile = props => {
                       </React.Fragment>
                     }
                   />
-                  <Button>
+                  <Button
+                    onClick={() => openEditUserProfileDialogAction(currentUser)}
+                  >
                     <Typography variant="p" className={classes.editButton}>
                       Edit Profile
                     </Typography>
@@ -203,21 +206,19 @@ const UserProfile = props => {
 
 UserProfile.propTypes = {
   loading: PropTypes.bool,
+  currentUser: PropTypes.object,
+  openEditUserProfileDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  getAllEmployees: Selectors.makeSelectGetAllEmployees(),
+  currentUser: AppSelectors.makeSelectCurrentUser(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewEmployeeDialogAction: () =>
-      dispatch(Actions.openNewEmployeeDialog()),
-    openEditEmployeeDialogAction: evt =>
-      dispatch(Actions.openEditEmployeeDialog(evt)),
-    openViewEmployeeDialogAction: evt =>
-      dispatch(Actions.openViewEmployeeDialog(evt)),
+    openEditUserProfileDialogAction: evt =>
+      dispatch(Actions.openEditUserProfileDialog(evt)),
   };
 }
 

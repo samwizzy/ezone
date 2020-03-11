@@ -96,3 +96,36 @@ export function closeSignatureDialog() {
     type: Constants.CLOSE_SIGNATURE_DIALOG,
   };
 }
+
+export function openEditUserProfileDialog(data) {
+  return {
+    type: Constants.OPEN_EDIT_USER_PROFILE_DIALOG,
+    payload: data,
+  };
+}
+
+export function closeEditUserProfileDialog() {
+  return {
+    type: Constants.CLOSE_EDIT_USER_PROFILE_DIALOG,
+  };
+}
+
+export function updateUserProfile(data) {
+  return {
+    type: Constants.UPDATE_USER_PROFILE,
+    payload: data,
+  };
+}
+
+export function updateUserProfileSuccess() {
+  return {
+    type: Constants.UPDATE_USER_PROFILE_SUCCESS,
+  };
+}
+
+export function updateUserProfileError(data) {
+  return {
+    type: Constants.UPDATE_USER_PROFILE_ERROR,
+    payload: data,
+  };
+}

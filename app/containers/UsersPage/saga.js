@@ -90,8 +90,70 @@ export function* createNewEmployee() {
     );
   }
 }
+
+export function* updateUserProfile() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  // const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const updateUserProfileData = yield select(
+    Selectors.makeSelectUpdateUserProfileData(),
+  );
+
+  const requestURL = `${Endpoints.UpdateUserProfileApi}`;
+
+  try {
+    const updateUserProfileResponse = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(updateUserProfileData),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(updateUserProfileResponse, 'updateUserProfileResponse');
+    yield put(Actions.updateUserProfileSuccess(updateUserProfileResponse));
+    yield put(Actions.closeEditUserProfileDialog());
+
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: updateUserProfileResponse.message,
+    //     status: 'success',
+    //   }),
+    // );
+    // if (createNewEmployeeResponse.success === true) {
+    //   yield put(
+    //     AppActions.openSnackBar({
+    //       open: true,
+    //       message: createNewEmployeeResponse.message,
+    //       status: 'success',
+    //     }),
+    //   );
+    // } else {
+    //   yield put(
+    //     AppActions.openSnackBar({
+    //       open: true,
+    //       message: createNewEmployeeResponse.message,
+    //       status: 'warning',
+    //     }),
+    //   );
+    // }
+  } catch (err) {
+    console.log(err, 'errr');
+    yield put(Actions.updateUserProfileError(err));
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: `${err}`,
+    //     status: 'error',
+    //   }),
+    // );
+  }
+}
+
 // Individual exports for testing
 export default function* usersPageSaga() {
   yield takeLatest(Constants.GET_ALL_EMPLOYEES, getAllEmployees);
   yield takeLatest(Constants.CREATE_NEW_EMPLOYEE, createNewEmployee);
+  yield takeLatest(Constants.UPDATE_USER_PROFILE, updateUserProfile);
 }

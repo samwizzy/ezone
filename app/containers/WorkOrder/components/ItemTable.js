@@ -219,12 +219,12 @@ const EnhancedTableToolbar = props => {
         <Typography className={classes.title} variant="h6" id="tableTitle">
           welcome here
         </Typography>
+      ) : (
         // <Tooltip title="Delete">
         //   <IconButton aria-label="delete">
         //     <DeleteIcon />
         //   </IconButton>
         // </Tooltip>
-      ) : (
         <Typography className={classes.title} variant="h6" id="tableTitle">
           welcome there
         </Typography>

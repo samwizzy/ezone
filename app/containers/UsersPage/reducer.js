@@ -7,6 +7,7 @@ import produce from 'immer';
 import * as Constants from './constants';
 
 export const initialState = {
+  updateUserProfileData: false,
   getAllEmployees: [],
   createNewEmployeeData: false,
   loading: false,
@@ -20,6 +21,13 @@ export const initialState = {
   },
   signatureDialog: {
     type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
+  updateUserProfileDialog: {
+    type: 'edit',
     props: {
       open: false,
     },
@@ -169,6 +177,52 @@ const usersPageReducer = (state = initialState, action) =>
             },
             data: null,
           },
+        };
+      }
+      case Constants.OPEN_EDIT_USER_PROFILE_DIALOG: {
+        return {
+          ...state,
+          updateUserProfileDialog: {
+            type: 'edit',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_EDIT_USER_PROFILE_DIALOG: {
+        return {
+          ...state,
+          updateUserProfileDialog: {
+            type: 'edit',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.UPDATE_USER_PROFILE: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          updateUserProfileData: action.payload,
+        };
+      }
+      case Constants.UPDATE_USER_PROFILE_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.UPDATE_USER_PROFILE_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
         };
       }
     }
