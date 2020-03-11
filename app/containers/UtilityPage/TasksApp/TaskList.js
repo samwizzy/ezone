@@ -86,10 +86,7 @@ const TaskList = props => {
   }, []);
 
   React.useEffect(() => {
-    const { createdBy, assignedTo } = task.data
-    createdBy? getUserByUUID(createdBy) : ''
-    assignedTo? getAssignedToByUUID(assignedTo) : ''
-  }, [task.data]);
+  }, [task]);
 
   const drawer = (
     <div className={classes.drawer}>
@@ -150,53 +147,53 @@ const TaskList = props => {
             <TableContainer component={Paper}>
               <Table className={classes.table} aria-label="custom pagination table">
                 <TableBody>
-                  <TableRow key={task.data.title}>
+                  <TableRow key={task.title}>
                     <TableCell component="th" scope="row">
                       Title
                     </TableCell>
-                    <TableCell align="left">{task.data.title}</TableCell>
+                    <TableCell align="left">{task.title}</TableCell>
                   </TableRow>
-                  <TableRow key={task.data.description}>
+                  <TableRow key={task.description}>
                     <TableCell component="th" scope="row">
                       Description
                     </TableCell>
-                    <TableCell align="left">{task.data.description}</TableCell>
+                    <TableCell align="left">{task.description}</TableCell>
                   </TableRow>
-                  <TableRow key={task.data.status}>
+                  <TableRow key={task.status}>
                     <TableCell component="th" scope="row">
                       Status
                     </TableCell>
-                    <TableCell align="left">{task.data.status}</TableCell>
+                    <TableCell align="left">{task.status}</TableCell>
                   </TableRow>
-                  <TableRow key={task.data.assignedTo}>
+                  <TableRow key={task.assignedTo}>
                     <TableCell component="th" scope="row">
                       Assigned To
                     </TableCell>
-                    <TableCell align="left">{task.assignedTo.emailAddress}</TableCell>
+                    <TableCell align="left">{task.assignedTo}</TableCell>
                   </TableRow>
-                  <TableRow key={task.data.createdBy}>
+                  <TableRow key={task.createdBy}>
                     <TableCell component="th" scope="row">
                       Owner
                     </TableCell>
-                    <TableCell align="left">{task.createdBy.emailAddress}</TableCell>
+                    <TableCell align="left">{task.createdBy}</TableCell>
                   </TableRow>
-                  <TableRow key={task.data.startDate}>
+                  <TableRow key={task.startDate}>
                     <TableCell component="th" scope="row">
                       Date Issued
                     </TableCell>
                     <TableCell align="left">
                       {<span>
-                          {task.data.startDate? moment(task.data.startDate).format('lll') : ''}
+                          {task.startDate? moment(task.startDate).format('lll') : ''}
                       </span>}
                     </TableCell>
                   </TableRow>
-                  <TableRow key={task.data.endDate}>
+                  <TableRow key={task.endDate}>
                     <TableCell component="th" scope="row">
                       End Date
                     </TableCell>
                     <TableCell align="left">
                       {<span>
-                          {task.data.endDate? moment(task.data.endDate).format('lll') : ''}
+                          {task.endDate? moment(task.endDate).format('lll') : ''}
                       </span>}
                     </TableCell>
                   </TableRow>
@@ -236,7 +233,7 @@ const TaskList = props => {
               <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
                 <ListSubheader component="div">Attachment Preview</ListSubheader>
               </GridListTile>
-              {task.data.documents && task.data.documents.map((tile, index) => (
+              {task.documents && task.documents.map((tile, index) => (
                 <GridListTile key={index}>
                   <img src={tile.fileUrl} alt={tile.docName} />
                   <GridListTileBar
@@ -275,7 +272,6 @@ function mapDispatchToProps(dispatch) {
     openNewTaskDialog: () => dispatch(Actions.openNewTaskDialog()),
     getUtilityTask: (id) => dispatch(Actions.getUtilityTask(id)),
     getUserByUUID: (id) => dispatch(Actions.getUserByUUID(id)),
-    getAssignedToByUUID: (id) => dispatch(Actions.getAssignedToByUUID(id)),
     getEmployees: () => dispatch(Actions.getEmployees()),
   };
 }

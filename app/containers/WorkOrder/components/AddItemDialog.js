@@ -4,36 +4,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { Autocomplete } from '@material-ui/lab';
 
 import {
-  withStyles,
   TextField,
   makeStyles,
   Button,
   Dialog,
   DialogContent,
   DialogActions,
-  AppBar,
-  Toolbar,
-  Typography,
-  MenuItem,
-  Tabs,
-  Tab,
-  Box,
-  Card,
-  CardActionArea,
-  CardMedia,
-  CardContent,
-  Grid,
   DialogTitle,
   Divider,
   Slide,
-  Checkbox,
-  FormGroup,
-  FormControlLabel,
-  FormControl,
-  FormLabel
 } from '@material-ui/core';
 
 import * as Selectors from '../selectors';
@@ -135,6 +116,7 @@ const AddItemDialog = props => {
               <TextField
                 id="standard-name"
                 label="Item"
+                type="name"
                 variant="outlined"
                 className={classes.textField}
                 value={values.name}
@@ -143,7 +125,7 @@ const AddItemDialog = props => {
                 fullWidth
               />
             </div>
-          ) : null}
+          ) : null }
         </DialogContent>
 
         <DialogActions>
@@ -151,7 +133,7 @@ const AddItemDialog = props => {
             <LoadingIndicator />
           ) : (
             <Button
-              onClick={() => { saveAddItemContentsAction(values), closeAddItemDialog()}}
+              onClick={() => { saveAddItemContentsAction(values), closeAddItemDialogAction() }}
               color="primary"
               variant="contained"
               // disabled={!canBeSubmitted()}

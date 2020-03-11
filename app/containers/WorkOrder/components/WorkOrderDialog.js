@@ -13,7 +13,8 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-import AddItemDialog from './AddItemDialog';
+import MaterialTable from 'material-table';
+import ItemTable from './ItemTable';
 
 import {
   withStyles,
@@ -54,11 +55,11 @@ import {
   Paper,
   IconButton,
   Tooltip,
-  DeleteIcon
+  DeleteIcon,
+  Switch,
+  FilterListIcon 
 } from '@material-ui/core';
 
-import clsx from 'clsx';
-import { lighten } from '@material-ui/core/styles';
 
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
@@ -135,7 +136,8 @@ const WorkOrderDialog = props => {
     closeWorkOrderDialogAction,
     listOfVendorsData,
     getListOfVendorsAction,
-    savedItemData
+    savedItemData,
+    savedItemStore
   } = props;
 
   const classes = useStyles();
@@ -215,9 +217,11 @@ const WorkOrderDialog = props => {
     getListOfVendorsAction();
   }, []);
 
+  savedItemStore.push(savedItemData);
+
   console.log('VendorsData --> ', listOfVendorsData);
-  
   console.log('savedItemData --> ', savedItemData);
+  console.log('savedItemStore --> ', savedItemStore);
 
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
@@ -225,20 +229,7 @@ const WorkOrderDialog = props => {
     setSelectedDate(date);
   };
 
-
-  function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-  }
-  
-  const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-  ];
-
-
+ 
 
   return (
     <div>
@@ -356,31 +347,26 @@ const WorkOrderDialog = props => {
       <Table className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+            <TableCell>Item</TableCell>
+            <TableCell align="right">Amount</TableCell>
+            <TableCell align="right">Amount Per Unit</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(row => (
+          {savedItemStore.map(row => (
             <TableRow key={row.name}>
               <TableCell component="th" scope="row">
                 {row.name}
               </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
+              <TableCell align="right">{row.amount}</TableCell>
+              <TableCell align="right">{row.amountForOneUnit}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
 
-
-
+    <ItemTable />
               
               <Button
                 variant="outlined"
@@ -515,6 +501,7 @@ WorkOrderDialog.propTypes = {
   loading: PropTypes.bool,
   workOrderDialog: PropTypes.object,
   addItemDialog: PropTypes.object,
+  savedItemStore: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -523,6 +510,7 @@ const mapStateToProps = createStructuredSelector({
   addItemDialog: Selectors.makeSelectItemDialog(),
   listOfVendorsData: Selectors.makeSelectGetListOfVendorsData(),
   savedItemData: Selectors.makeSelectSavedItemData(),
+  savedItemStore: Selectors.makeSelectSavedItemStore(),
 });
 
 function mapDispatchToProps(dispatch) {

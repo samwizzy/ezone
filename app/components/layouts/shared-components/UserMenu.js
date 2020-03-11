@@ -9,13 +9,12 @@ import {
   ListItemText,
   Popover,
   MenuItem,
-  Typography,
-  Link,
+  Typography
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import _ from 'lodash';
 import * as AppSelectors from '../../../containers/App/selectors';

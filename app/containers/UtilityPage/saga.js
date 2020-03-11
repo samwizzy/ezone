@@ -156,28 +156,6 @@ export function* getUserByUUID({ type, payload }) {
   }
 }
 
-export function* getAssignedToByUUID({ type, payload }) {
-  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${Endpoints.GetUserByUUIDApi}/${payload}`;
-
-  try {
-    const userResponse = yield call(request, requestURL, {
-      method: 'GET',
-      headers: new Headers({
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      }),
-    });
-
-    console.log(userResponse, 'userResponse');
-
-    yield put(Actions.getAssignedToByUUIDSuccess(userResponse));
-  } catch (err) {
-    // yield put(Actions.getUserByUUIDError(err));
-    console.error(err, 'I got the error');
-  }
-}
-
 export function* getUtilityFiles() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
@@ -204,7 +182,6 @@ export function* getUtilityFiles() {
 
 export function* getUtilityFile({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetUtilityFileApi}/${payload}`;
 
   try {
@@ -224,10 +201,57 @@ export function* getUtilityFile({ type, payload }) {
   }
 }
 
+export function* getSharedUtilityFiles({type, payload}) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const requestURL = `${Endpoints.GetShareDocumentApi}/${payload}`;
+
+  console.log(payload, "payload")
+
+  try {
+    const sharedDocResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(sharedDocResponse, 'get sharedDocResponse');
+
+    yield put(Actions.getSharedDocumentsSuccess(sharedDocResponse));
+  } catch (err) {
+    // yield put(Actions.getSharedDocumentsError(err));
+  }
+}
+
+export function* getFavoriteUtilityFiles({type, payload}) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const requestURL = `${Endpoints.GetFavoriteDocumentApi}/${payload}`;
+
+  console.log(payload, "payload")
+
+  try {
+    const favDocResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(favDocResponse, 'get favDocResponse');
+
+    yield put(Actions.getFavoriteDocumentsSuccess(favDocResponse));
+  } catch (err) {
+    // yield put(Actions.getUtilityFileError(err));
+  }
+}
+
 export function* favoriteUtilityFile({type, payload}) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${BaseUrl}${Endpoints.FavoriteDocumentApi}`;
+  const requestURL = `${Endpoints.FavoriteDocumentApi}`;
+
+  console.log(payload, "payload")
 
   try {
     const favDocResponse = yield call(request, requestURL, {
@@ -249,8 +273,7 @@ export function* favoriteUtilityFile({type, payload}) {
 
 export function* unfavoriteUtilityFile({type, payload}) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${BaseUrl}${Endpoints.FavoriteDocumentApi}`;
+  const requestURL = `${Endpoints.FavoriteDocumentApi}`;
 
   try {
     const favDocResponse = yield call(request, requestURL, {
@@ -267,28 +290,6 @@ export function* unfavoriteUtilityFile({type, payload}) {
     yield put(Actions.favoriteDocumentSuccess(favDocResponse));
   } catch (err) {
     // yield put(Actions.getUtilityFileError(err));
-  }
-}
-
-export function* getCreatedByUUID({type, payload}) {
-  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${Endpoints.GetUserByUUIDApi}/${payload}`;
-
-  try {
-    const userResponse = yield call(request, requestURL, {
-      method: 'GET',
-      headers: new Headers({
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      }),
-    });
-
-    console.log(userResponse, 'userResponse');
-
-    yield put(Actions.getCreatedByUUIDSuccess(userResponse));
-  } catch (err) {
-    // yield put(Actions.getUserByUUIDError(err));
-    console.error(err, 'I got the error');
   }
 }
 
@@ -417,8 +418,6 @@ export function* postMsg() {
 export default function* UtilityPageSaga() {
   yield takeLatest(Constants.GET_EMPLOYEES, getEmployees);
   yield takeLatest(Constants.GET_USER_BY_UUID, getUserByUUID);
-  yield takeLatest(Constants.GET_CREATEDBY_BY_UUID, getCreatedByUUID);
-  yield takeLatest(Constants.GET_ASSIGNEDTO_BY_UUID, getAssignedToByUUID);
   yield takeLatest(
     Constants.GET_UTILITY_TASKS_BY_STATUS,
     getUtilityTasksByStatus,
@@ -427,6 +426,7 @@ export default function* UtilityPageSaga() {
   yield takeLatest(Constants.GET_UTILITY_TASK, getUtilityTask);
   yield takeLatest(Constants.GET_UTILITY_FILE, getUtilityFile);
   yield takeLatest(Constants.GET_UTILITY_FILES, getUtilityFiles);
+  yield takeLatest(Constants.GET_FAVORITE_DOCS_BY_UUID, getFavoriteUtilityFiles);
   yield takeLatest(Constants.FAVORITE_FILE_BY_DOC_ID, favoriteUtilityFile);
   yield takeLatest(Constants.CREATE_UTILITY_TASKS, addUtilityTasks);
   yield takeLatest(Constants.CREATE_UTILITY_FILES, addUtilityFile);

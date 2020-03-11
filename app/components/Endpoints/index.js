@@ -43,9 +43,12 @@ export const GetUtilityFilesApi = `${BaseUrl}/utilityserv/api/v1/get_document_by
 export const GetUtilityFileApi = `${BaseUrl}/utilityserv/api/v1/get_document_by_id`;
 export const ShareUtilityFilesApi = `${BaseUrl}/utilityserv/api/v1/share_document`;
 
-export const FavoriteDocumentApi = '/utilityserv/api/v1/favourite_document';
-export const UnfavoriteDocumentApi = '/utilityserv/api/v1/unfavourite_document';
-export const ShareDocumentApi = '/utilityserv/api/v1/share_document';
+export const GetFavoriteDocumentApi = `${BaseUrl}/utilityserv/api/v1/get_favourite_by_uuid`;
+export const FavoriteDocumentApi = `${BaseUrl}/utilityserv/api/v1/favourite_document`;
+export const UnfavoriteDocumentApi = `${BaseUrl}/utilityserv/api/v1/unfavourite_document`;
+export const ShareDocumentApi = `${BaseUrl}/utilityserv/api/v1/share_document`;
+export const GetShareDocumentApi = `${BaseUrl}/utilityserv/api/v1/share_document/get_shared_document_by_uuid`;
+export const GenerateLinkAndSendEmailApi = `${BaseUrl}/utilityserv/api/v1/share_document/send_email_to_file_owner/{userId}/{sharedId}`;
 
 // Task Api
 export const GetUtilityTasksApi = `${BaseUrl}/utilityserv/api/v1/get_tasks_by_orgid`;
@@ -63,7 +66,7 @@ export const GetEmployeesApi = `${BaseUrl}/authserv/api/v1/users`;
 export const GetUserByUUIDApi = `${BaseUrl}/authserv/api/v1/users/get_by_uuid`;
 
 // App Api
-export const GetOrgAppsApi = '/utilityserv/api/v1/organisation/orgApps';
+export const GetOrgAppsApi = `${BaseUrl}/utilityserv/api/v1/organisation/orgApps`;
 
 /** *****************************************************************
  * Messages endpoint

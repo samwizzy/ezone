@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { orange } from '@material-ui/core/colors'
 import { withRouter } from 'react-router-dom'
 import classNames from 'classnames'
-import { Button, Box, Grid, Menu, MenuItem, List, ListItem, ListSubheader, ListItemText, ListItemIcon, Collapse, Icon, IconButton, Typography, TableContainer, Table, TableBody, TableRow, TableCell, Paper } from '@material-ui/core';
+import { Button, Box, Card, CardContent, CardActionArea, CardMedia, Grid, Menu, MenuItem, List, ListItem, ListSubheader, ListItemText, ListItemIcon, Collapse, Icon, IconButton, Typography, TableContainer, Table, TableBody, TableRow, TableCell, Paper } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -15,6 +15,7 @@ import Description from '@material-ui/icons/Description'
 import {AddFile} from './../components/AddButton';
 import * as Actions from '../actions';
 import * as Selectors from './../selectors';
+import * as AppSelectors from './../../App/selectors';
 import FileUploadDialog from './components/FileUploadDialog'
 import ShareFileDialog from './components/ShareFileDialog'
 import AddFileDialog from './components/AddFileDialog'
@@ -32,18 +33,18 @@ import Share from '@material-ui/icons/Share';
 import CloudDownload from '@material-ui/icons/CloudDownload';  
 import Visibility from '@material-ui/icons/Visibility';  
 import StarBorderOutlined from '@material-ui/icons/StarBorderOutlined';  
-import StarOutlined from '@material-ui/icons/StarOutlined';  
+import StarOutlined from '@material-ui/icons/StarOutlined';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    height: '100vh',
-    display: 'flex',
+    // height: '100vh',
+    // display: 'flex',
   },
   table: {
     marginTop: theme.spacing(2),
     '& .MuiTableCell-body': {
-      fontSize: theme.typography.fontSize - 2,
+      fontSize: theme.typography.fontSize - 1,
     },
   },
   sideMenu: {
@@ -51,6 +52,12 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     overflow: 'auto',
     maxHeight: 300,
+    '& .MuiListItem-root:hover': {
+      color: theme.palette.primary.main,
+      '& .MuiListItemIcon-root:hover': {
+        color: theme.palette.primary.main,
+      }
+    }
   },
   button: {
     borderRadius: '20px',
@@ -63,24 +70,24 @@ const useStyles = makeStyles(theme => ({
     padding: 0,
     '&.favorite': { color: orange[300]},
     '&.shared': { color: orange[500]},
-  }
+  },
+  cardRoot: {
+    maxWidth: '100%',
+  },
+  media: {
+    height: 140,
+  },
 }));
-
-function ListItemLink(props) {
-  return <ListItem button component="a" {...props} />;
-}
 
 const FilesList = props => {
   const classes = useStyles();
-  const { loading, files, file, getUtilityFile, favoriteDocument, getCreatedByUUID, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog, openNewTaskDialog } = props
+  const { loading, files, file, user, getUtilityFile, favoriteDocument, getFavoriteDocuments, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog } = props
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const [isOpen, setOpen] = React.useState(true);
 
   useEffect(() => {
-    const { createdBy } = file.data
-    getCreatedByUUID(createdBy)
-  }, [file.data])
+  }, [file])
 
   const handleCollapseClick = () => {
     setOpen(!isOpen);
@@ -88,6 +95,7 @@ const FilesList = props => {
 
   console.log(files, "Files")
   console.log(file, "File single")
+  console.log(user, "User single")
 
   const handleClick = event => {
     event.stopPropagation()
@@ -262,15 +270,27 @@ const FilesList = props => {
               }
             >
               <ListItem button>
+                <ListItemIcon>
+                  <Description />
+                </ListItemIcon>
                 <ListItemText primary="All" />
               </ListItem>
-              <ListItem button>
+              <ListItem button onClick={() => getFavoriteDocuments(user.uuId)}>
+                <ListItemIcon>
+                  <StarOutlined />
+                </ListItemIcon>
                 <ListItemText primary="Favorite" />
               </ListItem>
-              <ListItemLink href="#simple-list">
-                <ListItemText primary="Shared" />
-              </ListItemLink>
               <ListItem button>
+                <ListItemIcon>
+                  <Share />
+                </ListItemIcon>
+                <ListItemText primary="Shared" />
+              </ListItem>
+              <ListItem button>
+                <ListItemIcon>
+                  <Delete />
+                </ListItemIcon>
                 <ListItemText primary="Trash" />
               </ListItem>
             </List>
@@ -286,60 +306,72 @@ const FilesList = props => {
         </Grid>
         <Grid item md={3}>
           <Typography variant="subtitle2" color="textSecondary">Document Details</Typography>
-          {file.data && Object.keys(file.data).length > 0 &&
+          {file && Object.keys(file).length > 0 &&
           <div>
+          
+          <Card className={classes.cardRoot}>
+            <CardActionArea>
+              <CardMedia
+                className={classes.media}
+                image={file.fileUrl}
+                title={file.docName}
+              />
+            </CardActionArea>
+          </Card>
+
+
           <TableContainer component="div">
             <Table className={classes.table} size="small" aria-label="a dense table">
               <TableBody>
-                <TableRow key={file.data.docName}>
+                <TableRow key={file.docName}>
                   <TableCell component="th" scope="row">
                     Document Name
                   </TableCell>
-                  <TableCell align="right">{file.data.docName}</TableCell>
+                  <TableCell align="right">{file.docName}</TableCell>
                 </TableRow>
-                <TableRow key={file.data.description}>
+                <TableRow key={file.description}>
                   <TableCell component="th" scope="row">
                     Description
                   </TableCell>
-                  <TableCell align="right">{file.data.description}</TableCell>
+                  <TableCell align="right">{file.description}</TableCell>
                 </TableRow>
-                <TableRow key={file.data.format}>
+                <TableRow key={file.format}>
                   <TableCell component="th" scope="row">
                     Format
                   </TableCell>
-                  <TableCell align="right">{file.data.format}</TableCell>
+                  <TableCell align="right">{file.format}</TableCell>
                 </TableRow>
-                <TableRow key={file.data.size}>
+                <TableRow key={file.size}>
                   <TableCell component="th" scope="row">
                     Size
                   </TableCell>
-                  <TableCell align="right">{file.data.size}</TableCell>
+                  <TableCell align="right">{file.size}</TableCell>
                 </TableRow>
-                <TableRow key={file.data.createdBy}>
+                <TableRow key={file.createdBy}>
                   <TableCell component="th" scope="row">
                     Owner
                   </TableCell>
-                  <TableCell align="right">{file.createdBy.emailAddress}</TableCell>
+                  <TableCell align="right">{file.createdBy}</TableCell>
                 </TableRow>
-                <TableRow key={file.data.modifiedBy}>
+                <TableRow key={file.modifiedBy}>
                   <TableCell component="th" scope="row">
                     Modified By
                   </TableCell>
-                  <TableCell align="right">{file.data.modifiedBy}</TableCell>
+                  <TableCell align="right">{file.modifiedBy}</TableCell>
                 </TableRow>
-                <TableRow key={file.data.trash}>
+                <TableRow key={file.trash}>
                   <TableCell component="th" scope="row">
                     Trashed
                   </TableCell>
-                  <TableCell align="right">{file.data.trash? <DeleteRounded className={classes.icon} /> : 'No'}</TableCell>
+                  <TableCell align="right">{file.trash? <DeleteRounded className={classes.icon} /> : 'No'}</TableCell>
                 </TableRow>
-                <TableRow key={file.data.dateCreated}>
+                <TableRow key={file.dateCreated}>
                   <TableCell component="th" scope="row">
                     Date Created
                   </TableCell>
                   <TableCell align="right">
                     <Typography variant="inherit" color="textSecondary">
-                      {moment(file.data.dateCreated).format('lll')}
+                      {moment(file.dateCreated).format('lll')}
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -357,7 +389,7 @@ const FilesList = props => {
             </ListItem>
             <Collapse in={isOpen} timeout="auto" unmountOnExit>
               <Typography variant="inherit" color="textSecondary">
-                {file.data.description? file.data.description : "There is no description yet"}
+                {file.description? file.description : "There is no description yet"}
               </Typography>
             </Collapse>
           </List>
@@ -388,6 +420,7 @@ const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   files: Selectors.makeSelectFiles(),
   file: Selectors.makeSelectFile(),
+  user: AppSelectors.makeSelectCurrentUser(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -397,8 +430,8 @@ function mapDispatchToProps(dispatch) {
     openNewTaskDialog: ev => dispatch(Actions.openNewTaskDialog(ev)),
     getUtilityFiles: () => dispatch(Actions.getUtilityFiles()),
     getUtilityFile: id => dispatch(Actions.getUtilityFile(id)),
+    getFavoriteDocuments: (uuid) => dispatch(Actions.getFavoriteDocuments(uuid)),
     favoriteDocument: docId => dispatch(Actions.favoriteDocument(docId)),
-    getCreatedByUUID: id => dispatch(Actions.getCreatedByUUID(id)),
     openFilePreviewDialog: (data) => dispatch(Actions.openFilePreviewDialog(data)),
   };
 }
