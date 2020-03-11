@@ -57,6 +57,12 @@ const makeSelectSavedItemData = () =>
     substate => substate.savedItemData
   );
 
+const makeSelectSavedItemStore = () =>
+  createSelector(
+    selectWorkOrderPageDomain,
+    substate => substate.savedItemStore
+  );
+
 const makeSelectLoading = () =>
   createSelector(
     selectWorkOrderPageDomain,
@@ -74,5 +80,6 @@ export {
   makeSelectItemDialog,
   makeSelectVendorPostData,
   makeSelectGetListOfVendorsData,
-  makeSelectSavedItemData
+  makeSelectSavedItemData,
+  makeSelectSavedItemStore
 };

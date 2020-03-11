@@ -8,6 +8,7 @@ import * as Constants from './constants';
 
 
 export const initialState = {
+  savedItemStore: [],
   vendorPostData: false,
   savedItemData: false,
   getListOfVendorsData: false,
@@ -122,6 +123,7 @@ const workOrderPageReducer = (state = initialState, action) =>
       }
 
       case Constants.SAVE_ADDITEM_DIALOG_CONTENTS: {
+        console.log(`action.payload: ${action.payload}`);
         return {
           ...state,
           savedItemData: action.payload

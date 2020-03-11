@@ -23,7 +23,8 @@ import {
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-import Signature from './Signature';
+import SignaturePad from './SignaturePad';
+import SignatureUpload from './SignatureUpload';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -120,10 +121,10 @@ const SignatureDialog = props => {
                 </Tabs>
               </AppBar>
               <TabPanel value={value} index={0}>
-                <Signature />
+                <SignaturePad />
               </TabPanel>
               <TabPanel value={value} index={1}>
-                {/* <UploadSignature /> */}
+                <SignatureUpload />
               </TabPanel>
             </div>
           ) : null}

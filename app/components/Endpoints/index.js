@@ -31,6 +31,7 @@ export const AddNewEmployeeToPositionApi = `${BaseUrl}/authserv/api/v1/user/add_
 
 export const CreateNewEmployeeApi = `${BaseUrl}/authserv/api/v1/user`;
 export const GetAllEmployeesApi = `${BaseUrl}/authserv/api/v1/users/get_by_orgid`;
+export const UpdateUserProfileApi = `${BaseUrl}/authserv/api/v1/users/update_profile`;
 
 /** *****************************************************************
  * Utility endpoint

@@ -57,6 +57,18 @@ const makeSelectSignatureDialog = () =>
     subState => subState.signatureDialog,
   );
 
+const makeSelectUpdateUserProfileData = () =>
+  createSelector(
+    selectUsersPageDomain,
+    subState => subState.updateUserProfileData,
+  );
+
+const makeSelectUpdateUserProfileDialog = () =>
+  createSelector(
+    selectUsersPageDomain,
+    subState => subState.updateUserProfileDialog,
+  );
+
 export default makeSelectUsersPage;
 export {
   selectUsersPageDomain,
@@ -66,4 +78,6 @@ export {
   makeSelectEmployeeDialog,
   makeSelectCreateNewEmployeeData,
   makeSelectSignatureDialog,
+  makeSelectUpdateUserProfileData,
+  makeSelectUpdateUserProfileDialog,
 };

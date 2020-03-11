@@ -18,6 +18,7 @@ import * as Actions from '../actions';
 import reducer from '../reducer';
 import saga from '../saga';
 import SignatureDialog from './components/SignatureDialog';
+import UserProfileDialog from './components/UserProfileDialog';
 import UserProfile from './components/UserProfile';
 
 export function EmployeePage(props) {
@@ -38,6 +39,7 @@ export function EmployeePage(props) {
       </Helmet>
       <UserProfile />
       <SignatureDialog />
+      <UserProfileDialog />
     </div>
   );
 }
