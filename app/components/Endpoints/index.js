@@ -43,9 +43,12 @@ export const GetUtilityFilesApi = `${BaseUrl}/utilityserv/api/v1/get_document_by
 export const GetUtilityFileApi = `${BaseUrl}/utilityserv/api/v1/get_document_by_id`;
 export const ShareUtilityFilesApi = `${BaseUrl}/utilityserv/api/v1/share_document`;
 
-export const FavoriteDocumentApi = '/utilityserv/api/v1/favourite_document';
-export const UnfavoriteDocumentApi = '/utilityserv/api/v1/unfavourite_document';
-export const ShareDocumentApi = '/utilityserv/api/v1/share_document';
+export const GetFavoriteDocumentApi = `${BaseUrl}/utilityserv/api/v1/get_favourite_by_uuid`;
+export const FavoriteDocumentApi = `${BaseUrl}/utilityserv/api/v1/favourite_document`;
+export const UnfavoriteDocumentApi = `${BaseUrl}/utilityserv/api/v1/unfavourite_document`;
+export const ShareDocumentApi = `${BaseUrl}/utilityserv/api/v1/share_document`;
+export const GetShareDocumentApi = `${BaseUrl}/utilityserv/api/v1/share_document/get_shared_document_by_uuid`;
+export const GenerateLinkAndSendEmailApi = `${BaseUrl}/utilityserv/api/v1/share_document/send_email_to_file_owner/{userId}/{sharedId}`;
 
 // Task Api
 export const GetUtilityTasksApi = `${BaseUrl}/utilityserv/api/v1/get_tasks_by_orgid`;
@@ -63,19 +66,19 @@ export const GetEmployeesApi = `${BaseUrl}/authserv/api/v1/users`;
 export const GetUserByUUIDApi = `${BaseUrl}/authserv/api/v1/users/get_by_uuid`;
 
 // App Api
-export const GetOrgAppsApi = '/utilityserv/api/v1/organisation/orgApps';
+export const GetOrgAppsApi = `${BaseUrl}/utilityserv/api/v1/organisation/orgApps`;
 
 /** *****************************************************************
  * Messages endpoint
  ******************************************************************* */
 
 export const GetEmailConfigApi =
-  '/messagingserv/api/v1/get_email_config_by_orgId';
+  `${BaseUrl}/messagingserv/api/v1/get_email_config_by_orgId`;
 export const SaveEmailConfigApi = `${BaseUrl}/messagingserv/api/v1/emailConfig`;
 export const TestConnectionApi = `${BaseUrl}/messagingserv/api/v1/test_email_config`;
 export const GetSmsProviderApi = `${BaseUrl}/messagingserv/api/v1/get_all_sms_providers`;
 export const GetSmsConfigApi = `${BaseUrl}/messagingserv/api/v1/get_sms_config_by_orgId`;
 
 // Work order Api
-export const SaveVendorApi = '/utilityserv/api/v1/add_vendor';
-export const GetListOfVendorsApi = '/utilityserv/api/v1/find_all_vendors';
+export const SaveVendorApi = `${BaseUrl}/utilityserv/api/v1/add_vendor`;
+export const GetListOfVendorsApi = `${BaseUrl}/utilityserv/api/v1/find_all_vendors`;

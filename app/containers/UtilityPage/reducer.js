@@ -91,17 +91,9 @@ export const initialState = {
   users: [],
   user: {},
   tasks: [],
-  task: {
-    data: {},
-    assignedTo: {},
-    createdBy: {}
-  },
+  task: {},
   files: [],
-  file: {
-    data: {},
-    createdBy: {},
-    modifiedBy: {},
-  },
+  file: {},
   error: { success: '', message: '' },
 };
 
@@ -130,19 +122,7 @@ const utilityPageReducer = (state = initialState, action) =>
       case Constants.GET_USER_BY_UUID_SUCCESS: {
         return {
           ...state,
-          task: {
-            ...state.task,
-            createdBy: action.payload
-          },
-        };
-      }
-      case Constants.GET_ASSIGNEDTO_BY_UUID_SUCCESS: {
-        return {
-          ...state,
-          task: {
-            ...state.task,
-            assignedTo: action.payload
-          },
+          user: action.payload
         };
       }
       case Constants.CREATE_UTILITY_TASKS: {
@@ -154,10 +134,7 @@ const utilityPageReducer = (state = initialState, action) =>
       case Constants.GET_UTILITY_TASK_SUCCESS: {
         return {
           ...state,
-          task: {
-            ...state.task,
-            data: action.payload
-          },
+          task: action.payload,
         };
       }
       case Constants.GET_UTILITY_TASKS_SUCCESS: {
@@ -199,28 +176,25 @@ const utilityPageReducer = (state = initialState, action) =>
       case Constants.GET_UTILITY_FILE_SUCCESS: {
         return {
           ...state,
-          file: {
-            ...state.file,
-            data: action.payload
-          },
-        };
-      }
-      case Constants.GET_CREATEDBY_BY_UUID_SUCCESS: {
-        return {
-          ...state,
-          file: {
-            ...state.file,
-            createdBy: action.payload
-          },
+          file: action.payload
         };
       }
       case Constants.FAVORITE_FILE_BY_DOC_ID_SUCCESS: {
         return {
           ...state,
-          file: {
-            ...state.file,
-            data: action.payload
-          },
+          file: action.payload
+        };
+      }
+      case Constants.GET_SHARED_DOCS_BY_UUID_SUCCESS: {
+        return {
+          ...state,
+          files: action.payload,
+        };
+      }
+      case Constants.GET_FAVORITE_DOCS_BY_UUID_SUCCESS: {
+        return {
+          ...state,
+          files: action.payload,
         };
       }
       case Constants.GET_UTILITY_FILES_SUCCESS: {
