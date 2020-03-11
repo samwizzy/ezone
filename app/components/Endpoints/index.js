@@ -72,8 +72,7 @@ export const GetOrgAppsApi = `${BaseUrl}/utilityserv/api/v1/organisation/orgApps
  * Messages endpoint
  ******************************************************************* */
 
-export const GetEmailConfigApi =
-  `${BaseUrl}/messagingserv/api/v1/get_email_config_by_orgId`;
+export const GetEmailConfigApi = `${BaseUrl}/messagingserv/api/v1/get_email_config_by_orgId`;
 export const SaveEmailConfigApi = `${BaseUrl}/messagingserv/api/v1/emailConfig`;
 export const TestConnectionApi = `${BaseUrl}/messagingserv/api/v1/test_email_config`;
 export const GetSmsProviderApi = `${BaseUrl}/messagingserv/api/v1/get_all_sms_providers`;

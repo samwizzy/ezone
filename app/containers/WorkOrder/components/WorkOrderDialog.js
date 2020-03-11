@@ -13,7 +13,7 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-import Modal from '@material-ui/core/Modal';
+import AddItemDialog from './AddItemDialog';
 
 import {
   withStyles,
@@ -42,8 +42,23 @@ import {
   FormGroup,
   FormControlLabel,
   FormControl,
-  FormLabel
+  FormLabel,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TableSortLabel,
+  Paper,
+  IconButton,
+  Tooltip,
+  DeleteIcon
 } from '@material-ui/core';
+
+import clsx from 'clsx';
+import { lighten } from '@material-ui/core/styles';
 
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
@@ -63,24 +78,46 @@ const useStyles = makeStyles(theme => ({
   menu: {
     width: 200,
   },
-  paper: {
-    position: 'absolute',
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
+  table: {
+    minWidth: 650,
   },
 }));
 
-const gender = [
+const status = [
   {
-    value: 'Male',
-    label: 'Male',
+    value: 'NOT_STARTED',
+    label: 'NOT STARTED',
   },
   {
-    value: 'Female',
-    label: 'Female',
+    value: 'STARTED',
+    label: 'STARTED',
+  },
+  {
+    value: 'COMPLETED',
+    label: 'COMPLETED',
+  },
+  {
+    value: 'CANCELED',
+    label: 'CANCELED',
+  },
+];
+
+const priority = [
+  {
+    value: 'Low',
+    label: 'Low',
+  },
+  {
+    value: 'Medium',
+    label: 'Medium (Normal)',
+  },
+  {
+    value: 'High',
+    label: 'High',
+  },
+  {
+    value: 'Critical',
+    label: 'Critical',
   },
 ];
 
@@ -88,42 +125,20 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
-
-function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
-
 
 const WorkOrderDialog = props => {
   const {
     loading,
     workOrderDialog,
+    addItemDialog,
+    openAddItemDialogAction,
     closeWorkOrderDialogAction,
     listOfVendorsData,
-    getListOfVendorsAction
+    getListOfVendorsAction,
+    savedItemData
   } = props;
 
   const classes = useStyles();
-  // const [values, setValues] = React.useState({
-  //   firstName: '',
-  //   lastName: '',
-  //   emailAddress: '',
-  //   employeeId: '',
-  //   phoneNumber: '',
-  //   address: '',
-  //   gender: '',
-  //   password: '',
-  // });
 
   const [values, setValues] = React.useState({
     id: "",
@@ -197,29 +212,32 @@ const WorkOrderDialog = props => {
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    console.log("useEffect");
     getListOfVendorsAction();
   }, []);
 
   console.log('VendorsData --> ', listOfVendorsData);
+  
+  console.log('savedItemData --> ', savedItemData);
 
-  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
 
   const handleDateChange = date => {
     setSelectedDate(date);
   };
 
-  // getModalStyle is not a pure function, we roll the style only on the first render
-  const [modalStyle] = React.useState(getModalStyle);
-  const [open, setOpen] = React.useState(false);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  function createData(name, calories, fat, carbs, protein) {
+    return { name, calories, fat, carbs, protein };
+  }
+  
+  const rows = [
+    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+    createData('Eclair', 262, 16.0, 24, 6.0),
+    createData('Cupcake', 305, 3.7, 67, 4.3),
+    createData('Gingerbread', 356, 16.0, 49, 3.9),
+  ];
 
-  const handleClose = () => {
-    setOpen(false);
-  };
 
 
   return (
@@ -334,28 +352,44 @@ const WorkOrderDialog = props => {
                 </Grid>
               </MuiPickersUtilsProvider>
 
-              <div>
-              <button type="button" onClick={handleOpen}>
-                Open Modal
-              </button>
-              <Modal
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-                open={open}
-                onClose={handleClose}
-              >
-                <div style={modalStyle} className={classes.paper}>
-                  <h2 id="simple-modal-title">Text in a modal</h2>
-                  <p id="simple-modal-description">
-                    Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                  </p>
-                  {/* <SimpleModal /> */}
-                </div>
-              </Modal>
-          </div>
+              <TableContainer component={Paper}>
+      <Table className={classes.table} size="small" aria-label="a dense table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Dessert (100g serving)</TableCell>
+            <TableCell align="right">Calories</TableCell>
+            <TableCell align="right">Fat&nbsp;(g)</TableCell>
+            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map(row => (
+            <TableRow key={row.name}>
+              <TableCell component="th" scope="row">
+                {row.name}
+              </TableCell>
+              <TableCell align="right">{row.calories}</TableCell>
+              <TableCell align="right">{row.fat}</TableCell>
+              <TableCell align="right">{row.carbs}</TableCell>
+              <TableCell align="right">{row.protein}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
 
-    
+
+
               
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => openAddItemDialogAction()}
+              >
+                Add Item
+              </Button>
+             
               <TextField
                 id="standard-email"
                 label="Email"
@@ -400,18 +434,35 @@ const WorkOrderDialog = props => {
                 fullWidth
               />
               <TextField
-                id="standard-select-gender"
-                label="Select Gender"
+                id="standard-status"
+                label="Status"
                 variant="outlined"
                 className={classes.textField}
                 margin="normal"
-                value={values.gender ? values.gender : ''}
-                onChange={handleSelectChange('gender')}
+                value={values.status ? values.status : ''}
+                onChange={handleSelectChange('status')}
                 select
                 fullWidth
               >
-                {gender.map(option => (
+                {status.map(option => (
                   <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                id="standard-priority"
+                label="Urgency Level"
+                variant="outlined"
+                className={classes.textField}
+                margin="normal"
+                value={values.priority ? values.priority : ''}
+                onChange={handleSelectChange('priority')}
+                select
+                fullWidth
+              >
+                {priority.map(option => (
+                  <MenuItem key={option.label} value={option.value}>
                     {option.label}
                   </MenuItem>
                 ))}
@@ -463,18 +514,23 @@ const WorkOrderDialog = props => {
 WorkOrderDialog.propTypes = {
   loading: PropTypes.bool,
   workOrderDialog: PropTypes.object,
+  addItemDialog: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(), 
-  workOrderDialog: Selectors.makeSelectWorkOrderDialog(),
+  workOrderDialog: Selectors.makeSelectWorkOrderDialog(), 
+  addItemDialog: Selectors.makeSelectItemDialog(),
   listOfVendorsData: Selectors.makeSelectGetListOfVendorsData(),
+  savedItemData: Selectors.makeSelectSavedItemData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openCreateWorkOrderDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
     closeWorkOrderDialogAction: () => dispatch(Actions.closeCreateWorkOrderDialog()),
+    openAddItemDialogAction: () => dispatch(Actions.openAddItemDialog()),
+    closeAddItemDialogAction: () => dispatch(Actions.closeAddItemDialog()),
     getListOfVendorsAction: evt => dispatch(Actions.getAllVendorsAction(evt)),
     dispatch,
   };

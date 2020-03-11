@@ -25,6 +25,7 @@ import CompanyStructureParty from '../CompanyStructurePage/CompanyStructure/comp
 import CompanyStructurePosition from '../CompanyStructurePage/CompanyStructure/components/PositionPage';
 import UsersPage from '../UsersPage/Loadable';
 import Employees from '../UsersPage/EmployeePage/Loadable';
+import UserProfilePage from '../UsersPage/UserProfilePage/Loadable';
 import UtilityPage from '../UtilityPage/Loadable';
 import ChatApp from '../UtilityPage/ChatApp/Loadable';
 import TasksPage from '../UtilityPage/TasksApp/Loadable';
@@ -84,6 +85,11 @@ const App = () => {
                   exact
                   path="/users/employees"
                   component={Employees}
+                />
+                <PrivateRoute
+                  exact
+                  path="/users/profile"
+                  component={UserProfilePage}
                 />
                 <PrivateRoute
                   exact

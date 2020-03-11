@@ -30,6 +30,26 @@ export function closeVendorDialog() {
   };
 }
 
+export function openAddItemDialog() {
+  console.log('action come here');
+  return {
+    type: Constants.OPEN_ADDITEM_DIALOG,
+  };
+}
+
+export function closeAddItemDialog() {
+  return {
+    type: Constants.CLOSE_ADDITEM_DIALOG,
+  };
+}
+
+export function saveAddItemContents(data) {
+  return {
+    type: Constants.SAVE_ADDITEM_DIALOG_CONTENTS,
+    payload: data,
+  };
+}
+
 // Save vendor details
 export function saveVendorConfigAction(data) {
   return {
