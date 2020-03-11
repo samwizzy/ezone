@@ -44,6 +44,7 @@ export function closeAddItemDialog() {
 }
 
 export function saveAddItemContents(data) {
+  console.log("saveAddItemContents reducer");
   return {
     type: Constants.SAVE_ADDITEM_DIALOG_CONTENTS,
     payload: data,
