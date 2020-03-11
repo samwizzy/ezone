@@ -13,8 +13,8 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-import MaterialTable from 'material-table';
-
+// import MaterialTable from 'material-table';
+import clsx from 'clsx';
 import {
   withStyles,
   TextField,
@@ -26,20 +26,7 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  MenuItem,
-  Tabs,
-  Tab,
-  Box,
-  Card,
-  CardActionArea,
-  CardMedia,
-  CardContent,
-  Grid,
-  DialogTitle,
-  Divider,
-  Slide,
   Checkbox,
-  FormGroup,
   FormControlLabel,
   FormControl,
   FormLabel,
@@ -56,14 +43,13 @@ import {
   Tooltip,
   DeleteIcon,
   Switch,
-  FilterListIcon 
+  FilterListIcon,
+  lighten,
 } from '@material-ui/core';
-
 
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
 import LoadingIndicator from '../../../components/LoadingIndicator';
-
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -112,16 +98,28 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
+  {
+    id: 'name',
+    numeric: false,
+    disablePadding: true,
+    label: 'Dessert (100g serving)',
+  },
   { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
+  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
+  { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
+  { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
 ];
 
-
-const ItemTable = (props) => {
-  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+function EnhancedTableHead(props) {
+  const {
+    classes,
+    onSelectAllClick,
+    order,
+    orderBy,
+    numSelected,
+    rowCount,
+    onRequestSort,
+  } = props;
   const createSortHandler = property => event => {
     onRequestSort(event, property);
   };
@@ -161,13 +159,9 @@ const ItemTable = (props) => {
       </TableRow>
     </TableHead>
   );
-};
+}
 
-ItemTable.propTypes = {
-  loading: PropTypes.bool,
-  workOrderDialog: PropTypes.object,
-  addItemDialog: PropTypes.object,
-  savedItemStore: PropTypes.array,
+EnhancedTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
@@ -176,7 +170,6 @@ ItemTable.propTypes = {
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
 };
-
 
 const useToolbarStyles = makeStyles(theme => ({
   root: {
@@ -209,7 +202,11 @@ const EnhancedTableToolbar = props => {
       })}
     >
       {numSelected > 0 ? (
-        <Typography className={classes.title} color="inherit" variant="subtitle1">
+        <Typography
+          className={classes.title}
+          color="inherit"
+          variant="subtitle1"
+        >
           {numSelected} selected
         </Typography>
       ) : (
@@ -219,17 +216,23 @@ const EnhancedTableToolbar = props => {
       )}
 
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
+        <Typography className={classes.title} variant="h6" id="tableTitle">
+          welcome here
+        </Typography>
+        // <Tooltip title="Delete">
+        //   <IconButton aria-label="delete">
+        //     <DeleteIcon />
+        //   </IconButton>
+        // </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
+        <Typography className={classes.title} variant="h6" id="tableTitle">
+          welcome there
+        </Typography>
+        // <Tooltip title="Filter list">
+        //   <IconButton aria-label="filter list">
+        //     <FilterListIcon />
+        //   </IconButton>
+        // </Tooltip>
       )}
     </Toolbar>
   );
@@ -238,7 +241,6 @@ const EnhancedTableToolbar = props => {
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
-
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -264,8 +266,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const ItemTable = props => {
+  // const { onSelectAllClick, numSelected, rowCount, onRequestSort } = props;
 
-export default function EnhancedTable() {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
@@ -324,7 +327,8 @@ export default function EnhancedTable() {
 
   const isSelected = name => selected.indexOf(name) !== -1;
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const emptyRows =
+    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
@@ -369,7 +373,12 @@ export default function EnhancedTable() {
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
                       </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
+                      <TableCell
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        padding="none"
+                      >
                         {row.name}
                       </TableCell>
                       <TableCell align="right">{row.calories}</TableCell>
@@ -403,11 +412,25 @@ export default function EnhancedTable() {
       />
     </div>
   );
-}
+};
+
+ItemTable.propTypes = {
+  loading: PropTypes.bool,
+  workOrderDialog: PropTypes.object,
+  addItemDialog: PropTypes.object,
+  savedItemStore: PropTypes.array,
+  classes: PropTypes.object,
+  numSelected: PropTypes.number,
+  onRequestSort: PropTypes.func,
+  onSelectAllClick: PropTypes.func,
+  order: PropTypes.oneOf(['asc', 'desc']),
+  orderBy: PropTypes.string,
+  rowCount: PropTypes.number,
+};
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(), 
-  workOrderDialog: Selectors.makeSelectWorkOrderDialog(), 
+  loading: Selectors.makeSelectLoading(),
+  workOrderDialog: Selectors.makeSelectWorkOrderDialog(),
   addItemDialog: Selectors.makeSelectItemDialog(),
   listOfVendorsData: Selectors.makeSelectGetListOfVendorsData(),
   savedItemData: Selectors.makeSelectSavedItemData(),
@@ -416,8 +439,10 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openCreateWorkOrderDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
-    closeWorkOrderDialogAction: () => dispatch(Actions.closeCreateWorkOrderDialog()),
+    openCreateWorkOrderDialogAction: () =>
+      dispatch(Actions.openCreateWorkOrderDialog()),
+    closeWorkOrderDialogAction: () =>
+      dispatch(Actions.closeCreateWorkOrderDialog()),
     openAddItemDialogAction: () => dispatch(Actions.openAddItemDialog()),
     closeAddItemDialogAction: () => dispatch(Actions.closeAddItemDialog()),
     getListOfVendorsAction: evt => dispatch(Actions.getAllVendorsAction(evt)),
