@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Signature = props => {
+const SignaturePad = props => {
   const classes = useStyles();
 
   const [trimmedDataURL, setTrimmedDataURL] = React.useState(null);
@@ -93,7 +93,7 @@ const Signature = props => {
   );
 };
 
-Signature.prototypes = {
+SignaturePad.prototypes = {
   classes: PropTypes.object.isRequired,
   openNewEmployeeDialogAction: PropTypes.func,
 };
@@ -115,4 +115,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(Signature);
+)(SignaturePad);

@@ -27,7 +27,6 @@ import Vector from '../../../../images/Vector.svg';
 import Vector1 from '../../../../images/Vector1.svg';
 import Group266 from '../../../../images/Group266.svg';
 import UserDetail from './UserDetail';
-import Signature from './Signature';
 import NoSignature from './NoSignature';
 
 function TabPanel(props) {
