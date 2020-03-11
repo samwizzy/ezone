@@ -41,7 +41,7 @@ export const GetAllEmployeesApi = `${BaseUrl}/authserv/api/v1/users/get_by_orgid
 export const CreateUtilityFileApi = `${BaseUrl}/utilityserv/api/v1/upload_document`;
 export const GetUtilityFilesApi = `${BaseUrl}/utilityserv/api/v1/get_document_by_orgid`;
 export const GetUtilityFileApi = `${BaseUrl}/utilityserv/api/v1/get_document_by_id`;
-export const ShareUtilityFilesApi = `${BaseUrl}/utilityserv/api/v1/share_document`;
+export const DeleteUtilityFileApi = `${BaseUrl}/utilityserv/api/v1/delete_document`;
 
 export const GetFavoriteDocumentApi = `${BaseUrl}/utilityserv/api/v1/get_favourite_by_uuid`;
 export const FavoriteDocumentApi = `${BaseUrl}/utilityserv/api/v1/favourite_document`;

@@ -101,8 +101,21 @@ export function getEmployeesSuccess(data) {
   };
 }
 
+export function getSharedDocuments(uuid) {
+  return {
+    type: Constants.GET_SHARED_DOCS_BY_UUID,
+    payload: uuid
+  };
+}
+
+export function getSharedDocumentsSuccess(data) {
+  return {
+    type: Constants.GET_SHARED_DOCS_BY_UUID_SUCCESS,
+    payload: data
+  };
+}
+
 export function getFavoriteDocuments(uuid) {
-  console.log(uuid, "uuid action")
   return {
     type: Constants.GET_FAVORITE_DOCS_BY_UUID,
     payload: uuid
@@ -126,6 +139,34 @@ export function favoriteDocument(docId) {
 export function favoriteDocumentSuccess(data) {
   return {
     type: Constants.FAVORITE_FILE_BY_DOC_ID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function deleteDocument(docId) {
+  return {
+    type: Constants.DELETE_DOCUMENT,
+    payload: { docId }
+  };
+}
+
+export function deleteDocumentSuccess(data) {
+  return {
+    type: Constants.DELETE_DOCUMENT_SUCCESS,
+    payload: data,
+  };
+}
+
+export function shareDocument(data) {
+  return {
+    type: Constants.SHARE_DOCUMENT,
+    payload: data
+  };
+}
+
+export function shareDocumentSuccess(data) {
+  return {
+    type: Constants.SHARE_DOCUMENT_SUCCESS,
     payload: data,
   };
 }
@@ -199,10 +240,10 @@ export function closeFileUploadDialog() {
   };
 }
 
-export function openShareFileDialog(data) {
+export function openShareFileDialog(fileId) {
   return {
     type: Constants.OPEN_SHARE_FILE_DIALOG,
-    payload: data,
+    payload: fileId,
   };
 }
 

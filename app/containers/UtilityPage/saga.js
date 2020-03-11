@@ -28,7 +28,6 @@ export function* addUtilityFile({ type, payload }) {
     yield put(Actions.createUtilityFileSuccess(createdFileResponse));
   } catch (err) {
     yield put(Actions.getUtilityFilesError(err));
-    console.error(err, 'I got the error');
   }
 }
 
@@ -47,7 +46,6 @@ export function* addUtilityTasks({ type, payload }) {
       }),
     });
 
-    console.log(createdTasksResponse, 'createdTasksResponse');
     yield put({ type: Constants.GET_UTILITY_TASKS });
     yield put(
       AppActions.openSnackBar({
@@ -58,7 +56,6 @@ export function* addUtilityTasks({ type, payload }) {
     );
   } catch (err) {
     yield put(Actions.getUtilityTasksError(err));
-    console.error(err, 'I got the error');
   }
 }
 
@@ -83,7 +80,6 @@ export function* getUtilityTasks() {
     yield put(Actions.getUtilityTasksSuccess(utilityTasksResponse));
   } catch (err) {
     // yield put(Actions.getUtilityTasksError(err));
-    console.error(err, 'I got the error');
   }
 }
 
@@ -108,7 +104,6 @@ export function* getUtilityTasksByStatus({ type, payload }) {
     yield put(Actions.getUtilityTasksByStatusSuccess(utilityTasksResponse));
   } catch (err) {
     // yield put(Actions.getUtilityTasksError(err));
-    console.error(err, 'I got the error');
   }
 }
 
@@ -130,7 +125,7 @@ export function* getUtilityTask({ type, payload }) {
     yield put(Actions.getUtilityTaskSuccess(utilityTaskResponse));
   } catch (err) {
     // yield put(Actions.getUtilityTasksError(err));
-    console.error(err, 'I got the error');
+    // console.error(err, 'I got the error');
   }
 }
 
@@ -152,7 +147,7 @@ export function* getUserByUUID({ type, payload }) {
     yield put(Actions.getUserByUUIDSuccess(userResponse));
   } catch (err) {
     // yield put(Actions.getUserByUUIDError(err));
-    console.error(err, 'I got the error');
+    // console.error(err, 'I got the error');
   }
 }
 
@@ -180,6 +175,29 @@ export function* getUtilityFiles() {
   }
 }
 
+export function* deleteUtilityFile({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const requestURL = `${Endpoints.DeleteUtilityFileApi}/${payload}`;
+
+  console.log(payload, "DELETE_DOCUMENT")
+
+  try {
+    const utilityFileResponse = yield call(request, requestURL, {
+      method: 'PUT',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }),
+    });
+
+    console.log(utilityFileResponse, 'deleteFileResponse');
+
+    yield put(Actions.getUtilityFileSuccess(utilityFileResponse));
+  } catch (err) {
+    // yield put(Actions.getUtilityFileError(err));
+  }
+}
+
 export function* getUtilityFile({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.GetUtilityFileApi}/${payload}`;
@@ -198,6 +216,36 @@ export function* getUtilityFile({ type, payload }) {
     yield put(Actions.getUtilityFileSuccess(utilityFileResponse));
   } catch (err) {
     // yield put(Actions.getUtilityFileError(err));
+  }
+}
+
+export function* shareUtilityFiles({type, payload}) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const requestURL = `${Endpoints.ShareDocumentApi}`;
+
+  console.log(payload, "payload")
+
+  try {
+    const sharedDocResponse = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(
+      AppActions.openSnackBar({
+        open: true,
+        message: `${sharedDocResponse.document.docName} has been shared successfully`,
+        status: 'success',
+      }),
+    );
+    console.log(sharedDocResponse, "sharedDocResponse")
+    // yield put(Actions.shareDocumentSuccess(sharedDocResponse));
+  } catch (err) {
+    // yield put(Actions.getSharedDocumentsError(err));
   }
 }
 
@@ -355,7 +403,7 @@ export function* getEmployees() {
     yield put(Actions.getEmployeesSuccess(employeesResponse));
   } catch (err) {
     // yield put(Actions.getUtilityTasksError(err));
-    console.error(err, 'I got the error');
+    // console.error(err, 'I got the error');
   }
 }
 
@@ -425,7 +473,10 @@ export default function* UtilityPageSaga() {
   yield takeLatest(Constants.GET_UTILITY_TASKS, getUtilityTasks);
   yield takeLatest(Constants.GET_UTILITY_TASK, getUtilityTask);
   yield takeLatest(Constants.GET_UTILITY_FILE, getUtilityFile);
+  yield takeLatest(Constants.SHARE_DOCUMENT, shareUtilityFiles);
+  yield takeLatest(Constants.DELETE_DOCUMENT, deleteUtilityFile);
   yield takeLatest(Constants.GET_UTILITY_FILES, getUtilityFiles);
+  yield takeLatest(Constants.GET_SHARED_DOCS_BY_UUID, getSharedUtilityFiles);
   yield takeLatest(Constants.GET_FAVORITE_DOCS_BY_UUID, getFavoriteUtilityFiles);
   yield takeLatest(Constants.FAVORITE_FILE_BY_DOC_ID, favoriteUtilityFile);
   yield takeLatest(Constants.CREATE_UTILITY_TASKS, addUtilityTasks);

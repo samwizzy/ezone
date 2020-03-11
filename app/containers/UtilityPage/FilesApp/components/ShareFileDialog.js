@@ -4,12 +4,14 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Slide, Typography, TextField } from '@material-ui/core';
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, MenuItem, Slide, Typography, TextField } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
+    flexGrow: 1,
+    width: 350,
     '& .MuiTextField-root': {
       margin: theme.spacing(1, 0)
     },
@@ -24,12 +26,30 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function SharedFileDialog(props) {
   const classes = useStyles()
-  const { closeShareFileDialog, data } = props
-  const [form, setForm] = React.useState({email: '', comment: ''})
+  const { closeShareFileDialog, shareDocument, data, users, files } = props
+  const [form, setForm] = React.useState({
+    docId: "",
+    name: "",
+    sharedTo: ""
+  })
 
-  const handleChange = () => {}
+  React.useEffect(() => {
+    if(data.data != null){
+      setForm(_.set(form, "docId", data.data.id))
+      setForm(_.set(form, "name", data.data.docName))
+    }
+  }, [data])
+
+  const handleChange = (event) => {
+    setForm(_.set({...form}, event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value));
+  }
+
+  const handleSubmit = () => {
+    shareDocument(form)
+  }
 
   console.log(data, 'checking shared...')
+  console.log(form, 'checking form...')
 
   return (
     <div>
@@ -44,35 +64,33 @@ function SharedFileDialog(props) {
         <DialogTitle id="alert-dialog-slide-title">Share File</DialogTitle>
         <Divider />
         <DialogContent>
-          {/* <DialogContentText id="alert-dialog-slide-description"></DialogContentText> */}
           <form className={classes.root}>
             <TextField
-              label="Enter email address or usernames"
-              id="outlined-size-small"
+              id="select-head"
+              name="sharedTo"
+              placeholder="Select employee to assign to task"
+              select
               fullWidth
+              className={classes.textField}
               variant="outlined"
               size="small"
-              value={form.email}
-            />
-
-            <TextField
-              id="outlined-multiline-static"
-              label="Add comment"
-              multiline
-              fullWidth
-              rows="4"
-              rowsMax="4"
-              value={form.comment}
+              label="Share To"
+              value={form.sharedTo}
               onChange={handleChange}
-              variant="outlined"
-            />
+            >
+              {users && users.map(user => (
+                <MenuItem key={user.uuId} value={user.uuId}>
+                  {user.emailAddress}
+                </MenuItem>
+              ))}
+            </TextField>
           </form>
         </DialogContent>
         <DialogActions>
           <Button variant="outlined" onClick={closeShareFileDialog} color="primary">
             Cancel
           </Button>
-          <Button variant="outlined" onClick={closeShareFileDialog} color="primary">
+          <Button variant="outlined" onClick={handleSubmit} color="primary">
             Share
           </Button>
         </DialogActions>
@@ -88,13 +106,16 @@ SharedFileDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  data: Selectors.makeSelectShareFileDialog()
+  data: Selectors.makeSelectShareFileDialog(),
+  users: Selectors.makeSelectEmployees(),
+  files: Selectors.makeSelectFiles(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openShareFileDialog: ev => dispatch(Actions.openShareFileDialog(ev)),
     closeShareFileDialog: () => dispatch(Actions.closeShareFileDialog()),
+    shareDocument: data => dispatch(Actions.shareDocument(data)),
     dispatch,
   };
 }

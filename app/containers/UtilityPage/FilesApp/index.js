@@ -27,13 +27,14 @@ const FilesApp = props => {
     useInjectSaga({ key: 'utilityPage', saga });
 
     const classes = useStyles();
-    const { loading, openNewTaskDialog, getUtilityFiles, tasks, users, match } = props;
+    const { loading, getUtilityFiles, getEmployees, match } = props;
     const { params } = match
 
     console.log(params, "params")
 
     React.useEffect(() => {
         getUtilityFiles()
+        getEmployees()
     }, []);
 
     return (
@@ -62,6 +63,7 @@ function mapDispatchToProps(dispatch) {
     openShareFileDialog: ev => dispatch(Actions.openShareFileDialog(ev)),
     // openNewTaskDialog: ev => dispatch(Actions.openNewTaskDialog(ev)),
     getUtilityFiles: ev => dispatch(Actions.getUtilityFiles(ev)),
+    getEmployees: () => dispatch(Actions.getEmployees()),
   };
 }
 

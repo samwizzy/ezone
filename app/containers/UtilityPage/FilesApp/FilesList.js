@@ -46,6 +46,14 @@ const useStyles = makeStyles(theme => ({
     '& .MuiTableCell-body': {
       fontSize: theme.typography.fontSize - 1,
     },
+    '& .MuiTableRow-root:hover': {
+      cursor: 'pointer'
+    }
+  },
+  datatable: {
+    '& .MuiTableRow-root:hover': {
+      cursor: 'pointer'
+    }
   },
   sideMenu: {
     width: '100%',
@@ -81,8 +89,9 @@ const useStyles = makeStyles(theme => ({
 
 const FilesList = props => {
   const classes = useStyles();
-  const { loading, files, file, user, getUtilityFile, favoriteDocument, getFavoriteDocuments, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog } = props
+  const { loading, files, file, user, getUtilityFile, shareDocument, deleteDocument, favoriteDocument, getFavoriteDocuments, getSharedDocuments, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog } = props
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [fileId, setFileId] = React.useState(null);
   const open = Boolean(anchorEl);
   const [isOpen, setOpen] = React.useState(true);
 
@@ -93,12 +102,43 @@ const FilesList = props => {
     setOpen(!isOpen);
   };
 
+  const downloadFile = (fileId) => {
+    const doc = files && files.find(file => file.id == fileId)
+    let a = document.createElement('a');
+    a.href = doc.fileUrl;
+    a.download = doc.docName;
+    a.click();
+    setAnchorEl(null);
+  }
+
+  const handleView = () => {
+    openFilePreviewDialog(fileId)
+    setAnchorEl(null);
+  }
+  const handleShare = () => {
+    openShareFileDialog(fileId)
+    setAnchorEl(null);
+  }
+  const handleDownload = () => {
+    downloadFile(fileId)
+    setAnchorEl(null);
+  }
+  const handleDelete = () => {
+    deleteDocument(fileId)
+    setAnchorEl(null);
+  }
+
+
+
   console.log(files, "Files")
   console.log(file, "File single")
   console.log(user, "User single")
 
   const handleClick = event => {
     event.stopPropagation()
+    event.nativeEvent.stopImmediatePropagation()
+    const data = event.currentTarget
+    setFileId(data.dataset.id)
     setAnchorEl(event.currentTarget);
   };
 
@@ -168,12 +208,11 @@ const FilesList = props => {
         filter: true,
         sort: false,
         customBodyRender: id => {
-          const options = ['View', 'Download', 'Share', 'Delete']
-          
           return (
             <div>
               <IconButton
                 className={classes.iconButton}
+                data-id={id}
                 aria-label="more"
                 aria-controls="long-menu"
                 aria-haspopup="true"
@@ -188,7 +227,7 @@ const FilesList = props => {
                 open={open}
                 onClose={handleClose}
               >
-                  <MenuItem key={0} onClick={() => console.log(id)}>
+                  <MenuItem key={0} dense onClick={handleView}>
                     <ListItemIcon>
                       <Visibility fontSize="small" />
                     </ListItemIcon>
@@ -196,7 +235,7 @@ const FilesList = props => {
                       View
                     </Typography>
                   </MenuItem>
-                  <MenuItem key={1} onClick={() => openFilePreviewDialog(id)}>
+                  <MenuItem key={1} dense onClick={handleDownload}>
                     <ListItemIcon>
                       <CloudDownload fontSize="small" />
                     </ListItemIcon>
@@ -204,7 +243,7 @@ const FilesList = props => {
                       Download
                     </Typography>
                   </MenuItem>
-                  <MenuItem key={2} onClick={() => openFilePreviewDialog(id)}>
+                  <MenuItem key={2} dense onClick={handleShare}>
                     <ListItemIcon>
                       <Share fontSize="small" />
                     </ListItemIcon>
@@ -212,7 +251,7 @@ const FilesList = props => {
                       Share
                     </Typography>
                   </MenuItem>
-                  <MenuItem key={3} onClick={() => openFilePreviewDialog(id)}>
+                  <MenuItem key={3} dense onClick={handleDelete}>
                     <ListItemIcon>
                       <Delete fontSize="small" />
                     </ListItemIcon>
@@ -269,7 +308,7 @@ const FilesList = props => {
                 </ListSubheader>
               }
             >
-              <ListItem button>
+              <ListItem button onClick={() => getUtilityFiles()}>
                 <ListItemIcon>
                   <Description />
                 </ListItemIcon>
@@ -281,13 +320,13 @@ const FilesList = props => {
                 </ListItemIcon>
                 <ListItemText primary="Favorite" />
               </ListItem>
-              <ListItem button>
+              <ListItem button onClick={() => getSharedDocuments(user.uuId)}>
                 <ListItemIcon>
                   <Share />
                 </ListItemIcon>
                 <ListItemText primary="Shared" />
               </ListItem>
-              <ListItem button>
+              <ListItem button onClick={() => getSharedDocuments(user.uuId)}>
                 <ListItemIcon>
                   <Delete />
                 </ListItemIcon>
@@ -298,6 +337,7 @@ const FilesList = props => {
         </Grid>
         <Grid item xs={10} md={7}>
           <MUIDataTable
+            className={classes.datatable}
             title="Document List"
             data={files}
             columns={columns}
@@ -431,6 +471,9 @@ function mapDispatchToProps(dispatch) {
     getUtilityFiles: () => dispatch(Actions.getUtilityFiles()),
     getUtilityFile: id => dispatch(Actions.getUtilityFile(id)),
     getFavoriteDocuments: (uuid) => dispatch(Actions.getFavoriteDocuments(uuid)),
+    getSharedDocuments: (uuid) => dispatch(Actions.getSharedDocuments(uuid)),
+    deleteDocument: docId => dispatch(Actions.deleteDocument(docId)),
+    shareDocument: docId => dispatch(Actions.shareDocument(docId)),
     favoriteDocument: docId => dispatch(Actions.favoriteDocument(docId)),
     openFilePreviewDialog: (data) => dispatch(Actions.openFilePreviewDialog(data)),
   };

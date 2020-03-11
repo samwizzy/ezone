@@ -49,14 +49,9 @@ const useStyles = makeStyles(theme => ({
 
 const TasksList = props => {
   const classes = useStyles();
-  const { loading, getUtilityTasksByStatus, openNewTaskDialog, getUtilityTasks, getEmployees, tasks, users } = props;
+  const { loading, getUtilityTasksByStatus, openNewTaskDialog, tasks, users } = props;
 
   console.log(users, "Get users")
-
-  // React.useEffect(() => {
-  //   getUtilityTasks()
-  //   getEmployees()
-  // }, []);
 
   const columns = [
     {
