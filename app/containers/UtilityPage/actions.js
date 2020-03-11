@@ -101,17 +101,18 @@ export function getEmployeesSuccess(data) {
   };
 }
 
-export function getAssignedToByUUID(uuid) {
+export function getFavoriteDocuments(uuid) {
+  console.log(uuid, "uuid action")
   return {
-    type: Constants.GET_ASSIGNEDTO_BY_UUID,
-    payload: uuid,
+    type: Constants.GET_FAVORITE_DOCS_BY_UUID,
+    payload: uuid
   };
 }
 
-export function getAssignedToByUUIDSuccess(data) {
+export function getFavoriteDocumentsSuccess(data) {
   return {
-    type: Constants.GET_ASSIGNEDTO_BY_UUID_SUCCESS,
-    payload: data,
+    type: Constants.GET_FAVORITE_DOCS_BY_UUID_SUCCESS,
+    payload: data
   };
 }
 
@@ -125,20 +126,6 @@ export function favoriteDocument(docId) {
 export function favoriteDocumentSuccess(data) {
   return {
     type: Constants.FAVORITE_FILE_BY_DOC_ID_SUCCESS,
-    payload: data,
-  };
-}
-
-export function getCreatedByUUID(uuid) {
-  return {
-    type: Constants.GET_CREATEDBY_BY_UUID,
-    payload: uuid
-  };
-}
-
-export function getCreatedByUUIDSuccess(data) {
-  return {
-    type: Constants.GET_CREATEDBY_BY_UUID_SUCCESS,
     payload: data,
   };
 }

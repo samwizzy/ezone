@@ -1,21 +1,19 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Button,
   IconButton,
   Typography,
   Box,
-  Link,
   makeStyles,
   AppBar,
   Toolbar,
 } from '@material-ui/core';
 import { compose } from 'redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
-import { fade } from '@material-ui/core/styles/colorManipulator';
+import { fade, darken, lighten } from '@material-ui/core/styles/colorManipulator';
 import RefreshSharp from '@material-ui/icons/RefreshSharp';
 import * as Actions from '../actions';
 import UserMenu from '../../../components/layouts/shared-components/UserMenu';
@@ -24,12 +22,6 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
-  },
-  navList: {
-    '&.active': {
-      backgroundColor: fade(theme.palette.common.white, 0.5),
-      color: fade(theme.palette.common.white, 0.5),
-    },
   },
   content: {
     flexGrow: 1,
@@ -44,17 +36,23 @@ const useStyles = makeStyles(theme => ({
     '& > div:first-child': {
       display: 'flex',
       justifyContent: 'space-between',
-      '& button': {
+      '& a': {
         color: theme.palette.common.white,
-        marginLeft: '50px',
+        marginLeft: '20px',
         borderRadius: 0,
         textDecoration: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        textTransform: "uppercase",
+        padding: theme.spacing(1),
         '& :hover': {
           color: fade(theme.palette.common.white, 0.5),
-        },
+          backgroundColor: 'red'
+        }
       },
     },
   },
+  active: {backgroundColor: darken(theme.palette.primary.main, 0.25)},
 }));
 
 function TabPanel(props) {
@@ -100,50 +98,31 @@ function TabsPage(props) {
               <RefreshSharp />
             </IconButton>
 
-            <Button
-              className={classNames(classes.navList, {
-                active: pathname === '/dashboard',
-              })}
-              component="button"
-              onClick={() => {
-                history.push('/dashboard');
-              }}
+            <NavLink
+              exact
+              to="/dashboard"
+              activeClassName={classes.active}
             >
               Project
-            </Button>
-            <Button
-              className={classNames(classes.navList, {
-                active: pathname === '/dashboard/chats',
-              })}
-              component="button"
-              onClick={() => {
-                history.push('/dashboard/chats');
-              }}
+            </NavLink>
+            <NavLink
+              to="/dashboard/chats"
+              activeClassName={classes.active}
             >
               Chats
-            </Button>
-            <Button
-              className={classNames(classes.navList, {
-                active: pathname === '/dashboard/tasks',
-              })}
-              component="button"
-              onClick={() => {
-                history.push('/dashboard/tasks');
-              }}
+            </NavLink>
+            <NavLink
+              to="/dashboard/tasks"
+              activeClassName={classes.active}
             >
               Tasks
-            </Button>
-            <Button
-              className={classNames(classes.navList, {
-                active: pathname === '/dashboard/files',
-              })}
-              component="button"
-              onClick={() => {
-                history.push('/dashboard/files');
-              }}
+            </NavLink>
+            <NavLink
+              to="/dashboard/files"
+              activeClassName={classes.active}
             >
               Files
-            </Button>
+            </NavLink>
           </div>
 
           <UserMenu />

@@ -84,3 +84,15 @@ export function createNewEmployeeError(data) {
     payload: data,
   };
 }
+
+export function openSignatureDialog() {
+  return {
+    type: Constants.OPEN_SIGNATURE_DIALOG,
+  };
+}
+
+export function closeSignatureDialog() {
+  return {
+    type: Constants.CLOSE_SIGNATURE_DIALOG,
+  };
+}

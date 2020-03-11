@@ -16,11 +16,6 @@ import {
   AppBar,
   Tabs,
   Tab,
-  TableContainer,
-  Table,
-  TableBody,
-  TableRow,
-  TableCell,
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -31,6 +26,9 @@ import LoadingIndicator from '../../../../components/LoadingIndicator';
 import Vector from '../../../../images/Vector.svg';
 import Vector1 from '../../../../images/Vector1.svg';
 import Group266 from '../../../../images/Group266.svg';
+import UserDetail from './UserDetail';
+import Signature from './Signature';
+import NoSignature from './NoSignature';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -190,21 +188,11 @@ const UserProfile = props => {
                 </Tabs>
               </AppBar>
               <TabPanel value={value} index={0}>
-                <TableContainer>
-                  <Table className={classes.table} aria-label="simple table">
-                    <TableBody>
-                      <TableRow>
-                        <TableCell component="th" scope="row">
-                          Name
-                        </TableCell>
-                        <TableCell align="right">teslim</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
+                <UserDetail />
               </TabPanel>
               <TabPanel value={value} index={1}>
-                Item Two
+                <NoSignature />
+                {/* <Signature /> */}
               </TabPanel>
             </div>
           </Paper>

@@ -18,6 +18,13 @@ export const initialState = {
     },
     data: null,
   },
+  signatureDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -138,6 +145,30 @@ const usersPageReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: action.payload,
+        };
+      }
+      case Constants.OPEN_SIGNATURE_DIALOG: {
+        return {
+          ...state,
+          signatureDialog: {
+            type: 'new',
+            props: {
+              open: true,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.CLOSE_SIGNATURE_DIALOG: {
+        return {
+          ...state,
+          signatureDialog: {
+            type: 'new',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
         };
       }
     }

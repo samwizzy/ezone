@@ -53,10 +53,10 @@ const TasksList = props => {
 
   console.log(users, "Get users")
 
-  React.useEffect(() => {
-    getUtilityTasks()
-    getEmployees()
-  }, []);
+  // React.useEffect(() => {
+  //   getUtilityTasks()
+  //   getEmployees()
+  // }, []);
 
   const columns = [
     {
@@ -78,6 +78,7 @@ const TasksList = props => {
       name: 'description',
       label: 'Description',
       options: {
+        display: 'excluded',
         filter: true,
         sort: false,
       },
@@ -94,6 +95,7 @@ const TasksList = props => {
       name: 'dateCreated',
       label: 'Date Assigned',
       options: {
+        display: 'excluded',
         filter: true,
         sort: false,
         customBodyRender: day => {
