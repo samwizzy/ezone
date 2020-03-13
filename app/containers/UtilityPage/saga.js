@@ -481,15 +481,12 @@ export default function* UtilityPageSaga() {
   yield takeLatest(Constants.SHARE_DOCUMENT, shareUtilityFiles);
   yield takeLatest(Constants.DELETE_DOCUMENT, deleteUtilityFile);
   yield takeLatest(Constants.GET_UTILITY_FILES, getUtilityFiles);
-<<<<<<< HEAD
   yield takeLatest(
     Constants.GET_FAVORITE_DOCS_BY_UUID,
     getFavoriteUtilityFiles,
   );
-=======
   yield takeLatest(Constants.GET_SHARED_DOCS_BY_UUID, getSharedUtilityFiles);
   yield takeLatest(Constants.GET_FAVORITE_DOCS_BY_UUID, getFavoriteUtilityFiles);
->>>>>>> c1565f54ac6724d42120414eba2109c814d24ae1
   yield takeLatest(Constants.FAVORITE_FILE_BY_DOC_ID, favoriteUtilityFile);
   yield takeLatest(Constants.CREATE_UTILITY_TASKS, addUtilityTasks);
   yield takeLatest(Constants.CREATE_UTILITY_FILES, addUtilityFile);
