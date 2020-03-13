@@ -62,9 +62,7 @@ export function* addUtilityTasks({ type, payload }) {
 export function* getUtilityTasks() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetUtilityTasksApi}/${
-    user.organisation.orgId
-  }`;
+  const requestURL = `${Endpoints.GetUtilityTasksApi}/${user.organisation.orgId}`;
 
   try {
     const utilityTasksResponse = yield call(request, requestURL, {
@@ -177,7 +175,7 @@ export function* getUtilityFiles() {
 
 export function* deleteUtilityFile({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${Endpoints.DeleteUtilityFileApi}/${payload}`;
+  const requestURL = `${Endpoints.DeleteUtilityFileApi}/${payload.docId}`;
 
   console.log(payload, "DELETE_DOCUMENT")
 
@@ -191,8 +189,15 @@ export function* deleteUtilityFile({ type, payload }) {
     });
 
     console.log(utilityFileResponse, 'deleteFileResponse');
+    yield put(
+      AppActions.openSnackBar({
+        open: true,
+        message: `${utilityFileResponse.document.docName} has been deleted successfully`,
+        status: 'success',
+      }),
+    );
 
-    yield put(Actions.getUtilityFileSuccess(utilityFileResponse));
+    // yield put(Actions.deleteDocumentSuccess(utilityFileResponse));
   } catch (err) {
     // yield put(Actions.getUtilityFileError(err));
   }
