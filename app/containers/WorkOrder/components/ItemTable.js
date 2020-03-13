@@ -267,7 +267,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ItemTable = props => {
-  // const { onSelectAllClick, numSelected, rowCount, onRequestSort } = props;
+  const { savedItemStore } = props;
 
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');

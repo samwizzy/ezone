@@ -156,6 +156,7 @@ const usersPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.OPEN_SIGNATURE_DIALOG: {
+        console.log(action.payload, 'come to reducer');
         return {
           ...state,
           signatureDialog: {
@@ -163,7 +164,7 @@ const usersPageReducer = (state = initialState, action) =>
             props: {
               open: true,
             },
-            data: null,
+            data: action.payload,
           },
         };
       }

@@ -133,7 +133,7 @@ const AddItemDialog = props => {
             <LoadingIndicator />
           ) : (
             <Button
-              onClick={() => { saveAddItemContentsAction(values), closeAddItemDialogAction() }}
+              onClick={() => { saveAddItemContentsAction(values), closeAddItemDialogAction(), setValues('') }}
               color="primary"
               variant="contained"
               // disabled={!canBeSubmitted()}
@@ -142,7 +142,7 @@ const AddItemDialog = props => {
             </Button>
           )}
           <Button
-            onClick={() => closeAddItemDialogAction()}
+            onClick={() => { closeAddItemDialogAction(), setValues('') }}
             color="primary"
             variant="contained"
           >

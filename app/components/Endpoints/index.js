@@ -31,7 +31,7 @@ export const AddNewEmployeeToPositionApi = `${BaseUrl}/authserv/api/v1/user/add_
 
 export const CreateNewEmployeeApi = `${BaseUrl}/authserv/api/v1/user`;
 export const GetAllEmployeesApi = `${BaseUrl}/authserv/api/v1/users/get_by_orgid`;
-export const UpdateUserProfileApi = `${BaseUrl}/authserv/api/v1/users/update_profile`;
+export const UpdateUserProfileApi = `${BaseUrl}/authserv/api/v1/user/update_profile`;
 
 /** *****************************************************************
  * Utility endpoint
@@ -58,7 +58,7 @@ export const CreateUtilityTasksApi = `${BaseUrl}/utilityserv/api/v1/task`;
 export const GetUtilityTasksByStatusApi = `${BaseUrl}/utilityserv/api/v1/get_by_orgid_and_status`;
 
 // Chat Api
-export const GetUsersChatApi = `${BaseUrl}/utilityserv/api/v1/chat/get_user_chat`;
+export const GetUserChatApi = `${BaseUrl}/utilityserv/api/v1/chat/get_user_chat`;
 export const GetUserChatDataApi = `${BaseUrl}/utilityserv/api/v1/message/get_messages_for_chat`;
 export const SendMessageApi = `${BaseUrl}/utilityserv/api/v1/message/send_message`;
 

@@ -6,7 +6,6 @@
 import produce from 'immer';
 import * as Constants from './constants';
 
-
 export const initialState = {
   savedItemStore: [],
   vendorPostData: false,
@@ -95,7 +94,6 @@ const workOrderPageReducer = (state = initialState, action) =>
 
       // Open dialog for add item on workorder dialog
       case Constants.OPEN_ADDITEM_DIALOG: {
-        console.log('OPEN_ADDITEM_DIALOG');
         return {
           ...state,
           itemDialog: {
@@ -109,7 +107,6 @@ const workOrderPageReducer = (state = initialState, action) =>
       }
 
       case Constants.CLOSE_ADDITEM_DIALOG: {
-        console.log('CLOSE_ADDITEM_DIALOG');
         return {
           ...state,
           itemDialog: {
@@ -123,10 +120,9 @@ const workOrderPageReducer = (state = initialState, action) =>
       }
 
       case Constants.SAVE_ADDITEM_DIALOG_CONTENTS: {
-        console.log(`action.payload: ${action.payload}`);
         return {
           ...state,
-          savedItemData: action.payload
+          savedItemData: action.payload,
         };
       }
 
@@ -136,7 +132,7 @@ const workOrderPageReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          vendorPostData: action.payload
+          vendorPostData: action.payload,
         };
       }
       case Constants.SAVE_VENDOR_CONFIG_SUCCESS: {

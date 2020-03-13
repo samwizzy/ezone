@@ -201,11 +201,11 @@ export function* getUtilityFile({ type, payload }) {
   }
 }
 
-export function* getSharedUtilityFiles({type, payload}) {
+export function* getSharedUtilityFiles({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.GetShareDocumentApi}/${payload}`;
 
-  console.log(payload, "payload")
+  console.log(payload, 'payload');
 
   try {
     const sharedDocResponse = yield call(request, requestURL, {
@@ -224,11 +224,11 @@ export function* getSharedUtilityFiles({type, payload}) {
   }
 }
 
-export function* getFavoriteUtilityFiles({type, payload}) {
+export function* getFavoriteUtilityFiles({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.GetFavoriteDocumentApi}/${payload}`;
 
-  console.log(payload, "payload")
+  console.log(payload, 'payload');
 
   try {
     const favDocResponse = yield call(request, requestURL, {
@@ -247,11 +247,11 @@ export function* getFavoriteUtilityFiles({type, payload}) {
   }
 }
 
-export function* favoriteUtilityFile({type, payload}) {
+export function* favoriteUtilityFile({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.FavoriteDocumentApi}`;
 
-  console.log(payload, "payload")
+  console.log(payload, 'payload');
 
   try {
     const favDocResponse = yield call(request, requestURL, {
@@ -271,7 +271,7 @@ export function* favoriteUtilityFile({type, payload}) {
   }
 }
 
-export function* unfavoriteUtilityFile({type, payload}) {
+export function* unfavoriteUtilityFile({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.FavoriteDocumentApi}`;
 
@@ -316,16 +316,14 @@ export function* getAllUsers() {
   }
 }
 
-export function* getAllUsersChat() {
+export function* getUserChat() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
-  const requestURL = `${Endpoints.GetUsersChatApi}/?userUid=${
-    currentUser.uuId
-  }`;
+  const requestURL = `${Endpoints.GetUserChatApi}/?userUid=${currentUser.uuId}`;
 
   try {
-    const getAllUsersChatResponse = yield call(request, requestURL, {
+    const getUserChatResponse = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -333,7 +331,9 @@ export function* getAllUsersChat() {
       }),
     });
 
-    yield put(Actions.getAllUsersChatSuccess(getAllUsersChatResponse));
+    console.log(getUserChatResponse, 'getUserChatResponse');
+
+    yield put(Actions.getAllUsersChatSuccess(getUserChatResponse));
   } catch (err) {
     yield put(Actions.getAllUsersChatError(err));
   }
@@ -426,12 +426,15 @@ export default function* UtilityPageSaga() {
   yield takeLatest(Constants.GET_UTILITY_TASK, getUtilityTask);
   yield takeLatest(Constants.GET_UTILITY_FILE, getUtilityFile);
   yield takeLatest(Constants.GET_UTILITY_FILES, getUtilityFiles);
-  yield takeLatest(Constants.GET_FAVORITE_DOCS_BY_UUID, getFavoriteUtilityFiles);
+  yield takeLatest(
+    Constants.GET_FAVORITE_DOCS_BY_UUID,
+    getFavoriteUtilityFiles,
+  );
   yield takeLatest(Constants.FAVORITE_FILE_BY_DOC_ID, favoriteUtilityFile);
   yield takeLatest(Constants.CREATE_UTILITY_TASKS, addUtilityTasks);
   yield takeLatest(Constants.CREATE_UTILITY_FILES, addUtilityFile);
   yield takeLatest(Constants.GET_ALL_USERS, getAllUsers);
-  yield takeLatest(Constants.GET_ALL_USERS_CHAT, getAllUsersChat);
+  yield takeLatest(Constants.GET_ALL_USERS_CHAT, getUserChat);
   yield takeLatest(Constants.GET_USER_CHAT_DATA, getUserChatData);
   yield takeLatest(Constants.POST_MSG, postMsg);
 }

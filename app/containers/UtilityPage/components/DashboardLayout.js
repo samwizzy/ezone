@@ -13,7 +13,11 @@ import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
-import { fade, darken, lighten } from '@material-ui/core/styles/colorManipulator';
+import {
+  fade,
+  darken,
+  lighten,
+} from '@material-ui/core/styles/colorManipulator';
 import RefreshSharp from '@material-ui/icons/RefreshSharp';
 import * as Actions from '../actions';
 import UserMenu from '../../../components/layouts/shared-components/UserMenu';
@@ -43,16 +47,16 @@ const useStyles = makeStyles(theme => ({
         textDecoration: 'none',
         display: 'flex',
         alignItems: 'center',
-        textTransform: "uppercase",
+        textTransform: 'uppercase',
         padding: theme.spacing(1),
         '& :hover': {
           color: fade(theme.palette.common.white, 0.5),
-          backgroundColor: 'red'
-        }
+          backgroundColor: 'red',
+        },
       },
     },
   },
-  active: {backgroundColor: darken(theme.palette.primary.main, 0.25)},
+  active: { backgroundColor: darken(theme.palette.primary.main, 0.25) },
 }));
 
 function TabPanel(props) {
@@ -98,29 +102,16 @@ function TabsPage(props) {
               <RefreshSharp />
             </IconButton>
 
-            <NavLink
-              exact
-              to="/dashboard"
-              activeClassName={classes.active}
-            >
+            <NavLink exact to="/dashboard" activeClassName={classes.active}>
               Project
             </NavLink>
-            <NavLink
-              to="/dashboard/chats"
-              activeClassName={classes.active}
-            >
+            <NavLink to="/dashboard/chats" activeClassName={classes.active}>
               Chats
             </NavLink>
-            <NavLink
-              to="/dashboard/tasks"
-              activeClassName={classes.active}
-            >
+            <NavLink to="/dashboard/tasks" activeClassName={classes.active}>
               Tasks
             </NavLink>
-            <NavLink
-              to="/dashboard/files"
-              activeClassName={classes.active}
-            >
+            <NavLink to="/dashboard/files" activeClassName={classes.active}>
               Files
             </NavLink>
           </div>

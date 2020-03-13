@@ -8,8 +8,8 @@ import * as Constants from './constants';
 export const initialState = {
   postMsg: false,
   getPostMsg: false,
-  getAllUserChatData: false,
-  getUserChatData: false,
+  getAllUserChatData: [],
+  getUserChatData: [],
   getAllUsersChat: [],
   getAllEmployees: [],
   loading: false,

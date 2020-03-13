@@ -57,9 +57,8 @@ import {
   Tooltip,
   DeleteIcon,
   Switch,
-  FilterListIcon 
+  FilterListIcon,
 } from '@material-ui/core';
-
 
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
@@ -126,7 +125,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
-
 const WorkOrderDialog = props => {
   const {
     loading,
@@ -137,50 +135,49 @@ const WorkOrderDialog = props => {
     listOfVendorsData,
     getListOfVendorsAction,
     savedItemData,
-    savedItemStore
+    savedItemStore,
   } = props;
 
   const classes = useStyles();
 
   const [values, setValues] = React.useState({
-    id: "",
-    addedBy: "",
-    amountBal: "",
-    amountPaid: "",
-    approved: "",
-    cost: "",
-    date: "",
-    dateAdded: "",
-    dateCreated: "",
-    dateUpdated: "",
-    description: "",
-    expectedCompletionDate: "",
-    "id": 0,
-    "items": [
+    id: '',
+    addedBy: '',
+    amountBal: '',
+    amountPaid: '',
+    approved: '',
+    cost: '',
+    date: '',
+    dateAdded: '',
+    dateCreated: '',
+    dateUpdated: '',
+    description: '',
+    expectedCompletionDate: '',
+    id: 0,
+    items: [
       {
-        "addedBy": "string",
-        "amount": 0,
-        "amountForOneUnit": 0,
-        "date": "2020-03-05T12:18:32.015Z",
-        "dateCreated": "2020-03-05T12:18:32.015Z",
-        "dateUpdated": "2020-03-05T12:18:32.015Z",
-        "description": "string",
-        "id": 0,
-        "name": "string",
-        "orgId": "string",
-        "updatedBy": "string"
-      }
+        addedBy: 'string',
+        amount: 0,
+        amountForOneUnit: 0,
+        date: '2020-03-05T12:18:32.015Z',
+        dateCreated: '2020-03-05T12:18:32.015Z',
+        dateUpdated: '2020-03-05T12:18:32.015Z',
+        description: 'string',
+        id: 0,
+        name: 'string',
+        orgId: 'string',
+        updatedBy: 'string',
+      },
     ],
-    "memo": "string",
-    "number": "string",
-    "orgId": 0,
-    "paymentDate": "2020-03-05T12:18:32.015Z",
-    "priority": "string",
-    "status": "string",
-    "updatedBy": "string",
+    memo: 'string',
+    number: 'string',
+    orgId: 0,
+    paymentDate: '2020-03-05T12:18:32.015Z',
+    priority: 'string',
+    status: 'string',
+    updatedBy: 'string',
   });
 
-  
   // const canBeSubmitted = () => {
   //   const {
   //     firstName,
@@ -217,7 +214,9 @@ const WorkOrderDialog = props => {
     getListOfVendorsAction();
   }, []);
 
-  savedItemStore.push(savedItemData);
+  if (savedItemData) {
+    savedItemStore.push(savedItemData);
+  }
 
   console.log('VendorsData --> ', listOfVendorsData);
   console.log('savedItemData --> ', savedItemData);
@@ -228,8 +227,6 @@ const WorkOrderDialog = props => {
   const handleDateChange = date => {
     setSelectedDate(date);
   };
-
- 
 
   return (
     <div>
@@ -255,7 +252,7 @@ const WorkOrderDialog = props => {
                 getOptionLabel={option => option.description}
                 // style={{ width: 800 }}
                 fullWidth
-                onChange={(evt) => handleSelectChange(evt)}
+                onChange={evt => handleSelectChange(evt)}
                 renderInput={params => (
                   <TextField
                     {...params}
@@ -343,31 +340,8 @@ const WorkOrderDialog = props => {
                 </Grid>
               </MuiPickersUtilsProvider>
 
-              <TableContainer component={Paper}>
-      <Table className={classes.table} size="small" aria-label="a dense table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Item</TableCell>
-            <TableCell align="right">Amount</TableCell>
-            <TableCell align="right">Amount Per Unit</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {savedItemStore.map(row => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.amount}</TableCell>
-              <TableCell align="right">{row.amountForOneUnit}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+              <ItemTable savedItemStore={savedItemStore} />
 
-    <ItemTable />
-              
               <Button
                 variant="outlined"
                 color="primary"
@@ -375,7 +349,7 @@ const WorkOrderDialog = props => {
               >
                 Add Item
               </Button>
-             
+
               <TextField
                 id="standard-email"
                 label="Email"
@@ -505,8 +479,8 @@ WorkOrderDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(), 
-  workOrderDialog: Selectors.makeSelectWorkOrderDialog(), 
+  loading: Selectors.makeSelectLoading(),
+  workOrderDialog: Selectors.makeSelectWorkOrderDialog(),
   addItemDialog: Selectors.makeSelectItemDialog(),
   listOfVendorsData: Selectors.makeSelectGetListOfVendorsData(),
   savedItemData: Selectors.makeSelectSavedItemData(),
@@ -515,8 +489,10 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openCreateWorkOrderDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
-    closeWorkOrderDialogAction: () => dispatch(Actions.closeCreateWorkOrderDialog()),
+    openCreateWorkOrderDialogAction: () =>
+      dispatch(Actions.openCreateWorkOrderDialog()),
+    closeWorkOrderDialogAction: () =>
+      dispatch(Actions.closeCreateWorkOrderDialog()),
     openAddItemDialogAction: () => dispatch(Actions.openAddItemDialog()),
     closeAddItemDialogAction: () => dispatch(Actions.closeAddItemDialog()),
     getListOfVendorsAction: evt => dispatch(Actions.getAllVendorsAction(evt)),

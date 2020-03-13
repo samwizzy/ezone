@@ -85,9 +85,11 @@ export function createNewEmployeeError(data) {
   };
 }
 
-export function openSignatureDialog() {
+export function openSignatureDialog(data) {
+  console.log(data, 'data come here');
   return {
     type: Constants.OPEN_SIGNATURE_DIALOG,
+    payload: data,
   };
 }
 
