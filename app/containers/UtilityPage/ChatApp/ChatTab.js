@@ -146,6 +146,8 @@ const ChatTab = props => {
     currentUser,
     getAllUserChatData,
     userChatData,
+    dispatchGetAllEmployees,
+    dispatchGetUserChats
   } = props;
   useEffect(() => {
     // dispatchGetAllEmployees();
@@ -255,46 +257,46 @@ const ChatTab = props => {
             </Grid>
             <Grid item xs={12} md={8} component={Paper}>
               {/* {getAllUserChatData && getAllUserChatData.length > 0 ? ( */}
-                <Grid container justify="center">
-                  <Grid item xs={12}>
-                    <ChatHeader userChatData={userChatData} />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <div className={classes.msgBody}>
-                      <div
-                        className={classNames(
-                          classes.messageRow,
-                          { me: 'item.id' === 'user.id' },
-                          { contact: 'item.id' !== 'user.id' },
-                          {
-                            'first-of-group': isFirstMessageOfGroup('item', 'i'),
-                          },
-                          { 'last-of-group': isLastMessageOfGroup('item', 'i') },
-                        )}
-                        style={{
-                          border: '1px solid #efefef',
-                          display: 'flex',
-                          justifyContent: 'justify-end',
-                          alignItems: 'flex-start',
-                        }}
-                      >
-                        <Paper className={classes.chatPane}>
-                          <Typography variant="subtitle1">
-                            How you doing brother?
-                          </Typography>
-                          <Typography
-                            variant="caption"
-                            style={{ position: 'absolute', right: 12, bottom: 0 }}
-                          >
-                            05:56 am
-                          </Typography>
-                        </Paper>
-                      </div>
-
-                      <ChatFooter />
-                    </div>
-                  </Grid>
+              <Grid container justify="center">
+                <Grid item xs={12}>
+                  <ChatHeader userChatData={userChatData} />
                 </Grid>
+                <Grid item xs={12}>
+                  <div className={classes.msgBody}>
+                    <div
+                      className={classNames(
+                        classes.messageRow,
+                        { me: 'item.id' === 'user.id' },
+                        { contact: 'item.id' !== 'user.id' },
+                        {
+                          'first-of-group': isFirstMessageOfGroup('item', 'i'),
+                        },
+                        { 'last-of-group': isLastMessageOfGroup('item', 'i') },
+                      )}
+                      style={{
+                        border: '1px solid #efefef',
+                        display: 'flex',
+                        justifyContent: 'justify-end',
+                        alignItems: 'flex-start',
+                      }}
+                    >
+                      <Paper className={classes.chatPane}>
+                        <Typography variant="subtitle1">
+                            How you doing brother?
+                        </Typography>
+                        <Typography
+                          variant="caption"
+                          style={{ position: 'absolute', right: 12, bottom: 0 }}
+                        >
+                            05:56 am
+                        </Typography>
+                      </Paper>
+                    </div>
+
+                    <ChatFooter />
+                  </div>
+                </Grid>
+              </Grid>
               {/* ) : (
                 <Grid container justify="center">
                   <Grid item xs={12}>
@@ -318,11 +320,12 @@ const ChatTab = props => {
 
 ChatTab.propTypes = {
   dispatchGetAllEmployees: PropTypes.func,
+  dispatchGetUserChats: PropTypes.func,
   allEmployees: PropTypes.array,
   allUsersChat: PropTypes.array,
   currentUser: PropTypes.object,
   getAllUserChatData: PropTypes.array,
-  userChatData: PropTypes.object,
+  userChatData: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -335,6 +338,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    dispatchGetAllEmployees: () => dispatch(Actions.getAllUsers()),
+    dispatchGetUserChats: () => dispatch(Actions.getAllUsersChat()),
     dispatch,
   };
 }

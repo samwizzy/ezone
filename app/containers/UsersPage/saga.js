@@ -98,6 +98,7 @@ export function* updateUserProfile() {
     Selectors.makeSelectUpdateUserProfileData(),
   );
 
+  console.log(updateUserProfileData, 'updateUserProfileData');
   const requestURL = `${Endpoints.UpdateUserProfileApi}`;
 
   try {
@@ -113,6 +114,7 @@ export function* updateUserProfile() {
     console.log(updateUserProfileResponse, 'updateUserProfileResponse');
     yield put(Actions.updateUserProfileSuccess(updateUserProfileResponse));
     yield put(Actions.closeEditUserProfileDialog());
+    yield put(AppActions.getUserProfileAction(updateUserProfileResponse));
 
     // yield put(
     //   AppActions.openSnackBar({

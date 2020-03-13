@@ -29,6 +29,7 @@ import Vector1 from '../../../../images/Vector1.svg';
 import Group266 from '../../../../images/Group266.svg';
 import UserDetail from './UserDetail';
 import NoSignature from './NoSignature';
+import Signature from './Signature';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -108,98 +109,105 @@ const UserProfile = props => {
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={3} lg={3}>
-          <Paper className={classes.sidebar}>
-            <List component="nav" aria-label="secondary mailbox folders">
-              <ListItem button>
-                <ListItemIcon>
-                  <img src={Vector} alt="Vector" />
-                </ListItemIcon>
-                <ListItemText primary="My Account" />
-              </ListItem>
-              <ListItem button>
-                <ListItemIcon>
-                  <img src={Vector1} alt="Vector1" />
-                </ListItemIcon>
-                <ListItemText primary="Subscription" />
-              </ListItem>
-              <ListItem button>
-                <ListItemIcon>
-                  <img src={Vector1} alt="Vector1" />
-                </ListItemIcon>
-                <ListItemText primary="Settings" />
-              </ListItem>
-            </List>
-          </Paper>
-        </Grid>
-        <Grid item xs={12} sm={9} lg={9}>
-          <Paper>
-            <Paper className={classes.mainTop}>
-              <List className={classes.list}>
-                <ListItem
-                  alignItems="flex-start"
-                  style={{ display: 'flex', alignItems: 'center' }}
-                >
-                  <ListItemAvatar>
-                    <Avatar
-                      alt="Company Logo"
-                      src={Group266}
-                      className={classes.avatar}
-                    />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={
-                      <Typography variant="h6" color="inherit">
-                        Joy Essien
-                      </Typography>
-                    }
-                    secondary={
-                      <React.Fragment>
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          className={classes.inline}
-                          color="textPrimary"
-                        >
-                          UI/UX Designer
-                        </Typography>
-                      </React.Fragment>
-                    }
-                  />
-                  <Button
-                    onClick={() => openEditUserProfileDialogAction(currentUser)}
-                  >
-                    <Typography variant="p" className={classes.editButton}>
-                      Edit Profile
-                    </Typography>
-                  </Button>
+      {currentUser && (
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={3} lg={3}>
+            <Paper className={classes.sidebar}>
+              <List component="nav" aria-label="secondary mailbox folders">
+                <ListItem button>
+                  <ListItemIcon>
+                    <img src={Vector} alt="Vector" />
+                  </ListItemIcon>
+                  <ListItemText primary="My Account" />
+                </ListItem>
+                <ListItem button>
+                  <ListItemIcon>
+                    <img src={Vector1} alt="Vector1" />
+                  </ListItemIcon>
+                  <ListItemText primary="Subscription" />
+                </ListItem>
+                <ListItem button>
+                  <ListItemIcon>
+                    <img src={Vector1} alt="Vector1" />
+                  </ListItemIcon>
+                  <ListItemText primary="Settings" />
                 </ListItem>
               </List>
             </Paper>
+          </Grid>
+          <Grid item xs={12} sm={9} lg={9}>
+            <Paper>
+              <Paper className={classes.mainTop}>
+                <List className={classes.list}>
+                  <ListItem
+                    alignItems="flex-start"
+                    style={{ display: 'flex', alignItems: 'center' }}
+                  >
+                    <ListItemAvatar>
+                      <Avatar
+                        alt="Company Logo"
+                        src={Group266}
+                        className={classes.avatar}
+                      />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={
+                        <Typography variant="h6" color="inherit">
+                          {currentUser.firstName} {currentUser.lastName}
+                        </Typography>
+                      }
+                      secondary={
+                        <React.Fragment>
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            className={classes.inline}
+                            color="textPrimary"
+                          >
+                            UI/UX Designer
+                          </Typography>
+                        </React.Fragment>
+                      }
+                    />
+                    <Button
+                      onClick={() =>
+                        openEditUserProfileDialogAction(currentUser)
+                      }
+                    >
+                      <Typography variant="p" className={classes.editButton}>
+                        Edit Profile
+                      </Typography>
+                    </Button>
+                  </ListItem>
+                </List>
+              </Paper>
 
-            <div className={classes.tab}>
-              <AppBar position="static">
-                <Tabs
-                  value={value}
-                  onChange={handleChange}
-                  aria-label="simple tabs example"
-                >
-                  <Tab label="Basic Info" {...a11yProps(0)} />
-                  <Tab label="Signature" {...a11yProps(1)} />
-                </Tabs>
-              </AppBar>
-              <TabPanel value={value} index={0}>
-                <UserDetail />
-              </TabPanel>
-              <TabPanel value={value} index={1}>
-                <NoSignature />
-                {/* <Signature /> */}
-              </TabPanel>
-            </div>
-          </Paper>
+              <div className={classes.tab}>
+                <AppBar position="static">
+                  <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    aria-label="simple tabs example"
+                  >
+                    <Tab label="Basic Info" {...a11yProps(0)} />
+                    <Tab label="Signature" {...a11yProps(1)} />
+                  </Tabs>
+                </AppBar>
+                <TabPanel value={value} index={0}>
+                  <UserDetail />
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                  {currentUser.signature ? (
+                    <Signature currentUser={currentUser} />
+                  ) : (
+                    <NoSignature currentUser={currentUser} />
+                  )}
+                </TabPanel>
+              </div>
+            </Paper>
+          </Grid>
         </Grid>
-      </Grid>
+      )}
     </div>
   );
 };
