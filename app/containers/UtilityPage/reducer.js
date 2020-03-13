@@ -185,6 +185,18 @@ const utilityPageReducer = (state = initialState, action) =>
           file: action.payload
         };
       }
+      case Constants.SHARE_DOCUMENT_SUCCESS: {
+        return {
+          ...state,
+          file: action.payload
+        };
+      }
+      case Constants.DELETE_DOCUMENT_SUCCESS: {
+        return {
+          ...state,
+          file: action.payload
+        };
+      }
       case Constants.GET_SHARED_DOCS_BY_UUID_SUCCESS: {
         return {
           ...state,
@@ -222,6 +234,7 @@ const utilityPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.OPEN_SHARE_FILE_DIALOG: {
+        const file = state.files.find(file => file.id == action.payload)
         return {
           ...state,
           shareFileDialog: {
@@ -229,7 +242,7 @@ const utilityPageReducer = (state = initialState, action) =>
             props: {
               open: true,
             },
-            data: action.payload,
+            data: file,
           },
         };
       }
