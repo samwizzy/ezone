@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -34,6 +34,19 @@ const useStyles = makeStyles(theme => ({
 const SignaturePad = props => {
   const classes = useStyles();
 
+  const { updateUserProfileAction, signatureDialog } = props;
+  console.log(signatureDialog.data, 'come to pad');
+  // console.log(signatureDialog.data.signature, 'come to pad');
+  const [values, setValues] = React.useState({
+    signature: '',
+  });
+
+  useEffect(() => {
+    setValues({
+      ...signatureDialog.data,
+    });
+  }, [signatureDialog.data]);
+
   const [trimmedDataURL, setTrimmedDataURL] = React.useState(null);
   let sigPad = {};
   const clear = () => {
@@ -43,8 +56,20 @@ const SignaturePad = props => {
     setTrimmedDataURL(sigPad.getTrimmedCanvas().toDataURL('image/png'));
   };
 
-  const save = () =>
-    console.log(sigPad.getTrimmedCanvas().toDataURL('image/png'), 'console');
+  const save = () => {
+    setValues()
+    updateUserProfileAction(values);
+  };
+
+  // const save = () => {
+  //   if (signatureDialog && signatureDialog.data) {
+  //     updateUserProfileAction(
+  //       (signatureDialog.data.signature = sigPad
+  //         .getTrimmedCanvas()
+  //         .toDataURL('image/png')),
+  //     );
+  //   }
+  // };
 
   return (
     <React.Fragment>
@@ -95,14 +120,14 @@ const SignaturePad = props => {
 
 SignaturePad.prototypes = {
   classes: PropTypes.object.isRequired,
-  openNewEmployeeDialogAction: PropTypes.func,
+  updateUserProfileAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewBranchDialogAction: () => dispatch(Actions.openNewEmployeeDialog()),
+    updateUserProfileAction: evt => dispatch(Actions.updateUserProfile(evt)),
     dispatch,
   };
 }

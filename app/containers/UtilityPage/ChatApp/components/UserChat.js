@@ -34,35 +34,36 @@ const UserChat = props => {
 
   return (
     <List className={classes.list}>
-      {newChat &&
+      {newChat && (
         // newChat.map(User => (
-          <ListItem
-            alignItems="flex-start"
-            component={Paper}
-            key={newChat.id}
-            onClick={() => dispatchGetUserChatData(newChat)}
-          >
-            <ListItemAvatar>
-              <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              primary={newChat.responderName}
-              secondary={
-                <React.Fragment key={newChat.id}>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    {newChat.responderName}
-                  </Typography>
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-        // ))
-        }
+        <ListItem
+          alignItems="flex-start"
+          component={Paper}
+          key={newChat.id}
+          onClick={() => dispatchGetUserChatData(newChat)}
+        >
+          <ListItemAvatar>
+            <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+          </ListItemAvatar>
+          <ListItemText
+            primary={newChat.responderName}
+            secondary={
+              <React.Fragment key={newChat.id}>
+                <Typography
+                  component="span"
+                  variant="body2"
+                  className={classes.inline}
+                  color="textPrimary"
+                >
+                  {newChat.responderName}
+                </Typography>
+              </React.Fragment>
+            }
+          />
+        </ListItem>
+      )
+      // ))
+      }
       {allUsersChat &&
         allUsersChat.map(user => (
           <ListItem

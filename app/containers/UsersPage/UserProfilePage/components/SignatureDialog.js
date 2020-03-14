@@ -92,6 +92,7 @@ const SignatureDialog = props => {
     setValue(newValue);
   };
 
+  console.log(signatureDialog, 'come to dialog')
   return (
     <div>
       <Dialog
@@ -121,7 +122,7 @@ const SignatureDialog = props => {
                 </Tabs>
               </AppBar>
               <TabPanel value={value} index={0}>
-                <SignaturePad />
+                <SignaturePad signatureDialog={signatureDialog} />
               </TabPanel>
               <TabPanel value={value} index={1}>
                 <SignatureUpload />

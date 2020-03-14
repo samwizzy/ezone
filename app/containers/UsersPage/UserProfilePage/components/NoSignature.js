@@ -25,8 +25,9 @@ const useStyles = makeStyles(theme => ({
 const NoSignature = props => {
   const classes = useStyles();
 
-  const { dispatchOpenSignatureDialogAction } = props;
+  const { dispatchOpenSignatureDialogAction, currentUser } = props;
 
+  console.log(currentUser, 'currentUser');
   return (
     <React.Fragment>
       <Grid
@@ -44,7 +45,7 @@ const NoSignature = props => {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => dispatchOpenSignatureDialogAction()}
+              onClick={() => dispatchOpenSignatureDialogAction(currentUser)}
               className={classes.button}
               disableElevation
             >
@@ -53,23 +54,20 @@ const NoSignature = props => {
           </Box>
         </Grid>
       </Grid>
-      {/* <AddTaskDialog /> */}
     </React.Fragment>
   );
 };
 
 NoSignature.propTypes = {
-  loading: PropTypes.bool,
+  currentUser: PropTypes.object,
   dispatchOpenSignatureDialogAction: PropTypes.func,
 };
 
-const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(),
-});
+const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchOpenSignatureDialogAction: () => dispatch(Actions.openSignatureDialog()),
+    dispatchOpenSignatureDialogAction: evt => dispatch(Actions.openSignatureDialog(evt)),
   };
 }
 

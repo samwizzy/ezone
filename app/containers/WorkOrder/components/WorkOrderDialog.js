@@ -58,9 +58,8 @@ import {
   Tooltip,
   DeleteIcon,
   Switch,
-  FilterListIcon 
+  FilterListIcon,
 } from '@material-ui/core';
-
 
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
@@ -127,7 +126,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
-
 const WorkOrderDialog = props => {
   const {
     loading,
@@ -139,9 +137,6 @@ const WorkOrderDialog = props => {
     getListOfVendorsAction,
     savedItemData,
     savedItemStore,
-    workOrderPostData,
-    saveWorkOrderAction,
-    currentUser
   } = props;
 
   const classes = useStyles();
@@ -152,25 +147,46 @@ const WorkOrderDialog = props => {
     amountBal: "",
     amountPaid: "",
     approved: "",
-    cost: "",
-    description: "",
-    expectedCompletionDate: "",
-    paymentDate: "",
+    description: '',
+    expectedCompletionDate: '',
+    paymentDate: '',
     id: "",
     items: savedItemStore,
-    memo: "",
-    number: "",
-    priority: "",
-    status: "",
-    updatedBy: "",
+    memo: '',
+    number: '',
+    priority: '',
+    status: '',
+    updatedBy: '',
   });
+
+  // const canBeSubmitted = () => {
+  //   const {
+  //     firstName,
+  //     lastName,
+  //     emailAddress,
+  //     employeeId,
+  //     phoneNumber,
+  //     address,
+  //     gender,
+  //     password,
+  //   } = values;
+  //   return (
+  //     firstName !== '' &&
+  //     lastName !== '' &&
+  //     emailAddress !== '' &&
+  //     employeeId !== '' &&
+  //     phoneNumber !== '' &&
+  //     address !== '' &&
+  //     gender !== '' &&
+  //     password !== ''
+  //   );
+  // };
 
   const handleSelectChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
 
   const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
   };
 
   
@@ -215,7 +231,7 @@ const WorkOrderDialog = props => {
                 getOptionLabel={option => option.busName}
                 // style={{ width: 800 }}
                 fullWidth
-                onChange={(evt) => handleSelectChange(evt)}
+                onChange={evt => handleSelectChange(evt)}
                 renderInput={params => (
                   <TextField
                     {...params}
@@ -302,7 +318,9 @@ const WorkOrderDialog = props => {
                   />
                 </Grid>
               </MuiPickersUtilsProvider>
-              <ItemTable savedItemStore={savedItemStore}/>
+
+              <ItemTable savedItemStore={savedItemStore} />
+
               <Button
                 variant="outlined"
                 color="primary"
@@ -310,7 +328,7 @@ const WorkOrderDialog = props => {
               >
                 Add Item
               </Button>
-             
+
               <TextField
                 id="standard-email"
                 label="Email"
@@ -441,9 +459,14 @@ WorkOrderDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+<<<<<<< HEAD
   loading: Selectors.makeSelectLoading(), 
   currentUser: AppSelectors.makeSelectCurrentUser(),
   workOrderDialog: Selectors.makeSelectWorkOrderDialog(), 
+=======
+  loading: Selectors.makeSelectLoading(),
+  workOrderDialog: Selectors.makeSelectWorkOrderDialog(),
+>>>>>>> fee484cd43ee92d91747030b703db05004bc2718
   addItemDialog: Selectors.makeSelectItemDialog(),
   listOfVendorsData: Selectors.makeSelectGetListOfVendorsData(),
   savedItemData: Selectors.makeSelectSavedItemData(),
@@ -453,8 +476,10 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openCreateWorkOrderDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
-    closeWorkOrderDialogAction: () => dispatch(Actions.closeCreateWorkOrderDialog()),
+    openCreateWorkOrderDialogAction: () =>
+      dispatch(Actions.openCreateWorkOrderDialog()),
+    closeWorkOrderDialogAction: () =>
+      dispatch(Actions.closeCreateWorkOrderDialog()),
     openAddItemDialogAction: () => dispatch(Actions.openAddItemDialog()),
     closeAddItemDialogAction: () => dispatch(Actions.closeAddItemDialog()),
     getListOfVendorsAction: () => dispatch(Actions.getAllVendorsAction()),

@@ -132,7 +132,7 @@ const UserProfileDialog = props => {
                 label="First Name"
                 variant="outlined"
                 className={classes.textField}
-                value={values.firstName}
+                value={values.firstName || ''}
                 onChange={handleChange('firstName')}
                 margin="normal"
                 fullWidth
@@ -142,7 +142,7 @@ const UserProfileDialog = props => {
                 label="Last Name"
                 variant="outlined"
                 className={classes.textField}
-                value={values.lastName}
+                value={values.lastName || ''}
                 onChange={handleChange('lastName')}
                 margin="normal"
                 fullWidth
@@ -153,7 +153,7 @@ const UserProfileDialog = props => {
                 type="number"
                 variant="outlined"
                 className={classes.textField}
-                value={values.phoneNumber}
+                value={values.phoneNumber || ''}
                 onChange={handleChange('phoneNumber')}
                 margin="normal"
                 fullWidth
@@ -180,7 +180,7 @@ const UserProfileDialog = props => {
                 label="Address"
                 variant="outlined"
                 className={classes.textField}
-                value={values.address}
+                value={values.address || ''}
                 onChange={handleChange('address')}
                 margin="normal"
                 fullWidth
