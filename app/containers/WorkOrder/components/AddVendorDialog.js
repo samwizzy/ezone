@@ -676,7 +676,10 @@ const AddVendorDialog = props => {
             <LoadingIndicator />
           ) : (
             <Button
-              onClick={() => saveVendorAction(values)}
+              onClick={() => {
+                saveVendorAction(values)
+                closeVendorDialogAction()
+              }}
               color="primary"
               variant="contained"
               // disabled={!canBeSubmitted()}
@@ -685,7 +688,7 @@ const AddVendorDialog = props => {
             </Button>
           )}
           <Button
-            onClick={() => closeVendorDialogAction()}
+            onClick={() => closeVendorDialogAction() }
             color="primary"
             variant="contained"
           >

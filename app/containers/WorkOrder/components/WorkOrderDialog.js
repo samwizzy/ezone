@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
+import * as AppSelectors from '../../App/selectors';
+
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -13,7 +15,6 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-// import MaterialTable from 'material-table';
 import ItemTable from './ItemTable';
 
 import {
@@ -137,72 +138,32 @@ const WorkOrderDialog = props => {
     listOfVendorsData,
     getListOfVendorsAction,
     savedItemData,
-    savedItemStore
+    savedItemStore,
+    workOrderPostData,
+    saveWorkOrderAction,
+    currentUser
   } = props;
 
   const classes = useStyles();
 
   const [values, setValues] = React.useState({
-    id: "",
+    orgId: currentUser.organisation.orgId,
     addedBy: "",
     amountBal: "",
     amountPaid: "",
     approved: "",
     cost: "",
-    date: "",
-    dateAdded: "",
-    dateCreated: "",
-    dateUpdated: "",
     description: "",
     expectedCompletionDate: "",
-    "id": 0,
-    "items": [
-      {
-        "addedBy": "string",
-        "amount": 0,
-        "amountForOneUnit": 0,
-        "date": "2020-03-05T12:18:32.015Z",
-        "dateCreated": "2020-03-05T12:18:32.015Z",
-        "dateUpdated": "2020-03-05T12:18:32.015Z",
-        "description": "string",
-        "id": 0,
-        "name": "string",
-        "orgId": "string",
-        "updatedBy": "string"
-      }
-    ],
-    "memo": "string",
-    "number": "string",
-    "orgId": 0,
-    "paymentDate": "2020-03-05T12:18:32.015Z",
-    "priority": "string",
-    "status": "string",
-    "updatedBy": "string",
+    paymentDate: "",
+    id: "",
+    items: savedItemStore,
+    memo: "",
+    number: "",
+    priority: "",
+    status: "",
+    updatedBy: "",
   });
-
-  
-  // const canBeSubmitted = () => {
-  //   const {
-  //     firstName,
-  //     lastName,
-  //     emailAddress,
-  //     employeeId,
-  //     phoneNumber,
-  //     address,
-  //     gender,
-  //     password,
-  //   } = values;
-  //   return (
-  //     firstName !== '' &&
-  //     lastName !== '' &&
-  //     emailAddress !== '' &&
-  //     employeeId !== '' &&
-  //     phoneNumber !== '' &&
-  //     address !== '' &&
-  //     gender !== '' &&
-  //     password !== ''
-  //   );
-  // };
 
   const handleSelectChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
@@ -212,24 +173,23 @@ const WorkOrderDialog = props => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  // Similar to componentDidMount and componentDidUpdate:
-  useEffect(() => {
-    getListOfVendorsAction();
-  }, []);
+  
 
-  savedItemStore.push(savedItemData);
+  if (savedItemData) {
+    savedItemStore.push(savedItemData);
+  }
 
   console.log('VendorsData --> ', listOfVendorsData);
   console.log('savedItemData --> ', savedItemData);
   console.log('savedItemStore --> ', savedItemStore);
+  console.log('postValues : ', values);
+  console.log('workOrderPostData : ', workOrderPostData);
 
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
   const handleDateChange = date => {
     setSelectedDate(date);
   };
-
- 
 
   return (
     <div>
@@ -252,7 +212,7 @@ const WorkOrderDialog = props => {
               <Autocomplete
                 id="combo-box-demo"
                 options={listOfVendorsData}
-                getOptionLabel={option => option.description}
+                getOptionLabel={option => option.busName}
                 // style={{ width: 800 }}
                 fullWidth
                 onChange={(evt) => handleSelectChange(evt)}
@@ -323,7 +283,7 @@ const WorkOrderDialog = props => {
                     id="date-picker-dialog"
                     label="Expected Completion Date"
                     format="MM/dd/yyyy"
-                    value={selectedDate}
+                    // value={values.expectedCompletionDate}
                     onChange={handleDateChange}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
@@ -334,7 +294,7 @@ const WorkOrderDialog = props => {
                     id="date-picker-dialog"
                     label="Payment Date"
                     format="MM/dd/yyyy"
-                    value={selectedDate}
+                    // value={values.paymentDate}
                     onChange={handleDateChange}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
@@ -342,32 +302,7 @@ const WorkOrderDialog = props => {
                   />
                 </Grid>
               </MuiPickersUtilsProvider>
-
-              <TableContainer component={Paper}>
-      <Table className={classes.table} size="small" aria-label="a dense table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Item</TableCell>
-            <TableCell align="right">Amount</TableCell>
-            <TableCell align="right">Amount Per Unit</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {savedItemStore.map(row => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.amount}</TableCell>
-              <TableCell align="right">{row.amountForOneUnit}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-
-    <ItemTable />
-              
+              <ItemTable savedItemStore={savedItemStore}/>
               <Button
                 variant="outlined"
                 color="primary"
@@ -475,7 +410,8 @@ const WorkOrderDialog = props => {
           ) : (
             <Button
               onClick={() => {
-                openCreateWorkOrderDialogAction(values);
+                // openCreateWorkOrderDialogAction(values),
+                saveWorkOrderAction(values)
               }}
               color="primary"
               variant="contained"
@@ -506,11 +442,13 @@ WorkOrderDialog.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(), 
+  currentUser: AppSelectors.makeSelectCurrentUser(),
   workOrderDialog: Selectors.makeSelectWorkOrderDialog(), 
   addItemDialog: Selectors.makeSelectItemDialog(),
   listOfVendorsData: Selectors.makeSelectGetListOfVendorsData(),
   savedItemData: Selectors.makeSelectSavedItemData(),
   savedItemStore: Selectors.makeSelectSavedItemStore(),
+  workOrderPostData: Selectors.makeSelectWorkOrderPostData(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -519,7 +457,8 @@ function mapDispatchToProps(dispatch) {
     closeWorkOrderDialogAction: () => dispatch(Actions.closeCreateWorkOrderDialog()),
     openAddItemDialogAction: () => dispatch(Actions.openAddItemDialog()),
     closeAddItemDialogAction: () => dispatch(Actions.closeAddItemDialog()),
-    getListOfVendorsAction: evt => dispatch(Actions.getAllVendorsAction(evt)),
+    getListOfVendorsAction: () => dispatch(Actions.getAllVendorsAction()),
+    saveWorkOrderAction: evt => dispatch(Actions.saveWorkOrderAction(evt)),
     dispatch,
   };
 }

@@ -8,6 +8,7 @@ import * as Constants from './constants';
 
 
 export const initialState = {
+  workOrderPostData: false,
   savedItemStore: [],
   vendorPostData: false,
   savedItemData: false,
@@ -126,7 +127,7 @@ const workOrderPageReducer = (state = initialState, action) =>
         console.log(`action.payload: ${action.payload}`);
         return {
           ...state,
-          savedItemData: action.payload
+          savedItemData: action.payload,
         };
       }
 
@@ -147,6 +148,31 @@ const workOrderPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.SAVE_VENDOR_CONFIG_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+
+      // Create workorder
+      case Constants.SAVE_WORKORDER: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          workOrderPostData: action.payload
+        };
+      }
+
+      case Constants.SAVE_WORKORDER_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.SAVE_WORKORDER_ERR: {
         return {
           ...state,
           loading: false,

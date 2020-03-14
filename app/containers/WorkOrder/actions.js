@@ -74,8 +74,30 @@ export function saveVendorConfigErrorAction(data) {
 }
 
 
+export function saveWorkOrderAction(data) {
+  return {
+    type: Constants.SAVE_WORKORDER,
+    payload: data,
+  };
+}
+
+export function saveWorkOrderSuccessAction(data) {
+  return {
+    type: Constants.SAVE_WORKORDER_SUCCESS,
+    payload: data,
+  };
+}
+
+export function saveWorkOrderErrAction(data) {
+  return {
+    type: Constants.SAVE_WORKORDER_ERR,
+    payload: data,
+  };
+}
+
 // Get list of all saved vendors
 export function getAllVendorsAction() {
+  console.log('getAllVendorsAction');
   return {
     type: Constants.GET_ALL_VENDORS,
   };

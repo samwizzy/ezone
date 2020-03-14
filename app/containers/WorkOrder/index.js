@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -22,10 +22,21 @@ import WorkOrderList from './components/WorkOrderList';
 import WorkOrderDialog from './components/WorkOrderDialog';
 import AddItemDialog from './components/AddItemDialog';
 import AddVendorDialog from './components/AddVendorDialog';
+import Actions from './actions';
 
-export function WorkOrderPage() {
+export function WorkOrderPage(props) {
   useInjectReducer({ key: 'workOrderPage', reducer });
   useInjectSaga({ key: 'workOrderPage', saga });
+
+  // const {
+  //   getListOfVendorsAction
+  // } = props;
+
+  // Similar to componentDidMount and componentDidUpdate
+  // useEffect(() => {
+  //   console.log('useEffect');
+  //   getListOfVendorsAction();
+  // }, []);
 
   return (
     <div>
@@ -51,6 +62,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    getListOfVendorsAction: () => dispatch(Actions.getAllVendorsAction()),
     dispatch,
   };
 }
