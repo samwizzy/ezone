@@ -459,14 +459,8 @@ WorkOrderDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-<<<<<<< HEAD
-  loading: Selectors.makeSelectLoading(), 
-  currentUser: AppSelectors.makeSelectCurrentUser(),
-  workOrderDialog: Selectors.makeSelectWorkOrderDialog(), 
-=======
   loading: Selectors.makeSelectLoading(),
   workOrderDialog: Selectors.makeSelectWorkOrderDialog(),
->>>>>>> fee484cd43ee92d91747030b703db05004bc2718
   addItemDialog: Selectors.makeSelectItemDialog(),
   listOfVendorsData: Selectors.makeSelectGetListOfVendorsData(),
   savedItemData: Selectors.makeSelectSavedItemData(),

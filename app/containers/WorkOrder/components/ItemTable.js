@@ -261,10 +261,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ItemTable = props => {
-<<<<<<< HEAD
-  // const { onSelectAllClick, numSelected, rowCount, onRequestSort } = props;
-=======
->>>>>>> fee484cd43ee92d91747030b703db05004bc2718
   const { savedItemStore } = props;
 
   const classes = useStyles();
