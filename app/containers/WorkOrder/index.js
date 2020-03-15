@@ -27,9 +27,7 @@ export function WorkOrderPage(props) {
   useInjectReducer({ key: 'workOrderPage', reducer });
   useInjectSaga({ key: 'workOrderPage', saga });
 
-  const {
-    // getListOfVendorsAction
-  } = props;
+  // const { getListOfVendorsAction } = props;
 
   // Similar to componentDidMount and componentDidUpdate
   useEffect(() => {
