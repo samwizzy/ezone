@@ -37,6 +37,7 @@ const SignaturePad = props => {
   const { updateUserProfileAction, signatureDialog } = props;
   console.log(signatureDialog.data, 'come to pad');
   // console.log(signatureDialog.data.signature, 'come to pad');
+  const [save, setSave] = React.useState(false);
   const [values, setValues] = React.useState({
     signature: '',
   });
@@ -54,13 +55,26 @@ const SignaturePad = props => {
   };
   const trim = () => {
     setTrimmedDataURL(sigPad.getTrimmedCanvas().toDataURL('image/png'));
+    setValues({
+      ...values,
+      signature: (signatureDialog.data.signature = sigPad
+        .getTrimmedCanvas()
+        .toDataURL('image/png')),
+    });
+    setSave(true);
   };
 
-  const save = () => {
-    setValues()
+  const saveAction = () => {
+    // setValues({...values, signature: signatureDialog.data.signature = sigPad
+    //   .getTrimmedCanvas()
+    //   .toDataURL('image/png')})
     updateUserProfileAction(values);
   };
 
+  console.log(values, 'values outside');
+  // const uploadSignature = () => {
+  //   console.log(values, 'values outsidesignature');
+  // };
   // const save = () => {
   //   if (signatureDialog && signatureDialog.data) {
   //     updateUserProfileAction(
@@ -93,7 +107,8 @@ const SignaturePad = props => {
       <Button
         variant="contained"
         color="primary"
-        onClick={() => save()}
+        disabled={!save}
+        onClick={() => saveAction()}
         className={classes.resetButton}
       >
         Save

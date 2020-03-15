@@ -55,7 +55,7 @@ function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
 }
 
-const rows = [
+const savedItemStore = [
   createData('Cupcake', 305, 3.7, 67, 4.3),
   createData('Donut', 452, 25.0, 51, 4.9),
   createData('Eclair', 262, 16.0, 24, 6.0),
@@ -105,9 +105,9 @@ const headCells = [
     label: 'Dessert (100g serving)',
   },
   { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
+  // { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
+  // { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
+  // { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
 ];
 
 function EnhancedTableHead(props) {
@@ -269,6 +269,7 @@ const useStyles = makeStyles(theme => ({
 const ItemTable = props => {
   const { savedItemStore } = props;
 
+  console.log(savedItemStore, 'savedItemStore');
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
@@ -285,7 +286,7 @@ const ItemTable = props => {
 
   const handleSelectAllClick = event => {
     if (event.target.checked) {
-      const newSelecteds = rows.map(n => n.name);
+      const newSelecteds = savedItemStore.map(n => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -328,7 +329,8 @@ const ItemTable = props => {
   const isSelected = name => selected.indexOf(name) !== -1;
 
   const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+    rowsPerPage -
+    Math.min(rowsPerPage, savedItemStore.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
@@ -348,10 +350,10 @@ const ItemTable = props => {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={savedItemStore.length}
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
+              {stableSort(savedItemStore, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.name);
@@ -381,10 +383,10 @@ const ItemTable = props => {
                       >
                         {row.name}
                       </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
+                      <TableCell align="right">{row.amount}</TableCell>
+                      <TableCell align="right">
+                        {row.amountForOneUnit}
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -399,7 +401,7 @@ const ItemTable = props => {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={savedItemStore.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}

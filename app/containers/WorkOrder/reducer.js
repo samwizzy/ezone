@@ -87,7 +87,7 @@ const workOrderPageReducer = (state = initialState, action) =>
             props: {
               open: false,
             },
-            data: action.payload,
+            data: null,
           },
         };
       }

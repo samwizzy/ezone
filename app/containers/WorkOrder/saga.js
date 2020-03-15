@@ -2,7 +2,6 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
 import * as AppSelectors from '../App/selectors';
 import * as Selectors from './selectors';
-import { BaseUrl } from '../../components/BaseUrl';
 import request from '../../utils/request';
 import * as Endpoints from '../../components/Endpoints';
 import * as Actions from './actions';
@@ -31,6 +30,8 @@ export function* saveVendorConfigSaga() {
 
     console.log('saveVendorResponse ---->', saveVendorResponse);
     yield put(Actions.saveVendorConfigSuccessAction(saveVendorResponse));
+    yield put(Actions.getAllVendorsAction());
+    yield put(Actions.closeVendorDialog());
 
   } catch (err) {
     console.log(err, '---> saveVendorConfigErrorAction');

@@ -14,8 +14,6 @@ import {
 } from '@material-ui/pickers';
 
 // import MaterialTable from 'material-table';
-import ItemTable from './ItemTable';
-
 import {
   withStyles,
   TextField,
@@ -59,7 +57,7 @@ import {
   Switch,
   FilterListIcon,
 } from '@material-ui/core';
-
+import ItemTable from './ItemTable';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
 import LoadingIndicator from '../../../components/LoadingIndicator';
@@ -136,6 +134,7 @@ const WorkOrderDialog = props => {
     getListOfVendorsAction,
     savedItemData,
     savedItemStore,
+    openCreateWorkOrderDialogAction,
   } = props;
 
   const classes = useStyles();
@@ -476,6 +475,7 @@ WorkOrderDialog.propTypes = {
   workOrderDialog: PropTypes.object,
   addItemDialog: PropTypes.object,
   savedItemStore: PropTypes.array,
+  openCreateWorkOrderDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({

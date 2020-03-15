@@ -114,7 +114,7 @@ export function* updateUserProfile() {
     console.log(updateUserProfileResponse, 'updateUserProfileResponse');
     yield put(Actions.updateUserProfileSuccess(updateUserProfileResponse));
     yield put(Actions.closeEditUserProfileDialog());
-    yield put(AppActions.getUserProfileAction(updateUserProfileResponse));
+    // yield put(AppActions.getUserProfileAction(updateUserProfileResponse));
 
     // yield put(
     //   AppActions.openSnackBar({
