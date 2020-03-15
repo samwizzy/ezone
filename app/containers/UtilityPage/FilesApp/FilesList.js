@@ -89,7 +89,7 @@ const useStyles = makeStyles(theme => ({
 
 const FilesList = props => {
   const classes = useStyles();
-  const { loading, files, file, user, getUtilityFile, shareDocument, deleteDocument, favoriteDocument, getFavoriteDocuments, getSharedDocuments, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog } = props
+  const { loading, files, file, user, getUtilityFile, deleteDocument, favoriteDocument, getFavoriteDocuments, getSharedDocuments, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog } = props
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [fileId, setFileId] = React.useState(null);
   const open = Boolean(anchorEl);

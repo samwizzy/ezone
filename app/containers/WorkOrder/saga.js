@@ -39,6 +39,34 @@ export function* saveVendorConfigSaga() {
   }
 }
 
+export function* createWorkOrderSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const workOrderPostData = yield select(Selectors.makeSelectWorkOrderPostData());
+
+  console.log("workOrderPostData: ", workOrderPostData);
+
+  const requestURL = `${Endpoints.CreateWorkOrderApi}`;
+  console.log('workorder postURL --> ', requestURL);
+
+  try {
+    const workOrderResponse = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(workOrderPostData),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log('workOrderResponse ---->', workOrderResponse);
+    yield put(Actions.saveWorkOrderSuccessAction(workOrderResponse));
+
+  } catch (err) {
+    console.log(err, '---> saveWorkOrderErrAction');
+    yield put(Actions.saveWorkOrderErrAction(err));
+  }
+}
+
 export function* getListOfVendorsSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
 
@@ -68,4 +96,5 @@ export default function* WorkOrderConfigSaga() {
   // See example in containers/HomePage/saga.js 
   yield takeLatest(Constants.SAVE_VENDOR_CONFIG, saveVendorConfigSaga);
   yield takeLatest(Constants.GET_ALL_VENDORS, getListOfVendorsSaga);
+  yield takeLatest(Constants.SAVE_WORKORDER, createWorkOrderSaga);
 }
