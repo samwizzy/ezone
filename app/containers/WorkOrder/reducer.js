@@ -11,7 +11,7 @@ export const initialState = {
   savedItemStore: [],
   vendorPostData: false,
   savedItemData: false,
-  getListOfVendorsData: false,
+  getListOfVendorsData: [],
   loading: false,
   error: false,
   workOrderDialog: {
@@ -182,7 +182,7 @@ const workOrderPageReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          getListOfVendorsData: action.payload,
+          // getListOfVendorsData: action.payload,
         };
       }
       case Constants.GET_ALL_VENDORS_SUCCESS: {

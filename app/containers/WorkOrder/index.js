@@ -21,18 +21,17 @@ import WorkOrderList from './components/WorkOrderList';
 import WorkOrderDialog from './components/WorkOrderDialog';
 import AddItemDialog from './components/AddItemDialog';
 import AddVendorDialog from './components/AddVendorDialog';
-import Actions from './actions';
+import * as Actions from './actions';
 
 export function WorkOrderPage(props) {
   useInjectReducer({ key: 'workOrderPage', reducer });
   useInjectSaga({ key: 'workOrderPage', saga });
 
-  // const { getListOfVendorsAction } = props;
+  const { getListOfVendorsAction } = props;
 
   // Similar to componentDidMount and componentDidUpdate
   useEffect(() => {
-    // console.log('useEffect');
-    // getListOfVendorsAction();
+    getListOfVendorsAction();
   }, []);
 
   return (
@@ -51,6 +50,7 @@ export function WorkOrderPage(props) {
 
 WorkOrderPage.propTypes = {
   dispatch: PropTypes.func,
+  getListOfVendorsAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -59,7 +59,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    // getListOfVendorsAction: () => dispatch(Actions.getAllVendorsAction()),
+    getListOfVendorsAction: () => dispatch(Actions.getAllVendorsAction()),
     dispatch,
   };
 }
