@@ -39,7 +39,6 @@ UtilityPage.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   utilityPage: makeSelectUtilityPage(),
-  loading: makeSelectLoading()
 });
 
 function mapDispatchToProps(dispatch) {

@@ -13,7 +13,7 @@ export const initialState = {
   getAllUsersChat: [],
   getAllEmployees: [],
   loading: false,
-  error: false,
+  error: { success: '', message: '' },
   data: [
     {
       id: 1,
@@ -94,7 +94,6 @@ export const initialState = {
   task: {},
   files: [],
   file: {},
-  error: { success: '', message: '' },
 };
 
 /* eslint-disable default-case, no-param-reassign */
