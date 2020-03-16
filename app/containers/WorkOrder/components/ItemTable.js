@@ -255,7 +255,7 @@ const useStyles = makeStyles(theme => ({
     overflow: 'hidden',
     padding: 0,
     position: 'absolute',
-    top: 20,
+    top: 20, 
     width: 1,
   },
 }));
@@ -263,7 +263,6 @@ const useStyles = makeStyles(theme => ({
 const ItemTable = props => {
   const { savedItemStore } = props;
 
-  console.log(savedItemStore, 'savedItemStore');
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
@@ -323,8 +322,7 @@ const ItemTable = props => {
   const isSelected = name => selected.indexOf(name) !== -1;
 
   const emptyRows =
-    rowsPerPage -
-    Math.min(rowsPerPage, savedItemStore.length - page * rowsPerPage);
+    rowsPerPage - Math.min(rowsPerPage, savedItemStore.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
@@ -378,9 +376,7 @@ const ItemTable = props => {
                         {row.name}  
                       </TableCell>
                       <TableCell align="right">{row.amount}</TableCell>
-                      <TableCell align="right">
-                        {row.amountForOneUnit}
-                      </TableCell>
+                      <TableCell align="right">{row.amountForOneUnit}</TableCell>
                     </TableRow>
                   );
                 })}

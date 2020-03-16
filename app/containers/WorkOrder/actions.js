@@ -74,6 +74,7 @@ export function saveVendorConfigErrorAction(data) {
 
 
 export function saveWorkOrderAction(data) {
+  console.log('saveWorkOrderAction');
   return {
     type: Constants.SAVE_WORKORDER,
     payload: data,

@@ -136,6 +136,7 @@ const WorkOrderDialog = props => {
     savedItemData,
     savedItemStore,
     openCreateWorkOrderDialogAction,
+    saveWorkOrderAction
   } = props;
 
   const classes = useStyles();
@@ -158,28 +159,6 @@ const WorkOrderDialog = props => {
     updatedBy: '',
   });
 
-  // const canBeSubmitted = () => {
-  //   const {
-  //     firstName,
-  //     lastName,
-  //     emailAddress,
-  //     employeeId,
-  //     phoneNumber,
-  //     address,
-  //     gender,
-  //     password,
-  //   } = values;
-  //   return (
-  //     firstName !== '' &&
-  //     lastName !== '' &&
-  //     emailAddress !== '' &&
-  //     employeeId !== '' &&
-  //     phoneNumber !== '' &&
-  //     address !== '' &&
-  //     gender !== '' &&
-  //     password !== ''
-  //   );
-  // };
 
   const handleSelectChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
@@ -425,7 +404,8 @@ const WorkOrderDialog = props => {
             <Button
               onClick={() => {
                 // openCreateWorkOrderDialogAction(values),
-                saveWorkOrderAction(values);
+                saveWorkOrderAction(values),
+                closeWorkOrderDialogAction()
               }}
               color="primary"
               variant="contained"
