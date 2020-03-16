@@ -74,7 +74,7 @@ const useStyles = makeStyles(theme => ({
 
 const TaskList = props => {
   const classes = useStyles();
-  const { loading, openNewTaskDialog, getUtilityTask, getUserByUUID, getAssignedToByUUID, tasks, task, users, user, match, container } = props;
+  const { loading, openNewTaskDialog, openEditTaskDialog, getUtilityTask, getUserByUUID, getAssignedToByUUID, tasks, task, users, user, match, container } = props;
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -134,7 +134,7 @@ const TaskList = props => {
             <Typography variant="h6">Details</Typography>
             <div className={classes.buttonGroup}>
               <ButtonGroup size="small" aria-label="small outlined button group">
-                <Button><EditSharp className={classes.icon} />Edit</Button>
+                <Button onClick={openEditTaskDialog}><EditSharp className={classes.icon} />Edit</Button>
                 <Button><Assignment className={classes.icon} />Assign</Button>
               </ButtonGroup>
               <ButtonGroup size="small" aria-label="small outlined button group">
@@ -270,6 +270,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewTaskDialog: () => dispatch(Actions.openNewTaskDialog()),
+    openEditTaskDialog: () => dispatch(Actions.openEditTaskDialog()),
     getUtilityTask: (id) => dispatch(Actions.getUtilityTask(id)),
     getUserByUUID: (id) => dispatch(Actions.getUserByUUID(id)),
     getEmployees: () => dispatch(Actions.getEmployees()),

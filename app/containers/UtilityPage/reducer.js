@@ -137,16 +137,25 @@ const utilityPageReducer = (state = initialState, action) =>
           task: action.payload,
         };
       }
+      case Constants.GET_UTILITY_TASKS: {
+        return {
+          ...state,
+          tasks: action.payload,
+          loading: true
+        };
+      }
       case Constants.GET_UTILITY_TASKS_SUCCESS: {
         return {
           ...state,
           tasks: action.payload,
+          loading: false
         };
       }
       case Constants.GET_UTILITY_TASKS_BY_STATUS_SUCCESS: {
         return {
           ...state,
           tasks: action.payload,
+          loading: true
         };
       }
       case Constants.CREATE_UTILITY_TASKS_SUCCESS: {
@@ -209,10 +218,18 @@ const utilityPageReducer = (state = initialState, action) =>
           files: action.payload,
         };
       }
+      case Constants.GET_UTILITY_FILES: {
+        return {
+          ...state,
+          files: action.payload,
+          loading: true
+        };
+      }
       case Constants.GET_UTILITY_FILES_SUCCESS: {
         return {
           ...state,
           files: action.payload,
+          loading: false
         };
       }
       case Constants.GET_UTILITY_FILES_ERROR: {
@@ -263,6 +280,18 @@ const utilityPageReducer = (state = initialState, action) =>
           ...state,
           taskDialog: {
             type: 'new',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.OPEN_EDIT_TASK_DIALOG: {
+        return {
+          ...state,
+          taskDialog: {
+            type: 'edit',
             props: {
               open: true,
             },

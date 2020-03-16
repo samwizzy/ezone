@@ -38,8 +38,6 @@ import StarOutlined from '@material-ui/icons/StarOutlined';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    // height: '100vh',
-    // display: 'flex',
   },
   table: {
     marginTop: theme.spacing(2),
@@ -276,8 +274,8 @@ const FilesList = props => {
     viewColumns: false,
     filter: false,
     customToolbar: () => <AddFile openFileDialog={openFileUploadDialog} />,
-    rowsPerPage: 25,
-    rowsPerPageOptions: [25,50,100],
+    rowsPerPage: 10,
+    rowsPerPageOptions: [10,25,50,100],
     onRowClick: (rowData, rowState) => {
       getUtilityFile(rowData[0])
     },

@@ -20,6 +20,8 @@ export const CLOSE_PREVIEW_FILE_DIALOG =
 
 export const OPEN_NEW_TASK_DIALOG = 'app/UtilityPage/OPEN_NEW_TASK_DIALOG';
 export const CLOSE_NEW_TASK_DIALOG = 'app/UtilityPage/CLOSE_NEW_TASK_DIALOG';
+export const OPEN_EDIT_TASK_DIALOG = 'app/UtilityPage/OPEN_EDIT_TASK_DIALOG';
+export const CLOSE_EDIT_TASK_DIALOG = 'app/UtilityPage/CLOSE_EDIT_TASK_DIALOG';
 
 export const OPEN_NEW_FILE_DIALOG = 'app/UtilityPage/OPEN_NEW_TASK_DIALOG';
 export const CLOSE_NEW_FILE_DIALOG = 'app/UtilityPage/CLOSE_NEW_TASK_DIALOG';
