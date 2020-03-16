@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import * as AppSelectors from '../../App/selectors';
-
 import {
   withStyles,
   TextField,
@@ -30,10 +28,11 @@ import {
   Divider,
   Slide,
 } from '@material-ui/core';
+import * as AppSelectors from '../../App/selectors';
 
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
-// import LoadingIndicator from '../../../../components/LoadingIndicator';
+import LoadingIndicator from '../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -98,42 +97,42 @@ const AddVendorDialog = props => {
     closeVendorDialogAction,
     vendorDialog,
     saveVendorAction,
-    currentUser
+    currentUser,
   } = props;
 
   const classes = useStyles();
   const [values, setValues] = React.useState({
-    id: "",
+    id: '',
     orgId: currentUser.organisation.orgId,
-    type: "",
-    firstName: "",
-    lastName: "",
-    dateOfBirth: "",
-    gender: "",
-    busName: "",
-    registered: "",
-    regNumber: "",
-    regYear: "",
-    busType: "",
-    noOfEmployees: "",
-    address: "",
-    city: "",
-    state: "",
-    country: "",
-    mobilePhone: "",
-    officePhone: "",
-    email: "",
-    website: "",
-    zip: "",
-    contactName: "",
-    contactPhone: "",
-    fax: "",
-    companyNumber: "",
-    description: "",
-    dateCreated: "",
-    addedBy: "",
-    dateUpdated: "",
-    updatedBy: ""
+    type: '',
+    firstName: '',
+    lastName: '',
+    dateOfBirth: '',
+    gender: '',
+    busName: '',
+    registered: '',
+    regNumber: '',
+    regYear: '',
+    busType: '',
+    noOfEmployees: '',
+    address: '',
+    city: '',
+    state: '',
+    country: '',
+    mobilePhone: '',
+    officePhone: '',
+    email: '',
+    website: '',
+    zip: '',
+    contactName: '',
+    contactPhone: '',
+    fax: '',
+    companyNumber: '',
+    description: '',
+    dateCreated: '',
+    addedBy: '',
+    dateUpdated: '',
+    updatedBy: '',
   });
 
   // const canBeSubmitted = () => {
@@ -416,7 +415,7 @@ const AddVendorDialog = props => {
                 </div>
               ) : (
                 <div>
-                    <TextField
+                  <TextField
                     id="standard-firstName"
                     label="First Name"
                     type="firstName"
@@ -665,8 +664,7 @@ const AddVendorDialog = props => {
                     multiline
                   />
                 </div>
-            )}
-
+              )}
             </div>
           ) : null}
         </DialogContent>
@@ -676,7 +674,10 @@ const AddVendorDialog = props => {
             <LoadingIndicator />
           ) : (
             <Button
-              onClick={() => saveVendorAction(values)}
+              onClick={() => {
+                saveVendorAction(values)
+                closeVendorDialogAction()
+              }}
               color="primary"
               variant="contained"
               // disabled={!canBeSubmitted()}
@@ -685,7 +686,7 @@ const AddVendorDialog = props => {
             </Button>
           )}
           <Button
-            onClick={() => closeVendorDialogAction()}
+            onClick={() => closeVendorDialogAction() }
             color="primary"
             variant="contained"
           >
@@ -700,10 +701,11 @@ const AddVendorDialog = props => {
 AddVendorDialog.propTypes = {
   loading: PropTypes.bool,
   vendorDialog: PropTypes.object,
+  closeVendorDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-//   loading: Selectors.makeSelectLoading(),
+  loading: Selectors.makeSelectLoading(),
   currentUser: AppSelectors.makeSelectCurrentUser(),
   vendorDialog: Selectors.makeSelectVendorDialog(),
   vendorPostData: Selectors.makeSelectVendorPostData(),

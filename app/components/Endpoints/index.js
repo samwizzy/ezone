@@ -82,3 +82,6 @@ export const GetSmsConfigApi = `${BaseUrl}/messagingserv/api/v1/get_sms_config_b
 // Work order Api
 export const SaveVendorApi = `${BaseUrl}/utilityserv/api/v1/add_vendor`;
 export const GetListOfVendorsApi = `${BaseUrl}/utilityserv/api/v1/find_all_vendors`;
+export const CreateWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/add_workorder`;
+
+

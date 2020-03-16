@@ -7,6 +7,7 @@ import produce from 'immer';
 import * as Constants from './constants';
 
 export const initialState = {
+  workOrderPostData: false,
   savedItemStore: [],
   vendorPostData: false,
   savedItemData: false,
@@ -87,7 +88,7 @@ const workOrderPageReducer = (state = initialState, action) =>
             props: {
               open: false,
             },
-            data: action.payload,
+            data: null,
           },
         };
       }
@@ -143,6 +144,31 @@ const workOrderPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.SAVE_VENDOR_CONFIG_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+
+      // Create workorder
+      case Constants.SAVE_WORKORDER: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          workOrderPostData: action.payload
+        };
+      }
+
+      case Constants.SAVE_WORKORDER_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.SAVE_WORKORDER_ERR: {
         return {
           ...state,
           loading: false,

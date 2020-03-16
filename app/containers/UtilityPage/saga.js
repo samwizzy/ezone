@@ -62,7 +62,9 @@ export function* addUtilityTasks({ type, payload }) {
 export function* getUtilityTasks() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetUtilityTasksApi}/${user.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetUtilityTasksApi}/${
+    user.organisation.orgId
+  }`;
 
   try {
     const utilityTasksResponse = yield call(request, requestURL, {
@@ -177,7 +179,7 @@ export function* deleteUtilityFile({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.DeleteUtilityFileApi}/${payload.docId}`;
 
-  console.log(payload, "DELETE_DOCUMENT")
+  console.log(payload, 'DELETE_DOCUMENT');
 
   try {
     const utilityFileResponse = yield call(request, requestURL, {
@@ -192,7 +194,9 @@ export function* deleteUtilityFile({ type, payload }) {
     yield put(
       AppActions.openSnackBar({
         open: true,
-        message: `${utilityFileResponse.document.docName} has been deleted successfully`,
+        message: `${
+          utilityFileResponse.document.docName
+        } has been deleted successfully`,
         status: 'success',
       }),
     );
@@ -224,11 +228,11 @@ export function* getUtilityFile({ type, payload }) {
   }
 }
 
-export function* shareUtilityFiles({type, payload}) {
+export function* shareUtilityFiles({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.ShareDocumentApi}`;
 
-  console.log(payload, "payload")
+  console.log(payload, 'payload');
 
   try {
     const sharedDocResponse = yield call(request, requestURL, {
@@ -243,18 +247,20 @@ export function* shareUtilityFiles({type, payload}) {
     yield put(
       AppActions.openSnackBar({
         open: true,
-        message: `${sharedDocResponse.document.docName} has been shared successfully`,
+        message: `${
+          sharedDocResponse.document.docName
+        } has been shared successfully`,
         status: 'success',
       }),
     );
-    console.log(sharedDocResponse, "sharedDocResponse")
+    console.log(sharedDocResponse, 'sharedDocResponse');
     // yield put(Actions.shareDocumentSuccess(sharedDocResponse));
   } catch (err) {
     // yield put(Actions.getSharedDocumentsError(err));
   }
 }
 
-export function* getSharedUtilityFiles({type, payload}) {
+export function* getSharedUtilityFiles({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.GetShareDocumentApi}/${payload}`;
 
@@ -486,7 +492,10 @@ export default function* UtilityPageSaga() {
     getFavoriteUtilityFiles,
   );
   yield takeLatest(Constants.GET_SHARED_DOCS_BY_UUID, getSharedUtilityFiles);
-  yield takeLatest(Constants.GET_FAVORITE_DOCS_BY_UUID, getFavoriteUtilityFiles);
+  yield takeLatest(
+    Constants.GET_FAVORITE_DOCS_BY_UUID,
+    getFavoriteUtilityFiles,
+  );
   yield takeLatest(Constants.FAVORITE_FILE_BY_DOC_ID, favoriteUtilityFile);
   yield takeLatest(Constants.CREATE_UTILITY_TASKS, addUtilityTasks);
   yield takeLatest(Constants.CREATE_UTILITY_FILES, addUtilityFile);
