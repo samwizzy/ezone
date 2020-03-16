@@ -17,14 +17,11 @@ import tasksIcon from '../../../images/tasksIcon.svg'
 import {AddTask} from '../components/AddButton';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import AddTaskDialog from './components/AddTaskDialog'
-import TaskPreviewDialog from './components/TaskPreviewDialog'
 import NoTasksList from './components/NoTasksList'
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    textAlign: 'center',
   },
   datatable: {
     flexGrow: 1,
@@ -170,17 +167,17 @@ const TasksList = props => {
     elevation: 0
   };
 
-  // if (loading) {
-  //   return <List component={LoadingIndicator} />;
-  // }
+  if (loading) {
+    return <List component={LoadingIndicator} />;
+  }
 
   if(tasks && tasks.length === 0){
     return <NoTasksList />
   }
 
   return (
-    <React.Fragment>
-      <Grid container justify='center'>
+    <div className={classes.root}>
+      <Grid container justify='space-evenly' spacing={2}>
         <Grid item xs={12} md={2}>
           <List 
             component="nav" 
@@ -218,10 +215,7 @@ const TasksList = props => {
           />
         </Grid>
       </Grid>
-
-      <AddTaskDialog />
-      <TaskPreviewDialog />
-    </React.Fragment>
+    </div>
   );
 };
 

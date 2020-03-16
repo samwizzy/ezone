@@ -55,7 +55,7 @@ export function* addUtilityTasks({ type, payload }) {
       }),
     );
   } catch (err) {
-    yield put(Actions.getUtilityTasksError(err));
+    yield put(Actions.getUtilityTasksError(err.message));
   }
 }
 
@@ -63,7 +63,7 @@ export function* getUtilityTasks() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetUtilityTasksApi}/${
-    user.organisation.orgId
+    user.organisation && user.organisation.orgId
   }`;
 
   try {
@@ -79,7 +79,7 @@ export function* getUtilityTasks() {
 
     yield put(Actions.getUtilityTasksSuccess(utilityTasksResponse));
   } catch (err) {
-    // yield put(Actions.getUtilityTasksError(err));
+    yield put(Actions.getUtilityTasksError(err.message));
   }
 }
 
@@ -103,7 +103,7 @@ export function* getUtilityTasksByStatus({ type, payload }) {
 
     yield put(Actions.getUtilityTasksByStatusSuccess(utilityTasksResponse));
   } catch (err) {
-    // yield put(Actions.getUtilityTasksError(err));
+    // yield put(Actions.getUtilityTasksError(err.message));
   }
 }
 
@@ -124,8 +124,7 @@ export function* getUtilityTask({ type, payload }) {
 
     yield put(Actions.getUtilityTaskSuccess(utilityTaskResponse));
   } catch (err) {
-    // yield put(Actions.getUtilityTasksError(err));
-    // console.error(err, 'I got the error');
+    // yield put(Actions.getUtilityTasksError(err.message));
   }
 }
 

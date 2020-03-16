@@ -15,6 +15,8 @@ import { useInjectReducer } from 'utils/injectReducer';
 import TasksList from './TasksList'
 import TaskList from './TaskList'
 import DashboardLayout from '../components/DashboardLayout' 
+import AddTaskDialog from './components/AddTaskDialog'
+import TaskPreviewDialog from './components/TaskPreviewDialog'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,12 +38,18 @@ const TasksApp = props => {
         getEmployees()
     }, []);
 
+    if(loading){
+      return <LoadingIndicator />
+    }
+
     return (
-        <DashboardLayout>
-            { params.id? 
-                <TaskList /> : <TasksList />
-            }
-        </DashboardLayout>
+      <DashboardLayout>
+        { params.id? 
+          <TaskList /> : <TasksList />
+        }
+        <AddTaskDialog />
+        <TaskPreviewDialog />
+      </DashboardLayout>
     );
 };
 
