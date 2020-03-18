@@ -35,6 +35,7 @@ import EmailConfigs from '../EmailConfig/components/TabsPage';
 import EmailTemplate from '../EmailConfig/components/EmailTemplate';
 import EmailPasswordTemplate from '../EmailConfig/components/EmailPasswordTemplate';
 import WorkOrderPage from '../WorkOrder/Loadable';
+import InventoryPage from '../InventoryPage/Loadable';
 import Layout1 from '../../components/layouts/layout1/Layout1';
 import Layout2 from '../../components/layouts/layout2/Layout2';
 import Layout3 from '../../components/layouts/layout3/Layout3';
@@ -148,6 +149,7 @@ const App = () => {
                 />
                 <PrivateRoute exact path="/home" component={HomePage} />
                 <PrivateRoute path="/WorkOrder" component={WorkOrderPage} />
+                <PrivateRoute path="/inventory" component={InventoryPage} />
               </Layout3>
               <Route path="" component={NotFoundPage} />
             </Switch>
