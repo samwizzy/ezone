@@ -128,7 +128,7 @@ const ProjectsApp = () => {
               <Grid item sm={12} md={12} lg={12}>
                 <Paper className={classes.paper} elevation={1}>
                   {apps.map(app => (
-                    <Link href={app.url}>
+                    <Link href={app.url} key={app.id}>
                       <Paper className={classes.box}>
                         <img src={app.icon} alt="" />
                         <Typography variant="body2">{app.name}</Typography>

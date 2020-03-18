@@ -132,19 +132,13 @@ const SignatureDialog = props => {
         </DialogContent>
 
         <DialogActions>
-          {loading ? (
+          {/* {loading ? (
             <LoadingIndicator />
           ) : (
-            <Button
-              onClick={() => {
-                // dispatchCreateNewEmployeeAction(values);
-              }}
-              color="primary"
-              variant="contained"
-            >
+            <Button color="primary" variant="contained">
               Save
             </Button>
-          )}
+          )} */}
           <Button
             onClick={() => closeSignatureDialogAction()}
             color="primary"
