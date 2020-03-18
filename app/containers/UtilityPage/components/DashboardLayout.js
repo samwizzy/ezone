@@ -28,8 +28,9 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
   },
   content: {
-    flexGrow: 1,
-    padding: theme.spacing(2),
+    display: 'flex',
+    flexDirection: 'column',
+    padding: theme.spacing(1),
   },
   toolbar: {
     display: 'flex',

@@ -17,6 +17,7 @@ import TaskList from './TaskList'
 import DashboardLayout from '../components/DashboardLayout' 
 import AddTaskDialog from './components/AddTaskDialog'
 import TaskPreviewDialog from './components/TaskPreviewDialog'
+import AssignToDialog from './components/AssignToDialog'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -49,6 +50,7 @@ const TasksApp = props => {
         }
         <AddTaskDialog />
         <TaskPreviewDialog />
+        <AssignToDialog />
       </DashboardLayout>
     );
 };

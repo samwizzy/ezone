@@ -354,6 +354,12 @@ const FilesList = props => {
                 image={file.fileUrl}
                 title={file.docName}
               />
+              <img
+                className={classes.media}
+                src={file.fileUrl}
+                alt={file.docName}
+                style={{height: '400px', width: '400px'}}
+              />
             </CardActionArea>
           </Card>
 

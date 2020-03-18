@@ -33,7 +33,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function AddTaskDialog(props) {
   const classes = useStyles();
-  const { openTaskPreviewDialog, closeNewTaskDialog, createUtilityTask, data, users } = props;
+  const { openTaskPreviewDialog, closeNewTaskDialog, createUtilityTask, updateUtilityTask, data, users, task } = props;
   const [form, setForm] = React.useState({
     title: '',
     description: '',
@@ -41,11 +41,14 @@ function AddTaskDialog(props) {
     endDate: moment(new Date()).format('YYYY-MM-DD'),
     status: "PENDING",
     assignedTo: "",
-    attachments: []
+    attachments: [],
   });
 
   React.useEffect(() => {
-  }, [])
+    if(task && data.type == 'edit'){
+      setForm({...form, ...task})
+    }
+  }, [data])
 
   const toBase64 = file => new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -56,8 +59,6 @@ function AddTaskDialog(props) {
 
   const handleChange = (event) => {
     const { name, value } = event.target
-    console.log(name, "name")
-    console.log(value, "value")
     setForm({...form, [name]: value});
     // setForm(_.set({...form}, event.target.name, event.target.value))
   }
@@ -98,10 +99,14 @@ function AddTaskDialog(props) {
   }
 
   const handleSubmit = () => {
-    createUtilityTask(form)
+    data.type === 'new'?
+    createUtilityTask(form) :
+    updateUtilityTask(form)
   }
 
   console.log(form, 'checking form task...')
+  console.log(task, 'checking single task...')
+  console.log(data, 'checking dialog data...')
 
   return (
     <div>
@@ -124,7 +129,7 @@ function AddTaskDialog(props) {
               <TextField
                 name="title"
                 label="Title"
-                id="outlined-size-small"
+                id="outlined-title"
                 fullWidth
                 variant="outlined"
                 size="small"
@@ -134,7 +139,7 @@ function AddTaskDialog(props) {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                id="outlined-multiline-static"
+                id="outlined-multiline-desc"
                 name="description"
                 label="Description"
                 multiline
@@ -157,7 +162,7 @@ function AddTaskDialog(props) {
                       format="MM/dd/yyyy"
                       margin="normal"
                       name="startDate"
-                      id="date-picker-inline"
+                      id="date-picker-startDate"
                       label="Start Date"
                       value={form.startDate}
                       onChange={(date, formatted) => handleDateChange(date, formatted, 'startDate')}
@@ -175,7 +180,7 @@ function AddTaskDialog(props) {
                       format="MM/dd/yyyy"
                       margin="normal"
                       name="endDate"
-                      id="date-picker-inline"
+                      id="date-picker-endDate"
                       label="End Date"
                       value={form.endDate}
                       onChange={(date, formatted) => handleDateChange(date, formatted, 'endDate')}
@@ -190,7 +195,7 @@ function AddTaskDialog(props) {
 
             <Grid item xs={12}>
               <TextField
-                id="select-head"
+                id="assignedTo"
                 name="assignedTo"
                 placeholder="Select employee to assign to task"
                 select
@@ -199,7 +204,7 @@ function AddTaskDialog(props) {
                 variant="outlined"
                 size="small"
                 label="Assigned To"
-                value={form.assignedTo}
+                value={form.assignedTo?form.assignedTo:''}
                 onChange={handleChange}
               >
                 {users && users.map(user => (
@@ -251,6 +256,7 @@ AddTaskDialog.propTypes = {
 const mapStateToProps = createStructuredSelector({
   data: Selectors.makeSelectNewTaskDialog(),
   users: Selectors.makeSelectEmployees(),
+  task: Selectors.makeSelectTask(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -258,6 +264,7 @@ function mapDispatchToProps(dispatch) {
     openNewTaskDialog: ev => dispatch(Actions.openNewTaskDialog(ev)),
     openTaskPreviewDialog: ev => dispatch(Actions.openTaskPreviewDialog(ev)),
     createUtilityTask: ev => dispatch(Actions.createUtilityTask(ev)),
+    updateUtilityTask: (data) => dispatch(Actions.updateUtilityTask(data)),
     closeNewTaskDialog: () => dispatch(Actions.closeNewTaskDialog()),
     dispatch,
   };

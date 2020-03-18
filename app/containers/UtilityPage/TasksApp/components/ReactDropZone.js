@@ -64,16 +64,19 @@ const Container = styled.div`
   transition: border .24s ease-in-out;
 `;
 
+// {
+//   "file": "string",
+//   "fileName": "string",
+//   "format": "string",
+//   "size": "string"
+// }
+
 function PaperDropzone(props) {
   const [files, setFiles] = useState([]);
   const { uploadFileAction } = props
   const [form, setForm] = useState({
-    description: "",
-    fileName: "",
-    fileUrl: "",
-    format: "",
-    size: "",
-    file: ""
+    attachments: [],
+    docId: 0
   });
 
   const {
@@ -94,13 +97,17 @@ function PaperDropzone(props) {
       setFiles(acceptedFiles.map(file => Object.assign(file, {
         preview: URL.createObjectURL(file)
       })));
+
+      let attachments = []
+      let attachment = {}
       
-      // setForm(_.set(form, "fileName", acceptedFiles[0].name))
-      // setForm(_.set(form, "format", acceptedFiles[0].type))
-      // setForm(_.set(form, "size", acceptedFiles[0].size))
-      // getBase64(acceptedFiles[0], (result) => setForm(_.set(form, "file", result)))
+      _.set(attachment, "fileName", acceptedFiles[0].name)
+      _.set(attachment, "format", acceptedFiles[0].type)
+      _.set(attachment, "size", acceptedFiles[0].size)
+      getBase64(acceptedFiles[0], (result) => _.set(attachment, "file", result))
+      attachments.push(attachment)
+      setForm(_.set(form, "attachments", attachments))
       // uploadFileAction(form)
-      // console.log(form, "Set Form inside onDrop")
     },
   });
 
@@ -135,7 +142,7 @@ function PaperDropzone(props) {
 
   console.log(acceptedFiles, "References library")
   // console.log(inputRef, "inputRef library")
-  console.log(files[0], "files state library")
+  console.log(files, "files state library")
   console.log(form, "form state form")
   
   

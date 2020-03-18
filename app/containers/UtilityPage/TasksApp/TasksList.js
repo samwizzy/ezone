@@ -48,8 +48,6 @@ const TasksList = props => {
   const classes = useStyles();
   const { loading, getUtilityTasksByStatus, openNewTaskDialog, tasks, users } = props;
 
-  console.log(users, "Get users")
-
   const columns = [
     {
       name: 'id',
@@ -235,6 +233,7 @@ function mapDispatchToProps(dispatch) {
     openNewTaskDialog: () => dispatch(Actions.openNewTaskDialog()),
     getUtilityTasks: () => dispatch(Actions.getUtilityTasks()),
     getEmployees: () => dispatch(Actions.getEmployees()),
+    getUtilityTasks: () => dispatch(Actions.getUtilityTasks()),
     getUtilityTasksByStatus: (status) => dispatch(Actions.getUtilityTasksByStatus(status)),
   };
 }

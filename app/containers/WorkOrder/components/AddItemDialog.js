@@ -5,6 +5,14 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+
 import {
   TextField,
   makeStyles,
@@ -15,6 +23,7 @@ import {
   DialogTitle,
   Divider,
   Slide,
+  Grid 
 } from '@material-ui/core';
 
 import * as Selectors from '../selectors';
@@ -37,12 +46,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+// if (values.amount && values.amountForOneUnit) {
+//   setValues({...values, [totalAmount]: values.amount * values.amountForOneUnit});
+// }
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="right" ref={ref} {...props} />;
 });
-
-
 
 const AddItemDialog = props => {
   const {
@@ -57,18 +67,23 @@ const AddItemDialog = props => {
   const classes = useStyles();
   
   const [values, setValues] = React.useState({
-    addedBy: "",
+    date: "",
+    name: "",
     amount: "",
     amountForOneUnit: "",
+    totalAmount: "",
     description: "",
-    id: "",
-    name: "",
     orgId: "",
-    updatedBy: ""
   });
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
+  };
+
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
+
+  const handleDateChange = date => {
+    setSelectedDate(date);
   };
 
 
@@ -91,6 +106,32 @@ const AddItemDialog = props => {
         <DialogContent>
           {addItemDialog.type === 'new' ? (
             <div>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <Grid container justify="space-around">
+                  <KeyboardDatePicker
+                    margin="normal"
+                    id="date-picker-dialog"
+                    label="Date"
+                    format="MM/dd/yyyy"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
+                  />
+                </Grid>
+              </MuiPickersUtilsProvider>
+              <TextField
+                id="standard-name"
+                label="Item"
+                type="name"
+                variant="outlined"
+                className={classes.textField}
+                value={values.name}
+                onChange={handleChange('name')}
+                margin="normal"
+                fullWidth
+              />
               <TextField
                 id="standard-amount"
                 label="Amount"
@@ -104,7 +145,7 @@ const AddItemDialog = props => {
               />
               <TextField
                 id="standard-amountForOneUnit"
-                label="Amount for one unit"
+                label="Amount per unit"
                 type="number"
                 variant="outlined"
                 className={classes.textField}
@@ -114,15 +155,28 @@ const AddItemDialog = props => {
                 fullWidth
               />
               <TextField
-                id="standard-name"
-                label="Item"
-                type="name"
+                id="standard-totalAmount "
+                label="Total Amount"
+                readOnly
+                type="number"
                 variant="outlined"
                 className={classes.textField}
-                value={values.name}
-                onChange={handleChange('name')}
+                value={values.totalAmount }
+                onChange={handleChange('totalAmount ')}
                 margin="normal"
                 fullWidth
+              />
+              <TextField
+                id="standard-description"
+                label="Item Description"
+                variant="outlined"
+                className={classes.textField}
+                value={values.description}
+                onChange={handleChange('description')}
+                margin="normal"
+                fullWidth
+                rows={2}
+                multiline
               />
             </div>
           ) : null }

@@ -192,6 +192,48 @@ export function getUtilityTaskSuccess(data) {
   };
 }
 
+export function updateUtilityTask(data) {
+  return {
+    type: Constants.UPDATE_UTILITY_TASK,
+    payload: data,
+  };
+}
+
+export function updateUtilityTaskSuccess(data) {
+  return {
+    type: Constants.UPDATE_UTILITY_TASK_SUCCESS,
+    payload: data,
+  };
+}
+
+export function addTaskAttachment(data) {
+  return {
+    type: Constants.ADD_TASK_ATTACHMENT,
+    payload: data,
+  };
+}
+
+export function addTaskAttachmentSuccess(data) {
+  return {
+    type: Constants.ADD_TASK_ATTACHMENT_SUCCESS,
+    payload: data,
+  };
+}
+
+export function removeTaskAttachment(data) {
+  return {
+    type: Constants.REMOVE_TASK_ATTACHMENT,
+    payload: data,
+  };
+}
+
+export function removeTaskAttachmentSuccess(data) {
+  return {
+    type: Constants.REMOVE_TASK_ATTACHMENT_SUCCESS,
+    payload: data,
+  };
+}
+
 export function getUtilityTasksSuccess(data) {
   return {
     type: Constants.GET_UTILITY_TASKS_SUCCESS,
@@ -250,6 +292,18 @@ export function openShareFileDialog(fileId) {
 export function closeShareFileDialog() {
   return {
     type: Constants.CLOSE_SHARE_FILE_DIALOG,
+  };
+}
+
+export function openAssignToDialog() {
+  return {
+    type: Constants.OPEN_ASSIGN_TO_DIALOG,
+  };
+}
+
+export function closeAssignToDialog() {
+  return {
+    type: Constants.CLOSE_ASSIGN_TO_DIALOG,
   };
 }
 

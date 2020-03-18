@@ -145,8 +145,9 @@ const WorkOrderDialog = props => {
     orgId: '',
     addedBy: '',
     amountBal: '',
+    cost: "",
     amountPaid: '',
-    approved: '',
+    approved: false,
     description: '',
     expectedCompletionDate: '',
     paymentDate: '',
@@ -157,36 +158,24 @@ const WorkOrderDialog = props => {
     priority: '',
     status: '',
     updatedBy: '',
+    vendor: ''
   });
 
-  // const canBeSubmitted = () => {
-  //   const {
-  //     firstName,
-  //     lastName,
-  //     emailAddress,
-  //     employeeId,
-  //     phoneNumber,
-  //     address,
-  //     gender,
-  //     password,
-  //   } = values;
-  //   return (
-  //     firstName !== '' &&
-  //     lastName !== '' &&
-  //     emailAddress !== '' &&
-  //     employeeId !== '' &&
-  //     phoneNumber !== '' &&
-  //     address !== '' &&
-  //     gender !== '' &&
-  //     password !== ''
-  //   );
-  // };
 
-  const handleSelectChange = name => event => {
+  const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const handleChange = name => event => {};
+  const handleSelectChange = (name, value) => {
+    console.log('selected value: ', value);
+    setValues({ ...values, vendor: value });
+  };
+
+  const handleSelectChangeApproved = name => event => {
+    setValues({ ...values, [approved]: event.target.value });
+  };
+
+  console.log('values from state: ', values);
 
   if (savedItemData) {
     savedItemStore.push(savedItemData);
@@ -201,7 +190,8 @@ const WorkOrderDialog = props => {
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
   const handleDateChange = date => {
-    setSelectedDate(date);
+    console.log(`Date --> ${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`);
+    setSelectedDate(`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`);
   };
 
   return (
@@ -216,9 +206,7 @@ const WorkOrderDialog = props => {
         <DialogTitle id="alert-dialog-slide-title">
           {workOrderDialog.type === 'new' ? 'Work Order' : 'Edit Work Order'}
         </DialogTitle>
-
         <Divider />
-
         <DialogContent>
           {workOrderDialog.type === 'new' ? (
             <div>
@@ -228,7 +216,7 @@ const WorkOrderDialog = props => {
                 getOptionLabel={option => option.busName}
                 // style={{ width: 800 }}
                 fullWidth
-                onChange={evt => handleSelectChange(evt)}
+                onChange={(evt, value) => handleSelectChange(evt, value)}
                 renderInput={params => (
                   <TextField
                     {...params}
@@ -296,7 +284,7 @@ const WorkOrderDialog = props => {
                     id="date-picker-dialog"
                     label="Expected Completion Date"
                     format="MM/dd/yyyy"
-                    // value={values.expectedCompletionDate}
+                    value={selectedDate}
                     onChange={handleDateChange}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
@@ -307,7 +295,7 @@ const WorkOrderDialog = props => {
                     id="date-picker-dialog"
                     label="Payment Date"
                     format="MM/dd/yyyy"
-                    // value={values.paymentDate}
+                    value={selectedDate}
                     onChange={handleDateChange}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
@@ -326,7 +314,7 @@ const WorkOrderDialog = props => {
                 Add Item
               </Button>
 
-              <TextField
+              {/* <TextField
                 id="standard-email"
                 label="Email"
                 type="email"
@@ -336,15 +324,15 @@ const WorkOrderDialog = props => {
                 onChange={handleChange('emailAddress')}
                 margin="normal"
                 fullWidth
-              />
+              /> */}
               <TextField
                 id="standard-phone-number"
                 label="Phone Number"
                 type="number"
                 variant="outlined"
                 className={classes.textField}
-                value={values.phoneNumber}
-                onChange={handleChange('phoneNumber')}
+                value={values.number}
+                onChange={handleChange('number')}
                 margin="normal"
                 fullWidth
               />
@@ -359,24 +347,13 @@ const WorkOrderDialog = props => {
                 fullWidth
               />
               <TextField
-                id="standard-password"
-                label="Password"
-                variant="outlined"
-                className={classes.textField}
-                value={values.password}
-                type="password"
-                onChange={handleChange('password')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
                 id="standard-status"
                 label="Status"
                 variant="outlined"
                 className={classes.textField}
                 margin="normal"
                 value={values.status ? values.status : ''}
-                onChange={handleSelectChange('status')}
+                onChange={handleChange('status')}
                 select
                 fullWidth
               >
@@ -393,7 +370,7 @@ const WorkOrderDialog = props => {
                 className={classes.textField}
                 margin="normal"
                 value={values.priority ? values.priority : ''}
-                onChange={handleSelectChange('priority')}
+                onChange={handleChange('priority')}
                 select
                 fullWidth
               >
@@ -403,7 +380,7 @@ const WorkOrderDialog = props => {
                   </MenuItem>
                 ))}
               </TextField>
-              <TextField
+              {/* <TextField
                 id="standard-address"
                 label="Address"
                 variant="outlined"
@@ -414,7 +391,7 @@ const WorkOrderDialog = props => {
                 fullWidth
                 rows={2}
                 multiline
-              />
+              /> */}
             </div>
           ) : null}
         </DialogContent>
@@ -426,7 +403,8 @@ const WorkOrderDialog = props => {
             <Button
               onClick={() => {
                 // openCreateWorkOrderDialogAction(values),
-                saveWorkOrderAction(values);
+                saveWorkOrderAction(values),
+                closeWorkOrderDialogAction()
               }}
               color="primary"
               variant="contained"
