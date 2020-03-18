@@ -13,14 +13,22 @@ import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectUtilityPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import ProjectsApp from './ProjectsApp'
+import makeSelectUtilityPage from './selectors';
+import * as Actions from './actions';
+import ProjectsApp from './ProjectsApp';
 
-export function UtilityPage() {
+export function UtilityPage(props) {
   useInjectReducer({ key: 'utilityPage', reducer });
   useInjectSaga({ key: 'utilityPage', saga });
+
+  const { dispatchGetUserChats, dispatchGetAllEmployees } = props;
+
+  React.useEffect(() => {
+    dispatchGetAllEmployees();
+    dispatchGetUserChats();
+  }, []);
 
   return (
     <div>
@@ -34,6 +42,8 @@ export function UtilityPage() {
 }
 
 UtilityPage.propTypes = {
+  dispatchGetAllEmployees: PropTypes.func,
+  dispatchGetUserChats: PropTypes.func,
   dispatch: PropTypes.func.isRequired,
 };
 
@@ -43,6 +53,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    dispatchGetAllEmployees: () => dispatch(Actions.getAllUsers()),
+    dispatchGetUserChats: () => dispatch(Actions.getAllUsersChat()),
     dispatch,
   };
 }

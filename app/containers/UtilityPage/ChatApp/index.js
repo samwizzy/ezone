@@ -26,12 +26,12 @@ const ChatsApp = props => {
   useInjectSaga({ key: 'utilityPage', saga });
 
   const classes = useStyles();
-  const { dispatchGetUserChats, dispatchGetAllEmployees } = props;
+  // const { dispatchGetUserChats, dispatchGetAllEmployees } = props;
 
-  React.useEffect(() => {
-    dispatchGetAllEmployees();
-    dispatchGetUserChats();
-  }, []);
+  // React.useEffect(() => {
+  //   dispatchGetAllEmployees();
+  //   dispatchGetUserChats();
+  // }, []);
 
   return (
     <DashboardLayout>
@@ -41,8 +41,8 @@ const ChatsApp = props => {
 };
 
 ChatsApp.propTypes = {
-  dispatchGetAllEmployees: PropTypes.func,
-  dispatchGetUserChats: PropTypes.func,
+  // dispatchGetAllEmployees: PropTypes.func,
+  // dispatchGetUserChats: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -53,8 +53,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchGetAllEmployees: () => dispatch(Actions.getAllUsers()),
-    dispatchGetUserChats: () => dispatch(Actions.getAllUsersChat()),
+    // dispatchGetAllEmployees: () => dispatch(Actions.getAllUsers()),
+    // dispatchGetUserChats: () => dispatch(Actions.getAllUsersChat()),
   };
 }
 
