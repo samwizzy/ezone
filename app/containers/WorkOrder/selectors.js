@@ -24,49 +24,49 @@ const makeSelectWorkOrderPage = () =>
 const makeSelectWorkOrderDialog = () =>
   createSelector(
     selectWorkOrderPageDomain,
-    substate => substate.workOrderDialog
+    substate => substate.workOrderDialog,
   );
 
 const makeSelectVendorDialog = () =>
   createSelector(
     selectWorkOrderPageDomain,
-    substate => substate.vendorDialog
+    substate => substate.vendorDialog,
   );
 
 const makeSelectItemDialog = () =>
   createSelector(
     selectWorkOrderPageDomain,
-    substate => substate.itemDialog
+    substate => substate.itemDialog,
   );
-  
+
 const makeSelectVendorPostData = () =>
   createSelector(
     selectWorkOrderPageDomain,
-    substate => substate.vendorPostData
+    substate => substate.vendorPostData,
   );
 
 const makeSelectGetListOfVendorsData = () =>
   createSelector(
     selectWorkOrderPageDomain,
-    substate => substate.getListOfVendorsData
+    substate => substate.getListOfVendorsData,
   );
 
 const makeSelectSavedItemData = () =>
   createSelector(
     selectWorkOrderPageDomain,
-    substate => substate.savedItemData
+    substate => substate.savedItemData,
   );
 
 const makeSelectSavedItemStore = () =>
   createSelector(
     selectWorkOrderPageDomain,
-    substate => substate.savedItemStore
+    substate => substate.savedItemStore,
   );
 
 const makeSelectWorkOrderPostData = () =>
   createSelector(
     selectWorkOrderPageDomain,
-    substate => substate.workOrderPostData
+    substate => substate.workOrderPostData,
   );
 
 const makeSelectLoading = () =>
@@ -74,11 +74,10 @@ const makeSelectLoading = () =>
     selectWorkOrderPageDomain,
     subState => subState.loading,
   );
-  
 
 export default makeSelectWorkOrderPage;
 
-export { 
+export {
   makeSelectLoading,
   selectWorkOrderPageDomain,
   makeSelectWorkOrderDialog,
@@ -88,5 +87,5 @@ export {
   makeSelectGetListOfVendorsData,
   makeSelectSavedItemData,
   makeSelectSavedItemStore,
-  makeSelectWorkOrderPostData
+  makeSelectWorkOrderPostData,
 };

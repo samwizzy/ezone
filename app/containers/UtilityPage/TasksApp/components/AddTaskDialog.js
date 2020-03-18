@@ -113,7 +113,9 @@ function AddTaskDialog(props) {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle id="alert-dialog-slide-title">Add Task</DialogTitle>
+        <DialogTitle id="alert-dialog-slide-title">
+          {data.type === 'new'? "Add Task" : "Edit Task"}
+        </DialogTitle>
         <Divider />
         <DialogContent>
           <form className={classes.root}>

@@ -260,6 +260,13 @@ export function openNewTaskDialog(data) {
   };
 }
 
+export function openEditTaskDialog(data) {
+  return {
+    type: Constants.OPEN_EDIT_TASK_DIALOG,
+    payload: data,
+  };
+}
+
 export function closeNewTaskDialog() {
   return {
     type: Constants.CLOSE_NEW_TASK_DIALOG,

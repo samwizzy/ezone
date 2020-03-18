@@ -30,12 +30,14 @@ const FilesApp = props => {
     const { loading, getUtilityFiles, getEmployees, match } = props;
     const { params } = match
 
-    console.log(params, "params")
-
     React.useEffect(() => {
         getUtilityFiles()
         getEmployees()
     }, []);
+
+    if(loading){
+      <LoadingIndicator />
+    }
 
     return (
         <DashboardLayout>
@@ -61,7 +63,6 @@ function mapDispatchToProps(dispatch) {
   return {
     openFileUploadDialog: ev => dispatch(Actions.openFileUploadDialog(ev)),
     openShareFileDialog: ev => dispatch(Actions.openShareFileDialog(ev)),
-    // openNewTaskDialog: ev => dispatch(Actions.openNewTaskDialog(ev)),
     getUtilityFiles: ev => dispatch(Actions.getUtilityFiles(ev)),
     getEmployees: () => dispatch(Actions.getEmployees()),
   };
