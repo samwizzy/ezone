@@ -42,6 +42,13 @@ export const initialState = {
     },
     data: null,
   },
+  assignTaskDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
   filePreviewDialog: {
     open: false,
     data: {}
@@ -130,6 +137,12 @@ const utilityPageReducer = (state = initialState, action) =>
           task: action.payload,
         };
       }
+      case Constants.UPDATE_UTILITY_TASK_SUCCESS: {
+        return {
+          ...state,
+          task: action.payload,
+        };
+      }
       case Constants.GET_UTILITY_TASK_SUCCESS: {
         return {
           ...state,
@@ -190,19 +203,19 @@ const utilityPageReducer = (state = initialState, action) =>
       case Constants.FAVORITE_FILE_BY_DOC_ID_SUCCESS: {
         return {
           ...state,
-          file: action.payload
+          error: { success: '', message: action.payload }
         };
       }
       case Constants.SHARE_DOCUMENT_SUCCESS: {
         return {
           ...state,
-          file: action.payload
+          error: { success: '', message: action.payload }
         };
       }
       case Constants.DELETE_DOCUMENT_SUCCESS: {
         return {
           ...state,
-          file: action.payload
+          error: { success: '', message: action.payload }
         };
       }
       case Constants.GET_SHARED_DOCS_BY_UUID_SUCCESS: {
@@ -274,18 +287,6 @@ const utilityPageReducer = (state = initialState, action) =>
           },
         };
       }
-      case Constants.OPEN_NEW_TASK_DIALOG: {
-        return {
-          ...state,
-          taskDialog: {
-            type: 'new',
-            props: {
-              open: true,
-            },
-            data: action.payload,
-          },
-        };
-      }
       case Constants.OPEN_EDIT_TASK_DIALOG: {
         return {
           ...state,
@@ -298,10 +299,46 @@ const utilityPageReducer = (state = initialState, action) =>
           },
         };
       }
+      case Constants.OPEN_NEW_TASK_DIALOG: {
+        return {
+          ...state,
+          taskDialog: {
+            type: 'new',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
       case Constants.CLOSE_NEW_TASK_DIALOG: {
         return {
           ...state,
           taskDialog: {
+            type: 'new',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.OPEN_ASSIGN_TO_DIALOG: {
+        return {
+          ...state,
+          assignTaskDialog: {
+            type: 'new',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_ASSIGN_TO_DIALOG: {
+        return {
+          ...state,
+          assignTaskDialog: {
             type: 'new',
             props: {
               open: false,

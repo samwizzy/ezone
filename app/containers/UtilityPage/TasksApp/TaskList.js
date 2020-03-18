@@ -5,13 +5,16 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Button, ButtonGroup, TableContainer, Table, TableRow, TableCell, TableBody, TableFooter, TextField, Grid, GridList, GridListTile, GridListTileBar, Divider, Menu, MenuItem, Paper, List, ListItem, ListSubheader, ListItemText, ListItemIcon, FormControlLabel, Icon, IconButton, Typography, Toolbar, Hidden, Drawer } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
+import { green, orange } from '@material-ui/core/colors'
 import moment from 'moment'
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import AssignmentTurnedIn from '@material-ui/icons/AssignmentTurnedIn';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
+import Add from '@material-ui/icons/Add';
 import Lens from '@material-ui/icons/Lens';
 import ReactDropZone from './components/ReactDropZone'
 
@@ -27,7 +30,10 @@ const useStyles = makeStyles(theme => ({
       width: drawerWidth,
       flexShrink: 0,
       overflowY: 'auto',
-      height: '500px'
+      height: '500px',
+      '& .MuiListSubheader-root': {
+        backgroundColor: theme.palette.common.white
+      }
     },
   },
   menuButton: {
@@ -59,9 +65,12 @@ const useStyles = makeStyles(theme => ({
     height: 250,
   },
   icon: {
-    width: 16,
-    height: 16,
+    width: 14,
+    height: 14,
     color: theme.palette.grey[800],
+    '&.approved': { color: theme.palette.primary.main},
+    '&.inProgress': { color: orange[500]},
+    '&.done': { color: green[500]},
   },
   buttonGroup: {
     marginBottom: theme.spacing(1),
@@ -74,7 +83,7 @@ const useStyles = makeStyles(theme => ({
 
 const TaskList = props => {
   const classes = useStyles();
-  const { loading, openNewTaskDialog, openEditTaskDialog, getUtilityTask, getUserByUUID, getAssignedToByUUID, tasks, task, users, user, match, container } = props;
+  const { loading, openNewTaskDialog, openEditTaskDialog, openAssignToDialog, getUtilityTask, getUserByUUID, getAssignedToByUUID, tasks, task, users, user, match, container } = props;
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -93,7 +102,9 @@ const TaskList = props => {
       <List
         subheader={
           <ListSubheader component="div" id="nested-list-subheader">
-            <Typography variant="subtitle1">Tasks</Typography>
+            <Typography variant="subtitle1">
+              Tasks <IconButton onClick={openNewTaskDialog}><Add/></IconButton>
+            </Typography>
           </ListSubheader>
         }
       >
@@ -135,12 +146,12 @@ const TaskList = props => {
             <div className={classes.buttonGroup}>
               <ButtonGroup size="small" aria-label="small outlined button group">
                 <Button onClick={openEditTaskDialog}><EditSharp className={classes.icon} />Edit</Button>
-                <Button><Assignment className={classes.icon} />Assign</Button>
+                <Button onClick={openAssignToDialog}><Assignment className={classes.icon} />Assign</Button>
               </ButtonGroup>
               <ButtonGroup size="small" aria-label="small outlined button group">
-                <Button><Lens className={classes.icon} /> To do</Button>
-                <Button><Lens className={classes.icon} />In Progress</Button>
-                <Button><Lens className={classes.icon} />Done</Button>
+                <Button><Lens className={classNames(classes.icon, {'approved': true})} /> To do</Button>
+                <Button><Lens className={classNames(classes.icon, {'approved': true})} />In Progress</Button>
+                <Button><Lens className={classNames(classes.icon, {'approved': true})} />Done</Button>
               </ButtonGroup>
             </div>
             
@@ -246,7 +257,7 @@ const TaskList = props => {
           </div>
 
           <div>
-            <ReactDropZone />
+            <ReactDropZone uploadFileAction={props.addTaskAttachment} task={task} />
           </div>
         </Grid>
       </Grid>
@@ -271,6 +282,8 @@ function mapDispatchToProps(dispatch) {
   return {
     openNewTaskDialog: () => dispatch(Actions.openNewTaskDialog()),
     openEditTaskDialog: () => dispatch(Actions.openEditTaskDialog()),
+    openAssignToDialog: () => dispatch(Actions.openAssignToDialog()),
+    addTaskAttachment: (data) => dispatch(Actions.addTaskAttachment(data)),
     getUtilityTask: (id) => dispatch(Actions.getUtilityTask(id)),
     getUserByUUID: (id) => dispatch(Actions.getUserByUUID(id)),
     getEmployees: () => dispatch(Actions.getEmployees()),
