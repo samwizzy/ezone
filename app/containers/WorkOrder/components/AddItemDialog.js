@@ -83,7 +83,7 @@ const AddItemDialog = props => {
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
   const handleDateChange = date => {
-    setSelectedDate(date);
+    setValues({ ...values, date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`});
   };
 
 
@@ -98,7 +98,7 @@ const AddItemDialog = props => {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {addItemDialog.type === 'new' ? 'Add Item' : 'Edit Item'}
+          {addItemDialog.type === 'new' ? 'Item' : 'Edit Item'}
         </DialogTitle>
 
         <Divider />

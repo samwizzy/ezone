@@ -196,37 +196,27 @@ const EnhancedTableToolbar = props => {
       })}
     >
       {numSelected > 0 ? (
-        <Typography
-          className={classes.title}
-          color="inherit"
-          variant="subtitle1"
-        >
+        <Typography className={classes.title} color="inherit" variant="subtitle1">
           {numSelected} selected
         </Typography>
       ) : (
         <Typography className={classes.title} variant="h6" id="tableTitle">
-          Add Item
+          Nutrition
         </Typography>
       )}
 
       {numSelected > 0 ? (
-        <Typography className={classes.title} variant="h6" id="tableTitle">
-          welcome here
-        </Typography>
+        <Tooltip title="Delete">
+          <IconButton aria-label="delete">
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
       ) : (
-        // <Tooltip title="Delete">
-        //   <IconButton aria-label="delete">
-        //     <DeleteIcon />
-        //   </IconButton>
-        // </Tooltip>
-        <Typography className={classes.title} variant="h6" id="tableTitle">
-          welcome there
-        </Typography>
-        // <Tooltip title="Filter list">
-        //   <IconButton aria-label="filter list">
-        //     <FilterListIcon />
-        //   </IconButton>
-        // </Tooltip>
+        <Tooltip title="Filter list">
+          <IconButton aria-label="filter list">
+            <FilterListIcon />
+          </IconButton>
+        </Tooltip>
       )}
     </Toolbar>
   );

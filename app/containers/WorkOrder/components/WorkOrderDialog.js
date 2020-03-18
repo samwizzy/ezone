@@ -171,10 +171,6 @@ const WorkOrderDialog = props => {
     setValues({ ...values, vendor: value });
   };
 
-  const handleSelectChangeApproved = name => event => {
-    setValues({ ...values, [approved]: event.target.value });
-  };
-
   console.log('values from state: ', values);
 
   if (savedItemData) {
@@ -189,9 +185,12 @@ const WorkOrderDialog = props => {
 
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
-  const handleDateChange = date => {
-    console.log(`Date --> ${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`);
-    setSelectedDate(`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`);
+  const handleDateChangeExpectedCompletionDate = date => {
+    setValues({ ...values, expectedCompletionDate: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`});
+  };
+
+  const handleDateChangePaymentDate = date => {
+    setValues({ ...values, paymentDate: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`});
   };
 
   return (
@@ -285,7 +284,7 @@ const WorkOrderDialog = props => {
                     label="Expected Completion Date"
                     format="MM/dd/yyyy"
                     value={selectedDate}
-                    onChange={handleDateChange}
+                    onChange={handleDateChangeExpectedCompletionDate}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
                     }}
@@ -296,7 +295,7 @@ const WorkOrderDialog = props => {
                     label="Payment Date"
                     format="MM/dd/yyyy"
                     value={selectedDate}
-                    onChange={handleDateChange}
+                    onChange={handleDateChangePaymentDate}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
                     }}
