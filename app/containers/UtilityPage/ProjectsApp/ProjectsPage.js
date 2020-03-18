@@ -6,7 +6,8 @@ import {
   Typography,
   Paper,
   Button,
-  TextField
+  TextField,
+  Link,
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -16,8 +17,26 @@ import AppIcon1 from '../../../images/app-2.svg';
 import AcctIcon from '../../../images/acctIcon.svg';
 import StoreIcon from '../../../images/storeIcon.svg';
 import CRMIcon from '../../../images/crmIcon.svg';
-// import ChatBox from './../ChatApp/ChatBox';
+import FileIcon from '../../../images/FileIcon.svg';
+import BudgetingIcon from '../../../images/BudgetingIcon.svg';
+import TaskIcon from '../../../images/TaskIcon.svg';
+import ProjectsIcon from '../../../images/ProjectsIcon.svg';
 
+const apps = [
+  { id: 1, name: 'Accounting', url: '', icon: AcctIcon },
+  { id: 2, name: 'Human Resources', url: '', icon: AppIcon1 },
+  { id: 3, name: 'Store & Inventory Management', url: '', icon: StoreIcon },
+  { id: 4, name: 'CRM', url: '', icon: CRMIcon },
+  { id: 5, name: 'Budgeting', url: '', icon: BudgetingIcon },
+  { id: 6, name: 'Task management', url: '/dashboard/tasks', icon: TaskIcon },
+  {
+    id: 7,
+    name: 'Fiie and Document sharing',
+    url: '/dashboard/files',
+    icon: FileIcon,
+  },
+  { id: 8, name: 'Projects', url: '', icon: ProjectsIcon },
+];
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
@@ -30,22 +49,22 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     padding: theme.spacing(3),
     borderRadius: '10px',
-    backgroundColor: '#F8F8F8'
+    backgroundColor: '#F8F8F8',
   },
   button: {
     padding: theme.spacing(1, 4),
     background: theme.palette.primary.main,
-    borderRadius: '20px'
+    borderRadius: '20px',
   },
   grid: {
-    flexGrow: 1,
+    // flexGrow: 1,
     padding: theme.spacing(3),
-    border: '1px solid #dcdcdc'
+    border: '1px solid #dcdcdc',
   },
   textField: {
     width: theme.spacing(50),
     padding: theme.spacing(0),
-    borderRadius: '20px'
+    borderRadius: '20px',
   },
   box: {
     margin: theme.spacing(1),
@@ -58,85 +77,75 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     flexDirection: 'column',
     '& img': {
-      height: '70px'
-    }
-  }
+      height: '70px',
+    },
+  },
 }));
 
-const ProjectsApp = props => {
+const ProjectsApp = () => {
   const classes = useStyles();
-  
+
   return (
     <React.Fragment>
-        <div>
-          <Grid
-            justify="space-between"
-            container
-            className={classes.grid}
-          >
-
-            <Grid item xs={12} style={{border: '1px dotted #f8f8f8'}}>
-              <Grid container className={classes.grid}>
-                <Grid item sm={12} xs={12}>
-                  <TextField
-                    className={classes.textField}
-                    id="outlined-search" 
-                    label="Search Apps"
-                    type="search" 
-                    variant="outlined" 
-                    size="small"
-                  />
-                </Grid>
+      <div>
+        {/* <Grid justify="space-between" container className={classes.grid}> */}
+        <Grid justify="space-between" container>
+          <Grid item xs={12} style={{ border: '1px dotted #f8f8f8' }}>
+            <Grid container className={classes.grid}>
+              <Grid item sm={12} xs={12}>
+                <TextField
+                  className={classes.textField}
+                  id="outlined-search"
+                  label="Search Apps"
+                  type="search"
+                  variant="outlined"
+                  size="small"
+                />
               </Grid>
             </Grid>
-
-            <Grid item xs={12} md={8}>
-              <Grid container justify="space-between" className={classes.grid}>
-                <Grid item sm={6}>
-                  <Typography variant="h6" component="h3">My Apps</Typography>
-                </Grid>
-                <Grid item sm={6} style={{textAlign: 'right'}}>
-                  <Button
-                    type="button"
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                  >
-                    Request App Access
-                  </Button>
-                </Grid>
-              </Grid>  
-              <Grid container justify="space-between">
-                <Grid item sm={12} xs={12}>
-                  <Paper className={classes.paper} elevation={1}>
-                    <Paper className={classes.box}>
-                      <img src={AcctIcon} />
-                      <Typography variant='body2'>Accounting</Typography>
-                    </Paper>
-                    <Paper className={classes.box}>
-                      <img src={AppIcon1} />
-                        <Typography variant='body2'>Human Resources</Typography>
-                    </Paper>
-                    <Paper className={classes.box}>
-                      <img src={StoreIcon} />
-                      <Typography variant='body2'>Store & Inventory Management</Typography>
-                    </Paper>
-                    <Paper className={classes.box}>
-                      <img src={CRMIcon} />
-                      <Typography variant='body2'>CRM</Typography>
-                    </Paper>
-                  </Paper>
-                </Grid>
-              </Grid>
-            </Grid>
-
-            <Grid item xs={12} md={4}>
-              {/* <Calendar /> */}
-              {/* <ChatBox /> */}
-            </Grid>
-
           </Grid>
-        </div>
+
+          <Grid item xs={12} md={12} lg={12}>
+            <Grid container justify="space-between" className={classes.grid}>
+              <Grid item sm={12} md={6} lg={6}>
+                <Typography variant="h6" component="h3">
+                  My Apps
+                </Typography>
+              </Grid>
+              <Grid item sm={6} style={{ textAlign: 'right' }}>
+                {/* <Grid item sm={12} md={6} lg={6} style={{ textAlign: 'right' }}> */}
+                <Button
+                  type="button"
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                >
+                  Request App Access
+                </Button>
+              </Grid>
+            </Grid>
+            <Grid container justify="space-between">
+              <Grid item sm={12} md={12} lg={12}>
+                <Paper className={classes.paper} elevation={1}>
+                  {apps.map(app => (
+                    <Link href={app.url} key={app.id}>
+                      <Paper className={classes.box}>
+                        <img src={app.icon} alt="" />
+                        <Typography variant="body2">{app.name}</Typography>
+                      </Paper>
+                    </Link>
+                  ))}
+                </Paper>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            {/* <Calendar /> */}
+            {/* <ChatBox /> */}
+          </Grid>
+        </Grid>
+      </div>
     </React.Fragment>
   );
 };
@@ -145,8 +154,7 @@ ProjectsApp.propTypes = {
   // openEditCompanyDialog: PropTypes.func,
 };
 
-const mapStateToProps = createStructuredSelector({
-});
+const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
   return {

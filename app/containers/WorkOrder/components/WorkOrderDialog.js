@@ -136,6 +136,7 @@ const WorkOrderDialog = props => {
     savedItemData,
     savedItemStore,
     openCreateWorkOrderDialogAction,
+    saveWorkOrderAction,
   } = props;
 
   const classes = useStyles();
@@ -453,6 +454,8 @@ WorkOrderDialog.propTypes = {
   addItemDialog: PropTypes.object,
   savedItemStore: PropTypes.array,
   openCreateWorkOrderDialogAction: PropTypes.func,
+  listOfVendorsData: PropTypes.array,
+  saveWorkOrderAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({

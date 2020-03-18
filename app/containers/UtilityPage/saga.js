@@ -515,6 +515,8 @@ export function* getUserChatData() {
     userChatDetails.initiator
   }&limit=${10}&start=${10}`;
 
+  console.log(requestURL, 'requestURL');
+
   try {
     const userChatDataResponse = yield call(request, requestURL, {
       method: 'GET',
