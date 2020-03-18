@@ -17,8 +17,7 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectInventoryPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
-
+import ItemList from './components/ItemList';
 export function InventoryPage() {
   useInjectReducer({ key: 'inventoryPage', reducer });
   useInjectSaga({ key: 'inventoryPage', saga });
@@ -29,7 +28,7 @@ export function InventoryPage() {
         <title>InventoryPage</title>
         <meta name="description" content="Description of InventoryPage" />
       </Helmet>
-      <FormattedMessage {...messages.header} />
+      <ItemList />
     </div>
   );
 }
