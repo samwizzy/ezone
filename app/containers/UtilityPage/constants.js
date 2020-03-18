@@ -18,13 +18,15 @@ export const OPEN_PREVIEW_FILE_DIALOG =
 export const CLOSE_PREVIEW_FILE_DIALOG =
   'app/UtilityPage/CLOSE_PREVIEW_FILE_DIALOG';
 
-export const OPEN_NEW_TASK_DIALOG = 'app/UtilityPage/OPEN_NEW_TASK_DIALOG';
-export const CLOSE_NEW_TASK_DIALOG = 'app/UtilityPage/CLOSE_NEW_TASK_DIALOG';
-export const OPEN_EDIT_TASK_DIALOG = 'app/UtilityPage/OPEN_EDIT_TASK_DIALOG';
-export const CLOSE_EDIT_TASK_DIALOG = 'app/UtilityPage/CLOSE_EDIT_TASK_DIALOG';
+export const OPEN_NEW_TASK_DIALOG = 'app/UtilityPage/OPEN NEW TASK DIALOG';
+export const CLOSE_NEW_TASK_DIALOG = 'app/UtilityPage/CLOSE NEW TASK DIALOG';
+export const OPEN_EDIT_TASK_DIALOG = 'app/UtilityPage/OPEN EDIT TASK DIALOG';
+export const CLOSE_EDIT_TASK_DIALOG = 'app/UtilityPage/CLOSE EDIT TASK DIALOG';
+export const OPEN_ASSIGN_TO_DIALOG = 'app/UtilityPage/OPEN ASSIGN TO DIALOG';
+export const CLOSE_ASSIGN_TO_DIALOG = 'app/UtilityPage/CLOSE EDIT TASK DIALOG';
 
-export const OPEN_NEW_FILE_DIALOG = 'app/UtilityPage/OPEN_NEW_TASK_DIALOG';
-export const CLOSE_NEW_FILE_DIALOG = 'app/UtilityPage/CLOSE_NEW_TASK_DIALOG';
+export const OPEN_NEW_FILE_DIALOG = 'app/UtilityPage/OPEN NEW TASK DIALOG';
+export const CLOSE_NEW_FILE_DIALOG = 'app/UtilityPage/CLOSE NEW TASK DIALOG';
 
 export const OPEN_TASK_PREVIEW_DIALOG =
   'app/UtilityPage/OPEN_TASK_PREVIEW_DIALOG';
@@ -54,11 +56,16 @@ export const GET_UTILITY_APPS_SUCCESS =
   'app/UtilityPage/GET UTILITY APPS SUCCESS';
 export const GET_UTILITY_APPS_ERROR = 'app/UtilityPage/GET UTILITY APPS ERROR';
 
+export const ADD_TASK_ATTACHMENT = 'app/UtilityPage/ADD TASK ATTACHMENT';
+export const ADD_TASK_ATTACHMENT_SUCCESS = 'app/UtilityPage/ADD TASK ATTACHMENT SUCCESS';
+export const REMOVE_TASK_ATTACHMENT = 'app/UtilityPage/REMOVE TASK ATTACHMENT';
+export const REMOVE_TASK_ATTACHMENT_SUCCESS = 'app/UtilityPage/REMOVE TASK ATTACHMENT SUCCESS';
 export const GET_UTILITY_TASK = 'app/UtilityPage/GET UTILITY TASK';
-export const GET_UTILITY_TASK_SUCCESS =
-  'app/UtilityPage/GET UTILITY TASK SUCCESS';
+export const GET_UTILITY_TASK_SUCCESS = 'app/UtilityPage/GET UTILITY TASK SUCCESS';
 export const GET_UTILITY_TASKS = 'app/UtilityPage/GET UTILITY TASKS';
 export const GET_UTILITY_TASKS_SUCCESS = 'app/UtilityPage/GET ALL UTILITY TASKS SUCCESS';
+export const UPDATE_UTILITY_TASK = 'app/UtilityPage/UPDATE UTILITY TASK';
+export const UPDATE_UTILITY_TASK_SUCCESS = 'app/UtilityPage/UPDATE UTILITY TASK SUCCESS';
 export const GET_UTILITY_TASKS_BY_STATUS = 'app/UtilityPage/GET UTILITY TASKS BY STATUS';
 export const GET_UTILITY_TASKS_BY_STATUS_SUCCESS = 'app/UtilityPage/GET ALL UTILITY TASKS BY STATUS SUCCESS';
 export const CREATE_UTILITY_TASKS = 'app/UtilityPage/CREATE UTILITY TASKS';

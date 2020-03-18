@@ -25,7 +25,7 @@ export function* addUtilityFile({ type, payload }) {
 
     console.log(createdFileResponse, 'createdFileResponse');
 
-    yield put(Actions.createUtilityFileSuccess(createdFileResponse));
+    yield put({type: Constants.GET_UTILITY_TASKS});
   } catch (err) {
     yield put(Actions.getUtilityFilesError(err));
   }
@@ -63,7 +63,7 @@ export function* getUtilityTasks() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetUtilityTasksApi}/${
-    user.organisation && user.organisation.orgId
+    user && user.organisation.orgId
   }`;
 
   try {
@@ -128,6 +128,94 @@ export function* getUtilityTask({ type, payload }) {
   }
 }
 
+export function* commentUtilityTask({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const requestURL = `${Endpoints.TaskCommentApi}`;
+
+  try {
+    const utilityTaskResponse = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(utilityTaskResponse, 'utilityTaskResponse');
+
+    yield put(Actions.updateUtilityTaskSuccess(utilityTaskResponse));
+  } catch (err) {
+    // yield put(Actions.getUtilityTasksError(err.message));
+  }
+}
+
+export function* updateUtilityTask({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const requestURL = `${Endpoints.UpdateUtilityTaskApi}`;
+
+  try {
+    const utilityTaskResponse = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(utilityTaskResponse, 'utilityTaskResponse');
+
+    yield put(Actions.updateUtilityTaskSuccess(utilityTaskResponse));
+  } catch (err) {
+    // yield put(Actions.getUtilityTasksError(err.message));
+  }
+}
+
+export function* addAttachmentToTask({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const requestURL = `${Endpoints.AddTaskAttachmentApi}`;
+
+  try {
+    const utilityTaskResponse = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(utilityTaskResponse, 'utilityTaskResponse');
+
+    yield put(Actions.updateUtilityTaskSuccess(utilityTaskResponse));
+  } catch (err) {
+    // yield put(Actions.getUtilityTasksError(err.message));
+  }
+}
+
+export function* removeTaskAttachment({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const requestURL = `${Endpoints.RemoveTaskAttachmentApi}`;
+
+  try {
+    const utilityTaskResponse = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(utilityTaskResponse, 'utilityTaskResponse');
+
+    yield put(Actions.updateUtilityTaskSuccess(utilityTaskResponse));
+  } catch (err) {
+    // yield put(Actions.getUtilityTasksError(err.message));
+  }
+}
+
 export function* getUserByUUID({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.GetUserByUUIDApi}/${payload}`;
@@ -154,7 +242,7 @@ export function* getUtilityFiles() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetUtilityFilesApi}/${
-    user.organisation.orgId
+    user && user.organisation.orgId
   }`;
 
   try {
@@ -185,7 +273,7 @@ export function* deleteUtilityFile({ type, payload }) {
       method: 'PUT',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
       }),
     });
 
@@ -482,6 +570,7 @@ export default function* UtilityPageSaga() {
   );
   yield takeLatest(Constants.GET_UTILITY_TASKS, getUtilityTasks);
   yield takeLatest(Constants.GET_UTILITY_TASK, getUtilityTask);
+  yield takeLatest(Constants.UPDATE_UTILITY_TASK, updateUtilityTask);
   yield takeLatest(Constants.GET_UTILITY_FILE, getUtilityFile);
   yield takeLatest(Constants.SHARE_DOCUMENT, shareUtilityFiles);
   yield takeLatest(Constants.DELETE_DOCUMENT, deleteUtilityFile);

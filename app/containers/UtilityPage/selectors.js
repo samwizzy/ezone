@@ -81,6 +81,12 @@ const makeSelectFileUploadDialog = () =>
     subState => subState.fileUploadDialog,
   );
 
+const makeSelectAssignTaskDialog = () =>
+  createSelector(
+    selectUtilityPageDomain,
+    subState => subState.assignTaskDialog,
+  );
+
 const makeSelectError = () =>
   createSelector(
     selectUtilityPageDomain,
@@ -175,6 +181,7 @@ export {
   makeSelectNewTaskDialog,
   makeSelectPreviewTaskDialog,
   makeSelectShareFileDialog,
+  makeSelectAssignTaskDialog,
   makeSelectError,
   makeSelectNewFileDialog,
   makeSelectBranchDialog,
