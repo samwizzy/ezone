@@ -1,6 +1,6 @@
 /**
  *
- * InventoryPage
+ * WarehousePage
  *
  */
 
@@ -14,29 +14,35 @@ import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectInventoryPage from './selectors';
+import makeSelectWarehousePage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-export function InventoryPage() {
-  useInjectReducer({ key: 'inventoryPage', reducer });
-  useInjectSaga({ key: 'inventoryPage', saga });
+import messages from './messages';
+import WarehouseList from './components/WarehouseList';
+import WarehouseDialog from './components/WarehouseDialog';
+
+export function WarehousePage() {
+  useInjectReducer({ key: 'warehousePage', reducer });
+  useInjectSaga({ key: 'warehousePage', saga });
 
   return (
     <div>
       <Helmet>
-        <title>InventoryPage</title>
-        <meta name="description" content="Description of InventoryPage" />
+        <title>WarehousePage</title>
+        <meta name="description" content="Description of WarehousePage" />
       </Helmet>
+      <WarehouseList />
+      <WarehouseDialog />
     </div>
   );
 }
 
-InventoryPage.propTypes = {
+WarehousePage.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  inventoryPage: makeSelectInventoryPage(),
+  warehousePage: makeSelectWarehousePage(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -53,4 +59,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(InventoryPage);
+)(WarehousePage);

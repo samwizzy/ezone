@@ -41,7 +41,7 @@ const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewBranchDialogAction: () => dispatch(Actions.openNewEmployeeDialog()),
+    // openNewBranchDialogAction: () => dispatch(Actions.openNewEmployeeDialog()),
     dispatch,
   };
 }

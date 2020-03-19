@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -15,8 +16,8 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import LoadingIndicator from '../../../components/LoadingIndicator';
-import { AddItem } from './AddItem';
+import LoadingIndicator from '../../../../components/LoadingIndicator';
+import { AddWarehouse } from './AddWarehouse';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -71,7 +72,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ItemList = props => {
+const WarehouseList = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -86,7 +87,7 @@ const ItemList = props => {
   const {
     loading,
     getAllEmployees,
-    openNewEmployeeDialogAction,
+    openNewWarehouseDialogAction,
     openEditEmployeeDialogAction,
     openViewEmployeeDialogAction,
   } = props;
@@ -218,7 +219,7 @@ const ItemList = props => {
     responsive: 'scrollMaxHeight',
     selectableRows: 'none',
     customToolbar: () => (
-      <AddItem openNewEmployeeDialogAction={openNewEmployeeDialogAction} />
+      <AddWarehouse openNewWarehouseDialogAction={openNewWarehouseDialogAction} />
     ),
   };
 
@@ -229,7 +230,7 @@ const ItemList = props => {
   return (
     <React.Fragment>
       <MUIDataTable
-        title="All Employees"
+        title="All Warehouses"
         data={getAllEmployees}
         columns={columns}
         options={options}
@@ -238,27 +239,23 @@ const ItemList = props => {
   );
 };
 
-ItemList.propTypes = {
+WarehouseList.propTypes = {
   loading: PropTypes.bool,
   getAllEmployees: PropTypes.array,
-  openNewEmployeeDialogAction: PropTypes.func,
+  openNewWarehouseDialogAction: PropTypes.func,
   openEditEmployeeDialogAction: PropTypes.func,
   openViewEmployeeDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(),
-  getAllEmployees: Selectors.makeSelectGetAllEmployees(),
+  // loading: Selectors.makeSelectLoading(),
+  // getAllEmployees: Selectors.makeSelectGetAllEmployees(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewEmployeeDialogAction: () =>
-      dispatch(Actions.openNewEmployeeDialog()),
-    openEditEmployeeDialogAction: evt =>
-      dispatch(Actions.openEditEmployeeDialog(evt)),
-    openViewEmployeeDialogAction: evt =>
-      dispatch(Actions.openViewEmployeeDialog(evt)),
+    openNewWarehouseDialogAction: () =>
+      dispatch(Actions.openNewWarehouseDialog()),
   };
 }
 
@@ -270,4 +267,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(ItemList);
+)(WarehouseList);

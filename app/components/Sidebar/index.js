@@ -32,6 +32,7 @@ const links = [
   'WorkOrder',
   'Security',
   'Settings',
+  'WarehouseList',
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -254,6 +255,18 @@ export default function MiniDrawer(props) {
               case 'Settings':
                 return (
                   <ListItem button key={index} component="a" href="/email">
+                    <ListItemIcon>
+                      <Tooltip title={text} arrow placement="right-end">
+                        <Settings />
+                      </Tooltip>
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItem>
+                );
+                break;
+              case 'WarehouseList':
+                return (
+                  <ListItem button key={index} component="a" href="/warehouse">
                     <ListItemIcon>
                       <Tooltip title={text} arrow placement="right-end">
                         <Settings />
