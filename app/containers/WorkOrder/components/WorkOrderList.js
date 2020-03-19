@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -89,9 +89,11 @@ const WorkOrderList = props => {
     loading,
     openNewWorkOrderDialogAction,
     openVendorDialogAction,
+    listOfWorkOrderData,
   } = props;
 
-  // console.log(getAllEmployees, 'getAllEmployees');
+
+  console.log('listOfWorkOrderData--> ', listOfWorkOrderData);
 
   const columns = [
     {
@@ -241,11 +243,13 @@ const WorkOrderList = props => {
 
 WorkOrderList.propTypes = {
   loading: PropTypes.bool,
+  listOfWorkOrderData: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
   workOrderDialog: Selectors.makeSelectWorkOrderDialog(),
+  listOfWorkOrderData: Selectors.makeSelectGetListOfWorkOrderData(),
 });
 
 function mapDispatchToProps(dispatch) {

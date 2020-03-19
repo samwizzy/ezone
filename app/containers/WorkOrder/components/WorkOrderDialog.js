@@ -23,17 +23,7 @@ import {
   Dialog,
   DialogContent,
   DialogActions,
-  AppBar,
-  Toolbar,
-  Typography,
   MenuItem,
-  Tabs,
-  Tab,
-  Box,
-  Card,
-  CardActionArea,
-  CardMedia,
-  CardContent,
   Grid,
   DialogTitle,
   Divider,
@@ -43,19 +33,7 @@ import {
   FormControlLabel,
   FormControl,
   FormLabel,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  TableSortLabel,
-  Paper,
-  IconButton,
-  Tooltip,
-  DeleteIcon,
-  Switch,
+  Radio, 
   FilterListIcon,
 } from '@material-ui/core';
 import ItemTable from './ItemTable';
@@ -213,8 +191,6 @@ const WorkOrderDialog = props => {
                 id="combo-box-demo"
                 options={listOfVendorsData}
                 getOptionLabel={option => option.busName}
-                // style={{ width: 800 }}
-                fullWidth
                 onChange={(evt, value) => handleSelectChange(evt, value)}
                 renderInput={params => (
                   <TextField
@@ -312,18 +288,6 @@ const WorkOrderDialog = props => {
               >
                 Add Item
               </Button>
-
-              {/* <TextField
-                id="standard-email"
-                label="Email"
-                type="email"
-                variant="outlined"
-                className={classes.textField}
-                value={values.emailAddress}
-                onChange={handleChange('emailAddress')}
-                margin="normal"
-                fullWidth
-              /> */}
               <TextField
                 id="standard-phone-number"
                 label="Phone Number"
@@ -379,18 +343,6 @@ const WorkOrderDialog = props => {
                   </MenuItem>
                 ))}
               </TextField>
-              {/* <TextField
-                id="standard-address"
-                label="Address"
-                variant="outlined"
-                className={classes.textField}
-                value={values.address}
-                onChange={handleChange('address')}
-                margin="normal"
-                fullWidth
-                rows={2}
-                multiline
-              /> */}
             </div>
           ) : null}
         </DialogContent>

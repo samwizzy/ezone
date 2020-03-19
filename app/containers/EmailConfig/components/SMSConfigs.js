@@ -53,6 +53,7 @@ const SMSConfigs = props => {
 
   console.log('smsProviderData from component: ', smsProviderData);
   console.log('smsConfigData from component: ', smsConfigData);
+  console.log('currentUser: ', currentUser);
 
   const [values, setValues] = React.useState({
     orgId: currentUser.organisation.orgId,

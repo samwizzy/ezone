@@ -27,10 +27,12 @@ export function WorkOrderPage(props) {
   useInjectReducer({ key: 'workOrderPage', reducer });
   useInjectSaga({ key: 'workOrderPage', saga });
 
-  const { getListOfVendorsAction } = props;
+  const { getListOfVendorsAction, getListOfWorkOrderAction } = props;
 
   // Similar to componentDidMount and componentDidUpdate
   useEffect(() => {
+    console.log('useEffect triggered');
+    getListOfWorkOrderAction();
     getListOfVendorsAction();
   }, []);
 
@@ -51,6 +53,7 @@ export function WorkOrderPage(props) {
 WorkOrderPage.propTypes = {
   dispatch: PropTypes.func,
   getListOfVendorsAction: PropTypes.func,
+  getListOfWorkOrderAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -60,6 +63,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getListOfVendorsAction: () => dispatch(Actions.getAllVendorsAction()),
+    getListOfWorkOrderAction: () => dispatch(Actions.getAllWorkOrderAction()),
     dispatch,
   };
 }
