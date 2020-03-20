@@ -39,11 +39,23 @@ const makeSelectWarehouseDialog = () =>
     subState => subState.warehouseDialog,
   );
 
-  // const makeSelectWarehouseDialog = () =>
-  // createSelector(
-  //   selectWarehousePageDomain,
-  //   subState => subState.warehouseDialog,
-  // );
+const makeSelectGetAllEmployees = () =>
+  createSelector(
+    selectWarehousePageDomain,
+    subState => subState.getAllEmployees,
+  );
+
+const makeSelectGetAllWarehouses = () =>
+  createSelector(
+    selectWarehousePageDomain,
+    subState => subState.getAllWarehouses,
+  );
+
+const makeSelectWarehouseDetails = () =>
+  createSelector(
+    selectWarehousePageDomain,
+    subState => subState.warehouseDetails,
+  );
 
 export default makeSelectWarehousePage;
 export {
@@ -51,4 +63,7 @@ export {
   makeSelectError,
   makeSelectLoading,
   makeSelectWarehouseDialog,
+  makeSelectGetAllEmployees,
+  makeSelectGetAllWarehouses,
+  makeSelectWarehouseDetails,
 };

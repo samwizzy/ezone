@@ -25,7 +25,7 @@ export function AddWarehouse(props) {
           color="primary"
           onClick={() => openNewWarehouseDialogAction()}
         >
-          Add User
+          Add New Warehouse
         </Button>
       </Tooltip>
     </React.Fragment>
