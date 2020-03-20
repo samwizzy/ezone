@@ -51,6 +51,12 @@ const makeSelectGetListOfVendorsData = () =>
     substate => substate.getListOfVendorsData,
   );
 
+const makeSelectGetListOfWorkOrderData = () =>
+  createSelector(
+    selectWorkOrderPageDomain,
+    substate => substate.getListOfWorkOrderData,
+  );
+
 const makeSelectSavedItemData = () =>
   createSelector(
     selectWorkOrderPageDomain,
@@ -88,4 +94,5 @@ export {
   makeSelectSavedItemData,
   makeSelectSavedItemStore,
   makeSelectWorkOrderPostData,
+  makeSelectGetListOfWorkOrderData,
 };

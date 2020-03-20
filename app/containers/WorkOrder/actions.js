@@ -74,6 +74,7 @@ export function saveVendorConfigErrorAction(data) {
 
 
 export function saveWorkOrderAction(data) {
+  console.log('saveWorkOrderAction');
   return {
     type: Constants.SAVE_WORKORDER,
     payload: data,
@@ -112,6 +113,29 @@ export function getAllVendorsSuccessAction(data) {
 export function getAllVendorsErrorAction(data) {
   return {
     type: Constants.GET_ALL_VENDORS_ERR,
+    payload: data,
+  };
+}
+
+
+// Get list of all saved workorder
+export function getAllWorkOrderAction() {
+  console.log('getAllWorkOrderAction');
+  return {
+    type: Constants.GET_ALL_WORKORDER,
+  };
+}
+
+export function getAllWorkOrderSuccessAction(data) {
+  return {
+    type: Constants.GET_ALL_WORKORDER_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getAllWorkOrderErrorAction(data) {
+  return {
+    type: Constants.GET_ALL_WORKORDER_ERR,
     payload: data,
   };
 }

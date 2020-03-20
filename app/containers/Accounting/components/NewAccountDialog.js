@@ -46,23 +46,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-// if (values.amount && values.amountForOneUnit) {
-//   setValues({...values, [totalAmount]: values.amount * values.amountForOneUnit});
-// }
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="right" ref={ref} {...props} />;
 });
 
-const AddItemDialog = props => {
+const NewAccountDialog = props => {
   const {
     loading,
-    addItemDialog,
-    openAddItemDialogAction,
-    closeAddItemDialogAction,
-    saveAddItemContentsAction
+    accountDialog,
   } = props;
 
+  console.log('accountDialog: ', accountDialog);
 
   const classes = useStyles();
   
@@ -90,21 +84,21 @@ const AddItemDialog = props => {
   return (
     <div>
       <Dialog
-        {...addItemDialog.props}
-        onClose={closeAddItemDialogAction}
+        {...accountDialog.props}
+        // onClose={closeAddItemDialogAction}
         keepMounted
         TransitionComponent={Transition}
         maxWidth={"xs"}
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {addItemDialog.type === 'new' ? 'Item' : 'Edit Item'}
+          {accountDialog.type === 'new' ? 'Item' : 'Edit Item'}
         </DialogTitle>
 
         <Divider />
 
         <DialogContent>
-          {addItemDialog.type === 'new' ? (
+          {accountDialog.type === 'new' ? (
             <div>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Grid container justify="space-around">
@@ -153,31 +147,7 @@ const AddItemDialog = props => {
                 onChange={handleChange('amountForOneUnit')}
                 margin="normal"
                 fullWidth
-              />
-              <TextField
-                id="standard-totalAmount "
-                label="Total Amount"
-                readOnly
-                type="number"
-                variant="outlined"
-                className={classes.textField}
-                value={values.totalAmount }
-                onChange={handleChange('totalAmount ')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-description"
-                label="Item Description"
-                variant="outlined"
-                className={classes.textField}
-                value={values.description}
-                onChange={handleChange('description')}
-                margin="normal"
-                fullWidth
-                rows={2}
-                multiline
-              />
+              />   
             </div>
           ) : null }
         </DialogContent>
@@ -187,7 +157,7 @@ const AddItemDialog = props => {
             <LoadingIndicator />
           ) : (
             <Button
-              onClick={() => { saveAddItemContentsAction(values), closeAddItemDialogAction(), setValues('') }}
+              onClick={() => { openNewAccountDialogAction() }}
               color="primary"
               variant="contained"
               // disabled={!canBeSubmitted()}
@@ -196,7 +166,7 @@ const AddItemDialog = props => {
             </Button>
           )}
           <Button
-            onClick={() => { closeAddItemDialogAction(), setValues('') }}
+            onClick={() => { closeNewAccountDialogAction() }}
             color="primary"
             variant="contained"
           >
@@ -208,21 +178,20 @@ const AddItemDialog = props => {
   );
 };
 
-AddItemDialog.propTypes = {
+NewAccountDialog.propTypes = {
   loading: PropTypes.bool,
-  AddItemDialog: PropTypes.object,
+  accountDialog: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(), 
-  addItemDialog: Selectors.makeSelectItemDialog(),
+  accountDialog: Selectors.makeSelectNewAccountDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeAddItemDialogAction: () => dispatch(Actions.closeAddItemDialog()),
-    openAddItemDialogAction: () => dispatch(Actions.openAddItemDialog()),
-    saveAddItemContentsAction: evt => dispatch(Actions.saveAddItemContents(evt)),
+    openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
+    closeNewAccountDialogAction: () => dispatch(Actions.closeNewAccountDialog()),
     dispatch,
   };
 }
@@ -235,4 +204,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(AddItemDialog);
+)(NewAccountDialog);

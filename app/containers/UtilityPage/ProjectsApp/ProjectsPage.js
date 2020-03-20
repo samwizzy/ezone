@@ -23,19 +23,22 @@ import TaskIcon from '../../../images/TaskIcon.svg';
 import ProjectsIcon from '../../../images/ProjectsIcon.svg';
 
 const apps = [
-  { id: 1,  name: 'Accounting',                url: '/accounting',      icon: AcctIcon },
-  { id: 2,  name: 'Human Resources',           url: '/hr',              icon: AppIcon1 },
-  { id: 3,  name: 'Store & Inventory Mgt',     url: '/',              icon: StoreIcon },
-  { id: 4,  name: 'CRM',                       url: '/cms',             icon: CRMIcon },
-  { id: 5,  name: 'Budgeting',                 url: '/',                 icon: BudgetingIcon },
-  { id: 6,  name: 'Task management',           url: '/dashboard/tasks', icon: TaskIcon },
-  { id: 7,  name: 'Fiie and Document sharing', url: '/dashboard/files', icon: FileIcon },
-  { id: 8,  name: 'Projects',                  url: '/',                 icon: ProjectsIcon },
-  { id: 9,  name: 'Projects',                  url: '/',                 icon: ProjectsIcon },
-  { id: 10, name: 'Projects',                  url: '/',                 icon: ProjectsIcon },
-  { id: 11, name: 'Projects',                  url: '/',                 icon: ProjectsIcon },
-  { id: 12, name: 'Projects',                  url: '/',                 icon: ProjectsIcon },
-  { id: 13, name: 'Projects',                  url: '/',                 icon: ProjectsIcon },
+  { id: 1,  name: 'Accounting',                   url: '/accounting',      icon: AcctIcon },
+  { id: 2,  name: 'Human Resources',              url: '/hr',              icon: AppIcon1 },
+  { id: 3,  name: 'Store & Inventory Mgt',        url: '/',                icon: StoreIcon },
+  { id: 4,  name: 'CRM',                          url: '/cms',             icon: CRMIcon },
+  { id: 5,  name: 'Budgeting',                    url: '/',                icon: BudgetingIcon },
+  { id: 6,  name: 'Task management',              url: '/dashboard/tasks', icon: TaskIcon },
+  { id: 7,  name: 'Fiie and Document sharing',    url: '/dashboard/files', icon: FileIcon },
+  { id: 8,  name: 'Projects',                     url: '/',                icon: ProjectsIcon },
+  { id: 9,  name: 'Accounting',                   url: '/account',         icon: AcctIcon },
+  { id: 10, name: 'Human Resources',              url: '',                 icon: AppIcon1 },
+  { id: 11, name: 'Store & Inventory Management', url: '/inventory',       icon: StoreIcon},
+  { id: 12, name: 'CRM',                          url: '',                 icon: CRMIcon },
+  { id: 13, name: 'Budgeting',                    url: '',                 icon: BudgetingIcon },
+  { id: 14, name: 'Task management',              url: '/dashboard/tasks', icon: TaskIcon },
+  { id: 15, name: 'Fiie and Document sharing',    url: '/dashboard/files', icon: FileIcon},
+  { id: 16, name: 'Projects',                     url: '',                 icon: ProjectsIcon },
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -166,14 +169,12 @@ const ProjectsApp = () => {
 };
 
 ProjectsApp.propTypes = {
-  // openEditCompanyDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
   return {
-    // openEditCompanyDialog: evt => dispatch(Actions.openEditCompanyDialog(evt)),
   };
 }
 

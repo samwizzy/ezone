@@ -36,6 +36,8 @@ import EmailConfigs from '../EmailConfig/components/TabsPage';
 import EmailTemplate from '../EmailConfig/components/EmailTemplate';
 import EmailPasswordTemplate from '../EmailConfig/components/EmailPasswordTemplate';
 import WorkOrderPage from '../WorkOrder/Loadable';
+import InventoryPage from '../InventoryPage/Loadable';
+import WarehousePage from '../InventoryPage/WarehousePage/Loadable';
 import Layout1 from '../../components/layouts/layout1/Layout1';
 import Layout2 from '../../components/layouts/layout2/Layout2';
 import Layout3 from '../../components/layouts/layout3/Layout3';
@@ -44,6 +46,7 @@ import PrivateRoute from '../AuthProvider/PrivateRoute';
 import Snackbar from './components/Snackbar';
 import { AppContext } from '../context/AppContext';
 import sideBarconfig from '../../components/Sidebar/components/SidebarConfig'
+import AccountPage from '../Accounting/Loadable';
 
 // import { makeSelectGetSaveToken } from './selectors';
 
@@ -152,6 +155,13 @@ const App = () => {
                 <PrivateRoute path="/WorkOrder" component={WorkOrderPage} />
                 <PrivateRoute exact path="/hr" component={HRPage} />
                 <PrivateRoute exact path="/hr/:sectionId" component={HRPage} />
+                <PrivateRoute path="/account" component={AccountPage} />
+                <PrivateRoute
+                  exact
+                  path="/inventory"
+                  component={InventoryPage}
+                />
+                <PrivateRoute path="/warehouse" component={WarehousePage} />
               </Layout3>
               <Route path="" component={NotFoundPage} />
             </Switch>

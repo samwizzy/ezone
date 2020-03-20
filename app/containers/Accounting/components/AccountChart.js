@@ -73,7 +73,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const WorkOrderList = props => {
+const AccountChart = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -86,19 +86,15 @@ const WorkOrderList = props => {
   };
 
   const {
-    loading,
-    openNewWorkOrderDialogAction,
-    openVendorDialogAction,
-    listOfWorkOrderData,
+    accountDialog,
+    openNewAccountDialogAction,
   } = props;
 
 
-  console.log('listOfWorkOrderData--> ', listOfWorkOrderData);
-
   const columns = [
     {
-      name: 'Id',
-      label: 'S/N',
+      name: 'accountCode',
+      label: 'Account Code',
       options: {
         filter: true,
         customBodyRender: (value, tableMeta) => {
@@ -115,32 +111,32 @@ const WorkOrderList = props => {
       },
     },
     {
-      name: 'firstName',
-      label: 'First Name',
+      name: 'accountName',
+      label: 'Account Name',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'lastName',
-      label: 'Last Name',
+      name: 'accountDescription',
+      label: 'Account Description',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'emailAddress',
-      label: 'Email Address',
+      name: 'accountType',
+      label: 'Account Type',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'phoneNumber',
-      label: 'Phone Number',
+      name: 'status',
+      label: 'Status',
       options: {
         filter: true,
         sort: false,
@@ -164,12 +160,13 @@ const WorkOrderList = props => {
       },
     },
     {
-      name: 'gender',
-      label: 'Gender',
+      name: '',
+      label: '',
       options: {
         filter: true,
         sort: false,
       },
+      
     },
     // {
     //   name: 'id',
@@ -220,7 +217,10 @@ const WorkOrderList = props => {
     responsive: 'scrollMaxHeight',
     selectableRows: 'none',
     customToolbar: () => (
-      <AddButton openNewWorkOrderDialogAction={openNewWorkOrderDialogAction} openVendorDialogAction={openVendorDialogAction} />
+      <AddButton 
+      openNewAccountDialogAction={openNewAccountDialogAction} 
+        // openVendorDialogAction={openVendorDialogAction} 
+      />
       // <AddVendor />
     ),
   };
@@ -232,7 +232,7 @@ const WorkOrderList = props => {
   return (
     <React.Fragment>
       <MUIDataTable
-        title="Work Order"
+        title="Charts Of Accounts"
         // data={getAllEmployees}
         columns={columns}
         options={options}
@@ -241,21 +241,18 @@ const WorkOrderList = props => {
   );
 };
 
-WorkOrderList.propTypes = {
+AccountChart.propTypes = {
   loading: PropTypes.bool,
-  listOfWorkOrderData: PropTypes.array,
+  openNewAccountDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
-  workOrderDialog: Selectors.makeSelectWorkOrderDialog(),
-  listOfWorkOrderData: Selectors.makeSelectGetListOfWorkOrderData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewWorkOrderDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
-    openVendorDialogAction: () => dispatch(Actions.openVendorDialog()),
+    openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
   };
 }
 
@@ -267,4 +264,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(WorkOrderList);
+)(AccountChart);

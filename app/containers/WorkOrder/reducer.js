@@ -12,6 +12,7 @@ export const initialState = {
   vendorPostData: false,
   savedItemData: false,
   getListOfVendorsData: [],
+  getListOfWorkOrderData: [],
   loading: false,
   error: false,
   workOrderDialog: {
@@ -198,6 +199,29 @@ const workOrderPageReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: action.payload,
+        };
+      }
+      // Get a list of workorders
+      case Constants.GET_ALL_WORKORDER: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_ALL_WORKORDER_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getListOfWorkOrderData: action.payload,
+        };
+      }
+      case Constants.GET_ALL_WORKORDER_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
         };
       }
     }

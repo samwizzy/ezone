@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -9,16 +10,16 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core';
-
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import * as UtilityActions from '../../../UtilityPage/actions';
+import * as UtilitySelectors from '../../../UtilityPage/selectors';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-// import LoadingIndicator from '../../../../components/LoadingIndicator';
-import { AddButton } from './AddButton';
-
+import LoadingIndicator from '../../../../components/LoadingIndicator';
+import { AddWarehouse } from './AddWarehouse';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -73,7 +74,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const WorkOrderList = props => {
+const WarehouseList = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -87,13 +88,18 @@ const WorkOrderList = props => {
 
   const {
     loading,
-    openNewWorkOrderDialogAction,
-    openVendorDialogAction,
-    listOfWorkOrderData,
+    getAllEmployees,
+    openNewWarehouseDialogAction,
+    getAllUsersAction,
+    openEditEmployeeDialogAction,
+    openViewEmployeeDialogAction,
   } = props;
 
+  useEffect(() => {
+    getAllUsersAction();
+  }, []);
 
-  console.log('listOfWorkOrderData--> ', listOfWorkOrderData);
+  console.log(getAllEmployees, 'getAllEmployees');
 
   const columns = [
     {
@@ -220,20 +226,19 @@ const WorkOrderList = props => {
     responsive: 'scrollMaxHeight',
     selectableRows: 'none',
     customToolbar: () => (
-      <AddButton openNewWorkOrderDialogAction={openNewWorkOrderDialogAction} openVendorDialogAction={openVendorDialogAction} />
-      // <AddVendor />
+      <AddWarehouse openNewWarehouseDialogAction={openNewWarehouseDialogAction} />
     ),
   };
 
-  // if (loading) {
-  //   return <LoadingIndicator />;
-  // }
+  if (loading) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <React.Fragment>
       <MUIDataTable
-        title="Work Order"
-        // data={getAllEmployees}
+        title="All Warehouses"
+        data={getAllEmployees}
         columns={columns}
         options={options}
       />
@@ -241,21 +246,27 @@ const WorkOrderList = props => {
   );
 };
 
-WorkOrderList.propTypes = {
+WarehouseList.propTypes = {
   loading: PropTypes.bool,
-  listOfWorkOrderData: PropTypes.array,
+  getAllEmployees: PropTypes.array,
+  openNewWarehouseDialogAction: PropTypes.func,
+  openEditEmployeeDialogAction: PropTypes.func,
+  openViewEmployeeDialogAction: PropTypes.func,
+  getAllUsersAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
-  workOrderDialog: Selectors.makeSelectWorkOrderDialog(),
-  listOfWorkOrderData: Selectors.makeSelectGetListOfWorkOrderData(),
+  // getAllEmployees: Selectors.makeSelectGetAllEmployees(),
+  getAllEmployees: UtilitySelectors.makeSelectAllEmployees(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewWorkOrderDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
-    openVendorDialogAction: () => dispatch(Actions.openVendorDialog()),
+    getAllUsersAction: () =>
+      dispatch(UtilityActions.getAllUsers()),
+    openNewWarehouseDialogAction: () =>
+      dispatch(Actions.openNewWarehouseDialog()),
   };
 }
 
@@ -267,4 +278,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(WorkOrderList);
+)(WarehouseList);

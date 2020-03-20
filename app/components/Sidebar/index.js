@@ -5,7 +5,6 @@ import { withRouter } from 'react-router-dom'
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Link from '@material-ui/core/Link';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -34,6 +33,7 @@ const links = [
   'WorkOrder',
   'Security',
   'Settings',
+  'WarehouseList',
 ];
 
 const useStyles = makeStyles(theme => ({

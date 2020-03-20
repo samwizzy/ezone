@@ -188,6 +188,7 @@ const useToolbarStyles = makeStyles(theme => ({
 const EnhancedTableToolbar = props => {
   const classes = useToolbarStyles();
   const { numSelected } = props;
+  console.log(`numSelected ${numSelected}`);
 
   return (
     <Toolbar
@@ -196,38 +197,28 @@ const EnhancedTableToolbar = props => {
       })}
     >
       {numSelected > 0 ? (
-        <Typography
-          className={classes.title}
-          color="inherit"
-          variant="subtitle1"
-        >
-          {numSelected} selected
+        <Typography className={classes.title} color="inherit" variant="subtitle1">
+          {numSelected} Selected
         </Typography>
       ) : (
         <Typography className={classes.title} variant="h6" id="tableTitle">
-          Add Item
+          Nutrition
         </Typography>
       )}
 
-      {numSelected > 0 ? (
-        <Typography className={classes.title} variant="h6" id="tableTitle">
-          welcome here
-        </Typography>
+      {/* {numSelected > 0 ? (
+        <Tooltip title="Delete">
+          <IconButton aria-label="delete">
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
       ) : (
-        // <Tooltip title="Delete">
-        //   <IconButton aria-label="delete">
-        //     <DeleteIcon />
-        //   </IconButton>
-        // </Tooltip>
-        <Typography className={classes.title} variant="h6" id="tableTitle">
-          welcome there
-        </Typography>
-        // <Tooltip title="Filter list">
-        //   <IconButton aria-label="filter list">
-        //     <FilterListIcon />
-        //   </IconButton>
-        // </Tooltip>
-      )}
+        <Tooltip title="Filter list">
+           <IconButton aria-label="filter list">
+            <FilterListIcon />
+          </IconButton>
+        </Tooltip>
+      )} */}
     </Toolbar>
   );
 };
@@ -255,7 +246,7 @@ const useStyles = makeStyles(theme => ({
     overflow: 'hidden',
     padding: 0,
     position: 'absolute',
-    top: 20,
+    top: 20, 
     width: 1,
   },
 }));
@@ -263,7 +254,6 @@ const useStyles = makeStyles(theme => ({
 const ItemTable = props => {
   const { savedItemStore } = props;
 
-  console.log(savedItemStore, 'savedItemStore');
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
@@ -323,8 +313,7 @@ const ItemTable = props => {
   const isSelected = name => selected.indexOf(name) !== -1;
 
   const emptyRows =
-    rowsPerPage -
-    Math.min(rowsPerPage, savedItemStore.length - page * rowsPerPage);
+    rowsPerPage - Math.min(rowsPerPage, savedItemStore.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
@@ -378,9 +367,7 @@ const ItemTable = props => {
                         {row.name}  
                       </TableCell>
                       <TableCell align="right">{row.amount}</TableCell>
-                      <TableCell align="right">
-                        {row.amountForOneUnit}
-                      </TableCell>
+                      <TableCell align="right">{row.amountForOneUnit}</TableCell>
                     </TableRow>
                   );
                 })}
