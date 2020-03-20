@@ -35,14 +35,14 @@ export function AddButton(props) {
 
 AddButton.prototypes = {
   classes: PropTypes.object.isRequired,
-  openNewAccountDialogAction: PropTypes.func,
+  // openNewAccountDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
+    // openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
     dispatch,
   };
 }

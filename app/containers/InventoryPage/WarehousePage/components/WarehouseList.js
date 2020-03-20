@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -14,6 +14,8 @@ import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import * as UtilityActions from '../../../UtilityPage/actions';
+import * as UtilitySelectors from '../../../UtilityPage/selectors';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
@@ -88,11 +90,16 @@ const WarehouseList = props => {
     loading,
     getAllEmployees,
     openNewWarehouseDialogAction,
+    getAllUsersAction,
     openEditEmployeeDialogAction,
     openViewEmployeeDialogAction,
   } = props;
 
-  // console.log(getAllEmployees, 'getAllEmployees');
+  useEffect(() => {
+    getAllUsersAction();
+  }, []);
+
+  console.log(getAllEmployees, 'getAllEmployees');
 
   const columns = [
     {
@@ -245,15 +252,19 @@ WarehouseList.propTypes = {
   openNewWarehouseDialogAction: PropTypes.func,
   openEditEmployeeDialogAction: PropTypes.func,
   openViewEmployeeDialogAction: PropTypes.func,
+  getAllUsersAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
   // getAllEmployees: Selectors.makeSelectGetAllEmployees(),
+  getAllEmployees: UtilitySelectors.makeSelectAllEmployees(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    getAllUsersAction: () =>
+      dispatch(UtilityActions.getAllUsers()),
     openNewWarehouseDialogAction: () =>
       dispatch(Actions.openNewWarehouseDialog()),
   };
