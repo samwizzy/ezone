@@ -35,10 +35,6 @@ const FilesApp = props => {
         getEmployees()
     }, []);
 
-    if(loading){
-      <LoadingIndicator />
-    }
-
     return (
         <DashboardLayout>
             { params.id? 

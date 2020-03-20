@@ -57,6 +57,19 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.grey[50],
     borderRadius: theme.spacing(5),
     overflow: 'auto',
+    "&::-webkit-scrollbar": {
+      width: "6px",
+      backgroundColor: "#F5F5F5"
+    },
+    "&::-webkit-scrollbar-track": {
+      "-webkitBoxShadow": "inset 0 0 6px rgba(0,0,0,0.3)",
+      borderRadius: "10px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      borderRadius: "10px",
+      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.5)",
+      backgroundColor: theme.palette.grey[200],
+    }
   },
   image: {
     [theme.breakpoints.up('md')]: {

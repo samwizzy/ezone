@@ -27,12 +27,26 @@ const useStyles = makeStyles(theme => ({
   },
   drawer: {
     [theme.breakpoints.up('sm')]: {
+      display: 'flex',
       width: drawerWidth,
       flexShrink: 0,
       overflowY: 'auto',
-      height: '500px',
+      height: '100vh',
       '& .MuiListSubheader-root': {
         backgroundColor: theme.palette.common.white
+      },
+      "&::-webkit-scrollbar": {
+        width: "6px",
+        backgroundColor: "#F5F5F5"
+      },
+      "&::-webkit-scrollbar-track": {
+        "-webkitBoxShadow": "inset 0 0 6px rgba(0,0,0,0.3)",
+        borderRadius: "10px",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        borderRadius: "10px",
+        "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.5)",
+        backgroundColor: theme.palette.primary.main,
       }
     },
   },
@@ -150,8 +164,8 @@ const TaskList = props => {
               </ButtonGroup>
               <ButtonGroup size="small" aria-label="small outlined button group">
                 <Button><Lens className={classNames(classes.icon, {'approved': true})} /> To do</Button>
-                <Button><Lens className={classNames(classes.icon, {'approved': true})} />In Progress</Button>
-                <Button><Lens className={classNames(classes.icon, {'approved': true})} />Done</Button>
+                <Button><Lens className={classNames(classes.icon, {'inProgress': true})} />In Progress</Button>
+                <Button><Lens className={classNames(classes.icon, {'done': true})} />Done</Button>
               </ButtonGroup>
             </div>
             

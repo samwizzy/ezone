@@ -58,31 +58,7 @@ const useStyles = makeStyles(theme => ({
   active: { backgroundColor: darken(theme.palette.primary.main, 0.25) },
 }));
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <Typography
-      component="div"
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box p={3}>{children}</Box>}
-    </Typography>
-  );
-}
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
-
-function TabsPage(props) {
+function ModuleLayout(props) {
   const classes = useStyles();
 
   const refreshPage = () => {
@@ -98,17 +74,17 @@ function TabsPage(props) {
               <RefreshSharp />
             </IconButton>
 
-            <NavLink exact to="/dashboard" activeClassName={classes.active}>
-              Project
+            <NavLink exact to="/hr/employees" activeClassName={classes.active}>
+              Employees
             </NavLink>
-            <NavLink to="/dashboard/chats" activeClassName={classes.active}>
-              Chats
+            <NavLink to="/hr/departments" activeClassName={classes.active}>
+              Departments
             </NavLink>
-            <NavLink to="/dashboard/tasks" activeClassName={classes.active}>
-              Tasks
+            <NavLink to="/hr/branches" activeClassName={classes.active}>
+              Branches
             </NavLink>
-            <NavLink to="/dashboard/files" activeClassName={classes.active}>
-              Files
+            <NavLink to="/hr/roles" activeClassName={classes.active}>
+              Roles
             </NavLink>
           </div>
 
@@ -120,20 +96,14 @@ function TabsPage(props) {
   );
 }
 
-TabPanel.propTypes = {
+ModuleLayout.propTypes = {
   children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({
-  // loginPage: makeSelectLoginPage(),
-});
+const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
-  return {
-    getUtilityTasks: evt => dispatch(Actions.getUtilityTasks(evt)),
-  };
+  return {};
 }
 
 const withConnect = connect(
@@ -145,5 +115,5 @@ export default withRouter(
   compose(
     withConnect,
     memo,
-  )(TabsPage),
+  )(ModuleLayout),
 );

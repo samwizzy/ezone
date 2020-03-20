@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom'
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Link from '@material-ui/core/Link';
@@ -20,6 +21,7 @@ import Settings from '@material-ui/icons/Settings';
 import Security from '@material-ui/icons/Security';
 import BusinessCenter from '@material-ui/icons/BusinessCenter';
 import Logo from '../../images/logo.svg';
+import AppSidebar from './components/AppSidebar'
 
 const drawerWidth = 240;
 
@@ -67,7 +69,7 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
-    // zIndex: 1099,
+    backgroundColor: 'teal'
   },
   drawerOpen: {
     width: drawerWidth,
@@ -96,6 +98,7 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
+    width: `calc(100% - ${drawerWidth}px)`,
   },
   logo: {
     color: '#1F70C1',
@@ -107,10 +110,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function MiniDrawer(props) {
+function MiniDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
+  console.log(props, "props match")
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -122,8 +126,6 @@ export default function MiniDrawer(props) {
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
-
       <Drawer
         variant="permanent"
         style={{ backgroundColor: 'red' }}
@@ -161,113 +163,7 @@ export default function MiniDrawer(props) {
           )}
         </div>
         <Divider />
-        <List className={classes.list}>
-          {links.map((text, index) => {
-            switch (text) {
-              case 'Dashboard':
-                return (
-                  <ListItem button key={index} component="a" href="/dashboard">
-                    <ListItemIcon>
-                      <Tooltip title={text} arrow placement="right-end">
-                        <Dashboard />
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                );
-                break;
-              case 'Organization':
-                return (
-                  <ListItem
-                    button
-                    key={index}
-                    component="a"
-                    href="/organization"
-                  >
-                    <ListItemIcon>
-                      <Tooltip title={text} arrow placement="right-end">
-                        <BusinessCenter />
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                );
-                break;
-              case 'Employees':
-                return (
-                  <ListItem
-                    button
-                    key={index}
-                    component="a"
-                    href="/users/employees"
-                  >
-                    <ListItemIcon>
-                      <Tooltip title={text} arrow placement="right-end">
-                        <Person />
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                );
-                break;
-              case 'User Profile':
-                return (
-                  <ListItem
-                    button
-                    key={index}
-                    component="a"
-                    href="/users/profile"
-                  >
-                    <ListItemIcon>
-                      <Tooltip title={text} arrow placement="right-end">
-                        <Person />
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                );
-                break;
-              case 'Applications':
-                Security;
-                return (
-                  <ListItem button key={index} component="a" href="/utility">
-                    <ListItemIcon>
-                      <Tooltip title={text} arrow placement="right-end">
-                        <Apps />
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                );
-              case 'WorkOrder':
-                return (
-                  <ListItem button key={index} component="a" href="/workorder">
-                    <ListItemIcon>
-                      <Tooltip title={text} arrow placement="right-end">
-                        <Security />
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                );
-                break;
-              case 'Settings':
-                return (
-                  <ListItem button key={index} component="a" href="/email">
-                    <ListItemIcon>
-                      <Tooltip title={text} arrow placement="right-end">
-                        <Settings />
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                );
-                break;
-              default:
-                return null;
-            }
-          })}
-        </List>
+        <AppSidebar />
         <Divider />
       </Drawer>
       <main className={classes.content}>
@@ -277,3 +173,5 @@ export default function MiniDrawer(props) {
     </div>
   );
 }
+
+export default withRouter(MiniDrawer)

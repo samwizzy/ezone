@@ -81,33 +81,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const tileData = [
-    {
-      img: 'https://via.placeholder.com/150',
-      title: 'Task One',
-      author: 'author',
-    },
-    {
-      img: 'https://via.placeholder.com/150',
-      title: 'Image',
-      author: 'author',
-    },
-    {
-      img: 'https://via.placeholder.com/150',
-      title: 'Task Two',
-      author: 'author',
-    },
-    {
-      img: 'https://via.placeholder.com/150',
-      title: 'Task Three',
-      author: 'author',
-    },
-];
-
 const FileList = props => {
   const classes = useStyles();
   const { loading, openNewTaskDialog, getUtilityFiles, files, file, users, container } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
 
   console.log(files, "all files")

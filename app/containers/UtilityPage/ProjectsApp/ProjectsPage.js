@@ -23,23 +23,24 @@ import TaskIcon from '../../../images/TaskIcon.svg';
 import ProjectsIcon from '../../../images/ProjectsIcon.svg';
 
 const apps = [
-  { id: 1, name: 'Accounting', url: '', icon: AcctIcon },
-  { id: 2, name: 'Human Resources', url: '', icon: AppIcon1 },
-  { id: 3, name: 'Store & Inventory Management', url: '', icon: StoreIcon },
-  { id: 4, name: 'CRM', url: '', icon: CRMIcon },
-  { id: 5, name: 'Budgeting', url: '', icon: BudgetingIcon },
-  { id: 6, name: 'Task management', url: '/dashboard/tasks', icon: TaskIcon },
-  {
-    id: 7,
-    name: 'Fiie and Document sharing',
-    url: '/dashboard/files',
-    icon: FileIcon,
-  },
-  { id: 8, name: 'Projects', url: '', icon: ProjectsIcon },
+  { id: 1,  name: 'Accounting',                url: '/accounting',      icon: AcctIcon },
+  { id: 2,  name: 'Human Resources',           url: '/hr',              icon: AppIcon1 },
+  { id: 3,  name: 'Store & Inventory Mgt',     url: '/',              icon: StoreIcon },
+  { id: 4,  name: 'CRM',                       url: '/cms',             icon: CRMIcon },
+  { id: 5,  name: 'Budgeting',                 url: '/',                 icon: BudgetingIcon },
+  { id: 6,  name: 'Task management',           url: '/dashboard/tasks', icon: TaskIcon },
+  { id: 7,  name: 'Fiie and Document sharing', url: '/dashboard/files', icon: FileIcon },
+  { id: 8,  name: 'Projects',                  url: '/',                 icon: ProjectsIcon },
+  { id: 9,  name: 'Projects',                  url: '/',                 icon: ProjectsIcon },
+  { id: 10, name: 'Projects',                  url: '/',                 icon: ProjectsIcon },
+  { id: 11, name: 'Projects',                  url: '/',                 icon: ProjectsIcon },
+  { id: 12, name: 'Projects',                  url: '/',                 icon: ProjectsIcon },
+  { id: 13, name: 'Projects',                  url: '/',                 icon: ProjectsIcon },
 ];
+
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
+    flexGrow: 1,
   },
   avatar: {
     width: theme.spacing(12),
@@ -47,9 +48,25 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     display: 'flex',
-    padding: theme.spacing(3),
-    borderRadius: '10px',
-    backgroundColor: '#F8F8F8',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: theme.spacing(1),
+    backgroundColor: theme.palette.grey[100],
+    overflowX: 'auto',
+    paddingRight: '90px',
+    "&::-webkit-scrollbar": {
+      height: "6px",
+      backgroundColor: theme.palette.grey[50]
+    },
+    "&::-webkit-scrollbar-track": {
+      "-webkitBoxShadow": "inset 0 0 6px rgba(0,0,0,0.3)",
+      borderRadius: "10px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      borderRadius: "10px",
+      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.5)",
+      backgroundColor: theme.palette.primary.main,
+    }
   },
   button: {
     padding: theme.spacing(1, 4),
@@ -57,9 +74,8 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '20px',
   },
   grid: {
-    // flexGrow: 1,
     padding: theme.spacing(3),
-    border: '1px solid #dcdcdc',
+    border: `1px solid ${theme.palette.grey[50]}`,
   },
   textField: {
     width: theme.spacing(50),
@@ -67,8 +83,9 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '20px',
   },
   box: {
+    flex: '1 0 12em', // flex-grow flex-shrink flex-basis
     margin: theme.spacing(1),
-    width: theme.spacing(20),
+    padding: theme.spacing(2),
     height: theme.spacing(20),
     borderRadius: '10px',
     display: 'flex',
@@ -87,10 +104,9 @@ const ProjectsApp = () => {
 
   return (
     <React.Fragment>
-      <div>
-        {/* <Grid justify="space-between" container className={classes.grid}> */}
+      <div className={classes.root}>
         <Grid justify="space-between" container>
-          <Grid item xs={12} style={{ border: '1px dotted #f8f8f8' }}>
+          <Grid item xs={12}>
             <Grid container className={classes.grid}>
               <Grid item sm={12} xs={12}>
                 <TextField
@@ -105,14 +121,14 @@ const ProjectsApp = () => {
             </Grid>
           </Grid>
 
-          <Grid item xs={12} md={12} lg={12}>
+          <Grid item xs={12} md={12}>
             <Grid container justify="space-between" className={classes.grid}>
               <Grid item sm={12} md={6} lg={6}>
                 <Typography variant="h6" component="h3">
                   My Apps
                 </Typography>
               </Grid>
-              <Grid item sm={6} style={{ textAlign: 'right' }}>
+              <Grid item sm={6} style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 {/* <Grid item sm={12} md={6} lg={6} style={{ textAlign: 'right' }}> */}
                 <Button
                   type="button"
@@ -124,23 +140,22 @@ const ProjectsApp = () => {
                 </Button>
               </Grid>
             </Grid>
+          </Grid>
+
+          <Grid item xs={12} md={12}>
             <Grid container justify="space-between">
               <Grid item sm={12} md={12} lg={12}>
-                <Paper className={classes.paper} elevation={1}>
-                  {apps.map(app => (
-                    <Link href={app.url} key={app.id}>
-                      <Paper className={classes.box}>
-                        <img src={app.icon} alt="" />
-                        <Typography variant="body2">{app.name}</Typography>
-                      </Paper>
-                    </Link>
+                <Paper square className={classes.paper} elevation={1}>
+                  {apps.map((app, index) => (
+                    <Paper key={index} component={Link} href={app.url} className={classes.box}>
+                      <img src={app.icon} alt="" />
+                      <Typography variant="body2">{app.name}</Typography>
+                    </Paper>
                   ))}
                 </Paper>
               </Grid>
             </Grid>
-          </Grid>
 
-          <Grid item xs={12} md={4}>
             {/* <Calendar /> */}
             {/* <ChatBox /> */}
           </Grid>

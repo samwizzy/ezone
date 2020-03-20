@@ -28,10 +28,8 @@ const ProjectsApp = props => {
   const classes = useStyles();
   const {
     loading,
-    openNewTaskDialog,
     getUtilityTasks,
     getEmployees,
-    tasks,
     users,
     match,
   } = props;
@@ -56,7 +54,6 @@ ProjectsApp.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  tasks: Selectors.makeSelectTasks(),
   users: Selectors.makeSelectEmployees(),
 });
 

@@ -286,170 +286,171 @@ const FilesList = props => {
     return <List component={LoadingIndicator} />;
   }
 
-  if(files && files.length === 0){
-    return <NoFilesList /> 
-    // return <AddSignature /> 
-    // return <DocWidget /> 
-  }
+  if(files && files.length > 0){
+    return (
+      <div className={classes.root}>
+        <Grid container justify='space-evenly' spacing={2}>
+          <Grid item xs={2} md={2}>
+            <div className={classes.sideMenu}>
+              <List 
+                component="nav" 
+                aria-label="secondary mailbox folders"
+                subheader={
+                  <ListSubheader component="div" id="nested-list-subheader">
+                    Status
+                  </ListSubheader>
+                }
+              >
+                <ListItem button onClick={() => getUtilityFiles()}>
+                  <ListItemIcon>
+                    <Description />
+                  </ListItemIcon>
+                  <ListItemText primary="All" />
+                </ListItem>
+                <ListItem button onClick={() => getFavoriteDocuments(user.uuId)}>
+                  <ListItemIcon>
+                    <StarOutlined />
+                  </ListItemIcon>
+                  <ListItemText primary="Favorite" />
+                </ListItem>
+                <ListItem button onClick={() => getSharedDocuments(user.uuId)}>
+                  <ListItemIcon>
+                    <Share />
+                  </ListItemIcon>
+                  <ListItemText primary="Shared" />
+                </ListItem>
+                <ListItem button onClick={() => getSharedDocuments(user.uuId)}>
+                  <ListItemIcon>
+                    <Delete />
+                  </ListItemIcon>
+                  <ListItemText primary="Trash" />
+                </ListItem>
+              </List>
+            </div>
+          </Grid>
+          <Grid item xs={10} md={7}>
+            <MUIDataTable
+              className={classes.datatable}
+              title="Document List"
+              data={files}
+              columns={columns}
+              options={options}
+            />
+          </Grid>
+          <Grid item md={3}>
+            <Typography variant="subtitle2" color="textSecondary">Document Details</Typography>
+            {file && Object.keys(file).length > 0 &&
+            <div>
+            
+            <Card className={classes.cardRoot}>
+              <CardActionArea>
+                <CardMedia
+                  className={classes.media}
+                  image={file.fileUrl}
+                  title={file.docName}
+                />
+                <img
+                  className={classes.media}
+                  src={file.fileUrl}
+                  alt={file.docName}
+                  style={{height: '400px', width: '400px'}}
+                />
+              </CardActionArea>
+            </Card>
 
-  return (
-    <div className={classes.root}>
-      <Grid container justify='space-evenly' spacing={2}>
-        <Grid item xs={2} md={2}>
-          <div className={classes.sideMenu}>
-            <List 
-              component="nav" 
-              aria-label="secondary mailbox folders"
-              subheader={
-                <ListSubheader component="div" id="nested-list-subheader">
-                  Status
-                </ListSubheader>
-              }
-            >
-              <ListItem button onClick={() => getUtilityFiles()}>
+
+            <TableContainer component="div">
+              <Table className={classes.table} size="small" aria-label="a dense table">
+                <TableBody>
+                  <TableRow key={file.docName}>
+                    <TableCell component="th" scope="row">
+                      Document Name
+                    </TableCell>
+                    <TableCell align="right">{file.docName}</TableCell>
+                  </TableRow>
+                  <TableRow key={file.description}>
+                    <TableCell component="th" scope="row">
+                      Description
+                    </TableCell>
+                    <TableCell align="right">{file.description}</TableCell>
+                  </TableRow>
+                  <TableRow key={file.format}>
+                    <TableCell component="th" scope="row">
+                      Format
+                    </TableCell>
+                    <TableCell align="right">{file.format}</TableCell>
+                  </TableRow>
+                  <TableRow key={file.size}>
+                    <TableCell component="th" scope="row">
+                      Size
+                    </TableCell>
+                    <TableCell align="right">{file.size}</TableCell>
+                  </TableRow>
+                  <TableRow key={file.createdBy}>
+                    <TableCell component="th" scope="row">
+                      Owner
+                    </TableCell>
+                    <TableCell align="right">{file.createdBy}</TableCell>
+                  </TableRow>
+                  <TableRow key={file.modifiedBy}>
+                    <TableCell component="th" scope="row">
+                      Modified By
+                    </TableCell>
+                    <TableCell align="right">{file.modifiedBy}</TableCell>
+                  </TableRow>
+                  <TableRow key={file.trash}>
+                    <TableCell component="th" scope="row">
+                      Trashed
+                    </TableCell>
+                    <TableCell align="right">{file.trash? <DeleteRounded className={classes.icon} /> : 'No'}</TableCell>
+                  </TableRow>
+                  <TableRow key={file.dateCreated}>
+                    <TableCell component="th" scope="row">
+                      Date Created
+                    </TableCell>
+                    <TableCell align="right">
+                      <Typography variant="inherit" color="textSecondary">
+                        {moment(file.dateCreated).format('lll')}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+
+            <List>
+              <ListItem button onClick={handleCollapseClick}>
                 <ListItemIcon>
                   <Description />
                 </ListItemIcon>
-                <ListItemText primary="All" />
+                <ListItemText primary="Description" />
+                {isOpen ? <ExpandLess /> : <ExpandMore />}
               </ListItem>
-              <ListItem button onClick={() => getFavoriteDocuments(user.uuId)}>
-                <ListItemIcon>
-                  <StarOutlined />
-                </ListItemIcon>
-                <ListItemText primary="Favorite" />
-              </ListItem>
-              <ListItem button onClick={() => getSharedDocuments(user.uuId)}>
-                <ListItemIcon>
-                  <Share />
-                </ListItemIcon>
-                <ListItemText primary="Shared" />
-              </ListItem>
-              <ListItem button onClick={() => getSharedDocuments(user.uuId)}>
-                <ListItemIcon>
-                  <Delete />
-                </ListItemIcon>
-                <ListItemText primary="Trash" />
-              </ListItem>
+              <Collapse in={isOpen} timeout="auto" unmountOnExit>
+                <Typography variant="inherit" color="textSecondary">
+                  {file.description? file.description : "There is no description yet"}
+                </Typography>
+              </Collapse>
             </List>
-          </div>
+            
+            </div>
+            }
+          </Grid>
         </Grid>
-        <Grid item xs={10} md={7}>
-          <MUIDataTable
-            className={classes.datatable}
-            title="Document List"
-            data={files}
-            columns={columns}
-            options={options}
-          />
-        </Grid>
-        <Grid item md={3}>
-          <Typography variant="subtitle2" color="textSecondary">Document Details</Typography>
-          {file && Object.keys(file).length > 0 &&
-          <div>
-          
-          <Card className={classes.cardRoot}>
-            <CardActionArea>
-              <CardMedia
-                className={classes.media}
-                image={file.fileUrl}
-                title={file.docName}
-              />
-              <img
-                className={classes.media}
-                src={file.fileUrl}
-                alt={file.docName}
-                style={{height: '400px', width: '400px'}}
-              />
-            </CardActionArea>
-          </Card>
 
+        <FileUploadDialog />
+        <ShareFileDialog />
+        <AddFileDialog />
+        <FilePreviewDialog />
 
-          <TableContainer component="div">
-            <Table className={classes.table} size="small" aria-label="a dense table">
-              <TableBody>
-                <TableRow key={file.docName}>
-                  <TableCell component="th" scope="row">
-                    Document Name
-                  </TableCell>
-                  <TableCell align="right">{file.docName}</TableCell>
-                </TableRow>
-                <TableRow key={file.description}>
-                  <TableCell component="th" scope="row">
-                    Description
-                  </TableCell>
-                  <TableCell align="right">{file.description}</TableCell>
-                </TableRow>
-                <TableRow key={file.format}>
-                  <TableCell component="th" scope="row">
-                    Format
-                  </TableCell>
-                  <TableCell align="right">{file.format}</TableCell>
-                </TableRow>
-                <TableRow key={file.size}>
-                  <TableCell component="th" scope="row">
-                    Size
-                  </TableCell>
-                  <TableCell align="right">{file.size}</TableCell>
-                </TableRow>
-                <TableRow key={file.createdBy}>
-                  <TableCell component="th" scope="row">
-                    Owner
-                  </TableCell>
-                  <TableCell align="right">{file.createdBy}</TableCell>
-                </TableRow>
-                <TableRow key={file.modifiedBy}>
-                  <TableCell component="th" scope="row">
-                    Modified By
-                  </TableCell>
-                  <TableCell align="right">{file.modifiedBy}</TableCell>
-                </TableRow>
-                <TableRow key={file.trash}>
-                  <TableCell component="th" scope="row">
-                    Trashed
-                  </TableCell>
-                  <TableCell align="right">{file.trash? <DeleteRounded className={classes.icon} /> : 'No'}</TableCell>
-                </TableRow>
-                <TableRow key={file.dateCreated}>
-                  <TableCell component="th" scope="row">
-                    Date Created
-                  </TableCell>
-                  <TableCell align="right">
-                    <Typography variant="inherit" color="textSecondary">
-                      {moment(file.dateCreated).format('lll')}
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-
-          <List>
-            <ListItem button onClick={handleCollapseClick}>
-              <ListItemIcon>
-                <Description />
-              </ListItemIcon>
-              <ListItemText primary="Description" />
-              {isOpen ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-            <Collapse in={isOpen} timeout="auto" unmountOnExit>
-              <Typography variant="inherit" color="textSecondary">
-                {file.description? file.description : "There is no description yet"}
-              </Typography>
-            </Collapse>
-          </List>
-          
-          </div>
-          }
-        </Grid>
-      </Grid>
-
-      <FileUploadDialog />
-      <ShareFileDialog />
-      <AddFileDialog />
-      <FilePreviewDialog />
-
-    </div>
-  );
+      </div>
+    );
+  }else{
+    return <NoFilesList /> 
+    // return <AddSignature /> 
+    // return <DocWidget /> 
+  
+  }
 };
 
 FilesList.propTypes = {

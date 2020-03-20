@@ -64,13 +64,6 @@ const Container = styled.div`
   transition: border .24s ease-in-out;
 `;
 
-// {
-//   "file": "string",
-//   "fileName": "string",
-//   "format": "string",
-//   "size": "string"
-// }
-
 function PaperDropzone(props) {
   const [files, setFiles] = useState([]);
   const { uploadFileAction } = props
@@ -86,9 +79,7 @@ function PaperDropzone(props) {
     getInputProps,
     isDragActive,
     isDragAccept,
-    isDragReject,
-    rootRef,
-    inputRef
+    isDragReject
   } = useDropzone({
     accept: 'image/*',
     noClick: true,
