@@ -86,7 +86,7 @@ const AccountChart = props => {
   };
 
   const {
-    listOfWorkOrderData,
+    openNewAccountDialogAction,
   } = props;
 
 
@@ -218,7 +218,7 @@ const AccountChart = props => {
     selectableRows: 'none',
     customToolbar: () => (
       <AddButton 
-        // openNewWorkOrderDialogAction={openNewWorkOrderDialogAction} 
+      openNewAccountDialogAction={openNewAccountDialogAction} 
         // openVendorDialogAction={openVendorDialogAction} 
       />
       // <AddVendor />
@@ -243,7 +243,7 @@ const AccountChart = props => {
 
 AccountChart.propTypes = {
   loading: PropTypes.bool,
-  // listOfWorkOrderData: PropTypes.array,
+  openNewAccountDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -254,7 +254,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    // openNewWorkOrderDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
+    openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
     // openVendorDialogAction: () => dispatch(Actions.openVendorDialog()),
   };
 }
