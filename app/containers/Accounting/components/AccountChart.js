@@ -160,8 +160,8 @@ const AccountChart = props => {
       },
     },
     {
-      name: 'Select',
-      label: 'Select',
+      name: '',
+      label: '',
       options: {
         filter: true,
         sort: false,
