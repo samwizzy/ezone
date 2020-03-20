@@ -23,13 +23,13 @@ const makeSelectAccounting = () =>
 
 const makeSelectNewAccountDialog = () =>
   createSelector(
-    selectWorkOrderPageDomain,
+    selectAccountingDomain,
     substate => substate.accountDialog,
   );
 
 const makeSelectLoading = () =>
   createSelector(
-    selectWorkOrderPageDomain,
+    selectAccountingDomain,
     subState => subState.loading,
   );
 

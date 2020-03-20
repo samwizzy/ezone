@@ -86,9 +86,9 @@ const AccountChart = props => {
   };
 
   const {
+    accountDialog,
     openNewAccountDialogAction,
   } = props;
-
 
 
   const columns = [
@@ -248,14 +248,11 @@ AccountChart.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
-  // workOrderDialog: Selectors.makeSelectWorkOrderDialog(),
-  // listOfWorkOrderData: Selectors.makeSelectGetListOfWorkOrderData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
-    // openVendorDialogAction: () => dispatch(Actions.openVendorDialog()),
   };
 }
 

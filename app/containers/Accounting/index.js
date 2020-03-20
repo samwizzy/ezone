@@ -19,6 +19,7 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import AccountChart from './components/AccountChart';
+// import NewAccountDialog from './components/NewAccountDialog';
 
 export function Accounting() {
   useInjectReducer({ key: 'accounting', reducer });
@@ -31,6 +32,7 @@ export function Accounting() {
         <meta name="description" content="Description of Accounting" />
       </Helmet>
       <AccountChart />
+      {/* <NewAccountDialog /> */}
     </div>
   );
 }

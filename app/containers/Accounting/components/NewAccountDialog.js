@@ -46,10 +46,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-// if (values.amount && values.amountForOneUnit) {
-//   setValues({...values, [totalAmount]: values.amount * values.amountForOneUnit});
-// }
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="right" ref={ref} {...props} />;
 });
@@ -57,12 +53,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const NewAccountDialog = props => {
   const {
     loading,
-    newAccountDialog,
-    openAddItemDialogAction,
-    closeAddItemDialogAction,
-    saveAddItemContentsAction
+    accountDialog,
   } = props;
 
+  console.log('accountDialog: ', accountDialog);
 
   const classes = useStyles();
   
@@ -90,21 +84,21 @@ const NewAccountDialog = props => {
   return (
     <div>
       <Dialog
-        {...newAccountDialog.props}
-        onClose={closeAddItemDialogAction}
+        {...accountDialog.props}
+        // onClose={closeAddItemDialogAction}
         keepMounted
         TransitionComponent={Transition}
         maxWidth={"xs"}
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {newAccountDialog.type === 'new' ? 'Item' : 'Edit Item'}
+          {accountDialog.type === 'new' ? 'Item' : 'Edit Item'}
         </DialogTitle>
 
         <Divider />
 
         <DialogContent>
-          {newAccountDialog.type === 'new' ? (
+          {accountDialog.type === 'new' ? (
             <div>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Grid container justify="space-around">
@@ -153,31 +147,7 @@ const NewAccountDialog = props => {
                 onChange={handleChange('amountForOneUnit')}
                 margin="normal"
                 fullWidth
-              />
-              <TextField
-                id="standard-totalAmount "
-                label="Total Amount"
-                readOnly
-                type="number"
-                variant="outlined"
-                className={classes.textField}
-                value={values.totalAmount }
-                onChange={handleChange('totalAmount ')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-description"
-                label="Item Description"
-                variant="outlined"
-                className={classes.textField}
-                value={values.description}
-                onChange={handleChange('description')}
-                margin="normal"
-                fullWidth
-                rows={2}
-                multiline
-              />
+              />   
             </div>
           ) : null }
         </DialogContent>
@@ -210,12 +180,12 @@ const NewAccountDialog = props => {
 
 NewAccountDialog.propTypes = {
   loading: PropTypes.bool,
-  NewAccountDialog: PropTypes.object,
+  accountDialog: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(), 
-  newAccountDialog: Selectors.makeSelectNewAccountDialog(),
+  accountDialog: Selectors.makeSelectNewAccountDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
