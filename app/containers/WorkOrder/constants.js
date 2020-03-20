@@ -12,6 +12,7 @@ export const CLOSE_VENDOR_DIALOG = 'app/WorkOrderPage/CLOSE_VENDOR_DIALOG';
 
 export const OPEN_ADDITEM_DIALOG = 'app/WorkOrderPage/OPEN_ADDITEM_DIALOG';
 export const CLOSE_ADDITEM_DIALOG = 'app/WorkOrderPage/CLOSE_ADDITEM_DIALOG';
+
 export const SAVE_ADDITEM_DIALOG_CONTENTS = 'app/WorkOrderPage/SAVE_ADDITEM_DIALOG_CONTENTS';
 
 export const SAVE_VENDOR_CONFIG = 'app/WorkOrderPage/SAVE_VENDOR_CONFIG';

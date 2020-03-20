@@ -4,10 +4,17 @@
  *
  */
 
-import { DEFAULT_ACTION } from './constants';
+import * as Constants from './constants';
 
-export function defaultAction() {
+export function openNewAccountDialog() {
+  console.log('openNewAccountDialog action triggered');
   return {
-    type: DEFAULT_ACTION,
+    type: Constants.OPEN_NEW_ACCOUNT_DIALOG,
+  };
+}
+
+export function closeNewAccountDialog() {
+  return {
+    type: Constants.CLOSE_NEW_ACCOUNT_DIALOG,
   };
 }

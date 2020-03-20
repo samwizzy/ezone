@@ -18,6 +18,7 @@ import makeSelectAccounting from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
+import AccountChart from './components/AccountChart';
 
 export function Accounting() {
   useInjectReducer({ key: 'accounting', reducer });
@@ -29,7 +30,7 @@ export function Accounting() {
         <title>Accounting</title>
         <meta name="description" content="Description of Accounting" />
       </Helmet>
-      <FormattedMessage {...messages.header} />
+      <AccountChart />
     </div>
   );
 }

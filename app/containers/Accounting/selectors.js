@@ -21,5 +21,22 @@ const makeSelectAccounting = () =>
     substate => substate,
   );
 
+const makeSelectNewAccountDialog = () =>
+  createSelector(
+    selectWorkOrderPageDomain,
+    substate => substate.accountDialog,
+  );
+
+const makeSelectLoading = () =>
+  createSelector(
+    selectWorkOrderPageDomain,
+    subState => subState.loading,
+  );
+
 export default makeSelectAccounting;
-export { selectAccountingDomain };
+
+export { 
+  selectAccountingDomain,
+  makeSelectLoading,
+  makeSelectNewAccountDialog 
+};
