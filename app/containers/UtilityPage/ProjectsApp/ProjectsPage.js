@@ -23,7 +23,7 @@ import TaskIcon from '../../../images/TaskIcon.svg';
 import ProjectsIcon from '../../../images/ProjectsIcon.svg';
 
 const apps = [
-  { id: 1, name: 'Accounting', url: '', icon: AcctIcon },
+  { id: 1, name: 'Accounting', url: '/account', icon: AcctIcon },
   { id: 2, name: 'Human Resources', url: '', icon: AppIcon1 },
   {
     id: 3,

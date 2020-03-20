@@ -43,6 +43,7 @@ import Layout3 from '../../components/layouts/layout3/Layout3';
 // import { makeSelectUserToken } from './selectors';
 import PrivateRoute from '../AuthProvider/PrivateRoute';
 import Snackbar from './components/Snackbar';
+import AccountPage from '../Accounting/Loadable';
 // import { AppContext } from '../context/AppContext';
 
 // import { makeSelectGetSaveToken } from './selectors';
@@ -150,6 +151,7 @@ const App = () => {
                 />
                 <PrivateRoute exact path="/home" component={HomePage} />
                 <PrivateRoute path="/WorkOrder" component={WorkOrderPage} />
+                <PrivateRoute path="/account" component={AccountPage} />
                 <PrivateRoute
                   exact
                   path="/inventory"

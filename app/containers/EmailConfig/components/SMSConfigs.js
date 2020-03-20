@@ -53,6 +53,7 @@ const SMSConfigs = props => {
 
   console.log('smsProviderData from component: ', smsProviderData);
   console.log('smsConfigData from component: ', smsConfigData);
+  console.log('currentUser: ', currentUser);
 
   const [values, setValues] = React.useState({
     orgId: currentUser.organisation.orgId,
@@ -202,7 +203,6 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    // openEditColorDialog: evt => dispatch(Actions.openEditColorDialog(evt)),
     dispatchGetSmsProviderAction: evt => dispatch(Actions.getSmsProviderAction(evt)),
     dispatchGetSmsConfigAction: evt => dispatch(Actions.getSmsConfigAction(evt)),
   };

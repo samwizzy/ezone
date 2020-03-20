@@ -15,25 +15,18 @@ const defaultToolbarStyles = {
 
 // eslint-disable-next-line react/prop-types
 export function AddButton(props) {
-  const { classes, openNewWorkOrderDialogAction, openVendorDialogAction } = props;
+  const { classes, openNewAccountDialogAction } = props;
+  console.log('props -> ',props);
+
   return (
     <React.Fragment>
-      <Tooltip title="Vendor">
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={() => openVendorDialogAction()}
-        >
-          Create Vendor
-        </Button>
-      </Tooltip>
-      <Tooltip title="Work Order">
+      <Tooltip title="Create Account">
         <Button
           variant="contained"
           color="primary"
-          onClick={() => openNewWorkOrderDialogAction()}
+          onClick={() => openNewAccountDialogAction() }
         >
-          Create Work Order
+          New Account
         </Button>
       </Tooltip>
     </React.Fragment>
@@ -42,18 +35,14 @@ export function AddButton(props) {
 
 AddButton.prototypes = {
   classes: PropTypes.object.isRequired,
-  openNewWorkOrderDialogAction: PropTypes.func,
-  closeWorkOrderDialogAction: PropTypes.func,
-  openVendorDialogAction: PropTypes.func,
+  openNewAccountDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
   return {
-    // openNewWorkOrderDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
-    // df: () => dispatch(Actions.openCreateWorkOrderDialog()),
-    // openVendorDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
+    openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
     dispatch,
   };
 }

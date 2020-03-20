@@ -44,13 +44,8 @@ export function* createWorkOrderSaga() {
   const workOrderPostData = yield select(
     Selectors.makeSelectWorkOrderPostData(),
   );
-  console.log(currentUser, 'currentUser');
-  workOrderPostData.orgId = currentUser.organisation.orgId,
-
-  console.log('workOrderPostData: ', workOrderPostData);
-
+  workOrderPostData.orgId = currentUser.organisation.orgId;
   const requestURL = `${Endpoints.CreateWorkOrderApi}`;
-  console.log('workorder postURL --> ', requestURL);
 
   try {
     const workOrderResponse = yield call(request, requestURL, {
@@ -62,19 +57,15 @@ export function* createWorkOrderSaga() {
       }),
     });
 
-    console.log('workOrderResponse ---->', workOrderResponse);
     yield put(Actions.saveWorkOrderSuccessAction(workOrderResponse));
   } catch (err) {
-    console.log(err, '---> saveWorkOrderErrAction');
     yield put(Actions.saveWorkOrderErrAction(err));
   }
 }
 
 export function* getListOfVendorsSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-
   const requestURL = `${Endpoints.GetListOfVendorsApi}`;
-  console.log('requestURL --> ', requestURL);
 
   try {
     const listOfVendorsResponse = yield call(request, requestURL, {
@@ -85,13 +76,36 @@ export function* getListOfVendorsSaga() {
       }),
     });
 
-    console.log('listOfVendorsResponse ---->', listOfVendorsResponse);
     yield put(Actions.getAllVendorsSuccessAction(listOfVendorsResponse));
   } catch (err) {
-    console.log(err, '---> getPartyGroupErrorAction');
     yield put(Actions.getAllVendorsErrorAction(err));
   }
 }
+
+
+export function* getListOfWorkOrderSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+
+  const requestURL = `${Endpoints.GetListOfWorkOrderApi}`;
+  console.log('workorder requestURL --> ', requestURL);
+
+  try {
+    const listOfWorkOrderResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log('WorkOrderResponse --> ', listOfWorkOrderResponse);
+    yield put(Actions.getAllWorkOrderSuccessAction(listOfWorkOrderResponse));
+  } catch (err) {
+    console.log(err, '---> getAllWorkOrderErrorAction');
+    yield put(Actions.getAllWorkOrderErrorAction(err));
+  }
+}
+
 
 // Individual exports for testing
 export default function* WorkOrderConfigSaga() {
@@ -99,4 +113,5 @@ export default function* WorkOrderConfigSaga() {
   yield takeLatest(Constants.SAVE_VENDOR_CONFIG, saveVendorConfigSaga);
   yield takeLatest(Constants.GET_ALL_VENDORS, getListOfVendorsSaga);
   yield takeLatest(Constants.SAVE_WORKORDER, createWorkOrderSaga);
+  yield takeLatest(Constants.GET_ALL_WORKORDER, getListOfWorkOrderSaga);
 }
