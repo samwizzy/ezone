@@ -6,7 +6,7 @@
 
 export const GET_ALL_EMPLOYEES = 'app/UsersPage/GET_ALL_EMPLOYEES';
 export const GET_ALL_EMPLOYEES_SUCCESS =
-  'app/UsersPage/GET_ALL_EMPLOYEES_EMPLOYEE';
+  'app/UsersPage/GET_ALL_EMPLOYEES_SUCCESS';
 export const GET_ALL_EMPLOYEES_ERROR = 'app/UsersPage/GET_ALL_EMPLOYEES_ERROR';
 
 export const OPEN_NEW_EMPLOYEE_DIALOG =

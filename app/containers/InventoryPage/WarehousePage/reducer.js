@@ -7,6 +7,9 @@ import produce from 'immer';
 import * as Constants from './constants';
 
 export const initialState = {
+  warehouseDetails: false,
+  getAllWarehouses: [],
+  getAllEmployees: [],
   warehouseDialog: {
     type: 'new',
     props: {
@@ -21,7 +24,6 @@ const warehousePageReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
       case Constants.OPEN_NEW_WAREHOUSE_DIALOG: {
-        console.log('reducer come here');
         return {
           ...state,
           warehouseDialog: {
@@ -43,6 +45,72 @@ const warehousePageReducer = (state = initialState, action) =>
             },
             data: null,
           },
+        };
+      }
+      case Constants.GET_ALL_EMPLOYEES: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_ALL_EMPLOYEES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getAllEmployees: action.payload,
+        };
+      }
+      case Constants.GET_ALL_EMPLOYEES_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_ALL_WAREHOUSE: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_ALL_WAREHOUSE_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getAllWarehouses: action.payload,
+        };
+      }
+      case Constants.GET_ALL_WAREHOUSE_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.CREATE_NEW_WAREHOUSE: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          warehouseDetails: action.payload,
+        };
+      }
+      case Constants.CREATE_NEW_WAREHOUSE_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.CREATE_NEW_WAREHOUSE_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
         };
       }
     }

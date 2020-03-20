@@ -39,6 +39,12 @@ const makeSelectWarehouseDialog = () =>
     subState => subState.warehouseDialog,
   );
 
+  // const makeSelectWarehouseDialog = () =>
+  // createSelector(
+  //   selectWarehousePageDomain,
+  //   subState => subState.warehouseDialog,
+  // );
+
 export default makeSelectWarehousePage;
 export {
   selectWarehousePageDomain,
