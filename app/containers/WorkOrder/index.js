@@ -31,7 +31,6 @@ export function WorkOrderPage(props) {
 
   // Similar to componentDidMount and componentDidUpdate
   useEffect(() => {
-    console.log('useEffect triggered');
     getListOfWorkOrderAction();
     getListOfVendorsAction();
   }, []);
