@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import {
   IconButton,
+  Container,
   Typography,
   Box,
   makeStyles,
@@ -28,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   content: {
     display: 'flex',
     flexDirection: 'column',
-    padding: theme.spacing(1),
+    padding: theme.spacing(3, 0),
   },
   toolbar: {
     display: 'flex',
@@ -91,7 +92,11 @@ function ModuleLayout(props) {
           <UserMenu />
         </Toolbar>
       </AppBar>
-      <main className={classes.content}>{props.children}</main>
+      <main className={classes.content}>
+        <Container>
+          {props.children}
+        </Container>
+      </main>
     </div>
   );
 }

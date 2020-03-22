@@ -50,6 +50,7 @@ const styles = theme => ({
     overflow: 'hidden',
   },
   appBar: {
+    zIndex: theme.zIndex.drawer,
     boxShadow: theme.shadows[0],
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
@@ -320,8 +321,6 @@ function Header(props) {
                   <ModulesList />
                 </ListItem>
               </List>
-
-              
 
             </Grid>
           </Grid>

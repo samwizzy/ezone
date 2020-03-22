@@ -40,31 +40,6 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
   },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  list: {
-    marginTop: theme.spacing(4),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: 36,
-    color: theme.palette.common.black,
-  },
-  hide: {
-    display: 'none',
-  },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
@@ -94,11 +69,13 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
-    // ...theme.mixins.toolbar,
+    ...theme.mixins.toolbar,
   },
   content: {
     flexGrow: 1,
     width: `calc(100% - ${drawerWidth}px)`,
+    height: '100vh',
+    backgroundColor: theme.palette.common.white
   },
   logo: {
     color: '#1F70C1',
@@ -167,7 +144,6 @@ function MiniDrawer(props) {
         <Divider />
       </Drawer>
       <main className={classes.content}>
-        <div className={classes.toolbar} />
         {props.content}
       </main>
     </div>

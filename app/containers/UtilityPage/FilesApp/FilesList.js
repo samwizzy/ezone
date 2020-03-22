@@ -41,6 +41,7 @@ const useStyles = makeStyles(theme => ({
   },
   table: {
     marginTop: theme.spacing(2),
+    whiteSpace: 'nowrap',
     '& .MuiTableCell-body': {
       fontSize: theme.typography.fontSize - 1,
     },
@@ -343,19 +344,11 @@ const FilesList = props => {
             <div>
             
             <Card className={classes.cardRoot}>
-              <CardActionArea>
-                <CardMedia
-                  className={classes.media}
-                  image={file.fileUrl}
-                  title={file.docName}
-                />
-                <img
-                  className={classes.media}
-                  src={file.fileUrl}
-                  alt={file.docName}
-                  style={{height: '400px', width: '400px'}}
-                />
-              </CardActionArea>
+              <CardMedia
+                className={classes.media}
+                image={file.fileUrl}
+                title={file.docName}
+              />
             </Card>
 
 

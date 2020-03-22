@@ -14,7 +14,7 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import FilesList from './FilesList'
 import FileList from './FileList'
-import DashboardLayout from '../components/DashboardLayout' 
+import ModuleLayout from '../components/ModuleLayout' 
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,11 +36,11 @@ const FilesApp = props => {
     }, []);
 
     return (
-        <DashboardLayout>
+        <ModuleLayout>
             { params.id? 
                 <FileList /> : <FilesList />
             }
-        </DashboardLayout>
+        </ModuleLayout>
     );
 };
 

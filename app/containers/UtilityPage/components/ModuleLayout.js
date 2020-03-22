@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   IconButton,
   Typography,
-  Box,
+  Container,
   makeStyles,
   AppBar,
   Toolbar,
@@ -12,10 +12,7 @@ import { compose } from 'redux';
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import {
-  fade,
-  darken,
-} from '@material-ui/core/styles/colorManipulator';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import RefreshSharp from '@material-ui/icons/RefreshSharp';
 import * as Actions from '../actions';
 import UserMenu from '../../../components/layouts/shared-components/UserMenu';
@@ -28,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   content: {
     display: 'flex',
     flexDirection: 'column',
-    padding: theme.spacing(1),
+    padding: theme.spacing(3, 0),
   },
   toolbar: {
     display: 'flex',
@@ -58,31 +55,8 @@ const useStyles = makeStyles(theme => ({
   active: { backgroundColor: darken(theme.palette.primary.main, 0.25) },
 }));
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
 
-  return (
-    <Typography
-      component="div"
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box p={3}>{children}</Box>}
-    </Typography>
-  );
-}
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
-
-function TabsPage(props) {
+function ModuleLayout(props) {
   const classes = useStyles();
 
   const refreshPage = () => {
@@ -115,16 +89,14 @@ function TabsPage(props) {
           <UserMenu />
         </Toolbar>
       </AppBar>
-      <main className={classes.content}>{props.children}</main>
+      <main className={classes.content}>
+        <Container>
+          {props.children}
+        </Container>
+      </main>
     </div>
   );
 }
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
 
 const mapStateToProps = createStructuredSelector({
   // loginPage: makeSelectLoginPage(),
@@ -145,5 +117,5 @@ export default withRouter(
   compose(
     withConnect,
     memo,
-  )(TabsPage),
+  )(ModuleLayout),
 );

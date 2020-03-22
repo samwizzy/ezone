@@ -1,18 +1,19 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Icon from '@material-ui/core/Icon';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { makeStyles } from '@material-ui/core/styles';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import apps from '../../../containers/UtilityPage/ProjectsApp/components/apps.db'
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
+    zIndex: 9999
   },
   paper: {
     marginRight: theme.spacing(2),
@@ -56,23 +57,14 @@ export default function MenuListComposition() {
   return (
     <div className={classes.root}>
       <div>
-        <Link
-          ref={anchorRef}
-          aria-controls={open ? 'menu-list-grow' : undefined}
-          aria-haspopup="true"
-          onClick={handleToggle}
-          color="primary"
-        >
-          <MoreHorizIcon className={classes.icon} />
-        </Link>
-        {/* <Button
+        <Button
           ref={anchorRef}
           aria-controls={open ? 'menu-list-grow' : undefined}
           aria-haspopup="true"
           onClick={handleToggle}
         >
-          <MoreHorizIcon className={classes.icon} />
-        </Button> */}
+          Applications <Icon>keyboard_arrow_down</Icon>
+        </Button>
         <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
           {({ TransitionProps, placement }) => (
             <Grow
@@ -82,9 +74,9 @@ export default function MenuListComposition() {
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
-                    <MenuItem onClick={handleClose}>Logout</MenuItem>
+                    {apps && apps.map(app => (
+                      <MenuItem onClick={handleClose}>{app.name}</MenuItem>
+                    ))}
                   </MenuList>
                 </ClickAwayListener>
               </Paper>

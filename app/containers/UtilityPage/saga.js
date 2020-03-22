@@ -80,6 +80,7 @@ export function* getUtilityTasks() {
     yield put(Actions.getUtilityTasksSuccess(utilityTasksResponse));
   } catch (err) {
     yield put(Actions.getUtilityTasksError(err.message));
+    console.log(err.message, "err.message")
   }
 }
 
@@ -254,7 +255,9 @@ export function* getUtilityFiles() {
       }),
     });
 
+    const code = response.code
     console.log(utilityFilesResponse, 'utilityFilesResponse');
+    console.log(code, 'utilityFilesResponse code');
 
     yield put(Actions.getUtilityFilesSuccess(utilityFilesResponse));
   } catch (err) {
@@ -500,7 +503,7 @@ export function* getEmployees() {
 
     yield put(Actions.getEmployeesSuccess(employeesResponse));
   } catch (err) {
-    // yield put(Actions.getUtilityTasksError(err));
+    // yield put(Actions.getUtilityEmployeesError(err));
     // console.error(err, 'I got the error');
   }
 }

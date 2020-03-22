@@ -12,8 +12,8 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import saga from '../saga';
 import reducer from '../reducer';
-import ProjectsPage from './ProjectsPage';
-import DashboardLayout from '../components/DashboardLayout';
+import ProjectsList from './ProjectsList';
+import ModuleLayout from '../components/ModuleLayout';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,9 +41,9 @@ const ProjectsApp = props => {
   }, []);
 
   return (
-    <DashboardLayout>
-      <ProjectsPage />
-    </DashboardLayout>
+    <ModuleLayout>
+      <ProjectsList />
+    </ModuleLayout>
   );
 };
 

@@ -14,7 +14,7 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import TasksList from './TasksList'
 import TaskList from './TaskList'
-import DashboardLayout from '../components/DashboardLayout' 
+import ModuleLayout from '../components/ModuleLayout' 
 import AddTaskDialog from './components/AddTaskDialog'
 import TaskPreviewDialog from './components/TaskPreviewDialog'
 import AssignToDialog from './components/AssignToDialog'
@@ -44,14 +44,14 @@ const TasksApp = props => {
     }
 
     return (
-      <DashboardLayout>
+      <ModuleLayout>
         { params.id? 
           <TaskList /> : <TasksList />
         }
         <AddTaskDialog />
         <TaskPreviewDialog />
         <AssignToDialog />
-      </DashboardLayout>
+      </ModuleLayout>
     );
 };
 

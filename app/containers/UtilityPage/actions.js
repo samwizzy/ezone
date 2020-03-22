@@ -95,6 +95,7 @@ export function getEmployees() {
 }
 
 export function getEmployeesSuccess(data) {
+  console.log(data, "users gasrbbash")
   return {
     type: Constants.GET_EMPLOYEES_SUCCESS,
     payload: data,
