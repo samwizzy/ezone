@@ -39,10 +39,6 @@ const TasksApp = props => {
         getEmployees()
     }, []);
 
-    if(loading){
-      return <LoadingIndicator />
-    }
-
     return (
       <ModuleLayout>
         { params.id? 

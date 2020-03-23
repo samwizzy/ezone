@@ -56,6 +56,7 @@ export function closeSnackBar() {
 }
 
 export function logout() {
+  console.log("you just fired the logout action...")
   return {
     type: Constants.LOG_OUT,
   };

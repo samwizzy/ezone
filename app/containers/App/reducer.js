@@ -109,6 +109,7 @@ const appReducer = (state = initialState, action) =>
         };
       }
       case Constants.LOG_OUT: {
+        console.log("You never got to the logout reducer...")
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('expires_in');

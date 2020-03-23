@@ -23,15 +23,17 @@ const drawerWidth = '100%';
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-    backgroundColor: theme.palette.common.white
+    backgroundColor: theme.palette.common.white,
   },
   drawer: {
     [theme.breakpoints.up('sm')]: {
+      // position: 'fixed',
       display: 'flex',
-      width: drawerWidth,
+      flexDirection: 'column',
+      width: drawerWidth, // works better without position:fixed
       flexShrink: 0,
       overflowY: 'auto',
-      height: '100vh',
+      height: `calc(100% - ${200}px)`,
       '& .MuiListSubheader-root': {
         backgroundColor: theme.palette.common.white
       },
@@ -88,9 +90,9 @@ const useStyles = makeStyles(theme => ({
   },
   buttonGroup: {
     marginBottom: theme.spacing(1),
-    border: '1px solid #ededed',
+    border: `1px solid ${theme.palette.grey[50]}`,
     '& .MuiButtonGroup-root:last-child': {
-      marginLeft: '10px'
+      marginLeft: theme.spacing(1)
     }
   }
 }));
@@ -112,7 +114,7 @@ const TaskList = props => {
   }, [task]);
 
   const drawer = (
-    <div className={classes.drawer}>
+    <div className={classes.drawe}>
       <List
         subheader={
           <ListSubheader component="div" id="nested-list-subheader">
@@ -137,7 +139,7 @@ const TaskList = props => {
     <div className={classes.root}>
       <Grid
         container
-        justify='space-around'
+        justify='space-between'
       >
         <Grid item md={2}>
           <nav className={classes.drawer} aria-label="mailbox folders">

@@ -1,4 +1,5 @@
-import history from './history'
+import * as AppActions from '../containers/App/actions';
+import store from '../configureStore'
 /**
  * Parses the JSON returned by a network request
  *
@@ -25,10 +26,8 @@ function checkStatus(response) {
     return response;
   }else if(response.status >= 401 && response.status < 408){
     console.log("We got a 401 status error y'all")
-    history.push({
-      pathname: '/login',
-      // state   : {redirectUrl: pathname}
-    });
+    store.dispatch(AppActions.logout())
+    return
   }
 
   const error = new Error(response.statusText);

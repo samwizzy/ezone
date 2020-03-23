@@ -168,10 +168,6 @@ const TasksList = props => {
     elevation: 0
   };
 
-  if (loading) {
-    return <List component={LoadingIndicator} />;
-  }
-
   if(tasks && tasks.length === 0){
     return <NoTasksList />
   }
@@ -212,13 +208,18 @@ const TasksList = props => {
           </List>
         </Grid>
         <Grid item xs={12} md={10}>
-          <MUIDataTable
-            title="Task List"
-            data={tasks}
-            columns={columns}
-            options={options}
-            className={classes.datatable}
-          />
+          {loading?
+            <List component={LoadingIndicator} />
+          :
+          (
+            <MUIDataTable
+              title="Task List"
+              data={tasks}
+              columns={columns}
+              options={options}
+              className={classes.datatable}
+            />
+          )}
         </Grid>
       </Grid>
     </div>
