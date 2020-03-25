@@ -1,6 +1,6 @@
 /**
  *
- * Accounting
+ * ItemPage
  *
  */
 
@@ -14,35 +14,32 @@ import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectAccounting from './selectors';
+import makeSelectItemPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import AccountChart from './components/AccountChart';
-import NewAccountDialog from './components/NewAccountDialog';
 
-export function Accounting() {
-  useInjectReducer({ key: 'accounting', reducer });
-  useInjectSaga({ key: 'accounting', saga });
+export function ItemPage() {
+  useInjectReducer({ key: 'itemPage', reducer });
+  useInjectSaga({ key: 'itemPage', saga });
 
   return (
     <div>
       <Helmet>
-        <title>Accounting</title>
-        <meta name="description" content="Description of Accounting" />
+        <title>ItemPage</title>
+        <meta name="description" content="Description of ItemPage" />
       </Helmet>
-      <AccountChart />
-      <NewAccountDialog />
+      <FormattedMessage {...messages.header} />
     </div>
   );
 }
 
-Accounting.propTypes = {
+ItemPage.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  accounting: makeSelectAccounting(),
+  itemPage: makeSelectItemPage(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -59,4 +56,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(Accounting);
+)(ItemPage);

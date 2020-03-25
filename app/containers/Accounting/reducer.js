@@ -25,7 +25,6 @@ const accountingReducer = (state = initialState, action) =>
 
       // Open dialog for new account
       case Constants.OPEN_NEW_ACCOUNT_DIALOG: {
-        console.log('Constants.OPEN_NEW_ACCOUNT_DIALOG');
         return {
           ...state,
           accountDialog: {

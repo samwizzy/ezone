@@ -7,7 +7,6 @@
 import * as Constants from './constants';
 
 export function openNewAccountDialog() {
-  console.log('openNewAccountDialog action triggered');
   return {
     type: Constants.OPEN_NEW_ACCOUNT_DIALOG,
   };

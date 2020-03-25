@@ -16,7 +16,6 @@ const defaultToolbarStyles = {
 // eslint-disable-next-line react/prop-types
 export function AddButton(props) {
   const { classes, openNewAccountDialogAction } = props;
-  console.log('props -> ',props);
 
   return (
     <React.Fragment>

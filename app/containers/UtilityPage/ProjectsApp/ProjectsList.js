@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import PropTypes from 'prop-types';
 import {
   makeStyles,
   Grid,
@@ -12,8 +11,7 @@ import {
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import * as Actions from '../actions';
-import apps from './components/apps.db'
+import apps from './components/apps.db';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,19 +29,19 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.grey[100],
     overflowX: 'auto',
     paddingRight: '90px',
-    "&::-webkit-scrollbar": {
-      height: "6px",
-      backgroundColor: theme.palette.grey[50]
+    '&::-webkit-scrollbar': {
+      height: '6px',
+      backgroundColor: theme.palette.grey[50],
     },
-    "&::-webkit-scrollbar-track": {
-      "-webkitBoxShadow": "inset 0 0 6px rgba(0,0,0,0.3)",
-      borderRadius: "10px",
+    '&::-webkit-scrollbar-track': {
+      '-webkitBoxShadow': 'inset 0 0 6px rgba(0,0,0,0.3)',
+      borderRadius: '10px',
     },
-    "&::-webkit-scrollbar-thumb": {
-      borderRadius: "10px",
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.5)",
+    '&::-webkit-scrollbar-thumb': {
+      borderRadius: '10px',
+      '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.5)',
       backgroundColor: theme.palette.primary.main,
-    }
+    },
   },
   button: {
     padding: theme.spacing(1, 4),
@@ -105,7 +103,11 @@ const ProjectsList = () => {
                   My Apps
                 </Typography>
               </Grid>
-              <Grid item sm={6} style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Grid
+                item
+                sm={6}
+                style={{ display: 'flex', justifyContent: 'flex-end' }}
+              >
                 <Button
                   type="button"
                   variant="contained"
@@ -122,8 +124,13 @@ const ProjectsList = () => {
             <Grid container justify="space-between">
               <Grid item sm={12} md={12} lg={12}>
                 <Paper square className={classes.paper} elevation={1}>
-                  {apps.map((app, index) => (
-                    <Paper key={index} component={Link} href={app.url} className={classes.box}>
+                  {apps.map(app => (
+                    <Paper
+                      key={app.id}
+                      component={Link}
+                      href={app.url}
+                      className={classes.box}
+                    >
                       <img src={app.icon} alt="" />
                       <Typography variant="body2">{app.name}</Typography>
                     </Paper>
@@ -141,8 +148,7 @@ const ProjectsList = () => {
   );
 };
 
-ProjectsList.propTypes = {
-};
+ProjectsList.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({});
 

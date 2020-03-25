@@ -23,7 +23,7 @@ import {
   DialogTitle,
   Divider,
   Slide,
-  Grid 
+  Grid,
 } from '@material-ui/core';
 
 import * as Selectors from '../selectors';
@@ -51,23 +51,20 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const NewAccountDialog = props => {
-  const {
-    loading,
-    accountDialog,
-  } = props;
+  const { loading, accountDialog } = props;
 
   console.log('accountDialog: ', accountDialog);
 
   const classes = useStyles();
-  
+
   const [values, setValues] = React.useState({
-    date: "",
-    name: "",
-    amount: "",
-    amountForOneUnit: "",
-    totalAmount: "",
-    description: "",
-    orgId: "",
+    date: '',
+    name: '',
+    amount: '',
+    amountForOneUnit: '',
+    totalAmount: '',
+    description: '',
+    orgId: '',
   });
 
   const handleChange = name => event => {
@@ -77,9 +74,11 @@ const NewAccountDialog = props => {
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
   const handleDateChange = date => {
-    setValues({ ...values, date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`});
+    setValues({
+      ...values,
+      date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+    });
   };
-
 
   return (
     <div>
@@ -88,7 +87,7 @@ const NewAccountDialog = props => {
         // onClose={closeAddItemDialogAction}
         keepMounted
         TransitionComponent={Transition}
-        maxWidth={"xs"}
+        maxWidth={'xs'}
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
@@ -147,9 +146,9 @@ const NewAccountDialog = props => {
                 onChange={handleChange('amountForOneUnit')}
                 margin="normal"
                 fullWidth
-              />   
+              />
             </div>
-          ) : null }
+          ) : null}
         </DialogContent>
 
         <DialogActions>
@@ -157,7 +156,9 @@ const NewAccountDialog = props => {
             <LoadingIndicator />
           ) : (
             <Button
-              onClick={() => { openNewAccountDialogAction() }}
+              onClick={() => {
+                openNewAccountDialogAction();
+              }}
               color="primary"
               variant="contained"
               // disabled={!canBeSubmitted()}
@@ -166,7 +167,9 @@ const NewAccountDialog = props => {
             </Button>
           )}
           <Button
-            onClick={() => { closeNewAccountDialogAction() }}
+            onClick={() => {
+              closeNewAccountDialogAction();
+            }}
             color="primary"
             variant="contained"
           >
@@ -184,14 +187,15 @@ NewAccountDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(), 
+  loading: Selectors.makeSelectLoading(),
   accountDialog: Selectors.makeSelectNewAccountDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
-    closeNewAccountDialogAction: () => dispatch(Actions.closeNewAccountDialog()),
+    closeNewAccountDialogAction: () =>
+      dispatch(Actions.closeNewAccountDialog()),
     dispatch,
   };
 }
