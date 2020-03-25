@@ -46,7 +46,7 @@ import Layout3 from '../../components/layouts/layout3/Layout3';
 import PrivateRoute from '../AuthProvider/PrivateRoute';
 import Snackbar from './components/Snackbar';
 import { AppContext } from '../context/AppContext';
-import sideBarconfig from '../../components/Sidebar/components/SidebarConfig'
+import sideBarconfig from '../../components/Sidebar/components/SidebarConfig';
 import AccountPage from '../Accounting/Loadable';
 
 // import { makeSelectGetSaveToken } from './selectors';
@@ -155,14 +155,10 @@ const App = () => {
                 />
                 <PrivateRoute exact path="/home" component={HomePage} />
                 <PrivateRoute path="/WorkOrder" component={WorkOrderPage} />
-                <PrivateRoute exact path="/hr" component={HRPage} />
-                <PrivateRoute exact path="/hr/:sectionId" component={HRPage} />
+                <Route exact path="/hr" component={HRPage} />
+                <Route exact path="/hr/:sectionId" component={HRPage} />
                 <Route path="/account" component={AccountPage} />
-                <PrivateRoute
-                  exact
-                  path="/inventory"
-                  component={InventoryPage}
-                />
+                <Route exact path="/inventory" component={InventoryPage} />
                 <PrivateRoute path="/warehouses" component={WarehousePage} />
                 <Route path="/items" component={ItemPage} />
               </Layout3>
