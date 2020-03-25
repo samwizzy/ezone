@@ -18,7 +18,6 @@ import * as Endpoints from '../../components/Endpoints';
 export function* getEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.GetEmployeesApi}`;
-  console.log(accessToken, "i just hit the saga")
 
   try {
     const employeesResponse = yield call(request, requestURL, {
@@ -29,12 +28,9 @@ export function* getEmployees() {
       }),
     });
 
-    console.log(employeesResponse, "employeesResponse")
-
     yield put(Actions.getEmployeesSuccess(employeesResponse));
   } catch (err) {
     // yield put(Actions.getEmployeesError(err));
-    // console.error(err, 'I got the error');
   }
 }
 export function* getEmployeeByUUID({ type, payload }) {
@@ -55,7 +51,6 @@ export function* getEmployeeByUUID({ type, payload }) {
     yield put(Actions.getEmployeeSuccess(userResponse));
   } catch (err) {
     // yield put(Actions.getEmployeeError(err.message));
-    // console.error(err, 'I got the error');
   }
 }
 

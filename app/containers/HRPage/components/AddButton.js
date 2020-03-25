@@ -6,6 +6,7 @@ import { Add } from '@material-ui/icons';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 import AssignmentInd from '@material-ui/icons/AssignmentInd';
 import GroupAdd from '@material-ui/icons/GroupAdd';
+import AddBox from '@material-ui/icons/AddBox';
 
 const useStyles = makeStyles(theme => ({
   iconButton: {
@@ -21,7 +22,7 @@ export function AddDepartment(props) {
 
   return (
     <React.Fragment>
-      <Tooltip title="New Task">
+      <Tooltip title="New Department">
         <Button
           size="small"
           className={classes.iconButton}
@@ -40,13 +41,32 @@ export function AddRole(props) {
 
   return (
     <React.Fragment>
-      <Tooltip title="New Task">
+      <Tooltip title="New Role">
         <Button
           size="small"
           className={classes.iconButton}
           onClick={openNewTaskDialog}
         >
           <AssignmentInd className={classes.icon} /> Add Role
+        </Button>
+      </Tooltip>
+    </React.Fragment>
+  );
+}
+
+export function AddBranch(props) {
+  const { openNewTaskDialog } = props;
+  const classes = useStyles()
+
+  return (
+    <React.Fragment>
+      <Tooltip title="New Branch">
+        <Button
+          size="small"
+          className={classes.iconButton}
+          onClick={openNewTaskDialog}
+        >
+          <AddBox className={classes.icon} /> Add Branch
         </Button>
       </Tooltip>
     </React.Fragment>

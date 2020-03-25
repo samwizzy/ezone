@@ -14,5 +14,7 @@ export const GET_EMPLOYEES_SUCCESS = 'boilerplate/HRPage/GET EMPLOYEES SUCCESS';
 export const GET_EMPLOYEE = 'boilerplate/HRPage/GET EMPLOYEE';
 export const GET_EMPLOYEE_SUCCESS = 'boilerplate/HRPage/GET EMPLOYEE SUCCESS';
 
+export const OPEN_NEW_EMPLOYEE_DIALOG = 'boilerplate/HRPage/OPEN NEW EMPLOYEE DIALOG';
+export const CLOSE_NEW_EMPLOYEE_DIALOG = 'boilerplate/HRPage/CLOSE NEW EMPLOYEE DIALOG';
 export const OPEN_EDIT_EMPLOYEE_DIALOG = 'boilerplate/HRPage/OPEN EDIT EMPLOYEE DIALOG';
 export const CLOSE_EDIT_EMPLOYEE_DIALOG = 'boilerplate/HRPage/CLOSE EDIT EMPLOYEE DIALOG';

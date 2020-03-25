@@ -19,6 +19,7 @@ import saga from './saga';
 import EmployeesApp from './Employees'
 import RolesApp from './Roles'
 import DepartmentsApp from './Departments'
+import BranchesApp from './Branches'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,6 +42,9 @@ const HumanResourcePage = props => {
             break;
         case 'roles':
             return <RolesApp /> 
+            break;
+        case 'branches':
+            return <BranchesApp /> 
             break;
         default:
             return <EmployeesApp /> 
