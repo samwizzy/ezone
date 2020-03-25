@@ -28,7 +28,7 @@ const apps = [
   {
     id: 3,
     name: 'Store & Inventory Management',
-    url: '/inventory',
+    url: '/items', // TODO: change this back to inventory
     icon: StoreIcon,
   },
   { id: 4, name: 'CRM', url: '', icon: CRMIcon },

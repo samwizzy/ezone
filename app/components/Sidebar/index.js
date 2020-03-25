@@ -266,7 +266,7 @@ export default function MiniDrawer(props) {
                 break;
               case 'WarehouseList':
                 return (
-                  <ListItem button key={index} component="a" href="/warehouse">
+                  <ListItem button key={index} component="a" href="/warehouses">
                     <ListItemIcon>
                       <Tooltip title={text} arrow placement="right-end">
                         <Settings />

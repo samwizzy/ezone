@@ -37,6 +37,7 @@ import EmailPasswordTemplate from '../EmailConfig/components/EmailPasswordTempla
 import WorkOrderPage from '../WorkOrder/Loadable';
 import InventoryPage from '../InventoryPage/Loadable';
 import WarehousePage from '../InventoryPage/WarehousePage/Loadable';
+import ItemPage from '../InventoryPage/ItemPage/Loadable';
 import Layout1 from '../../components/layouts/layout1/Layout1';
 import Layout2 from '../../components/layouts/layout2/Layout2';
 import Layout3 from '../../components/layouts/layout3/Layout3';
@@ -109,7 +110,8 @@ const App = () => {
                   path="/organization/company/structure/position/:partyGroupId/:partyId/:positionId"
                   component={CompanyStructurePosition}
                 />
-                <PrivateRoute exact path="/dashboard" component={UtilityPage} />
+                {/* <PrivateRoute exact path="/dashboard" component={UtilityPage} /> */}
+                <Route exact path="/dashboard" component={UtilityPage} />
                 <PrivateRoute
                   exact
                   path="/dashboard/tasks"
@@ -151,13 +153,14 @@ const App = () => {
                 />
                 <PrivateRoute exact path="/home" component={HomePage} />
                 <PrivateRoute path="/WorkOrder" component={WorkOrderPage} />
-                <PrivateRoute path="/account" component={AccountPage} />
+                <Route path="/account" component={AccountPage} />
                 <PrivateRoute
                   exact
                   path="/inventory"
                   component={InventoryPage}
                 />
-                <PrivateRoute path="/warehouse" component={WarehousePage} />
+                <PrivateRoute path="/warehouses" component={WarehousePage} />
+                <Route path="/items" component={ItemPage} />
               </Layout3>
               <Route path="" component={NotFoundPage} />
             </Switch>
