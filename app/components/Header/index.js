@@ -28,6 +28,7 @@ import OctivierLogo from '../../images/octivier-logo.svg';
 import UserMenu from '../layouts/shared-components/UserMenu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ModulesList from './components/ModulesList'
 
 const drawerWidth = 50;
 
@@ -49,6 +50,7 @@ const styles = theme => ({
     overflow: 'hidden',
   },
   appBar: {
+    zIndex: theme.zIndex.drawer,
     boxShadow: theme.shadows[0],
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
@@ -315,14 +317,11 @@ function Header(props) {
                   </ListItemIcon>
                   <ListItemText primary={'Octiver Communications'} /> */}
                   {/* <UserMenu /> */}
-                  <Link
-                    aria-label="search" 
-                    color="primary"
-                  >
-                    <MoreHorizIcon className={classes.icon} />
-                  </Link>
+
+                  <ModulesList />
                 </ListItem>
               </List>
+
             </Grid>
           </Grid>
         </Toolbar>

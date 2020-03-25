@@ -1,74 +1,27 @@
 import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom';
 import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
 import Link from '@material-ui/core/Link';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Apps from '@material-ui/icons/Apps';
-import Dashboard from '@material-ui/icons/Dashboard';
-import Person from '@material-ui/icons/Person';
-import Settings from '@material-ui/icons/Settings';
-import Security from '@material-ui/icons/Security';
-import BusinessCenter from '@material-ui/icons/BusinessCenter';
 import Logo from '../../images/logo.svg';
+import AppSidebar from './components/AppSidebar';
 
 const drawerWidth = 240;
-
-const links = [
-  'Dashboard',
-  'Organization',
-  'Applications',
-  'Employees',
-  'User Profile',
-  'WorkOrder',
-  'Security',
-  'Settings',
-  'WarehouseList',
-];
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
   },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  list: {
-    marginTop: theme.spacing(4),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: 36,
-    color: theme.palette.common.black,
-  },
-  hide: {
-    display: 'none',
-  },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
-    // zIndex: 1099,
+    backgroundColor: 'teal',
   },
   drawerOpen: {
     width: drawerWidth,
@@ -93,10 +46,13 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
-    // ...theme.mixins.toolbar,
+    ...theme.mixins.toolbar,
   },
   content: {
     flexGrow: 1,
+    width: `calc(100% - ${drawerWidth}px)`,
+    height: '100vh',
+    backgroundColor: theme.palette.common.white,
   },
   logo: {
     color: '#1F70C1',
@@ -108,10 +64,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function MiniDrawer(props) {
+function MiniDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -123,8 +79,6 @@ export default function MiniDrawer(props) {
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
-
       <Drawer
         variant="permanent"
         style={{ backgroundColor: 'red' }}
@@ -141,7 +95,7 @@ export default function MiniDrawer(props) {
       >
         <div className={classes.toolbar}>
           <Link href="#">
-            <img src={Logo} className={classes.logo} />
+            <img src={Logo} className={classes.logo} alt="" />
           </Link>
           {open ? (
             <IconButton onClick={handleDrawerClose}>
@@ -162,131 +116,12 @@ export default function MiniDrawer(props) {
           )}
         </div>
         <Divider />
-        <List className={classes.list}>
-          {links.map((text, index) => {
-            switch (text) {
-              case 'Dashboard':
-                return (
-                  <ListItem button key={index} component="a" href="/dashboard">
-                    <ListItemIcon>
-                      <Tooltip title={text} arrow placement="right-end">
-                        <Dashboard />
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                );
-                break;
-              case 'Organization':
-                return (
-                  <ListItem
-                    button
-                    key={index}
-                    component="a"
-                    href="/organization"
-                  >
-                    <ListItemIcon>
-                      <Tooltip title={text} arrow placement="right-end">
-                        <BusinessCenter />
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                );
-                break;
-              case 'Employees':
-                return (
-                  <ListItem
-                    button
-                    key={index}
-                    component="a"
-                    href="/users/employees"
-                  >
-                    <ListItemIcon>
-                      <Tooltip title={text} arrow placement="right-end">
-                        <Person />
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                );
-                break;
-              case 'User Profile':
-                return (
-                  <ListItem
-                    button
-                    key={index}
-                    component="a"
-                    href="/users/profile"
-                  >
-                    <ListItemIcon>
-                      <Tooltip title={text} arrow placement="right-end">
-                        <Person />
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                );
-                break;
-              case 'Applications':
-                Security;
-                return (
-                  <ListItem button key={index} component="a" href="/utility">
-                    <ListItemIcon>
-                      <Tooltip title={text} arrow placement="right-end">
-                        <Apps />
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                );
-              case 'WorkOrder':
-                return (
-                  <ListItem button key={index} component="a" href="/workorder">
-                    <ListItemIcon>
-                      <Tooltip title={text} arrow placement="right-end">
-                        <Security />
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                );
-                break;
-              case 'Settings':
-                return (
-                  <ListItem button key={index} component="a" href="/email">
-                    <ListItemIcon>
-                      <Tooltip title={text} arrow placement="right-end">
-                        <Settings />
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                );
-                break;
-              case 'WarehouseList':
-                return (
-                  <ListItem button key={index} component="a" href="/warehouses">
-                    <ListItemIcon>
-                      <Tooltip title={text} arrow placement="right-end">
-                        <Settings />
-                      </Tooltip>
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                );
-                break;
-              default:
-                return null;
-            }
-          })}
-        </List>
+        <AppSidebar />
         <Divider />
       </Drawer>
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        {props.content}
-      </main>
+      <main className={classes.content}>{props.content}</main>
     </div>
   );
 }
+
+export default withRouter(MiniDrawer);

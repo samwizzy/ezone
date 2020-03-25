@@ -180,6 +180,7 @@ const utilityPageReducer = (state = initialState, action) =>
         return {
           ...state,
           error: action.payload,
+          loading: false
         };
       }
       case Constants.CREATE_UTILITY_FILES: {
@@ -248,6 +249,7 @@ const utilityPageReducer = (state = initialState, action) =>
         return {
           ...state,
           error: action.payload,
+          loading: false
         };
       }
       case Constants.CLOSE_FILE_UPLOAD_DIALOG: {

@@ -37,29 +37,64 @@ function Copyright() {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    // height: '100vh',
+    flexGrow: 1,
+    height: '100vh',
+    padding: '50px',
+    [theme.breakpoints.down('md')]: {
+      padding: '20px',
+    }
+  },
+  grid: {
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: theme.palette.grey[50],
     borderRadius: theme.spacing(5),
-    overflow: 'hidden',
+    overflowX: 'auto',
+    "&::-webkit-scrollbar": {
+      width: "6px",
+      backgroundColor: "#F5F5F5"
+    },
+    "&::-webkit-scrollbar-track": {
+      "-webkitBoxShadow": "inset 0 0 6px rgba(0,0,0,0.3)",
+      borderRadius: "10px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      borderRadius: "10px",
+      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.5)",
+      backgroundColor: theme.palette.grey[200],
+    },
+    [theme.breakpoints.down('md')]: {
+      // padding: theme.spacing(1, 0),
+    }
   },
   image: {
-    // backgroundImage: 'url(https://source.unsplash.com/random)',
-    backgroundImage: `url(${banner})`,
-    backgroundRepeat: 'no-repeat',
-    // backgroundColor:
-    //   theme.palette.type === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
+    [theme.breakpoints.up('md')]: {
+      width: '55%',
+      height: '100vh',
+      backgroundImage: `url(${banner})`,
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center right',
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+    },
+  },
+  gridItem: {
+    display: 'flex'
   },
   paper: {
-    margin: theme.spacing(8, 4),
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
     borderRadius: theme.spacing(5),
     padding: theme.spacing(2),
-    margin: theme.spacing(4),
     border: '1px solid #F1F5F8',
     backgroundColor: '#FFFFFF',
+    [theme.breakpoints.up('md')]: {
+      margin: theme.spacing(4),
+    }
   },
   avatar: {
     margin: theme.spacing(1),
@@ -120,47 +155,51 @@ const ForgotPasswordForm = ({ loginAction }) => {
   };
 
   return (
-    <Container style={{ padding: '50px' }}>
-      <Grid container component={Paper} className={classes.root}>
-        <Grid item xs={false} sm={4} md={8} className={classes.image} />
-        <Grid item xs={12} sm={8} md={4}>
-          <div className={classes.paper}>
-            <Box className={classes.avatar}>
-              <img src={logo} alt="" />
-            </Box>
-            <form className={classes.form} noValidate>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                InputProps={{
-                  className: classes.input,
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Rest Password
-              </Button>
-              <Box mt={5}>
-                <Copyright />
+      <React.Fragment>
+      <div className={classes.image} />
+
+      <div className={classes.root}>
+        <Grid container component={Paper} className={classes.grid}>
+          <Grid item xs={false} sm={false} md={7} />
+          <Grid item xs={12} sm={10} md={5} className={classes.gridItem}>
+            <div className={classes.paper}>
+              <Box className={classes.avatar}>
+                <img src={logo} alt="" />
               </Box>
-            </form>
-          </div>
+              <form className={classes.form} noValidate>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  InputProps={{
+                    className: classes.input,
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Rest Password
+                </Button>
+                <Box mt={5}>
+                  <Copyright />
+                </Box>
+              </form>
+            </div>
+          </Grid>
         </Grid>
-      </Grid>
-    </Container>
+      </div>
+      </React.Fragment>
   );
 };
 

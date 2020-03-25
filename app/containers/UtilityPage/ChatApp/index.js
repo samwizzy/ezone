@@ -13,7 +13,7 @@ import * as Selectors from '../selectors';
 import saga from '../saga';
 import reducer from '../reducer';
 import ChatTab from './ChatTab';
-import DashboardLayout from '../components/DashboardLayout';
+import ModuleLayout from '../components/ModuleLayout';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,9 +34,9 @@ const ChatsApp = props => {
   // }, []);
 
   return (
-    <DashboardLayout>
+    <ModuleLayout>
       <ChatTab />
-    </DashboardLayout>
+    </ModuleLayout>
   );
 };
 

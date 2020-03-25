@@ -80,6 +80,7 @@ export function* getUtilityTasks() {
     yield put(Actions.getUtilityTasksSuccess(utilityTasksResponse));
   } catch (err) {
     yield put(Actions.getUtilityTasksError(err.message));
+    console.log(err.message, "err.message")
   }
 }
 
@@ -254,8 +255,6 @@ export function* getUtilityFiles() {
       }),
     });
 
-    console.log(utilityFilesResponse, 'utilityFilesResponse');
-
     yield put(Actions.getUtilityFilesSuccess(utilityFilesResponse));
   } catch (err) {
     yield put(Actions.getUtilityFilesError(err));
@@ -278,15 +277,15 @@ export function* deleteUtilityFile({ type, payload }) {
     });
 
     console.log(utilityFileResponse, 'deleteFileResponse');
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: `${
-          utilityFileResponse.document.docName
-        } has been deleted successfully`,
-        status: 'success',
-      }),
-    );
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: `${
+    //       utilityFileResponse.document.docName
+    //     } has been deleted successfully`,
+    //     status: 'success',
+    //   }),
+    // );
 
     // yield put(Actions.deleteDocumentSuccess(utilityFileResponse));
   } catch (err) {
@@ -444,7 +443,7 @@ export function* getAllUsers() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
   const requestURL = `${Endpoints.GetAllUsersApi}/${
-    currentUser.organisation.orgId
+    currentUser && currentUser.organisation.orgId
   }`;
 
   try {
@@ -500,8 +499,7 @@ export function* getEmployees() {
 
     yield put(Actions.getEmployeesSuccess(employeesResponse));
   } catch (err) {
-    // yield put(Actions.getUtilityTasksError(err));
-    // console.error(err, 'I got the error');
+    // yield put(Actions.getUtilityEmployeesError(err));
   }
 }
 

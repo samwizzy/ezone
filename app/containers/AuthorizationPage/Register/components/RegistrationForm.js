@@ -38,17 +38,35 @@ function Copyright() {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
-    padding: '30px',
+    flexGrow: 1,
     height: '100vh',
-    overflow: 'auto'
+    overflow: 'auto',
+    padding: '50px',
+    [theme.breakpoints.down('md')]: {
+      padding: '20px',
+    }
   },
   grid: {
-    height: '100vh',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: theme.palette.grey[50],
     borderRadius: theme.spacing(5),
-    padding: theme.spacing(2, 0),
-    overflow: 'auto',
+    padding: theme.spacing(3, 0),
+    overflowX: 'auto',
+    "&::-webkit-scrollbar": {
+      width: "6px",
+      backgroundColor: "#F5F5F5"
+    },
+    "&::-webkit-scrollbar-track": {
+      "-webkitBoxShadow": "inset 0 0 6px rgba(0,0,0,0.3)",
+      borderRadius: "10px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      borderRadius: "10px",
+      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.5)",
+      backgroundColor: theme.palette.grey[200],
+    },
   },
   image: {
     [theme.breakpoints.up('md')]: {
@@ -83,7 +101,6 @@ const useStyles = makeStyles(theme => ({
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    // marginTop: theme.spacing(1),
   },
   input: {
     height: 40,
@@ -136,7 +153,7 @@ const RegistrationForm = props => {
       <div className={classes.image}></div>
 
       <div className={classes.root}>
-        <Grid container component={Paper} className={classes.grid} justify="center">
+        <Grid container component={Paper} className={classes.grid}>
           <Grid item xs={false} sm={false} md={7} />
           <Grid item xs={12} sm={10} md={5} style={{display: 'flex'}}>
             <div className={classes.paper}>

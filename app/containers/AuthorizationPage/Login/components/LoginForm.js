@@ -45,7 +45,7 @@ function Copyright() {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
+    flexGrow: 1,
     height: '100vh',
     padding: '50px',
     [theme.breakpoints.down('md')]: {
@@ -54,9 +54,24 @@ const useStyles = makeStyles(theme => ({
   },
   grid: {
     height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: theme.palette.grey[50],
     borderRadius: theme.spacing(5),
-    overflow: 'auto',
+    overflowX: 'auto',
+    "&::-webkit-scrollbar": {
+      width: "6px",
+      backgroundColor: "#F5F5F5"
+    },
+    "&::-webkit-scrollbar-track": {
+      "-webkitBoxShadow": "inset 0 0 6px rgba(0,0,0,0.3)",
+      borderRadius: "10px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      borderRadius: "10px",
+      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.5)",
+      backgroundColor: theme.palette.grey[200],
+    }
   },
   image: {
     [theme.breakpoints.up('md')]: {
@@ -143,7 +158,6 @@ const LoginForm = props => {
           container
           component={Paper}
           className={classes.grid}
-          justify="center"
         >
           <Grid item xs={false} sm={false} md={7} />
           <Grid item xs={12} sm={10} md={5} style={{ display: 'flex' }}>

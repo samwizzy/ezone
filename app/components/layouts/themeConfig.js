@@ -22,6 +22,10 @@ const themesConfig = {
       },
       error: red,
     },
+    typography: {
+      fontSize: 14,
+      htmlFontSize: 18,
+    },
     status: {
       danger: '#FF2700',
       due: '#FCD81C',

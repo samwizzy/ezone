@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import { makeStyles } from '@material-ui/core/styles'
-import { green, orange } from '@material-ui/core/colors'
-import { Button, Box, Grid, Menu, MenuItem, List, ListItem, ListItemText, ListSubheader, FormControlLabel, Icon, IconButton, Typography } from '@material-ui/core';
+import { green, orange, red } from '@material-ui/core/colors'
+import { Button, Box, Grid, Menu, MenuItem, List, ListItem, ListItemIcon, ListItemText, ListSubheader, FormControlLabel, Icon, IconButton, Typography } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -13,7 +13,6 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import moment from 'moment'
 import Lens from '@material-ui/icons/Lens'
-import tasksIcon from '../../../images/tasksIcon.svg'
 import {AddTask} from '../components/AddButton';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
@@ -38,8 +37,10 @@ const useStyles = makeStyles(theme => ({
   status: {
     width: 14,
     height: 14,
+    color: theme.palette.common.black,
     '&.approved': { color: theme.palette.primary.main},
     '&.inProgress': { color: orange[500]},
+    '&.expired': { color: red[500]},
     '&.done': { color: green[500]},
   }
 }));
@@ -145,7 +146,9 @@ const TasksList = props => {
   ];
 
   const options = {
-    filter: true,
+    filter: false,
+    print: false,
+    viewColumns: false,
     filterType: "checkbox",
     responsive: "scrollMaxHeight",
     selectableRows: 'none',
@@ -165,10 +168,6 @@ const TasksList = props => {
     elevation: 0
   };
 
-  if (loading) {
-    return <List component={LoadingIndicator} />;
-  }
-
   if(tasks && tasks.length === 0){
     return <NoTasksList />
   }
@@ -187,30 +186,40 @@ const TasksList = props => {
             }
           >
             <ListItem button>
+              <ListItemIcon><Lens className={classNames(classes.status)} /></ListItemIcon>
               <ListItemText primary="All" />
             </ListItem>
             <ListItem button onClick={() => getUtilityTasksByStatus('PENDING')}>
+              <ListItemIcon><Lens className={classNames(classes.status, {'approved': true})} /></ListItemIcon>
               <ListItemText primary="Pending" />
             </ListItem>
             <ListItem button onClick={() => getUtilityTasksByStatus('INPROGRESS')}>
+              <ListItemIcon><Lens className={classNames(classes.status, {'inProgress': true})} /></ListItemIcon>
               <ListItemText primary="In-Progress" />
             </ListItem>
             <ListItem button onClick={() => getUtilityTasksByStatus('EXPIRED')}>
+              <ListItemIcon><Lens className={classNames(classes.status, {'expired': true})} /></ListItemIcon>
               <ListItemText primary="Due" />
             </ListItem>
             <ListItem button onClick={() => getUtilityTasksByStatus('COMPLETED')}>
+              <ListItemIcon><Lens className={classNames(classes.status, {'done': true})} /></ListItemIcon>
               <ListItemText primary="Completed" />
             </ListItem>
           </List>
         </Grid>
         <Grid item xs={12} md={10}>
-          <MUIDataTable
-            title="Task List"
-            data={tasks}
-            columns={columns}
-            options={options}
-            className={classes.datatable}
-          />
+          {loading?
+            <List component={LoadingIndicator} />
+          :
+          (
+            <MUIDataTable
+              title="Task List"
+              data={tasks}
+              columns={columns}
+              options={options}
+              className={classes.datatable}
+            />
+          )}
         </Grid>
       </Grid>
     </div>

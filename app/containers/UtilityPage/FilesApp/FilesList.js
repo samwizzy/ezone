@@ -41,6 +41,7 @@ const useStyles = makeStyles(theme => ({
   },
   table: {
     marginTop: theme.spacing(2),
+    whiteSpace: 'nowrap',
     '& .MuiTableCell-body': {
       fontSize: theme.typography.fontSize - 1,
     },
@@ -49,14 +50,14 @@ const useStyles = makeStyles(theme => ({
     }
   },
   datatable: {
-    '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
-    }
+    // '& .MuiTableRow-root:hover': {
+    //   cursor: 'pointer'
+    // }
   },
   sideMenu: {
     width: '100%',
     position: 'relative',
-    overflow: 'auto',
+    overflowY: 'auto',
     maxHeight: 300,
     '& .MuiListItem-root:hover': {
       color: theme.palette.primary.main,
@@ -127,14 +128,12 @@ const FilesList = props => {
   }
 
 
-
   console.log(files, "Files")
   console.log(file, "File single")
   console.log(user, "User single")
 
   const handleClick = event => {
     event.stopPropagation()
-    event.nativeEvent.stopImmediatePropagation()
     const data = event.currentTarget
     setFileId(data.dataset.id)
     setAnchorEl(event.currentTarget);
@@ -270,6 +269,7 @@ const FilesList = props => {
     responsive: 'scrollMaxHeight',
     selectableRows: 'none',
     print: false,
+    pagination: false,
     download: true,
     viewColumns: false,
     filter: false,
@@ -282,16 +282,12 @@ const FilesList = props => {
     elevation: 0
   };
 
-  if (loading) {
-    return <List component={LoadingIndicator} />;
-  }
-
   if(files && files.length === 0){
     return <NoFilesList /> 
     // return <AddSignature /> 
     // return <DocWidget /> 
   }
-
+  
   return (
     <div className={classes.root}>
       <Grid container justify='space-evenly' spacing={2}>
@@ -334,35 +330,30 @@ const FilesList = props => {
           </div>
         </Grid>
         <Grid item xs={10} md={7}>
-          <MUIDataTable
-            className={classes.datatable}
-            title="Document List"
-            data={files}
-            columns={columns}
-            options={options}
-          />
+          {loading?
+            <List component={LoadingIndicator} />
+          :
+          (
+            <MUIDataTable
+              className={classes.datatable}
+              title="Document List"
+              data={files}
+              columns={columns}
+              options={options}
+            />
+          )}
         </Grid>
         <Grid item md={3}>
           <Typography variant="subtitle2" color="textSecondary">Document Details</Typography>
           {file && Object.keys(file).length > 0 &&
           <div>
-          
           <Card className={classes.cardRoot}>
-            <CardActionArea>
-              <CardMedia
-                className={classes.media}
-                image={file.fileUrl}
-                title={file.docName}
-              />
-              <img
-                className={classes.media}
-                src={file.fileUrl}
-                alt={file.docName}
-                style={{height: '400px', width: '400px'}}
-              />
-            </CardActionArea>
+            <CardMedia
+              className={classes.media}
+              image={file.fileUrl}
+              title={file.docName}
+            />
           </Card>
-
 
           <TableContainer component="div">
             <Table className={classes.table} size="small" aria-label="a dense table">

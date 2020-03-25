@@ -102,6 +102,16 @@ export function* login() {
   }
 }
 
+export function* logOut() {
+  try {
+    // yield put(AppActions.getUserProfileAction(loginResponse));
+    console.log("I am in logout saga...")
+  } catch (err) {
+    console.log(err, 'err');
+    // yield put(AppActions.loginErrorAction(err));
+  }
+}
+
 export function* userProfile() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
 
@@ -133,5 +143,6 @@ export default function* authorizationPageSaga() {
   yield takeLatest(Constants.SIGNUP_REQUEST, signup);
   // login actions
   yield takeLatest(AppConstants.LOGIN, login);
+  yield takeLatest(AppConstants.LOG_OUT, logOut);
   yield takeLatest(AppConstants.GET_USER_PROFILE, userProfile);
 }
