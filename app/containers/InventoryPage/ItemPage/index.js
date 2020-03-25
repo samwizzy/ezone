@@ -18,6 +18,7 @@ import makeSelectItemPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
+import ItemsList from './components/ItemsList';
 
 export function ItemPage() {
   useInjectReducer({ key: 'itemPage', reducer });
@@ -29,13 +30,13 @@ export function ItemPage() {
         <title>ItemPage</title>
         <meta name="description" content="Description of ItemPage" />
       </Helmet>
-      <FormattedMessage {...messages.header} />
+      <ItemsList />
     </div>
   );
 }
 
 ItemPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  // dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({

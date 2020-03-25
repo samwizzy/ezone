@@ -1,0 +1,244 @@
+/* eslint-disable prettier/prettier */
+import React, { memo, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import {
+  makeStyles,
+  List,
+  FormControlLabel,
+  Icon,
+  Button,
+  Menu,
+  MenuItem,
+} from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
+import MUIDataTable from 'mui-datatables';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import * as UtilityActions from '../../../UtilityPage/actions';
+import * as UtilitySelectors from '../../../UtilityPage/selectors';
+import * as Actions from '../actions';
+import * as Selectors from '../selectors';
+import LoadingIndicator from '../../../../components/LoadingIndicator';
+// import { AddWarehouse } from './AddWarehouse';
+
+const useStyles = makeStyles(theme => ({
+  button: {
+    margin: theme.spacing(1),
+  },
+}));
+
+const ItemsList = props => {
+  const classes = useStyles();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const {
+    loading,
+    getAllEmployees,
+    openNewWarehouseDialogAction,
+    // getAllUsersAction,
+    // openEditEmployeeDialogAction,
+    // openViewEmployeeDialogAction,
+  } = props;
+
+  useEffect(() => {
+    // getAllUsersAction();
+  }, []);
+
+  console.log(getAllEmployees, 'getAllEmployees');
+
+  const columns = [
+    {
+      name: 'Id',
+      label: 'S/N',
+      options: {
+        filter: true,
+        customBodyRender: (value, tableMeta) => {
+          if (value === '') {
+            return '';
+          }
+          return (
+            <FormControlLabel
+              label={tableMeta.rowIndex + 1}
+              control={<Icon />}
+            />
+          );
+        },
+      },
+    },
+    {
+      name: 'firstName',
+      label: 'First Name',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: 'lastName',
+      label: 'Last Name',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: 'emailAddress',
+      label: 'Email Address',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: 'phoneNumber',
+      label: 'Phone Number',
+      options: {
+        filter: true,
+        sort: false,
+        // customBodyRender: value => {
+        //   const Post = getAllPosts.find(post => value === post.id);
+
+        //   if (value === '') {
+        //     return '';
+        //   }
+        //   return (
+        //     <FormControlLabel
+        //       label="Edit"
+        //       control={<Icon>create</Icon>}
+        //       onClick={evt => {
+        //         evt.stopPropagation();
+        //         openEditPostDialog(Post);
+        //       }}
+        //     />
+        //   );
+        // },
+      },
+    },
+    {
+      name: 'gender',
+      label: 'Gender',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    // {
+    //   name: 'id',
+    //   label: '',
+    //   options: {
+    //     filter: true,
+    //     sort: false,
+    //     customBodyRender: value => {
+    //       const Post = datas.find(post => value === post.id);
+    //       if (value === '') {
+    //         return '';
+    //       }
+    //       return (
+    //         <div>
+    //           <Button
+    //             aria-controls="simple-menu"
+    //             aria-haspopup="true"
+    //             onClick={handleClick}
+    //           >
+    //             Options
+    //           </Button>
+    //           <Menu
+    //             id="simple-menu"
+    //             anchorEl={anchorEl}
+    //             keepMounted
+    //             open={Boolean(anchorEl)}
+    //             onClose={handleClose}
+    //           >
+    //             <MenuItem onClick={handleClose}>Assign Role</MenuItem>
+    //             <MenuItem onClick={handleClose}>Assign Apps</MenuItem>
+    //             <MenuItem onClick={() => openEditEmployeeDialogAction(Post)}>
+    //               Edit
+    //             </MenuItem>
+    //             <MenuItem onClick={() => openViewEmployeeDialogAction(Post)}>
+    //               View Details
+    //             </MenuItem>
+    //             <MenuItem onClick={handleClose}>Deactivate</MenuItem>
+    //           </Menu>
+    //         </div>
+    //       );
+    //     },
+    //   },
+    // },
+  ];
+
+  const options = {
+    filterType: 'checkbox',
+    responsive: 'scrollMaxHeight',
+    selectableRows: 'none',
+    customToolbar: () => (
+      <Button
+        variant="contained"
+        color="primary"
+        size="small"
+        className={classes.button}
+        startIcon={<AddIcon />}
+        href="/items/new"
+      >
+        New
+      </Button>
+    ),
+  };
+
+  if (loading) {
+    return <LoadingIndicator />;
+  }
+
+  return (
+    <React.Fragment>
+      <MUIDataTable
+        title="All Items"
+        data={getAllEmployees}
+        columns={columns}
+        options={options}
+      />
+    </React.Fragment>
+  );
+};
+
+ItemsList.propTypes = {
+  loading: PropTypes.bool,
+  getAllEmployees: PropTypes.array,
+  openNewWarehouseDialogAction: PropTypes.func,
+  // openEditEmployeeDialogAction: PropTypes.func,
+  // openViewEmployeeDialogAction: PropTypes.func,
+  getAllUsersAction: PropTypes.func,
+};
+
+const mapStateToProps = createStructuredSelector({
+  // loading: Selectors.makeSelectLoading(),
+  // getAllEmployees: Selectors.makeSelectGetAllEmployees(),
+  // getAllEmployees: UtilitySelectors.makeSelectAllEmployees(),
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    // getAllUsersAction: () =>
+    //   dispatch(UtilityActions.getAllUsers()),
+    // openNewWarehouseDialogAction: () =>
+    //   dispatch(Actions.openNewWarehouseDialog()),
+  };
+}
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+export default compose(
+  withConnect,
+  memo,
+)(ItemsList);
