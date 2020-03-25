@@ -15,6 +15,13 @@ export const initialState = {
   loading: false,
   employees: [],
   employee: {},
+  newEmployeeDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  }
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -32,6 +39,24 @@ const hrReducer = (state = initialState, action) =>
         return {
           ...state,
           employee: action.payload
+        };
+        break;
+      case Constants.GET_EMPLOYEE_SUCCESS:
+        return {
+          ...state,
+          employee: action.payload
+        };
+        break;
+      case Constants.OPEN_NEW_EMPLOYEE_DIALOG:
+        return {
+          ...state,
+          newEmployeeDialog: {...state.newEmployeeDialog, props: { open: true }},
+        };
+        break;
+      case Constants.CLOSE_NEW_EMPLOYEE_DIALOG:
+        return {
+          ...state,
+          newEmployeeDialog: {...state.newEmployeeDialog, props: { open:false }},
         };
         break;
     }

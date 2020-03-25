@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {
   IconButton,
   Typography,
-  Container,
   makeStyles,
   AppBar,
   Toolbar,
@@ -90,9 +89,7 @@ function ModuleLayout(props) {
         </Toolbar>
       </AppBar>
       <main className={classes.content}>
-        <Container>
-          {props.children}
-        </Container>
+        {props.children}
       </main>
     </div>
   );

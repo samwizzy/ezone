@@ -2,7 +2,6 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import {
   IconButton,
-  Container,
   Typography,
   Box,
   makeStyles,
@@ -93,9 +92,7 @@ function ModuleLayout(props) {
         </Toolbar>
       </AppBar>
       <main className={classes.content}>
-        <Container>
-          {props.children}
-        </Container>
+        {props.children}
       </main>
     </div>
   );

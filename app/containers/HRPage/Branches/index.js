@@ -16,9 +16,8 @@ import * as AppSelectors from '../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
 import Person from '@material-ui/icons/Person';
-import {AddEmployee} from '../components/AddButton'
+import {AddBranch} from '../components/AddButton'
 import SideBar from './../components/SideBar'
-import AddEmployeeDialog from './components/AddEmployeeDialog'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -59,14 +58,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const EmployeesApp = props => {
+const BranchesApp = props => {
   const classes = useStyles();
-  const { loading, openNewEmployeeDialog, getEmployee, employees, employee } = props;
+  const { loading, getEmployee, employees, employee } = props;
 
   React.useEffect(() => {
   }, [employee]);
-
-  console.log(employee, "employee")
 
   const toTitleCase = (str) => { 
     return str? str[0].toUpperCase() + str.slice(1) : ""; 
@@ -79,21 +76,6 @@ const EmployeesApp = props => {
       options: {
         display: 'excluded',
         filter: true,
-      },
-    },
-    {
-      name: 'id',
-      label: ' ',
-      options: {
-      filter: true,
-      sort: true,
-      customBodyRender: id => {
-        return (
-          <Avatar aria-label="avatar" className={classes.avatar}>
-            A
-          </Avatar>
-        )
-      }
       },
     },
     {
@@ -157,7 +139,7 @@ const EmployeesApp = props => {
     download: true,
     viewColumns: false,
     filter: false,
-    customToolbar: () => <AddEmployee openFileDialog={openNewEmployeeDialog} />,
+    customToolbar: () => <AddBranch openFileDialog={() => {}} />,
     rowsPerPage: 10,
     rowsPerPageOptions: [10,25,50,100],
     onRowClick: (rowData, rowState) => {
@@ -181,7 +163,7 @@ const EmployeesApp = props => {
         
             <MUIDataTable
                 className={classes.datatable}
-                title="Employee List"
+                title="Branch List"
                 data={employees}
                 columns={columns}
                 options={options}
@@ -248,13 +230,11 @@ const EmployeesApp = props => {
           </div>
         </Grid>
       </Grid>
-
-      <AddEmployeeDialog />
     </div>
   );
 };
 
-EmployeesApp.propTypes = {
+BranchesApp.propTypes = {
   loading: PropTypes.bool,
   getEmployees: PropTypes.func,
 };
@@ -268,8 +248,6 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewEmployeeDialog: () => dispatch(Actions.openNewEmployeeDialog()),
-    openEditEmployeeDialog: () => dispatch(Actions.openEditEmployeeDialog()),
     getEmployees: () => dispatch(Actions.getEmployees()),
     getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
   };
@@ -284,4 +262,4 @@ export default withRouter(
   compose(
     withConnect,
     memo,
-)(EmployeesApp));
+)(BranchesApp));

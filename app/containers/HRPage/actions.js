@@ -39,6 +39,19 @@ export function getEmployeeSuccess(data) {
   };
 }
 
+export function openNewEmployeeDialog() {
+  console.log("This is the open dialog here")
+  return {
+    type: Constants.OPEN_NEW_EMPLOYEE_DIALOG,
+  };
+}
+
+export function closeNewEmployeeDialog() {
+  return {
+    type: Constants.CLOSE_NEW_EMPLOYEE_DIALOG,
+  };
+}
+
 export function openEditEmployeeDialog(data) {
   return {
     type: Constants.OPEN_EDIT_EMPLOYEE_DIALOG,

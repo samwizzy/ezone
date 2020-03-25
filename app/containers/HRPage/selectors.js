@@ -31,10 +31,17 @@ const makeSelectEmployee = () =>
     hrState => hrState.employee,
   );
 
+const makeSelectNewEmployeeDialog = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.newEmployeeDialog,
+  );
+
 export default makeSelectHRPage;
 export { 
   selectHR,
   makeSelectEmployees,
   makeSelectLoading,
-  makeSelectEmployee
+  makeSelectEmployee,
+  makeSelectNewEmployeeDialog,
 };

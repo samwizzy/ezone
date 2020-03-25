@@ -91,7 +91,6 @@ function MiniDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
-  console.log(props, "props match")
 
   const handleDrawerOpen = () => {
     setOpen(true);
