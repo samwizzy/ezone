@@ -40,6 +40,8 @@ import InventoryPage from '../InventoryPage/Loadable';
 import WarehousePage from '../InventoryPage/WarehousePage/Loadable';
 import ItemPage from '../InventoryPage/ItemPage/Loadable';
 import NewItem from '../InventoryPage/ItemPage/components/NewItem';
+import TransferOrdersList from '../InventoryPage/ItemPage/components/TransferOrdersList';
+import NewTransferOrder from '../InventoryPage/ItemPage/components/NewTransferOrder';
 import Layout1 from '../../components/layouts/layout1/Layout1';
 import Layout2 from '../../components/layouts/layout2/Layout2';
 import Layout3 from '../../components/layouts/layout3/Layout3';
@@ -98,23 +100,23 @@ const App = () => {
                   path="/users/profile"
                   component={UserProfilePage}
                 />
-                <Route
+                <PrivateRoute
                   exact
                   path="/organization/company/structure"
                   component={CompanyStructure}
                 />
-                <Route
+                <PrivateRoute
                   exact
                   path="/organization/company/structure/party/:partyGroupId/:partyId"
                   component={CompanyStructureParty}
                 />
-                <Route
+                <PrivateRoute
                   exact
                   path="/organization/company/structure/position/:partyGroupId/:partyId/:positionId"
                   component={CompanyStructurePosition}
                 />
                 {/* <PrivateRoute exact path="/dashboard" component={UtilityPage} /> */}
-                <Route exact path="/dashboard" component={UtilityPage} />
+                <PrivateRoute exact path="/dashboard" component={UtilityPage} />
                 <PrivateRoute
                   exact
                   path="/dashboard/tasks"
@@ -141,8 +143,8 @@ const App = () => {
                   component={ChatApp}
                 />
 
-                <Route exact path="/email" component={EmailConfig} />
-                <Route
+                <PrivateRoute exact path="/email" component={EmailConfig} />
+                <PrivateRoute
                   path="/email/configuration"
                   component={EmailConfigs}
                 />
@@ -155,14 +157,28 @@ const App = () => {
                   component={EmailPasswordTemplate}
                 />
                 <PrivateRoute exact path="/home" component={HomePage} />
-                <Route path="/WorkOrder" component={WorkOrderPage} />
-                <Route exact path="/hr" component={HRPage} />
-                <Route exact path="/hr/:sectionId" component={HRPage} />
-                <Route path="/account" component={AccountPage} />
-                <Route exact path="/inventory" component={InventoryPage} />
+                <PrivateRoute path="/WorkOrder" component={WorkOrderPage} />
+                <PrivateRoute exact path="/hr" component={HRPage} />
+                <PrivateRoute exact path="/hr/:sectionId" component={HRPage} />
+                <PrivateRoute path="/account" component={AccountPage} />
+                <PrivateRoute
+                  exact
+                  path="/inventory"
+                  component={InventoryPage}
+                />
                 <PrivateRoute path="/warehouses" component={WarehousePage} />
-                <Route exact path="/items" component={ItemPage} />
-                <Route exact path="/items/new" component={NewItem} />
+                <PrivateRoute exact path="/items" component={ItemPage} />
+                <PrivateRoute exact path="/items/new" component={NewItem} />
+                <PrivateRoute
+                  exact
+                  path="/transfer/orders"
+                  component={TransferOrdersList}
+                />
+                <PrivateRoute
+                  exact
+                  path="/transfer/new"
+                  component={NewTransferOrder}
+                />
               </Layout3>
               <Route path="" component={NotFoundPage} />
             </Switch>
