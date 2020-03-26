@@ -8,7 +8,7 @@ import TaskIcon from '../../../../images/TaskIcon.svg';
 import ProjectsIcon from '../../../../images/ProjectsIcon.svg';
 
 const apps = [
-  { id: 1, name: 'Accounting', url: '/accounting', icon: AcctIcon },
+  { id: 1, name: 'Accounting', url: '/account', icon: AcctIcon },
   { id: 2, name: 'Human Resources', url: '/hr', icon: AppIcon1 },
   { id: 3, name: 'Store & Inventory Mgt', url: '/inventory', icon: StoreIcon },
   { id: 4, name: 'CRM', url: '/cms', icon: CRMIcon },
