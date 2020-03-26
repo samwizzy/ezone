@@ -17,7 +17,6 @@ import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
 import Person from '@material-ui/icons/Person';
 import {AddEmployee} from '../components/AddButton'
-import SideBar from './../components/SideBar'
 import AddEmployeeDialog from './components/AddEmployeeDialog'
 
 const useStyles = makeStyles(theme => ({
@@ -173,10 +172,7 @@ const EmployeesApp = props => {
         container
         justify='space-around'
       >
-        <Grid item md={2}>
-          <SideBar />
-        </Grid>
-        <Grid item md={7}>
+        <Grid item md={9}>
           <div className={classes.content}>
         
             <MUIDataTable

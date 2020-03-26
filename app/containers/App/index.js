@@ -144,8 +144,8 @@ const App = () => {
                   component={ChatApp}
                 />
 
-                <PrivateRoute exact path="/email" component={EmailConfig} />
-                <PrivateRoute
+                <Route exact path="/email" component={EmailConfig} />
+                <Route
                   path="/email/configuration"
                   component={EmailConfigs}
                 />
@@ -158,7 +158,7 @@ const App = () => {
                   component={EmailPasswordTemplate}
                 />
                 <PrivateRoute exact path="/home" component={HomePage} />
-                <PrivateRoute path="/WorkOrder" component={WorkOrderPage} />
+                <Route path="/WorkOrder" component={WorkOrderPage} />
                 <Route exact path="/hr" component={HRPage} />
                 <Route exact path="/hr/:sectionId" component={HRPage} />
                 <Route path="/account" component={AccountPage} />
