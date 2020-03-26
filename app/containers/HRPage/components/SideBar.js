@@ -3,10 +3,6 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Divider, List, ListItem, ListSubheader, ListItemText, ListItemIcon, Icon, Typography, Hidden, Drawer } from '@material-ui/core';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
-import classNames from 'classnames';
-import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors'
 import { AppContext } from '../../context/AppContext'
 
@@ -56,7 +52,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SideBar = props => {
-    const classes = useStyles()
+  const classes = useStyles()
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
+
+  const handleListItemClick = (event, index) => {
+    setSelectedIndex(index);
+  };
 
     const drawer = (
         <AppContext.Consumer>  
@@ -71,13 +72,13 @@ const SideBar = props => {
                     subheader={
                     <ListSubheader component="div" id="nested-list-subheader">
                         <Typography variant="subtitle1">
-                        HR Menu 
+                          HR Menu 
                         </Typography>
                     </ListSubheader>
                     }
                 >
                     {menus && menus.map(menu => (
-                    <ListItem button key={menu.id} onClick={() => getEmployee(menu.id)}>
+                    <ListItem button selected={selectedIndex === menu.id} key={menu.id} onClick={event => handleListItemClick(event, menu.id)}>
                         <ListItemIcon><Icon>{menu.icon}</Icon></ListItemIcon>
                         <ListItemText primary={menu.name} />
                     </ListItem>
