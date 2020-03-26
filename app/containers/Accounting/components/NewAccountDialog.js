@@ -51,7 +51,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const NewAccountDialog = props => {
-  const { loading, accountDialog } = props;
+  const { loading, accountDialog, closeNewAccountDialogAction } = props;
 
   console.log('accountDialog: ', accountDialog);
 
@@ -84,14 +84,14 @@ const NewAccountDialog = props => {
     <div>
       <Dialog
         {...accountDialog.props}
-        // onClose={closeAddItemDialogAction}
+        onClose={closeNewAccountDialogAction}
         keepMounted
         TransitionComponent={Transition}
         maxWidth={'xs'}
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {accountDialog.type === 'new' ? 'Item' : 'Edit Item'}
+          {accountDialog.type === 'new' ? 'Account' : 'Edit Account'}
         </DialogTitle>
 
         <Divider />
@@ -163,7 +163,7 @@ const NewAccountDialog = props => {
               variant="contained"
               // disabled={!canBeSubmitted()}
             >
-              Save Item
+              Save Account
             </Button>
           )}
           <Button
@@ -173,7 +173,7 @@ const NewAccountDialog = props => {
             color="primary"
             variant="contained"
           >
-            Cancel item
+            Cancel
           </Button>
         </DialogActions>
       </Dialog>
@@ -194,8 +194,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
-    closeNewAccountDialogAction: () =>
-      dispatch(Actions.closeNewAccountDialog()),
+    closeNewAccountDialogAction: () => dispatch(Actions.closeNewAccountDialog()),
     dispatch,
   };
 }

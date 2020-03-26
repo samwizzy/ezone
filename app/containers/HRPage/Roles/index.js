@@ -18,7 +18,6 @@ import Assignment from '@material-ui/icons/Assignment';
 import AssignmentInd from '@material-ui/icons/AssignmentInd';
 import Person from '@material-ui/icons/Person';
 import {AddRole} from '../components/AddButton'
-import SideBar from './../components/SideBar'
 
 const drawerWidth = '100%';
 
@@ -132,10 +131,7 @@ const HumanResource = props => {
         container
         justify='space-around'
       >
-        <Grid item md={2}>
-          <SideBar />
-        </Grid>
-        <Grid item md={7}>
+        <Grid item md={9}>
           <div className={classes.content}>
             <div className={classes.buttonGroup}>
               <ButtonGroup size="small" aria-label="small outlined button group">
