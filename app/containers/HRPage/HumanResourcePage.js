@@ -10,12 +10,6 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router-dom'
-import * as AppSelectors from '../App/selectors';
-import * as AppActions from '../App/actions';
-import * as Actions from './actions';
-import * as Selectors from './selectors';
-import reducer from './reducer';
-import saga from './saga';
 import EmployeesApp from './Employees'
 import RolesApp from './Roles'
 import DepartmentsApp from './Departments'
@@ -30,8 +24,6 @@ const useStyles = makeStyles(theme => ({
 const HumanResourcePage = props => {
     const { match } = props
     const { params } = match
-
-    console.log(params, "params sectionId")
 
     switch(params.sectionId){
         case 'employees':

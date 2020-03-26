@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   IconButton,
   Typography,
-  Box,
+  Grid,
   makeStyles,
   AppBar,
   Toolbar,
@@ -19,6 +19,7 @@ import {
 import RefreshSharp from '@material-ui/icons/RefreshSharp';
 import * as Actions from '../actions';
 import UserMenu from '../../../components/layouts/shared-components/UserMenu';
+// import SideBar from './SideBar'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -92,7 +93,11 @@ function ModuleLayout(props) {
         </Toolbar>
       </AppBar>
       <main className={classes.content}>
-        {props.children}
+        <Grid container>
+          <Grid item xs={12}>
+            {props.children}
+          </Grid>
+        </Grid>
       </main>
     </div>
   );

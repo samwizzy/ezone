@@ -17,7 +17,6 @@ import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
 import Person from '@material-ui/icons/Person';
 import {AddBranch} from '../components/AddButton'
-import SideBar from './../components/SideBar'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -155,10 +154,7 @@ const BranchesApp = props => {
         container
         justify='space-around'
       >
-        <Grid item md={2}>
-          <SideBar />
-        </Grid>
-        <Grid item md={7}>
+        <Grid item md={9}>
           <div className={classes.content}>
         
             <MUIDataTable
