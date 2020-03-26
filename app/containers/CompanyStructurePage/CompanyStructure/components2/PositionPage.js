@@ -3,6 +3,7 @@ import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
+  Breadcrumbs,
   List,
   ListItem,
   ListItemText,
@@ -15,16 +16,24 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableRow,
   Link,
+  TableHead,
 } from '@material-ui/core';
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
+
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import Add from '@material-ui/icons/Add';
+import saga from '../../saga';
+import reducer from '../../reducer';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
+import EmployeeDialog from './EmployeeDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -69,6 +78,9 @@ const useStyles = makeStyles(theme => ({
   header: {
     padding: theme.spacing(1.5, 0),
   },
+  head: {
+    textAlign: 'center',
+  },
 }));
 
 const NoPartyGroup = props => {
@@ -98,27 +110,59 @@ NoPartyGroup.propTypes = {
   dispatchOpenNewPartyGroupAction: PropTypes.func,
 };
 
-const CompanyStructure = props => {
+const PositionPage = props => {
+  useInjectReducer({ key: 'companyStructurePage', reducer });
+  useInjectSaga({ key: 'companyStructurePage', saga });
+
   const {
     dispatchGetAllUsersAction,
+    dispatchGetPartyGroups,
     selectedPartyGroupData,
     DispatchgetSelectedPartyGroupAction,
     partyGroupData,
     dispatchOpenNewPartyGroupAction,
-    dispatchOpenNewPartyAction,
+    dispatchOpenAddEmployeeToPositionDialogAction,
+    openNewRoleDialog,
     loading,
+    match,
+    allPositions,
   } = props;
 
+  const { params } = match;
+
+  console.log(params, 'position params');
+
   useEffect(() => {
+    dispatchGetPartyGroups();
     dispatchGetAllUsersAction();
   }, []);
   const classes = useStyles();
 
+  let party;
+  if (partyGroupData) {
+    for (let i = 0; i < partyGroupData.length; i++) {
+      if (partyGroupData[i].id == params.partyGroupId) {
+        for (let k = 0; k < partyGroupData[i].parties.length; k++) {
+          if (partyGroupData[i].parties[k].id == params.partyId) {
+            for ( let e = 0; e < partyGroupData[i].parties[k].positions.length; e++ ) {
+              if ( partyGroupData[i].parties[k].positions[e].id == params.positionId ) {
+                party = partyGroupData[i].parties[k].positions[e];
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   console.log(partyGroupData, 'partyGroupData');
 
-  if (loading) {
+  if (party === undefined) {
     return <LoadingIndicator />;
   }
+
+  // console.log(allPositions, 'allPositions');
+  console.log(party, 'selectedPartyGroupData party');
 
   if (!partyGroupData.length) {
     return (
@@ -128,13 +172,14 @@ const CompanyStructure = props => {
     );
   }
 
-  console.log(selectedPartyGroupData, 'selectedPartyGroupData');
+  console.log(selectedPartyGroupData, 'position selected value');
   return (
     <React.Fragment>
+      <EmployeeDialog params={params} />
       <div>
         <Grid container justify="space-between" className={classes.header}>
           <Grid item>
-            <Typography variant="h6">Company Information.</Typography>
+            <Typography variant="h6">Company Information</Typography>
           </Grid>
           <Grid item>
             <Button
@@ -148,34 +193,32 @@ const CompanyStructure = props => {
           </Grid>
         </Grid>
         <Grid container>
-          <Grid item xs={2} md={2}>
-            <Paper className={classes.paper}>
-              <List
-                component="nav"
-                aria-labelledby="nested-list-subheader"
-                className={classes.list}
-              >
-                {partyGroupData.map(data => (
+          {party && (
+            <Grid item xs={2} md={2}>
+              <Paper className={classes.paper}>
+                <List
+                  component="nav"
+                  aria-labelledby="nested-list-subheader"
+                  className={classes.list}
+                >
                   <ListItem
                     button
-                    key={data.id}
-                    // selected={selectedIndex === 0}
-                    onClick={() => DispatchgetSelectedPartyGroupAction(data)}
+                    // key={index}
+                    onClick={() => DispatchgetSelectedPartyGroupAction(party)}
                   >
-                    <ListItemText primary={data.name} />
+                    <ListItemText primary={party.name} />
                   </ListItem>
-                ))}
-              </List>
-            </Paper>
-          </Grid>
-          <Grid item xs={10} md={10}>
+                </List>
+              </Paper>
+            </Grid>
+          )}
+          <Grid item xs={10} md={10} lg={10}>
             <Paper className={classes.paper}>
               <List
                 component="nav"
                 aria-labelledby="nested-list-subheader"
                 subheader={
                   <ListSubheader component="div" id="nested-list-subheader">
-                    {/* Region */}
                     <Typography variant="h6">
                       {selectedPartyGroupData.name}
                     </Typography>
@@ -185,7 +228,7 @@ const CompanyStructure = props => {
               >
                 <Divider />
                 <ListItem>
-                  <Typography variant="h6">Information.</Typography>
+                  <Typography variant="h6">Information</Typography>
                 </ListItem>
                 <ListItem>
                   <Table
@@ -211,47 +254,53 @@ const CompanyStructure = props => {
 
               <Divider />
               <Grid item>
-                {selectedPartyGroupData && (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.partyButton}
-                    onClick={() => dispatchOpenNewPartyAction()}
-                  >
-                    <Add /> Add New Party
-                  </Button>
-                )}
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.partyButton}
+                  onClick={() =>
+                    dispatchOpenAddEmployeeToPositionDialogAction()
+                  }
+                >
+                  <Add /> Add Employee To Position
+                </Button>
               </Grid>
-              <Table
-                className={classes.table}
-                aria-label="simple table"
-                size="small"
-              >
-                <TableBody>
-                  {selectedPartyGroupData &&
-                    selectedPartyGroupData.parties.map(party => (
-                      <TableRow key={party.id}>
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          width="25%"
-                          // onClick={() =>
-                          //   DispatchgetSelectedPartyGroupAction(party)
-                          // }
-                        >
-                          <Link
-                            href={`/organization/company/structure/party/${
-                              selectedPartyGroupData.id
-                            }/${party.id}`}
-                          >
-                            {party.name}
-                            {/* <div>{party.name}</div> */}
-                          </Link>
+              <Grid container spacing={1}>
+                <Grid container item xs={6} md={6} lg={6}>
+                  <Table
+                    className={classes.table}
+                    aria-label="simple table"
+                    size="small"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell className={classes.head}>
+                          All Employees
                         </TableCell>
                       </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
+                    </TableHead>
+                    <TableBody>
+                      {party &&
+                        party.employees.map(employee => (
+                          <TableRow key={employee.id}>
+                            <TableCell
+                              component="th"
+                              scope="row"
+                              width="25%"
+                            // onClick={() =>
+                            //   DispatchgetSelectedPartyGroupAction(paty)
+                            // }
+                            >
+                              <div>
+                                {employee.firstName} {employee.lastName}
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                </Grid>
+              </Grid>
             </Paper>
           </Grid>
         </Grid>
@@ -260,33 +309,35 @@ const CompanyStructure = props => {
   );
 };
 
-CompanyStructure.propTypes = {
-  // dispatchGetPartyGroups: PropTypes.func,
+PositionPage.propTypes = {
+  dispatchGetPartyGroups: PropTypes.func,
   dispatchGetAllUsersAction: PropTypes.func,
   loading: PropTypes.bool,
   dispatchOpenNewPartyGroupAction: PropTypes.func,
-  dispatchOpenNewPartyAction: PropTypes.func,
-  partyGroupData: PropTypes.oneOfType(PropTypes.array),
+  dispatchOpenAddEmployeeToPositionDialogAction: PropTypes.func,
+  openNewRoleDialog: PropTypes.func,
+  partyGroupData: PropTypes.array,
   DispatchgetSelectedPartyGroupAction: PropTypes.func,
-  selectedPartyGroupData: PropTypes.oneOfType(PropTypes.object, PropTypes.bool),
+  selectedPartyGroupData: PropTypes.object,
+  allPositions: PropTypes.object,
+  // selectedPartyGroupData: PropTypes.oneOfType(PropTypes.object, PropTypes.bool),
+  // allPositions: PropTypes.oneOfType(PropTypes.object, PropTypes.bool),
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   partyGroupData: Selectors.makeSelectPartyGroupData(),
   selectedPartyGroupData: Selectors.makeSelectSelectedPartyGroupData(),
+  allPositions: Selectors.makeSelectGetAllPositions(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchOpenNewPartyGroupAction: () =>
-      dispatch(Actions.openNewPartyGroupDialog()),
-    dispatchOpenNewPartyAction: () => dispatch(Actions.openNewPartyDialog()),
-    openNewRoleDialog: () => dispatch(Actions.openNewRoleDialog()),
+    dispatchOpenAddEmployeeToPositionDialogAction: () =>
+      dispatch(Actions.openAddEmployeeToPositionDialog()),
     DispatchgetSelectedPartyGroupAction: evt =>
       dispatch(Actions.getSelectedPartyGroupAction(evt)),
-
-    // dispatchGetPartyGroups: () => dispatch(Actions.getPartyGroupAction()),
+    dispatchGetPartyGroups: () => dispatch(Actions.getPartyGroupAction()),
     dispatchGetAllUsersAction: () => dispatch(Actions.getAllUsers()),
   };
 }
@@ -299,4 +350,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(CompanyStructure);
+)(PositionPage);
