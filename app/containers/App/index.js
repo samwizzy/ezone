@@ -98,17 +98,17 @@ const App = () => {
                   path="/users/profile"
                   component={UserProfilePage}
                 />
-                <PrivateRoute
+                <Route
                   exact
                   path="/organization/company/structure"
                   component={CompanyStructure}
                 />
-                <PrivateRoute
+                <Route
                   exact
                   path="/organization/company/structure/party/:partyGroupId/:partyId"
                   component={CompanyStructureParty}
                 />
-                <PrivateRoute
+                <Route
                   exact
                   path="/organization/company/structure/position/:partyGroupId/:partyId/:positionId"
                   component={CompanyStructurePosition}

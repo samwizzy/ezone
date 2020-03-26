@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { withRouter, Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import classNames from 'classnames';
 import EditOutlined from '@material-ui/icons/EditOutlined';
@@ -149,11 +149,11 @@ const OrgInfo = props => {
                   onClick={() =>
                     history.push('/organization/company/structure')
                   }
+                  href="/organization/company/structure"
                 >
+                  {/* <Link href="/organization/company/structure"> */}
                   Company Structure
-                  <Link href="/organization/company/structure">
-                    Company Structure
-                  </Link>
+                  {/* </Link> */}
                 </Button>
               </Grid>
             </Grid>
