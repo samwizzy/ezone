@@ -6,19 +6,15 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListSubheader,
-  Divider,
   Grid,
-  Paper,
   Button,
   Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-  Link,
   Box,
+  Card,
+  CardContent,
+  IconButton,
 } from '@material-ui/core';
+import { Create } from '@material-ui/icons';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -34,48 +30,17 @@ const useStyles = makeStyles(theme => ({
     height: '80%',
     // height: '100vh',
   },
+  partyGroupCard: {
+    width: '100%',
+    height: 80,
+  },
+  editButton: {
+    marginLeft: theme.spacing(2),
+  },
   button: {
     borderRadius: '20px',
     margin: theme.spacing(5, 0),
     padding: theme.spacing(1, 15),
-  },
-  list: {
-    width: '100%',
-    backgroundColor: theme.palette.background.paper,
-    '& :hover': {
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.common.white,
-    },
-  },
-  breadcrumbs: {
-    padding: theme.spacing(2, 0),
-    '& > * + *': {
-      marginTop: theme.spacing(2),
-    },
-  },
-  partyButton: {
-    float: 'right',
-    marginLeft: '10px',
-  },
-  table: {
-    minWidth: 650,
-    '& td, th': {
-      border: 0,
-      '& button': {
-        textAlign: 'left',
-        width: theme.spacing(30),
-      },
-      '& div': {
-        width: theme.spacing(30),
-        color: theme.palette.common.white,
-        backgroundColor: theme.palette.primary.main,
-        borderRadius: '20px',
-        padding: theme.spacing(1, 2),
-      },
-    },
-  },
-  header: {
-    padding: theme.spacing(1.5, 0),
   },
 }));
 
@@ -91,7 +56,7 @@ const NoPartyGroup = props => {
         alignItems="center"
         className={classes.root}
       >
-        <Grid item>
+        <Grid item xs={12}>
           <Box>
             <Typography variant="h6">
               You Do Not have company structure
@@ -117,7 +82,7 @@ NoPartyGroup.propTypes = {
   dispatchOpenNewPartyGroupAction: PropTypes.func,
 };
 
-// const ListItemLink = props => <ListItem button component="a" {...props} />;
+const ListItemLink = props => <ListItem button component="a" {...props} />;
 
 const CompanyStructure = props => {
   const {
@@ -141,23 +106,51 @@ const CompanyStructure = props => {
     return <LoadingIndicator />;
   }
 
-  if (!partyGroupData.length) {
-    return (
-      <NoPartyGroup
-        dispatchOpenNewPartyGroupAction={dispatchOpenNewPartyGroupAction}
-      />
-    );
-  }
+  // if (!partyGroupData.length) {
+  //   return (
+  //     <NoPartyGroup
+  //       dispatchOpenNewPartyGroupAction={dispatchOpenNewPartyGroupAction}
+  //     />
+  //   );
+  // }
 
   return (
     <React.Fragment>
       <Grid container spacing={3}>
+        <Card className={classes.partyGroupCard}>
+          <CardContent>
+            <Typography variant="body2" color="textSecondary" component="p">
+              This impressive paella is a perfect impressive paella is a perfect
+              <span className={classes.editButton}>
+                <IconButton>
+                  <Create />
+                </IconButton>
+              </span>
+            </Typography>
+          </CardContent>
+        </Card>
         <Grid item xs={12} md={3} lg={3}>
-          <List component="nav" aria-label="secondary mailbox folders">
-            <ListItem button>
-              <ListItemText primary="Trash" />
-            </ListItem>
-          </List>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.partyButton}
+            onClick={() => dispatchOpenNewPartyAction()}
+          >
+            <Add /> Add New Party
+          </Button>
+          {selectedPartyGroupData &&
+            selectedPartyGroupData.parties.map(party => (
+              <List component="nav" aria-label="secondary mailbox folders">
+                <ListItemLink
+                  href={`/organization/company/structure/party/${
+                    selectedPartyGroupData.id
+                  }/${party.id}`}
+                  key={party.id}
+                >
+                  <ListItemText primary={party.name} />
+                </ListItemLink>
+              </List>
+            ))}
         </Grid>
       </Grid>
     </React.Fragment>
