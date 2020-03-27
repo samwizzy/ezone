@@ -18,9 +18,10 @@ export function closeNewPartyGroupDialog() {
   };
 }
 
-export function openNewPartyDialog() {
+export function openNewPartyDialog(data) {
   return {
     type: Constants.OPEN_NEW_PARTY_DIALOG,
+    payload: data,
   };
 }
 
@@ -63,7 +64,6 @@ export function getPartyGroupErrorAction(data) {
 }
 
 export function getSelectedPartyGroupAction(data) {
-  console.log(data, 'position data new');
   return {
     type: Constants.GET_SELECTED_PARTY_GROUP,
     payload: data,

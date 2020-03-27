@@ -24,6 +24,7 @@ import organizationPage from '../CompanyStructurePage/OrganizationInfo/Loadable'
 // import CompanyStructureParty from '../CompanyStructurePage/CompanyStructure/components/PartyPage';
 // import CompanyStructurePosition from '../CompanyStructurePage/CompanyStructure/components/PositionPage';
 import CompanyStructure from '../CompanyStructurePage/CompanyStructure/Loadable';
+import PartyPage from '../CompanyStructurePage/CompanyStructure/components2/PartyPage';
 import CompanyStructureParty from '../CompanyStructurePage/CompanyStructure/components2/PartyPage';
 import CompanyStructurePosition from '../CompanyStructurePage/CompanyStructure/components2/PositionPage';
 import UsersPage from '../UsersPage/Loadable';
@@ -105,6 +106,11 @@ const App = () => {
                   exact
                   path="/organization/company/structure"
                   component={CompanyStructure}
+                />
+                <PrivateRoute
+                  exact
+                  path="/organization/company/structure/:partyGroupId"
+                  component={PartyPage}
                 />
                 <PrivateRoute
                   exact

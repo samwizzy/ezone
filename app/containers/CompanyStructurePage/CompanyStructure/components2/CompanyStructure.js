@@ -10,15 +10,15 @@ import {
   Button,
   Typography,
   Box,
-  Card,
-  CardContent,
-  IconButton,
+  FormControlLabel,
+  Icon,
 } from '@material-ui/core';
-import { Create } from '@material-ui/icons';
+import { withRouter } from 'react-router-dom';
+import MUIDataTable from 'mui-datatables';
+import { Create, Add } from '@material-ui/icons';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import Add from '@material-ui/icons/Add';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
@@ -61,21 +61,21 @@ const useStyles = makeStyles(theme => ({
       overflowY: 'auto',
       height: `calc(100% - ${200}px)`,
       '& .MuiListSubheader-root': {
-        backgroundColor: theme.palette.common.white
+        backgroundColor: theme.palette.common.white,
       },
-      "&::-webkit-scrollbar": {
-        width: "6px",
-        backgroundColor: "#F5F5F5"
+      '&::-webkit-scrollbar': {
+        width: '6px',
+        backgroundColor: '#F5F5F5',
       },
-      "&::-webkit-scrollbar-track": {
-        "-webkitBoxShadow": "inset 0 0 6px rgba(0,0,0,0.3)",
-        borderRadius: "10px",
+      '&::-webkit-scrollbar-track': {
+        '-webkitBoxShadow': 'inset 0 0 6px rgba(0,0,0,0.3)',
+        borderRadius: '10px',
       },
-      "&::-webkit-scrollbar-thumb": {
-        borderRadius: "10px",
-        "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.5)",
+      '&::-webkit-scrollbar-thumb': {
+        borderRadius: '10px',
+        '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.5)',
         backgroundColor: theme.palette.primary.main,
-      }
+      },
     },
   },
 }));
@@ -136,7 +136,75 @@ const CompanyStructure = props => {
   }, []);
   const classes = useStyles();
 
-  console.log(partyGroupData, 'partyGroupData');
+  const columns = [
+    {
+      name: 'Id',
+      label: 'S/N',
+      options: {
+        filter: true,
+        customBodyRender: (value, tableMeta) => {
+          if (value === '') {
+            return '';
+          }
+          return (
+            <FormControlLabel
+              label={tableMeta.rowIndex + 1}
+              control={<Icon />}
+            />
+          );
+        },
+      },
+    },
+    {
+      name: 'name',
+      label: 'Party Name',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: 'id',
+      label: 'Action',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: value => {
+          return (
+            <Button
+              variant="contained"
+              color="primary"
+              href={`/organization/company/structure/party/${
+                selectedPartyGroupData.id
+              }/${value}`}
+            >
+              View
+            </Button>
+          );
+        },
+      },
+    },
+  ];
+
+  const options = {
+    filter: false,
+    print: false,
+    viewColumns: false,
+    filterType: 'checkbox',
+    responsive: 'scrollMaxHeight',
+    selectableRows: 'none',
+    customToolbar: () => (
+      <Button
+        variant="contained"
+        color="primary"
+        size="small"
+        startIcon={<Add />}
+        onClick={() => dispatchOpenNewPartyAction(selectedPartyGroupData)}
+      >
+        Add New Party
+      </Button>
+    ),
+  };
 
   if (loading) {
     return <LoadingIndicator />;
@@ -152,20 +220,8 @@ const CompanyStructure = props => {
 
   return (
     <React.Fragment>
-      <Grid container spacing={3}>
-        {/* <Card className={classes.partyGroupCard}>
-          <CardContent>
-            <Typography variant="h4" component="h2" color="textSecondary">
-              {partyGroupData && partyGroupData[0].name}
-              <span className={classes.editButton}>
-                <IconButton>
-                  <Create />
-                </IconButton>
-              </span>
-            </Typography>
-          </CardContent>
-        </Card> */}
-        <Grid item xs={12} md={3} lg={3}>
+      <Grid container spacing={0}>
+        <Grid item xs={12} md={4} lg={3}>
           <Button
             variant="contained"
             color="primary"
@@ -175,18 +231,25 @@ const CompanyStructure = props => {
             <Add /> Create Party Group
           </Button>
           {partyGroupData.map(data => (
-            <div>
-              <List component="nav">
-                <ListItemLink
-                  href={`/organization/company/structure/party/${data.id}`}
-                  key={data.id}
-                  onClick={() => DispatchgetSelectedPartyGroupAction(data)}
-                >
-                  <ListItemText primary={data.name} />
-                </ListItemLink>
-              </List>
-            </div>
+            <List component="nav" key={data.id}>
+              <ListItemLink
+                key={data.id}
+                onClick={() => DispatchgetSelectedPartyGroupAction(data)}
+              >
+                <ListItemText primary={data.name} />
+              </ListItemLink>
+            </List>
           ))}
+        </Grid>
+        <Grid item xs={12} md={4} lg={8}>
+          {selectedPartyGroupData && selectedPartyGroupData.parties && (
+            <MUIDataTable
+              title={`All ${selectedPartyGroupData.name} Parties`}
+              data={selectedPartyGroupData.parties}
+              columns={columns}
+              options={options}
+            />
+          )}
         </Grid>
       </Grid>
     </React.Fragment>
@@ -214,7 +277,8 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatchOpenNewPartyGroupAction: () =>
       dispatch(Actions.openNewPartyGroupDialog()),
-    dispatchOpenNewPartyAction: () => dispatch(Actions.openNewPartyDialog()),
+    dispatchOpenNewPartyAction: evt =>
+      dispatch(Actions.openNewPartyDialog(evt)),
     openNewRoleDialog: () => dispatch(Actions.openNewRoleDialog()),
     DispatchgetSelectedPartyGroupAction: evt =>
       dispatch(Actions.getSelectedPartyGroupAction(evt)),
@@ -230,6 +294,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(CompanyStructure);

@@ -21,6 +21,8 @@ import TabsPage from './components2/TabsPage';
 import PartyGroupDialog from './components2/PartyGroupDialog';
 import PartyDialog from './components2/PartyDialog';
 import RoleDialog from './components2/RoleDialog';
+import CompanyStructure from './components2/CompanyStructure';
+import PartyPage from './components2/PartyPage';
 
 // import PartyGroupDialog from './components/PartyGroupDialog';
 // import PartyDialog from './components/PartyDialog';
@@ -47,7 +49,8 @@ export function CompanyStructurePage(props) {
           content="Description of CompanyStructurePage"
         />
       </Helmet>
-      <TabsPage />
+      {/* <TabsPage /> */}
+      <CompanyStructure />
 
       <PartyGroupDialog />
       <PartyDialog />
