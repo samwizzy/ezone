@@ -20,13 +20,10 @@ import Registration from '../AuthorizationPage/Register/Loadable';
 import Login from '../AuthorizationPage/Login/Loadable';
 import ForgotPassword from '../AuthorizationPage/Login/components/ForgotPasswordForm';
 import organizationPage from '../CompanyStructurePage/OrganizationInfo/Loadable';
-// import CompanyStructure from '../CompanyStructurePage/CompanyStructure/Loadable';
-// import CompanyStructureParty from '../CompanyStructurePage/CompanyStructure/components/PartyPage';
-// import CompanyStructurePosition from '../CompanyStructurePage/CompanyStructure/components/PositionPage';
 import CompanyStructure from '../CompanyStructurePage/CompanyStructure/Loadable';
-import PartyPage from '../CompanyStructurePage/CompanyStructure/components2/PartyPage';
-import CompanyStructureParty from '../CompanyStructurePage/CompanyStructure/components2/PartyPage';
-import CompanyStructurePosition from '../CompanyStructurePage/CompanyStructure/components2/PositionPage';
+// import PartyPage from '../CompanyStructurePage/CompanyStructure/components/PartyPage';
+import CompanyStructureParty from '../CompanyStructurePage/CompanyStructure/components/PartyPage';
+import CompanyStructurePosition from '../CompanyStructurePage/CompanyStructure/components/PositionPage';
 import UsersPage from '../UsersPage/Loadable';
 import Employees from '../UsersPage/EmployeePage/Loadable';
 import UserProfilePage from '../UsersPage/UserProfilePage/Loadable';
@@ -107,11 +104,11 @@ const App = () => {
                   path="/organization/company/structure"
                   component={CompanyStructure}
                 />
-                <PrivateRoute
+                {/* <PrivateRoute
                   exact
                   path="/organization/company/structure/:partyGroupId"
                   component={PartyPage}
-                />
+                /> */}
                 <PrivateRoute
                   exact
                   path="/organization/company/structure/party/:partyGroupId/:partyId"

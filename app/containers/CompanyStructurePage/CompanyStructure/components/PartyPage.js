@@ -3,24 +3,13 @@ import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
-  Breadcrumbs,
-  List,
   ListItem,
-  ListItemText,
-  ListSubheader,
-  Divider,
   Grid,
-  Paper,
   Button,
-  Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  Link,
-  TableHead,
+  FormControlLabel,
+  Icon,
 } from '@material-ui/core';
+import MUIDataTable from 'mui-datatables';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 
@@ -59,28 +48,14 @@ const useStyles = makeStyles(theme => ({
     float: 'right',
     marginLeft: '10px',
   },
-  table: {
-    minWidth: 650,
-    '& td, th': {
-      border: 0,
-      '& button': {
-        textAlign: 'left',
-        width: theme.spacing(30),
-      },
-      '& div': {
-        width: theme.spacing(30),
-        color: theme.palette.common.white,
-        backgroundColor: theme.palette.primary.main,
-        borderRadius: '20px',
-        padding: theme.spacing(1, 2),
-      },
-    },
-  },
   header: {
     padding: theme.spacing(1.5, 0),
   },
   head: {
     textAlign: 'center',
+  },
+  table: {
+    margin: theme.spacing(1),
   },
 }));
 
@@ -119,28 +94,20 @@ const PartyPage = props => {
     dispatchOpenNewPositionAction,
     dispatchGetAllUsersAction,
     dispatchGetPartyGroups,
-    selectedPartyGroupData,
-    DispatchgetSelectedPartyGroupAction,
     partyGroupData,
     dispatchOpenNewPartyGroupAction,
     dispatchOpenNewPartiesAction,
-    openNewRoleDialog,
     loading,
     match,
-    allPositions,
   } = props;
 
   const { params } = match;
-
-  console.log(params, 'params');
 
   useEffect(() => {
     dispatchGetPartyGroups();
     dispatchGetAllUsersAction();
   }, []);
   const classes = useStyles();
-
-  console.log(partyGroupData, 'partyGroupData');
 
   // if (loading) {
   //   return <LoadingIndicator />;
@@ -163,10 +130,6 @@ const PartyPage = props => {
     return <LoadingIndicator />;
   }
 
-  // console.log(allPositions, 'allPositions');
-  // console.log(party, 'selectedPartyGroupData party');
-  // console.log(selectedPartyGroupData, 'selectedPartyGroupData');
-
   if (!partyGroupData.length) {
     return (
       <NoPartyGroup
@@ -175,183 +138,158 @@ const PartyPage = props => {
     );
   }
 
-  return (
-    <React.Fragment>
-      <PositionDialog params={params} />
-      <PartiesDialog params={params} />
-      <div>
-        <Grid container justify="space-between" className={classes.header}>
-          <Grid item>
-            <Typography variant="h6">Company Information.</Typography>
-          </Grid>
-          <Grid item>
+  const columns1 = [
+    {
+      name: 'Id',
+      label: 'S/N',
+      options: {
+        filter: true,
+        customBodyRender: (value, tableMeta) => {
+          if (value === '') {
+            return '';
+          }
+          return (
+            <FormControlLabel
+              label={tableMeta.rowIndex + 1}
+              control={<Icon />}
+            />
+          );
+        },
+      },
+    },
+    {
+      name: 'name',
+      label: 'Party Name',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+  ];
+
+  const options1 = {
+    filter: false,
+    print: false,
+    viewColumns: false,
+    filterType: 'checkbox',
+    responsive: 'scrollMaxHeight',
+    selectableRows: 'none',
+    customToolbar: () => (
+      <Button
+        variant="contained"
+        color="primary"
+        size="small"
+        startIcon={<Add />}
+        onClick={() => dispatchOpenNewPartiesAction()}
+      >
+        Add New Parties
+      </Button>
+    ),
+  };
+
+  const columns2 = [
+    {
+      name: 'Id',
+      label: 'S/N',
+      options: {
+        filter: true,
+        customBodyRender: (value, tableMeta) => {
+          if (value === '') {
+            return '';
+          }
+          return (
+            <FormControlLabel
+              label={tableMeta.rowIndex + 1}
+              control={<Icon />}
+            />
+          );
+        },
+      },
+    },
+    {
+      name: 'name',
+      label: 'Party Name',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: 'id',
+      label: 'Action',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: value => {
+          return (
             <Button
               variant="contained"
               color="primary"
-              className={classes.partyButton}
-              onClick={() => dispatchOpenNewPartyGroupAction()}
+              href={`/organization/company/structure/position/${
+                params.partyGroupId
+              }/${params.partyId}/${value}`}
             >
-              <Add /> Add Party Group
+              View
             </Button>
-          </Grid>
-        </Grid>
-        <Grid container>
-          <Grid item xs={2} md={2}>
-            <Paper className={classes.paper}>
-              <List
-                component="nav"
-                aria-labelledby="nested-list-subheader"
-                className={classes.list}
-              >
-                <ListItem
-                  button
-                  // key={index}
-                  onClick={() => DispatchgetSelectedPartyGroupAction(party)}
-                >
-                  <ListItemText primary={party.name} />
-                </ListItem>
-              </List>
-            </Paper>
-          </Grid>
-          <Grid item xs={10} md={10}>
-            <Paper className={classes.paper}>
-              <List
-                component="nav"
-                aria-labelledby="nested-list-subheader"
-                subheader={
-                  <ListSubheader component="div" id="nested-list-subheader">
-                    {/* Region */}
-                    <Typography variant="h6">
-                      {selectedPartyGroupData.name}
-                    </Typography>
-                  </ListSubheader>
-                }
-                className={classes.root}
-              >
-                <Divider />
-                <ListItem>
-                  <Typography variant="h6">Information.</Typography>
-                </ListItem>
-                <ListItem>
-                  <Table
-                    className={classes.table}
-                    aria-label="simple table"
-                    size="small"
-                  >
-                    <TableBody>
-                      {/* {rows.map(row => ( */}
-                      <TableRow key={selectedPartyGroupData.id}>
-                        <TableCell component="th" scope="row" width="25%">
-                          {/* {row.title} */}
-                        </TableCell>
-                        <TableCell align="left" width="75%">
-                          {selectedPartyGroupData.description}
-                        </TableCell>
-                      </TableRow>
-                      {/* ))} */}
-                    </TableBody>
-                  </Table>
-                </ListItem>
-              </List>
+          );
+        },
+      },
+    },
+  ];
 
-              <Divider />
-              <Grid item>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={classes.partyButton}
-                  onClick={() => dispatchOpenNewPositionAction()}
-                >
-                  <Add /> Add New Position
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={classes.partyButton}
-                  onClick={() => dispatchOpenNewPartiesAction()}
-                >
-                  <Add /> Add New Parties
-                </Button>
-              </Grid>
-              <Grid container spacing={1}>
-                <Grid container item xs={6} md={6} lg={6}>
-                  <Table
-                    className={classes.table}
-                    aria-label="simple table"
-                    size="small"
-                  >
-                    <TableHead>
-                      <TableRow>
-                        <TableCell className={classes.head}>
-                          All Parties
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {party &&
-                        party.parties.map(paty => (
-                          <TableRow key={paty.id}>
-                            <TableCell
-                              component="th"
-                              scope="row"
-                              width="25%"
-                              onClick={() =>
-                                DispatchgetSelectedPartyGroupAction(paty)
-                              }
-                            >
-                              <div>{paty.name}</div>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
-                </Grid>
-                <Grid container item xs={6} md={6} lg={6}>
-                  <Table
-                    className={classes.table}
-                    aria-label="simple table"
-                    size="small"
-                  >
-                    <TableHead>
-                      <TableRow>
-                        <TableCell className={classes.head}>
-                          All Positions
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {party &&
-                        party.positions.map(position => (
-                          <TableRow key={position.id}>
-                            <TableCell
-                              component="th"
-                              scope="row"
-                              width="25%"
-                              onClick={() =>
-                                DispatchgetSelectedPartyGroupAction(position)
-                              }
-                            >
-                              <Link
-                                href={`/organization/company/structure/position/${
-                                  params.partyGroupId
-                                }/${params.partyId}/${position.id}`}
-                              >
-                                {position.name}
-                                {/* <div>{party.name}</div> */}
-                              </Link>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
-                </Grid>
-              </Grid>
-            </Paper>
-          </Grid>
+  const options2 = {
+    filter: false,
+    print: false,
+    viewColumns: false,
+    filterType: 'checkbox',
+    responsive: 'scrollMaxHeight',
+    selectableRows: 'none',
+    customToolbar: () => (
+      <Button
+        variant="contained"
+        color="primary"
+        size="small"
+        startIcon={<Add />}
+        onClick={() => dispatchOpenNewPositionAction()}
+      >
+        Add New Position
+      </Button>
+    ),
+  };
+
+  return (
+    <React.Fragment>
+      <Grid container spacing={0}>
+        <Grid item xs={12} md={6} lg={6}>
+          <div className={classes.table}>
+            {party && party.parties && (
+              <MUIDataTable
+                // title={`All ${selectedPartyGroupData.name} Parties`}
+                title="All Parties"
+                data={party.parties}
+                columns={columns1}
+                options={options1}
+              />
+            )}
+          </div>
         </Grid>
-      </div>
+        <Grid item xs={12} md={6} lg={6}>
+          <div className={classes.table}>
+            {party && party.positions && (
+              <MUIDataTable
+                // title={`All ${selectedPartyGroupData.name} Positions`}
+                title="All Positions"
+                data={party.positions}
+                columns={columns2}
+                options={options2}
+              />
+            )}
+          </div>
+        </Grid>
+      </Grid>
+
+      <PositionDialog params={params} />
+      <PartiesDialog params={params} />
     </React.Fragment>
   );
 };

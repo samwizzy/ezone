@@ -16,13 +16,13 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectOrgPage from '../selectors';
 import reducer from '../reducer';
 import saga from '../saga';
-import TabsPage from './components2/TabsPage';
+import TabsPage from './components/TabsPage';
 
-import PartyGroupDialog from './components2/PartyGroupDialog';
-import PartyDialog from './components2/PartyDialog';
-import RoleDialog from './components2/RoleDialog';
-import CompanyStructure from './components2/CompanyStructure';
-import PartyPage from './components2/PartyPage';
+import PartyGroupDialog from './components/PartyGroupDialog';
+import PartyDialog from './components/PartyDialog';
+import RoleDialog from './components/RoleDialog';
+import CompanyStructure from './components/CompanyStructure';
+import PartyPage from './components/PartyPage';
 
 // import PartyGroupDialog from './components/PartyGroupDialog';
 // import PartyDialog from './components/PartyDialog';

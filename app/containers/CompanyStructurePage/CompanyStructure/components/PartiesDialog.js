@@ -16,6 +16,7 @@ import {
   MenuItem,
   Slide,
 } from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
@@ -53,16 +54,26 @@ const PartiesDialog = props => {
   const classes = useStyles();
   const [values, setValues] = React.useState({
     partyId: params.partyId,
-    partyHead: { id: '' },
-    assistantPartyHead: { id: '' },
+    partyHead: '',
+    assistantPartyHead: '',
     positions: null,
     parties: null,
     name: '',
     description: '',
   });
 
-  const handleSelectChange = name => event => {
-    setValues({ ...values, [name]: { id: event.target.value } });
+  const handlePartyHeadChange = (event, value) => {
+    setValues({
+      ...values,
+      partyHead: { id: value.id },
+    });
+  };
+
+  const handlePartyAssHeadChange = (event, value) => {
+    setValues({
+      ...values,
+      assistantPartyHead: { id: value.id },
+    });
   };
 
   const handleChange = name => event => {
@@ -123,40 +134,39 @@ const PartiesDialog = props => {
                 rows="3"
               />
 
-              <TextField
-                id="select-head"
-                select
-                fullWidth
-                variant="outlined"
-                label="Select Head"
-                className={classes.textField}
-                value={values.partyHead.id}
-                onChange={handleSelectChange('partyHead')}
-              >
-                {AllUserData &&
-                  AllUserData.map(option => (
-                    <MenuItem key={option.id} value={option.id}>
-                      {option.emailAddress} {option.lastName}
-                    </MenuItem>
-                  ))}
-              </TextField>
-              <TextField
-                id="select-assistant"
-                select
-                fullWidth
-                variant="outlined"
-                className={classes.textField}
-                label="Select Assistant"
-                value={values.assistantPartyHead.id}
-                onChange={handleSelectChange('assistantPartyHead')}
-              >
-                {AllUserData &&
-                  AllUserData.map(option => (
-                    <MenuItem key={option.id} value={option.id}>
-                      {option.emailAddress} {option.lastName}
-                    </MenuItem>
-                  ))}
-              </TextField>
+              <Autocomplete
+                id="combo-ass-partyHead"
+                options={AllUserData}
+                getOptionLabel={option => option.firstName}
+                onChange={(evt, ve) => handlePartyHeadChange(evt, ve)}
+                renderInput={param => (
+                  <TextField
+                    {...param}
+                    margin="normal"
+                    label="Search Head"
+                    variant="outlined"
+                    placeholder="Search Head"
+                    fullWidth
+                  />
+                )}
+              />
+
+              <Autocomplete
+                id="combo-ass-partyHead-assistant"
+                options={AllUserData}
+                getOptionLabel={option => option.firstName}
+                onChange={(evt, ve) => handlePartyAssHeadChange(evt, ve)}
+                renderInput={param => (
+                  <TextField
+                    {...param}
+                    margin="normal"
+                    label="Search Head Assistant"
+                    variant="outlined"
+                    placeholder="Search Head Assistant"
+                    fullWidth
+                  />
+                )}
+              />
             </div>
           ) : null}
         </DialogContent>
