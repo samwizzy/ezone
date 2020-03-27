@@ -15,6 +15,7 @@ import {
   MenuItem,
   Slide,
 } from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
@@ -52,16 +53,12 @@ const PartyDialog = props => {
 
   const classes = useStyles();
   const [values, setValues] = React.useState({
-    partyGroupId: '',
-    partyHead: { id: '' },
-    assistantPartyHead: { id: '' },
+    partyGroupId: '', // this is appended inside saga file
+    partyHead: '',
+    assistantPartyHead: '',
     name: '',
     description: '',
   });
-
-  const handleSelectChange = name => event => {
-    setValues({ ...values, [name]: { id: event.target.value } });
-  };
 
   const handleChange = name => event => {
     setValues({
@@ -70,11 +67,25 @@ const PartyDialog = props => {
     });
   };
 
+  const handlePartyHeadChange = (event, value) => {
+    setValues({
+      ...values,
+      partyHead: { id: value.id },
+    });
+  };
+
+  const handlePartyAssHeadChange = (event, value) => {
+    setValues({
+      ...values,
+      assistantPartyHead: { id: value.id },
+    });
+  };
+
   const canBeSubmitted = () => {
     const { partyHead, assistantPartyHead, name, description } = values;
     return (
-      partyHead !== null &&
-      assistantPartyHead !== null &&
+      partyHead !== '' &&
+      assistantPartyHead !== '' &&
       name !== '' &&
       description !== ''
     );
@@ -121,40 +132,39 @@ const PartyDialog = props => {
                 rows="3"
               />
 
-              <TextField
-                id="select-head"
-                select
-                fullWidth
-                variant="outlined"
-                label="Select Head"
-                className={classes.textField}
-                value={values.partyHead.id}
-                onChange={handleSelectChange('partyHead')}
-              >
-                {AllUserData &&
-                  AllUserData.map(option => (
-                    <MenuItem key={option.id} value={option.id}>
-                      {option.emailAddress} {option.lastName}
-                    </MenuItem>
-                  ))}
-              </TextField>
-              <TextField
-                id="select-assistant"
-                select
-                fullWidth
-                variant="outlined"
-                className={classes.textField}
-                label="Select Assistant"
-                value={values.assistantPartyHead.id}
-                onChange={handleSelectChange('assistantPartyHead')}
-              >
-                {AllUserData &&
-                  AllUserData.map(option => (
-                    <MenuItem key={option.id} value={option.id}>
-                      {option.emailAddress} {option.lastName}
-                    </MenuItem>
-                  ))}
-              </TextField>
+              <Autocomplete
+                id="combo-partyHead"
+                options={AllUserData}
+                getOptionLabel={option => option.firstName}
+                onChange={(evt, ve) => handlePartyHeadChange(evt, ve)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    margin="normal"
+                    label="Search Employee"
+                    variant="outlined"
+                    placeholder="Search Employee"
+                    fullWidth
+                  />
+                )}
+              />
+
+              <Autocomplete
+                id="combo-ass-partyHead"
+                options={AllUserData}
+                getOptionLabel={option => option.firstName}
+                onChange={(evt, ve) => handlePartyAssHeadChange(evt, ve)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    margin="normal"
+                    label="Search Employee"
+                    variant="outlined"
+                    placeholder="Search Employee"
+                    fullWidth
+                  />
+                )}
+              />
             </div>
           ) : null}
         </DialogContent>
@@ -165,7 +175,7 @@ const PartyDialog = props => {
           ) : (
             <Button
               onClick={() => {
-                dispatchCreateNewPartyAction(values)
+                dispatchCreateNewPartyAction(values);
               }}
               color="primary"
               variant="contained"
