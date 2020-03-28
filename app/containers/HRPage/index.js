@@ -48,8 +48,8 @@ export function HRPage(props) {
       </Helmet>
 
       <ModuleLayout>
-        {/* <HumanResourcePage /> */}
-        <VerticalTabs />
+        <HumanResourcePage />
+        {/* <VerticalTabs /> */}
       </ModuleLayout>
     </React.Fragment>
   );

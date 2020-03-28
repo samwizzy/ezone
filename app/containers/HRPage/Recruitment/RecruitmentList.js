@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Avatar, Button, ButtonGroup, TableContainer, Table, TableRow, TableCell, TableBody, TextField, Grid, Paper, Typography } from '@material-ui/core';
+import { Button, ButtonGroup, Icon, IconButton, TableContainer, Table, TableRow, TableCell, TableBody, TextField, Grid, Paper, Typography } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -15,9 +15,7 @@ import * as Selectors from '../selectors';
 import * as AppSelectors from '../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
-import Person from '@material-ui/icons/Person';
-import {AddBranch} from '../components/AddButton'
-import AddBranchDialog from './components/AddBranchDialog'
+import {AddEmployee} from '../components/AddButton'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -37,6 +35,7 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
+    padding: theme.spacing(1),
   },
   gridRoot: {
     display: 'flex',
@@ -57,12 +56,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const BranchesApp = props => {
+const RecruitmentList = props => {
   const classes = useStyles();
-  const { loading, openNewBranchDialog, getEmployee, employees, employee } = props;
+  const { loading, openNewEmployeeDialog, getEmployee, employees, employee } = props;
 
   React.useEffect(() => {
   }, [employee]);
+
+  console.log(employee, "employee")
 
   const toTitleCase = (str) => { 
     return str? str[0].toUpperCase() + str.slice(1) : ""; 
@@ -70,7 +71,7 @@ const BranchesApp = props => {
 
   const columns = [
     {
-      name: 'uuId',
+      name: 'id',
       label: 'Id',
       options: {
         display: 'excluded',
@@ -79,40 +80,18 @@ const BranchesApp = props => {
     },
     {
       name: 'id',
-      label: 'Employee Name',
+      label: 'Job Title',
       options: {
       filter: true,
       sort: true,
-      customBodyRender: id => {
-        const emp = employees && employees.find(e => e.id == id)
-        return (
-          <span>{`${toTitleCase(emp.firstName)} ${toTitleCase(emp.lastName)}`}</span>
-        )
-      }
       },
     },
     {
-      name: 'employeeId',
-      label: 'Employee ID',
+      name: 'id',
+      label: 'Applicant',
       options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: 'type',
-      label: 'Type',
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: 'department',
-      label: 'Department ',
-      options: {
-        filter: true,
-        sort: true,
+      filter: true,
+      sort: true,
       },
     },
     {
@@ -127,7 +106,52 @@ const BranchesApp = props => {
         )
       }
       },
-    }
+    },
+    {
+      name: 'dateCreated',
+      label: 'Created On',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: day => {
+          return (
+            <Typography variant="inherit" color="textSecondary">
+                {moment(day).format('lll')}
+            </Typography>
+          )
+        }
+      },
+    },
+    {
+      name: 'dateCreated',
+      label: 'Expiry Date',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: day => {
+          return (
+            <Typography variant="inherit" color="textSecondary">
+                {moment(day).format('lll')}
+            </Typography>
+          )
+        }
+      },
+    },
+    {
+      name: 'dateCreated',
+      label: 'Publish Date',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: day => {
+          return (
+            <Typography variant="inherit" color="textSecondary">
+                {moment(day).format('lll')}
+            </Typography>
+          )
+        }
+      },
+    },
   ];
 
   const options = {
@@ -138,7 +162,7 @@ const BranchesApp = props => {
     download: true,
     viewColumns: false,
     filter: false,
-    customToolbar: () => <AddBranch openDialog={openNewBranchDialog} />,
+    customToolbar: () => <IconButton component={Link} to="/hr/recruitment/new"><Icon color="primary">add_circle</Icon></IconButton>,
     rowsPerPage: 10,
     rowsPerPageOptions: [10,25,50,100],
     onRowClick: (rowData, rowState) => {
@@ -159,7 +183,7 @@ const BranchesApp = props => {
         
             <MUIDataTable
                 className={classes.datatable}
-                title="Branch List"
+                title="Recruitment"
                 data={employees}
                 columns={columns}
                 options={options}
@@ -215,8 +239,7 @@ const BranchesApp = props => {
                       </TableRow>
                       <TableRow key='5'>
                           <TableCell component="th" scope="row">
-                              Created On                          
-                          </TableCell>
+                              Created On                          </TableCell>
                           <TableCell align="right">{moment(employee.dateCreated).format('ll')}</TableCell>
                       </TableRow>
                     </React.Fragment>
@@ -227,16 +250,13 @@ const BranchesApp = props => {
           </div>
         </Grid>
       </Grid>
-
-      <AddBranchDialog />
     </div>
   );
 };
 
-BranchesApp.propTypes = {
+RecruitmentList.propTypes = {
   loading: PropTypes.bool,
   getEmployees: PropTypes.func,
-  openNewBranchDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -248,9 +268,10 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    openNewEmployeeDialog: () => dispatch(Actions.openNewEmployeeDialog()),
+    openEditEmployeeDialog: () => dispatch(Actions.openEditEmployeeDialog()),
     getEmployees: () => dispatch(Actions.getEmployees()),
     getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
-    openNewBranchDialog: () => dispatch(Actions.openNewBranchDialog()),
   };
 }
 
@@ -263,4 +284,4 @@ export default withRouter(
   compose(
     withConnect,
     memo,
-)(BranchesApp));
+)(RecruitmentList));

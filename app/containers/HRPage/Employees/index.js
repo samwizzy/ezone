@@ -37,7 +37,6 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
   },
   gridRoot: {
     display: 'flex',
@@ -156,7 +155,7 @@ const EmployeesApp = props => {
     download: true,
     viewColumns: false,
     filter: false,
-    customToolbar: () => <AddEmployee openFileDialog={openNewEmployeeDialog} />,
+    customToolbar: () => <AddEmployee openDialog={openNewEmployeeDialog} />,
     rowsPerPage: 10,
     rowsPerPageOptions: [10,25,50,100],
     onRowClick: (rowData, rowState) => {

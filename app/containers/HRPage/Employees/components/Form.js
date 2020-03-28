@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles'
 import _ from 'lodash';
-import {Button, Grid, MenuItem, TextField, DialogContent, DialogActions } from '@material-ui/core';
+import {Button, Grid, MenuItem, TextField, DialogTitle, DialogContent, DialogActions } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -22,6 +22,11 @@ export const Form = props => {
 
     return (
         <div>
+        <DialogTitle id="alert-dialog-slide-title">
+          Basic Information
+        </DialogTitle>
+        <Divider />    
+
         <DialogContent>
         <form className={classes.root}>
             <Grid container spacing={1}>

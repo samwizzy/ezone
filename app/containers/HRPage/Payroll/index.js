@@ -16,8 +16,8 @@ import * as AppSelectors from '../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
 import Person from '@material-ui/icons/Person';
-import {AddDepartment} from '../components/AddButton'
-import AddDepartmentDialog from './components/AddDepartmentDialog'
+import {AddPayroll} from '../components/AddButton'
+import AddPayrollDialog from './components/AddPayrollDialog'
 
 const drawerWidth = '100%';
 
@@ -58,9 +58,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const DepartmentsApp = props => {
+const PayrollApp = props => {
   const classes = useStyles();
-  const { loading, openNewDepartmentDialog, getEmployee, employees, employee } = props;
+  const { loading, openNewPayrollDialog, getEmployee, employees, employee } = props;
 
   React.useEffect(() => {
   }, [employee]);
@@ -100,7 +100,7 @@ const DepartmentsApp = props => {
     download: true,
     viewColumns: false,
     filter: false,
-    customToolbar: () => <AddDepartment openDialog={openNewDepartmentDialog} />,
+    customToolbar: () => <AddPayroll openDialog={openNewPayrollDialog} />,
     rowsPerPage: 10,
     rowsPerPageOptions: [10,25,50,100],
     onRowClick: (rowData, rowState) => {
@@ -120,7 +120,7 @@ const DepartmentsApp = props => {
             
             <MUIDataTable
                 className={classes.datatable}
-                title="Departments List"
+                title="Payroll List"
                 data={employees}
                 columns={columns}
                 options={options}
@@ -155,15 +155,15 @@ const DepartmentsApp = props => {
         </Grid>
       </Grid>
 
-      <AddDepartmentDialog />
+      <AddPayrollDialog />
     </div>
   );
 };
 
-DepartmentsApp.propTypes = {
+PayrollApp.propTypes = {
   loading: PropTypes.bool,
   getEmployees: PropTypes.func,
-  openNewDepartmentDialog: PropTypes.func,
+  openNewPayrollDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -177,7 +177,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getEmployees: () => dispatch(Actions.getEmployees()),
     getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
-    openNewDepartmentDialog: () => dispatch(Actions.openNewDepartmentDialog()),
+    openNewPayrollDialog: () => dispatch(Actions.openNewPayrollDialog()),
   };
 }
 
@@ -190,4 +190,4 @@ export default withRouter(
   compose(
     withConnect,
     memo,
-)(DepartmentsApp));
+)(PayrollApp));

@@ -31,9 +31,11 @@ export function* getAllAccountTypeSaga() {
   }
 }
 
-export function* getDetailTypeSaga() {
+export function* getDetailTypeSaga({type, payload}) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${Endpoints.GetDetailTypeApi}`;
+  const requestURL = `${Endpoints.GetDetailTypeApi}/${payload.id}`;
+
+  console.log(payload, "payload")
 
   try {
     const detailTypeResponse = yield call(request, requestURL, {

@@ -73,7 +73,16 @@ const NewAccountDialog = props => {
     console.log('selected value: ', value);
     // setValues({ ...values, vendor: value });
 
-    dispatchGetDetailTypeAction();
+    dispatchGetDetailTypeAction(value)
+  };
+
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
+
+  const handleDateChange = date => {
+    setValues({
+      ...values,
+      date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+    });
   };
 
   return (
@@ -124,6 +133,7 @@ const NewAccountDialog = props => {
                   <TextField
                     {...params}
                     label="Select Account Type"
+                    className={classes.textField}
                     variant="outlined"
                     placeholder="Search"
                     fullWidth
@@ -139,6 +149,7 @@ const NewAccountDialog = props => {
                   <TextField
                     {...params}
                     label="Select Detail Type"
+                    className={classes.textField}
                     variant="outlined"
                     placeholder="Search"
                     fullWidth
@@ -170,7 +181,7 @@ const NewAccountDialog = props => {
                 openNewAccountDialogAction();
               }}
               color="primary"
-              variant="contained"
+              // variant="contained"
               // disabled={!canBeSubmitted()}
             >
               Save Account
@@ -180,8 +191,8 @@ const NewAccountDialog = props => {
             onClick={() => {
               closeNewAccountDialogAction();
             }}
-            color="primary"
-            variant="contained"
+            color="inherit"
+            // variant="contained"
           >
             Cancel
           </Button>

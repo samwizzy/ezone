@@ -8,15 +8,15 @@ import TaskIcon from '../../../../images/TaskIcon.svg';
 import ProjectsIcon from '../../../../images/ProjectsIcon.svg';
 
 const apps = [
-  { id: 1, name: 'Accounting', url: '/account', icon: AcctIcon },
-  { id: 2, name: 'Human Resources', url: '/hr', icon: AppIcon1 },
-  { id: 3, name: 'Store & Inventory Mgt', url: '/inventory', icon: StoreIcon },
-  { id: 4, name: 'CRM', url: '/cms', icon: CRMIcon },
-  { id: 5, name: 'Budgeting', url: '/budgeting', icon: BudgetingIcon },
-  { id: 6, name: 'Task management', url: '/dashboard/tasks', icon: TaskIcon },
+  { id: 1, name: 'Accounting',                url: '/account',         icon: AcctIcon },
+  { id: 2, name: 'Human Resources',           url: '/hr',              icon: AppIcon1 },
+  { id: 3, name: 'Store & Inventory Mgt',     url: '/items',           icon: StoreIcon },
+  { id: 4, name: 'CRM',                       url: '/cms',             icon: CRMIcon },
+  { id: 5, name: 'Budgeting',                 url: '/budgeting',       icon: BudgetingIcon },
+  { id: 6, name: 'Task management',           url: '/dashboard/tasks', icon: TaskIcon },
   { id: 7, name: 'Fiie and Document sharing', url: '/dashboard/files', icon: FileIcon },
-  { id: 8, name: 'Projects', url: '/dashboard', icon: ProjectsIcon },
-  { id: 9, name: 'Accounting', url: '/account', icon: AcctIcon },
+  { id: 8, name: 'Projects',                  url: '/dashboard',       icon: ProjectsIcon },
+  { id: 9, name: 'Accounting',                url: '/account',         icon: AcctIcon },
 ];
 
 export default apps;

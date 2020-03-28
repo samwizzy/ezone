@@ -23,8 +23,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   datatable: {
-    flexGrow: 1,
-    boxShadow: 0,
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
     }
@@ -174,7 +172,7 @@ const TasksList = props => {
 
   return (
     <div className={classes.root}>
-      <Grid container justify='space-evenly' spacing={2}>
+      <Grid container justify='space-between'>
         <Grid item xs={12} md={2}>
           <List 
             component="nav" 

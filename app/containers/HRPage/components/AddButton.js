@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 
 
 export function AddDepartment(props) {
-  const { openNewTaskDialog } = props;
+  const { openDialog } = props;
   const classes = useStyles()
 
   return (
@@ -26,7 +26,7 @@ export function AddDepartment(props) {
         <Button
           size="small"
           className={classes.iconButton}
-          onClick={openNewTaskDialog}
+          onClick={openDialog}
         >
           <GroupAdd className={classes.icon} />
         </Button>
@@ -36,7 +36,7 @@ export function AddDepartment(props) {
 }
 
 export function AddRole(props) {
-  const { openNewTaskDialog } = props;
+  const { openDialog } = props;
   const classes = useStyles()
 
   return (
@@ -45,7 +45,7 @@ export function AddRole(props) {
         <Button
           size="small"
           className={classes.iconButton}
-          onClick={openNewTaskDialog}
+          onClick={openDialog}
         >
           <AssignmentInd className={classes.icon} /> Add Role
         </Button>
@@ -55,7 +55,7 @@ export function AddRole(props) {
 }
 
 export function AddBranch(props) {
-  const { openNewTaskDialog } = props;
+  const { openDialog } = props;
   const classes = useStyles()
 
   return (
@@ -64,7 +64,7 @@ export function AddBranch(props) {
         <Button
           size="small"
           className={classes.iconButton}
-          onClick={openNewTaskDialog}
+          onClick={openDialog}
         >
           <AddBox className={classes.icon} /> Add Branch
         </Button>
@@ -74,7 +74,7 @@ export function AddBranch(props) {
 }
 
 export function AddEmployee(props) {
-  const { openFileDialog } = props;
+  const { openDialog } = props;
   const classes = useStyles()
 
   return (
@@ -83,7 +83,45 @@ export function AddEmployee(props) {
         <Button
           size="small"
           className={classes.iconButton}
-          onClick={openFileDialog}
+          onClick={openDialog}
+        >
+          <PersonAdd className={classes.icon} />
+        </Button>
+      </Tooltip>
+    </React.Fragment>
+  );
+}
+
+export function AddAttendance(props) {
+  const { openDialog } = props;
+  const classes = useStyles()
+
+  return (
+    <React.Fragment>
+      <Tooltip title="New Attendance">
+        <Button
+          size="small"
+          className={classes.iconButton}
+          onClick={openDialog}
+        >
+          <PersonAdd className={classes.icon} />
+        </Button>
+      </Tooltip>
+    </React.Fragment>
+  );
+}
+
+export function AddPayroll(props) {
+  const { openDialog } = props;
+  const classes = useStyles()
+
+  return (
+    <React.Fragment>
+      <Tooltip title="New Payroll">
+        <Button
+          size="small"
+          className={classes.iconButton}
+          onClick={openDialog}
         >
           <PersonAdd className={classes.icon} />
         </Button>

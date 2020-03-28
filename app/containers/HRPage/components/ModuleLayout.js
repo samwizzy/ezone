@@ -19,7 +19,7 @@ import {
 import RefreshSharp from '@material-ui/icons/RefreshSharp';
 import * as Actions from '../actions';
 import UserMenu from '../../../components/layouts/shared-components/UserMenu';
-// import SideBar from './SideBar'
+import SideBar from './SideBar'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -94,7 +94,10 @@ function ModuleLayout(props) {
       </AppBar>
       <main className={classes.content}>
         <Grid container>
-          <Grid item xs={12}>
+          <Grid item xs={2} md={2}>
+            <SideBar />
+          </Grid>
+          <Grid item xs={10} md={10}>
             {props.children}
           </Grid>
         </Grid>

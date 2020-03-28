@@ -162,14 +162,11 @@ const App = () => {
                 />
                 <PrivateRoute exact path="/home" component={HomePage} />
                 <PrivateRoute path="/WorkOrder" component={WorkOrderPage} />
-                <PrivateRoute exact path="/hr" component={HRPage} />
-                <PrivateRoute exact path="/hr/:sectionId" component={HRPage} />
-                <PrivateRoute path="/account" component={AccountPage} />
-                <PrivateRoute
-                  exact
-                  path="/inventory"
-                  component={InventoryPage}
-                />
+                <Route exact path="/hr" component={HRPage} />
+                <Route exact path="/hr/:sectionId" component={HRPage} />
+                <Route exact path="/hr/:sectionId/:status" component={HRPage} />
+                <Route path="/account" component={AccountPage} />
+                <Route exact path="/inventory" component={InventoryPage} />
                 <PrivateRoute path="/warehouses" component={WarehousePage} />
                 <PrivateRoute exact path="/items" component={ItemPage} />
                 <PrivateRoute exact path="/items/new" component={NewItem} />

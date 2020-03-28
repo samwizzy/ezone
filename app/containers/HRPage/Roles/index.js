@@ -18,6 +18,7 @@ import Assignment from '@material-ui/icons/Assignment';
 import AssignmentInd from '@material-ui/icons/AssignmentInd';
 import Person from '@material-ui/icons/Person';
 import {AddRole} from '../components/AddButton'
+import AddRoleDialog from './components/AddRoleDialog'
 
 const drawerWidth = '100%';
 
@@ -34,7 +35,6 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
   },
   gridRoot: {
     display: 'flex',
@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
 
 const HumanResource = props => {
   const classes = useStyles();
-  const { loading, getEmployees, getEmployee, employees, employee } = props;
+  const { loading, openNewRoleDialog, getEmployees, getEmployee, employees, employee } = props;
 
   React.useEffect(() => {
   }, [employee]);
@@ -116,7 +116,7 @@ const HumanResource = props => {
       download: true,
       viewColumns: false,
       filter: false,
-      customToolbar: () => <AddRole openFileDialog={() => {}} />,
+      customToolbar: () => <AddRole openDialog={openNewRoleDialog} />,
       rowsPerPage: 10,
       rowsPerPageOptions: [10,25,50,100],
       onRowClick: (rowData, rowState) => {
@@ -133,12 +133,6 @@ const HumanResource = props => {
       >
         <Grid item md={9}>
           <div className={classes.content}>
-            <div className={classes.buttonGroup}>
-              <ButtonGroup size="small" aria-label="small outlined button group">
-                <Button onClick={()=>{}}><EditSharp className={classes.icon} />Edit</Button>
-                <Button onClick={()=>{}}><Assignment className={classes.icon} />Assign</Button>
-              </ButtonGroup>
-            </div>
             
             <MUIDataTable
                 className={classes.datatable}
@@ -152,23 +146,32 @@ const HumanResource = props => {
         </Grid>
         <Grid item md={3}>
           <div className={classes.gridRoot}>
+            <div className={classes.buttonGroup}>
+              <ButtonGroup size="small" aria-label="small outlined button group">
+                <Button onClick={()=>{}}><EditSharp className={classes.icon} />Edit</Button>
+                <Button onClick={()=>{}}><Assignment className={classes.icon} />Assign</Button>
+              </ButtonGroup>
+            </div>
+
             <TableContainer component={Paper}>
-                <Table className={classes.table} size="small" aria-label="a dense table">
+              <Table className={classes.table} size="small" aria-label="a dense table">
                 <TableBody>
-                    {employee && Object.keys(employee).map(key => (
-                    <TableRow key={employee.docName}>
-                        <TableCell component="th" scope="row">
-                            Employee Name
-                        </TableCell>
-                        <TableCell align="right">{employee[key]}</TableCell>
-                    </TableRow>
-                    ))}
+                  {employee && Object.keys(employee).map(key => (
+                  <TableRow key={employee.docName}>
+                      <TableCell component="th" scope="row">
+                          Employee Name
+                      </TableCell>
+                      <TableCell align="right">{employee[key]}</TableCell>
+                  </TableRow>
+                  ))}
                 </TableBody>
-                </Table>
+              </Table>
             </TableContainer>
           </div>
         </Grid>
       </Grid>
+
+      <AddRoleDialog />
     </div>
   );
 };
@@ -176,6 +179,7 @@ const HumanResource = props => {
 HumanResource.propTypes = {
   loading: PropTypes.bool,
   getEmployees: PropTypes.func,
+  openNewRoleDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -189,6 +193,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getEmployees: () => dispatch(Actions.getEmployees()),
     getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
+    openNewRoleDialog: () => dispatch(Actions.openNewRoleDialog()),
   };
 }
 
