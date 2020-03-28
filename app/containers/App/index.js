@@ -158,6 +158,7 @@ const App = () => {
                 <PrivateRoute path="/WorkOrder" component={WorkOrderPage} />
                 <Route exact path="/hr" component={HRPage} />
                 <Route exact path="/hr/:sectionId" component={HRPage} />
+                <Route exact path="/hr/:sectionId/:status" component={HRPage} />
                 <Route path="/account" component={AccountPage} />
                 <Route exact path="/inventory" component={InventoryPage} />
                 <PrivateRoute path="/warehouses" component={WarehousePage} />

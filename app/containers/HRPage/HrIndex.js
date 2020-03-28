@@ -4,38 +4,48 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Container from '@material-ui/core/Container';
-import Icon from '@material-ui/core/Icon';
+import Dashboard from '@material-ui/icons/Dashboard'
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import HumanResourcePage from './HumanResourcePage'
-import Dashboard from '@material-ui/icons/Dashboard'
+import Recruitment from './Recruitment'
 
+// root,vertical,flexContainer,flexContainerVertical,centered,scroller,fixed,scrollable,scrollButtons,scrollButtonsDesktop,indicator.
 const VertTabs = withStyles(theme => ({
     flexContainer: {
-      flexDirection: "column"
+      flexDirection: "column",
     },
     indicator: {
       display: "none"
     },
-    tabsRoot: {
-      textAlign: "right"
+    vertical: {
+      textAlign: 'left'  
     }
+    // tabsRoot: {
+    //   textAlign: "left"
+    // }
 }))(Tabs);
 
+// root,labelIcon,textColorInherit,textColorPrimary,textColorSecondary,selected,disabled,fullWidth,wrapped,wrapper
 const MyTab = withStyles(theme => ({
   root: {
     borderRight: "2px solid lightgray",
-    textAlign: "right !important"
+    textAlign: "left"
   },
   selected: {
     color: "#4ABDAC",
     borderRight: "3px solid #4ABDAC",
-    textAlign: "right !important"
+    textAlign: "left"
   },
-  label: {
+  fullWidth: {
+    textAlign: 'left',
+    backgroundColor: 'red'
+  },
+  labelIcon: {
     fontSize: 20,
-    textTransform: "initial"
+    textTransform: "initial",
+    color: 'red'
   }
 }))(Tab);
 
@@ -76,12 +86,11 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     display: 'flex',
     height: '100%',
-    textAlign: 'right'
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
     '& .MuiListItem-root': {
-        textAlign: 'right'
+        textAlign: 'left'
     }
   },
 }));
@@ -120,7 +129,7 @@ export default function VerticalTabs() {
         </VertTabs>
         {value === 0 && <TabPanel><HumanResourcePage /></TabPanel>}
         {value === 1 && <TabPanel>Production Stuff</TabPanel>}
-        {value === 2 && <TabPanel>Shipping Stuff</TabPanel>}
+        {value === 2 && <TabPanel><Recruitment /></TabPanel>}
         {value === 3 && <TabPanel>Sales Stuff</TabPanel>}
         {value === 4 && <TabPanel>Sales Stuff</TabPanel>}
         {value === 5 && <TabPanel>Sales Stuff</TabPanel>}

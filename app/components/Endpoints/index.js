@@ -38,16 +38,23 @@ export const UpdateUserProfileApi = `${BaseUrl}/authserv/api/v1/user/update_prof
  ******************************************************************* */
 
 // Utility Apis
+// Folder Api
+export const InitFolderDirApi = `${BaseUrl}/utilityserv/api/v1/folder/init_directories`;
+export const GetAllFoldersAndDocApi = `${BaseUrl}/utilityserv/api/v1/folder/get_all_folders_by_type/{uuid}/{id}/{type}`;
+export const CreateAndAddFolderToFolderApi = `${BaseUrl}/utilityserv/api/v1/folder/create_and_add_to_folder`;
+
 // File Api
+export const AddDocToFolderApi = `${BaseUrl}/utilityserv/api/v1/document/add_to_folder`;
 export const CreateUtilityFileApi = `${BaseUrl}/utilityserv/api/v1/upload_document`;
 export const GetUtilityFilesApi = `${BaseUrl}/utilityserv/api/v1/get_document_by_orgid`;
 export const GetUtilityFileApi = `${BaseUrl}/utilityserv/api/v1/get_document_by_id`;
-export const DeleteUtilityFileApi = `${BaseUrl}/utilityserv/api/v1/delete_document`;
+export const DeleteUtilityFileApi = `${BaseUrl}/utilityserv/api/v1/document/delete_document`;
+export const RestoreDocumentApi = `${BaseUrl}/utilityserv/api/v1/document/restore_document/{id}/{type}`;
 
 export const GetFavoriteDocumentApi = `${BaseUrl}/utilityserv/api/v1/get_favourite_by_uuid`;
 export const FavoriteDocumentApi = `${BaseUrl}/utilityserv/api/v1/favourite_document`;
 export const UnfavoriteDocumentApi = `${BaseUrl}/utilityserv/api/v1/unfavourite_document`;
-export const ShareDocumentApi = `${BaseUrl}/utilityserv/api/v1/share_document`;
+export const ShareDocumentApi = `${BaseUrl}/utilityserv/api/v1/document/share_document`;
 export const GetShareDocumentApi = `${BaseUrl}/utilityserv/api/v1/share_document/get_shared_document_by_uuid`;
 export const GenerateLinkAndSendEmailApi = `${BaseUrl}/utilityserv/api/v1/share_document/send_email_to_file_owner/{userId}/{sharedId}`;
 
@@ -59,7 +66,7 @@ export const CreateUtilityTasksApi = `${BaseUrl}/utilityserv/api/v1/task`;
 export const GetUtilityTasksByStatusApi = `${BaseUrl}/utilityserv/api/v1/get_by_orgid_and_status`;
 export const AddTaskAttachmentApi = `${BaseUrl}/utilityserv/api/v1/task/add_attachments`;
 export const RemoveTaskAttachmentApi = `${BaseUrl}/utilityserv/api/v1/task/remove_attachments`;
-export const TaskCommentApi = `${BaseUrl}/utilityserv/api/v1/add_comment`;
+export const TaskCommentApi = `${BaseUrl}/utilityserv/api/v1/comment/add_comment`;
 
 // Chat Api
 export const GetUserChatApi = `${BaseUrl}/utilityserv/api/v1/chat/get_user_chat`;

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, IconButton, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Add } from '@material-ui/icons';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import NoteAdd from '@material-ui/icons/NoteAdd';
 
 const useStyles = makeStyles(theme => ({
   iconButton: {
@@ -44,7 +44,7 @@ export function AddFile(props) {
           className={classes.iconButton}
           onClick={openFileDialog}
         >
-          <PhotoCamera className={classes.icon} />
+          <NoteAdd className={classes.icon} />
         </Button>
       </Tooltip>
     </React.Fragment>
