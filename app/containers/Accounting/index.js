@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -20,10 +20,24 @@ import saga from './saga';
 import messages from './messages';
 import AccountChart from './components/AccountChart';
 import NewAccountDialog from './components/NewAccountDialog';
+import * as Actions from './actions';
 
-export function Accounting() {
+export function Accounting(props) {
   useInjectReducer({ key: 'accounting', reducer });
   useInjectSaga({ key: 'accounting', saga });
+
+  const {
+    accountTypeData,
+    dispatchGetAllAccountTypeAction
+  } = props;
+
+  console.log('accountTypeData --> ', accountTypeData);
+
+  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {
+    dispatchGetAllAccountTypeAction();
+  }, []);
+
 
   return (
     <div>
@@ -43,10 +57,12 @@ Accounting.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   accounting: makeSelectAccounting(),
+  // accountTypeData: Selectors.makeSelectAccountTypeData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    dispatchGetAllAccountTypeAction: () => dispatch(Actions.getAllAccountTypeAction()),
     dispatch,
   };
 }
