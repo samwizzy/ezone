@@ -73,16 +73,7 @@ const NewAccountDialog = props => {
     console.log('selected value: ', value);
     // setValues({ ...values, vendor: value });
 
-    // dispatchGetDetailTypeAction()
-  };
-
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
-
-  const handleDateChange = date => {
-    setValues({
-      ...values,
-      date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
-    });
+    dispatchGetDetailTypeAction();
   };
 
   return (
@@ -139,7 +130,6 @@ const NewAccountDialog = props => {
                   />
                 )}
               />
-              
               <Autocomplete
                 id="combo-box-demo"
                 // options={accountTypeData}
