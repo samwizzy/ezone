@@ -45,6 +45,18 @@ const makeSelectLoading = () =>
     subState => subState.loading,
   );
 
+const makeSelectChartOfAccountPostData = () =>
+  createSelector(
+    selectAccountingDomain,
+    subState => subState.chartOfAccPostData,
+);
+
+const makeSelectGetChartOfAccountData = () =>
+  createSelector(
+    selectAccountingDomain,
+    substate => substate.chartOfAccData,
+  );
+
 export default makeSelectAccounting;
 
 export { 
@@ -52,5 +64,7 @@ export {
   makeSelectLoading,
   makeSelectNewAccountDialog,
   makeSelectAccountTypeData,
-  makeSelectDetailTypeData 
+  makeSelectDetailTypeData,
+  makeSelectChartOfAccountPostData,
+  makeSelectGetChartOfAccountData 
 };
