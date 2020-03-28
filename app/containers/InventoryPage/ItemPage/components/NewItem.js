@@ -9,6 +9,7 @@ import {
   Radio,
   Divider,
   Button,
+  Checkbox,
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -17,8 +18,8 @@ import { createStructuredSelector } from 'reselect';
 // import * as UtilitySelectors from '../../../UtilityPage/selectors';
 // import * as Actions from '../actions';
 // import * as Selectors from '../selectors';
+// import { CheckBox } from '@material-ui/icons';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-import { CheckBox } from '@material-ui/icons';
 // import { AddWarehouse } from './AddWarehouse';
 
 const useStyles = makeStyles(theme => ({
@@ -185,7 +186,7 @@ const NewItem = props => {
           <div className={classes.container}>
             <FormControlLabel
               value="Sales Information"
-              control={<CheckBox color="primary" />}
+              control={<Checkbox color="primary" />}
               label="Sales Information"
               labelPlacement="start"
             />
@@ -198,7 +199,7 @@ const NewItem = props => {
               className={classes.textField}
             />
             <TextField 
-              id="outlined-Account" 
+              id="outlined-Account2" 
               label="Account"
               fullWidth 
               // onChange={} 
@@ -229,7 +230,7 @@ const NewItem = props => {
           <div className={classes.container}>
             <FormControlLabel
               value="Purchase Information"
-              control={<CheckBox color="primary" />}
+              control={<Checkbox color="primary" />}
               label="Sales Information"
               labelPlacement="start"
             />
@@ -242,7 +243,7 @@ const NewItem = props => {
               className={classes.textField}
             />
             <TextField
-              id="outlined-Account"
+              id="outlined-Account1"
               label="Account"
               fullWidth 
               // onChange={} 

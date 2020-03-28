@@ -27,6 +27,18 @@ const makeSelectNewAccountDialog = () =>
     substate => substate.accountDialog,
   );
 
+const makeSelectAccountTypeData = () =>
+  createSelector(
+    selectAccountingDomain,
+    substate => substate.accountTypeData,
+  );
+
+const makeSelectDetailTypeData = () =>
+  createSelector(
+    selectAccountingDomain,
+    substate => substate.detailTypeData,
+  );
+
 const makeSelectLoading = () =>
   createSelector(
     selectAccountingDomain,
@@ -38,5 +50,7 @@ export default makeSelectAccounting;
 export { 
   selectAccountingDomain,
   makeSelectLoading,
-  makeSelectNewAccountDialog 
+  makeSelectNewAccountDialog,
+  makeSelectAccountTypeData,
+  makeSelectDetailTypeData 
 };

@@ -88,8 +88,11 @@ const AccountChart = props => {
   const {
     accountDialog,
     openNewAccountDialogAction,
+    accountTypeData,
+    dispatchGetAllAccountTypeAction
   } = props;
 
+  console.log('accountTypeData --> ', accountTypeData)
 
   const columns = [
     {
@@ -225,6 +228,11 @@ const AccountChart = props => {
     ),
   };
 
+  // Similar to componentDidMount and componentDidUpdate:
+  // useEffect(() => {
+  //   dispatchGetAllAccountTypeAction();
+  // }, []);
+
   // if (loading) {
   //   return <LoadingIndicator />;
   // }
@@ -248,11 +256,13 @@ AccountChart.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
+  accountTypeData: Selectors.makeSelectAccountTypeData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
+    // dispatchGetAllAccountTypeAction: () => dispatch(Actions.getAllAccountTypeAction()),
   };
 }
 

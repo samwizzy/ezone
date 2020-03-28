@@ -21,6 +21,7 @@ import Login from '../AuthorizationPage/Login/Loadable';
 import ForgotPassword from '../AuthorizationPage/Login/components/ForgotPasswordForm';
 import organizationPage from '../CompanyStructurePage/OrganizationInfo/Loadable';
 import CompanyStructure from '../CompanyStructurePage/CompanyStructure/Loadable';
+// import PartyPage from '../CompanyStructurePage/CompanyStructure/components/PartyPage';
 import CompanyStructureParty from '../CompanyStructurePage/CompanyStructure/components/PartyPage';
 import CompanyStructurePosition from '../CompanyStructurePage/CompanyStructure/components/PositionPage';
 import UsersPage from '../UsersPage/Loadable';
@@ -103,6 +104,11 @@ const App = () => {
                   path="/organization/company/structure"
                   component={CompanyStructure}
                 />
+                {/* <PrivateRoute
+                  exact
+                  path="/organization/company/structure/:partyGroupId"
+                  component={PartyPage}
+                /> */}
                 <PrivateRoute
                   exact
                   path="/organization/company/structure/party/:partyGroupId/:partyId"
@@ -114,7 +120,7 @@ const App = () => {
                   component={CompanyStructurePosition}
                 />
                 {/* <PrivateRoute exact path="/dashboard" component={UtilityPage} /> */}
-                <Route exact path="/dashboard" component={UtilityPage} />
+                <PrivateRoute exact path="/dashboard" component={UtilityPage} />
                 <PrivateRoute
                   exact
                   path="/dashboard/tasks"
@@ -162,8 +168,18 @@ const App = () => {
                 <Route path="/account" component={AccountPage} />
                 <Route exact path="/inventory" component={InventoryPage} />
                 <PrivateRoute path="/warehouses" component={WarehousePage} />
-                <Route exact path="/items" component={ItemPage} />
-                <Route exact path="/items/new" component={NewItem} />
+                <PrivateRoute exact path="/items" component={ItemPage} />
+                <PrivateRoute exact path="/items/new" component={NewItem} />
+                {/* <PrivateRoute
+                  exact
+                  path="/transfer/orders"
+                  component={TransferOrdersList}
+                />
+                <PrivateRoute
+                  exact
+                  path="/transfer/new"
+                  component={NewTransferOrder}
+                /> */}
               </Layout3>
               <Route path="" component={NotFoundPage} />
             </Switch>

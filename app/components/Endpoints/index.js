@@ -96,4 +96,6 @@ export const GetListOfVendorsApi = `${BaseUrl}/utilityserv/api/v1/find_all_vendo
 export const CreateWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/add_workorder`;
 export const GetListOfWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/find_all_workorders`;
 
-
+// Account Api
+export const GetAllAccountTypeApi = `${BaseUrl}/accountingserv/api/v1/account/get_all_account_types`;
+export const GetDetailTypeApi = `${BaseUrl}/accountingserv/api/v1/account/get_detail_types`;
