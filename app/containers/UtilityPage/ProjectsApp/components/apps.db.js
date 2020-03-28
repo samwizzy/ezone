@@ -10,7 +10,12 @@ import ProjectsIcon from '../../../../images/ProjectsIcon.svg';
 const apps = [
   { id: 1, name: 'Accounting', url: '/account', icon: AcctIcon },
   { id: 2, name: 'Human Resources', url: '/hr', icon: AppIcon1 },
-  { id: 3, name: 'Store & Inventory Mgt', url: '/items', icon: StoreIcon },
+  {
+    id: 3,
+    name: 'Store & Inventory Mgt',
+    url: '/inventory/items',
+    icon: StoreIcon,
+  },
   { id: 4, name: 'CRM', url: '/cms', icon: CRMIcon },
   { id: 5, name: 'Budgeting', url: '/budgeting', icon: BudgetingIcon },
   { id: 6, name: 'Task management', url: '/dashboard/tasks', icon: TaskIcon },
