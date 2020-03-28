@@ -72,7 +72,9 @@ const PartyGroupDialog = props => {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {newPartyGroupDialog.type === 'new' ? 'New Party' : 'Edit Party'}
+          {newPartyGroupDialog.type === 'new'
+            ? 'New Party Group'
+            : 'Edit Party Group'}
         </DialogTitle>
 
         <Divider />
@@ -183,7 +185,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchCloseNewPartyPartyDialog: () => dispatch(Actions.closeNewPartyGroupDialog()),
+    dispatchCloseNewPartyPartyDialog: () =>
+      dispatch(Actions.closeNewPartyGroupDialog()),
     dispatchCreateNewPartyGroupAction: evt =>
       dispatch(Actions.createNewPartyGroupAction(evt)),
     dispatch,

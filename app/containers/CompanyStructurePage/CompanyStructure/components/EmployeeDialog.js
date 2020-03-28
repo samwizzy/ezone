@@ -16,6 +16,7 @@ import {
   MenuItem,
   Slide,
 } from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
@@ -62,10 +63,10 @@ const EmployeeDialog = props => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const handleChange = name => event => {
+  const handleAddEmployeeChange = (event, value) => {
     setValues({
       ...values,
-      [name]: event.target.value,
+      userId: value.id,
     });
   };
 
@@ -85,7 +86,7 @@ const EmployeeDialog = props => {
       >
         <DialogTitle id="alert-dialog-slide-title">
           {addEmployeeToPositionDialog.type === 'new'
-            ? 'New Employee'
+            ? 'Add Employee To Position'
             : 'Edit Employee'}
         </DialogTitle>
 
@@ -94,23 +95,23 @@ const EmployeeDialog = props => {
         <DialogContent>
           {addEmployeeToPositionDialog.type === 'new' ? (
             <div>
-              <TextField
-                id="select-head"
-                select
-                fullWidth
-                variant="outlined"
-                label="Select Employee"
-                className={classes.textField}
-                value={values.userId}
-                onChange={handleSelectChange('userId')}
-              >
-                {AllUserData &&
-                  AllUserData.map(option => (
-                    <MenuItem key={option.id} value={option.id}>
-                      {option.emailAddress} {option.lastName}
-                    </MenuItem>
-                  ))}
-              </TextField>
+              <Autocomplete
+                id="combo-partyHead"
+                options={AllUserData}
+                getOptionLabel={option => option.firstName}
+                onChange={(evt, ve) => handleAddEmployeeChange(evt, ve)}
+                renderInput={param => (
+                  <TextField
+                    {...param}
+                    margin="normal"
+                    className={classes.textField}
+                    label="Search Employee"
+                    variant="outlined"
+                    placeholder="Search Employee"
+                    fullWidth
+                  />
+                )}
+              />
             </div>
           ) : null}
         </DialogContent>
