@@ -95,17 +95,6 @@ export function closeNewRoleDialog() {
   };
 }
 
-export function openNewRecruitmentDialog() {
-  return {
-    type: Constants.OPEN_NEW_RECRUITMENT_DIALOG,
-  };
-}
-export function closeNewRecruitmentDialog() {
-  return {
-    type: Constants.CLOSE_NEW_RECRUITMENT_DIALOG,
-  };
-}
-
 export function openNewAttendanceDialog() {
   return {
     type: Constants.OPEN_NEW_ATTENDANCE_DIALOG,

@@ -67,6 +67,7 @@ export const GetUtilityTasksByStatusApi = `${BaseUrl}/utilityserv/api/v1/get_by_
 export const AddTaskAttachmentApi = `${BaseUrl}/utilityserv/api/v1/task/add_attachments`;
 export const RemoveTaskAttachmentApi = `${BaseUrl}/utilityserv/api/v1/task/remove_attachments`;
 export const TaskCommentApi = `${BaseUrl}/utilityserv/api/v1/comment/add_comment`;
+export const GetAllCommentByTaskIdApi = `${BaseUrl}/utilityserv/api/v1/comment/get_all_comment_by_taskid`;
 
 // Chat Api
 export const GetUserChatApi = `${BaseUrl}/utilityserv/api/v1/chat/get_user_chat`;
@@ -103,3 +104,10 @@ export const CreateChartOfAccountApi = `${BaseUrl}/accountingserv/api/v1/account
 export const GetAllChartOfAccountApi = `${BaseUrl}/accountingserv/api/v1/account/get_account_by_orgid`;
 
 
+/** *****************************************************************
+ * Inventry endpoint
+ ******************************************************************* */
+
+// Warehouse Apis
+export const CreateNewWarehouseApi = `${BaseUrl}/inventoryserv/api/v1/add_warehouse`;
+export const GetAllWarehouses = `${BaseUrl}/inventoryserv/api/v1/get_all_warehouses`;

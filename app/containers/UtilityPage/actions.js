@@ -234,6 +234,33 @@ export function removeTaskAttachmentSuccess(data) {
   };
 }
 
+export function commentTask(data) {
+  return {
+    type: Constants.ADD_TASK_COMMENT,
+    payload: data,
+  };
+}
+
+export function commentTaskSuccess(data) {
+  return {
+    type: Constants.ADD_TASK_COMMENT_SUCCESS,
+    payload: data,
+  };
+}
+export function getTaskComments(taskId) {
+  return {
+    type: Constants.GET_TASK_COMMENTS,
+    payload: taskId,
+  };
+}
+
+export function getTaskCommentsSuccess(data) {
+  return {
+    type: Constants.GET_TASK_COMMENTS_SUCCESS,
+    payload: data,
+  };
+}
+
 export function getUtilityTasksSuccess(data) {
   return {
     type: Constants.GET_UTILITY_TASKS_SUCCESS,
@@ -256,7 +283,6 @@ export function getUtilityTasksError(err) {
 }
 
 export function openFilePreviewDialog(selectedFile) {
-  console.log(selectedFile, "selectedFile")
   return {
     type: Constants.OPEN_PREVIEW_FILE_DIALOG,
     payload: selectedFile

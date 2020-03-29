@@ -37,6 +37,30 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(5, 0),
     padding: theme.spacing(1, 15),
   },
+  paper: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: drawerWidth, // works better without position:fixed
+    flexShrink: 0,
+    overflowY: 'auto',
+    height: '600px',
+    '& .MuiListSubheader-root': {
+      backgroundColor: theme.palette.common.white,
+    },
+    '&::-webkit-scrollbar': {
+      width: '6px',
+      backgroundColor: '#F5F5F5',
+    },
+    '&::-webkit-scrollbar-track': {
+      '-webkitBoxShadow': 'inset 0 0 6px rgba(0,0,0,0.3)',
+      borderRadius: '10px',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      borderRadius: '10px',
+      '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.5)',
+      backgroundColor: theme.palette.primary.main,
+    },
+  },
 }));
 
 const NoPartyGroup = props => {
@@ -189,16 +213,18 @@ const CompanyStructure = props => {
           >
             <Add /> Create Party Group
           </Button>
-          {partyGroupData.map(data => (
-            <List component="nav" key={data.id}>
-              <ListItemLink
-                key={data.id}
-                onClick={() => DispatchgetSelectedPartyGroupAction(data)}
-              >
-                <ListItemText primary={data.name} />
-              </ListItemLink>
-            </List>
-          ))}
+          <div className={classes.paper}>
+            {partyGroupData.map(data => (
+              <List component="nav" key={data.id}>
+                <ListItemLink
+                  key={data.id}
+                  onClick={() => DispatchgetSelectedPartyGroupAction(data)}
+                >
+                  <ListItemText primary={data.name} />
+                </ListItemLink>
+              </List>
+            ))}
+          </div>
         </Grid>
         <Grid item xs={12} md={4} lg={8}>
           {selectedPartyGroupData && selectedPartyGroupData.parties && (

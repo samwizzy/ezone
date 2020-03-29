@@ -184,22 +184,6 @@ const FilesList = props => {
       },
     },
     {
-      name: 'documents',
-      label: ' ',
-      options: {
-        filter: true,
-        sort: true,
-        customBodyRender: doc => {
-          if(!doc) return ''
-          return  (
-            <Typography variant="inherit" color="textSecondary">
-              <InsertDriveFile /> &nbsp; {doc[0].docName}
-            </Typography>
-          )
-        }
-      },
-    },
-    {
       name: 'id',
       label: ' ',
       options: {

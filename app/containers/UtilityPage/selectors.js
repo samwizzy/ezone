@@ -39,6 +39,12 @@ const makeSelectTasks = () =>
     subState => subState.tasks,
   );
 
+const makeSelectTaskComments = () =>
+  createSelector(
+    selectUtilityPageDomain,
+    subState => subState.taskComments,
+  );
+
 const makeSelectTask = () =>
   createSelector(
     selectUtilityPageDomain,
@@ -172,6 +178,7 @@ export {
   makeSelectData,
   makeSelectTask,
   makeSelectTasks,
+  makeSelectTaskComments,
   makeSelectFile,
   makeSelectFiles,
   makeSelectEmployees,
