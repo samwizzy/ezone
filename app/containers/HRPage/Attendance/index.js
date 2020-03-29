@@ -16,8 +16,8 @@ import * as AppSelectors from '../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
 import Person from '@material-ui/icons/Person';
-import {AddDepartment} from '../components/AddButton'
-import AddDepartmentDialog from './components/AddDepartmentDialog'
+import {AddAttendance} from '../components/AddButton'
+import AddAttendanceDialog from './components/AddAttendanceDialog'
 
 const drawerWidth = '100%';
 
@@ -58,9 +58,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const DepartmentsApp = props => {
+const AttendanceApp = props => {
   const classes = useStyles();
-  const { loading, openNewDepartmentDialog, getEmployee, employees, employee } = props;
+  const { loading, openNewAttendanceDialog, getEmployee, employees, employee } = props;
 
   React.useEffect(() => {
   }, [employee]);
@@ -75,8 +75,8 @@ const DepartmentsApp = props => {
       },
     },
     {
-      name: 'firstName',
-      label: 'Department Name',
+      name: 'title',
+      label: 'Title',
       options: {
       filter: true,
       sort: true,
@@ -84,11 +84,32 @@ const DepartmentsApp = props => {
     },
     {
       name: 'id',
-      label: 'Employee Count',
+      label: 'Sent To',
       options: {
         filter: true,
         sort: true,
       },
+    },
+    {
+      name: 'id',
+      label: 'Message Type',
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: 'createdAt',
+      label: 'Publish Date',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: createdAt => {
+          return (
+            <Typography color='textSecondary'>{moment(createdAt).format('ll')}</Typography>
+          )
+        }
+      }
     },
   ];
 
@@ -100,7 +121,7 @@ const DepartmentsApp = props => {
     download: true,
     viewColumns: false,
     filter: false,
-    customToolbar: () => <AddDepartment openDialog={openNewDepartmentDialog} />,
+    customToolbar: () => <AddAttendance openDialog={openNewAttendanceDialog} />,
     rowsPerPage: 10,
     rowsPerPageOptions: [10,25,50,100],
     onRowClick: (rowData, rowState) => {
@@ -120,7 +141,7 @@ const DepartmentsApp = props => {
             
             <MUIDataTable
                 className={classes.datatable}
-                title="Departments List"
+                title="Attendance List"
                 data={employees}
                 columns={columns}
                 options={options}
@@ -155,15 +176,15 @@ const DepartmentsApp = props => {
         </Grid>
       </Grid>
 
-      <AddDepartmentDialog />
+      <AddAttendanceDialog />
     </div>
   );
 };
 
-DepartmentsApp.propTypes = {
+AttendanceApp.propTypes = {
   loading: PropTypes.bool,
   getEmployees: PropTypes.func,
-  openNewDepartmentDialog: PropTypes.func,
+  openNewAttendanceDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -177,7 +198,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getEmployees: () => dispatch(Actions.getEmployees()),
     getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
-    openNewDepartmentDialog: () => dispatch(Actions.openNewDepartmentDialog()),
+    openNewAttendanceDialog: () => dispatch(Actions.openNewAttendanceDialog()),
   };
 }
 
@@ -190,4 +211,4 @@ export default withRouter(
   compose(
     withConnect,
     memo,
-)(DepartmentsApp));
+)(AttendanceApp));

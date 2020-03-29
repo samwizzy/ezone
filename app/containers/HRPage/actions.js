@@ -25,7 +25,6 @@ export function getEmployeesSuccess(data) {
 }
 
 export function getEmployee(uuid) {
-  console.log(uuid, "I am the employee action")
   return {
     type: Constants.GET_EMPLOYEE,
     payload: uuid
@@ -40,12 +39,10 @@ export function getEmployeeSuccess(data) {
 }
 
 export function openNewEmployeeDialog() {
-  console.log("This is the open dialog here")
   return {
     type: Constants.OPEN_NEW_EMPLOYEE_DIALOG,
   };
 }
-
 export function closeNewEmployeeDialog() {
   return {
     type: Constants.CLOSE_NEW_EMPLOYEE_DIALOG,
@@ -57,9 +54,75 @@ export function openEditEmployeeDialog(data) {
     type: Constants.OPEN_EDIT_EMPLOYEE_DIALOG,
   };
 }
-
 export function closeEditEmployeeDialog(data) {
   return {
     type: Constants.CLOSE_EDIT_EMPLOYEE_DIALOG,
+  };
+}
+
+export function openNewDepartmentDialog() {
+  return {
+    type: Constants.OPEN_NEW_DEPARTMENT_DIALOG,
+  };
+}
+export function closeNewDepartmentDialog() {
+  return {
+    type: Constants.CLOSE_NEW_DEPARTMENT_DIALOG,
+  };
+}
+
+export function openNewBranchDialog() {
+  console.log('we opening the dialog in action')
+
+  return {
+    type: Constants.OPEN_NEW_BRANCH_DIALOG,
+  };
+}
+export function closeNewBranchDialog() {
+  return {
+    type: Constants.CLOSE_NEW_BRANCH_DIALOG,
+  };
+}
+
+export function openNewRoleDialog() {
+  return {
+    type: Constants.OPEN_NEW_ROLE_DIALOG,
+  };
+}
+export function closeNewRoleDialog() {
+  return {
+    type: Constants.CLOSE_NEW_ROLE_DIALOG,
+  };
+}
+
+export function openNewRecruitmentDialog() {
+  return {
+    type: Constants.OPEN_NEW_RECRUITMENT_DIALOG,
+  };
+}
+export function closeNewRecruitmentDialog() {
+  return {
+    type: Constants.CLOSE_NEW_RECRUITMENT_DIALOG,
+  };
+}
+
+export function openNewAttendanceDialog() {
+  return {
+    type: Constants.OPEN_NEW_ATTENDANCE_DIALOG,
+  };
+}
+export function closeNewAttendanceDialog() {
+  return {
+    type: Constants.CLOSE_NEW_ATTENDANCE_DIALOG,
+  };
+}
+export function openNewPayrollDialog() {
+  return {
+    type: Constants.OPEN_NEW_PAYROLL_DIALOG,
+  };
+}
+export function closeNewPayrollDialog() {
+  return {
+    type: Constants.CLOSE_NEW_PAYROLL_DIALOG,
   };
 }

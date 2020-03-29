@@ -41,13 +41,12 @@ const useStyles = makeStyles(theme => ({
   },
   table: {
     marginTop: theme.spacing(2),
-    whiteSpace: 'nowrap',
     '& .MuiTableCell-body': {
       fontSize: theme.typography.fontSize - 1,
     },
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
-    }
+    },
   },
   datatable: {
     // '& .MuiTableRow-root:hover': {
@@ -67,9 +66,8 @@ const useStyles = makeStyles(theme => ({
     }
   },
   button: {
-    borderRadius: '20px',
-    margin: theme.spacing(5, 0),
-    padding: theme.spacing(1, 15),
+    '&.favorite': { color: orange[300]},
+    '&.shared': { color: orange[500]},
   },
   iconButton: {
     width: 24,
@@ -77,6 +75,10 @@ const useStyles = makeStyles(theme => ({
     padding: 0,
     '&.favorite': { color: orange[300]},
     '&.shared': { color: orange[500]},
+    '&.delete': { color: theme.status.danger},
+  },
+  icon: {
+    margin: theme.spacing(0, 1),
   },
   cardRoot: {
     maxWidth: '100%',
@@ -91,6 +93,15 @@ const FilesList = props => {
   const { loading, files, file, user, getUtilityFile, deleteDocument, favoriteDocument, getFavoriteDocuments, getSharedDocuments, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog } = props
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [fileId, setFileId] = React.useState(null);
+  const [form, setForm] = React.useState({
+    file: [
+      {
+        id: 0,
+        type: "document"
+      }
+    ],
+    parentId: 0
+  });
   const open = Boolean(anchorEl);
   const [isOpen, setOpen] = React.useState(true);
 
@@ -107,24 +118,27 @@ const FilesList = props => {
     a.href = doc.fileUrl;
     a.download = doc.docName;
     a.click();
-    setAnchorEl(null);
   }
 
-  const handleView = () => {
-    openFilePreviewDialog(fileId)
-    setAnchorEl(null);
+  const handleView = (event, id) => {
+    event.stopPropagation()
+    openFilePreviewDialog(id)
   }
-  const handleShare = () => {
-    openShareFileDialog(fileId)
-    setAnchorEl(null);
+  const handleShare = (event, id) => {
+    event.stopPropagation()
+    openShareFileDialog(id)
   }
-  const handleDownload = () => {
-    downloadFile(fileId)
-    setAnchorEl(null);
+  const handleDownload = (event, id) => {
+    event.stopPropagation()
+    downloadFile(id)
   }
-  const handleDelete = () => {
-    deleteDocument(fileId)
-    setAnchorEl(null);
+  const handleDelete = (event, id) => {
+    event.stopPropagation()
+    deleteDocument(id)
+  }
+  const handleFavorite = (event, id) => {
+    event.stopPropagation()
+    favoriteDocument(id)
   }
 
 
@@ -160,9 +174,26 @@ const FilesList = props => {
         filter: true,
         sort: true,
         customBodyRender: docName => {
+          if(!docName) return ''
           return  (
             <Typography variant="inherit" color="textSecondary">
               <InsertDriveFile /> &nbsp; {docName}
+            </Typography>
+          )
+        }
+      },
+    },
+    {
+      name: 'documents',
+      label: ' ',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: doc => {
+          if(!doc) return ''
+          return  (
+            <Typography variant="inherit" color="textSecondary">
+              <InsertDriveFile /> &nbsp; {doc[0].docName}
             </Typography>
           )
         }
@@ -176,7 +207,7 @@ const FilesList = props => {
         sort: true,
         customBodyRender: id => {
           return  (
-            <IconButton onClick={() => favoriteDocument(id)} className={classes.iconButton} aria-label="favorite" color="inherit">
+            <IconButton onClick={event => handleFavorite(event, id)} className={classes.iconButton} aria-label="favorite" color="inherit">
               <StarOutlined className={classNames(classes.iconButton, {'favorite': true})} />
             </IconButton>
           )
@@ -203,65 +234,91 @@ const FilesList = props => {
       label: ' ',
       options: {
         filter: true,
-        sort: false,
+        sort: true,
         customBodyRender: id => {
-          return (
-            <div>
-              <IconButton
-                className={classes.iconButton}
-                data-id={id}
-                aria-label="more"
-                aria-controls="long-menu"
-                aria-haspopup="true"
-                onClick={handleClick}
-              >
-                <MoreVertRounded />
+          return  (
+            <React.Fragment>
+              <IconButton onClick={(event) => handleShare(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="share" color="inherit">
+                <Icon color="primary">share</Icon>
               </IconButton>
-              <Menu
-                id="long-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={open}
-                onClose={handleClose}
-              >
-                  <MenuItem key={0} dense onClick={handleView}>
-                    <ListItemIcon>
-                      <Visibility fontSize="small" />
-                    </ListItemIcon>
-                    <Typography variant="inherit" noWrap>
-                      View
-                    </Typography>
-                  </MenuItem>
-                  <MenuItem key={1} dense onClick={handleDownload}>
-                    <ListItemIcon>
-                      <CloudDownload fontSize="small" />
-                    </ListItemIcon>
-                    <Typography variant="inherit" noWrap>
-                      Download
-                    </Typography>
-                  </MenuItem>
-                  <MenuItem key={2} dense onClick={handleShare}>
-                    <ListItemIcon>
-                      <Share fontSize="small" />
-                    </ListItemIcon>
-                    <Typography variant="inherit" noWrap>
-                      Share
-                    </Typography>
-                  </MenuItem>
-                  <MenuItem key={3} dense onClick={handleDelete}>
-                    <ListItemIcon>
-                      <Delete fontSize="small" />
-                    </ListItemIcon>
-                    <Typography variant="inherit" noWrap>
-                      Delete
-                    </Typography>
-                  </MenuItem>
-              </Menu>
-            </div>
+              <IconButton onClick={(event) => handleDelete(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="delete" color="inherit">
+                <Icon color="primary">delete</Icon>
+              </IconButton>
+              <IconButton onClick={(event) => handleView(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="view" color="inherit">
+                <Icon color="primary">pageview</Icon>
+              </IconButton>
+              <IconButton onClick={(event) => handleDownload(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="download" color="inherit">
+                <Icon color="primary">cloud_download</Icon>
+              </IconButton>
+            </React.Fragment>
           )
         }
       },
-    }
+    },
+    // {
+    //   name: 'id',
+    //   label: ' ',
+    //   options: {
+    //     filter: true,
+    //     sort: false,
+    //     customBodyRender: id => {
+    //       return (
+    //         <div>
+    //           <IconButton
+    //             className={classes.iconButton}
+    //             data-id={id}
+    //             aria-label="more"
+    //             aria-controls="long-menu"
+    //             aria-haspopup="true"
+    //             onClick={handleClick}
+    //           >
+    //             <MoreVertRounded />
+    //           </IconButton>
+    //           <Menu
+    //             id="long-menu"
+    //             anchorEl={anchorEl}
+    //             keepMounted
+    //             open={open}
+    //             onClose={handleClose}
+    //           >
+    //               <MenuItem key={0} dense onClick={handleView}>
+    //                 <ListItemIcon>
+    //                   <Visibility fontSize="small" />
+    //                 </ListItemIcon>
+    //                 <Typography variant="inherit" noWrap>
+    //                   View
+    //                 </Typography>
+    //               </MenuItem>
+    //               <MenuItem key={1} dense onClick={handleDownload}>
+    //                 <ListItemIcon>
+    //                   <CloudDownload fontSize="small" />
+    //                 </ListItemIcon>
+    //                 <Typography variant="inherit" noWrap>
+    //                   Download
+    //                 </Typography>
+    //               </MenuItem>
+    //               <MenuItem key={2} dense onClick={handleShare}>
+    //                 <ListItemIcon>
+    //                   <Share fontSize="small" />
+    //                 </ListItemIcon>
+    //                 <Typography variant="inherit" noWrap>
+    //                   Share
+    //                 </Typography>
+    //               </MenuItem>
+    //               <MenuItem key={3} dense onClick={handleDelete}>
+    //                 <ListItemIcon>
+    //                   <Delete fontSize="small" />
+    //                 </ListItemIcon>
+    //                 <Typography variant="inherit" noWrap>
+    //                   Delete
+    //                 </Typography>
+    //               </MenuItem>
+    //           </Menu>
+    //         </div>
+    //       )
+    //     }
+    //   },
+    // }
   ];
 
   const options = {
@@ -290,7 +347,7 @@ const FilesList = props => {
   
   return (
     <div className={classes.root}>
-      <Grid container justify='space-evenly' spacing={2}>
+      <Grid container justify='space-between'>
         <Grid item xs={2} md={2}>
           <div className={classes.sideMenu}>
             <List 
@@ -347,7 +404,7 @@ const FilesList = props => {
           <Typography variant="subtitle2" color="textSecondary">Document Details</Typography>
           {file && Object.keys(file).length > 0 &&
           <div>
-          <Card className={classes.cardRoot}>
+          <Card className={classes.cardRoot} elevation={0}>
             <CardMedia
               className={classes.media}
               image={file.fileUrl}
@@ -410,6 +467,15 @@ const FilesList = props => {
                     </Typography>
                   </TableCell>
                 </TableRow>
+                <TableRow key="favorite">
+                  <TableCell component="th" scope="row"></TableCell>
+                  <TableCell align="right">
+                    <Button className={classNames(classes.button, {'favorite': false})} color='primary'>Favorite</Button>
+                    <IconButton className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>share</Icon></IconButton>
+                    <IconButton className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>cloud_download</Icon></IconButton>
+                    <IconButton className={classNames(classes.iconButton, {'delete': true}, classes.icon)} color='secondary'><Icon>delete</Icon></IconButton>
+                  </TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           </TableContainer>
@@ -423,9 +489,11 @@ const FilesList = props => {
               {isOpen ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
             <Collapse in={isOpen} timeout="auto" unmountOnExit>
+              <Box px={2}>
               <Typography variant="inherit" color="textSecondary">
                 {file.description? file.description : "There is no description yet"}
               </Typography>
+              </Box>
             </Collapse>
           </List>
           

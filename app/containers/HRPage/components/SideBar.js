@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Divider, List, ListItem, ListSubheader, ListItemText, ListItemIcon, Icon, Typography, Hidden, Drawer } from '@material-ui/core';
@@ -10,8 +11,11 @@ const drawerWidth = '100%';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
-    backgroundColor: theme.palette.common.white
+    flexGrow: 1,
+    backgroundColor: theme.palette.common.white,
+  },
+  list: { 
+    width: drawerWidth,
   },
   drawer: {
     [theme.breakpoints.up('sm')]: {
@@ -55,9 +59,10 @@ const SideBar = props => {
   const classes = useStyles()
   const [selectedIndex, setSelectedIndex] = React.useState(1);
 
-  const handleListItemClick = (event, index) => {
+  const handleListRoute = (event, link, index) => {
     setSelectedIndex(index);
-  };
+    props.history.push(`${link}`)
+  }
 
     const drawer = (
         <AppContext.Consumer>  
@@ -66,8 +71,9 @@ const SideBar = props => {
                 const sideMenu = sideBarconfig.find(sidebar => sidebar.module === 'hr')
                 const { menus } = sideMenu
                 return (
-                <div className={classes.drawer}>
+                <div>
                 <List
+                    className={classes.list}
                     dense
                     subheader={
                     <ListSubheader component="div" id="nested-list-subheader">
@@ -78,7 +84,7 @@ const SideBar = props => {
                     }
                 >
                     {menus && menus.map(menu => (
-                    <ListItem button selected={selectedIndex === menu.id} key={menu.id} onClick={event => handleListItemClick(event, menu.id)}>
+                    <ListItem button selected={selectedIndex === menu.id} key={menu.id} onClick={event => handleListRoute(event, menu.url, menu.id)}>
                         <ListItemIcon><Icon>{menu.icon}</Icon></ListItemIcon>
                         <ListItemText primary={menu.name} />
                     </ListItem>
@@ -92,20 +98,19 @@ const SideBar = props => {
     )
 
     return (
+      <div className={classes.root}>
         <nav className={classes.drawer} aria-label="mailbox folders">
-            {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-            <Hidden smUp implementation="css">
-                
-            </Hidden>
-            <Hidden xsDown implementation="css">
-                <div
-                className={classes.drawerPaper}
-                >
-                {drawer}
-                </div>
-            </Hidden>
+          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+          <Hidden smUp implementation="css"></Hidden>
+          <div className={classes.drawerPaper}>
+            {drawer}
+          </div>
         </nav>
+      </div>
     )
 }
 
-export default SideBar;
+export default compose(
+  withRouter,
+  memo,
+)(SideBar);

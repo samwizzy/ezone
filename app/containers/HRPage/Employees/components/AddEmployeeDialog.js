@@ -63,8 +63,6 @@ function AddEmployeeDialog(props) {
     bio: '',
   });
 
-  console.log(dialog, "dialog checking")
-
   React.useEffect(() => {
     if(dialog.type == 'edit'){
       setForm({...form})
@@ -95,11 +93,6 @@ function AddEmployeeDialog(props) {
     return newdate;
   }
 
-  const canSubmitForm = () => {
-    const {firstname, email, phoneNumber } = form
-    return email.length > 0 && phoneNumber.length > 0
-  }
-
   const handleDateChange = (date, formatted, name) => { 
     setForm(_.set({...form}, name, reformattedDate(date)))
   }
@@ -124,7 +117,6 @@ function AddEmployeeDialog(props) {
   }
 
   console.log(form, 'checking form employee...')
-  console.log(step, 'checking step..')
 
   return (
     <div>
@@ -136,14 +128,6 @@ function AddEmployeeDialog(props) {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle id="alert-dialog-slide-title">
-          {step === 0 && ("Basic Information")}
-          {step === 1 && "Work Information"}
-          {step === 2 && ("Personal Information")}
-          {step === 3 && ("Additional Information")}
-        </DialogTitle>
-        <Divider />
-
           {step === 0 && (
             <Form
             handleDateChange={handleDateChange}
@@ -180,8 +164,6 @@ function AddEmployeeDialog(props) {
             handleSubmit={handleSubmit}
             />
           )}
-
-        
       </Dialog>
     </div>
   );
@@ -193,7 +175,7 @@ AddEmployeeDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  dialog: Selectors.makeSelectNewEmployeeDialog(),
+  dialog: Selectors.makeSelectEmpDialog(),
 });
 
 function mapDispatchToProps(dispatch) {

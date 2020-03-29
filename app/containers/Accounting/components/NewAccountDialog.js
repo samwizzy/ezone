@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import { Autocomplete } from '@material-ui/lab';
 
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
@@ -51,34 +52,56 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const NewAccountDialog = props => {
-  const { loading, accountDialog, closeNewAccountDialogAction } = props;
+  const { 
+    loading, 
+    accountDialog, 
+    closeNewAccountDialogAction,
+    accountTypeData,
+    detailTypeData,
+    dispatchGetDetailTypeAction,
+    createChartOfAccountAction 
+  } = props;
 
-  console.log('accountDialog: ', accountDialog);
+  console.log('accountTypeData: ', accountTypeData);
+  console.log('detailTypeData: ', detailTypeData);
 
   const classes = useStyles();
 
   const [values, setValues] = React.useState({
-    date: '',
-    name: '',
-    amount: '',
-    amountForOneUnit: '',
-    totalAmount: '',
-    description: '',
-    orgId: '',
+    accountName: "",
+    accountNumber: "",
+    accountType: "",
+    description: "",
+    ezoneBalance: "",
+    orgId: "",
+    period: "",
+    ref: ""
   });
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
 
+  console.log('values: ', values);
+
+  const handleSelectChange = (name, value) => {
+    setValues({ ...values, accountType: value.type });
+
+    // Call detail type api
+    dispatchGetDetailTypeAction(value);
+  };
+
+
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
   const handleDateChange = date => {
-    setValues({
-      ...values,
-      date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
-    });
+    let month = date.getMonth() + 1;
+    if (month < 10) {
+      month = `0${month}`;
+    }
+    setValues({ ...values, period: `${date.getFullYear()}-${month}-${date.getDate()}`});
   };
+
 
   return (
     <div>
@@ -91,20 +114,62 @@ const NewAccountDialog = props => {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {accountDialog.type === 'new' ? 'Account' : 'Edit Account'}
+          {accountDialog.type === 'new' ? 'New Account' : 'Edit Account'}
         </DialogTitle>
-
         <Divider />
-
         <DialogContent>
           {accountDialog.type === 'new' ? (
             <div>
+              <TextField
+                id="standard-accountName"
+                label="Account Name"
+                type="name"
+                variant="outlined"
+                className={classes.textField}
+                value={values.accountName}
+                onChange={handleChange('accountName')}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                id="standard-accountNumber"
+                label="Account Code"
+                type="number"
+                variant="outlined"
+                className={classes.textField}
+                value={values.accountNumber}
+                onChange={handleChange('accountNumber')}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                id="standard-ezoneBalance"
+                label="E-Zone Balance"
+                type="number"
+                variant="outlined"
+                className={classes.textField}
+                value={values.ezoneBalance}
+                onChange={handleChange('ezoneBalance')}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                id="standard-ref"
+                label="Reference Code"
+                type="name"
+                variant="outlined"
+                className={classes.textField}
+                value={values.ref}
+                onChange={handleChange('ref')}
+                margin="normal"
+                fullWidth
+              />
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Grid container justify="space-around">
                   <KeyboardDatePicker
                     margin="normal"
                     id="date-picker-dialog"
-                    label="Date"
+                    label="Select Period"
                     format="MM/dd/yyyy"
                     value={selectedDate}
                     onChange={handleDateChange}
@@ -114,38 +179,49 @@ const NewAccountDialog = props => {
                   />
                 </Grid>
               </MuiPickersUtilsProvider>
-              <TextField
-                id="standard-name"
-                label="Item"
-                type="name"
-                variant="outlined"
-                className={classes.textField}
-                value={values.name}
-                onChange={handleChange('name')}
-                margin="normal"
-                fullWidth
+              <Autocomplete
+                id="combo-box-demo"
+                options={accountTypeData}
+                getOptionLabel={option => option.type}
+                onChange={(evt, value) => handleSelectChange(evt, value)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Select Account Type"
+                    className={classes.textField}
+                    variant="outlined"
+                    placeholder="Search"
+                    fullWidth
+                  />
+                )}
+              />
+              <Autocomplete
+                id="combo-box-demo"
+                options={detailTypeData}
+                getOptionLabel={option => option.name}
+                // onChange={(evt, value) => handleSelectChange(evt, value)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Select Detail Type"
+                    className={classes.textField}
+                    variant="outlined"
+                    placeholder="Search"
+                    fullWidth
+                  />
+                )}
               />
               <TextField
-                id="standard-amount"
-                label="Amount"
-                type="number"
+                id="standard-description"
+                label="Description"
                 variant="outlined"
                 className={classes.textField}
-                value={values.amount}
-                onChange={handleChange('amount')}
+                value={values.description}
+                onChange={handleChange('description')}
                 margin="normal"
                 fullWidth
-              />
-              <TextField
-                id="standard-amountForOneUnit"
-                label="Amount per unit"
-                type="number"
-                variant="outlined"
-                className={classes.textField}
-                value={values.amountForOneUnit}
-                onChange={handleChange('amountForOneUnit')}
-                margin="normal"
-                fullWidth
+                rows={2}
+                multiline
               />
             </div>
           ) : null}
@@ -157,10 +233,10 @@ const NewAccountDialog = props => {
           ) : (
             <Button
               onClick={() => {
-                openNewAccountDialogAction();
+                createChartOfAccountAction(values);
               }}
               color="primary"
-              variant="contained"
+              // variant="contained"
               // disabled={!canBeSubmitted()}
             >
               Save Account
@@ -170,8 +246,8 @@ const NewAccountDialog = props => {
             onClick={() => {
               closeNewAccountDialogAction();
             }}
-            color="primary"
-            variant="contained"
+            color="inherit"
+            // variant="contained"
           >
             Cancel
           </Button>
@@ -184,17 +260,24 @@ const NewAccountDialog = props => {
 NewAccountDialog.propTypes = {
   loading: PropTypes.bool,
   accountDialog: PropTypes.object,
+  accountTypeData: PropTypes.array,
+  // detailTypeData: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   accountDialog: Selectors.makeSelectNewAccountDialog(),
+  accountTypeData: Selectors.makeSelectAccountTypeData(),
+  detailTypeData: Selectors.makeSelectDetailTypeData(),
+  chartOfAccountPostData: Selectors.makeSelectChartOfAccountPostData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
     closeNewAccountDialogAction: () => dispatch(Actions.closeNewAccountDialog()),
+    dispatchGetDetailTypeAction: evt => dispatch(Actions.getDetailTypeAction(evt)),
+    createChartOfAccountAction: evt => dispatch(Actions.createNewChartOfAccountAction(evt)),
     dispatch,
   };
 }

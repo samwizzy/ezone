@@ -100,11 +100,16 @@ const useStyles = makeStyles(theme => ({
 const TaskList = props => {
   const classes = useStyles();
   const { loading, openNewTaskDialog, openEditTaskDialog, openAssignToDialog, getUtilityTask, getUserByUUID, getAssignedToByUUID, tasks, task, users, user, match, container } = props;
-  const theme = useTheme();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [comment, setComment] = React.useState({
+    comment: "",
+    commentBy: "",
+    taskId: task.id
+  });
 
   console.log(task, "task from tasklist single")
   console.log(user, "user from tasklist single")
+  console.log(comment, "user from comment form")
 
   React.useEffect(() => {
     getUtilityTask(match.params.id)
@@ -112,6 +117,18 @@ const TaskList = props => {
 
   React.useEffect(() => {
   }, [task]);
+
+  const handleChange = (event) => {
+    setComment(_.set({...comment}, event.target.name, event.target.value))
+  }
+
+  const handleSubmit = (form) => {
+  }
+
+  const handleTaskById = id => {
+    setSelectedIndex(id)
+    getUtilityTask(id)
+  }
 
   const drawer = (
     <div className={classes.drawe}>
@@ -125,7 +142,7 @@ const TaskList = props => {
         }
       >
         {tasks && tasks.map(task => (
-          <ListItem button key={task.id} onClick={() => getUtilityTask(task.id)}>
+          <ListItem disableRipple button selected={selectedIndex == task.id} key={task.id} onClick={() => handleTaskById(task.id)}>
             <ListItemIcon><AssignmentTurnedIn /></ListItemIcon>
             <ListItemText primary={task.title} />
           </ListItem>
@@ -233,17 +250,18 @@ const TaskList = props => {
                     <TableCell component="th" scope="row">
                       <TextField
                         id="outlined-multiline-static"
+                        name="comment"
                         label="Comment"
                         multiline
                         fullWidth
                         rows="4"
                         rowsMax="4"
-                        value={""}
-                        onChange={() => {}}
+                        value={comment.comment}
+                        onChange={handleChange}
                         variant="outlined"
                       />
 
-                      <Button className={classes.submitButton} variant="outlined" onClick={()=>{}} color="primary">
+                      <Button className={classes.submitButton} variant="outlined" onClick={handleSubmit} color="primary">
                         Send
                       </Button>
                     </TableCell>
@@ -258,7 +276,10 @@ const TaskList = props => {
           <div className={classes.gridRoot}>
             <GridList cellHeight={180} className={classes.gridList}>
               <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-                <ListSubheader component="div">Attachment Preview</ListSubheader>
+                {task.documents && task.documents.length > 0? 
+                <ListSubheader component="div">Attachment Preview</ListSubheader>:
+                <ListSubheader component="div">There are no Attachment</ListSubheader>
+                }
               </GridListTile>
               {task.documents && task.documents.map((tile, index) => (
                 <GridListTile key={index}>

@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom'
 import Button from '@material-ui/core/Button';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Icon from '@material-ui/core/Icon';
@@ -75,7 +76,7 @@ export default function MenuListComposition() {
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                     {apps && apps.map(app => (
-                      <MenuItem onClick={handleClose}>{app.name}</MenuItem>
+                      <MenuItem key={app.id} component={Link} to={app.url} onClick={handleClose}>{app.name}</MenuItem>
                     ))}
                   </MenuList>
                 </ClickAwayListener>

@@ -22,8 +22,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
   },
   content: {
-    display: 'flex',
-    flexDirection: 'column',
+    flexGrow: 1,
     padding: theme.spacing(3, 0),
   },
   toolbar: {

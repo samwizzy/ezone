@@ -86,15 +86,19 @@ const AccountChart = props => {
   };
 
   const {
-    accountDialog,
     openNewAccountDialogAction,
+    accountTypeData,
+    chartOfAccountData,
   } = props;
+
+  console.log('chartOfAccountData --> ', chartOfAccountData);
+  console.log('accountTypeData --> ', accountTypeData);
 
 
   const columns = [
     {
-      name: 'accountCode',
-      label: 'Account Code',
+      name: 'Id',
+      label: 'S/N',
       options: {
         filter: true,
         customBodyRender: (value, tableMeta) => {
@@ -111,6 +115,14 @@ const AccountChart = props => {
       },
     },
     {
+      name: 'accountNumber',
+      label: 'Account Code',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
       name: 'accountName',
       label: 'Account Name',
       options: {
@@ -119,7 +131,7 @@ const AccountChart = props => {
       },
     },
     {
-      name: 'accountDescription',
+      name: 'description',
       label: 'Account Description',
       options: {
         filter: true,
@@ -134,82 +146,73 @@ const AccountChart = props => {
         sort: false,
       },
     },
-    {
-      name: 'status',
-      label: 'Status',
-      options: {
-        filter: true,
-        sort: false,
-        // customBodyRender: value => {
-        //   const Post = getAllPosts.find(post => value === post.id);
+    // {
+    //   name: 'status',
+    //   label: 'Status',
+    //   options: {
+    //     filter: true,
+    //     sort: false,
+    //     customBodyRender: value => {
+    //       const Post = getAllPosts.find(post => value === post.id);
 
-        //   if (value === '') {
-        //     return '';
-        //   }
-        //   return (
-        //     <FormControlLabel
-        //       label="Edit"
-        //       control={<Icon>create</Icon>}
-        //       onClick={evt => {
-        //         evt.stopPropagation();
-        //         openEditPostDialog(Post);
-        //       }}
-        //     />
-        //   );
-        // },
-      },
-    },
+    //       if (value === '') {
+    //         return '';
+    //       }
+    //       return (
+    //         <FormControlLabel
+    //           label="Edit"
+    //           control={<Icon>create</Icon>}
+    //           onClick={evt => {
+    //             evt.stopPropagation();
+    //             openEditPostDialog(Post);
+    //           }}
+    //         />
+    //       );
+    //     },
+    //   },
+    // },
     {
       name: '',
       label: '',
       options: {
         filter: true,
         sort: false,
+        customBodyRender: value => {
+          // const Post = datas.find(post => value === post.id);
+          if (value === '') {
+            return '';
+          }
+          return (
+            <div>
+              <Button
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={handleClick}
+              >
+                Options
+              </Button>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                {/* <MenuItem onClick={handleClose}>Assign Role</MenuItem>
+                <MenuItem onClick={handleClose}>Assign Apps</MenuItem> */}
+                <MenuItem onClick={() => openEditEmployeeDialogAction(Post)}>
+                  Edit
+                </MenuItem>
+                <MenuItem onClick={() => openViewEmployeeDialogAction(Post)}>
+                  View Details
+                </MenuItem>
+                <MenuItem onClick={handleClose}>Delete</MenuItem>
+              </Menu>
+            </div>
+          );
+        },
       },
-      
     },
-    // {
-    //   name: 'id',
-    //   label: '',
-    //   options: {
-    //     filter: true,
-    //     sort: false,
-    //     customBodyRender: value => {
-    //       const Post = datas.find(post => value === post.id);
-    //       if (value === '') {
-    //         return '';
-    //       }
-    //       return (
-    //         <div>
-    //           <Button
-    //             aria-controls="simple-menu"
-    //             aria-haspopup="true"
-    //             onClick={handleClick}
-    //           >
-    //             Options
-    //           </Button>
-    //           <Menu
-    //             id="simple-menu"
-    //             anchorEl={anchorEl}
-    //             keepMounted
-    //             open={Boolean(anchorEl)}
-    //             onClose={handleClose}
-    //           >
-    //             <MenuItem onClick={handleClose}>Assign Role</MenuItem>
-    //             <MenuItem onClick={handleClose}>Assign Apps</MenuItem>
-    //             <MenuItem onClick={() => openEditEmployeeDialogAction(Post)}>
-    //               Edit
-    //             </MenuItem>
-    //             <MenuItem onClick={() => openViewEmployeeDialogAction(Post)}>
-    //               View Details
-    //             </MenuItem>
-    //             <MenuItem onClick={handleClose}>Deactivate</MenuItem>
-    //           </Menu>
-    //         </div>
-    //       );
-    //     },
-    //   },
-    // },
   ];
 
   const options = {
@@ -225,6 +228,11 @@ const AccountChart = props => {
     ),
   };
 
+  // Similar to componentDidMount and componentDidUpdate:
+  // useEffect(() => {
+  //   dispatchGetAllAccountTypeAction();
+  // }, []);
+
   // if (loading) {
   //   return <LoadingIndicator />;
   // }
@@ -233,7 +241,7 @@ const AccountChart = props => {
     <React.Fragment>
       <MUIDataTable
         title="Charts Of Accounts"
-        // data={getAllEmployees}
+        data={chartOfAccountData}
         columns={columns}
         options={options}
       />
@@ -248,11 +256,14 @@ AccountChart.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
+  accountTypeData: Selectors.makeSelectAccountTypeData(),
+  chartOfAccountData: Selectors.makeSelectGetChartOfAccountData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
+    // dispatchGetAllAccountTypeAction: () => dispatch(Actions.getAllAccountTypeAction()),
   };
 }
 

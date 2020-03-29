@@ -14,6 +14,9 @@ import EmployeesApp from './Employees'
 import RolesApp from './Roles'
 import DepartmentsApp from './Departments'
 import BranchesApp from './Branches'
+import RecruitmentApp from './Recruitment'
+import AttendanceApp from './Attendance'
+import PayrollApp from './Payroll'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -37,6 +40,15 @@ const HumanResourcePage = props => {
             break;
         case 'branches':
             return <BranchesApp /> 
+            break;
+        case 'recruitment':
+            return <RecruitmentApp /> 
+            break;
+        case 'attendance':
+            return <AttendanceApp /> 
+            break;
+        case 'payroll':
+            return <PayrollApp /> 
             break;
         default:
             return <EmployeesApp /> 

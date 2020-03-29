@@ -14,7 +14,7 @@ export function* addUtilityFile({ type, payload }) {
   payload.orgId = user.organisation.orgId;
 
   try {
-    const createdFileResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
       body: JSON.stringify(payload),
       headers: new Headers({
@@ -23,7 +23,7 @@ export function* addUtilityFile({ type, payload }) {
       }),
     });
 
-    console.log(createdFileResponse, 'createdFileResponse');
+    console.log(response, 'createdFileResponse');
 
     yield put({type: Constants.GET_UTILITY_TASKS});
   } catch (err) {
@@ -37,7 +37,7 @@ export function* addUtilityTasks({ type, payload }) {
   const requestURL = `${Endpoints.CreateUtilityTasksApi}`;
   payload.orgId = user.organisation.orgId;
   try {
-    const createdTasksResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
       body: JSON.stringify(payload),
       headers: new Headers({
@@ -50,7 +50,7 @@ export function* addUtilityTasks({ type, payload }) {
     yield put(
       AppActions.openSnackBar({
         open: true,
-        message: `${createdTasksResponse.title} has been created successfully`,
+        message: `${response.title} has been created successfully`,
         status: 'success',
       }),
     );
@@ -67,7 +67,7 @@ export function* getUtilityTasks() {
   }`;
 
   try {
-    const utilityTasksResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -75,9 +75,9 @@ export function* getUtilityTasks() {
       }),
     });
 
-    console.log(utilityTasksResponse, 'utilityTasksResponse');
+    console.log(response, 'utilityTasksResponse');
 
-    yield put(Actions.getUtilityTasksSuccess(utilityTasksResponse));
+    yield put(Actions.getUtilityTasksSuccess(response));
   } catch (err) {
     yield put(Actions.getUtilityTasksError(err.message));
     console.log(err.message, "err.message")
@@ -92,7 +92,7 @@ export function* getUtilityTasksByStatus({ type, payload }) {
   }&status=${payload}`;
 
   try {
-    const utilityTasksResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -100,9 +100,9 @@ export function* getUtilityTasksByStatus({ type, payload }) {
       }),
     });
 
-    console.log(utilityTasksResponse, 'utilityTasksResponse');
+    console.log(response, 'utilityTasksResponse');
 
-    yield put(Actions.getUtilityTasksByStatusSuccess(utilityTasksResponse));
+    yield put(Actions.getUtilityTasksByStatusSuccess(response));
   } catch (err) {
     // yield put(Actions.getUtilityTasksError(err.message));
   }
@@ -113,7 +113,7 @@ export function* getUtilityTask({ type, payload }) {
   const requestURL = `${Endpoints.GetUtilityTaskApi}/${payload}`;
 
   try {
-    const utilityTaskResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -121,9 +121,9 @@ export function* getUtilityTask({ type, payload }) {
       }),
     });
 
-    console.log(utilityTaskResponse, 'utilityTaskResponse');
+    console.log(response, 'utilityTaskResponse');
 
-    yield put(Actions.getUtilityTaskSuccess(utilityTaskResponse));
+    yield put(Actions.getUtilityTaskSuccess(response));
   } catch (err) {
     // yield put(Actions.getUtilityTasksError(err.message));
   }
@@ -134,8 +134,8 @@ export function* commentUtilityTask({ type, payload }) {
   const requestURL = `${Endpoints.TaskCommentApi}`;
 
   try {
-    const utilityTaskResponse = yield call(request, requestURL, {
-      method: 'PUT',
+    const response = yield call(request, requestURL, {
+      method: 'POST',
       body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -143,9 +143,9 @@ export function* commentUtilityTask({ type, payload }) {
       }),
     });
 
-    console.log(utilityTaskResponse, 'utilityTaskResponse');
+    console.log(response, 'utilityTaskResponse');
 
-    yield put(Actions.updateUtilityTaskSuccess(utilityTaskResponse));
+    yield put(Actions.updateUtilityTaskSuccess(response));
   } catch (err) {
     // yield put(Actions.getUtilityTasksError(err.message));
   }
@@ -156,7 +156,7 @@ export function* updateUtilityTask({ type, payload }) {
   const requestURL = `${Endpoints.UpdateUtilityTaskApi}`;
 
   try {
-    const utilityTaskResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'PUT',
       body: JSON.stringify(payload),
       headers: new Headers({
@@ -165,9 +165,9 @@ export function* updateUtilityTask({ type, payload }) {
       }),
     });
 
-    console.log(utilityTaskResponse, 'utilityTaskResponse');
+    console.log(response, 'utilityTaskResponse');
 
-    yield put(Actions.updateUtilityTaskSuccess(utilityTaskResponse));
+    yield put(Actions.updateUtilityTaskSuccess(response));
   } catch (err) {
     // yield put(Actions.getUtilityTasksError(err.message));
   }
@@ -178,7 +178,7 @@ export function* addAttachmentToTask({ type, payload }) {
   const requestURL = `${Endpoints.AddTaskAttachmentApi}`;
 
   try {
-    const utilityTaskResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'PUT',
       body: JSON.stringify(payload),
       headers: new Headers({
@@ -187,9 +187,9 @@ export function* addAttachmentToTask({ type, payload }) {
       }),
     });
 
-    console.log(utilityTaskResponse, 'utilityTaskResponse');
+    console.log(response, 'utilityTaskResponse');
 
-    yield put(Actions.updateUtilityTaskSuccess(utilityTaskResponse));
+    yield put(Actions.updateUtilityTaskSuccess(response));
   } catch (err) {
     // yield put(Actions.getUtilityTasksError(err.message));
   }
@@ -200,7 +200,7 @@ export function* removeTaskAttachment({ type, payload }) {
   const requestURL = `${Endpoints.RemoveTaskAttachmentApi}`;
 
   try {
-    const utilityTaskResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'PUT',
       body: JSON.stringify(payload),
       headers: new Headers({
@@ -209,9 +209,9 @@ export function* removeTaskAttachment({ type, payload }) {
       }),
     });
 
-    console.log(utilityTaskResponse, 'utilityTaskResponse');
+    console.log(response, 'utilityTaskResponse');
 
-    yield put(Actions.updateUtilityTaskSuccess(utilityTaskResponse));
+    yield put(Actions.updateUtilityTaskSuccess(response));
   } catch (err) {
     // yield put(Actions.getUtilityTasksError(err.message));
   }
@@ -222,7 +222,7 @@ export function* getUserByUUID({ type, payload }) {
   const requestURL = `${Endpoints.GetUserByUUIDApi}/${payload}`;
 
   try {
-    const userResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -230,9 +230,9 @@ export function* getUserByUUID({ type, payload }) {
       }),
     });
 
-    console.log(userResponse, 'userResponse');
+    console.log(response, 'userResponse');
 
-    yield put(Actions.getUserByUUIDSuccess(userResponse));
+    yield put(Actions.getUserByUUIDSuccess(response));
   } catch (err) {
     // yield put(Actions.getUserByUUIDError(err));
     // console.error(err, 'I got the error');
@@ -247,7 +247,7 @@ export function* getUtilityFiles() {
   }`;
 
   try {
-    const utilityFilesResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -255,7 +255,7 @@ export function* getUtilityFiles() {
       }),
     });
 
-    yield put(Actions.getUtilityFilesSuccess(utilityFilesResponse));
+    yield put(Actions.getUtilityFilesSuccess(response));
   } catch (err) {
     yield put(Actions.getUtilityFilesError(err));
   }
@@ -268,7 +268,7 @@ export function* deleteUtilityFile({ type, payload }) {
   console.log(payload, 'DELETE_DOCUMENT');
 
   try {
-    const utilityFileResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'PUT',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -276,18 +276,18 @@ export function* deleteUtilityFile({ type, payload }) {
       }),
     });
 
-    console.log(utilityFileResponse, 'deleteFileResponse');
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: `${
-    //       utilityFileResponse.document.docName
-    //     } has been deleted successfully`,
-    //     status: 'success',
-    //   }),
-    // );
+    console.log(response, 'deleteFileResponse');
+    yield put(
+      AppActions.openSnackBar({
+        open: true,
+        message: `${
+          response.document.docName
+        } has been deleted successfully`,
+        status: 'success',
+      }),
+    );
 
-    // yield put(Actions.deleteDocumentSuccess(utilityFileResponse));
+    // yield put(Actions.deleteDocumentSuccess(response));
   } catch (err) {
     // yield put(Actions.getUtilityFileError(err));
   }
@@ -298,7 +298,7 @@ export function* getUtilityFile({ type, payload }) {
   const requestURL = `${Endpoints.GetUtilityFileApi}/${payload}`;
 
   try {
-    const utilityFileResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -306,9 +306,9 @@ export function* getUtilityFile({ type, payload }) {
       }),
     });
 
-    console.log(utilityFileResponse, 'utilityFileResponse');
+    console.log(response, 'utilityFileResponse');
 
-    yield put(Actions.getUtilityFileSuccess(utilityFileResponse));
+    yield put(Actions.getUtilityFileSuccess(response));
   } catch (err) {
     // yield put(Actions.getUtilityFileError(err));
   }
@@ -321,7 +321,7 @@ export function* shareUtilityFiles({ type, payload }) {
   console.log(payload, 'payload');
 
   try {
-    const sharedDocResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
       body: JSON.stringify(payload),
       headers: new Headers({
@@ -331,16 +331,11 @@ export function* shareUtilityFiles({ type, payload }) {
     });
 
     yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: `${
-          sharedDocResponse.document.docName
-        } has been shared successfully`,
-        status: 'success',
-      }),
+      AppActions.openSnackBar({open: true, message: `${response.document.docName} has been shared successfully`, status: 'success' }),
     );
-    console.log(sharedDocResponse, 'sharedDocResponse');
-    // yield put(Actions.shareDocumentSuccess(sharedDocResponse));
+    console.log(response, 'response');
+    yield put(Actions.closeShareFileDialog())
+    // yield put(Actions.shareDocumentSuccess(response));
   } catch (err) {
     // yield put(Actions.getSharedDocumentsError(err));
   }
@@ -353,7 +348,7 @@ export function* getSharedUtilityFiles({ type, payload }) {
   console.log(payload, 'payload');
 
   try {
-    const sharedDocResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -361,9 +356,9 @@ export function* getSharedUtilityFiles({ type, payload }) {
       }),
     });
 
-    console.log(sharedDocResponse, 'get sharedDocResponse');
+    console.log(response, 'get sharedDocResponse');
 
-    yield put(Actions.getSharedDocumentsSuccess(sharedDocResponse));
+    yield put(Actions.getSharedDocumentsSuccess(response));
   } catch (err) {
     // yield put(Actions.getSharedDocumentsError(err));
   }
@@ -376,7 +371,7 @@ export function* getFavoriteUtilityFiles({ type, payload }) {
   console.log(payload, 'payload');
 
   try {
-    const favDocResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -384,9 +379,9 @@ export function* getFavoriteUtilityFiles({ type, payload }) {
       }),
     });
 
-    console.log(favDocResponse, 'get favDocResponse');
+    console.log(response, 'get favDocResponse');
 
-    yield put(Actions.getFavoriteDocumentsSuccess(favDocResponse));
+    yield put(Actions.getFavoriteDocumentsSuccess(response));
   } catch (err) {
     // yield put(Actions.getUtilityFileError(err));
   }
@@ -399,7 +394,7 @@ export function* favoriteUtilityFile({ type, payload }) {
   console.log(payload, 'payload');
 
   try {
-    const favDocResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
       body: JSON.stringify(payload),
       headers: new Headers({
@@ -408,9 +403,9 @@ export function* favoriteUtilityFile({ type, payload }) {
       }),
     });
 
-    console.log(favDocResponse, 'favDocResponse');
+    console.log(response, 'favDocResponse');
 
-    yield put(Actions.favoriteDocumentSuccess(favDocResponse));
+    yield put(Actions.favoriteDocumentSuccess(response));
   } catch (err) {
     // yield put(Actions.getUtilityFileError(err));
   }
@@ -421,7 +416,7 @@ export function* unfavoriteUtilityFile({ type, payload }) {
   const requestURL = `${Endpoints.FavoriteDocumentApi}`;
 
   try {
-    const favDocResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
       body: JSON.stringify(payload),
       headers: new Headers({
@@ -430,9 +425,9 @@ export function* unfavoriteUtilityFile({ type, payload }) {
       }),
     });
 
-    console.log(favDocResponse, 'favDocResponse');
+    console.log(response, 'favDocResponse');
 
-    yield put(Actions.favoriteDocumentSuccess(favDocResponse));
+    yield put(Actions.favoriteDocumentSuccess(response));
   } catch (err) {
     // yield put(Actions.getUtilityFileError(err));
   }
@@ -489,7 +484,7 @@ export function* getEmployees() {
   const requestURL = `${Endpoints.GetEmployeesApi}`;
 
   try {
-    const employeesResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -497,7 +492,7 @@ export function* getEmployees() {
       }),
     });
 
-    yield put(Actions.getEmployeesSuccess(employeesResponse));
+    yield put(Actions.getEmployeesSuccess(response));
   } catch (err) {
     // yield put(Actions.getUtilityEmployeesError(err));
   }
