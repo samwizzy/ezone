@@ -78,6 +78,13 @@ const NewAccountDialog = props => {
     ref: ""
   });
 
+  React.useEffect(() => {
+    if(accountDialog.type === 'edit'){
+      const {accountName, accountNumber, accountType, description, ezoneBalance, orgId, period, ref} = accountDialog.data
+      setValues({...values, accountName, accountNumber, accountType, description, ezoneBalance, orgId, period, ref})
+    }
+  }, [accountDialog])
+
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
@@ -350,9 +357,7 @@ const NewAccountDialog = props => {
             </Button>
           )}
           <Button
-            onClick={() => {
-              closeNewAccountDialogAction();
-            }}
+            onClick={closeNewAccountDialogAction}
             color="inherit"
             // variant="contained"
           >
