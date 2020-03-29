@@ -10,69 +10,26 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import * as UtilityActions from '../../../UtilityPage/actions';
+import * as UtilitySelectors from '../../../UtilityPage/selectors';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-import { AddWarehouse } from './AddWarehouse';
+import ModuleLayout from '../../components/ModuleLayout';
+// import { AddWarehouse } from './AddWarehouse';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(5, 5, 5, 20),
-    marginBottom: theme.spacing(4),
-  },
-  image: {
-    position: 'absolute',
-    width: '100px',
-    height: '100px',
-    left: '150px',
-    top: '180px',
-    border: '1px solid #C4C4C4',
-    borderRadius: '155px',
-    padding: '25px',
-  },
-  edit: {
-    position: 'absolute',
-    height: '100px',
-    left: '1280px',
-    top: '180px',
-    color: '#1A88E1',
-    fontStyle: 'normal',
-    fontWeight: '600',
-    fontSize: '13px',
-    lineHeight: '16px',
-    // border: '2px solid #1A88E1',
-    [theme.breakpoints.down('md')]: {
-      position: 'absolute',
-      height: '100px',
-      left: '265px',
-      top: '150px',
-      color: '#1A88E1',
-    },
-  },
-  orgContainer: {
-    padding: theme.spacing(0, 5, 0, 5),
-  },
-  demo: {
-    backgroundColor: theme.palette.background.paper,
-  },
-  editButton: {
-    width: '117px',
-    height: '40px',
-    background: '#1A88E1',
-    borderRadius: '10px',
-    align: 'right',
-  },
-  listFormat: {
-    marginBottom: '10px',
-    marginTop: '10px',
+  button: {
+    margin: theme.spacing(1),
   },
 }));
 
-const WarehouseList = props => {
+const TransferOrdersList = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -88,14 +45,14 @@ const WarehouseList = props => {
     loading,
     getAllEmployees,
     openNewWarehouseDialogAction,
-    // getAllEmployeesAction,
-    openEditEmployeeDialogAction,
-    openViewEmployeeDialogAction,
+    // getAllUsersAction,
+    // openEditEmployeeDialogAction,
+    // openViewEmployeeDialogAction,
   } = props;
 
-  // useEffect(() => {
-  //   getAllEmployeesAction();
-  // }, []);
+  useEffect(() => {
+    // getAllUsersAction();
+  }, []);
 
   console.log(getAllEmployees, 'getAllEmployees');
 
@@ -224,7 +181,16 @@ const WarehouseList = props => {
     responsive: 'scrollMaxHeight',
     selectableRows: 'none',
     customToolbar: () => (
-      <AddWarehouse openNewWarehouseDialogAction={openNewWarehouseDialogAction} />
+      <Button
+        variant="contained"
+        color="primary"
+        size="small"
+        className={classes.button}
+        startIcon={<AddIcon />}
+        href="/transfer/new"
+      >
+        New
+      </Button>
     ),
   };
 
@@ -234,37 +200,39 @@ const WarehouseList = props => {
 
   return (
     <React.Fragment>
-      <MUIDataTable
-        title="All Warehouses"
-        data={[]}
-        columns={columns}
-        options={options}
-      />
+      <ModuleLayout>
+        <MUIDataTable
+          title="All Transfer Orders"
+          data={getAllEmployees}
+          columns={columns}
+          options={options}
+        />
+      </ModuleLayout>
     </React.Fragment>
   );
 };
 
-WarehouseList.propTypes = {
+TransferOrdersList.propTypes = {
   loading: PropTypes.bool,
   getAllEmployees: PropTypes.array,
   openNewWarehouseDialogAction: PropTypes.func,
-  openEditEmployeeDialogAction: PropTypes.func,
-  openViewEmployeeDialogAction: PropTypes.func,
-  // getAllEmployeesAction: PropTypes.func,
+  // openEditEmployeeDialogAction: PropTypes.func,
+  // openViewEmployeeDialogAction: PropTypes.func,
+  getAllUsersAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
   // getAllEmployees: Selectors.makeSelectGetAllEmployees(),
-  getAllEmployees: Selectors.makeSelectGetAllEmployees(),
+  // getAllEmployees: UtilitySelectors.makeSelectAllEmployees(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    // getAllEmployeesAction: () =>
-    //   dispatch(Actions.getAllEmployees()),
-    openNewWarehouseDialogAction: () =>
-      dispatch(Actions.openNewWarehouseDialog()),
+    // getAllUsersAction: () =>
+    //   dispatch(UtilityActions.getAllUsers()),
+    // openNewWarehouseDialogAction: () =>
+    //   dispatch(Actions.openNewWarehouseDialog()),
   };
 }
 
@@ -276,4 +244,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(WarehouseList);
+)(TransferOrdersList);

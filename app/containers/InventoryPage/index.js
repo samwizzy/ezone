@@ -17,16 +17,24 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectInventoryPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
+import ModuleLayout from './components/ModuleLayout';
+import WarehousePage from './WarehousePage/index';
+import ItemPage from './ItemPage/index';
+
 export function InventoryPage() {
   useInjectReducer({ key: 'inventoryPage', reducer });
   useInjectSaga({ key: 'inventoryPage', saga });
 
   return (
     <div>
-      <Helmet>
-        <title>InventoryPage</title>
-        <meta name="description" content="Description of InventoryPage" />
-      </Helmet>
+      <ModuleLayout>
+        <Helmet>
+          <title>InventoryPage</title>
+          <meta name="description" content="Description of InventoryPage" />
+        </Helmet>
+        <WarehousePage />
+        <ItemPage />
+      </ModuleLayout>
     </div>
   );
 }

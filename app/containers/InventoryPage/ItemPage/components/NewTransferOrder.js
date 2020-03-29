@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const NewItem = props => {
+const NewTransferOrder = props => {
   const classes = useStyles();
 
   const {
@@ -291,7 +291,7 @@ const NewItem = props => {
   );
 };
 
-NewItem.propTypes = {
+NewTransferOrder.propTypes = {
   loading: PropTypes.bool,
   getAllEmployees: PropTypes.array,
   openNewWarehouseDialogAction: PropTypes.func,
@@ -323,4 +323,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(NewItem);
+)(NewTransferOrder);
