@@ -87,6 +87,7 @@ const AccountChart = props => {
 
   const {
     openNewAccountDialogAction,
+    editOpenAccountDialogAction,
     accountTypeData,
     chartOfAccountData,
   } = props;
@@ -200,10 +201,14 @@ const AccountChart = props => {
               >
                 {/* <MenuItem onClick={handleClose}>Assign Role</MenuItem>
                 <MenuItem onClick={handleClose}>Assign Apps</MenuItem> */}
-                <MenuItem onClick={() => openEditEmployeeDialogAction(Post)}>
+                
+                <MenuItem onClick={() => {
+                  // console.log('data --> ',chartOfAccountData.id);
+                  editOpenAccountDialogAction(chartOfAccountData);
+                }}>
                   Edit
                 </MenuItem>
-                <MenuItem onClick={() => openViewEmployeeDialogAction(Post)}>
+                <MenuItem onClick={handleClose}>
                   View Details
                 </MenuItem>
                 <MenuItem onClick={handleClose}>Delete</MenuItem>
@@ -221,10 +226,8 @@ const AccountChart = props => {
     selectableRows: 'none',
     customToolbar: () => (
       <AddButton 
-      openNewAccountDialogAction={openNewAccountDialogAction} 
-        // openVendorDialogAction={openVendorDialogAction} 
+        openNewAccountDialogAction={openNewAccountDialogAction} 
       />
-      // <AddVendor />
     ),
   };
 
@@ -252,6 +255,7 @@ const AccountChart = props => {
 AccountChart.propTypes = {
   loading: PropTypes.bool,
   openNewAccountDialogAction: PropTypes.func,
+  editOpenAccountDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -263,7 +267,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
-    // dispatchGetAllAccountTypeAction: () => dispatch(Actions.getAllAccountTypeAction()),
+    editOpenAccountDialogAction: evt => dispatch(Actions.editOpenAccountDialog(evt)),
   };
 }
 

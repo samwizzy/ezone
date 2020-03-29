@@ -6,6 +6,7 @@
 
 import * as Constants from './constants';
 
+// Account dialog operations (Open new)
 export function openNewAccountDialog() {
   return {
     type: Constants.OPEN_NEW_ACCOUNT_DIALOG,
@@ -15,6 +16,20 @@ export function openNewAccountDialog() {
 export function closeNewAccountDialog() {
   return {
     type: Constants.CLOSE_NEW_ACCOUNT_DIALOG,
+  };
+}
+
+// Account dialog operations (Edit)
+export function editOpenAccountDialog(data) {
+  return {
+    type: Constants.EDIT_OPEN_ACCOUNT_DIALOG,
+    payload: data,
+  };
+}
+
+export function editCloseAccountDialog() {
+  return {
+    type: Constants.EDIT_CLOSE_ACCOUNT_DIALOG,
   };
 }
 
