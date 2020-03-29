@@ -75,8 +75,6 @@ export function* getUtilityTasks() {
       }),
     });
 
-    console.log(response, 'utilityTasksResponse');
-
     yield put(Actions.getUtilityTasksSuccess(response));
   } catch (err) {
     yield put(Actions.getUtilityTasksError(err.message));
@@ -100,8 +98,6 @@ export function* getUtilityTasksByStatus({ type, payload }) {
       }),
     });
 
-    console.log(response, 'utilityTasksResponse');
-
     yield put(Actions.getUtilityTasksByStatusSuccess(response));
   } catch (err) {
     // yield put(Actions.getUtilityTasksError(err.message));
@@ -121,16 +117,35 @@ export function* getUtilityTask({ type, payload }) {
       }),
     });
 
-    console.log(response, 'utilityTaskResponse');
-
     yield put(Actions.getUtilityTaskSuccess(response));
   } catch (err) {
     // yield put(Actions.getUtilityTasksError(err.message));
   }
 }
 
+export function* getCommentsByTaskId({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  console.log(accessToken, "Access Token in get comment")
+  const requestURL = `${Endpoints.GetAllCommentByTaskIdApi}/${payload}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+    yield put(Actions.getTaskCommentsSuccess(response));
+  } catch (err) {
+    // yield put(Actions.commentTaskError(err.message));
+  }
+}
+
 export function* commentUtilityTask({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  console.log(accessToken, "Access Token in comment")
+
   const requestURL = `${Endpoints.TaskCommentApi}`;
 
   try {
@@ -143,11 +158,15 @@ export function* commentUtilityTask({ type, payload }) {
       }),
     });
 
-    console.log(response, 'utilityTaskResponse');
+    console.log(response, "comment response")
 
-    yield put(Actions.updateUtilityTaskSuccess(response));
+    yield put(
+      AppActions.openSnackBar({open: true, message: `Comment Posted`, status: 'success' }),
+    );
+    yield put(Actions.getTaskComments(response.task.id))
+    // yield put(Actions.commentTaskSuccess(response));
   } catch (err) {
-    // yield put(Actions.getUtilityTasksError(err.message));
+    // yield put(Actions.commentTaskError(err.message));
   }
 }
 
@@ -460,7 +479,7 @@ export function* getUserChat() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
-  const requestURL = `${Endpoints.GetUserChatApi}/?userUid=${currentUser.uuId}`;
+  const requestURL = `${Endpoints.GetUserChatApi}/?userUid=${currentUser && currentUser.uuId}`;
 
   try {
     const getUserChatResponse = yield call(request, requestURL, {
@@ -566,6 +585,8 @@ export default function* UtilityPageSaga() {
   yield takeLatest(Constants.GET_UTILITY_TASKS, getUtilityTasks);
   yield takeLatest(Constants.GET_UTILITY_TASK, getUtilityTask);
   yield takeLatest(Constants.UPDATE_UTILITY_TASK, updateUtilityTask);
+  yield takeLatest(Constants.ADD_TASK_COMMENT, commentUtilityTask);
+  yield takeLatest(Constants.GET_TASK_COMMENTS, getCommentsByTaskId);
   yield takeLatest(Constants.GET_UTILITY_FILE, getUtilityFile);
   yield takeLatest(Constants.SHARE_DOCUMENT, shareUtilityFiles);
   yield takeLatest(Constants.DELETE_DOCUMENT, deleteUtilityFile);

@@ -99,6 +99,7 @@ export const initialState = {
   user: {},
   tasks: [],
   task: {},
+  taskComments: [],
   files: [],
   file: {},
 };
@@ -174,6 +175,12 @@ const utilityPageReducer = (state = initialState, action) =>
         return {
           ...state,
           task: action.payload,
+        };
+      }
+      case Constants.GET_TASK_COMMENTS_SUCCESS: {
+        return {
+          ...state,
+          taskComments: action.payload,
         };
       }
       case Constants.GET_UTILITY_TASKS_ERROR: {

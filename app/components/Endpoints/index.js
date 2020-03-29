@@ -67,6 +67,7 @@ export const GetUtilityTasksByStatusApi = `${BaseUrl}/utilityserv/api/v1/get_by_
 export const AddTaskAttachmentApi = `${BaseUrl}/utilityserv/api/v1/task/add_attachments`;
 export const RemoveTaskAttachmentApi = `${BaseUrl}/utilityserv/api/v1/task/remove_attachments`;
 export const TaskCommentApi = `${BaseUrl}/utilityserv/api/v1/comment/add_comment`;
+export const GetAllCommentByTaskIdApi = `${BaseUrl}/utilityserv/api/v1/comment/get_all_comment_by_taskid`;
 
 // Chat Api
 export const GetUserChatApi = `${BaseUrl}/utilityserv/api/v1/chat/get_user_chat`;
