@@ -90,3 +90,10 @@ export const CreateWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/add_workorder`;
 export const GetListOfWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/find_all_workorders`;
 
 
+/** *****************************************************************
+ * Inventry endpoint
+ ******************************************************************* */
+
+// Warehouse Apis
+export const CreateNewWarehouseApi = `${BaseUrl}/inventoryserv/api/v1/add_warehouse`;
+export const GetAllWarehouses = `${BaseUrl}/inventoryserv/api/v1/get_all_warehouses`;

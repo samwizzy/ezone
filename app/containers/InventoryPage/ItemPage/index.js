@@ -18,7 +18,7 @@ import makeSelectItemPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import ItemsList from './components/ItemsList';
-import ModuleLayout from './components/ModuleLayout';
+import ModuleLayout from '../components/ModuleLayout';
 
 export function ItemPage() {
   useInjectReducer({ key: 'itemPage', reducer });
@@ -26,11 +26,11 @@ export function ItemPage() {
 
   return (
     <div>
-      <Helmet>
-        <title>ItemPage</title>
-        <meta name="description" content="Description of ItemPage" />
-      </Helmet>
       <ModuleLayout>
+        <Helmet>
+          <title>ItemPage</title>
+          <meta name="description" content="Description of ItemPage" />
+        </Helmet>
         <ItemsList />
       </ModuleLayout>
     </div>

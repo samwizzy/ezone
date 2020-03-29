@@ -25,7 +25,6 @@ export function* getAllEmployees() {
     });
 
     console.log(getAllEmployeesResponse, 'getAllEmployeesResponse');
-
     yield put(Actions.getAllEmployeesSuccess(getAllEmployeesResponse));
   } catch (err) {
     yield put(Actions.getAllEmployeesError(err));
@@ -41,11 +40,9 @@ export function* getAllEmployees() {
 
 export function* getAllWarehouses() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  // const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
-  const requestURL = `${Endpoints.GetAllEmployeesApi}/${
-    currentUser.organisation.orgId
-  }`;
+  const requestURL = `${Endpoints.GetAllWarehouses}`;
 
   try {
     const getAllWarehouseResponse = yield call(request, requestURL, {
@@ -73,26 +70,27 @@ export function* getAllWarehouses() {
 
 export function* createNewWarehouse() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  // const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const createNewEmployeeData = yield select(
-    Selectors.makeSelectCreateNewEmployeeData(),
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const createNewWarehouseData = yield select(
+    Selectors.makeSelectWarehouseDetails(),
   );
+  createNewWarehouseData.orgId = currentUser.organisation.orgId;
 
-  const requestURL = `${Endpoints.CreateNewEmployeeApi}`;
+  const requestURL = `${Endpoints.CreateNewWarehouseApi}`;
 
   try {
     const createNewEmployeeResponse = yield call(request, requestURL, {
       method: 'POST',
-      body: JSON.stringify(createNewEmployeeData),
+      body: JSON.stringify(createNewWarehouseData),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
-    yield put(Actions.createNewEmployeeSuccess(createNewEmployeeResponse));
+    // yield put(Actions.createNewEmployeeSuccess(createNewEmployeeResponse));
     yield put(Actions.getAllEmployees());
-    yield put(Actions.closeNewEmployeeDialog());
+    yield put(Actions.closeNewWarehouseDialog());
 
     if (createNewEmployeeResponse.success === true) {
       yield put(
@@ -112,7 +110,7 @@ export function* createNewWarehouse() {
       );
     }
   } catch (err) {
-    yield put(Actions.createNewEmployeeError(err));
+    yield put(Actions.createNewWarehouseError(err));
     yield put(
       AppActions.openSnackBar({
         open: true,

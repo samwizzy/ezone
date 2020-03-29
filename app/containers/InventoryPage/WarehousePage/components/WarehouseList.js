@@ -14,8 +14,6 @@ import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import * as UtilityActions from '../../../UtilityPage/actions';
-import * as UtilitySelectors from '../../../UtilityPage/selectors';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
@@ -90,14 +88,14 @@ const WarehouseList = props => {
     loading,
     getAllEmployees,
     openNewWarehouseDialogAction,
-    getAllUsersAction,
+    // getAllEmployeesAction,
     openEditEmployeeDialogAction,
     openViewEmployeeDialogAction,
   } = props;
 
-  useEffect(() => {
-    getAllUsersAction();
-  }, []);
+  // useEffect(() => {
+  //   getAllEmployeesAction();
+  // }, []);
 
   console.log(getAllEmployees, 'getAllEmployees');
 
@@ -238,7 +236,7 @@ const WarehouseList = props => {
     <React.Fragment>
       <MUIDataTable
         title="All Warehouses"
-        data={getAllEmployees}
+        data={[]}
         columns={columns}
         options={options}
       />
@@ -252,19 +250,19 @@ WarehouseList.propTypes = {
   openNewWarehouseDialogAction: PropTypes.func,
   openEditEmployeeDialogAction: PropTypes.func,
   openViewEmployeeDialogAction: PropTypes.func,
-  getAllUsersAction: PropTypes.func,
+  // getAllEmployeesAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
   // getAllEmployees: Selectors.makeSelectGetAllEmployees(),
-  getAllEmployees: UtilitySelectors.makeSelectAllEmployees(),
+  getAllEmployees: Selectors.makeSelectGetAllEmployees(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAllUsersAction: () =>
-      dispatch(UtilityActions.getAllUsers()),
+    // getAllEmployeesAction: () =>
+    //   dispatch(Actions.getAllEmployees()),
     openNewWarehouseDialogAction: () =>
       dispatch(Actions.openNewWarehouseDialog()),
   };

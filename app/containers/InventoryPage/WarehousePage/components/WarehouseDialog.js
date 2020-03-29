@@ -39,12 +39,12 @@ const useStyles = makeStyles(theme => ({
 
 const gender = [
   {
-    value: 'Male',
-    label: 'Male',
+    value: 'Nigeria',
+    label: 'Nigeria',
   },
   {
-    value: 'Female',
-    label: 'Female',
+    value: 'Ghana',
+    label: 'Ghana',
   },
 ];
 
@@ -56,22 +56,25 @@ const WarehouseDialog = props => {
   const {
     loading,
     warehouseDialog,
+    getAllEmployees,
     closeNewWarehouseDialogAction,
     closeEditEmployeeDialogAction,
-    dispatchCreateNewEmployeeAction,
+    dispatchCreateNewWarehouseAction,
   } = props;
 
   const classes = useStyles();
   const [values, setValues] = React.useState({
     name: '',
-    phone: '',
-    head: '',
-    contactEmail: '',
-    zipCode: '',
     firstStreet: '',
     secondStreet: '',
     city: '',
+    country: '',
     state: '',
+    zipCode: '',
+    wareHouseContactEmail: '',
+    warehousePhoneNumber: '',
+    headOfWareHouseEmailAddress: '',
+    headOfWareHousePhoneNumber: '',
   });
 
   const canBeSubmitted = () => {
@@ -130,70 +133,11 @@ const WarehouseDialog = props => {
             <div>
               <TextField
                 id="standard-Name"
-                label="Name"
+                label="Warehouse Name"
                 variant="outlined"
                 className={classes.textField}
                 value={values.name}
                 onChange={handleChange('name')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-Phone"
-                label="Phone Number"
-                variant="outlined"
-                className={classes.textField}
-                value={values.phone}
-                onChange={handleChange('phone')}
-                margin="normal"
-                type="number"
-                fullWidth
-              />
-              <Autocomplete
-                id="combo-box-demo"
-                options={[]}
-                getOptionLabel={option => option.firstName}
-                // style={{ width: 500 }}
-                // onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label="Search contacts"
-                    variant="outlined"
-                    placeholder="Search Contacts"
-                    fullWidth
-                  />
-                )}
-              />
-              <TextField
-                id="standard-head"
-                label="Head"
-                variant="outlined"
-                className={classes.textField}
-                value={values.head}
-                onChange={handleChange('head')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-contactEmail"
-                label="Contact Email"
-                type="email"
-                variant="outlined"
-                className={classes.textField}
-                value={values.contactEmail}
-                onChange={handleChange('contactEmail')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-zipCode"
-                label="zipCode"
-                type="number"
-                variant="outlined"
-                className={classes.textField}
-                value={values.zipCode}
-                onChange={handleChange('zipCode')}
                 margin="normal"
                 fullWidth
               />
@@ -233,12 +177,12 @@ const WarehouseDialog = props => {
               />
               <TextField
                 id="standard-select-state"
-                label="Select State"
+                label="Select Country"
                 variant="outlined"
                 className={classes.textField}
                 margin="normal"
-                value={values.state ? values.state : ''}
-                onChange={handleSelectChange('state')}
+                value={values.country ? values.country : ''}
+                onChange={handleSelectChange('country')}
                 select
                 fullWidth
               >
@@ -248,6 +192,86 @@ const WarehouseDialog = props => {
                   </MenuItem>
                 ))}
               </TextField>
+              <TextField
+                id="standard-state"
+                label="State"
+                variant="outlined"
+                className={classes.textField}
+                margin="normal"
+                value={values.state ? values.state : ''}
+                onChange={handleChange('state')}
+                fullWidth
+              />
+              <TextField
+                id="standard-zipCode"
+                label="zipCode"
+                type="number"
+                variant="outlined"
+                className={classes.textField}
+                value={values.zipCode}
+                onChange={handleChange('zipCode')}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                id="standard-warehousePhoneNumber"
+                label="Warehouse Phone Number"
+                variant="outlined"
+                className={classes.textField}
+                value={values.warehousePhoneNumber}
+                onChange={handleChange('warehousePhoneNumber')}
+                margin="normal"
+                type="number"
+                fullWidth
+              />
+              <TextField
+                id="standard-wareHouseContactEmail"
+                label="WareHouse Contact Email"
+                type="email"
+                variant="outlined"
+                className={classes.textField}
+                value={values.wareHouseContactEmail}
+                onChange={handleChange('wareHouseContactEmail')}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                id="standard-headOfWareHousePhoneNumber"
+                label="Head Of WareHouse PhoneNumber"
+                variant="outlined"
+                className={classes.textField}
+                value={values.phone}
+                onChange={handleChange('headOfWareHousePhoneNumber')}
+                margin="normal"
+                type="number"
+                fullWidth
+              />
+              <TextField
+                id="standard-headOfWareHouseEmailAddress"
+                label="Head Of WareHouse Email Address"
+                variant="outlined"
+                className={classes.textField}
+                value={values.phone}
+                onChange={handleChange('headOfWareHouseEmailAddress')}
+                margin="normal"
+                type="email"
+                fullWidth
+              />
+              {/* <Autocomplete
+                id="combo-headOfWareHouseEmailAddress"
+                options={getAllEmployees}
+                getOptionLabel={option => option.email}
+                // onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Search Head"
+                    variant="outlined"
+                    placeholder="Search Head"
+                    fullWidth
+                  />
+                )}
+              /> */}
             </div>
           ) : (
             <div>
@@ -381,7 +405,7 @@ const WarehouseDialog = props => {
           ) : (
             <Button
               onClick={() => {
-                dispatchCreateNewEmployeeAction(values);
+                dispatchCreateNewWarehouseAction(values);
               }}
               color="primary"
               variant="contained"
@@ -405,20 +429,22 @@ const WarehouseDialog = props => {
 
 WarehouseDialog.propTypes = {
   loading: PropTypes.bool,
+  getAllEmployees: PropTypes.array,
   warehouseDialog: PropTypes.object,
-  dispatchCreateNewEmployeeAction: PropTypes.func,
+  dispatchCreateNewWarehouseAction: PropTypes.func,
   closeNewWarehouseDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   warehouseDialog: Selectors.makeSelectWarehouseDialog(),
+  getAllEmployees: Selectors.makeSelectGetAllEmployees(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    // dispatchCreateNewEmployeeAction: evt =>
-    //   dispatch(Actions.createNewEmployee(evt)),
+    dispatchCreateNewWarehouseAction: evt =>
+      dispatch(Actions.createNewWarehouse(evt)),
     closeNewWarehouseDialogAction: () =>
       dispatch(Actions.closeNewWarehouseDialog()),
     dispatch,

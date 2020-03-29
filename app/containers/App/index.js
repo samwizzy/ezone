@@ -186,16 +186,16 @@ const App = () => {
                   path="/inventory/items/new"
                   component={NewItem}
                 />
-                {/* <PrivateRoute
+                <PrivateRoute
                   exact
-                  path="/transfer/orders"
+                  path="/inventory/transfer/orders"
                   component={TransferOrdersList}
                 />
                 <PrivateRoute
                   exact
-                  path="/transfer/new"
+                  path="/inventory/transfer/new"
                   component={NewTransferOrder}
-                /> */}
+                />
               </Layout3>
               <Route path="" component={NotFoundPage} />
             </Switch>

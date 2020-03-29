@@ -20,7 +20,7 @@ import * as UtilitySelectors from '../../../UtilityPage/selectors';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-import ModuleLayout from './ModuleLayout';
+import ModuleLayout from '../../components/ModuleLayout';
 // import { AddWarehouse } from './AddWarehouse';
 
 const useStyles = makeStyles(theme => ({

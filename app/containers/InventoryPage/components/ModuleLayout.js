@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import RefreshSharp from '@material-ui/icons/RefreshSharp';
-import UserMenu from '../../../../components/layouts/shared-components/UserMenu';
+import UserMenu from '../../../components/layouts/shared-components/UserMenu';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -70,10 +70,24 @@ function ModuleLayout(props) {
               <RefreshSharp />
             </IconButton>
 
-            <NavLink exact to="/items" activeClassName={classes.active}>
+            <NavLink
+              exact
+              to="/inventory/warehouses"
+              activeClassName={classes.active}
+            >
+              Warehouse
+            </NavLink>
+            <NavLink
+              exact
+              to="/inventory/items"
+              activeClassName={classes.active}
+            >
               Items
             </NavLink>
-            <NavLink to="/transfer/orders" activeClassName={classes.active}>
+            <NavLink
+              to="/inventory/transfer/orders"
+              activeClassName={classes.active}
+            >
               Transfer Orders
             </NavLink>
           </div>

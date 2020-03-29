@@ -20,7 +20,7 @@ import { createStructuredSelector } from 'reselect';
 // import * as Selectors from '../selectors';
 // import { CheckBox } from '@material-ui/icons';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-import ModuleLayout from './ModuleLayout';
+import ModuleLayout from '../../components/ModuleLayout';
 // import { AddWarehouse } from './AddWarehouse';
 
 const useStyles = makeStyles(theme => ({
