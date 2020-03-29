@@ -173,13 +173,15 @@ const AccountChart = props => {
     //   },
     // },
     {
-      name: '',
-      label: '',
+      name: 'id',
+      label: '.',
       options: {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          // const Post = datas.find(post => value === post.id);
+          const Post = chartOfAccountData.find(post => value === post.id);
+          console.log('Post --> ', Post);
+
           if (value === '') {
             return '';
           }
@@ -203,8 +205,8 @@ const AccountChart = props => {
                 <MenuItem onClick={handleClose}>Assign Apps</MenuItem> */}
                 
                 <MenuItem onClick={() => {
-                  // console.log('data --> ',chartOfAccountData.id);
-                  editOpenAccountDialogAction(chartOfAccountData);
+                  // console.log('Post --> ', Post);
+                  editOpenAccountDialogAction(Post);
                 }}>
                   Edit
                 </MenuItem>
