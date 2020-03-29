@@ -76,14 +76,16 @@ const useStyles = makeStyles(theme => ({
 const AccountChart = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  
   const [account, setAccount] = React.useState('');
 
 
   const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
-    console.log(id, "id value")
+    console.log("id value -> ", id);
+
     const selectedAccount = chartOfAccountData && chartOfAccountData.find(acc => id === acc.id);
-    setAccount(selectedAccount)
+    setAccount(selectedAccount);
   };
 
   const handleClose = () => {
@@ -179,7 +181,7 @@ const AccountChart = props => {
     // },
     {
       name: 'id',
-      label: '',
+      label: '.',
       options: {
         filter: true,
         sort: false,
