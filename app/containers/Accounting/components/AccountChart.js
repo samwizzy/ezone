@@ -76,9 +76,14 @@ const useStyles = makeStyles(theme => ({
 const AccountChart = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [account, setAccount] = React.useState('');
 
-  const handleClick = event => {
+
+  const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
+    console.log(id, "id value")
+    const selectedAccount = chartOfAccountData && chartOfAccountData.find(acc => id === acc.id);
+    setAccount(selectedAccount)
   };
 
   const handleClose = () => {
@@ -174,14 +179,12 @@ const AccountChart = props => {
     // },
     {
       name: 'id',
-      label: '.',
+      label: '',
       options: {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const Post = chartOfAccountData.find(post => value === post.id);
-          console.log('Post --> ', Post);
-
+          const AllCharts = chartOfAccountData && chartOfAccountData.find(post => value === post.id);
           if (value === '') {
             return '';
           }
@@ -190,7 +193,7 @@ const AccountChart = props => {
               <Button
                 aria-controls="simple-menu"
                 aria-haspopup="true"
-                onClick={handleClick}
+                onClick={event => handleClick(event, value)}
               >
                 Options
               </Button>
@@ -201,12 +204,8 @@ const AccountChart = props => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                {/* <MenuItem onClick={handleClose}>Assign Role</MenuItem>
-                <MenuItem onClick={handleClose}>Assign Apps</MenuItem> */}
-                
                 <MenuItem onClick={() => {
-                  // console.log('Post --> ', Post);
-                  editOpenAccountDialogAction(Post);
+                  editOpenAccountDialogAction(account);
                 }}>
                   Edit
                 </MenuItem>
