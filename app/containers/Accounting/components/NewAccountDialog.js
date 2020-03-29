@@ -83,6 +83,7 @@ const NewAccountDialog = props => {
   };
 
   console.log('values: ', values);
+  console.log('accountDialog: ', accountDialog);
 
   const handleSelectChange = (name, value) => {
     setValues({ ...values, accountType: value.type });

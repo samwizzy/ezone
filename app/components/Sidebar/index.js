@@ -81,7 +81,7 @@ function MiniDrawer(props) {
     <div className={classes.root}>
       <Drawer
         variant="permanent"
-        style={{ backgroundColor: 'red' }}
+        style={{ backgroundColor: 'red', border: '1px solid red' }}
         className={clsx(classes.drawer, {
           [classes.drawerOpen]: open,
           [classes.drawerClose]: !open,
