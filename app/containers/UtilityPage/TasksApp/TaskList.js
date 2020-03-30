@@ -27,6 +27,9 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     backgroundColor: theme.palette.common.white,
   },
+  flex: {
+    display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+  },
   drawer: {
     [theme.breakpoints.up('sm')]: {
       display: 'flex',
@@ -184,6 +187,7 @@ const TaskList = props => {
   const handleTaskById = id => {
     setSelectedIndex(id)
     getUtilityTask(id)
+    props.history.push({pathname: '/dashboard/task/' + id})
   }
 
   const drawer = (
@@ -192,9 +196,12 @@ const TaskList = props => {
         component="nav"
         subheader={
           <ListSubheader component="div" id="nested-list-subheader">
-            <Typography variant="subtitle1">
-              Tasks <IconButton onClick={openNewTaskDialog}><Add/></IconButton>
-            </Typography>
+            <div className={classes.flex}>
+              <Typography variant="h6">
+                Tasks 
+              </Typography>
+              <IconButton onClick={openNewTaskDialog}><Add/></IconButton>
+            </div>
           </ListSubheader>
         }
       >

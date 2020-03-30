@@ -234,6 +234,20 @@ export function removeTaskAttachmentSuccess(data) {
   };
 }
 
+export function deleteTask(taskId) {
+  return {
+    type: Constants.DELETE_TASK,
+    payload: taskId,
+  };
+}
+
+export function deleteTaskSuccess(data) {
+  return {
+    type: Constants.DELETE_TASK_SUCCESS,
+    payload: data,
+  };
+}
+
 export function commentTask(data) {
   return {
     type: Constants.ADD_TASK_COMMENT,
@@ -247,6 +261,7 @@ export function commentTaskSuccess(data) {
     payload: data,
   };
 }
+
 export function getTaskComments(taskId) {
   return {
     type: Constants.GET_TASK_COMMENTS,

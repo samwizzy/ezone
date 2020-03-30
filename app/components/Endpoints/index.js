@@ -62,6 +62,7 @@ export const GenerateLinkAndSendEmailApi = `${BaseUrl}/utilityserv/api/v1/share_
 export const GetUtilityTasksApi = `${BaseUrl}/utilityserv/api/v1/get_tasks_by_orgid`;
 export const GetUtilityTaskApi = `${BaseUrl}/utilityserv/api/v1/task`;
 export const UpdateUtilityTaskApi = `${BaseUrl}/utilityserv/api/v1/task/update_task`;
+export const DeleteUtilityTaskApi = `${BaseUrl}/utilityserv/api/v1/task/delete_task`;
 export const CreateUtilityTasksApi = `${BaseUrl}/utilityserv/api/v1/task`;
 export const GetUtilityTasksByStatusApi = `${BaseUrl}/utilityserv/api/v1/get_by_orgid_and_status`;
 export const AddTaskAttachmentApi = `${BaseUrl}/utilityserv/api/v1/task/add_attachments`;

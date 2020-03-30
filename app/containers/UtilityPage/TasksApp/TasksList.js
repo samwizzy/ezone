@@ -13,6 +13,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import moment from 'moment'
 import Lens from '@material-ui/icons/Lens'
+import DeleteOutline from '@material-ui/icons/DeleteOutline'
 import {AddTask} from '../components/AddButton';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
@@ -32,6 +33,12 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(5, 0),
     padding: theme.spacing(1, 15),
   },
+  iconButton: {
+    width: 24,
+    height: 24,
+    padding: 0,
+    '&.delete': { color: theme.status.danger},
+  },
   status: {
     width: 14,
     height: 14,
@@ -45,7 +52,7 @@ const useStyles = makeStyles(theme => ({
 
 const TasksList = props => {
   const classes = useStyles();
-  const { loading, getUtilityTasksByStatus, openNewTaskDialog, tasks, users } = props;
+  const { loading, getUtilityTasksByStatus, openNewTaskDialog, deleteTask, tasks, users } = props;
 
   const columns = [
     {
@@ -117,10 +124,10 @@ const TasksList = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: day => {
+        customBodyRender: date => {
           return (
             <Typography variant="inherit" color="textSecondary">
-                {moment(day).format('lll')}
+                {moment(date).format('lll')}
             </Typography>
           )
         }
@@ -132,11 +139,26 @@ const TasksList = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => {
+        customBodyRender: status => {
           return (
             <Typography variant="inherit" color="textSecondary">
-              <Lens className={classNames(classes.status, {'approved': true})} /> {value}
+              <Lens className={classNames(classes.status, {'approved': true})} /> {status}
             </Typography>
+          )
+        }
+      },
+    },
+    {
+      name: 'id',
+      label: ' ',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: id => {
+          return (
+            <IconButton onClick={event => {event.stopPropagation(), deleteTask(id)}} className={classNames(classes.iconButton, {'delete': true})}>
+              <DeleteOutline />
+            </IconButton>
           )
         }
       },
@@ -241,6 +263,7 @@ function mapDispatchToProps(dispatch) {
     getUtilityTasks: () => dispatch(Actions.getUtilityTasks()),
     getEmployees: () => dispatch(Actions.getEmployees()),
     getUtilityTasks: () => dispatch(Actions.getUtilityTasks()),
+    deleteTask: id => dispatch(Actions.deleteTask(id)),
     getUtilityTasksByStatus: (status) => dispatch(Actions.getUtilityTasksByStatus(status)),
   };
 }

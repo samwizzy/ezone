@@ -192,6 +192,27 @@ export function* updateUtilityTask({ type, payload }) {
   }
 }
 
+export function* deleteUtilityTask({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const requestURL = `${Endpoints.DeleteUtilityTaskApi}/${payload}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'PUT',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'delete task response');
+
+    yield put(Actions.deleteTaskSuccess(response));
+  } catch (err) {
+    // yield put(Actions.deleteUtilityTaskError(err.message));
+  }
+}
+
 export function* addAttachmentToTask({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.AddTaskAttachmentApi}`;
@@ -585,6 +606,7 @@ export default function* UtilityPageSaga() {
   yield takeLatest(Constants.GET_UTILITY_TASKS, getUtilityTasks);
   yield takeLatest(Constants.GET_UTILITY_TASK, getUtilityTask);
   yield takeLatest(Constants.UPDATE_UTILITY_TASK, updateUtilityTask);
+  yield takeLatest(Constants.DELETE_TASK, deleteUtilityTask);
   yield takeLatest(Constants.ADD_TASK_COMMENT, commentUtilityTask);
   yield takeLatest(Constants.GET_TASK_COMMENTS, getCommentsByTaskId);
   yield takeLatest(Constants.GET_UTILITY_FILE, getUtilityFile);
