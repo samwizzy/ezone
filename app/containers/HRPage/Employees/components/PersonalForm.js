@@ -99,8 +99,8 @@ export const PersonalForm = props => {
                             name="dateOfBirth"
                             id="date-picker-startDate"
                             label="Date Of Birth"
-                            value={form.dateOfBirth}
-                            onChange={(date, formatted) => handleDateChange(date, formatted, 'dateOfBirth')}
+                            value={form.dob}
+                            onChange={(date, formatted) => handleDateChange(date, formatted, 'dob')}
                             KeyboardButtonProps={{
                             'aria-label': 'change date',
                             }}

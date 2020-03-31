@@ -49,7 +49,7 @@ function AddTaskDialog(props) {
   React.useEffect(() => {
     if(task && data.type == 'edit'){
       const { id, title, description, status, startDate, endDate, assignedTo, assignedToName, assignedToEmail, supervisedBy } = task
-      setForm({...form, id, title, description, status, startDate, endDate, assignedTo, assignedToName, assignedToEmail, supervisedBy })
+      setForm({...form, id, title, description, status, startDate: moment(startDate).format('YYYY-MM-DD'), endDate: moment(endDate).format('YYYY-MM-DD'), assignedTo, assignedToName, assignedToEmail, supervisedBy })
     }
   }, [data])
 
@@ -107,6 +107,7 @@ function AddTaskDialog(props) {
   }
 
   console.log(form, 'checking form task...')
+  console.log(data, 'checking data dialog...')
 
   return (
     <div>

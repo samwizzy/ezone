@@ -52,7 +52,9 @@ const useStyles = makeStyles(theme => ({
 
 const TasksList = props => {
   const classes = useStyles();
-  const { loading, getUtilityTasksByStatus, openNewTaskDialog, deleteTask, tasks, users } = props;
+  const { loading, getUtilityTasks, getUtilityTasksByStatus, openNewTaskDialog, deleteTask, tasks, users } = props;
+
+console.log(tasks, "tasks")
 
   const columns = [
     {
@@ -116,6 +118,16 @@ const TasksList = props => {
             </Typography>
           )
         }
+      },
+    },
+    {
+      name: 'dateCreated',
+      label: 'Date Created',
+      options: {
+        filter: true,
+        sort: false,
+        sortDirection: "desc",
+        display: "excluded"
       },
     },
     {
@@ -205,7 +217,7 @@ const TasksList = props => {
               </ListSubheader>
             }
           >
-            <ListItem button>
+            <ListItem button onClick={getUtilityTasks}>
               <ListItemIcon><Lens className={classNames(classes.status)} /></ListItemIcon>
               <ListItemText primary="All" />
             </ListItem>

@@ -66,11 +66,15 @@ const Container = styled.div`
 
 function PaperDropzone(props) {
   const [files, setFiles] = useState([]);
-  const { uploadFileAction } = props
+  const { uploadFileAction, task } = props
   const [form, setForm] = useState({
     attachments: [],
-    docId: 0
+    taskId: ""
   });
+
+  React.useEffect(() => {
+    setForm(_.set(form, "taskId", task.id))
+  }, [task])
 
   const {
     open,
@@ -98,7 +102,8 @@ function PaperDropzone(props) {
       getBase64(acceptedFiles[0], (result) => _.set(attachment, "file", result))
       attachments.push(attachment)
       setForm(_.set(form, "attachments", attachments))
-      // uploadFileAction(form)
+      setForm(_.set(form, "taskId", task.id))
+      uploadFileAction(form)
     },
   });
 
