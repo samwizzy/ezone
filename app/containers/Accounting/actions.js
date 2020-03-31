@@ -100,6 +100,28 @@ export function createNewChartOfAccountErrorAction(data) {
   };
 }
 
+// Update chart of account
+export function updateChartOfAccountAction(data) {
+  return {
+    type: Constants.UPDATE_CHART_OF_ACCOUNT,
+    payload: data,
+  };
+}
+
+export function updateChartOfAccountSuccessAction(data) {
+  return {
+    type: Constants.UPDATE_CHART_OF_ACCOUNT_SUCCESS,
+    payload: data,
+  };
+}
+
+export function updateChartOfAccountErrorAction(data) {
+  return {
+    type: Constants.UPDATE_CHART_OF_ACCOUNT_ERR,
+    payload: data,
+  };
+}
+
 
 // Get all chart of account 
 export function getAllChartOfAccountTypeAction() {

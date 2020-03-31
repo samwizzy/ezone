@@ -59,11 +59,12 @@ const NewAccountDialog = props => {
     accountTypeData,
     detailTypeData,
     dispatchGetDetailTypeAction,
-    createChartOfAccountAction 
+    createChartOfAccountAction,
+    updateChartOfAccountAction 
   } = props;
 
-  console.log('accountTypeData: ', accountTypeData);
-  console.log('detailTypeData: ', detailTypeData);
+  // console.log('accountTypeData: ', accountTypeData);
+  // console.log('detailTypeData: ', detailTypeData);
 
   const classes = useStyles();
 
@@ -79,9 +80,9 @@ const NewAccountDialog = props => {
   });
 
   React.useEffect(() => {
-    if(accountDialog.type === 'edit'){
-      const {accountName, accountNumber, accountType, description, ezoneBalance, orgId, period, ref} = accountDialog.data
-      setValues({...values, accountName, accountNumber, accountType, description, ezoneBalance, orgId, period, ref})
+    if (accountDialog.type === 'edit') {
+      const {accountName, accountNumber, accountType, description, ezoneBalance, orgId, period, ref} = accountDialog.data;
+      setValues({...values, accountName, accountNumber, accountType, description, ezoneBalance, orgId, period, ref});
     }
   }, [accountDialog])
 
@@ -347,7 +348,8 @@ const NewAccountDialog = props => {
           ) : (
             <Button
               onClick={() => {
-                createChartOfAccountAction(values);
+                accountDialog.type === 'new' ? createChartOfAccountAction(values) : updateChartOfAccountAction(values);
+                // createChartOfAccountAction(values);
               }}
               color="primary"
               // variant="contained"
@@ -382,6 +384,7 @@ const mapStateToProps = createStructuredSelector({
   accountTypeData: Selectors.makeSelectAccountTypeData(),
   detailTypeData: Selectors.makeSelectDetailTypeData(),
   chartOfAccountPostData: Selectors.makeSelectChartOfAccountPostData(),
+  chartOfAccountUpdateData: Selectors.makeSelectUpdateChartOfAccountData(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -390,6 +393,7 @@ function mapDispatchToProps(dispatch) {
     closeNewAccountDialogAction: () => dispatch(Actions.closeNewAccountDialog()),
     dispatchGetDetailTypeAction: evt => dispatch(Actions.getDetailTypeAction(evt)),
     createChartOfAccountAction: evt => dispatch(Actions.createNewChartOfAccountAction(evt)),
+    updateChartOfAccountAction: evt => dispatch(Actions.updateChartOfAccountAction(evt)),
     dispatch,
   };
 }
