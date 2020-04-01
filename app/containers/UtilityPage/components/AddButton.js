@@ -4,10 +4,11 @@ import { Button, IconButton, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Add } from '@material-ui/icons';
 import NoteAdd from '@material-ui/icons/NoteAdd';
+import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 
 const useStyles = makeStyles(theme => ({
   iconButton: {
-    color: theme.palette.primary.main
+    color: theme.palette.primary.main,
   },
   icon: {}
 }));
@@ -33,19 +34,26 @@ export function AddTask(props) {
 }
 
 export function AddFile(props) {
-  const { openFileDialog } = props;
+  const { openFileDialog, openFolderDialog } = props;
   const classes = useStyles()
 
   return (
     <React.Fragment>
       <Tooltip title="New File">
-        <Button
-          size="small"
+        <IconButton
           className={classes.iconButton}
           onClick={openFileDialog}
         >
           <NoteAdd className={classes.icon} />
-        </Button>
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="New Folder">
+        <IconButton
+          className={classes.iconButton}
+          onClick={openFolderDialog}
+        >
+          <CreateNewFolderIcon className={classes.icon} />
+        </IconButton>
       </Tooltip>
     </React.Fragment>
   );

@@ -12,8 +12,8 @@ import saga from './../saga';
 import reducer from './../reducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import FilesList from './FilesList'
-import FileList from './FileList'
+import FilesList from './FoldersList'
+import FileList from './FolderList'
 import ModuleLayout from '../components/ModuleLayout' 
 
 const useStyles = makeStyles(theme => ({
@@ -27,19 +27,19 @@ const FilesApp = props => {
     useInjectSaga({ key: 'utilityPage', saga });
 
     const classes = useStyles();
-    const { loading, getUtilityFiles, getEmployees, match } = props;
+    const { loading, getAllFoldersAndDocs, getUtilityFiles, getEmployees, match } = props;
     const { params } = match
 
     React.useEffect(() => {
-        getUtilityFiles()
+        // getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
         getEmployees()
     }, []);
 
     return (
         <ModuleLayout>
-            { params.id? 
-                <FileList /> : <FilesList />
-            }
+          { params.folderId? 
+            <FileList /> : <FilesList />
+          }
         </ModuleLayout>
     );
 };
@@ -60,6 +60,7 @@ function mapDispatchToProps(dispatch) {
     openFileUploadDialog: ev => dispatch(Actions.openFileUploadDialog(ev)),
     openShareFileDialog: ev => dispatch(Actions.openShareFileDialog(ev)),
     getUtilityFiles: ev => dispatch(Actions.getUtilityFiles(ev)),
+    getAllFoldersAndDocs: (data) => dispatch(Actions.getAllFoldersAndDocs(data)),
     getEmployees: () => dispatch(Actions.getEmployees()),
   };
 }

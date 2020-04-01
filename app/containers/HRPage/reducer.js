@@ -15,6 +15,12 @@ export const initialState = {
   loading: false,
   employees: [],
   employee: {},
+  departments: [],
+  department: {},
+  roles: [],
+  role: {},
+  branches: [],
+  branch: {},
   empDialog: {
     type: 'new',
     props: {
@@ -63,8 +69,25 @@ export const initialState = {
 const hrReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
+      case Constants.GET_DEPARTMENTS_SUCCESS:
+        return {
+          ...state,
+          departments: action.payload
+        };
+        break;
+      case Constants.GET_BRANCHES_SUCCESS:
+        return {
+          ...state,
+          branches: action.payload
+        };
+        break;
+      case Constants.GET_ROLES_SUCCESS:
+        return {
+          ...state,
+          roles: action.payload
+        };
+        break;
       case Constants.GET_EMPLOYEES_SUCCESS:
-        console.log(state, "employees in reducer")
         return {
           ...state,
           employees: action.payload

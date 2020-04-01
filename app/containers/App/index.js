@@ -135,12 +135,12 @@ const App = () => {
                 />
                 <PrivateRoute
                   exact
-                  path="/dashboard/files"
+                  path="/dashboard/folders"
                   component={FilesApp}
                 />
                 <PrivateRoute
                   exact
-                  path="/dashboard/file/:id"
+                  path="/dashboard/folder/:folderId"
                   component={FilesApp}
                 />
                 <PrivateRoute

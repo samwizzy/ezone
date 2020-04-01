@@ -42,7 +42,7 @@ export const UpdateUserProfileApi = `${BaseUrl}/authserv/api/v1/user/update_prof
 // Folder Api
 export const InitFolderDirApi = `${BaseUrl}/utilityserv/api/v1/folder/init_directories`;
 export const GetAllFoldersAndDocApi = `${BaseUrl}/utilityserv/api/v1/folder/get_all_folders_by_type`;
-export const CreateAndAddFolderToFolderApi = `${BaseUrl}/utilityserv/api/v1/folder/create_and_add_to_folder`;
+export const AddFolderToFolderApi = `${BaseUrl}/utilityserv/api/v1/folder/create_and_add_to_folder`;
 
 // File Api
 export const AddDocToFolderApi = `${BaseUrl}/utilityserv/api/v1/document/add_to_folder`;
@@ -85,8 +85,8 @@ export const SendMessageApi = `${BaseUrl}/utilityserv/api/v1/message/send_messag
  ******************************************************************* */
 // Employee Api
 export const EmployeeApi = `${BaseUrl}/hrserv/api/v1/employee`;
-export const AllEmployeesApi = `${BaseUrl}/hrserv/api/v1/employees`;
-export const AllEmployeesByOrgIdApi = `${BaseUrl}/hrserv/api/v1/employees/for_organinisation/{orgId}`;
+export const EmployeesApi = `${BaseUrl}/hrserv/api/v1/employees`;
+export const EmployeesByOrgIdApi = `${BaseUrl}/hrserv/api/v1/employees/for_organinisation/{orgId}`;
 export const GetEmployeeByIdApi = `${BaseUrl}/hrserv/api/v1/employees/{employeeId}`;
 export const GetEmployeeByDeptApi = `${BaseUrl}/hrserv/api/v1/employees/by_department/{departmentId}`;
 export const GetEmployeeByTypeApi = `${BaseUrl}/hrserv/api/v1/employees/by_employee_type`;
@@ -94,7 +94,7 @@ export const GetEmployeeByLocationApi = `${BaseUrl}/hrserv/api/v1/employees/by_l
 export const GetEmployeeByRoleApi = `${BaseUrl}/hrserv/api/v1/employees/by_role`;
 // Department
 export const DepartmentApi = `${BaseUrl}/hrserv/api/v1/department`;
-export const AllDepartmentsApi = `${BaseUrl}/hrserv/api/v1/departments`;
+export const DepartmentsApi = `${BaseUrl}/hrserv/api/v1/departments`;
 export const GetDepartmentsByIdApi = `${BaseUrl}/hrserv/api/v1/departments/{id}`;
 export const GetDepartmentsByParentIdApi = `${BaseUrl}/hrserv/api/v1/departments/by_parent/{parentId}`;
 export const GetDepartmentsByOrgIdApi = `${BaseUrl}/hrserv/api/v1/departments/for_organinisation/{orgId}`;

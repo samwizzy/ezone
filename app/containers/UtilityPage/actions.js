@@ -47,6 +47,20 @@ export function getAllFoldersAndDocsSuccess(data) {
   };
 }
 
+export function getFolderById(payload) {
+  return {
+    type: Constants.GET_FOLDER_BY_ID,
+    payload
+  };
+}
+
+export function getFolderByIdSuccess(data) {
+  return {
+    type: Constants.GET_FOLDER_BY_ID_SUCCESS,
+    payload: data,
+  };
+}
+
 export function getUtilityFilesError(err) {
   return {
     type: Constants.GET_UTILITY_FILES_ERROR,
@@ -64,6 +78,34 @@ export function createUtilityFile(data) {
 export function createUtilityFileSuccess(data) {
   return {
     type: Constants.CREATE_UTILITY_FILES_SUCCESS,
+    payload: data,
+  };
+}
+
+export function addDocToFolder(data) {
+  return {
+    type: Constants.ADD_DOC_TO_FOLDER,
+    payload: data,
+  };
+}
+
+export function addDocToFolderSuccess(data) {
+  return {
+    type: Constants.ADD_DOC_TO_FOLDER_SUCCESS,
+    payload: data,
+  };
+}
+
+export function addFolderToFolder(data) {
+  return {
+    type: Constants.ADD_FOLDER_TO_FOLDER,
+    payload: data,
+  };
+}
+
+export function addFolderToFolderSuccess(data) {
+  return {
+    type: Constants.ADD_FOLDER_TO_FOLDER_SUCCESS,
     payload: data,
   };
 }
@@ -399,6 +441,19 @@ export function openNewFileDialog(data) {
 export function closeNewFileDialog() {
   return {
     type: Constants.CLOSE_NEW_FILE_DIALOG,
+  };
+}
+
+export function openNewFolderDialog() {
+  console.log('I have just clicked on folder dialog')
+  return {
+    type: Constants.OPEN_NEW_FOLDER_DIALOG,
+  };
+}
+
+export function closeNewFolderDialog() {
+  return {
+    type: Constants.CLOSE_NEW_FOLDER_DIALOG,
   };
 }
 

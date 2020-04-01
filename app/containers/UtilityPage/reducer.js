@@ -42,6 +42,13 @@ export const initialState = {
     },
     data: null,
   },
+  folderDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
   assignTaskDialog: {
     type: 'new',
     props: {
@@ -101,6 +108,7 @@ export const initialState = {
   task: {},
   taskComments: [],
   folders: [],
+  folder: {},
   files: [],
   file: {},
 };
@@ -169,6 +177,13 @@ const utilityPageReducer = (state = initialState, action) =>
         return {
           ...state,
           folders: action.payload,
+          loading: false
+        };
+      }
+      case Constants.GET_FOLDER_BY_ID: {
+        return {
+          ...state,
+          folder: action.payload,
           loading: false
         };
       }
@@ -410,6 +425,18 @@ const utilityPageReducer = (state = initialState, action) =>
             open: false,
             data: {}
           }
+        };
+      }
+      case Constants.OPEN_NEW_FOLDER_DIALOG: {
+        return {
+          ...state,
+          folderDialog: { type: 'new', props: {open: true}, data: action.payload },
+        };
+      }
+      case Constants.CLOSE_NEW_FOLDER_DIALOG: {
+        return {
+          ...state,
+          folderDialog: { type: 'new', props: {open: false}, data: action.payload },
         };
       }
       case Constants.OPEN_NEW_FILE_DIALOG: {

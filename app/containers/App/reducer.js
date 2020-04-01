@@ -113,9 +113,9 @@ const appReducer = (state = initialState, action) =>
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('expires_in');
 
-        history.push({
-          pathname: '/login'
-        })
+        // history.push({
+        //   pathname: '/login'
+        // })
 
         return {};
       }

@@ -57,6 +57,12 @@ const makeSelectFolders = () =>
     subState => subState.folders,
   );
 
+const makeSelectFolder = () =>
+  createSelector(
+    selectUtilityPageDomain,
+    subState => subState.folder,
+  );
+
 const makeSelectFiles = () =>
   createSelector(
     selectUtilityPageDomain,
@@ -115,6 +121,12 @@ const makeSelectNewFileDialog = () =>
   createSelector(
     selectUtilityPageDomain,
     subState => subState.fileDialog,
+  );
+
+const makeSelectNewFolderDialog = () =>
+  createSelector(
+    selectUtilityPageDomain,
+    subState => subState.folderDialog,
   );
 
 const makeSelectNewTaskDialog = () =>
@@ -188,6 +200,7 @@ export {
   makeSelectFile,
   makeSelectFiles,
   makeSelectFolders,
+  makeSelectFolder,
   makeSelectEmployees,
   makeSelectUser,
   makeSelectFileUploadDialog,
@@ -197,6 +210,7 @@ export {
   makeSelectShareFileDialog,
   makeSelectAssignTaskDialog,
   makeSelectError,
+  makeSelectNewFolderDialog,
   makeSelectNewFileDialog,
   makeSelectBranchDialog,
   makeSelectDepartmentDialog,
