@@ -102,11 +102,15 @@ export const GetDetailTypeApi = `${BaseUrl}/accountingserv/api/v1/account/get_de
 export const CreateChartOfAccountApi = `${BaseUrl}/accountingserv/api/v1/account/add_chart_of_account`;
 export const GetAllChartOfAccountApi = `${BaseUrl}/accountingserv/api/v1/account/get_account_by_orgid`;
 
-
 /** *****************************************************************
  * Inventry endpoint
  ******************************************************************* */
 
 // Warehouse Apis
 export const CreateNewWarehouseApi = `${BaseUrl}/inventoryserv/api/v1/add_warehouse`;
+export const UpdateWarehouseApi = `${BaseUrl}/inventoryserv/api/v1/update_warehouse`;
 export const GetAllWarehouses = `${BaseUrl}/inventoryserv/api/v1/get_all_warehouses`;
+
+// Item Apis
+export const CreateNewItemApi = `${BaseUrl}/inventoryserv/api/v1/upload_item`;
+export const GetAllItems = `${BaseUrl}/inventoryserv/api/v1/get_all_items`;

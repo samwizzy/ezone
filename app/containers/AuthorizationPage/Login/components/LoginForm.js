@@ -174,79 +174,79 @@ const LoginForm = props => {
                   Register
                 </Link>
               </Typography>
-              {/* <form className={classes.form} noValidate> */}
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="username"
-                label="Email Address"
-                name="username"
-                InputProps={{
-                  className: classes.input,
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                autoFocus
-                onChange={handleChange('username')}
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type={visibility?"text":"password"}
-                id="password"
-                InputProps={{
-                  className: classes.input,
-                  endAdornment: (
-                    <Tooltip title={visibility?"hide password":"show password"} arrow>
-                      <IconButton className={classes.iconButton} onClick={handleVisibility}>
-                        {visibility?<VisibilityOffOutlined />:<VisibilityOutlined />}
-                      </IconButton>
-                    </Tooltip>
-                  )
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onChange={handleChange('password')}
-              />
-              {/* <FormControlLabel
+              <form>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="username"
+                  label="Email Address"
+                  name="username"
+                  InputProps={{
+                    className: classes.input,
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  autoFocus
+                  onChange={handleChange('username')}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type={visibility?"text":"password"}
+                  id="password"
+                  InputProps={{
+                    className: classes.input,
+                    endAdornment: (
+                      <Tooltip title={visibility?"hide password":"show password"} arrow>
+                        <IconButton className={classes.iconButton} onClick={handleVisibility}>
+                          {visibility?<VisibilityOffOutlined />:<VisibilityOutlined />}
+                        </IconButton>
+                      </Tooltip>
+                    )
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  onChange={handleChange('password')}
+                />
+                {/* <FormControlLabel
                   className={classes.label}
                   control={<Checkbox value="remember" color="primary" />}
                   label="Remember me"
                 /> */}
-              <Grid container>
-                <Grid item xs={true}>
-                  <Link href="/forgot-password" variant="body2">
+                <Grid container>
+                  <Grid item xs={true}>
+                    <Link href="/forgot-password" variant="body2">
                     Forgot password?
-                  </Link>
+                    </Link>
+                  </Grid>
                 </Grid>
-              </Grid>
-              {!loading ? (
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                  disabled={!canBeSubmitted()}
-                  onClick={() => loginAction(values)}
-                >
+                {!loading ? (
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    disabled={!canBeSubmitted()}
+                    onClick={() => loginAction(values)}
+                  >
                   Sign In
-                </Button>
-              ) : (
-                <LoadingIndicator />
-              )}
-              <Box mt={5}>
-                <Copyright />
-              </Box>
-              {/* </form> */}
+                  </Button>
+                ) : (
+                  <LoadingIndicator />
+                )}
+                <Box mt={5}>
+                  <Copyright />
+                </Box>
+              </form>
             </div>
           </Grid>
         </Grid>

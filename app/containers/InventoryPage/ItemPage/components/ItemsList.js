@@ -1,9 +1,8 @@
 /* eslint-disable prettier/prettier */
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
-  List,
   FormControlLabel,
   Icon,
   Button,
@@ -15,12 +14,9 @@ import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import * as UtilityActions from '../../../UtilityPage/actions';
-import * as UtilitySelectors from '../../../UtilityPage/selectors';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-// import { AddWarehouse } from './AddWarehouse';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -42,18 +38,11 @@ const ItemsList = props => {
 
   const {
     loading,
-    getAllEmployees,
-    openNewWarehouseDialogAction,
-    // getAllUsersAction,
+    getAllItems,
+    openNewItemDialogAction,
+    openViewItemDialogAction,
     // openEditEmployeeDialogAction,
-    // openViewEmployeeDialogAction,
   } = props;
-
-  useEffect(() => {
-    // getAllUsersAction();
-  }, []);
-
-  console.log(getAllEmployees, 'getAllEmployees');
 
   const columns = [
     {
@@ -75,104 +64,60 @@ const ItemsList = props => {
       },
     },
     {
-      name: 'firstName',
-      label: 'First Name',
+      name: 'itemName',
+      label: 'Name',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'lastName',
-      label: 'Last Name',
+      name: 'sku',
+      label: 'SKU',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'emailAddress',
-      label: 'Email Address',
+      name: 'barcode',
+      label: 'Barcode',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'phoneNumber',
-      label: 'Phone Number',
+      name: 'quantity',
+      label: 'Stock On Hand',
       options: {
         filter: true,
         sort: false,
-        // customBodyRender: value => {
-        //   const Post = getAllPosts.find(post => value === post.id);
-
-        //   if (value === '') {
-        //     return '';
-        //   }
-        //   return (
-        //     <FormControlLabel
-        //       label="Edit"
-        //       control={<Icon>create</Icon>}
-        //       onClick={evt => {
-        //         evt.stopPropagation();
-        //         openEditPostDialog(Post);
-        //       }}
-        //     />
-        //   );
-        // },
       },
     },
     {
-      name: 'gender',
-      label: 'Gender',
+      name: 'id',
+      label: 'Action',
       options: {
         filter: true,
         sort: false,
+        customBodyRender: value => {
+          const item = getAllItems.find(post => value === post.id);
+          if (value === '') {
+            return '';
+          }
+          return (
+            <Button
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={() => openViewItemDialogAction(item)}
+            >
+              View
+            </Button>
+          );
+        },
       },
     },
-    // {
-    //   name: 'id',
-    //   label: '',
-    //   options: {
-    //     filter: true,
-    //     sort: false,
-    //     customBodyRender: value => {
-    //       const Post = datas.find(post => value === post.id);
-    //       if (value === '') {
-    //         return '';
-    //       }
-    //       return (
-    //         <div>
-    //           <Button
-    //             aria-controls="simple-menu"
-    //             aria-haspopup="true"
-    //             onClick={handleClick}
-    //           >
-    //             Options
-    //           </Button>
-    //           <Menu
-    //             id="simple-menu"
-    //             anchorEl={anchorEl}
-    //             keepMounted
-    //             open={Boolean(anchorEl)}
-    //             onClose={handleClose}
-    //           >
-    //             <MenuItem onClick={handleClose}>Assign Role</MenuItem>
-    //             <MenuItem onClick={handleClose}>Assign Apps</MenuItem>
-    //             <MenuItem onClick={() => openEditEmployeeDialogAction(Post)}>
-    //               Edit
-    //             </MenuItem>
-    //             <MenuItem onClick={() => openViewEmployeeDialogAction(Post)}>
-    //               View Details
-    //             </MenuItem>
-    //             <MenuItem onClick={handleClose}>Deactivate</MenuItem>
-    //           </Menu>
-    //         </div>
-    //       );
-    //     },
-    //   },
-    // },
   ];
 
   const options = {
@@ -186,7 +131,7 @@ const ItemsList = props => {
         size="small"
         className={classes.button}
         startIcon={<AddIcon />}
-        href="/items/new"
+        onClick={() => openNewItemDialogAction()}
       >
         New
       </Button>
@@ -201,7 +146,7 @@ const ItemsList = props => {
     <React.Fragment>
       <MUIDataTable
         title="All Items"
-        data={getAllEmployees}
+        data={getAllItems}
         columns={columns}
         options={options}
       />
@@ -211,25 +156,23 @@ const ItemsList = props => {
 
 ItemsList.propTypes = {
   loading: PropTypes.bool,
-  getAllEmployees: PropTypes.array,
-  openNewWarehouseDialogAction: PropTypes.func,
+  getAllItems: PropTypes.array,
+  openNewItemDialogAction: PropTypes.func,
+  openViewItemDialogAction: PropTypes.func,
   // openEditEmployeeDialogAction: PropTypes.func,
-  // openViewEmployeeDialogAction: PropTypes.func,
-  getAllUsersAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  // loading: Selectors.makeSelectLoading(),
-  // getAllEmployees: Selectors.makeSelectGetAllEmployees(),
-  // getAllEmployees: UtilitySelectors.makeSelectAllEmployees(),
+  loading: Selectors.makeSelectLoading(),
+  getAllItems: Selectors.makeSelectGetAllItems(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    // getAllUsersAction: () =>
-    //   dispatch(UtilityActions.getAllUsers()),
-    // openNewWarehouseDialogAction: () =>
-    //   dispatch(Actions.openNewWarehouseDialog()),
+    openViewItemDialogAction: evt =>
+      dispatch(Actions.openViewItemDialog(evt)),
+    openNewItemDialogAction: () =>
+      dispatch(Actions.openNewItemDialog()),
   };
 }
 

@@ -18,6 +18,19 @@ export function closeNewWarehouseDialog() {
   };
 }
 
+export function openEditWarehouseDialog(data) {
+  return {
+    type: Constants.OPEN_EDIT_WAREHOUSE_DIALOG,
+    payload: data,
+  };
+}
+
+export function closeEditWarehouseDialog() {
+  return {
+    type: Constants.CLOSE_EDIT_WAREHOUSE_DIALOG,
+  };
+}
+
 export function getAllEmployees() {
   return {
     type: Constants.GET_ALL_EMPLOYEES,
@@ -74,6 +87,26 @@ export function createNewWarehouseSuccess() {
 export function createNewWarehouseError(data) {
   return {
     type: Constants.CREATE_NEW_WAREHOUSE_ERROR,
+    payload: data,
+  };
+}
+
+export function updateWarehouse(data) {
+  return {
+    type: Constants.UPDATE_WAREHOUSE,
+    payload: data,
+  };
+}
+
+export function updateWarehouseSuccess() {
+  return {
+    type: Constants.UPDATE_WAREHOUSE_SUCCESS,
+  };
+}
+
+export function updateWarehouseError(data) {
+  return {
+    type: Constants.UPDATE_WAREHOUSE_ERROR,
     payload: data,
   };
 }
