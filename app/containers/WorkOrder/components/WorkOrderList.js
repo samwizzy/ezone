@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-// import LoadingIndicator from '../../../../components/LoadingIndicator';
+import LoadingIndicator from '../../../components/LoadingIndicator';
 import { AddButton } from './AddButton';
 
 
@@ -76,9 +76,14 @@ const useStyles = makeStyles(theme => ({
 const WorkOrderList = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [account, setAccount] = React.useState('');
 
-  const handleClick = event => {
+  const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
+    console.log("id value is -> ", id);
+
+    const selectedAccount = listOfWorkOrderData && listOfWorkOrderData.find(acc => id === acc.id);
+    setAccount(selectedAccount);
   };
 
   const handleClose = () => {
@@ -88,6 +93,8 @@ const WorkOrderList = props => {
   const {
     loading,
     openNewWorkOrderDialogAction,
+    editOpenWorkOrderDialogAction,
+    deleteWorkOrderAction,
     openVendorDialogAction,
     listOfWorkOrderData,
   } = props;
@@ -115,104 +122,83 @@ const WorkOrderList = props => {
       },
     },
     {
-      name: 'firstName',
-      label: 'First Name',
+      name: 'status',
+      label: 'Status',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'lastName',
-      label: 'Last Name',
+      name: 'cost',
+      label: 'Cost',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'emailAddress',
-      label: 'Email Address',
+      name: 'amountPaid',
+      label: 'Amount Paid',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'phoneNumber',
-      label: 'Phone Number',
+      name: 'priority',
+      label: 'Priority',
       options: {
         filter: true,
         sort: false,
-        // customBodyRender: value => {
-        //   const Post = getAllPosts.find(post => value === post.id);
-
-        //   if (value === '') {
-        //     return '';
-        //   }
-        //   return (
-        //     <FormControlLabel
-        //       label="Edit"
-        //       control={<Icon>create</Icon>}
-        //       onClick={evt => {
-        //         evt.stopPropagation();
-        //         openEditPostDialog(Post);
-        //       }}
-        //     />
-        //   );
-        // },
       },
     },
     {
-      name: 'gender',
-      label: 'Gender',
+      name: 'id',
+      label: '.',
       options: {
         filter: true,
         sort: false,
+        customBodyRender: value => {
+          // const AllCharts = chartOfAccountData && chartOfAccountData.find(post => value === post.id);
+          if (value === '') {
+            return '';
+          }
+          return (
+            <div>
+              <Button
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={event => handleClick(event, value)}
+              >
+                Options
+              </Button>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={() => {
+                  editOpenWorkOrderDialogAction(account);
+                }}>
+                  Edit
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                  View Details
+                </MenuItem>
+                <MenuItem onClick={() => {
+                  deleteWorkOrderAction(account);
+                }}>
+                  Delete 
+                </MenuItem>
+              </Menu>
+            </div>
+          );
+        },
       },
     },
-    // {
-    //   name: 'id',
-    //   label: '',
-    //   options: {
-    //     filter: true,
-    //     sort: false,
-    //     customBodyRender: value => {
-    //       const Post = datas.find(post => value === post.id);
-    //       if (value === '') {
-    //         return '';
-    //       }
-    //       return (
-    //         <div>
-    //           <Button
-    //             aria-controls="simple-menu"
-    //             aria-haspopup="true"
-    //             onClick={handleClick}
-    //           >
-    //             Options
-    //           </Button>
-    //           <Menu
-    //             id="simple-menu"
-    //             anchorEl={anchorEl}
-    //             keepMounted
-    //             open={Boolean(anchorEl)}
-    //             onClose={handleClose}
-    //           >
-    //             <MenuItem onClick={handleClose}>Assign Role</MenuItem>
-    //             <MenuItem onClick={handleClose}>Assign Apps</MenuItem>
-    //             <MenuItem onClick={() => openEditEmployeeDialogAction(Post)}>
-    //               Edit
-    //             </MenuItem>
-    //             <MenuItem onClick={() => openViewEmployeeDialogAction(Post)}>
-    //               View Details
-    //             </MenuItem>
-    //             <MenuItem onClick={handleClose}>Deactivate</MenuItem>
-    //           </Menu>
-    //         </div>
-    //       );
-    //     },
-    //   },
-    // },
   ];
 
   const options = {
@@ -221,19 +207,18 @@ const WorkOrderList = props => {
     selectableRows: 'none',
     customToolbar: () => (
       <AddButton openNewWorkOrderDialogAction={openNewWorkOrderDialogAction} openVendorDialogAction={openVendorDialogAction} />
-      // <AddVendor />
     ),
   };
 
-  // if (loading) {
-  //   return <LoadingIndicator />;
-  // }
+  if (loading) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <React.Fragment>
       <MUIDataTable
         title="Work Order"
-        // data={getAllEmployees}
+        data={listOfWorkOrderData}
         columns={columns}
         options={options}
       />
@@ -247,7 +232,7 @@ WorkOrderList.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  // loading: Selectors.makeSelectLoading(),
+  loading: Selectors.makeSelectLoading(),
   workOrderDialog: Selectors.makeSelectWorkOrderDialog(),
   listOfWorkOrderData: Selectors.makeSelectGetListOfWorkOrderData(),
 });
@@ -255,6 +240,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewWorkOrderDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
+    editOpenWorkOrderDialogAction: evt => dispatch(Actions.editOpenWorkOrderDialog(evt)),
+    deleteWorkOrderAction: evt => dispatch(Actions.deleteWorkOrderAction(evt)),
     openVendorDialogAction: () => dispatch(Actions.openVendorDialog()),
   };
 }

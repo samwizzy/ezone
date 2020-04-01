@@ -35,8 +35,6 @@ export function* getDetailTypeSaga({type, payload}) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.GetDetailTypeApi}/${payload.type}`;
 
-  console.log(payload, "payload")
-
   try {
     const detailTypeResponse = yield call(request, requestURL, {
       method: 'GET',
@@ -80,6 +78,7 @@ export function* createNewChartOfAccountSaga() {
     console.log('chartOfAccountResponse -> ', chartOfAccountResponse);
     alert(`Account Name: ${chartOfAccountResponse.accountName} was saved successfully!`);
     yield put(Actions.createNewChartOfAccountSuccessAction(chartOfAccountResponse));
+    yield put(Actions.getAllChartOfAccountTypeAction());
   } catch (err) {
     console.log('createNewChartOfAccountErrorAction -> ', err);
     alert(`Something went wrong.`);
@@ -88,17 +87,14 @@ export function* createNewChartOfAccountSaga() {
 }
 
 // Update a chart of account
-export function* updateChartOfAccountSaga({ payload }) {
+export function* updateChartOfAccountSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.UpdateChartOfAccountApi}`;
 
   const updateChartOfAccountData = yield select(
-    Selectors.makeSelectUpdateChartOfAccountData(),
+    Selectors.makeSelectChartOfAccountPostData(),
   );
-  console.log('payload -> ', payload);
-
-  updateChartOfAccountData.id = payload.id;
-
+  
   try {
     const updateChartOfAccountResponse = yield call(request, requestURL, {
       method: 'PUT',
@@ -110,14 +106,43 @@ export function* updateChartOfAccountSaga({ payload }) {
     });
 
     console.log('updateChartOfAccountResponse -> ', updateChartOfAccountResponse);
-    alert(`Account Name: ${updateChartOfAccountResponse.accountName} was updated successfully!`);
+    alert(`Account was updated successfully!`);
     yield put(Actions.updateChartOfAccountSuccessAction(updateChartOfAccountResponse));
+    yield put(Actions.getAllChartOfAccountTypeAction());
   } catch (err) {
-    console.log('createNewChartOfAccountErrorAction -> ', err);
     alert(`Something went wrong.`);
     yield put(Actions.updateChartOfAccountErrorAction(err));
   }
 }
+
+// Delete a chart of account
+export function* deleteChartOfAccountSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const deleteChartOfAccountData = yield select(
+    Selectors.makeSelectChartOfAccountPostData(),
+  );
+  const requestURL = `${Endpoints.DeleteChartOfAccountApi}/${deleteChartOfAccountData.id}`;
+  
+  try {
+    const deleteChartOfAccountResponse = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(deleteChartOfAccountData),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log('deleteChartOfAccountResponse -> ', deleteChartOfAccountResponse);
+    alert(`Account deleted successfully!`);
+    yield put(Actions.deleteChartOfAccountSuccessAction(deleteChartOfAccountResponse));
+    yield put(Actions.getAllChartOfAccountTypeAction());
+  } catch (err) {
+    alert(`Something went wrong.`);
+    yield put(Actions.deleteChartOfAccountErrorAction(err));
+  }
+}
+
 
 // Get list of chart of account
 export function* getAllChartOfAccountSaga() {
@@ -150,4 +175,6 @@ export default function* AccountingSaga() {
   yield takeLatest(Constants.GET_DETAIL_TYPES, getDetailTypeSaga);
   yield takeLatest(Constants.CREATE_NEW_CHART_OF_ACCOUNT, createNewChartOfAccountSaga);
   yield takeLatest(Constants.GET_ALL_CHART_OF_ACCOUNT, getAllChartOfAccountSaga);
+  yield takeLatest(Constants.UPDATE_CHART_OF_ACCOUNT, updateChartOfAccountSaga);
+  yield takeLatest(Constants.DELETE_CHART_OF_ACCOUNT, deleteChartOfAccountSaga);
 }

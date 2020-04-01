@@ -13,7 +13,6 @@ export const initialState = {
   detailTypeData: [],
   chartOfAccPostData: false,
   chartOfAccData: [],
-  updateChartOfAccData: false,
   accountDialog: {
     type: 'new',
     props: {
@@ -163,7 +162,7 @@ const accountingReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          updateChartOfAccData: action.payload
+          chartOfAccPostData: action.payload
         };
       }
       case Constants.UPDATE_CHART_OF_ACCOUNT_SUCCESS: {
@@ -171,10 +170,35 @@ const accountingReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          updateChartOfAccData: action.payload
+          chartOfAccPostData: action.payload
         };
       }
       case Constants.UPDATE_CHART_OF_ACCOUNT_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+
+      // Case to delete a chart of account
+      case Constants.DELETE_CHART_OF_ACCOUNT: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          chartOfAccPostData: action.payload
+        };
+      }
+      case Constants.DELETE_CHART_OF_ACCOUNT_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          chartOfAccPostData: action.payload
+        };
+      }
+      case Constants.DELETE_CHART_OF_ACCOUNT_ERR: {
         return {
           ...state,
           loading: false,

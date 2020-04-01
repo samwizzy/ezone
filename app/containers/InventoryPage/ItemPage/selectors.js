@@ -21,5 +21,63 @@ const makeSelectItemPage = () =>
     substate => substate,
   );
 
+const makeSelectLoading = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.loading,
+  );
+
+const makeSelectError = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.error,
+  );
+
+const makeSelectItemDialog = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.itemDialog,
+  );
+
+const makeSelectTransferOrderDialog = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.transferOrderDialog,
+  );
+
+const makeSelectTransferOrderDetails = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.newTransferOrderDetails,
+  );
+
+const makeSelectGetAllItems = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.getAllItems,
+  );
+
+const makeSelectItemDetails = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.newItemDetails,
+  );
+
+const makeSelectGetAllWarehouses = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.getAllWarehouses,
+  );
+
 export default makeSelectItemPage;
-export { selectItemPageDomain };
+export {
+  selectItemPageDomain,
+  makeSelectGetAllItems,
+  makeSelectItemDetails,
+  makeSelectItemDialog,
+  makeSelectLoading,
+  makeSelectError,
+  makeSelectGetAllWarehouses,
+  makeSelectTransferOrderDialog,
+  makeSelectTransferOrderDetails,
+};

@@ -21,6 +21,12 @@ const makeSelectEmailConfig = () =>
     substate => substate,
   );
 
+const makeSelectTestConnectionDialog = () =>
+  createSelector(
+    selectEmailConfigDomain,
+    substate => substate.testConnectionDialog,
+  );
+
 const makeSelectUserEmailConfigData = () =>
   createSelector(
     selectEmailConfigDomain,
@@ -51,6 +57,12 @@ const makeSelectSmsConfigData = () =>
     subState => subState.smsConfigData,
 );
 
+const makeSelectUserSmsConfigPostData = () =>
+  createSelector(
+    selectEmailConfigDomain,
+    subState => subState.smsConfigPostData,
+);
+
 const makeSelectLoading = () =>
   createSelector(
     selectEmailConfigDomain,
@@ -60,11 +72,13 @@ const makeSelectLoading = () =>
 export default makeSelectEmailConfig;
 export { 
   selectEmailConfigDomain,
+  makeSelectTestConnectionDialog,
   makeSelectUserEmailConfigData,
   makeSelectUserEmailConfigPostData,
   makeSelectUserTestConnectionData,
   makeSelectSmsProviderData,
   makeSelectSmsConfigData,
+  makeSelectUserSmsConfigPostData,
   makeSelectLoading
 };
 

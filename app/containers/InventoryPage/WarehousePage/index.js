@@ -8,7 +8,6 @@ import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
@@ -17,7 +16,6 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectWarehousePage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
 import * as Actions from './actions';
 import ModuleLayout from '../components/ModuleLayout';
 import WarehouseList from './components/WarehouseList';
@@ -27,11 +25,13 @@ export function WarehousePage(props) {
   useInjectReducer({ key: 'warehousePage', reducer });
   useInjectSaga({ key: 'warehousePage', saga });
 
-  const { getAllEmployeesAction } = props;
+  const { getAllEmployeesAction, getAllWarehousesAction } = props;
 
   useEffect(() => {
     getAllEmployeesAction();
+    getAllWarehousesAction();
   }, []);
+
   return (
     <div>
       <ModuleLayout>
@@ -49,6 +49,7 @@ export function WarehousePage(props) {
 WarehousePage.propTypes = {
   dispatch: PropTypes.func.isRequired,
   getAllEmployeesAction: PropTypes.func,
+  getAllWarehousesAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -58,6 +59,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getAllEmployeesAction: () => dispatch(Actions.getAllEmployees()),
+    getAllWarehousesAction: () => dispatch(Actions.getAllWarehouse()),
     dispatch,
   };
 }
