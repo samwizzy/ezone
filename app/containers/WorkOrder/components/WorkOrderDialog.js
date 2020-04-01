@@ -123,9 +123,9 @@ const WorkOrderDialog = props => {
     orgId: '',
     addedBy: '',
     amountBal: '',
-    cost: "",
     amountPaid: '',
     approved: false,
+    cost: '',
     description: '',
     expectedCompletionDate: '',
     paymentDate: '',
@@ -139,6 +139,50 @@ const WorkOrderDialog = props => {
     vendor: ''
   });
 
+  React.useEffect(() => {
+    if (workOrderDialog.type === 'edit') {
+      const { 
+        orgId,
+        addedBy,
+        amountBal,
+        amountPaid,
+        approved,
+        cost,
+        description,
+        expectedCompletionDate,
+        paymentDate,
+        items,
+        memo,
+        number,
+        priority,
+        status,
+        updatedBy,
+        vendor
+      } = workOrderDialog.data;
+
+      setValues({
+        ...values,
+        orgId,
+        addedBy,
+        amountBal,
+        amountPaid,
+        approved,
+        cost,
+        description,
+        expectedCompletionDate,
+        paymentDate,
+        id: workOrderDialog.data.id,
+        items,
+        memo,
+        number,
+        priority,
+        status,
+        updatedBy,
+        vendor
+      });
+    }
+  }, [workOrderDialog])
+
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
@@ -149,7 +193,7 @@ const WorkOrderDialog = props => {
     setValues({ ...values, vendor: value });
   };
 
-  console.log('values from state: ', values);
+  // console.log('values from state: ', values);
 
   if (savedItemData) {
     savedItemStore.push(savedItemData);
@@ -181,7 +225,7 @@ const WorkOrderDialog = props => {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {workOrderDialog.type === 'new' ? 'Work Order' : 'Edit Work Order'}
+          {workOrderDialog.type === 'new' ? 'Create Work Order' : 'Edit Work Order'}
         </DialogTitle>
         <Divider />
         <DialogContent>
@@ -344,7 +388,166 @@ const WorkOrderDialog = props => {
                 ))}
               </TextField>
             </div>
-          ) : null}
+          ) : (
+            <div>
+              <Autocomplete
+                id="combo-box-demo"
+                options={listOfVendorsData}
+                getOptionLabel={option => option.busName}
+                onChange={(evt, value) => handleSelectChange(evt, value)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Search Vendors"
+                    variant="outlined"
+                    placeholder="Vendors"
+                    fullWidth
+                  />
+                )}
+              />
+              <TextField
+                id="standard-amountBal"
+                label="Amount Balance"
+                variant="outlined"
+                className={classes.textField}
+                value={values.amountBal}
+                onChange={handleChange('amountBal')}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                id="standard-amountPaid"
+                label="Amount Paid"
+                variant="outlined"
+                className={classes.textField}
+                value={values.amountPaid}
+                onChange={handleChange('amountPaid')}
+                margin="normal"
+                fullWidth
+              />
+              <FormControl component="fieldset">
+                <FormLabel component="legend">Approve Order.</FormLabel>
+                <br />
+                <FormGroup aria-label="position" row>
+                  <FormControlLabel
+                    value={values.approved}
+                    onChange={handleChange('approved')}
+                    control={<Checkbox color="primary" />}
+                    label="Yes"
+                    labelPlacement="top"
+                  />
+                  <FormControlLabel
+                    value="start"
+                    control={<Checkbox color="primary" />}
+                    label="No"
+                    labelPlacement="top"
+                  />
+                </FormGroup>
+              </FormControl>
+              <TextField
+                id="standard-cost"
+                label="Cost"
+                variant="outlined"
+                className={classes.textField}
+                value={values.cost}
+                onChange={handleChange('cost')}
+                margin="normal"
+                fullWidth
+              />
+
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <Grid container justify="space-around">
+                  <KeyboardDatePicker
+                    margin="normal"
+                    id="date-picker-dialog"
+                    label="Expected Completion Date"
+                    format="MM/dd/yyyy"
+                    value={selectedDate}
+                    onChange={handleDateChangeExpectedCompletionDate}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
+                  />
+                  <KeyboardDatePicker
+                    margin="normal"
+                    id="date-picker-dialog"
+                    label="Payment Date"
+                    format="MM/dd/yyyy"
+                    value={selectedDate}
+                    onChange={handleDateChangePaymentDate}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
+                  />
+                </Grid>
+              </MuiPickersUtilsProvider>
+
+              <ItemTable savedItemStore={savedItemStore} />
+
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => openAddItemDialogAction()}
+              >
+                Add Item
+              </Button>
+              <TextField
+                id="standard-phone-number"
+                label="Phone Number"
+                type="number"
+                variant="outlined"
+                className={classes.textField}
+                value={values.number}
+                onChange={handleChange('number')}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                id="standard-employeeID"
+                label="Employee ID"
+                variant="outlined"
+                className={classes.textField}
+                value={values.employeeId}
+                onChange={handleChange('employeeId')}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                id="standard-status"
+                label="Status"
+                variant="outlined"
+                className={classes.textField}
+                margin="normal"
+                value={values.status ? values.status : ''}
+                onChange={handleChange('status')}
+                select
+                fullWidth
+              >
+                {status.map(option => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                id="standard-priority"
+                label="Urgency Level"
+                variant="outlined"
+                className={classes.textField}
+                margin="normal"
+                value={values.priority ? values.priority : ''}
+                onChange={handleChange('priority')}
+                select
+                fullWidth
+              >
+                {priority.map(option => (
+                  <MenuItem key={option.label} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
+          )}
         </DialogContent>
 
         <DialogActions>

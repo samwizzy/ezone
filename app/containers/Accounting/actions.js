@@ -102,6 +102,7 @@ export function createNewChartOfAccountErrorAction(data) {
 
 // Update chart of account
 export function updateChartOfAccountAction(data) {
+  console.log('updateChartOfAccountAction triggered');
   return {
     type: Constants.UPDATE_CHART_OF_ACCOUNT,
     payload: data,
@@ -118,6 +119,28 @@ export function updateChartOfAccountSuccessAction(data) {
 export function updateChartOfAccountErrorAction(data) {
   return {
     type: Constants.UPDATE_CHART_OF_ACCOUNT_ERR,
+    payload: data,
+  };
+}
+
+// Delete chart of account
+export function deleteChartOfAccountAction(data) {
+  return {
+    type: Constants.DELETE_CHART_OF_ACCOUNT,
+    payload: data,
+  };
+}
+
+export function deleteChartOfAccountSuccessAction(data) {
+  return {
+    type: Constants.DELETE_CHART_OF_ACCOUNT_SUCCESS,
+    payload: data,
+  };
+}
+
+export function deleteChartOfAccountErrorAction(data) {
+  return {
+    type: Constants.DELETE_CHART_OF_ACCOUNT_ERR,
     payload: data,
   };
 }

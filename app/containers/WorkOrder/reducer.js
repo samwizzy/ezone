@@ -42,6 +42,7 @@ export const initialState = {
 const workOrderPageReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
+
       // Open dialog for workorder
       case Constants.OPEN_NEW_WORKORDER_DIALOG: {
         return {
@@ -64,6 +65,32 @@ const workOrderPageReducer = (state = initialState, action) =>
               open: false,
             },
             data: null,
+          },
+        };
+      }
+
+      // Edit dialog for workorder
+      case Constants.EDIT_OPEN_WORKORDER_DIALOG: {
+        return {
+          ...state,
+          workOrderDialog: {
+            type: 'edit',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.EDIT_CLOSE_WORKORDER_DIALOG: {
+        return {
+          ...state,
+          workOrderDialog: {
+            type: 'edit',
+            props: {
+              open: false,
+            },
+            data: action.payload,
           },
         };
       }
@@ -177,13 +204,60 @@ const workOrderPageReducer = (state = initialState, action) =>
         };
       }
 
+      // Update/Edit workorder
+      case Constants.UPDATE_WORKORDER: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          workOrderPostData: action.payload
+        };
+      }
+      case Constants.UPDATE_WORKORDER_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.UPDATE_WORKORDER_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+
+      // Delete workorder
+      case Constants.DELETE_WORKORDER: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          workOrderPostData: action.payload
+        };
+      }
+      case Constants.DELETE_WORKORDER_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.DELETE_WORKORDER_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+
       // Get a list of vendors
       case Constants.GET_ALL_VENDORS: {
         return {
           ...state,
           loading: true,
           error: false,
-          // getListOfVendorsData: action.payload,
         };
       }
       case Constants.GET_ALL_VENDORS_SUCCESS: {
@@ -201,6 +275,7 @@ const workOrderPageReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
+
       // Get a list of workorders
       case Constants.GET_ALL_WORKORDER: {
         return {

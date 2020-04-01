@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -63,15 +63,13 @@ const NewAccountDialog = props => {
     updateChartOfAccountAction 
   } = props;
 
-  // console.log('accountTypeData: ', accountTypeData);
-  // console.log('detailTypeData: ', detailTypeData);
-
   const classes = useStyles();
 
   const [values, setValues] = React.useState({
     accountName: "",
     accountNumber: "",
     accountType: "",
+    detailType: "",
     description: "",
     ezoneBalance: "",
     orgId: "",
@@ -81,17 +79,16 @@ const NewAccountDialog = props => {
 
   React.useEffect(() => {
     if (accountDialog.type === 'edit') {
-      const {accountName, accountNumber, accountType, description, ezoneBalance, orgId, period, ref} = accountDialog.data;
-      setValues({...values, accountName, accountNumber, accountType, description, ezoneBalance, orgId, period, ref});
+      const {accountName, accountNumber, accountType, detailType, description, ezoneBalance, orgId, period, ref} = accountDialog.data;
+      setValues({...values, id: accountDialog.data.id, accountName, accountNumber, accountType, detailType, description, ezoneBalance, orgId, period, ref});
     }
   }, [accountDialog])
+
+  console.log('Selected value: ', values);
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
-
-  console.log('values: ', values);
-  console.log('accountDialog: ', accountDialog);
 
   const handleSelectChange = (name, value) => {
     setValues({ ...values, accountType: value.type });
@@ -100,6 +97,9 @@ const NewAccountDialog = props => {
     dispatchGetDetailTypeAction(value);
   };
 
+  const handleDetailTypeSelectChange = (name, value) => {
+    setValues({ ...values, detailType: value.name });
+  };
 
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
@@ -208,7 +208,7 @@ const NewAccountDialog = props => {
                 id="combo-box-demo"
                 options={detailTypeData}
                 getOptionLabel={option => option.name}
-                // onChange={(evt, value) => handleSelectChange(evt, value)}
+                onChange={(evt, value) => handleDetailTypeSelectChange(evt, value)}
                 renderInput={params => (
                   <TextField
                     {...params}
@@ -314,7 +314,7 @@ const NewAccountDialog = props => {
                 id="combo-box-demo"
                 options={detailTypeData}
                 getOptionLabel={option => option.name}
-                // onChange={(evt, value) => handleSelectChange(evt, value)}
+                onChange={(evt, value) => handleDetailTypeSelectChange(evt, value)}
                 renderInput={params => (
                   <TextField
                     {...params}
@@ -384,7 +384,6 @@ const mapStateToProps = createStructuredSelector({
   accountTypeData: Selectors.makeSelectAccountTypeData(),
   detailTypeData: Selectors.makeSelectDetailTypeData(),
   chartOfAccountPostData: Selectors.makeSelectChartOfAccountPostData(),
-  chartOfAccountUpdateData: Selectors.makeSelectUpdateChartOfAccountData(),
 });
 
 function mapDispatchToProps(dispatch) {

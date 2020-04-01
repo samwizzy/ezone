@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-// import LoadingIndicator from '../../../../components/LoadingIndicator';
+import LoadingIndicator from '../../../components/LoadingIndicator';
 import { AddButton } from './AddButton';
 
 
@@ -76,7 +76,6 @@ const useStyles = makeStyles(theme => ({
 const AccountChart = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  
   const [account, setAccount] = React.useState('');
 
 
@@ -93,8 +92,10 @@ const AccountChart = props => {
   };
 
   const {
+    loading,
     openNewAccountDialogAction,
     editOpenAccountDialogAction,
+    deleteChartOfAccountAction,
     accountTypeData,
     chartOfAccountData,
   } = props;
@@ -154,31 +155,6 @@ const AccountChart = props => {
         sort: false,
       },
     },
-    // {
-    //   name: 'status',
-    //   label: 'Status',
-    //   options: {
-    //     filter: true,
-    //     sort: false,
-    //     customBodyRender: value => {
-    //       const Post = getAllPosts.find(post => value === post.id);
-
-    //       if (value === '') {
-    //         return '';
-    //       }
-    //       return (
-    //         <FormControlLabel
-    //           label="Edit"
-    //           control={<Icon>create</Icon>}
-    //           onClick={evt => {
-    //             evt.stopPropagation();
-    //             openEditPostDialog(Post);
-    //           }}
-    //         />
-    //       );
-    //     },
-    //   },
-    // },
     {
       name: 'id',
       label: '.',
@@ -186,7 +162,7 @@ const AccountChart = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const AllCharts = chartOfAccountData && chartOfAccountData.find(post => value === post.id);
+          // const AllCharts = chartOfAccountData && chartOfAccountData.find(post => value === post.id);
           if (value === '') {
             return '';
           }
@@ -214,7 +190,11 @@ const AccountChart = props => {
                 <MenuItem onClick={handleClose}>
                   View Details
                 </MenuItem>
-                <MenuItem onClick={handleClose}>Delete</MenuItem>
+                <MenuItem onClick={() => {
+                  deleteChartOfAccountAction(account);
+                }}>
+                  Delete 
+                </MenuItem>
               </Menu>
             </div>
           );
@@ -234,14 +214,9 @@ const AccountChart = props => {
     ),
   };
 
-  // Similar to componentDidMount and componentDidUpdate:
-  // useEffect(() => {
-  //   dispatchGetAllAccountTypeAction();
-  // }, []);
-
-  // if (loading) {
-  //   return <LoadingIndicator />;
-  // }
+  if (loading) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <React.Fragment>
@@ -262,7 +237,7 @@ AccountChart.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  // loading: Selectors.makeSelectLoading(),
+  loading: Selectors.makeSelectLoading(),
   accountTypeData: Selectors.makeSelectAccountTypeData(),
   chartOfAccountData: Selectors.makeSelectGetChartOfAccountData(),
 });
@@ -271,6 +246,7 @@ function mapDispatchToProps(dispatch) {
   return {
     openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
     editOpenAccountDialogAction: evt => dispatch(Actions.editOpenAccountDialog(evt)),
+    deleteChartOfAccountAction: evt => dispatch(Actions.deleteChartOfAccountAction(evt)),
   };
 }
 
