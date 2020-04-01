@@ -17,6 +17,7 @@ import makeSelectItemPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import * as Actions from './actions';
+import TransferOrderDialog from './components/TransferOrderDialog';
 import ViewItemDialog from './components/ViewItemDialog';
 import ItemDialog from './components/ItemDialog';
 import ItemsList from './components/ItemsList';
@@ -43,6 +44,7 @@ export function ItemPage(props) {
         <ItemsList />
         <ItemDialog />
         <ViewItemDialog />
+        <TransferOrderDialog />
       </ModuleLayout>
     </div>
   );

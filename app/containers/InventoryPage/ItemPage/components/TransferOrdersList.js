@@ -12,16 +12,18 @@ import {
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import MUIDataTable from 'mui-datatables';
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import * as UtilityActions from '../../../UtilityPage/actions';
-import * as UtilitySelectors from '../../../UtilityPage/selectors';
+import reducer from '../reducer';
+import saga from '../saga';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import ModuleLayout from '../../components/ModuleLayout';
-// import { AddWarehouse } from './AddWarehouse';
+import TransferOrderDialog from './TransferOrderDialog';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -30,6 +32,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const TransferOrdersList = props => {
+  useInjectReducer({ key: 'itemPage', reducer });
+  useInjectSaga({ key: 'itemPage', saga });
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -44,17 +48,15 @@ const TransferOrdersList = props => {
   const {
     loading,
     getAllEmployees,
-    openNewWarehouseDialogAction,
-    // getAllUsersAction,
+    openNewTransferOrderDialogAction,
+    getAllWarehousesAction,
     // openEditEmployeeDialogAction,
     // openViewEmployeeDialogAction,
   } = props;
 
   useEffect(() => {
-    // getAllUsersAction();
+    getAllWarehousesAction();
   }, []);
-
-  console.log(getAllEmployees, 'getAllEmployees');
 
   const columns = [
     {
@@ -187,7 +189,7 @@ const TransferOrdersList = props => {
         size="small"
         className={classes.button}
         startIcon={<AddIcon />}
-        href="/transfer/new"
+        onClick={() => openNewTransferOrderDialogAction()}
       >
         New
       </Button>
@@ -208,6 +210,7 @@ const TransferOrdersList = props => {
           options={options}
         />
       </ModuleLayout>
+      <TransferOrderDialog />
     </React.Fragment>
   );
 };
@@ -215,7 +218,8 @@ const TransferOrdersList = props => {
 TransferOrdersList.propTypes = {
   loading: PropTypes.bool,
   getAllEmployees: PropTypes.array,
-  openNewWarehouseDialogAction: PropTypes.func,
+  openNewTransferOrderDialogAction: PropTypes.func,
+  getAllWarehousesAction: PropTypes.func,
   // openEditEmployeeDialogAction: PropTypes.func,
   // openViewEmployeeDialogAction: PropTypes.func,
   getAllUsersAction: PropTypes.func,
@@ -230,9 +234,10 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     // getAllUsersAction: () =>
-    //   dispatch(UtilityActions.getAllUsers()),
-    // openNewWarehouseDialogAction: () =>
-    //   dispatch(Actions.openNewWarehouseDialog()),
+    //   dispatch(Actions.get()),
+    openNewTransferOrderDialogAction: () =>
+      dispatch(Actions.openNewTransferOrderDialog()),
+    getAllWarehousesAction: () => dispatch(Actions.getAllWarehouse()),
   };
 }
 

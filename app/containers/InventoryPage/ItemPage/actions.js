@@ -31,6 +31,31 @@ export function closeViewItemDialog() {
   };
 }
 
+export function openNewTransferOrderDialog() {
+  return {
+    type: Constants.OPEN_NEW_TRANSFER_ORDER_DIALOG,
+  };
+}
+
+export function closeNewTransferOrderDialog() {
+  return {
+    type: Constants.CLOSE_NEW_TRANSFER_ORDER_DIALOG,
+  };
+}
+
+export function openViewTransferOrderDialog(data) {
+  return {
+    type: Constants.OPEN_VIEW_TRANSFER_ORDER_DIALOG,
+    payload: data,
+  };
+}
+
+export function closeViewTransferOrderDialog() {
+  return {
+    type: Constants.CLOSE_VIEW_TRANSFER_ORDER_DIALOG,
+  };
+}
+
 export function getAllItems() {
   return {
     type: Constants.GET_ALL_ITEMS,
@@ -88,6 +113,27 @@ export function getAllWarehouseSuccess(data) {
 export function getAllWarehouseError(data) {
   return {
     type: Constants.GET_ALL_WAREHOUSE_ERROR,
+    payload: data,
+  };
+}
+
+export function createNewTransferOrder(data) {
+  return {
+    type: Constants.CREATE_NEW_TRANSFER_ORDER,
+    payload: data,
+  };
+}
+
+export function createNewTransferOrderSuccess(data) {
+  return {
+    type: Constants.CREATE_NEW_TRANSFER_ORDER_SUCCESS,
+    payload: data,
+  };
+}
+
+export function createNewTransferOrderError(data) {
+  return {
+    type: Constants.CREATE_NEW_TRANSFER_ORDER_ERROR,
     payload: data,
   };
 }

@@ -39,6 +39,18 @@ const makeSelectItemDialog = () =>
     subState => subState.itemDialog,
   );
 
+const makeSelectTransferOrderDialog = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.transferOrderDialog,
+  );
+
+const makeSelectTransferOrderDetails = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.newTransferOrderDetails,
+  );
+
 const makeSelectGetAllItems = () =>
   createSelector(
     selectItemPageDomain,
@@ -66,4 +78,6 @@ export {
   makeSelectLoading,
   makeSelectError,
   makeSelectGetAllWarehouses,
+  makeSelectTransferOrderDialog,
+  makeSelectTransferOrderDetails,
 };

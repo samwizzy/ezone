@@ -7,12 +7,20 @@ import produce from 'immer';
 import * as Constants from './constants';
 
 export const initialState = {
+  newTransferOrderDetails: false,
   newItemDetails: false,
   getAllWarehouses: [],
   getAllItems: [],
   loading: false,
   error: false,
   itemDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
+  transferOrderDialog: {
     type: 'new',
     props: {
       open: false,
@@ -65,6 +73,54 @@ const itemPageReducer = (state = initialState, action) =>
         return {
           ...state,
           itemDialog: {
+            type: 'view',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.OPEN_NEW_TRANSFER_ORDER_DIALOG: {
+        return {
+          ...state,
+          transferOrderDialog: {
+            type: 'new',
+            props: {
+              open: true,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.CLOSE_NEW_TRANSFER_ORDER_DIALOG: {
+        return {
+          ...state,
+          transferOrderDialog: {
+            type: 'new',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.OPEN_VIEW_TRANSFER_ORDER_DIALOG: {
+        return {
+          ...state,
+          transferOrderDialog: {
+            type: 'view',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_VIEW_TRANSFER_ORDER_DIALOG: {
+        return {
+          ...state,
+          transferOrderDialog: {
             type: 'view',
             props: {
               open: false,
@@ -133,6 +189,28 @@ const itemPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_ALL_WAREHOUSE_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.CREATE_NEW_TRANSFER_ORDER: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          newTransferOrderDetails: action.payload,
+        };
+      }
+      case Constants.CREATE_NEW_TRANSFER_ORDER_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.CREATE_NEW_TRANSFER_ORDER_ERROR: {
         return {
           ...state,
           loading: false,
