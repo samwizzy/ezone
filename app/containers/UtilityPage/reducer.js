@@ -100,6 +100,7 @@ export const initialState = {
   tasks: [],
   task: {},
   taskComments: [],
+  folders: [],
   files: [],
   file: {},
 };
@@ -164,17 +165,30 @@ const utilityPageReducer = (state = initialState, action) =>
           loading: false
         };
       }
+      case Constants.GET_FOLDERS_AND_DOC_SUCCESS: {
+        return {
+          ...state,
+          folders: action.payload,
+          loading: false
+        };
+      }
       case Constants.GET_UTILITY_TASKS_BY_STATUS_SUCCESS: {
         return {
           ...state,
           tasks: action.payload,
-          loading: true
+          loading: false
         };
       }
       case Constants.CREATE_UTILITY_TASKS_SUCCESS: {
         return {
           ...state,
-          task: action.payload,
+          error: {...state.error, success: true, message: action.payload},
+        };
+      }
+      case Constants.CREATE_UTILITY_TASKS_ERROR: {
+        return {
+          ...state,
+          error: {...state.error, success: false, message: action.payload},
         };
       }
       case Constants.GET_TASK_COMMENTS_SUCCESS: {

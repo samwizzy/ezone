@@ -31,7 +31,7 @@ const TasksApp = props => {
     useInjectSaga({ key: 'utilityPage', saga });
 
     const classes = useStyles();
-    const { loading, openNewTaskDialog, getUtilityTasks, getEmployees, tasks, users, match } = props;
+    const { loading, getUtilityTasks, getEmployees, tasks, match } = props;
     const { params } = match
 
     React.useEffect(() => {
@@ -64,7 +64,6 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewTaskDialog: () => dispatch(Actions.openNewTaskDialog()),
     getUtilityTasks: () => dispatch(Actions.getUtilityTasks()),
     getEmployees: () => dispatch(Actions.getEmployees()),
   };
@@ -75,8 +74,8 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(
-  compose(
-    withConnect,
-    memo,
-)(TasksApp));
+export default compose(
+  withRouter,
+  withConnect,
+  memo,
+)(TasksApp);

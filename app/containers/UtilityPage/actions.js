@@ -33,6 +33,20 @@ export function getUtilityFileSuccess(data) {
   };
 }
 
+export function getAllFoldersAndDocs(payload) {
+  return {
+    type: Constants.GET_FOLDERS_AND_DOC,
+    payload
+  };
+}
+
+export function getAllFoldersAndDocsSuccess(data) {
+  return {
+    type: Constants.GET_FOLDERS_AND_DOC_SUCCESS,
+    payload: data,
+  };
+}
+
 export function getUtilityFilesError(err) {
   return {
     type: Constants.GET_UTILITY_FILES_ERROR,
@@ -143,10 +157,10 @@ export function favoriteDocumentSuccess(data) {
   };
 }
 
-export function deleteDocument(docId) {
+export function deleteDocument(payload) {
   return {
     type: Constants.DELETE_DOCUMENT,
-    payload: { docId }
+    payload
   };
 }
 
@@ -234,6 +248,20 @@ export function removeTaskAttachmentSuccess(data) {
   };
 }
 
+export function deleteTask(taskId) {
+  return {
+    type: Constants.DELETE_TASK,
+    payload: taskId,
+  };
+}
+
+export function deleteTaskSuccess(data) {
+  return {
+    type: Constants.DELETE_TASK_SUCCESS,
+    payload: data,
+  };
+}
+
 export function commentTask(data) {
   return {
     type: Constants.ADD_TASK_COMMENT,
@@ -247,6 +275,14 @@ export function commentTaskSuccess(data) {
     payload: data,
   };
 }
+
+export function commentTaskError(data) {
+  return {
+    type: Constants.ADD_TASK_COMMENT_ERROR,
+    payload: data,
+  };
+}
+
 export function getTaskComments(taskId) {
   return {
     type: Constants.GET_TASK_COMMENTS,

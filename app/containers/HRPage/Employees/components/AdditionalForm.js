@@ -21,8 +21,8 @@ export const AdditionalForm = props => {
     const classes = useStyles()
 
     const canSubmitForm = () => {
-        const {jobDescription, bio } = form
-        return jobDescription.length > 0 && bio.length > 0
+        const {jobDesc, about } = form
+        return jobDesc.length > 0 && about.length > 0
     }
 
     return (
@@ -31,7 +31,7 @@ export const AdditionalForm = props => {
           Additional Information
         </DialogTitle>
         <Divider />  
-        
+
         <DialogContent>
         <form className={classes.root}>
             <Grid container spacing={1}>
@@ -39,13 +39,13 @@ export const AdditionalForm = props => {
                 <Grid item xs={12}>
                     <TextField
                     id="outlined-multiline-desc"
-                    name="jobDescription"
+                    name="jobDesc"
                     label="Job Description"
                     multiline
                     fullWidth
                     rows="4"
                     rowsMax="4"
-                    value={form.jobDescription}
+                    value={form.jobDesc}
                     onChange={handleChange}
                     variant="outlined"
                     />
@@ -53,13 +53,13 @@ export const AdditionalForm = props => {
                 <Grid item xs={12}>
                     <TextField
                     id="outlined-multiline-desc"
-                    name="bio"
+                    name="about"
                     label="Bio"
                     multiline
                     fullWidth
                     rows="4"
                     rowsMax="4"
-                    value={form.bio}
+                    value={form.about}
                     onChange={handleChange}
                     variant="outlined"
                     />

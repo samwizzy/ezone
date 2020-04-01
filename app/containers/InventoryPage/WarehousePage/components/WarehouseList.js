@@ -10,6 +10,7 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -17,63 +18,12 @@ import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-import { AddWarehouse } from './AddWarehouse';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(5, 5, 5, 20),
-    marginBottom: theme.spacing(4),
-  },
-  image: {
-    position: 'absolute',
-    width: '100px',
-    height: '100px',
-    left: '150px',
-    top: '180px',
-    border: '1px solid #C4C4C4',
-    borderRadius: '155px',
-    padding: '25px',
-  },
-  edit: {
-    position: 'absolute',
-    height: '100px',
-    left: '1280px',
-    top: '180px',
-    color: '#1A88E1',
-    fontStyle: 'normal',
-    fontWeight: '600',
-    fontSize: '13px',
-    lineHeight: '16px',
-    // border: '2px solid #1A88E1',
-    [theme.breakpoints.down('md')]: {
-      position: 'absolute',
-      height: '100px',
-      left: '265px',
-      top: '150px',
-      color: '#1A88E1',
-    },
-  },
-  orgContainer: {
-    padding: theme.spacing(0, 5, 0, 5),
-  },
-  demo: {
-    backgroundColor: theme.palette.background.paper,
-  },
-  editButton: {
-    width: '117px',
-    height: '40px',
-    background: '#1A88E1',
-    borderRadius: '10px',
-    align: 'right',
-  },
-  listFormat: {
-    marginBottom: '10px',
-    marginTop: '10px',
-  },
-}));
+const useStyles = makeStyles(theme => ({}));
 
 const WarehouseList = props => {
   const classes = useStyles();
+
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = event => {
@@ -86,18 +36,10 @@ const WarehouseList = props => {
 
   const {
     loading,
-    getAllEmployees,
     openNewWarehouseDialogAction,
-    // getAllEmployeesAction,
-    openEditEmployeeDialogAction,
-    openViewEmployeeDialogAction,
+    getAllWarehouses,
+    openEditWarehouseDialogAction,
   } = props;
-
-  // useEffect(() => {
-  //   getAllEmployeesAction();
-  // }, []);
-
-  console.log(getAllEmployees, 'getAllEmployees');
 
   const columns = [
     {
@@ -119,104 +61,74 @@ const WarehouseList = props => {
       },
     },
     {
-      name: 'firstName',
-      label: 'First Name',
+      name: 'name',
+      label: 'Warehouse Name',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'lastName',
-      label: 'Last Name',
+      name: 'state',
+      label: 'State',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'emailAddress',
-      label: 'Email Address',
+      name: 'wareHouseContactEmail',
+      label: 'WareHouse Email Address',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'phoneNumber',
-      label: 'Phone Number',
+      name: 'warehousePhoneNumber',
+      label: 'Warehouse Phone Number',
       options: {
         filter: true,
         sort: false,
-        // customBodyRender: value => {
-        //   const Post = getAllPosts.find(post => value === post.id);
-
-        //   if (value === '') {
-        //     return '';
-        //   }
-        //   return (
-        //     <FormControlLabel
-        //       label="Edit"
-        //       control={<Icon>create</Icon>}
-        //       onClick={evt => {
-        //         evt.stopPropagation();
-        //         openEditPostDialog(Post);
-        //       }}
-        //     />
-        //   );
-        // },
       },
     },
     {
-      name: 'gender',
-      label: 'Gender',
+      name: 'id',
+      label: 'Action',
       options: {
         filter: true,
         sort: false,
+        customBodyRender: value => {
+          const item = getAllWarehouses.find(post => value === post.id);
+          if (value === '') {
+            return '';
+          }
+          return (
+            <div>
+              <Button
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={handleClick}
+              >
+                Options
+              </Button>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={() => openEditWarehouseDialogAction(item)}>
+                  Edit
+                </MenuItem>
+                <MenuItem onClick={handleClose}>Deactivate</MenuItem>
+              </Menu>
+            </div>
+          );
+        },
       },
     },
-    // {
-    //   name: 'id',
-    //   label: '',
-    //   options: {
-    //     filter: true,
-    //     sort: false,
-    //     customBodyRender: value => {
-    //       const Post = datas.find(post => value === post.id);
-    //       if (value === '') {
-    //         return '';
-    //       }
-    //       return (
-    //         <div>
-    //           <Button
-    //             aria-controls="simple-menu"
-    //             aria-haspopup="true"
-    //             onClick={handleClick}
-    //           >
-    //             Options
-    //           </Button>
-    //           <Menu
-    //             id="simple-menu"
-    //             anchorEl={anchorEl}
-    //             keepMounted
-    //             open={Boolean(anchorEl)}
-    //             onClose={handleClose}
-    //           >
-    //             <MenuItem onClick={handleClose}>Assign Role</MenuItem>
-    //             <MenuItem onClick={handleClose}>Assign Apps</MenuItem>
-    //             <MenuItem onClick={() => openEditEmployeeDialogAction(Post)}>
-    //               Edit
-    //             </MenuItem>
-    //             <MenuItem onClick={() => openViewEmployeeDialogAction(Post)}>
-    //               View Details
-    //             </MenuItem>
-    //             <MenuItem onClick={handleClose}>Deactivate</MenuItem>
-    //           </Menu>
-    //         </div>
-    //       );
-    //     },
-    //   },
-    // },
   ];
 
   const options = {
@@ -224,7 +136,16 @@ const WarehouseList = props => {
     responsive: 'scrollMaxHeight',
     selectableRows: 'none',
     customToolbar: () => (
-      <AddWarehouse openNewWarehouseDialogAction={openNewWarehouseDialogAction} />
+      <Button
+        variant="contained"
+        color="primary"
+        size="small"
+        className={classes.button}
+        startIcon={<AddIcon />}
+        onClick={() => openNewWarehouseDialogAction()}
+      >
+        Add New Warehouse
+      </Button>
     ),
   };
 
@@ -236,7 +157,7 @@ const WarehouseList = props => {
     <React.Fragment>
       <MUIDataTable
         title="All Warehouses"
-        data={[]}
+        data={getAllWarehouses}
         columns={columns}
         options={options}
       />
@@ -246,25 +167,22 @@ const WarehouseList = props => {
 
 WarehouseList.propTypes = {
   loading: PropTypes.bool,
-  getAllEmployees: PropTypes.array,
   openNewWarehouseDialogAction: PropTypes.func,
-  openEditEmployeeDialogAction: PropTypes.func,
-  openViewEmployeeDialogAction: PropTypes.func,
-  // getAllEmployeesAction: PropTypes.func,
+  openEditWarehouseDialogAction: PropTypes.func,
+  getAllWarehouses: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
-  // loading: Selectors.makeSelectLoading(),
-  // getAllEmployees: Selectors.makeSelectGetAllEmployees(),
-  getAllEmployees: Selectors.makeSelectGetAllEmployees(),
+  loading: Selectors.makeSelectLoading(),
+  getAllWarehouses: Selectors.makeSelectGetAllWarehouses(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    // getAllEmployeesAction: () =>
-    //   dispatch(Actions.getAllEmployees()),
     openNewWarehouseDialogAction: () =>
       dispatch(Actions.openNewWarehouseDialog()),
+    openEditWarehouseDialogAction: evt =>
+      dispatch(Actions.openEditWarehouseDialog(evt)),
   };
 }
 

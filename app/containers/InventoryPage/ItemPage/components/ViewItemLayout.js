@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   IconButton,
   Typography,
+  Grid,
   makeStyles,
   AppBar,
   Toolbar,
@@ -13,8 +14,6 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import RefreshSharp from '@material-ui/icons/RefreshSharp';
-import * as Actions from '../actions';
-import UserMenu from '../../../components/layouts/shared-components/UserMenu';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,8 +21,9 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
   },
   content: {
-    flexGrow: 1,
-    padding: theme.spacing(3, 2, 3, 0),
+    display: 'flex',
+    flexDirection: 'column',
+    padding: theme.spacing(3, 0),
   },
   toolbar: {
     display: 'flex',
@@ -53,8 +53,7 @@ const useStyles = makeStyles(theme => ({
   active: { backgroundColor: darken(theme.palette.primary.main, 0.25) },
 }));
 
-
-function ModuleLayout(props) {
+function ViewItemLayout(props) {
   const classes = useStyles();
 
   const refreshPage = () => {
@@ -70,38 +69,43 @@ function ModuleLayout(props) {
               <RefreshSharp />
             </IconButton>
 
-            <NavLink exact to="/dashboard" activeClassName={classes.active}>
-              Project
+            <NavLink exact to="#" activeClassName={classes.active}>
+              Overview
             </NavLink>
-            <NavLink to="/dashboard/chats" activeClassName={classes.active}>
-              Chats
+            <NavLink exact to="#" activeClassName={classes.active}>
+              Transactions
             </NavLink>
-            <NavLink to="/dashboard/tasks" activeClassName={classes.active}>
-              Tasks
+            <NavLink exact to="#" activeClassName={classes.active}>
+              Related List
             </NavLink>
-            <NavLink to="/dashboard/files" activeClassName={classes.active}>
-              Files
+            <NavLink exact to="#" activeClassName={classes.active}>
+              Adjustments
+            </NavLink>
+            <NavLink exact to="#" activeClassName={classes.active}>
+              History
             </NavLink>
           </div>
-
-          <UserMenu />
         </Toolbar>
       </AppBar>
       <main className={classes.content}>
-        {props.children}
+        <Grid container>
+          <Grid item xs={12}>
+            {props.children}
+          </Grid>
+        </Grid>
       </main>
     </div>
   );
 }
 
-const mapStateToProps = createStructuredSelector({
-  // loginPage: makeSelectLoginPage(),
-});
+ViewItemLayout.propTypes = {
+  children: PropTypes.node,
+};
+
+const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
-  return {
-    getUtilityTasks: evt => dispatch(Actions.getUtilityTasks(evt)),
-  };
+  return {};
 }
 
 const withConnect = connect(
@@ -113,5 +117,5 @@ export default withRouter(
   compose(
     withConnect,
     memo,
-  )(ModuleLayout),
+  )(ViewItemLayout),
 );

@@ -40,7 +40,6 @@ import WorkOrderPage from '../WorkOrder/Loadable';
 import InventoryPage from '../InventoryPage/Loadable';
 import WarehousePage from '../InventoryPage/WarehousePage/Loadable';
 import ItemPage from '../InventoryPage/ItemPage/Loadable';
-import NewItem from '../InventoryPage/ItemPage/components/NewItem';
 import TransferOrdersList from '../InventoryPage/ItemPage/components/TransferOrdersList';
 import NewTransferOrder from '../InventoryPage/ItemPage/components/NewTransferOrder';
 import Layout1 from '../../components/layouts/layout1/Layout1';
@@ -180,11 +179,6 @@ const App = () => {
                   exact
                   path="/inventory/items"
                   component={ItemPage}
-                />
-                <PrivateRoute
-                  exact
-                  path="/inventory/items/new"
-                  component={NewItem}
                 />
                 <PrivateRoute
                   exact

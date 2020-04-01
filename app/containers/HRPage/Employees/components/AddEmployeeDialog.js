@@ -40,27 +40,32 @@ function AddEmployeeDialog(props) {
   const { closeNewEmployeeDialog, dialog } = props;
   const [step, setStep] = React.useState(0)
   const [form, setForm] = React.useState({
-    firstname: '',
-    lastname: '',
+    firstName: '',
+    lastName: '',
     email: '',
-    phoneNumber: '',
-    nickname: '',
+    mobileNo: '',
+    workPhone: '',
+    nickName: '',
     employeeId: '',
-    dateHired: moment(new Date()).format('YYYY-MM-DD'),
+    dateOfJoining: moment(new Date()).format('YYYY-MM-DD'),
     branch: '',
     employmentStatus: '',
     employmentType: '',
-    department: '',
+    employeeType: "",
+    seatingLocation: '',
+    extension: '',
+    department: '', // {id: 1}
+    designation: '', // {id: 1}
     reportTo: '',
     payRate: '',
     payType: '',
-    role: '',
-    dateOfBirth: moment(new Date('01-01-1980')).format('YYYY-MM-DD'),
+    role: '', // {id: 1}
+    dob: moment(new Date('01-01-1980')).format('YYYY-MM-DD'),
     maritalStatus: '',
     gender: '',
     address: '',
-    jobDescription: '',
-    bio: '',
+    jobDesc: '',
+    about: '',
   });
 
   React.useEffect(() => {

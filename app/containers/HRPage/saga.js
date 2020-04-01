@@ -17,7 +17,10 @@ import * as Endpoints from '../../components/Endpoints';
  */
 export function* getEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetEmployeesApi}`;
+
+  console.log(user, "currentUser")
 
   try {
     const employeesResponse = yield call(request, requestURL, {

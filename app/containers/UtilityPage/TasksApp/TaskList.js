@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, withStyles, useTheme } from '@material-ui/core/styles';
 import { Box, Button, ButtonGroup, Tabs, Tab, TableContainer, Table, TableRow, TableCell, TableBody, TableFooter, TextField, Grid, GridList, GridListTile, GridListTileBar, Divider, Menu, MenuItem, Paper, List, ListItem, ListSubheader, ListItemText, ListItemIcon, FormControlLabel, Icon, IconButton, Typography, Toolbar, Hidden, Drawer } from '@material-ui/core';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors'
 import moment from 'moment'
+import _ from 'lodash'
 import * as Actions from '../actions';
 import * as AppSelectors from '../../App/selectors';
 import * as Selectors from '../selectors';
@@ -26,6 +28,9 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     backgroundColor: theme.palette.common.white,
+  },
+  flex: {
+    display: 'flex', justifyContent: 'space-between', alignItems: 'center'
   },
   drawer: {
     [theme.breakpoints.up('sm')]: {
@@ -53,6 +58,11 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.primary.main,
       }
     },
+  },
+  table: {
+    '& th.MuiTableCell-root': {
+      width: '20%'
+    }
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -147,13 +157,14 @@ const AntTab = withStyles((theme) => ({
 const TaskList = props => {
   const classes = useStyles();
   const { loading, openNewTaskDialog, openEditTaskDialog, openAssignToDialog, getUtilityTask, getTaskComments, commentTask, authUser, tasks, task, comments, users, user, match, container } = props;
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [comment, setComment] = React.useState({
     comment: "",
     commentBy: authUser && authUser.uuId,
     taskId: task.id
   });
   const [value, setValue] = React.useState(0);
+  const filteredTasks = _.orderBy(tasks, ['dateCreated'], ['desc']);
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
@@ -165,11 +176,14 @@ const TaskList = props => {
 
   React.useEffect(() => {
     getUtilityTask(match.params.id)
+    setSelectedIndex(match.params.id)
   }, []);
 
   React.useEffect(() => {
-    setComment(_.set({...comment}, 'taskId', task.id))
-    getTaskComments(task.id)
+    if(task){
+      setComment(_.set({...comment}, 'taskId', task.id))
+      getTaskComments(task.id)
+    }
   }, [task]);
 
   const handleChange = event => {
@@ -184,6 +198,7 @@ const TaskList = props => {
   const handleTaskById = id => {
     setSelectedIndex(id)
     getUtilityTask(id)
+    props.history.push({pathname: '/dashboard/task/' + id})
   }
 
   const drawer = (
@@ -192,22 +207,26 @@ const TaskList = props => {
         component="nav"
         subheader={
           <ListSubheader component="div" id="nested-list-subheader">
-            <Typography variant="subtitle1">
-              Tasks <IconButton onClick={openNewTaskDialog}><Add/></IconButton>
-            </Typography>
+            <div className={classes.flex}>
+              <Typography variant="h6">
+                Tasks 
+              </Typography>
+              <IconButton onClick={openNewTaskDialog}><Add/></IconButton>
+            </div>
           </ListSubheader>
         }
       >
-        {tasks && tasks.map(task => (
+        {tasks && tasks.length === 0 && <Skeleton animation="wave" />}
+        {filteredTasks && filteredTasks.map(task => (
           <ListItem disableRipple button selected={selectedIndex == task.id} key={task.id} onClick={() => handleTaskById(task.id)}>
             <ListItemIcon><AssignmentTurnedIn /></ListItemIcon>
             <ListItemText primary={task.title} />
           </ListItem>
         ))}
       </List>
-      <Divider />
     </div>
   );
+
 
   return (
     <div className={classes.root}>
@@ -230,8 +249,7 @@ const TaskList = props => {
             </Hidden>
           </nav>
         </Grid>
-        <Grid item md={7}>
-          {task && Object.keys(task).length > 0 &&
+        <Grid item md={7}>          
           <div className={classes.content}>
             <Typography variant="h6">Details</Typography>
             <div className={classes.buttonGroup}>
@@ -245,7 +263,7 @@ const TaskList = props => {
                 <Button><Lens className={classNames(classes.icon, {'done': true})} />Done</Button>
               </ButtonGroup>
             </div>
-            
+            {task && Object.keys(task).length > 0 ?
             <TableContainer component={Paper}>
               <Table className={classes.table} aria-label="custom pagination table">
                 <TableBody>
@@ -284,9 +302,7 @@ const TaskList = props => {
                       Date Issued
                     </TableCell>
                     <TableCell align="left">
-                      {<span>
-                          {task.startDate? moment(task.startDate).format('lll') : ''}
-                      </span>}
+                      {task.startDate? moment(task.startDate).format('lll') : ''}
                     </TableCell>
                   </TableRow>
                   <TableRow key={task.endDate}>
@@ -294,14 +310,15 @@ const TaskList = props => {
                       End Date
                     </TableCell>
                     <TableCell align="left">
-                      {<span>
-                          {task.endDate? moment(task.endDate).format('lll') : ''}
-                      </span>}
+                      {task.endDate? moment(task.endDate).format('lll') : ''}
                     </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>
+            :
+            <Skeleton variant="rect" animation="wave" width="100%" height={118} />
+            }
 
             <div className={classes.demo1}>
               <Box my={2}>
@@ -333,7 +350,7 @@ const TaskList = props => {
             </div>
                   
           </div>
-          }
+          
         </Grid>
         <Grid item md={3}>
           <div className={classes.gridRoot}>

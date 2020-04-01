@@ -10,6 +10,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
+
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -40,7 +41,7 @@ const Snackbars = props => {
     setOpen(false);
   };
 
-  console.log(messageDialog, 'messageDialog 2');
+  // console.log(messageDialog, 'messageDialog 2');
   return (
     <div className={classes.root}>
       {/* <Button variant="outlined" onClick={openSnackAction}>

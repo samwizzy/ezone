@@ -162,7 +162,6 @@ const AccountChart = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          // const AllCharts = chartOfAccountData && chartOfAccountData.find(post => value === post.id);
           if (value === '') {
             return '';
           }

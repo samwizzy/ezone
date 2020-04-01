@@ -47,6 +47,30 @@ const warehousePageReducer = (state = initialState, action) =>
           },
         };
       }
+      case Constants.OPEN_EDIT_WAREHOUSE_DIALOG: {
+        return {
+          ...state,
+          warehouseDialog: {
+            type: 'edit',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_EDIT_WAREHOUSE_DIALOG: {
+        return {
+          ...state,
+          warehouseDialog: {
+            type: 'edit',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
       case Constants.GET_ALL_EMPLOYEES: {
         return {
           ...state,
@@ -107,6 +131,28 @@ const warehousePageReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_NEW_WAREHOUSE_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.UPDATE_WAREHOUSE: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          warehouseDetails: action.payload,
+        };
+      }
+      case Constants.UPDATE_WAREHOUSE_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.UPDATE_WAREHOUSE_ERROR: {
         return {
           ...state,
           loading: false,

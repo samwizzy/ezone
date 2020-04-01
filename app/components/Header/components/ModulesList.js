@@ -76,7 +76,7 @@ export default function MenuListComposition() {
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                     {apps && apps.map(app => (
-                      <MenuItem key={app.id} component={Link} to={app.url} onClick={handleClose}>{app.name}</MenuItem>
+                      <MenuItem disableRipple key={app.id} component={Link} to={app.url} onClick={handleClose}>{app.name}</MenuItem>
                     ))}
                   </MenuList>
                 </ClickAwayListener>
