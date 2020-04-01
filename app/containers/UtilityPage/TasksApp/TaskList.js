@@ -1,15 +1,18 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Button, ButtonGroup, TableContainer, Table, TableRow, TableCell, TableBody, TableFooter, TextField, Grid, GridList, GridListTile, GridListTileBar, Divider, Menu, MenuItem, Paper, List, ListItem, ListSubheader, ListItemText, ListItemIcon, FormControlLabel, Icon, IconButton, Typography, Toolbar, Hidden, Drawer } from '@material-ui/core';
+import { makeStyles, withStyles, useTheme } from '@material-ui/core/styles';
+import { Box, Button, ButtonGroup, Tabs, Tab, TableContainer, Table, TableRow, TableCell, TableBody, TableFooter, TextField, Grid, GridList, GridListTile, GridListTileBar, Divider, Menu, MenuItem, Paper, List, ListItem, ListSubheader, ListItemText, ListItemIcon, FormControlLabel, Icon, IconButton, Typography, Toolbar, Hidden, Drawer } from '@material-ui/core';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors'
 import moment from 'moment'
+import _ from 'lodash'
 import * as Actions from '../actions';
+import * as AppSelectors from '../../App/selectors';
 import * as Selectors from '../selectors';
 import AssignmentTurnedIn from '@material-ui/icons/AssignmentTurnedIn';
 import EditSharp from '@material-ui/icons/EditSharp';
@@ -17,6 +20,7 @@ import Assignment from '@material-ui/icons/Assignment';
 import Add from '@material-ui/icons/Add';
 import Lens from '@material-ui/icons/Lens';
 import ReactDropZone from './components/ReactDropZone'
+import CommentList from './components/CommentList'
 
 const drawerWidth = '100%';
 
@@ -25,15 +29,18 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     backgroundColor: theme.palette.common.white,
   },
+  flex: {
+    display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+  },
   drawer: {
     [theme.breakpoints.up('sm')]: {
-      // position: 'fixed',
       display: 'flex',
       flexDirection: 'column',
       width: drawerWidth, // works better without position:fixed
       flexShrink: 0,
       overflowY: 'auto',
-      height: `calc(100% - ${200}px)`,
+      height: '100vh',
+      borderRight: `1px solid ${theme.palette.grey[100]}`,
       '& .MuiListSubheader-root': {
         backgroundColor: theme.palette.common.white
       },
@@ -51,6 +58,11 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.primary.main,
       }
     },
+  },
+  table: {
+    '& th.MuiTableCell-root': {
+      width: '20%'
+    }
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -80,6 +92,9 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     height: 250,
   },
+  demo1: {
+    backgroundColor: theme.palette.background.paper,
+  },
   icon: {
     width: 14,
     height: 14,
@@ -97,60 +112,121 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const AntTabs = withStyles({
+  root: {
+    borderBottom: '1px solid #e8e8e8',
+  },
+  indicator: {
+    backgroundColor: '#1890ff',
+  },
+})(Tabs);
+
+const AntTab = withStyles((theme) => ({
+  root: {
+    textTransform: 'none',
+    minWidth: 72,
+    fontWeight: theme.typography.fontWeightRegular,
+    marginRight: theme.spacing(4),
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+    '&:hover': {
+      color: '#40a9ff',
+      opacity: 1,
+    },
+    '&$selected': {
+      color: '#1890ff',
+      fontWeight: theme.typography.fontWeightMedium,
+    },
+    '&:focus': {
+      color: '#40a9ff',
+    },
+  },
+  selected: {},
+}))((props) => <Tab disableRipple {...props} />);
+
 const TaskList = props => {
   const classes = useStyles();
-  const { loading, openNewTaskDialog, openEditTaskDialog, openAssignToDialog, getUtilityTask, getUserByUUID, getAssignedToByUUID, tasks, task, users, user, match, container } = props;
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const { loading, openNewTaskDialog, openEditTaskDialog, openAssignToDialog, getUtilityTask, getTaskComments, commentTask, authUser, tasks, task, comments, users, user, match, container } = props;
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [comment, setComment] = React.useState({
     comment: "",
-    commentBy: "",
+    commentBy: authUser && authUser.uuId,
     taskId: task.id
   });
+  const [value, setValue] = React.useState(0);
+  const filteredTasks = _.orderBy(tasks, ['dateCreated'], ['desc']);
 
+  const handleTabChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  console.log(comment, "comment from comment")
   console.log(task, "task from tasklist single")
-  console.log(user, "user from tasklist single")
-  console.log(comment, "user from comment form")
+  console.log(comments, "comments from comments comments")
 
   React.useEffect(() => {
     getUtilityTask(match.params.id)
+    setSelectedIndex(match.params.id)
   }, []);
 
   React.useEffect(() => {
+    if(task){
+      setComment(_.set({...comment}, 'taskId', task.id))
+      getTaskComments(task.id)
+    }
   }, [task]);
 
-  const handleChange = (event) => {
+  const handleChange = event => {
     setComment(_.set({...comment}, event.target.name, event.target.value))
   }
 
-  const handleSubmit = (form) => {
+  const handleSubmit = event => {
+    commentTask(comment)
+    setComment(_.set({...comment, comment: '', commentBy: ''}))
   }
 
   const handleTaskById = id => {
     setSelectedIndex(id)
     getUtilityTask(id)
+    props.history.push({pathname: '/dashboard/task/' + id})
   }
 
   const drawer = (
-    <div className={classes.drawe}>
+    <div>
       <List
+        component="nav"
         subheader={
           <ListSubheader component="div" id="nested-list-subheader">
-            <Typography variant="subtitle1">
-              Tasks <IconButton onClick={openNewTaskDialog}><Add/></IconButton>
-            </Typography>
+            <div className={classes.flex}>
+              <Typography variant="h6">
+                Tasks 
+              </Typography>
+              <IconButton onClick={openNewTaskDialog}><Add/></IconButton>
+            </div>
           </ListSubheader>
         }
       >
-        {tasks && tasks.map(task => (
+        {tasks && tasks.length === 0 && <Skeleton animation="wave" />}
+        {filteredTasks && filteredTasks.map(task => (
           <ListItem disableRipple button selected={selectedIndex == task.id} key={task.id} onClick={() => handleTaskById(task.id)}>
             <ListItemIcon><AssignmentTurnedIn /></ListItemIcon>
             <ListItemText primary={task.title} />
           </ListItem>
         ))}
       </List>
-      <Divider />
     </div>
   );
+
 
   return (
     <div className={classes.root}>
@@ -173,7 +249,7 @@ const TaskList = props => {
             </Hidden>
           </nav>
         </Grid>
-        <Grid item md={7}>
+        <Grid item md={7}>          
           <div className={classes.content}>
             <Typography variant="h6">Details</Typography>
             <div className={classes.buttonGroup}>
@@ -187,7 +263,7 @@ const TaskList = props => {
                 <Button><Lens className={classNames(classes.icon, {'done': true})} />Done</Button>
               </ButtonGroup>
             </div>
-            
+            {task && Object.keys(task).length > 0 ?
             <TableContainer component={Paper}>
               <Table className={classes.table} aria-label="custom pagination table">
                 <TableBody>
@@ -226,9 +302,7 @@ const TaskList = props => {
                       Date Issued
                     </TableCell>
                     <TableCell align="left">
-                      {<span>
-                          {task.startDate? moment(task.startDate).format('lll') : ''}
-                      </span>}
+                      {task.startDate? moment(task.startDate).format('lll') : ''}
                     </TableCell>
                   </TableRow>
                   <TableRow key={task.endDate}>
@@ -236,41 +310,47 @@ const TaskList = props => {
                       End Date
                     </TableCell>
                     <TableCell align="left">
-                      {<span>
-                          {task.endDate? moment(task.endDate).format('lll') : ''}
-                      </span>}
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-
-              <Table>
-                <TableBody>  
-                  <TableRow key={0}>
-                    <TableCell component="th" scope="row">
-                      <TextField
-                        id="outlined-multiline-static"
-                        name="comment"
-                        label="Comment"
-                        multiline
-                        fullWidth
-                        rows="4"
-                        rowsMax="4"
-                        value={comment.comment}
-                        onChange={handleChange}
-                        variant="outlined"
-                      />
-
-                      <Button className={classes.submitButton} variant="outlined" onClick={handleSubmit} color="primary">
-                        Send
-                      </Button>
+                      {task.endDate? moment(task.endDate).format('lll') : ''}
                     </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>
+            :
+            <Skeleton variant="rect" animation="wave" width="100%" height={118} />
+            }
 
+            <div className={classes.demo1}>
+              <Box my={2}>
+                <TextField
+                  id="outlined-multiline-static"
+                  name="comment"
+                  label="Comment"
+                  multiline
+                  fullWidth
+                  rows="4"
+                  rowsMax="4"
+                  value={comment.comment}
+                  onChange={handleChange}
+                  variant="outlined"
+                />
+                <Button className={classes.submitButton} variant="outlined" onClick={handleSubmit} color="primary">
+                  Post
+                </Button>
+              </Box>
+              <AntTabs value={value} onChange={handleTabChange} aria-label="ant example">
+                <AntTab label="Comments" />
+                <AntTab label="History" />
+                <AntTab label="Activity" />
+              </AntTabs>
+              <Typography className={classes.padding} />
+              {value == 0 && <CommentList />}
+              {value == 1 && <CommentList />}
+              {value == 2 && <CommentList />}
+            </div>
+                  
           </div>
+          
         </Grid>
         <Grid item md={3}>
           <div className={classes.gridRoot}>
@@ -311,8 +391,10 @@ const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   tasks: Selectors.makeSelectTasks(),
   task : Selectors.makeSelectTask(),
+  comments : Selectors.makeSelectTaskComments(),
   users: Selectors.makeSelectEmployees(),
   user: Selectors.makeSelectUser(),
+  authUser: AppSelectors.makeSelectCurrentUser(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -321,7 +403,9 @@ function mapDispatchToProps(dispatch) {
     openEditTaskDialog: () => dispatch(Actions.openEditTaskDialog()),
     openAssignToDialog: () => dispatch(Actions.openAssignToDialog()),
     addTaskAttachment: (data) => dispatch(Actions.addTaskAttachment(data)),
+    commentTask: (data) => dispatch(Actions.commentTask(data)),
     getUtilityTask: (id) => dispatch(Actions.getUtilityTask(id)),
+    getTaskComments: (id) => dispatch(Actions.getTaskComments(id)),
     getUserByUUID: (id) => dispatch(Actions.getUserByUUID(id)),
     getEmployees: () => dispatch(Actions.getEmployees()),
   };

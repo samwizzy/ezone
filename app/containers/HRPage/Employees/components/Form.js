@@ -25,11 +25,11 @@ export const Form = props => {
   const classes = useStyles();
 
   const canSubmitForm = () => {
-    const { firstname, lastname, phoneNumber, email, nickname } = form;
+    const { firstName, lastName, mobileNo, email, nickName } = form;
     return (
-      firstname.length > 0 &&
-      lastname.length > 0 &&
-      phoneNumber.length > 0 &&
+      firstName.length > 0 &&
+      lastName.length > 0 &&
+      mobileNo.length > 0 &&
       email.length > 0
     );
   };
@@ -44,37 +44,37 @@ export const Form = props => {
           <Grid container spacing={1}>
             <Grid item xs={6}>
               <TextField
-                name="firstname"
+                name="firstName"
                 label="Firstname"
                 id="outlined-title"
                 fullWidth
                 variant="outlined"
                 size="small"
-                value={form.firstname}
+                value={form.firstName}
                 onChange={handleChange}
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
-                name="lastname"
+                name="lastName"
                 label="Lastname"
                 id="outlined-title"
                 fullWidth
                 variant="outlined"
                 size="small"
-                value={form.lastname}
+                value={form.lastName}
                 onChange={handleChange}
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
-                name="phoneNumber"
-                label="Phone Number"
+                name="mobileNo"
+                label="Mobile Number"
                 id="outlined-title"
                 fullWidth
                 variant="outlined"
                 size="small"
-                value={form.phoneNumber}
+                value={form.mobileNo}
                 onChange={handleChange}
               />
             </Grid>
@@ -93,12 +93,12 @@ export const Form = props => {
             <Grid item xs={12}>
               <TextField
                 id="outlined-multiline-desc"
-                name="nickname"
+                name="nickName"
                 label="Nickname"
                 multiline
                 fullWidth
                 size="small"
-                value={form.nickname}
+                value={form.nickName}
                 onChange={handleChange}
                 variant="outlined"
               />

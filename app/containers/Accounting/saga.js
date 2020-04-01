@@ -82,7 +82,40 @@ export function* createNewChartOfAccountSaga() {
     yield put(Actions.createNewChartOfAccountSuccessAction(chartOfAccountResponse));
   } catch (err) {
     console.log('createNewChartOfAccountErrorAction -> ', err);
+    alert(`Something went wrong.`);
     yield put(Actions.createNewChartOfAccountErrorAction(err));
+  }
+}
+
+// Update a chart of account
+export function* updateChartOfAccountSaga({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const requestURL = `${Endpoints.UpdateChartOfAccountApi}`;
+
+  const updateChartOfAccountData = yield select(
+    Selectors.makeSelectUpdateChartOfAccountData(),
+  );
+  console.log('payload -> ', payload);
+
+  updateChartOfAccountData.id = payload.id;
+
+  try {
+    const updateChartOfAccountResponse = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(updateChartOfAccountData),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log('updateChartOfAccountResponse -> ', updateChartOfAccountResponse);
+    alert(`Account Name: ${updateChartOfAccountResponse.accountName} was updated successfully!`);
+    yield put(Actions.updateChartOfAccountSuccessAction(updateChartOfAccountResponse));
+  } catch (err) {
+    console.log('createNewChartOfAccountErrorAction -> ', err);
+    alert(`Something went wrong.`);
+    yield put(Actions.updateChartOfAccountErrorAction(err));
   }
 }
 

@@ -303,7 +303,7 @@ function Header(props) {
           >
             <Grid item style={{display:'flex', alignItems:'center'}}>
               <Typography type="title" color="inherit">
-                <Link href='#'>
+                <Link href='/'>
                   <img src={Logo} className={classes.logo} />
                 </Link>
               </Typography>

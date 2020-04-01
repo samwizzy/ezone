@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => ({
       flexShrink: 0,
       overflowY: 'auto',
       height: '100vh',
+      borderRight: `1px solid ${theme.palette.grey[100]}`,
       '& .MuiListSubheader-root': {
         backgroundColor: theme.palette.common.white
       },
@@ -90,7 +91,6 @@ const SideBar = props => {
                     </ListItem>
                     ))}
                 </List>
-                <Divider />
                 </div>
                 )    
             }}

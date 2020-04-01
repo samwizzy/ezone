@@ -38,7 +38,7 @@ const NoTasksList = props => {
                     <Typography variant='h6'>No task yet</Typography>
 
                     <Button variant="contained" color="primary" onClick={props.openNewTaskDialog} className={classes.button} disableElevation>
-                        Upload a task
+                        Create a new task
                     </Button>
                 </Box>
             </Grid>

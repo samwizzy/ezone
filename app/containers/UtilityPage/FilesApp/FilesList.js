@@ -90,23 +90,17 @@ const useStyles = makeStyles(theme => ({
 
 const FilesList = props => {
   const classes = useStyles();
-  const { loading, files, file, user, getUtilityFile, deleteDocument, favoriteDocument, getFavoriteDocuments, getSharedDocuments, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog } = props
+  const { loading, folders, files, file, user, getUtilityFile, deleteDocument, favoriteDocument, getFavoriteDocuments, getSharedDocuments, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog } = props
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [fileId, setFileId] = React.useState(null);
   const [form, setForm] = React.useState({
-    file: [
-      {
-        id: 0,
-        type: "document"
-      }
-    ],
+    file: [],
     parentId: 0
   });
   const open = Boolean(anchorEl);
   const [isOpen, setOpen] = React.useState(true);
 
-  useEffect(() => {
-  }, [file])
+  console.log(folders, "folders")
 
   const handleCollapseClick = () => {
     setOpen(!isOpen);
@@ -134,7 +128,12 @@ const FilesList = props => {
   }
   const handleDelete = (event, id) => {
     event.stopPropagation()
-    deleteDocument(id)
+    const file = []
+    const payload = {id, type: "document"}
+    file.push(payload)
+    const model = {parentId: 0, file}; 
+    console.log(model, "model")
+    deleteDocument(model)
   }
   const handleFavorite = (event, id) => {
     event.stopPropagation()
@@ -178,22 +177,6 @@ const FilesList = props => {
           return  (
             <Typography variant="inherit" color="textSecondary">
               <InsertDriveFile /> &nbsp; {docName}
-            </Typography>
-          )
-        }
-      },
-    },
-    {
-      name: 'documents',
-      label: ' ',
-      options: {
-        filter: true,
-        sort: true,
-        customBodyRender: doc => {
-          if(!doc) return ''
-          return  (
-            <Typography variant="inherit" color="textSecondary">
-              <InsertDriveFile /> &nbsp; {doc[0].docName}
             </Typography>
           )
         }
@@ -521,6 +504,7 @@ FilesList.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
+  folders: Selectors.makeSelectFolders(),
   files: Selectors.makeSelectFiles(),
   file: Selectors.makeSelectFile(),
   user: AppSelectors.makeSelectCurrentUser(),

@@ -59,11 +59,12 @@ const NewAccountDialog = props => {
     accountTypeData,
     detailTypeData,
     dispatchGetDetailTypeAction,
-    createChartOfAccountAction 
+    createChartOfAccountAction,
+    updateChartOfAccountAction 
   } = props;
 
-  console.log('accountTypeData: ', accountTypeData);
-  console.log('detailTypeData: ', detailTypeData);
+  // console.log('accountTypeData: ', accountTypeData);
+  // console.log('detailTypeData: ', detailTypeData);
 
   const classes = useStyles();
 
@@ -78,11 +79,19 @@ const NewAccountDialog = props => {
     ref: ""
   });
 
+  React.useEffect(() => {
+    if (accountDialog.type === 'edit') {
+      const {accountName, accountNumber, accountType, description, ezoneBalance, orgId, period, ref} = accountDialog.data;
+      setValues({...values, accountName, accountNumber, accountType, description, ezoneBalance, orgId, period, ref});
+    }
+  }, [accountDialog])
+
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
 
   console.log('values: ', values);
+  console.log('accountDialog: ', accountDialog);
 
   const handleSelectChange = (name, value) => {
     setValues({ ...values, accountType: value.type });
@@ -224,7 +233,113 @@ const NewAccountDialog = props => {
                 multiline
               />
             </div>
-          ) : null}
+          ) : (
+            <div>
+              <TextField
+                id="standard-accountName"
+                label="Account Name"
+                type="name"
+                variant="outlined"
+                className={classes.textField}
+                value={values.accountName}
+                onChange={handleChange('accountName')}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                id="standard-accountNumber"
+                label="Account Code"
+                type="number"
+                variant="outlined"
+                className={classes.textField}
+                value={values.accountNumber}
+                onChange={handleChange('accountNumber')}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                id="standard-ezoneBalance"
+                label="E-Zone Balance"
+                type="number"
+                variant="outlined"
+                className={classes.textField}
+                value={values.ezoneBalance}
+                onChange={handleChange('ezoneBalance')}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                id="standard-ref"
+                label="Reference Code"
+                type="name"
+                variant="outlined"
+                className={classes.textField}
+                value={values.ref}
+                onChange={handleChange('ref')}
+                margin="normal"
+                fullWidth
+              />
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <Grid container justify="space-around">
+                  <KeyboardDatePicker
+                    margin="normal"
+                    id="date-picker-dialog"
+                    label="Select Period"
+                    format="MM/dd/yyyy"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
+                  />
+                </Grid>
+              </MuiPickersUtilsProvider>
+              <Autocomplete
+                id="combo-box-demo"
+                options={accountTypeData}
+                getOptionLabel={option => option.type}
+                onChange={(evt, value) => handleSelectChange(evt, value)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Select Account Type"
+                    className={classes.textField}
+                    variant="outlined"
+                    placeholder="Search"
+                    fullWidth
+                  />
+                )}
+              />
+              <Autocomplete
+                id="combo-box-demo"
+                options={detailTypeData}
+                getOptionLabel={option => option.name}
+                // onChange={(evt, value) => handleSelectChange(evt, value)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Select Detail Type"
+                    className={classes.textField}
+                    variant="outlined"
+                    placeholder="Search"
+                    fullWidth
+                  />
+                )}
+              />
+              <TextField
+                id="standard-description"
+                label="Description"
+                variant="outlined"
+                className={classes.textField}
+                value={values.description}
+                onChange={handleChange('description')}
+                margin="normal"
+                fullWidth
+                rows={2}
+                multiline
+              />
+            </div>
+          )}
         </DialogContent>
 
         <DialogActions>
@@ -233,7 +348,8 @@ const NewAccountDialog = props => {
           ) : (
             <Button
               onClick={() => {
-                createChartOfAccountAction(values);
+                accountDialog.type === 'new' ? createChartOfAccountAction(values) : updateChartOfAccountAction(values);
+                // createChartOfAccountAction(values);
               }}
               color="primary"
               // variant="contained"
@@ -243,9 +359,7 @@ const NewAccountDialog = props => {
             </Button>
           )}
           <Button
-            onClick={() => {
-              closeNewAccountDialogAction();
-            }}
+            onClick={closeNewAccountDialogAction}
             color="inherit"
             // variant="contained"
           >
@@ -270,6 +384,7 @@ const mapStateToProps = createStructuredSelector({
   accountTypeData: Selectors.makeSelectAccountTypeData(),
   detailTypeData: Selectors.makeSelectDetailTypeData(),
   chartOfAccountPostData: Selectors.makeSelectChartOfAccountPostData(),
+  chartOfAccountUpdateData: Selectors.makeSelectUpdateChartOfAccountData(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -278,6 +393,7 @@ function mapDispatchToProps(dispatch) {
     closeNewAccountDialogAction: () => dispatch(Actions.closeNewAccountDialog()),
     dispatchGetDetailTypeAction: evt => dispatch(Actions.getDetailTypeAction(evt)),
     createChartOfAccountAction: evt => dispatch(Actions.createNewChartOfAccountAction(evt)),
+    updateChartOfAccountAction: evt => dispatch(Actions.updateChartOfAccountAction(evt)),
     dispatch,
   };
 }
