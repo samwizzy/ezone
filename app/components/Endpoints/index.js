@@ -111,11 +111,15 @@ export const SaveEmailConfigApi = `${BaseUrl}/messagingserv/api/v1/emailConfig`;
 export const TestConnectionApi = `${BaseUrl}/messagingserv/api/v1/test_email_config`;
 export const GetSmsProviderApi = `${BaseUrl}/messagingserv/api/v1/get_all_sms_providers`;
 export const GetSmsConfigApi = `${BaseUrl}/messagingserv/api/v1/get_sms_config_by_orgId`;
+export const SaveSmsConfigApi = `${BaseUrl}/messagingserv/api/v1/smsConfig`;
+
 
 // Work order Api
 export const SaveVendorApi = `${BaseUrl}/utilityserv/api/v1/add_vendor`;
 export const GetListOfVendorsApi = `${BaseUrl}/utilityserv/api/v1/find_all_vendors`;
 export const CreateWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/add_workorder`;
+export const UpdateWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/update_workorder`;
+export const DeleteWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/delete_workorder`;
 export const GetListOfWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/find_all_workorders`;
 
 // Account Api
@@ -124,6 +128,7 @@ export const GetDetailTypeApi = `${BaseUrl}/accountingserv/api/v1/account/get_de
 export const CreateChartOfAccountApi = `${BaseUrl}/accountingserv/api/v1/account/add_chart_of_account`;
 export const GetAllChartOfAccountApi = `${BaseUrl}/accountingserv/api/v1/account/get_account_by_orgid`;
 export const UpdateChartOfAccountApi = `${BaseUrl}/accountingserv/api/v1/account/update_account`;
+export const DeleteChartOfAccountApi = `${BaseUrl}/accountingserv/api/v1/account/delete_account`;
 
 
 /** *****************************************************************

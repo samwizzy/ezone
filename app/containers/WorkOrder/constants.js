@@ -7,6 +7,9 @@
 export const OPEN_NEW_WORKORDER_DIALOG = 'app/WorkOrderPage/OPEN_NEW_WORKORDER_DIALOG';
 export const CLOSE_NEW_WORKORDER_DIALOG = 'app/WorkOrderPage/CLOSE_NEW_WORKORDER_DIALOG';
 
+export const EDIT_OPEN_WORKORDER_DIALOG = 'app/WorkOrderPage/EDIT_OPEN_WORKORDER_DIALOG';
+export const EDIT_CLOSE_WORKORDER_DIALOG = 'app/WorkOrderPage/EDIT_CLOSE_WORKORDER_DIALOG';
+
 export const OPEN_VENDOR_DIALOG = 'app/WorkOrderPage/OPEN_VENDOR_DIALOG';
 export const CLOSE_VENDOR_DIALOG = 'app/WorkOrderPage/CLOSE_VENDOR_DIALOG';
 
@@ -26,6 +29,14 @@ export const GET_ALL_VENDORS_ERR = 'app/WorkOrderPage/GET_ALL_VENDORS_ERR';
 export const SAVE_WORKORDER = 'app/WorkOrderPage/SAVE_WORKORDER';
 export const SAVE_WORKORDER_SUCCESS = 'app/WorkOrderPage/SAVE_WORKORDER_SUCCESS';
 export const SAVE_WORKORDER_ERR = 'app/WorkOrderPage/SAVE_WORKORDER_ERR';
+
+export const UPDATE_WORKORDER = 'app/WorkOrderPage/UPDATE_WORKORDER';
+export const UPDATE_WORKORDER_SUCCESS = 'app/WorkOrderPage/UPDATE_WORKORDER_SUCCESS';
+export const UPDATE_WORKORDER_ERR = 'app/WorkOrderPage/UPDATE_WORKORDER_ERR';
+
+export const DELETE_WORKORDER = 'app/WorkOrderPage/DELETE_WORKORDER';
+export const DELETE_WORKORDER_SUCCESS = 'app/WorkOrderPage/DELETE_WORKORDER_SUCCESS';
+export const DELETE_WORKORDER_ERR = 'app/WorkOrderPage/DELETE_WORKORDER_ERR';
 
 export const GET_ALL_WORKORDER = 'app/WorkOrderPage/GET_ALL_WORKORDER';
 export const GET_ALL_WORKORDER_SUCCESS = 'app/WorkOrderPage/GET_ALL_WORKORDER_SUCCESS';

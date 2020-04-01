@@ -7,18 +7,16 @@ import {
   CardContent,
   TextField,
   Button,
-  FormControl,
-  FormHelperText,
-  MenuItem,
-  Select,
 } from '@material-ui/core';
 
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import * as AppSelectors from '../../App/selectors';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
 import LoadingIndicator from '../../../components/LoadingIndicator';
+import { Autocomplete } from '@material-ui/lab';
 
 
 const useStyles = makeStyles(theme => ({
@@ -43,32 +41,38 @@ const useStyles = makeStyles(theme => ({
 const SMSConfigs = props => {
   const classes = useStyles();
 
-  const { 
-    dispatchGetSmsProviderAction, 
+  const {
     smsProviderData,
-    dispatchGetSmsConfigAction,
     smsConfigData,
     loading,
+    currentUser,
+    dispatchCreateSmsConfigAction,
+    testConnectionDialog,
+    openTestConnectionDialogAction
   } = props;
-
-  console.log('smsProviderData from component: ', smsProviderData);
-  console.log('smsConfigData from component: ', smsConfigData);
-  console.log('currentUser: ', currentUser);
+  console.log('testConnectionDialog -> ', testConnectionDialog);
 
   const [values, setValues] = React.useState({
+    gatewayUrl: "",
     orgId: currentUser.organisation.orgId,
-    gatewayUrl: '',
-    password: '',
-    username: '',
-    subject: '',
-    password: ''
+    password: "",
+    sender_id: "",
+    smsProvider: "",
+    username: ""
   });
 
+  const handleChange = name => event => {
+    setValues({ ...values, [name]: event.target.value });
+  };
+
+  const handleSelectChange = (name, value) => {
+    setValues({ ...values, smsProvider: value });
+  };
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    dispatchGetSmsProviderAction();
-    dispatchGetSmsConfigAction();
+    const { gatewayUrl, username, password, sender_id } = smsConfigData;
+    setValues({ ...values, gatewayUrl, username, password, sender_id });
   }, []);
 
 
@@ -81,82 +85,68 @@ const SMSConfigs = props => {
       SMS Configuration Settings
       <Card className={classes.card} variant="outlined">
         <CardContent>
-
-        <FormControl variant="outlined" className={classes.formControl}>
-          {/* <InputLabel id="demo-simple-select-outlined-label">
-            SMS
-          </InputLabel> */}
-          <FormHelperText><h3>Select SMS Provider</h3></FormHelperText>
-          <Select
-            labelId="demo-simple-select-outlined-label"
-            id="demo-simple-select-outlined"
-            // value={age}
-            // onChange={handleChange}
-            // labelWidth={labelWidth}
-          >
-            {/* {smsProviderData.map((item) => {
-              return <MenuItem value={item.id}>{item.providerName}</MenuItem>
-            })} */}
-          </Select>
-        </FormControl>
-        
+          <Autocomplete
+            id="combo-box-demo"
+            options={smsProviderData}
+            getOptionLabel={option => option.providerName}
+            onChange={(evt, value) => handleSelectChange(evt, value)}
+            renderInput={params => (
+              <TextField
+                {...params}
+                label="Select SMS Provider"
+                className={classes.textField}
+                variant="outlined"
+                placeholder="Search"
+                fullWidth
+              />
+            )}
+          />
           <Grid container spacing={3} className={classes.formStyle}>
             <Grid item xs={12} md={6} lg={6}>
               <div>
                 <TextField
-                  id="outlined-SMS-Gateway-URL"
-                  label="SMS Gateway URL"
+                  id="standard-gatewayUrl"
+                  label="Gateway Url"
+                  type="name"
                   variant="outlined"
+                  className={classes.textField}
+                  value={values.gatewayUrl}
+                  onChange={handleChange('gatewayUrl')}
+                  margin="normal"
                   fullWidth
                 />
-              </div>
-            </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <div>
                 <TextField
-                  id="outlined-Message-Parameter"
-                  label="Message Parameter"
+                  id="standard-gatewayUrl"
+                  label="Enter username"
+                  type="name"
                   variant="outlined"
+                  className={classes.textField}
+                  value={values.username}
+                  onChange={handleChange('username')}
+                  margin="normal"
                   fullWidth
                 />
-              </div>
-            </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <div>
                 <TextField
-                  id="outlined-Receiver-Parameter"
-                  label="Receiver Parameter"
-                  variant="outlined"
-                  fullWidth
-                />
-              </div>
-            </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <div>
-                <TextField
-                  id="outlined-Password"
+                  id="standard-password"
                   label="Password"
+                  type="password"
+                  autoComplete="current-password"
                   variant="outlined"
+                  className={classes.textField}
+                  value={values.password}
+                  onChange={handleChange('password')}
+                  margin="normal"
                   fullWidth
                 />
-              </div>
-            </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <div>
                 <TextField
-                  id="outlined-SMS-parameter-sender-ID"
+                  id="standard-sender_id"
                   label="SMS parameter sender ID"
+                  type="name"
                   variant="outlined"
-                  fullWidth
-                />
-              </div>
-            </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <div>
-                <TextField
-                  id="outlined-SMS-sending-model"
-                  label="SMS-sending-model"
-                  variant="outlined"
+                  className={classes.textField}
+                  value={values.sender_id}
+                  onChange={handleChange('sender_id')}
+                  margin="normal"
                   fullWidth
                 />
               </div>
@@ -166,14 +156,11 @@ const SMSConfigs = props => {
             <Button 
               variant="outlined" 
               color="primary"
+              onClick={() => openTestConnectionDialogAction()}
             >
               Test Sample Message
             </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.buttonStyle}
-            >
+            <Button variant="contained" color="primary" className={classes.buttonStyle} onClick={() => dispatchCreateSmsConfigAction(values)}>
               Save
             </Button>
             <Button
@@ -199,12 +186,14 @@ const mapStateToProps = createStructuredSelector({
   smsProviderData: Selectors.makeSelectSmsProviderData(),
   smsConfigData: Selectors.makeSelectSmsConfigData(),
   loading: Selectors.makeSelectLoading(),
+  currentUser: AppSelectors.makeSelectCurrentUser(),
+  testConnectionDialog: Selectors.makeSelectTestConnectionDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchGetSmsProviderAction: evt => dispatch(Actions.getSmsProviderAction(evt)),
-    dispatchGetSmsConfigAction: evt => dispatch(Actions.getSmsConfigAction(evt)),
+    dispatchCreateSmsConfigAction: evt => dispatch(Actions.createSmsConfigAction(evt)),
+    openTestConnectionDialogAction: () => dispatch(Actions.openTestConnectionDialog()),
   };
 }
 

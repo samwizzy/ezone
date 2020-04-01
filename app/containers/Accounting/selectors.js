@@ -51,12 +51,6 @@ const makeSelectChartOfAccountPostData = () =>
     subState => subState.chartOfAccPostData,
 );
 
-const makeSelectUpdateChartOfAccountData= () =>
-  createSelector(
-    selectAccountingDomain,
-    substate => substate.updateChartOfAccData,
-  );
-
 const makeSelectGetChartOfAccountData = () =>
   createSelector(
     selectAccountingDomain,
@@ -72,6 +66,5 @@ export {
   makeSelectAccountTypeData,
   makeSelectDetailTypeData,
   makeSelectChartOfAccountPostData,
-  makeSelectUpdateChartOfAccountData,
   makeSelectGetChartOfAccountData 
 };

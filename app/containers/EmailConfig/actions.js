@@ -6,11 +6,6 @@
 
 import * as Constants from './constants';
 
-// export function defaultAction() {
-//   return {
-//     type: DEFAULT_ACTION,
-//   };
-// }
 
 // Get email configuration details
 export function getEmailConfigAction() {
@@ -102,14 +97,12 @@ export function getSmsProviderErrorAction(data) {
 
 // Get sms configuration 
 export function getSmsConfigAction() {
-  console.log(`getSmsConfigAction()`);
   return {
     type: Constants.GET_SMS_CONFIG,
   };
 }
 
 export function getSmsConfigSuccessAction(data) {
-  console.log(`getSmsConfigSuccessAction: ${data}`);
   return {
     type: Constants.GET_SMS_CONFIG_SUCCESS,
     payload: data,
@@ -120,5 +113,42 @@ export function getSmsConfigErrorAction(data) {
   return {
     type: Constants.GET_SMS_CONFIG_ERR,
     payload: data,
+  };
+}
+
+// Create sms configuration 
+export function createSmsConfigAction(data) {
+  return {
+    type: Constants.CREATE_SMS_CONFIG,
+    payload: data,
+  };
+}
+
+export function createSmsConfigSuccessAction(data) {
+  return {
+    type: Constants.CREATE_SMS_CONFIG_SUCCESS,
+    payload: data,
+  };
+}
+
+export function createSmsConfigErrorAction(data) {
+  return {
+    type: Constants.CREATE_SMS_CONFIG_ERR,
+    payload: data,
+  };
+}
+
+
+// Open/Close test connection dialog
+export function openTestConnectionDialog() {
+  console.log('openTestConnectionDialog triggered');
+  return {
+    type: Constants.OPEN_TEST_CONNECTION_DIALOG,
+  };
+}
+
+export function closeTestConnectionDialog() {
+  return {
+    type: Constants.CLOSE_TEST_CONNECTION_DIALOG,
   };
 }

@@ -9,17 +9,52 @@ import * as Constants from './constants';
 export const initialState = {
   emailConfigData: false,
   emailConfigPostData: false,
+  smsConfigPostData: false,
   testConnectionData: false,
   smsProviderData: false,
   smsConfigData: false,
   loading: false,
   error: false,
+  testConnectionDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
 };
 
 /* eslint-disable default-case, no-param-reassign */
 const emailConfigReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
+
+      // Open/Close test connection dialog
+      case Constants.OPEN_TEST_CONNECTION_DIALOG: {
+        console.log('OPEN_TEST_CONNECTION_DIALOG reducer triggered');
+        return {
+          ...state,
+          testConnectionDialog: {
+            type: 'new',
+            props: {
+              open: true,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.CLOSE_TEST_CONNECTION_DIALOG: {
+        return {
+          ...state,
+          testConnectionDialog: {
+            type: 'new',
+            props: {
+              open: false,
+            },
+            data: action.payload,
+          },
+        };
+      }
 
       // Case to get email config
       case Constants.GET_EMAIL_CONFIG: {
@@ -154,6 +189,32 @@ const emailConfigReducer = (state = initialState, action) =>
         };
       }
 
+      // Create sms config
+      case Constants.CREATE_SMS_CONFIG: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          smsConfigPostData: action.payload
+        };
+      }
+
+      case Constants.CREATE_SMS_CONFIG_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          smsConfigPostData: action.payload
+        };
+      }
+
+      case Constants.CREATE_SMS_CONFIG_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
     }
   });
 

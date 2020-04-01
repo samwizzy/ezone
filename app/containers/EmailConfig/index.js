@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -18,10 +18,25 @@ import makeSelectEmailConfig from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import EmailHome from './components/EmailHome';
+import TestConnectionDialog from './components/TestConnectionDialog';
+import * as Actions from './actions';
 
-export function EmailConfig() {
+export function EmailConfig(props) {
   useInjectReducer({ key: 'emailConfig', reducer });
   useInjectSaga({ key: 'emailConfig', saga });
+
+  const {
+    dispatchGetEmailConfigAction,
+    dispatchGetSmsProviderAction,
+    dispatchGetSmsConfigAction
+  } = props;
+
+  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {
+    dispatchGetEmailConfigAction();
+    dispatchGetSmsProviderAction();
+    dispatchGetSmsConfigAction();
+  }, []);
 
   return (
     <div>
@@ -29,6 +44,7 @@ export function EmailConfig() {
         <title>EmailConfig</title>
         <meta name="description" content="Description of EmailConfig" />
       </Helmet>
+      <TestConnectionDialog />
       <EmailHome />
     </div>
   );
@@ -44,6 +60,9 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    dispatchGetEmailConfigAction: evt => dispatch(Actions.getEmailConfigAction(evt)),
+    dispatchGetSmsProviderAction: evt => dispatch(Actions.getSmsProviderAction(evt)),
+    dispatchGetSmsConfigAction: evt => dispatch(Actions.getSmsConfigAction(evt)),
     dispatch,
   };
 }

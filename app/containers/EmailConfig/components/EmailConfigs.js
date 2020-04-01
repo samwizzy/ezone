@@ -47,8 +47,7 @@ const EmailConfigs = props => {
   const classes = useStyles();
 
   const { 
-    dispatchUpdateEmailConfigAction, 
-    dispatchGetEmailConfigAction, 
+    dispatchUpdateEmailConfigAction,
     dispatchTestEmailConfigConnectionAction,
     emailConfigData,
     testEmailConfigConnectionData,
@@ -73,14 +72,17 @@ const EmailConfigs = props => {
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    dispatchGetEmailConfigAction();
-    
-    setValues({
-      ...emailConfigData,
-      tls: emailConfigData.isTlsEnabled,
-      tlsRequired: emailConfigData.isTlsRequired,
-      authenticate: emailConfigData.isAuth
-    });
+    console.log('emailConfigData --> ', emailConfigData);
+
+    // const { gatewayUrl, username, password, sender_id } = smsConfigData;
+    // setValues({ ...values, gatewayUrl, username, password, sender_id });
+
+    // setValues({
+    //   ...emailConfigData,
+    //   tls: emailConfigData.isTlsEnabled,
+    //   tlsRequired: emailConfigData.isTlsRequired,
+    //   authenticate: emailConfigData.isAuth
+    // });
   }, []);
 
   if (loading) {
@@ -121,12 +123,10 @@ const EmailConfigs = props => {
             </Grid>
           </Grid>
           <Divider component="hr" />
-
           <Typography variant="h6" component="h6" className={classes.header}>
             Security and Authentication
           </Typography>
           <Grid container spacing={3} className={classes.formStyle}>
-            
             <Grid item xs={12} md={6} lg={6}>
               <div>
                 <TextField
@@ -140,7 +140,6 @@ const EmailConfigs = props => {
                 />
               </div>
             </Grid>
-
             <Grid item xs={12} md={6} lg={6}>
               <div>
                 <TextField
@@ -155,7 +154,6 @@ const EmailConfigs = props => {
               </div>
             </Grid>
           </Grid>
-
           <FormGroup>
           <FormControlLabel
             value={values.tls}
@@ -175,18 +173,17 @@ const EmailConfigs = props => {
             label="Authentication"
           />
         </FormGroup>
-
-          <Grid item xs={12} md={6} lg={6}>
-            <Button variant="outlined" color="primary" onClick={() => dispatchTestEmailConfigConnectionAction(values)}>
-              Test Connection
-            </Button>
-            <Button variant="contained" color="primary" className={classes.buttonStyle} onClick={() => dispatchUpdateEmailConfigAction(values)}>
-              Save
-            </Button>
-            <Button variant="contained" color="primary" className={classes.buttonStyle}>
-              Cancel
-            </Button>
-          </Grid>
+        <Grid item xs={12} md={6} lg={6}>
+          <Button variant="outlined" color="primary" onClick={() => dispatchTestEmailConfigConnectionAction(values)}>
+            Test Connection
+          </Button>
+          <Button variant="contained" color="primary" className={classes.buttonStyle} onClick={() => dispatchUpdateEmailConfigAction(values)}>
+            Save
+          </Button>
+          <Button variant="contained" color="primary" className={classes.buttonStyle}>
+            Cancel
+          </Button>
+        </Grid>
         </CardContent>
       </Card>
     </React.Fragment>
@@ -198,7 +195,6 @@ EmailConfigs.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  // loginPage: makeSelectLoginPage(),
   currentUser: AppSelectors.makeSelectCurrentUser(),
   emailConfigData: Selectors.makeSelectUserEmailConfigData(),
   testEmailConfigConnectionData: Selectors.makeSelectUserTestConnectionData(),
@@ -207,8 +203,6 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    // openEditColorDialog: evt => dispatch(Actions.openEditColorDialog(evt)),
-    dispatchGetEmailConfigAction: evt => dispatch(Actions.getEmailConfigAction(evt)),
     dispatchUpdateEmailConfigAction: evt => dispatch(Actions.updateEmailConfigAction(evt)),
     dispatchTestEmailConfigConnectionAction: evt => dispatch(Actions.testEmailConnectionAction(evt)),
   };
