@@ -28,13 +28,13 @@ import {
 import { Close } from '@material-ui/icons';
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
+import TableTransfer from './TableTransfer';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -255,18 +255,8 @@ const TransferOrderDialog = props => {
               </Grid>
               <Divider />
               <Grid container spacing={0}>
-                <Grid item xs={12} md={6} lg={6}>
-                  <div className={classes.container}>
-                    <TextField
-                      id="outlined-Selling-Price"
-                      label="Selling Price"
-                      value={values.sellingPrice}
-                      onChange={handleChange('sellingPrice')}
-                      fullWidth
-                      variant="outlined"
-                      className={classes.textField}
-                    />
-                  </div>
+                <Grid item xs={12} md={12} lg={12}>
+                  <TableTransfer />
                 </Grid>
               </Grid>
               <Divider />
