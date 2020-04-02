@@ -84,6 +84,8 @@ const TransferOrderDialog = props => {
   console.log(getAllWarehouses, 'getAllWarehouses');
   const classes = useStyles();
   const [selectedDate, handleDateChange] = React.useState(new Date());
+
+  const [rows, setRows] = React.useState([{}]);
   const [values, setValues] = React.useState({
     transferOrder: '',
     destinationWarehouseUuId: '',
@@ -123,14 +125,17 @@ const TransferOrderDialog = props => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const handleWarehouseChange = (evt, value) => {
-    setValues({ ...values, wareHouseId: value.id });
+  const handleItemChange = (evt, value) => {
+    // console.log(value, 'value');
+    // setValues({ ...values, itemId: value.id });
+    setValues({ ...values, itemId: value.id, itemSku: value.sku });
   };
 
   const handleCategoryChange = (evt, value) => {
     setValues({ ...values, itemCategory: value.name });
   };
 
+  console.log(values, 'values');
   return (
     <div>
       <Dialog
@@ -258,7 +263,13 @@ const TransferOrderDialog = props => {
               <Divider />
               <Grid container spacing={0}>
                 <Grid item xs={12} md={12} lg={12}>
-                  <TableTransfer getAllItems={getAllItems} />
+                  <TableTransfer
+                    getAllItems={getAllItems}
+                    rows={rows}
+                    setRows={setRows}
+                    transferQuantity={values.transferQuantity}
+                    handleItemChange={handleItemChange}
+                  />
                 </Grid>
               </Grid>
               <Divider />

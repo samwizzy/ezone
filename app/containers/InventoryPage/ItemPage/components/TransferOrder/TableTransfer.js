@@ -28,22 +28,20 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const TableTransfer = props => {
-  const { getAllItems } = props;
   const classes = useStyles();
-  const [rows, setRows] = React.useState([{}]);
+  const {
+    getAllItems,
+    rows,
+    setRows,
+    transferQuantity,
+    handleItemChange,
+  } = props;
 
   const handleChange = id => event => {
     const { name } = event.target;
     const d = [rows];
     d[id] = { [name]: event.target.value };
     setRows(d);
-    // setRows({ ...rows[id], [name]: event.target.value });
-  };
-
-  const handleCategoryChange = (evt, value) => {
-    // setValues({ ...values, itemCategory: value.name });
-    console.log(evt, value, 'welcome here');
-    // console.log('welcome here');
   };
 
   const addRow = () => {
@@ -59,8 +57,6 @@ const TableTransfer = props => {
     setRows(rows.filter((item, id) => id !== idx));
   };
 
-  console.log([rows], 'rows');
-
   return (
     <React.Fragment>
       <TableContainer component={Paper}>
@@ -74,55 +70,6 @@ const TableTransfer = props => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
-              <TableCell component="th" scope="row">
-                <Autocomplete
-                  id="combo-itemCategory"
-                  options={getAllItems}
-                  getOptionLabel={option => option.itemName}
-                  onChange={(evt, ve) => handleCategoryChange(evt, ve)}
-                  renderInput={params => (
-                    <TextField
-                      {...params}
-                      label="Source Warehouse"
-                      variant="outlined"
-                      placeholder="Source Warehouse"
-                      fullWidth
-                    />
-                  )}
-                />
-              </TableCell>
-              <TableCell align="center">
-                <TextField
-                  disabled
-                  id="filled-disabled"
-                  label="Source Stock"
-                  defaultValue="0.00 Units"
-                  variant="filled"
-                />
-                &nbsp; | &nbsp;
-                <TextField
-                  disabled
-                  id="filled-disabled"
-                  label="Destination Stock"
-                  defaultValue="0.00 Units"
-                  variant="filled"
-                />
-              </TableCell>
-              <TableCell align="center">
-                <TextField
-                  id="filled-disabled"
-                  label=""
-                  defaultValue="1.00"
-                  variant="outlined"
-                />
-              </TableCell>
-              <TableCell align="center">
-                <Button variant="outlined" color="secondary">
-                  Remove
-                </Button>
-              </TableCell>
-            </TableRow>
             {rows.map((row, id) => (
               <TableRow key={id}>
                 <TableCell component="th" scope="row">
@@ -130,7 +77,7 @@ const TableTransfer = props => {
                     id="combo-itemCategory"
                     options={getAllItems}
                     getOptionLabel={option => option.itemName}
-                    onChange={(evt, ve) => handleCategoryChange(evt, ve)}
+                    onChange={(evt, ve) => handleItemChange(evt, ve)}
                     renderInput={params => (
                       <TextField
                         {...params}
@@ -151,7 +98,7 @@ const TableTransfer = props => {
                     defaultValue="0.00 Units"
                     variant="filled"
                   />
-                &nbsp; | &nbsp;
+                  &nbsp; | &nbsp;
                   <TextField
                     disabled
                     id="filled-disabled"
