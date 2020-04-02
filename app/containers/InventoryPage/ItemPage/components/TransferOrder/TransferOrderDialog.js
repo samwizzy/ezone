@@ -73,12 +73,14 @@ const TransferOrderDialog = props => {
   const {
     loading,
     transferOrderDialog,
+    getAllItems,
     getAllWarehouses,
     closeNewTransferOrderDialogAction,
     closeEditEmployeeDialogAction,
     dispatchCreateNewTransferOrderAction,
   } = props;
 
+  console.log(getAllItems, 'getAllItems');
   console.log(getAllWarehouses, 'getAllWarehouses');
   const classes = useStyles();
   const [selectedDate, handleDateChange] = React.useState(new Date());
@@ -256,7 +258,7 @@ const TransferOrderDialog = props => {
               <Divider />
               <Grid container spacing={0}>
                 <Grid item xs={12} md={12} lg={12}>
-                  <TableTransfer />
+                  <TableTransfer getAllItems={getAllItems} />
                 </Grid>
               </Grid>
               <Divider />
@@ -450,6 +452,7 @@ TransferOrderDialog.propTypes = {
   loading: PropTypes.bool,
   transferOrderDialog: PropTypes.object,
   getAllWarehouses: PropTypes.array,
+  getAllItems: PropTypes.array,
   dispatchCreateNewTransferOrderAction: PropTypes.func,
   closeNewTransferOrderDialogAction: PropTypes.func,
 };
@@ -458,6 +461,7 @@ const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   transferOrderDialog: Selectors.makeSelectTransferOrderDialog(),
   getAllWarehouses: Selectors.makeSelectGetAllWarehouses(),
+  getAllItems: Selectors.makeSelectGetAllItems(),
 });
 
 function mapDispatchToProps(dispatch) {

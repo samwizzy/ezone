@@ -50,11 +50,13 @@ const TransferOrdersList = props => {
     getAllEmployees,
     openNewTransferOrderDialogAction,
     getAllWarehousesAction,
+    getAllItemsAction,
     // openEditEmployeeDialogAction,
     // openViewEmployeeDialogAction,
   } = props;
 
   useEffect(() => {
+    getAllItemsAction();
     getAllWarehousesAction();
   }, []);
 
@@ -220,9 +222,9 @@ TransferOrdersList.propTypes = {
   getAllEmployees: PropTypes.array,
   openNewTransferOrderDialogAction: PropTypes.func,
   getAllWarehousesAction: PropTypes.func,
+  getAllItemsAction: PropTypes.func,
   // openEditEmployeeDialogAction: PropTypes.func,
   // openViewEmployeeDialogAction: PropTypes.func,
-  getAllUsersAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -238,6 +240,7 @@ function mapDispatchToProps(dispatch) {
     openNewTransferOrderDialogAction: () =>
       dispatch(Actions.openNewTransferOrderDialog()),
     getAllWarehousesAction: () => dispatch(Actions.getAllWarehouse()),
+    getAllItemsAction: () => dispatch(Actions.getAllItems()),
   };
 }
 

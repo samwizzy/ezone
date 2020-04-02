@@ -10,6 +10,7 @@ import {
   TableRow,
   Paper,
   TextField,
+  Button,
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { compose } from 'redux';
@@ -26,85 +27,29 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
-const customizeUseStyles = makeStyles(theme => ({
-  table: {
-    minWidth: 650,
-  },
-  textField: {
-    margin: theme.spacing(1),
-  },
-}));
-
-const handleCategoryChange = (evt, value) => {
-  // setValues({ ...values, itemCategory: value.name });
-  console.log('welcome here');
-};
-
-const Customize = () => {
-  const classes = customizeUseStyles();
-  return (
-    <TableRow>
-      <TableCell component="th" scope="row">
-        <Autocomplete
-          id="combo-itemCategory"
-          options={[]}
-          getOptionLabel={option => option.name}
-          onChange={(evt, ve) => handleCategoryChange(evt, ve)}
-          renderInput={params => (
-            <TextField
-              {...params}
-              label="Source Warehouse"
-              variant="outlined"
-              placeholder="Source Warehouse"
-              fullWidth
-              // className={classes.textField}
-            />
-          )}
-        />
-      </TableCell>
-      <TableCell align="right">
-        <TextField
-          disabled
-          id="filled-disabled"
-          label="Disabled"
-          defaultValue="Hello World"
-          variant="filled"
-        />
-        &nbsp; | &nbsp;
-        <TextField
-          disabled
-          id="filled-disabled"
-          label="Disabled"
-          defaultValue="Hello World"
-          variant="filled"
-        />
-      </TableCell>
-      <TableCell align="right">
-        <TextField
-          id="filled-disabled"
-          label="Disabled"
-          defaultValue="Hello World"
-          variant="filled"
-        />
-      </TableCell>
-    </TableRow>
-  );
-};
-
 const TableTransfer = props => {
+  const { getAllItems } = props;
   const classes = useStyles();
+  const [rows, setRows] = React.useState([]);
+
+  const handleCategoryChange = (evt, value) => {
+    // setValues({ ...values, itemCategory: value.name });
+    console.log(evt, value, 'welcome here');
+    // console.log('welcome here');
+  };
+
+  const addRow = () => {
+    const item = {
+      itemId: '',
+      itemSku: '',
+      transferQuantity: '',
+    };
+    setRows([...rows, item]);
+  };
+
+  const removeRow = idx => {
+    setRows(rows.filter((item, id) => id !== idx));
+  };
 
   return (
     <React.Fragment>
@@ -113,29 +58,129 @@ const TableTransfer = props => {
           <TableHead>
             <TableRow>
               <TableCell>Item Details</TableCell>
-              <TableCell align="right">Current Availablilty</TableCell>
-              <TableCell align="right">Transfer Quantity</TableCell>
+              <TableCell align="center">Current Availablilty</TableCell>
+              <TableCell align="center">Transfer Quantity</TableCell>
+              <TableCell align="center" />
             </TableRow>
           </TableHead>
           <TableBody>
-            <Customize />
-            {/* {rows.map(row => (
-              <TableRow key={row.name}>
+            <TableRow>
+              <TableCell component="th" scope="row">
+                <Autocomplete
+                  id="combo-itemCategory"
+                  options={getAllItems}
+                  getOptionLabel={option => option.itemName}
+                  onChange={(evt, ve) => handleCategoryChange(evt, ve)}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label="Source Warehouse"
+                      variant="outlined"
+                      placeholder="Source Warehouse"
+                      fullWidth
+                    />
+                  )}
+                />
+              </TableCell>
+              <TableCell align="center">
+                <TextField
+                  disabled
+                  id="filled-disabled"
+                  label="Source Stock"
+                  defaultValue="0.00 Units"
+                  variant="filled"
+                />
+                &nbsp; | &nbsp;
+                <TextField
+                  disabled
+                  id="filled-disabled"
+                  label="Destination Stock"
+                  defaultValue="0.00 Units"
+                  variant="filled"
+                />
+              </TableCell>
+              <TableCell align="center">
+                <TextField
+                  id="filled-disabled"
+                  label="Disabled"
+                  defaultValue="1.00"
+                  variant="outlined"
+                />
+              </TableCell>
+              <TableCell align="center">
+                <Button variant="outlined" color="secondary">
+                  Remove
+                </Button>
+              </TableCell>
+            </TableRow>
+            {rows.map((row, id) => (
+              <TableRow key={id}>
                 <TableCell component="th" scope="row">
-                  {row.name}
+                  <Autocomplete
+                    id="combo-itemCategory"
+                    options={[]}
+                    getOptionLabel={option => option.name}
+                    onChange={(evt, ve) => handleCategoryChange(evt, ve)}
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        label="Source Warehouse"
+                        variant="outlined"
+                        placeholder="Source Warehouse"
+                        fullWidth
+                      />
+                    )}
+                  />
                 </TableCell>
-                <TableCell align="right">{row.calories}</TableCell>
-                <TableCell align="right">{row.fat}</TableCell>
+                <TableCell align="center">
+                  <TextField
+                    disabled
+                    id="filled-disabled"
+                    label="Disabled"
+                    defaultValue="Hello World"
+                    variant="filled"
+                  />
+                  &nbsp; | &nbsp;
+                  <TextField
+                    disabled
+                    id="filled-disabled"
+                    label="Disabled"
+                    defaultValue="Hello World"
+                    variant="filled"
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <TextField
+                    id="filled-disabled"
+                    label="Disabled"
+                    defaultValue="Hello World"
+                    variant="filled"
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => removeRow(id)}
+                  >
+                    Remove
+                  </Button>
+                </TableCell>
               </TableRow>
-            ))} */}
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
+      <Button variant="contained" color="primary" onClick={() => addRow()}>
+        Add Row
+      </Button>
     </React.Fragment>
   );
 };
 
-TableTransfer.propTypes = {};
+TableTransfer.propTypes = {
+  getAllItems: PropTypes.array,
+};
 
 const mapStateToProps = createStructuredSelector({});
 
