@@ -2,9 +2,10 @@ import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles'
 import { orange } from '@material-ui/core/colors'
-import { withRouter } from 'react-router-dom'
+import { Route, MemoryRouter } from 'react-router';
+import { withRouter, Link as RouterLink } from 'react-router-dom'
 import classNames from 'classnames'
-import { Button, Box, Card, CardContent, CardActionArea, CardMedia, Grid, Menu, MenuItem, List, ListItem, ListSubheader, ListItemText, ListItemIcon, Collapse, Icon, IconButton, Typography, TableContainer, Table, TableBody, TableRow, TableCell, Tooltip, Paper } from '@material-ui/core';
+import { Backdrop, Button, Box, CircularProgress, Card, CardContent, CardActionArea, CardMedia, Grid, Menu, MenuItem, Link, List, ListItem, ListSubheader, ListItemText, ListItemIcon, Collapse, Icon, IconButton, Typography, TableContainer, Table, TableBody, TableRow, TableCell, Tooltip, Paper } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -90,6 +91,10 @@ const useStyles = makeStyles(theme => ({
   media: {
     height: 140,
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
 const FilesList = props => {
@@ -101,10 +106,12 @@ const FilesList = props => {
   
   React.useEffect(() => {
     getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
+    console.log("I am a useEffect in FolderList")
   }, [])
 
   console.log(folders, "folders")
   console.log(folder, "folder")
+  console.log(file, "file")
 
   const handleCollapseClick = () => {
     setOpen(!isOpen);
@@ -120,7 +127,8 @@ const FilesList = props => {
 
   const handleView = (event, id) => {
     event.stopPropagation()
-    openFilePreviewDialog(id)
+    const selectedDoc = folders && folders.find(folder => folder.id === id)
+    openFilePreviewDialog(selectedDoc)
   }
 
   const handleShare = (event, id) => {
@@ -135,8 +143,9 @@ const FilesList = props => {
 
   const handleDelete = (event, id) => {
     event.stopPropagation()
+    const selectedDoc = folders && folders.find(folder => folder.id === id)
     const file = []
-    const payload = {id, type: "document"}
+    const payload = {id, type: selectedDoc.type}
     file.push(payload)
     const model = {parentId: 1, file}; 
     console.log(model, "model")
@@ -255,7 +264,7 @@ const FilesList = props => {
                 <Icon color="primary">delete</Icon>
               </IconButton>
               <IconButton onClick={(event) => handleView(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="view" color="inherit" size="small">
-                <Icon color="primary">pageview</Icon>
+                <Icon color="primary">visibility</Icon>
               </IconButton>
               <IconButton onClick={(event) => handleDownload(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="download" color="inherit" size="small">
                 <Icon color="primary">cloud_download</Icon>
@@ -276,6 +285,17 @@ const FilesList = props => {
     download: true,
     viewColumns: false,
     filter: false,
+    textLabels: {
+      body: {
+        noMatch: "Sorry, no matching documents found",
+        toolTip: "Sort",
+      },
+      selectedRows: {
+        text: "document(s) selected",
+        delete: "Delete",
+        deleteAria: "Delete Selected Documents",
+      },
+    },
     customToolbar: () => <AddFile openFileDialog={openFileUploadDialog} openFolderDialog={openNewFolderDialog} />,
     rowsPerPage: 10,
     rowsPerPageOptions: [10,25,50,100],
@@ -423,10 +443,10 @@ const FilesList = props => {
                 <TableRow key="favorite">
                   <TableCell component="th" scope="row"></TableCell>
                   <TableCell align="right">
-                    <Button className={classNames(classes.button, {'favorite': false})} color='primary'>Favorite</Button>
-                    <IconButton className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>share</Icon></IconButton>
-                    <IconButton className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>cloud_download</Icon></IconButton>
-                    <IconButton className={classNames(classes.iconButton, {'delete': true}, classes.icon)} color='secondary'><Icon>delete</Icon></IconButton>
+                    <Button size="small" onClick={event => handleFavorite(event, file.id)}  className={classNames(classes.button, {'favorite': false})} color='primary'>Favorite</Button>
+                    <IconButton size="small" onClick={(event) => handleShare(event, file.id)} className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>share</Icon></IconButton>
+                    <IconButton size="small" onClick={(event) => handleDownload(event, file.id)} className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>cloud_download</Icon></IconButton>
+                    <IconButton size="small" onClick={(event) => handleDelete(event, file.id)} className={classNames(classes.iconButton, {'delete': true}, classes.icon)} color='secondary'><Icon>delete</Icon></IconButton>
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -460,6 +480,10 @@ const FilesList = props => {
       <AddFileDialog />
       <AddFolderDialog />
       <FilePreviewDialog />
+
+      <Backdrop className={classes.backdrop} open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
 
     </div>
   );

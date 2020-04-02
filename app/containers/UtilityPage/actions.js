@@ -47,6 +47,20 @@ export function getAllFoldersAndDocsSuccess(data) {
   };
 }
 
+export function getNestedFoldersAndDocs(payload) {
+  return {
+    type: Constants.GET_NESTED_FOLDERS_AND_DOC,
+    payload
+  };
+}
+
+export function getNestedFoldersAndDocsSuccess(data) {
+  return {
+    type: Constants.GET_NESTED_FOLDERS_AND_DOC_SUCCESS,
+    payload: data,
+  };
+}
+
 export function getFolderById(payload) {
   return {
     type: Constants.GET_FOLDER_BY_ID,
@@ -445,7 +459,6 @@ export function closeNewFileDialog() {
 }
 
 export function openNewFolderDialog() {
-  console.log('I have just clicked on folder dialog')
   return {
     type: Constants.OPEN_NEW_FOLDER_DIALOG,
   };

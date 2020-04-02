@@ -108,6 +108,7 @@ export const initialState = {
   task: {},
   taskComments: [],
   folders: [],
+  nestedFolders: [],
   folder: {},
   files: [],
   file: {},
@@ -177,6 +178,13 @@ const utilityPageReducer = (state = initialState, action) =>
         return {
           ...state,
           folders: action.payload,
+          loading: false
+        };
+      }
+      case Constants.GET_NESTED_FOLDERS_AND_DOC_SUCCESS: {
+        return {
+          ...state,
+          nestedFolders: action.payload,
           loading: false
         };
       }

@@ -1,13 +1,15 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { makeStyles, withStyles, useTheme } from '@material-ui/core/styles';
-import { Box, Button, ButtonGroup, Tabs, Tab, TableContainer, Table, TableRow, TableCell, TableBody, TableFooter, TextField, Grid, GridList, GridListTile, GridListTileBar, Divider, Menu, MenuItem, Paper, List, ListItem, ListSubheader, ListItemText, ListItemIcon, FormControlLabel, Icon, IconButton, Typography, Toolbar, Hidden, Drawer } from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
+import { makeStyles, withStyles, useTheme } from '@material-ui/core/styles';
+import { Box, Button, ButtonGroup, Tabs, Tab, TableContainer, Table, TableRow, TableCell, TableBody, TableFooter, TextField, MobileStepper, Grid, GridList, GridListTile, GridListTileBar, Divider, Menu, MenuItem, Paper, List, ListItem, ListSubheader, ListItemText, ListItemIcon, FormControlLabel, Icon, IconButton, Typography, Toolbar, Hidden, Drawer } from '@material-ui/core';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { green, orange } from '@material-ui/core/colors'
 import moment from 'moment'
 import _ from 'lodash'
@@ -109,7 +111,25 @@ const useStyles = makeStyles(theme => ({
     '& .MuiButtonGroup-root:last-child': {
       marginLeft: theme.spacing(1)
     }
-  }
+  },
+  stepRoot: {
+    maxWidth: 400,
+    flexGrow: 1,
+  },
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    height: 50,
+    paddingLeft: theme.spacing(4),
+    backgroundColor: theme.palette.background.default,
+  },
+  img: {
+    height: 255,
+    maxWidth: 400,
+    overflow: 'hidden',
+    display: 'block',
+    width: '100%',
+  },
 }));
 
 const AntTabs = withStyles({
@@ -165,6 +185,18 @@ const TaskList = props => {
   });
   const [value, setValue] = React.useState(0);
   const filteredTasks = _.orderBy(tasks, ['dateCreated'], ['desc']);
+
+  const theme = useTheme();
+  const [activeStep, setActiveStep] = React.useState(0);
+  const maxSteps = task.documents.length;
+
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
@@ -371,6 +403,35 @@ const TaskList = props => {
                 </GridListTile>
               ))}
             </GridList>
+          </div>
+
+          <div className={classes.stepRoot}>
+            <Paper square elevation={0} className={classes.header}>
+              <Typography>{task.documents[activeStep].docName}</Typography>
+            </Paper>
+            <img
+              className={classes.img}
+              src={task.documents[activeStep].fileUrl}
+              alt={task.documents[activeStep].docName}
+            />
+            <MobileStepper
+              steps={maxSteps}
+              position="static"
+              variant="text"
+              activeStep={activeStep}
+              nextButton={
+                <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
+                  Next
+                  {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+                </Button>
+              }
+              backButton={
+                <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+                  {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+                  Back
+                </Button>
+              }
+            />
           </div>
 
           <div>
