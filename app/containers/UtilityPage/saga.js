@@ -79,6 +79,28 @@ export function* getAllFoldersAndDoc({type, payload}) {
   }
 }
 
+export function* getNestedFoldersAndDoc({type, payload}) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const {uuId} = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAllFoldersAndDocApi}/${uuId}/${payload.folderId}/${payload.type}`;
+
+  console.log(payload, "All folder and doc payload")
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }),
+    });
+
+    yield put(Actions.getNestedFoldersAndDocsSuccess(response));
+  } catch (err) {
+    yield put(Actions.getUtilityFilesError(err));
+  }
+}
+
 export function* addFolderToFolder({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.AddFolderToFolderApi}`;
@@ -391,17 +413,35 @@ export function* deleteUtilityFile({ type, payload }) {
     });
 
     console.log(response, 'deleteFileResponse');
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: `${
-          response.document.docName
-        } has been deleted successfully`,
-        status: 'success',
-      }),
-    );
-
+    payload.parentId === 1?
+    yield put(Actions.getAllFoldersAndDocs({folderId: payload.folderId, type: 'ROOT'})):
+    yield put(Actions.getAllFoldersAndDocs({folderId: payload.folderId, type: 'FOLDER'}))
     // yield put(Actions.deleteDocumentSuccess(response));
+  } catch (err) {
+    // yield put(Actions.getUtilityFileError(err));
+  }
+}
+
+export function* restoreDocument({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const requestURL = `${Endpoints.RestoreDocumentApi}`;
+
+  console.log(payload, 'RESTORE_DOCUMENT');
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'restore response');
+    payload.id === 1?
+    yield put(Actions.getAllFoldersAndDocs({folderId: payload.folderId, type: 'ROOT'})):
+    yield put(Actions.getAllFoldersAndDocs({folderId: payload.folderId, type: 'FOLDER'}))
   } catch (err) {
     // yield put(Actions.getUtilityFileError(err));
   }
@@ -690,6 +730,7 @@ export default function* UtilityPageSaga() {
   yield takeLatest(Constants.GET_UTILITY_FILES, getUtilityFiles);
   yield takeLatest(Constants.ADD_FOLDER_TO_FOLDER, addFolderToFolder);
   yield takeLatest(Constants.GET_FOLDERS_AND_DOC, getAllFoldersAndDoc);
+  yield takeLatest(Constants.GET_NESTED_FOLDERS_AND_DOC, getNestedFoldersAndDoc);
   yield takeLatest(
     Constants.GET_FAVORITE_DOCS_BY_UUID,
     getFavoriteUtilityFiles,

@@ -57,6 +57,12 @@ const makeSelectFolders = () =>
     subState => subState.folders,
   );
 
+const makeSelectNestedFolders = () =>
+  createSelector(
+    selectUtilityPageDomain,
+    subState => subState.nestedFolders,
+  );  
+
 const makeSelectFolder = () =>
   createSelector(
     selectUtilityPageDomain,
@@ -200,6 +206,7 @@ export {
   makeSelectFile,
   makeSelectFiles,
   makeSelectFolders,
+  makeSelectNestedFolders,
   makeSelectFolder,
   makeSelectEmployees,
   makeSelectUser,

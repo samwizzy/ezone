@@ -94,7 +94,7 @@ const useStyles = makeStyles(theme => ({
 
 const FilesList = props => {
   const classes = useStyles();
-  const { loading, match, folders, folder, files, file, user, getAllFoldersAndDocs, getFolderById, getUtilityFile, deleteDocument, favoriteDocument, getFavoriteDocuments, getSharedDocuments, openNewFolderDialog, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog } = props
+  const { loading, match, folders, nestedFolders, folder, files, file, user, getAllFoldersAndDocs, getNestedFoldersAndDocs, getFolderById, getUtilityFile, deleteDocument, favoriteDocument, getFavoriteDocuments, getSharedDocuments, openNewFolderDialog, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog } = props
   const [prevIds, setPrevIds] = React.useState([]);
   const {params} = match
 
@@ -107,6 +107,7 @@ const FilesList = props => {
   }, [])
 
   console.log(folders, "folders")
+  console.log(nestedFolders, "Nested folders")
   console.log(folder, "folder")
   console.log(prevIds, "prevIds")
 
@@ -154,7 +155,7 @@ const FilesList = props => {
 
   const handleBack = () => {
     if(prevIds.length > 1){
-      getAllFoldersAndDocs({folderId: prevIds[prevIds.length - 2], type: 'FOLDER'})
+      getNestedFoldersAndDocs({folderId: prevIds[prevIds.length - 2], type: 'FOLDER'})
       prevIds.splice(prevIds.length - 1, 1)
     }else{
       // getAllFolders(params.folderId)
@@ -164,23 +165,24 @@ const FilesList = props => {
   }
 
   const getAllFolders = folderId => {
-    getAllFoldersAndDocs({folderId, type: 'FOLDER'})
+    getNestedFoldersAndDocs({folderId, type: 'FOLDER'})
     setPrevIds([])
     // props.history.push('/dashboard/folder/' + folderId)
   }
 
   const handleRowClick = folderId => {
-    const selectedDoc = folders && folders.find(folder => folder.id === folderId)
+    const selectedDoc = nestedFolders && nestedFolders.find(folder => folder.id === folderId)
     !prevIds.includes(folderId)? setPrevIds([...prevIds, folderId]) : prevIds.splice(prevIds.length - 1, 1)
-    props.history.push('/dashboard/folder/' + folderId)
-    selectedDoc.type == 'File'? getUtilityFile(folderId) : getAllFoldersAndDocs({folderId, type: 'FOLDER'})
+    
+    selectedDoc.type == 'File'? getUtilityFile(folderId) : (
+      getNestedFoldersAndDocs({folderId, type: 'FOLDER'}),
+      props.history.push('/dashboard/folder/' + folderId)
+    )
     getFolderById(selectedDoc)
   }
 
   console.log(files, "Files")
   console.log(file, "File single")
-  console.log(user, "User single")
-  console.log(prevIds, "PrevIds single")
 
   const columns = [
     {
@@ -266,7 +268,7 @@ const FilesList = props => {
                 <Icon color="primary">delete</Icon>
               </IconButton>
               <IconButton onClick={(event) => handleView(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="view" color="inherit" size="small">
-                <Icon color="primary">pageview</Icon>
+                <Icon color="primary">visibility</Icon>
               </IconButton>
               <IconButton onClick={(event) => handleDownload(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="download" color="inherit" size="small">
                 <Icon color="primary">cloud_download</Icon>
@@ -287,6 +289,17 @@ const FilesList = props => {
     download: true,
     viewColumns: false,
     filter: false,
+    textLabels: {
+      body: {
+        noMatch: "Sorry, no matching documents found",
+        toolTip: "Sort",
+      },
+      selectedRows: {
+        text: "document(s) selected",
+        delete: "Delete",
+        deleteAria: "Delete Selected Documents",
+      },
+    },
     customToolbar: () => <AddFile openFileDialog={openFileUploadDialog} openFolderDialog={openNewFolderDialog} />,
     rowsPerPage: 10,
     rowsPerPageOptions: [10,25,50,100],
@@ -295,12 +308,6 @@ const FilesList = props => {
     },
     elevation: 0
   };
-
-  if(folders && folders.length === 0){
-    // return <NoFilesList /> 
-    // return <AddSignature /> 
-    // return <DocWidget /> 
-  }
   
   return (
     <div className={classes.root}>
@@ -348,6 +355,9 @@ const FilesList = props => {
             <List component={LoadingIndicator} />
           :
           (
+            nestedFolders && nestedFolders.length === 0?
+              <NoFilesList /> 
+            :
             <MUIDataTable
               className={classes.datatable}
               title={
@@ -364,7 +374,7 @@ const FilesList = props => {
                   {folder && Object.keys(folder).length > 0 && folder.type == 'Folder'? folder.name : "Documents"}
                 </Typography>
               }
-              data={folders}
+              data={nestedFolders}
               columns={columns}
               options={options}
             />
@@ -434,10 +444,10 @@ const FilesList = props => {
                 <TableRow key="favorite">
                   <TableCell component="th" scope="row"></TableCell>
                   <TableCell align="right">
-                    <Button className={classNames(classes.button, {'favorite': false})} color='primary'>Favorite</Button>
-                    <IconButton className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>share</Icon></IconButton>
-                    <IconButton className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>cloud_download</Icon></IconButton>
-                    <IconButton className={classNames(classes.iconButton, {'delete': true}, classes.icon)} color='secondary'><Icon>delete</Icon></IconButton>
+                    <Button size="small" onClick={event => handleFavorite(event, file.id)}  className={classNames(classes.button, {'favorite': false})} color='primary'>Favorite</Button>
+                    <IconButton size="small" onClick={(event) => handleShare(event, file.id)} className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>share</Icon></IconButton>
+                    <IconButton size="small" onClick={(event) => handleDownload(event, file.id)} className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>cloud_download</Icon></IconButton>
+                    <IconButton size="small" onClick={(event) => handleDelete(event, file.id)} className={classNames(classes.iconButton, {'delete': true}, classes.icon)} color='secondary'><Icon>delete</Icon></IconButton>
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -487,6 +497,7 @@ FilesList.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   folders: Selectors.makeSelectFolders(),
+  nestedFolders: Selectors.makeSelectNestedFolders(),
   folder: Selectors.makeSelectFolder(),
   files: Selectors.makeSelectFiles(),
   file: Selectors.makeSelectFile(),
@@ -499,6 +510,7 @@ function mapDispatchToProps(dispatch) {
     openShareFileDialog: ev => dispatch(Actions.openShareFileDialog(ev)),
     openNewFolderDialog: () => dispatch(Actions.openNewFolderDialog()),
     getAllFoldersAndDocs: (data) => dispatch(Actions.getAllFoldersAndDocs(data)),
+    getNestedFoldersAndDocs: (data) => dispatch(Actions.getNestedFoldersAndDocs(data)),
     getFolderById: (data) => dispatch(Actions.getFolderById(data)),
     getUtilityFiles: () => dispatch(Actions.getUtilityFiles()),
     getUtilityFile: id => dispatch(Actions.getUtilityFile(id)),

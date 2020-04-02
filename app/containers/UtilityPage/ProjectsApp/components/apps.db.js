@@ -22,7 +22,7 @@ const apps = [
   {
     id: 7,
     name: 'Fiie and Document sharing',
-    url: '/dashboard/files',
+    url: '/dashboard/folders',
     icon: FileIcon,
   },
   { id: 8, name: 'Projects', url: '/dashboard', icon: ProjectsIcon },

@@ -27,11 +27,11 @@ const FilesApp = props => {
     useInjectSaga({ key: 'utilityPage', saga });
 
     const classes = useStyles();
-    const { loading, getAllFoldersAndDocs, getUtilityFiles, getEmployees, match } = props;
+    const { loading, getAllFoldersAndDocs, getEmployees, match } = props;
     const { params } = match
 
     React.useEffect(() => {
-        // getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
+        getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
         getEmployees()
     }, []);
 
@@ -59,7 +59,6 @@ function mapDispatchToProps(dispatch) {
   return {
     openFileUploadDialog: ev => dispatch(Actions.openFileUploadDialog(ev)),
     openShareFileDialog: ev => dispatch(Actions.openShareFileDialog(ev)),
-    getUtilityFiles: ev => dispatch(Actions.getUtilityFiles(ev)),
     getAllFoldersAndDocs: (data) => dispatch(Actions.getAllFoldersAndDocs(data)),
     getEmployees: () => dispatch(Actions.getEmployees()),
   };
