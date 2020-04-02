@@ -43,7 +43,7 @@ export function ItemPage(props) {
         </Helmet>
         <ItemsList />
         <ItemDialog />
-        <ViewItemDialog />
+        {/* <ViewItemDialog /> */}
         <TransferOrderDialog />
       </ModuleLayout>
     </div>

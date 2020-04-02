@@ -69,7 +69,7 @@ const ViewItemDialog = props => {
     loading,
     itemDialog,
     getAllWarehouses,
-    closeNewItemDialogAction,
+    closeViewItemDialogAction,
     closeEditEmployeeDialogAction,
     dispatchCreateNewItemAction,
   } = props;
@@ -138,7 +138,7 @@ const ViewItemDialog = props => {
     <div>
       <Dialog
         {...itemDialog.props}
-        onClose={closeNewItemDialogAction}
+        onClose={closeViewItemDialogAction}
         keepMounted
         fullScreen
         TransitionComponent={Transition}
@@ -149,7 +149,7 @@ const ViewItemDialog = props => {
             <IconButton
               edge="start"
               color="inherit"
-              onClick={closeNewItemDialogAction}
+              onClick={closeViewItemDialogAction}
               aria-label="close"
             >
               <Close />
@@ -160,7 +160,7 @@ const ViewItemDialog = props => {
             <Button
               autoFocus
               color="inherit"
-              onClick={closeNewItemDialogAction}
+              onClick={closeViewItemDialogAction}
             >
               save
             </Button>
@@ -193,7 +193,7 @@ const ViewItemDialog = props => {
             </Button>
           )}
           <Button
-            onClick={() => closeNewItemDialogAction()}
+            onClick={() => closeViewItemDialogAction()}
             color="primary"
             variant="contained"
           >
@@ -210,19 +210,19 @@ ViewItemDialog.propTypes = {
   itemDialog: PropTypes.object,
   getAllWarehouses: PropTypes.array,
   dispatchCreateNewItemAction: PropTypes.func,
-  closeNewItemDialogAction: PropTypes.func,
+  closeViewItemDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  itemDialog: Selectors.makeSelectItemDialog(),
+  itemDialog: Selectors.makeSelectViewItemDialog(),
   getAllWarehouses: Selectors.makeSelectGetAllWarehouses(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     dispatchCreateNewItemAction: evt => dispatch(Actions.createNewItem(evt)),
-    closeNewItemDialogAction: () => dispatch(Actions.closeNewItemDialog()),
+    closeViewItemDialogAction: () => dispatch(Actions.closeViewItemDialog()),
     dispatch,
   };
 }

@@ -791,7 +791,7 @@ ItemDialog.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  itemDialog: Selectors.makeSelectTransferOrderDialog(),
+  itemDialog: Selectors.makeSelectItemDialog(),
   getAllWarehouses: Selectors.makeSelectGetAllWarehouses(),
 });
 
