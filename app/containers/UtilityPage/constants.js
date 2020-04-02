@@ -25,8 +25,10 @@ export const CLOSE_EDIT_TASK_DIALOG = 'app/UtilityPage/CLOSE EDIT TASK DIALOG';
 export const OPEN_ASSIGN_TO_DIALOG = 'app/UtilityPage/OPEN ASSIGN TO DIALOG';
 export const CLOSE_ASSIGN_TO_DIALOG = 'app/UtilityPage/CLOSE EDIT TASK DIALOG';
 
-export const OPEN_NEW_FILE_DIALOG = 'app/UtilityPage/OPEN NEW TASK DIALOG';
-export const CLOSE_NEW_FILE_DIALOG = 'app/UtilityPage/CLOSE NEW TASK DIALOG';
+export const OPEN_NEW_FILE_DIALOG = 'app/UtilityPage/OPEN NEW FILE DIALOG';
+export const CLOSE_NEW_FILE_DIALOG = 'app/UtilityPage/CLOSE NEW FILE DIALOG';
+export const OPEN_NEW_FOLDER_DIALOG = 'app/UtilityPage/OPEN NEW FOLDER DIALOG';
+export const CLOSE_NEW_FOLDER_DIALOG = 'app/UtilityPage/CLOSE NEW FOLDER DIALOG';
 
 export const OPEN_TASK_PREVIEW_DIALOG =
   'app/UtilityPage/OPEN_TASK_PREVIEW_DIALOG';
@@ -82,6 +84,12 @@ export const GET_UTILITY_TASKS_ERROR = 'app/UtilityPage/GET UTILITY TASKS ERROR'
 export const GET_ASSIGNEDTO_BY_UUID = 'app/UtilityPage/GET ASSIGNEDTO BY UUID';
 export const GET_ASSIGNEDTO_BY_UUID_SUCCESS = 'app/UtilityPage/GET ASSIGNEDTO BY UUID SUCCESS';
 
+export const ADD_DOC_TO_FOLDER = 'app/UtilityPage/ADD DOC TO FOLDER';
+export const ADD_DOC_TO_FOLDER_SUCCESS = 'app/UtilityPage/ADD DOC TO FOLDER SUCCESS';
+export const ADD_FOLDER_TO_FOLDER = 'app/UtilityPage/ADD FOLDER TO FOLDER';
+export const ADD_FOLDER_TO_FOLDER_SUCCESS = 'app/UtilityPage/ADD FOLDER TO FOLDER SUCCESS';
+export const GET_FOLDER_BY_ID = 'app/UtilityPage/GET FOLDER BY ID';
+export const GET_FOLDER_BY_ID_SUCCESS = 'app/UtilityPage/GET FOLDER BY ID SUCCESS';
 export const GET_UTILITY_FILE = 'app/UtilityPage/GET UTILITY FILE';
 export const GET_UTILITY_FILE_SUCCESS = 'app/UtilityPage/GET UTILITY FILE SUCCESS';
 export const GET_UTILITY_FILES = 'app/UtilityPage/GET UTILITY FILES';

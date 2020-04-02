@@ -45,10 +45,10 @@ const NoFilesList = props => {
             <img src={tasksIcon} />
           </Box>
           <Box>
-            <Typography variant='h6'>No file yet</Typography>
+            <Typography variant='h6'>No Documents yet</Typography>
 
             <Button onClick={props.openFileUploadDialog} variant="contained" color="primary" className={classes.button} disableElevation>
-              Upload a file
+              Upload document
             </Button>
           </Box>
         </Grid>

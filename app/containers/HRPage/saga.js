@@ -57,10 +57,82 @@ export function* getEmployeeByUUID({ type, payload }) {
   }
 }
 
+export function* createEmployee({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.EmployeeApi}`;
+  payload.orgId = user.organisation.orgId;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'CREATE_EMPLOYEES');
+    yield put({type: Constants.GET_EMPLOYEES});
+  } catch (err) {
+    // yield put(Actions.getUtilityFilesError(err));
+    console.log(err.message, "err message")
+  }
+}
+
+export function* getDepartments({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.DepartmentsApi}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'DEPARTMENT RESPONSE');
+    yield put(Actions.getDepartmentsSuccess(response));
+  } catch (err) {
+    // yield put(Actions.getUtilityFilesError(err));
+    console.log(err.message, "err message")
+  }
+}
+
+export function* createDepartment({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.DepartmentApi}`;
+  payload.orgId = user.organisation.orgId;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'DEPARTMENT RESPONSE');
+    yield put({type: Constants.GET_DEPARTMENTS});
+  } catch (err) {
+    // yield put(Actions.getUtilityFilesError(err));
+    console.log(err.message, "err message")
+  }
+}
+
 /**
  * Root saga manages watcher lifecycle
  */
 export default function* HRRootSaga() {
   yield takeLatest(Constants.GET_EMPLOYEES, getEmployees);
   yield takeLatest(Constants.GET_EMPLOYEE, getEmployeeByUUID);
+  yield takeLatest(Constants.GET_DEPARTMENTS, getDepartments);
+  yield takeLatest(Constants.CREATE_DEPARTMENT, createDepartment);
 }

@@ -38,6 +38,43 @@ export function getEmployeeSuccess(data) {
   };
 }
 
+export function getDepartments() {
+  return {
+    type: Constants.GET_DEPARTMENTS,
+  };
+}
+export function getDepartmentsSuccess(data) {
+  return {
+    type: Constants.GET_DEPARTMENTS_SUCCESS,
+    payload: data
+  };
+}
+export function createDepartment(data) {
+  return {
+    type: Constants.CREATE_DEPARTMENT,
+    payload: data
+  };
+}
+export function createDepartmentSuccess(data) {
+  return {
+    type: Constants.CREATE_DEPARTMENT_SUCCESS,
+    payload: data
+  };
+}
+export function editDepartment(data) {
+  return {
+    type: Constants.EDIT_DEPARTMENT,
+    payload: data
+  };
+}
+
+export function editDepartmentSuccess(data) {
+  return {
+    type: Constants.EDIT_DEPARTMENT_SUCCESS,
+    payload: data
+  };
+}
+
 export function openNewEmployeeDialog() {
   return {
     type: Constants.OPEN_NEW_EMPLOYEE_DIALOG,
@@ -72,8 +109,6 @@ export function closeNewDepartmentDialog() {
 }
 
 export function openNewBranchDialog() {
-  console.log('we opening the dialog in action')
-
   return {
     type: Constants.OPEN_NEW_BRANCH_DIALOG,
   };

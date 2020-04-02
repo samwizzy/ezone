@@ -66,8 +66,10 @@ const Container = styled.div`
 
 function PaperDropzone(props) {
   const [files, setFiles] = useState([]);
-  const { uploadFileAction } = props
+  const { uploadFileAction, folderId } = props
   const [form, setForm] = useState({
+    folderId: 1,
+    docName: "",
     description: "",
     fileName: "",
     fileUrl: "",
@@ -96,8 +98,10 @@ function PaperDropzone(props) {
       })));
       
       setForm(_.set(form, "fileName", acceptedFiles[0].name))
+      setForm(_.set(form, "docName", acceptedFiles[0].name.split('.')[0]))
       setForm(_.set(form, "format", acceptedFiles[0].type))
       setForm(_.set(form, "size", acceptedFiles[0].size))
+      setForm(_.set(form, "folderId", folderId))
       getBase64(acceptedFiles[0], (result) => setForm(_.set(form, "file", result)))
       uploadFileAction(form)
       console.log(form, "Set Form inside onDrop")

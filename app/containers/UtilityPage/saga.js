@@ -10,7 +10,7 @@ import * as Endpoints from '../../components/Endpoints';
 export function* addUtilityFile({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.CreateUtilityFileApi}`;
+  const requestURL = `${Endpoints.AddDocToFolderApi}`;
   payload.orgId = user.organisation.orgId;
 
   try {
@@ -25,9 +25,81 @@ export function* addUtilityFile({ type, payload }) {
 
     console.log(response, 'createdFileResponse');
 
-    yield put({type: Constants.GET_UTILITY_TASKS});
+    yield put(Actions.getAllFoldersAndDocs({folderId: 0, type: 'ROOT'}));
   } catch (err) {
     yield put(Actions.getUtilityFilesError(err));
+    console.log(err.message, "err message")
+  }
+}
+
+export function* addDocToFolder({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.AddDocToFolderApi}`;
+  payload.orgId = user.organisation.orgId;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'createdFileResponse');
+    payload.folderId === 1?
+    yield put(Actions.getAllFoldersAndDocs({folderId: payload.folderId, type: 'ROOT'})):
+    yield put(Actions.getAllFoldersAndDocs({folderId: payload.folderId, type: 'FOLDER'}))
+  } catch (err) {
+    yield put(Actions.getUtilityFilesError(err));
+  }
+}
+
+export function* getAllFoldersAndDoc({type, payload}) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const {uuId} = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAllFoldersAndDocApi}/${uuId}/${payload.folderId}/${payload.type}`;
+
+  console.log(payload, "All folder and doc payload")
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }),
+    });
+
+    yield put(Actions.getAllFoldersAndDocsSuccess(response));
+  } catch (err) {
+    yield put(Actions.getUtilityFilesError(err));
+  }
+}
+
+export function* addFolderToFolder({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const requestURL = `${Endpoints.AddFolderToFolderApi}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'folder response');
+    payload.folderId === 1?
+    yield put(Actions.getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})):
+    yield put(Actions.getAllFoldersAndDocs({folderId: payload.folderId, type: 'FOLDER'}))
+    yield put(Actions.closeNewFolderDialog())
+  } catch (err) {
+    // yield put(Actions.getUtilityFilesError(err));
   }
 }
 
@@ -277,27 +349,6 @@ export function* getUserByUUID({ type, payload }) {
   } catch (err) {
     // yield put(Actions.getUserByUUIDError(err));
     // console.error(err, 'I got the error');
-  }
-}
-
-export function* getAllFoldersAndDoc({type, payload}) {
-  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const {uuId} = yield select(AppSelectors.makeSelectCurrentUser());
-  // currentUser && currentUser.uuId
-  const requestURL = `${Endpoints.GetAllFoldersAndDocApi}/${uuid}/${payload.id}/${payload.type}`;
-
-  try {
-    const response = yield call(request, requestURL, {
-      method: 'GET',
-      headers: new Headers({
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      }),
-    });
-
-    yield put(Actions.getUtilityFilesSuccess(response));
-  } catch (err) {
-    yield put(Actions.getUtilityFilesError(err));
   }
 }
 
@@ -637,6 +688,8 @@ export default function* UtilityPageSaga() {
   yield takeLatest(Constants.SHARE_DOCUMENT, shareUtilityFiles);
   yield takeLatest(Constants.DELETE_DOCUMENT, deleteUtilityFile);
   yield takeLatest(Constants.GET_UTILITY_FILES, getUtilityFiles);
+  yield takeLatest(Constants.ADD_FOLDER_TO_FOLDER, addFolderToFolder);
+  yield takeLatest(Constants.GET_FOLDERS_AND_DOC, getAllFoldersAndDoc);
   yield takeLatest(
     Constants.GET_FAVORITE_DOCS_BY_UUID,
     getFavoriteUtilityFiles,
@@ -648,7 +701,7 @@ export default function* UtilityPageSaga() {
   );
   yield takeLatest(Constants.FAVORITE_FILE_BY_DOC_ID, favoriteUtilityFile);
   yield takeLatest(Constants.CREATE_UTILITY_TASKS, addUtilityTasks);
-  yield takeLatest(Constants.CREATE_UTILITY_FILES, addUtilityFile);
+  yield takeLatest(Constants.ADD_DOC_TO_FOLDER, addDocToFolder);
   yield takeLatest(Constants.GET_ALL_USERS, getAllUsers);
   yield takeLatest(Constants.GET_ALL_USERS_CHAT, getUserChat);
   yield takeLatest(Constants.GET_USER_CHAT_DATA, getUserChatData);

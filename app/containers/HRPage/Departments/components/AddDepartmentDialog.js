@@ -24,11 +24,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function AddDepartmentDialog(props) {
   const classes = useStyles();
-  const { closeNewDepartmentDialog, dialog } = props;
+  const { closeNewDepartmentDialog, createDepartment, dialog } = props;
   const [form, setForm] = React.useState({
-    name: '',
-    description: '',
-    head: '',
+    mailAlias: "",
+    deptName: '',
+    deptLead: {id: ''},
   });
 
   console.log(dialog, "dialog checking")
@@ -40,8 +40,8 @@ function AddDepartmentDialog(props) {
   }, [dialog])
 
   const canSubmitForm = () => {
-    const {name, description, head } = form
-    return name.length > 0 && description.length > 0 && head.length > 0
+    const {deptName, deptLead, mailAlias } = form
+    return deptName.length > 0 && mailAlias.length > 0 && Object.values(deptLead)[0].length > 0
   }
 
   const handleChange = (event) => {
@@ -49,10 +49,15 @@ function AddDepartmentDialog(props) {
     setForm({...form, [name]: value});
   }
 
-  const handleSubmit = () => {
+  const handleSelectChange = (event) => {
+    setForm({...form, [event.target.name]: {id: event.target.value}});
   }
 
-  console.log(form, 'checking form employee...')
+  const handleSubmit = event => {
+    createDepartment(form)
+  }
+
+  console.log(form, 'checking form dept...')
 
   return (
     <div>
@@ -74,44 +79,41 @@ function AddDepartmentDialog(props) {
             <Grid container spacing={1}>
                 <Grid item xs={12}>
                     <TextField
-                    name="name"
-                    label="Firstname"
+                    name="deptName"
+                    label="Department Name"
                     id="outlined-title"
                     fullWidth
                     variant="outlined"
                     size="small"
-                    value={form.name}
+                    value={form.deptName}
                     onChange={handleChange}
                     />
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                    name="Description"
-                    label="description"
+                    name="mailAlias"
+                    label="Mail Alias"
                     id="outlined-title"
                     fullWidth
-                    multiline
-                    rows="4"
-                    rowsMax="4"
                     variant="outlined"
                     size="small"
-                    value={form.description}
+                    value={form.mailAlias}
                     onChange={handleChange}
                     />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    id="head"
-                    name="head"
-                    placeholder="Contact person"
+                    id="dept-lead"
+                    name="deptLead"
+                    placeholder="Department Lead"
                     select
                     fullWidth
                     className={classes.textField}
                     variant="outlined"
                     size="small"
-                    label="Contact Person"
-                    value={form.head}
-                    onChange={handleChange}
+                    label="Department Lead"
+                    value={form.deptLead.id}
+                    onChange={handleSelectChange}
                   >
                     <MenuItem key={0} value="1">
                         No record
@@ -127,7 +129,7 @@ function AddDepartmentDialog(props) {
             Cancel
           </Button>
           <Button onClick={handleSubmit} disabled={!canSubmitForm()} color="primary">
-            Next
+            Save
           </Button>
         </DialogActions>
       </Dialog>
@@ -147,6 +149,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     closeNewDepartmentDialog: () => dispatch(Actions.closeNewDepartmentDialog()),
+    createDepartment: (data) => dispatch(Actions.createDepartment(data)),
     dispatch,
   };
 }

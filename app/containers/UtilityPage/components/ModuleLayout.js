@@ -79,7 +79,7 @@ function ModuleLayout(props) {
             <NavLink to="/dashboard/tasks" activeClassName={classes.active}>
               Tasks
             </NavLink>
-            <NavLink to="/dashboard/files" activeClassName={classes.active}>
+            <NavLink to="/dashboard/folders" activeClassName={classes.active}>
               Files
             </NavLink>
           </div>

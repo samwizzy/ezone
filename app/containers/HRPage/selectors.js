@@ -25,6 +25,24 @@ const makeSelectEmployees = () =>
     hrState => hrState.employees,
   );
 
+const makeSelectDepartments = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.departments,
+  );
+
+const makeSelectBranches = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.branches,
+  );
+
+const makeSelectRoles = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.roles,
+  );
+
 const makeSelectEmployee = () =>
   createSelector(
     selectHR,
@@ -65,8 +83,11 @@ const makeSelectPayrollDialog = () =>
 export default makeSelectHRPage;
 export { 
   selectHR,
-  makeSelectEmployees,
   makeSelectLoading,
+  makeSelectEmployees,
+  makeSelectDepartments,
+  makeSelectBranches,
+  makeSelectRoles,
   makeSelectEmployee,
   makeSelectEmpDialog,
   makeSelectDeptDialog,

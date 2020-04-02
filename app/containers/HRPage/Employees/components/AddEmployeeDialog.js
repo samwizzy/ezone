@@ -37,7 +37,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function AddEmployeeDialog(props) {
   const classes = useStyles();
-  const { closeNewEmployeeDialog, dialog } = props;
+  const { closeNewEmployeeDialog, departments, dialog } = props;
   const [step, setStep] = React.useState(0)
   const [form, setForm] = React.useState({
     firstName: '',
@@ -67,6 +67,8 @@ function AddEmployeeDialog(props) {
     jobDesc: '',
     about: '',
   });
+
+  console.log(departments, "departments")
 
   React.useEffect(() => {
     if(dialog.type == 'edit'){
@@ -181,6 +183,7 @@ AddEmployeeDialog.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   dialog: Selectors.makeSelectEmpDialog(),
+  departments: Selectors.makeSelectDepartments(),
 });
 
 function mapDispatchToProps(dispatch) {

@@ -4,13 +4,14 @@ import { makeStyles } from '@material-ui/core/styles'
 import { orange } from '@material-ui/core/colors'
 import { withRouter } from 'react-router-dom'
 import classNames from 'classnames'
-import { Button, Box, Card, CardContent, CardActionArea, CardMedia, Grid, Menu, MenuItem, List, ListItem, ListSubheader, ListItemText, ListItemIcon, Collapse, Icon, IconButton, Typography, TableContainer, Table, TableBody, TableRow, TableCell, Paper } from '@material-ui/core';
+import { Button, Box, Card, CardContent, CardActionArea, CardMedia, Grid, Menu, MenuItem, List, ListItem, ListSubheader, ListItemText, ListItemIcon, Collapse, Icon, IconButton, Typography, TableContainer, Table, TableBody, TableRow, TableCell, Tooltip, Paper } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import MoreVertRounded from '@material-ui/icons/MoreVertRounded'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import Description from '@material-ui/icons/Description'
 import {AddFile} from './../components/AddButton';
 import * as Actions from '../actions';
@@ -19,6 +20,7 @@ import * as AppSelectors from './../../App/selectors';
 import FileUploadDialog from './components/FileUploadDialog'
 import ShareFileDialog from './components/ShareFileDialog'
 import AddFileDialog from './components/AddFileDialog'
+import AddFolderDialog from './components/AddFolderDialog'
 import FilePreviewDialog from './components/FilePreviewDialog'
 import AddSignature from './components/AddSignature'
 import DocWidget from './components/DocWidget'
@@ -28,6 +30,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import DeleteRounded from '@material-ui/icons/DeleteRounded';
 import InsertDriveFile from '@material-ui/icons/InsertDriveFile';  
+import FolderOpen from '@material-ui/icons/FolderOpen';  
 import Delete from '@material-ui/icons/Delete';  
 import Share from '@material-ui/icons/Share';  
 import CloudDownload from '@material-ui/icons/CloudDownload';  
@@ -49,15 +52,17 @@ const useStyles = makeStyles(theme => ({
     },
   },
   datatable: {
-    // '& .MuiTableRow-root:hover': {
-    //   cursor: 'pointer'
-    // }
+    '& .MuiTableRow-root:hover': {
+      cursor: 'pointer'
+    }
   },
   sideMenu: {
     width: '100%',
+    height: '100vh',
     position: 'relative',
     overflowY: 'auto',
     maxHeight: 300,
+    borderRight: `1px solid ${theme.palette.grey[100]}`,
     '& .MuiListItem-root:hover': {
       color: theme.palette.primary.main,
       '& .MuiListItemIcon-root:hover': {
@@ -70,15 +75,14 @@ const useStyles = makeStyles(theme => ({
     '&.shared': { color: orange[500]},
   },
   iconButton: {
-    width: 24,
-    height: 24,
-    padding: 0,
     '&.favorite': { color: orange[300]},
     '&.shared': { color: orange[500]},
     '&.delete': { color: theme.status.danger},
   },
   icon: {
-    margin: theme.spacing(0, 1),
+    '&.favorite': { color: orange[300]},
+    '&.shared': { color: orange[500]},
+    '&.delete': { color: theme.status.danger},
   },
   cardRoot: {
     maxWidth: '100%',
@@ -90,17 +94,21 @@ const useStyles = makeStyles(theme => ({
 
 const FilesList = props => {
   const classes = useStyles();
-  const { loading, folders, files, file, user, getUtilityFile, deleteDocument, favoriteDocument, getFavoriteDocuments, getSharedDocuments, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog } = props
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [fileId, setFileId] = React.useState(null);
-  const [form, setForm] = React.useState({
-    file: [],
-    parentId: 0
-  });
-  const open = Boolean(anchorEl);
+  const { loading, match, folders, folder, files, file, user, getAllFoldersAndDocs, getFolderById, getUtilityFile, deleteDocument, favoriteDocument, getFavoriteDocuments, getSharedDocuments, openNewFolderDialog, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog } = props
+  const [prevIds, setPrevIds] = React.useState([]);
+  const {params} = match
+
   const [isOpen, setOpen] = React.useState(true);
 
+  React.useEffect(() => {
+    getAllFolders(params.folderId)
+    setPrevIds([...prevIds, params.folderId])
+    // getFolderById(folders.find(f => f.id === params.folderId))
+  }, [])
+
   console.log(folders, "folders")
+  console.log(folder, "folder")
+  console.log(prevIds, "prevIds")
 
   const handleCollapseClick = () => {
     setOpen(!isOpen);
@@ -110,7 +118,7 @@ const FilesList = props => {
     const doc = files && files.find(file => file.id == fileId)
     let a = document.createElement('a');
     a.href = doc.fileUrl;
-    a.download = doc.docName;
+    a.download = doc.name;
     a.click();
   }
 
@@ -118,44 +126,61 @@ const FilesList = props => {
     event.stopPropagation()
     openFilePreviewDialog(id)
   }
+
   const handleShare = (event, id) => {
     event.stopPropagation()
     openShareFileDialog(id)
   }
+
   const handleDownload = (event, id) => {
     event.stopPropagation()
     downloadFile(id)
   }
+
   const handleDelete = (event, id) => {
     event.stopPropagation()
     const file = []
     const payload = {id, type: "document"}
     file.push(payload)
-    const model = {parentId: 0, file}; 
+    const model = {parentId: 1, file}; 
     console.log(model, "model")
     deleteDocument(model)
   }
+
   const handleFavorite = (event, id) => {
     event.stopPropagation()
     favoriteDocument(id)
   }
 
+  const handleBack = () => {
+    if(prevIds.length > 1){
+      getAllFoldersAndDocs({folderId: prevIds[prevIds.length - 2], type: 'FOLDER'})
+      prevIds.splice(prevIds.length - 1, 1)
+    }else{
+      // getAllFolders(params.folderId)
+      props.history.push('/dashboard/folders')
+      prevIds.splice(prevIds.length - 1, 1)
+    }
+  }
+
+  const getAllFolders = folderId => {
+    getAllFoldersAndDocs({folderId, type: 'FOLDER'})
+    setPrevIds([])
+    // props.history.push('/dashboard/folder/' + folderId)
+  }
+
+  const handleRowClick = folderId => {
+    const selectedDoc = folders && folders.find(folder => folder.id === folderId)
+    !prevIds.includes(folderId)? setPrevIds([...prevIds, folderId]) : prevIds.splice(prevIds.length - 1, 1)
+    props.history.push('/dashboard/folder/' + folderId)
+    selectedDoc.type == 'File'? getUtilityFile(folderId) : getAllFoldersAndDocs({folderId, type: 'FOLDER'})
+    getFolderById(selectedDoc)
+  }
 
   console.log(files, "Files")
   console.log(file, "File single")
   console.log(user, "User single")
-
-  const handleClick = event => {
-    event.stopPropagation()
-    const data = event.currentTarget
-    setFileId(data.dataset.id)
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = (event) => {
-    event.stopPropagation()
-    setAnchorEl(null);
-  };
+  console.log(prevIds, "PrevIds single")
 
   const columns = [
     {
@@ -167,16 +192,31 @@ const FilesList = props => {
       },
     },
     {
-      name: 'docName',
+      name: 'type',
+      label: ' ',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: type => {
+          return  (
+            <Typography variant="inherit" color="textSecondary">
+              {type == 'File'?<InsertDriveFile />:<FolderOpen />}
+            </Typography>
+          )
+        }
+      },
+    },
+    {
+      name: 'name',
       label: 'Name',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: docName => {
-          if(!docName) return ''
+        customBodyRender: name => {
+          if(!name) return ''
           return  (
             <Typography variant="inherit" color="textSecondary">
-              <InsertDriveFile /> &nbsp; {docName}
+              {name}
             </Typography>
           )
         }
@@ -190,24 +230,22 @@ const FilesList = props => {
         sort: true,
         customBodyRender: id => {
           return  (
-            <IconButton onClick={event => handleFavorite(event, id)} className={classes.iconButton} aria-label="favorite" color="inherit">
-              <StarOutlined className={classNames(classes.iconButton, {'favorite': true})} />
+            <IconButton onClick={event => handleFavorite(event, id)} className={classes.iconButton} aria-label="favorite" color="inherit" size="small">
+              <Icon color="inherit" className={classNames(classes.icon, {'favorite': true})}>star_outlined</Icon>
             </IconButton>
           )
         }
       },
     },
     {
-      name: 'id',
+      name: 'dateCreated',
       label: 'Last Modified',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: id => {
-          const selectedFile = files && files.find(file => file.id === id)
+        customBodyRender: dateCreated => {
           return (
-            selectedFile.dateUpdated? 
-            moment(selectedFile.dateUpdated).format('lll') : moment(selectedFile.dateCreated).format('lll')
+            moment(dateCreated).format('lll')
           )
         }
       },
@@ -221,109 +259,45 @@ const FilesList = props => {
         customBodyRender: id => {
           return  (
             <React.Fragment>
-              <IconButton onClick={(event) => handleShare(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="share" color="inherit">
+              <IconButton onClick={(event) => handleShare(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="share" color="inherit" size="small">
                 <Icon color="primary">share</Icon>
               </IconButton>
-              <IconButton onClick={(event) => handleDelete(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="delete" color="inherit">
+              <IconButton onClick={(event) => handleDelete(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="delete" color="inherit" size="small">
                 <Icon color="primary">delete</Icon>
               </IconButton>
-              <IconButton onClick={(event) => handleView(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="view" color="inherit">
+              <IconButton onClick={(event) => handleView(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="view" color="inherit" size="small">
                 <Icon color="primary">pageview</Icon>
               </IconButton>
-              <IconButton onClick={(event) => handleDownload(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="download" color="inherit">
+              <IconButton onClick={(event) => handleDownload(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="download" color="inherit" size="small">
                 <Icon color="primary">cloud_download</Icon>
               </IconButton>
             </React.Fragment>
           )
         }
       },
-    },
-    // {
-    //   name: 'id',
-    //   label: ' ',
-    //   options: {
-    //     filter: true,
-    //     sort: false,
-    //     customBodyRender: id => {
-    //       return (
-    //         <div>
-    //           <IconButton
-    //             className={classes.iconButton}
-    //             data-id={id}
-    //             aria-label="more"
-    //             aria-controls="long-menu"
-    //             aria-haspopup="true"
-    //             onClick={handleClick}
-    //           >
-    //             <MoreVertRounded />
-    //           </IconButton>
-    //           <Menu
-    //             id="long-menu"
-    //             anchorEl={anchorEl}
-    //             keepMounted
-    //             open={open}
-    //             onClose={handleClose}
-    //           >
-    //               <MenuItem key={0} dense onClick={handleView}>
-    //                 <ListItemIcon>
-    //                   <Visibility fontSize="small" />
-    //                 </ListItemIcon>
-    //                 <Typography variant="inherit" noWrap>
-    //                   View
-    //                 </Typography>
-    //               </MenuItem>
-    //               <MenuItem key={1} dense onClick={handleDownload}>
-    //                 <ListItemIcon>
-    //                   <CloudDownload fontSize="small" />
-    //                 </ListItemIcon>
-    //                 <Typography variant="inherit" noWrap>
-    //                   Download
-    //                 </Typography>
-    //               </MenuItem>
-    //               <MenuItem key={2} dense onClick={handleShare}>
-    //                 <ListItemIcon>
-    //                   <Share fontSize="small" />
-    //                 </ListItemIcon>
-    //                 <Typography variant="inherit" noWrap>
-    //                   Share
-    //                 </Typography>
-    //               </MenuItem>
-    //               <MenuItem key={3} dense onClick={handleDelete}>
-    //                 <ListItemIcon>
-    //                   <Delete fontSize="small" />
-    //                 </ListItemIcon>
-    //                 <Typography variant="inherit" noWrap>
-    //                   Delete
-    //                 </Typography>
-    //               </MenuItem>
-    //           </Menu>
-    //         </div>
-    //       )
-    //     }
-    //   },
-    // }
+    }
   ];
 
   const options = {
     filterType: 'checkbox',
     responsive: 'scrollMaxHeight',
-    selectableRows: 'none',
+    selectableRows: 'multiple',
     print: false,
     pagination: false,
     download: true,
     viewColumns: false,
     filter: false,
-    customToolbar: () => <AddFile openFileDialog={openFileUploadDialog} />,
+    customToolbar: () => <AddFile openFileDialog={openFileUploadDialog} openFolderDialog={openNewFolderDialog} />,
     rowsPerPage: 10,
     rowsPerPageOptions: [10,25,50,100],
     onRowClick: (rowData, rowState) => {
-      getUtilityFile(rowData[0])
+      handleRowClick(rowData[0])
     },
     elevation: 0
   };
 
-  if(files && files.length === 0){
-    return <NoFilesList /> 
+  if(folders && folders.length === 0){
+    // return <NoFilesList /> 
     // return <AddSignature /> 
     // return <DocWidget /> 
   }
@@ -338,11 +312,11 @@ const FilesList = props => {
               aria-label="secondary mailbox folders"
               subheader={
                 <ListSubheader component="div" id="nested-list-subheader">
-                  Status
+                  <Typography variant="h6">Status</Typography>
                 </ListSubheader>
               }
             >
-              <ListItem button onClick={() => getUtilityFiles()}>
+              <ListItem button onClick={() => getAllFolders(params.folderId)}>
                 <ListItemIcon>
                   <Description />
                 </ListItemIcon>
@@ -376,8 +350,21 @@ const FilesList = props => {
           (
             <MUIDataTable
               className={classes.datatable}
-              title="Document List"
-              data={files}
+              title={
+                <Typography variant="h6" color="textSecondary">
+                  {prevIds.length > 0 &&
+                    <Tooltip title="Back">
+                      <IconButton
+                        onClick={handleBack}
+                      >
+                        <ArrowBackIcon className={classes.icon} />
+                      </IconButton>
+                    </Tooltip>
+                  }
+                  {folder && Object.keys(folder).length > 0 && folder.type == 'Folder'? folder.name : "Documents"}
+                </Typography>
+              }
+              data={folders}
               columns={columns}
               options={options}
             />
@@ -391,7 +378,7 @@ const FilesList = props => {
             <CardMedia
               className={classes.media}
               image={file.fileUrl}
-              title={file.docName}
+              title={file.name}
             />
           </Card>
 
@@ -403,12 +390,6 @@ const FilesList = props => {
                     Document Name
                   </TableCell>
                   <TableCell align="right">{file.docName}</TableCell>
-                </TableRow>
-                <TableRow key={file.description}>
-                  <TableCell component="th" scope="row">
-                    Description
-                  </TableCell>
-                  <TableCell align="right">{file.description}</TableCell>
                 </TableRow>
                 <TableRow key={file.format}>
                   <TableCell component="th" scope="row">
@@ -474,7 +455,7 @@ const FilesList = props => {
             <Collapse in={isOpen} timeout="auto" unmountOnExit>
               <Box px={2}>
               <Typography variant="inherit" color="textSecondary">
-                {file.description? file.description : "There is no description yet"}
+                {file.description? file.description : "This file has no description yet"}
               </Typography>
               </Box>
             </Collapse>
@@ -488,6 +469,7 @@ const FilesList = props => {
       <FileUploadDialog />
       <ShareFileDialog />
       <AddFileDialog />
+      <AddFolderDialog />
       <FilePreviewDialog />
 
     </div>
@@ -505,6 +487,7 @@ FilesList.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   folders: Selectors.makeSelectFolders(),
+  folder: Selectors.makeSelectFolder(),
   files: Selectors.makeSelectFiles(),
   file: Selectors.makeSelectFile(),
   user: AppSelectors.makeSelectCurrentUser(),
@@ -514,7 +497,9 @@ function mapDispatchToProps(dispatch) {
   return {
     openFileUploadDialog: ev => dispatch(Actions.openFileUploadDialog(ev)),
     openShareFileDialog: ev => dispatch(Actions.openShareFileDialog(ev)),
-    openNewTaskDialog: ev => dispatch(Actions.openNewTaskDialog(ev)),
+    openNewFolderDialog: () => dispatch(Actions.openNewFolderDialog()),
+    getAllFoldersAndDocs: (data) => dispatch(Actions.getAllFoldersAndDocs(data)),
+    getFolderById: (data) => dispatch(Actions.getFolderById(data)),
     getUtilityFiles: () => dispatch(Actions.getUtilityFiles()),
     getUtilityFile: id => dispatch(Actions.getUtilityFile(id)),
     getFavoriteDocuments: (uuid) => dispatch(Actions.getFavoriteDocuments(uuid)),
@@ -531,9 +516,9 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(
-  compose(
-    withConnect,
-    memo,
-  )(FilesList));
+export default compose(
+  withRouter,
+  withConnect,
+  memo,
+)(FilesList);
 

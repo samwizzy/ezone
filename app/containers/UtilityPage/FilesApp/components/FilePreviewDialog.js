@@ -5,19 +5,15 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { makeStyles } from '@material-ui/core/styles';
-import Dialog from '@material-ui/core/Dialog';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
+import {AppBar, Dialog, DialogContent, IconButton, Toolbar, Typography, Slide} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import Slide from '@material-ui/core/Slide';
 import * as Actions from '../../actions'
 import * as Selectors from '../../selectors';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
     position: 'relative',
+    backgroundColor: theme.palette.common.white
   },
   title: {
     marginLeft: theme.spacing(2),
@@ -49,11 +45,11 @@ function FilePreviewDialog(props) {
           </Toolbar>
         </AppBar>
         
+        <DialogContent>
         {filePreviewDialog.data &&
-          <div>
-            <img src={filePreviewDialog.data.fileUrl} alt={filePreviewDialog.data.docName} />
-          </div>
+          <img src={filePreviewDialog.data.fileUrl} alt={filePreviewDialog.data.docName} />
         }
+        </DialogContent>
       </Dialog>
     </div>
   );

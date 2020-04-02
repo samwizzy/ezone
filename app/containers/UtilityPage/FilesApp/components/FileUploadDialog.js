@@ -1,6 +1,7 @@
 import React, {memo} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import Button from '@material-ui/core/Button';
@@ -20,13 +21,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function FileUploadDialog(props) {
-  const { closeFileUploadDialog, createUtilityFile, data } = props
+  const { match, closeFileUploadDialog, addDocToFolder, data } = props
+  const { params } = match
 
   console.log(data, 'checking...')
-
-  const handleUpload = (file) => {
-    createUtilityFile(file)
-  }
 
   return (
     <div>
@@ -39,14 +37,11 @@ function FileUploadDialog(props) {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogContent>
-          <ReactDropZone uploadFileAction={createUtilityFile} />
+          <ReactDropZone uploadFileAction={addDocToFolder} folderId={params.folderId} />
         </DialogContent>
         <DialogActions>
           <Button onClick={closeFileUploadDialog} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={closeFileUploadDialog} color="primary">
-            Upload
+            Close
           </Button>
         </DialogActions>
       </Dialog>
@@ -58,7 +53,7 @@ function FileUploadDialog(props) {
 FileUploadDialog.propTypes = {
   openFileUploadDialog: PropTypes.func,
   closeFileUploadDialog: PropTypes.func,
-  createUtilityFile: PropTypes.func,
+  addDocToFolder: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -69,7 +64,7 @@ function mapDispatchToProps(dispatch) {
   return {
     openFileUploadDialog: ev => dispatch(Actions.openFileUploadDialog(ev)),
     closeFileUploadDialog: () => dispatch(Actions.closeFileUploadDialog()),
-    createUtilityFile: (ev) => dispatch(Actions.createUtilityFile(ev)),
+    addDocToFolder: (ev) => dispatch(Actions.addDocToFolder(ev)),
     dispatch,
   };
 }
@@ -80,6 +75,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(FileUploadDialog);
