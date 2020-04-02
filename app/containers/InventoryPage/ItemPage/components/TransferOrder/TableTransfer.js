@@ -30,7 +30,15 @@ const useStyles = makeStyles(theme => ({
 const TableTransfer = props => {
   const { getAllItems } = props;
   const classes = useStyles();
-  const [rows, setRows] = React.useState([]);
+  const [rows, setRows] = React.useState([{}]);
+
+  const handleChange = id => event => {
+    const { name } = event.target;
+    const d = [rows];
+    d[id] = { [name]: event.target.value };
+    setRows(d);
+    // setRows({ ...rows[id], [name]: event.target.value });
+  };
 
   const handleCategoryChange = (evt, value) => {
     // setValues({ ...values, itemCategory: value.name });
@@ -50,6 +58,8 @@ const TableTransfer = props => {
   const removeRow = idx => {
     setRows(rows.filter((item, id) => id !== idx));
   };
+
+  console.log([rows], 'rows');
 
   return (
     <React.Fragment>
@@ -102,7 +112,7 @@ const TableTransfer = props => {
               <TableCell align="center">
                 <TextField
                   id="filled-disabled"
-                  label="Disabled"
+                  label=""
                   defaultValue="1.00"
                   variant="outlined"
                 />
@@ -118,14 +128,15 @@ const TableTransfer = props => {
                 <TableCell component="th" scope="row">
                   <Autocomplete
                     id="combo-itemCategory"
-                    options={[]}
-                    getOptionLabel={option => option.name}
+                    options={getAllItems}
+                    getOptionLabel={option => option.itemName}
                     onChange={(evt, ve) => handleCategoryChange(evt, ve)}
                     renderInput={params => (
                       <TextField
                         {...params}
                         label="Source Warehouse"
                         variant="outlined"
+                        name="itemId"
                         placeholder="Source Warehouse"
                         fullWidth
                       />
@@ -136,25 +147,28 @@ const TableTransfer = props => {
                   <TextField
                     disabled
                     id="filled-disabled"
-                    label="Disabled"
-                    defaultValue="Hello World"
+                    label="Source Stock"
+                    defaultValue="0.00 Units"
                     variant="filled"
                   />
-                  &nbsp; | &nbsp;
+                &nbsp; | &nbsp;
                   <TextField
                     disabled
                     id="filled-disabled"
-                    label="Disabled"
-                    defaultValue="Hello World"
+                    label="Destination Stock"
+                    defaultValue="0.00 Units"
                     variant="filled"
                   />
                 </TableCell>
                 <TableCell align="center">
                   <TextField
                     id="filled-disabled"
-                    label="Disabled"
-                    defaultValue="Hello World"
-                    variant="filled"
+                    label=""
+                    defaultValue="1.00"
+                    variant="outlined"
+                    name="transferQuantity"
+                    value={rows[id].transferQuantity || ''}
+                    onChange={handleChange(id)}
                   />
                 </TableCell>
                 <TableCell align="center">
