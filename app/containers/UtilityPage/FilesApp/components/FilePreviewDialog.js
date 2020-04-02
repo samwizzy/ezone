@@ -27,27 +27,27 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function FilePreviewDialog(props) {
   const classes = useStyles();
-  const { filePreviewDialog, closeFilePreviewDialog } = props
+  const { dialog, closeFilePreviewDialog } = props
 
   return (
     <div>
-      <Dialog fullScreen open={filePreviewDialog.open} onClose={closeFilePreviewDialog} TransitionComponent={Transition}>
+      <Dialog fullScreen open={dialog.open} onClose={closeFilePreviewDialog} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton edge="start" color="inherit" onClick={closeFilePreviewDialog} aria-label="close">
-              <CloseIcon />
+            <IconButton edge="start" color="primary" onClick={closeFilePreviewDialog} aria-label="close">
+              <CloseIcon className={classes.icon} />
             </IconButton>
-            {filePreviewDialog.data &&
+            {dialog.data.docName &&
               <Typography variant="h6" className={classes.title}>
-                {filePreviewDialog.data.docName}
+                {dialog.data.docName}
               </Typography>
             }
           </Toolbar>
         </AppBar>
         
         <DialogContent>
-        {filePreviewDialog.data &&
-          <img src={filePreviewDialog.data.fileUrl} alt={filePreviewDialog.data.docName} />
+        {dialog.data.fileUrl &&
+          <img src={dialog.data.fileUrl} alt={dialog.data.docName} />
         }
         </DialogContent>
       </Dialog>
@@ -62,7 +62,7 @@ FilePreviewDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  filePreviewDialog: Selectors.makeSelectFilePreviewDialog(),
+  dialog: Selectors.makeSelectFilePreviewDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
