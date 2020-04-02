@@ -14,9 +14,10 @@ import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import * as Actions from '../actions';
-import * as Selectors from '../selectors';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
+import * as Actions from '../../actions';
+import * as Selectors from '../../selectors';
+import LoadingIndicator from '../../../../../components/LoadingIndicator';
+import ViewItemDialog from './ViewItemDialog';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -144,6 +145,7 @@ const ItemsList = props => {
 
   return (
     <React.Fragment>
+      {/* <ViewItemDialog /> */}
       <MUIDataTable
         title="All Items"
         data={getAllItems}

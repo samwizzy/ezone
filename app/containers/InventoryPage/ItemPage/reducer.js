@@ -60,7 +60,7 @@ const itemPageReducer = (state = initialState, action) =>
       case Constants.OPEN_VIEW_ITEM_DIALOG: {
         return {
           ...state,
-          itemDialog: {
+          viewItemDialog: {
             type: 'view',
             props: {
               open: true,
@@ -72,7 +72,7 @@ const itemPageReducer = (state = initialState, action) =>
       case Constants.CLOSE_VIEW_ITEM_DIALOG: {
         return {
           ...state,
-          itemDialog: {
+          viewItemDialog: {
             type: 'view',
             props: {
               open: false,

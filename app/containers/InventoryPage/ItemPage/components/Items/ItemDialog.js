@@ -26,9 +26,9 @@ import {
   RadioGroup,
 } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
-import * as Selectors from '../selectors';
-import * as Actions from '../actions';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
+import * as Selectors from '../../selectors';
+import * as Actions from '../../actions';
+import LoadingIndicator from '../../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -791,7 +791,7 @@ ItemDialog.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  itemDialog: Selectors.makeSelectTransferOrderDialog(),
+  itemDialog: Selectors.makeSelectItemDialog(),
   getAllWarehouses: Selectors.makeSelectGetAllWarehouses(),
 });
 
