@@ -19,9 +19,8 @@ import { createStructuredSelector } from 'reselect';
 // import * as Actions from '../actions';
 // import * as Selectors from '../selectors';
 // import { CheckBox } from '@material-ui/icons';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
-import ModuleLayout from '../../components/ModuleLayout';
-// import { AddWarehouse } from './AddWarehouse';
+import LoadingIndicator from '../../../../../components/LoadingIndicator';
+import ModuleLayout from '../../../components/ModuleLayout';
 
 const useStyles = makeStyles(theme => ({
   container: {

@@ -17,10 +17,10 @@ import makeSelectItemPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import * as Actions from './actions';
-import TransferOrderDialog from './components/TransferOrderDialog';
-import ViewItemDialog from './components/ViewItemDialog';
-import ItemDialog from './components/ItemDialog';
-import ItemsList from './components/ItemsList';
+import TransferOrderDialog from './components/TransferOrder/TransferOrderDialog';
+import ViewItemDialog from './components/Items/ViewItemDialog';
+import ItemDialog from './components/Items/ItemDialog';
+import ItemsList from './components/Items/ItemsList';
 import ModuleLayout from '../components/ModuleLayout';
 
 export function ItemPage(props) {

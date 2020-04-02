@@ -19,12 +19,12 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import * as Actions from '../actions';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
-import ModuleLayout from '../../components/ModuleLayout';
+import * as Actions from '../../actions';
+import LoadingIndicator from '../../../../../components/LoadingIndicator';
+import ModuleLayout from '../../../components/ModuleLayout';
 
-import reducer from '../reducer';
-import saga from '../saga';
+import reducer from '../../reducer';
+import saga from '../../saga';
 
 const useStyles = makeStyles(theme => ({
   container: {

@@ -26,10 +26,10 @@ import {
   RadioGroup,
 } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
-import * as Selectors from '../selectors';
-import * as Actions from '../actions';
+import * as Selectors from '../../selectors';
+import * as Actions from '../../actions';
 import ViewItemLayout from './ViewItemLayout';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
+import LoadingIndicator from '../../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   appBar: {

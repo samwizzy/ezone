@@ -31,9 +31,9 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import * as Selectors from '../selectors';
-import * as Actions from '../actions';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
+import * as Selectors from '../../selectors';
+import * as Actions from '../../actions';
+import LoadingIndicator from '../../../../../components/LoadingIndicator';
 import TableTransfer from './TableTransfer';
 
 const useStyles = makeStyles(theme => ({

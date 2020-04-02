@@ -17,12 +17,12 @@ import { useInjectReducer } from 'utils/injectReducer';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import reducer from '../reducer';
-import saga from '../saga';
-import * as Actions from '../actions';
-import * as Selectors from '../selectors';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
-import ModuleLayout from '../../components/ModuleLayout';
+import reducer from '../../reducer';
+import saga from '../../saga';
+import * as Actions from '../../actions';
+import * as Selectors from '../../selectors';
+import LoadingIndicator from '../../../../../components/LoadingIndicator';
+import ModuleLayout from '../../../components/ModuleLayout';
 import TransferOrderDialog from './TransferOrderDialog';
 
 const useStyles = makeStyles(theme => ({
