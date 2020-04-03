@@ -99,7 +99,7 @@ const useStyles = makeStyles(theme => ({
 
 const FilesList = props => {
   const classes = useStyles();
-  const { loading, folders, folder, files, file, user, getAllFoldersAndDocs, getFolderById, getUtilityFile, deleteDocument, favoriteDocument, getFavoriteDocuments, getSharedDocuments, openNewFolderDialog, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog } = props
+  const { loading, folders, folder, files, file, user, getAllFoldersAndDocs, getFolderById, getUtilityFile, deleteDocument, favoriteDocument, getFavoriteDocuments, openNewFolderDialog, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog } = props
   const [prevIds, setPrevIds] = React.useState([]);
 
   const [isOpen, setOpen] = React.useState(true);
@@ -337,13 +337,13 @@ const FilesList = props => {
                 </ListItemIcon>
                 <ListItemText primary="Favorite" />
               </ListItem>
-              <ListItem button onClick={() => getSharedDocuments(user.uuId)}>
+              <ListItem button onClick={() => getAllFoldersAndDocs({folderId: 3, type: 'SHARED'})}>
                 <ListItemIcon>
                   <Share />
                 </ListItemIcon>
                 <ListItemText primary="Shared" />
               </ListItem>
-              <ListItem button onClick={() => getSharedDocuments(user.uuId)}>
+              <ListItem button onClick={() => getAllFoldersAndDocs({folderId: 2, type: 'TRASHED'})}>
                 <ListItemIcon>
                   <Delete />
                 </ListItemIcon>
@@ -443,7 +443,7 @@ const FilesList = props => {
                 <TableRow key="favorite">
                   <TableCell component="th" scope="row"></TableCell>
                   <TableCell align="right">
-                    <Button size="small" onClick={event => handleFavorite(event, file.id)}  className={classNames(classes.button, {'favorite': false})} color='primary'>Favorite</Button>
+                    <Button size="small" startIcon={<StarOutlined />} onClick={event => handleFavorite(event, file.id)}  className={classNames(classes.button, {'favorite': false})} color='primary'>Favorite</Button>
                     <IconButton size="small" onClick={(event) => handleShare(event, file.id)} className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>share</Icon></IconButton>
                     <IconButton size="small" onClick={(event) => handleDownload(event, file.id)} className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>cloud_download</Icon></IconButton>
                     <IconButton size="small" onClick={(event) => handleDelete(event, file.id)} className={classNames(classes.iconButton, {'delete': true}, classes.icon)} color='secondary'><Icon>delete</Icon></IconButton>
@@ -516,7 +516,6 @@ function mapDispatchToProps(dispatch) {
     getUtilityFiles: () => dispatch(Actions.getUtilityFiles()),
     getUtilityFile: id => dispatch(Actions.getUtilityFile(id)),
     getFavoriteDocuments: (uuid) => dispatch(Actions.getFavoriteDocuments(uuid)),
-    getSharedDocuments: (uuid) => dispatch(Actions.getSharedDocuments(uuid)),
     deleteDocument: docId => dispatch(Actions.deleteDocument(docId)),
     shareDocument: docId => dispatch(Actions.shareDocument(docId)),
     favoriteDocument: docId => dispatch(Actions.favoriteDocument(docId)),

@@ -17,41 +17,34 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectEmailConfig from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import EmailHome from './EmailHome';
-import TestConnectionDialog from './components/TestConnectionDialog';
+import EmailTemplate from './EmailTemplate';
+import ModuleLayout from './components/ModuleLayout';
 import * as Actions from './actions';
 
-export function EmailConfig(props) {
+export function EmailTemplateApp(props) {
   useInjectReducer({ key: 'emailConfig', reducer });
   useInjectSaga({ key: 'emailConfig', saga });
 
-  const {
-    dispatchGetEmailConfigAction,
-    dispatchGetSmsProviderAction,
-    dispatchGetSmsConfigAction
-  } = props;
+  const {} = props;
 
-  // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    dispatchGetEmailConfigAction();
-    dispatchGetSmsProviderAction();
-    dispatchGetSmsConfigAction();
   }, []);
 
   return (
     <div>
       <Helmet>
-        <title>EmailConfig</title>
-        <meta name="description" content="Description of EmailConfig" />
+        <title>Email Template</title>
+        <meta name="description" content="Description of Email Templates" />
       </Helmet>
-      <TestConnectionDialog />
-      <EmailHome />
+
+      <ModuleLayout>
+        <EmailTemplate />
+      </ModuleLayout>
     </div>
   );
 }
 
-EmailConfig.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+EmailTemplateApp.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -60,9 +53,6 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchGetEmailConfigAction: evt => dispatch(Actions.getEmailConfigAction(evt)),
-    dispatchGetSmsProviderAction: evt => dispatch(Actions.getSmsProviderAction(evt)),
-    dispatchGetSmsConfigAction: evt => dispatch(Actions.getSmsConfigAction(evt)),
     dispatch,
   };
 }
@@ -75,4 +65,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(EmailConfig);
+)(EmailTemplateApp);

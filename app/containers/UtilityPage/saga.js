@@ -490,30 +490,7 @@ export function* shareUtilityFiles({ type, payload }) {
     // );
     // yield put(Actions.shareDocumentSuccess(response));
   } catch (err) {
-    // yield put(Actions.getSharedDocumentsError(err));
-  }
-}
-
-export function* getSharedUtilityFiles({ type, payload }) {
-  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${Endpoints.GetShareDocumentApi}/${payload}`;
-
-  console.log(payload, 'payload');
-
-  try {
-    const response = yield call(request, requestURL, {
-      method: 'GET',
-      headers: new Headers({
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      }),
-    });
-
-    console.log(response, 'get sharedDocResponse');
-
-    yield put(Actions.getSharedDocumentsSuccess(response));
-  } catch (err) {
-    // yield put(Actions.getSharedDocumentsError(err));
+    // yield put(Actions.sharedDocumentsError(err));
   }
 }
 
@@ -735,7 +712,6 @@ export default function* UtilityPageSaga() {
     Constants.GET_FAVORITE_DOCS_BY_UUID,
     getFavoriteUtilityFiles,
   );
-  yield takeLatest(Constants.GET_SHARED_DOCS_BY_UUID, getSharedUtilityFiles);
   yield takeLatest(
     Constants.GET_FAVORITE_DOCS_BY_UUID,
     getFavoriteUtilityFiles,

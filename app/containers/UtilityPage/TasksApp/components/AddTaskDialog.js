@@ -14,7 +14,7 @@ import {
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 import _ from 'lodash';
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, MenuItem, Slide, Typography, TextField } from '@material-ui/core';
+import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, Grid, MenuItem, Slide, Typography, TextField } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
@@ -33,9 +33,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function AddTaskDialog(props) {
   const classes = useStyles();
-  const { openTaskPreviewDialog, closeNewTaskDialog, createUtilityTask, updateUtilityTask, data, users, task } = props;
+  const { closeNewTaskDialog, createUtilityTask, updateUtilityTask, data, users, task } = props;
   const [form, setForm] = React.useState({
-    title: '',
+    title: 'title',
     description: '',
     startDate: moment(new Date()).format('YYYY-MM-DD'),
     endDate: moment(new Date()).format('YYYY-MM-DD'),
@@ -43,7 +43,8 @@ function AddTaskDialog(props) {
     assignedTo: "",
     assignedToName: "",
     assignedToEmail: "",
-    supervisedBy: ""
+    supervisedBy: "",
+    attachments: []
   });
 
   React.useEffect(() => {
@@ -85,19 +86,18 @@ function AddTaskDialog(props) {
   const handleDateChange = (date, formatted, name) => { 
     setForm(_.set({...form}, name, reformattedDate(date)))
   }
+
   const handleImageChange = (ev) => { 
     let fileNode = []
     Object.keys(ev.target.files).map(index => {
       const { name, size, type } = ev.target.files[index]
-
       const result = toBase64(ev.target.files[index]);
       result.then(rs => {
         const file = Object.assign({}, { fileName: name, size, format: type, file: rs })
         fileNode.push(file)
-      })     
-
+      })   
     })
-    setForm(_.set({...form}, 'attachments', fileNode))
+    setForm(_.set({...form}, event.target.name, fileNode))
   }
 
   const handleSubmit = () => {
@@ -217,19 +217,36 @@ function AddTaskDialog(props) {
             </Grid>
 
             <Grid item xs={12}>
-              <Button
-                variant="outlined"
-                component="label"
-              >
-                Upload File
-                <input
+              {/* <FormControl variant="outlined" className={classes.formControl}>
+                <TextField
+                  id="outlined-attachments"
                   name="attachments"
                   type="file"
-                  style={{ display: "none" }}
+                  label="Attachment"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth
                   onChange={handleImageChange}
+                  variant="outlined"
                   multiple
                 />
-              </Button>
+              </FormControl> */}
+              <FormControl variant="outlined" className={classes.formControl}>
+                <Button
+                  variant="outlined"
+                  component="label"
+                >
+                  Upload File
+                  <input
+                    name="attachments"
+                    type="file"
+                    style={{ display: "none" }}
+                    onChange={handleImageChange}
+                    multiple
+                  />
+                </Button>
+              </FormControl>
             </Grid>
           </Grid>
           </form>
@@ -250,7 +267,6 @@ function AddTaskDialog(props) {
 
 AddTaskDialog.propTypes = {
   openNewTaskDialog: PropTypes.func,
-  openTaskPreviewDialog: PropTypes.func,
   closeNewTaskDialog: PropTypes.func,
 };
 
@@ -263,7 +279,6 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewTaskDialog: ev => dispatch(Actions.openNewTaskDialog(ev)),
-    openTaskPreviewDialog: ev => dispatch(Actions.openTaskPreviewDialog(ev)),
     createUtilityTask: ev => dispatch(Actions.createUtilityTask(ev)),
     updateUtilityTask: (data) => dispatch(Actions.updateUtilityTask(data)),
     closeNewTaskDialog: () => dispatch(Actions.closeNewTaskDialog()),

@@ -12,12 +12,15 @@ import {
   List,
   ListItem,
   ListItemText,
+  Link,
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import { createStructuredSelector } from 'reselect';
-import * as Actions from '../actions';
-import TextEditor from './TextEditor';
+import UserMenu from '../../../components/layouts/shared-components/UserMenu';
+import * as Actions from './actions';
+import TextEditor from './components/TextEditor';
 
 const useStyles = makeStyles(theme => ({
   contain: {
@@ -38,14 +41,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const EmailPasswordTemplate = props => {
+const EmailTemplate = props => {
   const classes = useStyles();
-
   const [content, setContent] = useState('');
+  const { history } = props;
 
-  console.log(content, 'content password extends');
+  const handleClick = link => {
+    history.push(link);
+  };
 
-  const {} = props;
+  console.log(content, 'content extends');
+
   return (
     <React.Fragment>
       <Grid container spacing={3} className={classes.contain}>
@@ -60,12 +66,21 @@ const EmailPasswordTemplate = props => {
                 <ListItem alignItems="flex-start">
                   <ListItemText primary="Choose Template" />
                 </ListItem>
-                <ListItem alignItems="flex-start">
-                  <ListItemText secondary="Password reset" />
-                </ListItem>
-                <ListItem alignItems="flex-start">
-                  <ListItemText secondary="New user welcome message" />
-                </ListItem>
+                <Link
+                  href="/email/password/template"
+                >
+                  <ListItem alignItems="flex-start">
+                    <ListItemText secondary="Password reset" />
+                  </ListItem>
+                </Link>
+                <Link
+                  href="#"
+                  onClick={() => handleClick('/email/password/template')}
+                >
+                  <ListItem alignItems="flex-start">
+                    <ListItemText secondary="New user welcome message" />
+                  </ListItem>
+                </Link>
                 <ListItem alignItems="flex-start">
                   <ListItemText secondary="Signature Approval" />
                 </ListItem>
@@ -92,7 +107,7 @@ const EmailPasswordTemplate = props => {
   );
 };
 
-EmailPasswordTemplate.propTypes = {
+EmailTemplate.propTypes = {
   // openEditColorDialog: PropTypes.func,
 };
 
@@ -112,6 +127,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
-)(EmailPasswordTemplate);
+)(EmailTemplate);
