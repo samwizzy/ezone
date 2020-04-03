@@ -359,12 +359,9 @@ const AddJournal = props => {
                         />
                     </TableCell>
                 </TableRow>
-                
             </TableBody>
         </Table>
       </TableContainer>
-
-
     </React.Fragment>
   );
 };

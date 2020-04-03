@@ -261,8 +261,6 @@ const AccountSetting = props => {
                     </TableRow>
                 </TableBody>
               </Table>
-
-              
           </Grid>
         </Grid>
       </div>
