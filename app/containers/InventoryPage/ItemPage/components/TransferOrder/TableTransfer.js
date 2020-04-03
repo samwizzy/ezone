@@ -29,48 +29,46 @@ const useStyles = makeStyles(theme => ({
 
 const TableTransfer = props => {
   const classes = useStyles();
-  const [rows, setRows] = React.useState([{}]);
+  // const [rows, setRows] = React.useState([{}]);
   const {
     getAllItems,
-    // rows,
-    // setRows,
     values,
     setValues,
-    transferQuantity,
-    // handleItemChange,
-    // handleQuantityChange,
+    handleItemChange,
+    handleQuantityChange,
   } = props;
 
-  const handleQuantityChange = idx => e => {
-    const { value } = e.target;
-    const newRow = rows;
-    newRow[idx].transferQuantity = value;
-    setRows(newRow);
-  };
+  // const handleQuantityChange = idx => e => {
+  //   const { value } = e.target;
+  //   const newRow = rows;
+  //   newRow[idx].transferQuantity = value;
+  //   setRows(newRow);
+  // };
 
-  const handleItemChange = (e, value, idx) => {
-    const newRoww = rows;
-    newRoww[idx] = {
-      itemId: value.id,
-      itemSku: value.sku,
-    };
-    setRows(newRoww);
-  };
+  // const handleItemChange = (e, value, idx) => {
+  //   const newRoww = rows;
+  //   newRoww[idx] = {
+  //     itemId: value.id,
+  //     itemSku: value.sku,
+  //   };
+  //   setRows(newRoww);
+  // };
 
   const addRow = () => {
+    console.log(values, 'values');
     const item = {
       itemId: '',
       itemSku: '',
       transferQuantity: '',
     };
-    setRows([...rows, item]);
+    setValues([...values.rows, item]);
   };
 
   const removeRow = idx => {
-    setRows(rows.filter((item, id) => id !== idx));
+    setValues(values.rows.filter((item, id) => id !== idx));
   };
 
-  console.log(rows, 'rows');
+  // console.log(values, 'rows');
 
   return (
     <React.Fragment>
@@ -85,64 +83,65 @@ const TableTransfer = props => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, id) => (
-              <TableRow key={id}>
-                <TableCell component="th" scope="row">
-                  <Autocomplete
-                    id="combo-itemCategory"
-                    options={getAllItems}
-                    getOptionLabel={option => option.itemName}
-                    onChange={(evt, ve) => handleItemChange(evt, ve, id)}
-                    renderInput={params => (
-                      <TextField
-                        {...params}
-                        label="Source Warehouse"
-                        variant="outlined"
-                        name="itemId"
-                        placeholder="Source Warehouse"
-                        fullWidth
-                      />
-                    )}
-                  />
-                </TableCell>
-                <TableCell align="center">
-                  <TextField
-                    disabled
-                    id="filled-disabled"
-                    label="Source Stock"
-                    defaultValue="0.00 Units"
-                    variant="filled"
-                  />
-                  &nbsp; | &nbsp;
-                  <TextField
-                    disabled
-                    id="filled-disabled"
-                    label="Destination Stock"
-                    defaultValue="0.00 Units"
-                    variant="filled"
-                  />
-                </TableCell>
-                <TableCell align="center">
-                  <TextField
-                    id="filled-disabled"
-                    label=""
-                    defaultValue="1.00"
-                    variant="outlined"
-                    name="transferQuantity"
-                    onChange={handleQuantityChange(id)}
-                  />
-                </TableCell>
-                <TableCell align="center">
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    onClick={() => removeRow(id)}
-                  >
-                    Remove
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            {values &&
+              values.rows.map((row, id) => (
+                <TableRow key={id}>
+                  <TableCell component="th" scope="row">
+                    <Autocomplete
+                      id="combo-itemCategory"
+                      options={getAllItems}
+                      getOptionLabel={option => option.itemName}
+                      onChange={(evt, ve) => handleItemChange(evt, ve, id)}
+                      renderInput={params => (
+                        <TextField
+                          {...params}
+                          label="Source Warehouse"
+                          variant="outlined"
+                          name="itemId"
+                          placeholder="Source Warehouse"
+                          fullWidth
+                        />
+                      )}
+                    />
+                  </TableCell>
+                  <TableCell align="center">
+                    <TextField
+                      disabled
+                      id="filled-disabled"
+                      label="Source Stock"
+                      defaultValue="0.00 Units"
+                      variant="filled"
+                    />
+                    &nbsp; | &nbsp;
+                    <TextField
+                      disabled
+                      id="filled-disabled"
+                      label="Destination Stock"
+                      defaultValue="0.00 Units"
+                      variant="filled"
+                    />
+                  </TableCell>
+                  <TableCell align="center">
+                    <TextField
+                      id="filled-disabled"
+                      label=""
+                      defaultValue="1.00"
+                      variant="outlined"
+                      name="transferQuantity"
+                      onChange={handleQuantityChange(id)}
+                    />
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      onClick={() => removeRow(id)}
+                    >
+                      Remove
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>

@@ -60,11 +60,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const category = [
-  { id: 1, name: 'STOCK_ITEM' },
-  { id: 2, name: 'COMPONENT_ITEM' },
-];
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -83,17 +78,19 @@ const TransferOrderDialog = props => {
   const classes = useStyles();
   const [selectedDate, handleDateChange] = React.useState(new Date());
 
-  const [rows, setRows] = React.useState([{}]);
+  // const [rows, setRows] = React.useState([{}]);
   const [values, setValues] = React.useState({
     transferOrder: '',
     destinationWarehouseUuId: '',
     reason: '',
     sourceWareHouseUuid: '',
     rows: [{}],
-    itemId: '',
-    itemSku: '',
-    transferQuantity: '',
+    // itemId: '',
+    // itemSku: '',
+    // transferQuantity: '',
   });
+
+  console.log(values, 'values rows');
 
   const canBeSubmitted = () => {
     const {
@@ -120,16 +117,24 @@ const TransferOrderDialog = props => {
     );
   };
 
-  const handleQuantityChange = name => event => {
-    setValues({ ...values, transferQuantity: event.target.value });
+  const handleQuantityChange = idx => e => {
+    const { value } = e.target;
+    const newRow = values;
+    newRow[idx].transferQuantity = value;
+    setValues(newRow);
+  };
+
+  const handleItemChange = (e, value, idx) => {
+    const newRoww = values;
+    newRoww[idx] = {
+      itemId: value.id,
+      itemSku: value.sku,
+    };
+    setValues(newRoww);
   };
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
-  };
-
-  const handleItemChange = (event, value) => {
-    setValues({ ...values, itemId: value.id, itemSku: value.sku });
   };
 
   const handleSourceChange = (evt, value) => {
@@ -270,11 +275,8 @@ const TransferOrderDialog = props => {
                 <Grid item xs={12} md={12} lg={12}>
                   <TableTransfer
                     getAllItems={getAllItems}
-                    rows={rows}
-                    setRows={setRows}
                     values={values}
                     setValues={setValues}
-                    transferQuantity={values.transferQuantity}
                     handleItemChange={handleItemChange}
                     handleQuantityChange={handleQuantityChange}
                   />
