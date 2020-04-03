@@ -143,3 +143,7 @@ export const GetAllWarehouses = `${BaseUrl}/inventoryserv/api/v1/get_all_warehou
 // Item Apis
 export const CreateNewItemApi = `${BaseUrl}/inventoryserv/api/v1/upload_item`;
 export const GetAllItems = `${BaseUrl}/inventoryserv/api/v1/get_all_items`;
+
+// Transfer Order APIs
+export const CreateNewTransferOrderApi = `${BaseUrl}/inventoryserv/api/v1/add_transfer_orders`;
+export const GetAllTransferOrderApi = `${BaseUrl}/inventoryserv/api/v1/get_all_transfer_orders`;

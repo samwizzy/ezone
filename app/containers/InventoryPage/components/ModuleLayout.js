@@ -90,6 +90,12 @@ function ModuleLayout(props) {
             >
               Transfer Orders
             </NavLink>
+            <NavLink
+              to="/inventory/inventory/adjustments"
+              activeClassName={classes.active}
+            >
+              Inventory Adjustments
+            </NavLink>
           </div>
 
           <UserMenu />

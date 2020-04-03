@@ -64,22 +64,22 @@ export function* createNewPartyGroupSaga() {
     );
     yield put(Actions.getPartyGroupAction());
     yield put(Actions.closeNewPartyGroupDialog());
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: 'Party Group Created Successfully',
-        status: 'success',
-      }),
-    );
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: 'Party Group Created Successfully',
+    //     status: 'success',
+    //   }),
+    // );
   } catch (err) {
     yield put(Actions.getPartyGroupErrorAction(err));
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: `${err} Failed To Create Party Group`,
-        status: 'error',
-      }),
-    );
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: `${err} Failed To Create Party Group`,
+    //     status: 'error',
+    //   }),
+    // );
   }
 }
 
@@ -131,22 +131,22 @@ export function* createNewParty() {
     yield put(Actions.createNewPartySuccess(createNewPartyResponse));
     yield put(Actions.getPartyGroupAction());
     yield put(Actions.closeNewPartyDialog());
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: 'Party Created Successfully',
-        status: 'success',
-      }),
-    );
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: 'Party Created Successfully',
+    //     status: 'success',
+    //   }),
+    // );
   } catch (err) {
     yield put(Actions.createNewPartyError(err));
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: `${err} Party Failed`,
-        status: 'error',
-      }),
-    );
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: `${err} Party Failed`,
+    //     status: 'error',
+    //   }),
+    // );
   }
 }
 
@@ -171,22 +171,22 @@ export function* createNewParties() {
     yield put(Actions.createNewPartiesSuccess(createNewPartiesResponse));
     yield put(Actions.getPartyGroupAction());
     yield put(Actions.closeNewPartiesDialog());
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: 'Party Created Successfully',
-        status: 'success',
-      }),
-    );
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: 'Party Created Successfully',
+    //     status: 'success',
+    //   }),
+    // );
   } catch (err) {
     yield put(Actions.createNewPartiesError(err));
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: `${err}`,
-        status: 'error',
-      }),
-    );
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: `${err}`,
+    //     status: 'error',
+    //   }),
+    // );
   }
 }
 
@@ -294,22 +294,22 @@ export function* AddEmployeeToPosition() {
     );
     yield put(Actions.getPartyGroupAction());
     yield put(Actions.closeAddEmployeeToPositionDialog());
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: 'Employee Add Successfully',
-        status: 'success',
-      }),
-    );
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: 'Employee Add Successfully',
+    //     status: 'success',
+    //   }),
+    // );
   } catch (err) {
     yield put(Actions.addEmployeeToPositionError(err));
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: `${err}`,
-        status: 'error',
-      }),
-    );
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: `${err}`,
+    //     status: 'error',
+    //   }),
+    // );
   }
 }
 
@@ -361,22 +361,22 @@ export function* updateCompanyDetail() {
     yield put(Actions.getCompanyInfo());
     yield put(Actions.updateCompanyInfoSuccess(companyDetailResponse));
     yield put(Actions.closeEditCompanyDialog());
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: 'Company Profile Update Successfully',
-        status: 'success',
-      }),
-    );
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: 'Company Profile Update Successfully',
+    //     status: 'success',
+    //   }),
+    // );
   } catch (err) {
     yield put(Actions.updateCompanyInfoError(err));
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: err.message,
-        status: 'error',
-      }),
-    );
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: err.message,
+    //     status: 'error',
+    //   }),
+    // );
   }
 }
 

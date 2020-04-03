@@ -42,6 +42,7 @@ import WarehousePage from '../InventoryPage/WarehousePage/Loadable';
 import ItemPage from '../InventoryPage/ItemPage/Loadable';
 import TransferOrdersList from '../InventoryPage/ItemPage/components/TransferOrder/TransferOrdersList';
 import NewTransferOrder from '../InventoryPage/ItemPage/components/TransferOrder/NewTransferOrder';
+import InventoryAdjustmentList from '../InventoryPage/ItemPage/components/InventoryAdjustment/InventoryAdjustmentList';
 import Layout1 from '../../components/layouts/layout1/Layout1';
 import Layout2 from '../../components/layouts/layout2/Layout2';
 import Layout3 from '../../components/layouts/layout3/Layout3';
@@ -191,6 +192,11 @@ const App = () => {
                   exact
                   path="/inventory/transfer/new"
                   component={NewTransferOrder}
+                />
+                <PrivateRoute
+                  exact
+                  path="/inventory/inventory/adjustments"
+                  component={InventoryAdjustmentList}
                 />
               </Layout3>
               <Route path="" component={NotFoundPage} />
