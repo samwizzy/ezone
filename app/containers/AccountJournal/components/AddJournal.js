@@ -10,6 +10,12 @@ import {
   MenuItem,
   Paper,
   Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   TextField
 } from '@material-ui/core';
 
@@ -82,6 +88,9 @@ const useStyles = makeStyles(theme => ({
   listFormat: {
     marginBottom: '10px',
     marginTop: '10px',
+  },
+  table: {
+    minWidth: 650,
   },
 }));
 
@@ -231,7 +240,9 @@ const AddJournal = props => {
 
   return (
     <React.Fragment>
+        
         <div className={classes.root}>
+        <h2>New Journal</h2>
       <Grid container spacing={3}>
         <Grid item xs={6}>
           <TextField
@@ -244,7 +255,7 @@ const AddJournal = props => {
             // onChange={handleChange('accountName')}
             margin="normal"
             fullWidth
-            />
+          />
         </Grid>
         <Grid item xs={6}>
           <TextField
@@ -275,12 +286,85 @@ const AddJournal = props => {
         </Grid>
       </Grid>
     </div>
-      <MUIDataTable
+
+      {/* <MUIDataTable
         title=""
         // data={chartOfAccountData}
         columns={columns}
         options={options}
-      />
+      /> */}
+
+      <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="simple table">
+            <TableHead >
+                <TableRow>
+                    <TableCell align="center">Account</TableCell>
+                    <TableCell align="center">Description</TableCell>
+                    <TableCell align="center">Debit</TableCell>
+                    <TableCell align="center">Credit</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                <TableRow>
+                    <TableCell align="center">
+                        <TextField
+                            id="standard-accountName"
+                            label="Transaction"
+                            type="name"
+                            variant="outlined"
+                            className={classes.textField}
+                            // value={values.accountName}
+                            // onChange={handleChange('accountName')}
+                            margin="normal"
+                            fullWidth
+                        />
+                    </TableCell>
+                    <TableCell align="center">
+                        <TextField
+                            id="standard-accountName"
+                            label="Transaction"
+                            type="name"
+                            variant="outlined"
+                            className={classes.textField}
+                            // value={values.accountName}
+                            // onChange={handleChange('accountName')}
+                            margin="normal"
+                            fullWidth
+                        />
+                    </TableCell>
+                    <TableCell align="center">
+                        <TextField
+                            id="standard-accountName"
+                            label="Transaction"
+                            type="name"
+                            variant="outlined"
+                            className={classes.textField}
+                            // value={values.accountName}
+                            // onChange={handleChange('accountName')}
+                            margin="normal"
+                            fullWidth
+                        />
+                    </TableCell>
+                    <TableCell align="center">
+                        <TextField
+                            id="standard-accountName"
+                            label="Transaction"
+                            type="name"
+                            variant="outlined"
+                            className={classes.textField}
+                            // value={values.accountName}
+                            // onChange={handleChange('accountName')}
+                            margin="normal"
+                            fullWidth
+                        />
+                    </TableCell>
+                </TableRow>
+                
+            </TableBody>
+        </Table>
+      </TableContainer>
+
+
     </React.Fragment>
   );
 };
