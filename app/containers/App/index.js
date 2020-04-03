@@ -43,6 +43,7 @@ import WarehousePage from '../InventoryPage/WarehousePage/Loadable';
 import ItemPage from '../InventoryPage/ItemPage/Loadable';
 import TransferOrdersList from '../InventoryPage/ItemPage/components/TransferOrder/TransferOrdersList';
 import NewTransferOrder from '../InventoryPage/ItemPage/components/TransferOrder/NewTransferOrder';
+import InventoryAdjustmentList from '../InventoryPage/ItemPage/components/InventoryAdjustment/InventoryAdjustmentList';
 import Layout1 from '../../components/layouts/layout1/Layout1';
 import Layout2 from '../../components/layouts/layout2/Layout2';
 import Layout3 from '../../components/layouts/layout3/Layout3';
@@ -52,6 +53,7 @@ import Snackbar from './components/Snackbar';
 import { AppContext } from '../context/AppContext';
 import sideBarconfig from '../../components/Sidebar/components/SidebarConfig';
 import AccountPage from '../Accounting/Loadable';
+import AccountJournal from '../AccountJournal/Loadable';
 
 // import { makeSelectGetSaveToken } from './selectors';
 
@@ -161,6 +163,7 @@ const App = () => {
                 <PrivateRoute exact path="/hr" component={HRPage} />
                 <PrivateRoute exact path="/hr/:sectionId" component={HRPage} />
                 <PrivateRoute path="/account" component={AccountPage} />
+                <PrivateRoute path="/journal" component={AccountJournal} />
                 <PrivateRoute
                   exact
                   path="/inventory"
@@ -184,6 +187,11 @@ const App = () => {
                   exact
                   path="/inventory/transfer/new"
                   component={NewTransferOrder}
+                />
+                <PrivateRoute
+                  exact
+                  path="/inventory/inventory/adjustments"
+                  component={InventoryAdjustmentList}
                 />
               </Layout3>
               <Route path="" component={NotFoundPage} />

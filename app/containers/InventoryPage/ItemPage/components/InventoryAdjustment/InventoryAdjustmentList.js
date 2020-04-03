@@ -31,27 +31,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TransferOrdersList = props => {
+const InventoryAdjustmentList = props => {
   useInjectReducer({ key: 'itemPage', reducer });
   useInjectSaga({ key: 'itemPage', saga });
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [transferOrdersState, setTransferOrdersState] = React.useState([]);
-  const [values, setValues] = React.useState({
-    transferOrder: '',
-    destinationWarehouseUuId: '',
-    itemId: '',
-    itemSku: '',
-    reason: '',
-    sourceWareHouseUuid: '',
-    transferQuantity: '',
-  });
-
-  const handleChange = event => {
-    console.log(event.target, "event.target")
-    setValues({...values, [event.target.name]: event.target.value });
-    console.log('i am handling on change event')
-  };
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -61,19 +45,9 @@ const TransferOrdersList = props => {
     setAnchorEl(null);
   };
 
-  const formModel = {
-    transferOrder: <input type='text' name="transferOrder" value={values.transferOrder} onChange={handleChange} />, 
-    destinationWarehouseUuId: <input type='text' name="destinationWarehouseUuId" value={values.destinationWarehouseUuId}  onChange={handleChange} />, 
-    itemId: <input type='text' name="itemId" value={values.itemId}  onChange={handleChange} />,
-    itemSku: <input type='text' name="itemSku" value={values.itemSku}  onChange={handleChange} />,
-    reason: <input type='text' name="reason" value={values.reason}  onChange={handleChange} />,
-    sourceWareHouseUuid: <input type='text' name="sourceWareHouseUuid" value={values.sourceWareHouseUuid}  onChange={handleChange} />,
-    transferQuantity: <input type='text' name="transferQuantity" value={values.transferQuantity}  onChange={handleChange} />,
-  }
-
   const {
     loading,
-    transferOrders,
+    getAllEmployees,
     openNewTransferOrderDialogAction,
     getAllWarehousesAction,
     getAllItemsAction,
@@ -110,56 +84,57 @@ const TransferOrdersList = props => {
       },
     },
     {
-      name: 'transferOrder',
-      label: 'Transfer Order',
+      name: 'firstName',
+      label: 'First Name',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'destinationWarehouseUuId',
-      label: 'Warehouse Destination ',
+      name: 'lastName',
+      label: 'Last Name',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'itemId',
-      label: 'Item Id',
+      name: 'emailAddress',
+      label: 'Email Address',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'itemSku',
-      label: 'Item Sku',
+      name: 'phoneNumber',
+      label: 'Phone Number',
       options: {
         filter: true,
         sort: false,
+        // customBodyRender: value => {
+        //   const Post = getAllPosts.find(post => value === post.id);
+
+        //   if (value === '') {
+        //     return '';
+        //   }
+        //   return (
+        //     <FormControlLabel
+        //       label="Edit"
+        //       control={<Icon>create</Icon>}
+        //       onClick={evt => {
+        //         evt.stopPropagation();
+        //         openEditPostDialog(Post);
+        //       }}
+        //     />
+        //   );
+        // },
       },
     },
     {
-      name: 'reason',
-      label: 'Reason',
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: 'sourceWareHouseUuid',
-      label: 'WareHouse Source',
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: 'transferQuantity',
-      label: 'Transfer Quantity',
+      name: 'gender',
+      label: 'Gender',
       options: {
         filter: true,
         sort: false,
@@ -220,8 +195,7 @@ const TransferOrdersList = props => {
         size="small"
         className={classes.button}
         startIcon={<AddIcon />}
-        // onClick={() => openNewTransferOrderDialogAction()}
-        onClick={handleNewRow}
+        onClick={() => openNewTransferOrderDialogAction()}
       >
         New
       </Button>
@@ -237,7 +211,7 @@ const TransferOrdersList = props => {
       <ModuleLayout>
         <MUIDataTable
           title="All Transfer Orders"
-          data={transferOrders}
+          data={getAllEmployees}
           columns={columns}
           options={options}
         />
@@ -247,7 +221,7 @@ const TransferOrdersList = props => {
   );
 };
 
-TransferOrdersList.propTypes = {
+InventoryAdjustmentList.propTypes = {
   loading: PropTypes.bool,
   getAllEmployees: PropTypes.array,
   openNewTransferOrderDialogAction: PropTypes.func,
@@ -283,4 +257,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(TransferOrdersList);
+)(InventoryAdjustmentList);

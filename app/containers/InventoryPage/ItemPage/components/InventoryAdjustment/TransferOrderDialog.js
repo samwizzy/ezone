@@ -140,7 +140,7 @@ const TransferOrderDialog = props => {
     setValues({ ...values, destinationWarehouseUuId: value.id });
   };
 
-  // console.log(values, 'values');
+  console.log(values, 'values');
   return (
     <div>
       <Dialog

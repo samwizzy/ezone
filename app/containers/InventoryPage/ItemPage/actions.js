@@ -137,3 +137,23 @@ export function createNewTransferOrderError(data) {
     payload: data,
   };
 }
+
+export function getAllTransferOrder() {
+  return {
+    type: Constants.GET_ALL_TRANSFER_ORDER,
+  };
+}
+
+export function getAllTransferOrderSuccess(data) {
+  return {
+    type: Constants.GET_ALL_TRANSFER_ORDER_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getAllTransferOrderError(data) {
+  return {
+    type: Constants.GET_ALL_TRANSFER_ORDER_ERROR,
+    payload: data,
+  };
+}

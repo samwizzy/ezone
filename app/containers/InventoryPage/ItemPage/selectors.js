@@ -57,6 +57,12 @@ const makeSelectTransferOrderDetails = () =>
     subState => subState.newTransferOrderDetails,
   );
 
+const makeSelectGetAllTransferOrder = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.getAllTransferOrder,
+  );
+
 const makeSelectGetAllItems = () =>
   createSelector(
     selectItemPageDomain,
@@ -93,5 +99,5 @@ export {
   makeSelectTransferOrderDialog,
   makeSelectTransferOrderDetails,
   makeSelectViewItemDialog,
-  makeSelectTransferOrders,
+  makeSelectGetAllTransferOrder,
 };

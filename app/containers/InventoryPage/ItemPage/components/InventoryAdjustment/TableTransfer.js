@@ -29,31 +29,27 @@ const useStyles = makeStyles(theme => ({
 
 const TableTransfer = props => {
   const classes = useStyles();
-  const [rows, setRows] = React.useState([]);
   const {
     getAllItems,
-    // rows,
-    // setRows,
+    rows,
+    setRows,
     values,
     setValues,
     transferQuantity,
-    // handleItemChange,
+    handleItemChange,
     handleQuantityChange,
   } = props;
 
-  const handleItemChange = (event, value, id) => {
-    const { name } = event.target;
-    console.log(id, 'id');
-    console.log(value, 'value');
-    console.log(event, 'event');
-    console.log(name, 'name');
-    const d = [rows];
-    console.log(d, 'd');
-    // d[id] = { [name]: event.target.value };
-
-    d[id] = { itemId: event.target.value };
-    setRows(d);
-  };
+  // const handleChange = id => event => {
+  //   const { name } = event.target;
+  //   console.log(id, 'id');
+  //   console.log(event, 'event');
+  //   console.log(name, 'name');
+  //   const d = [values.rows];
+  //   console.log(d, 'd');
+  //   d[id] = { [name]: event.target.value };
+  //   setRows(d);
+  // };
 
   const addRow = () => {
     const item = {
@@ -67,8 +63,6 @@ const TableTransfer = props => {
   const removeRow = idx => {
     setRows(rows.filter((item, id) => id !== idx));
   };
-
-  console.log(rows, 'rows');
 
   return (
     <React.Fragment>
@@ -89,9 +83,8 @@ const TableTransfer = props => {
                   <Autocomplete
                     id="combo-itemCategory"
                     options={getAllItems}
-                    inputValue={values.itemId || ''}
                     getOptionLabel={option => option.itemName}
-                    onChange={(evt, ve) => handleItemChange(evt, ve, id)}
+                    onChange={(evt, ve) => handleItemChange(evt, ve)}
                     renderInput={params => (
                       <TextField
                         {...params}
