@@ -34,6 +34,8 @@ const TableTransfer = props => {
     getAllItems,
     values,
     setValues,
+    addRow,
+    removeRow,
     handleItemChange,
     handleQuantityChange,
   } = props;
@@ -54,21 +56,21 @@ const TableTransfer = props => {
   //   setRows(newRoww);
   // };
 
-  const addRow = () => {
-    console.log(values, 'values');
-    const item = {
-      itemId: '',
-      itemSku: '',
-      transferQuantity: '',
-    };
-    setValues([...values.rows, item]);
-  };
+  // const addRow = () => {
+  //   console.log(values, 'values');
+  //   const item = {
+  //     itemId: '',
+  //     itemSku: '',
+  //     transferQuantity: '',
+  //   };
+  //   setValues([...values.rows, item]);
+  // };
 
-  const removeRow = idx => {
-    setValues(values.rows.filter((item, id) => id !== idx));
-  };
+  // const removeRow = idx => {
+  //   setValues(values.rows.filter((item, id) => id !== idx));
+  // };
 
-  // console.log(values, 'rows');
+  console.log(values, 'values');
 
   return (
     <React.Fragment>

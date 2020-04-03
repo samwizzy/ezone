@@ -6,6 +6,13 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
   TextField,
   makeStyles,
   Button,
@@ -78,13 +85,12 @@ const TransferOrderDialog = props => {
   const classes = useStyles();
   const [selectedDate, handleDateChange] = React.useState(new Date());
 
-  // const [rows, setRows] = React.useState([{}]);
+  const [rows, setRows] = React.useState([{}]);
   const [values, setValues] = React.useState({
     transferOrder: '',
     destinationWarehouseUuId: '',
     reason: '',
     sourceWareHouseUuid: '',
-    rows: [{}],
     // itemId: '',
     // itemSku: '',
     // transferQuantity: '',
@@ -119,18 +125,32 @@ const TransferOrderDialog = props => {
 
   const handleQuantityChange = idx => e => {
     const { value } = e.target;
-    const newRow = values;
+    const newRow = rows;
     newRow[idx].transferQuantity = value;
-    setValues(newRow);
+    setRows(newRow);
   };
 
   const handleItemChange = (e, value, idx) => {
-    const newRoww = values;
+    const newRoww = rows;
     newRoww[idx] = {
       itemId: value.id,
       itemSku: value.sku,
     };
-    setValues(newRoww);
+    setRows(newRoww);
+  };
+
+  const addRow = () => {
+    console.log(rows, 'rows values');
+    const item = {
+      itemId: '',
+      itemSku: '',
+      transferQuantity: '',
+    };
+    setRows([...rows, item]);
+  };
+
+  const removeRow = idx => {
+    setRows(rows.filter((item, id) => id !== idx));
   };
 
   const handleChange = name => event => {
@@ -273,171 +293,107 @@ const TransferOrderDialog = props => {
               <Divider />
               <Grid container spacing={0}>
                 <Grid item xs={12} md={12} lg={12}>
-                  <TableTransfer
+                  {/* <TableTransfer
                     getAllItems={getAllItems}
                     values={values}
                     setValues={setValues}
+                    addRow={addRow}
+                    removeRow={removeRow}
                     handleItemChange={handleItemChange}
                     handleQuantityChange={handleQuantityChange}
-                  />
+                  /> */}
+
+                  <TableContainer component={Paper}>
+                    <Table className={classes.table} aria-label="simple table">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Item Details</TableCell>
+                          <TableCell align="center">
+                            Current Availablilty
+                          </TableCell>
+                          <TableCell align="center">
+                            Transfer Quantity
+                          </TableCell>
+                          <TableCell align="center" />
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {rows.map((row, id) => (
+                          <TableRow key={id}>
+                            <TableCell component="th" scope="row">
+                              <Autocomplete
+                                id="combo-itemCategory"
+                                options={getAllItems}
+                                getOptionLabel={option => option.itemName}
+                                onChange={(evt, ve) =>
+                                  handleItemChange(evt, ve, id)
+                                }
+                                renderInput={params => (
+                                  <TextField
+                                    {...params}
+                                    label="Source Warehouse"
+                                    variant="outlined"
+                                    name="itemId"
+                                    placeholder="Source Warehouse"
+                                    fullWidth
+                                  />
+                                )}
+                              />
+                            </TableCell>
+                            <TableCell align="center">
+                              <TextField
+                                disabled
+                                id="filled-disabled"
+                                label="Source Stock"
+                                defaultValue="0.00 Units"
+                                variant="filled"
+                              />
+                              &nbsp; | &nbsp;
+                              <TextField
+                                disabled
+                                id="filled-disabled"
+                                label="Destination Stock"
+                                defaultValue="0.00 Units"
+                                variant="filled"
+                              />
+                            </TableCell>
+                            <TableCell align="center">
+                              <TextField
+                                id="filled-disabled"
+                                label=""
+                                defaultValue="1.00"
+                                variant="outlined"
+                                name="transferQuantity"
+                                onChange={handleQuantityChange(id)}
+                              />
+                            </TableCell>
+                            <TableCell align="center">
+                              <Button
+                                variant="outlined"
+                                color="secondary"
+                                onClick={() => removeRow(id)}
+                              >
+                                Remove
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => addRow()}
+                  >
+                    Add Row
+                  </Button>
                 </Grid>
               </Grid>
               <Divider />
             </div>
           ) : (
-            <div>
-              <Grid container spacing={0}>
-                <Grid item xs={12} md={6} lg={6}>
-                  <div className={classes.container}>
-                    <FormControl component="fieldset">
-                      <FormLabel
-                        component="legend"
-                        className={classes.textField}
-                      >
-                        Item Type
-                      </FormLabel>
-                      <RadioGroup
-                        row
-                        aria-label="position"
-                        name="position"
-                        defaultValue="top"
-                      >
-                        <FormControlLabel
-                          value="Group"
-                          control={<Radio color="primary" />}
-                          label="Group"
-                          labelPlacement="top"
-                          onChange={handleChange('itemType')}
-                        />
-                        <FormControlLabel
-                          value="Services"
-                          control={<Radio color="primary" />}
-                          label="Services"
-                          labelPlacement="top"
-                          onChange={handleChange('itemType')}
-                        />
-                      </RadioGroup>
-                    </FormControl>
-                    <TextField
-                      id="outlined-itemName"
-                      label="Item Name"
-                      value={values.itemName}
-                      onChange={handleChange('itemName')}
-                      variant="outlined"
-                      className={classes.textField}
-                      fullWidth
-                    />
-                    <TextField
-                      id="outlined-SKU"
-                      label="SKU"
-                      value={values.sku}
-                      onChange={handleChange('sku')}
-                      fullWidth
-                      variant="outlined"
-                      className={classes.textField}
-                    />
-                    <TextField
-                      id="outlined-barcode"
-                      label="Barcode"
-                      value={values.barcode}
-                      onChange={handleChange('barcode')}
-                      fullWidth
-                      variant="outlined"
-                      className={classes.textField}
-                    />
-                    <TextField
-                      id="outlined-Unit"
-                      label="Unit"
-                      value={values.unit}
-                      onChange={handleChange('unit')}
-                      fullWidth
-                      variant="outlined"
-                      className={classes.textField}
-                    />
-                  </div>
-                </Grid>
-                <Grid item xs={12} md={6} lg={6}>
-                  Image Upload
-                </Grid>
-              </Grid>
-              <Divider />
-              <Grid container spacing={0}>
-                <Grid item xs={12} md={6} lg={6}>
-                  <div className={classes.container}>
-                    <TextField
-                      id="outlined-Dimensions"
-                      label="Dimensions (cm)"
-                      value={values.itemDimension}
-                      onChange={handleChange('itemDimension')}
-                      fullWidth
-                      variant="outlined"
-                      className={classes.textField}
-                    />
-                    <TextField
-                      id="outlined-Manufacturer"
-                      label="Manufacturer"
-                      value={values.manufacturer}
-                      onChange={handleChange('manufacturer')}
-                      fullWidth
-                      variant="outlined"
-                      className={classes.textField}
-                    />
-                  </div>
-                </Grid>
-                <Grid item xs={12} md={6} lg={6}>
-                  <div className={classes.container}>
-                    <TextField
-                      id="outlined-Weight"
-                      label="Weight (kg)"
-                      value={values.itemWeight}
-                      onChange={handleChange('itemWeight')}
-                      fullWidth
-                      variant="outlined"
-                      className={classes.textField}
-                    />
-                  </div>
-                </Grid>
-              </Grid>
-              <Divider />
-              <Grid container spacing={0}>
-                <Grid item xs={12} md={6} lg={6}>
-                  <div className={classes.container}>
-                    <TextField
-                      id="outlined-Selling-Price"
-                      label="Selling Price"
-                      value={values.sellingPrice}
-                      onChange={handleChange('sellingPrice')}
-                      fullWidth
-                      variant="outlined"
-                      className={classes.textField}
-                    />
-                    <TextField
-                      id="outlined-quantity"
-                      label="Quantity"
-                      value={values.quantity}
-                      onChange={handleChange('quantity')}
-                      fullWidth
-                      variant="outlined"
-                      className={classes.textField}
-                    />
-                  </div>
-                </Grid>
-                <Grid item xs={12} md={6} lg={6}>
-                  <div className={classes.container}>
-                    <TextField
-                      id="outlined-Cost-Price"
-                      label="Cost Price"
-                      value={values.costPrice}
-                      onChange={handleChange('costPrice')}
-                      fullWidth
-                      variant="outlined"
-                      className={classes.textField}
-                    />
-                  </div>
-                </Grid>
-              </Grid>
-              <Divider />
-            </div>
+            <div />
           )}
         </DialogContent>
 
@@ -447,7 +403,9 @@ const TransferOrderDialog = props => {
           ) : (
             <Button
               onClick={() => {
-                dispatchCreateNewTransferOrderAction(values);
+                dispatchCreateNewTransferOrderAction(
+                  Object.assign(values, { items: [rows] }),
+                );
               }}
               color="primary"
               variant="contained"
