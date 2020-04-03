@@ -69,7 +69,7 @@ const AccountSetting = props => {
           <Table className={classes.table} aria-label="simple table">
             <TableBody>
                 <TableRow>
-                  <TableCell align="center">
+                  <TableCell align="right">
                     <h4>Financial year starts</h4>
                   </TableCell>
                   <TableCell align="center">
