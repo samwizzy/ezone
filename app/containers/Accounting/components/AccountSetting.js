@@ -63,44 +63,6 @@ const AccountSetting = props => {
   return (
     <React.Fragment>
       <div className={classes.root}>
-<<<<<<< HEAD
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Paper className={classes.paper}>xs=12</Paper>
-        </Grid>
-        <Grid item xs={6}>
-          <Paper className={classes.paper}>xs=6</Paper>
-        </Grid>
-        <Grid item xs={6}>
-          <Paper className={classes.paper}>xs=6</Paper>
-        </Grid>
-        <Grid item xs={3}>
-          {/* <Paper className={classes.paper}>xs=3</Paper> */}
-        </Grid>
-        <Grid item xs={6}>
-          <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="simple table">
-            <TableBody>
-                <TableRow>
-                  <TableCell align="right">
-                    <h4>Financial year starts</h4>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Autocomplete
-                      id="combo-box-demo"
-                      options={smsProviderData}
-                      getOptionLabel={option => option.name}
-                      onChange={(evt, value) => handleSelectChange(evt, value)}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          label="Select Month"
-                          className={classes.textField}
-                          variant="outlined"
-                          placeholder="Search"
-                          fullWidth
-=======
-
         <Grid container justify="center" alignItems="center">
           <Grid item xs={6}>
               <Paper square elevation={0}  className={classes.paper}>
@@ -137,7 +99,6 @@ const AccountSetting = props => {
                               fullWidth
                             />
                           )}
->>>>>>> 23bbac690d5d718a2cd9edfde6a877149e66d705
                         />
                       </TableCell>
                     </TableRow>
