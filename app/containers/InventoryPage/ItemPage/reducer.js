@@ -11,6 +11,7 @@ export const initialState = {
   newItemDetails: false,
   getAllWarehouses: [],
   getAllItems: [],
+  transferOrders: [],
   loading: false,
   error: false,
   itemDialog: {

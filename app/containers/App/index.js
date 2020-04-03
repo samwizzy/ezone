@@ -35,6 +35,7 @@ import HRPage from '../HRPage/Loadable';
 import EmailConfig from '../EmailConfig/Loadable';
 import EmailConfigs from '../EmailConfig/components/TabsPage';
 import EmailTemplate from '../EmailConfig/components/EmailTemplate';
+import EmailTemplates from '../EmailConfig/EmailTemplates/Loadable';
 import EmailPasswordTemplate from '../EmailConfig/components/EmailPasswordTemplate';
 import WorkOrderPage from '../WorkOrder/Loadable';
 import InventoryPage from '../InventoryPage/Loadable';
@@ -149,14 +150,8 @@ const App = () => {
                 />
 
                 <PrivateRoute exact path="/email" component={EmailConfig} />
-                <PrivateRoute
-                  path="/email/configuration"
-                  component={EmailConfigs}
-                />
-                <PrivateRoute
-                  path="/email/template"
-                  component={EmailTemplate}
-                />
+                <PrivateRoute path="/email/configuration" component={EmailConfigs} />
+                <PrivateRoute path="/email/template" component={EmailTemplates} />
                 <PrivateRoute
                   path="/email/password/template"
                   component={EmailPasswordTemplate}

@@ -165,9 +165,9 @@ const FilesList = props => {
   }
 
   const getAllFolders = folderId => {
-    getNestedFoldersAndDocs({folderId, type: 'FOLDER'})
-    setPrevIds([])
-    // props.history.push('/dashboard/folder/' + folderId)
+    // getNestedFoldersAndDocs({folderId, type: 'FOLDER'})
+    // setPrevIds([])
+    props.history.push('/dashboard/folders')
   }
 
   const handleRowClick = folderId => {

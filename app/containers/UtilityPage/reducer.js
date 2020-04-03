@@ -266,13 +266,19 @@ const utilityPageReducer = (state = initialState, action) =>
       case Constants.GET_SHARED_DOCS_BY_UUID_SUCCESS: {
         return {
           ...state,
-          files: action.payload,
+          folders: action.payload,
+        };
+      }
+      case Constants.GET_TRASHED_DOCS_BY_UUID_SUCCESS: {
+        return {
+          ...state,
+          folders: action.payload,
         };
       }
       case Constants.GET_FAVORITE_DOCS_BY_UUID_SUCCESS: {
         return {
           ...state,
-          files: action.payload,
+          folders: action.payload,
         };
       }
       case Constants.GET_UTILITY_FILES: {

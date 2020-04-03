@@ -36,6 +36,22 @@ const TransferOrdersList = props => {
   useInjectSaga({ key: 'itemPage', saga });
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [transferOrdersState, setTransferOrdersState] = React.useState([]);
+  const [values, setValues] = React.useState({
+    transferOrder: '',
+    destinationWarehouseUuId: '',
+    itemId: '',
+    itemSku: '',
+    reason: '',
+    sourceWareHouseUuid: '',
+    transferQuantity: '',
+  });
+
+  const handleChange = event => {
+    console.log(event.target, "event.target")
+    setValues({...values, [event.target.name]: event.target.value });
+    console.log('i am handling on change event')
+  };
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -45,9 +61,19 @@ const TransferOrdersList = props => {
     setAnchorEl(null);
   };
 
+  const formModel = {
+    transferOrder: <input type='text' name="transferOrder" value={values.transferOrder} onChange={handleChange} />, 
+    destinationWarehouseUuId: <input type='text' name="destinationWarehouseUuId" value={values.destinationWarehouseUuId}  onChange={handleChange} />, 
+    itemId: <input type='text' name="itemId" value={values.itemId}  onChange={handleChange} />,
+    itemSku: <input type='text' name="itemSku" value={values.itemSku}  onChange={handleChange} />,
+    reason: <input type='text' name="reason" value={values.reason}  onChange={handleChange} />,
+    sourceWareHouseUuid: <input type='text' name="sourceWareHouseUuid" value={values.sourceWareHouseUuid}  onChange={handleChange} />,
+    transferQuantity: <input type='text' name="transferQuantity" value={values.transferQuantity}  onChange={handleChange} />,
+  }
+
   const {
     loading,
-    getAllEmployees,
+    transferOrders,
     openNewTransferOrderDialogAction,
     getAllWarehousesAction,
     // openEditEmployeeDialogAction,
@@ -56,7 +82,14 @@ const TransferOrdersList = props => {
 
   useEffect(() => {
     getAllWarehousesAction();
-  }, []);
+    console.log("I have get updated after addition")
+  }, [transferOrders]);
+
+  const handleNewRow = () => {
+    if(transferOrders){ transferOrders.unshift(formModel) }
+    setTransferOrdersState([...transferOrdersState, formModel])
+    console.log('Adding Form Model..')
+  }
 
   const columns = [
     {
@@ -78,57 +111,56 @@ const TransferOrdersList = props => {
       },
     },
     {
-      name: 'firstName',
-      label: 'First Name',
+      name: 'transferOrder',
+      label: 'Transfer Order',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'lastName',
-      label: 'Last Name',
+      name: 'destinationWarehouseUuId',
+      label: 'Warehouse Destination ',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'emailAddress',
-      label: 'Email Address',
+      name: 'itemId',
+      label: 'Item Id',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'phoneNumber',
-      label: 'Phone Number',
+      name: 'itemSku',
+      label: 'Item Sku',
       options: {
         filter: true,
         sort: false,
-        // customBodyRender: value => {
-        //   const Post = getAllPosts.find(post => value === post.id);
-
-        //   if (value === '') {
-        //     return '';
-        //   }
-        //   return (
-        //     <FormControlLabel
-        //       label="Edit"
-        //       control={<Icon>create</Icon>}
-        //       onClick={evt => {
-        //         evt.stopPropagation();
-        //         openEditPostDialog(Post);
-        //       }}
-        //     />
-        //   );
-        // },
       },
     },
     {
-      name: 'gender',
-      label: 'Gender',
+      name: 'reason',
+      label: 'Reason',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: 'sourceWareHouseUuid',
+      label: 'WareHouse Source',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: 'transferQuantity',
+      label: 'Transfer Quantity',
       options: {
         filter: true,
         sort: false,
@@ -189,7 +221,8 @@ const TransferOrdersList = props => {
         size="small"
         className={classes.button}
         startIcon={<AddIcon />}
-        onClick={() => openNewTransferOrderDialogAction()}
+        // onClick={() => openNewTransferOrderDialogAction()}
+        onClick={handleNewRow}
       >
         New
       </Button>
@@ -205,7 +238,7 @@ const TransferOrdersList = props => {
       <ModuleLayout>
         <MUIDataTable
           title="All Transfer Orders"
-          data={getAllEmployees}
+          data={transferOrders}
           columns={columns}
           options={options}
         />
@@ -227,7 +260,7 @@ TransferOrdersList.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
-  // getAllEmployees: Selectors.makeSelectGetAllEmployees(),
+  transferOrders: Selectors.makeSelectTransferOrders(),
   // getAllEmployees: UtilitySelectors.makeSelectAllEmployees(),
 });
 
