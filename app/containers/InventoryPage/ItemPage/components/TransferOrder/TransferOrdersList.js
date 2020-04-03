@@ -220,8 +220,7 @@ const TransferOrdersList = props => {
         size="small"
         className={classes.button}
         startIcon={<AddIcon />}
-        // onClick={() => openNewTransferOrderDialogAction()}
-        onClick={handleNewRow}
+        onClick={() => openNewTransferOrderDialogAction()}
       >
         New
       </Button>
