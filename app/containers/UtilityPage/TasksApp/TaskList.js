@@ -188,7 +188,7 @@ const TaskList = props => {
 
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
-  const maxSteps = task.documents.length;
+  const maxSteps = task.documents && task.documents.length;
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -405,6 +405,7 @@ const TaskList = props => {
             </GridList>
           </div>
 
+          {task.documents && task.documents.length > 0 &&
           <div className={classes.stepRoot}>
             <Paper square elevation={0} className={classes.header}>
               <Typography>{task.documents[activeStep].docName}</Typography>
@@ -433,6 +434,7 @@ const TaskList = props => {
               }
             />
           </div>
+          }
 
           <div>
             <ReactDropZone uploadFileAction={props.addTaskAttachment} task={task} />

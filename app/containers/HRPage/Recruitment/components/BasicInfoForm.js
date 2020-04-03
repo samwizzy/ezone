@@ -64,7 +64,7 @@ export const BasicInfoForm = props => {
                     />
                 </Grid>
                 <Grid item xs={6}>
-                  <FormControl variant="outlined" className={classes.formControl}>
+                  <FormControl variant="outlined">
                     <TextField
                     id="outlined-cv"
                     name="cv"
@@ -81,7 +81,7 @@ export const BasicInfoForm = props => {
                   </FormControl>
                 </Grid>
                 <Grid item xs={6}>
-                  <FormControl variant="outlined" className={classes.formControl}>
+                  <FormControl variant="outlined">
                     <TextField
                     id="outlined-cover-letter"
                     name="coverLetter"

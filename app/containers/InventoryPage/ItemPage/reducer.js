@@ -12,6 +12,7 @@ export const initialState = {
   getAllTransferOrder: [],
   getAllWarehouses: [],
   getAllItems: [],
+  transferOrders: [],
   loading: false,
   error: false,
   itemDialog: {

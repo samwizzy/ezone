@@ -106,15 +106,6 @@ export const HiringWorkFlowForm = props => {
             </Grid>
         </Box>
         </Container>
-
-        {/* <CardActions>
-            <Button onClick={handleBack} color="primary">
-                Back
-            </Button>
-            <Button onClick={handleNext} disabled={canSubmitForm()} color="primary">
-                Next
-            </Button>
-        </CardActions> */}
         </Card>
     )
 }

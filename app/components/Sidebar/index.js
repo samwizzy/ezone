@@ -51,7 +51,6 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
     width: `calc(100% - ${drawerWidth}px)`,
-    height: '100vh',
     backgroundColor: theme.palette.common.white,
   },
   logo: {

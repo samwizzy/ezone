@@ -54,7 +54,6 @@ const EmailTemplate = props => {
 
   return (
     <React.Fragment>
-      <UserMenu />
       <Grid container spacing={3} className={classes.contain}>
         <Grid item xs={12} md={3} lg={3}>
           <Card className={classes.card} variant="outlined">
@@ -68,8 +67,7 @@ const EmailTemplate = props => {
                   <ListItemText primary="Choose Template" />
                 </ListItem>
                 <Link
-                  href="#"
-                  onClick={handleClick('/email/password/template')}
+                  href="/email/password/template"
                 >
                   <ListItem alignItems="flex-start">
                     <ListItemText secondary="Password reset" />
@@ -77,7 +75,7 @@ const EmailTemplate = props => {
                 </Link>
                 <Link
                   href="#"
-                  onClick={handleClick('/email/password/template')}
+                  onClick={() => handleClick('/email/password/template')}
                 >
                   <ListItem alignItems="flex-start">
                     <ListItemText secondary="New user welcome message" />

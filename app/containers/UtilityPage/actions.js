@@ -171,20 +171,6 @@ export function getEmployeesSuccess(data) {
   };
 }
 
-export function getSharedDocuments(uuid) {
-  return {
-    type: Constants.GET_SHARED_DOCS_BY_UUID,
-    payload: uuid
-  };
-}
-
-export function getSharedDocumentsSuccess(data) {
-  return {
-    type: Constants.GET_SHARED_DOCS_BY_UUID_SUCCESS,
-    payload: data
-  };
-}
-
 export function getFavoriteDocuments(uuid) {
   return {
     type: Constants.GET_FAVORITE_DOCS_BY_UUID,
