@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TransferOrdersList = props => {
+const InventoryAdjustmentList = props => {
   useInjectReducer({ key: 'itemPage', reducer });
   useInjectSaga({ key: 'itemPage', saga });
   const classes = useStyles();
@@ -221,7 +221,7 @@ const TransferOrdersList = props => {
   );
 };
 
-TransferOrdersList.propTypes = {
+InventoryAdjustmentList.propTypes = {
   loading: PropTypes.bool,
   getAllEmployees: PropTypes.array,
   openNewTransferOrderDialogAction: PropTypes.func,
@@ -257,4 +257,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(TransferOrdersList);
+)(InventoryAdjustmentList);

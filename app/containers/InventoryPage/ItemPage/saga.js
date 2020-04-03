@@ -118,9 +118,69 @@ export function* getAllWarehouses() {
   }
 }
 
+export function* createNewTransferOrder() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const createNewTransferOrderDetails = yield select(
+    Selectors.makeSelectTransferOrderDetails(),
+  );
+  // createNewTransferOrderDetails.orgId = currentUser.organisation.orgId;
+
+  console.log(createNewTransferOrderDetails, 'createNewTransferOrderDetails');
+  const requestURL = `${Endpoints.CreateNewTransferOrderApi}`;
+
+  try {
+    const createNewTransferOrderResponse = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(createNewTransferOrderDetails),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getAllTransferOrder());
+    yield put(Actions.closeNewTransferOrderDialog());
+  } catch (err) {
+    console.log(err);
+    yield put(Actions.createNewTransferOrderError(err));
+  }
+}
+
+export function* getAllTransferOrder() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+
+  const requestURL = `${Endpoints.GetAllTransferOrderApi}`;
+
+  try {
+    const getAllTransferOrderResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(getAllTransferOrderResponse, 'getAllTransferOrderResponse');
+
+    yield put(Actions.getAllTransferOrderSuccess(getAllTransferOrderResponse));
+  } catch (err) {
+    yield put(Actions.getAllTransferOrderError(err));
+    yield put(
+      AppActions.openSnackBar({
+        open: true,
+        message: `${err}`,
+        status: 'error',
+      }),
+    );
+  }
+}
+
 // Individual exports for testing
 export default function* itemPageSaga() {
+  yield takeLatest(Constants.GET_ALL_TRANSFER_ORDER, getAllTransferOrder);
   yield takeLatest(Constants.GET_ALL_ITEMS, getAllItems);
   yield takeLatest(Constants.CREATE_NEW_ITEM, createNewItem);
   yield takeLatest(Constants.GET_ALL_WAREHOUSE, getAllWarehouses);
+  yield takeLatest(Constants.CREATE_NEW_TRANSFER_ORDER, createNewTransferOrder);
 }

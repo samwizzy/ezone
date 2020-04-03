@@ -9,6 +9,7 @@ import * as Constants from './constants';
 export const initialState = {
   newTransferOrderDetails: false,
   newItemDetails: false,
+  getAllTransferOrder: [],
   getAllWarehouses: [],
   getAllItems: [],
   loading: false,
@@ -211,6 +212,28 @@ const itemPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_NEW_TRANSFER_ORDER_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_ALL_TRANSFER_ORDER: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_ALL_TRANSFER_ORDER_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getAllTransferOrder: action.payload,
+        };
+      }
+      case Constants.GET_ALL_TRANSFER_ORDER_ERROR: {
         return {
           ...state,
           loading: false,
