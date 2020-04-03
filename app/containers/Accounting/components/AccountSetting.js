@@ -2,15 +2,18 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
+  Box,
+  Button,
+  Divider,
   List,
   Paper,
   Grid,
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableRow,
   TextField,
+  Typography,
   Checkbox,
   FormGroup,
   FormControlLabel,
@@ -23,18 +26,28 @@ import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 // import LoadingIndicator from '../../../components/LoadingIndicator';
+import Logo from '../../../images/logo.svg';
 
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    padding: theme.spacing(3, 0)
   },
   paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
+    padding: theme.spacing(2, 0),
     color: theme.palette.text.secondary,
   },
+  table: {
+    '& .MuiTableCell-body': {
+      border: 0,
+    },
+  },
+  box: {
+    textAlign: "center",
+    border: `1px solid ${theme.palette.grey[100]}`
+  }
 }));
 
 const AccountSetting = props => {
@@ -43,7 +56,6 @@ const AccountSetting = props => {
 
   const smsProviderData = [{ name: 'Nigeria'}];
 
-
 //   if (loading) {
 //     return <LoadingIndicator />;
 //   }
@@ -51,210 +63,210 @@ const AccountSetting = props => {
   return (
     <React.Fragment>
       <div className={classes.root}>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Paper className={classes.paper}>xs=12</Paper>
+
+        <Grid container justify="center" alignItems="center">
+          <Grid item xs={6}>
+              <Paper square elevation={0}  className={classes.paper}>
+                <Box p={2} my={2} className={classes.box}>
+                  <Typography variant="h4" color="textSecondary">
+                    Welcome To <img src={Logo} height="40" />  Accounting
+                  </Typography>
+                </Box>
+                <Box p={2} my={2} className={classes.box}>  
+                  <Typography variant="h6" color="textSecondary">SetUp Your Accounting Structure</Typography>
+                </Box>
+              </Paper>
+              <Divider />
+
+              <Table className={classes.table} aria-label="simple table">
+                <TableBody>
+                    <TableRow>
+                      <TableCell align="right">
+                        <Typography variant="subtitle1" color="textSecondary">Financial year starts</Typography>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Autocomplete
+                          id="combo-box-demo"
+                          options={smsProviderData}
+                          getOptionLabel={option => option.name}
+                          onChange={(evt, value) => handleSelectChange(evt, value)}
+                          renderInput={params => (
+                            <TextField
+                              {...params}
+                              label="Select Month"
+                              className={classes.textField}
+                              variant="outlined"
+                              placeholder="Search"
+                              fullWidth
+                            />
+                          )}
+                        />
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell align="right"></TableCell>
+                      <TableCell align="left">
+                        <Autocomplete
+                          id="combo-box-demo"
+                          options={smsProviderData}
+                          getOptionLabel={option => option.name}
+                          onChange={(evt, value) => handleSelectChange(evt, value)}
+                          renderInput={params => (
+                            <TextField
+                              {...params}
+                              label="Select Day"
+                              className={classes.textField}
+                              variant="outlined"
+                              placeholder="Search"
+                              fullWidth
+                            />
+                          )}
+                        />
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell align="right">
+                        <Typography variant="subtitle1" color="textSecondary">Accounting method</Typography>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Autocomplete
+                          id="combo-box-demo"
+                          options={smsProviderData}
+                          getOptionLabel={option => option.name}
+                          onChange={(evt, value) => handleSelectChange(evt, value)}
+                          renderInput={params => (
+                            <TextField
+                              {...params}
+                              label="Select Day"
+                              className={classes.textField}
+                              variant="outlined"
+                              placeholder="Search"
+                              fullWidth
+                            />
+                          )}
+                        />
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell align="right">
+                        <Typography variant="subtitle1" color="textSecondary">Tax Type</Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Autocomplete
+                          id="combo-box-demo"
+                          options={smsProviderData}
+                          getOptionLabel={option => option.name}
+                          onChange={(evt, value) => handleSelectChange(evt, value)}
+                          renderInput={params => (
+                            <TextField
+                              {...params}
+                              label="Select Day"
+                              className={classes.textField}
+                              variant="outlined"
+                              placeholder="Search"
+                              fullWidth
+                            />
+                          )}
+                        />
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell align="right">
+                        <Typography variant="subtitle1" color="textSecondary">Tax year starts</Typography>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Autocomplete
+                          id="combo-box-demo"
+                          options={smsProviderData}
+                          getOptionLabel={option => option.name}
+                          onChange={(evt, value) => handleSelectChange(evt, value)}
+                          renderInput={params => (
+                            <TextField
+                              {...params}
+                              label="Select Day"
+                              className={classes.textField}
+                              variant="outlined"
+                              placeholder="Search"
+                              fullWidth
+                            />
+                          )}
+                        />
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell align="right">
+                      </TableCell>
+                      <TableCell align="left">
+                        <Autocomplete
+                          id="combo-box-demo"
+                          options={smsProviderData}
+                          getOptionLabel={option => option.name}
+                          onChange={(evt, value) => handleSelectChange(evt, value)}
+                          renderInput={params => (
+                            <TextField
+                              {...params}
+                              label="Select Day"
+                              className={classes.textField}
+                              variant="outlined"
+                              placeholder="Search"
+                              fullWidth
+                            />
+                          )}
+                        />
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell align="right">
+                        <Typography variant="subtitle1" color="textSecondary">Currency</Typography>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Autocomplete
+                          id="combo-box-demo"
+                          options={smsProviderData}
+                          getOptionLabel={option => option.name}
+                          onChange={(evt, value) => handleSelectChange(evt, value)}
+                          renderInput={params => (
+                            <TextField
+                              {...params}
+                              label="Select Day"
+                              className={classes.textField}
+                              variant="outlined"
+                              placeholder="Search"
+                              fullWidth
+                            />
+                          )}
+                        />
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell align="right">
+                      </TableCell>
+                      <TableCell align="left">
+                      <FormControl component="fieldset">
+                        <FormGroup aria-label="position" row>
+                          <FormControlLabel
+                            value="end"
+                            control={<Checkbox color="primary" />}
+                            label="Enable Multicurrency"
+                            labelPlacement="end"
+                          />
+                        </FormGroup>
+                      </FormControl>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell></TableCell>
+                      <TableCell align="right">
+                        <Button variant="contained" color="primary" onClick={() => {}} style={{align: "right"}}>Save Continue</Button>
+                      </TableCell>
+                    </TableRow>
+                </TableBody>
+              </Table>
+
+              
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <Paper className={classes.paper}>xs=6</Paper>
-        </Grid>
-        <Grid item xs={6}>
-          <Paper className={classes.paper}>xs=6</Paper>
-        </Grid>
-        <Grid item xs={3}>
-          {/* <Paper className={classes.paper}>xs=3</Paper> */}
-        </Grid>
-        <Grid item xs={6}>
-          <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="simple table">
-            <TableBody>
-                <TableRow>
-                  <TableCell align="center">
-                    <h4>Financial year starts</h4>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Autocomplete
-                      id="combo-box-demo"
-                      options={smsProviderData}
-                      getOptionLabel={option => option.name}
-                      onChange={(evt, value) => handleSelectChange(evt, value)}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          label="Select Month"
-                          className={classes.textField}
-                          variant="outlined"
-                          placeholder="Search"
-                          fullWidth
-                        />
-                      )}
-                    />
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell align="center">
-                    {/* <h4>Financial year starts</h4> */}
-                  </TableCell>
-                  <TableCell align="center">
-                    <Autocomplete
-                      id="combo-box-demo"
-                      options={smsProviderData}
-                      getOptionLabel={option => option.name}
-                      onChange={(evt, value) => handleSelectChange(evt, value)}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          label="Select Day"
-                          className={classes.textField}
-                          variant="outlined"
-                          placeholder="Search"
-                          fullWidth
-                        />
-                      )}
-                    />
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell align="center">
-                    <h4>Accounting method</h4>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Autocomplete
-                      id="combo-box-demo"
-                      options={smsProviderData}
-                      getOptionLabel={option => option.name}
-                      onChange={(evt, value) => handleSelectChange(evt, value)}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          label="Select Day"
-                          className={classes.textField}
-                          variant="outlined"
-                          placeholder="Search"
-                          fullWidth
-                        />
-                      )}
-                    />
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell align="center">
-                    <h4>Tax Type</h4>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Autocomplete
-                      id="combo-box-demo"
-                      options={smsProviderData}
-                      getOptionLabel={option => option.name}
-                      onChange={(evt, value) => handleSelectChange(evt, value)}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          label="Select Day"
-                          className={classes.textField}
-                          variant="outlined"
-                          placeholder="Search"
-                          fullWidth
-                        />
-                      )}
-                    />
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell align="center">
-                    <h4>Tax year starts</h4>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Autocomplete
-                      id="combo-box-demo"
-                      options={smsProviderData}
-                      getOptionLabel={option => option.name}
-                      onChange={(evt, value) => handleSelectChange(evt, value)}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          label="Select Day"
-                          className={classes.textField}
-                          variant="outlined"
-                          placeholder="Search"
-                          fullWidth
-                        />
-                      )}
-                    />
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell align="center">
-                    {/* <h4>Tax year starts</h4> */}
-                  </TableCell>
-                  <TableCell align="center">
-                    <Autocomplete
-                      id="combo-box-demo"
-                      options={smsProviderData}
-                      getOptionLabel={option => option.name}
-                      onChange={(evt, value) => handleSelectChange(evt, value)}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          label="Select Day"
-                          className={classes.textField}
-                          variant="outlined"
-                          placeholder="Search"
-                          fullWidth
-                        />
-                      )}
-                    />
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell align="center">
-                    <h4>Currency</h4>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Autocomplete
-                      id="combo-box-demo"
-                      options={smsProviderData}
-                      getOptionLabel={option => option.name}
-                      onChange={(evt, value) => handleSelectChange(evt, value)}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          label="Select Day"
-                          className={classes.textField}
-                          variant="outlined"
-                          placeholder="Search"
-                          fullWidth
-                        />
-                      )}
-                    />
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell align="center">
-                    {/* <h4>Currency</h4> */}
-                  </TableCell>
-                  <TableCell align="center">
-                  <FormControl component="fieldset">
-                    <FormGroup aria-label="position" row>
-                      <FormControlLabel
-                        value="end"
-                        control={<Checkbox color="primary" />}
-                        label="Enable Multicurrency"
-                        labelPlacement="end"
-                      />
-                    </FormGroup>
-                  </FormControl>
-                  </TableCell>
-                </TableRow>
-            </TableBody>
-          </Table>
-          </TableContainer>
-        </Grid>
-        <Grid item xs={3}>
-          {/* <Paper className={classes.paper}>xs=3</Paper> */}
-        </Grid>
-      </Grid>
-    </div>
+      </div>
     </React.Fragment>
   );
 };
