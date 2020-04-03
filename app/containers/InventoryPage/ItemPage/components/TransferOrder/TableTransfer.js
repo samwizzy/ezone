@@ -42,26 +42,17 @@ const TableTransfer = props => {
   } = props;
 
   const handleQuantityChange = idx => e => {
-    const { name, value } = e.target;
+    const { value } = e.target;
     const newRow = rows;
-    newRow[idx] = { [name]: value, itemId: '', itemSku: '' };
-    console.log(newRow, 'newRow');
+    newRow[idx].transferQuantity = value;
     setRows(newRow);
   };
 
-  const handleItemChange = (e, value, id) => {
-    // const { name } = e.target;
-    console.log(id, 'id');
-    console.log(value, 'value');
-    // console.log(name, 'name');
-    // d[id] = { [name]: event.target.value };
-    // newRoww[id] = { [name]: e.target.value };
-
+  const handleItemChange = (e, value, idx) => {
     const newRoww = rows;
-    newRoww[id] = {
+    newRoww[idx] = {
       itemId: value.id,
       itemSku: value.sku,
-      transferQuantity: '',
     };
     setRows(newRoww);
   };
@@ -100,7 +91,6 @@ const TableTransfer = props => {
                   <Autocomplete
                     id="combo-itemCategory"
                     options={getAllItems}
-                    inputValue={values.itemId || ''}
                     getOptionLabel={option => option.itemName}
                     onChange={(evt, ve) => handleItemChange(evt, ve, id)}
                     renderInput={params => (
@@ -139,8 +129,6 @@ const TableTransfer = props => {
                     defaultValue="1.00"
                     variant="outlined"
                     name="transferQuantity"
-                    value={transferQuantity || ''}
-                    // value={rows[id].transferQuantity || ''}
                     onChange={handleQuantityChange(id)}
                   />
                 </TableCell>
