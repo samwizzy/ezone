@@ -489,7 +489,6 @@ function mapDispatchToProps(dispatch) {
       dispatch(Actions.createNewTransferOrder(evt)),
     closeNewTransferOrderDialogAction: () =>
       dispatch(Actions.closeNewTransferOrderDialog()),
-    dispatch,
   };
 }
 

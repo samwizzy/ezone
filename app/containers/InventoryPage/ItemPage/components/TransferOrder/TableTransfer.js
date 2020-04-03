@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 
 const TableTransfer = props => {
   const classes = useStyles();
-  const [rows, setRows] = React.useState([]);
+  const [rows, setRows] = React.useState([{}]);
   const {
     getAllItems,
     // rows,
@@ -38,21 +38,32 @@ const TableTransfer = props => {
     setValues,
     transferQuantity,
     // handleItemChange,
-    handleQuantityChange,
+    // handleQuantityChange,
   } = props;
 
-  const handleItemChange = (event, value, id) => {
-    const { name } = event.target;
+  const handleQuantityChange = idx => e => {
+    const { name, value } = e.target;
+    const newRow = rows;
+    newRow[idx] = { [name]: value, itemId: '', itemSku: '' };
+    console.log(newRow, 'newRow');
+    setRows(newRow);
+  };
+
+  const handleItemChange = (e, value, id) => {
+    // const { name } = e.target;
     console.log(id, 'id');
     console.log(value, 'value');
-    console.log(event, 'event');
-    console.log(name, 'name');
-    const d = [rows];
-    console.log(d, 'd');
+    // console.log(name, 'name');
     // d[id] = { [name]: event.target.value };
+    // newRoww[id] = { [name]: e.target.value };
 
-    d[id] = { itemId: event.target.value };
-    setRows(d);
+    const newRoww = rows;
+    newRoww[id] = {
+      itemId: value.id,
+      itemSku: value.sku,
+      transferQuantity: '',
+    };
+    setRows(newRoww);
   };
 
   const addRow = () => {
