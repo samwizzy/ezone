@@ -35,3 +35,9 @@ export const UPDATE_CHART_OF_ACCOUNT_ERR = 'app/Accounting/UPDATE_CHART_OF_ACCOU
 export const DELETE_CHART_OF_ACCOUNT = 'app/Accounting/DELETE_CHART_OF_ACCOUNT';
 export const DELETE_CHART_OF_ACCOUNT_SUCCESS = 'app/Accounting/DELETE_CHART_OF_ACCOUNT_SUCCESS';
 export const DELETE_CHART_OF_ACCOUNT_ERR = 'app/Accounting/DELETE_CHART_OF_ACCOUNT_ERR';
+
+
+// Accounting Setup
+// export const GET_ALL_CHART_OF_ACCOUNT = 'app/Accounting/GET_ALL_CHART_OF_ACCOUNT';
+// export const GET_ALL_CHART_OF_ACCOUNT_SUCCESS = 'app/Accounting/GET_ALL_CHART_OF_ACCOUNT_SUCCESS';
+// export const GET_ALL_CHART_OF_ACCOUNT_ERR = 'app/Accounting/GET_ALL_CHART_OF_ACCOUNT_ERR';

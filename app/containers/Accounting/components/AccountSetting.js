@@ -63,7 +63,6 @@ const AccountSetting = props => {
   return (
     <React.Fragment>
       <div className={classes.root}>
-
         <Grid container justify="center" alignItems="center">
           <Grid item xs={6}>
               <Paper square elevation={0}  className={classes.paper}>
@@ -262,8 +261,6 @@ const AccountSetting = props => {
                     </TableRow>
                 </TableBody>
               </Table>
-
-              
           </Grid>
         </Grid>
       </div>
