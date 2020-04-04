@@ -34,7 +34,7 @@ const SidebarConfig = [
         url: '/dashboard',
         icon: 'business_center',
       },
-      { id: 3, name: 'Recruitment', url: '/utility', icon: 'find_in_page' },
+      { id: 3, name: 'Recruitment', url: '/users/recruitment', icon: 'find_in_page' },
       { id: 4, name: 'Attendance', url: '/users/employees', icon: 'person' },
       { id: 5, name: 'Payroll', url: '/users/profile', icon: 'payment' },
       { id: 6, name: 'Announcements', url: '/workorder', icon: 'announcement' },
