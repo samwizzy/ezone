@@ -81,10 +81,22 @@ const makeSelectGetAllWarehouses = () =>
     subState => subState.getAllWarehouses,
   );
 
-const makeSelectTransferOrders = () =>
+const makeSelectInventoryAdjustDialog = () =>
   createSelector(
     selectItemPageDomain,
-    subState => subState.transferOrders,
+    subState => subState.inventoryAdjustDialog,
+  );
+
+const makeSelectInventoryAdjustmentDetails = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.newInventoryAdjustmentDetails,
+  );
+
+const makeSelectGetAllInventoryAdjustments = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.getAllInventoryAdjustments,
   );
 
 export default makeSelectItemPage;
@@ -100,4 +112,7 @@ export {
   makeSelectTransferOrderDetails,
   makeSelectViewItemDialog,
   makeSelectGetAllTransferOrder,
+  makeSelectInventoryAdjustDialog,
+  makeSelectInventoryAdjustmentDetails,
+  makeSelectGetAllInventoryAdjustments,
 };

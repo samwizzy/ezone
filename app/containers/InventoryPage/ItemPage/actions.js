@@ -157,3 +157,56 @@ export function getAllTransferOrderError(data) {
     payload: data,
   };
 }
+
+export function openNewInventoryAdjustDialog() {
+  return {
+    type: Constants.OPEN_INVENTORY_ADJUST_DIALOG,
+  };
+}
+
+export function closeNewInventoryAdjustDialog() {
+  return {
+    type: Constants.CLOSE_INVENTORY_ADJUST_DIALOG,
+  };
+}
+
+export function createNewInventoryAdjustment(data) {
+  return {
+    type: Constants.CREATE_NEW_INVENTORY_ADJUSTMENT,
+    payload: data,
+  };
+}
+
+export function createNewInventoryAdjustmentSuccess(data) {
+  return {
+    type: Constants.CREATE_NEW_INVENTORY_ADJUSTMENT_SUCCESS,
+    payload: data,
+  };
+}
+
+export function createNewInventoryAdjustmentError(data) {
+  return {
+    type: Constants.CREATE_NEW_INVENTORY_ADJUSTMENT_ERROR,
+    payload: data,
+  };
+}
+
+export function getAllInventoryAdjustments() {
+  return {
+    type: Constants.GET_ALL_INVENTORY_ADJUSTMENT,
+  };
+}
+
+export function getAllInventoryAdjustmentsSuccess(data) {
+  return {
+    type: Constants.GET_ALL_INVENTORY_ADJUSTMENT_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getAllInventoryAdjustmentsError(data) {
+  return {
+    type: Constants.GET_ALL_INVENTORY_ADJUSTMENT_ERROR,
+    payload: data,
+  };
+}
