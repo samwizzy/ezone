@@ -168,6 +168,57 @@ export function* getAllChartOfAccountSaga() {
   }
 }
 
+// Get accounting setup
+export function* getAccountingSetupSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAccountingSetupApi}/${currentUser.organisation.orgId}`;
+
+  try {
+    const accountingSetupResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log('accountingSetupResponse -->', accountingSetupResponse);
+    yield put(Actions.getAccountingSetupSuccessAction(accountingSetupResponse));
+  } catch (err) {
+    console.log('getAccountingSetupErrorAction --> ', err);
+    yield put(Actions.getAccountingSetupErrorAction(err));
+  }
+}
+
+// Create accounting setup
+export function* createAccountingSetupSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const accountingSetupPostData = yield select(
+    Selectors.makeSelectAccountingSetupPostData(),
+  );
+  const requestURL = `${Endpoints.CreateAccountingSetupApi}`;
+
+  try {
+    const accountingSetupResponse = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(accountingSetupPostData),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log('accountingSetupResponse -> ', accountingSetupResponse);
+    alert(`Accounting setup successful!`);
+    yield put(Actions.createAccountingSetupSuccessAction(accountingSetupResponse));
+  } catch (err) {
+    console.log('createAccountingSetupErrorAction -> ', err);
+    alert(`Something went wrong.`);
+    yield put(Actions.createAccountingSetupErrorAction(err));
+  }
+}
+
 // Individual exports for testing
 export default function* AccountingSaga() {
   // See example in containers/HomePage/saga.js
@@ -177,4 +228,6 @@ export default function* AccountingSaga() {
   yield takeLatest(Constants.GET_ALL_CHART_OF_ACCOUNT, getAllChartOfAccountSaga);
   yield takeLatest(Constants.UPDATE_CHART_OF_ACCOUNT, updateChartOfAccountSaga);
   yield takeLatest(Constants.DELETE_CHART_OF_ACCOUNT, deleteChartOfAccountSaga);
+  yield takeLatest(Constants.GET_ACCOUNTING_SETUP, getAccountingSetupSaga);
+  yield takeLatest(Constants.CREATE_ACCOUNTING_SETUP, createAccountingSetupSaga);
 }

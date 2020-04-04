@@ -57,6 +57,19 @@ const makeSelectGetChartOfAccountData = () =>
     substate => substate.chartOfAccData,
   );
 
+const makeSelectGetAccountingSetupData = () =>
+  createSelector(
+    selectAccountingDomain,
+    substate => substate.accountingSetupData,
+  );
+
+const makeSelectAccountingSetupPostData = () =>
+  createSelector(
+    selectAccountingDomain,
+    subState => subState.accountSetupPostData,
+);
+
+
 export default makeSelectAccounting;
 
 export { 
@@ -66,5 +79,7 @@ export {
   makeSelectAccountTypeData,
   makeSelectDetailTypeData,
   makeSelectChartOfAccountPostData,
-  makeSelectGetChartOfAccountData 
+  makeSelectGetChartOfAccountData,
+  makeSelectGetAccountingSetupData,
+  makeSelectAccountingSetupPostData 
 };

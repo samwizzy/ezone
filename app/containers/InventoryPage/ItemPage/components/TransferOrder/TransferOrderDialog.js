@@ -404,7 +404,7 @@ const TransferOrderDialog = props => {
             <Button
               onClick={() => {
                 dispatchCreateNewTransferOrderAction(
-                  Object.assign(values, { items: [rows] }),
+                  Object.assign(values, { items: rows }),
                 );
               }}
               color="primary"
