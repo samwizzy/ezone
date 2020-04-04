@@ -153,7 +153,8 @@ const App = () => {
 
                 <PrivateRoute exact path="/email" component={EmailConfig} />
                 <PrivateRoute path="/email/configuration" component={EmailConfigs} />
-                <PrivateRoute path="/email/template" component={EmailTemplates} />
+                <PrivateRoute exact path="/email/template" component={EmailTemplates} />
+                <PrivateRoute exact path="/email/template/:emailType" component={EmailTemplates} />
                 <PrivateRoute
                   path="/email/password/template"
                   component={EmailPasswordTemplate}

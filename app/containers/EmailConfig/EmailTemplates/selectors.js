@@ -5,7 +5,7 @@ import { initialState } from './reducer';
  * Direct selector to the emailConfig state domain
  */
 
-const selectEmailConfigDomain = state => state.emailConfig || initialState;
+const selectEmailTemplateDomain = state => state.emailTemplate || initialState;
 
 /**
  * Other specific selectors
@@ -15,70 +15,28 @@ const selectEmailConfigDomain = state => state.emailConfig || initialState;
  * Default selector used by EmailConfig
  */
 
-const makeSelectEmailConfig = () =>
+const makeSelectEmailTemplates = () =>
   createSelector(
-    selectEmailConfigDomain,
+    selectEmailTemplateDomain,
     substate => substate,
   );
 
-const makeSelectTestConnectionDialog = () =>
+const makeSelectTemplates = () =>
   createSelector(
-    selectEmailConfigDomain,
-    substate => substate.testConnectionDialog,
+    selectEmailTemplateDomain,
+    substate => substate.templates,
   );
-
-const makeSelectUserEmailConfigData = () =>
-  createSelector(
-    selectEmailConfigDomain,
-    subState => subState.emailConfigData,
-);
-
-const makeSelectUserEmailConfigPostData = () =>
-  createSelector(
-    selectEmailConfigDomain,
-    subState => subState.emailConfigPostData,
-);
-
-const makeSelectUserTestConnectionData = () =>
-  createSelector(
-    selectEmailConfigDomain,
-    subState => subState.testConnectionData,
-);
-
-const makeSelectSmsProviderData = () =>
-  createSelector(
-    selectEmailConfigDomain,
-    subState => subState.smsProviderData,
-);
-
-const makeSelectSmsConfigData = () =>
-  createSelector(
-    selectEmailConfigDomain,
-    subState => subState.smsConfigData,
-);
-
-const makeSelectUserSmsConfigPostData = () =>
-  createSelector(
-    selectEmailConfigDomain,
-    subState => subState.smsConfigPostData,
-);
 
 const makeSelectLoading = () =>
   createSelector(
-    selectEmailConfigDomain,
+    selectEmailTemplateDomain,
     subState => subState.loading,
 );
 
-export default makeSelectEmailConfig;
+export default makeSelectEmailTemplates;
 export { 
-  selectEmailConfigDomain,
-  makeSelectTestConnectionDialog,
-  makeSelectUserEmailConfigData,
-  makeSelectUserEmailConfigPostData,
-  makeSelectUserTestConnectionData,
-  makeSelectSmsProviderData,
-  makeSelectSmsConfigData,
-  makeSelectUserSmsConfigPostData,
-  makeSelectLoading
+  selectEmailTemplateDomain,
+  makeSelectTemplates,
+  makeSelectLoading,
 };
 

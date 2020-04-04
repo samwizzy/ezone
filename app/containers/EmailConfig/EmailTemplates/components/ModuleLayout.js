@@ -74,19 +74,6 @@ function ModuleLayout(props) {
             <IconButton aria-label="delete" onClick={refreshPage}>
               <RefreshSharp />
             </IconButton>
-
-            <NavLink exact to="/hr/employees" activeClassName={classes.active}>
-              Employees
-            </NavLink>
-            <NavLink to="/hr/departments" activeClassName={classes.active}>
-              Departments
-            </NavLink>
-            <NavLink to="/hr/branches" activeClassName={classes.active}>
-              Branches
-            </NavLink>
-            <NavLink to="/hr/roles" activeClassName={classes.active}>
-              Roles
-            </NavLink>
           </div>
 
           <UserMenu />
