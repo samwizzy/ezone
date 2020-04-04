@@ -148,7 +148,6 @@ export function deleteChartOfAccountErrorAction(data) {
 
 // Get all chart of account 
 export function getAllChartOfAccountTypeAction() {
-  console.log('getAllChartOfAccountTypeAction triggered');
   return {
     type: Constants.GET_ALL_CHART_OF_ACCOUNT,
   };
@@ -164,6 +163,50 @@ export function getAllChartOfAccountTypeSuccessAction(data) {
 export function getAllChartOfAccountTypeErrorAction(data) {
   return {
     type: Constants.GET_ALL_CHART_OF_ACCOUNT_ERR,
+    payload: data,
+  };
+}
+
+
+// Get accounting setup
+export function getAccountingSetupAction() {
+  return {
+    type: Constants.GET_ACCOUNTING_SETUP,
+  };
+}
+
+export function getAccountingSetupSuccessAction(data) {
+  return {
+    type: Constants.GET_ACCOUNTING_SETUP_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getAccountingSetupErrorAction(data) {
+  return {
+    type: Constants.GET_ACCOUNTING_SETUP_ERR,
+    payload: data,
+  };
+}
+
+// Create accounting setup
+export function createAccountingSetupAction(data) {
+  return {
+    type: Constants.CREATE_ACCOUNTING_SETUP,
+    payload: data,
+  };
+}
+
+export function createAccountingSetupSuccessAction(data) {
+  return {
+    type: Constants.CREATE_ACCOUNTING_SETUP_SUCCESS,
+    payload: data,
+  };
+}
+
+export function createAccountingSetupErrorAction(data) {
+  return {
+    type: Constants.CREATE_ACCOUNTING_SETUP_ERR,
     payload: data,
   };
 }

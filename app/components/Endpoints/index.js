@@ -129,7 +129,8 @@ export const CreateChartOfAccountApi = `${BaseUrl}/accountingserv/api/v1/account
 export const GetAllChartOfAccountApi = `${BaseUrl}/accountingserv/api/v1/account/get_account_by_orgid`;
 export const UpdateChartOfAccountApi = `${BaseUrl}/accountingserv/api/v1/account/update_account`;
 export const DeleteChartOfAccountApi = `${BaseUrl}/accountingserv/api/v1/account/delete_account`;
-
+export const GetAccountingSetupApi = `${BaseUrl}/accountingserv/api/v1/account/get_settings_by_orgid`;
+export const CreateAccountingSetupApi = `${BaseUrl}/accountingserv/api/v1/account/add_account_settings`;
 
 /** *****************************************************************
  * Inventory endpoint

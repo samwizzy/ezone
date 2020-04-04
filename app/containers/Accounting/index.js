@@ -28,12 +28,14 @@ export function Accounting(props) {
   useInjectSaga({ key: 'accounting', saga });
 
   const {
+    getAccountingSetupAction,
     dispatchGetAllChartOfAccountTypeAction,
     dispatchGetAllAccountTypeAction
   } = props;
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
+    getAccountingSetupAction()
     dispatchGetAllChartOfAccountTypeAction();
     dispatchGetAllAccountTypeAction();
   }, []);
@@ -63,6 +65,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    getAccountingSetupAction: () => dispatch(Actions.getAccountingSetupAction()),
     dispatchGetAllChartOfAccountTypeAction: () => dispatch(Actions.getAllChartOfAccountTypeAction()),
     dispatchGetAllAccountTypeAction: () => dispatch(Actions.getAllAccountTypeAction()),
     dispatch,
