@@ -50,7 +50,6 @@ const SMSConfigs = props => {
     testConnectionDialog,
     openTestConnectionDialogAction
   } = props;
-  console.log('testConnectionDialog -> ', testConnectionDialog);
 
   const [values, setValues] = React.useState({
     gatewayUrl: "",

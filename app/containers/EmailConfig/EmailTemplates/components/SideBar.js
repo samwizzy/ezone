@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
 import { makeStyles, withStyles, useTheme } from '@material-ui/core/styles';
-import { AppBar, Box, Button, ButtonGroup, Tabs, Tab, TableContainer, Table, TableRow, TableCell, TableBody, TableFooter, TextField, MobileStepper, Grid, GridList, GridListTile, GridListTileBar, Divider, Menu, MenuItem, Paper, List, ListItem, ListSubheader, ListItemText, ListItemIcon, FormControlLabel, Icon, IconButton, Typography, Toolbar, Hidden, Drawer } from '@material-ui/core';
+import { AppBar, Box, Button, ButtonGroup, Tabs, Tab, Divider, List, ListItem, ListSubheader, ListItemText, ListItemIcon, Icon, IconButton, Typography, Toolbar, Hidden } from '@material-ui/core';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -16,6 +16,7 @@ import _ from 'lodash'
 import * as Actions from '../actions';
 import * as AppSelectors from '../../../App/selectors';
 import * as Selectors from '../selectors';
+import PaletteOutlinedIcon from '@material-ui/icons/PaletteOutlined';
 
 const drawerWidth = '100%';
 
@@ -78,29 +79,34 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const menus = [
-    {id: 1, name: "Password Reset", icon: 'vpn_key'},
-    {id: 2, name: "New User Welcome Message", icon: 'person_add'}, 
-    {id: 3, name: "Signature Approval", icon: 'fingerprint'}
+    {id: 1, name: "Password Reset", url: "password", icon: 'vpn_key'},
+    {id: 2, name: "New User Welcome Message", url: "welcome", icon: 'person_add'}, 
+    {id: 3, name: "Signature Approval", url: "signature", icon: 'fingerprint'},
+    {id: 3, name: "Invoice", url: "invoice", icon: 'receipt'},
 ];
 
 const SideBar = props => {
   const classes = useStyles();
   const { loading } = props;
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [selectedIndex, setSelectedIndex] = React.useState("password");
 
   React.useEffect(() => {
   }, []);
 
-  const handleSelectedById = id => {
-    setSelectedIndex(id)
-    props.history.push({pathname: '/email/' + id})
+  const handleSelectedById = url => {
+    setSelectedIndex(url)
+    props.history.push({pathname: '/email/template/' + url})
   }
+
+  console.log(selectedIndex, "selectedIndex")
 
   const drawer = (
     <div>
         <AppBar position='relative' color="inherit" elevation={0}>
             <Toolbar className={classes.toolbar}>
-                <Typography variant="h6" color="textSecondary">Email Template</Typography>
+                <Typography variant="h6" color="textSecondary">
+                    <PaletteOutlinedIcon /> Email Template
+                </Typography>
             </Toolbar>
         </AppBar>
         <Divider />
@@ -118,7 +124,7 @@ const SideBar = props => {
             }
         >
             {menus && menus.map(menu => (
-            <ListItem disableRipple button selected={selectedIndex == menu.id} key={menu.id} onClick={() => setSelectedIndex(menu.id)}>
+            <ListItem disableRipple button selected={selectedIndex == menu.url} key={menu.id} onClick={() => handleSelectedById(menu.url)}>
                 <ListItemIcon><Icon>{menu.icon}</Icon></ListItemIcon>
                 <ListItemText primary={menu.name} />
             </ListItem>

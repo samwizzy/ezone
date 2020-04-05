@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
-
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {

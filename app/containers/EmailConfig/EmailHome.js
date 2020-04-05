@@ -11,7 +11,6 @@ import {
   ListItemText,
   ListItemAvatar,
   Typography,
-  Paper,
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -28,15 +27,23 @@ import mail from '../../images/mail.svg';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+    height: '100vh'
+  },
+  grid: {
+    '& .MuiGrid-item': {
+      flex: 1,
+      margin: theme.spacing(5)
+    }
   },
   list: {},
   card: {
-    minWidth: 275,
-    color: console.log(theme, "theme"),
     background: theme.palette.common.white,
-    borderRadius: '20px',
-    // padding: theme.spacing(2, 0),
-    border: `1px solid ${theme.palette.grey[200]}`
+    borderRadius: theme.shape.borderRadius * 5,
+    padding: theme.spacing(2),
+    border: `1px solid ${theme.palette.grey[200]}`,
+    '& a': {
+      textDecoration: 'none'
+    }
   },
   cardIcon: {
   },
@@ -47,10 +54,10 @@ const useStyles = makeStyles(theme => ({
 
 const EmailHome = props => {
   const classes = useStyles();
-  
+
   return (
     <div className={classes.root}>
-      <Grid container>
+      <Grid container className={classes.grid}>
         <Grid item xs={4}>
           <Card
             className={classes.card}
@@ -60,7 +67,7 @@ const EmailHome = props => {
               <List className={classes.list}>
                 <ListItem>
                   <ListItemAvatar>
-                  <img alt="" src={envelope} className={classes.cardIcon} />
+                    <img alt="" src={envelope} className={classes.cardIcon} />
                   </ListItemAvatar>
                   <ListItemText primary="Email / SMS Configuration" secondary="Jan 9, 2014" />
                 </ListItem>
@@ -77,7 +84,7 @@ const EmailHome = props => {
               <List className={classes.list}>
                 <ListItem>
                   <ListItemAvatar>
-                  <img alt="" src={directory} className={classes.cardIcon} />
+                    <img alt="" src={directory} className={classes.cardIcon} />
                   </ListItemAvatar>
                   <ListItemText primary="AD Configuration" secondary="Jan 9, 2014" />
                 </ListItem>

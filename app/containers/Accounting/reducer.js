@@ -20,6 +20,8 @@ export const initialState = {
     },
     data: null,
   },
+  accountingSetupData: [],
+  accountSetupPostData: false,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -81,7 +83,6 @@ const accountingReducer = (state = initialState, action) =>
 
       // Case to get account type
       case Constants.GET_ALL_ACCOUNT_TYPES: {
-        console.log('GET_ALL_ACCOUNT_TYPES reducer');
         return {
           ...state,
           loading: true,
@@ -89,7 +90,6 @@ const accountingReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_ALL_ACCOUNT_TYPES_SUCCESS: {
-        console.log('GET_ALL_ACCOUNT_TYPES_SUCCESS reducer');
         return {
           ...state,
           loading: false,
@@ -223,6 +223,55 @@ const accountingReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_ALL_CHART_OF_ACCOUNT_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+
+      // Case to get accounting setup
+      case Constants.GET_ACCOUNTING_SETUP: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_ALL_ACCOUNT_TYPES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          accountingSetupData: action.payload,
+        };
+      }
+      case Constants.GET_ACCOUNTING_SETUP_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+
+      // Case to create accounting setup
+      case Constants.CREATE_ACCOUNTING_SETUP: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          accountSetupPostData: action.payload
+        };
+      }
+      case Constants.CREATE_ACCOUNTING_SETUP_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          accountSetupPostData: action.payload
+        };
+      }
+      case Constants.CREATE_ACCOUNTING_SETUP_ERR: {
         return {
           ...state,
           loading: false,
