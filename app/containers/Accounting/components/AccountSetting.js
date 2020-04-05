@@ -124,8 +124,8 @@ const AccountSetting = props => {
     setValues({ 
       ...values, 
       companyStartDate: `${date.getFullYear()}-${month}-${date.getDate()}`,
-      startDay: `${Number(date.getDate())}`,
-      startMonth: `${Number(month)}`
+      startDay: `${date.getDate()}`,
+      startMonth: `${month}`
     });
   };
 
@@ -136,13 +136,12 @@ const AccountSetting = props => {
     }
     setValues({ 
       ...values,
-      taxDay: `${Number(date.getDate())}`,
-      taxMonth: `${Number(month)}`
+      taxDay: `${date.getDate()}`,
+      taxMonth: `${month}`
     });
   };
 
   console.log('values -> ', values);
-
 
 //   if (loading) {
 //     return <LoadingIndicator />;
