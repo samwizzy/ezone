@@ -91,7 +91,7 @@ const AccountSetting = props => {
     accountMethod: "",
     companyStartDate: "",
     currency: "",
-    orgId: currentUser && currentUser.organisation.orgId,
+    orgId: currentUser.organisation && currentUser.organisation.orgId,
     startDay: 0,
     startMonth: 0,
     taxDay: 0,
