@@ -140,7 +140,6 @@ const TransferOrderDialog = props => {
   };
 
   const addRow = () => {
-    console.log(rows, 'rows values');
     const item = {
       itemId: '',
       itemSku: '',
