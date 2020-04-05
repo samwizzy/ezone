@@ -203,6 +203,7 @@ const companyStructurePageReducer = (state = initialState, action) =>
       case Constants.CREATE_NEW_PARTY_GROUP: {
         return {
           ...state,
+          loading: true,
           createNewPartyGroupData: action.payload,
         };
       }
@@ -231,7 +232,7 @@ const companyStructurePageReducer = (state = initialState, action) =>
       case Constants.GET_ALL_USERS_SUCCESS: {
         return {
           ...state,
-          loading: false,
+          loading: true,
           error: false,
           getAllUsersData: action.payload,
         };

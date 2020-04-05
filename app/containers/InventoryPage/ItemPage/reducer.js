@@ -9,10 +9,11 @@ import * as Constants from './constants';
 export const initialState = {
   newTransferOrderDetails: false,
   newItemDetails: false,
+  newInventoryAdjustmentDetails: false,
+  getAllInventoryAdjustments: [],
   getAllTransferOrder: [],
   getAllWarehouses: [],
   getAllItems: [],
-  transferOrders: [],
   loading: false,
   error: false,
   itemDialog: {
@@ -23,6 +24,13 @@ export const initialState = {
     data: null,
   },
   transferOrderDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
+  inventoryAdjustDialog: {
     type: 'new',
     props: {
       open: false,
@@ -235,6 +243,74 @@ const itemPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_ALL_TRANSFER_ORDER_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.OPEN_INVENTORY_ADJUST_DIALOG: {
+        return {
+          ...state,
+          inventoryAdjustDialog: {
+            type: 'new',
+            props: {
+              open: true,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.CLOSE_INVENTORY_ADJUST_DIALOG: {
+        return {
+          ...state,
+          inventoryAdjustDialog: {
+            type: 'new',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.CREATE_NEW_INVENTORY_ADJUSTMENT: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          newInventoryAdjustmentDetails: action.payload,
+        };
+      }
+      case Constants.CREATE_NEW_INVENTORY_ADJUSTMENT_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.CREATE_NEW_INVENTORY_ADJUSTMENT_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_ALL_INVENTORY_ADJUSTMENT: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_ALL_INVENTORY_ADJUSTMENT_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getAllInventoryAdjustments: action.payload,
+        };
+      }
+      case Constants.GET_ALL_INVENTORY_ADJUSTMENT_ERROR: {
         return {
           ...state,
           loading: false,

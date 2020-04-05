@@ -405,7 +405,7 @@ export function* deleteUtilityFile({ type, payload }) {
   try {
     const response = yield call(request, requestURL, {
       method: 'PUT',
-      body: JSON.stringify(payload),
+      body: JSON.stringify(payload.data),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',

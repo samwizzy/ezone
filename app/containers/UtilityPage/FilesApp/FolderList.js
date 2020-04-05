@@ -10,7 +10,6 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import LoadingIndicator from '../../../components/LoadingIndicator';
-import MoreVertRounded from '@material-ui/icons/MoreVertRounded'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import Description from '@material-ui/icons/Description'
 import {AddFile} from './../components/AddButton';
@@ -31,17 +30,24 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import DeleteRounded from '@material-ui/icons/DeleteRounded';
 import InsertDriveFile from '@material-ui/icons/InsertDriveFile';  
 import FolderOpen from '@material-ui/icons/FolderOpen';  
+import CropOriginal from '@material-ui/icons/CropOriginal';  
 import Delete from '@material-ui/icons/Delete';  
 import Share from '@material-ui/icons/Share';  
 import CloudDownload from '@material-ui/icons/CloudDownload';  
 import Visibility from '@material-ui/icons/Visibility';  
 import StarBorderOutlined from '@material-ui/icons/StarBorderOutlined';  
 import StarOutlined from '@material-ui/icons/StarOutlined';
+import FolderSideBar from './FolderSideBar'
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
+  flex: {
+    display: "flex",
+    alignItems: "center",
+    alignContent: "center",
+  }, 
   table: {
     marginTop: theme.spacing(2),
     '& .MuiTableCell-body': {
@@ -54,20 +60,6 @@ const useStyles = makeStyles(theme => ({
   datatable: {
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
-    }
-  },
-  sideMenu: {
-    width: '100%',
-    height: '100vh',
-    position: 'relative',
-    overflowY: 'auto',
-    maxHeight: 300,
-    borderRight: `1px solid ${theme.palette.grey[100]}`,
-    '& .MuiListItem-root:hover': {
-      color: theme.palette.primary.main,
-      '& .MuiListItemIcon-root:hover': {
-        color: theme.palette.primary.main,
-      }
     }
   },
   button: {
@@ -102,13 +94,11 @@ const FilesList = props => {
 
   React.useEffect(() => {
     getAllFolders(params.folderId)
-    setPrevIds([...prevIds, params.folderId])
-    // getFolderById(folders.find(f => f.id === params.folderId))
   }, [])
 
-  console.log(folders, "folders")
-  console.log(nestedFolders, "Nested folders")
-  console.log(folder, "folder")
+  console.log(folders, "folders nexted")
+  console.log(nestedFolders, "nestedfolders nexted")
+  console.log(folder, "folder nexted")
   console.log(prevIds, "prevIds")
 
   const handleCollapseClick = () => {
@@ -138,13 +128,12 @@ const FilesList = props => {
     downloadFile(id)
   }
 
-  const handleDelete = (event, id) => {
-    event.stopPropagation()
+  const handleDelete = (id) => {
+    const fd = nestedFolders && nestedFolders.find(f => f.id == id) // to retrieve fd.parentFolderId
     const file = []
-    const payload = {id, type: "document"}
+    const payload = Object.assign({}, {id, type: "document"})
     file.push(payload)
-    const model = {parentId: 1, file}; 
-    console.log(model, "model")
+    const model = Object.assign({}, {folderId: params.folderId, data: {parentId: 1, file}})
     deleteDocument(model)
   }
 
@@ -158,16 +147,17 @@ const FilesList = props => {
       getNestedFoldersAndDocs({folderId: prevIds[prevIds.length - 2], type: 'FOLDER'})
       prevIds.splice(prevIds.length - 1, 1)
     }else{
-      // getAllFolders(params.folderId)
       props.history.push('/dashboard/folders')
       prevIds.splice(prevIds.length - 1, 1)
     }
   }
 
   const getAllFolders = folderId => {
-    // getNestedFoldersAndDocs({folderId, type: 'FOLDER'})
-    // setPrevIds([])
-    props.history.push('/dashboard/folders')
+    const selectedfolder = folders && folders.find(f => f.id == folderId)
+    getNestedFoldersAndDocs({folderId, type: 'FOLDER'})
+    setPrevIds([...prevIds, folderId])
+    console.log(selectedfolder, "selectedfolder")
+    getFolderById(selectedfolder)
   }
 
   const handleRowClick = folderId => {
@@ -181,8 +171,9 @@ const FilesList = props => {
     getFolderById(selectedDoc)
   }
 
-  console.log(files, "Files")
-  console.log(file, "File single")
+  console.log(folders, "Folders")
+  console.log(nestedFolders, "nestedFolders")
+  console.log(folder, "Folder single")
 
   const columns = [
     {
@@ -202,7 +193,7 @@ const FilesList = props => {
         customBodyRender: type => {
           return  (
             <Typography variant="inherit" color="textSecondary">
-              {type == 'File'?<InsertDriveFile />:<FolderOpen />}
+              {type == 'File'?<CropOriginal />:<FolderOpen />}
             </Typography>
           )
         }
@@ -260,24 +251,43 @@ const FilesList = props => {
         sort: true,
         customBodyRender: id => {
           return  (
-            <React.Fragment>
-              <IconButton onClick={(event) => handleShare(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="share" color="inherit" size="small">
-                <Icon color="primary">share</Icon>
-              </IconButton>
-              <IconButton onClick={(event) => handleDelete(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="delete" color="inherit" size="small">
-                <Icon color="primary">delete</Icon>
-              </IconButton>
-              <IconButton onClick={(event) => handleView(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="view" color="inherit" size="small">
-                <Icon color="primary">visibility</Icon>
-              </IconButton>
-              <IconButton onClick={(event) => handleDownload(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="download" color="inherit" size="small">
-                <Icon color="primary">cloud_download</Icon>
-              </IconButton>
-            </React.Fragment>
+            <IconButton onClick={(event) => handleShare(event, id)} className={classNames(classes.iconButton)} aria-label="share" color="inherit" size="small">
+              <Icon color="primary">share</Icon>
+            </IconButton>
           )
         }
       },
-    }
+    },
+    {
+      name: 'id',
+      label: ' ',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: id => {
+          return  (
+            <IconButton onClick={(event) => handleView(event, id)} className={classNames(classes.iconButton)} aria-label="view" color="inherit" size="small">
+              <Icon color="primary">visibility</Icon>
+            </IconButton>
+          )
+        }
+      },
+    },
+    {
+      name: 'id',
+      label: ' ',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: id => {
+          return  (
+            <IconButton onClick={(event) => handleDownload(event, id)} className={classNames(classes.iconButton)} aria-label="download" color="inherit" size="small">
+              <Icon color="primary">cloud_download</Icon>
+            </IconButton>
+          )
+        }
+      },
+    },
   ];
 
   const options = {
@@ -303,8 +313,14 @@ const FilesList = props => {
     customToolbar: () => <AddFile openFileDialog={openFileUploadDialog} openFolderDialog={openNewFolderDialog} />,
     rowsPerPage: 10,
     rowsPerPageOptions: [10,25,50,100],
-    onRowClick: (rowData, rowState) => {
-      handleRowClick(rowData[0])
+    onRowClick: (rowData, rowState) => handleRowClick(rowData[0]),
+    onRowsDelete: (rowsDeleted) => {
+      console.log(rowsDeleted, "rowsDeleted")
+      console.log(nestedFolders, "nestedFolders")
+      rowsDeleted.data.map(obj => {
+        console.log(nestedFolders[obj.index], "data.index")
+        handleDelete(nestedFolders[obj.index].id)
+      });
     },
     elevation: 0
   };
@@ -313,42 +329,7 @@ const FilesList = props => {
     <div className={classes.root}>
       <Grid container justify='space-between'>
         <Grid item xs={2} md={2}>
-          <div className={classes.sideMenu}>
-            <List 
-              component="nav" 
-              aria-label="secondary mailbox folders"
-              subheader={
-                <ListSubheader component="div" id="nested-list-subheader">
-                  <Typography variant="h6">Status</Typography>
-                </ListSubheader>
-              }
-            >
-              <ListItem button onClick={() => getAllFolders(params.folderId)}>
-                <ListItemIcon>
-                  <Description />
-                </ListItemIcon>
-                <ListItemText primary="All" />
-              </ListItem>
-              <ListItem button onClick={() => getFavoriteDocuments(user.uuId)}>
-                <ListItemIcon>
-                  <StarOutlined />
-                </ListItemIcon>
-                <ListItemText primary="Favorite" />
-              </ListItem>
-              <ListItem button onClick={() => getSharedDocuments(user.uuId)}>
-                <ListItemIcon>
-                  <Share />
-                </ListItemIcon>
-                <ListItemText primary="Shared" />
-              </ListItem>
-              <ListItem button onClick={() => getSharedDocuments(user.uuId)}>
-                <ListItemIcon>
-                  <Delete />
-                </ListItemIcon>
-                <ListItemText primary="Trash" />
-              </ListItem>
-            </List>
-          </div>
+          <FolderSideBar />
         </Grid>
         <Grid item xs={10} md={7}>
           {loading?
@@ -361,7 +342,7 @@ const FilesList = props => {
             <MUIDataTable
               className={classes.datatable}
               title={
-                <Typography variant="h6" color="textSecondary">
+                <div style={{display: "flex", alignItems: "center"}}>
                   {prevIds.length > 0 &&
                     <Tooltip title="Back">
                       <IconButton
@@ -371,8 +352,10 @@ const FilesList = props => {
                       </IconButton>
                     </Tooltip>
                   }
-                  {folder && Object.keys(folder).length > 0 && folder.type == 'Folder'? folder.name : "Documents"}
-                </Typography>
+                  <Typography variant="h6" color="textSecondary">
+                    {folder && Object.keys(folder).length > 0 && folder.type == 'Folder'? folder.name : "Document"}
+                  </Typography>
+                </div>
               }
               data={nestedFolders}
               columns={columns}
@@ -447,7 +430,7 @@ const FilesList = props => {
                     <Button size="small" onClick={event => handleFavorite(event, file.id)}  className={classNames(classes.button, {'favorite': false})} color='primary'>Favorite</Button>
                     <IconButton size="small" onClick={(event) => handleShare(event, file.id)} className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>share</Icon></IconButton>
                     <IconButton size="small" onClick={(event) => handleDownload(event, file.id)} className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>cloud_download</Icon></IconButton>
-                    <IconButton size="small" onClick={(event) => handleDelete(event, file.id)} className={classNames(classes.iconButton, {'delete': true}, classes.icon)} color='secondary'><Icon>delete</Icon></IconButton>
+                    <IconButton size="small" onClick={() => handleDelete(file.id)} className={classNames(classes.iconButton, {'delete': true}, classes.icon)} color='secondary'><Icon>delete</Icon></IconButton>
                   </TableCell>
                 </TableRow>
               </TableBody>

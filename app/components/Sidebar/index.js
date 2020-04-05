@@ -16,6 +16,7 @@ const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
+    backgroundColor: theme.palette.common.white
   },
   drawer: {
     width: drawerWidth,
@@ -51,7 +52,6 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
     width: `calc(100% - ${drawerWidth}px)`,
-    backgroundColor: theme.palette.common.white,
   },
   logo: {
     color: '#1F70C1',
@@ -80,7 +80,7 @@ function MiniDrawer(props) {
     <div className={classes.root}>
       <Drawer
         variant="permanent"
-        style={{ backgroundColor: 'red', border: '1px solid red' }}
+        style={{ backgroundColor: '#fff'}}
         className={clsx(classes.drawer, {
           [classes.drawerOpen]: open,
           [classes.drawerClose]: !open,

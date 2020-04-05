@@ -17,8 +17,8 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import classNames from 'classnames';
-import VisibilityOutlined from '@material-ui/icons/VisibilityOutlined'
-import VisibilityOffOutlined from '@material-ui/icons/VisibilityOffOutlined'
+import VisibilityOutlined from '@material-ui/icons/VisibilityOutlined';
+import VisibilityOffOutlined from '@material-ui/icons/VisibilityOffOutlined';
 import {
   darken,
   fade,
@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
     padding: '50px',
     [theme.breakpoints.down('md')]: {
       padding: '20px',
-    }
+    },
   },
   grid: {
     height: '100%',
@@ -59,19 +59,19 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.grey[50],
     borderRadius: theme.spacing(5),
     overflowX: 'auto',
-    "&::-webkit-scrollbar": {
-      width: "6px",
-      backgroundColor: "#F5F5F5"
+    '&::-webkit-scrollbar': {
+      width: '6px',
+      backgroundColor: '#F5F5F5',
     },
-    "&::-webkit-scrollbar-track": {
-      "-webkitBoxShadow": "inset 0 0 6px rgba(0,0,0,0.3)",
-      borderRadius: "10px",
+    '&::-webkit-scrollbar-track': {
+      '-webkitBoxShadow': 'inset 0 0 6px rgba(0,0,0,0.3)',
+      borderRadius: '10px',
     },
-    "&::-webkit-scrollbar-thumb": {
-      borderRadius: "10px",
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.5)",
+    '&::-webkit-scrollbar-thumb': {
+      borderRadius: '10px',
+      '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.5)',
       backgroundColor: theme.palette.grey[200],
-    }
+    },
   },
   image: {
     [theme.breakpoints.up('md')]: {
@@ -96,7 +96,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#FFFFFF',
     [theme.breakpoints.up('md')]: {
       margin: theme.spacing(4),
-    }
+    },
   },
   avatar: {
     margin: theme.spacing(1),
@@ -121,15 +121,15 @@ const useStyles = makeStyles(theme => ({
     height: 40,
     padding: 0,
     '&:hover': {
-      backgroundColor: theme.palette.grey[50]
-    }
-  }
+      backgroundColor: theme.palette.grey[50],
+    },
+  },
 }));
 
 const LoginForm = props => {
   const { loginAction, loading } = props;
   const classes = useStyles();
-  const [visibility, setVisibility] = React.useState(false)
+  const [visibility, setVisibility] = React.useState(false);
 
   const [values, setValues] = React.useState({
     username: '',
@@ -137,8 +137,8 @@ const LoginForm = props => {
   });
 
   const handleVisibility = () => {
-    setVisibility(!visibility)
-  }
+    setVisibility(!visibility);
+  };
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
@@ -154,11 +154,7 @@ const LoginForm = props => {
       <div className={classes.image} />
 
       <div className={classes.root}>
-        <Grid
-          container
-          component={Paper}
-          className={classes.grid}
-        >
+        <Grid container component={Paper} className={classes.grid}>
           <Grid item xs={false} sm={false} md={7} />
           <Grid item xs={12} sm={10} md={5} style={{ display: 'flex' }}>
             <div className={classes.paper}>
@@ -199,17 +195,27 @@ const LoginForm = props => {
                   fullWidth
                   name="password"
                   label="Password"
-                  type={visibility?"text":"password"}
+                  type={visibility ? 'text' : 'password'}
                   id="password"
                   InputProps={{
                     className: classes.input,
                     endAdornment: (
-                      <Tooltip title={visibility?"hide password":"show password"} arrow>
-                        <IconButton className={classes.iconButton} onClick={handleVisibility}>
-                          {visibility?<VisibilityOffOutlined />:<VisibilityOutlined />}
+                      <Tooltip
+                        title={visibility ? 'hide password' : 'show password'}
+                        arrow
+                      >
+                        <IconButton
+                          className={classes.iconButton}
+                          onClick={handleVisibility}
+                        >
+                          {visibility ? (
+                            <VisibilityOffOutlined />
+                          ) : (
+                            <VisibilityOutlined />
+                          )}
                         </IconButton>
                       </Tooltip>
-                    )
+                    ),
                   }}
                   InputLabelProps={{
                     shrink: true,
@@ -222,9 +228,9 @@ const LoginForm = props => {
                   label="Remember me"
                 /> */}
                 <Grid container>
-                  <Grid item xs={true}>
+                  <Grid item xs>
                     <Link href="/forgot-password" variant="body2">
-                    Forgot password?
+                      Forgot password?
                     </Link>
                   </Grid>
                 </Grid>
@@ -238,7 +244,7 @@ const LoginForm = props => {
                     disabled={!canBeSubmitted()}
                     onClick={() => loginAction(values)}
                   >
-                  Sign In
+                    Sign In
                   </Button>
                 ) : (
                   <LoadingIndicator />
