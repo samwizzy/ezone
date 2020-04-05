@@ -62,7 +62,6 @@ const TestConnectionDialog = props => {
     closeAddItemDialogAction,
     saveAddItemContentsAction
   } = props;
-  console.log('testConnectionDialog -> ', testConnectionDialog);
 
 
   const classes = useStyles();
@@ -92,7 +91,7 @@ const TestConnectionDialog = props => {
     <div>
       <Dialog
         {...testConnectionDialog.props}
-        // onClose={closeAddItemDialogAction}
+        onClose={closeAddItemDialogAction}
         keepMounted
         TransitionComponent={Transition}
         maxWidth={"xs"}
@@ -210,8 +209,8 @@ const TestConnectionDialog = props => {
 };
 
 TestConnectionDialog.propTypes = {
-  loading: PropTypes.bool,
-  testConnectionDialog: PropTypes.object,
+//   loading: PropTypes.bool,
+//   AddItemDialog: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -221,9 +220,9 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    // closeAddItemDialogAction: () => dispatch(Actions.closeAddItemDialog()),
-    // openAddItemDialogAction: () => dispatch(Actions.openAddItemDialog()),
-    // saveAddItemContentsAction: evt => dispatch(Actions.saveAddItemContents(evt)),
+    closeAddItemDialogAction: () => dispatch(Actions.closeAddItemDialog()),
+    openAddItemDialogAction: () => dispatch(Actions.openAddItemDialog()),
+    saveAddItemContentsAction: evt => dispatch(Actions.saveAddItemContents(evt)),
     dispatch,
   };
 }

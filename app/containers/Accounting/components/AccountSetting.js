@@ -28,8 +28,6 @@ import * as Selectors from '../selectors';
 // import LoadingIndicator from '../../../components/LoadingIndicator';
 import Logo from '../../../images/logo.svg';
 
-
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -54,7 +52,97 @@ const AccountSetting = props => {
   const classes = useStyles();
   const { } = props;
 
-  const smsProviderData = [{ name: 'Nigeria'}];
+  const accountingMethodData = [
+    {
+      value: 'Accural',
+      label: 'Accural',
+    }
+  ];
+
+  const taxTypeData = [
+    {
+      value: 'Limited liability',
+      label: 'Limited liability',
+    }
+  ];
+
+  const currencyData = [
+    {
+      value: 'NGN',
+      label: 'NGN',
+    },
+    {
+      value: 'EUR',
+      label: 'EUR',
+    },
+    {
+      value: 'GBP',
+      label: 'GBP',
+    }
+  ];
+
+  const { 
+    currentUser,
+    accountingSetupData,
+    createAccountingSetupAction
+  } = props;
+
+  const [values, setValues] = React.useState({
+    accountMethod: "",
+    companyStartDate: "",
+    currency: "",
+    orgId: currentUser && currentUser.organisation.orgId,
+    startDay: 0,
+    startMonth: 0,
+    taxDay: 0,
+    taxMonth: 0,
+    taxType: ""
+  });
+
+  console.log('accountingSetupData -> ', accountingSetupData);
+
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
+
+  const handleAccountingMethodSelectChange = (name, value) => {
+    setValues({ ...values, accountMethod: value.value });
+  };
+
+  const handleTaxTypeSelectChange = (name, value) => {
+    setValues({ ...values, taxType: value.value });
+  };
+
+  const handleCurrencySelectChange = (name, value) => {
+    setValues({ ...values, currency: value.value });
+  };
+
+  const handleFinancialYearDateChange = date => {
+    console.log('date -> ', date);
+    let month = date.getMonth() + 1;
+    if (month < 10) {
+      month = `0${month}`;
+    }
+    setValues({ 
+      ...values, 
+      companyStartDate: `${date.getFullYear()}-${month}-${date.getDate()}`,
+      startDay: `${Number(date.getDate())}`,
+      startMonth: `${Number(month)}`
+    });
+  };
+
+  const handleTaxYearDateChange = date => {
+    let month = date.getMonth() + 1;
+    if (month < 10) {
+      month = `0${month}`;
+    }
+    setValues({ 
+      ...values,
+      taxDay: `${Number(date.getDate())}`,
+      taxMonth: `${Number(month)}`
+    });
+  };
+
+  console.log('values -> ', values);
+
 
 //   if (loading) {
 //     return <LoadingIndicator />;
@@ -63,7 +151,6 @@ const AccountSetting = props => {
   return (
     <React.Fragment>
       <div className={classes.root}>
-
         <Grid container justify="center" alignItems="center">
           <Grid item xs={6}>
               <Paper square elevation={0}  className={classes.paper}>
@@ -85,43 +172,21 @@ const AccountSetting = props => {
                         <Typography variant="subtitle1" color="textSecondary">Financial year starts</Typography>
                       </TableCell>
                       <TableCell align="left">
-                        <Autocomplete
-                          id="combo-box-demo"
-                          options={smsProviderData}
-                          getOptionLabel={option => option.name}
-                          onChange={(evt, value) => handleSelectChange(evt, value)}
-                          renderInput={params => (
-                            <TextField
-                              {...params}
-                              label="Select Month"
-                              className={classes.textField}
-                              variant="outlined"
-                              placeholder="Search"
-                              fullWidth
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                          <Grid container justify="space-around">
+                            <KeyboardDatePicker
+                              margin="normal"
+                              id="date-picker-dialog"
+                              label="Select Date"
+                              format="MM/dd/yyyy"
+                              value={selectedDate}
+                              onChange={handleFinancialYearDateChange}
+                              KeyboardButtonProps={{
+                                'aria-label': 'change date',
+                              }}
                             />
-                          )}
-                        />
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell align="right"></TableCell>
-                      <TableCell align="left">
-                        <Autocomplete
-                          id="combo-box-demo"
-                          options={smsProviderData}
-                          getOptionLabel={option => option.name}
-                          onChange={(evt, value) => handleSelectChange(evt, value)}
-                          renderInput={params => (
-                            <TextField
-                              {...params}
-                              label="Select Day"
-                              className={classes.textField}
-                              variant="outlined"
-                              placeholder="Search"
-                              fullWidth
-                            />
-                          )}
-                        />
+                          </Grid>
+                        </MuiPickersUtilsProvider>
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -131,13 +196,13 @@ const AccountSetting = props => {
                       <TableCell align="left">
                         <Autocomplete
                           id="combo-box-demo"
-                          options={smsProviderData}
-                          getOptionLabel={option => option.name}
-                          onChange={(evt, value) => handleSelectChange(evt, value)}
+                          options={accountingMethodData}
+                          getOptionLabel={option => option.label}
+                          onChange={(evt, value) => handleAccountingMethodSelectChange(evt, value)}
                           renderInput={params => (
                             <TextField
                               {...params}
-                              label="Select Day"
+                              label="Select Method"
                               className={classes.textField}
                               variant="outlined"
                               placeholder="Search"
@@ -154,13 +219,13 @@ const AccountSetting = props => {
                       <TableCell align="center">
                         <Autocomplete
                           id="combo-box-demo"
-                          options={smsProviderData}
-                          getOptionLabel={option => option.name}
-                          onChange={(evt, value) => handleSelectChange(evt, value)}
+                          options={taxTypeData}
+                          getOptionLabel={option => option.label}
+                          onChange={(evt, value) => handleTaxTypeSelectChange(evt, value)}
                           renderInput={params => (
                             <TextField
                               {...params}
-                              label="Select Day"
+                              label="Select Tax"
                               className={classes.textField}
                               variant="outlined"
                               placeholder="Search"
@@ -175,44 +240,21 @@ const AccountSetting = props => {
                         <Typography variant="subtitle1" color="textSecondary">Tax year starts</Typography>
                       </TableCell>
                       <TableCell align="left">
-                        <Autocomplete
-                          id="combo-box-demo"
-                          options={smsProviderData}
-                          getOptionLabel={option => option.name}
-                          onChange={(evt, value) => handleSelectChange(evt, value)}
-                          renderInput={params => (
-                            <TextField
-                              {...params}
-                              label="Select Day"
-                              className={classes.textField}
-                              variant="outlined"
-                              placeholder="Search"
-                              fullWidth
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                          <Grid container justify="space-around">
+                            <KeyboardDatePicker
+                              margin="normal"
+                              id="date-picker-dialog"
+                              label="Select Date"
+                              format="MM/dd/yyyy"
+                              value={selectedDate}
+                              onChange={handleTaxYearDateChange}
+                              KeyboardButtonProps={{
+                                'aria-label': 'change date',
+                              }}
                             />
-                          )}
-                        />
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell align="right">
-                      </TableCell>
-                      <TableCell align="left">
-                        <Autocomplete
-                          id="combo-box-demo"
-                          options={smsProviderData}
-                          getOptionLabel={option => option.name}
-                          onChange={(evt, value) => handleSelectChange(evt, value)}
-                          renderInput={params => (
-                            <TextField
-                              {...params}
-                              label="Select Day"
-                              className={classes.textField}
-                              variant="outlined"
-                              placeholder="Search"
-                              fullWidth
-                            />
-                          )}
-                        />
+                          </Grid>
+                        </MuiPickersUtilsProvider>
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -222,13 +264,13 @@ const AccountSetting = props => {
                       <TableCell align="left">
                         <Autocomplete
                           id="combo-box-demo"
-                          options={smsProviderData}
-                          getOptionLabel={option => option.name}
-                          onChange={(evt, value) => handleSelectChange(evt, value)}
+                          options={currencyData}
+                          getOptionLabel={option => option.value}
+                          onChange={(evt, value) => handleCurrencySelectChange(evt, value)}
                           renderInput={params => (
                             <TextField
                               {...params}
-                              label="Select Day"
+                              label="Select Currency"
                               className={classes.textField}
                               variant="outlined"
                               placeholder="Search"
@@ -257,7 +299,14 @@ const AccountSetting = props => {
                     <TableRow>
                       <TableCell></TableCell>
                       <TableCell align="right">
-                        <Button variant="contained" color="primary" onClick={() => {}} style={{align: "right"}}>Save and Continue</Button>
+                        <Button 
+                          variant="contained" 
+                          color="primary" 
+                          onClick={() => createAccountingSetupAction(values) } 
+                          style={{align: "right"}}
+                        >
+                          Save Continue
+                        </Button>
                       </TableCell>
                     </TableRow>
                 </TableBody>
