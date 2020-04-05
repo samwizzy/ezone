@@ -128,14 +128,12 @@ const FilesList = props => {
     downloadFile(id)
   }
 
-  const handleDelete = (event, id) => {
-    event.stopPropagation()
+  const handleDelete = (id) => {
     const selectedDoc = folders && folders.find(folder => folder.id === id)
     const file = []
-    const payload = {id, type: selectedDoc.type}
+    const payload = Object.assign({}, {id, type: selectedDoc.type})
     file.push(payload)
-    const model = {parentId: 1, file}; 
-    console.log(model, "model")
+    const model = Object.assign({}, {folderId: 0, data: {parentId: 1, file}})
     deleteDocument(model)
   }
 
@@ -243,24 +241,43 @@ const FilesList = props => {
         sort: true,
         customBodyRender: id => {
           return  (
-            <React.Fragment>
-              <IconButton onClick={(event) => handleShare(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="share" color="inherit" size="small">
-                <Icon color="primary">share</Icon>
-              </IconButton>
-              <IconButton onClick={(event) => handleDelete(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="delete" color="inherit" size="small">
-                <Icon color="primary">delete</Icon>
-              </IconButton>
-              <IconButton onClick={(event) => handleView(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="view" color="inherit" size="small">
-                <Icon color="primary">visibility</Icon>
-              </IconButton>
-              <IconButton onClick={(event) => handleDownload(event, id)} className={classNames(classes.iconButton, classes.icon)} aria-label="download" color="inherit" size="small">
-                <Icon color="primary">cloud_download</Icon>
-              </IconButton>
-            </React.Fragment>
+            <IconButton onClick={(event) => handleShare(event, id)} className={classNames(classes.iconButton)} aria-label="share" color="inherit" size="small">
+              <Icon color="primary">share</Icon>
+            </IconButton>
           )
         }
       },
-    }
+    },
+    {
+      name: 'id',
+      label: ' ',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: id => {
+          return  (
+            <IconButton onClick={(event) => handleView(event, id)} className={classNames(classes.iconButton)} aria-label="view" color="inherit" size="small">
+              <Icon color="primary">visibility</Icon>
+            </IconButton>
+          )
+        }
+      },
+    },
+    {
+      name: 'id',
+      label: ' ',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: id => {
+          return  (
+            <IconButton onClick={(event) => handleDownload(event, id)} className={classNames(classes.iconButton)} aria-label="download" color="inherit" size="small">
+              <Icon color="primary">cloud_download</Icon>
+            </IconButton>
+          )
+        }
+      },
+    },
   ];
 
   const options = {

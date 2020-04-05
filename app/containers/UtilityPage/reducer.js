@@ -174,11 +174,23 @@ const utilityPageReducer = (state = initialState, action) =>
           loading: false
         };
       }
+      case Constants.GET_FOLDERS_AND_DOC: {
+        return {
+          ...state,
+          loading: false
+        };
+      }
       case Constants.GET_FOLDERS_AND_DOC_SUCCESS: {
         return {
           ...state,
           folders: action.payload,
           loading: false
+        };
+      }
+      case Constants.GET_NESTED_FOLDERS_AND_DOC: {
+        return {
+          ...state,
+          loading: true
         };
       }
       case Constants.GET_NESTED_FOLDERS_AND_DOC_SUCCESS: {
@@ -257,10 +269,17 @@ const utilityPageReducer = (state = initialState, action) =>
           error: { success: '', message: action.payload }
         };
       }
+      case Constants.DELETE_DOCUMENT: {
+        return {
+          ...state,
+          loading: true
+        };
+      }
       case Constants.DELETE_DOCUMENT_SUCCESS: {
         return {
           ...state,
-          error: { success: '', message: action.payload }
+          error: { success: '', message: action.payload },
+          loading: false
         };
       }
       case Constants.GET_SHARED_DOCS_BY_UUID_SUCCESS: {
