@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     padding: '50px',
     [theme.breakpoints.down('md')]: {
       padding: '20px',
-    }
+    },
   },
   grid: {
     height: '100%',
@@ -51,22 +51,22 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.grey[50],
     borderRadius: theme.spacing(5),
     overflowX: 'auto',
-    "&::-webkit-scrollbar": {
-      width: "6px",
-      backgroundColor: "#F5F5F5"
+    '&::-webkit-scrollbar': {
+      width: '6px',
+      backgroundColor: '#F5F5F5',
     },
-    "&::-webkit-scrollbar-track": {
-      "-webkitBoxShadow": "inset 0 0 6px rgba(0,0,0,0.3)",
-      borderRadius: "10px",
+    '&::-webkit-scrollbar-track': {
+      '-webkitBoxShadow': 'inset 0 0 6px rgba(0,0,0,0.3)',
+      borderRadius: '10px',
     },
-    "&::-webkit-scrollbar-thumb": {
-      borderRadius: "10px",
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.5)",
+    '&::-webkit-scrollbar-thumb': {
+      borderRadius: '10px',
+      '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.5)',
       backgroundColor: theme.palette.grey[200],
     },
     [theme.breakpoints.down('md')]: {
       // padding: theme.spacing(1, 0),
-    }
+    },
   },
   image: {
     [theme.breakpoints.up('md')]: {
@@ -82,7 +82,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   gridItem: {
-    display: 'flex'
+    display: 'flex',
   },
   paper: {
     width: '100%',
@@ -94,7 +94,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#FFFFFF',
     [theme.breakpoints.up('md')]: {
       margin: theme.spacing(4),
-    }
+    },
   },
   avatar: {
     margin: theme.spacing(1),
@@ -155,7 +155,7 @@ const ForgotPasswordForm = ({ loginAction }) => {
   };
 
   return (
-      <React.Fragment>
+    <React.Fragment>
       <div className={classes.image} />
 
       <div className={classes.root}>
@@ -199,7 +199,7 @@ const ForgotPasswordForm = ({ loginAction }) => {
           </Grid>
         </Grid>
       </div>
-      </React.Fragment>
+    </React.Fragment>
   );
 };
 
