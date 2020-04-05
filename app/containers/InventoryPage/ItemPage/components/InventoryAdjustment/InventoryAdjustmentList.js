@@ -23,7 +23,7 @@ import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import LoadingIndicator from '../../../../../components/LoadingIndicator';
 import ModuleLayout from '../../../components/ModuleLayout';
-import TransferOrderDialog from './TransferOrderDialog';
+import InventoryAdjustmentDialog from './InventoryAdjustmentDialog';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -48,7 +48,7 @@ const InventoryAdjustmentList = props => {
   const {
     loading,
     getAllEmployees,
-    openNewTransferOrderDialogAction,
+    openNewInventoryAdjustDialogAction,
     getAllWarehousesAction,
     getAllItemsAction,
     getAllTransferOrderAction,
@@ -195,7 +195,7 @@ const InventoryAdjustmentList = props => {
         size="small"
         className={classes.button}
         startIcon={<AddIcon />}
-        onClick={() => openNewTransferOrderDialogAction()}
+        onClick={() => openNewInventoryAdjustDialogAction()}
       >
         New
       </Button>
@@ -216,7 +216,7 @@ const InventoryAdjustmentList = props => {
           options={options}
         />
       </ModuleLayout>
-      <TransferOrderDialog />
+      <InventoryAdjustmentDialog />
     </React.Fragment>
   );
 };
@@ -224,7 +224,7 @@ const InventoryAdjustmentList = props => {
 InventoryAdjustmentList.propTypes = {
   loading: PropTypes.bool,
   getAllEmployees: PropTypes.array,
-  openNewTransferOrderDialogAction: PropTypes.func,
+  openNewInventoryAdjustDialogAction: PropTypes.func,
   getAllWarehousesAction: PropTypes.func,
   getAllItemsAction: PropTypes.func,
   getAllTransferOrderAction: PropTypes.func,
@@ -242,8 +242,8 @@ function mapDispatchToProps(dispatch) {
   return {
     getAllTransferOrderAction: () =>
       dispatch(Actions.getAllTransferOrder()),
-    openNewTransferOrderDialogAction: () =>
-      dispatch(Actions.openNewTransferOrderDialog()),
+    openNewInventoryAdjustDialogAction: () =>
+      dispatch(Actions.openNewInventoryAdjustDialog()),
     getAllWarehousesAction: () => dispatch(Actions.getAllWarehouse()),
     getAllItemsAction: () => dispatch(Actions.getAllItems()),
   };

@@ -127,7 +127,7 @@ export function* createNewTransferOrder() {
   // createNewTransferOrderDetails.orgId = currentUser.organisation.orgId;
 
   console.log(createNewTransferOrderDetails, 'createNewTransferOrderDetails');
-  const requestURL = `${Endpoints.CreateNewTransferOrderApi}`;
+  const requestURL = `${Endpoints.CreateNewTransferOrderPerWarehouseApi}`;
 
   try {
     const createNewTransferOrderResponse = yield call(request, requestURL, {
@@ -166,13 +166,74 @@ export function* getAllTransferOrder() {
     yield put(Actions.getAllTransferOrderSuccess(getAllTransferOrderResponse));
   } catch (err) {
     yield put(Actions.getAllTransferOrderError(err));
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: `${err}`,
-        status: 'error',
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: `${err}`,
+    //     status: 'error',
+    //   }),
+    // );
+  }
+}
+
+export function* createNewInventoryAdjust() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const createNewInventoryAdjustDetails = yield select(
+    Selectors.makeSelectInventoryAdjustmentDetails(),
+  );
+
+  console.log(
+    createNewInventoryAdjustDetails,
+    'createNewInventoryAdjustDetails',
+  );
+  const requestURL = `${Endpoints.CreateNewInventoryAdjustApi}`;
+
+  try {
+    const createNewTransferOrderResponse = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(createNewInventoryAdjustDetails),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
       }),
+    });
+
+    yield put(Actions.getAllInventoryAdjustments());
+    yield put(Actions.closeNewInventoryAdjustDialog());
+  } catch (err) {
+    console.log(err);
+    yield put(Actions.createNewInventoryAdjustmentError(err));
+  }
+}
+
+export function* getAllInventoryAdjusts() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+
+  const requestURL = `${Endpoints.GetAllInventoryAdjustsApi}`;
+
+  try {
+    const getAllInventoryAdjustResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(getAllInventoryAdjustResponse, 'getAllInventoryAdjustResponse');
+
+    yield put(
+      Actions.getAllInventoryAdjustmentsSuccess(getAllInventoryAdjustResponse),
     );
+  } catch (err) {
+    yield put(Actions.getAllInventoryAdjustmentsError(err));
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: `${err}`,
+    //     status: 'error',
+    //   }),
+    // );
   }
 }
 
@@ -183,4 +244,12 @@ export default function* itemPageSaga() {
   yield takeLatest(Constants.CREATE_NEW_ITEM, createNewItem);
   yield takeLatest(Constants.GET_ALL_WAREHOUSE, getAllWarehouses);
   yield takeLatest(Constants.CREATE_NEW_TRANSFER_ORDER, createNewTransferOrder);
+  yield takeLatest(
+    Constants.CREATE_NEW_INVENTORY_ADJUSTMENT,
+    createNewInventoryAdjust,
+  );
+  yield takeLatest(
+    Constants.GET_ALL_INVENTORY_ADJUSTMENT,
+    getAllInventoryAdjusts,
+  );
 }

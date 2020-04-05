@@ -41,7 +41,6 @@ import DateFnsUtils from '@date-io/date-fns';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import LoadingIndicator from '../../../../../components/LoadingIndicator';
-import TableTransfer from './TableTransfer';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -71,17 +70,18 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const TransferOrderDialog = props => {
+const InventoryAdjustmentDialog = props => {
   const {
     loading,
-    transferOrderDialog,
+    inventoryAdjustDialog,
     getAllItems,
     getAllWarehouses,
-    closeNewTransferOrderDialogAction,
+    closeNewInventoryAdjustDialogAction,
     closeEditEmployeeDialogAction,
     dispatchCreateNewTransferOrderAction,
   } = props;
 
+  console.log(inventoryAdjustDialog, 'inventoryAdjustDialog');
   const classes = useStyles();
   const [selectedDate, handleDateChange] = React.useState(new Date());
 
@@ -131,6 +131,7 @@ const TransferOrderDialog = props => {
   };
 
   const handleItemChange = (e, value, idx) => {
+    console.log(value, 'value');
     const newRoww = rows;
     newRoww[idx] = {
       itemId: value.id,
@@ -140,6 +141,7 @@ const TransferOrderDialog = props => {
   };
 
   const addRow = () => {
+    console.log(rows, 'rows values');
     const item = {
       itemId: '',
       itemSku: '',
@@ -168,8 +170,8 @@ const TransferOrderDialog = props => {
   return (
     <div>
       <Dialog
-        {...transferOrderDialog.props}
-        onClose={closeNewTransferOrderDialogAction}
+        {...inventoryAdjustDialog.props}
+        onClose={closeNewInventoryAdjustDialogAction}
         keepMounted
         fullScreen
         TransitionComponent={Transition}
@@ -180,20 +182,20 @@ const TransferOrderDialog = props => {
             <IconButton
               edge="start"
               color="inherit"
-              onClick={closeNewTransferOrderDialogAction}
+              onClick={closeNewInventoryAdjustDialogAction}
               aria-label="close"
             >
               <Close />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              {transferOrderDialog.type === 'new'
+              {inventoryAdjustDialog.type === 'new'
                 ? 'New Transfer Order'
                 : 'Edit Transfer Order'}
             </Typography>
             <Button
               autoFocus
               color="inherit"
-              onClick={closeNewTransferOrderDialogAction}
+              onClick={closeNewInventoryAdjustDialogAction}
             >
               save
             </Button>
@@ -203,7 +205,7 @@ const TransferOrderDialog = props => {
         <Divider />
 
         <DialogContent>
-          {transferOrderDialog.type === 'new' ? (
+          {inventoryAdjustDialog.type === 'new' ? (
             <div>
               <Grid container spacing={0}>
                 <Grid item xs={12} md={6} lg={6}>
@@ -242,14 +244,6 @@ const TransferOrderDialog = props => {
                       multiline
                       rows={2}
                     />
-                  </div>
-                </Grid>
-                <Grid item xs={12} md={6} lg={6} />
-              </Grid>
-              <Divider />
-              <Grid container spacing={0}>
-                <Grid item xs={12} md={6} lg={6}>
-                  <div className={classes.container}>
                     <Autocomplete
                       id="combo-itemCategory"
                       options={getAllWarehouses}
@@ -268,26 +262,7 @@ const TransferOrderDialog = props => {
                     />
                   </div>
                 </Grid>
-                <Grid item xs={12} md={6} lg={6}>
-                  <div className={classes.container}>
-                    <Autocomplete
-                      id="combo-itemCategory"
-                      options={getAllWarehouses}
-                      getOptionLabel={option => option.name}
-                      onChange={(evt, ve) => handleDestinationChange(evt, ve)}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          label="Destination Warehouse"
-                          variant="outlined"
-                          placeholder="Destination Warehouse"
-                          fullWidth
-                          className={classes.textField}
-                        />
-                      )}
-                    />
-                  </div>
-                </Grid>
+                <Grid item xs={12} md={6} lg={6} />
               </Grid>
               <Divider />
               <Grid container spacing={0}>
@@ -308,10 +283,13 @@ const TransferOrderDialog = props => {
                         <TableRow>
                           <TableCell>Item Details</TableCell>
                           <TableCell align="center">
-                            Current Availablilty
+                            Quantity Available
                           </TableCell>
                           <TableCell align="center">
-                            Transfer Quantity
+                            New Quantity on hand
+                          </TableCell>
+                          <TableCell align="center">
+                            Quantity Adjusted
                           </TableCell>
                           <TableCell align="center" />
                         </TableRow>
@@ -330,10 +308,10 @@ const TransferOrderDialog = props => {
                                 renderInput={params => (
                                   <TextField
                                     {...params}
-                                    label="Source Warehouse"
+                                    label="Items"
                                     variant="outlined"
                                     name="itemId"
-                                    placeholder="Source Warehouse"
+                                    placeholder="Items"
                                     fullWidth
                                   />
                                 )}
@@ -343,17 +321,19 @@ const TransferOrderDialog = props => {
                               <TextField
                                 disabled
                                 id="filled-disabled"
-                                label="Source Stock"
-                                defaultValue="0.00 Units"
+                                label=""
+                                // defaultValue="0.00"
                                 variant="filled"
+                                placeholder="0.00"
                               />
-                              &nbsp; | &nbsp;
+                            </TableCell>
+                            <TableCell>
                               <TextField
-                                disabled
                                 id="filled-disabled"
-                                label="Destination Stock"
-                                defaultValue="0.00 Units"
+                                label=""
+                                defaultValue="0.00"
                                 variant="filled"
+                                placeholder="0.00"
                               />
                             </TableCell>
                             <TableCell align="center">
@@ -414,7 +394,7 @@ const TransferOrderDialog = props => {
             </Button>
           )}
           <Button
-            onClick={() => closeNewTransferOrderDialogAction()}
+            onClick={() => closeNewInventoryAdjustDialogAction()}
             color="primary"
             variant="contained"
           >
@@ -426,18 +406,18 @@ const TransferOrderDialog = props => {
   );
 };
 
-TransferOrderDialog.propTypes = {
+InventoryAdjustmentDialog.propTypes = {
   loading: PropTypes.bool,
-  transferOrderDialog: PropTypes.object,
+  inventoryAdjustDialog: PropTypes.object,
   getAllWarehouses: PropTypes.array,
   getAllItems: PropTypes.array,
   dispatchCreateNewTransferOrderAction: PropTypes.func,
-  closeNewTransferOrderDialogAction: PropTypes.func,
+  closeNewInventoryAdjustDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  transferOrderDialog: Selectors.makeSelectTransferOrderDialog(),
+  inventoryAdjustDialog: Selectors.makeSelectInventoryAdjustDialog(),
   getAllWarehouses: Selectors.makeSelectGetAllWarehouses(),
   getAllItems: Selectors.makeSelectGetAllItems(),
 });
@@ -446,8 +426,8 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatchCreateNewTransferOrderAction: evt =>
       dispatch(Actions.createNewTransferOrder(evt)),
-    closeNewTransferOrderDialogAction: () =>
-      dispatch(Actions.closeNewTransferOrderDialog()),
+    closeNewInventoryAdjustDialogAction: () =>
+      dispatch(Actions.closeNewInventoryAdjustDialog()),
   };
 }
 
@@ -459,4 +439,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(TransferOrderDialog);
+)(InventoryAdjustmentDialog);

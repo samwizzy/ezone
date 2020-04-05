@@ -12,8 +12,13 @@ import {
   Box,
   Grid,
   Link,
-  Paper
+  Paper,
+  Tooltip,
+  IconButton,
 } from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
+import VisibilityOutlined from '@material-ui/icons/VisibilityOutlined';
+import VisibilityOffOutlined from '@material-ui/icons/VisibilityOffOutlined';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -22,6 +27,7 @@ import * as Selectors from '../../selectors';
 import logo from '../../../../images/logo.svg';
 import banner from '../../../../images/banner.svg';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
+import CountriesAndStates from '../../../../utils/countries_states.json';
 
 function Copyright() {
   return (
@@ -44,7 +50,7 @@ const useStyles = makeStyles(theme => ({
     padding: '50px',
     [theme.breakpoints.down('md')]: {
       padding: '20px',
-    }
+    },
   },
   grid: {
     height: '100%',
@@ -54,17 +60,17 @@ const useStyles = makeStyles(theme => ({
     borderRadius: theme.spacing(5),
     padding: theme.spacing(3, 0),
     overflowX: 'auto',
-    "&::-webkit-scrollbar": {
-      width: "6px",
-      backgroundColor: "#F5F5F5"
+    '&::-webkit-scrollbar': {
+      width: '6px',
+      backgroundColor: '#F5F5F5',
     },
-    "&::-webkit-scrollbar-track": {
-      "-webkitBoxShadow": "inset 0 0 6px rgba(0,0,0,0.3)",
-      borderRadius: "10px",
+    '&::-webkit-scrollbar-track': {
+      '-webkitBoxShadow': 'inset 0 0 6px rgba(0,0,0,0.3)',
+      borderRadius: '10px',
     },
-    "&::-webkit-scrollbar-thumb": {
-      borderRadius: "10px",
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.5)",
+    '&::-webkit-scrollbar-thumb': {
+      borderRadius: '10px',
+      '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.5)',
       backgroundColor: theme.palette.grey[200],
     },
   },
@@ -79,8 +85,8 @@ const useStyles = makeStyles(theme => ({
       backgroundPosition: 'center right',
       position: 'absolute',
       top: 0,
-      bottom: 0
-    }
+      bottom: 0,
+    },
   },
   paper: {
     width: '100%',
@@ -120,6 +126,7 @@ const RegistrationForm = props => {
   const { loading, signupResData, signupAction } = props;
   const classes = useStyles();
 
+  const [visibility, setVisibility] = React.useState(false);
   const [values, setValues] = React.useState({
     companyName: '',
     country: '',
@@ -142,7 +149,13 @@ const RegistrationForm = props => {
     );
   };
 
-  console.log(signupResData, 'signupResData');
+  const handleSourceChange = (evt, value) => {
+    setValues({ ...values, country: value.name });
+  };
+
+  const handleVisibility = () => {
+    setVisibility(!visibility);
+  };
 
   if (signupResData.success === true) {
     return <Redirect to="/login" />;
@@ -150,12 +163,12 @@ const RegistrationForm = props => {
 
   return (
     <div>
-      <div className={classes.image}></div>
+      <div className={classes.image} />
 
       <div className={classes.root}>
         <Grid container component={Paper} className={classes.grid}>
           <Grid item xs={false} sm={false} md={7} />
-          <Grid item xs={12} sm={10} md={5} style={{display: 'flex'}}>
+          <Grid item xs={12} sm={10} md={5} style={{ display: 'flex' }}>
             <div className={classes.paper}>
               <Box className={classes.avatar}>
                 <img src={logo} alt="" />
@@ -209,31 +222,48 @@ const RegistrationForm = props => {
                 fullWidth
                 name="password"
                 label="Password"
-                type="password"
+                type={visibility ? 'text' : 'password'}
                 id="password"
                 InputProps={{
                   className: classes.input,
+                  endAdornment: (
+                    <Tooltip
+                      title={visibility ? 'hide password' : 'show password'}
+                      arrow
+                    >
+                      <IconButton
+                        className={classes.iconButton}
+                        onClick={handleVisibility}
+                      >
+                        {visibility ? (
+                          <VisibilityOffOutlined />
+                        ) : (
+                          <VisibilityOutlined />
+                        )}
+                      </IconButton>
+                    </Tooltip>
+                  ),
                 }}
                 InputLabelProps={{
                   shrink: true,
                 }}
                 onChange={handleChange('password')}
               />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                name="country"
-                label="Country"
-                id="country"
-                InputProps={{
-                  className: classes.input,
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onChange={handleChange('country')}
+              <Autocomplete
+                id="combo-itemCategory"
+                options={CountriesAndStates}
+                getOptionLabel={option => option.name}
+                onChange={(evt, ve) => handleSourceChange(evt, ve)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Select Country"
+                    variant="outlined"
+                    placeholder="Select Country"
+                    fullWidth
+                    className={classes.textField}
+                  />
+                )}
               />
               <FormControlLabel
                 className={classes.label}

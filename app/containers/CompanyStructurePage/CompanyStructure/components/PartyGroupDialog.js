@@ -106,40 +106,6 @@ const PartyGroupDialog = props => {
                 multiline
                 rows="3"
               />
-              {/* <TextField
-                id="select-head"
-                select
-                fullWidth
-                className={classes.textField}
-                variant="outlined"
-                size="small"
-                label="Select Head"
-                value={currency}
-                onChange={handleSelectChange}
-              >
-                {heads.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                id="standard-select-state"
-                select
-                fullWidth
-                className={classes.textField}
-                variant="outlined"
-                size="small"
-                label="Select Assistant"
-                value={currency}
-                onChange={handleSelectChange}
-              >
-                {heads.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField> */}
             </div>
           ) : null}
         </DialogContent>
