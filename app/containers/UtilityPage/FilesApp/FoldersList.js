@@ -38,6 +38,7 @@ import CloudDownload from '@material-ui/icons/CloudDownload';
 import Visibility from '@material-ui/icons/Visibility';  
 import StarBorderOutlined from '@material-ui/icons/StarBorderOutlined';  
 import StarOutlined from '@material-ui/icons/StarOutlined';
+import FolderSideBar from './FolderSideBar'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -55,20 +56,6 @@ const useStyles = makeStyles(theme => ({
   datatable: {
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
-    }
-  },
-  sideMenu: {
-    width: '100%',
-    height: '100vh',
-    position: 'relative',
-    overflowY: 'auto',
-    maxHeight: 300,
-    borderRight: `1px solid ${theme.palette.grey[100]}`,
-    '& .MuiListItem-root:hover': {
-      color: theme.palette.primary.main,
-      '& .MuiListItemIcon-root:hover': {
-        color: theme.palette.primary.main,
-      }
     }
   },
   button: {
@@ -177,7 +164,7 @@ const FilesList = props => {
     !prevIds.includes(folderId)? setPrevIds([...prevIds, folderId]) : prevIds.splice(prevIds.length - 1, 1)
     props.history.push('/dashboard/folder/' + folderId)
     selectedDoc.type == 'File'? getUtilityFile(folderId) : getAllFoldersAndDocs({folderId, type: 'FOLDER'})
-    getFolderById(selectedDoc)
+    // getFolderById(selectedDoc)
   }
 
   const columns = [
@@ -299,9 +286,7 @@ const FilesList = props => {
     customToolbar: () => <AddFile openFileDialog={openFileUploadDialog} openFolderDialog={openNewFolderDialog} />,
     rowsPerPage: 10,
     rowsPerPageOptions: [10,25,50,100],
-    onRowClick: (rowData, rowState) => {
-      handleRowClick(rowData[0])
-    },
+    onRowClick: (rowData, rowState) => handleRowClick(rowData[0]),
     elevation: 0
   };
 
@@ -315,42 +300,7 @@ const FilesList = props => {
     <div className={classes.root}>
       <Grid container justify='space-between'>
         <Grid item xs={2} md={2}>
-          <div className={classes.sideMenu}>
-            <List 
-              component="nav" 
-              aria-label="secondary mailbox folders"
-              subheader={
-                <ListSubheader component="div" id="nested-list-subheader">
-                  <Typography variant="h6">Status</Typography>
-                </ListSubheader>
-              }
-            >
-              <ListItem button onClick={getAllFolders}>
-                <ListItemIcon>
-                  <Description />
-                </ListItemIcon>
-                <ListItemText primary="All" />
-              </ListItem>
-              <ListItem button onClick={() => getFavoriteDocuments(user.uuId)}>
-                <ListItemIcon>
-                  <StarOutlined />
-                </ListItemIcon>
-                <ListItemText primary="Favorite" />
-              </ListItem>
-              <ListItem button onClick={() => getAllFoldersAndDocs({folderId: 3, type: 'SHARED'})}>
-                <ListItemIcon>
-                  <Share />
-                </ListItemIcon>
-                <ListItemText primary="Shared" />
-              </ListItem>
-              <ListItem button onClick={() => getAllFoldersAndDocs({folderId: 2, type: 'TRASHED'})}>
-                <ListItemIcon>
-                  <Delete />
-                </ListItemIcon>
-                <ListItemText primary="Trash" />
-              </ListItem>
-            </List>
-          </div>
+          <FolderSideBar />
         </Grid>
         <Grid item xs={10} md={7}>
           {loading?
