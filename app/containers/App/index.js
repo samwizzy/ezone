@@ -54,7 +54,8 @@ import Snackbar from './components/Snackbar';
 import { AppContext } from '../context/AppContext';
 import sideBarconfig from '../../components/Sidebar/components/SidebarConfig';
 import AccountPage from '../Accounting/Loadable';
-import AccountJournal from '../AccountJournal/Loadable';
+import AccountChart from '../Accounting/components/AccountChart';
+import AccountJournal from '../Accounting/components/AccountJournal';
 
 // import { makeSelectGetSaveToken } from './selectors';
 
@@ -164,7 +165,8 @@ const App = () => {
                 <PrivateRoute path="/WorkOrder" component={WorkOrderPage} />
                 <PrivateRoute path="/hr/:sectionId?/:status?" component={HRPage} />
                 <PrivateRoute path="/account" component={AccountPage} />
-                <PrivateRoute path="/journal" component={AccountJournal} />
+                <PrivateRoute path="/accountChart" component={AccountChart} />
+                <PrivateRoute path="/accountJournal" component={AccountJournal} />
                 <PrivateRoute
                   exact
                   path="/inventory"

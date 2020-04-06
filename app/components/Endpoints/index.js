@@ -146,9 +146,9 @@ export const CreateNewItemApi = `${BaseUrl}/inventoryserv/api/v1/upload_item`;
 export const GetAllItems = `${BaseUrl}/inventoryserv/api/v1/get_all_items`;
 
 // Transfer Order APIs
-export const CreateNewTransferOrderPerWarehouseApi = `${BaseUrl}/inventoryserv/api/v1/add_transfer_orders_per_warehouse`;
+export const CreateNewTransferOrderPerWarehouseApi = `${BaseUrl}/inventoryserv/api/v1/add_transfer_order_for_one_warehouse`;
 export const GetAllTransferOrderApi = `${BaseUrl}/inventoryserv/api/v1/get_all_transfer_orders`;
 
 // Transfer Order APIs
-export const CreateNewInventoryAdjustApi = `${BaseUrl}/inventoryserv/api/v1/do_adjustment`;
+export const CreateNewInventoryAdjustApi = `${BaseUrl}/inventoryserv/api/v1/do_many_adjustments`;
 export const GetAllInventoryAdjustsApi = `${BaseUrl}/inventoryserv/api/v1/get_all_adjustments`;

@@ -20,7 +20,7 @@ export const initialState = {
     },
     data: null,
   },
-  accountingSetupData: [],
+  accountingSetupData: {},
   accountSetupPostData: false,
 };
 

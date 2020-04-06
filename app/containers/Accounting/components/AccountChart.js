@@ -8,6 +8,7 @@ import {
   Button,
   Menu,
   MenuItem,
+  Grid
 } from '@material-ui/core';
 
 import MUIDataTable from 'mui-datatables';
@@ -18,58 +19,55 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import { AddButton } from './AddButton';
+import AccountSideBar from './AccountSideBar';
 
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: theme.spacing(5, 5, 5, 20),
-    marginBottom: theme.spacing(4),
+    flexGrow: 1,
   },
-  image: {
-    position: 'absolute',
-    width: '100px',
-    height: '100px',
-    left: '150px',
-    top: '180px',
-    border: '1px solid #C4C4C4',
-    borderRadius: '155px',
-    padding: '25px',
-  },
-  edit: {
-    position: 'absolute',
-    height: '100px',
-    left: '1280px',
-    top: '180px',
-    color: '#1A88E1',
-    fontStyle: 'normal',
-    fontWeight: '600',
-    fontSize: '13px',
-    lineHeight: '16px',
-    // border: '2px solid #1A88E1',
-    [theme.breakpoints.down('md')]: {
-      position: 'absolute',
-      height: '100px',
-      left: '265px',
-      top: '150px',
-      color: '#1A88E1',
+  flex: {
+    display: "flex",
+    alignItems: "center",
+    alignContent: "center",
+  }, 
+  table: {
+    marginTop: theme.spacing(2),
+    '& .MuiTableCell-body': {
+      fontSize: theme.typography.fontSize - 1,
+    },
+    '& .MuiTableRow-root:hover': {
+      cursor: 'pointer'
     },
   },
-  orgContainer: {
-    padding: theme.spacing(0, 5, 0, 5),
+  datatable: {
+    '& .MuiTableRow-root:hover': {
+      cursor: 'pointer'
+    }
   },
-  demo: {
-    backgroundColor: theme.palette.background.paper,
+  // button: {
+  //   '&.favorite': { color: orange[300]},
+  //   '&.shared': { color: orange[500]},
+  // },
+  // iconButton: {
+  //   '&.favorite': { color: orange[300]},
+  //   '&.shared': { color: orange[500]},
+  //   '&.delete': { color: theme.status.danger},
+  // },
+  // icon: {
+  //   '&.favorite': { color: orange[300]},
+  //   '&.shared': { color: orange[500]},
+  //   '&.delete': { color: theme.status.danger},
+  // },
+  cardRoot: {
+    maxWidth: '100%',
   },
-  editButton: {
-    width: '117px',
-    height: '40px',
-    background: '#1A88E1',
-    borderRadius: '10px',
-    align: 'right',
+  media: {
+    height: 140,
   },
-  listFormat: {
-    marginBottom: '10px',
-    marginTop: '10px',
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
   },
 }));
 
@@ -115,10 +113,12 @@ const AccountChart = props => {
             return '';
           }
           return (
-            <FormControlLabel
-              label={tableMeta.rowIndex + 1}
-              control={<Icon />}
-            />
+            <div>
+              <FormControlLabel
+                label={tableMeta.rowIndex + 1}
+                control={<Icon />}
+              />
+            </div>
           );
         },
       },
@@ -219,12 +219,21 @@ const AccountChart = props => {
 
   return (
     <React.Fragment>
-      <MUIDataTable
-        title="Charts Of Accounts"
-        data={chartOfAccountData}
-        columns={columns}
-        options={options}
-      />
+      <div className={classes.root}>
+        <Grid container>
+          <Grid item xs={2} md={2}>
+            <AccountSideBar />
+          </Grid>
+          <Grid item xs={10} md={8}>
+            <MUIDataTable
+              title="Charts Of Accounts"
+              data={chartOfAccountData}
+              columns={columns}
+              options={options}
+            />
+          </Grid>
+        </Grid>
+      </div>
     </React.Fragment>
   );
 };
