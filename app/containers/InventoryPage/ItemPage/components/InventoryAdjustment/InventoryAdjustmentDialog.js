@@ -78,7 +78,7 @@ const InventoryAdjustmentDialog = props => {
     getAllWarehouses,
     closeNewInventoryAdjustDialogAction,
     closeEditEmployeeDialogAction,
-    dispatchCreateNewTransferOrderAction,
+    dispatchCreateNewInventoryAdjustmentAction,
   } = props;
 
   console.log(inventoryAdjustDialog, 'inventoryAdjustDialog');
@@ -95,8 +95,6 @@ const InventoryAdjustmentDialog = props => {
     // itemSku: '',
     // transferQuantity: '',
   });
-
-  console.log(values, 'values rows');
 
   const canBeSubmitted = () => {
     const {
@@ -126,12 +124,11 @@ const InventoryAdjustmentDialog = props => {
   const handleQuantityChange = idx => e => {
     const { value } = e.target;
     const newRow = rows;
-    newRow[idx].transferQuantity = value;
+    newRow[idx].transferQuantity = parseFloat(value);
     setRows(newRow);
   };
 
   const handleItemChange = (e, value, idx) => {
-    console.log(value, 'value');
     const newRoww = rows;
     newRoww[idx] = {
       itemId: value.id,
@@ -382,7 +379,7 @@ const InventoryAdjustmentDialog = props => {
           ) : (
             <Button
               onClick={() => {
-                dispatchCreateNewTransferOrderAction(
+                dispatchCreateNewInventoryAdjustmentAction(
                   Object.assign(values, { items: rows }),
                 );
               }}
@@ -411,7 +408,7 @@ InventoryAdjustmentDialog.propTypes = {
   inventoryAdjustDialog: PropTypes.object,
   getAllWarehouses: PropTypes.array,
   getAllItems: PropTypes.array,
-  dispatchCreateNewTransferOrderAction: PropTypes.func,
+  dispatchCreateNewInventoryAdjustmentAction: PropTypes.func,
   closeNewInventoryAdjustDialogAction: PropTypes.func,
 };
 
@@ -424,8 +421,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchCreateNewTransferOrderAction: evt =>
-      dispatch(Actions.createNewTransferOrder(evt)),
+    dispatchCreateNewInventoryAdjustmentAction: evt =>
+      dispatch(Actions.createNewInventoryAdjustment(evt)),
     closeNewInventoryAdjustDialogAction: () =>
       dispatch(Actions.closeNewInventoryAdjustDialog()),
   };

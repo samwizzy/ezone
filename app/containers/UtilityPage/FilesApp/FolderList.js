@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { orange } from '@material-ui/core/colors'
 import { withRouter } from 'react-router-dom'
 import classNames from 'classnames'
-import { Button, Box, Card, CardContent, CardActionArea, CardMedia, Grid, Menu, MenuItem, List, ListItem, ListSubheader, ListItemText, ListItemIcon, Collapse, Icon, IconButton, Typography, TableContainer, Table, TableBody, TableRow, TableCell, Tooltip, Paper } from '@material-ui/core';
+import { Backdrop, Button, Box, CircularProgress, Card, CardContent, CardActionArea, CardMedia, Grid, Menu, MenuItem, List, ListItem, ListSubheader, ListItemText, ListItemIcon, Collapse, Icon, IconButton, Typography, TableContainer, Table, TableBody, TableRow, TableCell, Tooltip, Paper } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -82,6 +82,10 @@ const useStyles = makeStyles(theme => ({
   media: {
     height: 140,
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
 const FilesList = props => {
@@ -131,7 +135,7 @@ const FilesList = props => {
   const handleDelete = (id) => {
     const fd = nestedFolders && nestedFolders.find(f => f.id == id) // to retrieve fd.parentFolderId
     const file = []
-    const payload = Object.assign({}, {id, type: "document"})
+    const payload = Object.assign({}, {id, type: fd.type})
     file.push(payload)
     const model = Object.assign({}, {folderId: params.folderId, data: {parentId: 1, file}})
     deleteDocument(model)
@@ -332,10 +336,10 @@ const FilesList = props => {
           <FolderSideBar />
         </Grid>
         <Grid item xs={10} md={7}>
-          {loading?
-            <List component={LoadingIndicator} />
-          :
-          (
+          <Backdrop className={classes.backdrop} open={loading}>
+            <CircularProgress color="inherit" />
+          </Backdrop>
+          {
             nestedFolders && nestedFolders.length === 0?
               <NoFilesList /> 
             :
@@ -361,7 +365,7 @@ const FilesList = props => {
               columns={columns}
               options={options}
             />
-          )}
+          }
         </Grid>
         <Grid item md={3}>
           <Typography variant="subtitle2" color="textSecondary">Document Details</Typography>
@@ -464,7 +468,6 @@ const FilesList = props => {
       <AddFileDialog />
       <AddFolderDialog />
       <FilePreviewDialog />
-
     </div>
   );
 };

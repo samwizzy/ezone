@@ -124,11 +124,12 @@ export function* createNewTransferOrder() {
   const createNewTransferOrderDetails = yield select(
     Selectors.makeSelectTransferOrderDetails(),
   );
-  // createNewTransferOrderDetails.orgId = currentUser.organisation.orgId;
+  createNewTransferOrderDetails.orgId = currentUser.organisation.orgId;
 
   console.log(createNewTransferOrderDetails, 'createNewTransferOrderDetails');
   const requestURL = `${Endpoints.CreateNewTransferOrderPerWarehouseApi}`;
 
+  console.log(requestURL, 'requestURL');
   try {
     const createNewTransferOrderResponse = yield call(request, requestURL, {
       method: 'POST',
@@ -178,10 +179,11 @@ export function* getAllTransferOrder() {
 
 export function* createNewInventoryAdjust() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const createNewInventoryAdjustDetails = yield select(
     Selectors.makeSelectInventoryAdjustmentDetails(),
   );
-
+  createNewInventoryAdjustDetails.orgId = currentUser.organisation.orgId;
   console.log(
     createNewInventoryAdjustDetails,
     'createNewInventoryAdjustDetails',

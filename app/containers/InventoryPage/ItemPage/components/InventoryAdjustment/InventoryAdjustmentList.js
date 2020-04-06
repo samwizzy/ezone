@@ -51,8 +51,8 @@ const InventoryAdjustmentList = props => {
     openNewInventoryAdjustDialogAction,
     getAllWarehousesAction,
     getAllItemsAction,
-    getAllTransferOrderAction,
-    getAllTransferOrder,
+    getAllInventoryAdjustmentsAction,
+    getAllInventoryAdjusts,
     // openEditEmployeeDialogAction,
     // openViewEmployeeDialogAction,
   } = props;
@@ -60,10 +60,10 @@ const InventoryAdjustmentList = props => {
   useEffect(() => {
     getAllItemsAction();
     getAllWarehousesAction();
-    getAllTransferOrderAction();
+    getAllInventoryAdjustmentsAction();
   }, []);
 
-  console.log(getAllTransferOrder, 'getAllTransferOrder');
+  console.log(getAllInventoryAdjusts, 'getAllInventoryAdjusts');
   const columns = [
     {
       name: 'Id',
@@ -84,32 +84,32 @@ const InventoryAdjustmentList = props => {
       },
     },
     {
-      name: 'firstName',
-      label: 'First Name',
+      name: 'inventoryAdjustedDate',
+      label: 'Adjusted Date',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'lastName',
-      label: 'Last Name',
+      name: 'reason',
+      label: 'Reason',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'emailAddress',
-      label: 'Email Address',
+      name: 'reasonDescription',
+      label: 'Reason Description',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'phoneNumber',
-      label: 'Phone Number',
+      name: 'status',
+      label: 'Status',
       options: {
         filter: true,
         sort: false,
@@ -133,12 +133,28 @@ const InventoryAdjustmentList = props => {
       },
     },
     {
-      name: 'gender',
-      label: 'Gender',
+      name: 'referenceNumber',
+      label: 'Reference Number',
       options: {
         filter: true,
         sort: false,
-      },
+      }
+    },
+    {
+      name: 'type',
+      label: 'Type',
+      options: {
+        filter: true,
+        sort: false,
+      }
+    },
+    {
+      name: 'addedBy',
+      label: 'Adjusted By',
+      options: {
+        filter: true,
+        sort: false,
+      }
     },
     // {
     //   name: 'id',
@@ -210,8 +226,8 @@ const InventoryAdjustmentList = props => {
     <React.Fragment>
       <ModuleLayout>
         <MUIDataTable
-          title="All Transfer Orders"
-          data={getAllEmployees}
+          title="All Inventory Adjustments"
+          data={getAllInventoryAdjusts}
           columns={columns}
           options={options}
         />
@@ -227,21 +243,21 @@ InventoryAdjustmentList.propTypes = {
   openNewInventoryAdjustDialogAction: PropTypes.func,
   getAllWarehousesAction: PropTypes.func,
   getAllItemsAction: PropTypes.func,
-  getAllTransferOrderAction: PropTypes.func,
-  getAllTransferOrder: PropTypes.array,
+  getAllInventoryAdjustmentsAction: PropTypes.func,
+  getAllInventoryAdjusts: PropTypes.array,
   // openEditEmployeeDialogAction: PropTypes.func,
   // openViewEmployeeDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  getAllTransferOrder: Selectors.makeSelectGetAllTransferOrder(),
+  getAllInventoryAdjusts: Selectors.makeSelectGetAllInventoryAdjustments(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAllTransferOrderAction: () =>
-      dispatch(Actions.getAllTransferOrder()),
+    getAllInventoryAdjustmentsAction: () =>
+      dispatch(Actions.getAllInventoryAdjustments()),
     openNewInventoryAdjustDialogAction: () =>
       dispatch(Actions.openNewInventoryAdjustDialog()),
     getAllWarehousesAction: () => dispatch(Actions.getAllWarehouse()),

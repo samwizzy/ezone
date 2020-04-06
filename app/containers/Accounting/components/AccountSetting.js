@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import * as AppSelectors from '../../App/selectors';
 import {
   makeStyles,
   Box,
@@ -20,14 +19,6 @@ import {
   FormControlLabel,
   FormControl,
 } from '@material-ui/core';
-
-import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
 import { Autocomplete } from '@material-ui/lab';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -60,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AccountSetting = props => {
   const classes = useStyles();
+  const { } = props;
 
   const accountingMethodData = [
     {
@@ -99,7 +91,7 @@ const AccountSetting = props => {
     accountMethod: "",
     companyStartDate: "",
     currency: "",
-    orgId: currentUser.organisation.orgId,
+    orgId: currentUser.organisation && currentUser.organisation.orgId,
     startDay: 0,
     startMonth: 0,
     taxDay: 0,
@@ -326,7 +318,9 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    createAccountingSetupAction: evt => dispatch(Actions.createAccountingSetupAction(evt)),
+    // openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
+    // editOpenAccountDialogAction: evt => dispatch(Actions.editOpenAccountDialog(evt)),
+    // deleteChartOfAccountAction: evt => dispatch(Actions.deleteChartOfAccountAction(evt)),
   };
 }
 

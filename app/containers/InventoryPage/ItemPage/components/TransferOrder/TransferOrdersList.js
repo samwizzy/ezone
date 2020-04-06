@@ -35,8 +35,6 @@ const TransferOrdersList = props => {
   useInjectReducer({ key: 'itemPage', reducer });
   useInjectSaga({ key: 'itemPage', saga });
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [transferOrdersState, setTransferOrdersState] = React.useState([]);
   const [values, setValues] = React.useState({
     transferOrder: '',
     destinationWarehouseUuId: '',
@@ -52,24 +50,6 @@ const TransferOrdersList = props => {
     setValues({...values, [event.target.name]: event.target.value });
     console.log('i am handling on change event')
   };
-
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const formModel = {
-    transferOrder: <input type='text' name="transferOrder" value={values.transferOrder} onChange={handleChange} />, 
-    destinationWarehouseUuId: <input type='text' name="destinationWarehouseUuId" value={values.destinationWarehouseUuId}  onChange={handleChange} />, 
-    itemId: <input type='text' name="itemId" value={values.itemId}  onChange={handleChange} />,
-    itemSku: <input type='text' name="itemSku" value={values.itemSku}  onChange={handleChange} />,
-    reason: <input type='text' name="reason" value={values.reason}  onChange={handleChange} />,
-    sourceWareHouseUuid: <input type='text' name="sourceWareHouseUuid" value={values.sourceWareHouseUuid}  onChange={handleChange} />,
-    transferQuantity: <input type='text' name="transferQuantity" value={values.transferQuantity}  onChange={handleChange} />,
-  }
 
   const {
     loading,
@@ -110,32 +90,16 @@ const TransferOrdersList = props => {
       },
     },
     {
-      name: 'transferOrder',
-      label: 'Transfer Order',
+      name: 'transferDate',
+      label: 'Transfer Date',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'destinationWarehouseUuId',
-      label: 'Warehouse Destination ',
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: 'itemId',
-      label: 'Item Id',
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: 'itemSku',
-      label: 'Item Sku',
+      name: 'referenceNumber',
+      label: 'Transfer Order ',
       options: {
         filter: true,
         sort: false,
@@ -150,16 +114,32 @@ const TransferOrdersList = props => {
       },
     },
     {
-      name: 'sourceWareHouseUuid',
-      label: 'WareHouse Source',
+      name: '',
+      label: 'Status',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'transferQuantity',
-      label: 'Transfer Quantity',
+      name: 'transferredQuantity',
+      label: 'Quantity Transferred',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: 'sourceWareHouseUuid',
+      label: 'Source WareHouse',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: 'destinationWarehouseUuid',
+      label: 'Destination WareHouse',
       options: {
         filter: true,
         sort: false,
@@ -236,7 +216,7 @@ const TransferOrdersList = props => {
       <ModuleLayout>
         <MUIDataTable
           title="All Transfer Orders"
-          data={transferOrders}
+          data={getAllTransferOrder}
           columns={columns}
           options={options}
         />
