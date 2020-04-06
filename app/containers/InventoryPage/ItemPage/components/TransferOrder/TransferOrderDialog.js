@@ -87,16 +87,12 @@ const TransferOrderDialog = props => {
 
   const [rows, setRows] = React.useState([{}]);
   const [values, setValues] = React.useState({
+    referenceNumber: '',
     transferOrder: '',
     destinationWarehouseUuId: '',
     reason: '',
     sourceWareHouseUuid: '',
-    // itemId: '',
-    // itemSku: '',
-    // transferQuantity: '',
   });
-
-  console.log(values, 'values rows');
 
   const canBeSubmitted = () => {
     const {
@@ -126,7 +122,7 @@ const TransferOrderDialog = props => {
   const handleQuantityChange = idx => e => {
     const { value } = e.target;
     const newRow = rows;
-    newRow[idx].transferQuantity = value;
+    newRow[idx].transferQuantity = parseFloat(value);
     setRows(newRow);
   };
 
@@ -157,11 +153,11 @@ const TransferOrderDialog = props => {
   };
 
   const handleSourceChange = (evt, value) => {
-    setValues({ ...values, sourceWareHouseUuid: value.id });
+    setValues({ ...values, sourceWareHouseUuid: value.uuid });
   };
 
   const handleDestinationChange = (evt, value) => {
-    setValues({ ...values, destinationWarehouseUuId: value.id });
+    setValues({ ...values, destinationWarehouseUuId: value.uuid });
   };
 
   // console.log(values, 'values');
@@ -208,6 +204,15 @@ const TransferOrderDialog = props => {
               <Grid container spacing={0}>
                 <Grid item xs={12} md={6} lg={6}>
                   <div className={classes.container}>
+                    <TextField
+                      id="outlined-referenceNumber"
+                      label="Reference Number"
+                      value={values.referenceNumber}
+                      onChange={handleChange('referenceNumber')}
+                      variant="outlined"
+                      className={classes.textField}
+                      fullWidth
+                    />
                     <TextField
                       id="outlined-transfer-order"
                       label="Transfer Order"
@@ -292,16 +297,6 @@ const TransferOrderDialog = props => {
               <Divider />
               <Grid container spacing={0}>
                 <Grid item xs={12} md={12} lg={12}>
-                  {/* <TableTransfer
-                    getAllItems={getAllItems}
-                    values={values}
-                    setValues={setValues}
-                    addRow={addRow}
-                    removeRow={removeRow}
-                    handleItemChange={handleItemChange}
-                    handleQuantityChange={handleQuantityChange}
-                  /> */}
-
                   <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="simple table">
                       <TableHead>
