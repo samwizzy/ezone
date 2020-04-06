@@ -183,7 +183,6 @@ export default function VerticalTabs() {
           {...a11yProps(6)}
           component={ListItem}
         />
-        />
         {/* <MyTab disableRipple label="Sourcing" />
             <MyTab disableRipple label="Production" />
             <MyTab disableRipple label="Shipping" />

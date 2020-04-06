@@ -49,7 +49,6 @@ export function HRPage(props) {
 
       <ModuleLayout>
         <HumanResourcePage />
-        {/* <VerticalTabs /> */}
       </ModuleLayout>
     </React.Fragment>
   );
