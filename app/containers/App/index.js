@@ -29,7 +29,6 @@ import Employees from '../UsersPage/EmployeePage/Loadable';
 import UserProfilePage from '../UsersPage/UserProfilePage/Loadable';
 import UtilityPage from '../UtilityPage/Loadable';
 import ChatApp from '../UtilityPage/ChatApp/ChatTab';
-// import ChatApp from '../UtilityPage/ChatApp/Loadable';
 import TasksPage from '../UtilityPage/TasksApp/Loadable';
 import FilesApp from '../UtilityPage/FilesApp/Loadable';
 import HRPage from '../HRPage/Loadable';
@@ -153,9 +152,20 @@ const App = () => {
                 />
 
                 <PrivateRoute exact path="/email" component={EmailConfig} />
-                <PrivateRoute path="/email/configuration" component={EmailConfigs} />
-                <PrivateRoute exact path="/email/template" component={EmailTemplates} />
-                <PrivateRoute exact path="/email/template/:emailType" component={EmailTemplates} />
+                <PrivateRoute
+                  path="/email/configuration"
+                  component={EmailConfigs}
+                />
+                <PrivateRoute
+                  exact
+                  path="/email/template"
+                  component={EmailTemplates}
+                />
+                <PrivateRoute
+                  exact
+                  path="/email/template/:emailType"
+                  component={EmailTemplates}
+                />
                 <PrivateRoute
                   path="/email/password/template"
                   component={EmailPasswordTemplate}
