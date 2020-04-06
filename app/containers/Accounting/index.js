@@ -21,6 +21,7 @@ import saga from './saga';
 import messages from './messages';
 import AccountChart from './components/AccountChart';
 import NewAccountDialog from './components/NewAccountDialog';
+import AccountJournal from './components/AccountJournal';
 import AccountSetting from './components/AccountSetting';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
@@ -59,6 +60,7 @@ export function Accounting(props) {
           <meta name="description" content="Description of Accounting" />
         </Helmet>
         <AccountChart />
+        <AccountJournal />
         <NewAccountDialog />
       </div>
     );

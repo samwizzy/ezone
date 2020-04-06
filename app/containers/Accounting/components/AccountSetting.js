@@ -25,6 +25,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
+import * as AppSelectors from './../../App/selectors';
 // import LoadingIndicator from '../../../components/LoadingIndicator';
 import Logo from '../../../images/logo.svg';
 import moment from 'moment'
