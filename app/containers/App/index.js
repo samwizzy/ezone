@@ -154,16 +154,15 @@ const App = () => {
 
                 <PrivateRoute exact path="/email" component={EmailConfig} />
                 <PrivateRoute path="/email/configuration" component={EmailConfigs} />
-                <PrivateRoute exact path="/email/template" component={EmailTemplates} />
-                <PrivateRoute exact path="/email/template/:emailType" component={EmailTemplates} />
+                <PrivateRoute path="/email/template/:emailType?" component={EmailTemplates} />
+                {/* <PrivateRoute exact path="/email/template/:emailType" component={EmailTemplates} /> */}
                 <PrivateRoute
                   path="/email/password/template"
                   component={EmailPasswordTemplate}
                 />
                 <PrivateRoute exact path="/home" component={HomePage} />
                 <PrivateRoute path="/WorkOrder" component={WorkOrderPage} />
-                <PrivateRoute exact path="/hr" component={HRPage} />
-                <PrivateRoute exact path="/hr/:sectionId" component={HRPage} />
+                <PrivateRoute path="/hr/:sectionId?/:status?" component={HRPage} />
                 <PrivateRoute path="/account" component={AccountPage} />
                 <PrivateRoute path="/journal" component={AccountJournal} />
                 <PrivateRoute

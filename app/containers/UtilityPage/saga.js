@@ -214,7 +214,7 @@ export function* getUtilityTask({ type, payload }) {
 
     yield put(Actions.getUtilityTaskSuccess(response));
   } catch (err) {
-    // yield put(Actions.getUtilityTasksError(err.message));
+    yield put(Actions.getUtilityTaskError(err.message));
   }
 }
 

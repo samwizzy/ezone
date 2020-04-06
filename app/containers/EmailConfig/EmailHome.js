@@ -42,6 +42,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     border: `1px solid ${theme.palette.grey[200]}`,
     '& a': {
+      display: "flex",
       textDecoration: 'none'
     }
   },
@@ -69,7 +70,7 @@ const EmailHome = props => {
                   <ListItemAvatar>
                     <img alt="" src={envelope} className={classes.cardIcon} />
                   </ListItemAvatar>
-                  <ListItemText primary="Email / SMS Configuration" secondary="Jan 9, 2014" />
+                  <ListItemText primary={<Typography variant="h6">Email / SMS Configuration</Typography>} secondary="Configure settings" />
                 </ListItem>
               </List>
             </CardContent>
@@ -86,7 +87,7 @@ const EmailHome = props => {
                   <ListItemAvatar>
                     <img alt="" src={directory} className={classes.cardIcon} />
                   </ListItemAvatar>
-                  <ListItemText primary="AD Configuration" secondary="Jan 9, 2014" />
+                  <ListItemText primary={<Typography variant="h6">AD Configuration</Typography>} secondary="Configure settings" />
                 </ListItem>
               </List>
             </CardContent>
@@ -103,7 +104,7 @@ const EmailHome = props => {
                   <ListItemAvatar>
                     <img alt="" src={mail} className={classes.cardIcon} />
                   </ListItemAvatar>
-                  <ListItemText primary="Email Templates" secondary="Jan 9, 2014" />
+                  <ListItemText primary={<Typography variant="h6">Email Templates</Typography>} secondary="Configure settings" />
                 </ListItem>
               </List>
             </CardContent>

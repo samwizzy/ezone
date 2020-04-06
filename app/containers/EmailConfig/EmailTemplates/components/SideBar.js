@@ -81,8 +81,8 @@ const useStyles = makeStyles(theme => ({
 const menus = [
     {id: 1, name: "Password Reset", url: "password", icon: 'vpn_key'},
     {id: 2, name: "New User Welcome Message", url: "welcome", icon: 'person_add'}, 
-    {id: 3, name: "Signature Approval", url: "signature", icon: 'fingerprint'},
-    {id: 3, name: "Invoice", url: "invoice", icon: 'receipt'},
+    {id: 2, name: "Signature Approval", url: "signature", icon: 'fingerprint'},
+    {id: 4, name: "Invoice", url: "invoice", icon: 'receipt'},
 ];
 
 const SideBar = props => {

@@ -148,16 +148,37 @@ const utilityPageReducer = (state = initialState, action) =>
           task: action.payload,
         };
       }
+      case Constants.UPDATE_UTILITY_TASK: {
+        return {
+          ...state,
+          loading: true
+        };
+      }
       case Constants.UPDATE_UTILITY_TASK_SUCCESS: {
         return {
           ...state,
           task: action.payload,
+          loading: false
+        };
+      }
+      case Constants.GET_UTILITY_TASK: {
+        return {
+          ...state,
+          loading: true
         };
       }
       case Constants.GET_UTILITY_TASK_SUCCESS: {
         return {
           ...state,
           task: action.payload,
+          loading: false
+        };
+      }
+      case Constants.GET_UTILITY_TASK_ERROR: {
+        return {
+          ...state,
+          error: {...state.error, success: false, message: action.payload},
+          loading: false
         };
       }
       case Constants.GET_UTILITY_TASKS: {
@@ -235,7 +256,7 @@ const utilityPageReducer = (state = initialState, action) =>
       case Constants.GET_UTILITY_TASKS_ERROR: {
         return {
           ...state,
-          error: action.payload,
+          error: {...state.error, success: false, message: action.payload},
           loading: false
         };
       }

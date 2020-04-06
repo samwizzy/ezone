@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
 import { makeStyles, withStyles, useTheme } from '@material-ui/core/styles';
-import { Box, Button, ButtonGroup, Tabs, Tab, TableContainer, Table, TableRow, TableCell, TableBody, TableFooter, TextField, MobileStepper, Grid, GridList, GridListTile, GridListTileBar, Divider, Menu, MenuItem, Paper, List, ListItem, ListSubheader, ListItemText, ListItemIcon, FormControlLabel, Icon, IconButton, Typography, Toolbar, Hidden, Drawer } from '@material-ui/core';
+import { Backdrop, Box, Button, ButtonGroup, CircularProgress, Tabs, Tab, TableContainer, Table, TableRow, TableCell, TableBody, TableFooter, TextField, MobileStepper, Grid, GridList, GridListTile, GridListTileBar, Divider, Menu, MenuItem, Paper, List, ListItem, ListSubheader, ListItemText, ListItemIcon, FormControlLabel, Icon, IconButton, Typography, Toolbar, Hidden, Drawer } from '@material-ui/core';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -129,6 +129,10 @@ const useStyles = makeStyles(theme => ({
     overflow: 'hidden',
     display: 'block',
     width: '100%',
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
   },
 }));
 
@@ -283,6 +287,10 @@ const TaskList = props => {
         </Grid>
         <Grid item md={7}>          
           <div className={classes.content}>
+            <Backdrop className={classes.backdrop} open={loading}>
+              <CircularProgress color="inherit" />
+            </Backdrop>
+
             <Typography variant="h6">Details</Typography>
             <div className={classes.buttonGroup}>
               <ButtonGroup size="small" aria-label="small outlined button group">

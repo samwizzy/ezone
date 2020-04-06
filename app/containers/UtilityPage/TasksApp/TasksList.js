@@ -213,7 +213,7 @@ console.log(tasks, "tasks")
             aria-label="secondary mailbox folders"
             subheader={
               <ListSubheader component="div" id="nested-list-subheader">
-                Status
+                <Typography variant="h6">Status</Typography>
               </ListSubheader>
             }
           >
