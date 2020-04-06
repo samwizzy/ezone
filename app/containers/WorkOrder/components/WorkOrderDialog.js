@@ -42,21 +42,10 @@ import * as Actions from '../actions';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    margin: theme.spacing(1.5, 0),
-  },
-  dense: {
-    marginTop: 19,
-  },
-  menu: {
-    width: 200,
-  },
-  table: {
-    minWidth: 650,
+  root: {
+    '& .MuiTextField-root': {
+      margin: theme.spacing(1, 0),
+    },
   },
 }));
 
@@ -189,8 +178,15 @@ const WorkOrderDialog = props => {
   };
 
   const handleSelectChange = (name, value) => {
-    console.log('selected value: ', value);
     setValues({ ...values, vendor: value });
+  };
+
+  const handleStatusSelectChange = (name, value) => {
+    setValues({ ...values, status: value.value });
+  };
+
+  const handlePrioritySelectChange = (name, value) => {
+    setValues({ ...values, priority: value.value });
   };
 
   // console.log('values from state: ', values);
@@ -230,43 +226,52 @@ const WorkOrderDialog = props => {
         <Divider />
         <DialogContent>
           {workOrderDialog.type === 'new' ? (
-            <div>
-              <Autocomplete
-                id="combo-box-demo"
-                options={listOfVendorsData}
-                getOptionLabel={option => option.busName}
-                onChange={(evt, value) => handleSelectChange(evt, value)}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label="Search Vendors"
-                    variant="outlined"
-                    placeholder="Vendors"
-                    fullWidth
-                  />
-                )}
-              />
-              <TextField
-                id="standard-amountBal"
-                label="Amount Balance"
-                variant="outlined"
-                className={classes.textField}
-                value={values.amountBal}
-                onChange={handleChange('amountBal')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-amountPaid"
-                label="Amount Paid"
-                variant="outlined"
-                className={classes.textField}
-                value={values.amountPaid}
-                onChange={handleChange('amountPaid')}
-                margin="normal"
-                fullWidth
-              />
-              <FormControl component="fieldset">
+            <Grid container spacing={3} className={classes.root}>
+              <Grid item xs={6} md={6} lg={6}>
+                <Autocomplete
+                  id="combo-box-demo"
+                  size="small"
+                  options={listOfVendorsData}
+                  getOptionLabel={option => option.busName}
+                  onChange={(evt, value) => handleSelectChange(evt, value)}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label="Search Vendors"
+                      variant="outlined"
+                      placeholder="Vendors"
+                      fullWidth
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={6} md={6} lg={6}>
+                <TextField
+                  id="standard-amountBal"
+                  label="Amount Balance"
+                  size="small"
+                  variant="outlined"
+                  className={classes.textField}
+                  value={values.amountBal}
+                  onChange={handleChange('amountBal')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6} md={6} lg={6}>
+                <TextField
+                  id="standard-amountPaid"
+                  label="Amount Paid"
+                  size="small"
+                  variant="outlined"
+                  className={classes.textField}
+                  value={values.amountPaid}
+                  onChange={handleChange('amountPaid')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              {/* <FormControl component="fieldset">
                 <FormLabel component="legend">Approve Order.</FormLabel>
                 <br />
                 <FormGroup aria-label="position" row>
@@ -284,18 +289,21 @@ const WorkOrderDialog = props => {
                     labelPlacement="top"
                   />
                 </FormGroup>
-              </FormControl>
-              <TextField
-                id="standard-cost"
-                label="Cost"
-                variant="outlined"
-                className={classes.textField}
-                value={values.cost}
-                onChange={handleChange('cost')}
-                margin="normal"
-                fullWidth
-              />
-
+              </FormControl> */}
+              <Grid item xs={6} md={6} lg={6}>
+                <TextField
+                  id="standard-cost"
+                  label="Cost"
+                  size="small"
+                  variant="outlined"
+                  className={classes.textField}
+                  value={values.cost}
+                  onChange={handleChange('cost')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} md={6} lg={6}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Grid container justify="space-around">
                   <KeyboardDatePicker
@@ -322,110 +330,128 @@ const WorkOrderDialog = props => {
                   />
                 </Grid>
               </MuiPickersUtilsProvider>
-
-              <ItemTable savedItemStore={savedItemStore} />
-
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => openAddItemDialogAction()}
-              >
-                Add Item
-              </Button>
-              <TextField
-                id="standard-phone-number"
-                label="Phone Number"
-                type="number"
-                variant="outlined"
-                className={classes.textField}
-                value={values.number}
-                onChange={handleChange('number')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-employeeID"
-                label="Employee ID"
-                variant="outlined"
-                className={classes.textField}
-                value={values.employeeId}
-                onChange={handleChange('employeeId')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-status"
-                label="Status"
-                variant="outlined"
-                className={classes.textField}
-                margin="normal"
-                value={values.status ? values.status : ''}
-                onChange={handleChange('status')}
-                select
-                fullWidth
-              >
-                {status.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                id="standard-priority"
-                label="Urgency Level"
-                variant="outlined"
-                className={classes.textField}
-                margin="normal"
-                value={values.priority ? values.priority : ''}
-                onChange={handleChange('priority')}
-                select
-                fullWidth
-              >
-                {priority.map(option => (
-                  <MenuItem key={option.label} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
+              </Grid>
+              <Grid item xs={12} md={6} lg={6}>
+                <ItemTable savedItemStore={savedItemStore} />
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => openAddItemDialogAction()}
+                >
+                  Add Item
+                </Button>
+              </Grid>
+              <Grid item xs={6} md={6} lg={6}>
+                <TextField
+                  id="standard-phone-number"
+                  label="Phone Number"
+                  size="small"
+                  type="number"
+                  variant="outlined"
+                  className={classes.textField}
+                  value={values.number}
+                  onChange={handleChange('number')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6} md={6} lg={6}>
+                <TextField
+                  id="standard-employeeID"
+                  label="Employee ID"
+                  size="small"
+                  variant="outlined"
+                  className={classes.textField}
+                  value={values.employeeId}
+                  onChange={handleChange('employeeId')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6} md={6} lg={6}>
+                <Autocomplete
+                  id="combo-box-demo"
+                  size="small"
+                  options={status}
+                  getOptionLabel={option => option.label}
+                  onChange={(evt, value) => handleStatusSelectChange(evt, value)}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label="Status"
+                      variant="outlined"
+                      placeholder="Status"
+                      fullWidth
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={6} md={6} lg={6}>
+                <Autocomplete
+                  id="combo-box-demo"
+                  size="small"
+                  options={priority}
+                  getOptionLabel={option => option.label}
+                  onChange={(evt, value) => handlePrioritySelectChange(evt, value)}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label="Urgency Level"
+                      variant="outlined"
+                      placeholder="Urgency"
+                      fullWidth
+                    />
+                  )}
+                />
+              </Grid>
+            </Grid>
           ) : (
-            <div>
-              <Autocomplete
-                id="combo-box-demo"
-                options={listOfVendorsData}
-                getOptionLabel={option => option.busName}
-                onChange={(evt, value) => handleSelectChange(evt, value)}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label="Search Vendors"
-                    variant="outlined"
-                    placeholder="Vendors"
-                    fullWidth
-                  />
-                )}
-              />
-              <TextField
-                id="standard-amountBal"
-                label="Amount Balance"
-                variant="outlined"
-                className={classes.textField}
-                value={values.amountBal}
-                onChange={handleChange('amountBal')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-amountPaid"
-                label="Amount Paid"
-                variant="outlined"
-                className={classes.textField}
-                value={values.amountPaid}
-                onChange={handleChange('amountPaid')}
-                margin="normal"
-                fullWidth
-              />
-              <FormControl component="fieldset">
+            <Grid container spacing={3} className={classes.root}>
+              <Grid item xs={6} md={6} lg={6}>
+                <Autocomplete
+                  id="combo-box-demo"
+                  size="small"
+                  options={listOfVendorsData}
+                  getOptionLabel={option => option.busName}
+                  onChange={(evt, value) => handleSelectChange(evt, value)}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label="Search Vendors"
+                      variant="outlined"
+                      placeholder="Vendors"
+                      fullWidth
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={6} md={6} lg={6}>
+                <TextField
+                  id="standard-amountBal"
+                  label="Amount Balance"
+                  size="small"
+                  variant="outlined"
+                  className={classes.textField}
+                  value={values.amountBal}
+                  onChange={handleChange('amountBal')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6} md={6} lg={6}>
+                <TextField
+                  id="standard-amountPaid"
+                  label="Amount Paid"
+                  size="small"
+                  variant="outlined"
+                  className={classes.textField}
+                  value={values.amountPaid}
+                  onChange={handleChange('amountPaid')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              {/* <FormControl component="fieldset">
                 <FormLabel component="legend">Approve Order.</FormLabel>
                 <br />
                 <FormGroup aria-label="position" row>
@@ -443,18 +469,21 @@ const WorkOrderDialog = props => {
                     labelPlacement="top"
                   />
                 </FormGroup>
-              </FormControl>
-              <TextField
-                id="standard-cost"
-                label="Cost"
-                variant="outlined"
-                className={classes.textField}
-                value={values.cost}
-                onChange={handleChange('cost')}
-                margin="normal"
-                fullWidth
-              />
-
+              </FormControl> */}
+              <Grid item xs={6} md={6} lg={6}>
+                <TextField
+                  id="standard-cost"
+                  label="Cost"
+                  size="small"
+                  variant="outlined"
+                  className={classes.textField}
+                  value={values.cost}
+                  onChange={handleChange('cost')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} md={6} lg={6}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Grid container justify="space-around">
                   <KeyboardDatePicker
@@ -481,72 +510,81 @@ const WorkOrderDialog = props => {
                   />
                 </Grid>
               </MuiPickersUtilsProvider>
-
-              <ItemTable savedItemStore={savedItemStore} />
-
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => openAddItemDialogAction()}
-              >
-                Add Item
-              </Button>
-              <TextField
-                id="standard-phone-number"
-                label="Phone Number"
-                type="number"
-                variant="outlined"
-                className={classes.textField}
-                value={values.number}
-                onChange={handleChange('number')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-employeeID"
-                label="Employee ID"
-                variant="outlined"
-                className={classes.textField}
-                value={values.employeeId}
-                onChange={handleChange('employeeId')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-status"
-                label="Status"
-                variant="outlined"
-                className={classes.textField}
-                margin="normal"
-                value={values.status ? values.status : ''}
-                onChange={handleChange('status')}
-                select
-                fullWidth
-              >
-                {status.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                id="standard-priority"
-                label="Urgency Level"
-                variant="outlined"
-                className={classes.textField}
-                margin="normal"
-                value={values.priority ? values.priority : ''}
-                onChange={handleChange('priority')}
-                select
-                fullWidth
-              >
-                {priority.map(option => (
-                  <MenuItem key={option.label} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
+              </Grid>
+              <Grid item xs={12} md={6} lg={6}>
+                <ItemTable savedItemStore={savedItemStore} />
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => openAddItemDialogAction()}
+                >
+                  Add Item
+                </Button>
+              </Grid>
+              <Grid item xs={6} md={6} lg={6}>
+                <TextField
+                  id="standard-phone-number"
+                  label="Phone Number"
+                  size="small"
+                  type="number"
+                  variant="outlined"
+                  className={classes.textField}
+                  value={values.number}
+                  onChange={handleChange('number')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6} md={6} lg={6}>
+                <TextField
+                  id="standard-employeeID"
+                  label="Employee ID"
+                  size="small"
+                  variant="outlined"
+                  className={classes.textField}
+                  value={values.employeeId}
+                  onChange={handleChange('employeeId')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6} md={6} lg={6}>
+                <Autocomplete
+                  id="combo-box-demo"
+                  size="small"
+                  options={status}
+                  getOptionLabel={option => option.label}
+                  onChange={(evt, value) => handleStatusSelectChange(evt, value)}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label="Status"
+                      variant="outlined"
+                      placeholder="Status"
+                      fullWidth
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={6} md={6} lg={6}>
+                <Autocomplete
+                  id="combo-box-demo"
+                  size="small"
+                  options={priority}
+                  getOptionLabel={option => option.label}
+                  onChange={(evt, value) => handlePrioritySelectChange(evt, value)}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label="Urgency Level"
+                      variant="outlined"
+                      placeholder="Urgency"
+                      fullWidth
+                    />
+                  )}
+                />
+              </Grid>
+            </Grid>
           )}
         </DialogContent>
 
@@ -556,7 +594,6 @@ const WorkOrderDialog = props => {
           ) : (
             <Button
               onClick={() => {
-                // openCreateWorkOrderDialogAction(values),
                 saveWorkOrderAction(values),
                 closeWorkOrderDialogAction()
               }}

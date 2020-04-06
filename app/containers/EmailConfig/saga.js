@@ -62,14 +62,10 @@ export function* saveEmailConfigSaga() {
 // Test connection
 export function* testConnectionSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-
   const testEmailConnectionData = yield select(
     Selectors.makeSelectUserTestConnectionData(),
   );
-  console.log("testEmailConnectionData: ", testEmailConnectionData);
-
   const requestURL = `${Endpoints.TestConnectionApi}`;
-  console.log('postURL --> ', requestURL);
 
   try {
     const testEmailConnectionResponse = yield call(request, requestURL, {

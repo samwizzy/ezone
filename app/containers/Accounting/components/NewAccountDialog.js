@@ -5,13 +5,6 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
-import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
 
 import {
   TextField,
@@ -72,14 +65,13 @@ const NewAccountDialog = props => {
     description: "",
     ezoneBalance: "",
     orgId: "",
-    period: "",
     ref: ""
   });
 
   React.useEffect(() => {
     if (accountDialog.type === 'edit') {
-      const {accountName, accountNumber, accountType, detailType, description, ezoneBalance, orgId, period, ref} = accountDialog.data;
-      setValues({...values, id: accountDialog.data.id, accountName, accountNumber, accountType, detailType, description, ezoneBalance, orgId, period, ref});
+      const {accountName, accountNumber, accountType, detailType, description, ezoneBalance, orgId, ref} = accountDialog.data;
+      setValues({...values, id: accountDialog.data.id, accountName, accountNumber, accountType, detailType, description, ezoneBalance, orgId, ref});
     }
   }, [accountDialog])
 
@@ -90,24 +82,14 @@ const NewAccountDialog = props => {
   };
 
   const handleSelectChange = (name, value) => {
+    console.log('value is -0-> ', value);
     setValues({ ...values, accountType: value.type });
-
-    // Call detail type api
-    dispatchGetDetailTypeAction(value);
   };
 
   const handleDetailTypeSelectChange = (name, value) => {
+    // Call detail type api
+    // dispatchGetDetailTypeAction(value);
     setValues({ ...values, detailType: value.name });
-  };
-
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
-
-  const handleDateChange = date => {
-    let month = date.getMonth() + 1;
-    if (month < 10) {
-      month = `0${month}`;
-    }
-    setValues({ ...values, period: `${date.getFullYear()}-${month}-${date.getDate()}`});
   };
 
 
@@ -127,217 +109,233 @@ const NewAccountDialog = props => {
         <Divider />
         <DialogContent>
           {accountDialog.type === 'new' ? (
-            <div>
-              <TextField
-                id="standard-accountName"
-                label="Account Name"
-                type="name"
-                variant="outlined"
-                className={classes.textField}
-                value={values.accountName}
-                onChange={handleChange('accountName')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-accountNumber"
-                label="Account Code"
-                type="number"
-                variant="outlined"
-                className={classes.textField}
-                value={values.accountNumber}
-                onChange={handleChange('accountNumber')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-ezoneBalance"
-                label="E-Zone Balance"
-                type="number"
-                variant="outlined"
-                className={classes.textField}
-                value={values.ezoneBalance}
-                onChange={handleChange('ezoneBalance')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-ref"
-                label="Reference Code"
-                type="name"
-                variant="outlined"
-                className={classes.textField}
-                value={values.ref}
-                onChange={handleChange('ref')}
-                margin="normal"
-                fullWidth
-              />
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <Grid container justify="space-around">
-                  <KeyboardDatePicker
-                    margin="normal"
-                    id="date-picker-dialog"
-                    label="Select Period"
-                    format="MM/dd/yyyy"
-                    value={selectedDate}
-                    onChange={handleDateChange}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date',
-                    }}
-                  />
-                </Grid>
-              </MuiPickersUtilsProvider>
-              <Autocomplete
-                id="combo-box-demo"
-                options={accountTypeData}
-                getOptionLabel={option => option.type}
-                onChange={(evt, value) => handleSelectChange(evt, value)}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label="Select Account Type"
-                    className={classes.textField}
-                    variant="outlined"
-                    placeholder="Search"
-                    fullWidth
-                  />
-                )}
-              />
-              <Autocomplete
-                id="combo-box-demo"
-                options={detailTypeData}
-                getOptionLabel={option => option.name}
-                onChange={(evt, value) => handleDetailTypeSelectChange(evt, value)}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label="Select Detail Type"
-                    className={classes.textField}
-                    variant="outlined"
-                    placeholder="Search"
-                    fullWidth
-                  />
-                )}
-              />
-              <TextField
-                id="standard-description"
-                label="Description"
-                variant="outlined"
-                className={classes.textField}
-                value={values.description}
-                onChange={handleChange('description')}
-                margin="normal"
-                fullWidth
-                rows={2}
-                multiline
-              />
-            </div>
+            <form className={classes.root}>
+            <Grid container spacing={1}>
+              <Grid item xs={12}>
+                <TextField
+                  id="standard-accountName"
+                  label="Account Name"
+                  type="name"
+                  variant="outlined"
+                  size="small"
+                  className={classes.textField}
+                  value={values.accountName}
+                  onChange={handleChange('accountName')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  id="standard-accountNumber"
+                  label="Account Code"
+                  type="number"
+                  variant="outlined"
+                  size="small"
+                  className={classes.textField}
+                  value={values.accountNumber}
+                  onChange={handleChange('accountNumber')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  id="standard-ezoneBalance"
+                  label="E-Zone Balance"
+                  type="number"
+                  variant="outlined"
+                  size="small"
+                  className={classes.textField}
+                  value={values.ezoneBalance}
+                  onChange={handleChange('ezoneBalance')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  id="standard-ref"
+                  label="Reference Code"
+                  type="name"
+                  variant="outlined"
+                  size="small"
+                  className={classes.textField}
+                  value={values.ref}
+                  onChange={handleChange('ref')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Autocomplete
+                  id="combo-box-demo"
+                  size="small"
+                  options={accountTypeData}
+                  getOptionLabel={option => option.type}
+                  onChange={(evt, value) => handleSelectChange(evt, value)}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label="Select Account Type"
+                      className={classes.textField}
+                      variant="outlined"
+                      placeholder="Search"
+                      fullWidth
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Autocomplete
+                  id="combo-box-demo"
+                  size="small"
+                  options={detailTypeData}
+                  getOptionLabel={option => option.name}
+                  onChange={(evt, value) => handleDetailTypeSelectChange(evt, value)}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label="Select Detail Type"
+                      className={classes.textField}
+                      variant="outlined"
+                      placeholder="Search"
+                      fullWidth
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="standard-description"
+                  label="Description"
+                  variant="outlined"
+                  size="small"
+                  className={classes.textField}
+                  value={values.description}
+                  onChange={handleChange('description')}
+                  margin="normal"
+                  fullWidth
+                  rows={2}
+                  multiline
+                />
+              </Grid>
+            </Grid>
+            </form>
           ) : (
-            <div>
-              <TextField
-                id="standard-accountName"
-                label="Account Name"
-                type="name"
-                variant="outlined"
-                className={classes.textField}
-                value={values.accountName}
-                onChange={handleChange('accountName')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-accountNumber"
-                label="Account Code"
-                type="number"
-                variant="outlined"
-                className={classes.textField}
-                value={values.accountNumber}
-                onChange={handleChange('accountNumber')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-ezoneBalance"
-                label="E-Zone Balance"
-                type="number"
-                variant="outlined"
-                className={classes.textField}
-                value={values.ezoneBalance}
-                onChange={handleChange('ezoneBalance')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-ref"
-                label="Reference Code"
-                type="name"
-                variant="outlined"
-                className={classes.textField}
-                value={values.ref}
-                onChange={handleChange('ref')}
-                margin="normal"
-                fullWidth
-              />
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <Grid container justify="space-around">
-                  <KeyboardDatePicker
-                    margin="normal"
-                    id="date-picker-dialog"
-                    label="Select Period"
-                    format="MM/dd/yyyy"
-                    value={selectedDate}
-                    onChange={handleDateChange}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date',
-                    }}
-                  />
-                </Grid>
-              </MuiPickersUtilsProvider>
-              <Autocomplete
-                id="combo-box-demo"
-                options={accountTypeData}
-                getOptionLabel={option => option.type}
-                onChange={(evt, value) => handleSelectChange(evt, value)}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label="Select Account Type"
-                    className={classes.textField}
-                    variant="outlined"
-                    placeholder="Search"
-                    fullWidth
-                  />
-                )}
-              />
-              <Autocomplete
-                id="combo-box-demo"
-                options={detailTypeData}
-                getOptionLabel={option => option.name}
-                onChange={(evt, value) => handleDetailTypeSelectChange(evt, value)}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label="Select Detail Type"
-                    className={classes.textField}
-                    variant="outlined"
-                    placeholder="Search"
-                    fullWidth
-                  />
-                )}
-              />
-              <TextField
-                id="standard-description"
-                label="Description"
-                variant="outlined"
-                className={classes.textField}
-                value={values.description}
-                onChange={handleChange('description')}
-                margin="normal"
-                fullWidth
-                rows={2}
-                multiline
-              />
-            </div>
+            <form className={classes.root}>
+            <Grid container spacing={1}>
+              <Grid item xs={12}>
+                <TextField
+                  id="standard-accountName"
+                  label="Account Name"
+                  type="name"
+                  variant="outlined"
+                  size="small"
+                  className={classes.textField}
+                  value={values.accountName}
+                  onChange={handleChange('accountName')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  id="standard-accountNumber"
+                  label="Account Code"
+                  type="number"
+                  variant="outlined"
+                  size="small"
+                  className={classes.textField}
+                  value={values.accountNumber}
+                  onChange={handleChange('accountNumber')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  id="standard-ezoneBalance"
+                  label="E-Zone Balance"
+                  type="number"
+                  variant="outlined"
+                  size="small"
+                  className={classes.textField}
+                  value={values.ezoneBalance}
+                  onChange={handleChange('ezoneBalance')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  id="standard-ref"
+                  label="Reference Code"
+                  type="name"
+                  variant="outlined"
+                  size="small"
+                  className={classes.textField}
+                  value={values.ref}
+                  onChange={handleChange('ref')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Autocomplete
+                  id="combo-box-demo"
+                  size="small"
+                  options={accountTypeData}
+                  getOptionLabel={option => option.type}
+                  onChange={(evt, value) => handleSelectChange(evt, value)}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label="Select Account Type"
+                      className={classes.textField}
+                      variant="outlined"
+                      placeholder="Search"
+                      fullWidth
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Autocomplete
+                  id="combo-box-demo"
+                  size="small"
+                  options={detailTypeData}
+                  getOptionLabel={option => option.name}
+                  onChange={(evt, value) => handleDetailTypeSelectChange(evt, value)}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label="Select Detail Type"
+                      className={classes.textField}
+                      variant="outlined"
+                      placeholder="Search"
+                      fullWidth
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="standard-description"
+                  label="Description"
+                  variant="outlined"
+                  size="small"
+                  className={classes.textField}
+                  value={values.description}
+                  onChange={handleChange('description')}
+                  margin="normal"
+                  fullWidth
+                  rows={2}
+                  multiline
+                />
+              </Grid>
+            </Grid>
+            </form>
           )}
         </DialogContent>
 

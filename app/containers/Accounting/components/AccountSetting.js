@@ -36,6 +36,7 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 // import LoadingIndicator from '../../../components/LoadingIndicator';
 import Logo from '../../../images/logo.svg';
+import moment from 'moment'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -91,7 +92,6 @@ const AccountSetting = props => {
 
   const { 
     currentUser,
-    accountingSetupData,
     createAccountingSetupAction
   } = props;
 
@@ -107,10 +107,7 @@ const AccountSetting = props => {
     taxType: ""
   });
 
-  console.log('accountingSetupData -> ', accountingSetupData);
-
   const [selectedDate, setSelectedDate] = React.useState(new Date());
-
   const handleAccountingMethodSelectChange = (name, value) => {
     setValues({ ...values, accountMethod: value.value });
   };
@@ -124,28 +121,19 @@ const AccountSetting = props => {
   };
 
   const handleFinancialYearDateChange = date => {
-    console.log('date -> ', date);
-    let month = date.getMonth() + 1;
-    if (month < 10) {
-      month = `0${month}`;
-    }
     setValues({ 
       ...values, 
-      companyStartDate: `${date.getFullYear()}-${month}-${date.getDate()}`,
-      startDay: `${date.getDate()}`,
-      startMonth: `${month}`
+      companyStartDate: moment(date).format('YYYY-MM-DD'),
+      startDay: Number(moment(date).format('D')),
+      startMonth: Number(moment(date).format('M'))
     });
   };
 
   const handleTaxYearDateChange = date => {
-    let month = date.getMonth() + 1;
-    if (month < 10) {
-      month = `0${month}`;
-    }
     setValues({ 
       ...values,
-      taxDay: `${date.getDate()}`,
-      taxMonth: `${month}`
+      taxDay: Number(moment(date).format('D')),
+      taxMonth: Number(moment(date).format('M'))
     });
   };
 
@@ -334,7 +322,6 @@ AccountSetting.propTypes = {
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
   currentUser: AppSelectors.makeSelectCurrentUser(),
-  accountingSetupData: Selectors.makeSelectGetAccountingSetupData(),
 });
 
 function mapDispatchToProps(dispatch) {

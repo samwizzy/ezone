@@ -26,6 +26,7 @@ import {
   Grid 
 } from '@material-ui/core';
 
+import moment from 'moment'
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
 import LoadingIndicator from '../../../components/LoadingIndicator';
@@ -83,7 +84,10 @@ const AddItemDialog = props => {
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
   const handleDateChange = date => {
-    setValues({ ...values, date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`});
+    setValues({ 
+      ...values, 
+      date: moment(date).format('YYYY-MM-DD')
+    });
   };
 
 
@@ -100,88 +104,103 @@ const AddItemDialog = props => {
         <DialogTitle id="alert-dialog-slide-title">
           {addItemDialog.type === 'new' ? 'Item' : 'Edit Item'}
         </DialogTitle>
-
         <Divider />
-
         <DialogContent>
           {addItemDialog.type === 'new' ? (
-            <div>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <Grid container justify="space-around">
-                  <KeyboardDatePicker
-                    margin="normal"
-                    id="date-picker-dialog"
-                    label="Date"
-                    format="MM/dd/yyyy"
-                    value={selectedDate}
-                    onChange={handleDateChange}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date',
-                    }}
-                  />
-                </Grid>
-              </MuiPickersUtilsProvider>
-              <TextField
-                id="standard-name"
-                label="Item"
-                type="name"
-                variant="outlined"
-                className={classes.textField}
-                value={values.name}
-                onChange={handleChange('name')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-amount"
-                label="Amount"
-                type="number"
-                variant="outlined"
-                className={classes.textField}
-                value={values.amount}
-                onChange={handleChange('amount')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-amountForOneUnit"
-                label="Amount per unit"
-                type="number"
-                variant="outlined"
-                className={classes.textField}
-                value={values.amountForOneUnit}
-                onChange={handleChange('amountForOneUnit')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-totalAmount "
-                label="Total Amount"
-                readOnly
-                type="number"
-                variant="outlined"
-                className={classes.textField}
-                value={values.totalAmount }
-                onChange={handleChange('totalAmount ')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-description"
-                label="Item Description"
-                variant="outlined"
-                className={classes.textField}
-                value={values.description}
-                onChange={handleChange('description')}
-                margin="normal"
-                fullWidth
-                rows={2}
-                multiline
-              />
-            </div>
+            <Grid container spacing={3} className={classes.root}>
+              <Grid item xs={12} md={6} lg={6}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <Grid container justify="space-around">
+                    <KeyboardDatePicker
+                      margin="normal"
+                      id="date-picker-dialog"
+                      label="Date"
+                      size="small"
+                      format="MM/dd/yyyy"
+                      value={selectedDate}
+                      onChange={handleDateChange}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                    />
+                  </Grid>
+                </MuiPickersUtilsProvider>
+              </Grid>
+              <Grid item xs={6} md={6} lg={6}>
+                <TextField
+                  id="standard-name"
+                  label="Item"
+                  size="small"
+                  type="name"
+                  variant="outlined"
+                  className={classes.textField}
+                  value={values.name}
+                  onChange={handleChange('name')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6} md={6} lg={6}>
+                <TextField
+                  id="standard-amount"
+                  label="Amount"
+                  size="small"
+                  type="number"
+                  variant="outlined"
+                  className={classes.textField}
+                  value={values.amount}
+                  onChange={handleChange('amount')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6} md={6} lg={6}>
+                <TextField
+                  id="standard-amountForOneUnit"
+                  label="Amount per unit"
+                  size="small"
+                  type="number"
+                  variant="outlined"
+                  className={classes.textField}
+                  value={values.amountForOneUnit}
+                  onChange={handleChange('amountForOneUnit')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6} md={6} lg={6}>
+                <TextField
+                  id="standard-totalAmount "
+                  label="Total Amount"
+                  size="small"
+                  readOnly
+                  type="number"
+                  variant="outlined"
+                  className={classes.textField}
+                  value={values.totalAmount }
+                  onChange={handleChange('totalAmount ')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} md={6} lg={6}>
+                <TextField
+                  id="standard-description"
+                  label="Item Description"
+                  size="small"
+                  variant="outlined"
+                  className={classes.textField}
+                  value={values.description}
+                  onChange={handleChange('description')}
+                  margin="normal"
+                  fullWidth
+                  rows={2}
+                  multiline
+                />
+              </Grid>
+            </Grid>
           ) : null }
         </DialogContent>
-
         <DialogActions>
           {loading ? (
             <LoadingIndicator />
