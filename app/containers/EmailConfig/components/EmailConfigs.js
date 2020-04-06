@@ -85,6 +85,16 @@ const EmailConfigs = props => {
     // });
   }, []);
 
+  const canSubmitForm = () => {
+    const { host, port, username, password } = values;
+    return (
+      host.length > 0 &&
+      port.length > 0 &&
+      username.length > 0 &&
+      password.length > 0
+    );
+  };
+
   if (loading) {
     return <LoadingIndicator />
   }
@@ -95,31 +105,29 @@ const EmailConfigs = props => {
       <Card className={classes.card} variant="outlined">
         <CardContent>
           <Grid container spacing={3} className={classes.formStyle}>
-            <Grid item xs={12} md={6} lg={6}>
-              <div>
-                <TextField
-                  name="host"
-                  value={values.host}
-                  id="host"
-                  label="Host Name"
-                  variant="outlined"
-                  fullWidth
-                  onChange={handleChange}
-                />
-              </div>
+            <Grid item xs={6} md={6} lg={6}>
+              <TextField
+                name="host"
+                value={values.host}
+                id="host"
+                label="Host Name"
+                size="medium"
+                variant="outlined"
+                fullWidth
+                onChange={handleChange}
+              />
             </Grid>
-            <Grid item xs={12} md={6} lg={3}>
-              <div>
-                <TextField
-                  name="port"
-                  value={values.port}
-                  id="outlined-Port"
-                  label="Port"
-                  variant="outlined"
-                  fullWidth
-                  onChange={handleChange}
-                />
-              </div>
+            <Grid item xs={6} md={6} lg={3}>
+              <TextField
+                name="port"
+                value={values.port}
+                id="outlined-Port"
+                label="Port"
+                size="medium"
+                variant="outlined"
+                fullWidth
+                onChange={handleChange}
+              />
             </Grid>
           </Grid>
           <Divider component="hr" />
@@ -127,31 +135,29 @@ const EmailConfigs = props => {
             Security and Authentication
           </Typography>
           <Grid container spacing={3} className={classes.formStyle}>
-            <Grid item xs={12} md={6} lg={6}>
-              <div>
-                <TextField
-                  name="username"
-                  value={values.username}
-                  id="outlined-Username"
-                  label="Username"
-                  variant="outlined"
-                  fullWidth
-                  onChange={handleChange}
-                />
-              </div>
+            <Grid item xs={6} md={6} lg={6}>
+              <TextField
+                name="username"
+                value={values.username}
+                id="outlined-Username"
+                label="Username"
+                size="medium"
+                variant="outlined"
+                fullWidth
+                onChange={handleChange}
+              />
             </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <div>
-                <TextField
-                  name="password"
-                  value={values.password}
-                  id="outlined-Password"
-                  label="Password"
-                  variant="outlined"
-                  fullWidth
-                  onChange={handleChange}
-                />
-              </div>
+            <Grid item xs={6} md={6} lg={6}>
+              <TextField
+                name="password"
+                value={values.password}
+                id="outlined-Password"
+                label="Password"
+                size="medium"
+                variant="outlined"
+                fullWidth
+                onChange={handleChange}
+              />
             </Grid>
           </Grid>
           <FormGroup>
@@ -174,15 +180,29 @@ const EmailConfigs = props => {
           />
         </FormGroup>
         <Grid item xs={12} md={6} lg={6}>
-          <Button variant="outlined" color="primary" onClick={() => dispatchTestEmailConfigConnectionAction(values)}>
+          <Button 
+            variant="outlined" 
+            color="primary" 
+            onClick={() => dispatchTestEmailConfigConnectionAction(values)}
+          >
             Test Connection
           </Button>
-          <Button variant="contained" color="primary" className={classes.buttonStyle} onClick={() => dispatchUpdateEmailConfigAction(values)}>
+          <Button 
+            variant="contained" 
+            color="primary" 
+            className={classes.buttonStyle} 
+            onClick={() => dispatchUpdateEmailConfigAction(values)}
+            disabled={!canSubmitForm()}
+          >
             Save
           </Button>
-          <Button variant="contained" color="primary" className={classes.buttonStyle}>
+          {/* <Button 
+            variant="contained" 
+            color="primary" 
+            className={classes.buttonStyle}
+          >
             Cancel
-          </Button>
+          </Button> */}
         </Grid>
         </CardContent>
       </Card>

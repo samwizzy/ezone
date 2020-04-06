@@ -67,12 +67,24 @@ const SMSConfigs = props => {
   const handleSelectChange = (name, value) => {
     setValues({ ...values, smsProvider: value });
   };
+  console.log('smsConfigData -> ', smsConfigData);
 
   // Similar to componentDidMount and componentDidUpdate:
-  useEffect(() => {
-    const { gatewayUrl, username, password, sender_id } = smsConfigData;
-    setValues({ ...values, gatewayUrl, username, password, sender_id });
-  }, []);
+  // useEffect(() => {
+  //   const { gatewayUrl, username, password, sender_id } = smsConfigData;
+  //   setValues({ ...values, gatewayUrl, username, password, sender_id });
+  // }, []);
+
+  const canSubmitForm = () => {
+    const { smsProvider, gatewayUrl, sender_id, username, password } = values;
+    return (
+      smsProvider.length > 0 &&
+      gatewayUrl.length > 0 &&
+      sender_id.length > 0 &&
+      username.length > 0 &&
+      password.length > 0
+    );
+  };
 
 
   if (loading) {
@@ -86,6 +98,7 @@ const SMSConfigs = props => {
         <CardContent>
           <Autocomplete
             id="combo-box-demo"
+            size="medium"
             options={smsProviderData}
             getOptionLabel={option => option.providerName}
             onChange={(evt, value) => handleSelectChange(evt, value)}
@@ -101,54 +114,62 @@ const SMSConfigs = props => {
             )}
           />
           <Grid container spacing={3} className={classes.formStyle}>
-            <Grid item xs={12} md={6} lg={6}>
-              <div>
-                <TextField
-                  id="standard-gatewayUrl"
-                  label="Gateway Url"
-                  type="name"
-                  variant="outlined"
-                  className={classes.textField}
-                  value={values.gatewayUrl}
-                  onChange={handleChange('gatewayUrl')}
-                  margin="normal"
-                  fullWidth
-                />
-                <TextField
-                  id="standard-gatewayUrl"
-                  label="Enter username"
-                  type="name"
-                  variant="outlined"
-                  className={classes.textField}
-                  value={values.username}
-                  onChange={handleChange('username')}
-                  margin="normal"
-                  fullWidth
-                />
-                <TextField
-                  id="standard-password"
-                  label="Password"
-                  type="password"
-                  autoComplete="current-password"
-                  variant="outlined"
-                  className={classes.textField}
-                  value={values.password}
-                  onChange={handleChange('password')}
-                  margin="normal"
-                  fullWidth
-                />
-                <TextField
-                  id="standard-sender_id"
-                  label="SMS parameter sender ID"
-                  type="name"
-                  variant="outlined"
-                  className={classes.textField}
-                  value={values.sender_id}
-                  onChange={handleChange('sender_id')}
-                  margin="normal"
-                  fullWidth
-                />
-              </div>
+            <Grid item xs={6} md={6} lg={6}>
+              <TextField
+                id="standard-gatewayUrl"
+                label="Gateway Url"
+                size="medium"
+                type="name"
+                variant="outlined"
+                className={classes.textField}
+                value={values.gatewayUrl}
+                onChange={handleChange('gatewayUrl')}
+                margin="normal"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={6} md={6} lg={6}>
+              <TextField
+                id="standard-sender_id"
+                label="SMS parameter sender ID"
+                size="medium"
+                type="name"
+                variant="outlined"
+                className={classes.textField}
+                value={values.sender_id}
+                onChange={handleChange('sender_id')}
+                margin="normal"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={6} md={6} lg={6}>
+              <TextField
+                id="standard-gatewayUrl"
+                label="Enter username"
+                size="medium"
+                type="name"
+                variant="outlined"
+                className={classes.textField}
+                value={values.username}
+                onChange={handleChange('username')}
+                margin="normal"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={6} md={6} lg={6}>
+              <TextField
+                id="standard-password"
+                label="Password"
+                size="medium"
+                type="password"
+                autoComplete="current-password"
+                variant="outlined"
+                className={classes.textField}
+                value={values.password}
+                onChange={handleChange('password')}
+                margin="normal"
+                fullWidth
+              />
             </Grid>
           </Grid>
           <Grid item xs={12} md={6} lg={6}>
@@ -159,16 +180,22 @@ const SMSConfigs = props => {
             >
               Test Sample Message
             </Button>
-            <Button variant="contained" color="primary" className={classes.buttonStyle} onClick={() => dispatchCreateSmsConfigAction(values)}>
+            <Button 
+              variant="contained" 
+              color="primary" 
+              className={classes.buttonStyle} 
+              onClick={() => dispatchCreateSmsConfigAction(values)}
+              disabled={!canSubmitForm()}
+            >
               Save
             </Button>
-            <Button
+            {/* <Button
               variant="contained"
               color="primary"
               className={classes.buttonStyle}
             >
               Cancel
-            </Button>
+            </Button> */}
           </Grid>
         </CardContent>
       </Card>

@@ -28,8 +28,8 @@ import {
   Divider,
   Slide,
 } from '@material-ui/core';
-import * as AppSelectors from '../../App/selectors';
 
+import * as AppSelectors from '../../App/selectors';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
 import LoadingIndicator from '../../../components/LoadingIndicator';
@@ -178,9 +178,7 @@ const AddVendorDialog = props => {
         <DialogTitle id="alert-dialog-slide-title">
           {vendorDialog.type === 'new' ? 'Vendor' : 'Edit Vendor'}
         </DialogTitle>
-
         <Divider />
-
         <DialogContent>
           {vendorDialog.type === 'new' ? (
             <div>
@@ -202,217 +200,218 @@ const AddVendorDialog = props => {
                 ))}
               </TextField>
               {values.type == 'BUSINESS' ? (
-                <div>
-                  <TextField
-                    id="standard-busName"
-                    label="Business Name"
-                    type="busName"
-                    variant="outlined"
-                    className={classes.textField}
-                    value={values.busName}
-                    onChange={handleChange('busName')}
-                    margin="normal"
-                    fullWidth
-                  />
-                  <TextField
-                    id="standard-registered"
-                    label="registered"
-                    type="registered"
-                    variant="outlined"
-                    className={classes.textField}
-                    value={values.registered}
-                    onChange={handleChange('registered')}
-                    margin="normal"
-                    fullWidth
-                  />
-                  <TextField
-                    id="standard-regNumber"
-                    label="Registration Number"
-                    type="regNumber"
-                    variant="outlined"
-                    className={classes.textField}
-                    value={values.regNumber}
-                    onChange={handleChange('regNumber')}
-                    margin="normal"
-                    fullWidth
-                  />
-                  <TextField
-                    id="standard-regYear"
-                    label="Registration Year"
-                    type="regYear"
-                    variant="outlined"
-                    className={classes.textField}
-                    value={values.regYear}
-                    onChange={handleChange('regYear')}
-                    margin="normal"
-                    fullWidth
-                  />
-                  <TextField
-                    id="standard-noOfEmployees"
-                    label="Number of employees"
-                    type="number"
-                    variant="outlined"
-                    className={classes.textField}
-                    value={values.noOfEmployees}
-                    onChange={handleChange('noOfEmployees')}
-                    margin="normal"
-                    fullWidth
-                  />
-                  {/* <TextField
-                    id="standard-phone-number"
-                    label="Phone Number"
-                    type="number"
-                    variant="outlined"
-                    className={classes.textField}
-                    value={values.phoneNumber}
-                    onChange={handleChange('phoneNumber')}
-                    margin="normal"
-                    fullWidth
-                  /> */}
-                  <TextField
-                    id="standard-officePhone"
-                    label="Office Phone Number"
-                    type="number"
-                    variant="outlined"
-                    className={classes.textField}
-                    value={values.officePhone}
-                    onChange={handleChange('officePhone')}
-                    margin="normal"
-                    fullWidth
-                  />
-                  <TextField
-                    id="standard-country"
-                    label="Select Country"
-                    variant="outlined"
-                    className={classes.textField}
-                    margin="normal"
-                    value={values.country ? values.country : ''}
-                    onChange={handleChange('country')}
-                    select
-                    fullWidth
-                  >
-                    {countryList.map(option => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                  <TextField
-                    id="standard-state"
-                    label="State"
-                    variant="outlined"
-                    className={classes.textField}
-                    value={values.state}
-                    onChange={handleChange('state')}
-                    margin="normal"
-                    fullWidth
-                  />
-                  <TextField
-                    id="standard-city"
-                    label="City"
-                    variant="outlined"
-                    className={classes.textField}
-                    value={values.city}
-                    onChange={handleChange('city')}
-                    margin="normal"
-                    fullWidth
-                  />
-                  <TextField
-                    id="standard-email"
-                    label="Email Address"
-                    type="email"
-                    variant="outlined"
-                    className={classes.textField}
-                    value={values.email}
-                    onChange={handleChange('email')}
-                    margin="normal"
-                    fullWidth
-                  />
-                  <TextField
-                    id="standard-website"
-                    label="Website Link"
-                    variant="outlined"
-                    className={classes.textField}
-                    value={values.website}
-                    onChange={handleChange('website')}
-                    margin="normal"
-                    fullWidth
-                  />
-                  <TextField
-                    id="standard-zip"
-                    label="Zip"
-                    type="number"
-                    variant="outlined"
-                    className={classes.textField}
-                    value={values.zip}
-                    onChange={handleChange('zip')}
-                    margin="normal"
-                    fullWidth
-                  />
-                  {/* <TextField
-                    id="standard-contactName"
-                    label="Contact Name"
-                    variant="outlined"
-                    className={classes.textField}
-                    value={values.contactName}
-                    onChange={handleChange('contactName')}
-                    margin="normal"
-                    fullWidth
-                  /> */}
-                  <TextField
-                    id="standard-contactPhone"
-                    label="Contact Phone"
-                    variant="outlined"
-                    className={classes.textField}
-                    value={values.contactPhone}
-                    onChange={handleChange('contactPhone')}
-                    margin="normal"
-                    fullWidth
-                  />
-                  <TextField
-                    id="standard-fax"
-                    label="Fax"
-                    type="number"
-                    variant="outlined"
-                    className={classes.textField}
-                    value={values.fax}
-                    onChange={handleChange('fax')}
-                    margin="normal"
-                    fullWidth
-                  />
-                  <TextField
-                    id="standard-companyNumber"
-                    label="Company Number"
-                    variant="outlined"
-                    className={classes.textField}
-                    value={values.companyNumber}
-                    onChange={handleChange('companyNumber')}
-                    margin="normal"
-                    fullWidth
-                  />
-                  {/* <TextField
-                    id="standard-employeeID"
-                    label="Employee ID"
-                    variant="outlined"
-                    className={classes.textField}
-                    value={values.employeeId}
-                    onChange={handleChange('employeeId')}
-                    margin="normal"
-                    fullWidth
-                  /> */}
-                  <TextField
-                    id="standard-description"
-                    label="Description"
-                    variant="outlined"
-                    className={classes.textField}
-                    value={values.description}
-                    onChange={handleChange('description')}
-                    margin="normal"
-                    fullWidth
-                    rows={2}
-                    multiline
-                  />
-                </div>
+                <Grid container spacing={3} className={classes.formStyle}>
+                  <Grid item xs={6} md={6} lg={6}>
+                    <TextField
+                      id="standard-busName"
+                      label="Business Name"
+                      type="busName"
+                      variant="outlined"
+                      className={classes.textField}
+                      value={values.busName}
+                      onChange={handleChange('busName')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={6} lg={6}>
+                    <TextField
+                      id="standard-registered"
+                      label="registered"
+                      type="registered"
+                      variant="outlined"
+                      className={classes.textField}
+                      value={values.registered}
+                      onChange={handleChange('registered')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={6} lg={6}>
+                    <TextField
+                      id="standard-regNumber"
+                      label="Registration Number"
+                      type="regNumber"
+                      variant="outlined"
+                      className={classes.textField}
+                      value={values.regNumber}
+                      onChange={handleChange('regNumber')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={6} lg={6}>
+                    <TextField
+                      id="standard-regYear"
+                      label="Registration Year"
+                      type="regYear"
+                      variant="outlined"
+                      className={classes.textField}
+                      value={values.regYear}
+                      onChange={handleChange('regYear')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={6} lg={6}>
+                    <TextField
+                      id="standard-noOfEmployees"
+                      label="Number of employees"
+                      type="number"
+                      variant="outlined"
+                      className={classes.textField}
+                      value={values.noOfEmployees}
+                      onChange={handleChange('noOfEmployees')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={6} lg={6}>
+                    <TextField
+                      id="standard-officePhone"
+                      label="Office Phone Number"
+                      type="number"
+                      variant="outlined"
+                      className={classes.textField}
+                      value={values.officePhone}
+                      onChange={handleChange('officePhone')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={6} lg={6}>
+                    <TextField
+                      id="standard-country"
+                      label="Select Country"
+                      variant="outlined"
+                      className={classes.textField}
+                      margin="normal"
+                      value={values.country ? values.country : ''}
+                      onChange={handleChange('country')}
+                      select
+                      fullWidth
+                    >
+                      {countryList.map(option => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </Grid>
+                  <Grid item xs={6} md={6} lg={6}>
+                    <TextField
+                      id="standard-state"
+                      label="State"
+                      variant="outlined"
+                      className={classes.textField}
+                      value={values.state}
+                      onChange={handleChange('state')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={6} lg={6}>
+                    <TextField
+                      id="standard-city"
+                      label="City"
+                      variant="outlined"
+                      className={classes.textField}
+                      value={values.city}
+                      onChange={handleChange('city')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={6} lg={6}>
+                    <TextField
+                      id="standard-email"
+                      label="Email Address"
+                      type="email"
+                      variant="outlined"
+                      className={classes.textField}
+                      value={values.email}
+                      onChange={handleChange('email')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={6} lg={6}>
+                    <TextField
+                      id="standard-website"
+                      label="Website Link"
+                      variant="outlined"
+                      className={classes.textField}
+                      value={values.website}
+                      onChange={handleChange('website')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={6} lg={6}>
+                    <TextField
+                      id="standard-zip"
+                      label="Zip"
+                      type="number"
+                      variant="outlined"
+                      className={classes.textField}
+                      value={values.zip}
+                      onChange={handleChange('zip')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={6} lg={6}>
+                    <TextField
+                      id="standard-contactPhone"
+                      label="Contact Phone"
+                      variant="outlined"
+                      className={classes.textField}
+                      value={values.contactPhone}
+                      onChange={handleChange('contactPhone')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={6} lg={6}>
+                    <TextField
+                      id="standard-fax"
+                      label="Fax"
+                      type="number"
+                      variant="outlined"
+                      className={classes.textField}
+                      value={values.fax}
+                      onChange={handleChange('fax')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={6} lg={6}>
+                    <TextField
+                      id="standard-companyNumber"
+                      label="Company Number"
+                      variant="outlined"
+                      className={classes.textField}
+                      value={values.companyNumber}
+                      onChange={handleChange('companyNumber')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={6} lg={6}>
+                    <TextField
+                      id="standard-description"
+                      label="Description"
+                      variant="outlined"
+                      className={classes.textField}
+                      value={values.description}
+                      onChange={handleChange('description')}
+                      margin="normal"
+                      fullWidth
+                      rows={2}
+                      multiline
+                    />
+                  </Grid>
+                </Grid>
               ) : (
                 <div>
                   <TextField
