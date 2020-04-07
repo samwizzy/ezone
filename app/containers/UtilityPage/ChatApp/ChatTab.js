@@ -284,21 +284,24 @@ const ChatTab = props => {
                           alignItems: 'flex-start',
                         }}
                       >
-                        <Paper className={classes.chatPane}>
-                          <Typography variant="subtitle1">
-                            How you doing brother?
-                          </Typography>
-                          <Typography
-                            variant="caption"
-                            style={{
-                              position: 'absolute',
-                              right: 12,
-                              bottom: 0,
-                            }}
-                          >
-                            05:56 am
-                          </Typography>
-                        </Paper>
+                        {getAllUserChatData &&
+                          getAllUserChatData.messages.map(data => (
+                            <Paper className={classes.chatPane}>
+                              <Typography variant="subtitle1">
+                                {data.chatMessage}
+                              </Typography>
+                              <Typography
+                                variant="caption"
+                                style={{
+                                  position: 'absolute',
+                                  right: 12,
+                                  bottom: 0,
+                                }}
+                              >
+                                05:56 am
+                              </Typography>
+                            </Paper>
+                          ))}
                       </div>
 
                       <ChatFooter />
