@@ -25,7 +25,6 @@ import NoAvailableChats from './components/NoAvailableChats';
 import ChatHeader from './components/ChatHeader';
 import ChatFooter from './components/ChatFooter';
 import ModuleLayout from '../components/ModuleLayout';
-import LoadingIndicator from '../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -49,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     padding: theme.spacing(3),
     borderRadius: '10px',
-    backgroundColor: '#F8F8F8',
+    backgroundColor: 'ddce30',
   },
   button: {
     padding: theme.spacing(1, 4),
@@ -108,7 +107,7 @@ const useStyles = makeStyles(theme => ({
   },
   msgBody: {
     position: 'relative',
-    backgroundColor: '#efefef',
+    backgroundColor: theme.palette.grey[50],
     minHeight: '200px',
     height: '400px',
     overflow: 'auto',
@@ -148,7 +147,6 @@ function a11yProps(index) {
 
 const ChatTab = props => {
   const {
-    loading,
     allEmployees,
     allUsersChat,
     currentUser,
@@ -162,15 +160,22 @@ const ChatTab = props => {
     dispatchGetUserChats();
   }, []);
 
-  // console.log(allEmployees, 'allEmployees');
-  console.log(allUsersChat, 'allUsersChat');
-  console.log(getAllUserChatData, 'getAllUserChatData');
+  console.log(userChatData, 'userChatData');
+  // console.log(getAllUserChatData, 'getAllUserChatData');
   const classes = useStyles();
   const [status, setStatus] = React.useState(false);
 
   const [value, setValue] = React.useState(0);
   const [newChat, setNewChat] = useState();
   const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const handleMenu = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (event, newValue) => {
     setValue(newValue);
   };
 
@@ -190,11 +195,9 @@ const ChatTab = props => {
       responderName: (vl.firstName, vl.lastName),
     };
     setNewChat(initNewChat);
+    // setNewChat([initNewChat]);
   };
 
-  // if (loading) {
-  //   return <LoadingIndicator />;
-  // }
   return (
     <React.Fragment>
       <ModuleLayout>
@@ -204,7 +207,7 @@ const ChatTab = props => {
             <div />
           ) : (
             <Grid justify="center" container>
-              <Grid item xs={12} md={4} style={{ backgroundColor: '#efefef' }}>
+              <Grid item xs={12} md={4}>
                 <Paper square>
                   <div
                     style={{
@@ -323,7 +326,6 @@ const ChatTab = props => {
 };
 
 ChatTab.propTypes = {
-  loading: PropTypes.bool,
   dispatchGetAllEmployees: PropTypes.func,
   dispatchGetUserChats: PropTypes.func,
   allEmployees: PropTypes.array,
@@ -334,7 +336,6 @@ ChatTab.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(),
   userChatData: Selectors.makeSelectGetUserChatData(),
   getAllUserChatData: Selectors.makeSelectGetAllUserChatData(),
   allEmployees: Selectors.makeSelectAllEmployees(),

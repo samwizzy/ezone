@@ -32,7 +32,7 @@ const themesConfig = {
       ongoing: '#1EE11A',
       completed: '#C2C2C2',
     },
-    shadows: ["none"]
+    // shadows: ["none"]
   },
   sunset: {
     palette: {

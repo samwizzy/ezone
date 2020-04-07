@@ -204,7 +204,9 @@ const App = () => (
       </main>
     </AppContext.Provider>
   </div>
+  )
 );
+
 const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {

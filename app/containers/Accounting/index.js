@@ -51,20 +51,20 @@ export function Accounting(props) {
   if (loading) {
     return <LoadingIndicator />
   }
-  else if (accountingSetupData) {
-    // return <Redirect to="/accountChart" />;
-    return (
-      <div>
-        <Helmet>
-          <title>Accounting</title>
-          <meta name="description" content="Description of Accounting" />
-        </Helmet>
-        <AccountChart />
-        {/* <AccountJournal /> */}
-        <NewAccountDialog />
-      </div>
-    );
-  }
+  // else if (accountingSetupData) {
+  //   // return <Redirect to="/accountChart" />;
+  //   return (
+  //     <div>
+  //       <Helmet>
+  //         <title>Accounting</title>
+  //         <meta name="description" content="Description of Accounting" />
+  //       </Helmet>
+  //       <AccountChart />
+  //       {/* <AccountJournal /> */}
+  //       <NewAccountDialog />
+  //     </div>
+  //   );
+  // }
   return (
     <div>
       <Helmet>
@@ -77,7 +77,6 @@ export function Accounting(props) {
 }
 
 Accounting.propTypes = {
-  dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({

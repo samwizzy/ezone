@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, IconButton, Tooltip } from '@material-ui/core';
+import { Button, ButtonGroup, IconButton, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Add } from '@material-ui/icons';
 import NoteAdd from '@material-ui/icons/NoteAdd';
@@ -9,6 +9,10 @@ import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 const useStyles = makeStyles(theme => ({
   iconButton: {
     color: theme.palette.primary.main,
+  },
+  button: {
+    color: theme.palette.primary.main,
+    "& :nth-child(n+2)": {},
   },
   icon: {}
 }));
@@ -25,8 +29,10 @@ export function AddTask(props) {
           size="small"
           className={classes.iconButton}
           onClick={openNewTaskDialog}
+          variant="outlined"
+          startIcon={<Add className={classes.icon} />}
         >
-          <Add className={classes.icon} /> Add Task
+          Add Task
         </Button>
       </Tooltip>
     </React.Fragment>
@@ -39,22 +45,26 @@ export function AddFile(props) {
 
   return (
     <React.Fragment>
-      <Tooltip title="New File">
-        <IconButton
-          className={classes.iconButton}
-          onClick={openFileDialog}
-        >
-          <NoteAdd className={classes.icon} />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="New Folder">
-        <IconButton
-          className={classes.iconButton}
-          onClick={openFolderDialog}
-        >
-          <CreateNewFolderIcon className={classes.icon} />
-        </IconButton>
-      </Tooltip>
+      <ButtonGroup size="small" aria-label="small outlined button group">
+        <Tooltip title="New File">
+          <Button
+            className={classes.button}
+            onClick={openFileDialog}
+            startIcon={<Add className={classes.icon} />}
+          >
+            New File
+          </Button>
+        </Tooltip>
+        <Tooltip title="New Folder">
+          <Button
+            className={classes.button}
+            onClick={openFolderDialog}
+            startIcon={<Add className={classes.icon} />}
+          >
+            New Folder
+          </Button>
+        </Tooltip>
+      </ButtonGroup>
     </React.Fragment>
   );
 }
