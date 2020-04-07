@@ -51,7 +51,18 @@ export function Accounting(props) {
   if (loading) {
     return <LoadingIndicator />
   }
-  else if (accountingSetupData) {
+  else if (accountingSetupData.id == undefined) {
+    return (
+      <div>
+        <Helmet>
+          <title>Accounting</title>
+          <meta name="description" content="Description of Accounting" />
+        </Helmet>
+        <AccountSetting />
+      </div>
+    );
+  } 
+  else if (accountingSetupData.id) {
     // return <Redirect to="/accountChart" />;
     return (
       <div>
@@ -60,20 +71,11 @@ export function Accounting(props) {
           <meta name="description" content="Description of Accounting" />
         </Helmet>
         <AccountChart />
-        <AccountJournal />
+        {/* <AccountJournal /> */}
         <NewAccountDialog />
       </div>
     );
   }
-  return (
-    <div>
-      <Helmet>
-        <title>Accounting</title>
-        <meta name="description" content="Description of Accounting" />
-      </Helmet>
-      <AccountSetting />
-    </div>
-  );
 }
 
 Accounting.propTypes = {
