@@ -189,9 +189,12 @@ const CompanyStructure = props => {
     ),
   };
 
-  if (loading) {
-    return <LoadingIndicator />;
-  }
+  console.log(partyGroupData, 'partyGroupData');
+  console.log(loading, 'loading');
+
+  // if (loading) {
+  //   return <LoadingIndicator />;
+  // }
 
   if (!partyGroupData.length) {
     return (

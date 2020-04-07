@@ -180,6 +180,7 @@ const companyStructurePageReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_PARTY_GROUP_SUCCESS: {
+        console.log(action, 'action.payload');
         return {
           ...state,
           loading: false,
