@@ -29,13 +29,13 @@ export function* getAllEmployees() {
     yield put(Actions.getAllEmployeesSuccess(getAllEmployeesResponse));
   } catch (err) {
     yield put(Actions.getAllEmployeesError(err));
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: `${err}`,
-        status: 'error',
-      }),
-    );
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: `${err}`,
+    //     status: 'error',
+    //   }),
+    // );
   }
 }
 
@@ -62,32 +62,32 @@ export function* createNewEmployee() {
     yield put(Actions.getAllEmployees());
     yield put(Actions.closeNewEmployeeDialog());
 
-    if (createNewEmployeeResponse.success === true) {
-      yield put(
-        AppActions.openSnackBar({
-          open: true,
-          message: createNewEmployeeResponse.message,
-          status: 'success',
-        }),
-      );
-    } else {
-      yield put(
-        AppActions.openSnackBar({
-          open: true,
-          message: createNewEmployeeResponse.message,
-          status: 'warning',
-        }),
-      );
-    }
+    // if (createNewEmployeeResponse.success === true) {
+    //   yield put(
+    //     AppActions.openSnackBar({
+    //       open: true,
+    //       message: createNewEmployeeResponse.message,
+    //       status: 'success',
+    //     }),
+    //   );
+    // } else {
+    //   yield put(
+    //     AppActions.openSnackBar({
+    //       open: true,
+    //       message: createNewEmployeeResponse.message,
+    //       status: 'warning',
+    //     }),
+    //   );
+    // }
   } catch (err) {
     yield put(Actions.createNewEmployeeError(err));
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: `${err}`,
-        status: 'error',
-      }),
-    );
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: `${err}`,
+    //     status: 'error',
+    //   }),
+    // );
   }
 }
 
