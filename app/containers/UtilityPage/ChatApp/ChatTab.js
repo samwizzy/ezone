@@ -25,6 +25,7 @@ import NoAvailableChats from './components/NoAvailableChats';
 import ChatHeader from './components/ChatHeader';
 import ChatFooter from './components/ChatFooter';
 import ModuleLayout from '../components/ModuleLayout';
+import LoadingIndicator from '../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -142,6 +143,7 @@ function a11yProps(index) {
 
 const ChatTab = props => {
   const {
+    loading,
     allEmployees,
     allUsersChat,
     currentUser,
@@ -155,22 +157,15 @@ const ChatTab = props => {
     dispatchGetUserChats();
   }, []);
 
-  console.log(userChatData, 'userChatData');
-  // console.log(getAllUserChatData, 'getAllUserChatData');
+  // console.log(allEmployees, 'allEmployees');
+  console.log(allUsersChat, 'allUsersChat');
+  console.log(getAllUserChatData, 'getAllUserChatData');
   const classes = useStyles();
   const [status, setStatus] = React.useState(false);
 
   const [value, setValue] = React.useState(0);
   const [newChat, setNewChat] = useState();
   const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  const handleMenu = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = (event, newValue) => {
     setValue(newValue);
   };
 
@@ -190,9 +185,11 @@ const ChatTab = props => {
       responderName: (vl.firstName, vl.lastName),
     };
     setNewChat(initNewChat);
-    // setNewChat([initNewChat]);
   };
 
+  // if (loading) {
+  //   return <LoadingIndicator />;
+  // }
   return (
     <React.Fragment>
       <ModuleLayout>
@@ -331,6 +328,7 @@ const ChatTab = props => {
 };
 
 ChatTab.propTypes = {
+  loading: PropTypes.bool,
   dispatchGetAllEmployees: PropTypes.func,
   dispatchGetUserChats: PropTypes.func,
   allEmployees: PropTypes.array,
@@ -341,6 +339,7 @@ ChatTab.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  loading: Selectors.makeSelectLoading(),
   userChatData: Selectors.makeSelectGetUserChatData(),
   getAllUserChatData: Selectors.makeSelectGetAllUserChatData(),
   allEmployees: Selectors.makeSelectAllEmployees(),
