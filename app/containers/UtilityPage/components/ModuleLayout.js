@@ -15,12 +15,17 @@ import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import RefreshSharp from '@material-ui/icons/RefreshSharp';
 import * as Actions from '../actions';
 import UserMenu from '../../../components/layouts/shared-components/UserMenu';
+import navBarImage from '../../../images/navbarImage.jpg';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     height: "100vh"
+  },
+  appBar: {
+    background: `${theme.palette.primary.main} url(${navBarImage}) no-repeat right top`,
+    backgroundSize: "100%",
   },
   content: {
     flexGrow: 1,
@@ -35,23 +40,37 @@ const useStyles = makeStyles(theme => ({
     '& > div:first-child': {
       display: 'flex',
       justifyContent: 'space-between',
+      color: theme.palette.common.white,
       '& a': {
+        display: "block",
         color: theme.palette.common.white,
         marginLeft: '20px',
-        borderRadius: 0,
+        borderRadius: theme.spacing(2, 2, 0, 0),
         textDecoration: 'none',
         display: 'flex',
         alignItems: 'center',
         textTransform: 'uppercase',
-        padding: theme.spacing(1),
-        '& :hover': {
-          color: fade(theme.palette.common.white, 0.5),
-          backgroundColor: 'red',
+        padding: theme.spacing(0, 4),
+        '&:hover': {
+          color: theme.palette.primary.main,
+          backgroundColor: theme.palette.common.white,
+        },
+        '& [class^="makeStyles-active"]': {
+          color: `${darken(theme.palette.primary.main, 0.5)} !important`,
+        },
+        '&:active': {
+          color: theme.palette.primary.main,
+        },
+        '&:focus': {
+          color: darken(theme.palette.primary.main, 0.5),
         },
       },
     },
   },
-  active: { backgroundColor: darken(theme.palette.primary.main, 0.25) },
+  active: { 
+    backgroundColor: theme.palette.common.white,  
+    color: `${darken(theme.palette.primary.main, 0.5)} !important`,
+  },
 }));
 
 
@@ -64,7 +83,7 @@ function ModuleLayout(props) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="relative" color="secondary">
+      <AppBar position="relative" color="inherit" className={classes.appBar}>
         <Toolbar variant="dense" className={classes.toolbar}>
           <div>
             <IconButton aria-label="delete" onClick={refreshPage}>
