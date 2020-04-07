@@ -28,6 +28,8 @@ const HumanResourcePage = props => {
     const { match } = props
     const { params } = match
 
+    console.log(params, "params tired")
+
     switch(params.sectionId){
         case 'employees':
             return <EmployeesApp />

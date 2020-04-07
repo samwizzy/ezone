@@ -181,9 +181,7 @@ const styles = theme => ({
       display: 'none',
     },
   },
-  SwipeableDrawer: {
-    
-  }
+  SwipeableDrawer: {}
 });
 
 function Header(props) {

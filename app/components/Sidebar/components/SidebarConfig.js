@@ -10,9 +10,7 @@ const SidebarConfig = [
     module: 'utility',
     menus: [
       { id: 1, name: 'Dashboard', url: '/dashboard', icon: 'dashboard' },
-      {
-        id: 2,
-        name: 'Organization',
+      { id: 2, name: 'Organization',
         url: '/organization',
         icon: 'business_center',
       },
@@ -28,7 +26,7 @@ const SidebarConfig = [
     module: 'hr',
     menus: [
       { id: 1, name: 'Dashboard', url: '/hr/employee', icon: 'dashboard' },
-      { id: 2, name: 'Organization', url: 'hr/employee', icon: 'business_center'},
+      { id: 2, name: 'Organization', url: '/hr/employee', icon: 'business_center'},
       { id: 3, name: 'Recruitment', url: '/hr/recruitment', icon: 'find_in_page' },
       { id: 4, name: 'Attendance', url: '/hr/attendance', icon: 'person' },
       { id: 5, name: 'Payroll', url: '/hr/payroll', icon: 'payment' },

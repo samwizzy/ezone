@@ -21,9 +21,11 @@ import { createStructuredSelector } from 'reselect';
 import classNames from 'classnames';
 import EditOutlined from '@material-ui/icons/EditOutlined';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
+import { fade, darken, lighten } from '@material-ui/core/styles/colorManipulator';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import firstmarine from '../../../../images/firstmarine.svg';
+import TaskIcon from '../../../../images/TaskIcon.svg';
 import user from '../../../../images/user.svg';
 import msg from '../../../../images/msg.svg';
 import phone2 from '../../../../images/phone2.svg';
@@ -43,6 +45,7 @@ const useStyles = makeStyles(theme => ({
     width: theme.spacing(12),
     height: theme.spacing(12),
     marginRight: theme.spacing(1),
+    border: `1px solid ${lighten(theme.palette.primary.main, 0.3)}`
   },
   paper: {
     padding: theme.spacing(4, 8),
@@ -90,7 +93,7 @@ const OrgInfo = props => {
                 <ListItemAvatar>
                   <Avatar
                     alt="Company Logo"
-                    src={firstmarine}
+                    src={TaskIcon}
                     className={classes.avatar}
                   />
                 </ListItemAvatar>

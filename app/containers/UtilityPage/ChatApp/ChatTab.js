@@ -25,14 +25,19 @@ import NoAvailableChats from './components/NoAvailableChats';
 import ChatHeader from './components/ChatHeader';
 import ChatFooter from './components/ChatFooter';
 import ModuleLayout from '../components/ModuleLayout';
+import LoadingIndicator from '../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
   },
   messageRow: {
-    '&.me': {},
-    '&.contact': {},
+    border: `1px solid ${theme.palette.grey[300]}`,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    '&.me': {justifyContent: 'flex-end'},
+    '&.contact': {justifyContent: 'flex-start'},
     '&.first-of-group': {},
     '&.last-of-group': {},
   },
@@ -92,11 +97,12 @@ const useStyles = makeStyles(theme => ({
   chatPane: {
     display: 'flex',
     position: 'relative',
+    margin: theme.spacing(1, 0),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: theme.palette.primary.main,
     padding: theme.spacing(1, 12, 1, 2),
-    borderRadius: '0 20px 20px 20px',
+    borderRadius: '0 50px 50px 50px',
     whiteSpace: 'pre-wrap',
     color: theme.palette.common.white,
   },
@@ -142,6 +148,7 @@ function a11yProps(index) {
 
 const ChatTab = props => {
   const {
+    loading,
     allEmployees,
     allUsersChat,
     currentUser,
@@ -155,22 +162,15 @@ const ChatTab = props => {
     dispatchGetUserChats();
   }, []);
 
-  console.log(userChatData, 'userChatData');
-  // console.log(getAllUserChatData, 'getAllUserChatData');
+  // console.log(allEmployees, 'allEmployees');
+  console.log(allUsersChat, 'allUsersChat');
+  console.log(getAllUserChatData, 'getAllUserChatData');
   const classes = useStyles();
   const [status, setStatus] = React.useState(false);
 
   const [value, setValue] = React.useState(0);
   const [newChat, setNewChat] = useState();
   const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  const handleMenu = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = (event, newValue) => {
     setValue(newValue);
   };
 
@@ -190,9 +190,11 @@ const ChatTab = props => {
       responderName: (vl.firstName, vl.lastName),
     };
     setNewChat(initNewChat);
-    // setNewChat([initNewChat]);
   };
 
+  // if (loading) {
+  //   return <LoadingIndicator />;
+  // }
   return (
     <React.Fragment>
       <ModuleLayout>
@@ -216,7 +218,7 @@ const ChatTab = props => {
                       id="combo-box-demo"
                       options={allEmployees}
                       getOptionLabel={option => option.firstName}
-                      style={{ width: 800 }}
+                      style={{ width: "100%" }}
                       onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
                       renderInput={params => (
                         <TextField
@@ -265,27 +267,15 @@ const ChatTab = props => {
                   </Grid>
                   <Grid item xs={12}>
                     <div className={classes.msgBody}>
+                    {[0,1,2,3].map(chat => 
                       <div
                         className={classNames(
                           classes.messageRow,
-                          { me: 'item.id' === 'user.id' },
-                          { contact: 'item.id' !== 'user.id' },
-                          {
-                            'first-of-group': isFirstMessageOfGroup(
-                              'item',
-                              'i',
-                            ),
-                          },
-                          {
-                            'last-of-group': isLastMessageOfGroup('item', 'i'),
-                          },
+                          { me: true },
+                          { contact: false },
+                          { 'first-of-group': isFirstMessageOfGroup('item', 'i') },
+                          { 'last-of-group': isLastMessageOfGroup('item', 'i') },
                         )}
-                        style={{
-                          border: '1px solid #efefef',
-                          display: 'flex',
-                          justifyContent: 'justify-end',
-                          alignItems: 'flex-start',
-                        }}
                       >
                         <Paper className={classes.chatPane}>
                           <Typography variant="subtitle1">
@@ -302,7 +292,9 @@ const ChatTab = props => {
                             05:56 am
                           </Typography>
                         </Paper>
+                        
                       </div>
+                      )}
 
                       <ChatFooter />
                     </div>
@@ -331,6 +323,7 @@ const ChatTab = props => {
 };
 
 ChatTab.propTypes = {
+  loading: PropTypes.bool,
   dispatchGetAllEmployees: PropTypes.func,
   dispatchGetUserChats: PropTypes.func,
   allEmployees: PropTypes.array,
@@ -341,6 +334,7 @@ ChatTab.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  loading: Selectors.makeSelectLoading(),
   userChatData: Selectors.makeSelectGetUserChatData(),
   getAllUserChatData: Selectors.makeSelectGetAllUserChatData(),
   allEmployees: Selectors.makeSelectAllEmployees(),

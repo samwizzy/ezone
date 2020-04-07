@@ -29,7 +29,6 @@ import Employees from '../UsersPage/EmployeePage/Loadable';
 import UserProfilePage from '../UsersPage/UserProfilePage/Loadable';
 import UtilityPage from '../UtilityPage/Loadable';
 import ChatApp from '../UtilityPage/ChatApp/ChatTab';
-// import ChatApp from '../UtilityPage/ChatApp/Loadable';
 import TasksPage from '../UtilityPage/TasksApp/Loadable';
 import FilesApp from '../UtilityPage/FilesApp/Loadable';
 import HRPage from '../HRPage/Loadable';
@@ -59,155 +58,153 @@ import AccountJournal from '../Accounting/components/AccountJournal';
 
 // import { makeSelectGetSaveToken } from './selectors';
 
-const App = () => {
-  // const [authTokens, setAuthTokens] = useState();
+const App = () => (
+// const [authTokens, setAuthTokens] = useState();
 
-  // const setTokens = data => {
-  //   // localStorage.setItem('tokens', JSON.stringify(data));
-  //   setAuthTokens(data);
-  // };
+// const setTokens = data => {
+//   // localStorage.setItem('tokens', JSON.stringify(data));
+//   setAuthTokens(data);
+// };
 
-  // console.log(makeSelectGetSaveToken(), 'makeSelectGetSaveToken');
+// console.log(makeSelectGetSaveToken(), 'makeSelectGetSaveToken');
 
-  return (
+  (
     <div>
-      {/* <AppContext.Provider value={{ authTokens, setAuthTokens: setTokens }}> */}
-      <AppContext.Provider value={{ sideBarconfig }}>
-        <CssBaseline />
-        <main>
-          <div>
-            <Helmet titleTemplate="%s - Ezone" defaultTitle="Ezone">
-              <meta
-                name="description"
-                content="A React.js Boilerplate application"
-              />
-            </Helmet>
+    {/* <AppContext.Provider value={{ authTokens, setAuthTokens: setTokens }}> */}
+    <AppContext.Provider value={{ sideBarconfig }}>
+      <CssBaseline />
+      <main>
+        <div>
+          <Helmet titleTemplate="%s - Ezone" defaultTitle="Ezone">
+            <meta
+              name="description"
+              content="A React.js Boilerplate application"
+            />
+          </Helmet>
 
-            <Switch>
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/" component={Login} />
-              <Route exact path="/forgot-password" component={ForgotPassword} />
-              <Route exact path="/register" component={Registration} />
-              <Layout3>
-                <PrivateRoute
-                  exact
-                  path="/organization"
-                  component={organizationPage}
-                />
-                <PrivateRoute exact path="/users" component={UsersPage} />
-                <PrivateRoute
-                  exact
-                  path="/users/employees"
-                  component={Employees}
-                />
-                <PrivateRoute
-                  exact
-                  path="/users/profile"
-                  component={UserProfilePage}
-                />
-                <PrivateRoute
-                  exact
-                  path="/organization/company/structure"
-                  component={CompanyStructure}
-                />
-                {/* <PrivateRoute
+          <Switch>
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/" component={Login} />
+            <Route exact path="/forgot-password" component={ForgotPassword} />
+            <Route exact path="/register" component={Registration} />
+            <Layout3>
+              <PrivateRoute
+                exact
+                path="/organization"
+                component={organizationPage}
+              />
+              <PrivateRoute exact path="/users" component={UsersPage} />
+              <PrivateRoute
+                exact
+                path="/users/employees"
+                component={Employees}
+              />
+              <PrivateRoute
+                exact
+                path="/users/profile"
+                component={UserProfilePage}
+              />
+              <PrivateRoute
+                exact
+                path="/organization/company/structure"
+                component={CompanyStructure}
+              />
+              {/* <PrivateRoute
                   exact
                   path="/organization/company/structure/:partyGroupId"
                   component={PartyPage}
                 /> */}
-                <PrivateRoute
-                  exact
-                  path="/organization/company/structure/party/:partyGroupId/:partyId"
-                  component={CompanyStructureParty}
-                />
-                <PrivateRoute
-                  exact
-                  path="/organization/company/structure/position/:partyGroupId/:partyId/:positionId"
-                  component={CompanyStructurePosition}
-                />
-                {/* <PrivateRoute exact path="/dashboard" component={UtilityPage} /> */}
-                <PrivateRoute exact path="/dashboard" component={UtilityPage} />
-                <PrivateRoute
-                  exact
-                  path="/dashboard/tasks"
-                  component={TasksPage}
-                />
-                <PrivateRoute
-                  exact
-                  path="/dashboard/task/:id"
-                  component={TasksPage}
-                />
-                <PrivateRoute
-                  exact
-                  path="/dashboard/folders"
-                  component={FilesApp}
-                />
-                <PrivateRoute
-                  exact
-                  path="/dashboard/folder/:folderId"
-                  component={FilesApp}
-                />
-                <PrivateRoute
-                  exact
-                  path="/dashboard/chats"
-                  component={ChatApp}
-                />
+              <PrivateRoute
+                exact
+                path="/organization/company/structure/party/:partyGroupId/:partyId"
+                component={CompanyStructureParty}
+              />
+              <PrivateRoute
+                exact
+                path="/organization/company/structure/position/:partyGroupId/:partyId/:positionId"
+                component={CompanyStructurePosition}
+              />
+              {/* <PrivateRoute exact path="/dashboard" component={UtilityPage} /> */}
+              <PrivateRoute exact path="/dashboard" component={UtilityPage} />
+              <PrivateRoute
+                exact
+                path="/dashboard/tasks"
+                component={TasksPage}
+              />
+              <PrivateRoute
+                exact
+                path="/dashboard/task/:id"
+                component={TasksPage}
+              />
+              <PrivateRoute
+                exact
+                path="/dashboard/folders"
+                component={FilesApp}
+              />
+              <PrivateRoute
+                exact
+                path="/dashboard/folder/:folderId"
+                component={FilesApp}
+              />
+              <PrivateRoute exact path="/dashboard/chats" component={ChatApp} />
 
-                <PrivateRoute exact path="/email" component={EmailConfig} />
-                <PrivateRoute path="/email/configuration" component={EmailConfigs} />
-                <PrivateRoute exact path="/email/template" component={EmailTemplates} />
-                <PrivateRoute exact path="/email/template/:emailType" component={EmailTemplates} />
-                <PrivateRoute
-                  path="/email/password/template"
-                  component={EmailPasswordTemplate}
-                />
-                <PrivateRoute exact path="/home" component={HomePage} />
-                <PrivateRoute path="/WorkOrder" component={WorkOrderPage} />
-                <PrivateRoute exact path="/hr" component={HRPage} />
-                <PrivateRoute exact path="/hr/:sectionId" component={HRPage} />
-                <PrivateRoute path="/account" component={AccountPage} />
-                <PrivateRoute path="/accountChart" component={AccountChart} />
-                <PrivateRoute path="/accountJournal" component={AccountJournal} />
-                <PrivateRoute
-                  exact
-                  path="/inventory"
-                  component={InventoryPage}
-                />
-                <PrivateRoute
-                  path="/inventory/warehouses"
-                  component={WarehousePage}
-                />
-                <PrivateRoute
-                  exact
-                  path="/inventory/items"
-                  component={ItemPage}
-                />
-                <PrivateRoute
-                  exact
-                  path="/inventory/transfer/orders"
-                  component={TransferOrdersList}
-                />
-                <PrivateRoute
-                  exact
-                  path="/inventory/transfer/new"
-                  component={NewTransferOrder}
-                />
-                <PrivateRoute
-                  exact
-                  path="/inventory/inventory/adjustments"
-                  component={InventoryAdjustmentList}
-                />
-              </Layout3>
-              <Route path="" component={NotFoundPage} />
-            </Switch>
-            <Snackbar />
-          </div>
-        </main>
-      </AppContext.Provider>
-    </div>
-  );
-};
-
+              <PrivateRoute exact path="/email" component={EmailConfig} />
+              <PrivateRoute
+                path="/email/configuration"
+                component={EmailConfigs}
+              />
+              <PrivateRoute
+                path="/email/template/:emailType?"
+                component={EmailTemplates}
+              />
+              {/* <PrivateRoute exact path="/email/template/:emailType" component={EmailTemplates} /> */}
+              <PrivateRoute
+                path="/email/password/template"
+                component={EmailPasswordTemplate}
+              />
+              <PrivateRoute exact path="/home" component={HomePage} />
+              <PrivateRoute path="/WorkOrder" component={WorkOrderPage} />
+              <PrivateRoute
+                path="/hr/:sectionId?/:status?"
+                component={HRPage}
+              />
+              <PrivateRoute path="/account" component={AccountPage} />
+              <PrivateRoute path="/accountChart" component={AccountChart} />
+              <PrivateRoute path="/accountJournal" component={AccountJournal} />
+              <PrivateRoute exact path="/inventory" component={InventoryPage} />
+              <PrivateRoute
+                path="/inventory/warehouses"
+                component={WarehousePage}
+              />
+              <PrivateRoute
+                exact
+                path="/inventory/items"
+                component={ItemPage}
+              />
+              <PrivateRoute
+                exact
+                path="/inventory/transfer/orders"
+                component={TransferOrdersList}
+              />
+              <PrivateRoute
+                exact
+                path="/inventory/transfer/new"
+                component={NewTransferOrder}
+              />
+              <PrivateRoute
+                exact
+                path="/inventory/inventory/adjustments"
+                component={InventoryAdjustmentList}
+              />
+            </Layout3>
+            <Route path="" component={NotFoundPage} />
+          </Switch>
+          <Snackbar />
+        </div>
+      </main>
+    </AppContext.Provider>
+  </div>
+);
 const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
