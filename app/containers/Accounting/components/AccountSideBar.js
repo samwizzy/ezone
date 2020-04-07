@@ -7,10 +7,9 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import Description from '@material-ui/icons/Description'
-import * as Actions from '../actions';
-import * as Selectors from './../selectors';
-import * as AppSelectors from './../../App/selectors'; 
-import Delete from '@material-ui/icons/Delete';  
+// import * as Actions from '../actions';
+// import * as Selectors from './../selectors';
+// import * as AppSelectors from './../../App/selectors'; 
 import Share from '@material-ui/icons/Share';  
 import StarOutlined from '@material-ui/icons/StarOutlined';
 
@@ -32,15 +31,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const FolderSideBar = props => {
+const AccountSideBar = props => {
   const classes = useStyles();
-  const { loading, folders, folder, user, getAllFoldersAndDocs, getFavoriteDocuments } = props
+//   const { loading, folders, folder, user, getAllFoldersAndDocs, getFavoriteDocuments } = props
 
-  const getAllFolders = () => {
-    getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
-    setPrevIds([])
-    props.history.push('/dashboard/folders')
-  }
+//   const getAllFolders = () => {
+//     getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
+//     setPrevIds([])
+//     props.history.push('/dashboard/folders')
+//   }
   
   return (
     <div className={classes.root}>
@@ -49,56 +48,60 @@ const FolderSideBar = props => {
         aria-label="secondary mailbox folders"
         subheader={
           <ListSubheader component="div" id="nested-list-subheader">
-            <Typography variant="h6">Status</Typography>
+            <Typography variant="h6">Account</Typography>
           </ListSubheader>
         }
       >
-        <ListItem button onClick={getAllFolders}>
+        <ListItem button 
+        //  onClick={getAllFolders}
+        >
           <ListItemIcon>
             <Description />
           </ListItemIcon>
-          <ListItemText primary="All" />
+          <ListItemText primary="Chart" />
         </ListItem>
-        <ListItem button onClick={() => getFavoriteDocuments(user.uuId)}>
+        <ListItem button 
+        //  onClick={() => getFavoriteDocuments(user.uuId)}
+        >
           <ListItemIcon>
             <StarOutlined />
           </ListItemIcon>
-          <ListItemText primary="Favorite" />
+          <ListItemText primary="Journal" />
         </ListItem>
-        <ListItem button onClick={() => getAllFoldersAndDocs({folderId: 3, type: 'SHARED'})}>
+        <ListItem button 
+        //  onClick={() => getAllFoldersAndDocs({folderId: 3, type: 'SHARED'})}
+        >
           <ListItemIcon>
             <Share />
           </ListItemIcon>
-          <ListItemText primary="Shared" />
+          <ListItemText primary="Banking" />
         </ListItem>
-        <ListItem button onClick={() => getAllFoldersAndDocs({folderId: 2, type: 'TRASHED'})}>
-          <ListItemIcon>
-            <Delete />
-          </ListItemIcon>
-          <ListItemText primary="Trashjdjddjhd" />
+        <ListItem button 
+        //  onClick={() => getAllFoldersAndDocs({folderId: 2, type: 'TRASHED'})}
+        >
         </ListItem>
       </List>
     </div>
   );
 };
 
-FolderSideBar.propTypes = {
-  loading: PropTypes.bool,
-  getAllFoldersAndDocs: PropTypes.func,
-  getFavoriteDocuments: PropTypes.func,
+AccountSideBar.propTypes = {
+//   loading: PropTypes.bool,
+//   getAllFoldersAndDocs: PropTypes.func,
+//   getFavoriteDocuments: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(),
-  folders: Selectors.makeSelectFolders(),
-  folder: Selectors.makeSelectFolder(),
-  user: AppSelectors.makeSelectCurrentUser(),
+//   loading: Selectors.makeSelectLoading(),
+//   folders: Selectors.makeSelectFolders(),
+//   folder: Selectors.makeSelectFolder(),
+//   user: AppSelectors.makeSelectCurrentUser(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAllFoldersAndDocs: (data) => dispatch(Actions.getAllFoldersAndDocs(data)),
-    getFavoriteDocuments: (uuid) => dispatch(Actions.getFavoriteDocuments(uuid)),
+    // getAllFoldersAndDocs: (data) => dispatch(Actions.getAllFoldersAndDocs(data)),
+    // getFavoriteDocuments: (uuid) => dispatch(Actions.getFavoriteDocuments(uuid)),
   };
 }
 
@@ -111,5 +114,5 @@ export default compose(
   withRouter,
   withConnect,
   memo,
-)(FolderSideBar);
+)(AccountSideBar);
 

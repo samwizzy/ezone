@@ -138,26 +138,6 @@ export function createUtilityTaskSuccess(data) {
   };
 }
 
-export function getUtilityTask(taskId) {
-  return {
-    type: Constants.GET_UTILITY_TASK,
-    payload: taskId,
-  };
-}
-
-export function getUtilityTasks() {
-  return {
-    type: Constants.GET_UTILITY_TASKS,
-  };
-}
-
-export function getUtilityTasksByStatus(status) {
-  return {
-    type: Constants.GET_UTILITY_TASKS_BY_STATUS,
-    payload: status
-  };
-}
-
 export function getEmployees() {
   return {
     type: Constants.GET_EMPLOYEES,
@@ -241,9 +221,22 @@ export function getUserByUUIDSuccess(data) {
   };
 }
 
+export function getUtilityTask(taskId) {
+  return {
+    type: Constants.GET_UTILITY_TASK,
+    payload: taskId,
+  };
+}
+
 export function getUtilityTaskSuccess(data) {
   return {
     type: Constants.GET_UTILITY_TASK_SUCCESS,
+    payload: data,
+  };
+}
+export function getUtilityTaskError(data) {
+  return {
+    type: Constants.GET_UTILITY_TASK_ERROR,
     payload: data,
   };
 }
@@ -339,16 +332,15 @@ export function getTaskCommentsSuccess(data) {
   };
 }
 
-export function getUtilityTasksSuccess(data) {
+export function getUtilityTasks() {
   return {
-    type: Constants.GET_UTILITY_TASKS_SUCCESS,
-    payload: data,
+    type: Constants.GET_UTILITY_TASKS,
   };
 }
 
-export function getUtilityTasksByStatusSuccess(data) {
+export function getUtilityTasksSuccess(data) {
   return {
-    type: Constants.GET_UTILITY_TASKS_BY_STATUS_SUCCESS,
+    type: Constants.GET_UTILITY_TASKS_SUCCESS,
     payload: data,
   };
 }
@@ -357,6 +349,20 @@ export function getUtilityTasksError(err) {
   return {
     type: Constants.GET_UTILITY_TASKS_ERROR,
     payload: err,
+  };
+}
+
+export function getUtilityTasksByStatus(status) {
+  return {
+    type: Constants.GET_UTILITY_TASKS_BY_STATUS,
+    payload: status
+  };
+}
+
+export function getUtilityTasksByStatusSuccess(data) {
+  return {
+    type: Constants.GET_UTILITY_TASKS_BY_STATUS_SUCCESS,
+    payload: data,
   };
 }
 
