@@ -8,15 +8,22 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { AppContext } from '../../../containers/context/AppContext';
+import sidebarImage from '../../../images/sidebarImage.jpg';
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
   },
   list: {
-    backgroundolor: "orange",
-    marginTop: theme.spacing(1),
+    background: `url(${sidebarImage}) no-repeat left -1px`,
+    backgroundSize: "cover",
+    height: `calc(100vh - 66px)`,
+    paddingTop: theme.spacing(1),
     width: '100%',
+    color: theme.palette.common.white,
+    "& .material-icons": {
+      color: theme.palette.common.white,
+    }
   },
 }));
 

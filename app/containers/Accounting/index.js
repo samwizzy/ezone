@@ -60,7 +60,7 @@ export function Accounting(props) {
           <meta name="description" content="Description of Accounting" />
         </Helmet>
         <AccountChart />
-        <AccountJournal />
+        {/* <AccountJournal /> */}
         <NewAccountDialog />
       </div>
     );

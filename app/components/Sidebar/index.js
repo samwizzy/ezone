@@ -10,19 +10,20 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Logo from '../../images/logo.svg';
 import AppSidebar from './components/AppSidebar';
+import sidebarImage from '../../images/sidebarImage.jpg';
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-    // backgroundColor: theme.palette.common.white
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
-    backgroundColor: 'teal',
+    // background: `url(${sidebarImage}) no-repeat left 70px`,
+    // backgroundSize: "cover"
   },
   drawerOpen: {
     width: drawerWidth,
@@ -43,8 +44,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   toolbar: {
-    backgroundColor: "none",
     display: 'flex',
+    backgroundColor: theme.palette.common.white,
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
@@ -81,13 +82,12 @@ function MiniDrawer(props) {
     <div className={classes.root}>
       <Drawer
         variant="permanent"
-        style={{ backgroundColor: '#000'}}
         className={clsx(classes.drawer, {
           [classes.drawerOpen]: open,
           [classes.drawerClose]: !open,
         })}
         classes={{
-          paper: clsx({
+          paper: clsx(classes.drawer, {
             [classes.drawerOpen]: open,
             [classes.drawerClose]: !open,
           }),

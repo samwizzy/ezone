@@ -31,8 +31,12 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
   },
   messageRow: {
-    '&.me': {},
-    '&.contact': {},
+    border: `1px solid ${theme.palette.grey[300]}`,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    '&.me': {justifyContent: 'flex-end'},
+    '&.contact': {justifyContent: 'flex-start'},
     '&.first-of-group': {},
     '&.last-of-group': {},
   },
@@ -92,11 +96,12 @@ const useStyles = makeStyles(theme => ({
   chatPane: {
     display: 'flex',
     position: 'relative',
+    margin: theme.spacing(1, 0),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: theme.palette.primary.main,
     padding: theme.spacing(1, 12, 1, 2),
-    borderRadius: '0 20px 20px 20px',
+    borderRadius: '0 50px 50px 50px',
     whiteSpace: 'pre-wrap',
     color: theme.palette.common.white,
   },
@@ -216,7 +221,7 @@ const ChatTab = props => {
                       id="combo-box-demo"
                       options={allEmployees}
                       getOptionLabel={option => option.firstName}
-                      style={{ width: 800 }}
+                      style={{ width: "100%" }}
                       onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
                       renderInput={params => (
                         <TextField
@@ -265,27 +270,15 @@ const ChatTab = props => {
                   </Grid>
                   <Grid item xs={12}>
                     <div className={classes.msgBody}>
+                    {[0,1,2,3].map(chat => 
                       <div
                         className={classNames(
                           classes.messageRow,
-                          { me: 'item.id' === 'user.id' },
-                          { contact: 'item.id' !== 'user.id' },
-                          {
-                            'first-of-group': isFirstMessageOfGroup(
-                              'item',
-                              'i',
-                            ),
-                          },
-                          {
-                            'last-of-group': isLastMessageOfGroup('item', 'i'),
-                          },
+                          { me: true },
+                          { contact: false },
+                          { 'first-of-group': isFirstMessageOfGroup('item', 'i') },
+                          { 'last-of-group': isLastMessageOfGroup('item', 'i') },
                         )}
-                        style={{
-                          border: '1px solid #efefef',
-                          display: 'flex',
-                          justifyContent: 'justify-end',
-                          alignItems: 'flex-start',
-                        }}
                       >
                         <Paper className={classes.chatPane}>
                           <Typography variant="subtitle1">
@@ -302,7 +295,9 @@ const ChatTab = props => {
                             05:56 am
                           </Typography>
                         </Paper>
+                        
                       </div>
+                      )}
 
                       <ChatFooter />
                     </div>

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   makeStyles,
   AppBar,
+  InputAdornment ,
   Icon,
   IconButton,
   Paper,
@@ -25,8 +26,9 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(1),
   },
   textField: {
-    width: '100%',
+    flex: 1,
   },
+  toolbar: {},
   grow: {
     flexGrow: 1,
   },
@@ -62,7 +64,7 @@ const ChatFooter = props => {
           color="inherit"
           style={{ bottom: 0, top: 'inherit', backgroundColor: 'transparent' }}
         >
-          <Toolbar style={{ border: '1px solid blue' }}>
+          <Toolbar dense className={classes.toolbar}>
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -72,6 +74,7 @@ const ChatFooter = props => {
               <AttachFile />
             </IconButton>
             <Paper
+              component="form" 
               style={{
                 display: 'flex',
                 justifyContent: 'center',
@@ -82,7 +85,6 @@ const ChatFooter = props => {
                 borderRadius: '50px',
               }}
             >
-              {/* <form> */}
               <TextField
                 autoFocus={false}
                 id="filled-full-width"
@@ -94,6 +96,11 @@ const ChatFooter = props => {
                 margin="normal"
                 InputProps={{
                   disableUnderline: true,
+                  // startAdornment: (
+                  //   <InputAdornment position="start">
+                  //     <AttachFile />
+                  //   </InputAdornment>
+                  // ),
                   classes: {
                     root: classes.textField,
                     input: '',
@@ -105,7 +112,6 @@ const ChatFooter = props => {
                   className: classes.bootstrapFormLabel,
                 }}
               />
-              {/* </form> */}
             </Paper>
 
             <div className={classes.grow} />

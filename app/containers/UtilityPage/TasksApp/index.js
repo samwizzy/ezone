@@ -44,6 +44,7 @@ const TasksApp = props => {
         { params.id? 
           <TaskList /> : <TasksList />
         }
+        
         <AddTaskDialog />
         <TaskPreviewDialog />
         <AssignToDialog />
