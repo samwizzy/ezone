@@ -163,25 +163,24 @@ const ChatTab = props => {
   }, []);
 
   // console.log(allEmployees, 'allEmployees');
-  console.log(allUsersChat, 'allUsersChat');
-  console.log(getAllUserChatData, 'getAllUserChatData');
+  // console.log(allUsersChat, 'allUsersChat');
   const classes = useStyles();
   const [status, setStatus] = React.useState(false);
-
+  
   const [value, setValue] = React.useState(0);
   const [newChat, setNewChat] = useState();
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
+  
   const isFirstMessageOfGroup = (item, i) => {
     // return (i === 0 || (props.chat.dialog[i - 1] && props.chat.dialog[i - 1].who !== item.who));
   };
-
+  
   const isLastMessageOfGroup = (item, i) => {
     // return (i === props.chat.dialog.length - 1 || (props.chat.dialog[i + 1] && props.chat.dialog[i + 1].who !== item.who));
   };
-
+  
   const handleEmployeeChange = (event, vl) => {
     const initNewChat = {
       initiator: currentUser.uuId,
@@ -191,6 +190,10 @@ const ChatTab = props => {
     };
     setNewChat(initNewChat);
   };
+
+
+  console.log(currentUser, 'currentUser');
+  console.log(getAllUserChatData, 'getAllUserChatData');
 
   // if (loading) {
   //   return <LoadingIndicator />;
@@ -268,12 +271,12 @@ const ChatTab = props => {
                   <Grid item xs={12}>
                     <div className={classes.msgBody}>
                       {getAllUserChatData &&
-                        getAllUserChatData.messages.map(chat =>
+                        getAllUserChatData.messages.map(chat => (
                           <div
                             className={classNames(
                               classes.messageRow,
-                              { me: true },
-                              { contact: false },
+                              { me: currentUser.uuId === chat.senderId },
+                              { contact: currentUser.uuId !== chat.senderId },
                               {
                                 'first-of-group': isFirstMessageOfGroup(
                                   'item',
@@ -288,7 +291,7 @@ const ChatTab = props => {
                               },
                             )}
                           >
-                            <Paper className={classes.chatPane}>
+                            <Paper className={classes.chatPane} key={chat.id}>
                               <Typography variant="subtitle1">
                                 {chat.chatMessage}
                               </Typography>
@@ -304,7 +307,7 @@ const ChatTab = props => {
                               </Typography>
                             </Paper>
                           </div>
-                        )}
+                        ))}
                       <ChatFooter />
                     </div>
                   </Grid>
@@ -338,7 +341,7 @@ ChatTab.propTypes = {
   allEmployees: PropTypes.array,
   allUsersChat: PropTypes.array,
   currentUser: PropTypes.object,
-  getAllUserChatData: PropTypes.array,
+  getAllUserChatData: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
   userChatData: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
 

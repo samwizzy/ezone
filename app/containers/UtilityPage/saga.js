@@ -680,6 +680,8 @@ export function* getUserChatData() {
       }),
     });
 
+    console.log(userChatDataResponse, 'userChatDataResponse');
+
     yield put(Actions.getUserChatDataSuccess(userChatDataResponse));
   } catch (err) {
     yield put(Actions.getUserChatDataError(err));
