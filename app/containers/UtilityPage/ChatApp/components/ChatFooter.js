@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   makeStyles,
   AppBar,
-  InputAdornment ,
+  InputAdornment,
   Icon,
   IconButton,
   Paper,
@@ -21,7 +21,7 @@ import * as Actions from '../../actions';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    position: "relative"
+    position: 'relative',
   },
   title: {
     flexGrow: 1,
@@ -31,9 +31,9 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
   },
   appBar: {
-    bottom: 0, 
-    top: 'inherit', 
-    backgroundColor: fade(theme.palette.common.white, 0.5)
+    bottom: 0,
+    top: 'inherit',
+    backgroundColor: fade(theme.palette.common.white, 0.5),
   },
   toolbar: {},
   grow: {
@@ -63,13 +63,23 @@ const ChatFooter = props => {
     });
   };
 
+  const onMessageSubmit = evt => {
+    evt.preventDefault();
+    if (values.message === '') {
+      return;
+    }
+
+    dispatchPostMessage(values);
+    setValues({ ...values, message: '' });
+  };
+
   return (
-      <div className={classes.root}>
-        <AppBar
-          className={classes.appBar}
-          position="absolute"
-          color="inherit"
-        >
+    <div className={classes.root}>
+      <form
+        onSubmit={onMessageSubmit}
+        // className="absolute bottom-0 right-0 left-0 py-16 px-8"
+      >
+        <AppBar className={classes.appBar} position="absolute" color="inherit">
           <Toolbar dense className={classes.toolbar}>
             <IconButton
               aria-label="account of current user"
@@ -80,7 +90,7 @@ const ChatFooter = props => {
               <AttachFile />
             </IconButton>
             <Paper
-              component="form" 
+              component="form"
               style={{
                 display: 'flex',
                 justifyContent: 'center',
@@ -103,9 +113,7 @@ const ChatFooter = props => {
                 InputProps={{
                   disableUnderline: true,
                   startAdornment: (
-                    <InputAdornment position="start">
-                      {" "}
-                    </InputAdornment>
+                    <InputAdornment position="start"> </InputAdornment>
                   ),
                   classes: {
                     root: classes.textField,
@@ -136,13 +144,14 @@ const ChatFooter = props => {
               aria-haspopup="true"
               color="inherit"
               type="submit"
-              onClick={() => dispatchPostMessage(values)}
+              // onClick={() => dispatchPostMessage(values)}
             >
               <Icon color="action">send</Icon>
             </IconButton>
           </Toolbar>
         </AppBar>
-      </div>
+      </form>
+    </div>
   );
 };
 

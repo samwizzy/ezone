@@ -308,7 +308,7 @@ const ChatTab = props => {
                             </Paper>
                           </div>
                         ))}
-                      <ChatFooter />
+                      {/* <ChatFooter /> */}
                     </div>
 
                     <ChatFooter />
