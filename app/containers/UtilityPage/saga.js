@@ -668,10 +668,8 @@ export function* getUserChatData() {
 
   const userChatDetails = yield select(Selectors.makeSelectGetUserChatData());
   const requestURL = `${Endpoints.GetUserChatDataApi}/?chatId=${
-    userChatDetails.initiator
-  }&limit=${10}&start=${10}`;
-
-  console.log(requestURL, 'requestURL');
+    userChatDetails.chatId
+  }&limit=${10}&start=${0}`;
 
   try {
     const userChatDataResponse = yield call(request, requestURL, {
@@ -681,6 +679,8 @@ export function* getUserChatData() {
         'Content-Type': 'application/json',
       }),
     });
+
+    console.log(userChatDataResponse, 'userChatDataResponse');
 
     yield put(Actions.getUserChatDataSuccess(userChatDataResponse));
   } catch (err) {

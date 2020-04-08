@@ -189,6 +189,9 @@ const CompanyStructure = props => {
     ),
   };
 
+  // console.log(partyGroupData, 'partyGroupData');
+  // console.log(loading, 'loading');
+
   if (loading) {
     return <LoadingIndicator />;
   }
@@ -247,7 +250,7 @@ CompanyStructure.propTypes = {
   loading: PropTypes.bool,
   dispatchOpenNewPartyGroupAction: PropTypes.func,
   dispatchOpenNewPartyAction: PropTypes.func,
-  partyGroupData: PropTypes.array,
+  partyGroupData: PropTypes.oneOfType(PropTypes.array, PropTypes.bool),
   DispatchgetSelectedPartyGroupAction: PropTypes.func,
   selectedPartyGroupData: PropTypes.oneOfType(PropTypes.object, PropTypes.bool),
 };

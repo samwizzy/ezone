@@ -15,7 +15,7 @@ export const initialState = {
   createNewPartiesData: false,
   createNewPositionData: false,
   createNewPartyGroupData: false,
-  partyGroupData: [],
+  partyGroupData: false,
   loading: false,
   error: false,
   selectedPartyGroupData: false,
@@ -180,6 +180,7 @@ const companyStructurePageReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_PARTY_GROUP_SUCCESS: {
+        console.log(action, 'action.payload');
         return {
           ...state,
           loading: false,

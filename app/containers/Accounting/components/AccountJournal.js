@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -19,6 +19,15 @@ import {
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+
+import { Autocomplete } from '@material-ui/lab';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -65,6 +74,13 @@ const AccountJournal = props => {
   const classes = useStyles();
   const [rows, setRows] = React.useState([{}]);
 
+  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const [values, setValues] = React.useState({});
+
   const addRow = () => {
     const item = {
       itemId: '',
@@ -78,7 +94,22 @@ const AccountJournal = props => {
     setRows(rows.filter((item, id) => id !== idx));
   };
 
-  const { } = props;
+  const handleSelectChange = (name, value) => {
+    setValues({ ...values, currency: taxType.id });
+  };
+
+  const { 
+    dispatchGetAllChartOfAccountTypeAction,
+    chartOfAccountData
+  } = props;
+
+  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {
+    dispatchGetAllChartOfAccountTypeAction();
+  }, []);
+
+  console.log('chartOfAccountData journal -> ', chartOfAccountData);
+
 
   return (
     <ModuleLayout>
@@ -152,18 +183,23 @@ const AccountJournal = props => {
           {rows.map((row, id) => (
             <TableRow key={id}>
               <TableCell align="center">
-                <TextField
-                  id="standard-accountName"
-                  label="Transaction"
-                  size="small"
-                  type="name"
-                  variant="outlined"
-                  className={classes.textField}
-                  // value={values.accountName}
-                  // onChange={handleChange('accountName')}
-                  margin="normal"
-                  fullWidth
-                />
+              <Autocomplete
+                id="combo-box-demo"
+                options={chartOfAccountData}
+                getOptionLabel={option => option.accountNumber}
+                onChange={(evt, value) => handleSelectChange(evt, value)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Select Method"
+                    size="small"
+                    className={classes.textField}
+                    variant="outlined"
+                    placeholder="Search"
+                    fullWidth
+                  />
+                )}
+              />
               </TableCell>
               <TableCell align="center">
                 <TextField
@@ -237,21 +273,16 @@ const AccountJournal = props => {
 
 AccountJournal.propTypes = {
 //   loading: PropTypes.bool,
-//   openNewAccountDialogAction: PropTypes.func,
-//   editOpenAccountDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
 //   loading: Selectors.makeSelectLoading(),
-//   accountTypeData: Selectors.makeSelectAccountTypeData(),
-//   chartOfAccountData: Selectors.makeSelectGetChartOfAccountData(),
+  chartOfAccountData: Selectors.makeSelectGetChartOfAccountData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    // openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
-    // editOpenAccountDialogAction: evt => dispatch(Actions.editOpenAccountDialog(evt)),
-    // deleteChartOfAccountAction: evt => dispatch(Actions.deleteChartOfAccountAction(evt)),
+    dispatchGetAllChartOfAccountTypeAction: () => dispatch(Actions.getAllChartOfAccountTypeAction()),
   };
 }
 

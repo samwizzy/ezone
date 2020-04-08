@@ -16,7 +16,6 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectOrgPage from '../selectors';
 import reducer from '../reducer';
 import saga from '../saga';
-import TabsPage from './components/TabsPage';
 
 import PartyGroupDialog from './components/PartyGroupDialog';
 import PartyDialog from './components/PartyDialog';
@@ -49,7 +48,6 @@ export function CompanyStructurePage(props) {
           content="Description of CompanyStructurePage"
         />
       </Helmet>
-      {/* <TabsPage /> */}
       <CompanyStructure />
 
       <PartyGroupDialog />

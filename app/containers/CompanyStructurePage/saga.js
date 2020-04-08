@@ -24,6 +24,8 @@ export function* getPartyGroupSaga() {
       }),
     });
 
+    // console.log(userPartyGroupResponse, 'userPartyGroupResponse');
+
     yield put(Actions.getPartyGroupSuccessAction(userPartyGroupResponse));
   } catch (err) {
     yield put(Actions.getPartyGroupErrorAction(err));

@@ -148,6 +148,7 @@ export function deleteChartOfAccountErrorAction(data) {
 
 // Get all chart of account 
 export function getAllChartOfAccountTypeAction() {
+  console.log('getAllChartOfAccountTypeAction');
   return {
     type: Constants.GET_ALL_CHART_OF_ACCOUNT,
   };

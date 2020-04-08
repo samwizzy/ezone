@@ -35,8 +35,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'flex-start',
-    '&.me': {justifyContent: 'flex-end'},
-    '&.contact': {justifyContent: 'flex-start'},
+    '&.me': { justifyContent: 'flex-end' },
+    '&.contact': { justifyContent: 'flex-start' },
     '&.first-of-group': {},
     '&.last-of-group': {},
   },
@@ -162,8 +162,8 @@ const ChatTab = props => {
     dispatchGetUserChats();
   }, []);
 
-  console.log(userChatData, 'userChatData');
-  // console.log(getAllUserChatData, 'getAllUserChatData');
+  // console.log(allEmployees, 'allEmployees');
+  // console.log(allUsersChat, 'allUsersChat');
   const classes = useStyles();
   const [status, setStatus] = React.useState(false);
 
@@ -192,6 +192,12 @@ const ChatTab = props => {
     // setNewChat([initNewChat]);
   };
 
+  console.log(currentUser, 'currentUser');
+  console.log(getAllUserChatData, 'getAllUserChatData');
+
+  // if (loading) {
+  //   return <LoadingIndicator />;
+  // }
   return (
     <React.Fragment>
       <ModuleLayout>
@@ -215,7 +221,7 @@ const ChatTab = props => {
                       id="combo-box-demo"
                       options={allEmployees}
                       getOptionLabel={option => option.firstName}
-                      style={{ width: "100%" }}
+                      style={{ width: '100%' }}
                       onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
                       renderInput={params => (
                         <TextField
@@ -263,35 +269,46 @@ const ChatTab = props => {
                     <ChatHeader userChatData={userChatData} />
                   </Grid>
                   <Grid item xs={12}>
-                    <div className={classes.msgBody} ref={msgRef}>
-                    {[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(chat => 
-                      <div
-                        className={classNames(
-                          classes.messageRow,
-                          { me: true },
-                          { contact: false },
-                          { 'first-of-group': isFirstMessageOfGroup('item', 'i') },
-                          { 'last-of-group': isLastMessageOfGroup('item', 'i') },
-                        )}
-                      >
-                        <Paper className={classes.chatPane}>
-                          <Typography variant="subtitle1">
-                            How you doing brother?
-                          </Typography>
-                          <Typography
-                            variant="caption"
-                            style={{
-                              position: 'absolute',
-                              right: 12,
-                              bottom: 0,
-                            }}
+                    <div className={classes.msgBody}>
+                      {getAllUserChatData &&
+                        getAllUserChatData.messages.map(chat => (
+                          <div
+                            className={classNames(
+                              classes.messageRow,
+                              { me: currentUser.uuId === chat.senderId },
+                              { contact: currentUser.uuId !== chat.senderId },
+                              {
+                                'first-of-group': isFirstMessageOfGroup(
+                                  'item',
+                                  'i',
+                                ),
+                              },
+                              {
+                                'last-of-group': isLastMessageOfGroup(
+                                  'item',
+                                  'i',
+                                ),
+                              },
+                            )}
                           >
-                            05:56 am
-                          </Typography>
-                        </Paper>
-                        
-                      </div>
-                      )}
+                            <Paper className={classes.chatPane} key={chat.id}>
+                              <Typography variant="subtitle1">
+                                {chat.chatMessage}
+                              </Typography>
+                              <Typography
+                                variant="caption"
+                                style={{
+                                  position: 'absolute',
+                                  right: 12,
+                                  bottom: 0,
+                                }}
+                              >
+                                05:56 am
+                              </Typography>
+                            </Paper>
+                          </div>
+                        ))}
+                      {/* <ChatFooter /> */}
                     </div>
 
                     <ChatFooter />
@@ -325,7 +342,7 @@ ChatTab.propTypes = {
   allEmployees: PropTypes.array,
   allUsersChat: PropTypes.array,
   currentUser: PropTypes.object,
-  getAllUserChatData: PropTypes.array,
+  getAllUserChatData: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
   userChatData: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
 
