@@ -25,7 +25,6 @@ import NoAvailableChats from './components/NoAvailableChats';
 import ChatHeader from './components/ChatHeader';
 import ChatFooter from './components/ChatFooter';
 import ModuleLayout from '../components/ModuleLayout';
-import LoadingIndicator from '../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,8 +35,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'flex-start',
-    '&.me': {justifyContent: 'flex-end'},
-    '&.contact': {justifyContent: 'flex-start'},
+    '&.me': { justifyContent: 'flex-end' },
+    '&.contact': { justifyContent: 'flex-start' },
     '&.first-of-group': {},
     '&.last-of-group': {},
   },
@@ -49,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     padding: theme.spacing(3),
     borderRadius: '10px',
-    backgroundColor: '#F8F8F8',
+    backgroundColor: 'ddce30',
   },
   button: {
     padding: theme.spacing(1, 4),
@@ -108,11 +107,11 @@ const useStyles = makeStyles(theme => ({
   },
   msgBody: {
     position: 'relative',
-    backgroundColor: '#efefef',
-    minHeight: '200px',
+    backgroundColor: theme.palette.grey[50],
+    minHeight: '400px',
     height: '400px',
     overflow: 'auto',
-    padding: theme.spacing(3, 5),
+    padding: theme.spacing(3, 5, 10, 3),
   },
 }));
 
@@ -146,9 +145,10 @@ function a11yProps(index) {
   };
 }
 
+const msgRef = React.createRef();
+
 const ChatTab = props => {
   const {
-    loading,
     allEmployees,
     allUsersChat,
     currentUser,
@@ -166,21 +166,21 @@ const ChatTab = props => {
   // console.log(allUsersChat, 'allUsersChat');
   const classes = useStyles();
   const [status, setStatus] = React.useState(false);
-  
+
   const [value, setValue] = React.useState(0);
   const [newChat, setNewChat] = useState();
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  
+
   const isFirstMessageOfGroup = (item, i) => {
     // return (i === 0 || (props.chat.dialog[i - 1] && props.chat.dialog[i - 1].who !== item.who));
   };
-  
+
   const isLastMessageOfGroup = (item, i) => {
     // return (i === props.chat.dialog.length - 1 || (props.chat.dialog[i + 1] && props.chat.dialog[i + 1].who !== item.who));
   };
-  
+
   const handleEmployeeChange = (event, vl) => {
     const initNewChat = {
       initiator: currentUser.uuId,
@@ -189,8 +189,8 @@ const ChatTab = props => {
       responderName: (vl.firstName, vl.lastName),
     };
     setNewChat(initNewChat);
+    // setNewChat([initNewChat]);
   };
-
 
   console.log(currentUser, 'currentUser');
   console.log(getAllUserChatData, 'getAllUserChatData');
@@ -207,7 +207,7 @@ const ChatTab = props => {
             <div />
           ) : (
             <Grid justify="center" container>
-              <Grid item xs={12} md={4} style={{ backgroundColor: '#efefef' }}>
+              <Grid item xs={12} md={4}>
                 <Paper square>
                   <div
                     style={{
@@ -221,7 +221,7 @@ const ChatTab = props => {
                       id="combo-box-demo"
                       options={allEmployees}
                       getOptionLabel={option => option.firstName}
-                      style={{ width: "100%" }}
+                      style={{ width: '100%' }}
                       onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
                       renderInput={params => (
                         <TextField
@@ -310,6 +310,8 @@ const ChatTab = props => {
                         ))}
                       <ChatFooter />
                     </div>
+
+                    <ChatFooter />
                   </Grid>
                 </Grid>
                 {/* ) : (
@@ -335,7 +337,6 @@ const ChatTab = props => {
 };
 
 ChatTab.propTypes = {
-  loading: PropTypes.bool,
   dispatchGetAllEmployees: PropTypes.func,
   dispatchGetUserChats: PropTypes.func,
   allEmployees: PropTypes.array,
@@ -346,7 +347,6 @@ ChatTab.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(),
   userChatData: Selectors.makeSelectGetUserChatData(),
   getAllUserChatData: Selectors.makeSelectGetAllUserChatData(),
   allEmployees: Selectors.makeSelectAllEmployees(),

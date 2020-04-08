@@ -13,6 +13,7 @@ import {
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import SettingsVoice from '@material-ui/icons/SettingsVoice';
 import AttachFile from '@material-ui/icons/AttachFile';
 import * as Actions from '../../actions';
@@ -20,6 +21,7 @@ import * as Actions from '../../actions';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+    position: "relative"
   },
   title: {
     flexGrow: 1,
@@ -27,6 +29,11 @@ const useStyles = makeStyles(theme => ({
   },
   textField: {
     flex: 1,
+  },
+  appBar: {
+    bottom: 0, 
+    top: 'inherit', 
+    backgroundColor: fade(theme.palette.common.white, 0.5)
   },
   toolbar: {},
   grow: {
@@ -57,12 +64,11 @@ const ChatFooter = props => {
   };
 
   return (
-    <React.Fragment>
       <div className={classes.root}>
         <AppBar
+          className={classes.appBar}
           position="absolute"
           color="inherit"
-          style={{ bottom: 0, top: 'inherit', backgroundColor: 'transparent' }}
         >
           <Toolbar dense className={classes.toolbar}>
             <IconButton
@@ -96,11 +102,11 @@ const ChatFooter = props => {
                 margin="normal"
                 InputProps={{
                   disableUnderline: true,
-                  // startAdornment: (
-                  //   <InputAdornment position="start">
-                  //     <AttachFile />
-                  //   </InputAdornment>
-                  // ),
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      {" "}
+                    </InputAdornment>
+                  ),
                   classes: {
                     root: classes.textField,
                     input: '',
@@ -137,7 +143,6 @@ const ChatFooter = props => {
           </Toolbar>
         </AppBar>
       </div>
-    </React.Fragment>
   );
 };
 
