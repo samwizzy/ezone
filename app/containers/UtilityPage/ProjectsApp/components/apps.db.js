@@ -1,3 +1,23 @@
+// 1. Accounting Management
+// 2. Warehouse/Store Management
+// 3. Inventory Management
+// 4. Financial Management
+// 5. Manufacturing
+// 6. Budgeting and Expense Monitoring
+// 7. Purchasing
+// 8. Sales Management
+// 9. HR Management
+// 10. CRM
+// 11. Dashboard
+// 12. Distribution Management
+// 13. Enterprise Asset Management
+// 14. Project Management
+// 15. Workorder
+// 16. Task Manager
+// 17. Files and Document Managent
+// 18. Chats (text, Voice, videos)
+// 19. Issues and Escalation management
+
 import AppIcon1 from '../../../../images/app-2.svg';
 import AcctIcon from '../../../../images/acctIcon.svg';
 import StoreIcon from '../../../../images/storeIcon.svg';
@@ -25,7 +45,8 @@ const apps = [
     url: '/dashboard/folders',
     icon: FileIcon,
   },
-  { id: 8, name: 'Projects', url: '/dashboard', icon: ProjectsIcon },
+  { id: 8, name: 'Dashboard', url: '/dashboard', icon: ProjectsIcon },
+  { id: 9, name: 'Chat', url: '/dashboard/chats', icon: ProjectsIcon },
 ];
 
 export default apps;

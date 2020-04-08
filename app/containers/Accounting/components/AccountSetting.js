@@ -19,6 +19,15 @@ import {
   FormControlLabel,
   FormControl,
 } from '@material-ui/core';
+
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+
 import { Autocomplete } from '@material-ui/lab';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -114,6 +123,7 @@ const AccountSetting = props => {
   };
 
   const handleFinancialYearDateChange = date => {
+    console.log('date changed - > ', date);
     setValues({ 
       ...values, 
       companyStartDate: moment(date).format('YYYY-MM-DD'),
@@ -321,7 +331,7 @@ function mapDispatchToProps(dispatch) {
   return {
     // openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
     // editOpenAccountDialogAction: evt => dispatch(Actions.editOpenAccountDialog(evt)),
-    // deleteChartOfAccountAction: evt => dispatch(Actions.deleteChartOfAccountAction(evt)),
+    createAccountingSetupAction: evt => dispatch(Actions.createAccountingSetupAction(evt)),
   };
 }
 

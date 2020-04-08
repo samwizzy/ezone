@@ -15,6 +15,7 @@ import { createStructuredSelector } from 'reselect';
 import * as Actions from '../../../App/actions';
 import OrgInfo from './OrgInfo';
 import UserMenu from '../../../../components/layouts/shared-components/UserMenu';
+import MenuBar from '../../../../components/MenuBar'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -76,9 +77,10 @@ function TabsPage() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="secondary">
-        <Toolbar variant="dense" className={classes.toolbar}>
+      <MenuBar
+        navigations={
           <Tabs
+            elevation={0}
             value={value}
             onChange={handleChange}
             aria-label="simple tabs example"
@@ -90,14 +92,13 @@ function TabsPage() {
               {...a11yProps(0)}
             />
           </Tabs>
-
-          <UserMenu />
-        </Toolbar>
-      </AppBar>
-
-      <TabPanel value={value} index={0}>
-        <OrgInfo />
-      </TabPanel>
+        }
+        content={
+          <TabPanel value={value} index={0}>
+            <OrgInfo />
+          </TabPanel>
+        }
+      />
     </div>
   );
 }
