@@ -94,8 +94,12 @@ const AccountSetting = props => {
 
   const { 
     currentUser,
+    accountingSetupData,
     createAccountingSetupAction
   } = props;
+
+  console.log('accountingSetupData setting.js -> ', accountingSetupData);
+
 
   const [values, setValues] = React.useState({
     accountMethod: "",
@@ -123,7 +127,6 @@ const AccountSetting = props => {
   };
 
   const handleFinancialYearDateChange = date => {
-    console.log('date changed - > ', date);
     setValues({ 
       ...values, 
       companyStartDate: moment(date).format('YYYY-MM-DD'),
@@ -178,6 +181,7 @@ const AccountSetting = props => {
                               label="Select Date"
                               format="MM/dd/yyyy"
                               value={selectedDate}
+                              readOnly={true}
                               onChange={handleFinancialYearDateChange}
                               KeyboardButtonProps={{
                                 'aria-label': 'change date',
@@ -325,6 +329,7 @@ AccountSetting.propTypes = {
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
   currentUser: AppSelectors.makeSelectCurrentUser(),
+  accountingSetupData: Selectors.makeSelectGetAccountingSetupData(),
 });
 
 function mapDispatchToProps(dispatch) {

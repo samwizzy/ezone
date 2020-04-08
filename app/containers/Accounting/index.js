@@ -20,8 +20,8 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import AccountChart from './components/AccountChart';
-import NewAccountDialog from './components/NewAccountDialog';
 import AccountJournal from './components/AccountJournal';
+import NewAccountDialog from './components/NewAccountDialog';
 import AccountSetting from './components/AccountSetting';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
@@ -48,34 +48,34 @@ export function Accounting(props) {
   }, []);
 
 
-  if (loading) {
-    return <LoadingIndicator />
-  }
-  else if (accountingSetupData.id == undefined) {
-    return (
-      <div>
-        <Helmet>
-          <title>Accounting</title>
-          <meta name="description" content="Description of Accounting" />
-        </Helmet>
-        <AccountSetting />
-      </div>
-    );
-  } 
-  else if (accountingSetupData.id) {
-    // return <Redirect to="/accountChart" />;
-    return (
-      <div>
-        <Helmet>
-          <title>Accounting</title>
-          <meta name="description" content="Description of Accounting" />
-        </Helmet>
-        <AccountChart />
-        {/* <AccountJournal /> */}
-        <NewAccountDialog />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return <LoadingIndicator />
+  // }
+  // else if (accountingSetupData) {
+  //   // return <Redirect to="/accountChart" />;
+  //   return (
+  //     <div>
+  //       <Helmet>
+  //         <title>Accounting</title>
+  //         <meta name="description" content="Description of Accounting" />
+  //       </Helmet>
+  //       <AccountChart />
+  //       <NewAccountDialog />
+  //     </div>
+  //   );
+  // }
+  return (
+    <div>
+      <Helmet>
+        <title>Accounting</title>
+        <meta name="description" content="Description of Accounting" />
+      </Helmet>
+      <AccountJournal />
+      {/* <AccountChart />
+      <NewAccountDialog /> */}
+      {/* <AccountSetting /> */}
+    </div>
+  );
 }
 
 Accounting.propTypes = {

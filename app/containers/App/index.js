@@ -171,6 +171,7 @@ const App = () => (
               <PrivateRoute path="/account" component={AccountPage} />
               <PrivateRoute path="/accountChart" component={AccountChart} />
               <PrivateRoute path="/accountJournal" component={AccountJournal} />
+              
               <PrivateRoute exact path="/inventory" component={InventoryPage} />
               <PrivateRoute
                 path="/inventory/warehouses"
@@ -204,7 +205,7 @@ const App = () => (
       </main>
     </AppContext.Provider>
   </div>
-);
+));
 const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
