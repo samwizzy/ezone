@@ -26,6 +26,7 @@ import AccountSetting from './components/AccountSetting';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
 import LoadingIndicator from './../../components/LoadingIndicator';
+import Dashboard from './Dashboard'
 
 export function Accounting(props) {
   useInjectReducer({ key: 'accounting', reducer });
@@ -47,33 +48,37 @@ export function Accounting(props) {
     dispatchGetAllAccountTypeAction();
   }, []);
 
+  return  <Dashboard />
+
 
   if (loading) {
     return <LoadingIndicator />
   }
-  // else if (accountingSetupData) {
-  //   // return <Redirect to="/accountChart" />;
-  //   return (
-  //     <div>
-  //       <Helmet>
-  //         <title>Accounting</title>
-  //         <meta name="description" content="Description of Accounting" />
-  //       </Helmet>
-  //       <AccountChart />
-  //       {/* <AccountJournal /> */}
-  //       <NewAccountDialog />
-  //     </div>
-  //   );
-  // }
-  return (
-    <div>
-      <Helmet>
-        <title>Accounting</title>
-        <meta name="description" content="Description of Accounting" />
-      </Helmet>
-      <AccountSetting />
-    </div>
-  );
+  else if (accountingSetupData.id == undefined) {
+    return (
+      <div>
+        <Helmet>
+          <title>Accounting</title>
+          <meta name="description" content="Description of Accounting" />
+        </Helmet>
+        <AccountSetting />
+      </div>
+    );
+  } 
+  else if (accountingSetupData.id) {
+    // return <Redirect to="/accountChart" />;
+    return (
+      <div>
+        <Helmet>
+          <title>Accounting</title>
+          <meta name="description" content="Description of Accounting" />
+        </Helmet>
+        <AccountChart />
+        {/* <AccountJournal /> */}
+        <NewAccountDialog />
+      </div>
+    );
+  }
 }
 
 Accounting.propTypes = {

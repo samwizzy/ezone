@@ -15,6 +15,7 @@ import { createStructuredSelector } from 'reselect';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import RefreshSharp from '@material-ui/icons/RefreshSharp';
 import UserMenu from '../../../components/layouts/shared-components/UserMenu';
+import MenuBar from '../../../components/MenuBar'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -63,13 +64,9 @@ function ModuleLayout(props) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="relative" color="secondary">
-        <Toolbar variant="dense" className={classes.toolbar}>
-          <div>
-            <IconButton aria-label="delete" onClick={refreshPage}>
-              <RefreshSharp />
-            </IconButton>
-
+      <MenuBar
+        navigations={
+          <React.Fragment>
             <NavLink
               exact
               to="/inventory/warehouses"
@@ -96,18 +93,16 @@ function ModuleLayout(props) {
             >
               Inventory Adjustments
             </NavLink>
-          </div>
-
-          <UserMenu />
-        </Toolbar>
-      </AppBar>
-      <main className={classes.content}>
-        <Grid container>
-          <Grid item xs={12}>
-            {props.children}
+          </React.Fragment>
+        }
+        content={
+          <Grid container>
+            <Grid item xs={12}>
+              {props.children}
+            </Grid>
           </Grid>
-        </Grid>
-      </main>
+        }
+      />
     </div>
   );
 }

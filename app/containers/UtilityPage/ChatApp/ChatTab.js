@@ -108,10 +108,10 @@ const useStyles = makeStyles(theme => ({
   msgBody: {
     position: 'relative',
     backgroundColor: theme.palette.grey[50],
-    minHeight: '200px',
+    minHeight: '400px',
     height: '400px',
     overflow: 'auto',
-    padding: theme.spacing(3, 5),
+    padding: theme.spacing(3, 5, 10, 3),
   },
 }));
 
@@ -145,6 +145,8 @@ function a11yProps(index) {
   };
 }
 
+const msgRef = React.createRef();
+
 const ChatTab = props => {
   const {
     allEmployees,
@@ -168,14 +170,6 @@ const ChatTab = props => {
   const [value, setValue] = React.useState(0);
   const [newChat, setNewChat] = useState();
   const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  const handleMenu = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = (event, newValue) => {
     setValue(newValue);
   };
 
@@ -269,8 +263,8 @@ const ChatTab = props => {
                     <ChatHeader userChatData={userChatData} />
                   </Grid>
                   <Grid item xs={12}>
-                    <div className={classes.msgBody}>
-                    {[0,1,2,3].map(chat => 
+                    <div className={classes.msgBody} ref={msgRef}>
+                    {[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(chat => 
                       <div
                         className={classNames(
                           classes.messageRow,
@@ -298,9 +292,9 @@ const ChatTab = props => {
                         
                       </div>
                       )}
-
-                      <ChatFooter />
                     </div>
+
+                    <ChatFooter />
                   </Grid>
                 </Grid>
                 {/* ) : (

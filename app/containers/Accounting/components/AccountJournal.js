@@ -239,6 +239,9 @@ const AccountJournal = props => {
       <Button variant="contained" color="primary" onClick={() => addRow()}>
         Add row
       </Button>
+      <Button variant="contained" color="primary">
+        Save
+      </Button>
       </Grid>
     </Grid>
     </React.Fragment>
