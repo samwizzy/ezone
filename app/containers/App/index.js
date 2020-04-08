@@ -206,64 +206,6 @@ const App = () => {
   );
 };
 
-              <PrivateRoute exact path="/email" component={EmailConfig} />
-              <PrivateRoute
-                path="/email/configuration"
-                component={EmailConfigs}
-              />
-              <PrivateRoute
-                path="/email/template/:emailType?"
-                component={EmailTemplates}
-              />
-              {/* <PrivateRoute exact path="/email/template/:emailType" component={EmailTemplates} /> */}
-              <PrivateRoute
-                path="/email/password/template"
-                component={EmailPasswordTemplate}
-              />
-              <PrivateRoute exact path="/home" component={HomePage} />
-              <PrivateRoute path="/WorkOrder" component={WorkOrderPage} />
-              <PrivateRoute
-                path="/hr/:sectionId?/:status?"
-                component={HRPage}
-              />
-              <PrivateRoute path="/account" component={AccountPage} />
-              <PrivateRoute path="/accountChart" component={AccountChart} />
-              <PrivateRoute path="/accountJournal" component={AccountJournal} />
-              
-              <PrivateRoute exact path="/inventory" component={InventoryPage} />
-              <PrivateRoute
-                path="/inventory/warehouses"
-                component={WarehousePage}
-              />
-              <PrivateRoute
-                exact
-                path="/inventory/items"
-                component={ItemPage}
-              />
-              <PrivateRoute
-                exact
-                path="/inventory/transfer/orders"
-                component={TransferOrdersList}
-              />
-              <PrivateRoute
-                exact
-                path="/inventory/transfer/new"
-                component={NewTransferOrder}
-              />
-              <PrivateRoute
-                exact
-                path="/inventory/inventory/adjustments"
-                component={InventoryAdjustmentList}
-              />
-            </Layout3>
-            <Route path="" component={NotFoundPage} />
-          </Switch>
-          <Snackbar />
-        </div>
-      </main>
-    </AppContext.Provider>
-  </div>
-));
 const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
