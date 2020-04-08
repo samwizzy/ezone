@@ -138,9 +138,6 @@ const ProjectsList = () => {
                 </Paper>
               </Grid>
             </Grid>
-
-            {/* <Calendar /> */}
-            {/* <ChatBox /> */}
           </Grid>
         </Grid>
       </div>

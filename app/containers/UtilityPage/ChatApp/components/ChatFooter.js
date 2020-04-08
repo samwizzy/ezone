@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   makeStyles,
   AppBar,
-  InputAdornment ,
+  InputAdornment,
   Icon,
   IconButton,
   Paper,
@@ -13,6 +13,7 @@ import {
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import SettingsVoice from '@material-ui/icons/SettingsVoice';
 import AttachFile from '@material-ui/icons/AttachFile';
 import * as Actions from '../../actions';
@@ -20,6 +21,7 @@ import * as Actions from '../../actions';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+    position: 'relative',
   },
   title: {
     flexGrow: 1,
@@ -27,6 +29,11 @@ const useStyles = makeStyles(theme => ({
   },
   textField: {
     flex: 1,
+  },
+  appBar: {
+    bottom: 0,
+    top: 'inherit',
+    backgroundColor: fade(theme.palette.common.white, 0.5),
   },
   toolbar: {},
   grow: {
@@ -56,14 +63,23 @@ const ChatFooter = props => {
     });
   };
 
+  const onMessageSubmit = evt => {
+    evt.preventDefault();
+    if (values.message === '') {
+      return;
+    }
+
+    dispatchPostMessage(values);
+    setValues({ ...values, message: '' });
+  };
+
   return (
-    <React.Fragment>
-      <div className={classes.root}>
-        <AppBar
-          position="absolute"
-          color="inherit"
-          style={{ bottom: 0, top: 'inherit', backgroundColor: 'transparent' }}
-        >
+    <div className={classes.root}>
+      <form
+        onSubmit={onMessageSubmit}
+        // className="absolute bottom-0 right-0 left-0 py-16 px-8"
+      >
+        <AppBar className={classes.appBar} position="absolute" color="inherit">
           <Toolbar dense className={classes.toolbar}>
             <IconButton
               aria-label="account of current user"
@@ -74,7 +90,7 @@ const ChatFooter = props => {
               <AttachFile />
             </IconButton>
             <Paper
-              component="form" 
+              component="form"
               style={{
                 display: 'flex',
                 justifyContent: 'center',
@@ -96,11 +112,9 @@ const ChatFooter = props => {
                 margin="normal"
                 InputProps={{
                   disableUnderline: true,
-                  // startAdornment: (
-                  //   <InputAdornment position="start">
-                  //     <AttachFile />
-                  //   </InputAdornment>
-                  // ),
+                  startAdornment: (
+                    <InputAdornment position="start"> </InputAdornment>
+                  ),
                   classes: {
                     root: classes.textField,
                     input: '',
@@ -130,14 +144,14 @@ const ChatFooter = props => {
               aria-haspopup="true"
               color="inherit"
               type="submit"
-              onClick={() => dispatchPostMessage(values)}
+              // onClick={() => dispatchPostMessage(values)}
             >
               <Icon color="action">send</Icon>
             </IconButton>
           </Toolbar>
         </AppBar>
-      </div>
-    </React.Fragment>
+      </form>
+    </div>
   );
 };
 

@@ -8,6 +8,7 @@ import {
   List,
   Paper,
   Grid,
+  TableContainer,
   Table,
   TableBody,
   TableCell,
@@ -29,6 +30,7 @@ import {
 } from '@material-ui/pickers';
 
 import { Autocomplete } from '@material-ui/lab';
+import SendIcon from '@material-ui/icons/Send';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -49,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
   table: {
+    margin: theme.spacing(5, 1),
     '& .MuiTableCell-body': {
       border: 0,
     },
@@ -154,6 +157,7 @@ const AccountSetting = props => {
       <div className={classes.root}>
         <Grid container justify="center" alignItems="center">
           <Grid item xs={6}>
+            <Paper square elevation={1} style={{padding: "20px 10px"}}>
               <Paper square elevation={0}  className={classes.paper}>
                 <Box p={2} my={2} className={classes.box}>
                   <Typography variant="h4" color="textSecondary">
@@ -186,6 +190,7 @@ const AccountSetting = props => {
                               KeyboardButtonProps={{
                                 'aria-label': 'change date',
                               }}
+                              fullWidth
                             />
                           </Grid>
                         </MuiPickersUtilsProvider>
@@ -254,6 +259,8 @@ const AccountSetting = props => {
                               KeyboardButtonProps={{
                                 'aria-label': 'change date',
                               }}
+                              fullWidth
+                              variant="outlined"
                             />
                           </Grid>
                         </MuiPickersUtilsProvider>
@@ -299,20 +306,24 @@ const AccountSetting = props => {
                       </TableCell>
                     </TableRow>
                     <TableRow>
+                      <TableCell colSpan={2}><Divider /></TableCell>
+                    </TableRow>
+                    <TableRow>
                       <TableCell></TableCell>
                       <TableCell align="right">
                         <Button 
                           variant="contained" 
                           color="primary" 
-                          onClick={() => createAccountingSetupAction(values) } 
-                          style={{align: "right"}}
+                          onClick={() => createAccountingSetupAction(values)} 
+                          endIcon={<SendIcon />}
                         >
-                          Save Continue
+                          Save And Continue 
                         </Button>
                       </TableCell>
                     </TableRow>
                 </TableBody>
               </Table>
+            </Paper>
           </Grid>
         </Grid>
       </div>

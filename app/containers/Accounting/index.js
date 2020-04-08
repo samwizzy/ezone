@@ -26,6 +26,7 @@ import AccountSetting from './components/AccountSetting';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
 import LoadingIndicator from './../../components/LoadingIndicator';
+import Dashboard from './Dashboard'
 
 export function Accounting(props) {
   useInjectReducer({ key: 'accounting', reducer });
@@ -46,6 +47,8 @@ export function Accounting(props) {
     dispatchGetAllChartOfAccountTypeAction();
     dispatchGetAllAccountTypeAction();
   }, []);
+
+  return  <Dashboard />
 
 
   // if (loading) {
@@ -79,7 +82,6 @@ export function Accounting(props) {
 }
 
 Accounting.propTypes = {
-  dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({

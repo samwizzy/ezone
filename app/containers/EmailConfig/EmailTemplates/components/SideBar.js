@@ -79,10 +79,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const menus = [
-    {id: 1, name: "Password Reset", url: "password", icon: 'vpn_key'},
-    {id: 2, name: "New User Welcome Message", url: "welcome", icon: 'person_add'}, 
-    {id: 2, name: "Signature Approval", url: "signature", icon: 'fingerprint'},
-    {id: 4, name: "Invoice", url: "invoice", icon: 'receipt'},
+  {id: 1, name: "Password Reset", url: "password", icon: 'vpn_key'},
+  {id: 2, name: "New User Welcome Message", url: "welcome", icon: 'person_add'}, 
+  {id: 2, name: "Signature Approval", url: "signature", icon: 'fingerprint'},
+  {id: 4, name: "Invoice", url: "invoice", icon: 'receipt'},
 ];
 
 const SideBar = props => {
@@ -98,28 +98,24 @@ const SideBar = props => {
     props.history.push({pathname: '/email/template/' + url})
   }
 
-  console.log(selectedIndex, "selectedIndex")
-
   const drawer = (
     <div>
         <AppBar position='relative' color="inherit" elevation={0}>
             <Toolbar className={classes.toolbar}>
-                <Typography variant="h6" color="textSecondary">
+                <Typography variant="h6" color="primary">
                     <PaletteOutlinedIcon /> Email Template
                 </Typography>
             </Toolbar>
         </AppBar>
         <Divider />
-        <Toolbar  className={classes.toolbar2} />
+        <Toolbar className={classes.toolbar2} />
         <List
             component="nav"
             subheader={
             <ListSubheader component="div" id="nested-list-subheader">
-                <div className={classes.flex}>
-                    <Typography variant="h6">
-                        Choose Template 
-                    </Typography>
-                </div>
+              <Typography variant="h6">
+                  Choose Template 
+              </Typography>
             </ListSubheader>
             }
         >

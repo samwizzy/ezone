@@ -25,7 +25,6 @@ import NoAvailableChats from './components/NoAvailableChats';
 import ChatHeader from './components/ChatHeader';
 import ChatFooter from './components/ChatFooter';
 import ModuleLayout from '../components/ModuleLayout';
-import LoadingIndicator from '../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,8 +35,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'flex-start',
-    '&.me': {justifyContent: 'flex-end'},
-    '&.contact': {justifyContent: 'flex-start'},
+    '&.me': { justifyContent: 'flex-end' },
+    '&.contact': { justifyContent: 'flex-start' },
     '&.first-of-group': {},
     '&.last-of-group': {},
   },
@@ -49,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     padding: theme.spacing(3),
     borderRadius: '10px',
-    backgroundColor: '#F8F8F8',
+    backgroundColor: 'ddce30',
   },
   button: {
     padding: theme.spacing(1, 4),
@@ -108,11 +107,11 @@ const useStyles = makeStyles(theme => ({
   },
   msgBody: {
     position: 'relative',
-    backgroundColor: '#efefef',
-    minHeight: '200px',
+    backgroundColor: theme.palette.grey[50],
+    minHeight: '400px',
     height: '400px',
     overflow: 'auto',
-    padding: theme.spacing(3, 5),
+    padding: theme.spacing(3, 5, 10, 3),
   },
 }));
 
@@ -146,9 +145,10 @@ function a11yProps(index) {
   };
 }
 
+const msgRef = React.createRef();
+
 const ChatTab = props => {
   const {
-    loading,
     allEmployees,
     allUsersChat,
     currentUser,
@@ -163,8 +163,7 @@ const ChatTab = props => {
   }, []);
 
   // console.log(allEmployees, 'allEmployees');
-  console.log(allUsersChat, 'allUsersChat');
-  console.log(getAllUserChatData, 'getAllUserChatData');
+  // console.log(allUsersChat, 'allUsersChat');
   const classes = useStyles();
   const [status, setStatus] = React.useState(false);
 
@@ -190,7 +189,11 @@ const ChatTab = props => {
       responderName: (vl.firstName, vl.lastName),
     };
     setNewChat(initNewChat);
+    // setNewChat([initNewChat]);
   };
+
+  console.log(currentUser, 'currentUser');
+  console.log(getAllUserChatData, 'getAllUserChatData');
 
   // if (loading) {
   //   return <LoadingIndicator />;
@@ -204,7 +207,7 @@ const ChatTab = props => {
             <div />
           ) : (
             <Grid justify="center" container>
-              <Grid item xs={12} md={4} style={{ backgroundColor: '#efefef' }}>
+              <Grid item xs={12} md={4}>
                 <Paper square>
                   <div
                     style={{
@@ -218,7 +221,7 @@ const ChatTab = props => {
                       id="combo-box-demo"
                       options={allEmployees}
                       getOptionLabel={option => option.firstName}
-                      style={{ width: "100%" }}
+                      style={{ width: '100%' }}
                       onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
                       renderInput={params => (
                         <TextField
@@ -267,37 +270,48 @@ const ChatTab = props => {
                   </Grid>
                   <Grid item xs={12}>
                     <div className={classes.msgBody}>
-                    {[0,1,2,3].map(chat => 
-                      <div
-                        className={classNames(
-                          classes.messageRow,
-                          { me: true },
-                          { contact: false },
-                          { 'first-of-group': isFirstMessageOfGroup('item', 'i') },
-                          { 'last-of-group': isLastMessageOfGroup('item', 'i') },
-                        )}
-                      >
-                        <Paper className={classes.chatPane}>
-                          <Typography variant="subtitle1">
-                            How you doing brother?
-                          </Typography>
-                          <Typography
-                            variant="caption"
-                            style={{
-                              position: 'absolute',
-                              right: 12,
-                              bottom: 0,
-                            }}
+                      {getAllUserChatData &&
+                        getAllUserChatData.messages.map(chat => (
+                          <div
+                            className={classNames(
+                              classes.messageRow,
+                              { me: currentUser.uuId === chat.senderId },
+                              { contact: currentUser.uuId !== chat.senderId },
+                              {
+                                'first-of-group': isFirstMessageOfGroup(
+                                  'item',
+                                  'i',
+                                ),
+                              },
+                              {
+                                'last-of-group': isLastMessageOfGroup(
+                                  'item',
+                                  'i',
+                                ),
+                              },
+                            )}
                           >
-                            05:56 am
-                          </Typography>
-                        </Paper>
-                        
-                      </div>
-                      )}
-
-                      <ChatFooter />
+                            <Paper className={classes.chatPane} key={chat.id}>
+                              <Typography variant="subtitle1">
+                                {chat.chatMessage}
+                              </Typography>
+                              <Typography
+                                variant="caption"
+                                style={{
+                                  position: 'absolute',
+                                  right: 12,
+                                  bottom: 0,
+                                }}
+                              >
+                                05:56 am
+                              </Typography>
+                            </Paper>
+                          </div>
+                        ))}
+                      {/* <ChatFooter /> */}
                     </div>
+
+                    <ChatFooter />
                   </Grid>
                 </Grid>
                 {/* ) : (
@@ -323,18 +337,16 @@ const ChatTab = props => {
 };
 
 ChatTab.propTypes = {
-  loading: PropTypes.bool,
   dispatchGetAllEmployees: PropTypes.func,
   dispatchGetUserChats: PropTypes.func,
   allEmployees: PropTypes.array,
   allUsersChat: PropTypes.array,
   currentUser: PropTypes.object,
-  getAllUserChatData: PropTypes.array,
+  getAllUserChatData: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
   userChatData: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(),
   userChatData: Selectors.makeSelectGetUserChatData(),
   getAllUserChatData: Selectors.makeSelectGetAllUserChatData(),
   allEmployees: Selectors.makeSelectAllEmployees(),
