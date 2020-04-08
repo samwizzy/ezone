@@ -15,7 +15,7 @@ export const initialState = {
   createNewPartiesData: false,
   createNewPositionData: false,
   createNewPartyGroupData: false,
-  partyGroupData: [],
+  partyGroupData: false,
   loading: false,
   error: false,
   selectedPartyGroupData: false,
