@@ -9851,6 +9851,11 @@ react-highlight.js@1.0.5:
   dependencies:
     highlight.js "^9.3.0"
 
+react-infinite-scroll-hook@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-infinite-scroll-hook/-/react-infinite-scroll-hook-2.0.1.tgz#9aff0f7d836f501591a5a92729026ad301eb690d"
+  integrity sha512-gKeqcnT9L2vwWQvUxQGaPc5UpS8NFw7ixV81avur5Vu44kqm3fhlZkie0t6bvaoM3ODxpjA0kx+zwHTGTTUmrQ==
+
 react-intl@2.8.0:
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/react-intl/-/react-intl-2.8.0.tgz#20b0c1f01d1292427768aa8ec9e51ab7e36503ba"
