@@ -191,11 +191,20 @@ const ChatTab = props => {
       responderName: (vl.firstName, vl.lastName),
     };
     setNewChat(initNewChat);
-    // setNewChat([initNewChat]);
   };
 
-  console.log(currentUser, 'currentUser');
-  console.log(getAllUserChatData, 'getAllUserChatData');
+  if (getAllUserChatData) {
+    var reversedData = _.orderBy(
+      getAllUserChatData.messages,
+      ['dateCreated'],
+      ['asc'],
+    );
+  }
+
+  // console.log(userChatData, 'userChatData');
+  // console.log(newChat, 'newChat');
+  // console.log(currentUser, 'currentUser');
+  // console.log(getAllUserChatData, 'getAllUserChatData');
 
   // if (loading) {
   //   return <LoadingIndicator />;
@@ -265,70 +274,70 @@ const ChatTab = props => {
                 </TabPanel>
               </Grid>
               <Grid item xs={12} md={8} component={Paper}>
-                {getAllUserChatData &&
-                  getAllUserChatData.messages.length > 0 ? (
-                    <Grid container justify="center">
-                      <Grid item xs={12}>
-                        <ChatHeader userChatData={userChatData} />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <div className={classes.msgBody}>
-                          {getAllUserChatData &&
-                            _.reverse(getAllUserChatData.messages).map(chat => (
-                              <div
-                                className={classNames(
-                                  classes.messageRow,
-                                  { me: currentUser.uuId === chat.senderId },
-                                  { contact: currentUser.uuId !== chat.senderId },
-                                  {
-                                    'first-of-group': isFirstMessageOfGroup(
-                                      'item',
-                                      'i',
-                                    ),
-                                  },
-                                  {
-                                    'last-of-group': isLastMessageOfGroup(
-                                      'item',
-                                      'i',
-                                    ),
-                                  },
-                                )}
+                {/* {getAllUserChatData &&
+                getAllUserChatData.messages.length > 0 ? ( */}
+                <Grid container justify="center">
+                  <Grid item xs={12}>
+                    <ChatHeader userChatData={userChatData} />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <div className={classes.msgBody}>
+                      {reversedData &&
+                        reversedData.map(chat => (
+                          <div
+                            className={classNames(
+                              classes.messageRow,
+                              { me: currentUser.uuId === chat.senderId },
+                              { contact: currentUser.uuId !== chat.senderId },
+                              {
+                                'first-of-group': isFirstMessageOfGroup(
+                                  'item',
+                                  'i',
+                                ),
+                              },
+                              {
+                                'last-of-group': isLastMessageOfGroup(
+                                  'item',
+                                  'i',
+                                ),
+                              },
+                            )}
+                          >
+                            <Paper className={classes.chatPane}>
+                              <Typography variant="subtitle1" key={chat.id}>
+                                {chat.chatMessage}
+                              </Typography>
+                              <Typography
+                                variant="caption"
+                                style={{
+                                  position: 'absolute',
+                                  right: 12,
+                                  bottom: 0,
+                                }}
                               >
-                                <Paper className={classes.chatPane} key={chat.id}>
-                                  <Typography variant="subtitle1">
-                                    {chat.chatMessage}
-                                  </Typography>
-                                  <Typography
-                                    variant="caption"
-                                    style={{
-                                      position: 'absolute',
-                                      right: 12,
-                                      bottom: 0,
-                                    }}
-                                  >
-                                    {moment(chat.dateCreated).format('LT')}
-                                  </Typography>
-                                </Paper>
-                              </div>
-                            ))}
-                          {/* <ChatFooter /> */}
-                        </div>
-                        <ChatFooter />
-                      </Grid>
-                    </Grid>
-                  ) : (
+                                {moment(chat.dateCreated).format('LT')}
+                              </Typography>
+                            </Paper>
+                          </div>
+                        ))}
+                      {/* <ChatFooter /> */}
+                    </div>
+                    <ChatFooter />
+                  </Grid>
+                </Grid>
+                {/* ) : (
                     <Grid container justify="center">
                       <Grid item xs={12}>
                         <div className={classes.msgBody}>
                           <Paper className={classes.chatPane}>
                             <Typography variant="subtitle1">
-                              Start a new conversation
+                            Start a new conversation
                             </Typography>
                           </Paper>
                         </div>
                       </Grid>
                     </Grid>
-                  )}
+                  )} */}
               </Grid>
             </Grid>
           )}
