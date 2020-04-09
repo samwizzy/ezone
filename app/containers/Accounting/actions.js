@@ -211,3 +211,25 @@ export function createAccountingSetupErrorAction(data) {
     payload: data,
   };
 }
+
+
+// Get accounting period
+export function getAllAccountPeriodAction() {
+  return {
+    type: Constants.GET_ALL_ACCOUNT_PERIOD,
+  };
+}
+
+export function getAllAccountPeriodSuccessAction(data) {
+  return {
+    type: Constants.GET_ALL_ACCOUNT_PERIOD_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getAllAccountPeriodErrorAction(data) {
+  return {
+    type: Constants.GET_ALL_ACCOUNT_PERIOD_ERR,
+    payload: data,
+  };
+}

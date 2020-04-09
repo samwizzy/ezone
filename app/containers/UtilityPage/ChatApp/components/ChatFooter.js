@@ -65,7 +65,11 @@ const ChatFooter = props => {
 
   const onMessageSubmit = evt => {
     evt.preventDefault();
-    if (values.message === '') {
+    if (
+      values.message === '' &&
+      values.recipientId === '' &&
+      values.senderId === ''
+    ) {
       return;
     }
 

@@ -131,6 +131,7 @@ export const UpdateChartOfAccountApi = `${BaseUrl}/accountingserv/api/v1/account
 export const DeleteChartOfAccountApi = `${BaseUrl}/accountingserv/api/v1/account/delete_account`;
 export const GetAccountingSetupApi = `${BaseUrl}/accountingserv/api/v1/account/get_settings_by_orgid`;
 export const CreateAccountingSetupApi = `${BaseUrl}/accountingserv/api/v1/account/add_account_settings`;
+export const GetAllAccountPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/get_periods_by_orgid`;
 
 /** *****************************************************************
  * Inventory endpoint

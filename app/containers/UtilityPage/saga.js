@@ -636,7 +636,7 @@ export function* getUserChat() {
       }),
     });
 
-    console.log(getUserChatResponse, 'getUserChatResponse');
+    // console.log(getUserChatResponse, 'getUserChatResponse');
 
     yield put(Actions.getAllUsersChatSuccess(getUserChatResponse));
   } catch (err) {
@@ -671,6 +671,7 @@ export function* getUserChatData() {
     userChatDetails.chatId
   }&limit=${10}&start=${0}`;
 
+  // console.log(userChatDetails, 'userChatDetails');
   try {
     const userChatDataResponse = yield call(request, requestURL, {
       method: 'GET',
@@ -680,7 +681,7 @@ export function* getUserChatData() {
       }),
     });
 
-    console.log(userChatDataResponse, 'userChatDataResponse');
+    // console.log(userChatDataResponse, 'userChatDataResponse');
 
     yield put(Actions.getUserChatDataSuccess(userChatDataResponse));
   } catch (err) {
@@ -690,6 +691,7 @@ export function* getUserChatData() {
 
 export function* postMsg() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const userChatDetails = yield select(Selectors.makeSelectGetUserChatData());
 
   const userChatData = yield select(Selectors.makeSelectGetUserChatData());
   const postMsgDetails = yield select(Selectors.makeSelectPostMsg());
@@ -698,8 +700,9 @@ export function* postMsg() {
   postMsgDetails.senderId = userChatData.initiator;
   postMsgDetails.senderName = userChatData.initiatorName;
 
-  console.log(userChatData, 'userChatData');
-  console.log(postMsgDetails, 'postMsgDetails');
+  // console.log(userChatDetails, 'lunch this in userChatDetails');
+  // console.log(userChatData, 'userChatData');
+  // console.log(postMsgDetails, 'postMsgDetails');
 
   const requestURL = `${Endpoints.SendMessageApi}`;
 
@@ -713,9 +716,9 @@ export function* postMsg() {
       }),
     });
 
-    console.log(postMsgResponse, 'postMsgResponse');
+    // console.log(postMsgResponse, 'postMsgResponse');
 
-    yield put(Actions.getUserChatData());
+    yield put(Actions.getUserChatData(userChatDetails));
     yield put(Actions.postMsgSuccess(postMsgResponse));
   } catch (err) {
     yield put(Actions.postMsgError(err));
