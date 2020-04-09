@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -19,7 +19,6 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import { AddButton } from './AddButton';
-import AccountSideBar from './AccountSideBar';
 
 
 const useStyles = makeStyles(theme => ({
@@ -89,6 +88,11 @@ const AccountChart = props => {
     setAnchorEl(null);
   };
 
+  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {
+    dispatchGetAllChartOfAccountTypeAction();
+  }, []);
+
   const {
     loading,
     openNewAccountDialogAction,
@@ -96,9 +100,10 @@ const AccountChart = props => {
     deleteChartOfAccountAction,
     accountTypeData,
     chartOfAccountData,
+    dispatchGetAllChartOfAccountTypeAction
   } = props;
 
-  console.log('chartOfAccountData --> ', chartOfAccountData);
+  console.log('chartOfAccountData from chart --> ', chartOfAccountData);
   console.log('accountTypeData --> ', accountTypeData);
 
 
@@ -221,10 +226,7 @@ const AccountChart = props => {
     <React.Fragment>
       <div className={classes.root}>
         <Grid container>
-          <Grid item xs={2} md={2}>
-            <AccountSideBar />
-          </Grid>
-          <Grid item xs={10} md={8}>
+          <Grid item xs={12} md={8}>
             <MUIDataTable
               title="Charts Of Accounts"
               data={chartOfAccountData}
@@ -252,6 +254,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    dispatchGetAllChartOfAccountTypeAction: () => dispatch(Actions.getAllChartOfAccountTypeAction()),
     openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
     editOpenAccountDialogAction: evt => dispatch(Actions.editOpenAccountDialog(evt)),
     deleteChartOfAccountAction: evt => dispatch(Actions.deleteChartOfAccountAction(evt)),

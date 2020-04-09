@@ -21,7 +21,6 @@ import reducer from './reducer';
 import saga from './saga';
 import ModuleLayout from './components/ModuleLayout';
 import HumanResourcePage from './HumanResourcePage'
-import VerticalTabs from './HrIndex'
 
 const key = 'hrPage';
 

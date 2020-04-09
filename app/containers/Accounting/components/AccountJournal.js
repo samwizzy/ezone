@@ -1,26 +1,33 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
-  List,
-  FormControlLabel,
+  Divider,
   Icon,
   Button,
-  Menu,
-  MenuItem,
   Paper,
   Grid,
   Table,
-  TableBody,
-  TableCell,
-  TableContainer,
   TableHead,
+  TableBody,
   TableRow,
-  TextField
+  TableCell,
+  TableFooter,
+  TextField,
+  Typography
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+
+import { Autocomplete } from '@material-ui/lab';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -28,79 +35,51 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 // import LoadingIndicator from '../../../components/LoadingIndicator';
 // import { AddButton } from './AddButton';
+import ModuleLayout from './ModuleLayout'
 
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: theme.spacing(5, 5, 5, 20),
-    marginBottom: theme.spacing(4),
     flexGrow: 1,
-    '& > *': {
-      margin: theme.spacing(1),
-    },
+    backgroundColor: theme.palette.common.white,
   },
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
-  image: {
-    position: 'absolute',
-    width: '100px',
-    height: '100px',
-    left: '150px',
-    top: '180px',
-    border: '1px solid #C4C4C4',
-    borderRadius: '155px',
-    padding: '25px',
+  grid: {
+    justifyContent: "space-between",
+    '& .MuiGrid-item': {
+      flex: 1,
+    }
   },
-  edit: {
-    position: 'absolute',
-    height: '100px',
-    left: '1280px',
-    top: '180px',
-    color: '#1A88E1',
-    fontStyle: 'normal',
-    fontWeight: '600',
-    fontSize: '13px',
-    lineHeight: '16px',
-    // border: '2px solid #1A88E1',
-    [theme.breakpoints.down('md')]: {
-      position: 'absolute',
-      height: '100px',
-      left: '265px',
-      top: '150px',
-      color: '#1A88E1',
-    },
-    textField: {
-        margin: theme.spacing(1.5, 0),
-    },
-  },
-  orgContainer: {
-    padding: theme.spacing(0, 5, 0, 5),
-  },
-  demo: {
-    backgroundColor: theme.palette.background.paper,
-  },
-  editButton: {
-    width: '117px',
-    height: '40px',
-    background: '#1A88E1',
-    borderRadius: '10px',
-    align: 'right',
-  },
-  listFormat: {
-    marginBottom: '10px',
-    marginTop: '10px',
-  },
+  divider: { marginTop: theme.spacing(4) },
   table: {
-    minWidth: 650,
-  },
+    "& .MuiTableFooter-root": {
+        borderTop: `1px solid ${theme.palette.grey[400]} !important`
+    },
+    "& .MuiTableCell-root": {
+        "& button:last-child": {
+          marginLeft: theme.spacing(1)
+        }
+    },
+    '& .MuiTableCell-body': {
+        color: theme.palette.text.secondary,
+    },
+  }
 }));
 
 const AccountJournal = props => {
   const classes = useStyles();
   const [rows, setRows] = React.useState([{}]);
+
+  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const [values, setValues] = React.useState({});
 
   const addRow = () => {
     const item = {
@@ -115,42 +94,61 @@ const AccountJournal = props => {
     setRows(rows.filter((item, id) => id !== idx));
   };
 
-  const { } = props;
+  const handleSelectChange = (name, value) => {
+    setValues({ ...values, currency: taxType.id });
+  };
+
+  const { 
+    dispatchGetAllChartOfAccountTypeAction,
+    chartOfAccountData
+  } = props;
+
+  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {
+    dispatchGetAllChartOfAccountTypeAction();
+  }, []);
+
+  console.log('chartOfAccountData journal -> ', chartOfAccountData);
+
 
   return (
-    <React.Fragment>
-      <div className={classes.root}>
-      <h2>New Journal</h2>
-      <Grid container spacing={2}>
-        <Grid item xs={5}>
-          <TextField
-            id="standard-accountName"
-            label="Transaction"
-            size="small"
-            type="name"
-            variant="outlined"
-            className={classes.textField}
-            // value={values.accountName}
-            // onChange={handleChange('accountName')}
-            margin="normal"
-            fullWidth
-          />
+    <ModuleLayout>
+    <div className={classes.root}>
+      <Grid container>
+        <Grid item xs={12}>
+          <Typography variant="h6">New Journal</Typography>
+          <Grid container className={classes.grid}>
+            <Grid item xs={5}>
+              <TextField
+                id="standard-accountName"
+                label="Transaction"
+                size="small"
+                type="name"
+                variant="outlined"
+                className={classes.textField}
+                // value={values.accountName}
+                // onChange={handleChange('accountName')}
+                margin="normal"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                id="standard-accountName"
+                label="Reference Number"
+                size="small"
+                type="name"
+                variant="outlined"
+                className={classes.textField}
+                // value={values.accountName}
+                // onChange={handleChange('accountName')}
+                margin="normal"
+                fullWidth
+              />
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid item xs={5}>
-          <TextField
-            id="standard-accountName"
-            label="Reference Number"
-            size="small"
-            type="name"
-            variant="outlined"
-            className={classes.textField}
-            // value={values.accountName}
-            // onChange={handleChange('accountName')}
-            margin="normal"
-            fullWidth
-            />
-        </Grid>
-        <Grid item xs={10}>
+        <Grid item xs={12}>
           <TextField
             id="standard-description"
             label="Notes"
@@ -166,24 +164,43 @@ const AccountJournal = props => {
             />
         </Grid>
       </Grid>
-    </div>
 
-    <Grid container spacing={3}>
+      <Divider className={classes.divider} />
+
+      <Grid container>
       <Grid item xs={12}>
-      <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
-          <TableHead >
+          <TableHead>
             <TableRow>
-              <TableCell align="center">Account</TableCell>
-              <TableCell align="center">Description</TableCell>
-              <TableCell align="center">Debit</TableCell>
-              <TableCell align="center">Credit</TableCell>
-              <TableCell align="center"></TableCell>
+              <TableCell component="th">Account</TableCell>
+              <TableCell component="th">Description</TableCell>
+              <TableCell component="th">Debit</TableCell>
+              <TableCell component="th">Credit</TableCell>
+              <TableCell component="th"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
           {rows.map((row, id) => (
             <TableRow key={id}>
+              <TableCell align="center">
+              <Autocomplete
+                id="combo-box-demo"
+                options={chartOfAccountData}
+                getOptionLabel={option => option.accountNumber}
+                onChange={(evt, value) => handleSelectChange(evt, value)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Select Method"
+                    size="small"
+                    className={classes.textField}
+                    variant="outlined"
+                    placeholder="Search"
+                    fullWidth
+                  />
+                )}
+              />
+              </TableCell>
               <TableCell align="center">
                 <TextField
                   id="standard-accountName"
@@ -234,37 +251,38 @@ const AccountJournal = props => {
             </TableRow>
           ))}
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TableCell colSpan={5}>
+              <Button variant="contained" color="primary" onClick={() => addRow()} className={classes.button}>
+                Add row
+              </Button>
+              <Button variant="contained" color="primary" className={classes.button}>
+                Save
+              </Button>
+            </TableCell>
+          </TableRow>
+        </TableFooter>
         </Table>
-      </TableContainer>
-      <Button variant="contained" color="primary" onClick={() => addRow()}>
-        Add row
-      </Button>
-      <Button variant="contained" color="primary">
-        Save
-      </Button>
       </Grid>
     </Grid>
-    </React.Fragment>
+    </div>
+    </ModuleLayout>
   );
 };
 
 AccountJournal.propTypes = {
 //   loading: PropTypes.bool,
-//   openNewAccountDialogAction: PropTypes.func,
-//   editOpenAccountDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
 //   loading: Selectors.makeSelectLoading(),
-//   accountTypeData: Selectors.makeSelectAccountTypeData(),
-//   chartOfAccountData: Selectors.makeSelectGetChartOfAccountData(),
+  chartOfAccountData: Selectors.makeSelectGetChartOfAccountData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    // openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
-    // editOpenAccountDialogAction: evt => dispatch(Actions.editOpenAccountDialog(evt)),
-    // deleteChartOfAccountAction: evt => dispatch(Actions.deleteChartOfAccountAction(evt)),
+    dispatchGetAllChartOfAccountTypeAction: () => dispatch(Actions.getAllChartOfAccountTypeAction()),
   };
 }
 

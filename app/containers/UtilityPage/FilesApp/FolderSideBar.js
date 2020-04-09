@@ -75,7 +75,7 @@ const FolderSideBar = props => {
           <ListItemIcon>
             <Delete />
           </ListItemIcon>
-          <ListItemText primary="Trashjdjddjhd" />
+          <ListItemText primary="Trash" />
         </ListItem>
       </List>
     </div>

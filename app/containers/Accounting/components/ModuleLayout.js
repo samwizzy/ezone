@@ -1,12 +1,7 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Container,
-  IconButton,
-  Typography,
   makeStyles,
-  AppBar,
-  Toolbar,
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { withRouter, NavLink } from 'react-router-dom';
@@ -14,13 +9,14 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import RefreshSharp from '@material-ui/icons/RefreshSharp';
-import UserMenu from '../layouts/shared-components/UserMenu';
-import navBarImage from '../../images/navbarImage.jpg';
+import * as Actions from '../actions';
+import UserMenu from '../../../components/layouts/shared-components/UserMenu';
+import navBarImage from '../../../images/navbarImage.jpg';
+import MenuBar from '../../../components/MenuBar'
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    // backgroundColor: theme.palette.background.paper,
   },
   appBar: {
     background: `${theme.palette.primary.main} url(${navBarImage}) no-repeat right top`,
@@ -28,7 +24,6 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    // padding: theme.spacing(3, 2, 3, 0),
   },
   toolbar: {
     display: 'flex',
@@ -73,7 +68,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-function MenuBar(props) {
+function ModuleLayout(props) {
   const classes = useStyles();
 
   const refreshPage = () => {
@@ -82,33 +77,21 @@ function MenuBar(props) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="relative" color="inherit" className={classes.appBar}>
-        <Toolbar variant="dense" className={classes.toolbar}>
-          <div>
-            <IconButton aria-label="delete" onClick={refreshPage}>
-              <RefreshSharp />
-            </IconButton>
-
-            {props.navigations}
-          </div>
-
-          <UserMenu />
-        </Toolbar>
-      </AppBar>
-
-      <main className={classes.content}>
-        <Container>
-          {props.content}
-        </Container>
-      </main>
+      <MenuBar
+        content={props.children}
+      />
     </div>
   );
 }
 
-const mapStateToProps = createStructuredSelector({});
+const mapStateToProps = createStructuredSelector({
+  // loginPage: makeSelectLoginPage(),
+});
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    getUtilityTasks: evt => dispatch(Actions.getUtilityTasks(evt)),
+  };
 }
 
 const withConnect = connect(
@@ -120,4 +103,4 @@ export default compose(
   withRouter,
   withConnect,
   memo,
-)(MenuBar);
+)(ModuleLayout);
