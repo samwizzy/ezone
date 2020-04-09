@@ -16,37 +16,29 @@ import {
   TextField,
   Typography
 } from '@material-ui/core';
+import classNames from 'classnames'
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-
-import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-
+import AttachFileIcon from '@material-ui/icons/AttachFile';
+import AddIcon from '@material-ui/icons/Add';
 import { Autocomplete } from '@material-ui/lab';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-// import LoadingIndicator from '../../../components/LoadingIndicator';
-// import { AddButton } from './AddButton';
+import LoadingIndicator from '../../../components/LoadingIndicator';
 import ModuleLayout from './ModuleLayout'
 
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.common.white,
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(3)
   },
   paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
+    padding: theme.spacing(1, 2),
   },
   grid: {
     justifyContent: "space-between",
@@ -54,13 +46,13 @@ const useStyles = makeStyles(theme => ({
       flex: 1,
     }
   },
-  divider: { marginTop: theme.spacing(4) },
+  gridMargin: {marginBottom: theme.spacing(2)},
   table: {
     "& .MuiTableFooter-root": {
-        borderTop: `1px solid ${theme.palette.grey[400]} !important`
+        // borderTop: `1px solid ${theme.palette.grey[400]} !important`
     },
     "& .MuiTableCell-root": {
-        "& button:last-child": {
+        "& button:nth-child(n+2)": {
           marginLeft: theme.spacing(1)
         }
     },
@@ -113,160 +105,201 @@ const AccountJournal = props => {
 
   return (
     <ModuleLayout>
-    <div className={classes.root}>
-      <Grid container>
-        <Grid item xs={12}>
-          <Typography variant="h6">New Journal</Typography>
-          <Grid container className={classes.grid}>
-            <Grid item xs={5}>
-              <TextField
-                id="standard-accountName"
-                label="Transaction"
-                size="small"
-                type="name"
-                variant="outlined"
-                className={classes.textField}
-                // value={values.accountName}
-                // onChange={handleChange('accountName')}
-                margin="normal"
-                fullWidth
-              />
+      <div className={classes.root}>
+        <Grid container className={classNames(classes.grid, classes.gridMargin)}>
+          <Grid item xs={12}>
+            <Typography variant="h6">New Journal</Typography>
+            <Grid container className={classes.grid}>
+              <Grid item xs={5}>
+                <TextField
+                  id="standard-accountName"
+                  label="Transaction"
+                  size="small"
+                  type="name"
+                  variant="outlined"
+                  className={classes.textField}
+                  // value={values.accountName}
+                  // onChange={handleChange('accountName')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={5}>
+                <TextField
+                  id="standard-accountName"
+                  label="Reference Number"
+                  size="small"
+                  type="name"
+                  variant="outlined"
+                  className={classes.textField}
+                  // value={values.accountName}
+                  // onChange={handleChange('accountName')}
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={5}>
-              <TextField
-                id="standard-accountName"
-                label="Reference Number"
-                size="small"
-                type="name"
-                variant="outlined"
-                className={classes.textField}
-                // value={values.accountName}
-                // onChange={handleChange('accountName')}
-                margin="normal"
-                fullWidth
-              />
-            </Grid>
+            <Grid item xs={12}>
+                <TextField
+                  id="standard-description"
+                  label="Notes"
+                  size="small"
+                  variant="outlined"
+                  className={classes.textField}
+                  // value={values.description}
+                  // onChange={handleChange('description')}
+                  margin="normal"
+                  fullWidth
+                  rows={4}
+                  multiline
+                />
+              </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <TextField
-            id="standard-description"
-            label="Notes"
-            size="small"
-            variant="outlined"
-            className={classes.textField}
-            // value={values.description}
-            // onChange={handleChange('description')}
-            margin="normal"
-            fullWidth
-            rows={4}
-            multiline
-            />
+
+        <Grid container>
+          <Grid item xs={12}>
+            <Table className={classes.table} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell component="th">Account</TableCell>
+                  <TableCell component="th">Description</TableCell>
+                  <TableCell component="th">Debit</TableCell>
+                  <TableCell component="th">Credit</TableCell>
+                  <TableCell component="th"></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+              {rows.map((row, id) => (
+                <TableRow key={id}>
+                  <TableCell align="center">
+                    <Autocomplete
+                      id="combo-box-demo"
+                      options={chartOfAccountData}
+                      getOptionLabel={option => option.accountNumber}
+                      onChange={(evt, value) => handleSelectChange(evt, value)}
+                      renderInput={params => (
+                        <TextField
+                          {...params}
+                          label="Select Method"
+                          size="small"
+                          className={classes.textField}
+                          variant="outlined"
+                          placeholder="Search"
+                          fullWidth
+                        />
+                      )}
+                    />
+                  </TableCell>
+                  <TableCell align="center">
+                    <TextField
+                      id="standard-accountName"
+                      label="Transaction"
+                      size="small"
+                      type="name"
+                      variant="outlined"
+                      className={classes.textField}
+                      // value={values.accountName}
+                      // onChange={handleChange('accountName')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </TableCell>
+                  <TableCell align="center">
+                    <TextField
+                      id="standard-accountName"
+                      label="Transaction"
+                      size="small"
+                      type="name"
+                      variant="outlined"
+                      className={classes.textField}
+                      // value={values.accountName}
+                      // onChange={handleChange('accountName')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </TableCell>
+                  <TableCell align="center">
+                    <TextField
+                      id="standard-accountName"
+                      label="Transaction"
+                      size="small"
+                      type="name"
+                      variant="outlined"
+                      className={classes.textField}
+                      // value={values.accountName}
+                      // onChange={handleChange('accountName')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </TableCell>
+                  <TableCell align="center">
+                    <IconButton aria-label="delete" onClick={() => removeRow(id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+              </TableBody>
+              <TableFooter>
+                <TableRow>
+                  <TableCell>
+                    <Button variant="contained" color="primary" onClick={() => addRow()} startIcon={<AddIcon />}>
+                      Add Another Line
+                    </Button>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h6">Total</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Paper square className={classes.paper}>
+                      <Typography variant="h6">NGN 10500</Typography>
+                    </Paper>
+                  </TableCell>
+                  <TableCell>
+                    <Paper square className={classes.paper}>
+                      <Typography variant="h6">NGN 10500</Typography>
+                    </Paper>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={5}>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      component="label"
+                      color="inherit"
+                      startIcon={<AttachFileIcon />}
+                    >
+                      Attach a file
+                      <input
+                        name="attachments"
+                        type="file"
+                        style={{ display: "none" }}
+                        onChange={() => {}}
+                        multiple
+                      />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={5} align="right">
+                    <Button variant="contained" color="inherit" className={classes.button}>
+                      Cancel
+                    </Button>
+                    <Button variant="contained" color="primary" className={classes.button}>
+                      Save Draft
+                    </Button>
+                    <Button variant="contained" color="primary" className={classes.button}>
+                      Save and Submit
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              </TableFooter>
+            </Table>
+          </Grid>
         </Grid>
-      </Grid>
-
-      <Divider className={classes.divider} />
-
-      <Grid container>
-      <Grid item xs={12}>
-        <Table className={classes.table} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell component="th">Account</TableCell>
-              <TableCell component="th">Description</TableCell>
-              <TableCell component="th">Debit</TableCell>
-              <TableCell component="th">Credit</TableCell>
-              <TableCell component="th"></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-          {rows.map((row, id) => (
-            <TableRow key={id}>
-              <TableCell align="center">
-              <Autocomplete
-                id="combo-box-demo"
-                options={chartOfAccountData}
-                getOptionLabel={option => option.accountNumber}
-                onChange={(evt, value) => handleSelectChange(evt, value)}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label="Select Method"
-                    size="small"
-                    className={classes.textField}
-                    variant="outlined"
-                    placeholder="Search"
-                    fullWidth
-                  />
-                )}
-              />
-              </TableCell>
-              <TableCell align="center">
-                <TextField
-                  id="standard-accountName"
-                  label="Transaction"
-                  size="small"
-                  type="name"
-                  variant="outlined"
-                  className={classes.textField}
-                  // value={values.accountName}
-                  // onChange={handleChange('accountName')}
-                  margin="normal"
-                  fullWidth
-                />
-              </TableCell>
-              <TableCell align="center">
-                <TextField
-                  id="standard-accountName"
-                  label="Transaction"
-                  size="small"
-                  type="name"
-                  variant="outlined"
-                  className={classes.textField}
-                  // value={values.accountName}
-                  // onChange={handleChange('accountName')}
-                  margin="normal"
-                  fullWidth
-                />
-              </TableCell>
-              <TableCell align="center">
-                <TextField
-                  id="standard-accountName"
-                  label="Transaction"
-                  size="small"
-                  type="name"
-                  variant="outlined"
-                  className={classes.textField}
-                  // value={values.accountName}
-                  // onChange={handleChange('accountName')}
-                  margin="normal"
-                  fullWidth
-                />
-              </TableCell>
-              <TableCell align="center">
-                <IconButton aria-label="delete" onClick={() => removeRow(id)}>
-                  <DeleteIcon />
-                </IconButton>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={5}>
-              <Button variant="contained" color="primary" onClick={() => addRow()} className={classes.button}>
-                Add row
-              </Button>
-              <Button variant="contained" color="primary" className={classes.button}>
-                Save
-              </Button>
-            </TableCell>
-          </TableRow>
-        </TableFooter>
-        </Table>
-      </Grid>
-    </Grid>
-    </div>
+      </div>
     </ModuleLayout>
   );
 };
