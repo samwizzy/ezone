@@ -130,11 +130,11 @@ const AccountJournal = props => {
       description: "",
       id: 0
     };
-    setRows([...rows, item]);
+    setValues({...values, "entries": [...values.entries, item]});
   };
 
   const removeRow = idx => {
-    setRows(rows.filter((item, id) => id !== idx));
+    setValues(values.entries.filter((item, id) => id !== idx));
   };
 
   const handleChange = name => event => {
@@ -142,12 +142,12 @@ const AccountJournal = props => {
   };
 
   const handleChangeRows = name => event => {
-    setRows({ ...rows, [name]: event.target.value });
+    setValues({...values, "entries": [...values.entries, item]})
   };
 
-  const handleSelectChange = (name, value) => {
-    setValues({ ...values, currency: taxType.id });
-  };
+  // const handleSelectChange = (name, value) => {
+  //   setValues({ ...values, currency: taxType.id });
+  // };
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
@@ -155,7 +155,7 @@ const AccountJournal = props => {
   }, []);
 
   console.log('values-> ', values);
-  console.log('rows-> ', rows);
+  // console.log('rows-> ', rows);
 
 
   return (
@@ -230,7 +230,7 @@ const AccountJournal = props => {
                 </TableRow>
               </TableHead>
               <TableBody>
-              {rows.map((row, id) => (
+              {values.entries.map((row, id) => (
                 <TableRow key={id}>
                   <TableCell align="center">
                     <Autocomplete
@@ -276,7 +276,7 @@ const AccountJournal = props => {
                       type="name"
                       variant="outlined"
                       className={classes.textField}
-                      value={rows.description}
+                      value={values.entries.description}
                       onChange={handleChangeRows('description')}
                       margin="normal"
                       fullWidth
