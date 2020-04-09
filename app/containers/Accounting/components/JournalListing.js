@@ -8,7 +8,7 @@ import {
   Button,
   Menu,
   MenuItem,
-  Grid
+  Grid,
 } from '@material-ui/core';
 
 import MUIDataTable from 'mui-datatables';
