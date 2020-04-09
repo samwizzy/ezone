@@ -715,6 +715,7 @@ export function* postMsg() {
 
     console.log(postMsgResponse, 'postMsgResponse');
 
+    yield put(Actions.getUserChatData());
     yield put(Actions.postMsgSuccess(postMsgResponse));
   } catch (err) {
     yield put(Actions.postMsgError(err));

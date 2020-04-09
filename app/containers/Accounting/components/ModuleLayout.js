@@ -17,7 +17,6 @@ import MenuBar from '../../../components/MenuBar'
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    height: "100vh"
   },
   appBar: {
     background: `${theme.palette.primary.main} url(${navBarImage}) no-repeat right top`,
@@ -25,7 +24,6 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3, 2, 3, 0),
   },
   toolbar: {
     display: 'flex',

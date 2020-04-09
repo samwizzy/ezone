@@ -74,7 +74,7 @@ export function Accounting(props) {
         <title>Accounting</title>
         <meta name="description" content="Description of Accounting" />
       </Helmet>
-      <JournalListing />
+      <AccountJournal />
       {/* <AccountChart />
       <NewAccountDialog /> */}
       {/* <AccountSetting /> */}
