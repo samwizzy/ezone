@@ -2,8 +2,6 @@ import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
-  Divider,
-  Icon,
   Button,
   Paper,
   Grid,
@@ -22,6 +20,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import AddIcon from '@material-ui/icons/Add';
 import { Autocomplete } from '@material-ui/lab';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -39,6 +38,7 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     padding: theme.spacing(1, 2),
+    backgroundColor: theme.palette.grey[100]
   },
   grid: {
     justifyContent: "space-between",
@@ -48,8 +48,18 @@ const useStyles = makeStyles(theme => ({
   },
   gridMargin: {marginBottom: theme.spacing(2)},
   table: {
+    "& .MuiTableHead-root": {
+      "& .MuiTableCell-head": {
+        color: theme.palette.common.white,
+      },
+      "& .MuiTableCell-root:nth-child(odd)": {
+        backgroundColor: theme.palette.primary.main,
+      },
+      "& .MuiTableCell-root:nth-child(even)": {
+        backgroundColor: darken(theme.palette.primary.main, 0.5),
+      }
+    },
     "& .MuiTableFooter-root": {
-        // borderTop: `1px solid ${theme.palette.grey[400]} !important`
     },
     "& .MuiTableCell-root": {
         "& button:nth-child(n+2)": {
@@ -252,12 +262,12 @@ const AccountJournal = props => {
                     <Typography variant="h6">Total</Typography>
                   </TableCell>
                   <TableCell>
-                    <Paper square className={classes.paper}>
+                    <Paper elevation={0} square className={classes.paper}>
                       <Typography variant="h6">NGN 10500</Typography>
                     </Paper>
                   </TableCell>
                   <TableCell>
-                    <Paper square className={classes.paper}>
+                    <Paper elevation={0} square className={classes.paper}>
                       <Typography variant="h6">NGN 10500</Typography>
                     </Paper>
                   </TableCell>
@@ -266,9 +276,8 @@ const AccountJournal = props => {
                   <TableCell colSpan={5}>
                     <Button
                       variant="outlined"
-                      color="secondary"
+                      color="primary"
                       component="label"
-                      color="inherit"
                       startIcon={<AttachFileIcon />}
                     >
                       Attach a file
