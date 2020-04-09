@@ -193,11 +193,20 @@ const ChatTab = props => {
     setNewChat(initNewChat);
   };
 
+  // reversed datas
   if (getAllUserChatData) {
     var reversedData = _.orderBy(
       getAllUserChatData.messages,
       ['dateCreated'],
       ['asc'],
+    );
+  }
+
+  if(allUsersChat){
+    var allUserReversedData = _.orderBy(
+      allUsersChat,
+      ['dateCreated'],
+      ['desc'],
     );
   }
 
@@ -264,7 +273,10 @@ const ChatTab = props => {
                   </Tabs>
                 </Paper>
                 <TabPanel value={value} index={0}>
-                  <UserChat allUsersChat={allUsersChat} newChat={newChat} />
+                  <UserChat
+                    allUsersChat={allUserReversedData}
+                    newChat={newChat}
+                  />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                   <UserChat />
@@ -285,6 +297,7 @@ const ChatTab = props => {
                       {reversedData &&
                         reversedData.map(chat => (
                           <div
+                            key={chat.id}
                             className={classNames(
                               classes.messageRow,
                               { me: currentUser.uuId === chat.senderId },
@@ -303,7 +316,7 @@ const ChatTab = props => {
                               },
                             )}
                           >
-                            <Paper className={classes.chatPane}>
+                            <Paper className={classes.chatPane} key={chat.id}>
                               <Typography variant="subtitle1" key={chat.id}>
                                 {chat.chatMessage}
                               </Typography>
