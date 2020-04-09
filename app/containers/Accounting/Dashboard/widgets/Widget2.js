@@ -60,7 +60,7 @@ const Widget2 = () => {
                     </Typography>
                 </CardContent>
                 <TableContainer>
-                    <Table className={classes.table}>
+                    <Table className={classes.table} size="small">
                         <TableHead>
                             <TableRow>
                                 <TableCell colSpan="3" variant="head" component="th">
@@ -72,7 +72,7 @@ const Widget2 = () => {
                             <TableRow>
                                 <TableCell component="th" scope="row">10</TableCell>
                                 <TableCell align="left">1 - 10 days</TableCell>
-                                <TableCell align="left">NGN 100.00</TableCell>
+                                <TableCell align="right">NGN 100.00</TableCell>
                             </TableRow>
                         </TableBody>
 
@@ -87,7 +87,7 @@ const Widget2 = () => {
                             <TableRow>
                                 <TableCell component="th" scope="row">10</TableCell>
                                 <TableCell align="left">1 - 30 days</TableCell>
-                                <TableCell align="left">NGN 100.00</TableCell>
+                                <TableCell align="right">NGN 100.00</TableCell>
                             </TableRow>
                         </TableBody>
                         
@@ -96,7 +96,7 @@ const Widget2 = () => {
                                 <TableCell align="left" colSpan={2}>
                                     <Typography variant="h6" component="h2" color="textSecondary">Total</Typography>
                                 </TableCell>
-                                <TableCell align="left">
+                                <TableCell align="right">
                                     <Typography variant="h6" component="h2" color="textSecondary">NGN 100000.00</Typography>
                                 </TableCell>
                             </TableRow>
