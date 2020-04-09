@@ -32,40 +32,11 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     padding: theme.spacing(3, 0),
   },
-  toolbar: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    '& > div': {
-      display: 'flex',
-    },
-    '& > div:first-child': {
-      display: 'flex',
-      justifyContent: 'space-between',
-      '& a': {
-        color: theme.palette.common.white,
-        marginLeft: '20px',
-        borderRadius: 0,
-        textDecoration: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        textTransform: 'uppercase',
-        padding: theme.spacing(1),
-        '& :hover': {
-          color: fade(theme.palette.common.white, 0.5),
-          backgroundColor: 'red',
-        },
-      },
-    },
-  },
   active: { backgroundColor: darken(theme.palette.primary.main, 0.25) },
 }));
 
 function ModuleLayout(props) {
   const classes = useStyles();
-
-  const refreshPage = () => {
-    window.location.reload(false);
-  };
 
   return (
     <div className={classes.root}>

@@ -160,6 +160,8 @@ const TransferOrderDialog = props => {
     setValues({ ...values, destinationWarehouseUuId: value.uuid });
   };
 
+  console.log('inventory rows -> ', rows)
+
   // console.log(values, 'values');
   return (
     <div>

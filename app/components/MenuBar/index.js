@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    // padding: theme.spacing(3, 2, 3, 0),
+    padding: theme.spacing(2, 0),
   },
   toolbar: {
     display: 'flex',

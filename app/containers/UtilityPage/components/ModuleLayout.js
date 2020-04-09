@@ -27,42 +27,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     padding: theme.spacing(3, 2, 3, 0),
   },
-  toolbar: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    '& > div': {
-      display: 'flex',
-    },
-    '& > div:first-child': {
-      display: 'flex',
-      justifyContent: 'space-between',
-      color: theme.palette.common.white,
-      '& a': {
-        display: "block",
-        color: theme.palette.common.white,
-        marginLeft: '20px',
-        borderRadius: theme.spacing(2, 2, 0, 0),
-        textDecoration: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        textTransform: 'uppercase',
-        padding: theme.spacing(0, 4),
-        '&:hover': {
-          color: theme.palette.primary.main,
-          backgroundColor: theme.palette.common.white,
-        },
-        '& [class^="makeStyles-active"]': {
-          color: `${darken(theme.palette.primary.main, 0.5)} !important`,
-        },
-        '&:active': {
-          color: theme.palette.primary.main,
-        },
-        '&:focus': {
-          color: darken(theme.palette.primary.main, 0.5),
-        },
-      },
-    },
-  },
   active: { 
     backgroundColor: theme.palette.common.white,  
     color: `${darken(theme.palette.primary.main, 0.5)} !important`,
@@ -72,10 +36,6 @@ const useStyles = makeStyles(theme => ({
 
 function ModuleLayout(props) {
   const classes = useStyles();
-
-  const refreshPage = () => {
-    window.location.reload(false);
-  };
 
   return (
     <div className={classes.root}>
