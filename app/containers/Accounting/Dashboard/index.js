@@ -27,6 +27,7 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from './../../App/selectors';
 import moment from 'moment'
+import ModuleLayout from './../components/ModuleLayout'
 import Widget1 from './widgets/Widget1'
 import Widget2 from './widgets/Widget2'
 import Widget3 from './widgets/Widget3'
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
   grid: {
     justifyContent: "center",
-    borderBottom: `1px solid ${theme.palette.grey[100]}`,
+    borderBottom: `1px solid ${theme.palette.divider}`,
     '& .MuiGrid-item': {
       flex: 1,
       margin: theme.spacing(5, 2),
@@ -64,7 +65,7 @@ const AccountDashBoard = props => {
     const {} = props;
 
     return (
-        <React.Fragment>
+        <ModuleLayout>
             <div className={classes.root}>
                 <Grid container>
                     <Grid item xs={12}>
@@ -89,7 +90,7 @@ const AccountDashBoard = props => {
                     </Grid>
                 </Grid>
             </div>
-        </React.Fragment>
+        </ModuleLayout>
     );
 };
 
