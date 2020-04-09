@@ -2,19 +2,21 @@ import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
-  Divider,
+  List,
+  FormControlLabel,
   Icon,
   Button,
+  Menu,
+  MenuItem,
   Paper,
   Grid,
   Table,
-  TableHead,
   TableBody,
-  TableRow,
   TableCell,
-  TableFooter,
-  TextField,
-  Typography
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -35,39 +37,74 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 // import LoadingIndicator from '../../../components/LoadingIndicator';
 // import { AddButton } from './AddButton';
-import ModuleLayout from './ModuleLayout'
 
 
 const useStyles = makeStyles(theme => ({
   root: {
+    padding: theme.spacing(5, 5, 5, 20),
+    marginBottom: theme.spacing(4),
     flexGrow: 1,
-    backgroundColor: theme.palette.common.white,
+    '& > *': {
+      margin: theme.spacing(1),
+    },
   },
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
-  grid: {
-    justifyContent: "space-between",
-    '& .MuiGrid-item': {
-      flex: 1,
-    }
+  image: {
+    position: 'absolute',
+    width: '100px',
+    height: '100px',
+    left: '150px',
+    top: '180px',
+    border: '1px solid #C4C4C4',
+    borderRadius: '155px',
+    padding: '25px',
   },
-  divider: { marginTop: theme.spacing(4) },
+  edit: {
+    position: 'absolute',
+    height: '100px',
+    left: '1280px',
+    top: '180px',
+    color: '#1A88E1',
+    fontStyle: 'normal',
+    fontWeight: '600',
+    fontSize: '13px',
+    lineHeight: '16px',
+    // border: '2px solid #1A88E1',
+    [theme.breakpoints.down('md')]: {
+      position: 'absolute',
+      height: '100px',
+      left: '265px',
+      top: '150px',
+      color: '#1A88E1',
+    },
+    textField: {
+        margin: theme.spacing(1.5, 0),
+    },
+  },
+  orgContainer: {
+    padding: theme.spacing(0, 5, 0, 5),
+  },
+  demo: {
+    backgroundColor: theme.palette.background.paper,
+  },
+  editButton: {
+    width: '117px',
+    height: '40px',
+    background: '#1A88E1',
+    borderRadius: '10px',
+    align: 'right',
+  },
+  listFormat: {
+    marginBottom: '10px',
+    marginTop: '10px',
+  },
   table: {
-    "& .MuiTableFooter-root": {
-        borderTop: `1px solid ${theme.palette.grey[400]} !important`
-    },
-    "& .MuiTableCell-root": {
-        "& button:last-child": {
-          marginLeft: theme.spacing(1)
-        }
-    },
-    '& .MuiTableCell-body': {
-        color: theme.palette.text.secondary,
-    },
-  }
+    minWidth: 650,
+  },
 }));
 
 const AccountJournal = props => {
@@ -79,7 +116,22 @@ const AccountJournal = props => {
     setSelectedDate(date);
   };
 
-  const [values, setValues] = React.useState({});
+  const [values, setValues] = React.useState({
+    entries: [
+      {
+        accountId: 0,
+        credit: 0,
+        debit: 0,
+        description: "string",
+        id: 0
+      }
+    ],
+    note: "string",
+    orgId: "string",
+    periodId: 0,
+    reference: "string",
+    transactionDate: "2020-04-08T12:13:17.505Z"
+  });
 
   const addRow = () => {
     const item = {
@@ -112,43 +164,42 @@ const AccountJournal = props => {
 
 
   return (
-    <ModuleLayout>
-    <div className={classes.root}>
-      <Grid container>
-        <Grid item xs={12}>
-          <Typography variant="h6">New Journal</Typography>
-          <Grid container className={classes.grid}>
-            <Grid item xs={5}>
-              <TextField
-                id="standard-accountName"
-                label="Transaction"
-                size="small"
-                type="name"
-                variant="outlined"
-                className={classes.textField}
-                // value={values.accountName}
-                // onChange={handleChange('accountName')}
-                margin="normal"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={5}>
-              <TextField
-                id="standard-accountName"
-                label="Reference Number"
-                size="small"
-                type="name"
-                variant="outlined"
-                className={classes.textField}
-                // value={values.accountName}
-                // onChange={handleChange('accountName')}
-                margin="normal"
-                fullWidth
-              />
-            </Grid>
+    <React.Fragment>
+      <div className={classes.root}>
+      <h2>New Journal</h2>
+      <Grid container spacing={2}>
+        <Grid item xs={5}>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <Grid container justify="space-around">
+            <KeyboardDatePicker
+              margin="normal"
+              id="date-picker-dialog"
+              label="Transaction Date"
+              format="MM/dd/yyyy"
+              value={selectedDate}
+              onChange={handleDateChange}
+              KeyboardButtonProps={{
+                'aria-label': 'change date',
+              }}
+            />
           </Grid>
+        </MuiPickersUtilsProvider>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={5}>
+        <TextField
+          id="standard-accountName"
+          label="Transaction"
+          size="small"
+          type="name"
+          variant="outlined"
+          className={classes.textField}
+          // value={values.accountName}
+          // onChange={handleChange('accountName')}
+          margin="normal"
+          fullWidth
+        />
+        </Grid>
+        <Grid item xs={10}>
           <TextField
             id="standard-description"
             label="Notes"
@@ -164,19 +215,19 @@ const AccountJournal = props => {
             />
         </Grid>
       </Grid>
+    </div>
 
-      <Divider className={classes.divider} />
-
-      <Grid container>
+    <Grid container spacing={3}>
       <Grid item xs={12}>
+      <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
-          <TableHead>
+          <TableHead >
             <TableRow>
-              <TableCell component="th">Account</TableCell>
-              <TableCell component="th">Description</TableCell>
-              <TableCell component="th">Debit</TableCell>
-              <TableCell component="th">Credit</TableCell>
-              <TableCell component="th"></TableCell>
+              <TableCell align="center">Account</TableCell>
+              <TableCell align="center">Description</TableCell>
+              <TableCell align="center">Debit</TableCell>
+              <TableCell align="center">Credit</TableCell>
+              <TableCell align="center"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -230,20 +281,6 @@ const AccountJournal = props => {
                 />
               </TableCell>
               <TableCell align="center">
-                <TextField
-                  id="standard-accountName"
-                  label="Transaction"
-                  size="small"
-                  type="name"
-                  variant="outlined"
-                  className={classes.textField}
-                  // value={values.accountName}
-                  // onChange={handleChange('accountName')}
-                  margin="normal"
-                  fullWidth
-                />
-              </TableCell>
-              <TableCell align="center">
                 <IconButton aria-label="delete" onClick={() => removeRow(id)}>
                   <DeleteIcon />
                 </IconButton>
@@ -251,23 +288,17 @@ const AccountJournal = props => {
             </TableRow>
           ))}
         </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={5}>
-              <Button variant="contained" color="primary" onClick={() => addRow()} className={classes.button}>
-                Add row
-              </Button>
-              <Button variant="contained" color="primary" className={classes.button}>
-                Save
-              </Button>
-            </TableCell>
-          </TableRow>
-        </TableFooter>
         </Table>
+      </TableContainer>
+      <Button variant="contained" color="primary" onClick={() => addRow()}>
+        Add row
+      </Button>
+      <Button variant="contained" color="primary">
+        Save
+      </Button>
       </Grid>
     </Grid>
-    </div>
-    </ModuleLayout>
+    </React.Fragment>
   );
 };
 
