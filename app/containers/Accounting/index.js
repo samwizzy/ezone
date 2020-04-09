@@ -21,6 +21,7 @@ import saga from './saga';
 import messages from './messages';
 import AccountChart from './components/AccountChart';
 import AccountJournal from './components/AccountJournal';
+import JournalListing from './components/JournalListing';
 import NewAccountDialog from './components/NewAccountDialog';
 import AccountSetting from './components/AccountSetting';
 import * as Actions from './actions';
@@ -48,7 +49,7 @@ export function Accounting(props) {
     dispatchGetAllAccountTypeAction();
   }, []);
 
-  return  <Dashboard />
+  // return  <Dashboard />
 
 
   // if (loading) {
@@ -73,7 +74,7 @@ export function Accounting(props) {
         <title>Accounting</title>
         <meta name="description" content="Description of Accounting" />
       </Helmet>
-      <AccountJournal />
+      <JournalListing />
       {/* <AccountChart />
       <NewAccountDialog /> */}
       {/* <AccountSetting /> */}

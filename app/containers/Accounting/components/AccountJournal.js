@@ -117,20 +117,20 @@ const AccountJournal = props => {
   };
 
   const [values, setValues] = React.useState({
-    entries: [
-      {
-        accountId: 0,
-        credit: 0,
-        debit: 0,
-        description: "string",
-        id: 0
-      }
-    ],
-    note: "string",
-    orgId: "string",
-    periodId: 0,
-    reference: "string",
-    transactionDate: "2020-04-08T12:13:17.505Z"
+    "entries": [
+    {
+      "accountId": 0,
+      "credit": 0,
+      "debit": 0,
+      "description": "string",
+      "id": 0
+    }
+  ],
+  "note": "string",
+  "orgId": "string",
+  "periodId": 0,
+  "reference": "string",
+  "transactionDate": "2020-04-08T12:13:17.505Z"
   });
 
   const addRow = () => {

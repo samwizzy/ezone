@@ -219,6 +219,31 @@ export function* createAccountingSetupSaga() {
   }
 }
 
+
+export function* getAllAccountPeriodSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAllAccountPeriodApi}/${currentUser.organisation.orgId}`;
+  console.log('getAllAccountPeriodSaga', requestURL);
+
+  try {
+    const accountPeriodListResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log('accountPeriodListResponse -->', accountPeriodListResponse);
+    yield put(Actions.getAllAccountPeriodSuccessAction(accountPeriodListResponse));
+  } catch (err) {
+    console.log('getAllAccountPeriodErrorAction--->', err);
+    yield put(Actions.getAllAccountPeriodErrorAction(err));
+  }
+}
+
+
 // Individual exports for testing
 export default function* AccountingSaga() {
   // See example in containers/HomePage/saga.js
@@ -230,4 +255,5 @@ export default function* AccountingSaga() {
   yield takeLatest(Constants.DELETE_CHART_OF_ACCOUNT, deleteChartOfAccountSaga);
   yield takeLatest(Constants.GET_ACCOUNTING_SETUP, getAccountingSetupSaga);
   yield takeLatest(Constants.CREATE_ACCOUNTING_SETUP, createAccountingSetupSaga);
+  yield takeLatest(Constants.GET_ALL_ACCOUNT_PERIOD, getAllAccountPeriodSaga);
 }

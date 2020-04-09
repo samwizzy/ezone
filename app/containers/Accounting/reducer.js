@@ -13,6 +13,7 @@ export const initialState = {
   detailTypeData: [],
   chartOfAccPostData: false,
   chartOfAccData: [],
+  allAccountPeriodData: [],
   accountDialog: {
     type: 'new',
     props: {
@@ -278,6 +279,31 @@ const accountingReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
+
+      // Case to get all account period
+      case Constants.GET_ALL_ACCOUNT_PERIOD_SUCCESS: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_ALL_ACCOUNT_PERIOD_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          allAccountPeriodData: action.payload,
+        };
+      }
+      case Constants.GET_ALL_ACCOUNT_PERIOD_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+
     }
   });
 
