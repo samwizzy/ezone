@@ -116,6 +116,7 @@ const ChatFooter = props => {
                 margin="normal"
                 InputProps={{
                   disableUnderline: true,
+                  autoComplete: 'off',
                   startAdornment: (
                     <InputAdornment position="start"> </InputAdornment>
                   ),

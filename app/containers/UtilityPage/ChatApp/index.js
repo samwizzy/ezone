@@ -13,6 +13,7 @@ import * as Selectors from '../selectors';
 import saga from '../saga';
 import reducer from '../reducer';
 import ChatTab from './ChatTab';
+import ChatBox from './ChatBox';
 import ModuleLayout from '../components/ModuleLayout';
 
 const useStyles = makeStyles(theme => ({

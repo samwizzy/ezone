@@ -35,8 +35,6 @@ import ModuleLayout from './ModuleLayout';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: theme.spacing(5, 5, 5, 20),
-    marginBottom: theme.spacing(4),
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(3),
@@ -45,15 +43,12 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(1, 2),
     backgroundColor: theme.palette.grey[100],
   },
-  image: {
-    position: 'absolute',
-    width: '100px',
-    height: '100px',
-    left: '150px',
-    top: '180px',
-    border: '1px solid #C4C4C4',
-    borderRadius: '155px',
-    padding: '25px',
+  grid: {
+    justifyContent: "space-between",
+    '& .MuiGrid-item': {
+      flex: 1,
+      margin: theme.spacing(2, 0),
+    }
   },
   gridMargin: { marginBottom: theme.spacing(2) },
   table: {
@@ -77,26 +72,6 @@ const useStyles = makeStyles(theme => ({
     textField: {
       margin: theme.spacing(1.5, 0),
     },
-  },
-  orgContainer: {
-    padding: theme.spacing(0, 5, 0, 5),
-  },
-  demo: {
-    backgroundColor: theme.palette.background.paper,
-  },
-  editButton: {
-    width: '117px',
-    height: '40px',
-    background: '#1A88E1',
-    borderRadius: '10px',
-    align: 'right',
-  },
-  listFormat: {
-    marginBottom: '10px',
-    marginTop: '10px',
-  },
-  table: {
-    minWidth: 650,
   },
 }));
 
@@ -201,9 +176,8 @@ const AccountJournal = props => {
       <div className={classes.root}>
         <Grid
           container
-          className={classNames(classes.grid, classes.gridMargin)}
         >
-          <Grid item xs={12}>
+          <Grid item xs={12} className={classNames(classes.gridMargin)}>
             <Typography variant="h6">New Journal</Typography>
             <Grid container className={classes.grid}>
               <Grid item xs={5}>
@@ -220,6 +194,7 @@ const AccountJournal = props => {
                       className={classes.textField}
                       variant="outlined"
                       placeholder="Date"
+                      margin="normal"
                       fullWidth
                     />
                   )}
@@ -290,6 +265,7 @@ const AccountJournal = props => {
                             variant="outlined"
                             placeholder="Search"
                             fullWidth
+                            margin="normal"
                           />
                         )}
                       />
@@ -309,6 +285,7 @@ const AccountJournal = props => {
                             variant="outlined"
                             placeholder="Search"
                             fullWidth
+                            margin="normal"
                           />
                         )}
                       />
@@ -404,6 +381,9 @@ const AccountJournal = props => {
                   </TableRow>
                 ))}
               </TableBody>
+            </Table>
+            
+            <Table className={classes.table}>
               <TableFooter>
                 <TableRow>
                   <TableCell>
@@ -429,6 +409,7 @@ const AccountJournal = props => {
                       <Typography variant="h6">NGN 10500</Typography>
                     </Paper>
                   </TableCell>
+                  <TableCell></TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell colSpan={5}>

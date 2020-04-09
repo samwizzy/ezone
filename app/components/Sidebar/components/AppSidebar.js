@@ -49,7 +49,7 @@ function AppSidebar(props) {
         const { sideBarconfig } = value;
         const pathName = location.pathname.replace(/^\/|\/$/g, '').split('/')[0]
         console.log(pathName, "pathName")
-        const sideMenu = sideBarconfig.find(sidebar => sidebar.module == pathName);
+        const sideMenu = sideBarconfig.find(sidebar => sidebar.module == "utility");
 
         return (
           <div className={classes.root}>
