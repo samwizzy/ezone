@@ -38,11 +38,11 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   grid: {
-    justifyContent: "center",
-    borderBottom: `1px solid ${theme.palette.divider}`,
+    justifyContent: "space-between",
+    // borderBottom: `1px solid ${theme.palette.divider}`,
     '& .MuiGrid-item': {
       flex: 1,
-      margin: theme.spacing(5, 2),
+      margin: theme.spacing(3, 2),
     }
   },
   table: {
@@ -70,17 +70,17 @@ const AccountDashBoard = props => {
                 <Grid container>
                     <Grid item xs={12}>
                         <Grid container className={classes.grid}>
-                            <Grid item xs={5}>
+                            <Grid item xs={6}>
                                 <Widget1 />
                             </Grid>
-                            <Grid item xs={5}>
+                            <Grid item xs={6}>
                                 <Widget2 />
                             </Grid>
                         </Grid>
                     </Grid>
                     <Grid item xs={12}>
                         <Grid container className={classes.grid}>
-                            <Grid item xs={6}>
+                            <Grid item xs={8}>
                                 <Widget3 />
                             </Grid>
                             <Grid item xs={4}>

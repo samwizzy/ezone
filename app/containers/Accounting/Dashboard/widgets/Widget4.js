@@ -57,7 +57,7 @@ const Widget4 = () => {
                     </Typography>
                 </CardContent>
                 <TableContainer>
-                    <Table className={classes.table}>
+                    <Table className={classes.table} size="small">
                         <TableBody>
                             <TableRow>
                                 <TableCell component="th" scope="row">Cash at Hand</TableCell>
