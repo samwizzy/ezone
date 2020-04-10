@@ -31,7 +31,7 @@ import * as Actions from '../actions';
 import * as AppSelectors from '../../App/selectors';
 import * as Selectors from '../selectors';
 import LoadingIndicator from '../../../components/LoadingIndicator';
-import ModuleLayout from './ModuleLayout';
+import ModuleLayout from '../components/ModuleLayout';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -76,7 +76,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AccountJournal = props => {
+const AddNewJournal = props => {
   const classes = useStyles();
 
   const {
@@ -115,8 +115,13 @@ const AccountJournal = props => {
     setValues({ ...values, [name]: event.target.value });
   };
 
+<<<<<<< HEAD:app/containers/Accounting/Journal/AddNewJournal.js
+  const handleChangeRows = name => event => {
+    setValues({...values, "entries": [...values.entries, item]})
+=======
   const handleChangeRows = (event, id) => {
     setValues({...values, "entries": [...values.entries, {[values.entries[id][event.target.name]]: event.target.value}]})
+>>>>>>> 8cbf233d5c122874dc4e37fb3402191324b9317c:app/containers/Accounting/components/AccountJournal.js
   };
 
   // const handleSelectChange = (name, value) => {
@@ -416,7 +421,7 @@ const AccountJournal = props => {
   );
 };
 
-AccountJournal.propTypes = {
+AddNewJournal.propTypes = {
   //   loading: PropTypes.bool,
 };
 
@@ -441,4 +446,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(AccountJournal);
+)(AddNewJournal);

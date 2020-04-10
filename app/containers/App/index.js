@@ -54,7 +54,7 @@ import { AppContext } from '../context/AppContext';
 import sideBarconfig from '../../components/Sidebar/components/SidebarConfig';
 import AccountPage from '../Accounting/Loadable';
 import AccountChart from '../Accounting/components/AccountChart';
-import AccountJournal from '../Accounting/components/AccountJournal';
+import AddNewJournal from '../Accounting/Journal/AddNewJournal';
 
 // import { makeSelectGetSaveToken } from './selectors';
 
@@ -165,7 +165,11 @@ const App = () => {
                 <PrivateRoute path="/hr/:sectionId?/:status?" component={HRPage} />
                 <PrivateRoute path="/account" component={AccountPage} />
                 <PrivateRoute path="/account/chart" component={AccountChart} />
+<<<<<<< HEAD
+                <PrivateRoute path="/account/journal/new" component={AddNewJournal} />
+=======
                 <PrivateRoute path="/accountJournal" component={AccountJournal} />
+>>>>>>> 8cbf233d5c122874dc4e37fb3402191324b9317c
                 <PrivateRoute
                   exact
                   path="/inventory"
