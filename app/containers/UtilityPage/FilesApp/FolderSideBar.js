@@ -42,9 +42,8 @@ const FolderSideBar = props => {
   const { loading, folders, folder, user, getAllFoldersAndDocs, getFavoriteDocuments } = props
 
   const getAllFolders = () => {
-    getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
-    setPrevIds([])
     props.history.push('/dashboard/folders')
+    getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
   }
   
   return (

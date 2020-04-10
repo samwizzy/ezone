@@ -25,8 +25,22 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.common.white
   },
   datatable: {
+    "& .MuiTable-root": {
+      border: "1px solid",
+    },
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
+    },
+    '& .MuiTableHead-root': {
+      '& .MuiTableCell-head': {
+        color: theme.palette.common.white,
+      },
+      '& .MuiTableCell-root:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+      },
+      '& .MuiTableCell-root:nth-child(even)': {
+        backgroundColor: darken(theme.palette.primary.main, 0.5),
+      },
     },
   },
   table: { 

@@ -246,7 +246,7 @@ console.log(tasks, "tasks")
           </List>
         </Grid>
         <Grid item xs={12} md={10}>
-          {!loading?
+          {loading?
             <List component={LoadingIndicator} />
           :
           (
