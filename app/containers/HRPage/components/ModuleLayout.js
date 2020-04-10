@@ -25,14 +25,16 @@ import MenuBar from '../../../components/MenuBar'
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
   },
   content: {
     display: 'flex',
     flexDirection: 'column',
     padding: theme.spacing(3, 0),
   },
-  active: { backgroundColor: darken(theme.palette.primary.main, 0.25) },
+  active: {
+    backgroundColor: theme.palette.common.white,  
+    color: `${darken(theme.palette.primary.main, 0.5)} !important`,
+  },
 }));
 
 function ModuleLayout(props) {
@@ -59,10 +61,10 @@ function ModuleLayout(props) {
         }
         content={
           <Grid container>
-            <Grid item xs={2} md={2}>
+            {/* <Grid item xs={2} md={2}>
               <SideBar />
-            </Grid>
-            <Grid item xs={10} md={10}>
+            </Grid> */}
+            <Grid item xs={12} md={12}>
               {props.children}
             </Grid>
           </Grid>

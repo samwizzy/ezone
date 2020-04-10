@@ -158,10 +158,9 @@ function AddTaskDialog(props) {
                 <Grid item xs={6}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
-                      disableToolbar
-                      variant="inline"
                       format="MM/dd/yyyy"
                       margin="normal"
+                      inputVariant="outlined"
                       name="startDate"
                       id="date-picker-startDate"
                       label="Start Date"
@@ -170,15 +169,15 @@ function AddTaskDialog(props) {
                       KeyboardButtonProps={{
                         'aria-label': 'change date',
                       }}
+                      fullWidth
                     />
                   </MuiPickersUtilsProvider>
                 </Grid>
                 <Grid item xs={6}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
-                      disableToolbar
-                      variant="inline"
                       format="MM/dd/yyyy"
+                      inputVariant="outlined"
                       margin="normal"
                       name="endDate"
                       id="date-picker-endDate"
@@ -188,6 +187,7 @@ function AddTaskDialog(props) {
                       KeyboardButtonProps={{
                         'aria-label': 'change date',
                       }}
+                      fullWidth
                     />
                   </MuiPickersUtilsProvider>
                 </Grid>

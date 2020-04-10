@@ -39,6 +39,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
+    padding: theme.spacing(2, 1),
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper,
   },
@@ -115,7 +116,7 @@ const PayrollApp = props => {
         container
         justify='space-around'
       >
-        <Grid item md={9}>
+        <Grid item md={12}>
           <div className={classes.content}>
             
             <MUIDataTable
@@ -126,31 +127,6 @@ const PayrollApp = props => {
                 options={options}
             />
 
-          </div>
-        </Grid>
-        <Grid item md={3}>
-          <div className={classes.gridRoot}>
-            <div className={classes.buttonGroup}>
-              <ButtonGroup size="small" aria-label="small outlined button group">
-                <Button onClick={()=>{}}><EditSharp className={classes.icon} />Edit</Button>
-                <Button onClick={()=>{}}><Assignment className={classes.icon} />Assign</Button>
-              </ButtonGroup>
-            </div>
-
-            <TableContainer component={Paper}>
-              <Table className={classes.table} size="small" aria-label="a dense table">
-                <TableBody>
-                  {employee && Object.keys(employee).map(key => (
-                  <TableRow key={employee.docName}>
-                      <TableCell component="th" scope="row">
-                        Department Name
-                      </TableCell>
-                      <TableCell align="right">{employee[key]}</TableCell>
-                  </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
           </div>
         </Grid>
       </Grid>

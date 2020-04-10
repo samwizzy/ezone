@@ -35,8 +35,6 @@ import ModuleLayout from '../components/ModuleLayout';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: theme.spacing(5, 5, 5, 20),
-    marginBottom: theme.spacing(4),
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(3),
@@ -45,17 +43,15 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(1, 2),
     backgroundColor: theme.palette.grey[100],
   },
-  image: {
-    position: 'absolute',
-    width: '100px',
-    height: '100px',
-    left: '150px',
-    top: '180px',
-    border: '1px solid #C4C4C4',
-    borderRadius: '155px',
-    padding: '25px',
+  grid: {
+    justifyContent: "space-between",
+    '& .MuiGrid-item': {
+      flex: 1,
+      margin: theme.spacing(2, 0),
+    }
   },
   gridMargin: { marginBottom: theme.spacing(2) },
+  label: { marginLeft: theme.spacing(1) },
   table: {
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
@@ -78,26 +74,6 @@ const useStyles = makeStyles(theme => ({
       margin: theme.spacing(1.5, 0),
     },
   },
-  orgContainer: {
-    padding: theme.spacing(0, 5, 0, 5),
-  },
-  demo: {
-    backgroundColor: theme.palette.background.paper,
-  },
-  editButton: {
-    width: '117px',
-    height: '40px',
-    background: '#1A88E1',
-    borderRadius: '10px',
-    align: 'right',
-  },
-  listFormat: {
-    marginBottom: '10px',
-    marginTop: '10px',
-  },
-  table: {
-    minWidth: 650,
-  },
 }));
 
 const AddNewJournal = props => {
@@ -112,7 +88,7 @@ const AddNewJournal = props => {
   const [values, setValues] = React.useState({
     entries: [],
     note: '',
-    orgId: currentUser.organisation.orgId,
+    // orgId: currentUser.organisation.orgId,
     periodId: '',
     reference: '',
     transactionDate: '',
@@ -139,8 +115,13 @@ const AddNewJournal = props => {
     setValues({ ...values, [name]: event.target.value });
   };
 
+<<<<<<< HEAD:app/containers/Accounting/Journal/AddNewJournal.js
   const handleChangeRows = name => event => {
     setValues({...values, "entries": [...values.entries, item]})
+=======
+  const handleChangeRows = (event, id) => {
+    setValues({...values, "entries": [...values.entries, {[values.entries[id][event.target.name]]: event.target.value}]})
+>>>>>>> 8cbf233d5c122874dc4e37fb3402191324b9317c:app/containers/Accounting/components/AccountJournal.js
   };
 
   // const handleSelectChange = (name, value) => {
@@ -160,9 +141,8 @@ const AddNewJournal = props => {
       <div className={classes.root}>
         <Grid
           container
-          className={classNames(classes.grid, classes.gridMargin)}
         >
-          <Grid item xs={12}>
+          <Grid item xs={12} className={classNames(classes.gridMargin)}>
             <Typography variant="h6">New Journal</Typography>
             <Grid container className={classes.grid}>
               <Grid item xs={5}>
@@ -179,6 +159,7 @@ const AddNewJournal = props => {
                       className={classes.textField}
                       variant="outlined"
                       placeholder="Date"
+                      margin="normal"
                       fullWidth
                     />
                   )}
@@ -246,6 +227,7 @@ const AddNewJournal = props => {
                           className={classes.textField}
                           variant="outlined"
                           placeholder="Search"
+                          margin="normal"
                           fullWidth
                         />
                       )}
@@ -263,6 +245,7 @@ const AddNewJournal = props => {
                           className={classes.textField}
                           variant="outlined"
                           placeholder="Search"
+                          margin="normal"
                           fullWidth
                         />
                       )}
@@ -276,8 +259,8 @@ const AddNewJournal = props => {
                       type="name"
                       variant="outlined"
                       className={classes.textField}
-                      value={values.entries.description}
-                      onChange={handleChangeRows('description')}
+                      value={values.entries[id].description}
+                      onChange={(event) => handleChangeRows(event, id)}
                       margin="normal"
                       fullWidth
                     />
@@ -356,17 +339,7 @@ const AddNewJournal = props => {
               </TableBody>
               <TableFooter>
                 <TableRow>
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => addRow()}
-                      startIcon={<AddIcon />}
-                    >
-                      Add Another Line
-                    </Button>
-                  </TableCell>
-                  <TableCell>
+                  <TableCell colSpan={2} align="right">
                     <Typography variant="h6">Total</Typography>
                   </TableCell>
                   <TableCell>
@@ -379,14 +352,29 @@ const AddNewJournal = props => {
                       <Typography variant="h6">NGN 10500</Typography>
                     </Paper>
                   </TableCell>
+                  <TableCell></TableCell>
                 </TableRow>
+              </TableFooter>
+            </Table>
+            
+            <Table className={classes.table}>
+              <TableFooter>
                 <TableRow>
-                  <TableCell colSpan={5}>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => addRow()}
+                      startIcon={<AddIcon />}
+                    >
+                      Add Another Line
+                    </Button>
                     <Button
                       variant="outlined"
                       color="primary"
                       component="label"
                       startIcon={<AttachFileIcon />}
+                      className={classes.label}
                     >
                       Attach a file
                       <input

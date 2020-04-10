@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
   },
   messageRow: {
-    border: `1px solid ${theme.palette.grey[300]}`,
+    border: `1px solid ${theme.palette.grey[200]}`,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -72,7 +72,6 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '50px',
   },
   input: {
-    // height: 40,
     borderRadius: theme.shape.borderRadius * 5,
   },
   appBar: {
@@ -111,7 +110,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     backgroundColor: theme.palette.grey[50],
     minHeight: '400px',
-    height: '400px',
+    maxHeight: `calc(100vh - 200px)`,
     overflow: 'auto',
     padding: theme.spacing(3, 5, 10, 3),
   },
@@ -147,7 +146,7 @@ function a11yProps(index) {
   };
 }
 
-const msgRef = React.createRef();
+const ref = React.createRef();
 
 const ChatTab = props => {
   const {
@@ -159,9 +158,11 @@ const ChatTab = props => {
     dispatchGetAllEmployees,
     dispatchGetUserChats,
   } = props;
+
   useEffect(() => {
     dispatchGetAllEmployees();
     dispatchGetUserChats();
+    handleScrollToBottom()
   }, []);
 
   // console.log(allEmployees, 'allEmployees');
@@ -174,6 +175,10 @@ const ChatTab = props => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const handleScrollToBottom = () => {
+    ref.current.scrollTop = ref.current.scrollHeight
+  }
 
   const isFirstMessageOfGroup = (item, i) => {
     // return (i === 0 || (props.chat.dialog[i - 1] && props.chat.dialog[i - 1].who !== item.who));
@@ -209,6 +214,8 @@ const ChatTab = props => {
       ['desc'],
     );
   }
+
+  console.log(ref, "ref")
 
   // console.log(userChatData, 'userChatData');
   // console.log(newChat, 'newChat');
@@ -293,7 +300,7 @@ const ChatTab = props => {
                     <ChatHeader userChatData={userChatData} />
                   </Grid>
                   <Grid item xs={12}>
-                    <div className={classes.msgBody}>
+                    <div className={classes.msgBody} ref={ref}>
                       {reversedData &&
                         reversedData.map(chat => (
                           <div
@@ -319,6 +326,7 @@ const ChatTab = props => {
                             <Paper className={classes.chatPane} key={chat.id}>
                               <Typography variant="subtitle1" key={chat.id}>
                                 {chat.chatMessage}
+                                How are you doing folks?
                               </Typography>
                               <Typography
                                 variant="caption"

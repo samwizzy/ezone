@@ -39,6 +39,11 @@ const useStyles = makeStyles(theme => ({
     padding: 0,
     '&.delete': { color: theme.status.danger},
   },
+  list: {
+    "& .MuiListItemIcon-root": {
+      minWidth: "40px !important"
+    },
+  },
   status: {
     width: 14,
     height: 14,
@@ -184,7 +189,7 @@ console.log(tasks, "tasks")
     filterType: "checkbox",
     responsive: "scrollMaxHeight",
     selectableRows: 'none',
-    customToolbar: () => <AddTask openNewTaskDialog={openNewTaskDialog} />,
+    // customToolbar: () => <AddTask openNewTaskDialog={openNewTaskDialog} />,
     rowsPerPage: 25,
     rowsPerPageOptions: [25,50,100],
     onRowClick: (rowData, rowState) => {
@@ -209,6 +214,7 @@ console.log(tasks, "tasks")
       <Grid container justify='space-between'>
         <Grid item xs={12} md={2}>
           <List 
+            className={classes.list}
             component="nav" 
             aria-label="secondary mailbox folders"
             subheader={
@@ -240,17 +246,22 @@ console.log(tasks, "tasks")
           </List>
         </Grid>
         <Grid item xs={12} md={10}>
-          {loading?
+          {!loading?
             <List component={LoadingIndicator} />
           :
           (
-            <MUIDataTable
-              title="Task List"
-              data={tasks}
-              columns={columns}
-              options={options}
-              className={classes.datatable}
-            />
+            <div>
+              <Box mb={2} align="right">
+                <AddTask openNewTaskDialog={openNewTaskDialog} />
+              </Box>
+              <MUIDataTable
+                title="Task List"
+                data={tasks}
+                columns={columns}
+                options={options}
+                className={classes.datatable}
+              />
+            </div>
           )}
         </Grid>
       </Grid>
