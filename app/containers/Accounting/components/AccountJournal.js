@@ -51,6 +51,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   gridMargin: { marginBottom: theme.spacing(2) },
+  label: { marginLeft: theme.spacing(1) },
   table: {
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
@@ -87,7 +88,7 @@ const AccountJournal = props => {
   const [values, setValues] = React.useState({
     entries: [],
     note: '',
-    orgId: currentUser.organisation.orgId,
+    // orgId: currentUser.organisation.orgId,
     periodId: '',
     reference: '',
     transactionDate: '',
@@ -114,64 +115,13 @@ const AccountJournal = props => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-<<<<<<< HEAD
-  const handleChangeRows = name => event => {
-    setValues({...values, "entries": [...values.entries, item]})
+  const handleChangeRows = (event, id) => {
+    setValues({...values, "entries": [...values.entries, {[values.entries[id][event.target.name]]: event.target.value}]})
   };
 
   // const handleSelectChange = (name, value) => {
   //   setValues({ ...values, currency: taxType.id });
   // };
-=======
-  const handleChangeW = idx => event => {
-    // console.log(idx, 'idx');
-    const { name, value } = event.target;
-    // console.log(value, 'target.value');
-    // console.log(name, 'target.name');
-    const newRow = rows;
-    newRow[idx][name] = value;
-    setRows(newRow);
-    // setValues({ ...values, [name]: event.target.value });
-  };
-
-  console.log(rows, 'rows come here');
-  // const handleChangeRows = name => (event, id) => {
-  //   console.log('name -> ', name);
-  //   console.log('event -> ', event);
-  //   console.log('id -> ', id);
-
-  //   setRows({ ...rows, [name]: event.target.value });
-  // };
-
-  const handleChangeRows = idx => e => {
-    const { value } = e.target;
-    const newRow = rows;
-    newRow[idx].transferQuantity = value;
-    setRows(newRow);
-  };
-
-  const handleChangeTransaction = idx => e => {
-    const { value } = e.target;
-    const newRow = rows;
-    newRow[idx].debit = value;
-    setRows(newRow);
-  };
-
-  // const handleChangeRows = (event, id) => {
-  //   console.log('event.target ', event.target);
-  //   const { value } = event.target;
-
-  //   console.log('name -> ', name);
-  //   console.log('value -> ', value);
-  //   // console.log('id -> ', id);
-
-  //   setRows({ ...rows, [name]: event.target.value });
-  // };
-
-  const handleSelectChange = (name, value) => {
-    setValues({ ...values, currency: taxType.id });
-  };
->>>>>>> 21ca8730094e5faee6f4cfbb45b19f4030b2d13a
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
@@ -256,7 +206,6 @@ const AccountJournal = props => {
                 </TableRow>
               </TableHead>
               <TableBody>
-<<<<<<< HEAD
               {values.entries.map((row, id) => (
                 <TableRow key={id}>
                   <TableCell align="center">
@@ -273,6 +222,7 @@ const AccountJournal = props => {
                           className={classes.textField}
                           variant="outlined"
                           placeholder="Search"
+                          margin="normal"
                           fullWidth
                         />
                       )}
@@ -290,6 +240,7 @@ const AccountJournal = props => {
                           className={classes.textField}
                           variant="outlined"
                           placeholder="Search"
+                          margin="normal"
                           fullWidth
                         />
                       )}
@@ -303,8 +254,8 @@ const AccountJournal = props => {
                       type="name"
                       variant="outlined"
                       className={classes.textField}
-                      value={values.entries.description}
-                      onChange={handleChangeRows('description')}
+                      value={values.entries[id].description}
+                      onChange={(event) => handleChangeRows(event, id)}
                       margin="normal"
                       fullWidth
                     />
@@ -380,159 +331,10 @@ const AccountJournal = props => {
                   </TableCell>
                 </TableRow>
               ))}
-=======
-                {rows.map((row, id) => (
-                  <TableRow key={id}>
-                    <TableCell align="center">
-                      <Autocomplete
-                        id="combo-box-demo"
-                        options={chartOfAccountData}
-                        getOptionLabel={option => option.accountNumber}
-                        onChange={(evt, value) =>
-                          handleSelectChange(evt, value)
-                        }
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            label="Select Method"
-                            size="small"
-                            className={classes.textField}
-                            variant="outlined"
-                            placeholder="Search"
-                            fullWidth
-                            margin="normal"
-                          />
-                        )}
-                      />
-                      <Autocomplete
-                        id="combo-box-demo"
-                        options={chartOfAccountData}
-                        getOptionLabel={option => option.accountNumber}
-                        onChange={(evt, value) =>
-                          handleSelectChange(evt, value)
-                        }
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            label="Select Method"
-                            size="small"
-                            className={classes.textField}
-                            variant="outlined"
-                            placeholder="Search"
-                            fullWidth
-                            margin="normal"
-                          />
-                        )}
-                      />
-                    </TableCell>
-                    <TableCell align="center">
-                      <TextField
-                        id="standard-description"
-                        label="Description"
-                        size="small"
-                        type="name"
-                        variant="outlined"
-                        className={classes.textField}
-                        value={rows.description}
-                        name="description"
-                        onChange={handleChangeW(id)}
-                        margin="normal"
-                        fullWidth
-                      />
-                      <TextField
-                        id="standard-debit"
-                        label="Debit"
-                        size="small"
-                        type="name"
-                        variant="outlined"
-                        className={classes.textField}
-                        value={rows.debit}
-                        name="debit"
-                        onChange={handleChangeW(id)}
-                        margin="normal"
-                        fullWidth
-                      />
-                    </TableCell>
-                    <TableCell align="center">
-                      <TextField
-                        id="standard-accountName"
-                        label="Transaction"
-                        size="small"
-                        type="name"
-                        variant="outlined"
-                        className={classes.textField}
-                        // value={values.accountName}
-                        // onChange={handleChange('accountName')}
-                        margin="normal"
-                        fullWidth
-                      />
-                      <TextField
-                        id="standard-accountName"
-                        label="Transaction"
-                        size="small"
-                        type="name"
-                        variant="outlined"
-                        className={classes.textField}
-                        // value={values.accountName}
-                        // onChange={handleChange('accountName')}
-                        margin="normal"
-                        fullWidth
-                      />
-                    </TableCell>
-                    <TableCell align="center">
-                      <TextField
-                        id="standard-accountName"
-                        label="Transaction"
-                        size="small"
-                        type="name"
-                        variant="outlined"
-                        className={classes.textField}
-                        // value={values.accountName}
-                        // onChange={handleChange('accountName')}
-                        margin="normal"
-                        fullWidth
-                      />
-                      <TextField
-                        id="standard-accountName"
-                        label="Transaction"
-                        size="small"
-                        type="name"
-                        variant="outlined"
-                        className={classes.textField}
-                        // value={values.accountName}
-                        // onChange={handleChange('accountName')}
-                        margin="normal"
-                        fullWidth
-                      />
-                    </TableCell>
-                    <TableCell align="center">
-                      <IconButton
-                        aria-label="delete"
-                        onClick={() => removeRow(id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
->>>>>>> 21ca8730094e5faee6f4cfbb45b19f4030b2d13a
               </TableBody>
-            </Table>
-            
-            <Table className={classes.table}>
               <TableFooter>
                 <TableRow>
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => addRow()}
-                      startIcon={<AddIcon />}
-                    >
-                      Add Another Line
-                    </Button>
-                  </TableCell>
-                  <TableCell>
+                  <TableCell colSpan={2} align="right">
                     <Typography variant="h6">Total</Typography>
                   </TableCell>
                   <TableCell>
@@ -547,13 +349,27 @@ const AccountJournal = props => {
                   </TableCell>
                   <TableCell></TableCell>
                 </TableRow>
+              </TableFooter>
+            </Table>
+            
+            <Table className={classes.table}>
+              <TableFooter>
                 <TableRow>
-                  <TableCell colSpan={5}>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => addRow()}
+                      startIcon={<AddIcon />}
+                    >
+                      Add Another Line
+                    </Button>
                     <Button
                       variant="outlined"
                       color="primary"
                       component="label"
                       startIcon={<AttachFileIcon />}
+                      className={classes.label}
                     >
                       Attach a file
                       <input

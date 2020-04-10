@@ -54,6 +54,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   datatable: {
+    borderRight: `1px solid ${theme.palette.grey[100]}`,
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
     }
@@ -300,7 +301,7 @@ const FilesList = props => {
         deleteAria: "Delete Selected Documents",
       },
     },
-    customToolbar: () => <AddFile openFileDialog={openFileUploadDialog} openFolderDialog={openNewFolderDialog} />,
+    // customToolbar: () => <AddFile openFileDialog={openFileUploadDialog} openFolderDialog={openNewFolderDialog} />,
     rowsPerPage: 10,
     rowsPerPageOptions: [10,25,50,100],
     onRowClick: (rowData, rowState) => handleRowClick(rowData[0]),
@@ -324,30 +325,36 @@ const FilesList = props => {
             <List component={LoadingIndicator} />
           :
           (
-            <MUIDataTable
-              className={classes.datatable}
-              title={
-                <Typography variant="h6">
-                  {prevIds.length > 0 &&
-                    <Tooltip title="Back">
-                      <IconButton
-                        onClick={handleBack}
-                      >
-                        <ArrowBackIcon className={classes.icon} />
-                      </IconButton>
-                    </Tooltip>
-                  }
-                  Documents
-                </Typography>
-              }
-              data={folders}
-              columns={columns}
-              options={options}
-            />
+            <div>
+              <Box mb={2} align="right">
+                <AddFile openFileDialog={openFileUploadDialog} openFolderDialog={openNewFolderDialog} />
+              </Box>
+              <MUIDataTable
+                className={classes.datatable}
+                title={
+                  <Typography variant="h6">
+                    {prevIds.length > 0 &&
+                      <Tooltip title="Back">
+                        <IconButton
+                          onClick={handleBack}
+                        >
+                          <ArrowBackIcon className={classes.icon} />
+                        </IconButton>
+                      </Tooltip>
+                    }
+                    Documents
+                  </Typography>
+                }
+                data={folders}
+                columns={columns}
+                options={options}
+              />
+            </div>
           )}
         </Grid>
         <Grid item md={3}>
-          <Typography variant="subtitle2" color="textSecondary">Document Details</Typography>
+          <Box p={2}>
+          <Typography variant="h6" color="inherit">Document Details</Typography>
           {file && Object.keys(file).length > 0 &&
           <div>
           <Card className={classes.cardRoot} elevation={0}>
@@ -439,6 +446,7 @@ const FilesList = props => {
           
           </div>
           }
+          </Box>
         </Grid>
       </Grid>
 

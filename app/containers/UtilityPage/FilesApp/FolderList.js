@@ -368,6 +368,7 @@ const FilesList = props => {
           }
         </Grid>
         <Grid item md={3}>
+          <Box p={2}>
           <Typography variant="subtitle2" color="textSecondary">Document Details</Typography>
           {file && Object.keys(file).length > 0 &&
           <div>
@@ -451,15 +452,16 @@ const FilesList = props => {
             </ListItem>
             <Collapse in={isOpen} timeout="auto" unmountOnExit>
               <Box px={2}>
-              <Typography variant="inherit" color="textSecondary">
-                {file.description? file.description : "This file has no description yet"}
-              </Typography>
+                <Typography variant="inherit" color="textSecondary">
+                  {file.description? file.description : "This file has no description yet"}
+                </Typography>
               </Box>
             </Collapse>
           </List>
           
           </div>
           }
+          </Box>
         </Grid>
       </Grid>
 

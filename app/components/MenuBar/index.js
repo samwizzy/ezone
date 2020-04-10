@@ -20,15 +20,16 @@ import navBarImage from '../../images/navbarImage.jpg';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    // backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.paper,
+    minHeight: `calc(100vh - 65px)`
   },
   appBar: {
     background: `${theme.palette.primary.main} url(${navBarImage}) no-repeat right top`,
-    backgroundSize: "100%",
+    backgroundSize: "cover",
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(2, 0),
+    padding: theme.spacing(4, 0),
   },
   toolbar: {
     display: 'flex',

@@ -30,6 +30,11 @@ const useStyles = makeStyles(theme => ({
       }
     }
   },
+  list: {
+    "& .MuiListItemIcon-root": {
+      minWidth: "40px !important"
+    },
+  },
 }));
 
 const FolderSideBar = props => {
@@ -45,6 +50,7 @@ const FolderSideBar = props => {
   return (
     <div className={classes.root}>
       <List 
+        className={classes.list}
         component="nav" 
         aria-label="secondary mailbox folders"
         subheader={
