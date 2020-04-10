@@ -90,18 +90,15 @@ const JournalListing = props => {
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    // dispatchGetAllChartOfAccountTypeAction();
+    dispatchGetAllAccountPeriodAction();
   }, []);
 
   const {
-    // loading,
-    // openNewAccountDialogAction,
-    // editOpenAccountDialogAction,
-    // deleteChartOfAccountAction,
-    // accountTypeData,
-    // chartOfAccountData,
-    // dispatchGetAllChartOfAccountTypeAction
+    accountPeriodData,
+    dispatchGetAllAccountPeriodAction
   } = props;
+
+  console.log('accountPeriodData -> ', accountPeriodData);
 
 
   const columns = [
@@ -255,16 +252,12 @@ JournalListing.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
 //   loading: Selectors.makeSelectLoading(),
-//   accountTypeData: Selectors.makeSelectAccountTypeData(),
-//   chartOfAccountData: Selectors.makeSelectGetChartOfAccountData(),
+  accountPeriodData: Selectors.makeSelectGetAllAccountPeriodData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    // dispatchGetAllChartOfAccountTypeAction: () => dispatch(Actions.getAllChartOfAccountTypeAction()),
-    // openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
-    // editOpenAccountDialogAction: evt => dispatch(Actions.editOpenAccountDialog(evt)),
-    // deleteChartOfAccountAction: evt => dispatch(Actions.deleteChartOfAccountAction(evt)),
+    dispatchGetAllAccountPeriodAction: () => dispatch(Actions.getAllAccountPeriodAction()),
   };
 }
 

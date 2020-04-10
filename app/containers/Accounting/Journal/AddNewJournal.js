@@ -31,7 +31,7 @@ import * as Actions from '../actions';
 import * as AppSelectors from '../../App/selectors';
 import * as Selectors from '../selectors';
 import LoadingIndicator from '../../../components/LoadingIndicator';
-import ModuleLayout from './ModuleLayout';
+import ModuleLayout from '../components/ModuleLayout';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -100,7 +100,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AccountJournal = props => {
+const AddNewJournal = props => {
   const classes = useStyles();
 
   const {
@@ -433,7 +433,7 @@ const AccountJournal = props => {
   );
 };
 
-AccountJournal.propTypes = {
+AddNewJournal.propTypes = {
   //   loading: PropTypes.bool,
 };
 
@@ -458,4 +458,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(AccountJournal);
+)(AddNewJournal);

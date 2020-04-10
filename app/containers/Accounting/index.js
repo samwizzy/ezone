@@ -19,19 +19,27 @@ import makeSelectAccounting from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import AccountChart from './components/AccountChart';
-import AccountJournal from './components/AccountJournal';
-import JournalListing from './components/JournalListing';
-import NewAccountDialog from './components/NewAccountDialog';
+// import AccountChart from './components/AccountChart';
+// import AccountJournal from './components/AccountJournal';
+// import JournalListing from './components/JournalListing';
+// import NewAccountDialog from './components/NewAccountDialog';
 import AccountSetting from './components/AccountSetting';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
 import LoadingIndicator from './../../components/LoadingIndicator';
 import Dashboard from './Dashboard'
+import Router from '../Accounting/components/Router';
 
 export function Accounting(props) {
   useInjectReducer({ key: 'accounting', reducer });
   useInjectSaga({ key: 'accounting', saga });
+
+  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {
+    getAccountingSetupAction();
+    dispatchGetAllChartOfAccountTypeAction();
+    dispatchGetAllAccountTypeAction();
+  }, []);
 
   const {
     loading,
@@ -40,46 +48,8 @@ export function Accounting(props) {
     dispatchGetAllChartOfAccountTypeAction,
     dispatchGetAllAccountTypeAction
   } = props;
-  console.log('accountingSetupData index.js -> ', accountingSetupData);
 
-  // Similar to componentDidMount and componentDidUpdate:
-  useEffect(() => {
-    getAccountingSetupAction()
-    dispatchGetAllChartOfAccountTypeAction();
-    dispatchGetAllAccountTypeAction();
-  }, []);
-
-  // return  <Dashboard />
-
-
-  // if (loading) {
-  //   return <LoadingIndicator />
-  // }
-  // else if (accountingSetupData) {
-  //   // return <Redirect to="/accountChart" />;
-  //   return (
-  //     <div>
-  //       <Helmet>
-  //         <title>Accounting</title>
-  //         <meta name="description" content="Description of Accounting" />
-  //       </Helmet>
-  //       <AccountChart />
-  //       <NewAccountDialog />
-  //     </div>
-  //   );
-  // }
-  return (
-    <div>
-      <Helmet>
-        <title>Accounting</title>
-        <meta name="description" content="Description of Accounting" />
-      </Helmet>
-      <AccountJournal />
-      {/* <AccountChart />
-      <NewAccountDialog /> */}
-      {/* <AccountSetting /> */}
-    </div>
-  );
+  return <Router />
 }
 
 Accounting.propTypes = {

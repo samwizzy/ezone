@@ -58,7 +58,7 @@ const SidebarConfig = [
       {
         id: 2,
         name: 'Chart of Account',
-        url: '/account',
+        url: '/account/chart',
         icon: 'account_tree',
       },
       { id: 3, name: 'Journal', url: '/account', icon: 'menu_book' },
