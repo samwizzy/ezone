@@ -115,13 +115,8 @@ const AddNewJournal = props => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-<<<<<<< HEAD:app/containers/Accounting/Journal/AddNewJournal.js
-  const handleChangeRows = name => event => {
-    setValues({...values, "entries": [...values.entries, item]})
-=======
   const handleChangeRows = (event, id) => {
     setValues({...values, "entries": [...values.entries, {[values.entries[id][event.target.name]]: event.target.value}]})
->>>>>>> 8cbf233d5c122874dc4e37fb3402191324b9317c:app/containers/Accounting/components/AccountJournal.js
   };
 
   // const handleSelectChange = (name, value) => {
