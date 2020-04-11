@@ -1,5 +1,6 @@
 import React from 'react';
 import { fade } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom';
 import {
   withStyles,
   AppBar,
@@ -16,29 +17,17 @@ import {
   Link
 } from '@material-ui/core';
 import Menu from '@material-ui/icons/Menu';
-import Apps from '@material-ui/icons/Apps';
-import Dashboard from '@material-ui/icons/Dashboard';
-import Person from '@material-ui/icons/Person';
-import Group from '@material-ui/icons/Group';
-import BusinessCenter from '@material-ui/icons/BusinessCenter';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import Banner from './banner.jpg';
 import Logo from '../../images/logo.svg';
 import OctivierLogo from '../../images/octivier-logo.svg';
-import UserMenu from '../layouts/shared-components/UserMenu';
+import sidebarImage from '../../images/sidebarImage.jpg';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ModulesList from './components/ModulesList'
+import AppSideBar from './../Sidebar/components/AppSidebar'
 
-const drawerWidth = 50;
-
-const links = [
-  'Dashboard',
-  'Organization', 
-  'Applications', 
-  'Employees', 
-  'Groups'
-];
+const drawerWidth = 240;
+const drawerHeight = 48;
 
 const styles = theme => ({
   banner: {
@@ -52,52 +41,39 @@ const styles = theme => ({
   appBar: {
     zIndex: theme.zIndex.drawer,
     boxShadow: theme.shadows[0],
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
+    // marginLeft: drawerWidth,
+    // width: `calc(100% - ${drawerWidth}px)`,
   },
-  text: {
-    fontSize: 50,
-    [theme.breakpoints.down('md')]: {
-      lineHeight: 1,
-      marginBottom: theme.spacing(2),
-    },
-  },
-  strapline: {
-    fontSize: 23,
-    fontWeight: 200,
-    color: '#E5E5E5',
-    [theme.breakpoints.down('md')]: {
-      fontSize: 18,
-    },
-  },
-  button: {
-    backgroundColor: '#A8BF54',
-    padding: theme.spacing(1, 6),
-    borderRadius: theme.shape.borderRadius,
-    opacity: 1,
-    marginTop: theme.spacing(2),
-    textTransform: 'capitalize',
-    fontSize: 16,
-    '&:hover': {
-      backgroundColor: '#93a847',
-    },
+  listRoot: {
+    display: 'flex',
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    background: `url(${sidebarImage}) no-repeat left -1px`,
+    backgroundSize: "cover",
+    width: drawerWidth,
+    height: "100%",
+    paddingTop: theme.spacing(1),
   },
   list: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 250,
-    height: '100%',
-    // backgroundImage: `url(${SideBanner})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'top center',
-  },
-  fullList: {
-    width: 'auto',
+    width: '100%',
+    "& .MuiListItem-root": {
+      color: theme.palette.common.white,
+      "& .MuiListItemIcon-root": {
+        color: theme.palette.common.white,
+      },
+      "&:hover > .MuiListItemIcon-root": {
+        color: theme.palette.primary.main
+      },
+      "&:hover": {
+        color: theme.palette.primary.main,
+        backgroundColor: theme.palette.common.white, 
+      },
+    }
   },
   grow: {
     flexGrow: 1,
+    marginBottom: drawerHeight,
   },
   link: {
     marginRight: theme.spacing(6),
@@ -133,6 +109,9 @@ const styles = theme => ({
   },
   icon: {
     // height: '20px',
+  },
+  title: {
+    flexGrow: 1
   },
   search: {
     position: 'relative',
@@ -185,7 +164,9 @@ const styles = theme => ({
 });
 
 function Header(props) {
-  const { classes } = props;
+  const { classes, location } = props;
+  const pathName = location.pathname.replace(/^\/|\/$/g, '').split('/')[0]
+  console.log(pathName, "pathName from header")
 
   const [state, setState] = React.useState({ open: false });
 
@@ -203,12 +184,12 @@ function Header(props) {
 
   const sideList = open => (
     <div
-      className={classes.list}
+      className={classes.listRoot}
       role="presentation"
       onClick={toggleDrawer(open, false)}
       onKeyDown={toggleDrawer(open, false)}
     >
-      <IconButton
+      {/* <IconButton
         onClick={toggleDrawer('open', true)}
         edge="start"
         className={classes.SwipeableDrawer}
@@ -220,70 +201,16 @@ function Header(props) {
         ) : (
           <ChevronRightIcon />
         )}
-      </IconButton>
+      </IconButton> */}
 
-      <List>
-        {links.map(
-          (text, index) => {
-            switch(text){
-              case 'Dashboard':
-                return (
-                  <ListItem button key={index}>
-                    <ListItemIcon><Dashboard /></ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                );
-                break;
-              case 'Organization':
-                return (
-                  <ListItem button key={index}>
-                    <ListItemIcon><BusinessCenter /></ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                );
-                break;
-              case 'Employees':
-                return (
-                  <ListItem button key={index} className={classes.link}>
-                    <ListItemIcon><Person /></ListItemIcon>
-                    <ListItemText primary={text} className={classes.li} />
-                  </ListItem>
-                );
-                break;
-              case 'Applications':
-                return (
-                  <ListItem button key={index}>
-                    <ListItemIcon><Apps /></ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                );
-                break;
-              case 'Groups':
-                return (
-                  <ListItem button key={index}>
-                    <ListItemIcon><Group /></ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                );
-                break;
-              default:
-                return (
-                  <ListItem button key={index}>
-                    <ListItemIcon><Dashboard /></ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                )
-            }
-          }
-        )}
-      </List>
+      <AppSideBar />
       <Divider />
     </div>
   );
 
   return (
     <div className={classes.grow}>
-      <AppBar position="relative" color="inherit" className={classes.appBar}>
+      <AppBar position="fixed" color="inherit" className={classes.appBar}>
         <Toolbar variant="dense" disableGutters={false}>
           <IconButton
             onClick={toggleDrawer('open', true)}
@@ -298,28 +225,32 @@ function Header(props) {
           <Grid
             justify="space-between" // Add it here :)
             container
+            alignItems="center"
           >
-            <Grid item style={{display:'flex', alignItems:'center'}}>
+            <Grid item>
               <Typography type="title" color="inherit">
                 <Link href='/'>
                   <img src={Logo} className={classes.logo} />
                 </Link>
               </Typography>
             </Grid>
+            <Grid item>
+              <Typography variant="h6" color="inherit">
+                {pathName && pathName.toUpperCase()}
+              </Typography>
+            </Grid>
 
             <Grid item>
-              <List>
+              <List dense disablePadding>
                 <ListItem>
                   {/* <ListItemIcon>
                     <img src={OctivierLogo} />
                   </ListItemIcon>
                   <ListItemText primary={'Octiver Communications'} /> */}
                   {/* <UserMenu /> */}
-
                   <ModulesList />
                 </ListItem>
               </List>
-
             </Grid>
           </Grid>
         </Toolbar>
@@ -336,4 +267,4 @@ function Header(props) {
   );
 }
 
-export default withStyles(styles)(Header);
+export default withRouter(withStyles(styles)(Header));

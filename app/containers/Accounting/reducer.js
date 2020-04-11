@@ -240,6 +240,7 @@ const accountingReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_ALL_ACCOUNT_TYPES_SUCCESS: {
+        console.log('accountingSetupData reducer ', accountingSetupData);
         return {
           ...state,
           loading: false,

@@ -32,6 +32,19 @@ const SidebarConfig = [
     ],
   },
   {
+    module: 'email',
+    menus: [
+      { id: 1, name: 'Dashboard', url: '/dashboard', icon: 'dashboard' },
+      { id: 2, name: 'Organization', url: '/organization', icon: 'business_center' },
+      { id: 3, name: 'Applications', url: '/utility', icon: 'apps' },
+      { id: 4, name: 'Employees', url: '/users/employees', icon: 'group' },
+      { id: 5, name: 'User Profile', url: '/users/profile', icon: 'person' },
+      { id: 6, name: 'WorkOrder', url: '/workorder', icon: 'list_alt' },
+      { id: 7, name: 'Security', url: '/email', icon: 'security' },
+      { id: 8, name: 'Settings', url: '/dashboard', icon: 'settings' },
+    ],
+  },
+  {
     module: 'utility',
     menus: [
       { id: 1, name: 'Dashboard', url: '/dashboard', icon: 'dashboard' },
@@ -88,7 +101,7 @@ const SidebarConfig = [
       {
         id: 2,
         name: 'Chart of Account',
-        url: '/account',
+        url: '/account/chart',
         icon: 'account_tree',
       },
       { id: 3, name: 'Journal', url: '/account', icon: 'menu_book' },

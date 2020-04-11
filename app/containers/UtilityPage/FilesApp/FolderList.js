@@ -21,22 +21,13 @@ import ShareFileDialog from './components/ShareFileDialog'
 import AddFileDialog from './components/AddFileDialog'
 import AddFolderDialog from './components/AddFolderDialog'
 import FilePreviewDialog from './components/FilePreviewDialog'
-import AddSignature from './components/AddSignature'
-import DocWidget from './components/DocWidget'
 import NoFilesList from './components/NoFilesList'
 import moment from 'moment' 
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import DeleteRounded from '@material-ui/icons/DeleteRounded';
-import InsertDriveFile from '@material-ui/icons/InsertDriveFile';  
 import FolderOpen from '@material-ui/icons/FolderOpen';  
 import CropOriginal from '@material-ui/icons/CropOriginal';  
-import Delete from '@material-ui/icons/Delete';  
-import Share from '@material-ui/icons/Share';  
-import CloudDownload from '@material-ui/icons/CloudDownload';  
-import Visibility from '@material-ui/icons/Visibility';  
-import StarBorderOutlined from '@material-ui/icons/StarBorderOutlined';  
-import StarOutlined from '@material-ui/icons/StarOutlined';
 import FolderSideBar from './FolderSideBar'
 
 const useStyles = makeStyles(theme => ({
@@ -52,6 +43,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(2),
     '& .MuiTableCell-body': {
       fontSize: theme.typography.fontSize - 1,
+      whiteSpace: "nowrap",
     },
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
@@ -60,7 +52,18 @@ const useStyles = makeStyles(theme => ({
   datatable: {
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
-    }
+    },
+    '& .MuiTableHead-root': {
+      '& .MuiTableCell-head': {
+        color: theme.palette.common.white,
+      },
+      '& .MuiTableCell-root:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+      },
+      '& .MuiTableCell-root:nth-child(even)': {
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
+      },
+    },
   },
   button: {
     '&.favorite': { color: orange[300]},
@@ -368,7 +371,8 @@ const FilesList = props => {
           }
         </Grid>
         <Grid item md={3}>
-          <Typography variant="subtitle2" color="textSecondary">Document Details</Typography>
+          <Box p={1}>
+          <Typography variant="h6" color="textSecondary">Document Details</Typography>
           {file && Object.keys(file).length > 0 &&
           <div>
           <Card className={classes.cardRoot} elevation={0}>
@@ -451,15 +455,16 @@ const FilesList = props => {
             </ListItem>
             <Collapse in={isOpen} timeout="auto" unmountOnExit>
               <Box px={2}>
-              <Typography variant="inherit" color="textSecondary">
-                {file.description? file.description : "This file has no description yet"}
-              </Typography>
+                <Typography variant="inherit" color="textSecondary">
+                  {file.description? file.description : "This file has no description yet"}
+                </Typography>
               </Box>
             </Collapse>
           </List>
           
           </div>
           }
+          </Box>
         </Grid>
       </Grid>
 

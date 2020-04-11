@@ -27,15 +27,20 @@ import mail from '../../images/mail.svg';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    height: '100vh'
   },
   grid: {
+    justifyContent: "space-between",
+    alignItems: "center",
     '& .MuiGrid-item': {
       flex: 1,
-      margin: theme.spacing(5)
+      margin: theme.spacing(4)
     }
   },
-  list: {},
+  list: {
+    "& .MuiListItemAvatar-root": {
+      marginRight: `20px !important`,
+    },
+  },
   card: {
     background: theme.palette.common.white,
     borderRadius: theme.shape.borderRadius * 5,
@@ -45,11 +50,7 @@ const useStyles = makeStyles(theme => ({
       display: "flex",
       textDecoration: 'none'
     }
-  },
-  cardIcon: {
-  },
-  cardContent: {
-  },
+  }
 }));
 
 

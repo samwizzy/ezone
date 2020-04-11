@@ -11,8 +11,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import LoadingIndicator from '../../../components/LoadingIndicator';
-import MoreVertRounded from '@material-ui/icons/MoreVertRounded'
-import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import Description from '@material-ui/icons/Description'
 import {AddFile} from './../components/AddButton';
 import * as Actions from '../actions';
@@ -32,10 +31,6 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import DeleteRounded from '@material-ui/icons/DeleteRounded';
 import InsertDriveFile from '@material-ui/icons/InsertDriveFile';  
 import FolderOpen from '@material-ui/icons/FolderOpen';  
-import Delete from '@material-ui/icons/Delete';  
-import Share from '@material-ui/icons/Share';  
-import CloudDownload from '@material-ui/icons/CloudDownload';  
-import Visibility from '@material-ui/icons/Visibility';  
 import StarBorderOutlined from '@material-ui/icons/StarBorderOutlined';  
 import StarOutlined from '@material-ui/icons/StarOutlined';
 import FolderSideBar from './FolderSideBar'
@@ -48,15 +43,30 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(2),
     '& .MuiTableCell-body': {
       fontSize: theme.typography.fontSize - 1,
+      whiteSpace: "nowrap",
     },
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
     },
   },
   datatable: {
+    borderRight: `1px solid ${theme.palette.grey[100]}`,
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
-    }
+    },
+    '& .MuiTableHead-root': {
+      '& .MuiTableCell-head': {
+        color: theme.palette.common.white,
+      },
+      '& .MuiTableCell-root:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+        // backgroundImage: `linear-gradient(to left, ${theme.palette.primary.main}, ${darken(theme.palette.primary.main, 0.3)})`
+      },
+      '& .MuiTableCell-root:nth-child(even)': {
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
+        // backgroundImage: `linear-gradient(to right, ${theme.palette.primary.main}, ${darken(theme.palette.primary.main, 0.3)})`
+      },
+    },
   },
   button: {
     '&.favorite': { color: orange[300]},
@@ -87,7 +97,6 @@ const useStyles = makeStyles(theme => ({
 const FilesList = props => {
   const classes = useStyles();
   const { loading, folders, folder, files, file, user, getAllFoldersAndDocs, getFolderById, getUtilityFile, deleteDocument, favoriteDocument, getFavoriteDocuments, openNewFolderDialog, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog } = props
-  const [prevIds, setPrevIds] = React.useState([]);
 
   const [isOpen, setOpen] = React.useState(true);
   
@@ -142,27 +151,18 @@ const FilesList = props => {
     favoriteDocument(id)
   }
 
-  const handleBack = () => {
-    if(prevIds.length > 1){
-      getAllFoldersAndDocs({folderId: prevIds[prevIds.length - 1], type: 'FOLDER'})
-      prevIds.splice(prevIds.length - 1, 1)
-    }else{
-      getAllFolders()
-    }
-  }
-
   const getAllFolders = () => {
     getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
-    setPrevIds([])
     props.history.push('/dashboard/folders')
   }
 
   const handleRowClick = folderId => {
     const selectedDoc = folders && folders.find(folder => folder.id === folderId)
-    !prevIds.includes(folderId)? setPrevIds([...prevIds, folderId]) : prevIds.splice(prevIds.length - 1, 1)
-    props.history.push('/dashboard/folder/' + folderId)
-    selectedDoc.type == 'File'? getUtilityFile(folderId) : getAllFoldersAndDocs({folderId, type: 'FOLDER'})
-    // getFolderById(selectedDoc)
+    selectedDoc.type == 'File'? getUtilityFile(folderId) : 
+    (
+      getAllFoldersAndDocs({folderId, type: 'FOLDER'}), 
+      props.history.push('/dashboard/folder/' + folderId)
+    )
   }
 
   const columns = [
@@ -324,121 +324,119 @@ const FilesList = props => {
             <List component={LoadingIndicator} />
           :
           (
-            <MUIDataTable
-              className={classes.datatable}
-              title={
-                <Typography variant="h6">
-                  {prevIds.length > 0 &&
-                    <Tooltip title="Back">
-                      <IconButton
-                        onClick={handleBack}
-                      >
-                        <ArrowBackIcon className={classes.icon} />
-                      </IconButton>
-                    </Tooltip>
-                  }
-                  Documents
-                </Typography>
-              }
-              data={folders}
-              columns={columns}
-              options={options}
-            />
+            <div>
+              {/* <Box mb={2} align="right">
+                <AddFile openFileDialog={openFileUploadDialog} openFolderDialog={openNewFolderDialog} />
+              </Box> */}
+              <MUIDataTable
+                className={classes.datatable}
+                title={
+                  <Typography variant="h6">
+                    Documents
+                  </Typography>
+                }
+                data={folders}
+                columns={columns}
+                options={options}
+              />
+            </div>
           )}
         </Grid>
         <Grid item md={3}>
-          <Typography variant="subtitle2" color="textSecondary">Document Details</Typography>
-          {file && Object.keys(file).length > 0 &&
-          <div>
-          <Card className={classes.cardRoot} elevation={0}>
-            <CardMedia
-              className={classes.media}
-              image={file.fileUrl}
-              title={file.name}
-            />
-          </Card>
+          <Box p={1}>
+            <Typography variant="h6" color="inherit">Document Details</Typography>
+            {file && Object.keys(file).length > 0 &&
+            <div>
+            <Card className={classes.cardRoot} elevation={0}>
+              <CardMedia
+                className={classes.media}
+                image={file.fileUrl}
+                title={file.name}
+              />
+            </Card>
 
-          <TableContainer component="div">
-            <Table className={classes.table} size="small" aria-label="a dense table">
-              <TableBody>
-                <TableRow key={file.docName}>
-                  <TableCell component="th" scope="row">
-                    Document Name
-                  </TableCell>
-                  <TableCell align="right">{file.docName}</TableCell>
-                </TableRow>
-                <TableRow key={file.format}>
-                  <TableCell component="th" scope="row">
-                    Format
-                  </TableCell>
-                  <TableCell align="right">{file.format}</TableCell>
-                </TableRow>
-                <TableRow key={file.size}>
-                  <TableCell component="th" scope="row">
-                    Size
-                  </TableCell>
-                  <TableCell align="right">{file.size}</TableCell>
-                </TableRow>
-                <TableRow key={file.createdBy}>
-                  <TableCell component="th" scope="row">
-                    Owner
-                  </TableCell>
-                  <TableCell align="right">{file.createdBy}</TableCell>
-                </TableRow>
-                <TableRow key={file.modifiedBy}>
-                  <TableCell component="th" scope="row">
-                    Modified By
-                  </TableCell>
-                  <TableCell align="right">{file.modifiedBy}</TableCell>
-                </TableRow>
-                <TableRow key={file.trash}>
-                  <TableCell component="th" scope="row">
-                    Trashed
-                  </TableCell>
-                  <TableCell align="right">{file.trash? <DeleteRounded className={classes.icon} /> : 'No'}</TableCell>
-                </TableRow>
-                <TableRow key={file.dateCreated}>
-                  <TableCell component="th" scope="row">
-                    Date Created
-                  </TableCell>
-                  <TableCell align="right">
-                    <Typography variant="inherit" color="textSecondary">
-                      {moment(file.dateCreated).format('lll')}
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-                <TableRow key="favorite">
-                  <TableCell component="th" scope="row"></TableCell>
-                  <TableCell align="right">
-                    <Button size="small" startIcon={<StarOutlined />} onClick={event => handleFavorite(event, file.id)}  className={classNames(classes.button, {'favorite': false})} color='primary'>Favorite</Button>
-                    <IconButton size="small" onClick={(event) => handleShare(event, file.id)} className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>share</Icon></IconButton>
-                    <IconButton size="small" onClick={(event) => handleDownload(event, file.id)} className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>cloud_download</Icon></IconButton>
-                    <IconButton size="small" onClick={(event) => handleDelete(event, file.id)} className={classNames(classes.iconButton, {'delete': true}, classes.icon)} color='secondary'><Icon>delete</Icon></IconButton>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
+            <TableContainer component="div">
+              <Table className={classes.table} size="small" aria-label="a dense table">
+                <TableBody>
+                  <TableRow key={file.docName}>
+                    <TableCell component="th" scope="row">
+                      Name
+                    </TableCell>
+                    <TableCell align="right">{file.docName}</TableCell>
+                  </TableRow>
+                  <TableRow key={file.format}>
+                    <TableCell component="th" scope="row">
+                      Format
+                    </TableCell>
+                    <TableCell align="right">{file.format}</TableCell>
+                  </TableRow>
+                  <TableRow key={file.size}>
+                    <TableCell component="th" scope="row">
+                      Size
+                    </TableCell>
+                    <TableCell align="right">{file.size}</TableCell>
+                  </TableRow>
+                  <TableRow key={file.createdBy}>
+                    <TableCell component="th" scope="row">
+                      Owner
+                    </TableCell>
+                    <TableCell align="right">{file.createdBy?"":""}</TableCell>
+                  </TableRow>
+                  <TableRow key={file.modifiedBy}>
+                    <TableCell component="th" scope="row">
+                      Modified By
+                    </TableCell>
+                    <TableCell align="right">{file.modifiedBy}</TableCell>
+                  </TableRow>
+                  <TableRow key={file.trash}>
+                    <TableCell component="th" scope="row">
+                      Trashed
+                    </TableCell>
+                    <TableCell align="right">{file.trash? <DeleteRounded className={classes.icon} /> : 'No'}</TableCell>
+                  </TableRow>
+                  <TableRow key={file.dateCreated}>
+                    <TableCell component="th" scope="row">
+                      Date Created
+                    </TableCell>
+                    <TableCell align="right">
+                      <Typography variant="inherit" color="textSecondary">
+                        {moment(file.dateCreated).format('lll')}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow key="favorite">
+                    <TableCell component="th" scope="row"></TableCell>
+                    <TableCell align="right">
+                      <Button size="small" startIcon={<StarOutlined />} onClick={event => handleFavorite(event, file.id)}  className={classNames(classes.button, {'favorite': false})} color='primary'>Favorite</Button>
+                      <IconButton size="small" onClick={(event) => handleShare(event, file.id)} className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>share</Icon></IconButton>
+                      <IconButton size="small" onClick={(event) => handleDownload(event, file.id)} className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>cloud_download</Icon></IconButton>
+                      <IconButton size="small" onClick={(event) => handleDelete(event, file.id)} className={classNames(classes.iconButton, {'delete': true}, classes.icon)} color='secondary'><Icon>delete</Icon></IconButton>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
 
-          <List>
-            <ListItem button onClick={handleCollapseClick}>
-              <ListItemIcon>
-                <Description />
-              </ListItemIcon>
-              <ListItemText primary="Description" />
-              {isOpen ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-            <Collapse in={isOpen} timeout="auto" unmountOnExit>
-              <Box px={2}>
-              <Typography variant="inherit" color="textSecondary">
-                {file.description? file.description : "This file has no description yet"}
-              </Typography>
-              </Box>
-            </Collapse>
-          </List>
-          
-          </div>
-          }
+            <List>
+              <ListItem button onClick={handleCollapseClick}>
+                <ListItemIcon>
+                  <Description />
+                </ListItemIcon>
+                <ListItemText primary="Description" />
+                {isOpen ? <ExpandLess /> : <ExpandMore />}
+              </ListItem>
+              <Collapse in={isOpen} timeout="auto" unmountOnExit>
+                <Box px={2}>
+                <Typography variant="inherit" color="textSecondary">
+                  {file.description? file.description : "This file has no description yet"}
+                </Typography>
+                </Box>
+              </Collapse>
+            </List>
+            
+            </div>
+            }
+          </Box>
         </Grid>
       </Grid>
 

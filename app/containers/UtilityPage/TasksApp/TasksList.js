@@ -9,7 +9,7 @@ import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { fade } from '@material-ui/core/styles/colorManipulator';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import moment from 'moment'
 import Lens from '@material-ui/icons/Lens'
@@ -26,7 +26,18 @@ const useStyles = makeStyles(theme => ({
   datatable: {
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
-    }
+    },
+    '& .MuiTableHead-root': {
+      '& .MuiTableCell-head': {
+        color: theme.palette.common.white,
+      },
+      '& .MuiTableCell-root:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+      },
+      '& .MuiTableCell-root:nth-child(even)': {
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
+      },
+    },
   },
   button: {
     borderRadius: '20px',
@@ -38,6 +49,11 @@ const useStyles = makeStyles(theme => ({
     height: 24,
     padding: 0,
     '&.delete': { color: theme.status.danger},
+  },
+  list: {
+    "& .MuiListItemIcon-root": {
+      minWidth: "40px !important"
+    },
   },
   status: {
     width: 14,
@@ -209,6 +225,7 @@ console.log(tasks, "tasks")
       <Grid container justify='space-between'>
         <Grid item xs={12} md={2}>
           <List 
+            className={classes.list}
             component="nav" 
             aria-label="secondary mailbox folders"
             subheader={
@@ -244,13 +261,18 @@ console.log(tasks, "tasks")
             <List component={LoadingIndicator} />
           :
           (
-            <MUIDataTable
-              title="Task List"
-              data={tasks}
-              columns={columns}
-              options={options}
-              className={classes.datatable}
-            />
+            <div>
+              {/* <Box mb={2} align="right">
+                <AddTask openNewTaskDialog={openNewTaskDialog} />
+              </Box> */}
+              <MUIDataTable
+                title="Task List"
+                data={tasks}
+                columns={columns}
+                options={options}
+                className={classes.datatable}
+              />
+            </div>
           )}
         </Grid>
       </Grid>

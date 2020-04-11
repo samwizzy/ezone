@@ -1,32 +1,23 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import Icon from '@material-ui/core/Icon';
-import Tooltip from '@material-ui/core/Tooltip';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import {Icon, List, ListItem, ListItemIcon, ListItemText, Typography} from '@material-ui/core';
 import { AppContext } from '../../../containers/context/AppContext';
-import sidebarImage from '../../../images/sidebarImage.jpg';
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    background: `url(${sidebarImage}) no-repeat left -1px`,
-    backgroundSize: "cover",
-    height: `calc(100vh - 66px)`,
-    paddingTop: theme.spacing(1),
+    width: "100%",
+    marginTop: theme.spacing(2),
   },
   list: {
     width: '100%',
+    // fontSize: theme.typography.fontSize + 2,
     "& .MuiListItem-root": {
       color: theme.palette.common.white,
       "& .MuiListItemIcon-root": {
         color: theme.palette.common.white,
+        minWidth: "40px !important"
       },
       "&:hover > .MuiListItemIcon-root": {
         color: theme.palette.primary.main
@@ -48,7 +39,6 @@ function AppSidebar(props) {
       {value => {
         const { sideBarconfig } = value;
         const pathName = location.pathname.replace(/^\/|\/$/g, '').split('/')[0]
-        console.log(pathName, "pathName")
         const sideMenu = sideBarconfig.find(sidebar => sidebar.module == pathName);
 
         return (

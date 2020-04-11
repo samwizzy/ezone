@@ -11,8 +11,8 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.primary.main,
   },
   button: {
-    color: theme.palette.primary.main,
-    "& :nth-child(n+2)": {},
+    "& :nth-child(odd)": {
+    },
   },
   icon: {}
 }));
@@ -26,10 +26,11 @@ export function AddTask(props) {
     <React.Fragment>
       <Tooltip title="New Task">
         <Button
+          color="primary"
           size="small"
-          className={classes.iconButton}
+          className={classes.button}
           onClick={openNewTaskDialog}
-          variant="outlined"
+          variant="contained"
           startIcon={<Add className={classes.icon} />}
         >
           Add Task
@@ -45,26 +46,31 @@ export function AddFile(props) {
 
   return (
     <React.Fragment>
-      <ButtonGroup size="small" aria-label="small outlined button group">
+      {/* <ButtonGroup size="small" aria-label="small outlined button group"> */}
         <Tooltip title="New File">
           <Button
             className={classes.button}
             onClick={openFileDialog}
+            color="primary"
+            variant="contained"
             startIcon={<Add className={classes.icon} />}
           >
             New File
           </Button>
         </Tooltip>
+        &nbsp;
         <Tooltip title="New Folder">
           <Button
             className={classes.button}
             onClick={openFolderDialog}
+            variant="contained"
+            color="primary"
             startIcon={<Add className={classes.icon} />}
           >
             New Folder
           </Button>
         </Tooltip>
-      </ButtonGroup>
+      {/* </ButtonGroup> */}
     </React.Fragment>
   );
 }
