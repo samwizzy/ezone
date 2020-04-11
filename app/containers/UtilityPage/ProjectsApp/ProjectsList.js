@@ -52,12 +52,12 @@ const useStyles = makeStyles(theme => ({
   },
   grid: {
     margin: theme.spacing(1, 0),
-    border: `1px solid ${theme.palette.grey[100]}`,
+    border: `1px solid ${theme.palette.grey[50]}`,
   },
   textField: {
     width: theme.spacing(50),
     padding: theme.spacing(0),
-    borderRadius: '20px',
+    borderRadius: theme.spacing(4),
   },
   box: {
     width: theme.spacing(20),
@@ -122,8 +122,8 @@ const ProjectsList = () => {
 
                 <Grid container justify="space-between">
                   <Grid item sm={12} md={12} lg={12}>
-                    <Paper square className={classes.paper} elevation={1}>
-                      {apps.map(app => (
+                    <Paper square className={classes.paper} elevation={0}>
+                      {/* {apps.map(app => (
                         <Paper
                           key={app.id}
                           component={Link}
@@ -133,7 +133,7 @@ const ProjectsList = () => {
                           <img src={app.icon} alt="" />
                           <Typography variant="body2">{app.name}</Typography>
                         </Paper>
-                      ))}
+                      ))} */}
                     </Paper>
                   </Grid>
                 </Grid>

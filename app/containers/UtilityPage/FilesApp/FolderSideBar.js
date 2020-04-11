@@ -23,18 +23,18 @@ const useStyles = makeStyles(theme => ({
     overflowY: 'auto',
     maxHeight: 300,
     borderRight: `1px solid ${theme.palette.grey[100]}`,
-    '& .MuiListItem-root:hover': {
-      color: theme.palette.primary.main,
-      '& .MuiListItemIcon-root:hover': {
+    "& .MuiListItem-root": {
+      "& .MuiListItemIcon-root": {
+        minWidth: "40px !important"
+      },
+      "&:hover > .MuiListItemIcon-root": {
+        color: theme.palette.primary.main
+      },
+      "&:hover": {
         color: theme.palette.primary.main,
-      }
+      },
     }
-  },
-  list: {
-    "& .MuiListItemIcon-root": {
-      minWidth: "40px !important"
-    },
-  },
+  }
 }));
 
 const FolderSideBar = props => {
@@ -42,15 +42,13 @@ const FolderSideBar = props => {
   const { loading, folders, folder, user, getAllFoldersAndDocs, getFavoriteDocuments } = props
 
   const getAllFolders = () => {
-    getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
-    setPrevIds([])
     props.history.push('/dashboard/folders')
+    getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
   }
   
   return (
     <div className={classes.root}>
       <List 
-        className={classes.list}
         component="nav" 
         aria-label="secondary mailbox folders"
         subheader={

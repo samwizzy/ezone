@@ -101,7 +101,7 @@ function PaperDropzone(props) {
       setForm(_.set(form, "docName", acceptedFiles[0].name.split('.')[0]))
       setForm(_.set(form, "format", acceptedFiles[0].type))
       setForm(_.set(form, "size", acceptedFiles[0].size))
-      setForm(_.set(form, "folderId", folderId))
+      setForm(_.set(form, "folderId", folderId? folderId: 1  ))
       getBase64(acceptedFiles[0], (result) => setForm(_.set(form, "file", result)))
       uploadFileAction(form)
       console.log(form, "Set Form inside onDrop")

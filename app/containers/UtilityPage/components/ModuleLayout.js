@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
   },
   active: { 
     backgroundColor: theme.palette.common.white,  
-    color: `${darken(theme.palette.primary.main, 0.5)} !important`,
+    color: `${darken(theme.palette.primary.main, 0.1)} !important`,
   },
 }));
 

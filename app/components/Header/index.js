@@ -17,23 +17,17 @@ import {
   Link
 } from '@material-ui/core';
 import Menu from '@material-ui/icons/Menu';
-import Apps from '@material-ui/icons/Apps';
-import Dashboard from '@material-ui/icons/Dashboard';
-import Person from '@material-ui/icons/Person';
-import Group from '@material-ui/icons/Group';
-import BusinessCenter from '@material-ui/icons/BusinessCenter';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import Banner from './banner.jpg';
 import Logo from '../../images/logo.svg';
 import OctivierLogo from '../../images/octivier-logo.svg';
 import sidebarImage from '../../images/sidebarImage.jpg';
-import UserMenu from '../layouts/shared-components/UserMenu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ModulesList from './components/ModulesList'
 import AppSideBar from './../Sidebar/components/AppSidebar'
 
 const drawerWidth = 240;
+const drawerHeight = 48;
 
 const styles = theme => ({
   banner: {
@@ -79,7 +73,7 @@ const styles = theme => ({
   },
   grow: {
     flexGrow: 1,
-    marginBottom: "65px",
+    marginBottom: drawerHeight,
   },
   link: {
     marginRight: theme.spacing(6),
@@ -231,33 +225,32 @@ function Header(props) {
           <Grid
             justify="space-between" // Add it here :)
             container
+            alignItems="center"
           >
-            <Grid item style={{display:'flex', alignItems:'center'}}>
+            <Grid item>
               <Typography type="title" color="inherit">
                 <Link href='/'>
                   <img src={Logo} className={classes.logo} />
                 </Link>
               </Typography>
             </Grid>
-            <Grid item style={{display:'flex', alignItems:'center'}}>
-              <Typography variant="h6" color="primary">
+            <Grid item>
+              <Typography variant="h6" color="inherit">
                 {pathName && pathName.toUpperCase()}
               </Typography>
             </Grid>
 
             <Grid item>
-              <List>
+              <List dense disablePadding>
                 <ListItem>
                   {/* <ListItemIcon>
                     <img src={OctivierLogo} />
                   </ListItemIcon>
                   <ListItemText primary={'Octiver Communications'} /> */}
                   {/* <UserMenu /> */}
-
                   <ModulesList />
                 </ListItem>
               </List>
-
             </Grid>
           </Grid>
         </Toolbar>

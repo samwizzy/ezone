@@ -35,7 +35,7 @@ function AddTaskDialog(props) {
   const classes = useStyles();
   const { closeNewTaskDialog, createUtilityTask, updateUtilityTask, data, users, task } = props;
   const [form, setForm] = React.useState({
-    title: 'title',
+    title: '',
     description: '',
     startDate: moment(new Date()).format('YYYY-MM-DD'),
     endDate: moment(new Date()).format('YYYY-MM-DD'),

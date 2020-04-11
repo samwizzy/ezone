@@ -116,7 +116,7 @@ const AddNewJournal = props => {
   };
 
   const handleChangeRows = (event, id) => {
-    setValues({...values, "entries": [...values.entries, {[values.entries[id][event.target.name]]: event.target.value}]})
+    setValues({...values, "entries": [...values.entries, {[values.entries[id][event.target.name]]: event.target.value}]});
   };
 
   // const handleSelectChange = (name, value) => {
