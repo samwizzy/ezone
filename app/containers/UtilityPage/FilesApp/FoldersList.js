@@ -11,8 +11,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import LoadingIndicator from '../../../components/LoadingIndicator';
-import MoreVertRounded from '@material-ui/icons/MoreVertRounded'
-import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import Description from '@material-ui/icons/Description'
 import {AddFile} from './../components/AddButton';
 import * as Actions from '../actions';
@@ -54,7 +53,20 @@ const useStyles = makeStyles(theme => ({
     borderRight: `1px solid ${theme.palette.grey[100]}`,
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
-    }
+    },
+    '& .MuiTableHead-root': {
+      '& .MuiTableCell-head': {
+        color: theme.palette.common.white,
+      },
+      '& .MuiTableCell-root:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+        // backgroundImage: `linear-gradient(to left, ${theme.palette.primary.main}, ${darken(theme.palette.primary.main, 0.3)})`
+      },
+      '& .MuiTableCell-root:nth-child(even)': {
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
+        // backgroundImage: `linear-gradient(to right, ${theme.palette.primary.main}, ${darken(theme.palette.primary.main, 0.3)})`
+      },
+    },
   },
   button: {
     '&.favorite': { color: orange[300]},
@@ -288,7 +300,7 @@ const FilesList = props => {
         deleteAria: "Delete Selected Documents",
       },
     },
-    // customToolbar: () => <AddFile openFileDialog={openFileUploadDialog} openFolderDialog={openNewFolderDialog} />,
+    customToolbar: () => <AddFile openFileDialog={openFileUploadDialog} openFolderDialog={openNewFolderDialog} />,
     rowsPerPage: 10,
     rowsPerPageOptions: [10,25,50,100],
     onRowClick: (rowData, rowState) => handleRowClick(rowData[0]),
@@ -313,9 +325,9 @@ const FilesList = props => {
           :
           (
             <div>
-              <Box mb={2} align="right">
+              {/* <Box mb={2} align="right">
                 <AddFile openFileDialog={openFileUploadDialog} openFolderDialog={openNewFolderDialog} />
-              </Box>
+              </Box> */}
               <MUIDataTable
                 className={classes.datatable}
                 title={

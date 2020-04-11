@@ -14,7 +14,7 @@ import AppSidebar from './components/AppSidebar';
 import sidebarImage from '../../images/sidebarImage.jpg';
 
 const drawerWidth = 240;
-const drawerHeight = 64;
+const drawerHeight = 48;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,6 +51,7 @@ const useStyles = makeStyles(theme => ({
   toolbar: {
     zIndex: 9999,
     position: "absolute",
+    borderRadius: theme.spacing(20, 0, 0, 20),
     right: 0,
     bottom: "40%",
     display: 'flex',
@@ -112,7 +113,7 @@ function MiniDrawer(props) {
               {theme.direction === 'rtl' ? (
                 <ChevronRightIcon />
               ) : (
-                <ChevronLeftIcon />
+                <ChevronLeftIcon fontSize="large" />
               )}
             </IconButton>
           ) : (
@@ -120,7 +121,7 @@ function MiniDrawer(props) {
               {theme.direction === 'rtl' ? (
                 <ChevronLeftIcon />
               ) : (
-                <ChevronRightIcon />
+                <ChevronRightIcon fontSize="large" />
               )}
             </IconButton>
           )}

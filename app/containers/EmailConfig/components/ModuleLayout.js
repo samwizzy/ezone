@@ -1,20 +1,18 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import {
-  makeStyles,
-} from '@material-ui/core';
+import { Grid, makeStyles } from '@material-ui/core';
 import { compose } from 'redux';
-import { withRouter, NavLink } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import * as Actions from '../actions';
-import navBarImage from '../../../images/navbarImage.jpg';
 import MenuBar from '../../../components/MenuBar'
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
   },
   active: { 
     backgroundColor: theme.palette.common.white,  
@@ -22,18 +20,27 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-
 function ModuleLayout(props) {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <MenuBar
-        content={props.children}
+        content={
+          <Grid container>
+            <Grid item xs={12} md={12}>
+              {props.children}
+            </Grid>
+          </Grid>
+        }
       />
     </div>
   );
 }
+
+ModuleLayout.propTypes = {
+  children: PropTypes.node,
+};
 
 const mapStateToProps = createStructuredSelector({});
 
@@ -46,8 +53,9 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(
-  withRouter,
-  withConnect,
-  memo,
-)(ModuleLayout);
+export default withRouter(
+  compose(
+    withConnect,
+    memo,
+  )(ModuleLayout),
+);

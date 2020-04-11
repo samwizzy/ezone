@@ -9,7 +9,7 @@ import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { fade } from '@material-ui/core/styles/colorManipulator';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import moment from 'moment'
 import Lens from '@material-ui/icons/Lens'
@@ -26,7 +26,18 @@ const useStyles = makeStyles(theme => ({
   datatable: {
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
-    }
+    },
+    '& .MuiTableHead-root': {
+      '& .MuiTableCell-head': {
+        color: theme.palette.common.white,
+      },
+      '& .MuiTableCell-root:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+      },
+      '& .MuiTableCell-root:nth-child(even)': {
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
+      },
+    },
   },
   button: {
     borderRadius: '20px',
@@ -189,7 +200,7 @@ console.log(tasks, "tasks")
     filterType: "checkbox",
     responsive: "scrollMaxHeight",
     selectableRows: 'none',
-    // customToolbar: () => <AddTask openNewTaskDialog={openNewTaskDialog} />,
+    customToolbar: () => <AddTask openNewTaskDialog={openNewTaskDialog} />,
     rowsPerPage: 25,
     rowsPerPageOptions: [25,50,100],
     onRowClick: (rowData, rowState) => {
@@ -251,9 +262,9 @@ console.log(tasks, "tasks")
           :
           (
             <div>
-              <Box mb={2} align="right">
+              {/* <Box mb={2} align="right">
                 <AddTask openNewTaskDialog={openNewTaskDialog} />
-              </Box>
+              </Box> */}
               <MUIDataTable
                 title="Task List"
                 data={tasks}

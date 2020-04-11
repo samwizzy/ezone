@@ -17,15 +17,18 @@ import RefreshSharp from '@material-ui/icons/RefreshSharp';
 import UserMenu from '../layouts/shared-components/UserMenu';
 import navBarImage from '../../images/navbarImage.jpg';
 
+const drawerHeight = 48;
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
-    minHeight: `calc(100vh - 65px)`
+    minHeight: `calc(100vh - ${drawerHeight}px)`
   },
   appBar: {
     background: `${theme.palette.primary.main} url(${navBarImage}) no-repeat right top`,
     backgroundSize: "cover",
+    overflowY: 'hidden',
   },
   content: {
     flexGrow: 1,
@@ -45,6 +48,7 @@ const useStyles = makeStyles(theme => ({
         display: "block",
         color: theme.palette.common.white,
         marginLeft: '20px',
+        marginBottom: '-1px',
         borderRadius: theme.spacing(2, 2, 0, 0),
         textDecoration: 'none',
         display: 'flex',
@@ -56,7 +60,7 @@ const useStyles = makeStyles(theme => ({
           backgroundColor: theme.palette.common.white,
         },
         '& [class^="makeStyles-active"]': {
-          color: `${darken(theme.palette.primary.main, 0.5)} !important`,
+          color: `${darken(theme.palette.primary.main, 0.1)} !important`,
         },
         '&:active': {
           color: theme.palette.primary.main,
@@ -69,7 +73,7 @@ const useStyles = makeStyles(theme => ({
   },
   active: { 
     backgroundColor: theme.palette.common.white,  
-    color: `${darken(theme.palette.primary.main, 0.5)} !important`,
+    color: `${darken(theme.palette.primary.main, 0.1)} !important`,
   },
 }));
 
@@ -83,7 +87,7 @@ function MenuBar(props) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="relative" color="inherit" className={classes.appBar}>
+      <AppBar position="relative" elevation={0} color="inherit" className={classes.appBar}>
         <Toolbar variant="dense" className={classes.toolbar}>
           <div>
             <IconButton aria-label="delete" onClick={refreshPage}>

@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors'
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import moment from 'moment'
 import MUIDataTable from 'mui-datatables'
 import * as Actions from '../actions';
@@ -25,12 +26,6 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.common.white
   },
   datatable: {
-    "& .MuiTable-root": {
-      border: "1px solid",
-    },
-    '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
-    },
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
         color: theme.palette.common.white,
@@ -47,6 +42,10 @@ const useStyles = makeStyles(theme => ({
     border: 0, 
     whiteSpace: 'nowrap',
     overflowX: 'auto',
+  },
+  avatar: {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
   },
   toolbar: theme.mixins.toolbar,
   content: {

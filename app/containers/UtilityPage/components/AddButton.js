@@ -11,7 +11,8 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.primary.main,
   },
   button: {
-    "& :nth-child(odd)": {},
+    "& :nth-child(odd)": {
+    },
   },
   icon: {}
 }));
@@ -45,7 +46,7 @@ export function AddFile(props) {
 
   return (
     <React.Fragment>
-      <ButtonGroup size="small" aria-label="small outlined button group">
+      {/* <ButtonGroup size="small" aria-label="small outlined button group"> */}
         <Tooltip title="New File">
           <Button
             className={classes.button}
@@ -57,6 +58,7 @@ export function AddFile(props) {
             New File
           </Button>
         </Tooltip>
+        &nbsp;
         <Tooltip title="New Folder">
           <Button
             className={classes.button}
@@ -68,7 +70,7 @@ export function AddFile(props) {
             New Folder
           </Button>
         </Tooltip>
-      </ButtonGroup>
+      {/* </ButtonGroup> */}
     </React.Fragment>
   );
 }

@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.primary.main,
       },
       '& .MuiTableCell-root:nth-child(even)': {
-        backgroundColor: darken(theme.palette.primary.main, 0.5),
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
     '& .MuiTableFooter-root': {},
@@ -115,13 +115,11 @@ const AddNewJournal = props => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-<<<<<<< HEAD:app/containers/Accounting/Journal/AddNewJournal.js
-  const handleChangeRows = name => event => {
-    setValues({...values, "entries": [...values.entries, item]})
-=======
   const handleChangeRows = (event, id) => {
-    setValues({...values, "entries": [...values.entries, {[values.entries[id][event.target.name]]: event.target.value}]})
->>>>>>> 8cbf233d5c122874dc4e37fb3402191324b9317c:app/containers/Accounting/components/AccountJournal.js
+    const entries = [...values.entries]
+    entries[id].event.target.name = event.target.value
+    console.log(entries, "entries")
+    // setValues({...values, "entries":  entries})
   };
 
   // const handleSelectChange = (name, value) => {
