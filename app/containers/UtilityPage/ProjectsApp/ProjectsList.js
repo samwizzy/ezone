@@ -123,7 +123,7 @@ const ProjectsList = () => {
                 <Grid container justify="space-between">
                   <Grid item sm={12} md={12} lg={12}>
                     <Paper square className={classes.paper} elevation={0}>
-                      {/* {apps.map(app => (
+                      {apps.map(app => (
                         <Paper
                           key={app.id}
                           component={Link}
@@ -133,7 +133,7 @@ const ProjectsList = () => {
                           <img src={app.icon} alt="" />
                           <Typography variant="body2">{app.name}</Typography>
                         </Paper>
-                      ))} */}
+                      ))}
                     </Paper>
                   </Grid>
                 </Grid>
