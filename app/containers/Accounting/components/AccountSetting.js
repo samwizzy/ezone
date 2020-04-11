@@ -181,6 +181,7 @@ const AccountSetting = props => {
                           <Grid container justify="space-around">
                             <KeyboardDatePicker
                               margin="normal"
+                              inputVariant="outlined"
                               id="date-picker-dialog"
                               label="Select Date"
                               format="MM/dd/yyyy"
@@ -251,6 +252,7 @@ const AccountSetting = props => {
                           <Grid container justify="space-around">
                             <KeyboardDatePicker
                               margin="normal"
+                              inputVariant="outlined"
                               id="date-picker-dialog"
                               label="Select Date"
                               format="MM/dd/yyyy"
