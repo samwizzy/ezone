@@ -27,7 +27,7 @@ useEffect(() => {
   if (loading) {
     return <LoadingIndicator />;
   }
-  else if (accountingSetupData.id) {
+  else if (accountingSetupData.id==undefined) {
     return <Dashboard />
   }
   else {

@@ -22,7 +22,7 @@ import messages from './messages';
 // import AccountChart from './components/AccountChart';
 // import AccountJournal from './components/AccountJournal';
 // import JournalListing from './components/JournalListing';
-// import NewAccountDialog from './components/NewAccountDialog';
+import NewAccountDialog from './components/NewAccountDialog';
 import AccountSetting from './components/AccountSetting';
 import * as Actions from './actions';
 import * as Selectors from './selectors';

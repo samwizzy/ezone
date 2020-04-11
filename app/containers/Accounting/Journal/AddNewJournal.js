@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.primary.main,
       },
       '& .MuiTableCell-root:nth-child(even)': {
-        backgroundColor: darken(theme.palette.primary.main, 0.1),
+        backgroundColor: darken(theme.palette.primary.main, 0.5),
       },
     },
     '& .MuiTableFooter-root': {},
@@ -116,10 +116,7 @@ const AddNewJournal = props => {
   };
 
   const handleChangeRows = (event, id) => {
-    const entries = [...values.entries]
-    entries[id].event.target.name = event.target.value
-    console.log(entries, "entries")
-    // setValues({...values, "entries":  entries})
+    setValues({...values, "entries": [...values.entries, {[values.entries[id][event.target.name]]: event.target.value}]});
   };
 
   // const handleSelectChange = (name, value) => {
