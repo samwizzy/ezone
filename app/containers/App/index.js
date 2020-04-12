@@ -55,6 +55,7 @@ import sideBarconfig from '../../components/Sidebar/components/SidebarConfig';
 import AccountPage from '../Accounting/Loadable';
 import AccountChart from '../Accounting/components/AccountChart';
 
+import {Auth} from '../../auth';
 // import { makeSelectGetSaveToken } from './selectors';
 
 const App = () => {
@@ -81,6 +82,7 @@ const App = () => {
               />
             </Helmet>
 
+            <Auth>
             <Switch>
               <Route exact path="/login" component={Login} />
               <Route exact path="/" component={Login} />
@@ -209,6 +211,7 @@ const App = () => {
               <Route path="" component={NotFoundPage} />
             </Switch>
             <Snackbar />
+            </Auth>
           </div>
         </main>
       </AppContext.Provider>
