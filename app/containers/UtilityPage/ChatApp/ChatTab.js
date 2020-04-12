@@ -16,6 +16,10 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
+import SockJS from "sockjs-client";
+import Stomp from "webstomp-client"; 
+// import Stomp from '@stomp/stompjs';
+import { useInfiniteScroll } from 'react-infinite-scroll-hook';
 import { createStructuredSelector } from 'reselect';
 import classNames from 'classnames';
 import Add from '@material-ui/icons/Add';
@@ -148,6 +152,7 @@ function a11yProps(index) {
 
 const ref = React.createRef();
 
+let stompClient = null;
 const ChatTab = props => {
   const {
     allEmployees,
@@ -162,8 +167,39 @@ const ChatTab = props => {
   useEffect(() => {
     dispatchGetAllEmployees();
     dispatchGetUserChats();
-    handleScrollToBottom()
+    chatConnect();
+    handleScrollToBottom();
   }, []);
+
+  const chatConnect = () => {
+    const socket = new SockJS('http://64.20.51.173/gateway/utilityserv/secured/room');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function(frame) {
+      // setConnected(true);
+      console.log(`Connected: ${frame}`, 'welcome');
+      stompClient.subscribe('http://64.20.51.173/gateway/utilityserv/secured/user/queue/specific-user' + '-user' + currentUser.uuId, function (msgOut) {
+          //handle messages
+          // showGreeting(JSON.parse(greeting.body).content);
+          console.log(msgOut, 'msgOut');
+      });
+    });
+  };
+
+  // function disconnect() {
+  //   if (stompClient !== null) {
+  //     stompClient.disconnect();
+  //   }
+  //   setConnected(false);
+  //   console.log('Disconnected');
+  // }
+
+  // function sendName() {
+  //   stompClient.send(
+  //     '/app/hello',
+  //     {},
+  //     JSON.stringify({ name: $('#name').val() }),
+  //   );
+  // }
 
   // console.log(allEmployees, 'allEmployees');
   // console.log(allUsersChat, 'allUsersChat');
@@ -207,7 +243,7 @@ const ChatTab = props => {
     );
   }
 
-  if(allUsersChat){
+  if (allUsersChat) {
     var allUserReversedData = _.orderBy(
       allUsersChat,
       ['dateCreated'],
@@ -326,7 +362,6 @@ const ChatTab = props => {
                             <Paper className={classes.chatPane} key={chat.id}>
                               <Typography variant="subtitle1" key={chat.id}>
                                 {chat.chatMessage}
-                                How are you doing folks?
                               </Typography>
                               <Typography
                                 variant="caption"

@@ -30,7 +30,12 @@ const SidebarConfig = [
     module: 'users',
     menus: [
       { id: 1, name: 'Dashboard', url: '/dashboard', icon: 'dashboard' },
-      { id: 2, name: 'Organization', url: '/organization', icon: 'business_center' },
+      {
+        id: 2,
+        name: 'Organization',
+        url: '/organization',
+        icon: 'business_center',
+      },
       { id: 3, name: 'Applications', url: '/utility', icon: 'apps' },
       { id: 4, name: 'Employees', url: '/users/employees', icon: 'group' },
       { id: 5, name: 'User Profile', url: '/users/profile', icon: 'person' },
@@ -69,7 +74,12 @@ const SidebarConfig = [
     module: 'utility',
     menus: [
       { id: 1, name: 'Dashboard', url: '/dashboard', icon: 'dashboard' },
-      { id: 2, name: 'Organization', url: '/organization', icon: 'business_center' },
+      {
+        id: 2,
+        name: 'Organization',
+        url: '/organization',
+        icon: 'business_center',
+      },
       { id: 3, name: 'Applications', url: '/utility', icon: 'apps' },
       { id: 4, name: 'Employees', url: '/users/employees', icon: 'group' },
       { id: 5, name: 'User Profile', url: '/users/profile', icon: 'person' },
@@ -82,12 +92,32 @@ const SidebarConfig = [
     module: 'hr',
     menus: [
       { id: 1, name: 'Dashboard', url: '/hr/employee', icon: 'dashboard' },
-      { id: 2, name: 'Organization', url: '/hr/employee', icon: 'business_center'},
-      { id: 3, name: 'Recruitment', url: '/hr/recruitment', icon: 'find_in_page' },
+      {
+        id: 2,
+        name: 'Organization',
+        url: '/hr/employee',
+        icon: 'business_center',
+      },
+      {
+        id: 3,
+        name: 'Recruitment',
+        url: '/hr/recruitment',
+        icon: 'find_in_page',
+      },
       { id: 4, name: 'Attendance', url: '/hr/attendance', icon: 'person' },
       { id: 5, name: 'Payroll', url: '/hr/payroll', icon: 'payment' },
-      { id: 6, name: 'Announcements', url: '/hr/announcement', icon: 'announcement' },
-      { id: 7, name: 'Performance', url: '/hr/performance', icon: 'local_activity' },
+      {
+        id: 6,
+        name: 'Announcements',
+        url: '/hr/announcement',
+        icon: 'announcement',
+      },
+      {
+        id: 7,
+        name: 'Performance',
+        url: '/hr/performance',
+        icon: 'local_activity',
+      },
     ],
   },
   {
@@ -122,8 +152,18 @@ const SidebarConfig = [
     module: 'profile',
     menus: [
       { id: 1, name: 'Dashboard', url: '/crm/employee', icon: 'dashboard' },
-      { id: 2, name: 'Organisation', url: '/crm/employee', icon: 'business_center'},
-      { id: 3, name: 'Applications', url: '/crm/recruitment', icon: 'find_in_page' },
+      {
+        id: 2,
+        name: 'Organisation',
+        url: '/crm/employee',
+        icon: 'business_center',
+      },
+      {
+        id: 3,
+        name: 'Applications',
+        url: '/crm/recruitment',
+        icon: 'find_in_page',
+      },
       { id: 4, name: 'Employees', url: '/crm/attendance', icon: 'person' },
       { id: 5, name: 'Groups', url: '/crm/payroll', icon: 'group' },
     ],
@@ -132,21 +172,61 @@ const SidebarConfig = [
     module: 'crm',
     menus: [
       { id: 1, name: 'Dashboard', url: '/crm/employee', icon: 'dashboard' },
-      { id: 2, name: 'Contacts', url: '/crm/employee', icon: 'business_center'},
-      { id: 3, name: 'Companies', url: '/crm/recruitment', icon: 'find_in_page' },
+      {
+        id: 2,
+        name: 'Contacts',
+        url: '/crm/employee',
+        icon: 'business_center',
+      },
+      {
+        id: 3,
+        name: 'Companies',
+        url: '/crm/recruitment',
+        icon: 'find_in_page',
+      },
       { id: 4, name: 'Activities', url: '/crm/attendance', icon: 'person' },
       { id: 5, name: 'Schedules', url: '/crm/payroll', icon: 'payment' },
-      { id: 6, name: 'Contact Groups', url: '/crm/announcement', icon: 'announcement' },
-      { id: 7, name: 'Reports', url: '/crm/performance', icon: 'local_activity' },
+      {
+        id: 6,
+        name: 'Contact Groups',
+        url: '/crm/announcement',
+        icon: 'announcement',
+      },
+      {
+        id: 7,
+        name: 'Reports',
+        url: '/crm/performance',
+        icon: 'local_activity',
+      },
     ],
   },
   {
     module: 'inventory',
     menus: [
-      { id: 1, name: 'Warehouses', url: '/inventory/warehouses', icon: 'dashboard' },
-      { id: 2, name: 'Items', url: '/inventory/items', icon: 'business_center'},
-      { id: 3, name: 'Transfer Orders', url: '/inventory/transfer/orders', icon: 'find_in_page' },
-      { id: 4, name: 'Investment Adjustment', url: '/inventory/investment/adjustments', icon: 'person' }
+      {
+        id: 1,
+        name: 'Warehouses',
+        url: '/inventory/warehouses',
+        icon: 'dashboard',
+      },
+      {
+        id: 2,
+        name: 'Items',
+        url: '/inventory/items',
+        icon: 'business_center',
+      },
+      {
+        id: 3,
+        name: 'Transfer Orders',
+        url: '/inventory/transfer/orders',
+        icon: 'find_in_page',
+      },
+      {
+        id: 4,
+        name: 'Investment Adjustment',
+        url: '/inventory/investment/adjustments',
+        icon: 'person',
+      },
     ],
   },
 ];
