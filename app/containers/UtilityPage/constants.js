@@ -29,6 +29,8 @@ export const OPEN_NEW_FILE_DIALOG = 'app/UtilityPage/OPEN NEW FILE DIALOG';
 export const CLOSE_NEW_FILE_DIALOG = 'app/UtilityPage/CLOSE NEW FILE DIALOG';
 export const OPEN_NEW_FOLDER_DIALOG = 'app/UtilityPage/OPEN NEW FOLDER DIALOG';
 export const CLOSE_NEW_FOLDER_DIALOG = 'app/UtilityPage/CLOSE NEW FOLDER DIALOG';
+export const ADD_PREV_ID = 'app/UtilityPage/ADD PREV ID';
+export const REMOVE_PREV_ID = 'app/UtilityPage/REMOVE PREV ID';
 
 export const OPEN_TASK_PREVIEW_DIALOG =
   'app/UtilityPage/OPEN_TASK_PREVIEW_DIALOG';

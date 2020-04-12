@@ -51,6 +51,7 @@ const useStyles = makeStyles(theme => ({
   },
   datatable: {
     borderRight: `1px solid ${theme.palette.grey[100]}`,
+    borderLeft: `1px solid ${theme.palette.grey[100]}`,
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
     },
@@ -102,7 +103,6 @@ const FilesList = props => {
   
   React.useEffect(() => {
     getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
-    console.log("I am a useEffect in FolderList")
   }, [])
 
   console.log(folders, "folders")
@@ -205,21 +205,21 @@ const FilesList = props => {
         }
       },
     },
-    {
-      name: 'id',
-      label: ' ',
-      options: {
-        filter: true,
-        sort: true,
-        customBodyRender: id => {
-          return  (
-            <IconButton onClick={event => handleFavorite(event, id)} className={classes.iconButton} aria-label="favorite" color="inherit" size="small">
-              <Icon color="inherit" className={classNames(classes.icon, {'favorite': true})}>star_outlined</Icon>
-            </IconButton>
-          )
-        }
-      },
-    },
+    // {
+    //   name: 'id',
+    //   label: ' ',
+    //   options: {
+    //     filter: true,
+    //     sort: true,
+    //     customBodyRender: id => {
+    //       return  (
+    //         <IconButton onClick={event => handleFavorite(event, id)} className={classes.iconButton} aria-label="favorite" color="inherit" size="small">
+    //           <Icon color="inherit" className={classNames(classes.icon, {'favorite': true})}>star_outlined</Icon>
+    //         </IconButton>
+    //       )
+    //     }
+    //   },
+    // },
     {
       name: 'dateCreated',
       label: 'Last Modified',
@@ -282,7 +282,7 @@ const FilesList = props => {
 
   const options = {
     filterType: 'checkbox',
-    responsive: 'scrollMaxHeight',
+    responsive: 'scrollFullHeight', //'scrollMaxHeight',
     selectableRows: 'none',
     print: false,
     pagination: false,
@@ -320,27 +320,21 @@ const FilesList = props => {
           <FolderSideBar />
         </Grid>
         <Grid item xs={10} md={7}>
-          {loading?
-            <List component={LoadingIndicator} />
-          :
-          (
-            <div>
-              {/* <Box mb={2} align="right">
-                <AddFile openFileDialog={openFileUploadDialog} openFolderDialog={openNewFolderDialog} />
-              </Box> */}
-              <MUIDataTable
-                className={classes.datatable}
-                title={
-                  <Typography variant="h6">
-                    Documents
-                  </Typography>
-                }
-                data={folders}
-                columns={columns}
-                options={options}
-              />
-            </div>
-          )}
+          <Backdrop className={classes.backdrop} open={loading}>
+            <CircularProgress color="inherit" />
+          </Backdrop>
+
+          <MUIDataTable
+            className={classes.datatable}
+            title={
+              <Typography variant="h6">
+                Documents
+              </Typography>
+            }
+            data={folders}
+            columns={columns}
+            options={options}
+          />
         </Grid>
         <Grid item md={3}>
           <Box p={1}>
@@ -445,11 +439,6 @@ const FilesList = props => {
       <AddFileDialog />
       <AddFolderDialog />
       <FilePreviewDialog />
-
-      <Backdrop className={classes.backdrop} open={loading}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
-
     </div>
   );
 };

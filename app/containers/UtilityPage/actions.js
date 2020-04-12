@@ -61,6 +61,18 @@ export function getNestedFoldersAndDocsSuccess(data) {
   };
 }
 
+export function addPrevIds(folderId) {
+  return {
+    type: Constants.ADD_PREV_ID,
+    payload: folderId
+  };
+}
+export function removePrevIds() {
+  return {
+    type: Constants.REMOVE_PREV_ID,
+  };
+}
+
 export function getFolderById(payload) {
   return {
     type: Constants.GET_FOLDER_BY_ID,

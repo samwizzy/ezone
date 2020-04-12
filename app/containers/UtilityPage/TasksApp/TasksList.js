@@ -198,7 +198,7 @@ console.log(tasks, "tasks")
     print: false,
     viewColumns: false,
     filterType: "checkbox",
-    responsive: "scrollMaxHeight",
+    responsive: "scrollFullHeight", // "scrollMaxHeight",
     selectableRows: 'none',
     customToolbar: () => <AddTask openNewTaskDialog={openNewTaskDialog} />,
     rowsPerPage: 25,

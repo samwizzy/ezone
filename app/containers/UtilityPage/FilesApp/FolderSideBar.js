@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     overflowY: 'auto',
     maxHeight: 300,
-    borderRight: `1px solid ${theme.palette.grey[100]}`,
+    // borderRight: `1px solid ${theme.palette.grey[100]}`,
     "& .MuiListItem-root": {
       "& .MuiListItemIcon-root": {
         minWidth: "40px !important"
