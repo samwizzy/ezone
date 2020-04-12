@@ -658,7 +658,7 @@ const utilityPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_USER_CHAT_DATA: {
-        console.log(action.payload, 'getUserChatData');
+        // console.log(action.payload, 'getUserChatData');
         return {
           ...state,
           loading: true,
@@ -682,6 +682,7 @@ const utilityPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.POST_MSG: {
+        console.log(action.payload, 'reducer data');
         return {
           ...state,
           loading: true,

@@ -589,6 +589,7 @@ export function getUserChatDataError(data) {
 }
 
 export function postMsg(data) {
+  // console.log(data, 'action data');
   return {
     type: Constants.POST_MSG,
     payload: data,
