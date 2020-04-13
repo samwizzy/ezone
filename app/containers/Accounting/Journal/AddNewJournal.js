@@ -32,6 +32,7 @@ import * as AppSelectors from '../../App/selectors';
 import * as Selectors from '../selectors';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import ModuleLayout from '../components/ModuleLayout';
+import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -81,20 +82,21 @@ const AddNewJournal = props => {
 
   const {
     currentUser,
+    dispatchGetAccountPeriodAction,
     dispatchGetAllChartOfAccountTypeAction,
     chartOfAccountData,
+    accountPeriodData,
+    createNewAccountJournalAction
   } = props;
 
   const [values, setValues] = React.useState({
     entries: [],
     note: '',
-    // orgId: currentUser.organisation.orgId,
+    orgId: currentUser.organisation.orgId,
     periodId: '',
     reference: '',
-    transactionDate: '',
+    transactionDate: moment(new Date()).format('YYYY-MM-DD'),
   });
-
-  const [rows, setRows] = React.useState([{}]);
 
   const addRow = () => {
     const item = {
@@ -102,63 +104,34 @@ const AddNewJournal = props => {
       credit: 0,
       debit: 0,
       description: '',
-      id: 0,
     };
-    setValues({...values, "entries": [...values.entries, item]});
+    setValues({...values, "entries": [ ...values.entries, item ]});
   };
 
-  const removeRow = idx => {
-    setValues(values.entries.filter((item, id) => id !== idx));
+  const removeRow = index => {
+    values.entries.splice(index, 1);
+    setValues({ ...values });
   };
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const handleChangeW = idx => event => {
-    // console.log(idx, 'idx');
-    const { name, value } = event.target;
-    // console.log(value, 'target.value');
-    // console.log(name, 'target.name');
-    const newRow = rows;
-    newRow[idx][name] = value;
-    setRows(newRow);
-    // setValues({ ...values, [name]: event.target.value });
+  const handleSelectChange = (name, value) => {
+    setValues({ ...values, periodId: value.id });
   };
 
-  console.log(rows, 'rows come here');
-  // const handleChangeRows = name => (event, id) => {
-  //   console.log('name -> ', name);
-  //   console.log('event -> ', event);
-  //   console.log('id -> ', id);
+  const handleRowChange = (event, index) => {
+    const entries = [...values.entries]
+    entries[index][event.target.name] = event.target.value
+    setValues({...values, entries})
+  }
 
-  //   setRows({ ...rows, [name]: event.target.value });
-  // };
-
-  const handleChangeRows = idx => e => {
-    const { value } = e.target;
-    const newRow = rows;
-    newRow[idx].transferQuantity = value;
-    setRows(newRow);
+  const handleSelectChangeRows = (event, value, index) => {
+    const { entries } = values;
+    entries[index]["accountId"] = value.id;
+    setValues({ ...values, entries });
   };
-
-  const handleChangeTransaction = idx => e => {
-    const { value } = e.target;
-    const newRow = rows;
-    newRow[idx].debit = value;
-    setRows(newRow);
-  };
-
-  // const handleChangeRows = (event, id) => {
-  //   console.log('event.target ', event.target);
-  //   const { value } = event.target;
-
-  //   console.log('name -> ', name);
-  //   console.log('value -> ', value);
-  //   // console.log('id -> ', id);
-
-  //   setRows({ ...rows, [name]: event.target.value });
-  // };
 
   const handleSelectChange = (name, value) => {
     setValues({ ...values, currency: taxType.id });
@@ -166,26 +139,25 @@ const AddNewJournal = props => {
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
+    dispatchGetAccountPeriodAction();
     dispatchGetAllChartOfAccountTypeAction();
   }, []);
 
+  console.log('accountPeriodData > ', accountPeriodData);
   console.log('values-> ', values);
-  // console.log('rows-> ', rows);
 
   return (
     <ModuleLayout>
       <div className={classes.root}>
-        <Grid
-          container
-        >
+        <Grid container>
           <Grid item xs={12} className={classNames(classes.gridMargin)}>
             <Typography variant="h6">New Journal</Typography>
             <Grid container className={classes.grid}>
               <Grid item xs={5}>
                 <Autocomplete
                   id="combo-box-demo"
-                  options={chartOfAccountData}
-                  getOptionLabel={option => option.accountNumber}
+                  options={accountPeriodData}
+                  getOptionLabel={option => option.year}
                   onChange={(evt, value) => handleSelectChange(evt, value)}
                   renderInput={params => (
                     <TextField
@@ -247,138 +219,136 @@ const AddNewJournal = props => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row, id) => (
-                  <TableRow key={id}>
-                    <TableCell align="center">
-                      <Autocomplete
-                        id="combo-box-demo"
-                        options={chartOfAccountData}
-                        getOptionLabel={option => option.accountNumber}
-                        onChange={(evt, value) =>
-                          handleSelectChange(evt, value)
-                        }
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            label="Select Method"
-                            size="small"
-                            className={classes.textField}
-                            variant="outlined"
-                            placeholder="Search"
-                            fullWidth
-                          />
-                        )}
-                      />
-                      <Autocomplete
-                        id="combo-box-demo"
-                        options={chartOfAccountData}
-                        getOptionLabel={option => option.accountNumber}
-                        onChange={(evt, value) =>
-                          handleSelectChange(evt, value)
-                        }
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            label="Select Method"
-                            size="small"
-                            className={classes.textField}
-                            variant="outlined"
-                            placeholder="Search"
-                            fullWidth
-                          />
-                        )}
-                      />
-                    </TableCell>
-                    <TableCell align="center">
-                      <TextField
-                        id="standard-description"
-                        label="Description"
-                        size="small"
-                        type="name"
-                        variant="outlined"
-                        className={classes.textField}
-                        value={rows.description}
-                        name="description"
-                        onChange={handleChangeW(id)}
-                        margin="normal"
-                        fullWidth
-                      />
-                      <TextField
-                        id="standard-debit"
-                        label="Debit"
-                        size="small"
-                        type="name"
-                        variant="outlined"
-                        className={classes.textField}
-                        value={rows.debit}
-                        name="debit"
-                        onChange={handleChangeW(id)}
-                        margin="normal"
-                        fullWidth
-                      />
-                    </TableCell>
-                    <TableCell align="center">
-                      <TextField
-                        id="standard-accountName"
-                        label="Transaction"
-                        size="small"
-                        type="name"
-                        variant="outlined"
-                        className={classes.textField}
-                        // value={values.accountName}
-                        // onChange={handleChange('accountName')}
-                        margin="normal"
-                        fullWidth
-                      />
-                      <TextField
-                        id="standard-accountName"
-                        label="Transaction"
-                        size="small"
-                        type="name"
-                        variant="outlined"
-                        className={classes.textField}
-                        // value={values.accountName}
-                        // onChange={handleChange('accountName')}
-                        margin="normal"
-                        fullWidth
-                      />
-                    </TableCell>
-                    <TableCell align="center">
-                      <TextField
-                        id="standard-accountName"
-                        label="Transaction"
-                        size="small"
-                        type="name"
-                        variant="outlined"
-                        className={classes.textField}
-                        // value={values.accountName}
-                        // onChange={handleChange('accountName')}
-                        margin="normal"
-                        fullWidth
-                      />
-                      <TextField
-                        id="standard-accountName"
-                        label="Transaction"
-                        size="small"
-                        type="name"
-                        variant="outlined"
-                        className={classes.textField}
-                        // value={values.accountName}
-                        // onChange={handleChange('accountName')}
-                        margin="normal"
-                        fullWidth
-                      />
-                    </TableCell>
-                    <TableCell align="center">
-                      <IconButton
-                        aria-label="delete"
-                        onClick={() => removeRow(id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
+              {values.entries.map((row, id) => (
+                <TableRow key={id}>
+                  <TableCell align="center">
+                    <Autocomplete
+                      id={id}
+                      options={chartOfAccountData}
+                      getOptionLabel={option => option.accountNumber}
+                      onChange={(evt, value) => handleSelectChangeRows(evt, value, id)}
+                      renderInput={params => (
+                        <TextField
+                          {...params}
+                          label="Account"
+                          size="small"
+                          className={classes.textField}
+                          variant="outlined"
+                          placeholder="Search"
+                          margin="normal"
+                          fullWidth
+                        />
+                      )}
+                    />
+                    {/* <Autocomplete
+                      id="combo-box-demo"
+                      options={chartOfAccountData}
+                      getOptionLabel={option => option.accountNumber}
+                      onChange={(evt, value) => handleSelectChangeRows(evt, value, id)}
+                      renderInput={params => (
+                        <TextField
+                          {...params}
+                          label="Account"
+                          size="small"
+                          className={classes.textField}
+                          variant="outlined"
+                          placeholder="Search"
+                          margin="normal"
+                          fullWidth
+                        />
+                      )}
+                    /> */}
+                  </TableCell>
+                  <TableCell align="center">
+                    <TextField
+                      id="standard-description"
+                      label="Description"
+                      size="small"
+                      type="name"
+                      variant="outlined"
+                      className={classes.textField}
+                      name="description"
+                      value={row.description}
+                      onChange={(event) => handleRowChange(event, id)}
+                      margin="normal"
+                      fullWidth
+                    />
+                    {/* <TextField
+                      id="standard-accountName"
+                      label="Description"
+                      size="small"
+                      type="name"
+                      variant="outlined"
+                      className={classes.textField}
+                      value={row.description}
+                      onChange={(event) => handleRowChange(event, id)}
+                      margin="normal"
+                      fullWidth
+                    /> */}
+                  </TableCell>
+                  <TableCell align="center">
+                    <TextField
+                      id="standard-accountName"
+                      label="Debit"
+                      size="small"
+                      type="number"
+                      variant="outlined"
+                      className={classes.textField}
+                      name="debit"
+                      value={row.debit}
+                      onChange={(event) => handleRowChange(event, id)}
+                      margin="normal"
+                      fullWidth
+                    />
+                    {/* <TextField
+                      id="standard-accountName"
+                      label="Debit"
+                      size="small"
+                      type="number"
+                      variant="outlined"
+                      className={classes.textField}
+                      name="debit"
+                      value={row.debit}
+                      onChange={handleChange('accountName')}
+                      margin="normal"
+                      fullWidth
+                    /> */}
+                  </TableCell>
+                  <TableCell align="center">
+                    <TextField
+                      id="standard-accountName"
+                      label="Credit"
+                      size="small"
+                      type="number"
+                      variant="outlined"
+                      className={classes.textField}
+                      name="credit"
+                      value={row.credit}
+                      onChange={(event) => handleRowChange(event, id)}
+                      margin="normal"
+                      fullWidth
+                    />
+                    {/* <TextField
+                      id="standard-accountName"
+                      label="Credit"
+                      size="small"
+                      type="number"
+                      variant="outlined"
+                      className={classes.textField}
+                      name="credit"
+                      value={row.credit}
+                      onChange={(event) => handleRowChange(event, id)}
+                      margin="normal"
+                      fullWidth
+                    /> */}
+                  </TableCell>
+                  <TableCell align="center">
+                    <IconButton aria-label="delete" onClick={() => removeRow(id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
               </TableBody>
               <TableFooter>
                 <TableRow>
@@ -387,12 +357,12 @@ const AddNewJournal = props => {
                   </TableCell>
                   <TableCell>
                     <Paper elevation={0} square className={classes.paper}>
-                      <Typography variant="h6">NGN 10500</Typography>
+                      <Typography variant="h6">0</Typography>
                     </Paper>
                   </TableCell>
                   <TableCell>
                     <Paper elevation={0} square className={classes.paper}>
-                      <Typography variant="h6">NGN 10500</Typography>
+                      <Typography variant="h6">0</Typography>
                     </Paper>
                   </TableCell>
                   <TableCell />
@@ -449,6 +419,9 @@ const AddNewJournal = props => {
                       variant="contained"
                       color="primary"
                       className={classes.button}
+                      onClick={() => {
+                        createNewAccountJournalAction(values);
+                      }}
                     >
                       Save and Submit
                     </Button>
@@ -471,12 +444,14 @@ const mapStateToProps = createStructuredSelector({
   //   loading: Selectors.makeSelectLoading(),
   currentUser: AppSelectors.makeSelectCurrentUser(),
   chartOfAccountData: Selectors.makeSelectGetChartOfAccountData(),
+  accountPeriodData: Selectors.makeSelectGetAccountPeriodData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchGetAllChartOfAccountTypeAction: () =>
-      dispatch(Actions.getAllChartOfAccountTypeAction()),
+    dispatchGetAllChartOfAccountTypeAction: () => dispatch(Actions.getAllChartOfAccountTypeAction()),
+    dispatchGetAccountPeriodAction: () => dispatch(Actions.getAccountPeriodAction()),
+    createNewAccountJournalAction: evt => dispatch(Actions.createNewAccountJournalAction(evt)),
   };
 }
 
