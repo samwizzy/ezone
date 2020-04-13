@@ -53,8 +53,6 @@ export function Accounting(props) {
     createNewAccountJournalAction
   } = props;
 
-
-
   console.log('loading', loading);
   console.log('accountingSetupData index.js file', accountingSetupData);
 
