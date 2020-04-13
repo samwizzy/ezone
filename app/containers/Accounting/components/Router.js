@@ -10,19 +10,18 @@ import AccountSetting from '../components/AccountSetting';
 
 
 const Router = props => {
-
-useEffect(() => {
-    getAccountingSetupAction();
-}, []);
-
   const {
     loading,
     accountingSetupData,
     getAccountingSetupAction
   } = props;
 
-  console.log('accountingSetupData Router -> ', accountingSetupData);
+  useEffect(() => {
+      getAccountingSetupAction();
+  }, []);
 
+
+  console.log('accountingSetupData Router -> ', accountingSetupData);
 
   if (loading) {
     return <LoadingIndicator />;

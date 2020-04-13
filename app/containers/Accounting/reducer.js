@@ -243,8 +243,15 @@ const accountingReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: false,
+          accountingSetupData: action.payload
+        };
+      }
+      case Constants.GET_ALL_ACCOUNT_TYPES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
           error: false,
-          accountingSetupData: action.payload,
+          accountTypeData: action.payload,
         };
       }
       case Constants.GET_ACCOUNTING_SETUP_ERR: {

@@ -28,7 +28,7 @@ import * as Actions from './actions';
 import * as Selectors from './selectors';
 import LoadingIndicator from './../../components/LoadingIndicator';
 import Dashboard from './Dashboard'
-import Router from '../Accounting/components/Router';
+import Router from './components/Router';
 
 export function Accounting(props) {
   useInjectReducer({ key: 'accounting', reducer });
