@@ -88,7 +88,7 @@ const EmailHome = props => {
                   <ListItemAvatar>
                     <img alt="" src={directory} className={classes.cardIcon} />
                   </ListItemAvatar>
-                  <ListItemText primary={<Typography variant="h6">AD Configuration</Typography>} secondary="Configure settings" />
+                  <ListItemText primary={<Typography variant="h6">AD <br/>Configuration</Typography>} secondary="Configure settings" />
                 </ListItem>
               </List>
             </CardContent>
@@ -105,7 +105,7 @@ const EmailHome = props => {
                   <ListItemAvatar>
                     <img alt="" src={mail} className={classes.cardIcon} />
                   </ListItemAvatar>
-                  <ListItemText primary={<Typography variant="h6">Email Templates</Typography>} secondary="Configure settings" />
+                  <ListItemText primary={<Typography variant="h6">Email <br/>Templates</Typography>} secondary="Configure settings" />
                 </ListItem>
               </List>
             </CardContent>

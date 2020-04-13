@@ -154,8 +154,14 @@ const App = () => {
                 />
 
                 <PrivateRoute exact path="/email" component={EmailConfig} />
-                <PrivateRoute path="/email/configuration" component={EmailConfigs} />
-                <PrivateRoute path="/email/template/:emailType?" component={EmailTemplates} />
+                <PrivateRoute
+                  path="/email/configuration"
+                  component={EmailConfigs}
+                />
+                <PrivateRoute
+                  path="/email/template/:emailType?"
+                  component={EmailTemplates}
+                />
                 {/* <PrivateRoute exact path="/email/template/:emailType" component={EmailTemplates} /> */}
                 <PrivateRoute
                   path="/email/password/template"
@@ -163,7 +169,10 @@ const App = () => {
                 />
                 <PrivateRoute exact path="/home" component={HomePage} />
                 <PrivateRoute path="/WorkOrder" component={WorkOrderPage} />
-                <PrivateRoute path="/hr/:sectionId?/:status?" component={HRPage} />
+                <PrivateRoute
+                  path="/hr/:sectionId?/:status?"
+                  component={HRPage}
+                />
                 <PrivateRoute path="/account" component={AccountPage} />
                 <PrivateRoute path="/account/chart" component={AccountChart} />
                 <PrivateRoute path="/account/journal/new" component={AddNewJournal} />

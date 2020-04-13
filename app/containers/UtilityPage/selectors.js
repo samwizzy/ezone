@@ -195,6 +195,12 @@ const makeSelectGetPostMsg = () =>
     subState => subState.getPostMsg,
   );
 
+const makeSelectPrevIds = () =>
+  createSelector(
+    selectUtilityPageDomain,
+    subState => subState.prevIds,
+  );
+
 export default makeSelectUtilityPage;
 export {
   selectUtilityPageDomain,
@@ -227,4 +233,5 @@ export {
   makeSelectGetAllUserChatData,
   makeSelectGetPostMsg,
   makeSelectPostMsg,
+  makeSelectPrevIds,
 };

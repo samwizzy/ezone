@@ -1,8 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import {
-  makeStyles,
-} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core';
 import { compose } from 'redux';
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
