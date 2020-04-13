@@ -56,7 +56,6 @@ export function getAllAccountTypeErrorAction(data) {
 
 // Get detail type
 export function getDetailTypeAction(data) {
-  console.log('getDetailTypeAction');
   return {
     type: Constants.GET_DETAIL_TYPES,
     payload: data,
@@ -64,7 +63,6 @@ export function getDetailTypeAction(data) {
 }
 
 export function getDetailTypeSuccessAction(data) {
-  console.log('getDetailTypeSuccessAction');
   return {
     type: Constants.GET_DETAIL_TYPES_SUCCESS,
     payload: data,
@@ -148,7 +146,6 @@ export function deleteChartOfAccountErrorAction(data) {
 
 // Get all chart of account 
 export function getAllChartOfAccountTypeAction() {
-  console.log('getAllChartOfAccountTypeAction');
   return {
     type: Constants.GET_ALL_CHART_OF_ACCOUNT,
   };
@@ -214,22 +211,45 @@ export function createAccountingSetupErrorAction(data) {
 
 
 // Get accounting period
-export function getAllAccountPeriodAction() {
+export function getAccountPeriodAction() {
   return {
-    type: Constants.GET_ALL_ACCOUNT_PERIOD,
+    type: Constants.GET_ACCOUNT_PERIOD,
   };
 }
 
-export function getAllAccountPeriodSuccessAction(data) {
+export function getAccountPeriodSuccessAction(data) {
   return {
-    type: Constants.GET_ALL_ACCOUNT_PERIOD_SUCCESS,
+    type: Constants.GET_ACCOUNT_PERIOD_SUCCESS,
     payload: data,
   };
 }
 
-export function getAllAccountPeriodErrorAction(data) {
+export function getAccountPeriodErrorAction(data) {
   return {
-    type: Constants.GET_ALL_ACCOUNT_PERIOD_ERR,
+    type: Constants.GET_ACCOUNT_PERIOD_ERR,
+    payload: data,
+  };
+}
+
+
+// Create new account journal
+export function createNewAccountJournalAction(data) {
+  return {
+    type: Constants.CREATE_NEW_ACCOUNT_JOURNAL,
+    payload: data,
+  };
+}
+
+export function createNewAccountJournalSuccessAction(data) {
+  return {
+    type: Constants.CREATE_NEW_ACCOUNT_JOURNAL_SUCCESS,
+    payload: data,
+  };
+}
+
+export function createNewAccountJournalErrorAction(data) {
+  return {
+    type: Constants.CREATE_NEW_ACCOUNT_JOURNAL_ERR,
     payload: data,
   };
 }

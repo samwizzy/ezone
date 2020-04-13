@@ -8,6 +8,7 @@ import * as Constants from './constants';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
 import * as EndPoints from '../../components/Endpoints';
+// import * as FirebaseServices from '../../services/firebaseService';
 
 export function* signup() {
   const signupReqData = yield select(Selectors.makeSelectSignupReqData());
@@ -25,6 +26,7 @@ export function* signup() {
     console.log(signupRes, 'signupRes');
     yield put(Actions.signupSuccessRequest(signupRes));
     if (signupRes.success === true) {
+      // yield put(FirebaseServices.createNewAdmin(signupRes));
       yield put(
         AppActions.openSnackBar({
           open: true,
