@@ -13,7 +13,7 @@ export const initialState = {
   detailTypeData: [],
   chartOfAccPostData: false,
   chartOfAccData: [],
-  allAccountPeriodData: [],
+  accountPeriodData: [],
   accountDialog: {
     type: 'new',
     props: {
@@ -23,6 +23,7 @@ export const initialState = {
   },
   accountingSetupData: {},
   accountSetupPostData: false,
+  accountJournalPostData: false,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -99,7 +100,6 @@ const accountingReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_ALL_ACCOUNT_TYPES_ERR: {
-        console.log('GET_ALL_ACCOUNT_TYPES_ERR reducer');
         return {
           ...state,
           loading: false,
@@ -239,8 +239,7 @@ const accountingReducer = (state = initialState, action) =>
           error: false,
         };
       }
-      case Constants.GET_ALL_ACCOUNT_TYPES_SUCCESS: {
-        console.log('accountingSetupData reducer ', accountingSetupData);
+      case Constants.GET_ACCOUNTING_SETUP_SUCCESS: {
         return {
           ...state,
           loading: false,
@@ -282,22 +281,47 @@ const accountingReducer = (state = initialState, action) =>
       }
 
       // Case to get all account period
-      case Constants.GET_ALL_ACCOUNT_PERIOD_SUCCESS: {
+      case Constants.GET_ACCOUNT_PERIOD: {
         return {
           ...state,
           loading: true,
           error: false,
         };
       }
-      case Constants.GET_ALL_ACCOUNT_PERIOD_SUCCESS: {
+      case Constants.GET_ACCOUNT_PERIOD_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-          allAccountPeriodData: action.payload,
+          accountPeriodData: action.payload,
         };
       }
-      case Constants.GET_ALL_ACCOUNT_PERIOD_ERR: {
+      case Constants.GET_ACCOUNT_PERIOD_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+
+      // Case to create account journal
+      case Constants.CREATE_NEW_ACCOUNT_JOURNAL: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          accountJournalPostData: action.payload
+        };
+      }
+      case Constants.CREATE_NEW_ACCOUNT_JOURNAL_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          accountJournalPostData: action.payload
+        };
+      }
+      case Constants.CREATE_NEW_ACCOUNT_JOURNAL_ERR: {
         return {
           ...state,
           loading: false,

@@ -220,14 +220,14 @@ export function* createAccountingSetupSaga() {
 }
 
 
-export function* getAllAccountPeriodSaga() {
+export function* getAccountPeriodSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllAccountPeriodApi}/${currentUser.organisation.orgId}`;
-  console.log('getAllAccountPeriodSaga', requestURL);
+  const requestURL = `${Endpoints.GetAccountPeriodApi}/${currentUser.organisation.orgId}`;
+  console.log('getAccountPeriodSaga requestURL', requestURL);
 
   try {
-    const accountPeriodListResponse = yield call(request, requestURL, {
+    const accountPeriodResponse = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -235,11 +235,41 @@ export function* getAllAccountPeriodSaga() {
       }),
     });
 
-    console.log('accountPeriodListResponse -->', accountPeriodListResponse);
-    yield put(Actions.getAllAccountPeriodSuccessAction(accountPeriodListResponse));
+    console.log('accountPeriodResponse -->', accountPeriodResponse);
+    yield put(Actions.getAccountPeriodSuccessAction(accountPeriodResponse));
   } catch (err) {
     console.log('getAllAccountPeriodErrorAction--->', err);
-    yield put(Actions.getAllAccountPeriodErrorAction(err));
+    yield put(Actions.getAccountPeriodErrorAction(err));
+  }
+}
+
+
+// Create accounting setup
+export function* createAccountJournalSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const accountJournalPostData = yield select(
+    Selectors.makeSelectNewAccountJournalPostData(),
+  );
+  const requestURL = `${Endpoints.CreateAccountJournalApi}`;
+  console.log('journal requestURL ', requestURL);
+
+  try {
+    const accountJournalResponse = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(accountJournalPostData),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log('accountJournalResponse -> ', accountJournalResponse);
+    alert(`Account journal successful!`);
+    yield put(Actions.createNewAccountJournalSuccessAction(accountJournalResponse));
+  } catch (err) {
+    console.log('createAccountingSetupErrorAction -> ', err);
+    alert(`Something went wrong.`);
+    yield put(Actions.createNewAccountJournalErrorAction(err));
   }
 }
 
@@ -255,5 +285,5 @@ export default function* AccountingSaga() {
   yield takeLatest(Constants.DELETE_CHART_OF_ACCOUNT, deleteChartOfAccountSaga);
   yield takeLatest(Constants.GET_ACCOUNTING_SETUP, getAccountingSetupSaga);
   yield takeLatest(Constants.CREATE_ACCOUNTING_SETUP, createAccountingSetupSaga);
-  yield takeLatest(Constants.GET_ALL_ACCOUNT_PERIOD, getAllAccountPeriodSaga);
+  yield takeLatest(Constants.GET_ACCOUNT_PERIOD, getAccountPeriodSaga);
 }

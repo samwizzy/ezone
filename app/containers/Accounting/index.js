@@ -19,10 +19,10 @@ import makeSelectAccounting from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-// import AccountChart from './components/AccountChart';
+import AccountChart from './components/AccountChart';
 // import AccountJournal from './components/AccountJournal';
 // import JournalListing from './components/JournalListing';
-import NewAccountDialog from './components/NewAccountDialog';
+// import NewAccountDialog from './components/NewAccountDialog';
 import AccountSetting from './components/AccountSetting';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
@@ -36,9 +36,11 @@ export function Accounting(props) {
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
+    dispatchGetAccountPeriodAction();
     getAccountingSetupAction();
     dispatchGetAllChartOfAccountTypeAction();
     dispatchGetAllAccountTypeAction();
+    createNewAccountJournalAction();
   }, []);
 
   const {
@@ -46,10 +48,24 @@ export function Accounting(props) {
     accountingSetupData,
     getAccountingSetupAction,
     dispatchGetAllChartOfAccountTypeAction,
-    dispatchGetAllAccountTypeAction
+    dispatchGetAllAccountTypeAction,
+    dispatchGetAccountPeriodAction,
+    createNewAccountJournalAction
   } = props;
 
-  return <Router />
+
+
+  console.log('loading', loading);
+  console.log('accountingSetupData index.js file', accountingSetupData);
+
+
+  if (loading) {
+    return <LoadingIndicator />;
+  }
+  if (accountingSetupData.id) {
+    return props.history.push({ pathname: '/dashboard' });
+  }
+  return props.history.push({ pathname: '/account/setting' });
 }
 
 Accounting.propTypes = {
@@ -66,6 +82,8 @@ function mapDispatchToProps(dispatch) {
     getAccountingSetupAction: () => dispatch(Actions.getAccountingSetupAction()),
     dispatchGetAllChartOfAccountTypeAction: () => dispatch(Actions.getAllChartOfAccountTypeAction()),
     dispatchGetAllAccountTypeAction: () => dispatch(Actions.getAllAccountTypeAction()),
+    dispatchGetAccountPeriodAction: () => dispatch(Actions.getAccountPeriodAction()),
+    createNewAccountJournalAction: evt => dispatch(Actions.createNewAccountJournalAction(evt)),
     dispatch,
   };
 }
