@@ -700,9 +700,11 @@ export function* postMsg() {
   postMsgDetails.senderId = userChatData.initiator;
   postMsgDetails.senderName = userChatData.initiatorName;
 
+  
+  // console.log(postMsgDetails, 'postMsgDetails');
+
   // console.log(userChatDetails, 'lunch this in userChatDetails');
   // console.log(userChatData, 'userChatData');
-  // console.log(postMsgDetails, 'postMsgDetails');
 
   const requestURL = `${Endpoints.SendMessageApi}`;
 
@@ -716,9 +718,9 @@ export function* postMsg() {
       }),
     });
 
-    // console.log(postMsgResponse, 'postMsgResponse');
+    console.log(postMsgResponse, 'postMsgResponse');
 
-    yield put(Actions.getUserChatData(userChatDetails));
+    // yield put(Actions.getUserChatData(userChatDetails));
     yield put(Actions.postMsgSuccess(postMsgResponse));
   } catch (err) {
     yield put(Actions.postMsgError(err));

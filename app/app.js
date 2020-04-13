@@ -28,6 +28,9 @@ import LanguageProvider from './containers/LanguageProvider';
 import '!file-loader?name=[name].[ext]!./images/favicon.ico';
 import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line import/extensions
 
+// Load the favicon and the .htaccess file
+import 'file-loader?name=firebase-messaging-sw.js!./firebase-messaging-sw.js';
+
 import configureStore from './configureStore';
 
 // Import i18n messages

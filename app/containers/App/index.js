@@ -57,6 +57,7 @@ import AccountChart from '../Accounting/components/AccountChart';
 import AddNewJournal from '../Accounting/Journal/AddNewJournal';
 import AccountSetting from '../Accounting/components/AccountSetting';
 
+import {Auth} from '../../auth';
 // import { makeSelectGetSaveToken } from './selectors';
 
 const App = () => {
@@ -83,6 +84,7 @@ const App = () => {
               />
             </Helmet>
 
+            <Auth>
             <Switch>
               <Route exact path="/login" component={Login} />
               <Route exact path="/" component={Login} />
@@ -210,6 +212,7 @@ const App = () => {
               <Route path="" component={NotFoundPage} />
             </Switch>
             <Snackbar />
+            </Auth>
           </div>
         </main>
       </AppContext.Provider>

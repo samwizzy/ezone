@@ -11,7 +11,7 @@ export function* getAllEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
-  const requestURL = `${Endpoints.GetAllEmployeesApi}/${
+  const requestURL = `${Endpoints.GetAllUsersApi}/${
     currentUser.organisation.orgId
   }`;
 

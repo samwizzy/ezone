@@ -50,7 +50,7 @@ export function Accounting(props) {
     dispatchGetAllChartOfAccountTypeAction,
     dispatchGetAllAccountTypeAction,
     dispatchGetAccountPeriodAction,
-    createNewAccountJournalAction
+    createNewAccountJournalAction,
   } = props;
 
   console.log('loading', loading);
@@ -60,10 +60,12 @@ export function Accounting(props) {
   if (loading) {
     return <LoadingIndicator />;
   }
+
   if (accountingSetupData.id) {
-    return props.history.push({ pathname: '/dashboard' });
+    return props.history.push({ pathname: '/Dashboard' });
   }
-  return props.history.push({ pathname: '/account/setting' });
+
+  return <AccountSetting />;
 }
 
 Accounting.propTypes = {

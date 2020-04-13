@@ -90,6 +90,10 @@ module.exports = require('./webpack.base.babel')({
       relativePaths: false,
       publicPath: '/',
       appShell: '/',
+      ServiceWorker: {
+        events: true,
+        entry: path.join(process.cwd(), 'app/firebase-messaging-sw.js') //<-- path for your extended service worker
+      },
 
       // No need to cache .htaccess. See http://mxs.is/googmp,
       // this is applied before any match in `caches` section

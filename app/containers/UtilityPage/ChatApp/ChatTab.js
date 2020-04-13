@@ -16,8 +16,8 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
-import SockJS from "sockjs-client";
-import Stomp from "webstomp-client"; 
+import SockJS from 'sockjs-client';
+import Stomp from 'webstomp-client';
 // import Stomp from '@stomp/stompjs';
 import { useInfiniteScroll } from 'react-infinite-scroll-hook';
 import { createStructuredSelector } from 'reselect';
@@ -171,17 +171,41 @@ const ChatTab = props => {
     handleScrollToBottom();
   }, []);
 
+  // console.log(currentUser, 'currentUser');
   const chatConnect = () => {
-    const socket = new SockJS('http://64.20.51.173/gateway/utilityserv/secured/room');
+    const socket = new SockJS(
+      'http://64.20.51.173/gateway/utilityserv/secured/room',
+    );
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, function(frame) {
+    stompClient.connect({name: currentUser.username}, function(frame) {
+      let { url } = stompClient.ws._transport;
+      url = url.replace(
+        'http://64.20.51.173/gateway/utilityserv/secured/room',
+        '',
+      );
+      url = url.replace('/websocket', '');
+      url = url.replace(/^[0-9]+\//, '');
+      const newArray = url.split('/');
+      const sessionId = newArray[newArray.length - 1];
+
+      // stompClient.send(
+      //   '/ezone/save_session_id',
+      //   JSON.stringify({
+      //     sessionId: `${sessionId}`,
+      //     userUuid: `${currentUser.uuId}`,
+      //   }),
+      //   {},
+      // );
       // setConnected(true);
-      console.log(`Connected: ${frame}`, 'welcome');
-      stompClient.subscribe('http://64.20.51.173/gateway/utilityserv/secured/user/queue/specific-user' + '-user' + currentUser.uuId, function (msgOut) {
-          //handle messages
+      console.log(`Connected: ${frame}`, 'welcome here');
+      stompClient.subscribe(
+        '/secured/user/queue/specific-user' + '/' + sessionId,
+        function(msgOut) {
+          // handle messages
           // showGreeting(JSON.parse(greeting.body).content);
           console.log(msgOut, 'msgOut');
-      });
+        },
+      );
     });
   };
 
@@ -193,13 +217,21 @@ const ChatTab = props => {
   //   console.log('Disconnected');
   // }
 
-  // function sendName() {
-  //   stompClient.send(
-  //     '/app/hello',
-  //     {},
-  //     JSON.stringify({ name: $('#name').val() }),
-  //   );
-  // }
+  const send = () => {
+    stompClient.send(
+      '/ezone/send_message',
+      JSON.stringify({
+        message: 'Good afternoon',
+        // recipientId: currentUser.username,
+        recipientId: '67b5cccb-25f1-4b3e-9fb3-446533c26ac2',
+        recipientName: 'waq',
+        senderId: '5c8eb1f9-6a90-4141-9f38-9832bd40de00',
+        senderName: 'afeez',
+      }),
+      {},
+      // JSON.stringify({ name: $('#name').val() }),
+    );
+  };
 
   // console.log(allEmployees, 'allEmployees');
   // console.log(allUsersChat, 'allUsersChat');
@@ -213,8 +245,8 @@ const ChatTab = props => {
   };
 
   const handleScrollToBottom = () => {
-    ref.current.scrollTop = ref.current.scrollHeight
-  }
+    ref.current.scrollTop = ref.current.scrollHeight;
+  };
 
   const isFirstMessageOfGroup = (item, i) => {
     // return (i === 0 || (props.chat.dialog[i - 1] && props.chat.dialog[i - 1].who !== item.who));
@@ -251,7 +283,7 @@ const ChatTab = props => {
     );
   }
 
-  console.log(ref, "ref")
+  // console.log(ref, "ref")
 
   // console.log(userChatData, 'userChatData');
   // console.log(newChat, 'newChat');
@@ -296,7 +328,7 @@ const ChatTab = props => {
                         />
                       )}
                     />
-                    <IconButton>
+                    <IconButton onClick={() => send()}>
                       <Add />
                     </IconButton>
                   </div>
