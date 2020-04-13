@@ -19,6 +19,7 @@ import reducer from './reducer';
 import saga from './saga';
 import EmailHome from './EmailHome';
 import TestConnectionDialog from './components/TestConnectionDialog';
+import ModuleLayout from './components/ModuleLayout';
 import * as Actions from './actions';
 
 export function EmailConfig(props) {
@@ -44,8 +45,11 @@ export function EmailConfig(props) {
         <title>EmailConfig</title>
         <meta name="description" content="Description of EmailConfig" />
       </Helmet>
+      
+      <ModuleLayout>
+        <EmailHome />
+      </ModuleLayout>
       <TestConnectionDialog />
-      <EmailHome />
     </div>
   );
 }

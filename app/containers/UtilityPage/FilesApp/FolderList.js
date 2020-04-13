@@ -10,6 +10,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import LoadingIndicator from '../../../components/LoadingIndicator';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import Description from '@material-ui/icons/Description'
 import {AddFile} from './../components/AddButton';
@@ -21,22 +22,13 @@ import ShareFileDialog from './components/ShareFileDialog'
 import AddFileDialog from './components/AddFileDialog'
 import AddFolderDialog from './components/AddFolderDialog'
 import FilePreviewDialog from './components/FilePreviewDialog'
-import AddSignature from './components/AddSignature'
-import DocWidget from './components/DocWidget'
 import NoFilesList from './components/NoFilesList'
 import moment from 'moment' 
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import DeleteRounded from '@material-ui/icons/DeleteRounded';
-import InsertDriveFile from '@material-ui/icons/InsertDriveFile';  
 import FolderOpen from '@material-ui/icons/FolderOpen';  
 import CropOriginal from '@material-ui/icons/CropOriginal';  
-import Delete from '@material-ui/icons/Delete';  
-import Share from '@material-ui/icons/Share';  
-import CloudDownload from '@material-ui/icons/CloudDownload';  
-import Visibility from '@material-ui/icons/Visibility';  
-import StarBorderOutlined from '@material-ui/icons/StarBorderOutlined';  
-import StarOutlined from '@material-ui/icons/StarOutlined';
 import FolderSideBar from './FolderSideBar'
 
 const useStyles = makeStyles(theme => ({
@@ -52,6 +44,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(2),
     '& .MuiTableCell-body': {
       fontSize: theme.typography.fontSize - 1,
+      whiteSpace: "nowrap",
     },
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
@@ -60,7 +53,18 @@ const useStyles = makeStyles(theme => ({
   datatable: {
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
-    }
+    },
+    '& .MuiTableHead-root': {
+      '& .MuiTableCell-head': {
+        color: theme.palette.common.white,
+      },
+      '& .MuiTableCell-root:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+      },
+      '& .MuiTableCell-root:nth-child(even)': {
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
+      },
+    },
   },
   button: {
     '&.favorite': { color: orange[300]},
@@ -90,15 +94,16 @@ const useStyles = makeStyles(theme => ({
 
 const FilesList = props => {
   const classes = useStyles();
-  const { loading, match, folders, nestedFolders, folder, files, file, user, getAllFoldersAndDocs, getNestedFoldersAndDocs, getFolderById, getUtilityFile, deleteDocument, favoriteDocument, getFavoriteDocuments, getSharedDocuments, openNewFolderDialog, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog } = props
-  const [prevIds, setPrevIds] = React.useState([]);
+  const { loading, match, folders, nestedFolders, folder, files, file, prevIds, addPrevIds, removePrevIds, user, getNestedFoldersAndDocs, getFolderById, getUtilityFile, deleteDocument, favoriteDocument, openNewFolderDialog, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog } = props
   const {params} = match
 
   const [isOpen, setOpen] = React.useState(true);
 
   React.useEffect(() => {
     getAllFolders(params.folderId)
-  }, [])
+    handleNext(params.folderId)
+    console.log("I am been fired")
+  }, [params.folderId])
 
   console.log(folders, "folders nexted")
   console.log(nestedFolders, "nestedfolders nexted")
@@ -148,25 +153,31 @@ const FilesList = props => {
 
   const handleBack = () => {
     if(prevIds.length > 1){
+      console.log(prevIds[prevIds.length - 1], "prevIds[prevIds.length - 1]")
       getNestedFoldersAndDocs({folderId: prevIds[prevIds.length - 2], type: 'FOLDER'})
-      prevIds.splice(prevIds.length - 1, 1)
+      removePrevIds()
     }else{
       props.history.push('/dashboard/folders')
-      prevIds.splice(prevIds.length - 1, 1)
+      // prevIds.splice(prevIds.length - 1, 1)
     }
+  }
+
+  const handleNext = (folderId) => {
+    const folder_id = parseInt(folderId)
+    !prevIds.includes(folder_id)? addPrevIds(folder_id) : null
   }
 
   const getAllFolders = folderId => {
     const selectedfolder = folders && folders.find(f => f.id == folderId)
     getNestedFoldersAndDocs({folderId, type: 'FOLDER'})
-    setPrevIds([...prevIds, folderId])
+    // addPrevIds(folderId)
     console.log(selectedfolder, "selectedfolder")
-    getFolderById(selectedfolder)
+    // getFolderById(selectedfolder)
   }
 
   const handleRowClick = folderId => {
-    const selectedDoc = nestedFolders && nestedFolders.find(folder => folder.id === folderId)
-    !prevIds.includes(folderId)? setPrevIds([...prevIds, folderId]) : prevIds.splice(prevIds.length - 1, 1)
+    const selectedDoc = nestedFolders && nestedFolders.find(folder => folder.id == folderId)
+    !prevIds.includes(folderId)? addPrevIds(folderId) : null
     
     selectedDoc.type == 'File'? getUtilityFile(folderId) : (
       getNestedFoldersAndDocs({folderId, type: 'FOLDER'}),
@@ -178,6 +189,7 @@ const FilesList = props => {
   console.log(folders, "Folders")
   console.log(nestedFolders, "nestedFolders")
   console.log(folder, "Folder single")
+  console.log(prevIds, "prevIds single")
 
   const columns = [
     {
@@ -368,7 +380,8 @@ const FilesList = props => {
           }
         </Grid>
         <Grid item md={3}>
-          <Typography variant="subtitle2" color="textSecondary">Document Details</Typography>
+          <Box p={1}>
+          <Typography variant="h6" color="textSecondary">Document Details</Typography>
           {file && Object.keys(file).length > 0 &&
           <div>
           <Card className={classes.cardRoot} elevation={0}>
@@ -451,15 +464,16 @@ const FilesList = props => {
             </ListItem>
             <Collapse in={isOpen} timeout="auto" unmountOnExit>
               <Box px={2}>
-              <Typography variant="inherit" color="textSecondary">
-                {file.description? file.description : "This file has no description yet"}
-              </Typography>
+                <Typography variant="inherit" color="textSecondary">
+                  {file.description? file.description : "This file has no description yet"}
+                </Typography>
               </Box>
             </Collapse>
           </List>
           
           </div>
           }
+          </Box>
         </Grid>
       </Grid>
 
@@ -488,6 +502,7 @@ const mapStateToProps = createStructuredSelector({
   files: Selectors.makeSelectFiles(),
   file: Selectors.makeSelectFile(),
   user: AppSelectors.makeSelectCurrentUser(),
+  prevIds: Selectors.makeSelectPrevIds(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -495,7 +510,6 @@ function mapDispatchToProps(dispatch) {
     openFileUploadDialog: ev => dispatch(Actions.openFileUploadDialog(ev)),
     openShareFileDialog: ev => dispatch(Actions.openShareFileDialog(ev)),
     openNewFolderDialog: () => dispatch(Actions.openNewFolderDialog()),
-    getAllFoldersAndDocs: (data) => dispatch(Actions.getAllFoldersAndDocs(data)),
     getNestedFoldersAndDocs: (data) => dispatch(Actions.getNestedFoldersAndDocs(data)),
     getFolderById: (data) => dispatch(Actions.getFolderById(data)),
     getUtilityFiles: () => dispatch(Actions.getUtilityFiles()),
@@ -506,6 +520,8 @@ function mapDispatchToProps(dispatch) {
     shareDocument: docId => dispatch(Actions.shareDocument(docId)),
     favoriteDocument: docId => dispatch(Actions.favoriteDocument(docId)),
     openFilePreviewDialog: (data) => dispatch(Actions.openFilePreviewDialog(data)),
+    addPrevIds: (id) => dispatch(Actions.addPrevIds(id)),
+    removePrevIds: () => dispatch(Actions.removePrevIds()),
   };
 }
 

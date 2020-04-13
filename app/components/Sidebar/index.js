@@ -5,24 +5,29 @@ import { withRouter } from 'react-router-dom';
 import Drawer from '@material-ui/core/Drawer';
 import Link from '@material-ui/core/Link';
 import Divider from '@material-ui/core/Divider';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Logo from '../../images/logo.svg';
 import AppSidebar from './components/AppSidebar';
+import sidebarImage from '../../images/sidebarImage.jpg';
 
 const drawerWidth = 240;
+const drawerHeight = 48;
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-    backgroundColor: theme.palette.common.white
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
-    backgroundColor: 'teal',
+    marginTop: drawerHeight,
+    height: `calc(100vh - ${drawerHeight}px)`,
+    background: `url(${sidebarImage}) no-repeat left top`,
+    backgroundSize: "cover",
   },
   drawerOpen: {
     width: drawerWidth,
@@ -30,6 +35,7 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    overflowX: 'hidden',
   },
   drawerClose: {
     transition: theme.transitions.create('width', {
@@ -43,7 +49,13 @@ const useStyles = makeStyles(theme => ({
     },
   },
   toolbar: {
+    zIndex: 9999,
+    position: "absolute",
+    borderRadius: theme.spacing(20, 0, 0, 20),
+    right: 0,
+    bottom: "40%",
     display: 'flex',
+    backgroundColor: fade(theme.palette.common.white, 0.5),
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
@@ -80,28 +92,28 @@ function MiniDrawer(props) {
     <div className={classes.root}>
       <Drawer
         variant="permanent"
-        style={{ backgroundColor: '#fff'}}
-        className={clsx(classes.drawer, {
+        className={clsx({
           [classes.drawerOpen]: open,
           [classes.drawerClose]: !open,
         })}
         classes={{
-          paper: clsx({
+          paper: clsx(classes.drawer, {
             [classes.drawerOpen]: open,
             [classes.drawerClose]: !open,
           }),
         }}
       >
+
         <div className={classes.toolbar}>
-          <Link href="#">
+          {/* <Link href="#">
             <img src={Logo} className={classes.logo} alt="" />
-          </Link>
+          </Link> */}
           {open ? (
             <IconButton onClick={handleDrawerClose}>
               {theme.direction === 'rtl' ? (
                 <ChevronRightIcon />
               ) : (
-                <ChevronLeftIcon />
+                <ChevronLeftIcon fontSize="large" />
               )}
             </IconButton>
           ) : (
@@ -109,16 +121,18 @@ function MiniDrawer(props) {
               {theme.direction === 'rtl' ? (
                 <ChevronLeftIcon />
               ) : (
-                <ChevronRightIcon />
+                <ChevronRightIcon fontSize="large" />
               )}
             </IconButton>
           )}
         </div>
-        <Divider />
+        {/* <Divider /> */}
         <AppSidebar />
         <Divider />
       </Drawer>
-      <main className={classes.content}>{props.content}</main>
+      <main className={classes.content}>
+        {props.content}
+      </main>
     </div>
   );
 }

@@ -8,7 +8,7 @@ import * as Constants from './constants';
 export const initialState = {
   postMsg: false,
   getPostMsg: false,
-  getAllUserChatData: [],
+  getAllUserChatData: false,
   getUserChatData: [],
   getAllUsersChat: [],
   getAllEmployees: [],
@@ -112,6 +112,7 @@ export const initialState = {
   folder: {},
   files: [],
   file: {},
+  prevIds: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -128,6 +129,18 @@ const utilityPageReducer = (state = initialState, action) =>
             },
             data: action.payload,
           },
+        };
+      }
+      case Constants.ADD_PREV_ID: {
+        return {
+          ...state,
+          prevIds: [...state.prevIds, action.payload],
+        };
+      }
+      case Constants.REMOVE_PREV_ID: {
+        return {
+          ...state,
+          prevIds: state.prevIds.slice(0, -1),
         };
       }
       case Constants.GET_EMPLOYEES_SUCCESS: {
@@ -148,16 +161,37 @@ const utilityPageReducer = (state = initialState, action) =>
           task: action.payload,
         };
       }
+      case Constants.UPDATE_UTILITY_TASK: {
+        return {
+          ...state,
+          loading: true
+        };
+      }
       case Constants.UPDATE_UTILITY_TASK_SUCCESS: {
         return {
           ...state,
           task: action.payload,
+          loading: false
+        };
+      }
+      case Constants.GET_UTILITY_TASK: {
+        return {
+          ...state,
+          loading: true
         };
       }
       case Constants.GET_UTILITY_TASK_SUCCESS: {
         return {
           ...state,
           task: action.payload,
+          loading: false
+        };
+      }
+      case Constants.GET_UTILITY_TASK_ERROR: {
+        return {
+          ...state,
+          error: {...state.error, success: false, message: action.payload},
+          loading: false
         };
       }
       case Constants.GET_UTILITY_TASKS: {
@@ -177,7 +211,7 @@ const utilityPageReducer = (state = initialState, action) =>
       case Constants.GET_FOLDERS_AND_DOC: {
         return {
           ...state,
-          loading: false
+          loading: true
         };
       }
       case Constants.GET_FOLDERS_AND_DOC_SUCCESS: {
@@ -235,7 +269,7 @@ const utilityPageReducer = (state = initialState, action) =>
       case Constants.GET_UTILITY_TASKS_ERROR: {
         return {
           ...state,
-          error: action.payload,
+          error: {...state.error, success: false, message: action.payload},
           loading: false
         };
       }
@@ -637,6 +671,7 @@ const utilityPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_USER_CHAT_DATA: {
+        // console.log(action.payload, 'getUserChatData');
         return {
           ...state,
           loading: true,
@@ -660,6 +695,7 @@ const utilityPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.POST_MSG: {
+        console.log(action.payload, 'reducer data');
         return {
           ...state,
           loading: true,

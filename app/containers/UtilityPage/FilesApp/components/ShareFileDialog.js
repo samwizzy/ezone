@@ -30,7 +30,8 @@ function SharedFileDialog(props) {
   const [form, setForm] = React.useState({
     docId: "",
     name: "",
-    sharedTo: ""
+    sharedTo: "",
+    type: "ROOT"
   })
 
   React.useEffect(() => {

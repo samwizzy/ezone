@@ -25,10 +25,10 @@ export function* addUtilityFile({ type, payload }) {
 
     console.log(response, 'createdFileResponse');
 
-    yield put(Actions.getAllFoldersAndDocs({folderId: 0, type: 'ROOT'}));
+    yield put(Actions.getAllFoldersAndDocs({ folderId: 0, type: 'ROOT' }));
   } catch (err) {
     yield put(Actions.getUtilityFilesError(err));
-    console.log(err.message, "err message")
+    console.log(err.message, 'err message');
   }
 }
 
@@ -49,20 +49,32 @@ export function* addDocToFolder({ type, payload }) {
     });
 
     console.log(response, 'createdFileResponse');
-    payload.folderId === 1?
-    yield put(Actions.getAllFoldersAndDocs({folderId: payload.folderId, type: 'ROOT'})):
-    yield put(Actions.getAllFoldersAndDocs({folderId: payload.folderId, type: 'FOLDER'}))
+    payload.folderId === 1
+      ? yield put(
+          Actions.getAllFoldersAndDocs({
+            folderId: payload.folderId,
+            type: 'ROOT',
+          }),
+        )
+      : yield put(
+          Actions.getAllFoldersAndDocs({
+            folderId: payload.folderId,
+            type: 'FOLDER',
+          }),
+        );
   } catch (err) {
     yield put(Actions.getUtilityFilesError(err));
   }
 }
 
-export function* getAllFoldersAndDoc({type, payload}) {
+export function* getAllFoldersAndDoc({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const {uuId} = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllFoldersAndDocApi}/${uuId}/${payload.folderId}/${payload.type}`;
+  const { uuId } = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAllFoldersAndDocApi}/${uuId}/${
+    payload.folderId
+  }/${payload.type}`;
 
-  console.log(payload, "All folder and doc payload")
+  console.log(payload, 'All folder and doc payload');
 
   try {
     const response = yield call(request, requestURL, {
@@ -79,12 +91,14 @@ export function* getAllFoldersAndDoc({type, payload}) {
   }
 }
 
-export function* getNestedFoldersAndDoc({type, payload}) {
+export function* getNestedFoldersAndDoc({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const {uuId} = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllFoldersAndDocApi}/${uuId}/${payload.folderId}/${payload.type}`;
+  const { uuId } = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAllFoldersAndDocApi}/${uuId}/${
+    payload.folderId
+  }/${payload.type}`;
 
-  console.log(payload, "All folder and doc payload")
+  console.log(payload, 'All folder and doc payload');
 
   try {
     const response = yield call(request, requestURL, {
@@ -116,10 +130,15 @@ export function* addFolderToFolder({ type, payload }) {
     });
 
     console.log(response, 'folder response');
-    payload.folderId === 1?
-    yield put(Actions.getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})):
-    yield put(Actions.getAllFoldersAndDocs({folderId: payload.folderId, type: 'FOLDER'}))
-    yield put(Actions.closeNewFolderDialog())
+    payload.folderId === 1
+      ? yield put(Actions.getAllFoldersAndDocs({ folderId: 0, type: 'ROOT' }))
+      : yield put(
+          Actions.getAllFoldersAndDocs({
+            folderId: payload.folderId,
+            type: 'FOLDER',
+          }),
+        );
+    yield put(Actions.closeNewFolderDialog());
   } catch (err) {
     // yield put(Actions.getUtilityFilesError(err));
   }
@@ -157,9 +176,8 @@ export function* addUtilityTasks({ type, payload }) {
 export function* getUtilityTasks() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetUtilityTasksApi}/${
-    user && user.organisation.orgId
-  }`;
+  const requestURL = `${Endpoints.GetUtilityTasksApi}/${user &&
+    user.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -173,16 +191,15 @@ export function* getUtilityTasks() {
     yield put(Actions.getUtilityTasksSuccess(response));
   } catch (err) {
     yield put(Actions.getUtilityTasksError(err.message));
-    console.log(err.message, "err.message")
+    console.log(err.message, 'err.message');
   }
 }
 
 export function* getUtilityTasksByStatus({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetUtilityTasksByStatusApi}?orgId=${
-    user && user.organisation.orgId
-  }&status=${payload}`;
+  const requestURL = `${Endpoints.GetUtilityTasksByStatusApi}?orgId=${user &&
+    user.organisation.orgId}&status=${payload}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -214,7 +231,7 @@ export function* getUtilityTask({ type, payload }) {
 
     yield put(Actions.getUtilityTaskSuccess(response));
   } catch (err) {
-    // yield put(Actions.getUtilityTasksError(err.message));
+    yield put(Actions.getUtilityTaskError(err.message));
   }
 }
 
@@ -250,12 +267,12 @@ export function* commentUtilityTask({ type, payload }) {
       }),
     });
 
-    console.log(response, "comment response")
+    console.log(response, 'comment response');
 
     // yield put(
     //   AppActions.openSnackBar({open: true, message: `Comment Posted`, status: 'success' }),
     // );
-    yield put(Actions.getTaskComments(response.task.id))
+    yield put(Actions.getTaskComments(response.task.id));
     // yield put(Actions.commentTaskSuccess(response));
   } catch (err) {
     // yield put(Actions.commentTaskError(err.message));
@@ -377,9 +394,8 @@ export function* getUserByUUID({ type, payload }) {
 export function* getUtilityFiles() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetUtilityFilesApi}/${
-    user && user.organisation.orgId
-  }`;
+  const requestURL = `${Endpoints.GetUtilityFilesApi}/${user &&
+    user.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -413,9 +429,19 @@ export function* deleteUtilityFile({ type, payload }) {
     });
 
     console.log(response, 'deleteFileResponse');
-    payload.parentId === 1?
-    yield put(Actions.getAllFoldersAndDocs({folderId: payload.folderId, type: 'ROOT'})):
-    yield put(Actions.getAllFoldersAndDocs({folderId: payload.folderId, type: 'FOLDER'}))
+    payload.parentId === 1
+      ? yield put(
+          Actions.getAllFoldersAndDocs({
+            folderId: payload.folderId,
+            type: 'ROOT',
+          }),
+        )
+      : yield put(
+          Actions.getAllFoldersAndDocs({
+            folderId: payload.folderId,
+            type: 'FOLDER',
+          }),
+        );
     // yield put(Actions.deleteDocumentSuccess(response));
   } catch (err) {
     // yield put(Actions.getUtilityFileError(err));
@@ -439,9 +465,19 @@ export function* restoreDocument({ type, payload }) {
     });
 
     console.log(response, 'restore response');
-    payload.id === 1?
-    yield put(Actions.getAllFoldersAndDocs({folderId: payload.folderId, type: 'ROOT'})):
-    yield put(Actions.getAllFoldersAndDocs({folderId: payload.folderId, type: 'FOLDER'}))
+    payload.id === 1
+      ? yield put(
+          Actions.getAllFoldersAndDocs({
+            folderId: payload.folderId,
+            type: 'ROOT',
+          }),
+        )
+      : yield put(
+          Actions.getAllFoldersAndDocs({
+            folderId: payload.folderId,
+            type: 'FOLDER',
+          }),
+        );
   } catch (err) {
     // yield put(Actions.getUtilityFileError(err));
   }
@@ -484,7 +520,7 @@ export function* shareUtilityFiles({ type, payload }) {
       }),
     });
     console.log(response, 'response');
-    yield put(Actions.closeShareFileDialog())
+    yield put(Actions.closeShareFileDialog());
     // yield put(
     //   AppActions.openSnackBar({open: true, message: `${response.document.docName} has been shared successfully`, status: 'success' }),
     // );
@@ -567,10 +603,8 @@ export function* getAllUsers() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
-  const requestURL = `${Endpoints.GetAllUsersApi}/${
-    currentUser && currentUser.organisation.orgId
-  }`;
-
+  const requestURL = `${Endpoints.GetAllUsersApi}/${currentUser &&
+    currentUser.organisation.orgId}`;
   try {
     const getAllUsersResponse = yield call(request, requestURL, {
       method: 'GET',
@@ -590,7 +624,8 @@ export function* getUserChat() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
-  const requestURL = `${Endpoints.GetUserChatApi}/?userUid=${currentUser && currentUser.uuId}`;
+  const requestURL = `${Endpoints.GetUserChatApi}/?userUid=${currentUser &&
+    currentUser.uuId}`;
 
   try {
     const getUserChatResponse = yield call(request, requestURL, {
@@ -601,7 +636,7 @@ export function* getUserChat() {
       }),
     });
 
-    console.log(getUserChatResponse, 'getUserChatResponse');
+    // console.log(getUserChatResponse, 'getUserChatResponse');
 
     yield put(Actions.getAllUsersChatSuccess(getUserChatResponse));
   } catch (err) {
@@ -632,14 +667,11 @@ export function* getUserChatData() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
 
   const userChatDetails = yield select(Selectors.makeSelectGetUserChatData());
-
-  console.log(userChatDetails, 'userChatDetails');
   const requestURL = `${Endpoints.GetUserChatDataApi}/?chatId=${
-    userChatDetails.initiator
-  }&limit=${10}&start=${10}`;
+    userChatDetails.chatId
+  }&limit=${10}&start=${0}`;
 
-  console.log(requestURL, 'requestURL');
-
+  // console.log(userChatDetails, 'userChatDetails');
   try {
     const userChatDataResponse = yield call(request, requestURL, {
       method: 'GET',
@@ -649,6 +681,8 @@ export function* getUserChatData() {
       }),
     });
 
+    // console.log(userChatDataResponse, 'userChatDataResponse');
+
     yield put(Actions.getUserChatDataSuccess(userChatDataResponse));
   } catch (err) {
     yield put(Actions.getUserChatDataError(err));
@@ -657,6 +691,7 @@ export function* getUserChatData() {
 
 export function* postMsg() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const userChatDetails = yield select(Selectors.makeSelectGetUserChatData());
 
   const userChatData = yield select(Selectors.makeSelectGetUserChatData());
   const postMsgDetails = yield select(Selectors.makeSelectPostMsg());
@@ -665,8 +700,12 @@ export function* postMsg() {
   postMsgDetails.senderId = userChatData.initiator;
   postMsgDetails.senderName = userChatData.initiatorName;
 
-  console.log(userChatData, 'userChatData');
-  console.log(postMsgDetails, 'postMsgDetails');
+  
+  // console.log(postMsgDetails, 'postMsgDetails');
+
+  // console.log(userChatDetails, 'lunch this in userChatDetails');
+  // console.log(userChatData, 'userChatData');
+
   const requestURL = `${Endpoints.SendMessageApi}`;
 
   try {
@@ -679,6 +718,9 @@ export function* postMsg() {
       }),
     });
 
+    console.log(postMsgResponse, 'postMsgResponse');
+
+    // yield put(Actions.getUserChatData(userChatDetails));
     yield put(Actions.postMsgSuccess(postMsgResponse));
   } catch (err) {
     yield put(Actions.postMsgError(err));
@@ -707,7 +749,10 @@ export default function* UtilityPageSaga() {
   yield takeLatest(Constants.GET_UTILITY_FILES, getUtilityFiles);
   yield takeLatest(Constants.ADD_FOLDER_TO_FOLDER, addFolderToFolder);
   yield takeLatest(Constants.GET_FOLDERS_AND_DOC, getAllFoldersAndDoc);
-  yield takeLatest(Constants.GET_NESTED_FOLDERS_AND_DOC, getNestedFoldersAndDoc);
+  yield takeLatest(
+    Constants.GET_NESTED_FOLDERS_AND_DOC,
+    getNestedFoldersAndDoc,
+  );
   yield takeLatest(
     Constants.GET_FAVORITE_DOCS_BY_UUID,
     getFavoriteUtilityFiles,

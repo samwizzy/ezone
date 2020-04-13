@@ -171,7 +171,7 @@ const WelcomeTemplate = props => {
         <Grid item xs={12}>
           <AppBar position='relative' color="inherit" elevation={0}>
               <Toolbar className={classes.toolbar}>
-                  <Typography variant="h6" color="textSecondary">Password Reset Template</Typography>
+                  <Typography variant="h6" color="primary">Password Reset Template</Typography>
                   <ButtonGroup size="small" aria-label="small outlined button group">
                     <Button variant="outlined" className={classes.resetButton}>
                       Reset Default Template

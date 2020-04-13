@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
-import { IconButton, Tooltip, Button } from '@material-ui/core';
+import { IconButton, Tooltip, Button, ButtonGroup } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
 import { Add } from '@material-ui/icons';
 import * as Actions from '../actions';
 
 const defaultToolbarStyles = {
-  iconButton: {},
+  button: {},
 };
 
 // eslint-disable-next-line react/prop-types
@@ -18,7 +18,8 @@ export function AddButton(props) {
   const { classes, openNewWorkOrderDialogAction, openVendorDialogAction } = props;
   return (
     <React.Fragment>
-      <Tooltip title="Vendor">
+      <ButtonGroup size="small" aria-label="small outlined button group">
+      <Tooltip title="New Vendor">
         <Button
           variant="outlined"
           color="primary"
@@ -27,7 +28,7 @@ export function AddButton(props) {
           Create Vendor
         </Button>
       </Tooltip>
-      <Tooltip title="Work Order">
+      <Tooltip title="New Work Order">
         <Button
           variant="contained"
           color="primary"
@@ -36,6 +37,7 @@ export function AddButton(props) {
           Create Work Order
         </Button>
       </Tooltip>
+      </ButtonGroup>
     </React.Fragment>
   );
 }

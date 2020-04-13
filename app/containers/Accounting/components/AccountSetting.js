@@ -8,6 +8,7 @@ import {
   List,
   Paper,
   Grid,
+  TableContainer,
   Table,
   TableBody,
   TableCell,
@@ -19,12 +20,23 @@ import {
   FormControlLabel,
   FormControl,
 } from '@material-ui/core';
+
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+
 import { Autocomplete } from '@material-ui/lab';
+import SendIcon from '@material-ui/icons/Send';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
+import * as AppSelectors from './../../App/selectors';
 // import LoadingIndicator from '../../../components/LoadingIndicator';
 import Logo from '../../../images/logo.svg';
 import moment from 'moment'
@@ -39,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
   table: {
+    margin: theme.spacing(5, 1),
     '& .MuiTableCell-body': {
       border: 0,
     },
@@ -84,8 +97,12 @@ const AccountSetting = props => {
 
   const { 
     currentUser,
+    accountingSetupData,
     createAccountingSetupAction
   } = props;
+
+  console.log('accountingSetupData setting.js -> ', accountingSetupData);
+
 
   const [values, setValues] = React.useState({
     accountMethod: "",
@@ -140,6 +157,7 @@ const AccountSetting = props => {
       <div className={classes.root}>
         <Grid container justify="center" alignItems="center">
           <Grid item xs={6}>
+            <Paper square elevation={1} style={{padding: "20px 10px"}}>
               <Paper square elevation={0}  className={classes.paper}>
                 <Box p={2} my={2} className={classes.box}>
                   <Typography variant="h4" color="textSecondary">
@@ -163,14 +181,17 @@ const AccountSetting = props => {
                           <Grid container justify="space-around">
                             <KeyboardDatePicker
                               margin="normal"
+                              inputVariant="outlined"
                               id="date-picker-dialog"
                               label="Select Date"
                               format="MM/dd/yyyy"
                               value={selectedDate}
+                              readOnly={true}
                               onChange={handleFinancialYearDateChange}
                               KeyboardButtonProps={{
                                 'aria-label': 'change date',
                               }}
+                              fullWidth
                             />
                           </Grid>
                         </MuiPickersUtilsProvider>
@@ -231,6 +252,7 @@ const AccountSetting = props => {
                           <Grid container justify="space-around">
                             <KeyboardDatePicker
                               margin="normal"
+                              inputVariant="outlined"
                               id="date-picker-dialog"
                               label="Select Date"
                               format="MM/dd/yyyy"
@@ -239,6 +261,8 @@ const AccountSetting = props => {
                               KeyboardButtonProps={{
                                 'aria-label': 'change date',
                               }}
+                              fullWidth
+                              variant="outlined"
                             />
                           </Grid>
                         </MuiPickersUtilsProvider>
@@ -284,20 +308,24 @@ const AccountSetting = props => {
                       </TableCell>
                     </TableRow>
                     <TableRow>
+                      <TableCell colSpan={2}><Divider /></TableCell>
+                    </TableRow>
+                    <TableRow>
                       <TableCell></TableCell>
                       <TableCell align="right">
                         <Button 
                           variant="contained" 
                           color="primary" 
-                          onClick={() => createAccountingSetupAction(values) } 
-                          style={{align: "right"}}
+                          onClick={() => createAccountingSetupAction(values)} 
+                          endIcon={<SendIcon />}
                         >
-                          Save Continue
+                          Save And Continue 
                         </Button>
                       </TableCell>
                     </TableRow>
                 </TableBody>
               </Table>
+            </Paper>
           </Grid>
         </Grid>
       </div>
@@ -314,13 +342,14 @@ AccountSetting.propTypes = {
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
   currentUser: AppSelectors.makeSelectCurrentUser(),
+  accountingSetupData: Selectors.makeSelectGetAccountingSetupData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     // openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
     // editOpenAccountDialogAction: evt => dispatch(Actions.editOpenAccountDialog(evt)),
-    // deleteChartOfAccountAction: evt => dispatch(Actions.deleteChartOfAccountAction(evt)),
+    createAccountingSetupAction: evt => dispatch(Actions.createAccountingSetupAction(evt)),
   };
 }
 

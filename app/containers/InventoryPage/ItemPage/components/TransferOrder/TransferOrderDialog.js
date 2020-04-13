@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
   },
   container: {
-    width: 400,
+    // width: 400,
   },
   textField: {
     margin: theme.spacing(1),
@@ -160,14 +160,14 @@ const TransferOrderDialog = props => {
     setValues({ ...values, destinationWarehouseUuId: value.uuid });
   };
 
+  console.log('inventory rows -> ', rows)
+
   // console.log(values, 'values');
   return (
     <div>
       <Dialog
         {...transferOrderDialog.props}
         onClose={closeNewTransferOrderDialogAction}
-        keepMounted
-        fullScreen
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
       >
@@ -201,9 +201,9 @@ const TransferOrderDialog = props => {
         <DialogContent>
           {transferOrderDialog.type === 'new' ? (
             <div>
-              <Grid container spacing={0}>
-                <Grid item xs={12} md={6} lg={6}>
-                  <div className={classes.container}>
+              <Grid item xs={12}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
                     <TextField
                       id="outlined-referenceNumber"
                       label="Reference Number"
@@ -213,6 +213,8 @@ const TransferOrderDialog = props => {
                       className={classes.textField}
                       fullWidth
                     />
+                  </Grid>
+                  <Grid item xs={6}>
                     <TextField
                       id="outlined-transfer-order"
                       label="Transfer Order"
@@ -222,6 +224,8 @@ const TransferOrderDialog = props => {
                       className={classes.textField}
                       fullWidth
                     />
+                  </Grid>
+                  <Grid item xs={12}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
                         autoOk
@@ -236,6 +240,8 @@ const TransferOrderDialog = props => {
                         fullWidth
                       />
                     </MuiPickersUtilsProvider>
+                  </Grid>
+                  <Grid item xs={12}>
                     <TextField
                       id="outlined-reason"
                       label="Reason"
@@ -247,13 +253,12 @@ const TransferOrderDialog = props => {
                       multiline
                       rows={2}
                     />
-                  </div>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} md={6} lg={6} />
               </Grid>
               <Divider />
-              <Grid container spacing={0}>
-                <Grid item xs={12} md={6} lg={6}>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
                   <div className={classes.container}>
                     <Autocomplete
                       id="combo-itemCategory"
@@ -273,7 +278,7 @@ const TransferOrderDialog = props => {
                     />
                   </div>
                 </Grid>
-                <Grid item xs={12} md={6} lg={6}>
+                <Grid item xs={6}>
                   <div className={classes.container}>
                     <Autocomplete
                       id="combo-itemCategory"
@@ -303,7 +308,10 @@ const TransferOrderDialog = props => {
                         <TableRow>
                           <TableCell>Item Details</TableCell>
                           <TableCell align="center">
-                            Current Availablilty
+                            Destination Current Availablilty
+                          </TableCell>
+                          <TableCell align="center">
+                            Source Current Availablilty
                           </TableCell>
                           <TableCell align="center">
                             Transfer Quantity
@@ -338,15 +346,16 @@ const TransferOrderDialog = props => {
                               <TextField
                                 disabled
                                 id="filled-disabled"
-                                label="Source Stock"
+                                label="Destination Stock"
                                 defaultValue="0.00 Units"
                                 variant="filled"
                               />
-                              &nbsp; | &nbsp;
+                            </TableCell>
+                            <TableCell align="center">
                               <TextField
                                 disabled
                                 id="filled-disabled"
-                                label="Destination Stock"
+                                label="Source Stock"
                                 defaultValue="0.00 Units"
                                 variant="filled"
                               />

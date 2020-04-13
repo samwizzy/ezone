@@ -29,6 +29,8 @@ export const OPEN_NEW_FILE_DIALOG = 'app/UtilityPage/OPEN NEW FILE DIALOG';
 export const CLOSE_NEW_FILE_DIALOG = 'app/UtilityPage/CLOSE NEW FILE DIALOG';
 export const OPEN_NEW_FOLDER_DIALOG = 'app/UtilityPage/OPEN NEW FOLDER DIALOG';
 export const CLOSE_NEW_FOLDER_DIALOG = 'app/UtilityPage/CLOSE NEW FOLDER DIALOG';
+export const ADD_PREV_ID = 'app/UtilityPage/ADD PREV ID';
+export const REMOVE_PREV_ID = 'app/UtilityPage/REMOVE PREV ID';
 
 export const OPEN_TASK_PREVIEW_DIALOG =
   'app/UtilityPage/OPEN_TASK_PREVIEW_DIALOG';
@@ -71,6 +73,7 @@ export const REMOVE_TASK_ATTACHMENT = 'app/UtilityPage/REMOVE TASK ATTACHMENT';
 export const REMOVE_TASK_ATTACHMENT_SUCCESS = 'app/UtilityPage/REMOVE TASK ATTACHMENT SUCCESS';
 export const GET_UTILITY_TASK = 'app/UtilityPage/GET UTILITY TASK';
 export const GET_UTILITY_TASK_SUCCESS = 'app/UtilityPage/GET UTILITY TASK SUCCESS';
+export const GET_UTILITY_TASK_ERROR = 'app/UtilityPage/GET UTILITY TASK ERROR';
 export const GET_UTILITY_TASKS = 'app/UtilityPage/GET UTILITY TASKS';
 export const GET_UTILITY_TASKS_SUCCESS = 'app/UtilityPage/GET ALL UTILITY TASKS SUCCESS';
 export const UPDATE_UTILITY_TASK = 'app/UtilityPage/UPDATE UTILITY TASK';

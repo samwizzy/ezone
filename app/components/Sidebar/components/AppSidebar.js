@@ -1,47 +1,45 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import Icon from '@material-ui/core/Icon';
-import Tooltip from '@material-ui/core/Tooltip';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import {Icon, List, ListItem, ListItemIcon, ListItemText, Typography} from '@material-ui/core';
 import { AppContext } from '../../../containers/context/AppContext';
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
+    width: "100%",
+    marginTop: theme.spacing(2),
   },
   list: {
-    marginTop: theme.spacing(1),
     width: '100%',
+    // fontSize: theme.typography.fontSize + 2,
+    "& .MuiListItem-root": {
+      color: theme.palette.common.white,
+      "& .MuiListItemIcon-root": {
+        color: theme.palette.common.white,
+        minWidth: "40px !important"
+      },
+      "&:hover > .MuiListItemIcon-root": {
+        color: theme.palette.primary.main
+      },
+      "&:hover": {
+        color: theme.palette.primary.main,
+        backgroundColor: theme.palette.common.white, 
+      },
+    }
   },
 }));
 
-const modules = [
-  'dashboard',
-  'hr',
-  'accounting',
-  'Human Resources',
-  'Store & Inventory Management',
-  'CRM',
-  'Budgeting',
-  'Task management',
-  'File and Document sharing',
-  'Projects',
-];
-
 function AppSidebar(props) {
   const classes = useStyles();
+  const { location } = props
 
   return (
     <AppContext.Consumer>
       {value => {
         const { sideBarconfig } = value;
-        const sideMenu = sideBarconfig.find(
-          sidebar => sidebar.module === 'utility',
-        );
+        const pathName = location.pathname.replace(/^\/|\/$/g, '').split('/')[0]
+        const sideMenu = sideBarconfig.find(sidebar => sidebar.module == pathName);
 
         return (
           <div className={classes.root}>
@@ -50,9 +48,7 @@ function AppSidebar(props) {
                 return (
                   <ListItem button key={index} component="a" href={menu.url}>
                     <ListItemIcon>
-                      <Tooltip title={menu.name} arrow placement="right-end">
-                        <Icon>{menu.icon}</Icon>
-                      </Tooltip>
+                      <Icon color="inherit">{menu.icon}</Icon>
                     </ListItemIcon>
                     <ListItemText primary={menu.name} />
                   </ListItem>

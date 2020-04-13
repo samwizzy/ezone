@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
   },
   container: {
-    width: 400,
+    // width: 400,
   },
   textField: {
     margin: theme.spacing(1),
@@ -170,7 +170,6 @@ const InventoryAdjustmentDialog = props => {
         {...inventoryAdjustDialog.props}
         onClose={closeNewInventoryAdjustDialogAction}
         keepMounted
-        fullScreen
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
       >
@@ -186,8 +185,8 @@ const InventoryAdjustmentDialog = props => {
             </IconButton>
             <Typography variant="h6" className={classes.title}>
               {inventoryAdjustDialog.type === 'new'
-                ? 'New Transfer Order'
-                : 'Edit Transfer Order'}
+                ? 'Inventory Adjustment'
+                : 'Edit Inventory Adjustment'}
             </Typography>
             <Button
               autoFocus
@@ -204,18 +203,18 @@ const InventoryAdjustmentDialog = props => {
         <DialogContent>
           {inventoryAdjustDialog.type === 'new' ? (
             <div>
-              <Grid container spacing={0}>
-                <Grid item xs={12} md={6} lg={6}>
-                  <div className={classes.container}>
-                    <TextField
-                      id="outlined-transfer-order"
-                      label="Transfer Order"
-                      value={values.transferOrder}
-                      onChange={handleChange('transferOrder')}
-                      variant="outlined"
-                      className={classes.textField}
-                      fullWidth
-                    />
+              <Grid item xs={12}>
+                <Grid container spacing={2}>
+                  <TextField
+                    id="outlined-transfer-order"
+                    label="Transfer Order"
+                    value={values.transferOrder}
+                    onChange={handleChange('transferOrder')}
+                    variant="outlined"
+                    className={classes.textField}
+                    fullWidth
+                  />
+                  <Grid item xs={6}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
                         autoOk
@@ -230,17 +229,8 @@ const InventoryAdjustmentDialog = props => {
                         fullWidth
                       />
                     </MuiPickersUtilsProvider>
-                    <TextField
-                      id="outlined-reason"
-                      label="Reason"
-                      value={values.reason}
-                      onChange={handleChange('reason')}
-                      fullWidth
-                      variant="outlined"
-                      className={classes.textField}
-                      multiline
-                      rows={2}
-                    />
+                  </Grid>
+                  <Grid item xs={6}>
                     <Autocomplete
                       id="combo-itemCategory"
                       options={getAllWarehouses}
@@ -257,9 +247,19 @@ const InventoryAdjustmentDialog = props => {
                         />
                       )}
                     />
-                  </div>
+                  </Grid>
+                  <TextField
+                    id="outlined-reason"
+                    label="Reason"
+                    value={values.reason}
+                    onChange={handleChange('reason')}
+                    fullWidth
+                    variant="outlined"
+                    className={classes.textField}
+                    multiline
+                    rows={2}
+                  />
                 </Grid>
-                <Grid item xs={12} md={6} lg={6} />
               </Grid>
               <Divider />
               <Grid container spacing={0}>

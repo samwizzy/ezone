@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors'
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import moment from 'moment'
 import MUIDataTable from 'mui-datatables'
 import * as Actions from '../actions';
@@ -25,14 +26,26 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.common.white
   },
   datatable: {
-    '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+    '& .MuiTableHead-root': {
+      '& .MuiTableCell-head': {
+        color: theme.palette.common.white,
+      },
+      '& .MuiTableCell-root:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+      },
+      '& .MuiTableCell-root:nth-child(even)': {
+        backgroundColor: darken(theme.palette.primary.main, 0.5),
+      },
     },
   },
   table: { 
     border: 0, 
     whiteSpace: 'nowrap',
     overflowX: 'auto',
+  },
+  avatar: {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
   },
   toolbar: theme.mixins.toolbar,
   content: {
@@ -42,6 +55,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+    padding: theme.spacing(2, 1),
     backgroundColor: theme.palette.background.paper,
   },
   icon: {
@@ -171,7 +185,7 @@ const EmployeesApp = props => {
         container
         justify='space-around'
       >
-        <Grid item md={9}>
+        <Grid item md={12}>
           <div className={classes.content}>
         
             <MUIDataTable
@@ -182,64 +196,6 @@ const EmployeesApp = props => {
                 options={options}
             />
 
-          </div>
-        </Grid>
-        <Grid item md={3}>
-          <div className={classes.gridRoot}>
-            <div className={classes.buttonGroup}>
-              <ButtonGroup size="small" aria-label="small outlined button group">
-                <Button onClick={()=>{}}><EditSharp className={classes.icon} />Edit</Button>
-                <Button onClick={()=>{}}><Assignment className={classes.icon} />Assign</Button>
-              </ButtonGroup>
-            </div>
-
-            <TableContainer component={Paper} square>
-                <Table className={classes.table} size="small" aria-label="a dense table">
-                <TableBody>
-                    {employee && Object.keys(employee).length > 0 && (
-                    <React.Fragment>  
-                      <TableRow key='0'>
-                          <TableCell component="th" scope="row">
-                              Name
-                          </TableCell>
-                          <TableCell align="right">
-                            {`${toTitleCase(employee.firstName)} ${toTitleCase(employee.lastName)}`}
-                          </TableCell>
-                      </TableRow>
-                      <TableRow key='1'>
-                          <TableCell component="th" scope="row">
-                              Email Address
-                          </TableCell>
-                          <TableCell align="right">{employee.emailAddress}</TableCell>
-                      </TableRow>
-                      <TableRow key='2'>
-                          <TableCell component="th" scope="row">
-                              Phone Number
-                          </TableCell>
-                          <TableCell align="right">{employee.phoneNumber}</TableCell>
-                      </TableRow>
-                      <TableRow key='3'>
-                          <TableCell component="th" scope="row">
-                              Gender
-                          </TableCell>
-                          <TableCell align="right">{employee.gender}</TableCell>
-                      </TableRow>
-                      <TableRow key='4'>
-                          <TableCell component="th" scope="row">
-                              Address
-                          </TableCell>
-                          <TableCell align="right">{`${employee.city?employee.city:""} ${employee.state?employee.state:""} ${employee.country}`}</TableCell>
-                      </TableRow>
-                      <TableRow key='5'>
-                          <TableCell component="th" scope="row">
-                              Created On                          </TableCell>
-                          <TableCell align="right">{moment(employee.dateCreated).format('ll')}</TableCell>
-                      </TableRow>
-                    </React.Fragment>
-                    )}
-                </TableBody>
-                </Table>
-            </TableContainer>
           </div>
         </Grid>
       </Grid>

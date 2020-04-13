@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors'
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import moment from 'moment'
 import MUIDataTable from 'mui-datatables'
 import * as Actions from '../actions';
@@ -19,8 +20,6 @@ import Person from '@material-ui/icons/Person';
 import {AddAttendance} from '../components/AddButton'
 import AddAttendanceDialog from './components/AddAttendanceDialog'
 
-const drawerWidth = '100%';
-
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
@@ -29,6 +28,17 @@ const useStyles = makeStyles(theme => ({
   datatable: {
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
+    },
+    '& .MuiTableHead-root': {
+      '& .MuiTableCell-head': {
+        color: theme.palette.common.white,
+      },
+      '& .MuiTableCell-root:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+      },
+      '& .MuiTableCell-root:nth-child(even)': {
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
+      },
     },
   },
   toolbar: theme.mixins.toolbar,
@@ -39,6 +49,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
+    padding: theme.spacing(2, 1),
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper,
   },
@@ -136,7 +147,7 @@ const AttendanceApp = props => {
         container
         justify='space-around'
       >
-        <Grid item md={9}>
+        <Grid item md={12}>
           <div className={classes.content}>
             
             <MUIDataTable
@@ -147,31 +158,6 @@ const AttendanceApp = props => {
                 options={options}
             />
 
-          </div>
-        </Grid>
-        <Grid item md={3}>
-          <div className={classes.gridRoot}>
-            <div className={classes.buttonGroup}>
-              <ButtonGroup size="small" aria-label="small outlined button group">
-                <Button onClick={()=>{}}><EditSharp className={classes.icon} />Edit</Button>
-                <Button onClick={()=>{}}><Assignment className={classes.icon} />Assign</Button>
-              </ButtonGroup>
-            </div>
-
-            <TableContainer component={Paper}>
-              <Table className={classes.table} size="small" aria-label="a dense table">
-                <TableBody>
-                  {employee && Object.keys(employee).map(key => (
-                  <TableRow key={employee.docName}>
-                      <TableCell component="th" scope="row">
-                        Department Name
-                      </TableCell>
-                      <TableCell align="right">{employee[key]}</TableCell>
-                  </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
           </div>
         </Grid>
       </Grid>

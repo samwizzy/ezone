@@ -54,6 +54,7 @@ import { AppContext } from '../context/AppContext';
 import sideBarconfig from '../../components/Sidebar/components/SidebarConfig';
 import AccountPage from '../Accounting/Loadable';
 import AccountChart from '../Accounting/components/AccountChart';
+// import AccountJournal from '../Accounting/components/AccountJournal';
 
 import {Auth} from '../../auth';
 // import { makeSelectGetSaveToken } from './selectors';
@@ -159,25 +160,26 @@ const App = () => {
                   component={EmailConfigs}
                 />
                 <PrivateRoute
-                  exact
-                  path="/email/template"
+                  path="/email/template/:emailType?"
                   component={EmailTemplates}
                 />
-                <PrivateRoute
-                  exact
-                  path="/email/template/:emailType"
-                  component={EmailTemplates}
-                />
+                {/* <PrivateRoute exact path="/email/template/:emailType" component={EmailTemplates} /> */}
                 <PrivateRoute
                   path="/email/password/template"
                   component={EmailPasswordTemplate}
                 />
                 <PrivateRoute exact path="/home" component={HomePage} />
                 <PrivateRoute path="/WorkOrder" component={WorkOrderPage} />
-                <PrivateRoute exact path="/hr" component={HRPage} />
-                <PrivateRoute exact path="/hr/:sectionId" component={HRPage} />
+                <PrivateRoute
+                  path="/hr/:sectionId?/:status?"
+                  component={HRPage}
+                />
                 <PrivateRoute path="/account" component={AccountPage} />
                 <PrivateRoute path="/accountChart" component={AccountChart} />
+                {/* <PrivateRoute
+                  path="/accountJournal"
+                  component={AccountJournal}
+                /> */}
                 <PrivateRoute
                   exact
                   path="/inventory"

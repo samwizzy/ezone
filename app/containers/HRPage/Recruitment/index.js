@@ -21,6 +21,8 @@ const RecruitmentApp = props => {
   const { loading, match } = props;
   const { params } = match
 
+  console.log(params, "param recruitment")
+
   React.useEffect(() => {
   }, []);
 

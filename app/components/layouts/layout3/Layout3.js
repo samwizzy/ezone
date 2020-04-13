@@ -9,6 +9,7 @@ import Header from '../../Header';
 import Footer from '../../Footer';
 import Sidebar from '../../Sidebar';
 import theme from './../themeConfig'
+import Backdrop from  './../../Backdrop/Loadable'
 
 const styles = theme => ({
   root: {
@@ -23,6 +24,7 @@ class Layout3 extends React.Component {
     return (
         <React.Fragment>
           <ThemeProvider theme={theme}>
+            <Backdrop />
             <Header />
             <Sidebar
               content={this.props.children}

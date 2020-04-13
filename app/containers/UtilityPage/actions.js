@@ -61,6 +61,18 @@ export function getNestedFoldersAndDocsSuccess(data) {
   };
 }
 
+export function addPrevIds(folderId) {
+  return {
+    type: Constants.ADD_PREV_ID,
+    payload: folderId
+  };
+}
+export function removePrevIds() {
+  return {
+    type: Constants.REMOVE_PREV_ID,
+  };
+}
+
 export function getFolderById(payload) {
   return {
     type: Constants.GET_FOLDER_BY_ID,
@@ -135,26 +147,6 @@ export function createUtilityTaskSuccess(data) {
   return {
     type: Constants.CREATE_UTILITY_TASKS_SUCCESS,
     payload: data,
-  };
-}
-
-export function getUtilityTask(taskId) {
-  return {
-    type: Constants.GET_UTILITY_TASK,
-    payload: taskId,
-  };
-}
-
-export function getUtilityTasks() {
-  return {
-    type: Constants.GET_UTILITY_TASKS,
-  };
-}
-
-export function getUtilityTasksByStatus(status) {
-  return {
-    type: Constants.GET_UTILITY_TASKS_BY_STATUS,
-    payload: status
   };
 }
 
@@ -241,9 +233,22 @@ export function getUserByUUIDSuccess(data) {
   };
 }
 
+export function getUtilityTask(taskId) {
+  return {
+    type: Constants.GET_UTILITY_TASK,
+    payload: taskId,
+  };
+}
+
 export function getUtilityTaskSuccess(data) {
   return {
     type: Constants.GET_UTILITY_TASK_SUCCESS,
+    payload: data,
+  };
+}
+export function getUtilityTaskError(data) {
+  return {
+    type: Constants.GET_UTILITY_TASK_ERROR,
     payload: data,
   };
 }
@@ -339,16 +344,15 @@ export function getTaskCommentsSuccess(data) {
   };
 }
 
-export function getUtilityTasksSuccess(data) {
+export function getUtilityTasks() {
   return {
-    type: Constants.GET_UTILITY_TASKS_SUCCESS,
-    payload: data,
+    type: Constants.GET_UTILITY_TASKS,
   };
 }
 
-export function getUtilityTasksByStatusSuccess(data) {
+export function getUtilityTasksSuccess(data) {
   return {
-    type: Constants.GET_UTILITY_TASKS_BY_STATUS_SUCCESS,
+    type: Constants.GET_UTILITY_TASKS_SUCCESS,
     payload: data,
   };
 }
@@ -357,6 +361,20 @@ export function getUtilityTasksError(err) {
   return {
     type: Constants.GET_UTILITY_TASKS_ERROR,
     payload: err,
+  };
+}
+
+export function getUtilityTasksByStatus(status) {
+  return {
+    type: Constants.GET_UTILITY_TASKS_BY_STATUS,
+    payload: status
+  };
+}
+
+export function getUtilityTasksByStatusSuccess(data) {
+  return {
+    type: Constants.GET_UTILITY_TASKS_BY_STATUS_SUCCESS,
+    payload: data,
   };
 }
 
@@ -583,6 +601,7 @@ export function getUserChatDataError(data) {
 }
 
 export function postMsg(data) {
+  // console.log(data, 'action data');
   return {
     type: Constants.POST_MSG,
     payload: data,

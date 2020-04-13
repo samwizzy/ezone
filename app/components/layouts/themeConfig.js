@@ -32,6 +32,15 @@ const themesConfig = {
       ongoing: '#1EE11A',
       completed: '#C2C2C2',
     },
+    // MUIDataTable: {
+    //   root: {
+    //     backgroundColor: "#AAF",
+    //   },
+    //   paper: {
+    //     boxShadow: "none",
+    //   }
+    // },
+    // shadows: ["none"]
   },
   sunset: {
     palette: {
