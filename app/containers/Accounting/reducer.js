@@ -239,6 +239,13 @@ const accountingReducer = (state = initialState, action) =>
           error: false,
         };
       }
+      case Constants.GET_ACCOUNTING_SETUP_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          accountingSetupData: action.payload
+        };
+      }
       case Constants.GET_ALL_ACCOUNT_TYPES_SUCCESS: {
         console.log('accountingSetupData reducer ', accountingSetupData);
         return {
