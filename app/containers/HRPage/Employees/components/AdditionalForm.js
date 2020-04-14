@@ -6,7 +6,7 @@ import {
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 import _ from 'lodash';
-import {Button, Grid, MenuItem, TextField, DialogTitle, DialogContent, DialogActions } from '@material-ui/core';
+import {Button, Divider, Grid, MenuItem, TextField, DialogTitle, DialogContent, DialogActions } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     root: {

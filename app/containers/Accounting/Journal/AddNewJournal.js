@@ -133,10 +133,6 @@ const AddNewJournal = props => {
     setValues({ ...values, entries });
   };
 
-  // const handleSelectChange = (name, value) => {
-  //   setValues({ ...values, currency: taxType.id });
-  // };
-
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     dispatchGetAccountPeriodAction();

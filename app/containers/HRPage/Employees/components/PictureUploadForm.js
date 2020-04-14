@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles'
 import _ from 'lodash';
-import {Button, Grid, DialogTitle, DialogContent } from '@material-ui/core';
+import {Button, Divider, Grid, DialogTitle, DialogContent } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     root: {
