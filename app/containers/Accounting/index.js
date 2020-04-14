@@ -28,6 +28,7 @@ import * as Actions from './actions';
 import * as Selectors from './selectors';
 import LoadingIndicator from './../../components/LoadingIndicator';
 import Dashboard from './Dashboard'
+import Chart from './Chart'
 import Router from './components/Router';
 
 export function Accounting(props) {
@@ -56,6 +57,7 @@ export function Accounting(props) {
   console.log('loading', loading);
   console.log('accountingSetupData index.js file', accountingSetupData);
 
+  return <Chart />
 
   if (loading) {
     return <LoadingIndicator />;
