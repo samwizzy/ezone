@@ -31,6 +31,7 @@ import NoAvailableChats from './components/NoAvailableChats';
 import ChatHeader from './components/ChatHeader';
 import ChatFooter from './components/ChatFooter';
 import ModuleLayout from '../components/ModuleLayout';
+import { messaging } from '../../../utils/firebase-notification';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -172,6 +173,7 @@ const ChatTab = props => {
     handleScrollToBottom();
     // dispatchPostFcmToken();
   }, []);
+
 
   // console.log(currentUser, 'currentUser');
 

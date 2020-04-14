@@ -6,7 +6,7 @@
  * contain code that should be seen on all pages. (e.g. navigation bar)
  */
 
-import React, { memo } from 'react';
+import React, { useEffect, memo } from 'react';
 import { Helmet } from 'react-helmet';
 // import styled from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
@@ -62,59 +62,35 @@ import CrmDashboard from '../Crm/Dashboard/Loadable';
 import CrmContacts from '../Crm/Contacts/Loadable';
 import CrmCompanies from '../Crm/Companies/Loadable';
 
-
-
-// import { postFcmToken } from '../UtilityPage/actions';
-// import utilityReducer from '../UtilityPage/reducer';
-// import utilitySaga from '../UtilityPage/saga';
-
-// const withUtilityReducer = useInjectReducer({ key: 'utilityPage', utilityReducer });
-// const withUtilitySaga = useInjectSaga({ key: 'utilityPage', utilitySaga });
-
+import { messaging } from '../../utils/firebase-notification';
 
 import { Auth } from '../../auth';
-
-import firebase from 'firebase';
-
-export const initializeFirebase = () => {
-  firebase.initializeApp({
-    messagingSenderId: '344064508183',
-  });
-};
 
 const App = (props) => {
 
   const { currentUser, accessToken } = props;
 
-  // if(currentUser){
-  //   const messaging = firebase.messaging();
-  //   messaging.requestPermission();
-  //   messaging.getToken().then(d => {
-  //     fetch(
-  //       'http://64.20.51.173/gateway/utilityserv/api/v1/fcm/update_client_fcm_token',
-  //       {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: `Bearer ${accessToken}`,
-  //         },
-  //         body: JSON.stringify({ sessionId: d, userUuid: currentUser.uuId }),
-  //       },
-  //     )
-  //       .then(response => response.json())
-  //       .then(data => console.log(data, 'data'));
-  //   });
-  // }
-
-  // firebaseService.getFcmToken().then(d => console.log(d, 'ddddddddd'));
-  // const [authTokens, setAuthTokens] = useState();
-
-  // const setTokens = data => {
-  //   // localStorage.setItem('tokens', JSON.stringify(data));
-  //   setAuthTokens(data);
-  // };
-
-  // console.log(makeSelectGetSaveToken(), 'makeSelectGetSaveToken');
+  useEffect(() => {
+    messaging.requestPermission()
+    .then(async function() {
+			await messaging.getToken().then(token => {
+        fetch('http://64.20.51.173/gateway/utilityserv/api/v1/fcm/update_client_fcm_token',{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({ sessionId: token, userUuid: currentUser.uuId }),
+        })
+        .then(response => response.json())
+        .then(data => console.log(data, 'data'));
+      });
+      })
+    .catch(function(err) {
+      console.log("Unable to get permission to notify.", err);
+    });
+    navigator.serviceWorker.addEventListener("message", (message) => console.log(message));
+  }, []);
 
   return (
     <div>

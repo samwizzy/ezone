@@ -696,9 +696,9 @@ export function* postMsg() {
 
   const userChatData = yield select(Selectors.makeSelectGetUserChatData());
   const postMsgDetails = yield select(Selectors.makeSelectPostMsg());
-  postMsgDetails.recipientId = userChatData.responder;
+  postMsgDetails.recipientId = userChatData.initiator;
   postMsgDetails.recipientName = userChatData.responderName;
-  postMsgDetails.senderId = userChatData.initiator;
+  postMsgDetails.senderId = userChatData.responder;
   postMsgDetails.senderName = userChatData.initiatorName;
 
   
