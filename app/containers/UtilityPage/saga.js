@@ -696,9 +696,9 @@ export function* postMsg() {
 
   const userChatData = yield select(Selectors.makeSelectGetUserChatData());
   const postMsgDetails = yield select(Selectors.makeSelectPostMsg());
-  postMsgDetails.recipientId = userChatData.initiator;
+  postMsgDetails.recipientId = userChatData.responder;
   postMsgDetails.recipientName = userChatData.responderName;
-  postMsgDetails.senderId = userChatData.responder;
+  postMsgDetails.senderId = userChatData.initiator;
   postMsgDetails.senderName = userChatData.initiatorName;
 
   
@@ -721,7 +721,7 @@ export function* postMsg() {
 
     console.log(postMsgResponse, 'postMsgResponse');
 
-    // yield put(Actions.getUserChatData(userChatDetails));
+    yield put(Actions.getUserChatData(userChatDetails));
     yield put(Actions.postMsgSuccess(postMsgResponse));
   } catch (err) {
     yield put(Actions.postMsgError(err));

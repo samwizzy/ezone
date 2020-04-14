@@ -83,7 +83,7 @@ const App = (props) => {
           body: JSON.stringify({ sessionId: token, userUuid: currentUser.uuId }),
         })
         .then(response => response.json())
-        .then(data => console.log(data, 'data'));
+        .then(data => console.log(data, 'response data'));
       });
       })
     .catch(function(err) {
