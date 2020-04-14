@@ -9,14 +9,11 @@ import {
   TextField,
   makeStyles,
   Button,
-  Dialog,
-  DialogContent,
-  DialogActions,
+  Box,
+  Card,
+  CardContent,
+  CardActions,
   Divider,
-  Slide,
-  AppBar,
-  Toolbar,
-  IconButton,
   Typography,
   FormControlLabel,
   Radio,
@@ -32,37 +29,23 @@ import * as Actions from '../../actions';
 import LoadingIndicator from '../../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
-  appBar: {
-    position: 'relative',
+  root: {
+    flexGrow: 1
   },
   title: {
-    marginLeft: theme.spacing(2),
-    flex: 1,
-  },
-  container: {
-    // width: 400,
+    color: theme.typography.fontWeightBold
   },
   textField: {
-    margin: theme.spacing(1),
   },
-  divider: {
-    margin: theme.spacing(1),
-    border: '1px solid red',
-  },
-  buttonStyle: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  button: {
+    marginRight: theme.spacing(1)
+  }
 }));
 
 const category = [
   { id: 1, name: 'STOCK_ITEM' },
   { id: 2, name: 'COMPONENT_ITEM' },
 ];
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 const ItemDialog = props => {
   const {
@@ -142,67 +125,45 @@ const ItemDialog = props => {
 
   return (
     <div>
-      <Dialog
-        {...itemDialog.props}
-        onClose={closeNewItemDialogAction}
-        keepMounted
-        TransitionComponent={Transition}
-        aria-labelledby="form-dialog-title"
-      >
-        <AppBar className={classes.appBar}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={closeNewItemDialogAction}
-              aria-label="close"
-            >
-              <Close />
-            </IconButton>
-            <Typography variant="h6" className={classes.title}>
+      <Card>
+        <CardContent>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Typography variant="h5" className={classes.title} color="primary" gutterBottom>
               {itemDialog.type === 'new' ? 'New Item' : 'Edit Item'}
             </Typography>
-            {/* <Button
-              autoFocus
-              color="inherit"
-              onClick={closeNewItemDialogAction}
-            >
-              save
-            </Button> */}
-          </Toolbar>
-        </AppBar>
+          </Grid>
 
-        <Divider />
-
-        <DialogContent>
           {itemDialog.type === 'new' ? (
-            <div>
-              <FormControl component="fieldset">
-                <FormLabel component="legend" className={classes.textField}>
-                  Item Type
-                </FormLabel>
-                <RadioGroup
-                  row
-                  aria-label="position"
-                  name="position"
-                  defaultValue="top"
-                >
-                  <FormControlLabel
-                    value="GROUP"
-                    control={<Radio color="primary" />}
-                    label="Group"
-                    labelPlacement="top"
-                    onChange={handleChange('itemType')}
-                  />
-                  <FormControlLabel
-                    value="SERVICE"
-                    control={<Radio color="primary" />}
-                    label="Services"
-                    labelPlacement="top"
-                    onChange={handleChange('itemType')}
-                  />
-                </RadioGroup>
-              </FormControl>
+            <React.Fragment>
+              <Grid item xs={12}>
+                <FormControl component="fieldset">
+                  <FormLabel component="legend" className={classes.textField}>
+                    <Typography variant="subtitle1" className={classes.title} color="textSecondary">
+                      Item Type
+                    </Typography>
+                  </FormLabel>
+                  <RadioGroup
+                    row
+                    aria-label="position"
+                    name="position"
+                    defaultValue="top"
+                  >
+                    <FormControlLabel
+                      value="GROUP"
+                      control={<Radio color="primary" />}
+                      label="Group"
+                      onChange={handleChange('itemType')}
+                    />
+                    <FormControlLabel
+                      value="SERVICE"
+                      control={<Radio color="primary" />}
+                      label="Services"
+                      onChange={handleChange('itemType')}
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
               <Grid item xs={12}>
                 <Grid container spacing={2}>
                   <Grid item xs={6}>
@@ -380,240 +341,248 @@ const ItemDialog = props => {
                   </Grid>
                 </Grid>
               </Grid>
-            </div>
+            </React.Fragment>
           ) : (
-            <div>
-              <FormControl component="fieldset">
-                <FormLabel component="legend" className={classes.textField}>
-                  Item Type
-                </FormLabel>
-                <RadioGroup
-                  row
-                  aria-label="position"
-                  name="position"
-                  defaultValue="top"
-                >
-                  <FormControlLabel
-                    value="GROUP"
-                    control={<Radio color="primary" />}
-                    label="Group"
-                    labelPlacement="top"
-                    onChange={handleChange('itemType')}
-                  />
-                  <FormControlLabel
-                    value="SERVICE"
-                    control={<Radio color="primary" />}
-                    label="Services"
-                    labelPlacement="top"
-                    onChange={handleChange('itemType')}
-                  />
-                </RadioGroup>
-              </FormControl>
-              <Grid item xs={12}>
-                <Grid container spacing={2}>
-                  <Grid item xs={6}>
-                    <TextField
-                      id="outlined-itemName"
-                      label="Item Name"
-                      value={values.itemName}
-                      onChange={handleChange('itemName')}
-                      variant="outlined"
-                      className={classes.textField}
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      id="outlined-SKU"
-                      label="SKU"
-                      value={values.sku}
-                      onChange={handleChange('sku')}
-                      fullWidth
-                      variant="outlined"
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      id="outlined-barcode"
-                      label="Barcode"
-                      value={values.barcode}
-                      onChange={handleChange('barcode')}
-                      fullWidth
-                      variant="outlined"
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      id="outlined-Unit"
-                      label="Unit"
-                      value={values.unit}
-                      onChange={handleChange('unit')}
-                      fullWidth
-                      variant="outlined"
-                      className={classes.textField}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12} sm={12} md={12} lg={12}>
-                <PaperDropzone uploadFileAction={uploadFileAction} />
-              </Grid>
-              <Divider />
-              <Grid item xs={12}>
-                <Grid container spacing={2}>
-                  <Grid item xs={6}>
-                    <TextField
-                      id="outlined-Dimensions"
-                      label="Dimensions (cm)"
-                      value={values.itemDimension}
-                      onChange={handleChange('itemDimension')}
-                      fullWidth
-                      variant="outlined"
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      id="outlined-Manufacturer"
-                      label="Manufacturer"
-                      value={values.manufacturer}
-                      onChange={handleChange('manufacturer')}
-                      fullWidth
-                      variant="outlined"
-                      className={classes.textField}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <TextField
-                      id="outlined-Weight"
-                      label="Weight (kg)"
-                      value={values.itemWeight}
-                      onChange={handleChange('itemWeight')}
-                      fullWidth
-                      variant="outlined"
-                      className={classes.textField}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <Grid container spacing={2}>
-                  <Grid item xs={6}>
-                    <TextField
-                      id="outlined-Selling-Price"
-                      label="Selling Price"
-                      value={values.sellingPrice}
-                      onChange={handleChange('sellingPrice')}
-                      fullWidth
-                      variant="outlined"
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      id="outlined-Cost-Price"
-                      label="Cost Price"
-                      value={values.costPrice}
-                      onChange={handleChange('costPrice')}
-                      fullWidth
-                      variant="outlined"
-                      className={classes.textField}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <Grid container spacing={2}>
-                  <Grid item xs={6}>
-                    <Autocomplete
-                      id="combo-itemCategory"
-                      options={category}
-                      getOptionLabel={option => option.name}
-                      onChange={(evt, ve) => handleCategoryChange(evt, ve)}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          label="Select Category"
-                          variant="outlined"
-                          placeholder="Select Category"
-                          fullWidth
-                          className={classes.textField}
-                        />
-                      )}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Autocomplete
-                      id="combo-wareHouseId"
-                      options={getAllWarehouses}
-                      getOptionLabel={option => option.name}
-                      onChange={(evt, ve) => handleWarehouseChange(evt, ve)}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          label="Select WareHouse"
-                          variant="outlined"
-                          placeholder="Select WareHouse"
-                          fullWidth
-                          className={classes.textField}
-                        />
-                      )}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <TextField
-                      id="standard-description"
-                      label="Description"
-                      variant="outlined"
-                      className={classes.textField}
-                      value={values.description}
-                      onChange={handleChange('description')}
-                      margin="normal"
-                      fullWidth
-                      rows={2}
-                      multiline
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-            </div>
-          )}
-        </DialogContent>
 
-        <DialogActions>
-          {loading ? (
-            <LoadingIndicator />
-          ) : (
-            <Button
-              onClick={() => {
-                dispatchCreateNewItemAction(values);
-              }}
-              color="primary"
-              variant="contained"
-              // disabled={!canBeSubmitted()}
-            >
-              Save
-            </Button>
+            <div>
+              <Grid item xs={12}>
+                <FormControl component="fieldset">
+                  <FormLabel component="legend" className={classes.textField}>
+                    Item Type
+                  </FormLabel>
+                  <RadioGroup
+                    row
+                    aria-label="position"
+                    name="position"
+                    defaultValue="top"
+                  >
+                    <FormControlLabel
+                      value="GROUP"
+                      control={<Radio color="primary" />}
+                      label="Group"
+                      onChange={handleChange('itemType')}
+                    />
+                    <FormControlLabel
+                      value="SERVICE"
+                      control={<Radio color="primary" />}
+                      label="Services"
+                      onChange={handleChange('itemType')}
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="outlined-itemName"
+                      label="Item Name"
+                      value={values.itemName}
+                      onChange={handleChange('itemName')}
+                      variant="outlined"
+                      className={classes.textField}
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="outlined-SKU"
+                      label="SKU"
+                      value={values.sku}
+                      onChange={handleChange('sku')}
+                      fullWidth
+                      variant="outlined"
+                      className={classes.textField}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="outlined-barcode"
+                      label="Barcode"
+                      value={values.barcode}
+                      onChange={handleChange('barcode')}
+                      fullWidth
+                      variant="outlined"
+                      className={classes.textField}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="outlined-Unit"
+                      label="Unit"
+                      value={values.unit}
+                      onChange={handleChange('unit')}
+                      fullWidth
+                      variant="outlined"
+                      className={classes.textField}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} lg={12}>
+                <PaperDropzone uploadFileAction={uploadFileAction} />
+                <Divider />
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="outlined-Dimensions"
+                      label="Dimensions (cm)"
+                      value={values.itemDimension}
+                      onChange={handleChange('itemDimension')}
+                      fullWidth
+                      variant="outlined"
+                      className={classes.textField}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="outlined-Manufacturer"
+                      label="Manufacturer"
+                      value={values.manufacturer}
+                      onChange={handleChange('manufacturer')}
+                      fullWidth
+                      variant="outlined"
+                      className={classes.textField}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <TextField
+                      id="outlined-Weight"
+                      label="Weight (kg)"
+                      value={values.itemWeight}
+                      onChange={handleChange('itemWeight')}
+                      fullWidth
+                      variant="outlined"
+                      className={classes.textField}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="outlined-Selling-Price"
+                      label="Selling Price"
+                      value={values.sellingPrice}
+                      onChange={handleChange('sellingPrice')}
+                      fullWidth
+                      variant="outlined"
+                      className={classes.textField}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="outlined-Cost-Price"
+                      label="Cost Price"
+                      value={values.costPrice}
+                      onChange={handleChange('costPrice')}
+                      fullWidth
+                      variant="outlined"
+                      className={classes.textField}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <Autocomplete
+                      id="combo-itemCategory"
+                      options={category}
+                      getOptionLabel={option => option.name}
+                      onChange={(evt, ve) => handleCategoryChange(evt, ve)}
+                      renderInput={params => (
+                        <TextField
+                          {...params}
+                          label="Select Category"
+                          variant="outlined"
+                          placeholder="Select Category"
+                          fullWidth
+                          className={classes.textField}
+                        />
+                      )}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Autocomplete
+                      id="combo-wareHouseId"
+                      options={getAllWarehouses}
+                      getOptionLabel={option => option.name}
+                      onChange={(evt, ve) => handleWarehouseChange(evt, ve)}
+                      renderInput={params => (
+                        <TextField
+                          {...params}
+                          label="Select WareHouse"
+                          variant="outlined"
+                          placeholder="Select WareHouse"
+                          fullWidth
+                          className={classes.textField}
+                        />
+                      )}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <TextField
+                      id="standard-description"
+                      label="Description"
+                      variant="outlined"
+                      className={classes.textField}
+                      value={values.description}
+                      onChange={handleChange('description')}
+                      margin="normal"
+                      fullWidth
+                      rows={2}
+                      multiline
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+            </div>
           )}
-          <Button
-            onClick={() => closeNewItemDialogAction()}
-            color="primary"
-            variant="contained"
-          >
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
+        </Grid>
+        </CardContent>
+
+        <CardActions>
+          <Grid container spacing={2}>
+            <Grid item>
+              {loading ? (
+                <LoadingIndicator />
+              ) : (
+                <Button
+                  className={classes.button}
+                  onClick={() => {
+                    dispatchCreateNewItemAction(values);
+                  }}
+                  color="primary"
+                  variant="contained"
+                  // disabled={!canBeSubmitted()}
+                >
+                  Save
+                </Button>
+              )}
+              <Button
+                className={classes.button}
+                onClick={() => closeNewItemDialogAction()}
+                color="primary"
+                variant="contained"
+              >
+                Cancel
+              </Button>
+            </Grid>
+          </Grid>
+        </CardActions>
+      </Card>
     </div>
   );
 };

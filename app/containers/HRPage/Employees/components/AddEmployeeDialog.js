@@ -4,17 +4,8 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import DateFnsUtils from '@date-io/date-fns'; // choose your lib
-import {
-  DatePicker,
-  TimePicker,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-  DateTimePicker,
-  MuiPickersUtilsProvider,
-} from '@material-ui/pickers';
 import _ from 'lodash';
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, MenuItem, Slide, Typography, TextField } from '@material-ui/core';
+import { Dialog, Slide } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
@@ -102,21 +93,6 @@ function AddEmployeeDialog(props) {
 
   const handleDateChange = (date, formatted, name) => { 
     setForm(_.set({...form}, name, reformattedDate(date)))
-  }
-
-  const handleImageChange = (ev) => { 
-    let fileNode = []
-    Object.keys(ev.target.files).map(index => {
-      const { name, size, type } = ev.target.files[index]
-
-      const result = toBase64(ev.target.files[index]);
-      result.then(rs => {
-        const file = Object.assign({}, { fileName: name, size, format: type, file: rs })
-        fileNode.push(file)
-      })     
-
-    })
-    setForm(_.set({...form}, 'attachments', fileNode))
   }
 
   const handleSubmit = () => {

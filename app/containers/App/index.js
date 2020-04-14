@@ -41,9 +41,9 @@ import WorkOrderPage from '../WorkOrder/Loadable';
 import InventoryPage from '../InventoryPage/Loadable';
 import WarehousePage from '../InventoryPage/WarehousePage/Loadable';
 import ItemPage from '../InventoryPage/ItemPage/Loadable';
-import TransferOrdersList from '../InventoryPage/ItemPage/components/TransferOrder/TransferOrdersList';
+import TransferOrdersApp from '../InventoryPage/ItemPage/components/TransferOrder';
 import NewTransferOrder from '../InventoryPage/ItemPage/components/TransferOrder/NewTransferOrder';
-import InventoryAdjustmentList from '../InventoryPage/ItemPage/components/InventoryAdjustment/InventoryAdjustmentList';
+import InventoryAdjustmentApp from '../InventoryPage/ItemPage/components/InventoryAdjustment';
 import Layout1 from '../../components/layouts/layout1/Layout1';
 import Layout2 from '../../components/layouts/layout2/Layout2';
 import Layout3 from '../../components/layouts/layout3/Layout3';
@@ -190,13 +190,13 @@ const App = () => {
                 />
                 <PrivateRoute
                   exact
-                  path="/inventory/items"
+                  path="/inventory/items/:statusId?"
                   component={ItemPage}
                 />
                 <PrivateRoute
                   exact
-                  path="/inventory/transfer/orders"
-                  component={TransferOrdersList}
+                  path="/inventory/transfer/orders/:statusId?"
+                  component={TransferOrdersApp}
                 />
                 <PrivateRoute
                   exact
@@ -205,8 +205,8 @@ const App = () => {
                 />
                 <PrivateRoute
                   exact
-                  path="/inventory/inventory/adjustments"
-                  component={InventoryAdjustmentList}
+                  path="/inventory/inventory/adjustments/:statusId?"
+                  component={InventoryAdjustmentApp}
                 />
               </Layout3>
               <Route path="" component={NotFoundPage} />

@@ -6,70 +6,58 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
 import {
+  Card, 
+  CardContent,
+  CardActions,
   Table,
-  TableBody,
-  TableCell,
-  TableContainer,
   TableHead,
+  TableBody,
+  TableFooter,
   TableRow,
+  TableCell,
   Paper,
   TextField,
   makeStyles,
   Button,
-  Dialog,
-  DialogContent,
-  DialogActions,
-  Divider,
-  Slide,
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-  FormControlLabel,
-  Radio,
-  Grid,
-  FormControl,
-  FormLabel,
-  RadioGroup,
+  Grid
 } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import AddIcon from '@material-ui/icons/Add'
 import DateFnsUtils from '@date-io/date-fns';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import LoadingIndicator from '../../../../../components/LoadingIndicator';
 import TableTransfer from './TableTransfer';
 
 const useStyles = makeStyles(theme => ({
-  appBar: {
-    position: 'relative',
+  root: {
+    flexGrow: 1
   },
-  title: {
-    marginLeft: theme.spacing(2),
-    flex: 1,
+  table: {
+    marginTop: theme.spacing(2),
+    '& .MuiTableRow-root:hover': {
+      cursor: 'pointer'
+    },
+    '& .MuiTableHead-root': {
+      '& .MuiTableCell-head': {
+        color: theme.palette.common.white,
+      },
+      '& .MuiTableCell-root:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+      },
+      '& .MuiTableCell-root:nth-child(even)': {
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
+      },
+    },
   },
-  container: {
-    // width: 400,
-  },
-  textField: {
-    margin: theme.spacing(1),
-  },
-  divider: {
-    margin: theme.spacing(1),
-    border: '1px solid red',
-  },
-  buttonStyle: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  button: {
+    marginRight: theme.spacing(1)
+  }
 }));
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 const TransferOrderDialog = props => {
   const {
@@ -165,42 +153,11 @@ const TransferOrderDialog = props => {
   // console.log(values, 'values');
   return (
     <div>
-      <Dialog
-        {...transferOrderDialog.props}
-        onClose={closeNewTransferOrderDialogAction}
-        TransitionComponent={Transition}
-        aria-labelledby="form-dialog-title"
-      >
-        <AppBar className={classes.appBar}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={closeNewTransferOrderDialogAction}
-              aria-label="close"
-            >
-              <Close />
-            </IconButton>
-            <Typography variant="h6" className={classes.title}>
-              {transferOrderDialog.type === 'new'
-                ? 'New Transfer Order'
-                : 'Edit Transfer Order'}
-            </Typography>
-            <Button
-              autoFocus
-              color="inherit"
-              onClick={closeNewTransferOrderDialogAction}
-            >
-              save
-            </Button>
-          </Toolbar>
-        </AppBar>
-
-        <Divider />
-
-        <DialogContent>
+      <Card>
+        <CardContent>
+          <Grid container spacing={2}>
           {transferOrderDialog.type === 'new' ? (
-            <div>
+            <React.Fragment>
               <Grid item xs={12}>
                 <Grid container spacing={2}>
                   <Grid item xs={6}>
@@ -256,10 +213,9 @@ const TransferOrderDialog = props => {
                   </Grid>
                 </Grid>
               </Grid>
-              <Divider />
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <div className={classes.container}>
+              <Grid item xs={12}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
                     <Autocomplete
                       id="combo-itemCategory"
                       options={getAllWarehouses}
@@ -276,10 +232,8 @@ const TransferOrderDialog = props => {
                         />
                       )}
                     />
-                  </div>
-                </Grid>
-                <Grid item xs={6}>
-                  <div className={classes.container}>
+                  </Grid>
+                  <Grid item xs={6}>
                     <Autocomplete
                       id="combo-itemCategory"
                       options={getAllWarehouses}
@@ -296,13 +250,12 @@ const TransferOrderDialog = props => {
                         />
                       )}
                     />
-                  </div>
+                  </Grid>
                 </Grid>
               </Grid>
-              <Divider />
-              <Grid container spacing={0}>
-                <Grid item xs={12} md={12} lg={12}>
-                  <TableContainer component={Paper}>
+              <Grid item xs={12}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
                     <Table className={classes.table} aria-label="simple table">
                       <TableHead>
                         <TableRow>
@@ -382,50 +335,64 @@ const TransferOrderDialog = props => {
                           </TableRow>
                         ))}
                       </TableBody>
+                      <TableFooter>
+                        <TableRow>
+                          <TableCell>
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={() => addRow()}
+                              startIcon={<AddIcon />}
+                            >
+                              Add Row
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      </TableFooter>
                     </Table>
-                  </TableContainer>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => addRow()}
-                  >
-                    Add Row
-                  </Button>
+                    
+                  </Grid>
                 </Grid>
               </Grid>
-              <Divider />
-            </div>
+            </React.Fragment>
           ) : (
             <div />
           )}
-        </DialogContent>
+          </Grid>
+        </CardContent>
 
-        <DialogActions>
-          {loading ? (
-            <LoadingIndicator />
-          ) : (
-            <Button
-              onClick={() => {
-                dispatchCreateNewTransferOrderAction(
-                  Object.assign(values, { items: rows }),
-                );
-              }}
-              color="primary"
-              variant="contained"
-              // disabled={!canBeSubmitted()}
-            >
-              Save
-            </Button>
-          )}
-          <Button
-            onClick={() => closeNewTransferOrderDialogAction()}
-            color="primary"
-            variant="contained"
-          >
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
+        <CardActions>
+          <Grid container>
+            <Grid item>
+              {loading ? (
+                <LoadingIndicator />
+              ) : (
+                <Button
+                  className={classes.button}
+                  onClick={() => {
+                    dispatchCreateNewTransferOrderAction(
+                      Object.assign(values, { items: rows }),
+                    );
+                  }}
+                  color="primary"
+                  variant="contained"
+                  // disabled={!canBeSubmitted()}
+                >
+                  Save
+                </Button>
+              )}
+              <Button
+                className={classes.button}
+                onClick={() => closeNewTransferOrderDialogAction()}
+                color="primary"
+                variant="contained"
+              >
+                Cancel
+              </Button>
+            </Grid>
+          </Grid>
+        </CardActions>
+      </Card>
     </div>
   );
 };

@@ -22,7 +22,6 @@ import saga from '../../saga';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import LoadingIndicator from '../../../../../components/LoadingIndicator';
-import ModuleLayout from '../../../components/ModuleLayout';
 import InventoryAdjustmentDialog from './InventoryAdjustmentDialog';
 
 const useStyles = makeStyles(theme => ({
@@ -224,15 +223,12 @@ const InventoryAdjustmentList = props => {
 
   return (
     <React.Fragment>
-      <ModuleLayout>
         <MUIDataTable
           title="All Inventory Adjustments"
           data={getAllInventoryAdjusts}
           columns={columns}
           options={options}
         />
-      </ModuleLayout>
-      <InventoryAdjustmentDialog />
     </React.Fragment>
   );
 };

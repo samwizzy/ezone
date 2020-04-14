@@ -7,6 +7,7 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -27,7 +28,9 @@ export function ItemPage(props) {
   useInjectReducer({ key: 'itemPage', reducer });
   useInjectSaga({ key: 'itemPage', saga });
 
-  const { getAllItemsAction, getAllWarehousesAction } = props;
+  const { getAllItemsAction, getAllWarehousesAction, match } = props;
+  const { params } = match
+  console.log(match.params, "params")
 
   useEffect(() => {
     getAllItemsAction();
@@ -41,8 +44,11 @@ export function ItemPage(props) {
           <title>ItemPage</title>
           <meta name="description" content="Description of ItemPage" />
         </Helmet>
-        <ItemsList />
-        <ItemDialog />
+        {
+          params.statusId == 'new'?
+          <ItemDialog />:
+          <ItemsList />
+        }
         {/* <ViewItemDialog /> */}
         <TransferOrderDialog />
       </ModuleLayout>
@@ -73,6 +79,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(ItemPage);
