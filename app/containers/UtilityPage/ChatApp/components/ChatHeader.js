@@ -29,6 +29,7 @@ const ChatHeader = props => {
   const { userChatData } = props;
   const classes = useStyles();
 
+  console.log(userChatData, 'userChatData')
   const handleMenu = () => {};
 
   return (

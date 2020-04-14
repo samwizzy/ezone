@@ -14,6 +14,8 @@ import { CssBaseline } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
 import HomePage from '../HomePage/Loadable';
 import NotFoundPage from '../NotFoundPage/Loadable';
 import Registration from '../AuthorizationPage/Register/Loadable';
@@ -47,7 +49,7 @@ import InventoryAdjustmentList from '../InventoryPage/ItemPage/components/Invent
 import Layout1 from '../../components/layouts/layout1/Layout1';
 import Layout2 from '../../components/layouts/layout2/Layout2';
 import Layout3 from '../../components/layouts/layout3/Layout3';
-// import { makeSelectUserToken } from './selectors';
+import * as Selectors from './selectors';
 import PrivateRoute from '../AuthProvider/PrivateRoute';
 import Snackbar from './components/Snackbar';
 import { AppContext } from '../context/AppContext';
@@ -56,11 +58,55 @@ import AccountPage from '../Accounting/Loadable';
 import AccountChart from '../Accounting/components/AccountChart';
 import AddNewJournal from '../Accounting/Journal/AddNewJournal';
 import AccountSetting from '../Accounting/components/AccountSetting';
+import CrmDashboard from '../Crm/Dashboard/Loadable';
+import CrmContacts from '../Crm/Contacts/Loadable';
+import CrmCompanies from '../Crm/Companies/Loadable';
 
-import {Auth} from '../../auth';
-// import { makeSelectGetSaveToken } from './selectors';
 
-const App = () => {
+
+// import { postFcmToken } from '../UtilityPage/actions';
+// import utilityReducer from '../UtilityPage/reducer';
+// import utilitySaga from '../UtilityPage/saga';
+
+// const withUtilityReducer = useInjectReducer({ key: 'utilityPage', utilityReducer });
+// const withUtilitySaga = useInjectSaga({ key: 'utilityPage', utilitySaga });
+
+
+import { Auth } from '../../auth';
+
+import firebase from 'firebase';
+
+export const initializeFirebase = () => {
+  firebase.initializeApp({
+    messagingSenderId: '344064508183',
+  });
+};
+
+const App = (props) => {
+
+  const { currentUser, accessToken } = props;
+
+  // if(currentUser){
+  //   const messaging = firebase.messaging();
+  //   messaging.requestPermission();
+  //   messaging.getToken().then(d => {
+  //     fetch(
+  //       'http://64.20.51.173/gateway/utilityserv/api/v1/fcm/update_client_fcm_token',
+  //       {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `Bearer ${accessToken}`,
+  //         },
+  //         body: JSON.stringify({ sessionId: d, userUuid: currentUser.uuId }),
+  //       },
+  //     )
+  //       .then(response => response.json())
+  //       .then(data => console.log(data, 'data'));
+  //   });
+  // }
+
+  // firebaseService.getFcmToken().then(d => console.log(d, 'ddddddddd'));
   // const [authTokens, setAuthTokens] = useState();
 
   // const setTokens = data => {
@@ -84,7 +130,7 @@ const App = () => {
               />
             </Helmet>
 
-            <Auth>
+            {/* <Auth> */}
             <Switch>
               <Route exact path="/login" component={Login} />
               <Route exact path="/" component={Login} />
@@ -208,11 +254,26 @@ const App = () => {
                   path="/inventory/inventory/adjustments"
                   component={InventoryAdjustmentList}
                 />
+                <PrivateRoute
+                  exact
+                  path="/crm/dashboard"
+                  component={CrmDashboard}
+                />
+                <PrivateRoute
+                  exact
+                  path="/crm/contacts"
+                  component={CrmContacts}
+                />
+                <PrivateRoute
+                  exact
+                  path="/crm/companies"
+                  component={CrmCompanies}
+                />
               </Layout3>
               <Route path="" component={NotFoundPage} />
             </Switch>
             <Snackbar />
-            </Auth>
+            {/* </Auth> */}
           </div>
         </main>
       </AppContext.Provider>
@@ -220,7 +281,10 @@ const App = () => {
   );
 };
 
-const mapStateToProps = createStructuredSelector({});
+const mapStateToProps = createStructuredSelector({
+  currentUser: Selectors.makeSelectCurrentUser(),
+  accessToken: Selectors.makeSelectAccessToken(),
+});
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -235,5 +299,7 @@ const withConnect = connect(
 
 export default compose(
   withConnect,
+  // withUtilitySaga,
+  // withUtilityReducer,
   memo,
 )(App);

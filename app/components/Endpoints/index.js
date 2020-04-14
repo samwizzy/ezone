@@ -79,6 +79,7 @@ export const GetAllCommentByTaskIdApi = `${BaseUrl}/utilityserv/api/v1/comment/g
 export const GetUserChatApi = `${BaseUrl}/utilityserv/api/v1/chat/get_user_chat`;
 export const GetUserChatDataApi = `${BaseUrl}/utilityserv/api/v1/message/get_messages_for_chat`;
 export const SendMessageApi = `${BaseUrl}/utilityserv/api/v1/message/send_message`;
+export const SendFcmDataApi = `${BaseUrl}/utilityserv/api/v1/fcm/update_client_fcm_token`;
 
 /** *****************************************************************
  * HR Module

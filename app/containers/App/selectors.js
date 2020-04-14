@@ -45,6 +45,12 @@ const makeSelectSnackBar = () =>
     globalState => globalState.messageDialog,
   );
 
+const makeSelectPostFcmToken = () =>
+  createSelector(
+    selectGlobal,
+    subState => subState.postFcmToken,
+  );
+
 // const makeSelectLocation = () =>
 //   createSelector(
 //     selectRouter,
@@ -53,6 +59,7 @@ const makeSelectSnackBar = () =>
 
 export {
   selectGlobal,
+  makeSelectPostFcmToken,
   makeSelectCurrentUser,
   makeSelectLoading,
   makeSelectError,

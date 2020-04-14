@@ -61,3 +61,26 @@ export function logout() {
     type: Constants.LOG_OUT,
   };
 }
+
+export function postFcmToken(data) {
+  console.log(data, 'action data');
+  return {
+    type: Constants.POST_FCM_TOKEN,
+    payload: data,
+  };
+}
+
+export function postFcmTokenSuccess(data) {
+  return {
+    type: Constants.POST_FCM_TOKEN_SUCCESS,
+    payload: data,
+  };
+}
+
+export function postFcmTokenError(data) {
+  return {
+    type: Constants.POST_FCM_TOKEN_ERROR,
+    payload: data,
+  };
+}
+

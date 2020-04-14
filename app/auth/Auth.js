@@ -80,7 +80,6 @@ class Auth extends Component {
 
   firebaseCheck = () => {
     firebaseService.init();
-    console.log('anything happend here');
 
     firebaseService.onAuthStateChanged(authUser => {
       if (authUser) {
