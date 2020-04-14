@@ -62,7 +62,7 @@ export function Accounting(props) {
   }
 
   if (accountingSetupData.id) {
-    return props.history.push({ pathname: '/Dashboard' });
+    return <Dashboard />;
   }
 
   return <AccountSetting />;
