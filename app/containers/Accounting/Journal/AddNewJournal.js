@@ -416,6 +416,7 @@ const AddNewJournal = props => {
                       color="primary"
                       className={classes.button}
                       onClick={() => {
+                        console.log('onclick');
                         createNewAccountJournalAction(values);
                       }}
                     >

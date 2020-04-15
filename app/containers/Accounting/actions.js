@@ -234,6 +234,7 @@ export function getAccountPeriodErrorAction(data) {
 
 // Create new account journal
 export function createNewAccountJournalAction(data) {
+  console.log('createNewAccountJournalAction ', data);
   return {
     type: Constants.CREATE_NEW_ACCOUNT_JOURNAL,
     payload: data,

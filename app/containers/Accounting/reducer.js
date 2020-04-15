@@ -272,6 +272,7 @@ const accountingReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_ACCOUNTING_SETUP_SUCCESS: {
+        console.log('action.payload ', action.payload);
         return {
           ...state,
           loading: false,

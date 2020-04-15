@@ -41,7 +41,6 @@ export function Accounting(props) {
     getAccountingSetupAction();
     dispatchGetAllChartOfAccountTypeAction();
     dispatchGetAllAccountTypeAction();
-    createNewAccountJournalAction();
   }, []);
 
   const {
@@ -51,13 +50,12 @@ export function Accounting(props) {
     dispatchGetAllChartOfAccountTypeAction,
     dispatchGetAllAccountTypeAction,
     dispatchGetAccountPeriodAction,
-    createNewAccountJournalAction,
   } = props;
 
   console.log('loading', loading);
   console.log('accountingSetupData index.js file', accountingSetupData);
 
-  return <Chart />
+  // return <Chart />
 
   if (loading) {
     return <LoadingIndicator />;
@@ -85,7 +83,6 @@ function mapDispatchToProps(dispatch) {
     dispatchGetAllChartOfAccountTypeAction: () => dispatch(Actions.getAllChartOfAccountTypeAction()),
     dispatchGetAllAccountTypeAction: () => dispatch(Actions.getAllAccountTypeAction()),
     dispatchGetAccountPeriodAction: () => dispatch(Actions.getAccountPeriodAction()),
-    createNewAccountJournalAction: evt => dispatch(Actions.createNewAccountJournalAction(evt)),
     dispatch,
   };
 }
