@@ -21,6 +21,7 @@ import * as Actions from './actions';
 import TransferOrderDialog from './components/TransferOrder/TransferOrderDialog';
 import ViewItemDialog from './components/Items/ViewItemDialog';
 import ItemDialog from './components/Items/ItemDialog';
+import ItemDetails from './components/Items/ItemDetails';
 import ItemsList from './components/Items/ItemsList';
 import ModuleLayout from '../components/ModuleLayout';
 
@@ -47,6 +48,8 @@ export function ItemPage(props) {
         {
           params.statusId == 'new'?
           <ItemDialog />:
+          params.statusId?
+          <ItemDetails />:
           <ItemsList />
         }
       </ModuleLayout>

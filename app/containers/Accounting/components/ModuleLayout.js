@@ -8,7 +8,6 @@ import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
-import * as Actions from '../actions';
 import navBarImage from '../../../images/navbarImage.jpg';
 import MenuBar from '../../../components/MenuBar'
 

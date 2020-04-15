@@ -24,6 +24,8 @@ export const initialState = {
   accountingSetupData: {},
   accountSetupPostData: false,
   accountJournalPostData: false,
+  accountJournals: [],
+  accountJournal: {},
 };
 
 /* eslint-disable default-case, no-param-reassign */

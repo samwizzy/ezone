@@ -10,7 +10,7 @@ import {
   MenuItem,
   Grid,
 } from '@material-ui/core';
-
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -99,18 +99,11 @@ const JournalListing = props => {
     setAnchorEl(null);
   };
 
-  // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    dispatchGetAllAccountPeriodAction();
   }, []);
 
   const {
-    accountPeriodData,
-    dispatchGetAllAccountPeriodAction
   } = props;
-
-  console.log('accountPeriodData -> ', accountPeriodData);
-
 
   const columns = [
     {
@@ -224,7 +217,7 @@ const JournalListing = props => {
 
   const options = {
     filterType: 'checkbox',
-    responsive: 'scrollMaxHeight',
+    responsive: "scrollFullHeight", // "scrollMaxHeight",
     selectableRows: 'none',
     // customToolbar: () => (
     //   <AddButton 
@@ -241,7 +234,7 @@ const JournalListing = props => {
     <React.Fragment>
       <div className={classes.root}>
         <Grid container>
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12}>
             <MUIDataTable
               title="Journal"
             //   data={chartOfAccountData}
@@ -263,12 +256,12 @@ JournalListing.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
 //   loading: Selectors.makeSelectLoading(),
-  accountPeriodData: Selectors.makeSelectGetAllAccountPeriodData(),
+  // accountPeriodData: Selectors.makeSelectGetAllAccountPeriodData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchGetAllAccountPeriodAction: () => dispatch(Actions.getAllAccountPeriodAction()),
+    // dispatchGetAllAccountPeriodAction: () => dispatch(Actions.getAllAccountPeriodAction()),
   };
 }
 
