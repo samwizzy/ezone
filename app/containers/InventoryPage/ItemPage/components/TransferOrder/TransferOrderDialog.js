@@ -42,6 +42,11 @@ const useStyles = makeStyles(theme => ({
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
     },
+    '& .MuiTableFooter-root': {
+      '& .MuiTableCell-root': {
+        border: 'none !important',
+      }
+    },
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
         color: theme.palette.common.white,
@@ -337,7 +342,7 @@ const TransferOrderDialog = props => {
                       </TableBody>
                       <TableFooter>
                         <TableRow>
-                          <TableCell>
+                          <TableCell colSpan={5}>
                             <Button
                               variant="contained"
                               color="primary"
