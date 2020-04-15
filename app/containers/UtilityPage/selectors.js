@@ -195,6 +195,12 @@ const makeSelectGetPostMsg = () =>
     subState => subState.getPostMsg,
   );
 
+const makeSelectPostFcmToken = () =>
+  createSelector(
+    selectUtilityPageDomain,
+    subState => subState.postFcmToken,
+  );
+
 const makeSelectPrevIds = () =>
   createSelector(
     selectUtilityPageDomain,
@@ -204,6 +210,7 @@ const makeSelectPrevIds = () =>
 export default makeSelectUtilityPage;
 export {
   selectUtilityPageDomain,
+  makeSelectPostFcmToken,
   makeSelectLoading,
   makeSelectData,
   makeSelectTask,

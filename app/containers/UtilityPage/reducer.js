@@ -6,6 +6,7 @@
 import produce from 'immer';
 import * as Constants from './constants';
 export const initialState = {
+  postFcmToken: false,
   postMsg: false,
   getPostMsg: false,
   getAllUserChatData: false,
@@ -695,7 +696,7 @@ const utilityPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.POST_MSG: {
-        console.log(action.payload, 'reducer data');
+        // console.log(action.payload, 'reducer data');
         return {
           ...state,
           loading: true,
@@ -712,6 +713,30 @@ const utilityPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.POST_MSG_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.POST_FCM_TOKEN: {
+        console.log(action.payload, 'action.payload');
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          postFcmToken: action.payload,
+        };
+      }
+      case Constants.POST_FCM_TOKEN_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getPostMsg: action.payload,
+        };
+      }
+      case Constants.POST_FCM_TOKEN_ERROR: {
         return {
           ...state,
           loading: false,

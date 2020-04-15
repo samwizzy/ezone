@@ -6,7 +6,7 @@
  * contain code that should be seen on all pages. (e.g. navigation bar)
  */
 
-import React, { memo } from 'react';
+import React, { useEffect, memo } from 'react';
 import { Helmet } from 'react-helmet';
 // import styled from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
@@ -14,6 +14,8 @@ import { CssBaseline } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
 import HomePage from '../HomePage/Loadable';
 import NotFoundPage from '../NotFoundPage/Loadable';
 import Registration from '../AuthorizationPage/Register/Loadable';
@@ -47,7 +49,7 @@ import InventoryAdjustmentApp from '../InventoryPage/ItemPage/components/Invento
 import Layout1 from '../../components/layouts/layout1/Layout1';
 import Layout2 from '../../components/layouts/layout2/Layout2';
 import Layout3 from '../../components/layouts/layout3/Layout3';
-// import { makeSelectUserToken } from './selectors';
+import * as Selectors from './selectors';
 import PrivateRoute from '../AuthProvider/PrivateRoute';
 import Snackbar from './components/Snackbar';
 import { AppContext } from '../context/AppContext';
@@ -56,19 +58,39 @@ import AccountPage from '../Accounting/Loadable';
 import AccountChart from '../Accounting/components/AccountChart';
 import AddNewJournal from '../Accounting/Journal';
 import AccountSetting from '../Accounting/components/AccountSetting';
+import CrmDashboard from '../Crm/Dashboard/Loadable';
+import CrmContacts from '../Crm/Contacts/Loadable';
+import CrmCompanies from '../Crm/Companies/Loadable';
 
-import {Auth} from '../../auth';
-// import { makeSelectGetSaveToken } from './selectors';
+// import { messaging } from '../../utils/firebase-notification';
 
-const App = () => {
-  // const [authTokens, setAuthTokens] = useState();
+import { Auth } from '../../auth';
 
-  // const setTokens = data => {
-  //   // localStorage.setItem('tokens', JSON.stringify(data));
-  //   setAuthTokens(data);
-  // };
+const App = (props) => {
 
-  // console.log(makeSelectGetSaveToken(), 'makeSelectGetSaveToken');
+  const { currentUser, accessToken } = props;
+
+  // useEffect(() => {
+  //   messaging.requestPermission()
+  //   .then(async function() {
+	// 		await messaging.getToken().then(token => {
+  //       fetch('http://64.20.51.173/gateway/utilityserv/api/v1/fcm/update_client_fcm_token',{
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `Bearer ${accessToken}`,
+  //         },
+  //         body: JSON.stringify({ sessionId: token, userUuid: currentUser.uuId }),
+  //       })
+  //       .then(response => response.json())
+  //       // .then(data => console.log(data, 'dont bother for this response'));
+  //     });
+  //     })
+  //   .catch(function(err) {
+  //     console.log("Unable to get permission to notify.", err);
+  //   });
+  //   // navigator.serviceWorker.addEventListener("message", (message) => console.log(message));
+  // }, []);
 
   return (
     <div>
@@ -84,7 +106,7 @@ const App = () => {
               />
             </Helmet>
 
-            <Auth>
+            {/* <Auth> */}
             <Switch>
               <Route exact path="/login" component={Login} />
               <Route exact path="/" component={Login} />
@@ -208,11 +230,26 @@ const App = () => {
                   path="/inventory/inventory/adjustments/:statusId?"
                   component={InventoryAdjustmentApp}
                 />
+                <PrivateRoute
+                  exact
+                  path="/crm/dashboard"
+                  component={CrmDashboard}
+                />
+                <PrivateRoute
+                  exact
+                  path="/crm/contacts"
+                  component={CrmContacts}
+                />
+                <PrivateRoute
+                  exact
+                  path="/crm/companies"
+                  component={CrmCompanies}
+                />
               </Layout3>
               <Route path="" component={NotFoundPage} />
             </Switch>
             <Snackbar />
-            </Auth>
+            {/* </Auth> */}
           </div>
         </main>
       </AppContext.Provider>
@@ -220,7 +257,10 @@ const App = () => {
   );
 };
 
-const mapStateToProps = createStructuredSelector({});
+const mapStateToProps = createStructuredSelector({
+  currentUser: Selectors.makeSelectCurrentUser(),
+  accessToken: Selectors.makeSelectAccessToken(),
+});
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -235,5 +275,7 @@ const withConnect = connect(
 
 export default compose(
   withConnect,
+  // withUtilitySaga,
+  // withUtilityReducer,
   memo,
 )(App);

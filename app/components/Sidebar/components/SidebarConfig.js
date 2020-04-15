@@ -171,17 +171,17 @@ const SidebarConfig = [
   {
     module: 'crm',
     menus: [
-      { id: 1, name: 'Dashboard', url: '/crm/employee', icon: 'dashboard' },
+      { id: 1, name: 'Dashboard', url: '/crm/dashboard', icon: 'dashboard' },
       {
         id: 2,
         name: 'Contacts',
-        url: '/crm/employee',
+        url: '/crm/contacts',
         icon: 'business_center',
       },
       {
         id: 3,
         name: 'Companies',
-        url: '/crm/recruitment',
+        url: '/crm/companies',
         icon: 'find_in_page',
       },
       { id: 4, name: 'Activities', url: '/crm/attendance', icon: 'person' },

@@ -10,3 +10,7 @@ export const OPEN_SNACKBAR = 'app/App/OPEN_SNACKBAR';
 export const CLOSE_SNACKBAR = 'app/App/CLOSE_SNACKBAR';
 
 export const LOG_OUT = 'app/App/LOG_OUT';
+
+export const POST_FCM_TOKEN = 'app/App/POST_FCM_TOKEN';
+export const POST_FCM_TOKEN_SUCCESS = 'app/App/POST_FCM_TOKEN_SUCCESS';
+export const POST_FCM_TOKEN_ERROR = 'app/App/POST_FCM_TOKEN_ERROR';

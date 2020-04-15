@@ -149,3 +149,7 @@ export const GET_USER_CHAT_DATA_ERROR =
 export const POST_MSG = 'app/UtilityPage/POST_MSG';
 export const POST_MSG_SUCCESS = 'app/UtilityPage/POST_MSG_SUCCESS';
 export const POST_MSG_ERROR = 'app/UtilityPage/POST_MSG_ERROR';
+
+export const POST_FCM_TOKEN = 'app/UtilityPage/POST_FCM_TOKEN';
+export const POST_FCM_TOKEN_SUCCESS = 'app/UtilityPage/POST_FCM_TOKEN_SUCCESS';
+export const POST_FCM_TOKEN_ERROR = 'app/UtilityPage/POST_FCM_TOKEN_ERROR';

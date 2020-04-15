@@ -286,4 +286,5 @@ export default function* AccountingSaga() {
   yield takeLatest(Constants.GET_ACCOUNTING_SETUP, getAccountingSetupSaga);
   yield takeLatest(Constants.CREATE_ACCOUNTING_SETUP, createAccountingSetupSaga);
   yield takeLatest(Constants.GET_ACCOUNT_PERIOD, getAccountPeriodSaga);
+  yield takeLatest(Constants.CREATE_NEW_ACCOUNT_JOURNAL, createAccountJournalSaga);
 }

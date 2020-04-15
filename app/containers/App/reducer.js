@@ -119,6 +119,30 @@ const appReducer = (state = initialState, action) =>
 
         return {};
       }
+      case Constants.POST_FCM_TOKEN: {
+        console.log(action.payload, 'action.payload');
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          postFcmToken: action.payload,
+        };
+      }
+      case Constants.POST_FCM_TOKEN_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getPostMsg: action.payload,
+        };
+      }
+      case Constants.POST_FCM_TOKEN_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
     }
   });
 

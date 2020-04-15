@@ -152,8 +152,8 @@ function a11yProps(index) {
 
 const ref = React.createRef();
 
-let stompClient = null;
 const ChatTab = props => {
+  let stompClient = null;
   const {
     allEmployees,
     allUsersChat,
@@ -162,79 +162,16 @@ const ChatTab = props => {
     userChatData,
     dispatchGetAllEmployees,
     dispatchGetUserChats,
+    dispatchGetUserChatData,
   } = props;
 
   useEffect(() => {
     dispatchGetAllEmployees();
     dispatchGetUserChats();
-    chatConnect();
+    // chatConnect();
     handleScrollToBottom();
   }, []);
 
-  // console.log(currentUser, 'currentUser');
-  const chatConnect = () => {
-    const socket = new SockJS(
-      'http://64.20.51.173/gateway/utilityserv/secured/room',
-    );
-    stompClient = Stomp.over(socket);
-    stompClient.connect({name: currentUser.username}, function(frame) {
-      let { url } = stompClient.ws._transport;
-      url = url.replace(
-        'http://64.20.51.173/gateway/utilityserv/secured/room',
-        '',
-      );
-      url = url.replace('/websocket', '');
-      url = url.replace(/^[0-9]+\//, '');
-      const newArray = url.split('/');
-      const sessionId = newArray[newArray.length - 1];
-
-      // stompClient.send(
-      //   '/ezone/save_session_id',
-      //   JSON.stringify({
-      //     sessionId: `${sessionId}`,
-      //     userUuid: `${currentUser.uuId}`,
-      //   }),
-      //   {},
-      // );
-      // setConnected(true);
-      console.log(`Connected: ${frame}`, 'welcome here');
-      stompClient.subscribe(
-        '/secured/user/queue/specific-user' + '/' + sessionId,
-        function(msgOut) {
-          // handle messages
-          // showGreeting(JSON.parse(greeting.body).content);
-          console.log(msgOut, 'msgOut');
-        },
-      );
-    });
-  };
-
-  // function disconnect() {
-  //   if (stompClient !== null) {
-  //     stompClient.disconnect();
-  //   }
-  //   setConnected(false);
-  //   console.log('Disconnected');
-  // }
-
-  const send = () => {
-    stompClient.send(
-      '/ezone/send_message',
-      JSON.stringify({
-        message: 'Good afternoon',
-        // recipientId: currentUser.username,
-        recipientId: '67b5cccb-25f1-4b3e-9fb3-446533c26ac2',
-        recipientName: 'waq',
-        senderId: '5c8eb1f9-6a90-4141-9f38-9832bd40de00',
-        senderName: 'afeez',
-      }),
-      {},
-      // JSON.stringify({ name: $('#name').val() }),
-    );
-  };
-
-  // console.log(allEmployees, 'allEmployees');
-  // console.log(allUsersChat, 'allUsersChat');
   const classes = useStyles();
   const [status, setStatus] = React.useState(false);
 
@@ -265,6 +202,18 @@ const ChatTab = props => {
     };
     setNewChat(initNewChat);
   };
+
+  navigator.serviceWorker.addEventListener('message', message => {
+    if (message) {
+      getAllUserChatData.messages.push(
+        JSON.parse(message.data['firebase-messaging-msg-data'].data.payload),
+      );
+      // console.log(getAllUserChatData.messages, 'getAllUserChatData.messages');
+      dispatchGetUserChatData(
+        JSON.parse(message.data['firebase-messaging-msg-data'].data.payload),
+      );
+    }
+  });
 
   // reversed datas
   if (getAllUserChatData) {
@@ -457,6 +406,7 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatchGetAllEmployees: () => dispatch(Actions.getAllUsers()),
     dispatchGetUserChats: () => dispatch(Actions.getAllUsersChat()),
+    dispatchGetUserChatData: evt => dispatch(Actions.getUserChatData(evt)),
     dispatch,
   };
 }

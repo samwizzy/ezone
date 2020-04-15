@@ -1,5 +1,6 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import request from '../../utils/request';
+import * as AppConstants from '../App/constants';
 import * as AppActions from '../App/actions';
 import * as AppSelectors from '../App/selectors';
 import * as Selectors from './selectors';
@@ -667,7 +668,7 @@ export function* getUserChatData() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
 
   const userChatDetails = yield select(Selectors.makeSelectGetUserChatData());
-  const requestURL = `${Endpoints.GetUserChatDataApi}/?chatId=${
+  const requestURL = `${Endpoints.GetUserChatDataApi}?chatId=${
     userChatDetails.chatId
   }&limit=${10}&start=${0}`;
 
@@ -691,7 +692,9 @@ export function* getUserChatData() {
 
 export function* postMsg() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const userChatDetails = yield select(Selectors.makeSelectGetUserChatData());
+  // const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+
+  // console.log(currentUser, 'currentUser');
 
   const userChatData = yield select(Selectors.makeSelectGetUserChatData());
   const postMsgDetails = yield select(Selectors.makeSelectPostMsg());
@@ -718,12 +721,44 @@ export function* postMsg() {
       }),
     });
 
-    console.log(postMsgResponse, 'postMsgResponse');
+    // console.log(postMsgResponse, 'postMsgResponse');
 
     // yield put(Actions.getUserChatData(userChatDetails));
     yield put(Actions.postMsgSuccess(postMsgResponse));
   } catch (err) {
     yield put(Actions.postMsgError(err));
+  }
+}
+
+export function* postFcmToken() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const fcmData = yield select(Selectors.makeSelectPostFcmToken());
+  fcmData.userUuid = currentUser.uuId;
+
+  // console.log(fcmData, 'fcmData');
+
+  // console.log(userChatDetails, 'lunch this in userChatDetails');
+  // console.log(userChatData, 'userChatData');
+
+  const requestURL = `${Endpoints.SendFcmDataApi}`;
+
+  try {
+    const postMsgResponse = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(fcmData),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    // console.log(postMsgResponse, 'postMsgResponse');
+
+    // yield put(Actions.getUserChatData(userChatDetails));
+    yield put(Actions.postFcmTokenSuccess(postMsgResponse));
+  } catch (err) {
+    yield put(Actions.postFcmTokenError(err));
   }
 }
 
@@ -768,4 +803,5 @@ export default function* UtilityPageSaga() {
   yield takeLatest(Constants.GET_ALL_USERS_CHAT, getUserChat);
   yield takeLatest(Constants.GET_USER_CHAT_DATA, getUserChatData);
   yield takeLatest(Constants.POST_MSG, postMsg);
+  yield takeLatest(Constants.POST_FCM_TOKEN, postFcmToken);
 }

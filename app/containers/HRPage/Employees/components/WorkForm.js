@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const WorkForm = props => {
-    const {handleChange, handleDateChange, closeNewEmployeeDialog, handleSubmit, form} = props
+    const {handleChange, handleDateChange, closeNewEmployeeDialog, handleSubmit, handlePrev, form} = props
     const classes = useStyles()
 
     const canSubmitForm = () => {
@@ -227,6 +227,9 @@ export const WorkForm = props => {
             <DialogActions>
             <Button onClick={closeNewEmployeeDialog} color="primary">
                 Cancel
+            </Button>
+            <Button onClick={handlePrev} color="primary">
+                Prev
             </Button>
             <Button onClick={handleSubmit} disabled={!canSubmitForm()} color="primary">
                 Next

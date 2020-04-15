@@ -580,6 +580,7 @@ export function getAllUsersChatError(data) {
 }
 
 export function getUserChatData(data) {
+  // console.log('come here');
   return {
     type: Constants.GET_USER_CHAT_DATA,
     payload: data,
@@ -618,6 +619,28 @@ export function postMsgSuccess(data) {
 export function postMsgError(data) {
   return {
     type: Constants.POST_MSG_ERROR,
+    payload: data,
+  };
+}
+
+export function postFcmToken(data) {
+  // console.log(data, 'action data');
+  return {
+    type: Constants.POST_FCM_TOKEN,
+    payload: data,
+  };
+}
+
+export function postFcmTokenSuccess(data) {
+  return {
+    type: Constants.POST_FCM_TOKEN_SUCCESS,
+    payload: data,
+  };
+}
+
+export function postFcmTokenError(data) {
+  return {
+    type: Constants.POST_FCM_TOKEN_ERROR,
     payload: data,
   };
 }
