@@ -31,7 +31,6 @@ import NoAvailableChats from './components/NoAvailableChats';
 import ChatHeader from './components/ChatHeader';
 import ChatFooter from './components/ChatFooter';
 import ModuleLayout from '../components/ModuleLayout';
-import { messaging } from '../../../utils/firebase-notification';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -163,7 +162,7 @@ const ChatTab = props => {
     userChatData,
     dispatchGetAllEmployees,
     dispatchGetUserChats,
-    // dispatchPostFcmToken,
+    dispatchGetUserChatData,
   } = props;
 
   useEffect(() => {
@@ -171,14 +170,8 @@ const ChatTab = props => {
     dispatchGetUserChats();
     // chatConnect();
     handleScrollToBottom();
-    // dispatchPostFcmToken();
   }, []);
 
-
-  // console.log(currentUser, 'currentUser');
-
-  // console.log(allEmployees, 'allEmployees');
-  // console.log(allUsersChat, 'allUsersChat');
   const classes = useStyles();
   const [status, setStatus] = React.useState(false);
 
@@ -209,6 +202,18 @@ const ChatTab = props => {
     };
     setNewChat(initNewChat);
   };
+
+  navigator.serviceWorker.addEventListener('message', message => {
+    if (message) {
+      getAllUserChatData.messages.push(
+        JSON.parse(message.data['firebase-messaging-msg-data'].data.payload),
+      );
+      // console.log(getAllUserChatData.messages, 'getAllUserChatData.messages');
+      dispatchGetUserChatData(
+        JSON.parse(message.data['firebase-messaging-msg-data'].data.payload),
+      );
+    }
+  });
 
   // reversed datas
   if (getAllUserChatData) {
@@ -401,7 +406,7 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatchGetAllEmployees: () => dispatch(Actions.getAllUsers()),
     dispatchGetUserChats: () => dispatch(Actions.getAllUsersChat()),
-    // dispatchPostFcmToken: () => dispatch(Actions.postFcmToken()),
+    dispatchGetUserChatData: evt => dispatch(Actions.getUserChatData(evt)),
     dispatch,
   };
 }

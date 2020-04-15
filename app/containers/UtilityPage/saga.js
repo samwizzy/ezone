@@ -672,7 +672,7 @@ export function* getUserChatData() {
     userChatDetails.chatId
   }&limit=${10}&start=${0}`;
 
-  console.log(userChatDetails, 'userChatDetails');
+  // console.log(userChatDetails, 'userChatDetails');
   try {
     const userChatDataResponse = yield call(request, requestURL, {
       method: 'GET',
@@ -692,7 +692,9 @@ export function* getUserChatData() {
 
 export function* postMsg() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const userChatDetails = yield select(Selectors.makeSelectGetUserChatData());
+  // const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+
+  // console.log(currentUser, 'currentUser');
 
   const userChatData = yield select(Selectors.makeSelectGetUserChatData());
   const postMsgDetails = yield select(Selectors.makeSelectPostMsg());
@@ -702,7 +704,7 @@ export function* postMsg() {
   postMsgDetails.senderName = userChatData.initiatorName;
 
   
-  console.log(postMsgDetails, 'postMsgDetails');
+  // console.log(postMsgDetails, 'postMsgDetails');
 
   // console.log(userChatDetails, 'lunch this in userChatDetails');
   // console.log(userChatData, 'userChatData');
@@ -719,9 +721,9 @@ export function* postMsg() {
       }),
     });
 
-    console.log(postMsgResponse, 'postMsgResponse');
+    // console.log(postMsgResponse, 'postMsgResponse');
 
-    yield put(Actions.getUserChatData(userChatDetails));
+    // yield put(Actions.getUserChatData(userChatDetails));
     yield put(Actions.postMsgSuccess(postMsgResponse));
   } catch (err) {
     yield put(Actions.postMsgError(err));
@@ -734,7 +736,7 @@ export function* postFcmToken() {
   const fcmData = yield select(Selectors.makeSelectPostFcmToken());
   fcmData.userUuid = currentUser.uuId;
 
-  console.log(fcmData, 'fcmData');
+  // console.log(fcmData, 'fcmData');
 
   // console.log(userChatDetails, 'lunch this in userChatDetails');
   // console.log(userChatData, 'userChatData');
@@ -751,7 +753,7 @@ export function* postFcmToken() {
       }),
     });
 
-    console.log(postMsgResponse, 'postMsgResponse');
+    // console.log(postMsgResponse, 'postMsgResponse');
 
     // yield put(Actions.getUserChatData(userChatDetails));
     yield put(Actions.postFcmTokenSuccess(postMsgResponse));

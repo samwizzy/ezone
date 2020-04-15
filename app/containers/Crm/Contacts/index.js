@@ -19,7 +19,6 @@ import reducer from '../reducer';
 import saga from '../saga';
 import messages from '../messages';
 import ContactsList from './components/ContactsList';
-import ContactDialog from './components/ContactDialog';
 
 export function Crm() {
   useInjectReducer({ key: 'crm', reducer });
@@ -31,7 +30,6 @@ export function Crm() {
         <title>Crm - Contacts</title>
         <meta name="description" content="Description of Crm" />
       </Helmet>
-      {/* <ContactDialog /> */}
       <ContactsList />
     </div>
   );

@@ -580,7 +580,7 @@ export function getAllUsersChatError(data) {
 }
 
 export function getUserChatData(data) {
-  console.log('come here');
+  // console.log('come here');
   return {
     type: Constants.GET_USER_CHAT_DATA,
     payload: data,
@@ -624,7 +624,7 @@ export function postMsgError(data) {
 }
 
 export function postFcmToken(data) {
-  console.log(data, 'action data');
+  // console.log(data, 'action data');
   return {
     type: Constants.POST_FCM_TOKEN,
     payload: data,

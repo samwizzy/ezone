@@ -21,5 +21,28 @@ const makeSelectCrm = () =>
     substate => substate,
   );
 
+const makeSelectLoading = () =>
+  createSelector(
+    selectCrmDomain,
+    subState => subState.loading,
+  );
+
+const makeSelectError = () =>
+  createSelector(
+    selectCrmDomain,
+    subState => subState.error,
+  );
+
+const makeSelectContactDialog = () =>
+  createSelector(
+    selectCrmDomain,
+    subState => subState.contactDialog,
+  );
+
 export default makeSelectCrm;
-export { selectCrmDomain };
+export {
+  selectCrmDomain,
+  makeSelectLoading,
+  makeSelectError,
+  makeSelectContactDialog,
+};

@@ -18,7 +18,7 @@ import { createStructuredSelector } from 'reselect';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-// import InventoryAdjustmentDialog from './ContactDialog';
+import ContactDialog from './ContactDialog';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CompaniesList = props => {
+const ContactsList = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -40,14 +40,7 @@ const CompaniesList = props => {
 
   const {
     loading,
-    // getAllEmployees,
-    // openNewInventoryAdjustDialogAction,
-    // getAllWarehousesAction,
-    // getAllItemsAction,
-    // getAllInventoryAdjustmentsAction,
-    // getAllInventoryAdjusts,
-    // openEditEmployeeDialogAction,
-    // openViewEmployeeDialogAction,
+    openNewContactDialogAction,
   } = props;
 
   useEffect(() => {
@@ -204,7 +197,7 @@ const CompaniesList = props => {
         size="small"
         className={classes.button}
         startIcon={<AddIcon />}
-        // onClick={() => openNewInventoryAdjustDialogAction()}
+        onClick={() => openNewContactDialogAction()}
       >
         New
       </Button>
@@ -217,6 +210,7 @@ const CompaniesList = props => {
 
   return (
     <React.Fragment>
+      <ContactDialog />
       <MUIDataTable
         title="All Contacts"
         data={[]}
@@ -227,31 +221,20 @@ const CompaniesList = props => {
   );
 };
 
-CompaniesList.propTypes = {
+ContactsList.propTypes = {
   loading: PropTypes.bool,
-  getAllEmployees: PropTypes.array,
-  openNewInventoryAdjustDialogAction: PropTypes.func,
-  getAllWarehousesAction: PropTypes.func,
-  getAllItemsAction: PropTypes.func,
-  getAllInventoryAdjustmentsAction: PropTypes.func,
-  getAllInventoryAdjusts: PropTypes.array,
-  // openEditEmployeeDialogAction: PropTypes.func,
-  // openViewEmployeeDialogAction: PropTypes.func,
+  openNewContactDialogAction: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
-  // loading: Selectors.makeSelectLoading(),
+  loading: Selectors.makeSelectLoading(),
   // getAllInventoryAdjusts: Selectors.makeSelectGetAllInventoryAdjustments(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    // getAllInventoryAdjustmentsAction: () =>
-    //   dispatch(Actions.getAllInventoryAdjustments()),
-    // openNewInventoryAdjustDialogAction: () =>
-    //   dispatch(Actions.openNewInventoryAdjustDialog()),
-    // getAllWarehousesAction: () => dispatch(Actions.getAllWarehouse()),
-    // getAllItemsAction: () => dispatch(Actions.getAllItems()),
+    openNewContactDialogAction: () =>
+      dispatch(Actions.openNewContactDialog()),
   };
 }
 
@@ -263,4 +246,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(CompaniesList);
+)(ContactsList);
