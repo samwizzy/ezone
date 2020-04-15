@@ -22,7 +22,6 @@ import saga from '../../saga';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import LoadingIndicator from '../../../../../components/LoadingIndicator';
-import ModuleLayout from '../../../components/ModuleLayout';
 import TransferOrderDialog from './TransferOrderDialog';
 
 const useStyles = makeStyles(theme => ({
@@ -213,15 +212,12 @@ const TransferOrdersList = props => {
 
   return (
     <React.Fragment>
-      <ModuleLayout>
-        <MUIDataTable
-          title="All Transfer Orders"
-          data={getAllTransferOrder}
-          columns={columns}
-          options={options}
-        />
-      </ModuleLayout>
-      <TransferOrderDialog />
+      <MUIDataTable
+        title="All Transfer Orders"
+        data={getAllTransferOrder}
+        columns={columns}
+        options={options}
+      />
     </React.Fragment>
   );
 };

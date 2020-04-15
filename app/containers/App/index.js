@@ -43,9 +43,9 @@ import WorkOrderPage from '../WorkOrder/Loadable';
 import InventoryPage from '../InventoryPage/Loadable';
 import WarehousePage from '../InventoryPage/WarehousePage/Loadable';
 import ItemPage from '../InventoryPage/ItemPage/Loadable';
-import TransferOrdersList from '../InventoryPage/ItemPage/components/TransferOrder/TransferOrdersList';
+import TransferOrdersApp from '../InventoryPage/ItemPage/components/TransferOrder';
 import NewTransferOrder from '../InventoryPage/ItemPage/components/TransferOrder/NewTransferOrder';
-import InventoryAdjustmentList from '../InventoryPage/ItemPage/components/InventoryAdjustment/InventoryAdjustmentList';
+import InventoryAdjustmentApp from '../InventoryPage/ItemPage/components/InventoryAdjustment';
 import Layout1 from '../../components/layouts/layout1/Layout1';
 import Layout2 from '../../components/layouts/layout2/Layout2';
 import Layout3 from '../../components/layouts/layout3/Layout3';
@@ -197,10 +197,10 @@ const App = (props) => {
                   path="/hr/:sectionId?/:status?"
                   component={HRPage}
                 />
-                <PrivateRoute path="/account" component={AccountPage} />
-                <PrivateRoute path="/account/chart" component={AccountChart} />
-                <PrivateRoute path="/account/journal/new" component={AddNewJournal} />
-                <PrivateRoute path="/account/setting" component={AccountSetting} />
+                <PrivateRoute exact path="/account" component={AccountPage} />
+                <PrivateRoute exact path="/account/chart" component={AccountChart} />
+                <PrivateRoute exact path="/account/journal/new" component={AddNewJournal} />
+                <PrivateRoute exact path="/account/setting" component={AccountSetting} />
                 <PrivateRoute
                   exact
                   path="/inventory"
@@ -212,13 +212,13 @@ const App = (props) => {
                 />
                 <PrivateRoute
                   exact
-                  path="/inventory/items"
+                  path="/inventory/items/:statusId?"
                   component={ItemPage}
                 />
                 <PrivateRoute
                   exact
-                  path="/inventory/transfer/orders"
-                  component={TransferOrdersList}
+                  path="/inventory/transfer/orders/:statusId?"
+                  component={TransferOrdersApp}
                 />
                 <PrivateRoute
                   exact
@@ -227,8 +227,8 @@ const App = (props) => {
                 />
                 <PrivateRoute
                   exact
-                  path="/inventory/inventory/adjustments"
-                  component={InventoryAdjustmentList}
+                  path="/inventory/inventory/adjustments/:statusId?"
+                  component={InventoryAdjustmentApp}
                 />
                 <PrivateRoute
                   exact
