@@ -26,6 +26,8 @@ import { Autocomplete } from '@material-ui/lab';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as AppSelectors from '../../App/selectors';
@@ -78,6 +80,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AddNewJournal = props => {
+  useInjectReducer({ key: 'accounting', reducer });
+  useInjectSaga({ key: 'accounting', saga });
   const classes = useStyles();
 
   const {
