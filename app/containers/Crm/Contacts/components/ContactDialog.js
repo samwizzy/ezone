@@ -43,6 +43,7 @@ import * as Actions from '../../actions';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import { BasicInfo } from './BasicInfo';
 import { AdvanceInfo } from './AdvanceInfo';
+import { UtilityInfo } from './UtilityInfo';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -149,6 +150,15 @@ const ContactDialog = props => {
         )}
         {step === 1 && (
           <AdvanceInfo
+            handleChange={handleChange}
+            form={form}
+            closeNewContactDialog={closeNewContactDialogAction}
+            handleNext={handleNext}
+            handlePrev={handlePrev}
+          />
+        )}
+        {step === 2 && (
+          <UtilityInfo
             handleChange={handleChange}
             form={form}
             closeNewContactDialog={closeNewContactDialogAction}

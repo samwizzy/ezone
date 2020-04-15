@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const AdvanceInfo = props => {
+export const UtilityInfo = props => {
   const { handleChange, closeNewContactDialog, handleNext, handlePrev, form } = props;
   const classes = useStyles();
 
@@ -137,16 +137,16 @@ export const AdvanceInfo = props => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                id="country"
-                name="country"
-                placeholder="Select country"
+                id="lifeStage"
+                name="lifeStage"
+                placeholder="Select life Stage"
                 select
                 fullWidth
                 className={classes.textField}
                 variant="outlined"
                 size="small"
-                label="Country"
-                value={form.country}
+                label="life Stage"
+                value={form.lifeStage}
                 onChange={handleChange}
               >
                 <MenuItem key={0} value="3">
