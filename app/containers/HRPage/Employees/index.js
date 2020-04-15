@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.primary.main,
       },
       '& .MuiTableCell-root:nth-child(even)': {
-        backgroundColor: darken(theme.palette.primary.main, 0.5),
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
   },

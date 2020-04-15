@@ -44,6 +44,11 @@ const useStyles = makeStyles(theme => ({
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
     },
+    '& .MuiTableFooter-root': {
+      '& .MuiTableCell-root': {
+        border: 'none !important',
+      }
+    },
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
         color: theme.palette.common.white,
@@ -231,113 +236,113 @@ const InventoryAdjustmentDialog = props => {
               </Grid>
             </Grid>
 
-              <Grid item xs={12}>
-                {/* <TableTransfer
-                  getAllItems={getAllItems}
-                  values={values}
-                  setValues={setValues}
-                  addRow={addRow}
-                  removeRow={removeRow}
-                  handleItemChange={handleItemChange}
-                  handleQuantityChange={handleQuantityChange}
-                /> */}
+            <Grid item xs={12}>
+              {/* <TableTransfer
+                getAllItems={getAllItems}
+                values={values}
+                setValues={setValues}
+                addRow={addRow}
+                removeRow={removeRow}
+                handleItemChange={handleItemChange}
+                handleQuantityChange={handleQuantityChange}
+              /> */}
 
-                <Table className={classes.table} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Item Details</TableCell>
-                      <TableCell align="center">
-                        Quantity Available
+              <Table className={classes.table} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Item Details</TableCell>
+                    <TableCell align="center">
+                      Quantity Available
+                    </TableCell>
+                    <TableCell align="center">
+                      New Quantity on hand
+                    </TableCell>
+                    <TableCell align="center">
+                      Quantity Adjusted
+                    </TableCell>
+                    <TableCell align="center" />
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows.map((row, id) => (
+                    <TableRow key={id}>
+                      <TableCell component="th" scope="row">
+                        <Autocomplete
+                          id="combo-itemCategory"
+                          options={getAllItems}
+                          getOptionLabel={option => option.itemName}
+                          onChange={(evt, ve) =>
+                            handleItemChange(evt, ve, id)
+                          }
+                          renderInput={params => (
+                            <TextField
+                              {...params}
+                              label="Items"
+                              variant="outlined"
+                              name="itemId"
+                              placeholder="Items"
+                              fullWidth
+                            />
+                          )}
+                        />
                       </TableCell>
                       <TableCell align="center">
-                        New Quantity on hand
+                        <TextField
+                          disabled
+                          id="filled-disabled"
+                          label=""
+                          // defaultValue="0.00"
+                          variant="filled"
+                          placeholder="0.00"
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          id="filled-disabled"
+                          label=""
+                          defaultValue="0.00"
+                          variant="filled"
+                          placeholder="0.00"
+                        />
                       </TableCell>
                       <TableCell align="center">
-                        Quantity Adjusted
+                        <TextField
+                          id="filled-disabled"
+                          label=""
+                          defaultValue="1.00"
+                          variant="outlined"
+                          name="transferQuantity"
+                          onChange={handleQuantityChange(id)}
+                        />
                       </TableCell>
-                      <TableCell align="center" />
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {rows.map((row, id) => (
-                      <TableRow key={id}>
-                        <TableCell component="th" scope="row">
-                          <Autocomplete
-                            id="combo-itemCategory"
-                            options={getAllItems}
-                            getOptionLabel={option => option.itemName}
-                            onChange={(evt, ve) =>
-                              handleItemChange(evt, ve, id)
-                            }
-                            renderInput={params => (
-                              <TextField
-                                {...params}
-                                label="Items"
-                                variant="outlined"
-                                name="itemId"
-                                placeholder="Items"
-                                fullWidth
-                              />
-                            )}
-                          />
-                        </TableCell>
-                        <TableCell align="center">
-                          <TextField
-                            disabled
-                            id="filled-disabled"
-                            label=""
-                            // defaultValue="0.00"
-                            variant="filled"
-                            placeholder="0.00"
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <TextField
-                            id="filled-disabled"
-                            label=""
-                            defaultValue="0.00"
-                            variant="filled"
-                            placeholder="0.00"
-                          />
-                        </TableCell>
-                        <TableCell align="center">
-                          <TextField
-                            id="filled-disabled"
-                            label=""
-                            defaultValue="1.00"
-                            variant="outlined"
-                            name="transferQuantity"
-                            onChange={handleQuantityChange(id)}
-                          />
-                        </TableCell>
-                        <TableCell align="center">
-                          <Button
-                            variant="outlined"
-                            color="secondary"
-                            onClick={() => removeRow(id)}
-                          >
-                            Remove
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                  <TableFooter>
-                    <TableRow>
-                      <TableCell colSpan={5}>
+                      <TableCell align="center">
                         <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={() => addRow()}
-                          startIcon={<AddIcon/>}
+                          variant="outlined"
+                          color="secondary"
+                          onClick={() => removeRow(id)}
                         >
-                          Add Row
+                          Remove
                         </Button>
                       </TableCell>
                     </TableRow>
-                  </TableFooter>
-                </Table>
-              </Grid>
+                  ))}
+                </TableBody>
+                <TableFooter>
+                  <TableRow>
+                    <TableCell colSpan={5}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => addRow()}
+                        startIcon={<AddIcon/>}
+                      >
+                        Add Row
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                </TableFooter>
+              </Table>
+            </Grid>
           </Grid>
         </CardContent>
 
