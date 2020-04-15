@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom'
 import {
   makeStyles,
   List,
@@ -46,6 +47,7 @@ const InventoryAdjustmentList = props => {
 
   const {
     loading,
+    history,
     getAllEmployees,
     openNewInventoryAdjustDialogAction,
     getAllWarehousesAction,
@@ -210,7 +212,7 @@ const InventoryAdjustmentList = props => {
         size="small"
         className={classes.button}
         startIcon={<AddIcon />}
-        onClick={() => openNewInventoryAdjustDialogAction()}
+        onClick={() => history.push('/inventory/inventory/adjustments/new')}
       >
         New
       </Button>
@@ -267,6 +269,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(InventoryAdjustmentList);

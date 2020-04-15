@@ -49,8 +49,6 @@ export function ItemPage(props) {
           <ItemDialog />:
           <ItemsList />
         }
-        {/* <ViewItemDialog /> */}
-        <TransferOrderDialog />
       </ModuleLayout>
     </div>
   );

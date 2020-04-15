@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom'
 import {
   makeStyles,
   List,
@@ -52,6 +53,7 @@ const TransferOrdersList = props => {
 
   const {
     loading,
+    history,
     transferOrders,
     openNewTransferOrderDialogAction,
     getAllWarehousesAction,
@@ -199,7 +201,7 @@ const TransferOrdersList = props => {
         size="small"
         className={classes.button}
         startIcon={<AddIcon />}
-        onClick={() => openNewTransferOrderDialogAction()}
+        onClick={() => history.push('/inventory/transfer/orders/new')}
       >
         New
       </Button>
@@ -256,6 +258,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(TransferOrdersList);

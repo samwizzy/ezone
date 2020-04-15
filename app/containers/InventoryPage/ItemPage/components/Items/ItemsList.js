@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom'
 import {
   makeStyles,
   FormControlLabel,
@@ -39,6 +40,7 @@ const ItemsList = props => {
 
   const {
     loading,
+    history,
     getAllItems,
     openNewItemDialogAction,
     openViewItemDialogAction,
@@ -132,7 +134,7 @@ const ItemsList = props => {
         size="small"
         className={classes.button}
         startIcon={<AddIcon />}
-        onClick={() => openNewItemDialogAction()}
+        onClick={() => history.push('/inventory/items/new')}
       >
         New
       </Button>
@@ -145,7 +147,6 @@ const ItemsList = props => {
 
   return (
     <React.Fragment>
-      {/* <ViewItemDialog /> */}
       <MUIDataTable
         title="All Items"
         data={getAllItems}
@@ -184,6 +185,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(ItemsList);
