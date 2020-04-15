@@ -81,6 +81,12 @@ const makeSelectNewAccountJournalPostData = () =>
     subState => subState.accountJournalPostData,
 );
 
+const makeSelectAccountJournal = () =>
+  createSelector(
+    selectAccountingDomain,
+    subState => subState.accountJournal,
+);
+
 
 export default makeSelectAccounting;
 
@@ -95,5 +101,6 @@ export {
   makeSelectGetAccountingSetupData,
   makeSelectAccountingSetupPostData,
   makeSelectGetAccountPeriodData,
-  makeSelectNewAccountJournalPostData
+  makeSelectNewAccountJournalPostData,
+  makeSelectAccountJournal
 };
