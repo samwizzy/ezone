@@ -32,6 +32,8 @@ import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as AppSelectors from '../../App/selectors';
 import * as Selectors from '../selectors';
+import reducer from '../reducer';
+import saga from '../saga';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import ModuleLayout from '../components/ModuleLayout';
 import moment from 'moment';
