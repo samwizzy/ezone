@@ -17,6 +17,10 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
+import reducer from '../reducer';
+import saga from '../saga';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import { AddButton } from './AddButton';
 
@@ -71,10 +75,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AccountChart = props => {
+  useInjectReducer({ key: 'accounting', reducer });
+  useInjectSaga({ key: 'accounting', saga });
+
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [account, setAccount] = React.useState('');
-
 
   const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
@@ -100,7 +106,7 @@ const AccountChart = props => {
     deleteChartOfAccountAction,
     accountTypeData,
     chartOfAccountData,
-    dispatchGetAllChartOfAccountTypeAction
+    dispatchGetAllChartOfAccountTypeAction,
   } = props;
 
   console.log('chartOfAccountData from chart --> ', chartOfAccountData);
