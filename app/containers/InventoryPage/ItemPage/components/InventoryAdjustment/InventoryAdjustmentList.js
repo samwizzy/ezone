@@ -11,6 +11,7 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import AddIcon from '@material-ui/icons/Add';
 import MUIDataTable from 'mui-datatables';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -28,6 +29,22 @@ import InventoryAdjustmentDialog from './InventoryAdjustmentDialog';
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1),
+  },
+  datatable: {
+    '& .MuiTableRow-root:hover': {
+      cursor: 'pointer'
+    },
+    '& .MuiTableHead-root': {
+      '& .MuiTableCell-head': {
+        color: theme.palette.common.white,
+      },
+      '& .MuiTableCell-root:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+      },
+      '& .MuiTableCell-root:nth-child(even)': {
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
+      },
+    },
   },
 }));
 
@@ -66,6 +83,14 @@ const InventoryAdjustmentList = props => {
 
   console.log(getAllInventoryAdjusts, 'getAllInventoryAdjusts');
   const columns = [
+    {
+      name: 'id',
+      label: ' ',
+      options: {
+        display: "excluded",
+        filter: true
+      },
+    },
     {
       name: 'Id',
       label: 'S/N',
@@ -218,7 +243,7 @@ const InventoryAdjustmentList = props => {
       </Button>
     ),
     onRowClick: (rowData, rowState) => {
-      props.history.push('/inventory/adjustment/' + rowData[0])
+      props.history.push('/inventory/inventory/adjustments/' + rowData[0])
     },
   };
 
@@ -229,6 +254,7 @@ const InventoryAdjustmentList = props => {
   return (
     <React.Fragment>
         <MUIDataTable
+          className={classes.datatable}
           title="All Inventory Adjustments"
           data={getAllInventoryAdjusts}
           columns={columns}
