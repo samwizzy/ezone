@@ -55,9 +55,9 @@ export function* createNewItem() {
       }),
     });
 
-    // yield put(Actions.createNewItemSuccess(createNewItemResponse));
+    yield put(Actions.createNewItemSuccess(createNewItemResponse));
     yield put(Actions.getAllItems());
-    yield put(Actions.closeNewItemDialog());
+    // yield put(Actions.closeNewItemDialog());
 
     // if (createNewEmployeeResponse.success === true) {
     //   yield put(
