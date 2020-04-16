@@ -234,6 +234,7 @@ const TransferOrdersList = props => {
     onRowClick: (rowData, rowState) => {
       props.history.push('/inventory/transfer/orders/' + rowData[0])
     },
+    elevation: 0
   };
 
   if (loading) {

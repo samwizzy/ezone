@@ -230,7 +230,6 @@ const TransferOrderDetails = props => {
           </ListSubheader>
         }
       >
-        {items && items.length === 0 && <Skeleton animation="wave" />}
         {filteredItems && [0,1,2,3].map(item => (
           <ListItem disableRipple button selected={selectedIndex == item.id} key={item.id} onClick={() => handleItemById(item.id)}>
             <ListItemIcon><LabelOutlined /></ListItemIcon>

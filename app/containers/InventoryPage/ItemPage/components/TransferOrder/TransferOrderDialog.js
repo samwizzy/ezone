@@ -6,20 +6,21 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
 import {
+  makeStyles,
+  Button,
   Card,
   CardContent,
   CardActions,
+  Grid,
   Table,
   TableHead,
   TableBody,
   TableFooter,
   TableRow,
   TableCell,
-  Paper,
   TextField,
-  makeStyles,
-  Button,
-  Grid,
+  Typography,
+  Paper
 } from '@material-ui/core';
 import {
   MuiPickersUtilsProvider,
@@ -166,9 +167,19 @@ const TransferOrderDialog = props => {
   console.log(values, 'values');
   return (
     <div>
-      <Card>
+      <Card elevation={0}>
         <CardContent>
           <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Typography
+                variant="h5"
+                className={classes.title}
+                color="textPrimary"
+                gutterBottom
+              >
+                {transferOrderDialog.type === 'new' ? 'New Transfer Order' : 'Edit Transfer Order'}
+              </Typography>
+            </Grid>
             {transferOrderDialog.type === 'new' ? (
               <React.Fragment>
                 <Grid item xs={12}>
@@ -269,10 +280,7 @@ const TransferOrderDialog = props => {
                 <Grid item xs={12}>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
-                      <Table
-                        className={classes.table}
-                        aria-label="simple table"
-                      >
+                      <Table className={classes.table} aria-label="simple table">
                         <TableHead>
                           <TableRow>
                             <TableCell>Item Details</TableCell>

@@ -224,7 +224,7 @@ const SidebarConfig = [
       {
         id: 4,
         name: 'Investment Adjustment',
-        url: '/inventory/investment/adjustments',
+        url: '/inventory/inventory/adjustments',
         icon: 'person',
       },
     ],

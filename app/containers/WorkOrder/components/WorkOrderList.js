@@ -208,6 +208,7 @@ const WorkOrderList = props => {
     customToolbar: () => (
       <AddButton openNewWorkOrderDialogAction={openNewWorkOrderDialogAction} openVendorDialogAction={openVendorDialogAction} />
     ),
+    elevation: 0
   };
 
   if (loading) {

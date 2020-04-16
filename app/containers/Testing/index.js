@@ -1,6 +1,6 @@
 /**
  *
- * Crm
+ * Testing
  *
  */
 
@@ -14,35 +14,32 @@ import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectCrm from '../selectors';
-import reducer from '../reducer';
-import saga from '../saga';
-import messages from '../messages';
-import Dashboard from './Dashboard'
-import ModuleLayout from './../components/ModuleLayout'
+import makeSelectTesting from './selectors';
+import reducer from './reducer';
+import saga from './saga';
+import messages from './messages';
 
-export function CrmDashboard() {
-  useInjectReducer({ key: 'crm', reducer });
-  useInjectSaga({ key: 'crm', saga });
+export function Testing() {
+  useInjectReducer({ key: 'testing', reducer });
+  useInjectSaga({ key: 'testing', saga });
 
   return (
     <div>
       <Helmet>
-        <title>Crm - Dashboard</title>
-        <meta name="description" content="Description of Crm" />
+        <title>Testing</title>
+        <meta name="description" content="Description of Testing" />
       </Helmet>
-
-      <ModuleLayout>
-        <Dashboard />
-      </ModuleLayout>
+      <FormattedMessage {...messages.header} />
     </div>
   );
 }
 
-CrmDashboard.propTypes = {};
+Testing.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = createStructuredSelector({
-  crm: makeSelectCrm(),
+  testing: makeSelectTesting(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -59,4 +56,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(CrmDashboard);
+)(Testing);
