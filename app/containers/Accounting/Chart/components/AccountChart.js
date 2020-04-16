@@ -17,13 +17,8 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-// import { useInjectSaga } from 'utils/injectSaga';
-// import { useInjectReducer } from 'utils/injectReducer';
-// import reducer from '../../reducer';
-// import saga from '../../saga';
 // import LoadingIndicator from '../../../../components/LoadingIndicator';
 import { AddButton } from './AddButton';
-// import NewAccountDialog from '../../components/NewAccountDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -75,9 +70,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AccountChart = props => {
-  // useInjectReducer({ key: 'accounting', reducer });
-  // useInjectSaga({ key: 'accounting', saga });
-
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [account, setAccount] = React.useState('');
@@ -193,7 +185,7 @@ const AccountChart = props => {
                 onClose={handleClose}
               >
                 <MenuItem onClick={() => {
-                  editOpenAccountDialogAction(account);
+                  // editOpenAccountDialogAction(account);
                 }}>
                   Edit
                 </MenuItem>
@@ -201,7 +193,7 @@ const AccountChart = props => {
                   View Details
                 </MenuItem>
                 <MenuItem onClick={() => {
-                  deleteChartOfAccountAction(account);
+                  // deleteChartOfAccountAction(account);
                 }}>
                   Delete 
                 </MenuItem>
@@ -238,7 +230,6 @@ const AccountChart = props => {
 
   return (
     <React.Fragment>
-      {/* <NewAccountDialog /> */}
       <div className={classes.root}>
         <Grid container>
           <Grid item xs={12} md={8}>
@@ -257,14 +248,14 @@ const AccountChart = props => {
 
 AccountChart.propTypes = {
   // loading: PropTypes.bool,
-  // openNewAccountDialogAction: PropTypes.func,
+  openNewAccountDialogAction: PropTypes.func,
   // editOpenAccountDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
   // accountTypeData: Selectors.makeSelectAccountTypeData(),
-  // chartOfAccountData: Selectors.makeSelectGetChartOfAccountData(),
+  newAccountDialog: Selectors.makeSelectNewAccountDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
