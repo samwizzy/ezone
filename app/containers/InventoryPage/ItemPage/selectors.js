@@ -105,6 +105,18 @@ const makeSelectGetAllInventoryAdjustments = () =>
     subState => subState.getAllInventoryAdjustments,
   );
 
+const makeSelectGetAllItemsPerWarehouse = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.getAllItemsPerWarehouse,
+  );
+
+const makeSelectGetAllItemsPerWarehouseUuid = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.getAllItemsPerWarehouseUuid,
+  );
+
 export default makeSelectItemPage;
 export {
   selectItemPageDomain,
@@ -122,4 +134,6 @@ export {
   makeSelectInventoryAdjustmentDetails,
   makeSelectGetAllInventoryAdjustments,
   makeSelectMessage,
+  makeSelectGetAllItemsPerWarehouse,
+  makeSelectGetAllItemsPerWarehouseUuid,
 };

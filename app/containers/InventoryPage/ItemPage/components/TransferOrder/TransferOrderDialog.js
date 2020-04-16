@@ -8,7 +8,7 @@ import { Autocomplete } from '@material-ui/lab';
 import {
   makeStyles,
   Button,
-  Card, 
+  Card,
   CardContent,
   CardActions,
   Grid,
@@ -26,7 +26,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import AddIcon from '@material-ui/icons/Add'
+import AddIcon from '@material-ui/icons/Add';
 import DateFnsUtils from '@date-io/date-fns';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import * as Selectors from '../../selectors';
@@ -36,17 +36,17 @@ import TableTransfer from './TableTransfer';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   table: {
     marginTop: theme.spacing(2),
     '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& .MuiTableFooter-root': {
       '& .MuiTableCell-root': {
         border: 'none !important',
-      }
+      },
     },
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
@@ -61,8 +61,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   button: {
-    marginRight: theme.spacing(1)
-  }
+    marginRight: theme.spacing(1),
+  },
 }));
 
 const TransferOrderDialog = props => {
@@ -74,6 +74,8 @@ const TransferOrderDialog = props => {
     closeNewTransferOrderDialogAction,
     closeEditEmployeeDialogAction,
     dispatchCreateNewTransferOrderAction,
+    getAllItemsPerWarehouseAction,
+    getAllItemsPerWarehouse,
   } = props;
 
   const classes = useStyles();
@@ -114,9 +116,9 @@ const TransferOrderDialog = props => {
   };
 
   const handleQuantityChange = idx => e => {
-    const { value } = e.target;
+    const { name, value } = e.target;
     const newRow = rows;
-    newRow[idx].transferQuantity = parseFloat(value);
+    newRow[idx][name] = parseFloat(value);
     setRows(newRow);
   };
 
@@ -125,6 +127,7 @@ const TransferOrderDialog = props => {
     newRoww[idx] = {
       itemId: value.id,
       itemSku: value.sku,
+      sourceStock: value.unit,
     };
     setRows(newRoww);
   };
@@ -134,6 +137,8 @@ const TransferOrderDialog = props => {
       itemId: '',
       itemSku: '',
       transferQuantity: '',
+      sourceStock: '',
+      destinationStock: '',
     };
     setRows([...rows, item]);
   };
@@ -147,6 +152,7 @@ const TransferOrderDialog = props => {
   };
 
   const handleSourceChange = (evt, value) => {
+    getAllItemsPerWarehouseAction(value.uuid);
     setValues({ ...values, sourceWareHouseUuid: value.uuid });
   };
 
@@ -154,9 +160,11 @@ const TransferOrderDialog = props => {
     setValues({ ...values, destinationWarehouseUuId: value.uuid });
   };
 
-  console.log('inventory rows -> ', rows)
+  console.log(getAllItemsPerWarehouse, 'getAllItemsPerWarehouse');
+  // console.log('inventory rows -> ', rows);
 
-  // console.log(values, 'values');
+  console.log(rows, 'rows');
+  console.log(values, 'values');
   return (
     <div>
       <Card elevation={0}>
@@ -294,7 +302,7 @@ const TransferOrderDialog = props => {
                               <TableCell component="th" scope="row">
                                 <Autocomplete
                                   id="combo-itemCategory"
-                                  options={getAllItems}
+                                  options={getAllItemsPerWarehouse}
                                   getOptionLabel={option => option.itemName}
                                   onChange={(evt, ve) =>
                                     handleItemChange(evt, ve, id)
@@ -313,11 +321,15 @@ const TransferOrderDialog = props => {
                               </TableCell>
                               <TableCell align="center">
                                 <TextField
-                                  disabled
+                                  // disabled
                                   id="filled-disabled"
                                   label="Destination Stock"
-                                  defaultValue="0.00 Units"
+                                  defaultValue={row.destinationStock}
                                   variant="filled"
+                                  name="destinationStock"
+                                  // value={row.destinationStock}
+                                  onChange={evt => console.log(evt, 'evt')}
+                                  // onChange={(evt) => handleQuantityChange(id)}
                                 />
                               </TableCell>
                               <TableCell align="center">
@@ -327,6 +339,7 @@ const TransferOrderDialog = props => {
                                   label="Source Stock"
                                   defaultValue="0.00 Units"
                                   variant="filled"
+                                  name="sourceStock"
                                 />
                               </TableCell>
                               <TableCell align="center">
@@ -366,7 +379,6 @@ const TransferOrderDialog = props => {
                           </TableRow>
                         </TableFooter>
                       </Table>
-                      
                     </Grid>
                   </Grid>
                 </Grid>
@@ -420,6 +432,7 @@ TransferOrderDialog.propTypes = {
   getAllItems: PropTypes.array,
   dispatchCreateNewTransferOrderAction: PropTypes.func,
   closeNewTransferOrderDialogAction: PropTypes.func,
+  getAllItemsPerWarehouseAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -427,10 +440,13 @@ const mapStateToProps = createStructuredSelector({
   transferOrderDialog: Selectors.makeSelectTransferOrderDialog(),
   getAllWarehouses: Selectors.makeSelectGetAllWarehouses(),
   getAllItems: Selectors.makeSelectGetAllItems(),
+  getAllItemsPerWarehouse: Selectors.makeSelectGetAllItemsPerWarehouse(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    getAllItemsPerWarehouseAction: evt =>
+      dispatch(Actions.getAllItemsPerWarehouse(evt)),
     dispatchCreateNewTransferOrderAction: evt =>
       dispatch(Actions.createNewTransferOrder(evt)),
     closeNewTransferOrderDialogAction: () =>
