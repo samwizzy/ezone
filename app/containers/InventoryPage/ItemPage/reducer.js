@@ -7,6 +7,8 @@ import produce from 'immer';
 import * as Constants from './constants';
 
 export const initialState = {
+  getAllItemsPerWarehouse: [],
+  getAllItemsPerWarehouseUuid: {},
   message: false,
   newTransferOrderDetails: false,
   newItemDetails: false,
@@ -171,7 +173,6 @@ const itemPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_NEW_ITEM_SUCCESS: {
-        console.log(action.payload, 'action.payload');
         return {
           ...state,
           message: action.payload,
@@ -314,6 +315,29 @@ const itemPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_ALL_INVENTORY_ADJUSTMENT_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_ALL_ITEMS_PER_WAREHOUSE: {
+        return {
+          ...state,
+          getAllItemsPerWarehouseUuid: action.payload,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_ALL_ITEMS_PER_WAREHOUSE_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getAllItemsPerWarehouse: action.payload,
+        };
+      }
+      case Constants.GET_ALL_ITEMS_PER_WAREHOUSE_ERROR: {
         return {
           ...state,
           loading: false,
