@@ -11,6 +11,7 @@ import { withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import TransferOrderDetails from './TransferOrderDetails';
 import TransferOrderDialog from './TransferOrderDialog';
 import TransferOrdersList from './TransferOrdersList';
 import ModuleLayout from '../../../components/ModuleLayout';
@@ -33,7 +34,8 @@ function TransferOrderApp(props) {
             params.statusId == 'new'?
             <TransferOrderDialog />
             :
-            <TransferOrdersList />
+            params.statusId?
+            <TransferOrderDetails />:<TransferOrdersList />
             }
         </ModuleLayout>
     </div>

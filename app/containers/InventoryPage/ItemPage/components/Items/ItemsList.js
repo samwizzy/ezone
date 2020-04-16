@@ -10,6 +10,7 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import AddIcon from '@material-ui/icons/Add';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
@@ -23,6 +24,22 @@ import ViewItemDialog from './ViewItemDialog';
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1),
+  },
+  datatable: {
+    '& .MuiTableRow-root:hover': {
+      cursor: 'pointer'
+    },
+    '& .MuiTableHead-root': {
+      '& .MuiTableCell-head': {
+        color: theme.palette.common.white,
+      },
+      '& .MuiTableCell-root:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+      },
+      '& .MuiTableCell-root:nth-child(even)': {
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
+      },
+    },
   },
 }));
 
@@ -48,6 +65,14 @@ const ItemsList = props => {
   } = props;
 
   const columns = [
+    {
+      name: 'id',
+      label: ' ',
+      options: {
+        display: "excluded",
+        filter: true
+      },
+    },
     {
       name: 'Id',
       label: 'S/N',
@@ -139,6 +164,9 @@ const ItemsList = props => {
         New
       </Button>
     ),
+    onRowClick: (rowData, rowState) => {
+      props.history.push('/inventory/item/' + rowData[0])
+    },
   };
 
   if (loading) {
@@ -148,6 +176,7 @@ const ItemsList = props => {
   return (
     <React.Fragment>
       <MUIDataTable
+        className={classes.datatable}
         title="All Items"
         data={getAllItems}
         columns={columns}
