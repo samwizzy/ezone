@@ -17,14 +17,13 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import { useInjectSaga } from 'utils/injectSaga';
-import { useInjectReducer } from 'utils/injectReducer';
-import reducer from '../reducer';
-import saga from '../saga';
-import LoadingIndicator from '../../../components/LoadingIndicator';
-import { AddButton } from './AddButton';
-// import NewAccountDialog from './NewAccountDialog';
-import AddIcon from '@material-ui/icons/Add';
+// import { useInjectSaga } from 'utils/injectSaga';
+// import { useInjectReducer } from 'utils/injectReducer';
+// import reducer from '../../reducer';
+// import saga from '../../saga';
+// import LoadingIndicator from '../../../../components/LoadingIndicator';
+import { AddButton } from '../components/AddButton';
+// import NewAccountDialog from '../../components/NewAccountDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -76,8 +75,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AccountChart = props => {
-  useInjectReducer({ key: 'accounting', reducer });
-  useInjectSaga({ key: 'accounting', saga });
+  // useInjectReducer({ key: 'accounting', reducer });
+  // useInjectSaga({ key: 'accounting', saga });
 
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -97,21 +96,21 @@ const AccountChart = props => {
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    dispatchGetAllChartOfAccountTypeAction();
+    // dispatchGetAllChartOfAccountTypeAction();
   }, []);
 
   const {
-    loading,
-    openNewAccountDialogAction,
-    editOpenAccountDialogAction,
-    deleteChartOfAccountAction,
-    accountTypeData,
-    chartOfAccountData,
-    dispatchGetAllChartOfAccountTypeAction,
+    // loading,
+    // openNewAccountDialogAction,
+    // editOpenAccountDialogAction,
+    // deleteChartOfAccountAction,
+    // accountTypeData,
+    // chartOfAccountData,
+    // dispatchGetAllChartOfAccountTypeAction,
   } = props;
 
-  console.log('chartOfAccountData from chart --> ', chartOfAccountData);
-  console.log('accountTypeData --> ', accountTypeData);
+  // console.log('chartOfAccountData from chart --> ', chartOfAccountData);
+  // console.log('accountTypeData --> ', accountTypeData);
 
 
   const columns = [
@@ -219,22 +218,23 @@ const AccountChart = props => {
     responsive: 'scrollMaxHeight',
     selectableRows: 'none',
     customToolbar: () => (
-      <Button
-        variant="contained"
-        color="primary"
-        size="small"
-        className={classes.button}
-        startIcon={<AddIcon />}
-        onClick={() => openNewAccountDialogAction()}
-      >
-        New
-      </Button>
+      // <Button
+      //   variant="contained"
+      //   color="primary"
+      //   size="small"
+      //   className={classes.button}
+      //   startIcon={<AddIcon />}
+      //   onClick={() => openNewAccountDialogAction()}
+      // >
+      //   New
+      // </Button>
+      <AddButton />
     ),
   };
 
-  if (loading) {
-    return <LoadingIndicator />;
-  }
+  // if (loading) {
+  //   return <LoadingIndicator />;
+  // }
 
   return (
     <React.Fragment>
@@ -243,8 +243,8 @@ const AccountChart = props => {
         <Grid container>
           <Grid item xs={12} md={8}>
             <MUIDataTable
-              title="Charts Of Accounts"
-              data={chartOfAccountData}
+              title="Account Charts"
+              // data={chartOfAccountData}
               columns={columns}
               options={options}
             />
@@ -256,23 +256,23 @@ const AccountChart = props => {
 };
 
 AccountChart.propTypes = {
-  loading: PropTypes.bool,
-  openNewAccountDialogAction: PropTypes.func,
-  editOpenAccountDialogAction: PropTypes.func,
+  // loading: PropTypes.bool,
+  // openNewAccountDialogAction: PropTypes.func,
+  // editOpenAccountDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(),
-  accountTypeData: Selectors.makeSelectAccountTypeData(),
-  chartOfAccountData: Selectors.makeSelectGetChartOfAccountData(),
+  // loading: Selectors.makeSelectLoading(),
+  // accountTypeData: Selectors.makeSelectAccountTypeData(),
+  // chartOfAccountData: Selectors.makeSelectGetChartOfAccountData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchGetAllChartOfAccountTypeAction: () => dispatch(Actions.getAllChartOfAccountTypeAction()),
-    openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
-    editOpenAccountDialogAction: evt => dispatch(Actions.editOpenAccountDialog(evt)),
-    deleteChartOfAccountAction: evt => dispatch(Actions.deleteChartOfAccountAction(evt)),
+    // dispatchGetAllChartOfAccountTypeAction: () => dispatch(Actions.getAllChartOfAccountTypeAction()),
+    // openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
+    // editOpenAccountDialogAction: evt => dispatch(Actions.editOpenAccountDialog(evt)),
+    // deleteChartOfAccountAction: evt => dispatch(Actions.deleteChartOfAccountAction(evt)),
   };
 }
 

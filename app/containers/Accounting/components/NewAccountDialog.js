@@ -17,8 +17,8 @@ import {
   Divider,
   Slide,
 } from '@material-ui/core';
-import * as Selectors from '../selectors';
-import * as Actions from '../actions';
+import * as Selectors from '../Chart/selectors';
+import * as Actions from '../Chart/actions';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
