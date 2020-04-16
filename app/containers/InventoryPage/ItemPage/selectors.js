@@ -27,6 +27,12 @@ const makeSelectLoading = () =>
     subState => subState.loading,
   );
 
+const makeSelectMessage = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.message,
+  );
+
 const makeSelectError = () =>
   createSelector(
     selectItemPageDomain,
@@ -115,4 +121,5 @@ export {
   makeSelectInventoryAdjustDialog,
   makeSelectInventoryAdjustmentDetails,
   makeSelectGetAllInventoryAdjustments,
+  makeSelectMessage,
 };

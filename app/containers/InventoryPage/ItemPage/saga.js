@@ -1,4 +1,5 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
+import { push } from 'connected-react-router';
 import request from '../../../utils/request';
 import * as Endpoints from '../../../components/Endpoints';
 import * as AppSelectors from '../../App/selectors';
@@ -55,9 +56,10 @@ export function* createNewItem() {
       }),
     });
 
-    // yield put(Actions.createNewItemSuccess(createNewItemResponse));
+    yield put(Actions.createNewItemSuccess(createNewItemResponse));
     yield put(Actions.getAllItems());
-    yield put(Actions.closeNewItemDialog());
+    yield put(push('/inventory/items'));
+    // yield put(Actions.closeNewItemDialog());
 
     // if (createNewEmployeeResponse.success === true) {
     //   yield put(

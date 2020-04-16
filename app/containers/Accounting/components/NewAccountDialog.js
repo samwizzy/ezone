@@ -1,11 +1,10 @@
 /* eslint-disable no-nested-ternary */
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
-
 import {
   TextField,
   makeStyles,
@@ -13,12 +12,11 @@ import {
   Dialog,
   DialogContent,
   DialogActions,
+  MenuItem,
   DialogTitle,
   Divider,
   Slide,
-  Grid,
 } from '@material-ui/core';
-
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
 import LoadingIndicator from '../../../components/LoadingIndicator';
@@ -35,16 +33,27 @@ const useStyles = makeStyles(theme => ({
     marginTop: 19,
   },
   menu: {
-    width: 100,
+    width: 200,
   },
 }));
 
+const gender = [
+  {
+    value: 'Nigeria',
+    label: 'Nigeria',
+  },
+  {
+    value: 'Ghana',
+    label: 'Ghana',
+  },
+];
+
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="right" ref={ref} {...props} />;
+  return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const NewAccountDialog = props => {
-  const { 
+  const {
     loading, 
     accountDialog, 
     closeNewAccountDialogAction,
@@ -55,19 +64,6 @@ const NewAccountDialog = props => {
     updateChartOfAccountAction 
   } = props;
 
-  const classes = useStyles();
-
-  const [values, setValues] = React.useState({
-    accountName: "",
-    accountNumber: "",
-    accountType: "",
-    detailType: "",
-    description: "",
-    ezoneBalance: "",
-    orgId: "",
-    ref: ""
-  });
-
   React.useEffect(() => {
     if (accountDialog.type === 'edit') {
       const {accountName, accountNumber, accountType, detailType, description, ezoneBalance, orgId, ref} = accountDialog.data;
@@ -75,24 +71,53 @@ const NewAccountDialog = props => {
     }
   }, [accountDialog])
 
-  console.log('Selected value: ', values);
+  const classes = useStyles();
+  const [values, setValues] = React.useState({
+    name: '',
+    firstStreet: '',
+    secondStreet: '',
+    city: '',
+    state: '',
+    zipCode: '',
+    warehousePhoneNumber: '',
+    wareHouseContactEmail: '',
+    headOfWareHouseId: '',
+  });
+
+  const canBeSubmitted = () => {
+    const {
+      name,
+      firstStreet,
+      secondStreet,
+      city,
+      state,
+      zipCode,
+      warehousePhoneNumber,
+      wareHouseContactEmail,
+      headOfWareHouseId,
+    } = values;
+    return (
+      name !== '' &&
+      firstStreet !== '' &&
+      secondStreet !== '' &&
+      city !== '' &&
+      state !== '' &&
+      zipCode !== '' &&
+      warehousePhoneNumber !== '' &&
+      wareHouseContactEmail !== '' &&
+      headOfWareHouseId !== ''
+    );
+  };
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const handleSelectChange = (name, value) => {
-    console.log('value is -0-> ', value);
-    setValues({ ...values, accountType: value.type });
+  const handleEmployeeChange = (evt, value) => {
+    setValues({ ...values, headOfWareHouseId: value.id });
   };
 
-  const handleDetailTypeSelectChange = (name, value) => {
-    // Call detail type api
-    // dispatchGetDetailTypeAction(value);
-    setValues({ ...values, detailType: value.name });
-  };
-
-
+  console.log(accountDialog, 'accountDialog');
   return (
     <div>
       <Dialog
@@ -100,268 +125,280 @@ const NewAccountDialog = props => {
         onClose={closeNewAccountDialogAction}
         keepMounted
         TransitionComponent={Transition}
-        maxWidth={'xs'}
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {accountDialog.type === 'new' ? 'New Account' : 'Edit Account'}
+          {accountDialog.type === 'new' ? 'New Warehouse' : 'Edit Warehouse'}
         </DialogTitle>
+
         <Divider />
+
         <DialogContent>
           {accountDialog.type === 'new' ? (
-            <form className={classes.root}>
-            <Grid container spacing={1}>
-              <Grid item xs={12}>
-                <TextField
-                  id="standard-accountName"
-                  label="Account Name"
-                  type="name"
-                  variant="outlined"
-                  size="small"
-                  className={classes.textField}
-                  value={values.accountName}
-                  onChange={handleChange('accountName')}
-                  margin="normal"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  id="standard-accountNumber"
-                  label="Account Code"
-                  type="number"
-                  variant="outlined"
-                  size="small"
-                  className={classes.textField}
-                  value={values.accountNumber}
-                  onChange={handleChange('accountNumber')}
-                  margin="normal"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  id="standard-ezoneBalance"
-                  label="E-Zone Balance"
-                  type="number"
-                  variant="outlined"
-                  size="small"
-                  className={classes.textField}
-                  value={values.ezoneBalance}
-                  onChange={handleChange('ezoneBalance')}
-                  margin="normal"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  id="standard-ref"
-                  label="Reference Code"
-                  type="name"
-                  variant="outlined"
-                  size="small"
-                  className={classes.textField}
-                  value={values.ref}
-                  onChange={handleChange('ref')}
-                  margin="normal"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Autocomplete
-                  id="combo-box-demo"
-                  size="small"
-                  options={accountTypeData}
-                  getOptionLabel={option => option.type}
-                  onChange={(evt, value) => handleSelectChange(evt, value)}
-                  renderInput={params => (
-                    <TextField
-                      {...params}
-                      label="Select Account Type"
-                      className={classes.textField}
-                      variant="outlined"
-                      placeholder="Search"
-                      fullWidth
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Autocomplete
-                  id="combo-box-demo"
-                  size="small"
-                  options={detailTypeData}
-                  getOptionLabel={option => option.name}
-                  onChange={(evt, value) => handleDetailTypeSelectChange(evt, value)}
-                  renderInput={params => (
-                    <TextField
-                      {...params}
-                      label="Select Detail Type"
-                      className={classes.textField}
-                      variant="outlined"
-                      placeholder="Search"
-                      fullWidth
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  id="standard-description"
-                  label="Description"
-                  variant="outlined"
-                  size="small"
-                  className={classes.textField}
-                  value={values.description}
-                  onChange={handleChange('description')}
-                  margin="normal"
-                  fullWidth
-                  rows={2}
-                  multiline
-                />
-              </Grid>
-            </Grid>
-            </form>
+            <div>
+              <TextField
+                id="standard-Name"
+                label="Warehouse Name"
+                variant="outlined"
+                className={classes.textField}
+                value={values.name || ''}
+                onChange={handleChange('name')}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                id="standard-firstStreet"
+                label="First Street"
+                variant="outlined"
+                className={classes.textField}
+                value={values.firstStreet || ''}
+                onChange={handleChange('firstStreet')}
+                margin="normal"
+                fullWidth
+                rows={2}
+                multiline
+              />
+              <TextField
+                id="standard-secondStreet"
+                label="Second Street"
+                variant="outlined"
+                className={classes.textField}
+                value={values.secondStreet || ''}
+                onChange={handleChange('secondStreet')}
+                margin="normal"
+                fullWidth
+                rows={2}
+                multiline
+              />
+              <TextField
+                id="standard-city"
+                label="City"
+                variant="outlined"
+                className={classes.textField}
+                value={values.city || ''}
+                onChange={handleChange('city')}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                id="standard-state"
+                label="State"
+                variant="outlined"
+                className={classes.textField}
+                margin="normal"
+                value={values.state ? values.state : ''}
+                onChange={handleChange('state')}
+                fullWidth
+              />
+              <TextField
+                id="standard-zipCode"
+                label="zipCode"
+                type="number"
+                variant="outlined"
+                className={classes.textField}
+                value={values.zipCode || ''}
+                onChange={handleChange('zipCode')}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                id="standard-warehousePhoneNumber"
+                label="Warehouse Phone Number"
+                variant="outlined"
+                className={classes.textField}
+                value={values.warehousePhoneNumber || ''}
+                onChange={handleChange('warehousePhoneNumber')}
+                margin="normal"
+                type="number"
+                fullWidth
+              />
+              <TextField
+                id="standard-wareHouseContactEmail"
+                label="WareHouse Contact Email"
+                type="email"
+                variant="outlined"
+                className={classes.textField}
+                value={values.wareHouseContactEmail || ''}
+                onChange={handleChange('wareHouseContactEmail')}
+                margin="normal"
+                fullWidth
+              />
+              <Autocomplete
+                id="combo-headOfWareHouseId"
+                options={[]}
+                getOptionLabel={option => option.firstName}
+                onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Search Head Of WareHouse Email Address"
+                    variant="outlined"
+                    placeholder="Search Head Of WareHouse Email Address"
+                    fullWidth
+                  />
+                )}
+              />
+            </div>
           ) : (
-            <form className={classes.root}>
-            <Grid container spacing={1}>
-              <Grid item xs={12}>
-                <TextField
-                  id="standard-accountName"
-                  label="Account Name"
-                  type="name"
-                  variant="outlined"
-                  size="small"
-                  className={classes.textField}
-                  value={values.accountName}
-                  onChange={handleChange('accountName')}
-                  margin="normal"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  id="standard-accountNumber"
-                  label="Account Code"
-                  type="number"
-                  variant="outlined"
-                  size="small"
-                  className={classes.textField}
-                  value={values.accountNumber}
-                  onChange={handleChange('accountNumber')}
-                  margin="normal"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  id="standard-ezoneBalance"
-                  label="E-Zone Balance"
-                  type="number"
-                  variant="outlined"
-                  size="small"
-                  className={classes.textField}
-                  value={values.ezoneBalance}
-                  onChange={handleChange('ezoneBalance')}
-                  margin="normal"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  id="standard-ref"
-                  label="Reference Code"
-                  type="name"
-                  variant="outlined"
-                  size="small"
-                  className={classes.textField}
-                  value={values.ref}
-                  onChange={handleChange('ref')}
-                  margin="normal"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Autocomplete
-                  id="combo-box-demo"
-                  size="small"
-                  options={accountTypeData}
-                  getOptionLabel={option => option.type}
-                  onChange={(evt, value) => handleSelectChange(evt, value)}
-                  renderInput={params => (
-                    <TextField
-                      {...params}
-                      label="Select Account Type"
-                      className={classes.textField}
-                      variant="outlined"
-                      placeholder="Search"
-                      fullWidth
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Autocomplete
-                  id="combo-box-demo"
-                  size="small"
-                  options={detailTypeData}
-                  getOptionLabel={option => option.name}
-                  onChange={(evt, value) => handleDetailTypeSelectChange(evt, value)}
-                  renderInput={params => (
-                    <TextField
-                      {...params}
-                      label="Select Detail Type"
-                      className={classes.textField}
-                      variant="outlined"
-                      placeholder="Search"
-                      fullWidth
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  id="standard-description"
-                  label="Description"
-                  variant="outlined"
-                  size="small"
-                  className={classes.textField}
-                  value={values.description}
-                  onChange={handleChange('description')}
-                  margin="normal"
-                  fullWidth
-                  rows={2}
-                  multiline
-                />
-              </Grid>
-            </Grid>
-            </form>
+            <div>
+              <TextField
+                id="standard-Name"
+                label="Warehouse Name"
+                variant="outlined"
+                className={classes.textField}
+                value={values.name || ''}
+                onChange={handleChange('name')}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                id="standard-firstStreet"
+                label="First Street"
+                variant="outlined"
+                className={classes.textField}
+                value={values.firstStreet || ''}
+                onChange={handleChange('firstStreet')}
+                margin="normal"
+                fullWidth
+                rows={2}
+                multiline
+              />
+              <TextField
+                id="standard-secondStreet"
+                label="Second Street"
+                variant="outlined"
+                className={classes.textField}
+                value={values.secondStreet || ''}
+                onChange={handleChange('secondStreet')}
+                margin="normal"
+                fullWidth
+                rows={2}
+                multiline
+              />
+              <TextField
+                id="standard-city"
+                label="City"
+                variant="outlined"
+                className={classes.textField}
+                value={values.city || ''}
+                onChange={handleChange('city')}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                id="standard-state"
+                label="State"
+                variant="outlined"
+                className={classes.textField}
+                margin="normal"
+                value={values.state ? values.state : ''}
+                onChange={handleChange('state')}
+                fullWidth
+              />
+              <TextField
+                id="standard-zipCode"
+                label="zipCode"
+                type="number"
+                variant="outlined"
+                className={classes.textField}
+                value={values.zipCode || ''}
+                onChange={handleChange('zipCode')}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                id="standard-warehousePhoneNumber"
+                label="Warehouse Phone Number"
+                variant="outlined"
+                className={classes.textField}
+                value={values.warehousePhoneNumber || ''}
+                onChange={handleChange('warehousePhoneNumber')}
+                margin="normal"
+                type="number"
+                fullWidth
+              />
+              <TextField
+                id="standard-wareHouseContactEmail"
+                label="WareHouse Contact Email"
+                type="email"
+                variant="outlined"
+                className={classes.textField}
+                value={values.wareHouseContactEmail || ''}
+                onChange={handleChange('wareHouseContactEmail')}
+                margin="normal"
+                fullWidth
+              />
+              <Autocomplete
+                id="combo-headOfWareHouseId"
+                options={[]}
+                getOptionLabel={option => option.firstName}
+                onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Search Head Of WareHouse Email Address"
+                    variant="outlined"
+                    placeholder="Search Head Of WareHouse Email Address"
+                    fullWidth
+                  />
+                )}
+              />
+            </div>
           )}
         </DialogContent>
 
         <DialogActions>
-          {loading ? (
-            <LoadingIndicator />
+          {accountDialog.type === 'new' ? (
+            <div>
+              {loading ? (
+                <LoadingIndicator />
+              ) : (
+                <Button
+                  onClick={() => {
+                    createChartOfAccountAction(values);
+                  }}
+                  color="primary"
+                  variant="contained"
+                  disabled={!canBeSubmitted()}
+                >
+                  Save
+                </Button>
+              )}
+
+              <Button
+                onClick={() => closeNewAccountDialogAction()}
+                color="primary"
+                variant="contained"
+              >
+                Cancel
+              </Button>
+            </div>
           ) : (
-            <Button
-              onClick={() => {
-                accountDialog.type === 'new' ? createChartOfAccountAction(values) : updateChartOfAccountAction(values);
-                // createChartOfAccountAction(values);
-              }}
-              color="primary"
-              // variant="contained"
-              // disabled={!canBeSubmitted()}
-            >
-              Save Account
-            </Button>
+            <div>
+              {loading ? (
+                <LoadingIndicator />
+              ) : (
+                <Button
+                  onClick={() => {
+                    updateChartOfAccountAction(values);
+                  }}
+                  color="primary"
+                  variant="contained"
+                  disabled={!canBeSubmitted()}
+                >
+                  Update
+                </Button>
+              )}
+
+              <Button
+                onClick={() => closeNewAccountDialogAction()}
+                color="primary"
+                variant="contained"
+              >
+                Cancel
+              </Button>
+            </div>
           )}
-          <Button
-            onClick={closeNewAccountDialogAction}
-            color="inherit"
-            // variant="contained"
-          >
-            Cancel
-          </Button>
         </DialogActions>
       </Dialog>
     </div>

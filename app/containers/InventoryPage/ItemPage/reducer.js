@@ -7,6 +7,7 @@ import produce from 'immer';
 import * as Constants from './constants';
 
 export const initialState = {
+  message: false,
   newTransferOrderDetails: false,
   newItemDetails: false,
   newInventoryAdjustmentDetails: false,
@@ -170,8 +171,10 @@ const itemPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_NEW_ITEM_SUCCESS: {
+        console.log(action.payload, 'action.payload');
         return {
           ...state,
+          message: action.payload,
           loading: false,
           error: false,
         };

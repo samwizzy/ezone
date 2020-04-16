@@ -2,6 +2,7 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter, Redirect } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
@@ -48,6 +49,8 @@ const category = [
 
 const ItemDialog = props => {
   const {
+    history,
+    message,
     loading,
     itemDialog,
     getAllWarehouses,
@@ -121,6 +124,10 @@ const ItemDialog = props => {
   };
 
   console.log(values, 'values');
+
+  // if (message.id) {
+  //   return <Redirect to="/inventory/items" />;
+  // }
 
   return (
     <div>
@@ -578,14 +585,14 @@ const ItemDialog = props => {
                   Save
                 </Button>
               )}
-              <Button
+              {/* <Button
                 className={classes.button}
                 onClick={() => closeNewItemDialogAction()}
                 color="primary"
                 variant="contained"
               >
                 Cancel
-              </Button>
+              </Button> */}
             </Grid>
           </Grid>
         </CardActions>
@@ -596,6 +603,7 @@ const ItemDialog = props => {
 
 ItemDialog.propTypes = {
   loading: PropTypes.bool,
+  message: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
   itemDialog: PropTypes.object,
   getAllWarehouses: PropTypes.array,
   dispatchCreateNewItemAction: PropTypes.func,
@@ -604,6 +612,7 @@ ItemDialog.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
+  message: Selectors.makeSelectMessage(),
   itemDialog: Selectors.makeSelectItemDialog(),
   getAllWarehouses: Selectors.makeSelectGetAllWarehouses(),
 });
@@ -622,6 +631,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(ItemDialog);

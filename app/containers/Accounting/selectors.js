@@ -22,6 +22,7 @@ const makeSelectAccounting = () =>
   );
 
 const makeSelectNewAccountDialog = () =>
+  console.log('makeSelectNewAccountDialog');
   createSelector(
     selectAccountingDomain,
     substate => substate.accountDialog,
