@@ -19,7 +19,7 @@ import makeSelectAccounting from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import AccountChart from './components/AccountChart';
+// import AccountChart from './Chart/components/AccountChart';
 // import AccountJournal from './components/AccountJournal';
 // import JournalListing from './components/JournalListing';
 // import NewAccountDialog from './components/NewAccountDialog';
@@ -53,17 +53,17 @@ export function Accounting(props) {
   console.log('loading', loading);
   console.log('accountingSetupData index.js file', accountingSetupData);
 
-  // return <Chart />
+  return <Chart />
 
-  if (loading) {
-    return <LoadingIndicator />;
-  }
+  // if (loading) {
+  //   return <LoadingIndicator />;
+  // }
 
-  if (accountingSetupData.id) {
-    return <Dashboard />;
-  }
+  // if (accountingSetupData.id) {
+  //   return <Dashboard />;
+  // }
 
-  return <AccountSetting />;
+  // return <AccountSetting />;
 }
 
 Accounting.propTypes = {

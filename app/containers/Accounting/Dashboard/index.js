@@ -25,9 +25,9 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import * as AppSelectors from './../../App/selectors';
+import * as AppSelectors from '../../App/selectors';
 import moment from 'moment'
-import ModuleLayout from './../components/ModuleLayout'
+import ModuleLayout from '../components/ModuleLayout'
 import Widget1 from './widgets/Widget1'
 import Widget2 from './widgets/Widget2'
 import Widget3 from './widgets/Widget3'

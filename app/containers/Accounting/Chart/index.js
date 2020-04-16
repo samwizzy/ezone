@@ -10,21 +10,22 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import ModuleLayout from './../components/ModuleLayout'
-import AccountDetails from './AccountDetails'
+import ModuleLayout from '../components/ModuleLayout'
+import AccountDetails from './components/AccountDetails';
+import AccountChart from './components/AccountChart';
 
-const AccountChartApp = props => {
+const Chart = props => {
   useInjectReducer({ key: 'accounting', reducer });
   useInjectSaga({ key: 'accounting', saga });
 
   return (
       <ModuleLayout>
-        <AccountDetails />
+        <AccountChart />
       </ModuleLayout>
   );
 };
 
-AccountChartApp.propTypes = {
+Chart.propTypes = {
   loading: PropTypes.bool,
 };
 
@@ -44,4 +45,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(AccountChartApp);
+)(Chart);

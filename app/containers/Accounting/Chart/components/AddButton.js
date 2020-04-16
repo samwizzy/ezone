@@ -6,7 +6,7 @@ import { compose } from 'redux';
 
 import { IconButton, Tooltip, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
-import { Add } from '@material-ui/icons';
+import AddIcon from '@material-ui/icons/Add';
 import * as Actions from '../actions';
 
 const defaultToolbarStyles = {
@@ -19,11 +19,15 @@ export function AddButton(props) {
 
   return (
     <React.Fragment>
-      <Tooltip title="Create Account">
+      <Tooltip title="Create New Chart">
         <Button
           variant="contained"
           color="primary"
-          onClick={() => openNewAccountDialogAction() }
+          startIcon={<AddIcon />}
+          onClick={() => {
+            console.log('openNewAccountDialogAction triggered');
+            openNewAccountDialogAction();
+          }}
         >
           New Account
         </Button>
