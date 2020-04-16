@@ -23,7 +23,8 @@ import reducer from '../reducer';
 import saga from '../saga';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import { AddButton } from './AddButton';
-
+// import NewAccountDialog from './NewAccountDialog';
+import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -218,9 +219,16 @@ const AccountChart = props => {
     responsive: 'scrollMaxHeight',
     selectableRows: 'none',
     customToolbar: () => (
-      <AddButton 
-        openNewAccountDialogAction={openNewAccountDialogAction} 
-      />
+      <Button
+        variant="contained"
+        color="primary"
+        size="small"
+        className={classes.button}
+        startIcon={<AddIcon />}
+        onClick={() => openNewAccountDialogAction()}
+      >
+        New
+      </Button>
     ),
   };
 
@@ -230,6 +238,7 @@ const AccountChart = props => {
 
   return (
     <React.Fragment>
+      {/* <NewAccountDialog /> */}
       <div className={classes.root}>
         <Grid container>
           <Grid item xs={12} md={8}>

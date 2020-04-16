@@ -125,9 +125,9 @@ const ItemDialog = props => {
 
   console.log(values, 'values');
 
-  if (message.id) {
-    return <Redirect to="/inventory/items" />;
-  }
+  // if (message.id) {
+  //   return <Redirect to="/inventory/items" />;
+  // }
 
   return (
     <div>

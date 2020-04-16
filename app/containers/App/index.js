@@ -62,7 +62,7 @@ import CrmDashboard from '../Crm/Dashboard/Loadable';
 import CrmContacts from '../Crm/Contacts/Loadable';
 import CrmCompanies from '../Crm/Companies/Loadable';
 
-// import { messaging } from '../../utils/firebase-notification';
+import { messaging } from '../../utils/firebase-notification';
 
 import { Auth } from '../../auth';
 
@@ -70,27 +70,27 @@ const App = (props) => {
 
   const { currentUser, accessToken } = props;
 
-  // useEffect(() => {
-  //   messaging.requestPermission()
-  //   .then(async function() {
-	// 		await messaging.getToken().then(token => {
-  //       fetch('http://64.20.51.173/gateway/utilityserv/api/v1/fcm/update_client_fcm_token',{
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: `Bearer ${accessToken}`,
-  //         },
-  //         body: JSON.stringify({ sessionId: token, userUuid: currentUser.uuId }),
-  //       })
-  //       .then(response => response.json())
-  //       // .then(data => console.log(data, 'dont bother for this response'));
-  //     });
-  //     })
-  //   .catch(function(err) {
-  //     console.log("Unable to get permission to notify.", err);
-  //   });
-  //   // navigator.serviceWorker.addEventListener("message", (message) => console.log(message));
-  // }, []);
+  useEffect(() => {
+    messaging.requestPermission()
+    .then(async function() {
+			await messaging.getToken().then(token => {
+        fetch('https://dev.ezoneapps.com/gateway/utilityserv/api/v1/fcm/update_client_fcm_token',{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({ sessionId: token, userUuid: currentUser.uuId }),
+        })
+        .then(response => response.json())
+        // .then(data => console.log(data, 'dont bother for this response'));
+      });
+      })
+    .catch(function(err) {
+      console.log("Unable to get permission to notify.", err);
+    });
+    // navigator.serviceWorker.addEventListener("message", (message) => console.log(message));
+  }, []);
 
   return (
     <div>
