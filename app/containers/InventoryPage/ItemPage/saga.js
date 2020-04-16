@@ -241,8 +241,53 @@ export function* getAllInventoryAdjusts() {
   }
 }
 
+export function* getAllItemsPerWarehouse() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const itemsPerWarehouseUuid = yield select(
+    Selectors.makeSelectGetAllItemsPerWarehouseUuid(),
+  );
+
+  console.log(itemsPerWarehouseUuid, 'itemsPerWarehouseUuid');
+
+  const requestURL = `${
+    Endpoints.GetAllItemsPerWarehouseApi
+  }/${itemsPerWarehouseUuid}`;
+
+  try {
+    const getAllItemsPerWarehouseResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(
+      getAllItemsPerWarehouseResponse,
+      'getAllInventoryAdjustResponse',
+    );
+
+    yield put(
+      Actions.getAllItemsPerWarehouseSuccess(getAllItemsPerWarehouseResponse),
+    );
+  } catch (err) {
+    yield put(Actions.getAllItemsPerWarehouseError(err));
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: `${err}`,
+    //     status: 'error',
+    //   }),
+    // );
+  }
+}
+
 // Individual exports for testing
 export default function* itemPageSaga() {
+  yield takeLatest(
+    Constants.GET_ALL_ITEMS_PER_WAREHOUSE,
+    getAllItemsPerWarehouse,
+  );
   yield takeLatest(Constants.GET_ALL_TRANSFER_ORDER, getAllTransferOrder);
   yield takeLatest(Constants.GET_ALL_ITEMS, getAllItems);
   yield takeLatest(Constants.CREATE_NEW_ITEM, createNewItem);

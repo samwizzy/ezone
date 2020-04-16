@@ -151,6 +151,7 @@ export const GetAllItems = `${BaseUrl}/inventoryserv/api/v1/get_all_items`;
 // Transfer Order APIs
 export const CreateNewTransferOrderPerWarehouseApi = `${BaseUrl}/inventoryserv/api/v1/add_transfer_order_for_one_warehouse`;
 export const GetAllTransferOrderApi = `${BaseUrl}/inventoryserv/api/v1/get_all_transfer_orders`;
+export const GetAllItemsPerWarehouseApi = `${BaseUrl}/inventoryserv/api/v1/get_all_items`;
 
 // Transfer Order APIs
 export const CreateNewInventoryAdjustApi = `${BaseUrl}/inventoryserv/api/v1/do_many_adjustments`;
