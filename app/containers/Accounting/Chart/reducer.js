@@ -19,7 +19,7 @@ export const initialState = {
 };
 
 /* eslint-disable default-case, no-param-reassign */
-const chartReducer = (state = initialState, action) =>
+const accountChartReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
 
@@ -52,4 +52,4 @@ const chartReducer = (state = initialState, action) =>
     }
   });
 
-export default chartReducer;
+export default accountChartReducer;

@@ -30,7 +30,7 @@ export function* getDashBoardDataSaga() {
 
 
 // Individual exports for testing
-export default function* AccDashboardSaga() {
+export default function* AccountChartSaga() {
   // See example in containers/HomePage/saga.js
   yield takeLatest(Constants.DEFAULT_ACTION, getDashBoardDataSaga);
 }

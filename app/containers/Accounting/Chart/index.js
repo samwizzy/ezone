@@ -15,8 +15,8 @@ import AccountDetails from './components/AccountDetails';
 import AccountChart from './components/AccountChart';
 
 const Chart = props => {
-  useInjectReducer({ key: 'accounting', reducer });
-  useInjectSaga({ key: 'accounting', saga });
+  useInjectReducer({ key: 'accountChart', reducer });
+  useInjectSaga({ key: 'accountChart', saga });
 
   return (
       <ModuleLayout>
