@@ -7,6 +7,7 @@ import {
   makeStyles,
   AppBar,
   Toolbar,
+  Paper
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { withRouter, NavLink } from 'react-router-dom';
@@ -32,11 +33,14 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(4, 0),
+    padding: theme.spacing(2, 0)
   },
   toolbar: {
     display: 'flex',
     justifyContent: 'space-between',
+    "& .MuiIconButton-label": {
+      color: theme.palette.common.white,
+    },
     '& > div': {
       display: 'flex',
     },
@@ -102,9 +106,9 @@ function MenuBar(props) {
       </AppBar>
 
       <main className={classes.content}>
-        <Container>
+        <Paper square elevation={0}>
           {props.content}
-        </Container>
+        </Paper>
       </main>
     </div>
   );

@@ -48,12 +48,15 @@ const useStyles = makeStyles(theme => ({
     width: 24,
     height: 24,
     padding: 0,
-    '&.delete': { color: theme.status.danger},
+    '&.delete': { color: theme.status.danger },
   },
   list: {
     "& .MuiListItemIcon-root": {
       minWidth: "40px !important"
     },
+    borderRight: `1px solid ${theme.palette.grey[200]}`,
+    minHeight: `calc(100vh - 128px)`,
+    padding: theme.spacing(2, 0)
   },
   status: {
     width: 14,

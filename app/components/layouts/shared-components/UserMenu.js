@@ -1,5 +1,6 @@
 import React, { Component, useState } from 'react';
 import {
+  makeStyles,
   Avatar,
   Badge,
   Button,
@@ -20,8 +21,20 @@ import _ from 'lodash';
 import * as AppSelectors from '../../../containers/App/selectors';
 import * as AppActions from '../../../containers/App/actions';
 
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    "& .MuiIconButton-label": {
+      color: theme.palette.common.white,
+    },
+    "& .MuiButton-label": {
+      color: theme.palette.common.white,
+    },
+  }
+}))
 // class UserMenu extends Component {
 const UserMenu = props => {
+  const classes = useStyles()
   //   state = {
   //     userMenu: null,
   //   };
@@ -49,7 +62,7 @@ const UserMenu = props => {
 
   return (
     <React.Fragment>
-      <div>
+      <div className={classes.root}>
         <IconButton aria-label="show 17 new notifications" color="inherit">
           <Badge badgeContent={1} color="secondary">
             <NotificationsIcon />

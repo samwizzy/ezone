@@ -18,8 +18,10 @@ import makeSelectCrm from '../selectors';
 import reducer from '../reducer';
 import saga from '../saga';
 import messages from '../messages';
+import Dashboard from './Dashboard'
+import ModuleLayout from './../components/ModuleLayout'
 
-export function Crm() {
+export function CrmDashboard() {
   useInjectReducer({ key: 'crm', reducer });
   useInjectSaga({ key: 'crm', saga });
 
@@ -29,14 +31,15 @@ export function Crm() {
         <title>Crm - Dashboard</title>
         <meta name="description" content="Description of Crm" />
       </Helmet>
-      <FormattedMessage {...messages.header} />
+
+      <ModuleLayout>
+        <Dashboard />
+      </ModuleLayout>
     </div>
   );
 }
 
-Crm.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
+CrmDashboard.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
   crm: makeSelectCrm(),
@@ -56,4 +59,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(Crm);
+)(CrmDashboard);

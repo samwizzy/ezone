@@ -17,7 +17,7 @@ import * as Selectors from '../../selectors';
 import GrainIcon from '@material-ui/icons/Grain';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import Adjust from '@material-ui/icons/Adjust';
-import EditSharp from '@material-ui/icons/EditSharp';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import LabelOutlined from '@material-ui/icons/LabelOutlined';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 import Add from '@material-ui/icons/Add';
@@ -105,22 +105,21 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3, 0),
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
   },
   icon: {
-    width: 14,
-    height: 14,
+    width: 20,
+    height: 20,
     color: theme.palette.grey[800],
     '&.approved': { color: theme.palette.primary.main},
     '&.inProgress': { color: orange[500]},
     '&.done': { color: green[500]},
   },
   buttonGroup: {
-    border: `1px solid ${theme.palette.grey[50]}`,
-    textAlign: "right"
+    textAlign: "right",
+    padding: theme.spacing(1)
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -232,7 +231,6 @@ const ItemDetails = props => {
             <div className={classes.flex}>
                 <div>
                     <Button
-                    size="small"
                     ref={anchorRef}
                     aria-controls={open ? 'menu-list-grow' : undefined}
                     aria-haspopup="true"
@@ -267,7 +265,6 @@ const ItemDetails = props => {
           </ListSubheader>
         }
       >
-        {items && items.length === 0 && <Skeleton animation="wave" />}
         {filteredItems && [0,1,2,3].map(item => (
           <ListItem disableRipple button selected={selectedIndex == item.id} key={item.id} onClick={() => handleItemById(item.id)}>
             <ListItemIcon><LabelOutlined /></ListItemIcon>
@@ -306,7 +303,7 @@ const ItemDetails = props => {
                 <Grid item xs={12}>
                     <div className={classes.buttonGroup}>
                         <ButtonGroup size="small" aria-label="small outlined button group">
-                            <Button onClick={()=>{}} startIcon={<EditSharp className={classes.icon} />}>Edit</Button>
+                            <Button onClick={()=>{}} startIcon={<EditOutlinedIcon className={classes.icon} />}>Edit</Button>
                             <Button onClick={()=>{}} startIcon={<Adjust className={classes.icon} />}>Adjust Stock</Button>
                             <Button endIcon={<KeyboardArrowDown className={classes.icon} />}> More</Button>
                         </ButtonGroup>

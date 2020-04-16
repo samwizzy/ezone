@@ -36,6 +36,9 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
   },
+  card: {
+    width: 600
+  },
   grid: {
     marginBottom: theme.spacing(2),
   },
@@ -161,12 +164,12 @@ const InventoryAdjustmentDialog = props => {
 
   // console.log(values, 'values');
   return (
-    <div>
-      <Card>
+    <div className={classes.root}>
+      <Card className={classes.card} elevation={0}>
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Typography variant="h6" className={classes.title}>
+              <Typography variant="h5" color="textPrimary" className={classes.title}>
                 {inventoryAdjustDialog.type === 'new'
                   ? 'Inventory Adjustment'
                   : 'Edit Inventory Adjustment'}
