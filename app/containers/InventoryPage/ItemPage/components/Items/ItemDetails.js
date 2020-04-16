@@ -17,7 +17,7 @@ import * as Selectors from '../../selectors';
 import GrainIcon from '@material-ui/icons/Grain';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import Adjust from '@material-ui/icons/Adjust';
-import EditSharp from '@material-ui/icons/EditSharp';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import LabelOutlined from '@material-ui/icons/LabelOutlined';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 import Add from '@material-ui/icons/Add';
@@ -105,21 +105,21 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3, 0),
   },
-  tabsPaper: {
+  paper: {
     backgroundColor: theme.palette.background.paper,
   },
   icon: {
-    width: 14,
-    height: 14,
+    width: 20,
+    height: 20,
     color: theme.palette.grey[800],
     '&.approved': { color: theme.palette.primary.main},
     '&.inProgress': { color: orange[500]},
     '&.done': { color: green[500]},
   },
   buttonGroup: {
-    border: `1px solid ${theme.palette.grey[50]}`,
+    textAlign: "right",
+    padding: theme.spacing(1)
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -231,7 +231,6 @@ const ItemDetails = props => {
             <div className={classes.flex}>
                 <div>
                     <Button
-                    size="small"
                     ref={anchorRef}
                     aria-controls={open ? 'menu-list-grow' : undefined}
                     aria-haspopup="true"
@@ -266,7 +265,6 @@ const ItemDetails = props => {
           </ListSubheader>
         }
       >
-        {items && items.length === 0 && <Skeleton animation="wave" />}
         {filteredItems && [0,1,2,3].map(item => (
           <ListItem disableRipple button selected={selectedIndex == item.id} key={item.id} onClick={() => handleItemById(item.id)}>
             <ListItemIcon><LabelOutlined /></ListItemIcon>
@@ -305,185 +303,186 @@ const ItemDetails = props => {
                 <Grid item xs={12}>
                     <div className={classes.buttonGroup}>
                         <ButtonGroup size="small" aria-label="small outlined button group">
-                            <Button onClick={()=>{}} startIcon={<EditSharp className={classes.icon} />}>Edit</Button>
+                            <Button onClick={()=>{}} startIcon={<EditOutlinedIcon className={classes.icon} />}>Edit</Button>
                             <Button onClick={()=>{}} startIcon={<Adjust className={classes.icon} />}>Adjust Stock</Button>
                             <Button endIcon={<KeyboardArrowDown className={classes.icon} />}> More</Button>
                         </ButtonGroup>
                     </div>
                 </Grid>
-                <Grid item md={9}>          
-                <div className={classes.content}>
-                    <Backdrop className={classes.backdrop} open={loading}>
-                        <CircularProgress color="inherit" />
-                    </Backdrop>
+                <Grid item xs={12}>          
+                    <div className={classes.content}>
+                        <Backdrop className={classes.backdrop} open={loading}>
+                            <CircularProgress color="inherit" />
+                        </Backdrop>
 
-                    <Box px={2}>
-                        <Typography variant="h6">Item title</Typography>
-                        <Breadcrumbs aria-label="breadcrumb" separator="›">
-                            <Typography color="textPrimary" className={classes.link}>
-                                23490856
-                            </Typography>
-                            <Typography color="textPrimary" className={classes.link}>
-                                <KeyboardReturn className={classes.icon} />
-                                Returnable Items
-                            </Typography>
-                        </Breadcrumbs>
-                    </Box>
-                    <div className={classes.tabsPaper}>
-                  
-                        <AntTabs value={value} onChange={handleTabChange} aria-label="ant example">
-                            <AntTab label="Overview" />
-                            <AntTab label="Transactions" />
-                            <AntTab label="Related List" />
-                            <AntTab label="Adjustment" />
-                            <AntTab label="History" />
-                        </AntTabs>
-                        <Typography className={classes.padding} />
-                        <Box p={1} mb={2}>
-                            {value == 0 && 
-                            <div>
-                                {Object.keys({id: 1, title: 'Infinix'}).length > 0 ?
-                                    <div>
-                                        <Table className={classes.table} size="small" aria-label="custom table">
-                                            <TableHead>
-                                                <TableRow>
-                                                    <TableCell colSpan={2}>Product Information</TableCell>
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                                <TableRow key={item.title}>
-                                                    <TableCell component="th" scope="row">
-                                                        Cost Price
-                                                    </TableCell>
-                                                    <TableCell align="right">{"NGN50,000.00"}</TableCell>
-                                                </TableRow>
-                                                <TableRow key={item.description}>
-                                                    <TableCell component="th" scope="row">
-                                                        Purchase Account
-                                                    </TableCell>
-                                                    <TableCell align="right">{"Cost of Goods Sold"}</TableCell>
-                                                </TableRow>
-                                            </TableBody>
-                                        </Table>
-                                        <Table className={classes.table} size="small" aria-label="custom table">
-                                            <TableHead>
-                                                <TableRow>
-                                                    <TableCell colSpan={2}>Sales Information</TableCell>
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                                <TableRow key={item.title}>
-                                                    <TableCell component="th" scope="row">
-                                                        Selling Price
-                                                    </TableCell>
-                                                    <TableCell align="right">{"NGN50,000.00"}</TableCell>
-                                                </TableRow>
-                                                <TableRow key={item.description}>
-                                                    <TableCell component="th" scope="row">
-                                                        Sales Account
-                                                    </TableCell>
-                                                    <TableCell align="right">{"Cost of Goods Sold"}</TableCell>
-                                                </TableRow>
-                                            </TableBody>
-                                        </Table>
-
-                                        <Box p={1} mt={2}>
-                                            <Box my={1}>
-                                                <div className={classes.flex}>
-                                                    <Typography variant="h6">Stock Locations</Typography>
-                                                    <ButtonGroup size="small" aria-label="small outlined button group">
-                                                        <Button variant="contained" color="primary" onClick={()=>{}} disableElevation>
-                                                            Acccounting Stock
-                                                        </Button>
-                                                        <Button onClick={()=>{}}>Physical Stock</Button>
-                                                    </ButtonGroup>
-                                                </div>
-                                            </Box>
-                                            <Table className={classes.table2} size="small" aria-label="custom table">
+                        <Box px={2}>
+                            <Typography variant="h6">Item title</Typography>
+                            <Breadcrumbs aria-label="breadcrumb" separator="›">
+                                <Typography color="textPrimary" className={classes.link}>
+                                    23490856
+                                </Typography>
+                                <Typography color="textPrimary" className={classes.link}>
+                                    <KeyboardReturn className={classes.icon} />
+                                    Returnable Items
+                                </Typography>
+                            </Breadcrumbs>
+                        </Box>
+                        <div className={classes.paper}>
+                    
+                            <AntTabs value={value} onChange={handleTabChange} aria-label="ant example">
+                                <AntTab label="Overview" />
+                                <AntTab label="Transactions" />
+                                <AntTab label="Related List" />
+                                <AntTab label="Adjustment" />
+                                <AntTab label="History" />
+                            </AntTabs>
+                            <Typography className={classes.padding} />
+                            <Box p={1} mb={2}>
+                                {value == 0 && 
+                                <div>
+                                    {Object.keys({id: 1, title: 'Infinix'}).length > 0 ?
+                                        <Grid container>
+                                            <Grid item xs={9}>
+                                            <Table className={classes.table} size="small" aria-label="custom table">
                                                 <TableHead>
                                                     <TableRow>
-                                                        <TableCell rowSpan={2} align="center">WAREHOUSE NAME</TableCell>
-                                                        <TableCell colSpan={3} align="center">ACCOUNTING STOCK</TableCell>
-                                                    </TableRow>
-                                                    <TableRow>
-                                                        <TableCell align="center">STOCK ON HAND</TableCell>
-                                                        <TableCell align="center">COMMITTED STOCK</TableCell>
-                                                        <TableCell align="center">AVAILABLE FOR SALE</TableCell>
+                                                        <TableCell colSpan={2}>Product Information</TableCell>
                                                     </TableRow>
                                                 </TableHead>
                                                 <TableBody>
-                                                    <TableRow>
-                                                        <TableCell component="th">Optisoft Tech</TableCell>
-                                                        <TableCell align="right">45.00</TableCell>
-                                                        <TableCell align="right">00.00</TableCell>
-                                                        <TableCell align="right">00.00</TableCell>
+                                                    <TableRow key={item.title}>
+                                                        <TableCell component="th" scope="row">
+                                                            Cost Price
+                                                        </TableCell>
+                                                        <TableCell align="right">{"NGN50,000.00"}</TableCell>
                                                     </TableRow>
-                                                    <TableRow>
-                                                        <TableCell component="th">Marina</TableCell>
-                                                        <TableCell align="right">45.00</TableCell>
-                                                        <TableCell align="right">00.00</TableCell>
-                                                        <TableCell align="right">00.00</TableCell>
-                                                    </TableRow>
-                                                    <TableRow>
-                                                        <TableCell component="th">Holder</TableCell>
-                                                        <TableCell align="right">45.00</TableCell>
-                                                        <TableCell align="right">00.00</TableCell>
-                                                        <TableCell align="right">00.00</TableCell>
+                                                    <TableRow key={item.description}>
+                                                        <TableCell component="th" scope="row">
+                                                            Purchase Account
+                                                        </TableCell>
+                                                        <TableCell align="right">{"Cost of Goods Sold"}</TableCell>
                                                     </TableRow>
                                                 </TableBody>
                                             </Table>
-                                        </Box>
-                                    </div>
-                                    :
-                                    <Skeleton variant="rect" animation="wave" width="100%" height={118} />
-                                }
-                            </div>
-                            }
-                            {value == 1 && <div />}
-                            {value == 2 && <div />}
-                        </Box>
-                    </div>
-                        
-                </div>
-                </Grid>
-                <Grid item md={3}>
-                    <Typography variant="subtitle1">Metadata</Typography>
-                
-                    <div>
-                        <ReactDropZone uploadFileAction={() => {}} task={item} />
-                    </div>
+                                            <Table className={classes.table} size="small" aria-label="custom table">
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell colSpan={2}>Sales Information</TableCell>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    <TableRow key={item.title}>
+                                                        <TableCell component="th" scope="row">
+                                                            Selling Price
+                                                        </TableCell>
+                                                        <TableCell align="right">{"NGN50,000.00"}</TableCell>
+                                                    </TableRow>
+                                                    <TableRow key={item.description}>
+                                                        <TableCell component="th" scope="row">
+                                                            Sales Account
+                                                        </TableCell>
+                                                        <TableCell align="right">{"Cost of Goods Sold"}</TableCell>
+                                                    </TableRow>
+                                                </TableBody>
+                                            </Table>
 
-                    <Paper square elevation={0}>
-                        {[{name: 'Accounting Stock'}, {name: 'Physical Stock'}].map(stock => 
-                        <Table className={classes.table} size="small" aria-label="custom table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell colSpan={2}>{stock.name}<HelpOutlineIcon /></TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                <TableRow key={item.title}>
-                                    <TableCell component="th" scope="row">
-                                        Stock on hand
-                                    </TableCell>
-                                    <TableCell align="left">{"50.00"}</TableCell>
-                                </TableRow>
-                                <TableRow key={item.description}>
-                                    <TableCell component="th" scope="row">
-                                        Committed Stock
-                                    </TableCell>
-                                    <TableCell align="left">{"50.00"}</TableCell>
-                                </TableRow>
-                                <TableRow key={item.description}>
-                                    <TableCell component="th" scope="row">
-                                        Available on Sale
-                                    </TableCell>
-                                    <TableCell align="left">{"50.00"}</TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                        )}
-                    </Paper>
+                                            <Box p={1} mt={2}>
+                                                <Box my={1}>
+                                                    <div className={classes.flex}>
+                                                        <Typography variant="h6">Stock Locations</Typography>
+                                                        <ButtonGroup size="small" aria-label="small outlined button group">
+                                                            <Button variant="contained" color="primary" onClick={()=>{}} disableElevation>
+                                                                Acccounting Stock
+                                                            </Button>
+                                                            <Button onClick={()=>{}}>Physical Stock</Button>
+                                                        </ButtonGroup>
+                                                    </div>
+                                                </Box>
+                                                <Table className={classes.table2} size="small" aria-label="custom table">
+                                                    <TableHead>
+                                                        <TableRow>
+                                                            <TableCell rowSpan={2} align="center">WAREHOUSE NAME</TableCell>
+                                                            <TableCell colSpan={3} align="center">ACCOUNTING STOCK</TableCell>
+                                                        </TableRow>
+                                                        <TableRow>
+                                                            <TableCell align="center">STOCK ON HAND</TableCell>
+                                                            <TableCell align="center">COMMITTED STOCK</TableCell>
+                                                            <TableCell align="center">AVAILABLE FOR SALE</TableCell>
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        <TableRow>
+                                                            <TableCell component="th">Optisoft Tech</TableCell>
+                                                            <TableCell align="right">45.00</TableCell>
+                                                            <TableCell align="right">00.00</TableCell>
+                                                            <TableCell align="right">00.00</TableCell>
+                                                        </TableRow>
+                                                        <TableRow>
+                                                            <TableCell component="th">Marina</TableCell>
+                                                            <TableCell align="right">45.00</TableCell>
+                                                            <TableCell align="right">00.00</TableCell>
+                                                            <TableCell align="right">00.00</TableCell>
+                                                        </TableRow>
+                                                        <TableRow>
+                                                            <TableCell component="th">Holder</TableCell>
+                                                            <TableCell align="right">45.00</TableCell>
+                                                            <TableCell align="right">00.00</TableCell>
+                                                            <TableCell align="right">00.00</TableCell>
+                                                        </TableRow>
+                                                    </TableBody>
+                                                </Table>
+                                            </Box>
+                                            </Grid>
+                                            <Grid item xs={3}>
+
+                                                <div>
+                                                    <ReactDropZone uploadFileAction={() => {}} task={item} />
+                                                </div>
+
+                                                <Paper square elevation={0}>
+                                                    {[{name: 'Accounting Stock'}, {name: 'Physical Stock'}].map(stock => 
+                                                    <Table className={classes.table} size="small" aria-label="custom table">
+                                                        <TableHead>
+                                                            <TableRow>
+                                                                <TableCell colSpan={2}>{stock.name}<HelpOutlineIcon /></TableCell>
+                                                            </TableRow>
+                                                        </TableHead>
+                                                        <TableBody>
+                                                            <TableRow key={item.title}>
+                                                                <TableCell component="th" scope="row">
+                                                                    Stock on hand
+                                                                </TableCell>
+                                                                <TableCell align="left">{"50.00"}</TableCell>
+                                                            </TableRow>
+                                                            <TableRow key={item.description}>
+                                                                <TableCell component="th" scope="row">
+                                                                    Committed Stock
+                                                                </TableCell>
+                                                                <TableCell align="left">{"50.00"}</TableCell>
+                                                            </TableRow>
+                                                            <TableRow key={item.description}>
+                                                                <TableCell component="th" scope="row">
+                                                                    Available on Sale
+                                                                </TableCell>
+                                                                <TableCell align="left">{"50.00"}</TableCell>
+                                                            </TableRow>
+                                                        </TableBody>
+                                                    </Table>
+                                                    )}
+                                                </Paper>
+
+                                            </Grid>
+                                        </Grid>
+                                        :
+                                        <Skeleton variant="rect" animation="wave" width="100%" height={118} />
+                                    }
+                                </div>
+                                }
+                                {value == 1 && <div />}
+                                {value == 2 && <div />}
+                            </Box>
+                        </div>
+                    </div>
                 </Grid>
             </Grid>
         </Grid>

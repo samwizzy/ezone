@@ -138,7 +138,7 @@ const ItemDialog = props => {
               <Typography
                 variant="h5"
                 className={classes.title}
-                color="primary"
+                color="textPrimary"
                 gutterBottom
               >
                 {itemDialog.type === 'new' ? 'New Item' : 'Edit Item'}

@@ -11,6 +11,7 @@ import { withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import InventoryAdjustmentDetails from './InventoryAdjustmentDetails';
 import InventoryAdjustmentDialog from './InventoryAdjustmentDialog';
 import InventoryAdjustmentList from './InventoryAdjustmentList';
 import ModuleLayout from '../../../components/ModuleLayout';
@@ -33,7 +34,8 @@ function InventoryAdjustmentApp(props) {
             params.statusId == 'new'?
             <InventoryAdjustmentDialog />
             :
-            <InventoryAdjustmentList />
+            params.statusId?
+            <InventoryAdjustmentDetails />:<InventoryAdjustmentList />
             }
         </ModuleLayout>
     </div>

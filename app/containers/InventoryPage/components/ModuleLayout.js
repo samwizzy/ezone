@@ -21,14 +21,9 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
-  content: {
-    display: 'flex',
-    flexDirection: 'column',
-    padding: theme.spacing(3, 0),
-  },
   active: { 
     backgroundColor: theme.palette.common.white,  
-    color: `${darken(theme.palette.primary.main, 0.5)} !important`,
+    color: `${darken(theme.palette.primary.main, 0.1)} !important`,
   },
 }));
 
@@ -38,36 +33,36 @@ function ModuleLayout(props) {
   return (
     <div className={classes.root}>
       <MenuBar
-        navigations={
-          <React.Fragment>
-            <NavLink
-              exact
-              to="/inventory/warehouses"
-              activeClassName={classes.active}
-            >
-              Warehouse
-            </NavLink>
-            <NavLink
-              exact
-              to="/inventory/items"
-              activeClassName={classes.active}
-            >
-              Items
-            </NavLink>
-            <NavLink
-              to="/inventory/transfer/orders"
-              activeClassName={classes.active}
-            >
-              Transfer Orders
-            </NavLink>
-            <NavLink
-              to="/inventory/inventory/adjustments"
-              activeClassName={classes.active}
-            >
-              Inventory Adjustments
-            </NavLink>
-          </React.Fragment>
-        }
+        // navigations={
+        //   <React.Fragment>
+        //     <NavLink
+        //       exact
+        //       to="/inventory/warehouses"
+        //       activeClassName={classes.active}
+        //     >
+        //       Warehouse
+        //     </NavLink>
+        //     <NavLink
+        //       exact
+        //       to="/inventory/items"
+        //       activeClassName={classes.active}
+        //     >
+        //       Items
+        //     </NavLink>
+        //     <NavLink
+        //       to="/inventory/transfer/orders"
+        //       activeClassName={classes.active}
+        //     >
+        //       Transfer Orders
+        //     </NavLink>
+        //     <NavLink
+        //       to="/inventory/inventory/adjustments"
+        //       activeClassName={classes.active}
+        //     >
+        //       Inventory Adjustments
+        //     </NavLink>
+        //   </React.Fragment>
+        // }
         content={
           <Grid container>
             <Grid item xs={12}>

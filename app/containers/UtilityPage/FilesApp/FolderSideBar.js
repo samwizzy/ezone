@@ -18,11 +18,11 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     width: '100%',
-    height: '100vh',
     position: 'relative',
     overflowY: 'auto',
-    maxHeight: 300,
-    // borderRight: `1px solid ${theme.palette.grey[100]}`,
+    borderRight: `1px solid ${theme.palette.grey[200]}`,
+    minHeight: `calc(100vh - 128px)`,
+    padding: theme.spacing(2, 0),
     "& .MuiListItem-root": {
       "& .MuiListItemIcon-root": {
         minWidth: "40px !important"
@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.primary.main,
       },
     }
-  }
+  },
 }));
 
 const FolderSideBar = props => {

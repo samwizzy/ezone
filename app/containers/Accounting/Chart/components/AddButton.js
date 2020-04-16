@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
-import { IconButton, Tooltip, Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/styles';
+import { withStyles, Tooltip, Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import * as Actions from '../actions';
 
@@ -15,7 +14,7 @@ const defaultToolbarStyles = {
 
 // eslint-disable-next-line react/prop-types
 export function AddButton(props) {
-  const { classes, openNewAccountDialogAction } = props;
+  const { classes, openDialog } = props;
 
   return (
     <React.Fragment>
@@ -24,10 +23,7 @@ export function AddButton(props) {
           variant="contained"
           color="primary"
           startIcon={<AddIcon />}
-          onClick={() => {
-            console.log('openNewAccountDialogAction triggered');
-            openNewAccountDialogAction();
-          }}
+          onClick={() => openDialog()}
         >
           New Account
         </Button>
@@ -36,16 +32,14 @@ export function AddButton(props) {
   );
 }
 
-AddButton.prototypes = {
-  classes: PropTypes.object.isRequired,
-  openNewAccountDialogAction: PropTypes.func,
+AddButton.propTypes = {
+  classes: PropTypes.object.isRequired
 };
 
 const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
     dispatch,
   };
 }

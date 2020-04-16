@@ -210,3 +210,25 @@ export function getAllInventoryAdjustmentsError(data) {
     payload: data,
   };
 }
+
+export function getAllItemsPerWarehouse(data) {
+  console.log(data, 'data');
+  return {
+    type: Constants.GET_ALL_ITEMS_PER_WAREHOUSE,
+    payload: data,
+  };
+}
+
+export function getAllItemsPerWarehouseSuccess(data) {
+  return {
+    type: Constants.GET_ALL_ITEMS_PER_WAREHOUSE_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getAllItemsPerWarehouseError(data) {
+  return {
+    type: Constants.GET_ALL_ITEMS_PER_WAREHOUSE_ERROR,
+    payload: data,
+  };
+}

@@ -17,6 +17,7 @@ import apps from './components/apps.db';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+    padding: theme.spacing(2)
   },
   avatar: {
     width: theme.spacing(12),

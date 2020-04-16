@@ -22,7 +22,7 @@ import * as Selectors from '../selectors';
 // import reducer from '../../reducer';
 // import saga from '../../saga';
 // import LoadingIndicator from '../../../../components/LoadingIndicator';
-import { AddButton } from '../components/AddButton';
+import { AddButton } from './AddButton';
 // import NewAccountDialog from '../../components/NewAccountDialog';
 
 const useStyles = makeStyles(theme => ({
@@ -101,7 +101,7 @@ const AccountChart = props => {
 
   const {
     // loading,
-    // openNewAccountDialogAction,
+    openNewAccountDialogAction,
     // editOpenAccountDialogAction,
     // deleteChartOfAccountAction,
     // accountTypeData,
@@ -228,7 +228,7 @@ const AccountChart = props => {
       // >
       //   New
       // </Button>
-      <AddButton />
+      <AddButton openDialog={openNewAccountDialogAction} />
     ),
   };
 
@@ -269,6 +269,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
     // dispatchGetAllChartOfAccountTypeAction: () => dispatch(Actions.getAllChartOfAccountTypeAction()),
     // openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
     // editOpenAccountDialogAction: evt => dispatch(Actions.editOpenAccountDialog(evt)),
