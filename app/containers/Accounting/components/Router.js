@@ -6,7 +6,7 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import Dashboard from '../Dashboard';
-import AccountSetting from '../components/AccountSetting';
+import AccountSetting from './AccountSetting';
 
 
 const Router = props => {
