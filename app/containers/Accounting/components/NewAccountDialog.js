@@ -55,6 +55,8 @@ const NewAccountDialog = props => {
     updateChartOfAccountAction 
   } = props;
 
+  console.log('accountDialog -> ', accountDialog);
+
   const classes = useStyles();
 
   const [values, setValues] = React.useState({

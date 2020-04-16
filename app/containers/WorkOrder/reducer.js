@@ -52,7 +52,7 @@ const workOrderPageReducer = (state = initialState, action) =>
             props: {
               open: true,
             },
-            data: action.payload,
+            data: null,
           },
         };
       }

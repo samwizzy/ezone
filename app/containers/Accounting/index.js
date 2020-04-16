@@ -39,7 +39,6 @@ export function Accounting(props) {
   useEffect(() => {
     dispatchGetAccountPeriodAction();
     getAccountingSetupAction();
-    dispatchGetAllChartOfAccountTypeAction();
     dispatchGetAllAccountTypeAction();
   }, []);
 
@@ -47,7 +46,6 @@ export function Accounting(props) {
     loading,
     accountingSetupData,
     getAccountingSetupAction,
-    dispatchGetAllChartOfAccountTypeAction,
     dispatchGetAllAccountTypeAction,
     dispatchGetAccountPeriodAction,
   } = props;
@@ -80,7 +78,6 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getAccountingSetupAction: () => dispatch(Actions.getAccountingSetupAction()),
-    dispatchGetAllChartOfAccountTypeAction: () => dispatch(Actions.getAllChartOfAccountTypeAction()),
     dispatchGetAllAccountTypeAction: () => dispatch(Actions.getAllAccountTypeAction()),
     dispatchGetAccountPeriodAction: () => dispatch(Actions.getAccountPeriodAction()),
     dispatch,

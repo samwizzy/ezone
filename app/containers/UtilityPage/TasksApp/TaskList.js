@@ -294,13 +294,13 @@ const TaskList = props => {
             <Typography variant="h6">Details</Typography>
             <div className={classes.buttonGroup}>
               <ButtonGroup size="small" aria-label="small outlined button group">
-                <Button onClick={openEditTaskDialog}><EditSharp className={classes.icon} />Edit</Button>
-                <Button onClick={openAssignToDialog}><Assignment className={classes.icon} />Assign</Button>
+                <Button onClick={openEditTaskDialog} startIcon={<EditSharp className={classes.icon} />}>Edit</Button>
+                <Button onClick={openAssignToDialog} startIcon={<Assignment className={classes.icon} />}>Assign</Button>
               </ButtonGroup>
               <ButtonGroup size="small" aria-label="small outlined button group">
-                <Button><Lens className={classNames(classes.icon, {'approved': true})} /> To do</Button>
-                <Button><Lens className={classNames(classes.icon, {'inProgress': true})} />In Progress</Button>
-                <Button><Lens className={classNames(classes.icon, {'done': true})} />Done</Button>
+                <Button startIcon={<Lens className={classNames(classes.icon, {'approved': true})} />}>To do</Button>
+                <Button startIcon={<Lens className={classNames(classes.icon, {'inProgress': true})} />}>In Progress</Button>
+                <Button startIcon={<Lens className={classNames(classes.icon, {'done': true})} />}>Done</Button>
               </ButtonGroup>
             </div>
             {task && Object.keys(task).length > 0 ?

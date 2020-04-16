@@ -56,7 +56,7 @@ import { AppContext } from '../context/AppContext';
 import sideBarconfig from '../../components/Sidebar/components/SidebarConfig';
 import AccountPage from '../Accounting/Loadable';
 import AccountChart from '../Accounting/components/AccountChart';
-import AddNewJournal from '../Accounting/Journal/AddNewJournal';
+import AddNewJournal from '../Accounting/Journal';
 import AccountSetting from '../Accounting/components/AccountSetting';
 import CrmDashboard from '../Crm/Dashboard/Loadable';
 import CrmContacts from '../Crm/Contacts/Loadable';
@@ -199,7 +199,7 @@ const App = (props) => {
                 />
                 <PrivateRoute exact path="/account" component={AccountPage} />
                 <PrivateRoute exact path="/account/chart" component={AccountChart} />
-                <PrivateRoute exact path="/account/journal/new" component={AddNewJournal} />
+                <PrivateRoute exact path="/account/journal/:statusId?" component={AddNewJournal} />
                 <PrivateRoute exact path="/account/setting" component={AccountSetting} />
                 <PrivateRoute
                   exact
