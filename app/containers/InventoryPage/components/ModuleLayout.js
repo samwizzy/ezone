@@ -21,14 +21,9 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
-  content: {
-    display: 'flex',
-    flexDirection: 'column',
-    padding: theme.spacing(3, 0),
-  },
   active: { 
     backgroundColor: theme.palette.common.white,  
-    color: `${darken(theme.palette.primary.main, 0.5)} !important`,
+    color: `${darken(theme.palette.primary.main, 0.1)} !important`,
   },
 }));
 

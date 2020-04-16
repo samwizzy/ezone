@@ -139,6 +139,9 @@ const ItemsList = props => {
         New
       </Button>
     ),
+    onRowClick: (rowData, rowState) => {
+      props.history.push('/inventory/item/' + rowData[0])
+    },
   };
 
   if (loading) {

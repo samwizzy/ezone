@@ -217,6 +217,9 @@ const InventoryAdjustmentList = props => {
         New
       </Button>
     ),
+    onRowClick: (rowData, rowState) => {
+      props.history.push('/inventory/adjustment/' + rowData[0])
+    },
   };
 
   if (loading) {

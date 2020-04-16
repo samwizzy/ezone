@@ -48,9 +48,7 @@ export function ItemPage(props) {
         {
           params.statusId == 'new'?
           <ItemDialog />:
-          params.statusId?
-          <ItemDetails />:
-          <ItemsList />
+          params.statusId? <ItemDetails /> : <ItemsList />
         }
       </ModuleLayout>
     </div>

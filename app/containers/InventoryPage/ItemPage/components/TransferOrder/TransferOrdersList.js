@@ -206,6 +206,9 @@ const TransferOrdersList = props => {
         New
       </Button>
     ),
+    onRowClick: (rowData, rowState) => {
+      props.history.push('/inventory/transfer/orders/' + rowData[0])
+    },
   };
 
   if (loading) {
