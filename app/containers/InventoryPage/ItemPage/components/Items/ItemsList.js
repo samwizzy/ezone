@@ -62,6 +62,7 @@ const ItemsList = props => {
     openNewItemDialogAction,
     openViewItemDialogAction,
     // openEditEmployeeDialogAction,
+    getItemByIdAction,
   } = props;
 
   const columns = [
@@ -165,6 +166,7 @@ const ItemsList = props => {
       </Button>
     ),
     onRowClick: (rowData, rowState) => {
+      getItemByIdAction(rowData[0]);
       props.history.push('/inventory/item/' + rowData[0])
     },
     elevation: 0
@@ -202,6 +204,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    getItemByIdAction: evt =>
+      dispatch(Actions.getItemById(evt)),
     openViewItemDialogAction: evt =>
       dispatch(Actions.openViewItemDialog(evt)),
     openNewItemDialogAction: () =>

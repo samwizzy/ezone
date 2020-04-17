@@ -212,7 +212,6 @@ export function getAllInventoryAdjustmentsError(data) {
 }
 
 export function getAllItemsPerWarehouse(data) {
-  console.log(data, 'data');
   return {
     type: Constants.GET_ALL_ITEMS_PER_WAREHOUSE,
     payload: data,
@@ -229,6 +228,28 @@ export function getAllItemsPerWarehouseSuccess(data) {
 export function getAllItemsPerWarehouseError(data) {
   return {
     type: Constants.GET_ALL_ITEMS_PER_WAREHOUSE_ERROR,
+    payload: data,
+  };
+}
+
+export function getItemById(data) {
+  console.log(data, 'data here');
+  return {
+    type: Constants.GET_ITEM_BY_ID,
+    payload: data,
+  };
+}
+
+export function getItemByIdSuccess(data) {
+  return {
+    type: Constants.GET_ITEM_BY_ID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getItemByIdError(data) {
+  return {
+    type: Constants.GET_ITEM_BY_ID_ERROR,
     payload: data,
   };
 }

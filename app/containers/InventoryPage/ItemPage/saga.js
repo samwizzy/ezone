@@ -247,11 +247,9 @@ export function* getAllItemsPerWarehouse() {
     Selectors.makeSelectGetAllItemsPerWarehouseUuid(),
   );
 
-  console.log(itemsPerWarehouseUuid, 'itemsPerWarehouseUuid');
-
   const requestURL = `${
     Endpoints.GetAllItemsPerWarehouseApi
-  }/${itemsPerWarehouseUuid}`;
+    }/${itemsPerWarehouseUuid}`;
 
   try {
     const getAllItemsPerWarehouseResponse = yield call(request, requestURL, {
@@ -261,11 +259,6 @@ export function* getAllItemsPerWarehouse() {
         'Content-Type': 'application/json',
       }),
     });
-
-    console.log(
-      getAllItemsPerWarehouseResponse,
-      'getAllInventoryAdjustResponse',
-    );
 
     yield put(
       Actions.getAllItemsPerWarehouseSuccess(getAllItemsPerWarehouseResponse),
@@ -282,12 +275,41 @@ export function* getAllItemsPerWarehouse() {
   }
 }
 
+export function* getItemById() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const getItemByIdDetails = yield select(Selectors.makeSelectGetItemById());
+
+  const requestURL = `${Endpoints.GetItemByIdApi}/${getItemByIdDetails}`;
+
+  try {
+    const getItemByIdResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getItemByIdSuccess(getItemByIdResponse));
+  } catch (err) {
+    yield put(Actions.getItemByIdError(err));
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: `${err}`,
+    //     status: 'error',
+    //   }),
+    // );
+  }
+}
+
 // Individual exports for testing
 export default function* itemPageSaga() {
   yield takeLatest(
     Constants.GET_ALL_ITEMS_PER_WAREHOUSE,
     getAllItemsPerWarehouse,
   );
+  yield takeLatest(Constants.GET_ITEM_BY_ID, getItemById);
   yield takeLatest(Constants.GET_ALL_TRANSFER_ORDER, getAllTransferOrder);
   yield takeLatest(Constants.GET_ALL_ITEMS, getAllItems);
   yield takeLatest(Constants.CREATE_NEW_ITEM, createNewItem);
