@@ -33,6 +33,13 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
+  card: {
+    "& .MuiCardActions-root": {
+      // padding: theme.spacing(2),
+      justifyContent: "flex-end",
+      borderTop: `1px solid ${theme.palette.divider}`
+    }
+  },
   title: {
     color: theme.typography.fontWeightBold,
   },
@@ -131,7 +138,7 @@ const ItemDialog = props => {
 
   return (
     <div>
-      <Card>
+      <Card elevation={0} className={classes.card}>
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -568,33 +575,29 @@ const ItemDialog = props => {
         </CardContent>
 
         <CardActions>
-          <Grid container spacing={2}>
-            <Grid item>
-              {loading ? (
-                <LoadingIndicator />
-              ) : (
-                <Button
-                  className={classes.button}
-                  onClick={() => {
-                    dispatchCreateNewItemAction(values);
-                  }}
-                  color="primary"
-                  variant="contained"
-                  // disabled={!canBeSubmitted()}
-                >
-                  Save
-                </Button>
-              )}
-              {/* <Button
-                className={classes.button}
-                onClick={() => closeNewItemDialogAction()}
-                color="primary"
-                variant="contained"
-              >
-                Cancel
-              </Button> */}
-            </Grid>
-          </Grid>
+          {loading ? (
+            <LoadingIndicator />
+          ) : (
+            <Button
+              className={classes.button}
+              onClick={() => {
+                dispatchCreateNewItemAction(values);
+              }}
+              color="primary"
+              variant="contained"
+              // disabled={!canBeSubmitted()}
+            >
+              Save
+            </Button>
+          )}
+          {/* <Button
+            className={classes.button}
+            onClick={() => closeNewItemDialogAction()}
+            color="primary"
+            variant="outlined"
+          >
+            Cancel
+          </Button> */}
         </CardActions>
       </Card>
     </div>

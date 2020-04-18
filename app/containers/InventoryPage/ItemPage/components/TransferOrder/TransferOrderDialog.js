@@ -37,6 +37,13 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
+  card: {
+    "& .MuiCardActions-root": {
+      justifyContent: "flex-end",
+      padding: theme.spacing(2),
+      borderTop: `1px solid ${theme.palette.divider}`
+    }
+  },
   table: {
     marginTop: theme.spacing(2),
     '& .MuiTableRow-root:hover': {
@@ -166,7 +173,7 @@ const TransferOrderDialog = props => {
   console.log(values, 'values');
   return (
     <div>
-      <Card>
+      <Card elevation={0} className={classes.card}>
         <CardContent>
           <Grid container spacing={2}>
             {transferOrderDialog.type === 'new' ? (
@@ -380,35 +387,31 @@ const TransferOrderDialog = props => {
         </CardContent>
 
         <CardActions>
-          <Grid container>
-            <Grid item>
-              {loading ? (
-                <LoadingIndicator />
-              ) : (
-                <Button
-                  className={classes.button}
-                  onClick={() => {
-                    dispatchCreateNewTransferOrderAction(
-                      Object.assign(values, { items: rows }),
-                    );
-                  }}
-                  color="primary"
-                  variant="contained"
-                  // disabled={!canBeSubmitted()}
-                >
-                  Save
-                </Button>
-              )}
-              <Button
-                className={classes.button}
-                onClick={() => closeNewTransferOrderDialogAction()}
-                color="primary"
-                variant="contained"
-              >
-                Cancel
-              </Button>
-            </Grid>
-          </Grid>
+          {loading ? (
+            <LoadingIndicator />
+          ) : (
+            <Button
+              className={classes.button}
+              onClick={() => {
+                dispatchCreateNewTransferOrderAction(
+                  Object.assign(values, { items: rows }),
+                );
+              }}
+              color="primary"
+              variant="contained"
+              // disabled={!canBeSubmitted()}
+            >
+              Save
+            </Button>
+          )}
+          <Button
+            className={classes.button}
+            onClick={() => closeNewTransferOrderDialogAction()}
+            color="primary"
+            variant="outlined"
+          >
+            Cancel
+          </Button>
         </CardActions>
       </Card>
     </div>

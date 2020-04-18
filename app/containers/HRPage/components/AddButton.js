@@ -9,9 +9,8 @@ import GroupAdd from '@material-ui/icons/GroupAdd';
 import AddBox from '@material-ui/icons/AddBox';
 
 const useStyles = makeStyles(theme => ({
-  iconButton: {
-    color: theme.palette.primary.main
-  },
+  iconButton: {},
+  button: { marginLeft: theme.spacing(1) },
   icon: {}
 }));
 
@@ -25,10 +24,14 @@ export function AddDepartment(props) {
       <Tooltip title="New Department">
         <Button
           size="small"
-          className={classes.iconButton}
+          color="primary"
+          variant="contained"
+          className={classes.button}
           onClick={openDialog}
+          startIcon={<GroupAdd className={classes.icon} />}
+          disableElevation
         >
-          <GroupAdd className={classes.icon} />
+          New
         </Button>
       </Tooltip>
     </React.Fragment>
@@ -44,10 +47,14 @@ export function AddRole(props) {
       <Tooltip title="New Role">
         <Button
           size="small"
-          className={classes.iconButton}
+          color="primary"
+          variant="contained"
+          className={classes.button}
           onClick={openDialog}
+          startIcon={<AssignmentInd className={classes.icon} />}
+          disableElevation
         >
-          <AssignmentInd className={classes.icon} /> Add Role
+          Add Role
         </Button>
       </Tooltip>
     </React.Fragment>
@@ -63,10 +70,14 @@ export function AddBranch(props) {
       <Tooltip title="New Branch">
         <Button
           size="small"
-          className={classes.iconButton}
+          color="primary"
+          variant="contained"
+          className={classes.button}
           onClick={openDialog}
+          startIcon={<AddBox className={classes.icon} />}
+          disableElevation
         >
-          <AddBox className={classes.icon} /> Add Branch
+          Add Branch
         </Button>
       </Tooltip>
     </React.Fragment>
@@ -82,10 +93,14 @@ export function AddEmployee(props) {
       <Tooltip title="New Employee">
         <Button
           size="small"
-          className={classes.iconButton}
+          color="primary"
+          variant="contained"
+          className={classes.button}
           onClick={openDialog}
+          startIcon={<PersonAdd className={classes.icon} />}
+          disableElevation
         >
-          <PersonAdd className={classes.icon} />
+          New
         </Button>
       </Tooltip>
     </React.Fragment>
@@ -101,10 +116,14 @@ export function AddAttendance(props) {
       <Tooltip title="New Attendance">
         <Button
           size="small"
-          className={classes.iconButton}
+          color="primary"
+          variant="contained"
+          className={classes.button}
           onClick={openDialog}
+          startIcon={<PersonAdd className={classes.icon} />}
+          disableElevation
         >
-          <PersonAdd className={classes.icon} />
+          New
         </Button>
       </Tooltip>
     </React.Fragment>
@@ -120,10 +139,14 @@ export function AddPayroll(props) {
       <Tooltip title="New Payroll">
         <Button
           size="small"
-          className={classes.iconButton}
+          color="primary"
+          variant="contained"
+          className={classes.button}
           onClick={openDialog}
+          startIcon={<PersonAdd className={classes.icon} />}
+          disableElevation
         >
-          <PersonAdd className={classes.icon} />
+          New
         </Button>
       </Tooltip>
     </React.Fragment>

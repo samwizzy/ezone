@@ -62,6 +62,7 @@ import ChartPage from '../Accounting/Chart/Loadable';
 import CrmDashboard from '../Crm/Dashboard/Loadable';
 import CrmContacts from '../Crm/Contacts/Loadable';
 import CrmCompanies from '../Crm/Companies/Loadable';
+import CrmActivities from '../Crm/Activities/Loadable';
 
 import { messaging } from '../../utils/firebase-notification';
 
@@ -244,6 +245,11 @@ const App = (props) => {
                 />
                 <PrivateRoute
                   exact
+                  path="/crm"
+                  component={CrmDashboard}
+                />
+                <PrivateRoute
+                  exact
                   path="/crm/dashboard"
                   component={CrmDashboard}
                 />
@@ -256,6 +262,11 @@ const App = (props) => {
                   exact
                   path="/crm/companies"
                   component={CrmCompanies}
+                />
+                <PrivateRoute
+                  exact
+                  path="/crm/activities"
+                  component={CrmActivities}
                 />
               </Layout3>
               <Route path="" component={NotFoundPage} />

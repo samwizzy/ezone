@@ -3,12 +3,13 @@ import {
     makeStyles,
     Box,
     Button,
-    Card, CardContent, CardActions,
+    Card, 
+    CardContent, 
+    CardActions,
     Divider,
     List,
     Paper,
     Grid,
-    TableContainer,
     Table,
     TableHead,
     TableBody,
@@ -17,6 +18,8 @@ import {
     TableCell,
     Typography
 } from '@material-ui/core';
+import CrmDashImage1 from '../../../../images/crmDash.jpg'
+import CrmDashImage2 from '../../../../images/crmDash2.jpg'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,16 +32,27 @@ const useStyles = makeStyles((theme) => ({
             margin: theme.spacing(5)
         }
     },
+    card: {
+        // maxWidth: 345,
+        borderRadius: theme.shape.borderRadius * 2,
+        backgroundImage: `url(${CrmDashImage1})`,
+        backgroundRepeat: `no-repeat`,
+        backgroundPosition: `center bottom`,
+        backgroundSize: 'cover',
+        "& .MuiCardActions-root": {
+            justifyContent: "center",
+            backgroundColor: theme.palette.common.white,
+        }
+    },
     table: {
         "& .MuiTableFooter-root": {
-            borderTop: `1px solid ${theme.palette.grey[400]} !important`
+            borderTop: `1px solid ${theme.palette.grey[400]} !important`,
         },
         "& .MuiTableCell-root": {
-            borderBottom: "none !important"
+            borderBottom: "none !important",
         },
         '& .MuiTableCell-body': {
-            border: 0,
-            color: theme.palette.text.secondary,
+            color: theme.palette.common.white,
             fontSize: theme.typography.fontSize + 1
         },
     }
@@ -50,60 +64,37 @@ const Widget1 = () => {
 
     return (
         <div>
-            <Typography gutterBottom variant="h6" component="h2">
-                Total Receivables
-            </Typography>
-            <Card>
+            <Card className={classes.card}>
                 <CardContent>
-                    <Typography variant="h6" color="textSecondary">
-                        Total Unpaid Invoices
-                    </Typography>
-                </CardContent>
-                <TableContainer>
                     <Table className={classes.table} size="small">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell colSpan="3" variant="head" component="th">
-                                    <Typography variant="subtitle1" color="primary">Current</Typography>
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
                         <TableBody>
                             <TableRow>
-                                <TableCell component="th" scope="row">10</TableCell>
-                                <TableCell align="left">1 - 10 days</TableCell>
-                                <TableCell align="right">NGN 100.00</TableCell>
-                            </TableRow>
-                        </TableBody>
-
-                        <TableHead>
-                            <TableRow>
-                                <TableCell colSpan="3" variant="head" component="th">
-                                    <Typography variant="subtitle1" component="h2" color="primary">Overdue</Typography>
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            <TableRow>
-                                <TableCell component="th" scope="row">10</TableCell>
-                                <TableCell align="left">1 - 30 days</TableCell>
-                                <TableCell align="right">NGN 100.00</TableCell>
-                            </TableRow>
-                        </TableBody>
-                        
-                        <TableFooter>
-                            <TableRow>
-                                <TableCell align="left" colSpan={2}>
-                                    <Typography variant="h6" component="h2" color="textSecondary">Total</Typography>
+                                <TableCell component="th" align="center">
+                                    <Typography variant="h3">100</Typography>
+                                    <Typography variant="h5">Contacts</Typography>
                                 </TableCell>
                                 <TableCell align="right">
-                                    <Typography variant="h6" component="h2" color="textSecondary">NGN 100000.00</Typography>
+                                    <Table size="small" align="right">
+                                        <TableBody>
+                                            <TableRow><TableCell align="left">20 Contacts</TableCell></TableRow>
+                                            <TableRow><TableCell align="left">21 Leads</TableCell></TableRow>
+                                            <TableRow><TableCell align="left">12 Opportunity</TableCell></TableRow>
+                                            <TableRow><TableCell align="left">20 Subscribers</TableCell></TableRow>
+                                        </TableBody>
+                                    </Table>
                                 </TableCell>
                             </TableRow>
-                        </TableFooter>
+                        </TableBody>
                     </Table>  
-                </TableContainer>
-                
+                </CardContent>
+
+                <Divider />
+
+                <CardActions>
+                    <Typography variant="h6" component="h1" className={classes.title} color="textPrimary">
+                        View all Contacts
+                    </Typography>
+                </CardActions>
             </Card>
         </div>
     )

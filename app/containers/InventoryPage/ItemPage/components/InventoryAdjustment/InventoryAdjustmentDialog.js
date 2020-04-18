@@ -37,7 +37,11 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   card: {
-    width: 600
+    "& .MuiCardActions-root": {
+      justifyContent: "flex-end",
+      padding: theme.spacing(2),
+      borderTop: `1px solid ${theme.palette.divider}`
+    }
   },
   grid: {
     marginBottom: theme.spacing(2),
@@ -162,7 +166,6 @@ const InventoryAdjustmentDialog = props => {
     setValues({ ...values, destinationWarehouseUuId: value.id });
   };
 
-  // console.log(values, 'values');
   return (
     <div className={classes.root}>
       <Card className={classes.card} elevation={0}>
@@ -299,7 +302,7 @@ const InventoryAdjustmentDialog = props => {
                           placeholder="0.00"
                         />
                       </TableCell>
-                      <TableCell>
+                      <TableCell align="center">
                         <TextField
                           id="filled-disabled"
                           label=""
@@ -350,35 +353,31 @@ const InventoryAdjustmentDialog = props => {
         </CardContent>
 
         <CardActions>
-          <Grid container spacing={2}>
-            <Grid item>
-              {loading ? (
-                <LoadingIndicator />
-              ) : (
-                <Button
-                  className={classes.button}
-                  onClick={() => {
-                    dispatchCreateNewInventoryAdjustmentAction(
-                      Object.assign(values, { items: rows }),
-                    );
-                  }}
-                  color="primary"
-                  variant="contained"
-                  // disabled={!canBeSubmitted()}
-                >
-                  Save
-                </Button>
-              )}
-              <Button
-                className={classes.button}
-                onClick={() => closeNewInventoryAdjustDialogAction()}
-                color="primary"
-                variant="contained"
-              >
-                Cancel
-              </Button>
-            </Grid>
-          </Grid>
+          {loading ? (
+            <LoadingIndicator />
+          ) : (
+            <Button
+              className={classes.button}
+              onClick={() => {
+                dispatchCreateNewInventoryAdjustmentAction(
+                  Object.assign(values, { items: rows }),
+                );
+              }}
+              color="primary"
+              variant="contained"
+              // disabled={!canBeSubmitted()}
+            >
+              Save
+            </Button>
+          )}
+          <Button
+            className={classes.button}
+            onClick={() => closeNewInventoryAdjustDialogAction()}
+            color="primary"
+            variant="outlined"
+          >
+            Cancel
+          </Button>
         </CardActions>
       </Card>
     </div>
