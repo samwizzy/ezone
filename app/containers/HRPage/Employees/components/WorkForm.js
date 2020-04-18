@@ -6,7 +6,7 @@ import {
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 import _ from 'lodash';
-import {Button, Grid, MenuItem, TextField, DialogTitle, DialogContent, DialogActions, Divider } from '@material-ui/core';
+import {AppBar, Button, Grid, MenuItem, TextField, Typography, DialogTitle, DialogContent, DialogActions, Divider, Toolbar} from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -28,10 +28,16 @@ export const WorkForm = props => {
 
     return (
         <React.Fragment>
-            <DialogTitle id="alert-dialog-slide-title">
-                Work Information
-            </DialogTitle>
-            <Divider />    
+            <AppBar position="relative">
+                <Toolbar>
+                    <Typography variant="h6" className={classes.title}>
+                        Work Information
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+
+            <Divider />   
+
             <DialogContent>
             <form className={classes.root}>
                 <Grid container spacing={1}>

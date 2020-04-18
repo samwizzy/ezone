@@ -6,7 +6,7 @@ import {
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 import _ from 'lodash';
-import {Button, Divider, Grid, MenuItem, TextField, DialogTitle, DialogContent, DialogActions } from '@material-ui/core';
+import {AppBar, Button, Divider, Grid, MenuItem, TextField, Typography, DialogTitle, DialogContent, DialogActions, Toolbar} from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -27,9 +27,14 @@ export const AdditionalForm = props => {
 
     return (
         <div>
-        <DialogTitle id="alert-dialog-slide-title">
-          Additional Information
-        </DialogTitle>
+        <AppBar position="relative">
+          <Toolbar>
+            <Typography variant="h6" className={classes.title}>
+              Additional Information
+            </Typography>
+          </Toolbar>
+        </AppBar>
+
         <Divider />  
 
         <DialogContent>
