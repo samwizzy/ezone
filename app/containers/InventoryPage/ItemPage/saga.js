@@ -303,8 +303,63 @@ export function* getItemById() {
   }
 }
 
+export function* getStockLocations() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const getStockLocBySku = yield select(
+    Selectors.makeSelectGetStockLocationBySku(),
+  );
+
+  const requestURL = `${Endpoints.GetStockLocations}/${getStockLocBySku}`;
+
+  try {
+    const getStockLocResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getStockLocationsSuccess(getStockLocResponse));
+  } catch (err) {
+    yield put(Actions.getStockLocationsError(err));
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: `${err}`,
+    //     status: 'error',
+    //   }),
+    // );
+  }
+}
+
+export function* getTransferOrderById() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const getItemByIdDetails = yield select(Selectors.makeSelectGetItemById());
+
+  const requestURL = `${
+    Endpoints.GetTransferOrderByIdApi
+  }/${getItemByIdDetails}`;
+
+  try {
+    const getTransferOrderResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getTransferOrderByIdSuccess(getTransferOrderResponse));
+  } catch (err) {
+    yield put(Actions.getTransferOrderByIdError(err));
+  }
+}
+
 // Individual exports for testing
 export default function* itemPageSaga() {
+  yield takeLatest(Constants.GET_TRANSFER_ORDER_BY_ID, getTransferOrderById);
+  yield takeLatest(Constants.GET_STOCK_LOCATIONS, getStockLocations);
   yield takeLatest(
     Constants.GET_ALL_ITEMS_PER_WAREHOUSE,
     getAllItemsPerWarehouse,

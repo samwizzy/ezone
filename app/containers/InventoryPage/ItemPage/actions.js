@@ -233,7 +233,6 @@ export function getAllItemsPerWarehouseError(data) {
 }
 
 export function getItemById(data) {
-  console.log(data, 'data here');
   return {
     type: Constants.GET_ITEM_BY_ID,
     payload: data,
@@ -250,6 +249,48 @@ export function getItemByIdSuccess(data) {
 export function getItemByIdError(data) {
   return {
     type: Constants.GET_ITEM_BY_ID_ERROR,
+    payload: data,
+  };
+}
+
+export function getStockLocations(data) {
+  return {
+    type: Constants.GET_STOCK_LOCATIONS,
+    payload: data,
+  };
+}
+
+export function getStockLocationsSuccess(data) {
+  return {
+    type: Constants.GET_STOCK_LOCATIONS_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getStockLocationsError(data) {
+  return {
+    type: Constants.GET_STOCK_LOCATIONS_ERROR,
+    payload: data,
+  };
+}
+
+export function getTransferOrderById(data) {
+  return {
+    type: Constants.GET_TRANSFER_ORDER_BY_ID,
+    payload: data,
+  };
+}
+
+export function getTransferOrderByIdSuccess(data) {
+  return {
+    type: Constants.GET_TRANSFER_ORDER_BY_ID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getTransferOrderByIdError(data) {
+  return {
+    type: Constants.GET_TRANSFER_ORDER_BY_ID_ERROR,
     payload: data,
   };
 }

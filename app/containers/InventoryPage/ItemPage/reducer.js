@@ -7,6 +7,8 @@ import produce from 'immer';
 import * as Constants from './constants';
 
 export const initialState = {
+  getStockLocationBySku: false,
+  getStockLocationBySkuResponse: [],
   getItemByIdResponse: false,
   getItemById: false,
   getAllItemsPerWarehouse: [],
@@ -363,6 +365,52 @@ const itemPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_ITEM_BY_ID_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_STOCK_LOCATIONS: {
+        return {
+          ...state,
+          getStockLocationBySku: action.payload,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_STOCK_LOCATIONS_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getStockLocationBySkuResponse: action.payload,
+        };
+      }
+      case Constants.GET_STOCK_LOCATIONS_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_TRANSFER_ORDER_BY_ID: {
+        return {
+          ...state,
+          getItemById: action.payload,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_TRANSFER_ORDER_BY_ID_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getItemByIdResponse: action.payload,
+        };
+      }
+      case Constants.GET_TRANSFER_ORDER_BY_ID_ERROR: {
         return {
           ...state,
           loading: false,

@@ -166,8 +166,9 @@ const ItemsList = props => {
       </Button>
     ),
     onRowClick: (rowData, rowState) => {
+      console.log(rowData, 'rowData');
       getItemByIdAction(rowData[0]);
-      props.history.push('/inventory/item/' + rowData[0])
+      props.history.push('/inventory/item/' + rowData[0] + '/' + rowData[3])
     },
     elevation: 0
   };

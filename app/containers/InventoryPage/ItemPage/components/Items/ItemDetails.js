@@ -209,7 +209,16 @@ const AntTab = withStyles(theme => ({
 
 const ItemDetails = props => {
   const classes = useStyles();
-  const { loading, items, item, match, getItemByIdAction, getItemById } = props;
+  const {
+    loading,
+    items,
+    item,
+    match,
+    getItemByIdAction,
+    getItemById,
+    getStockLocationsAction,
+    getStockLocations,
+  } = props;
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -239,6 +248,7 @@ const ItemDetails = props => {
   const prevOpen = React.useRef(open);
   React.useEffect(() => {
     getItemByIdAction(params.statusId);
+    getStockLocationsAction(params.sku);
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus();
     }
@@ -253,10 +263,11 @@ const ItemDetails = props => {
     setValue(newValue);
   };
 
-  const handleItemById = id => {
+  const handleItemById = (id, sku) => {
     setSelectedIndex(id);
     getItemByIdAction(id);
-    props.history.push({ pathname: `/inventory/item/${id}` });
+    getStockLocationsAction(sku);
+    props.history.push({ pathname: `/inventory/item/${id}/${sku}` });
   };
 
   const drawer = (
@@ -328,18 +339,18 @@ const ItemDetails = props => {
         }
       >
         {filteredItems &&
-          items.map(item => (
+          items.map(iteM => (
             <ListItem
               disableRipple
               button
-              selected={selectedIndex == item.id}
-              key={item.id}
-              onClick={() => handleItemById(item.id)}
+              selected={selectedIndex == iteM.id}
+              key={iteM.id}
+              onClick={() => handleItemById(iteM.id, iteM.sku)}
             >
               <ListItemIcon>
                 <LabelOutlined />
               </ListItemIcon>
-              <ListItemText primary={item.itemName} />
+              <ListItemText primary={iteM.itemName} />
             </ListItem>
           ))}
       </List>
@@ -367,13 +378,13 @@ const ItemDetails = props => {
                   aria-label="small outlined button group"
                 >
                   <Button
-                    onClick={() => { }}
+                    onClick={() => {}}
                     startIcon={<EditOutlinedIcon className={classes.icon} />}
                   >
                     Edit
                   </Button>
                   <Button
-                    onClick={() => { }}
+                    onClick={() => {}}
                     startIcon={<Adjust className={classes.icon} />}
                   >
                     Adjust Stock
@@ -533,12 +544,12 @@ const ItemDetails = props => {
                                       <Button
                                         variant="contained"
                                         color="primary"
-                                        onClick={() => { }}
+                                        onClick={() => {}}
                                         disableElevation
                                       >
                                         Acccounting Stock
                                       </Button>
-                                      <Button onClick={() => { }}>
+                                      <Button onClick={() => {}}>
                                         Physical Stock
                                       </Button>
                                     </ButtonGroup>
@@ -571,30 +582,22 @@ const ItemDetails = props => {
                                     </TableRow>
                                   </TableHead>
                                   <TableBody>
-                                    <TableRow>
-                                      <TableCell component="th">
-                                        Optisoft Tech
-                                      </TableCell>
-                                      <TableCell align="right">45.00</TableCell>
-                                      <TableCell align="right">00.00</TableCell>
-                                      <TableCell align="right">00.00</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                      <TableCell component="th">
-                                        Marina
-                                      </TableCell>
-                                      <TableCell align="right">45.00</TableCell>
-                                      <TableCell align="right">00.00</TableCell>
-                                      <TableCell align="right">00.00</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                      <TableCell component="th">
-                                        Holder
-                                      </TableCell>
-                                      <TableCell align="right">45.00</TableCell>
-                                      <TableCell align="right">00.00</TableCell>
-                                      <TableCell align="right">00.00</TableCell>
-                                    </TableRow>
+                                    {getStockLocations.map(getStockLocation => (
+                                      <TableRow key={getStockLocation.id}>
+                                        <TableCell component="th">
+                                          {getStockLocation.warehouseName}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                          {getStockLocation.stockOnHand}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                          {getStockLocation.committedStock}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                          {getStockLocation.availableForSale}
+                                        </TableCell>
+                                      </TableRow>
+                                    ))}
                                   </TableBody>
                                 </Table>
                               </Box>
@@ -602,7 +605,7 @@ const ItemDetails = props => {
                             <Grid item xs={3}>
                               <div>
                                 <ReactDropZone
-                                  uploadFileAction={() => { }}
+                                  uploadFileAction={() => {}}
                                   task={item}
                                 />
                               </div>
@@ -657,13 +660,13 @@ const ItemDetails = props => {
                             </Grid>
                           </Grid>
                         ) : (
-                            <Skeleton
-                              variant="rect"
-                              animation="wave"
-                              width="100%"
-                              height={118}
-                            />
-                          )}
+                          <Skeleton
+                            variant="rect"
+                            animation="wave"
+                            width="100%"
+                            height={118}
+                          />
+                        )}
                       </div>
                     )}
                     {value == 1 && <div />}
@@ -683,6 +686,8 @@ ItemDetails.propTypes = {
   loading: PropTypes.bool,
   getItemByIdAction: PropTypes.func,
   getItemById: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+  getStockLocationsAction: PropTypes.func,
+  getStockLocations: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -690,11 +695,13 @@ const mapStateToProps = createStructuredSelector({
   items: Selectors.makeSelectGetAllItems(),
   item: Selectors.makeSelectItemDetails(),
   getItemById: Selectors.makeSelectGetItemByIdResponse(),
+  getStockLocations: Selectors.makeSelectGetStockLocationBySkuResponse(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     getItemByIdAction: evt => dispatch(Actions.getItemById(evt)),
+    getStockLocationsAction: evt => dispatch(Actions.getStockLocations(evt)),
   };
 }
 

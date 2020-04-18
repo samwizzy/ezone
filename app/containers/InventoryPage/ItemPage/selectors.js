@@ -129,6 +129,18 @@ const makeSelectGetItemByIdResponse = () =>
     subState => subState.getItemByIdResponse,
   );
 
+const makeSelectGetStockLocationBySku = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.getStockLocationBySku,
+  );
+
+const makeSelectGetStockLocationBySkuResponse = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.getStockLocationBySkuResponse,
+  );
+
 export default makeSelectItemPage;
 export {
   selectItemPageDomain,
@@ -150,4 +162,6 @@ export {
   makeSelectGetAllItemsPerWarehouseUuid,
   makeSelectGetItemById,
   makeSelectGetItemByIdResponse,
+  makeSelectGetStockLocationBySku,
+  makeSelectGetStockLocationBySkuResponse,
 };
