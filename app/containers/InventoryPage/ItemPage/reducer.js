@@ -9,6 +9,8 @@ import * as Constants from './constants';
 export const initialState = {
   getStockLocationBySku: false,
   getStockLocationBySkuResponse: [],
+  getInventoryAdjustById: false,
+  getInventoryAdjustByIdResponse: false,
   getItemByIdResponse: false,
   getItemById: false,
   getAllItemsPerWarehouse: [],
@@ -411,6 +413,29 @@ const itemPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_TRANSFER_ORDER_BY_ID_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_INVENTORY_ADJUST_BY_ID: {
+        return {
+          ...state,
+          getInventoryAdjustById: action.payload,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_INVENTORY_ADJUST_BY_ID_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getInventoryAdjustByIdResponse: action.payload,
+        };
+      }
+      case Constants.GET_INVENTORY_ADJUST_BY_ID_ERROR: {
         return {
           ...state,
           loading: false,

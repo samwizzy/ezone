@@ -123,10 +123,22 @@ const makeSelectGetItemById = () =>
     subState => subState.getItemById,
   );
 
+const makeSelectGetInventoryAdjustById = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.getInventoryAdjustById,
+  );
+
 const makeSelectGetItemByIdResponse = () =>
   createSelector(
     selectItemPageDomain,
     subState => subState.getItemByIdResponse,
+  );
+
+const makeSelectGetInventoryAdjustByIdResponse = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.getInventoryAdjustByIdResponse,
   );
 
 const makeSelectGetStockLocationBySku = () =>
@@ -164,4 +176,6 @@ export {
   makeSelectGetItemByIdResponse,
   makeSelectGetStockLocationBySku,
   makeSelectGetStockLocationBySkuResponse,
+  makeSelectGetInventoryAdjustByIdResponse,
+  makeSelectGetInventoryAdjustById,
 };

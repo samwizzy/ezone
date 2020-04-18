@@ -294,3 +294,24 @@ export function getTransferOrderByIdError(data) {
     payload: data,
   };
 }
+
+export function getInventoryAdjustById(data) {
+  return {
+    type: Constants.GET_INVENTORY_ADJUST_BY_ID,
+    payload: data,
+  };
+}
+
+export function getInventoryAdjustByIdSuccess(data) {
+  return {
+    type: Constants.GET_INVENTORY_ADJUST_BY_ID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getInventoryAdjustByIdError(data) {
+  return {
+    type: Constants.GET_INVENTORY_ADJUST_BY_ID_ERROR,
+    payload: data,
+  };
+}

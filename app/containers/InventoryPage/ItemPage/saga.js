@@ -356,8 +356,37 @@ export function* getTransferOrderById() {
   }
 }
 
+export function* getInventoryAdjustById() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const getItemByIdDetails = yield select(
+    Selectors.makeSelectGetInventoryAdjustById(),
+  );
+
+  const requestURL = `${Endpoints.GetAdjustmentByIdApi}/${getItemByIdDetails}`;
+
+  try {
+    const getInventoryAdjustResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(
+      Actions.getInventoryAdjustByIdSuccess(getInventoryAdjustResponse),
+    );
+  } catch (err) {
+    yield put(Actions.getInventoryAdjustByIdError(err));
+  }
+}
+
 // Individual exports for testing
 export default function* itemPageSaga() {
+  yield takeLatest(
+    Constants.GET_INVENTORY_ADJUST_BY_ID,
+    getInventoryAdjustById,
+  );
   yield takeLatest(Constants.GET_TRANSFER_ORDER_BY_ID, getTransferOrderById);
   yield takeLatest(Constants.GET_STOCK_LOCATIONS, getStockLocations);
   yield takeLatest(
