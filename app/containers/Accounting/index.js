@@ -37,9 +37,9 @@ export function Accounting(props) {
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    dispatchGetAccountPeriodAction();
-    getAccountingSetupAction();
-    dispatchGetAllAccountTypeAction();
+    // dispatchGetAccountPeriodAction();
+    // getAccountingSetupAction();
+    // dispatchGetAllAccountTypeAction();
   }, []);
 
   const {
@@ -53,7 +53,7 @@ export function Accounting(props) {
   console.log('loading', loading);
   console.log('accountingSetupData index.js file', accountingSetupData);
 
-  return <Chart />
+  return <Dashboard />
 
   // if (loading) {
   //   return <LoadingIndicator />;
@@ -70,16 +70,16 @@ Accounting.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  accounting: makeSelectAccounting(),
-  loading: Selectors.makeSelectLoading(),
-  accountingSetupData: Selectors.makeSelectGetAccountingSetupData(),
+  // accounting: makeSelectAccounting(),
+  // loading: Selectors.makeSelectLoading(),
+  // accountingSetupData: Selectors.makeSelectGetAccountingSetupData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAccountingSetupAction: () => dispatch(Actions.getAccountingSetupAction()),
-    dispatchGetAllAccountTypeAction: () => dispatch(Actions.getAllAccountTypeAction()),
-    dispatchGetAccountPeriodAction: () => dispatch(Actions.getAccountPeriodAction()),
+    // getAccountingSetupAction: () => dispatch(Actions.getAccountingSetupAction()),
+    // dispatchGetAllAccountTypeAction: () => dispatch(Actions.getAllAccountTypeAction()),
+    // dispatchGetAccountPeriodAction: () => dispatch(Actions.getAccountPeriodAction()),
     dispatch,
   };
 }

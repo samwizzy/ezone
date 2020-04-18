@@ -19,8 +19,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import NewAccountDialog from './NewAccountDialog';
-import AccountDetails from './AccountDetails';
+import AddBankAccountDialog from './AddBankAccountDialog';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
@@ -72,16 +71,23 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AccountChart = props => {
+const BankList = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [account, setAccount] = React.useState('');
 
-  const handleClick = (event, id) => {
-    setAnchorEl(event.currentTarget);
-    console.log("id value -> ", id);
+  const {
+    loading,
+		openNewBankAccountDialogAction,
+		editOpenBankAccountDialogAction,
+    bankAccountData,
+    dispatchGetAllBankAccountAction
+  } = props;
 
-    const selectedAccount = chartOfAccountData && chartOfAccountData.find(acc => id === acc.id);
+  const handleClick = (event, id) => {
+		console.log("id value -> ", id);
+    setAnchorEl(event.currentTarget);
+    const selectedAccount = bankAccountData && bankAccountData.find(acc => id === acc.id);
     setAccount(selectedAccount);
   };
 
@@ -91,39 +97,18 @@ const AccountChart = props => {
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    dispatchGetAllChartOfAccountTypeAction();
+    dispatchGetAllBankAccountAction();
   }, []);
 
-  const {
-    loading,
-    openNewAccountDialogAction,
-    editOpenAccountDialogAction,
-    deleteChartOfAccountAction,
-    chartOfAccountData,
-    dispatchGetAllChartOfAccountTypeAction,
-  } = props;
-
-  console.log('chartOfAccountData from chart --> ', chartOfAccountData);
+  console.log('bankAccountData from banking --> ', bankAccountData);
 
   const columns = [
     {
-      name: 'Id',
-      label: 'S/N',
+      name: 'accountName',
+      label: 'Account Name',
       options: {
         filter: true,
-        customBodyRender: (value, tableMeta) => {
-          if (value === '') {
-            return '';
-          }
-          return (
-            <div>
-              <FormControlLabel
-                label={tableMeta.rowIndex + 1}
-                control={<Icon />}
-              />
-            </div>
-          );
-        },
+        sort: false,
       },
     },
     {
@@ -135,29 +120,29 @@ const AccountChart = props => {
       },
     },
     {
-      name: 'accountName',
-      label: 'Account Name',
+      name: 'accountNumber',
+      label: 'Account Number',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'accountType.accountType',
-      label: 'Account Type',
+      name: 'bankName',
+      label: 'Bank Name',
       options: {
         filter: true,
         sort: false,
       },
     },
-    // {
-    //   name: 'accountType.description',
-    //   label: 'Account Description',
-    //   options: {
-    //     filter: true,
-    //     sort: false,
-    //   },
-    // },
+    {
+			name: 'bankBalance',
+			label: 'Bank Balance',
+			options: {
+				filter: true,
+				sort: false,
+			},
+		},
     {
       name: 'id',
       label: '.',
@@ -185,20 +170,14 @@ const AccountChart = props => {
                 onClose={handleClose}
               >
                 <MenuItem onClick={() => {
-                  editOpenAccountDialogAction(account);
+                  editOpenBankAccountDialogAction(account);
                 }}>
                   Edit
                 </MenuItem>
                 <MenuItem onClick={() => {
                   // history.push(AccountDetails);
-                  return <AccountDetails />
                 }}>
                   View Details
-                </MenuItem>
-                <MenuItem onClick={() => {
-                  deleteChartOfAccountAction(account);
-                }}>
-                  Delete 
                 </MenuItem>
               </Menu>
             </div>
@@ -220,9 +199,9 @@ const AccountChart = props => {
           size="small"
           className={classes.button}
           startIcon={<AddIcon />}
-          onClick={() => openNewAccountDialogAction()}
+          onClick={() => openNewBankAccountDialogAction()}
         >
-          New Account
+          Add Bank Account
         </Button>
       </Tooltip>
     ),
@@ -234,13 +213,13 @@ const AccountChart = props => {
 
   return (
     <React.Fragment>
-      <NewAccountDialog />
+      <AddBankAccountDialog />
       <div className={classes.root}>
         <Grid container>
           <Grid item xs={12} md={8}>
             <MUIDataTable
-              title="Account Charts"
-              data={chartOfAccountData}
+              title="Banking"
+              data={bankAccountData}
               columns={columns}
               options={options}
             />
@@ -251,24 +230,23 @@ const AccountChart = props => {
   );
 };
 
-AccountChart.propTypes = {
-  loading: PropTypes.bool,
-  openNewAccountDialogAction: PropTypes.func,
-  editOpenAccountDialogAction: PropTypes.func,
+BankList.propTypes = {
+//   loading: PropTypes.bool,
+//   openNewAccountDialogAction: PropTypes.func,
+//   editOpenAccountDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  newAccountDialog: Selectors.makeSelectNewAccountDialog(),
-  chartOfAccountData: Selectors.makeSelectGetChartOfAccountData(),
+  bankAccountDialog: Selectors.makeSelectBankAccountDialog(),
+  bankAccountData: Selectors.makeSelectBankAccountData()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
-    dispatchGetAllChartOfAccountTypeAction: () => dispatch(Actions.getAllChartOfAccountTypeAction()),
-    deleteChartOfAccountAction: evt => dispatch(Actions.deleteChartOfAccountAction(evt)),
-    editOpenAccountDialogAction: evt => dispatch(Actions.editOpenAccountDialog(evt)),
+    openNewBankAccountDialogAction: () => dispatch(Actions.openNewBankAccountDialog()),
+    editOpenBankAccountDialogAction: () => dispatch(Actions.editOpenBankAccountDialog()),
+    dispatchGetAllBankAccountAction: () => dispatch(Actions.getAllBankAccountAction()),
   };
 }
 
@@ -280,4 +258,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(AccountChart);
+)(BankList);

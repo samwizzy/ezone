@@ -8,83 +8,83 @@ import * as Constants from './constants';
 
 
 // Account dialog operations (Edit)
-export function editOpenAccountDialog(data) {
-  return {
-    type: Constants.EDIT_OPEN_ACCOUNT_DIALOG,
-    payload: data,
-  };
-}
+// export function editOpenAccountDialog(data) {
+//   return {
+//     type: Constants.EDIT_OPEN_ACCOUNT_DIALOG,
+//     payload: data,
+//   };
+// }
 
-export function editCloseAccountDialog() {
-  return {
-    type: Constants.EDIT_CLOSE_ACCOUNT_DIALOG,
-  };
-}
+// export function editCloseAccountDialog() {
+//   return {
+//     type: Constants.EDIT_CLOSE_ACCOUNT_DIALOG,
+//   };
+// }
 
 // Get account types 
-export function getAllAccountTypeAction() {
-  return {
-    type: Constants.GET_ALL_ACCOUNT_TYPES,
-  };
-}
+// export function getAllAccountTypeAction() {
+//   return {
+//     type: Constants.GET_ALL_ACCOUNT_TYPES,
+//   };
+// }
 
-export function getAllAccountTypeSuccessAction(data) {
-  return {
-    type: Constants.GET_ALL_ACCOUNT_TYPES_SUCCESS,
-    payload: data,
-  };
-}
+// export function getAllAccountTypeSuccessAction(data) {
+//   return {
+//     type: Constants.GET_ALL_ACCOUNT_TYPES_SUCCESS,
+//     payload: data,
+//   };
+// }
 
-export function getAllAccountTypeErrorAction(data) {
-  return {
-    type: Constants.GET_ALL_ACCOUNT_TYPES_ERR,
-    payload: data,
-  };
-}
+// export function getAllAccountTypeErrorAction(data) {
+//   return {
+//     type: Constants.GET_ALL_ACCOUNT_TYPES_ERR,
+//     payload: data,
+//   };
+// }
 
 // Get detail type
-export function getDetailTypeAction(data) {
-  return {
-    type: Constants.GET_DETAIL_TYPES,
-    payload: data,
-  };
-}
+// export function getDetailTypeAction(data) {
+//   return {
+//     type: Constants.GET_DETAIL_TYPES,
+//     payload: data,
+//   };
+// }
 
-export function getDetailTypeSuccessAction(data) {
-  return {
-    type: Constants.GET_DETAIL_TYPES_SUCCESS,
-    payload: data,
-  };
-}
+// export function getDetailTypeSuccessAction(data) {
+//   return {
+//     type: Constants.GET_DETAIL_TYPES_SUCCESS,
+//     payload: data,
+//   };
+// }
 
-export function getDetailTypeErrorAction(data) {
-  return {
-    type: Constants.GET_DETAIL_TYPES_ERR,
-    payload: data,
-  };
-}
+// export function getDetailTypeErrorAction(data) {
+//   return {
+//     type: Constants.GET_DETAIL_TYPES_ERR,
+//     payload: data,
+//   };
+// }
 
 // Create new chart of account
-export function createNewChartOfAccountAction(data) {
-  return {
-    type: Constants.CREATE_NEW_CHART_OF_ACCOUNT,
-    payload: data,
-  };
-}
+// export function createNewChartOfAccountAction(data) {
+//   return {
+//     type: Constants.CREATE_NEW_CHART_OF_ACCOUNT,
+//     payload: data,
+//   };
+// }
 
-export function createNewChartOfAccountSuccessAction(data) {
-  return {
-    type: Constants.CREATE_NEW_CHART_OF_ACCOUNT_SUCCESS,
-    payload: data,
-  };
-}
+// export function createNewChartOfAccountSuccessAction(data) {
+//   return {
+//     type: Constants.CREATE_NEW_CHART_OF_ACCOUNT_SUCCESS,
+//     payload: data,
+//   };
+// }
 
-export function createNewChartOfAccountErrorAction(data) {
-  return {
-    type: Constants.CREATE_NEW_CHART_OF_ACCOUNT_ERR,
-    payload: data,
-  };
-}
+// export function createNewChartOfAccountErrorAction(data) {
+//   return {
+//     type: Constants.CREATE_NEW_CHART_OF_ACCOUNT_ERR,
+//     payload: data,
+//   };
+// }
 
 // Update chart of account
 export function updateChartOfAccountAction(data) {
@@ -110,49 +110,49 @@ export function updateChartOfAccountErrorAction(data) {
 }
 
 // Delete chart of account
-export function deleteChartOfAccountAction(data) {
-  return {
-    type: Constants.DELETE_CHART_OF_ACCOUNT,
-    payload: data,
-  };
-}
+// export function deleteChartOfAccountAction(data) {
+//   return {
+//     type: Constants.DELETE_CHART_OF_ACCOUNT,
+//     payload: data,
+//   };
+// }
 
-export function deleteChartOfAccountSuccessAction(data) {
-  return {
-    type: Constants.DELETE_CHART_OF_ACCOUNT_SUCCESS,
-    payload: data,
-  };
-}
+// export function deleteChartOfAccountSuccessAction(data) {
+//   return {
+//     type: Constants.DELETE_CHART_OF_ACCOUNT_SUCCESS,
+//     payload: data,
+//   };
+// }
 
-export function deleteChartOfAccountErrorAction(data) {
-  return {
-    type: Constants.DELETE_CHART_OF_ACCOUNT_ERR,
-    payload: data,
-  };
-}
+// export function deleteChartOfAccountErrorAction(data) {
+//   return {
+//     type: Constants.DELETE_CHART_OF_ACCOUNT_ERR,
+//     payload: data,
+//   };
+// }
 
 
 // Get all chart of account 
-export function getAllChartOfAccountTypeAction() {
-  console.log('getAllChartOfAccountTypeAction');
-  return {
-    type: Constants.GET_ALL_CHART_OF_ACCOUNT,
-  };
-}
+// export function getAllChartOfAccountTypeAction() {
+//   console.log('getAllChartOfAccountTypeAction');
+//   return {
+//     type: Constants.GET_ALL_CHART_OF_ACCOUNT,
+//   };
+// }
 
-export function getAllChartOfAccountTypeSuccessAction(data) {
-  return {
-    type: Constants.GET_ALL_CHART_OF_ACCOUNT_SUCCESS,
-    payload: data,
-  };
-}
+// export function getAllChartOfAccountTypeSuccessAction(data) {
+//   return {
+//     type: Constants.GET_ALL_CHART_OF_ACCOUNT_SUCCESS,
+//     payload: data,
+//   };
+// }
 
-export function getAllChartOfAccountTypeErrorAction(data) {
-  return {
-    type: Constants.GET_ALL_CHART_OF_ACCOUNT_ERR,
-    payload: data,
-  };
-}
+// export function getAllChartOfAccountTypeErrorAction(data) {
+//   return {
+//     type: Constants.GET_ALL_CHART_OF_ACCOUNT_ERR,
+//     payload: data,
+//   };
+// }
 
 
 // Get accounting setup
