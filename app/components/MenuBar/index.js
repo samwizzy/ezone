@@ -23,7 +23,6 @@ const drawerHeight = 48;
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
     minHeight: `calc(100vh - ${drawerHeight}px)`
   },
   appBar: {
@@ -33,7 +32,8 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(2, 0)
+    backgroundColor: "transparent",
+    // padding: theme.spacing(2, 0)
   },
   toolbar: {
     display: 'flex',
@@ -105,8 +105,8 @@ function MenuBar(props) {
         </Toolbar>
       </AppBar>
 
-      <main className={classes.content}>
-        <Paper square elevation={0}>
+      <main>
+        <Paper square elevation={0} className={classes.content}>
           {props.content}
         </Paper>
       </main>

@@ -11,6 +11,7 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -21,8 +22,27 @@ import LoadingIndicator from '../../../../components/LoadingIndicator';
 // import InventoryAdjustmentDialog from './ContactDialog';
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1
+  },
   button: {
     margin: theme.spacing(1),
+  },
+  datatable: {
+    '& .MuiTableRow-root:hover': {
+      cursor: 'pointer'
+    },
+    '& .MuiTableHead-root': {
+      '& .MuiTableCell-head': {
+        color: theme.palette.common.white,
+      },
+      '& .MuiTableCell-root:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+      },
+      '& .MuiTableCell-root:nth-child(even)': {
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
+      },
+    },
   },
 }));
 
@@ -218,6 +238,7 @@ const CompaniesList = props => {
   return (
     <React.Fragment>
       <MUIDataTable
+        className={classes.datatable}
         title="All Companies"
         data={[]}
         columns={columns}

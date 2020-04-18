@@ -117,6 +117,42 @@ const makeSelectGetAllItemsPerWarehouseUuid = () =>
     subState => subState.getAllItemsPerWarehouseUuid,
   );
 
+const makeSelectGetItemById = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.getItemById,
+  );
+
+const makeSelectGetInventoryAdjustById = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.getInventoryAdjustById,
+  );
+
+const makeSelectGetItemByIdResponse = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.getItemByIdResponse,
+  );
+
+const makeSelectGetInventoryAdjustByIdResponse = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.getInventoryAdjustByIdResponse,
+  );
+
+const makeSelectGetStockLocationBySku = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.getStockLocationBySku,
+  );
+
+const makeSelectGetStockLocationBySkuResponse = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.getStockLocationBySkuResponse,
+  );
+
 export default makeSelectItemPage;
 export {
   selectItemPageDomain,
@@ -136,4 +172,10 @@ export {
   makeSelectMessage,
   makeSelectGetAllItemsPerWarehouse,
   makeSelectGetAllItemsPerWarehouseUuid,
+  makeSelectGetItemById,
+  makeSelectGetItemByIdResponse,
+  makeSelectGetStockLocationBySku,
+  makeSelectGetStockLocationBySkuResponse,
+  makeSelectGetInventoryAdjustByIdResponse,
+  makeSelectGetInventoryAdjustById,
 };

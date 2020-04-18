@@ -152,12 +152,16 @@ export const GetAllWarehouses = `${BaseUrl}/inventoryserv/api/v1/get_all_warehou
 // Item Apis
 export const CreateNewItemApi = `${BaseUrl}/inventoryserv/api/v1/upload_item`;
 export const GetAllItems = `${BaseUrl}/inventoryserv/api/v1/get_all_items`;
+export const GetItemByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_item_by_id`;
+export const GetStockLocations = `${BaseUrl}/inventoryserv/api/v1/get_item_status_in_all_warehouses`;
 
 // Transfer Order APIs
-export const CreateNewTransferOrderPerWarehouseApi = `${BaseUrl}/inventoryserv/api/v1/add_transfer_order_for_one_warehouse`;
+export const CreateNewTransferOrdersApi = `${BaseUrl}/inventoryserv/api/v1/add_transfer_orders`;
 export const GetAllTransferOrderApi = `${BaseUrl}/inventoryserv/api/v1/get_all_transfer_orders`;
 export const GetAllItemsPerWarehouseApi = `${BaseUrl}/inventoryserv/api/v1/get_all_items`;
+export const GetTransferOrderByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_by_id`;
 
-// Transfer Order APIs
-export const CreateNewInventoryAdjustApi = `${BaseUrl}/inventoryserv/api/v1/do_many_adjustments`;
+// Inventory Adjustment APIs
+export const CreateNewInventoryAdjustApi = `${BaseUrl}/inventoryserv/api/v1/do_many_adjustments_per_warehouse`;
 export const GetAllInventoryAdjustsApi = `${BaseUrl}/inventoryserv/api/v1/get_all_adjustments`;
+export const GetAdjustmentByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_adjustment_by_id`;

@@ -6,21 +6,20 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
 import {
-  makeStyles,
-  Button,
   Card,
   CardContent,
   CardActions,
-  Grid,
   Table,
   TableHead,
   TableBody,
   TableFooter,
   TableRow,
   TableCell,
+  Paper,
   TextField,
-  Typography,
-  Paper
+  makeStyles,
+  Button,
+  Grid,
 } from '@material-ui/core';
 import {
   MuiPickersUtilsProvider,
@@ -37,6 +36,13 @@ import TableTransfer from './TableTransfer';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+  },
+  card: {
+    "& .MuiCardActions-root": {
+      justifyContent: "flex-end",
+      padding: theme.spacing(2),
+      borderTop: `1px solid ${theme.palette.divider}`
+    }
   },
   table: {
     marginTop: theme.spacing(2),
@@ -167,19 +173,9 @@ const TransferOrderDialog = props => {
   console.log(values, 'values');
   return (
     <div>
-      <Card elevation={0}>
+      <Card elevation={0} className={classes.card}>
         <CardContent>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Typography
-                variant="h5"
-                className={classes.title}
-                color="textPrimary"
-                gutterBottom
-              >
-                {transferOrderDialog.type === 'new' ? 'New Transfer Order' : 'Edit Transfer Order'}
-              </Typography>
-            </Grid>
             {transferOrderDialog.type === 'new' ? (
               <React.Fragment>
                 <Grid item xs={12}>
@@ -241,7 +237,7 @@ const TransferOrderDialog = props => {
                   <Grid container spacing={2}>
                     <Grid item xs={6}>
                       <Autocomplete
-                        id="combo-itemCategory"
+                        id="combo-source"
                         options={getAllWarehouses}
                         getOptionLabel={option => option.name}
                         onChange={(evt, ve) => handleSourceChange(evt, ve)}
@@ -259,7 +255,7 @@ const TransferOrderDialog = props => {
                     </Grid>
                     <Grid item xs={6}>
                       <Autocomplete
-                        id="combo-itemCategory"
+                        id="combo-destination"
                         options={getAllWarehouses}
                         getOptionLabel={option => option.name}
                         onChange={(evt, ve) => handleDestinationChange(evt, ve)}
@@ -280,7 +276,10 @@ const TransferOrderDialog = props => {
                 <Grid item xs={12}>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
-                      <Table className={classes.table} aria-label="simple table">
+                      <Table
+                        className={classes.table}
+                        aria-label="simple table"
+                      >
                         <TableHead>
                           <TableRow>
                             <TableCell>Item Details</TableCell>
@@ -301,7 +300,7 @@ const TransferOrderDialog = props => {
                             <TableRow key={id}>
                               <TableCell component="th" scope="row">
                                 <Autocomplete
-                                  id="combo-itemCategory"
+                                  id="combo-item-details"
                                   options={getAllItemsPerWarehouse}
                                   getOptionLabel={option => option.itemName}
                                   onChange={(evt, ve) =>
@@ -310,10 +309,10 @@ const TransferOrderDialog = props => {
                                   renderInput={params => (
                                     <TextField
                                       {...params}
-                                      label="Source Warehouse"
+                                      label="Item Details"
                                       variant="outlined"
                                       name="itemId"
-                                      placeholder="Source Warehouse"
+                                      placeholder="Item Details"
                                       fullWidth
                                     />
                                   )}
@@ -321,21 +320,19 @@ const TransferOrderDialog = props => {
                               </TableCell>
                               <TableCell align="center">
                                 <TextField
-                                  // disabled
-                                  id="filled-disabled"
+                                  disabled
+                                  id={`filled-${id + 1}`}
                                   label="Destination Stock"
-                                  defaultValue={row.destinationStock}
+                                  defaultValue="0.00 Units"
                                   variant="filled"
                                   name="destinationStock"
-                                  // value={row.destinationStock}
-                                  onChange={evt => console.log(evt, 'evt')}
-                                  // onChange={(evt) => handleQuantityChange(id)}
+                                  value={row.destinationStock}
                                 />
                               </TableCell>
                               <TableCell align="center">
                                 <TextField
                                   disabled
-                                  id="filled-disabled"
+                                  id={`filled-${id + 2}`}
                                   label="Source Stock"
                                   defaultValue="0.00 Units"
                                   variant="filled"
@@ -344,7 +341,7 @@ const TransferOrderDialog = props => {
                               </TableCell>
                               <TableCell align="center">
                                 <TextField
-                                  id="filled-disabled"
+                                  id={`filled-${id + 3}`}
                                   label=""
                                   defaultValue="1.00"
                                   variant="outlined"
@@ -390,35 +387,31 @@ const TransferOrderDialog = props => {
         </CardContent>
 
         <CardActions>
-          <Grid container>
-            <Grid item>
-              {loading ? (
-                <LoadingIndicator />
-              ) : (
-                <Button
-                  className={classes.button}
-                  onClick={() => {
-                    dispatchCreateNewTransferOrderAction(
-                      Object.assign(values, { items: rows }),
-                    );
-                  }}
-                  color="primary"
-                  variant="contained"
-                  // disabled={!canBeSubmitted()}
-                >
-                  Save
-                </Button>
-              )}
-              <Button
-                className={classes.button}
-                onClick={() => closeNewTransferOrderDialogAction()}
-                color="primary"
-                variant="contained"
-              >
-                Cancel
-              </Button>
-            </Grid>
-          </Grid>
+          {loading ? (
+            <LoadingIndicator />
+          ) : (
+            <Button
+              className={classes.button}
+              onClick={() => {
+                dispatchCreateNewTransferOrderAction(
+                  Object.assign(values, { items: rows }),
+                );
+              }}
+              color="primary"
+              variant="contained"
+              // disabled={!canBeSubmitted()}
+            >
+              Save
+            </Button>
+          )}
+          <Button
+            className={classes.button}
+            onClick={() => closeNewTransferOrderDialogAction()}
+            color="primary"
+            variant="outlined"
+          >
+            Cancel
+          </Button>
         </CardActions>
       </Card>
     </div>

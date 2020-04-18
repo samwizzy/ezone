@@ -7,7 +7,7 @@ import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
 import {
   Card,
-  CardContent, 
+  CardContent,
   CardActions,
   Table,
   TableHead,
@@ -19,7 +19,7 @@ import {
   makeStyles,
   Button,
   Typography,
-  Grid
+  Grid,
 } from '@material-ui/core';
 import {
   MuiPickersUtilsProvider,
@@ -27,17 +27,21 @@ import {
 } from '@material-ui/pickers';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import DateFnsUtils from '@date-io/date-fns';
+import AddIcon from '@material-ui/icons/Add';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import LoadingIndicator from '../../../../../components/LoadingIndicator';
-import AddIcon from '@material-ui/icons/Add'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   card: {
-    width: 600
+    '& .MuiCardActions-root': {
+      justifyContent: 'flex-end',
+      padding: theme.spacing(2),
+      borderTop: `1px solid ${theme.palette.divider}`,
+    },
   },
   grid: {
     marginBottom: theme.spacing(2),
@@ -45,12 +49,12 @@ const useStyles = makeStyles(theme => ({
   table: {
     marginTop: theme.spacing(2),
     '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& .MuiTableFooter-root': {
       '& .MuiTableCell-root': {
         border: 'none !important',
-      }
+      },
     },
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
@@ -65,8 +69,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   button: {
-    marginRight: theme.spacing(1)
-  }
+    marginRight: theme.spacing(1),
+  },
 }));
 
 const InventoryAdjustmentDialog = props => {
@@ -162,14 +166,17 @@ const InventoryAdjustmentDialog = props => {
     setValues({ ...values, destinationWarehouseUuId: value.id });
   };
 
-  // console.log(values, 'values');
   return (
     <div className={classes.root}>
       <Card className={classes.card} elevation={0}>
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Typography variant="h5" color="textPrimary" className={classes.title}>
+              <Typography
+                variant="h5"
+                color="textPrimary"
+                className={classes.title}
+              >
                 {inventoryAdjustDialog.type === 'new'
                   ? 'Inventory Adjustment'
                   : 'Edit Inventory Adjustment'}
@@ -207,7 +214,7 @@ const InventoryAdjustmentDialog = props => {
                 </Grid>
                 <Grid item xs={6}>
                   <Autocomplete
-                    id="combo-itemCategory"
+                    id="combo-Source"
                     options={getAllWarehouses}
                     getOptionLabel={option => option.name}
                     onChange={(evt, ve) => handleSourceChange(evt, ve)}
@@ -254,15 +261,9 @@ const InventoryAdjustmentDialog = props => {
                 <TableHead>
                   <TableRow>
                     <TableCell>Item Details</TableCell>
-                    <TableCell align="center">
-                      Quantity Available
-                    </TableCell>
-                    <TableCell align="center">
-                      New Quantity on hand
-                    </TableCell>
-                    <TableCell align="center">
-                      Quantity Adjusted
-                    </TableCell>
+                    <TableCell align="center">Quantity Available</TableCell>
+                    <TableCell align="center">New Quantity on hand</TableCell>
+                    <TableCell align="center">Quantity Adjusted</TableCell>
                     <TableCell align="center" />
                   </TableRow>
                 </TableHead>
@@ -271,12 +272,10 @@ const InventoryAdjustmentDialog = props => {
                     <TableRow key={id}>
                       <TableCell component="th" scope="row">
                         <Autocomplete
-                          id="combo-itemCategory"
+                          id="combo-items"
                           options={getAllItems}
                           getOptionLabel={option => option.itemName}
-                          onChange={(evt, ve) =>
-                            handleItemChange(evt, ve, id)
-                          }
+                          onChange={(evt, ve) => handleItemChange(evt, ve, id)}
                           renderInput={params => (
                             <TextField
                               {...params}
@@ -292,16 +291,16 @@ const InventoryAdjustmentDialog = props => {
                       <TableCell align="center">
                         <TextField
                           disabled
-                          id="filled-disabled"
+                          id={`filled-${id + 1}`}
                           label=""
                           // defaultValue="0.00"
                           variant="filled"
                           placeholder="0.00"
                         />
                       </TableCell>
-                      <TableCell>
+                      <TableCell align="center">
                         <TextField
-                          id="filled-disabled"
+                          id={`filled-${id + 2}`}
                           label=""
                           defaultValue="0.00"
                           variant="filled"
@@ -310,7 +309,7 @@ const InventoryAdjustmentDialog = props => {
                       </TableCell>
                       <TableCell align="center">
                         <TextField
-                          id="filled-disabled"
+                          id={`filled-${id + 3}`}
                           label=""
                           defaultValue="1.00"
                           variant="outlined"
@@ -337,7 +336,7 @@ const InventoryAdjustmentDialog = props => {
                         variant="contained"
                         color="primary"
                         onClick={() => addRow()}
-                        startIcon={<AddIcon/>}
+                        startIcon={<AddIcon />}
                       >
                         Add Row
                       </Button>
@@ -350,35 +349,31 @@ const InventoryAdjustmentDialog = props => {
         </CardContent>
 
         <CardActions>
-          <Grid container spacing={2}>
-            <Grid item>
-              {loading ? (
-                <LoadingIndicator />
-              ) : (
-                <Button
-                  className={classes.button}
-                  onClick={() => {
-                    dispatchCreateNewInventoryAdjustmentAction(
-                      Object.assign(values, { items: rows }),
-                    );
-                  }}
-                  color="primary"
-                  variant="contained"
-                  // disabled={!canBeSubmitted()}
-                >
-                  Save
-                </Button>
-              )}
-              <Button
-                className={classes.button}
-                onClick={() => closeNewInventoryAdjustDialogAction()}
-                color="primary"
-                variant="contained"
-              >
-                Cancel
-              </Button>
-            </Grid>
-          </Grid>
+          {loading ? (
+            <LoadingIndicator />
+          ) : (
+            <Button
+              className={classes.button}
+              onClick={() => {
+                dispatchCreateNewInventoryAdjustmentAction(
+                  Object.assign(values, { items: rows }),
+                );
+              }}
+              color="primary"
+              variant="contained"
+              // disabled={!canBeSubmitted()}
+            >
+              Save
+            </Button>
+          )}
+          <Button
+            className={classes.button}
+            onClick={() => closeNewInventoryAdjustDialogAction()}
+            color="primary"
+            variant="outlined"
+          >
+            Cancel
+          </Button>
         </CardActions>
       </Card>
     </div>
