@@ -127,11 +127,7 @@ export function* createNewTransferOrder() {
     Selectors.makeSelectTransferOrderDetails(),
   );
   createNewTransferOrderDetails.orgId = currentUser.organisation.orgId;
-
-  console.log(createNewTransferOrderDetails, 'createNewTransferOrderDetails');
-  const requestURL = `${Endpoints.CreateNewTransferOrderPerWarehouseApi}`;
-
-  console.log(requestURL, 'requestURL');
+  const requestURL = `${Endpoints.CreateNewTransferOrdersApi}`;
   try {
     const createNewTransferOrderResponse = yield call(request, requestURL, {
       method: 'POST',
@@ -143,7 +139,7 @@ export function* createNewTransferOrder() {
     });
 
     yield put(Actions.getAllTransferOrder());
-    yield put(Actions.closeNewTransferOrderDialog());
+    yield put(push('/inventory/transfer/orders'));
   } catch (err) {
     console.log(err);
     yield put(Actions.createNewTransferOrderError(err));
@@ -163,8 +159,6 @@ export function* getAllTransferOrder() {
         'Content-Type': 'application/json',
       }),
     });
-
-    console.log(getAllTransferOrderResponse, 'getAllTransferOrderResponse');
 
     yield put(Actions.getAllTransferOrderSuccess(getAllTransferOrderResponse));
   } catch (err) {
@@ -186,10 +180,6 @@ export function* createNewInventoryAdjust() {
     Selectors.makeSelectInventoryAdjustmentDetails(),
   );
   createNewInventoryAdjustDetails.orgId = currentUser.organisation.orgId;
-  console.log(
-    createNewInventoryAdjustDetails,
-    'createNewInventoryAdjustDetails',
-  );
   const requestURL = `${Endpoints.CreateNewInventoryAdjustApi}`;
 
   try {
@@ -203,7 +193,7 @@ export function* createNewInventoryAdjust() {
     });
 
     yield put(Actions.getAllInventoryAdjustments());
-    yield put(Actions.closeNewInventoryAdjustDialog());
+    yield put(push('/inventory/adjustments'));
   } catch (err) {
     console.log(err);
     yield put(Actions.createNewInventoryAdjustmentError(err));

@@ -452,19 +452,18 @@ const TransferOrderDetails = props => {
                           </TableHead>
                           <TableBody>
                             {transferOrder.items.map(item => (
-                              <TableRow>
+                              <TableRow key={item.id}>
                                 <TableCell align="center">
                                   <WallpaperIcon />
                                 </TableCell>
                                 <TableCell>
                                   <Typography variant="subtitle1">
-                                    {item.itemName}
-                                  </Typography>
-                                  <Typography variant="caption">
-                                    {item.quality}
+                                    {item.name}
                                   </Typography>
                                 </TableCell>
-                                <TableCell align="right">1</TableCell>
+                                <TableCell align="right">
+                                  {item.transferredQuantity}
+                                </TableCell>
                               </TableRow>
                             ))}
                           </TableBody>

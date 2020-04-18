@@ -423,21 +423,25 @@ const InventoryAdjustmentDetails = props => {
                             </TableRow>
                           </TableHead>
                           <TableBody>
-                            <TableRow>
-                              <TableCell align="center">
-                                <WallpaperIcon />
-                              </TableCell>
-                              <TableCell>
-                                <Typography variant="subtitle1">
-                                  Infinix
-                                </Typography>
-                                <Typography variant="caption">
-                                  SKU 26392403
-                                </Typography>
-                              </TableCell>
-                              <TableCell>Optisoft Tech</TableCell>
-                              <TableCell align="right">54(pcs)</TableCell>
-                            </TableRow>
+                            {inventoryAdjust.items.map(item => (
+                              <TableRow key={item.id}>
+                                <TableCell align="center">
+                                  <WallpaperIcon />
+                                </TableCell>
+                                <TableCell>
+                                  <Typography variant="subtitle1">
+                                    {item.itemName}
+                                  </Typography>
+                                  {/* <Typography variant="caption">
+                                    SKU 26392403
+                                  </Typography> */}
+                                </TableCell>
+                                <TableCell>Optisoft Tech</TableCell>
+                                <TableCell align="right">
+                                  {item.adjustedQuantity}(pcs)
+                                </TableCell>
+                              </TableRow>
+                            ))}
                           </TableBody>
                         </Table>
                       </Box>
