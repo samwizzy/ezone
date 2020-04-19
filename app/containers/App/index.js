@@ -57,6 +57,7 @@ import sideBarconfig from '../../components/Sidebar/components/SidebarConfig';
 import AccountPage from '../Accounting/Loadable';
 import ChartPage from '../Accounting/Chart/Loadable';
 import BankingPage from '../Accounting/Banking/Loadable';
+import JournalPage from '../Accounting/Journal/Loadable';
 import CrmDashboard from '../Crm/Dashboard/Loadable';
 import CrmContacts from '../Crm/Contacts/Loadable';
 import CrmCompanies from '../Crm/Companies/Loadable';
@@ -199,6 +200,7 @@ const App = (props) => {
                 <PrivateRoute exact path="/account" component={AccountPage} />
                 <PrivateRoute exact path="/account/chart" component={ChartPage} />
                 <PrivateRoute exact path="/account/banking" component={BankingPage} />
+                <PrivateRoute exact path="/account/journal" component={JournalPage} />
                 <PrivateRoute
                   exact
                   path="/inventory"

@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -20,7 +20,7 @@ import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import AddBankAccountDialog from './AddBankAccountDialog';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
+// import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -81,7 +81,6 @@ const BankList = props => {
 		openNewBankAccountDialogAction,
 		editOpenBankAccountDialogAction,
     bankAccountData,
-    dispatchGetAllBankAccountAction
   } = props;
 
   const handleClick = (event, id) => {
@@ -94,13 +93,6 @@ const BankList = props => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  // Similar to componentDidMount and componentDidUpdate:
-  useEffect(() => {
-    dispatchGetAllBankAccountAction();
-  }, []);
-
-  console.log('bankAccountData from banking --> ', bankAccountData);
 
   const columns = [
     {
@@ -207,10 +199,6 @@ const BankList = props => {
     ),
   };
 
-  if (loading) {
-    return <LoadingIndicator />;
-  }
-
   return (
     <React.Fragment>
       <AddBankAccountDialog />
@@ -237,7 +225,7 @@ BankList.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(),
+  // loading: Selectors.makeSelectLoading(),
   bankAccountDialog: Selectors.makeSelectBankAccountDialog(),
   bankAccountData: Selectors.makeSelectBankAccountData()
 });
@@ -246,7 +234,6 @@ function mapDispatchToProps(dispatch) {
   return {
     openNewBankAccountDialogAction: () => dispatch(Actions.openNewBankAccountDialog()),
     editOpenBankAccountDialogAction: () => dispatch(Actions.editOpenBankAccountDialog()),
-    dispatchGetAllBankAccountAction: () => dispatch(Actions.getAllBankAccountAction()),
   };
 }
 

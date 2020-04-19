@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -9,17 +9,18 @@ import {
   Menu,
   MenuItem,
   Grid,
+  Tooltip
 } from '@material-ui/core';
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
+import AddIcon from '@material-ui/icons/Add';
+
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import * as Actions from '../actions';
-import * as Selectors from '../selectors';
-// import LoadingIndicator from '../../../components/LoadingIndicator';
-// import { AddButton } from './AddButton';
-
+// import * as Actions from '../actions';
+// import * as Selectors from '../selectors';
+// import AddBankAccountDialog from './AddBankAccountDialog';
+// import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -42,18 +43,7 @@ const useStyles = makeStyles(theme => ({
   datatable: {
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
-    },
-    '& .MuiTableHead-root': {
-      '& .MuiTableCell-head': {
-        color: theme.palette.common.white,
-      },
-      '& .MuiTableCell-root:nth-child(odd)': {
-        backgroundColor: theme.palette.primary.main,
-      },
-      '& .MuiTableCell-root:nth-child(even)': {
-        backgroundColor: darken(theme.palette.primary.main, 0.1),
-      },
-    },
+    }
   },
   // button: {
   //   '&.favorite': { color: orange[300]},
@@ -86,12 +76,17 @@ const JournalListing = props => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [account, setAccount] = React.useState('');
 
+  const {
+    // loading,
+		// openNewBankAccountDialogAction,
+		// editOpenBankAccountDialogAction,
+    // bankAccountData,
+  } = props;
 
   const handleClick = (event, id) => {
+		console.log("id value -> ", id);
     setAnchorEl(event.currentTarget);
-    console.log("id value -> ", id);
-
-    const selectedAccount = chartOfAccountData && chartOfAccountData.find(acc => id === acc.id);
+    const selectedAccount = bankAccountData && bankAccountData.find(acc => id === acc.id);
     setAccount(selectedAccount);
   };
 
@@ -99,73 +94,47 @@ const JournalListing = props => {
     setAnchorEl(null);
   };
 
-  useEffect(() => {
-  }, []);
-
-  const {
-  } = props;
-
   const columns = [
     {
-      name: 'Id',
-      label: 'S/N',
+      name: 'accountName',
+      label: 'Account Name',
       options: {
         filter: true,
-        customBodyRender: (value, tableMeta) => {
-          if (value === '') {
-            return '';
-          }
-          return (
-            <div>
-              <FormControlLabel
-                label={tableMeta.rowIndex + 1}
-                control={<Icon />}
-              />
-            </div>
-          );
-        },
+        sort: false,
+      },
+    },
+    {
+      name: 'accountCode',
+      label: 'Account Code',
+      options: {
+        filter: true,
+        sort: false,
       },
     },
     {
       name: 'accountNumber',
-      label: 'Date',
+      label: 'Account Number',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'accountName',
-      label: 'Reference number',
+      name: 'bankName',
+      label: 'Bank Name',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'description',
-      label: 'Amount',
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: 'accountType',
-      label: 'Created by',
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: 'accountType',
-      label: 'Status',
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
+			name: 'bankBalance',
+			label: 'Bank Balance',
+			options: {
+				filter: true,
+				sort: false,
+			},
+		},
     {
       name: 'id',
       label: '.',
@@ -193,19 +162,14 @@ const JournalListing = props => {
                 onClose={handleClose}
               >
                 <MenuItem onClick={() => {
-                //   editOpenAccountDialogAction(account);
+                  // editOpenBankAccountDialogAction(account);
                 }}>
                   Edit
                 </MenuItem>
-                <MenuItem 
-                    // onClick={handleClose}
-                >
-                  View Details
-                </MenuItem>
                 <MenuItem onClick={() => {
-                //   deleteChartOfAccountAction(account);
+                  // history.push(AccountDetails);
                 }}>
-                  Delete 
+                  View Details
                 </MenuItem>
               </Menu>
             </div>
@@ -217,27 +181,33 @@ const JournalListing = props => {
 
   const options = {
     filterType: 'checkbox',
-    responsive: "scrollFullHeight", // "scrollMaxHeight",
+    responsive: 'scrollMaxHeight',
     selectableRows: 'none',
-    // customToolbar: () => (
-    //   <AddButton 
-    //     openNewAccountDialogAction={openNewAccountDialogAction} 
-    //   />
-    // ),
+    customToolbar: () => (
+      <Tooltip title="Create New Chart">
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          className={classes.button}
+          startIcon={<AddIcon />}
+          // onClick={() => openNewBankAccountDialogAction()}
+        >
+          New Journal
+        </Button>
+      </Tooltip>
+    ),
   };
-
-//   if (loading) {
-//     return <LoadingIndicator />;
-//   }
 
   return (
     <React.Fragment>
+      {/* <AddBankAccountDialog /> */}
       <div className={classes.root}>
         <Grid container>
-          <Grid item xs={12}>
+          <Grid item xs={12} md={8}>
             <MUIDataTable
-              title="Journal"
-            //   data={chartOfAccountData}
+              title="Journals"
+              // data={bankAccountData}
               columns={columns}
               options={options}
             />
@@ -255,13 +225,15 @@ JournalListing.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-//   loading: Selectors.makeSelectLoading(),
-  // accountPeriodData: Selectors.makeSelectGetAllAccountPeriodData(),
+  // loading: Selectors.makeSelectLoading(),
+  // bankAccountDialog: Selectors.makeSelectBankAccountDialog(),
+  // bankAccountData: Selectors.makeSelectBankAccountData()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    // dispatchGetAllAccountPeriodAction: () => dispatch(Actions.getAllAccountPeriodAction()),
+    // openNewBankAccountDialogAction: () => dispatch(Actions.openNewBankAccountDialog()),
+    // editOpenBankAccountDialogAction: () => dispatch(Actions.editOpenBankAccountDialog()),
   };
 }
 
