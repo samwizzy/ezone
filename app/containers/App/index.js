@@ -68,14 +68,13 @@ import CrmActivities from '../Crm/Activities/Loadable';
 
 import { Auth } from '../../auth';
 
-const App = (props) => {
-
+const App = props => {
   const { currentUser, accessToken } = props;
 
   // useEffect(() => {
   //   messaging.requestPermission()
   //   .then(async function() {
-	// 		await messaging.getToken().then(token => {
+  // 		await messaging.getToken().then(token => {
   //       fetch('https://dev.ezoneapps.com/gateway/utilityserv/api/v1/fcm/update_client_fcm_token',{
   //         method: 'POST',
   //         headers: {
@@ -200,7 +199,11 @@ const App = (props) => {
                   component={HRPage}
                 />
                 <PrivateRoute exact path="/account" component={AccountPage} />
-                <PrivateRoute exact path="/account/chart" component={ChartPage} />
+                <PrivateRoute
+                  exact
+                  path="/account/chart"
+                  component={ChartPage}
+                />
                 {/* <PrivateRoute exact path="/account/chart" component={AccountChart} />
                 <PrivateRoute exact path="/account/journal/new" component={AddNewJournal} />
                 <PrivateRoute exact path="/account/setting" component={AccountSetting} /> */}
@@ -243,11 +246,7 @@ const App = (props) => {
                   path="/inventory/adjustments/:statusId?"
                   component={InventoryAdjustmentApp}
                 />
-                <PrivateRoute
-                  exact
-                  path="/crm"
-                  component={CrmDashboard}
-                />
+                <PrivateRoute exact path="/crm" component={CrmDashboard} />
                 <PrivateRoute
                   exact
                   path="/crm/dashboard"

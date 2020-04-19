@@ -22,7 +22,6 @@ import VisibilityOffOutlined from '@material-ui/icons/VisibilityOffOutlined';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import strength from 'strength';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import logo from '../../../../images/logo.svg';
@@ -42,36 +41,6 @@ function Copyright() {
     </Typography>
   );
 }
-
-const helperTextStyles = makeStyles(theme => ({
-  // root: {
-  //   margin: 4,
-  //   color: 'black',
-  // },
-  // error: {
-  //   '&.MuiFormHelperText-root.Mui-error': {
-  //     color: 'red',
-  //   },
-  // },
-  root: {
-    '&$error': {
-      color: "green"
-    },
-  },
-  asterisk: {
-    '&$error': {
-      color: "green"
-    },
-  },
-  underline: {
-    '&$error:after': {
-      borderBottomColor: "green",
-    },
-  },
-  error: {
-    color: 'red',
-  },
-}));
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -159,7 +128,6 @@ const useStyles = makeStyles(theme => ({
 const RegistrationForm = props => {
   const { loading, signupResData, signupAction } = props;
   const classes = useStyles();
-  const helperTestClasses = helperTextStyles();
 
   const [visibility, setVisibility] = React.useState(false);
   const [values, setValues] = React.useState({
@@ -274,9 +242,9 @@ const RegistrationForm = props => {
                         onClick={handleVisibility}
                       >
                         {visibility ? (
-                          <VisibilityOffOutlined />
-                        ) : (
                           <VisibilityOutlined />
+                        ) : (
+                          <VisibilityOffOutlined />
                         )}
                       </IconButton>
                     </Tooltip>

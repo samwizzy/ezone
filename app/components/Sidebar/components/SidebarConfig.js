@@ -11,13 +11,24 @@ const SidebarConfig = [
     menus: [
       { id: 1, name: 'Home', url: '/', icon: 'home' },
       { id: 2, name: 'Dashboard', url: '/dashboard', icon: 'build' },
+      {
+        id: 3,
+        name: 'Organization',
+        url: '/organization',
+        icon: 'business_center',
+      },
     ],
   },
   {
     module: 'organization',
     menus: [
       { id: 1, name: 'Dashboard', url: '/dashboard', icon: 'dashboard' },
-      { id: 2, name: 'Organization', url: '/organization', icon: 'business_center' },
+      {
+        id: 2,
+        name: 'Organization',
+        url: '/organization',
+        icon: 'business_center',
+      },
       { id: 3, name: 'Applications', url: '/utility', icon: 'apps' },
       { id: 4, name: 'Employees', url: '/users/employees', icon: 'group' },
       { id: 5, name: 'User Profile', url: '/users/profile', icon: 'person' },
@@ -48,7 +59,12 @@ const SidebarConfig = [
     module: 'email',
     menus: [
       { id: 1, name: 'Dashboard', url: '/dashboard', icon: 'dashboard' },
-      { id: 2, name: 'Organization', url: '/organization', icon: 'business_center' },
+      {
+        id: 2,
+        name: 'Organization',
+        url: '/organization',
+        icon: 'business_center',
+      },
       { id: 3, name: 'Applications', url: '/utility', icon: 'apps' },
       { id: 4, name: 'Employees', url: '/users/employees', icon: 'group' },
       { id: 5, name: 'User Profile', url: '/users/profile', icon: 'person' },
@@ -61,7 +77,12 @@ const SidebarConfig = [
     module: 'workorder',
     menus: [
       { id: 1, name: 'Dashboard', url: '/dashboard', icon: 'dashboard' },
-      { id: 2, name: 'Organization', url: '/organization', icon: 'business_center' },
+      {
+        id: 2,
+        name: 'Organization',
+        url: '/organization',
+        icon: 'business_center',
+      },
       { id: 3, name: 'Applications', url: '/utility', icon: 'apps' },
       { id: 4, name: 'Employees', url: '/users/employees', icon: 'group' },
       { id: 5, name: 'User Profile', url: '/users/profile', icon: 'person' },
@@ -130,7 +151,12 @@ const SidebarConfig = [
         url: '/account/chart',
         icon: 'account_tree',
       },
-      { id: 3, name: 'Journal', url: '/account/journal/new', icon: 'menu_book' },
+      {
+        id: 3,
+        name: 'Journal',
+        url: '/account/journal/new',
+        icon: 'menu_book',
+      },
       { id: 4, name: 'Groups', url: '/account', icon: 'group' },
     ],
   },
