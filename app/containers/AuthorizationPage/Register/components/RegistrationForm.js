@@ -22,6 +22,7 @@ import VisibilityOffOutlined from '@material-ui/icons/VisibilityOffOutlined';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import strength from 'strength';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import logo from '../../../../images/logo.svg';
@@ -41,6 +42,36 @@ function Copyright() {
     </Typography>
   );
 }
+
+const helperTextStyles = makeStyles(theme => ({
+  // root: {
+  //   margin: 4,
+  //   color: 'black',
+  // },
+  // error: {
+  //   '&.MuiFormHelperText-root.Mui-error': {
+  //     color: 'red',
+  //   },
+  // },
+  root: {
+    '&$error': {
+      color: "green"
+    },
+  },
+  asterisk: {
+    '&$error': {
+      color: "green"
+    },
+  },
+  underline: {
+    '&$error:after': {
+      borderBottomColor: "green",
+    },
+  },
+  error: {
+    color: 'red',
+  },
+}));
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -120,11 +151,15 @@ const useStyles = makeStyles(theme => ({
   label: {
     fontSize: 10,
   },
+  span: {
+    color: 'red',
+  },
 }));
 
 const RegistrationForm = props => {
   const { loading, signupResData, signupAction } = props;
   const classes = useStyles();
+  const helperTestClasses = helperTextStyles();
 
   const [visibility, setVisibility] = React.useState(false);
   const [values, setValues] = React.useState({
@@ -143,9 +178,12 @@ const RegistrationForm = props => {
 
   const canBeSubmitted = () => {
     const { companyName, country, email, password } = values;
+    const passwordPattern = new RegExp(
+      '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$',
+    );
+    const pass = passwordPattern.test(password);
     return (
-      companyName !== '' && country !== '' && email !== '' && password !== ''
-      // companyName !== null && country !== null && email !== null && password !== null
+      companyName !== '' && country !== '' && email !== '' && pass !== false
     );
   };
 
@@ -249,6 +287,10 @@ const RegistrationForm = props => {
                 }}
                 onChange={handleChange('password')}
               />
+              <span className={classes.span}>
+                Password must contain at least one upper case, lower case,
+                symbol,number and can not be less than 6 digits
+              </span>
               <Autocomplete
                 id="combo-itemCategory"
                 options={CountriesAndStates}

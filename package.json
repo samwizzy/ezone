@@ -136,6 +136,7 @@
     "sanitize.css": "8.0.0",
     "soap": "^0.30.0",
     "sockjs-client": "^1.4.0",
+    "strength": "^0.1.4",
     "style-loader": "0.23.1",
     "styled-components": "4.2.0",
     "svg-url-loader": "2.3.2",
