@@ -47,6 +47,7 @@ export function* createNewBankSaga() {
     });
 
     yield put(Actions.createNewBankSuccessAction(newBankResponse));
+    yield put(Actions.getAllBankAccountAction());
   } catch (err) {
     yield put(Actions.createNewBankErrorAction(err));
   }
@@ -57,8 +58,6 @@ export function* getAllBankAccountSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetAllBankAccount}/${currentUser.organisation.orgId}`;
-
-  console.log('getAllBankAccountSaga requestURL -> ', requestURL);
 
   try {
     const allBankAccountResponse = yield call(request, requestURL, {

@@ -1,62 +1,51 @@
 /**
  *
- * Accounting
+ * Journal
  *
  */
 
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import reducer from './../reducer';
-import saga from './../saga';
-import * as Actions from './../actions';
-import * as Selectors from './../selectors';
-import LoadingIndicator from './../../../components/LoadingIndicator';
-import JournalListing from './JournalListing'
-import JournalDetails from './JournalDetails'
-import ModuleLayout from './../components/ModuleLayout'
+import makeSelectJournal from './selectors';
+import reducer from './reducer';
+import saga from './saga';
+import messages from './messages';
+import ModuleLayout from '../components/ModuleLayout';
+import JournalListing from './components/JournalListing';
 
-export function JournalApp(props) {
-//   useInjectReducer({ key: 'accounting', reducer });
-//   useInjectSaga({ key: 'accounting', saga });
+export function Journal() {
+  useInjectReducer({ key: 'journal', reducer });
+  useInjectSaga({ key: 'journal', saga });
 
-  useEffect(() => {
-  }, []);
-
-  const { loading, match } = props;
-  const { params } = match
-  console.log(params, "params")
+  console.log('Journal index.js loaded');
 
   return (
-    <React.Fragment>
-        <Helmet>
-            <title>Journal Page</title>
-            <meta name="description" content="ezone accounting journal" />
-        </Helmet>
-        <ModuleLayout>
-            {
-            params.statusId?
-                <JournalDetails />
-                :
-                <JournalListing />
-            }
-        </ModuleLayout>
-    </React.Fragment>
-  )
-
+    <div>
+      <Helmet>
+        <title>Journal</title>
+        <meta name="description" content="Description of Journal" />
+      </Helmet>
+      <ModuleLayout>
+        <JournalListing />
+      </ModuleLayout>
+    </div>
+  );
 }
 
-JournalApp.propTypes = {};
+Journal.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(),
-  accountingSetupData: Selectors.makeSelectGetAccountingSetupData(),
+  journal: makeSelectJournal(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -71,7 +60,6 @@ const withConnect = connect(
 );
 
 export default compose(
-    withRouter,
-    withConnect,
-    memo,
-)(JournalApp);
+  withConnect,
+  memo,
+)(Journal);
