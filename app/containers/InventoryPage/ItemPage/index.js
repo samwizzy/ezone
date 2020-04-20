@@ -30,8 +30,8 @@ export function ItemPage(props) {
   useInjectSaga({ key: 'itemPage', saga });
 
   const { getAllItemsAction, getAllWarehousesAction, match } = props;
-  const { params } = match
-  console.log(match.params, "params")
+  const { params } = match;
+  console.log(match.params, 'params');
 
   useEffect(() => {
     getAllItemsAction();
@@ -45,11 +45,13 @@ export function ItemPage(props) {
           <title>ItemPage</title>
           <meta name="description" content="Description of ItemPage" />
         </Helmet>
-        {
-          params.statusId == 'new'?
-          <ItemDialog />:
-          params.statusId? <ItemDetails /> : <ItemsList />
-        }
+        {params.statusId == 'new' ? (
+          <ItemDialog />
+        ) : params.statusId ? (
+          <ItemDetails />
+        ) : (
+          <ItemsList />
+        )}
       </ModuleLayout>
     </div>
   );

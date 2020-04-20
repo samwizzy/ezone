@@ -144,7 +144,7 @@ const SidebarConfig = [
         icon: 'account_tree',
       },
       { id: 3, name: 'Journal', url: '/account/journal/new', icon: 'menu_book' },
-      { id: 4, name: 'Groups', url: '/account', icon: 'group' },
+      { id: 4, name: 'Banking', url: '/account/banking', icon: 'group' },
     ],
   },
   {
@@ -249,7 +249,7 @@ const SidebarConfig = [
       {
         id: 4,
         name: 'Investment Adjustment',
-        url: '/inventory/inventory/adjustments',
+        url: '/inventory/adjustments',
         icon: 'person',
       },
     ],

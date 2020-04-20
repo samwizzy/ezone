@@ -123,7 +123,8 @@ export const UpdateWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/update_workorde
 export const DeleteWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/delete_workorder`;
 export const GetListOfWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/find_all_workorders`;
 
-// Account Api
+
+// Account Api 
 export const GetAllAccountTypeApi = `${BaseUrl}/accountingserv/api/v1/account/get_all_account_types`;
 export const GetDetailTypeApi = `${BaseUrl}/accountingserv/api/v1/account/get_detail_types`;
 export const CreateChartOfAccountApi = `${BaseUrl}/accountingserv/api/v1/account/add_chart_of_account`;
@@ -134,8 +135,12 @@ export const GetAccountingSetupApi = `${BaseUrl}/accountingserv/api/v1/account/g
 export const CreateAccountingSetupApi = `${BaseUrl}/accountingserv/api/v1/account/add_account_settings`;
 export const GetAccountPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/get_periods_by_orgid`;
 export const CreateAccountJournalApi = `${BaseUrl}/accountingserv/api/v1/journal/create_and_add_to_period`;
+export const GetParentAccountTypeApi = `${BaseUrl}/accountingserv/api/v1/account/get_parent_types`;
+export const CreateNewBankApi = `${BaseUrl}/accountingserv/api/v1/bank/add_bank`;
+export const GetAllBankAccount = `${BaseUrl}/accountingserv/api/v1/bank/get_All_bank_account_by_orgid`;
 
-/** *****************************************************************
+
+/** ***************************************************************** 
  * Inventory endpoint  
  ******************************************************************* */
 
@@ -147,12 +152,16 @@ export const GetAllWarehouses = `${BaseUrl}/inventoryserv/api/v1/get_all_warehou
 // Item Apis
 export const CreateNewItemApi = `${BaseUrl}/inventoryserv/api/v1/upload_item`;
 export const GetAllItems = `${BaseUrl}/inventoryserv/api/v1/get_all_items`;
+export const GetItemByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_item_by_id`;
+export const GetStockLocations = `${BaseUrl}/inventoryserv/api/v1/get_item_status_in_all_warehouses`;
 
 // Transfer Order APIs
-export const CreateNewTransferOrderPerWarehouseApi = `${BaseUrl}/inventoryserv/api/v1/add_transfer_order_for_one_warehouse`;
+export const CreateNewTransferOrdersApi = `${BaseUrl}/inventoryserv/api/v1/add_transfer_orders`;
 export const GetAllTransferOrderApi = `${BaseUrl}/inventoryserv/api/v1/get_all_transfer_orders`;
 export const GetAllItemsPerWarehouseApi = `${BaseUrl}/inventoryserv/api/v1/get_all_items`;
+export const GetTransferOrderByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_by_id`;
 
-// Transfer Order APIs
-export const CreateNewInventoryAdjustApi = `${BaseUrl}/inventoryserv/api/v1/do_many_adjustments`;
+// Inventory Adjustment APIs
+export const CreateNewInventoryAdjustApi = `${BaseUrl}/inventoryserv/api/v1/do_many_adjustments_per_warehouse`;
 export const GetAllInventoryAdjustsApi = `${BaseUrl}/inventoryserv/api/v1/get_all_adjustments`;
+export const GetAdjustmentByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_adjustment_by_id`;

@@ -182,48 +182,6 @@ const InventoryAdjustmentList = props => {
         sort: false,
       }
     },
-    // {
-    //   name: 'id',
-    //   label: '',
-    //   options: {
-    //     filter: true,
-    //     sort: false,
-    //     customBodyRender: value => {
-    //       const Post = datas.find(post => value === post.id);
-    //       if (value === '') {
-    //         return '';
-    //       }
-    //       return (
-    //         <div>
-    //           <Button
-    //             aria-controls="simple-menu"
-    //             aria-haspopup="true"
-    //             onClick={handleClick}
-    //           >
-    //             Options
-    //           </Button>
-    //           <Menu
-    //             id="simple-menu"
-    //             anchorEl={anchorEl}
-    //             keepMounted
-    //             open={Boolean(anchorEl)}
-    //             onClose={handleClose}
-    //           >
-    //             <MenuItem onClick={handleClose}>Assign Role</MenuItem>
-    //             <MenuItem onClick={handleClose}>Assign Apps</MenuItem>
-    //             <MenuItem onClick={() => openEditEmployeeDialogAction(Post)}>
-    //               Edit
-    //             </MenuItem>
-    //             <MenuItem onClick={() => openViewEmployeeDialogAction(Post)}>
-    //               View Details
-    //             </MenuItem>
-    //             <MenuItem onClick={handleClose}>Deactivate</MenuItem>
-    //           </Menu>
-    //         </div>
-    //       );
-    //     },
-    //   },
-    // },
   ];
 
   const options = {
@@ -237,13 +195,13 @@ const InventoryAdjustmentList = props => {
         size="small"
         className={classes.button}
         startIcon={<AddIcon />}
-        onClick={() => history.push('/inventory/inventory/adjustments/new')}
+        onClick={() => history.push('/inventory/adjustments/new')}
       >
         New
       </Button>
     ),
     onRowClick: (rowData, rowState) => {
-      props.history.push('/inventory/inventory/adjustments/' + rowData[0])
+      props.history.push('/inventory/adjustments/' + rowData[0])
     },
     elevation: 0
   };

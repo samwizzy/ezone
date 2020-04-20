@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -8,15 +8,25 @@ import saga from './saga';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import * as Actions from '../actions';
-import * as Selectors from '../selectors';
+import * as Actions from './actions';
+// import * as Selectors from '../selectors';
 import ModuleLayout from '../components/ModuleLayout'
 import AccountDetails from './components/AccountDetails';
-import AccountChart from './components/AccountChart';
+import AccountChart from '../Chart/components/AccountChart';
+
 
 const Chart = props => {
-  useInjectReducer({ key: 'accountChart', reducer });
-  useInjectSaga({ key: 'accountChart', saga });
+  useInjectReducer({ key: 'chart', reducer });
+  useInjectSaga({ key: 'chart', saga });
+
+  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {
+    dispatchGetAllAccountTypeAction();
+  }, []);
+
+  const {
+    dispatchGetAllAccountTypeAction,
+  } = props;
 
   return (
       <ModuleLayout>
@@ -30,11 +40,13 @@ Chart.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(),
+  // loading: Selectors.makeSelectLoading(),
 });
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    dispatchGetAllAccountTypeAction: () => dispatch(Actions.getAllAccountTypeAction()),
+  };
 }
 
 const withConnect = connect(

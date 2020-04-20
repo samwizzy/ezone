@@ -1,5 +1,8 @@
-import React from 'react'
-import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
+import React from 'react';
+import {
+  VerticalTimeline,
+  VerticalTimelineElement,
+} from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 import { makeStyles, Grid, Card, CardContent, Divider } from '@material-ui/core'
 import WorkIcon from '@material-ui/icons/Work'
@@ -44,4 +47,4 @@ const VerticalTime = (props) => {
     )
 }
 
-export default VerticalTime
+export default VerticalTime;

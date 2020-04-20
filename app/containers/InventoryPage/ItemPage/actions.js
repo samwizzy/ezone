@@ -212,7 +212,6 @@ export function getAllInventoryAdjustmentsError(data) {
 }
 
 export function getAllItemsPerWarehouse(data) {
-  console.log(data, 'data');
   return {
     type: Constants.GET_ALL_ITEMS_PER_WAREHOUSE,
     payload: data,
@@ -229,6 +228,90 @@ export function getAllItemsPerWarehouseSuccess(data) {
 export function getAllItemsPerWarehouseError(data) {
   return {
     type: Constants.GET_ALL_ITEMS_PER_WAREHOUSE_ERROR,
+    payload: data,
+  };
+}
+
+export function getItemById(data) {
+  return {
+    type: Constants.GET_ITEM_BY_ID,
+    payload: data,
+  };
+}
+
+export function getItemByIdSuccess(data) {
+  return {
+    type: Constants.GET_ITEM_BY_ID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getItemByIdError(data) {
+  return {
+    type: Constants.GET_ITEM_BY_ID_ERROR,
+    payload: data,
+  };
+}
+
+export function getStockLocations(data) {
+  return {
+    type: Constants.GET_STOCK_LOCATIONS,
+    payload: data,
+  };
+}
+
+export function getStockLocationsSuccess(data) {
+  return {
+    type: Constants.GET_STOCK_LOCATIONS_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getStockLocationsError(data) {
+  return {
+    type: Constants.GET_STOCK_LOCATIONS_ERROR,
+    payload: data,
+  };
+}
+
+export function getTransferOrderById(data) {
+  return {
+    type: Constants.GET_TRANSFER_ORDER_BY_ID,
+    payload: data,
+  };
+}
+
+export function getTransferOrderByIdSuccess(data) {
+  return {
+    type: Constants.GET_TRANSFER_ORDER_BY_ID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getTransferOrderByIdError(data) {
+  return {
+    type: Constants.GET_TRANSFER_ORDER_BY_ID_ERROR,
+    payload: data,
+  };
+}
+
+export function getInventoryAdjustById(data) {
+  return {
+    type: Constants.GET_INVENTORY_ADJUST_BY_ID,
+    payload: data,
+  };
+}
+
+export function getInventoryAdjustByIdSuccess(data) {
+  return {
+    type: Constants.GET_INVENTORY_ADJUST_BY_ID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getInventoryAdjustByIdError(data) {
+  return {
+    type: Constants.GET_INVENTORY_ADJUST_BY_ID_ERROR,
     payload: data,
   };
 }
