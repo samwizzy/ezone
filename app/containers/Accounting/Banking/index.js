@@ -34,12 +34,14 @@ export function Banking(props) {
     loading,
     dispatchGetAllBankAccountAction,
     dispatchGetAllAccountTypeAction,
+    dispatchGetAllTransferByOrgIdAction,
   } = props;
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     dispatchGetAllBankAccountAction();
     dispatchGetAllAccountTypeAction();
+    dispatchGetAllTransferByOrgIdAction();
   }, []);
 
 
@@ -73,6 +75,7 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatchGetAllBankAccountAction: () => dispatch(Actions.getAllBankAccountAction()),
     dispatchGetAllAccountTypeAction: () => dispatch(Actions.getAllAccountTypeAction()),
+    dispatchGetAllTransferByOrgIdAction: () => dispatch(Actions.getAllTransferByOrgIdAction()),
     dispatch,
   };
 }
