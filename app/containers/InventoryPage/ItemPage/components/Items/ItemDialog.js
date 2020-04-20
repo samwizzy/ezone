@@ -34,11 +34,11 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   card: {
-    "& .MuiCardActions-root": {
+    '& .MuiCardActions-root': {
       // padding: theme.spacing(2),
-      justifyContent: "flex-end",
-      borderTop: `1px solid ${theme.palette.divider}`
-    }
+      justifyContent: 'flex-end',
+      borderTop: `1px solid ${theme.palette.divider}`,
+    },
   },
   title: {
     color: theme.typography.fontWeightBold,
@@ -56,14 +56,16 @@ const category = [
 
 const ItemDialog = props => {
   const {
+    match,
     history,
     message,
     loading,
     itemDialog,
     getAllWarehouses,
-    closeNewItemDialogAction,
     closeEditEmployeeDialogAction,
     dispatchCreateNewItemAction,
+    getItemByIdAction,
+    getItemById,
   } = props;
 
   const classes = useStyles();
@@ -130,11 +132,14 @@ const ItemDialog = props => {
     // setValues({ ...values, attachments: file });
   };
 
-  console.log(values, 'values');
+  const { params } = match;
+  useEffect(() => {
+    getItemByIdAction(params.sku);
+  }, []);
 
-  // if (message.id) {
-  //   return <Redirect to="/inventory/items" />;
-  // }
+  useEffect(() => {
+    setValues({ ...getItemById });
+  }, [getItemById]);
 
   return (
     <div>
@@ -575,29 +580,41 @@ const ItemDialog = props => {
         </CardContent>
 
         <CardActions>
-          {loading ? (
-            <LoadingIndicator />
+          {params.statusId === 'new' ? (
+            <div>
+              {loading ? (
+                <LoadingIndicator />
+              ) : (
+                <Button
+                  onClick={() => {
+                    dispatchCreateNewItemAction(values);
+                  }}
+                  color="primary"
+                  variant="contained"
+                  disabled={!canBeSubmitted()}
+                >
+                  Save
+                </Button>
+              )}
+            </div>
           ) : (
-            <Button
-              className={classes.button}
-              onClick={() => {
-                dispatchCreateNewItemAction(values);
-              }}
-              color="primary"
-              variant="contained"
-              // disabled={!canBeSubmitted()}
-            >
-              Save
-            </Button>
+            <div>
+              {loading ? (
+                <LoadingIndicator />
+              ) : (
+                <Button
+                  onClick={() => {
+                    dispatchCreateNewItemAction(values);
+                  }}
+                  color="primary"
+                  variant="contained"
+                  disabled={!canBeSubmitted()}
+                >
+                  Update
+                </Button>
+              )}
+            </div>
           )}
-          {/* <Button
-            className={classes.button}
-            onClick={() => closeNewItemDialogAction()}
-            color="primary"
-            variant="outlined"
-          >
-            Cancel
-          </Button> */}
         </CardActions>
       </Card>
     </div>
@@ -610,7 +627,8 @@ ItemDialog.propTypes = {
   itemDialog: PropTypes.object,
   getAllWarehouses: PropTypes.array,
   dispatchCreateNewItemAction: PropTypes.func,
-  closeNewItemDialogAction: PropTypes.func,
+  getItemByIdAction: PropTypes.func,
+  getItemById: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -618,12 +636,13 @@ const mapStateToProps = createStructuredSelector({
   message: Selectors.makeSelectMessage(),
   itemDialog: Selectors.makeSelectItemDialog(),
   getAllWarehouses: Selectors.makeSelectGetAllWarehouses(),
+  getItemById: Selectors.makeSelectGetItemByIdResponse(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     dispatchCreateNewItemAction: evt => dispatch(Actions.createNewItem(evt)),
-    closeNewItemDialogAction: () => dispatch(Actions.closeNewItemDialog()),
+    getItemByIdAction: evt => dispatch(Actions.getItemById(evt)),
     dispatch,
   };
 }
