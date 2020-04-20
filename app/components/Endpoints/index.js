@@ -123,7 +123,8 @@ export const UpdateWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/update_workorde
 export const DeleteWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/delete_workorder`;
 export const GetListOfWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/find_all_workorders`;
 
-// Account Api
+
+// Account Api 
 export const GetAllAccountTypeApi = `${BaseUrl}/accountingserv/api/v1/account/get_all_account_types`;
 export const GetDetailTypeApi = `${BaseUrl}/accountingserv/api/v1/account/get_detail_types`;
 export const CreateChartOfAccountApi = `${BaseUrl}/accountingserv/api/v1/account/add_chart_of_account`;
@@ -134,8 +135,12 @@ export const GetAccountingSetupApi = `${BaseUrl}/accountingserv/api/v1/account/g
 export const CreateAccountingSetupApi = `${BaseUrl}/accountingserv/api/v1/account/add_account_settings`;
 export const GetAccountPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/get_periods_by_orgid`;
 export const CreateAccountJournalApi = `${BaseUrl}/accountingserv/api/v1/journal/create_and_add_to_period`;
+export const GetParentAccountTypeApi = `${BaseUrl}/accountingserv/api/v1/account/get_parent_types`;
+export const CreateNewBankApi = `${BaseUrl}/accountingserv/api/v1/bank/add_bank`;
+export const GetAllBankAccount = `${BaseUrl}/accountingserv/api/v1/bank/get_All_bank_account_by_orgid`;
 
-/** *****************************************************************
+
+/** ***************************************************************** 
  * Inventory endpoint  
  ******************************************************************* */
 

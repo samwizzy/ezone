@@ -56,9 +56,7 @@ import { AppContext } from '../context/AppContext';
 import sideBarconfig from '../../components/Sidebar/components/SidebarConfig';
 import AccountPage from '../Accounting/Loadable';
 import ChartPage from '../Accounting/Chart/Loadable';
-// import AccountChart from '../OldAccounting/Chart/components/AccountChart';
-// import AddNewJournal from '../OldAccounting/Journal/AddNewJournal';
-// import AccountSetting from '../OldAccounting/components/AccountSetting';
+import BankingPage from '../Accounting/Banking/Loadable';
 import CrmDashboard from '../Crm/Dashboard/Loadable';
 import CrmContacts from '../Crm/Contacts/Loadable';
 import CrmCompanies from '../Crm/Companies/Loadable';
@@ -193,20 +191,14 @@ const App = props => {
                   component={EmailPasswordTemplate}
                 />
                 <PrivateRoute exact path="/home" component={HomePage} />
-                <PrivateRoute path="/WorkOrder" component={WorkOrderPage} />
+                <PrivateRoute exact path="/WorkOrder" component={WorkOrderPage} />
                 <PrivateRoute
                   path="/hr/:sectionId?/:status?"
                   component={HRPage}
                 />
                 <PrivateRoute exact path="/account" component={AccountPage} />
-                <PrivateRoute
-                  exact
-                  path="/account/chart"
-                  component={ChartPage}
-                />
-                {/* <PrivateRoute exact path="/account/chart" component={AccountChart} />
-                <PrivateRoute exact path="/account/journal/new" component={AddNewJournal} />
-                <PrivateRoute exact path="/account/setting" component={AccountSetting} /> */}
+                <PrivateRoute exact path="/account/chart" component={ChartPage} />
+                <PrivateRoute exact path="/account/banking" component={BankingPage} />
                 <PrivateRoute
                   exact
                   path="/inventory"
