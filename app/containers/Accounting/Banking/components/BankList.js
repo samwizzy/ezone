@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import {
   makeStyles,
   List,
@@ -11,8 +12,8 @@ import {
   Grid,
   Tooltip
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
 
+import AddIcon from '@material-ui/icons/Add';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -78,13 +79,14 @@ const BankList = props => {
 
   const {
     loading,
+    history,
 		openNewBankAccountDialogAction,
 		editOpenBankAccountDialogAction,
     bankAccountData,
   } = props;
 
   const handleClick = (event, id) => {
-		console.log("id value -> ", id);
+    console.log("id value -> ", id);
     setAnchorEl(event.currentTarget);
     const selectedAccount = bankAccountData && bankAccountData.find(acc => id === acc.id);
     setAccount(selectedAccount);
@@ -94,6 +96,7 @@ const BankList = props => {
     setAnchorEl(null);
   };
 
+  
   const columns = [
     {
       name: 'accountName',
@@ -167,7 +170,8 @@ const BankList = props => {
                   Edit
                 </MenuItem>
                 <MenuItem onClick={() => {
-                  // history.push(AccountDetails);
+                  console.log('account that was clicked ', account);
+                  history.push('/account/banking/details', account);
                 }}>
                   View Details
                 </MenuItem>
@@ -243,6 +247,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(BankList);
