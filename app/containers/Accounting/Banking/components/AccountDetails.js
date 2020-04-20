@@ -15,8 +15,8 @@ import {
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import * as Actions from '../../actions';
-import * as Selectors from '../../selectors';
+// import * as Actions from '../../actions';
+import * as Selectors from '../selectors';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,36 +32,49 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     "& .MuiTableFooter-root": {
-        fontSize: theme.typography.fontSize + 2,
+      fontSize: theme.typography.fontSize + 2,
+      color: theme.palette.common.white,
+      borderTop: `1px solid ${theme.palette.grey[400]} !important`,
+      backgroundColor: theme.palette.primary.main,
+      '& .MuiTableCell-root': {
         color: theme.palette.common.white,
-        borderTop: `1px solid ${theme.palette.grey[400]} !important`,
-        backgroundColor: theme.palette.primary.main,
-        '& .MuiTableCell-root': {
-          color: theme.palette.common.white,
-          fontSize: theme.typography.fontSize + 2
-        },
+        fontSize: theme.typography.fontSize + 2
+      },
     },
     "& th.MuiTableCell-root": {
-        borderBottom: "none !important",
-        fontSize: theme.typography.fontSize + 2,
-        fontWeight: theme.typography.fontWeightBold //fontWeightMedium
+      borderBottom: "none !important",
+      fontSize: theme.typography.fontSize + 2,
+      fontWeight: theme.typography.fontWeightBold //fontWeightMedium
     },
     "& .MuiTableCell-root": {
-        borderBottom: "none !important"
+      borderBottom: "none !important"
     },
     '& .MuiTableCell-body': {
-        border: 0,
-        color: theme.palette.text.secondary,
-        fontSize: theme.typography.fontSize + 2
+      border: 0,
+      color: theme.palette.text.secondary,
+      fontSize: theme.typography.fontSize + 2
     },
   }
 }));
 
 const AccountDetails = props => {
-    const classes = useStyles();
-    const {} = props;
+  const classes = useStyles();
 
-    return (
+  console.log('AccountDetails loaded');
+
+  const {
+    account,
+    bankAccountData,
+    state
+  } = props;
+
+  console.log('data from details comp', bankAccountData);
+  console.log('account props', account);
+
+  console.log('state', state);
+
+
+  return (
         <div className={classes.root}>
             <Grid container>
                 <Grid item xs={12}>
@@ -102,7 +115,7 @@ const AccountDetails = props => {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                     <Grid container className={classes.grid}>
                         <Grid item xs={12}>
                             <Paper>
@@ -139,22 +152,25 @@ const AccountDetails = props => {
                             </Paper>
                         </Grid>
                     </Grid>
-                </Grid>
+                </Grid> */}
             </Grid>
         </div>
     );
 };
 
 AccountDetails.propTypes = {
-  loading: PropTypes.bool,
+  // loading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(),
+  // loading: Selectors.makeSelectLoading(),
+  bankAccountData: Selectors.makeSelectBankAccountData(),
 });
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+
+  };
 }
 
 const withConnect = connect(

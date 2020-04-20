@@ -20,7 +20,7 @@ import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import NewAccountDialog from './NewAccountDialog';
-import AccountDetails from './AccountDetails';
+// import AccountDetails from './AccountDetails';
 // import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
@@ -182,7 +182,7 @@ const AccountChart = props => {
                 </MenuItem>
                 <MenuItem onClick={() => {
                   // history.push(AccountDetails);
-                  return <AccountDetails />
+                  // return <AccountDetails />
                 }}>
                   View Details
                 </MenuItem>

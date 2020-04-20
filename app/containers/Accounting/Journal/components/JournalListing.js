@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import {
   makeStyles,
   List,
@@ -77,6 +78,7 @@ const JournalListing = props => {
   const [account, setAccount] = React.useState('');
 
   const {
+    history,
     // loading,
 		// openNewBankAccountDialogAction,
 		// editOpenBankAccountDialogAction,
@@ -191,12 +193,17 @@ const JournalListing = props => {
           size="small"
           className={classes.button}
           startIcon={<AddIcon />}
+          onClick={() => history.push('/account/journal/add')}
           // onClick={() => openNewBankAccountDialogAction()}
         >
           New Journal
         </Button>
       </Tooltip>
     ),
+    // onRowClick: (rowData, rowState) => {
+    //   props.history.push('/inventory/item/' + rowData[0])
+    // },
+    // elevation: 0
   };
 
   return (
@@ -206,7 +213,7 @@ const JournalListing = props => {
         <Grid container>
           <Grid item xs={12} md={8}>
             <MUIDataTable
-              title="Journals"
+              title="Journal"
               // data={bankAccountData}
               columns={columns}
               options={options}
@@ -243,6 +250,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(JournalListing);
