@@ -6,6 +6,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
 import {
+  Checkbox,
   Table,
   TableBody,
   TableCell,
@@ -30,6 +31,7 @@ import {
   Radio,
   Grid,
   FormControl,
+  FormGroup,
   FormLabel,
   RadioGroup,
 } from '@material-ui/core';
@@ -59,27 +61,8 @@ const AssignContactDialog = props => {
   const [selectedDate, handleDateChange] = React.useState(new Date());
 
   const [form, setForm] = React.useState({
-    firstName: '',
-    lastName: '',
-    emailAddress: '',
-    phoneNumber: '',
-    mobileNo: '',
-    lifeStage: '',
-    contactGroup: '',
-    contactGroupId: '',
-    contactSource: '',
-    address1: '',
-    address2: '',
-    country: '',
-    state: '',
-    city: '',
-    fax: '',
-    dob: '',
-    image: '',
-    notes: '',
-    ownerId: '',
-    type: '',
-    website: '',
+    contact: '',
+    groups: []
   });
 
   const handleChange = event => {
@@ -114,113 +97,57 @@ const AssignContactDialog = props => {
 
         <DialogContent>
           <form className={classes.root}>
-            <Grid container spacing={1}>
-              <Grid item xs={6}>
-                <TextField
-                  name="firstName"
-                  label="Firstname"
-                  id="outlined-title"
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                  value={form.firstName}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  name="lastName"
-                  label="Lastname"
-                  id="outlined-title"
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                  value={form.lastName}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  name="phoneNumber"
-                  label="Mobile Number"
-                  id="outlined-title"
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                  value={form.phoneNumber}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  name="emailAddress"
-                  label="Email"
-                  id="outlined-title"
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                  value={form.emailAddress}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  id="lifeStage"
-                  name="lifeStage"
-                  placeholder="Select life Stage"
-                  select
-                  fullWidth
-                  className={classes.textField}
-                  variant="outlined"
-                  size="small"
-                  label="life Stage"
-                  value={form.lifeStage}
-                  onChange={handleChange}
-                >
-                  <MenuItem key={0} value="3">
-                    No record
-                  </MenuItem>
-                </TextField>
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  id="lifeStage"
-                  name="lifeStage"
-                  placeholder="Select life Stage"
-                  select
-                  fullWidth
-                  className={classes.textField}
-                  variant="outlined"
-                  size="small"
-                  label="life Stage"
-                  value={form.lifeStage}
-                  onChange={handleChange}
-                >
-                  <MenuItem key={0} value="3">
-                    No record
-                  </MenuItem>
-                </TextField>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  id="lifeStage"
-                  name="lifeStage"
-                  placeholder="Select life Stage"
-                  select
-                  fullWidth
-                  className={classes.textField}
-                  variant="outlined"
-                  size="small"
-                  label="life Stage"
-                  value={form.lifeStage}
-                  onChange={handleChange}
-                >
-                  <MenuItem key={0} value="3">
-                    No record
-                  </MenuItem>
-                </TextField>
-              </Grid>
-            </Grid>
+            <Table className={classes.table}>
+              <TableBody>
+                <TableRow>
+                  <TableCell><FormLabel component="legend">Contact / Company</FormLabel></TableCell>
+                  <TableCell>
+                    <TextField
+                      id="contact"
+                      name="contact"
+                      placeholder="Select Contact / Company"
+                      select
+                      fullWidth
+                      className={classes.textField}
+                      variant="outlined"
+                      size="small"
+                      label="Contact / Company"
+                      value={form.contact}
+                      onChange={handleChange}
+                    >
+                      <MenuItem key={0} value="3">
+                        No record
+                      </MenuItem>
+                    </TextField>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell><FormLabel component="legend">Assign Group</FormLabel></TableCell>
+                  <TableCell>
+                    <FormControl component="fieldset" className={classes.formControl}>
+                      <FormGroup>
+                        <FormControlLabel
+                          control={<Checkbox checked={form.groups} onChange={handleChange} name="john" />}  
+                          label="John Foundation"
+                        />
+                        <FormControlLabel
+                          control={<Checkbox checked={form.groups} onChange={handleChange} name="marine" />}
+                          label="First Marine"
+                        />
+                        <FormControlLabel
+                          control={<Checkbox checked={form.groups} onChange={handleChange} name="optisoft" />}
+                          label="Optisoft Technology"
+                        />
+                        <FormControlLabel
+                          control={<Checkbox checked={form.groups} onChange={handleChange} name="jitiful" />}
+                          label="Jitiful Technology"
+                        />
+                      </FormGroup>
+                    </FormControl>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
           </form>
         </DialogContent>
 

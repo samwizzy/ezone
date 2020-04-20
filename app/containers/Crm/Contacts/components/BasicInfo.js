@@ -78,19 +78,7 @@ export const BasicInfo = props => {
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={6}>
-              <TextField
-                name="phoneNumber"
-                label="Mobile Number"
-                id="outlined-title"
-                fullWidth
-                variant="outlined"
-                size="small"
-                value={form.phoneNumber}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <TextField
                 name="emailAddress"
                 label="Email"
@@ -104,22 +92,15 @@ export const BasicInfo = props => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                id="lifeStage"
-                name="lifeStage"
-                placeholder="Select life Stage"
-                select
+                name="phoneNumber"
+                label="Phone Number"
+                id="outlined-title"
                 fullWidth
-                className={classes.textField}
                 variant="outlined"
                 size="small"
-                label="life Stage"
-                value={form.lifeStage}
+                value={form.phoneNumber}
                 onChange={handleChange}
-              >
-                <MenuItem key={0} value="3">
-                  No record
-                </MenuItem>
-              </TextField>
+              />
             </Grid>
             <Grid item xs={6}>
               <TextField
@@ -131,7 +112,7 @@ export const BasicInfo = props => {
                 className={classes.textField}
                 variant="outlined"
                 size="small"
-                label="life Stage"
+                label="Life Stage"
                 value={form.lifeStage}
                 onChange={handleChange}
               >
@@ -150,11 +131,30 @@ export const BasicInfo = props => {
                 className={classes.textField}
                 variant="outlined"
                 size="small"
-                label="life Stage"
+                label="Contact Owner"
                 value={form.lifeStage}
                 onChange={handleChange}
               >
-                <MenuItem key={0} value="3">
+                <MenuItem key={0} value="">
+                  No record
+                </MenuItem>
+              </TextField>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id="lifeStage"
+                name="lifeStage"
+                placeholder="Select life Stage"
+                select
+                fullWidth
+                className={classes.textField}
+                variant="outlined"
+                size="small"
+                label="Vendor"
+                value={form.lifeStage}
+                onChange={handleChange}
+              >
+                <MenuItem key={0} value="">
                   No record
                 </MenuItem>
               </TextField>
@@ -164,7 +164,7 @@ export const BasicInfo = props => {
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={closeNewContactDialog} color="primary">
+        <Button onClick={closeNewContactDialog} variant="outlined" color="primary">
           Cancel
         </Button>
         <Button
