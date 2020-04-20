@@ -4156,6 +4156,13 @@ dom-converter@^0.2:
   dependencies:
     utila "~0.4"
 
+dom-helpers@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-3.4.0.tgz#e9b369700f959f62ecde5a6babde4bccd9169af8"
+  integrity sha512-LnuPJ+dwqKDIyotW1VzmOZ5TONUN7CwkCR5hrgawTUbkBGYdeoNLZo6nNfGkCrjtE1nXXaj7iMMpDa8/d9WoIA==
+  dependencies:
+    "@babel/runtime" "^7.1.2"
+
 dom-helpers@^5.0.1, dom-helpers@^5.1.0:
   version "5.1.4"
   resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-5.1.4.tgz#4609680ab5c79a45f2531441f1949b79d6587f4b"
@@ -10396,6 +10403,24 @@ react-router@5.0.0:
     react-is "^16.6.0"
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
+
+react-schedule-calendar@^0.22.8:
+  version "0.22.8"
+  resolved "https://registry.yarnpkg.com/react-schedule-calendar/-/react-schedule-calendar-0.22.8.tgz#e1eb7e14ef82a39968b58c446a389db338d96ca5"
+  integrity sha512-T/CdUkVGb7z1ssIXK/IWPkhbravFm0feAFLa30VWCL0V2P2Klg/SHQyPFegB0mWS714tlPtgs0M9qkN3BR/GhQ==
+  dependencies:
+    "@babel/runtime" "^7.1.5"
+    classnames "^2.2.6"
+    date-arithmetic "^4.0.1"
+    dom-helpers "^3.4.0"
+    invariant "^2.2.4"
+    lodash "^4.17.11"
+    lodash-es "^4.17.11"
+    memoize-one "^4.0.3"
+    prop-types "^15.6.2"
+    react-overlays "^2.0.0-0"
+    uncontrollable "^7.0.0"
+    warning "^4.0.2"
 
 react-side-effect@^1.1.0:
   version "1.2.0"

@@ -28,7 +28,7 @@ const drawerWidth = '100%';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
+    flexGrow: 1,
     backgroundColor: theme.palette.common.white,
   },
   flex: {
@@ -119,7 +119,7 @@ const useStyles = makeStyles(theme => ({
   },
   buttonGroup: {
     textAlign: "right",
-    padding: theme.spacing(1)
+    // padding: theme.spacing(1)
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,

@@ -15,6 +15,10 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(2),
+  },
   active: { 
     backgroundColor: theme.palette.common.white,  
     color: `${darken(theme.palette.primary.main, 0.1)} !important`,

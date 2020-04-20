@@ -28,21 +28,21 @@ import VerticalTimeline from './VerticalTimeline';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   grid: {
     justifyContent: "space-between",
     alignItems: "center",
     "& .MuiGrid-container": {
-      backgroundImage: `linear-gradient(to bottom, ${blue[50]}, #fff 70%, ${blue[50]})`,
+      backgroundImage: `linear-gradient(to bottom, ${blue[50]}, #fff 80%, ${blue[50]})`,
       '& .MuiGrid-item': {
         flex: 1,
-        margin: theme.spacing(4)
+        margin: theme.spacing(0, 4),
       }
     }
   },
   textField: {
-    borderRadius: theme.shape.borderRadius * 6,
+    borderRadius: theme.shape.borderRadius * 5,
   }
 }));
 
