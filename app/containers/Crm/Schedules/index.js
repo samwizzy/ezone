@@ -18,33 +18,33 @@ import makeSelectCrm from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from '../messages';
-import ActivitiesList from './components/ActivitiesList';
+import SchedulesList from './components/SchedulesList';
 import ModuleLayout from './../components/ModuleLayout';
 
-export function Activities() {
-  useInjectReducer({ key: 'crmActivities', reducer });
-  useInjectSaga({ key: 'crmActivities', saga });
+export function Schedules() {
+  useInjectReducer({ key: 'crmSchedules', reducer });
+  useInjectSaga({ key: 'crmSchedules', saga });
 
   return (
     <div>
       <Helmet>
-        <title>Crm - Activities</title>
-        <meta name="description" content="Description of Crm Activities" />
+        <title>Crm - Schedules</title>
+        <meta name="description" content="Description of Crm Schedules" />
       </Helmet>
-
+      
       <ModuleLayout>
-        <ActivitiesList />
+        <SchedulesList />
       </ModuleLayout>
     </div>
   );
 }
 
-Activities.propTypes = {
+Schedules.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  crmActivities: makeSelectCrm(),
+  crmSchedules: makeSelectCrm(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -61,4 +61,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(Activities);
+)(Schedules);

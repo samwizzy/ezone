@@ -38,8 +38,8 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import * as Selectors from '../../selectors';
-import * as Actions from '../../actions';
+import * as Selectors from '../selectors';
+import * as Actions from '../actions';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import { BasicInfo } from './BasicInfo';
 import { AdvanceInfo } from './AdvanceInfo';

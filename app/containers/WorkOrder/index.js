@@ -21,6 +21,7 @@ import WorkOrderList from './components/WorkOrderList';
 import WorkOrderDialog from './components/WorkOrderDialog';
 import AddItemDialog from './components/AddItemDialog';
 import AddVendorDialog from './components/AddVendorDialog';
+import ModuleLayout from './components/ModuleLayout';
 import * as Actions from './actions';
 
 export function WorkOrderPage(props) {
@@ -41,7 +42,10 @@ export function WorkOrderPage(props) {
         <title>WorkOrderPage</title>
         <meta name="description" content="Description of WorkOrderPage" />
       </Helmet>
-      <WorkOrderList />
+      
+      <ModuleLayout>
+        <WorkOrderList />
+      </ModuleLayout>
       <WorkOrderDialog />
       <AddVendorDialog />
       <AddItemDialog />

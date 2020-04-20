@@ -18,33 +18,29 @@ import makeSelectCrm from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from '../messages';
-import ActivitiesList from './components/ActivitiesList';
-import ModuleLayout from './../components/ModuleLayout';
+import ContactGroupsList from './components/ContactGroupsList';
 
-export function Activities() {
-  useInjectReducer({ key: 'crmActivities', reducer });
-  useInjectSaga({ key: 'crmActivities', saga });
+export function CrmContactGroups() {
+  useInjectReducer({ key: 'crmContactGroups', reducer });
+  useInjectSaga({ key: 'crmContactGroups', saga });
 
   return (
     <div>
       <Helmet>
-        <title>Crm - Activities</title>
-        <meta name="description" content="Description of Crm Activities" />
+        <title>Crm - Contact Groups</title>
+        <meta name="description" content="Description of Crm Contact Groups" />
       </Helmet>
-
-      <ModuleLayout>
-        <ActivitiesList />
-      </ModuleLayout>
+      <ContactGroupsList />
     </div>
   );
 }
 
-Activities.propTypes = {
+CrmContactGroups.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  crmActivities: makeSelectCrm(),
+  crmContactGroups: makeSelectCrm(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -61,4 +57,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(Activities);
+)(CrmContactGroups);
