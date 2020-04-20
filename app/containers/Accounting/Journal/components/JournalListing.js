@@ -211,7 +211,7 @@ const JournalListing = props => {
       {/* <AddBankAccountDialog /> */}
       <div className={classes.root}>
         <Grid container>
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12}>
             <MUIDataTable
               title="Journal"
               // data={bankAccountData}

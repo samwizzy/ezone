@@ -50,6 +50,24 @@ const makeSelectBankAccountData = () =>
     selectBankingDomain,
     substate => substate.bankAccountData,
   );
+
+const makeSelectBankTransferByOrgIdData= () =>
+  createSelector(
+    selectBankingDomain,
+    substate => substate.bankTransferByOrgIdData,
+  );
+
+const makeSelectTransactionTransferDialog = () =>
+  createSelector(
+    selectBankingDomain,
+    substate => substate.transactionTransferDialog,
+  );
+
+const makeSelectBankTransferPostData = () =>
+  createSelector(
+    selectBankingDomain,
+    substate => substate.bankTransferPostData,
+  );
   
 export default makeSelectBanking;
 
@@ -59,5 +77,8 @@ export {
   makeSelectBankAccountDialog,
   makeSelectAccountTypeData,
   makeSelectNewBankPostData,
-  makeSelectBankAccountData
+  makeSelectBankAccountData,
+  makeSelectBankTransferByOrgIdData,
+  makeSelectTransactionTransferDialog,
+  makeSelectBankTransferPostData
 };
