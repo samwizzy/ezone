@@ -20,24 +20,32 @@ import * as Selectors from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import ModuleLayout from '../components/ModuleLayout'
-import BankList from '../Banking/components/BankList';
+import ModuleLayout from '../components/ModuleLayout';
+import LoadingIndicator from './../../../components/LoadingIndicator';
+import BankList from './components/BankList';
 
 export function Banking(props) {
   useInjectReducer({ key: 'banking', reducer });
   useInjectSaga({ key: 'banking', saga });
 
+  console.log('Banking index.js loaded');
+
   const {
+    loading,
+    dispatchGetAllBankAccountAction,
     dispatchGetAllAccountTypeAction,
   } = props;
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
+    dispatchGetAllBankAccountAction();
     dispatchGetAllAccountTypeAction();
   }, []);
 
-  console.log('Banking index.js loaded');
 
+  if (loading) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <div>
@@ -58,10 +66,12 @@ Banking.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   banking: makeSelectBanking(),
+  loading: Selectors.makeSelectLoading(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    dispatchGetAllBankAccountAction: () => dispatch(Actions.getAllBankAccountAction()),
     dispatchGetAllAccountTypeAction: () => dispatch(Actions.getAllAccountTypeAction()),
     dispatch,
   };

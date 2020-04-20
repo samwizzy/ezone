@@ -9,9 +9,9 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from './actions';
-// import * as Selectors from '../selectors';
-import ModuleLayout from '../components/ModuleLayout'
-import AccountDetails from './components/AccountDetails';
+import * as Selectors from './selectors';
+import LoadingIndicator from './../../../components/LoadingIndicator';
+import ModuleLayout from '../components/ModuleLayout';
 import AccountChart from '../Chart/components/AccountChart';
 
 
@@ -19,14 +19,24 @@ const Chart = props => {
   useInjectReducer({ key: 'chart', reducer });
   useInjectSaga({ key: 'chart', saga });
 
+  console.log('Chart index.js loaded');
+
+  const {
+    loading,
+    dispatchGetAllChartOfAccountTypeAction,
+    dispatchGetAllAccountTypeAction,
+  } = props;
+
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
+    dispatchGetAllChartOfAccountTypeAction();
     dispatchGetAllAccountTypeAction();
   }, []);
 
-  const {
-    dispatchGetAllAccountTypeAction,
-  } = props;
+
+  if (loading) {
+    return <LoadingIndicator />;
+  }
 
   return (
       <ModuleLayout>
@@ -40,11 +50,12 @@ Chart.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  // loading: Selectors.makeSelectLoading(),
+  loading: Selectors.makeSelectLoading(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    dispatchGetAllChartOfAccountTypeAction: () => dispatch(Actions.getAllChartOfAccountTypeAction()),
     dispatchGetAllAccountTypeAction: () => dispatch(Actions.getAllAccountTypeAction()),
   };
 }

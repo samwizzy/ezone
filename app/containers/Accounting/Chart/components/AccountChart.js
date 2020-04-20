@@ -20,8 +20,8 @@ import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import NewAccountDialog from './NewAccountDialog';
-import AccountDetails from './AccountDetails';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
+// import AccountDetails from './AccountDetails';
+// import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -77,10 +77,17 @@ const AccountChart = props => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [account, setAccount] = React.useState('');
 
-  const handleClick = (event, id) => {
-    setAnchorEl(event.currentTarget);
-    console.log("id value -> ", id);
+  const {
+    loading,
+    openNewAccountDialogAction,
+    editOpenAccountDialogAction,
+    deleteChartOfAccountAction,
+    chartOfAccountData,
+  } = props;
 
+  const handleClick = (event, id) => {
+    console.log("id value -> ", id);
+    setAnchorEl(event.currentTarget);
     const selectedAccount = chartOfAccountData && chartOfAccountData.find(acc => id === acc.id);
     setAccount(selectedAccount);
   };
@@ -88,22 +95,6 @@ const AccountChart = props => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  // Similar to componentDidMount and componentDidUpdate:
-  useEffect(() => {
-    dispatchGetAllChartOfAccountTypeAction();
-  }, []);
-
-  const {
-    loading,
-    openNewAccountDialogAction,
-    editOpenAccountDialogAction,
-    deleteChartOfAccountAction,
-    chartOfAccountData,
-    dispatchGetAllChartOfAccountTypeAction,
-  } = props;
-
-  console.log('chartOfAccountData from chart --> ', chartOfAccountData);
 
   const columns = [
     {
@@ -191,7 +182,7 @@ const AccountChart = props => {
                 </MenuItem>
                 <MenuItem onClick={() => {
                   // history.push(AccountDetails);
-                  return <AccountDetails />
+                  // return <AccountDetails />
                 }}>
                   View Details
                 </MenuItem>
@@ -228,10 +219,6 @@ const AccountChart = props => {
     ),
   };
 
-  if (loading) {
-    return <LoadingIndicator />;
-  }
-
   return (
     <React.Fragment>
       <NewAccountDialog />
@@ -252,13 +239,13 @@ const AccountChart = props => {
 };
 
 AccountChart.propTypes = {
-  loading: PropTypes.bool,
+  // loading: PropTypes.bool,
   openNewAccountDialogAction: PropTypes.func,
   editOpenAccountDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(),
+  // loading: Selectors.makeSelectLoading(),
   newAccountDialog: Selectors.makeSelectNewAccountDialog(),
   chartOfAccountData: Selectors.makeSelectGetChartOfAccountData(),
 });
@@ -266,7 +253,6 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
-    dispatchGetAllChartOfAccountTypeAction: () => dispatch(Actions.getAllChartOfAccountTypeAction()),
     deleteChartOfAccountAction: evt => dispatch(Actions.deleteChartOfAccountAction(evt)),
     editOpenAccountDialogAction: evt => dispatch(Actions.editOpenAccountDialog(evt)),
   };
