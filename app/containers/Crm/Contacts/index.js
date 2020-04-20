@@ -15,14 +15,14 @@ import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectCrm from '../selectors';
-import reducer from '../reducer';
-import saga from '../saga';
+import reducer from './reducer';
+import saga from './saga';
 import messages from '../messages';
 import ContactsList from './components/ContactsList';
 
 export function Crm() {
-  useInjectReducer({ key: 'crm', reducer });
-  useInjectSaga({ key: 'crm', saga });
+  useInjectReducer({ key: 'crmContacts', reducer });
+  useInjectSaga({ key: 'crmContacts', saga });
 
   return (
     <div>
@@ -40,7 +40,7 @@ Crm.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  crm: makeSelectCrm(),
+  crmContacts: makeSelectCrm(),
 });
 
 function mapDispatchToProps(dispatch) {

@@ -15,8 +15,8 @@ import {
 } from '@material-ui/pickers';
 import _ from 'lodash';
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, MenuItem, Slide, Typography, TextField } from '@material-ui/core';
-import * as Selectors from '../../selectors';
-import * as Actions from '../../actions';
+import * as Selectors from '../selectors';
+import * as Actions from '../actions';
 import moment from 'moment'
 import {Form} from './Form'
 import {WorkForm} from './WorkForm'

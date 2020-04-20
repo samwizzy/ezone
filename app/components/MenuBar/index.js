@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
     backgroundColor: "transparent",
-    // padding: theme.spacing(2, 0)
+    padding: theme.spacing(2)
   },
   toolbar: {
     display: 'flex',
@@ -105,8 +105,8 @@ function MenuBar(props) {
         </Toolbar>
       </AppBar>
 
-      <main>
-        <Paper square elevation={0} className={classes.content}>
+      <main className={classes.content}>
+        <Paper square elevation={0}>
           {props.content}
         </Paper>
       </main>

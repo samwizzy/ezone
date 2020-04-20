@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     card: {
-        // maxWidth: 345,
         borderRadius: theme.shape.borderRadius * 2,
         backgroundImage: `url(${CrmDashImage2})`,
         backgroundRepeat: `no-repeat`,

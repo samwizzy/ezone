@@ -60,6 +60,8 @@ import BankingPage from '../Accounting/Banking/Loadable';
 import CrmDashboard from '../Crm/Dashboard/Loadable';
 import CrmContacts from '../Crm/Contacts/Loadable';
 import CrmCompanies from '../Crm/Companies/Loadable';
+import CrmContactGroups from '../Crm/ContactGroups/Loadable';
+import CrmSchedules from '../Crm/Schedules/Loadable';
 import CrmActivities from '../Crm/Activities/Loadable';
 
 // import { messaging } from '../../utils/firebase-notification';
@@ -253,6 +255,16 @@ const App = props => {
                   exact
                   path="/crm/companies"
                   component={CrmCompanies}
+                />
+                <PrivateRoute
+                  exact
+                  path="/crm/contact-groups"
+                  component={CrmContactGroups}
+                />
+                <PrivateRoute
+                  exact
+                  path="/crm/schedules"
+                  component={CrmSchedules}
                 />
                 <PrivateRoute
                   exact
