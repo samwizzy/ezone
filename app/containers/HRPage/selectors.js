@@ -31,6 +31,12 @@ const makeSelectDepartments = () =>
     hrState => hrState.departments,
   );
 
+  const makeSelectDepartmentsByOrgIdApi = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.departments,
+  );
+
 const makeSelectBranches = () =>
   createSelector(
     selectHR,
