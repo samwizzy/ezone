@@ -10,13 +10,17 @@ import {
   TableFooter,
   TableRow,
   TableCell,
-  Typography
+  Typography,
+  Button,
+  Menu,
+  MenuItem,
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-// import * as Actions from '../../actions';
+import * as Actions from '../actions';
 import * as Selectors from '../selectors';
+import TransactionTransferDialog from './TransactionTransferDialog';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,102 +64,156 @@ const useStyles = makeStyles((theme) => ({
 const AccountDetails = props => {
   const classes = useStyles();
 
-  console.log('AccountDetails loaded');
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const {
-    account,
-    bankAccountData,
-    state
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const { 
+    bankTransferByOrgIdData,
+    // editOpenBankAccountDialogAction
+    openAccountTransferDialogAction
   } = props;
 
-  console.log('data from details comp', bankAccountData);
-  console.log('account props', account);
+  console.log('AccountDetails loaded');
+  console.log('accountDetailsData --> ', props.location.accountDetailsData);
+  console.log('bankTransferByOrgIdData from details.js --> ', bankTransferByOrgIdData);
 
-  console.log('state', state);
-
-
+  
   return (
-        <div className={classes.root}>
-            <Grid container>
-                <Grid item xs={12}>
-                    <Grid container className={classes.grid}>
-                        <Grid item xs={12}>
-                            <Paper>
-                            <Table className={classes.table}>
-                                <TableBody>
-                                <TableRow>
-                                    <TableCell component="th" scope="row">Account Name</TableCell>
-                                    <TableCell></TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" scope="row">Sale Account</TableCell>
-                                    <TableCell></TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" scope="row">Account Type</TableCell>
-                                    <TableCell></TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" scope="row">Description</TableCell>
-                                    <TableCell></TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" scope="row">Transaction Period</TableCell>
-                                    <TableCell></TableCell>
-                                </TableRow>
-                                </TableBody>
-                                <TableFooter>
-                                <TableRow>
-                                    <TableCell component="th" scope="row">Closing Balance</TableCell>
-                                    <TableCell>NGN 200,000.00</TableCell>
-                                </TableRow>
-                                </TableFooter>
-                            </Table>
-                            </Paper>
-                        </Grid>
-                    </Grid>
-                </Grid>
-                {/* <Grid item xs={12}>
-                    <Grid container className={classes.grid}>
-                        <Grid item xs={12}>
-                            <Paper>
-                            <Table className={classes.table}>
-                                <TableHead>
-                                <TableRow>
-                                    <TableCell component="th" scope="row">Trs Date</TableCell>
-                                    <TableCell>Created At</TableCell>
-                                    <TableCell>Trs no.</TableCell>
-                                    <TableCell>Debit</TableCell>
-                                    <TableCell>Credit</TableCell>
-                                    <TableCell>Balance</TableCell>
-                                </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                <TableRow>
-                                    <TableCell>3rd, June, 2019</TableCell>
-                                    <TableCell>3rd, June, 2019</TableCell>
-                                    <TableCell>09089</TableCell>
-                                    <TableCell>$1200</TableCell>
-                                    <TableCell>$1200</TableCell>
-                                    <TableCell>$1200</TableCell>
-                                </TableRow>
-                                </TableBody>
-                                <TableFooter>
-                                <TableRow>
-                                    <TableCell colSpan={3}></TableCell>
-                                    <TableCell>NGN 200,000.00</TableCell>
-                                    <TableCell>NGN 200,000.00</TableCell>
-                                    <TableCell>NGN 200,000.00</TableCell>
-                                </TableRow>
-                                </TableFooter>
-                            </Table>
-                            </Paper>
-                        </Grid>
-                    </Grid>
-                </Grid> */}
+    <div className={classes.root}>
+      <TransactionTransferDialog />
+      <Grid container>
+        <Grid item xs={12}>
+          <Grid container className={classes.grid}>
+            <Grid item xs={12}>
+              <Paper>
+                <Table className={classes.table}>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell component="th" scope="row">Account Name</TableCell>
+                      <TableCell>
+                        { props.location.accountDetailsData.accountName }
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row">Account Code</TableCell>
+                      <TableCell>
+                        { props.location.accountDetailsData.accountCode }
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row">Account Type</TableCell>
+                      <TableCell>
+                        { props.location.accountDetailsData.accountType.accountType }
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row">Description</TableCell>
+                      <TableCell>
+                        { props.location.accountDetailsData.accountType.description }
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row">Transaction Period</TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                  </TableBody>
+                  <TableFooter>
+                    <TableRow>
+                        <TableCell component="th" scope="row">Closing Balance</TableCell>
+                        <TableCell>
+                          NGN { props.location.accountDetailsData.accountType.openingBalance }
+                        </TableCell>
+                    </TableRow>
+                  </TableFooter>
+                </Table>
+              </Paper>
             </Grid>
-        </div>
-    );
+          </Grid>
+        </Grid>
+
+        {bankTransferByOrgIdData.length ? (
+          <Grid item xs={12}>
+            <Grid container className={classes.grid}>
+              <Grid item xs={12}>
+                <Paper>
+                  <Table className={classes.table}>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell component="th" scope="row">Trs Date</TableCell>
+                        <TableCell>Created At</TableCell>
+                        <TableCell>Trs no.</TableCell>
+                        <TableCell>Debit</TableCell>
+                        <TableCell>Credit</TableCell>
+                        <TableCell>Balance</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell>3rd, June, 2019</TableCell>
+                        <TableCell>3rd, June, 2019</TableCell>
+                        <TableCell>09089</TableCell>
+                        <TableCell>$1200</TableCell>
+                        <TableCell>$1200</TableCell>
+                        <TableCell>$1200</TableCell>
+                      </TableRow>
+                    </TableBody>
+                    <TableFooter>
+                      <TableRow>
+                        <TableCell colSpan={3}></TableCell>
+                        <TableCell>NGN 200,000.00</TableCell>
+                        <TableCell>NGN 200,000.00</TableCell>
+                        <TableCell>NGN 200,000.00</TableCell>
+                      </TableRow>
+                    </TableFooter>
+                  </Table>
+                </Paper>
+              </Grid>
+            </Grid>
+          </Grid>
+        ) : (
+          <Grid item xs={12}>
+            <Grid container className={classes.grid}>
+              <Paper>
+                You haven’t recorded any transactions for this account
+                <Button 
+                  aria-controls="simple-menu" 
+                  aria-haspopup="true" 
+                  onClick={handleClick}
+                >
+                  Add Transactions
+                </Button>
+                <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
+                  <MenuItem onClick={() => {
+                    openAccountTransferDialogAction(1);
+                  }}>
+                    Transfer from another account
+                  </MenuItem>
+                  <MenuItem onClick={() => {
+                    openAccountTransferDialogAction();
+                  }}>
+                    Transfer to another account
+                  </MenuItem>
+                </Menu>
+              </Paper>
+            </Grid>
+          </Grid>
+        )}
+      </Grid>
+    </div>
+  );
 };
 
 AccountDetails.propTypes = {
@@ -164,12 +222,13 @@ AccountDetails.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
-  bankAccountData: Selectors.makeSelectBankAccountData(),
+  bankTransferByOrgIdData: Selectors.makeSelectBankTransferByOrgIdData(),
+  // bankAccountDialog: Selectors.makeSelectBankAccountDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-
+    openAccountTransferDialogAction: evt => dispatch(Actions.openAccountTransferDialog(evt)),
   };
 }
 

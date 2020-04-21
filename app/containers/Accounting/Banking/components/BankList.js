@@ -171,7 +171,10 @@ const BankList = props => {
                 </MenuItem>
                 <MenuItem onClick={() => {
                   console.log('account that was clicked ', account);
-                  history.push('/account/banking/details', account);
+                  history.push({
+                    pathname: '/account/banking/details',
+                    accountDetailsData: account,
+                  });
                 }}>
                   View Details
                 </MenuItem>
@@ -208,7 +211,7 @@ const BankList = props => {
       <AddBankAccountDialog />
       <div className={classes.root}>
         <Grid container>
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12}>
             <MUIDataTable
               title="Banking"
               data={bankAccountData}

@@ -77,6 +77,55 @@ export function* getAllBankAccountSaga() {
 }
 
 
+// Get all bank transactions made by organisation 
+export function* getAllTransferByOrgIdSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAllTransferByOrgIdApi}/${currentUser.organisation.orgId}`;
+
+  try {
+    const allTransferByOrgIdResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log('allTransferByOrgIdResponse --> ', allTransferByOrgIdResponse);
+    yield put(Actions.getAllTransferByOrgIdSuccessAction(allTransferByOrgIdResponse));
+  } catch (err) {
+    console.log('getAllTransferByOrgIdErrorAction --> ', err);
+    yield put(Actions.getAllTransferByOrgIdErrorAction(err));
+  }
+}
+
+
+// Create new chart of account
+export function* createBankTransferSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const bankTransferPostData = yield select(Selectors.makeSelectBankTransferPostData());
+  const requestURL = `${Endpoints.CreateBankTransferApi}`;
+  
+  try {
+    const bankTransferResponse = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(bankTransferPostData),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log('bankTransferResponse -> ', bankTransferResponse);
+    yield put(Actions.createBankTransferSuccessAction(bankTransferResponse));
+    yield put(Actions.getAllTransferByOrgIdAction());
+    yield put(Actions.closeAccountTransferDialog());
+  } catch (err) {
+    yield put(Actions.createBankTransferErrorAction(err));
+  }
+}
+
 
 // Individual exports for testing
 export default function* AccountChartSaga() {
@@ -84,5 +133,7 @@ export default function* AccountChartSaga() {
   yield takeLatest(Constants.GET_ALL_ACCOUNT_TYPES, getAllAccountTypeSaga);
   yield takeLatest(Constants.CREATE_NEW_BANK, createNewBankSaga);
   yield takeLatest(Constants.GET_ALL_BANK_ACCOUNT, getAllBankAccountSaga);
+  yield takeLatest(Constants.GET_ALL_TRANSFER_BY_ORGID, getAllTransferByOrgIdSaga);
+  yield takeLatest(Constants.CREATE_BANK_TRANSFER, createBankTransferSaga);
 }
 
