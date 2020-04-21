@@ -16,6 +16,13 @@ export const initialState = {
     },
     data: null,
   },
+  contactDetailsDialog: {
+    type: 'new',
+    props: {
+      open: true,
+    },
+    data: null,
+  },
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -38,6 +45,30 @@ const crmReducer = (state = initialState, action) =>
         return {
           ...state,
           contactDialog: {
+            type: 'new',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.OPEN_NEW_CONTACT_DETAILS_DIALOG: {
+        return {
+          ...state,
+          contactDetailsDialog: {
+            type: 'new',
+            props: {
+              open: true,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.CLOSE_NEW_CONTACT_DETAILS_DIALOG: {
+        return {
+          ...state,
+          contactDetailsDialog: {
             type: 'new',
             props: {
               open: false,

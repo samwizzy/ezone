@@ -20,6 +20,7 @@ import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import ContactDialog from './ContactDialog';
+import ContactDetailsDialog from './ContactDetailsDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -239,6 +240,7 @@ const ContactsList = props => {
         options={options}
       />
       <ContactDialog />
+      <ContactDetailsDialog />
     </React.Fragment>
   );
 };

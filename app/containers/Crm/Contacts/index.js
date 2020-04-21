@@ -19,6 +19,7 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from '../messages';
 import ContactsList from './components/ContactsList';
+import ModuleLayout from './../components/ModuleLayout';
 
 export function Crm() {
   useInjectReducer({ key: 'crmContacts', reducer });
@@ -30,7 +31,9 @@ export function Crm() {
         <title>Crm - Contacts</title>
         <meta name="description" content="Description of Crm" />
       </Helmet>
-      <ContactsList />
+      <ModuleLayout>
+        <ContactsList />
+      </ModuleLayout>
     </div>
   );
 }

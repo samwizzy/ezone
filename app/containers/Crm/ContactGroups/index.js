@@ -19,6 +19,7 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from '../messages';
 import ContactGroupsList from './components/ContactGroupsList';
+import ModuleLayout from './../components/ModuleLayout';
 
 export function CrmContactGroups() {
   useInjectReducer({ key: 'crmContactGroups', reducer });
@@ -30,7 +31,10 @@ export function CrmContactGroups() {
         <title>Crm - Contact Groups</title>
         <meta name="description" content="Description of Crm Contact Groups" />
       </Helmet>
-      <ContactGroupsList />
+
+      <ModuleLayout>
+        <ContactGroupsList />
+      </ModuleLayout>
     </div>
   );
 }
