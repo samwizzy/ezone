@@ -15,6 +15,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
