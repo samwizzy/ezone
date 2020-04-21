@@ -106,7 +106,8 @@ export function* getDepartments({ type, payload }) {
 export function* getDepartmentsByOrgIdApi() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.DepartmentsByOrgIdApi}`;
+  const requestURL = `${Endpoints.DepartmentsByOrgIdApi}/${user && user.organisation.orgId}`;
+  console.log("i am trying the department inside saga")
 
   try {
     const response = yield call(request, requestURL, {
@@ -121,7 +122,7 @@ export function* getDepartmentsByOrgIdApi() {
     yield put(Actions.getDepartmentsByOrgIdApiSuccess(response));
   } catch (err) {
     // yield put(Actions.getUtilityFilesError(err));
-    console.log(err.message, "err message")
+    console.log(err.message, "err message in dept")
   }
 }
 

@@ -50,6 +50,7 @@ export function getDepartmentsSuccess(data) {
   };
 }
 export function getDepartmentsByOrgIdApi() {
+  console.log("i am trying the department")
   return {
     type: Constants.GET_DEPARTMENTS_BY_ORGID_API,
   };

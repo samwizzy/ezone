@@ -225,6 +225,7 @@ EmployeesApp.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
+  departments: Selectors.makeSelectDepartments(),
   employees: Selectors.makeSelectEmployees(),
   employee: Selectors.makeSelectEmployee(),
   user: AppSelectors.makeSelectCurrentUser(),
@@ -236,8 +237,6 @@ function mapDispatchToProps(dispatch) {
     openEditEmployeeDialog: () => dispatch(Actions.openEditEmployeeDialog()),
     getEmployees: () => dispatch(Actions.getEmployees()),
     getEmployee: uuid => dispatch(Actions.getEmployee(uuid)),
-    getDepartmentsByOrgIdApi: () =>
-      dispatch(Actions.getDepartmentsByOrgIdApi()),
   };
 }
 
@@ -246,9 +245,8 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(
-  compose(
-    withConnect,
-    memo,
-  )(EmployeesApp),
-);
+export default compose(
+  withRouter,
+  withConnect,
+  memo,
+)(EmployeesApp);

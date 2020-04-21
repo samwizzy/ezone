@@ -98,7 +98,7 @@ export const DepartmentApi = `${BaseUrl}/hrserv/api/v1/department`;
 export const DepartmentsApi = `${BaseUrl}/hrserv/api/v1/departments`;
 export const GetDepartmentsByIdApi = `${BaseUrl}/hrserv/api/v1/departments/{id}`;
 export const GetDepartmentsByParentIdApi = `${BaseUrl}/hrserv/api/v1/departments/by_parent/{parentId}`;
-export const GetDepartmentsByOrgIdApi = `${BaseUrl}/hrserv/api/v1/departments/for_organinisation/{orgId}`;
+export const GetDepartmentsByOrgIdApi = `${BaseUrl}/hrserv/api/v1/departments/for_organinisation`;
 
 // App Api
 export const GetOrgAppsApi = `${BaseUrl}/utilityserv/api/v1/organisation/orgApps`;
