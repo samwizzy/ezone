@@ -26,16 +26,16 @@ import { Autocomplete } from '@material-ui/lab';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { useInjectSaga } from 'utils/injectSaga';
-import { useInjectReducer } from 'utils/injectReducer';
+// import { useInjectSaga } from 'utils/injectSaga';
+// import { useInjectReducer } from 'utils/injectReducer';
 import { createStructuredSelector } from 'reselect';
-import * as Actions from '../actions';
-import * as AppSelectors from '../../App/selectors';
-import * as Selectors from '../selectors';
-import reducer from '../reducer';
-import saga from '../saga';
-import LoadingIndicator from '../../../components/LoadingIndicator';
-import ModuleLayout from '../components/ModuleLayout';
+// import * as Actions from '../../actions';
+// import * as AppSelectors from '../../../App/selectors';
+// import * as Selectors from '../../selectors';
+import reducer from '../../reducer';
+import saga from '../../saga';
+// import LoadingIndicator from '../../../../components/LoadingIndicator';
+import ModuleLayout from '../../components/ModuleLayout';
 import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
@@ -79,23 +79,21 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AddNewJournal = props => {
-  useInjectReducer({ key: 'accounting', reducer });
-  useInjectSaga({ key: 'accounting', saga });
   const classes = useStyles();
 
   const {
-    currentUser,
-    dispatchGetAccountPeriodAction,
-    dispatchGetAllChartOfAccountTypeAction,
-    chartOfAccountData,
-    accountPeriodData,
-    createNewAccountJournalAction
+    // currentUser,
+    // dispatchGetAccountPeriodAction,
+    // dispatchGetAllChartOfAccountTypeAction,
+    // chartOfAccountData,
+    // accountPeriodData,
+    // createNewAccountJournalAction
   } = props;
 
   const [values, setValues] = React.useState({
     entries: [],
     note: '',
-    orgId: currentUser.organisation.orgId,
+    // orgId: currentUser.organisation.orgId,
     periodId: '',
     reference: '',
     transactionDate: moment(new Date()).format('YYYY-MM-DD'),
@@ -138,12 +136,12 @@ const AddNewJournal = props => {
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    dispatchGetAccountPeriodAction();
-    dispatchGetAllChartOfAccountTypeAction();
+    // dispatchGetAccountPeriodAction();
+    // dispatchGetAllChartOfAccountTypeAction();
   }, []);
 
-  console.log('accountPeriodData > ', accountPeriodData);
-  console.log('values-> ', values);
+  // console.log('accountPeriodData > ', accountPeriodData);
+  // console.log('values-> ', values);
 
   return (
     <ModuleLayout>
@@ -155,9 +153,9 @@ const AddNewJournal = props => {
               <Grid item xs={5}>
                 <Autocomplete
                   id="combo-box-demo"
-                  options={accountPeriodData}
-                  getOptionLabel={option => option.year}
-                  onChange={(evt, value) => handleSelectChange(evt, value)}
+                  // options={accountPeriodData}
+                  // getOptionLabel={option => option.year}
+                  // onChange={(evt, value) => handleSelectChange(evt, value)}
                   renderInput={params => (
                     <TextField
                       {...params}
@@ -223,8 +221,8 @@ const AddNewJournal = props => {
                   <TableCell align="center">
                     <Autocomplete
                       id={id}
-                      options={chartOfAccountData}
-                      getOptionLabel={option => option.accountNumber}
+                      // options={chartOfAccountData}
+                      // getOptionLabel={option => option.accountNumber}
                       onChange={(evt, value) => handleSelectChangeRows(evt, value, id)}
                       renderInput={params => (
                         <TextField
@@ -420,7 +418,7 @@ const AddNewJournal = props => {
                       className={classes.button}
                       onClick={() => {
                         console.log('onclick');
-                        createNewAccountJournalAction(values);
+                        // createNewAccountJournalAction(values);
                       }}
                     >
                       Save and Submit
@@ -442,16 +440,16 @@ AddNewJournal.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   //   loading: Selectors.makeSelectLoading(),
-  currentUser: AppSelectors.makeSelectCurrentUser(),
-  chartOfAccountData: Selectors.makeSelectGetChartOfAccountData(),
-  accountPeriodData: Selectors.makeSelectGetAccountPeriodData(),
+  // currentUser: AppSelectors.makeSelectCurrentUser(),
+  // chartOfAccountData: Selectors.makeSelectGetChartOfAccountData(),
+  // accountPeriodData: Selectors.makeSelectGetAccountPeriodData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchGetAllChartOfAccountTypeAction: () => dispatch(Actions.getAllChartOfAccountTypeAction()),
-    dispatchGetAccountPeriodAction: () => dispatch(Actions.getAccountPeriodAction()),
-    createNewAccountJournalAction: evt => dispatch(Actions.createNewAccountJournalAction(evt)),
+    // dispatchGetAllChartOfAccountTypeAction: () => dispatch(Actions.getAllChartOfAccountTypeAction()),
+    // dispatchGetAccountPeriodAction: () => dispatch(Actions.getAccountPeriodAction()),
+    // createNewAccountJournalAction: evt => dispatch(Actions.createNewAccountJournalAction(evt)),
   };
 }
 

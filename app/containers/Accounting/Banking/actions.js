@@ -76,6 +76,7 @@ export function createNewBankErrorAction(data) {
 
 // Get bank account 
 export function getAllBankAccountAction() {
+  console.log('getAllBankAccountAction triggered.');
   return {
     type: Constants.GET_ALL_BANK_ACCOUNT,
   };
@@ -114,6 +115,66 @@ export function updateBankAccountSuccessAction(data) {
 export function updateBankAccountErrorAction(data) {
   return {
     type: Constants.UPDATE_BANK_ACCOUNT_ERR,
+    payload: data,
+  };
+}
+
+
+// Get all bank transfers made by organisation 
+export function getAllTransferByOrgIdAction() {
+  return {
+    type: Constants.GET_ALL_TRANSFER_BY_ORGID,
+  };
+}
+
+export function getAllTransferByOrgIdSuccessAction(data) {
+  return {
+    type: Constants.GET_ALL_TRANSFER_BY_ORGID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getAllTransferByOrgIdErrorAction(data) {
+  return {
+    type: Constants.GET_ALL_TRANSFER_BY_ORGID_ERR,
+    payload: data,
+  };
+}
+
+
+// Transaction transfer dialog
+export function openAccountTransferDialog(data) {
+  return {
+    type: Constants.OPEN_ACCOUNT_TRANSFER_DIALOG,
+    payload: data,
+  };
+}
+
+export function closeAccountTransferDialog() {
+  return {
+    type: Constants.CLOSE_ACCOUNT_TRANSFER_DIALOG,
+  };
+}
+
+
+// Create a bank transfer
+export function createBankTransferAction(data) {
+  return {
+    type: Constants.CREATE_BANK_TRANSFER,
+    payload: data,
+  };
+}
+
+export function createBankTransferSuccessAction(data) {
+  return {
+    type: Constants.CREATE_BANK_TRANSFER_SUCCESS,
+    payload: data,
+  };
+}
+
+export function createBankTransferErrorAction(data) {
+  return {
+    type: Constants.CREATE_BANK_TRANSFER_ERR,
     payload: data,
   };
 }

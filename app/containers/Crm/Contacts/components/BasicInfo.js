@@ -98,10 +98,10 @@ export const BasicInfo = props => {
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <TextField
-                name="phoneNumber"
-                label="Mobile Number"
+                name="emailAddress"
+                label="Email"
                 id="outlined-title"
                 fullWidth
                 variant="outlined"
@@ -113,8 +113,8 @@ export const BasicInfo = props => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                name="emailAddress"
-                label="Email"
+                name="phoneNumber"
+                label="Phone Number"
                 id="outlined-title"
                 fullWidth
                 variant="outlined"
@@ -184,7 +184,7 @@ export const BasicInfo = props => {
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={closeNewContactDialog} color="primary">
+        <Button onClick={closeNewContactDialog} variant="outlined" color="primary">
           Cancel
         </Button>
         <Button

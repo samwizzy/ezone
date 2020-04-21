@@ -19,6 +19,15 @@ export const initialState = {
   accountTypeData: [],
   newBankPostData: {},
   bankAccountData: [],
+  bankTransferByOrgIdData: [],
+  transactionTransferDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
+  bankTransferPostData: {},
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -174,6 +183,82 @@ const bankingReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
+
+      // Case to get all bank accounts
+      case Constants.GET_ALL_TRANSFER_BY_ORGID: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_ALL_TRANSFER_BY_ORGID_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          bankTransferByOrgIdData: action.payload,
+        };
+      }
+      case Constants.GET_ALL_TRANSFER_BY_ORGID_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+
+      // Open transaction transfer dialog
+      case Constants.OPEN_ACCOUNT_TRANSFER_DIALOG: {
+        return {
+          ...state,
+          transactionTransferDialog: {
+            type: 'new',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_ACCOUNT_TRANSFER_DIALOG: {
+        return {
+          ...state,
+          transactionTransferDialog: {
+            type: 'new',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
+
+      // Case to create bank transfer
+      case Constants.CREATE_BANK_TRANSFER: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          bankTransferPostData: action.payload
+        };
+      }
+      case Constants.CREATE_BANK_TRANSFER_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          bankTransferPostData: action.payload
+        };
+      }
+      case Constants.CREATE_BANK_TRANSFER_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+
     }
   });
 

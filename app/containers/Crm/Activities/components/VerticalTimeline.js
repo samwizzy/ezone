@@ -5,13 +5,20 @@ import {
 } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 import { makeStyles, Grid, Card, CardContent, Divider } from '@material-ui/core'
-import WorkIcon from '@material-ui/icons/Work'
-import SchoolIcon from '@material-ui/icons/School'
-import StarIcon from '@material-ui/icons/Star'
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday'
 
+const useStyles = makeStyles(theme => ({
+    root: {
+        flexGrow: 1,
+        backgroundColor: theme.palette.grey[100]
+    }
+}))
+
 const VerticalTime = (props) => {
+    const classes = useStyles()
+
     return (
+        <div className={classes.root}>
         <VerticalTimeline layout={'1-column'}>
             <VerticalTimelineElement
                 className="vertical-timeline-element--work"
@@ -31,7 +38,21 @@ const VerticalTime = (props) => {
             </VerticalTimelineElement>
             <VerticalTimelineElement
                 className="vertical-timeline-element--work"
-                contentStyle={{ background: 'rgba(228, 233, 237, 1)', color: '#666', padding: 0 }}
+                contentStyle={{ padding: 0 }}
+                iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
+                icon={<CalendarTodayIcon />}
+            >
+                <CardContent>
+                    <h3 className="vertical-timeline-element-title">You have scheduled for Paul Okeme and Samuel Okeke</h3>
+                </CardContent>
+                <Divider />
+                <CardContent>
+                    <p>Creative Direction, User Experience, Visual Design, SEO, Online Marketing</p>
+                </CardContent>
+            </VerticalTimelineElement>
+            <VerticalTimelineElement
+                className="vertical-timeline-element--work"
+                contentStyle={{ padding: 0 }}
                 iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
                 icon={<CalendarTodayIcon />}
             >
@@ -44,6 +65,7 @@ const VerticalTime = (props) => {
                 </CardContent>
             </VerticalTimelineElement>
         </VerticalTimeline>
+        </div>
     )
 }
 

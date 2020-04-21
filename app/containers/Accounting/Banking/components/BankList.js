@@ -1,5 +1,6 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import {
   makeStyles,
   List,
@@ -11,8 +12,8 @@ import {
   Grid,
   Tooltip
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
 
+import AddIcon from '@material-ui/icons/Add';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -20,7 +21,7 @@ import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import AddBankAccountDialog from './AddBankAccountDialog';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
+// import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -78,14 +79,14 @@ const BankList = props => {
 
   const {
     loading,
+    history,
 		openNewBankAccountDialogAction,
 		editOpenBankAccountDialogAction,
     bankAccountData,
-    dispatchGetAllBankAccountAction
   } = props;
 
   const handleClick = (event, id) => {
-		console.log("id value -> ", id);
+    console.log("id value -> ", id);
     setAnchorEl(event.currentTarget);
     const selectedAccount = bankAccountData && bankAccountData.find(acc => id === acc.id);
     setAccount(selectedAccount);
@@ -95,13 +96,7 @@ const BankList = props => {
     setAnchorEl(null);
   };
 
-  // Similar to componentDidMount and componentDidUpdate:
-  useEffect(() => {
-    dispatchGetAllBankAccountAction();
-  }, []);
-
-  console.log('bankAccountData from banking --> ', bankAccountData);
-
+  
   const columns = [
     {
       name: 'accountName',
@@ -175,7 +170,11 @@ const BankList = props => {
                   Edit
                 </MenuItem>
                 <MenuItem onClick={() => {
-                  // history.push(AccountDetails);
+                  console.log('account that was clicked ', account);
+                  history.push({
+                    pathname: '/account/banking/details',
+                    accountDetailsData: account,
+                  });
                 }}>
                   View Details
                 </MenuItem>
@@ -207,16 +206,12 @@ const BankList = props => {
     ),
   };
 
-  if (loading) {
-    return <LoadingIndicator />;
-  }
-
   return (
     <React.Fragment>
       <AddBankAccountDialog />
       <div className={classes.root}>
         <Grid container>
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12}>
             <MUIDataTable
               title="Banking"
               data={bankAccountData}
@@ -237,7 +232,7 @@ BankList.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(),
+  // loading: Selectors.makeSelectLoading(),
   bankAccountDialog: Selectors.makeSelectBankAccountDialog(),
   bankAccountData: Selectors.makeSelectBankAccountData()
 });
@@ -246,7 +241,6 @@ function mapDispatchToProps(dispatch) {
   return {
     openNewBankAccountDialogAction: () => dispatch(Actions.openNewBankAccountDialog()),
     editOpenBankAccountDialogAction: () => dispatch(Actions.editOpenBankAccountDialog()),
-    dispatchGetAllBankAccountAction: () => dispatch(Actions.getAllBankAccountAction()),
   };
 }
 
@@ -256,6 +250,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(BankList);

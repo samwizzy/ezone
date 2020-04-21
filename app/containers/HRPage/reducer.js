@@ -75,6 +75,12 @@ const hrReducer = (state = initialState, action) =>
           departments: action.payload
         };
         break;
+        case Constants.GET_DEPARTMENTS_BY_ORGID_API_SUCCESS:
+        return {
+          ...state,
+          departments: action.payload
+        };
+        break;
       case Constants.GET_BRANCHES_SUCCESS:
         return {
           ...state,

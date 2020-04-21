@@ -20,6 +20,13 @@ export const initialState = {
     },
     data: null,
   },
+  contactDetailsDialog: {
+    type: 'new',
+    props: {
+      open: true,
+    },
+    data: null,
+  },
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -62,11 +69,35 @@ const crmReducer = (state = initialState, action) =>
           },
         };
       }
+      case Constants.OPEN_NEW_CONTACT_DETAILS_DIALOG: {
+        return {
+          ...state,
+          contactDetailsDialog: {
+            type: 'new',
+            props: {
+              open: true,
+            },
+            data: null,
+          },
+        };
+      }
       case Constants.CLOSE_EDIT_CONTACT_DIALOG: {
         return {
           ...state,
           contactDialog: {
             type: 'edit',
+            props: {
+              open: false,
+            },
+            data: null,
+          }
+        }
+      }
+      case Constants.CLOSE_NEW_CONTACT_DETAILS_DIALOG: {
+        return {
+          ...state,
+          contactDetailsDialog: {
+            type: 'new',
             props: {
               open: false,
             },
