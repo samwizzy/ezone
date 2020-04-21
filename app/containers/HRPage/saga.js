@@ -103,6 +103,29 @@ export function* getDepartments({ type, payload }) {
   }
 }
 
+export function* getDepartmentsByOrgIdApi() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.DepartmentsByOrgIdApi}/${user && user.organisation.orgId}`;
+  console.log("i am trying the department inside saga")
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'DEPARTMENT RESPONSE');
+    yield put(Actions.getDepartmentsByOrgIdApiSuccess(response));
+  } catch (err) {
+    // yield put(Actions.getUtilityFilesError(err));
+    console.log(err.message, "err message in dept")
+  }
+}
+
 export function* createDepartment({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
@@ -135,4 +158,5 @@ export default function* HRRootSaga() {
   yield takeLatest(Constants.GET_EMPLOYEE, getEmployeeByUUID);
   yield takeLatest(Constants.GET_DEPARTMENTS, getDepartments);
   yield takeLatest(Constants.CREATE_DEPARTMENT, createDepartment);
+  yield takeLatest(Constants.GET_DEPARTMENTS_BY_ORGID_API, getDepartmentsByOrgIdApi);
 }

@@ -14,6 +14,7 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,7 +28,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const BasicInfo = props => {
-  const { handleChange, closeNewContactDialog, handleNext, form } = props;
+  const {
+    handleChange,
+    handleSelectLifeStage,
+    handleSelectOwnerId,
+    handleSelectAssociateId,
+    closeNewContactDialog,
+    handleNext,
+    form,
+  } = props;
   const classes = useStyles();
 
   const canSubmitForm = () => {
@@ -39,6 +48,17 @@ export const BasicInfo = props => {
       emailAddress.length > 0
     );
   };
+
+  const lifeStages = [
+    { id: '1', name: 'SUBSCRIBER' },
+    { id: '2', name: 'LEAD' },
+    { id: '3', name: 'OPPORTUNITY' },
+  ];
+
+  const contactType = [
+    { id: '1', name: 'CUSTOMER' },
+    { id: '2', name: 'VENDORS' },
+  ];
 
   return (
     <div>
@@ -86,7 +106,8 @@ export const BasicInfo = props => {
                 fullWidth
                 variant="outlined"
                 size="small"
-                value={form.emailAddress}
+                type="number"
+                value={form.phoneNumber}
                 onChange={handleChange}
               />
             </Grid>
@@ -98,66 +119,65 @@ export const BasicInfo = props => {
                 fullWidth
                 variant="outlined"
                 size="small"
-                value={form.phoneNumber}
+                type="email"
+                value={form.emailAddress}
                 onChange={handleChange}
               />
             </Grid>
             <Grid item xs={6}>
-              <TextField
-                id="lifeStage"
-                name="lifeStage"
-                placeholder="Select life Stage"
-                select
-                fullWidth
-                className={classes.textField}
-                variant="outlined"
-                size="small"
-                label="Life Stage"
-                value={form.lifeStage}
-                onChange={handleChange}
-              >
-                <MenuItem key={0} value="3">
-                  No record
-                </MenuItem>
-              </TextField>
+              <Autocomplete
+                id="combo-lifeStage"
+                options={lifeStages}
+                getOptionLabel={option => option.name}
+                onChange={(evt, value) => handleSelectLifeStage(evt, value)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Life Stage"
+                    variant="outlined"
+                    placeholder="Select Life Stage"
+                    fullWidth
+                    name="lifeStage"
+                    value={form.lifeStage}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Autocomplete
+                id="combo-ownerId"
+                options={contactType}
+                getOptionLabel={option => `${option.name} ${option.name}`}
+                onChange={(evt, value) => handleSelectOwnerId(evt, value)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Contact Owner"
+                    variant="outlined"
+                    placeholder="Select Contact Owner"
+                    fullWidth
+                    name="ownerId"
+                    value={form.ownerId}
+                  />
+                )}
+              />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                id="lifeStage"
-                name="lifeStage"
-                placeholder="Select life Stage"
-                select
-                fullWidth
-                className={classes.textField}
-                variant="outlined"
-                size="small"
-                label="Contact Owner"
-                value={form.lifeStage}
-                onChange={handleChange}
-              >
-                <MenuItem key={0} value="">
-                  No record
-                </MenuItem>
-              </TextField>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="lifeStage"
-                name="lifeStage"
-                placeholder="Select life Stage"
-                select
-                fullWidth
-                className={classes.textField}
-                variant="outlined"
-                size="small"
-                label="Vendor"
-                value={form.lifeStage}
-                onChange={handleChange}
-              >
-                <MenuItem key={0} value="">
-                  No record
-                </MenuItem>
-              </TextField>
+              <Autocomplete
+                id="combo-associationType"
+                options={contactType}
+                getOptionLabel={option => `${option.name}`}
+                onChange={(evt, value) => handleSelectAssociateId(evt, value)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Select Association Type"
+                    variant="outlined"
+                    placeholder="Select Association Type"
+                    fullWidth
+                  />
+                )}
+              />
             </Grid>
           </Grid>
         </form>

@@ -15,6 +15,7 @@ export const initialState = {
   createNewPartiesData: false,
   createNewPositionData: false,
   createNewPartyGroupData: false,
+  updatePartyGroupData: false,
   partyGroupData: false,
   loading: false,
   error: false,
@@ -124,6 +125,30 @@ const companyStructurePageReducer = (state = initialState, action) =>
           },
         };
       }
+      case Constants.OPEN_EDIT_PARTY_GROUP_DIALOG: {
+        return {
+          ...state,
+          newPartyGroupDialog: {
+            type: 'edit',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_EDIT_PARTY_GROUP_DIALOG: {
+        return {
+          ...state,
+          newPartyGroupDialog: {
+            type: 'edit',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
       case Constants.OPEN_NEW_PARTY_DIALOG: {
         return {
           ...state,
@@ -180,7 +205,6 @@ const companyStructurePageReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_PARTY_GROUP_SUCCESS: {
-        console.log(action, 'action.payload');
         return {
           ...state,
           loading: false,
@@ -217,6 +241,28 @@ const companyStructurePageReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_NEW_PARTY_GROUP_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.UPDATE_PARTY_GROUP: {
+        return {
+          ...state,
+          loading: true,
+          updatePartyGroupData: action.payload,
+        };
+      }
+      case Constants.UPDATE_PARTY_GROUP_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          // success: action.payload,
+        };
+      }
+      case Constants.UPDATE_PARTY_GROUP_ERROR: {
         return {
           ...state,
           loading: false,

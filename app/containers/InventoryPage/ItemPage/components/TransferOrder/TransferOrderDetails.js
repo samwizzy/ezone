@@ -154,7 +154,6 @@ const useStyles = makeStyles(theme => ({
     left: '-27px',
     textAlign: 'center',
     boxShadow: `0px 7px 8px ${theme.palette.grey[300]}`,
-    right: console.log(theme, 'theme'),
   },
   toolbar: theme.mixins.toolbar,
   drawerPaper: {

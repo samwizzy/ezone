@@ -2,7 +2,20 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Avatar, Button, ButtonGroup, TableContainer, Table, TableRow, TableCell, TableBody, TextField, Grid, Paper, Typography } from '@material-ui/core';
+import {
+  Avatar,
+  Button,
+  ButtonGroup,
+  TableContainer,
+  Table,
+  TableRow,
+  TableCell,
+  TableBody,
+  TextField,
+  Grid,
+  Paper,
+  Typography,
+} from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -17,13 +30,13 @@ import * as AppSelectors from '../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
 import Person from '@material-ui/icons/Person';
-import {AddEmployee} from '../components/AddButton'
-import AddEmployeeDialog from './components/AddEmployeeDialog'
+import { AddEmployee } from '../components/AddButton';
+import AddEmployeeDialog from './components/AddEmployeeDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-    backgroundColor: theme.palette.common.white
+    backgroundColor: theme.palette.common.white,
   },
   datatable: {
     '& .MuiTableHead-root': {
@@ -38,8 +51,8 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
-  table: { 
-    border: 0, 
+  table: {
+    border: 0,
     whiteSpace: 'nowrap',
     overflowX: 'auto',
   },
@@ -62,27 +75,31 @@ const useStyles = makeStyles(theme => ({
     width: 14,
     height: 14,
     color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.done': { color: green[500]},
+    '&.approved': { color: theme.palette.primary.main },
+    '&.inProgress': { color: orange[500] },
+    '&.done': { color: green[500] },
   },
   buttonGroup: {
     marginBottom: theme.spacing(1),
-  }
+  },
 }));
 
 const EmployeesApp = props => {
   const classes = useStyles();
-  const { loading, openNewEmployeeDialog, getEmployee, employees, employee } = props;
+  const {
+    loading,
+    openNewEmployeeDialog,
+    getEmployee,
+    employees,
+    departments,
+    employee,
+  } = props;
+  console.log(departments, 'departments');
+  React.useEffect(() => {}, [employee]);
 
-  React.useEffect(() => {
-  }, [employee]);
+  console.log(employee, 'employee');
 
-  console.log(employee, "employee")
-
-  const toTitleCase = (str) => { 
-    return str? str[0].toUpperCase() + str.slice(1) : ""; 
-  }
+  const toTitleCase = str => (str ? str[0].toUpperCase() + str.slice(1) : '');
 
   const columns = [
     {
@@ -97,29 +114,29 @@ const EmployeesApp = props => {
       name: 'id',
       label: ' ',
       options: {
-      filter: true,
-      sort: true,
-      customBodyRender: id => {
-        return (
+        filter: true,
+        sort: true,
+        customBodyRender: id => (
           <Avatar aria-label="avatar" className={classes.avatar}>
             A
           </Avatar>
-        )
-      }
+        ),
       },
     },
     {
       name: 'id',
       label: 'Employee Name',
       options: {
-      filter: true,
-      sort: true,
-      customBodyRender: id => {
-        const emp = employees && employees.find(e => e.id == id)
-        return (
-          <span>{`${toTitleCase(emp.firstName)} ${toTitleCase(emp.lastName)}`}</span>
-        )
-      }
+        filter: true,
+        sort: true,
+        customBodyRender: id => {
+          const emp = employees && employees.find(e => e.id == id);
+          return (
+            <span>{`${toTitleCase(emp.firstName)} ${toTitleCase(
+              emp.lastName,
+            )}`}</span>
+          );
+        },
       },
     },
     {
@@ -150,15 +167,13 @@ const EmployeesApp = props => {
       name: 'enabled',
       label: 'Status',
       options: {
-      filter: true,
-      sort: true,
-      customBodyRender: enabled => {
-        return (
-          <span>{enabled?"Active":"Inactive"}</span>
-        )
-      }
+        filter: true,
+        sort: true,
+        customBodyRender: enabled => (
+          <span>{enabled ? 'Active' : 'Inactive'}</span>
+        ),
       },
-    }
+    },
   ];
 
   const options = {
@@ -171,12 +186,12 @@ const EmployeesApp = props => {
     filter: false,
     customToolbar: () => <AddEmployee openDialog={openNewEmployeeDialog} />,
     rowsPerPage: 10,
-    rowsPerPageOptions: [10,25,50,100],
+    rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
-      console.log(rowData[0], "rowData[0]")
-      getEmployee(rowData[0])
+      console.log(rowData[0], 'rowData[0]');
+      getEmployee(rowData[0]);
     },
-    elevation: 0
+    elevation: 0,
   };
 
   return (
@@ -187,15 +202,13 @@ const EmployeesApp = props => {
       >
         <Grid item md={12}>
           <div className={classes.content}>
-        
             <MUIDataTable
-                className={classes.datatable}
-                title="Employee List"
-                data={employees}
-                columns={columns}
-                options={options}
+              className={classes.datatable}
+              title="Employee List"
+              data={employees}
+              columns={columns}
+              options={options}
             />
-
           </div>
         </Grid>
       </Grid>
@@ -212,8 +225,9 @@ EmployeesApp.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
+  departments: Selectors.makeSelectDepartments(),
   employees: Selectors.makeSelectEmployees(),
-  employee : Selectors.makeSelectEmployee(),
+  employee: Selectors.makeSelectEmployee(),
   user: AppSelectors.makeSelectCurrentUser(),
 });
 
@@ -222,7 +236,7 @@ function mapDispatchToProps(dispatch) {
     openNewEmployeeDialog: () => dispatch(Actions.openNewEmployeeDialog()),
     openEditEmployeeDialog: () => dispatch(Actions.openEditEmployeeDialog()),
     getEmployees: () => dispatch(Actions.getEmployees()),
-    getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
+    getEmployee: uuid => dispatch(Actions.getEmployee(uuid)),
   };
 }
 
@@ -231,8 +245,8 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(
-  compose(
-    withConnect,
-    memo,
-)(EmployeesApp));
+export default compose(
+  withRouter,
+  withConnect,
+  memo,
+)(EmployeesApp);

@@ -11,6 +11,12 @@ const SidebarConfig = [
     menus: [
       { id: 1, name: 'Home', url: '/', icon: 'home' },
       { id: 2, name: 'Dashboard', url: '/dashboard', icon: 'build' },
+      {
+        id: 3,
+        name: 'Organization',
+        url: '/organization',
+        icon: 'business_center',
+      },
     ],
   },
   {
@@ -30,7 +36,12 @@ const SidebarConfig = [
     module: 'organization',
     menus: [
       { id: 1, name: 'Dashboard', url: '/dashboard', icon: 'dashboard' },
-      { id: 2, name: 'Organization', url: '/organization', icon: 'business_center' },
+      {
+        id: 2,
+        name: 'Organization',
+        url: '/organization',
+        icon: 'business_center',
+      },
       { id: 3, name: 'Applications', url: '/utility', icon: 'apps' },
       { id: 4, name: 'Employees', url: '/users/employees', icon: 'group' },
       { id: 5, name: 'User Profile', url: '/users/profile', icon: 'person' },
@@ -61,7 +72,12 @@ const SidebarConfig = [
     module: 'email',
     menus: [
       { id: 1, name: 'Dashboard', url: '/dashboard', icon: 'dashboard' },
-      { id: 2, name: 'Organization', url: '/organization', icon: 'business_center' },
+      {
+        id: 2,
+        name: 'Organization',
+        url: '/organization',
+        icon: 'business_center',
+      },
       { id: 3, name: 'Applications', url: '/utility', icon: 'apps' },
       { id: 4, name: 'Employees', url: '/users/employees', icon: 'group' },
       { id: 5, name: 'User Profile', url: '/users/profile', icon: 'person' },
@@ -74,7 +90,12 @@ const SidebarConfig = [
     module: 'workorder',
     menus: [
       { id: 1, name: 'Dashboard', url: '/dashboard', icon: 'dashboard' },
-      { id: 2, name: 'Organization', url: '/organization', icon: 'business_center' },
+      {
+        id: 2,
+        name: 'Organization',
+        url: '/organization',
+        icon: 'business_center',
+      },
       { id: 3, name: 'Applications', url: '/utility', icon: 'apps' },
       { id: 4, name: 'Employees', url: '/users/employees', icon: 'group' },
       { id: 5, name: 'User Profile', url: '/users/profile', icon: 'person' },

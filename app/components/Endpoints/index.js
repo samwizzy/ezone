@@ -18,6 +18,7 @@ export const CompanyInfoUrl = `${BaseUrl}/authserv/api/v1/organisation`;
 export const UpdateCompanyInfoUrl = `${BaseUrl}/authserv/api/v1/update_organization`;
 export const GetPartyGroup = `${BaseUrl}/authserv/api/v1/organisation/partygroups`;
 export const CreateNewPartyGroup = `${BaseUrl}/authserv/api/v1/partygroup`;
+export const UpdatePartyGroup = `${BaseUrl}/authserv/api/v1/partygroup`;
 export const CreateNewPartyApi = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_group`;
 export const CreateNewPartiesApi = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_party`;
 export const CreateNewPositionApi = `${BaseUrl}/authserv/api/v1/position`;
@@ -98,7 +99,7 @@ export const DepartmentApi = `${BaseUrl}/hrserv/api/v1/department`;
 export const DepartmentsApi = `${BaseUrl}/hrserv/api/v1/departments`;
 export const GetDepartmentsByIdApi = `${BaseUrl}/hrserv/api/v1/departments/{id}`;
 export const GetDepartmentsByParentIdApi = `${BaseUrl}/hrserv/api/v1/departments/by_parent/{parentId}`;
-export const GetDepartmentsByOrgIdApi = `${BaseUrl}/hrserv/api/v1/departments/for_organinisation/{orgId}`;
+export const GetDepartmentsByOrgIdApi = `${BaseUrl}/hrserv/api/v1/departments/for_organinisation`;
 
 // App Api
 export const GetOrgAppsApi = `${BaseUrl}/utilityserv/api/v1/organisation/orgApps`;
@@ -167,3 +168,13 @@ export const GetTransferOrderByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_by_i
 export const CreateNewInventoryAdjustApi = `${BaseUrl}/inventoryserv/api/v1/do_many_adjustments_per_warehouse`;
 export const GetAllInventoryAdjustsApi = `${BaseUrl}/inventoryserv/api/v1/get_all_adjustments`;
 export const GetAdjustmentByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_adjustment_by_id`;
+
+/** ***************************************************************** 
+ * CRM endpoint
+ ******************************************************************* */
+
+// Contacts Apis
+export const CreateNewContactApi = `${BaseUrl}/crmserv/api/v1/add_contact`;
+export const UpdateContactApi = `${BaseUrl}/crmserv/api/v1/update_contact`;
+export const GetAllContactsApi = `${BaseUrl}/inventoryserv/api/v1/get_all_contacts`;
+// export const UpdateWarehouseApi = `${BaseUrl}/inventoryserv/api/v1/update_warehouse`;

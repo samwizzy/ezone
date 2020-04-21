@@ -19,6 +19,7 @@ import {
   Grid,
   InputLabel,
 } from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
@@ -371,6 +372,21 @@ const CompanyDialog = props => {
                 <Grid item xs={12}>
                   <Grid container spacing={2}>
                     <Grid item xs={6}>
+                      {/* <Autocomplete
+                        id="combo-itemCategory"
+                        options={CountriesAndStates}
+                        getOptionLabel={option => option.name}
+                        onChange={(evt, ve) => handleSelectChange(evt, ve)}
+                        renderInput={params => (
+                          <TextField
+                            {...params}
+                            label="Select Country"
+                            variant="outlined"
+                            placeholder="Select Country"
+                            fullWidth
+                          />
+                        )}
+                      /> */}
                       <TextField
                         id="standard-select-country"
                         select

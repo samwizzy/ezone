@@ -16,7 +16,6 @@ import {
 import AddIcon from '@material-ui/icons/Add';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { blue } from '@material-ui/core/colors';
-import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -25,7 +24,8 @@ import * as Selectors from '../selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import ScheduleDialog from './ScheduleDialog';
 import ParticipantDialog from './ParticipantDialog';
-import VerticalTimeline from './VerticalTimeline';
+import CalendarEvent from './CalendarEvent';
+import Schedules from './Schedules';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -68,7 +68,7 @@ const SchedulesList = props => {
         </Grid>
         <Grid item xs={12}>
           <Grid container spacing={8}>
-            
+            <Schedules />
           </Grid>
           <Grid container spacing={4}>
             

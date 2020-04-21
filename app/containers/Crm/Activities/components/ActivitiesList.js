@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   textField: {
-    borderRadius: theme.shape.borderRadius * 5,
+    borderRadius: theme.shape.borderRadius * 8,
   }
 }));
 

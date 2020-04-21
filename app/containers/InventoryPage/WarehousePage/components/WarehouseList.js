@@ -39,7 +39,12 @@ const WarehouseList = props => {
     openNewWarehouseDialogAction,
     getAllWarehouses,
     openEditWarehouseDialogAction,
+    getAllEmployeesAction,
   } = props;
+
+  useEffect(() => {
+    getAllEmployeesAction();
+  }, []);
 
   const columns = [
     {
@@ -170,6 +175,7 @@ WarehouseList.propTypes = {
   openNewWarehouseDialogAction: PropTypes.func,
   openEditWarehouseDialogAction: PropTypes.func,
   getAllWarehouses: PropTypes.array,
+  getAllEmployeesAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -181,6 +187,8 @@ function mapDispatchToProps(dispatch) {
   return {
     openNewWarehouseDialogAction: () =>
       dispatch(Actions.openNewWarehouseDialog()),
+    getAllEmployeesAction: () =>
+      dispatch(Actions.getAllEmployees()),
     openEditWarehouseDialogAction: evt =>
       dispatch(Actions.openEditWarehouseDialog(evt)),
   };
