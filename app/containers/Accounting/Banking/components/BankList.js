@@ -10,7 +10,7 @@ import {
   Menu,
   MenuItem,
   Grid,
-  Tooltip
+  Tooltip,
 } from '@material-ui/core';
 
 import AddIcon from '@material-ui/icons/Add';
@@ -53,7 +53,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.primary.main,
       },
       '& .MuiTableCell-root:nth-child(even)': {
-        backgroundColor: darken(theme.palette.primary.main, 0.1),
+        // backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
   },
