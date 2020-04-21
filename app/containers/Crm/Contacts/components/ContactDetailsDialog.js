@@ -53,10 +53,10 @@ const useStyles = makeStyles(theme => ({
     border: `1px solid ${lighten(theme.palette.primary.main, 0.3)}`
   },
   button: {
-    backgroundColor: blue[500],
+    backgroundColor: blue[400],
     color: theme.palette.common.white,
     '&:hover': {
-      backgroundColor: blue[700],
+      backgroundColor: blue[500],
     },
   },
 }));
