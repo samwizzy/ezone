@@ -35,6 +35,7 @@ import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import MailOutline from '@material-ui/icons/MailOutline';
 import Smartphone from '@material-ui/icons/Smartphone';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
 import { lighten } from '@material-ui/core/styles/colorManipulator'
@@ -136,7 +137,7 @@ const ContactDetailsDialog = props => {
                     <ListItemAvatar>
                       <Avatar
                         alt="Company Logo"
-                        src={user}
+                        src={<AccountCircle/>}
                         className={classes.avatar}
                       />
                     </ListItemAvatar>
@@ -245,6 +246,36 @@ const ContactDetailsDialog = props => {
                   <TableRow>
                     <TableCell>Country</TableCell>
                     <TableCell align="right">Nigeria</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </ExpansionPanelDetails>
+            <ExpansionPanelSummary aria-controls="panel1d-content" id="panel1d-header">
+              <Typography>Contact Group #3</Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <Table className={classes.table}>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Contact Group</TableCell>
+                    <TableCell align="right">Sales Group</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </ExpansionPanelDetails>
+            <ExpansionPanelSummary aria-controls="panel1d-content" id="panel1d-header">
+              <Typography>Additional Info #4</Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <Table className={classes.table}>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Contact Source</TableCell>
+                    <TableCell align="right">Advertisement</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Note</TableCell>
+                    <TableCell align="right">This is an additional text about the contact</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
