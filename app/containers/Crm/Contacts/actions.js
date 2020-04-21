@@ -17,3 +17,76 @@ export function closeNewContactDialog() {
     type: Constants.CLOSE_NEW_CONTACT_DIALOG,
   };
 }
+
+export function openEditContactDialog() {
+  return {
+    type: Constants.OPEN_EDIT_CONTACT_DIALOG,
+  };
+}
+
+export function closeEditContactDialog() {
+  return {
+    type: Constants.CLOSE_EDIT_CONTACT_DIALOG,
+  };
+}
+
+export function getAllContacts() {
+  return {
+    type: Constants.GET_ALL_CONTACTS,
+  };
+}
+
+export function getAllContactsSuccess(data) {
+  return {
+    type: Constants.GET_ALL_CONTACTS_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getAllContactsError() {
+  return {
+    type: Constants.GET_ALL_CONTACTS_ERROR,
+  };
+}
+
+export function createNewContact(data) {
+  return {
+    type: Constants.CREATE_NEW_CONTACT,
+    payload: data,
+  };
+}
+
+export function createNewContactSuccess(data) {
+  return {
+    type: Constants.CREATE_NEW_CONTACT_SUCCESS,
+    payload: data,
+  };
+}
+
+export function createNewContactError(data) {
+  return {
+    type: Constants.CREATE_NEW_CONTACT_ERROR,
+    payload: data,
+  };
+}
+
+export function updateContact(data) {
+  return {
+    type: Constants.UPDATE_CONTACT,
+    payload: data,
+  };
+}
+
+export function updateContactSuccess(data) {
+  return {
+    type: Constants.UPDATE_CONTACT_SUCCESS,
+    payload: data,
+  };
+}
+
+export function updateContactError(data) {
+  return {
+    type: Constants.UPDATE_CONTACT_ERROR,
+    payload: data,
+  };
+}

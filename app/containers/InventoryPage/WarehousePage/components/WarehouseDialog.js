@@ -221,7 +221,9 @@ const WarehouseDialog = props => {
               <Autocomplete
                 id="combo-headOfWareHouseId"
                 options={getAllEmployees}
-                getOptionLabel={option => option.firstName}
+                getOptionLabel={option =>
+                  `${option.firstName} ${option.lastName}`
+                }
                 onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
                 renderInput={params => (
                   <TextField

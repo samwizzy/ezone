@@ -18,6 +18,19 @@ export function closeNewPartyGroupDialog() {
   };
 }
 
+export function openEditPartyGroupDialog(data) {
+  return {
+    type: Constants.OPEN_EDIT_PARTY_GROUP_DIALOG,
+    payload: data,
+  };
+}
+
+export function closeEditPartyGroupDialog() {
+  return {
+    type: Constants.CLOSE_EDIT_PARTY_GROUP_DIALOG,
+  };
+}
+
 export function openNewPartyDialog(data) {
   return {
     type: Constants.OPEN_NEW_PARTY_DIALOG,
@@ -87,6 +100,27 @@ export function createNewPartyGroupSuccessAction(data) {
 export function createNewPartyGroupErrorAction(data) {
   return {
     type: Constants.CREATE_NEW_PARTY_GROUP_ERROR,
+    payload: data,
+  };
+}
+
+export function updatePartyGroupAction(data) {
+  return {
+    type: Constants.UPDATE_PARTY_GROUP,
+    payload: data,
+  };
+}
+
+export function updatePartyGroupSuccessAction(data) {
+  return {
+    type: Constants.UPDATE_PARTY_GROUP_SUCCESS,
+    payload: data,
+  };
+}
+
+export function updatePartyGroupErrorAction(data) {
+  return {
+    type: Constants.UPDATE_PARTY_GROUP_ERROR,
     payload: data,
   };
 }

@@ -201,7 +201,7 @@ PartyDialog.propTypes = {
   dispatchCloseNewPartyDialog: PropTypes.func,
   newPartyDialog: PropTypes.object,
   partyGroupData: PropTypes.array,
-  AllUserData: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  AllUserData: PropTypes.array,
   dispatchCreateNewPartyAction: PropTypes.func,
   loading: PropTypes.bool,
   selectedPartyGroupData: PropTypes.oneOfType(PropTypes.object, PropTypes.bool),

@@ -18,6 +18,7 @@ export const CompanyInfoUrl = `${BaseUrl}/authserv/api/v1/organisation`;
 export const UpdateCompanyInfoUrl = `${BaseUrl}/authserv/api/v1/update_organization`;
 export const GetPartyGroup = `${BaseUrl}/authserv/api/v1/organisation/partygroups`;
 export const CreateNewPartyGroup = `${BaseUrl}/authserv/api/v1/partygroup`;
+export const UpdatePartyGroup = `${BaseUrl}/authserv/api/v1/partygroup`;
 export const CreateNewPartyApi = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_group`;
 export const CreateNewPartiesApi = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_party`;
 export const CreateNewPositionApi = `${BaseUrl}/authserv/api/v1/position`;
@@ -165,3 +166,13 @@ export const GetTransferOrderByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_by_i
 export const CreateNewInventoryAdjustApi = `${BaseUrl}/inventoryserv/api/v1/do_many_adjustments_per_warehouse`;
 export const GetAllInventoryAdjustsApi = `${BaseUrl}/inventoryserv/api/v1/get_all_adjustments`;
 export const GetAdjustmentByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_adjustment_by_id`;
+
+/** ***************************************************************** 
+ * CRM endpoint
+ ******************************************************************* */
+
+// Contacts Apis
+export const CreateNewContactApi = `${BaseUrl}/crmserv/api/v1/add_contact`;
+export const UpdateContactApi = `${BaseUrl}/crmserv/api/v1/update_contact`;
+export const GetAllContactsApi = `${BaseUrl}/inventoryserv/api/v1/get_all_contacts`;
+// export const UpdateWarehouseApi = `${BaseUrl}/inventoryserv/api/v1/update_warehouse`;

@@ -12,10 +12,14 @@ import {
   Box,
   FormControlLabel,
   Icon,
+  ListItemSecondaryAction,
+  IconButton,
+  Backdrop,
+  CircularProgress,
 } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import MUIDataTable from 'mui-datatables';
-import { Create, Add } from '@material-ui/icons';
+import { Create, Add, Edit } from '@material-ui/icons';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -61,6 +65,10 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.primary.main,
     },
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
 const NoPartyGroup = props => {
@@ -105,6 +113,7 @@ const ListItemLink = props => <ListItem button component="a" {...props} />;
 
 const CompanyStructure = props => {
   const {
+    openEditPartyGroupAction,
     dispatchGetAllUsersAction,
     selectedPartyGroupData,
     DispatchgetSelectedPartyGroupAction,
@@ -152,19 +161,17 @@ const CompanyStructure = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => {
-          return (
-            <Button
-              variant="contained"
-              color="primary"
-              href={`/organization/company/structure/party/${
-                selectedPartyGroupData.id
-              }/${value}`}
-            >
-              View
-            </Button>
-          );
-        },
+        customBodyRender: value => (
+          <Button
+            variant="contained"
+            color="primary"
+            href={`/organization/company/structure/party/${
+              selectedPartyGroupData.id
+            }/${value}`}
+          >
+            View
+          </Button>
+        ),
       },
     },
   ];
@@ -224,6 +231,13 @@ const CompanyStructure = props => {
                   onClick={() => DispatchgetSelectedPartyGroupAction(data)}
                 >
                   <ListItemText primary={data.name} />
+                  <ListItemSecondaryAction
+                    onClick={() => openEditPartyGroupAction(data)}
+                  >
+                    <IconButton edge="end" aria-label="comments">
+                      <Edit />
+                    </IconButton>
+                  </ListItemSecondaryAction>
                 </ListItemLink>
               </List>
             ))}
@@ -245,7 +259,7 @@ const CompanyStructure = props => {
 };
 
 CompanyStructure.propTypes = {
-  // dispatchGetPartyGroups: PropTypes.func,
+  openEditPartyGroupAction: PropTypes.func,
   dispatchGetAllUsersAction: PropTypes.func,
   loading: PropTypes.bool,
   dispatchOpenNewPartyGroupAction: PropTypes.func,
@@ -265,13 +279,13 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatchOpenNewPartyGroupAction: () =>
       dispatch(Actions.openNewPartyGroupDialog()),
+    openEditPartyGroupAction: evt =>
+      dispatch(Actions.openEditPartyGroupDialog(evt)),
     dispatchOpenNewPartyAction: evt =>
       dispatch(Actions.openNewPartyDialog(evt)),
     openNewRoleDialog: () => dispatch(Actions.openNewRoleDialog()),
     DispatchgetSelectedPartyGroupAction: evt =>
       dispatch(Actions.getSelectedPartyGroupAction(evt)),
-
-    // dispatchGetPartyGroups: () => dispatch(Actions.getPartyGroupAction()),
     dispatchGetAllUsersAction: () => dispatch(Actions.getAllUsers()),
   };
 }

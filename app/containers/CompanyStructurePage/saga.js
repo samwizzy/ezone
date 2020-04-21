@@ -74,7 +74,7 @@ export function* createNewPartyGroupSaga() {
     //   }),
     // );
   } catch (err) {
-    yield put(Actions.getPartyGroupErrorAction(err));
+    yield put(Actions.createNewPartyError(err));
     // yield put(
     //   AppActions.openSnackBar({
     //     open: true,
@@ -82,6 +82,45 @@ export function* createNewPartyGroupSaga() {
     //     status: 'error',
     //   }),
     // );
+  }
+}
+
+export function* updatePartyGroupSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+
+  const updatePartyGroupParams = yield select(
+    Selectors.makeSelectUpdatePartyGroupData(),
+  );
+
+  console.log(updatePartyGroupParams, 'updatePartyGroupParams');
+  const { name, description } = updatePartyGroupParams;
+  const newData = {
+    name,
+    description,
+    organisation: { orgId: currentUser.organisation.orgId }, // TODO: user object clear from store
+  };
+
+  const requestURL = `${Endpoints.UpdatePartyGroup}`;
+
+  try {
+    const createPartyGroupResponse = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(newData),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/Json',
+      }),
+    });
+
+    console.log(createPartyGroupResponse, 'createPartyGroupResponse');
+
+    yield put(Actions.updatePartyGroupSuccessAction(createPartyGroupResponse));
+    yield put(Actions.getPartyGroupAction());
+    yield put(Actions.closeEditPartyGroupDialog());
+  } catch (err) {
+    console.log(err, 'errrrrrrr');
+    yield put(Actions.updatePartyGroupErrorAction(err));
   }
 }
 
@@ -384,6 +423,7 @@ export function* updateCompanyDetail() {
 
 // Individual exports for testing
 export default function* companyStructureSaga() {
+  yield takeLatest(Constants.UPDATE_PARTY_GROUP, updatePartyGroupSaga);
   yield takeLatest(Constants.GET_PARTY_GROUP, getPartyGroupSaga);
   yield takeLatest(Constants.GET_ALL_USERS, getAllUsers);
   yield takeLatest(Constants.CREATE_NEW_PARTY_GROUP, createNewPartyGroupSaga);

@@ -4,35 +4,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { Autocomplete } from '@material-ui/lab';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  TextField,
   makeStyles,
-  Button,
+  Backdrop,
+  CircularProgress,
   Dialog,
-  DialogContent,
-  DialogActions,
-  Divider,
   Slide,
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-  FormControlLabel,
-  Radio,
-  Grid,
-  FormControl,
-  FormLabel,
-  RadioGroup,
 } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
+import moment from 'moment';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -44,6 +24,7 @@ import LoadingIndicator from '../../../../components/LoadingIndicator';
 import { BasicInfo } from './BasicInfo';
 import { AdvanceInfo } from './AdvanceInfo';
 import { UtilityInfo } from './UtilityInfo';
+import { ImageUpload } from './ImageUpload';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -67,6 +48,10 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -75,9 +60,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const ContactDialog = props => {
   const classes = useStyles();
-  const [selectedDate, handleDateChange] = React.useState(new Date());
 
-  const [rows, setRows] = React.useState([{}]);
   const [step, setStep] = React.useState(0);
   const [form, setForm] = React.useState({
     firstName: '',
@@ -86,6 +69,7 @@ const ContactDialog = props => {
     phoneNumber: '',
     mobileNo: '',
     lifeStage: '',
+    associationType: '',
     contactGroup: '',
     contactGroupId: '',
     contactSource: '',
@@ -95,41 +79,75 @@ const ContactDialog = props => {
     state: '',
     city: '',
     fax: '',
-    dob: '',
+    dob: new Date(),
     image: '',
     notes: '',
     ownerId: '',
-    type: '',
+    type: 'INDIVIDUAL',
     website: '',
   });
 
   const {
     loading,
     contactDialog,
-    getAllItems,
-    getAllWarehouses,
+    createNewContactAction,
+    updateContactAction,
     closeNewContactDialogAction,
     closeEditEmployeeDialogAction,
-    dispatchCreateNewInventoryAdjustmentAction,
   } = props;
-
-  console.log(contactDialog, 'contactDialog');
 
   const handleChange = event => {
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
   };
 
+  const handleSelectLifeStage = (evt, value) => {
+    setForm({ ...form, lifeStage: value.name });
+  };
+  const handleSelectOwnerId = (evt, value) => {
+    setForm({ ...form, ownerId: value.id });
+  };
+  const handleSelectAssociateId = (evt, value) => {
+    setForm({ ...form, associationType: value.name });
+  };
+  const handleSelectCountry = (evt, value) => {
+    setForm({ ...form, country: value.name });
+  };
+  const handleSelectContactGroup = (evt, value) => {
+    setForm({ ...form, contactGroup: value.id });
+  };
+  const handleSelectContactSource = (evt, value) => {
+    setForm({ ...form, contactSource: value.id });
+  };
+
+  const uploadFileAction = file => {
+    setForm({ ...form, attachments: [file] });
+  };
+
   const handleNext = () => {
-    if(step > -1 && step < 3){ setStep(step + 1) }
-  }
+    if (step > -1 && step <= 3) {
+      setStep(step + 1);
+    }
+  };
+
+  const handleDateChange = date => {
+    setForm({ ...form, dob: moment(date).format('MMMM Do YYYY, h:mm:ss a') });
+  };
 
   const handlePrev = () => {
     if (step => 1 && step <= 3) {
       setStep(step - 1);
     }
-  }
+  };
 
+  React.useEffect(() => {
+    if (contactDialog.type === 'edit') {
+      setForm({ ...form });
+    }
+  }, [contactDialog.data]);
+
+  console.log(contactDialog, 'contactDialog');
+  console.log(form, 'form');
 
   return (
     <div>
@@ -140,9 +158,15 @@ const ContactDialog = props => {
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
       >
+        <Backdrop className={classes.backdrop} open={loading}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
         {step === 0 && (
           <BasicInfo
             handleChange={handleChange}
+            handleSelectLifeStage={handleSelectLifeStage}
+            handleSelectOwnerId={handleSelectOwnerId}
+            handleSelectAssociateId={handleSelectAssociateId}
             form={form}
             closeNewContactDialog={closeNewContactDialogAction}
             handleNext={handleNext}
@@ -151,6 +175,8 @@ const ContactDialog = props => {
         {step === 1 && (
           <AdvanceInfo
             handleChange={handleChange}
+            handleDateChange={handleDateChange}
+            handleSelectCountry={handleSelectCountry}
             form={form}
             closeNewContactDialog={closeNewContactDialogAction}
             handleNext={handleNext}
@@ -159,11 +185,25 @@ const ContactDialog = props => {
         )}
         {step === 2 && (
           <UtilityInfo
+            handleSelectContactGroup={handleSelectContactGroup}
+            handleSelectContactSource={handleSelectContactSource}
             handleChange={handleChange}
             form={form}
             closeNewContactDialog={closeNewContactDialogAction}
             handleNext={handleNext}
             handlePrev={handlePrev}
+          />
+        )}
+        {step === 3 && (
+          <ImageUpload
+            contactDialog={contactDialog}
+            updateContactAction={updateContactAction}
+            createNewContactAction={createNewContactAction}
+            uploadFileAction={uploadFileAction}
+            handleChange={handleChange}
+            handlePrev={handlePrev}
+            form={form}
+            closeNewContactDialog={closeNewContactDialogAction}
           />
         )}
       </Dialog>
@@ -178,6 +218,7 @@ ContactDialog.propTypes = {
   getAllItems: PropTypes.array,
   dispatchCreateNewInventoryAdjustmentAction: PropTypes.func,
   closeNewContactDialogAction: PropTypes.func,
+  updateContactAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -187,8 +228,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    // dispatchCreateNewInventoryAdjustmentAction: evt =>
-    //   dispatch(Actions.createNewInventoryAdjustment(evt)),
+    createNewContactAction: evt => dispatch(Actions.createNewContact(evt)),
+    updateContactAction: evt => dispatch(Actions.updateContact(evt)),
     closeNewContactDialogAction: () =>
       dispatch(Actions.closeNewContactDialog()),
   };

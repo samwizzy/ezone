@@ -11,7 +11,7 @@ export function* getAllEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
-  const requestURL = `${Endpoints.GetAllEmployeesApi}/${
+  const requestURL = `${Endpoints.GetAllUsersApi}/${
     currentUser.organisation.orgId
   }`;
 
@@ -24,7 +24,6 @@ export function* getAllEmployees() {
       }),
     });
 
-    console.log(getAllEmployeesResponse, 'getAllEmployeesResponse');
     yield put(Actions.getAllEmployeesSuccess(getAllEmployeesResponse));
   } catch (err) {
     yield put(Actions.getAllEmployeesError(err));
