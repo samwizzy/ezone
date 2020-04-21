@@ -82,6 +82,7 @@ const AccountDetails = props => {
 
   console.log('AccountDetails loaded');
   console.log('accountDetailsData --> ', props.location.accountDetailsData);
+  console.log('transfer --> ', props.location.accountDetailsData.transfers);
   console.log('bankTransferByOrgIdData from details.js --> ', bankTransferByOrgIdData);
 
   
@@ -98,25 +99,25 @@ const AccountDetails = props => {
                     <TableRow>
                       <TableCell component="th" scope="row">Account Name</TableCell>
                       <TableCell>
-                        { props.location.accountDetailsData.accountName }
+                        {/* { props.location.accountDetailsData.accountName } */}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">Account Code</TableCell>
                       <TableCell>
-                        { props.location.accountDetailsData.accountCode }
+                        {/* { props.location.accountDetailsData.accountCode } */}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">Account Type</TableCell>
                       <TableCell>
-                        { props.location.accountDetailsData.accountType.accountType }
+                        {/* { props.location.accountDetailsData.accountType.accountType } */}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">Description</TableCell>
                       <TableCell>
-                        { props.location.accountDetailsData.accountType.description }
+                        {/* { props.location.accountDetailsData.accountType.description } */}
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -128,7 +129,7 @@ const AccountDetails = props => {
                     <TableRow>
                         <TableCell component="th" scope="row">Closing Balance</TableCell>
                         <TableCell>
-                          NGN { props.location.accountDetailsData.accountType.openingBalance }
+                          {/* NGN { props.location.accountDetailsData.accountType.openingBalance } */}
                         </TableCell>
                     </TableRow>
                   </TableFooter>
@@ -138,7 +139,7 @@ const AccountDetails = props => {
           </Grid>
         </Grid>
 
-        {bankTransferByOrgIdData.length ? (
+        { props.location.accountDetailsData.transfers.length ? (
           <Grid item xs={12}>
             <Grid container className={classes.grid}>
               <Grid item xs={12}>
