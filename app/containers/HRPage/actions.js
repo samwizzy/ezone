@@ -49,6 +49,17 @@ export function getDepartmentsSuccess(data) {
     payload: data
   };
 }
+export function getDepartmentsByOrgIdApi() {
+  return {
+    type: Constants.GET_DEPARTMENTS_BY_ORGID_API,
+  };
+}
+export function getDepartmentsByOrgIdApiSuccess(data) {
+  return {
+    type: Constants.GET_DEPARTMENTS_BY_ORGID_API_SUCCESS,
+    payload: data
+  };
+}
 export function createDepartment(data) {
   return {
     type: Constants.CREATE_DEPARTMENT,
