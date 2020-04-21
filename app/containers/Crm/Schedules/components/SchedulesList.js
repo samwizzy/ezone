@@ -67,12 +67,15 @@ const SchedulesList = props => {
           <Typography variant="h6">Schedules</Typography>
         </Grid>
         <Grid item xs={12}>
-          <Grid container spacing={8}>
-            <Schedules />
-          </Grid>
-          <Grid container spacing={4}>
+          <Grid container>
+            <Grid item xs={8}>
+              <Schedules />
+            </Grid>
+            <Grid item xs={4}>
             
+            </Grid>
           </Grid>
+          
         </Grid>
       </Grid>
 
