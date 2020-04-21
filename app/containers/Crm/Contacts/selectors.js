@@ -39,6 +39,24 @@ const makeSelectContactDialog = () =>
     subState => subState.contactDialog,
   );
 
+const makeSelectCreateNewContact = () =>
+  createSelector(
+    selectCrmDomain,
+    subState => subState.createNewContact,
+  );
+
+const makeSelectUpdateContact = () =>
+  createSelector(
+    selectCrmDomain,
+    subState => subState.updateContact,
+  );
+
+const makeSelectAllContacts = () =>
+  createSelector(
+    selectCrmDomain,
+    subState => subState.allContacts,
+  );
+
 const makeSelectContactDetailsDialog = () =>
   createSelector(
     selectCrmDomain,
@@ -51,5 +69,8 @@ export {
   makeSelectLoading,
   makeSelectError,
   makeSelectContactDialog,
+  makeSelectCreateNewContact,
+  makeSelectAllContacts,
+  makeSelectUpdateContact,
   makeSelectContactDetailsDialog,
 };

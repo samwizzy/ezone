@@ -37,6 +37,12 @@ export const CREATE_NEW_PARTY_GROUP_SUCCESS =
 export const CREATE_NEW_PARTY_GROUP_ERROR =
   'app/CompanyStructurePage/CREATE_NEW_PARTY_GROUP_ERROR';
 
+export const UPDATE_PARTY_GROUP = 'app/CompanyStructurePage/UPDATE_PARTY_GROUP';
+export const UPDATE_PARTY_GROUP_SUCCESS =
+  'app/CompanyStructurePage/UPDATE_PARTY_GROUP_SUCCESS';
+export const UPDATE_PARTY_GROUP_ERROR =
+  'app/CompanyStructurePage/UPDATE_PARTY_GROUP_ERROR';
+
 export const GET_SELECTED_PARTY_GROUP =
   'app/CompanyStructurePage/GET_SELECTED_PARTY_GROUP';
 

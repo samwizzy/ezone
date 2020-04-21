@@ -153,8 +153,9 @@ function a11yProps(index) {
 const ref = React.createRef();
 
 const ChatTab = props => {
-  let stompClient = null;
+  // let stompClient = null;
   const {
+    accessToken,
     allEmployees,
     allUsersChat,
     currentUser,
@@ -168,7 +169,7 @@ const ChatTab = props => {
   useEffect(() => {
     dispatchGetAllEmployees();
     dispatchGetUserChats();
-    // chatConnect();
+    chatConnect();
     handleScrollToBottom();
   }, []);
 
@@ -231,6 +232,34 @@ const ChatTab = props => {
       ['desc'],
     );
   }
+
+  // console.log(currentUser, 'currentUser');
+  // console.log(accessToken, 'accessToken');
+
+  const chatConnect = () => {
+    const socket = new SockJS(
+      'https://dev.ezoneapps.com/gateway/utilityserv/messages',
+    );
+    const stompClient = Stomp.over(socket);
+    stompClient.connect(
+      {
+        'X-Authorization': 'Bearer ' + `${accessToken}`,
+        login: 'admin',
+        passcode: 'admin',
+      },
+      frame => {
+        const connected = true;
+        console.log(frame, 'frame');
+        stompClient.subscribe(`/queue/${currentUser.uuId}`, tick => {
+          console.log(tick, 'tick');
+        });
+      },
+      error => {
+        console.log(error);
+        const connected = false;
+      },
+    );
+  };
 
   // console.log(ref, "ref")
 
@@ -400,6 +429,7 @@ const mapStateToProps = createStructuredSelector({
   allEmployees: Selectors.makeSelectAllEmployees(),
   allUsersChat: Selectors.makeSelectAllUsersChat(),
   currentUser: AppSelectors.makeSelectCurrentUser(),
+  accessToken: AppSelectors.makeSelectAccessToken(),
 });
 
 function mapDispatchToProps(dispatch) {

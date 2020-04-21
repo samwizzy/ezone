@@ -24,13 +24,8 @@ export default class Demo extends React.PureComponent {
 
     return (
       <Paper>
-        <Scheduler
-          data={data}
-          width="100%"
-        >
-          <ViewState
-            currentDate={currentDate}
-          />
+        <Scheduler data={data} width="100%">
+          <ViewState currentDate={currentDate} />
           <MonthView />
           <Appointments />
         </Scheduler>

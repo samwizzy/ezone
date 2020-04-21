@@ -76,6 +76,12 @@ const createNewPartyGroupData = () =>
     subState => subState.createNewPartyGroupData,
   );
 
+const makeSelectUpdatePartyGroupData = () =>
+  createSelector(
+    selectCompanyStructurePageDomain,
+    subState => subState.updatePartyGroupData,
+  );
+
 const makeSelectAllUsersData = () =>
   createSelector(
     selectCompanyStructurePageDomain,
@@ -213,4 +219,5 @@ export {
   makeSelectCompanyInfo,
   makeSelectUpdateCompanyInfoData,
   makeSelectCreateNewPartiesData,
+  makeSelectUpdatePartyGroupData,
 };

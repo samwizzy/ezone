@@ -105,7 +105,7 @@ const TransactionTransferDialog = props => {
   const handleImageChange = (ev) => { 
     let fileNode = []
     Object.keys(ev.target.files).map(index => {
-      const { name, size, type } = ev.target.files[index]
+      const { name } = ev.target.files[index]
       const result = toBase64(ev.target.files[index]);
       result.then(rs => {
         const file = Object.assign({}, { fileName: name, file: rs })
@@ -116,6 +116,7 @@ const TransactionTransferDialog = props => {
   }
 
   console.log('values: ', values);
+
 
   return (
     <div>

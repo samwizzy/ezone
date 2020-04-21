@@ -3,12 +3,11 @@ import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
-  List,
+  Backdrop,
+  CircularProgress,
   FormControlLabel,
   Icon,
   Button,
-  Menu,
-  MenuItem,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
@@ -16,8 +15,8 @@ import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import * as Actions from '../../actions';
-import * as Selectors from '../../selectors';
+import * as Actions from '../actions';
+import * as Selectors from '../selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import ContactDialog from './ContactDialog';
 import ContactDetailsDialog from './ContactDetailsDialog';
@@ -45,32 +44,32 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+  margin: {
+    margin: theme.spacing(1),
+  },
 }));
 
 const ContactsList = props => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const dd = [
+    { id: 1, name: 'cust1', phone: '0810132', emailAddress: 'cust1@gmail.com' },
+  ];
 
   const {
     loading,
     openNewContactDialogAction,
+    openEditContactDialogAction,
+    getAllContactsAction,
   } = props;
 
   useEffect(() => {
-    // getAllItemsAction();
-    // getAllWarehousesAction();
-    // getAllInventoryAdjustmentsAction();
+    getAllContactsAction();
   }, []);
 
-  // console.log(getAllInventoryAdjusts, 'getAllInventoryAdjusts');
   const columns = [
     {
       name: 'Id',
@@ -91,24 +90,24 @@ const ContactsList = props => {
       },
     },
     {
-      name: 'inventoryAdjustedDate',
-      label: 'Adjusted Date',
+      name: 'name',
+      label: 'Name',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'reason',
-      label: 'Reason',
+      name: 'emailAddress',
+      label: 'Email',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'reasonDescription',
-      label: 'Reason Description',
+      name: 'phone',
+      label: 'Phone Number',
       options: {
         filter: true,
         sort: false,
@@ -163,48 +162,27 @@ const ContactsList = props => {
         sort: false,
       }
     },
-    // {
-    //   name: 'id',
-    //   label: '',
-    //   options: {
-    //     filter: true,
-    //     sort: false,
-    //     customBodyRender: value => {
-    //       const Post = datas.find(post => value === post.id);
-    //       if (value === '') {
-    //         return '';
-    //       }
-    //       return (
-    //         <div>
-    //           <Button
-    //             aria-controls="simple-menu"
-    //             aria-haspopup="true"
-    //             onClick={handleClick}
-    //           >
-    //             Options
-    //           </Button>
-    //           <Menu
-    //             id="simple-menu"
-    //             anchorEl={anchorEl}
-    //             keepMounted
-    //             open={Boolean(anchorEl)}
-    //             onClose={handleClose}
-    //           >
-    //             <MenuItem onClick={handleClose}>Assign Role</MenuItem>
-    //             <MenuItem onClick={handleClose}>Assign Apps</MenuItem>
-    //             <MenuItem onClick={() => openEditEmployeeDialogAction(Post)}>
-    //               Edit
-    //             </MenuItem>
-    //             <MenuItem onClick={() => openViewEmployeeDialogAction(Post)}>
-    //               View Details
-    //             </MenuItem>
-    //             <MenuItem onClick={handleClose}>Deactivate</MenuItem>
-    //           </Menu>
-    //         </div>
-    //       );
-    //     },
-    //   },
-    // },
+    {
+      name: 'id',
+      label: '',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: value => {
+          const d = dd.find(post => value === post.id);
+          if (value === '') {
+            return '';
+          }
+          return (
+            <div>
+              <Button variant="outlined" size="small" color="primary" className={classes.margin} onClick={() => openEditContactDialogAction(d)}>
+                Edit
+              </Button>
+            </div>
+          );
+        },
+      },
+    },
   ];
 
   const options = {
@@ -226,16 +204,15 @@ const ContactsList = props => {
     elevation: 0
   };
 
-  if (loading) {
-    return <LoadingIndicator />;
-  }
-
   return (
     <React.Fragment>
+      <Backdrop className={classes.backdrop} open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <MUIDataTable
         className={classes.datatable}
         title="All Contacts"
-        data={[]}
+        data={dd}
         columns={columns}
         options={options}
       />
@@ -247,7 +224,9 @@ const ContactsList = props => {
 
 ContactsList.propTypes = {
   loading: PropTypes.bool,
-  openNewContactDialogAction: PropTypes.object,
+  openNewContactDialogAction: PropTypes.func,
+  openEditContactDialogAction: PropTypes.func,
+  getAllContactsAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -259,6 +238,10 @@ function mapDispatchToProps(dispatch) {
   return {
     openNewContactDialogAction: () =>
       dispatch(Actions.openNewContactDialog()),
+    openEditContactDialogAction: () =>
+      dispatch(Actions.openEditContactDialog()),
+    getAllContactsAction: () =>
+      dispatch(Actions.getAllContacts()),
   };
 }
 

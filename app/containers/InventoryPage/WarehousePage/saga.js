@@ -11,7 +11,7 @@ export function* getAllEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
-  const requestURL = `${Endpoints.GetAllEmployeesApi}/${
+  const requestURL = `${Endpoints.GetAllUsersApi}/${
     currentUser.organisation.orgId
   }`;
 
@@ -24,7 +24,6 @@ export function* getAllEmployees() {
       }),
     });
 
-    console.log(getAllEmployeesResponse, 'getAllEmployeesResponse');
     yield put(Actions.getAllEmployeesSuccess(getAllEmployeesResponse));
   } catch (err) {
     yield put(Actions.getAllEmployeesError(err));
@@ -145,37 +144,11 @@ export function* updateWarehouse() {
       }),
     });
 
-    // yield put(Actions.createNewEmployeeSuccess(createNewEmployeeResponse));
     yield put(Actions.getAllWarehouse());
     yield put(Actions.closeEditWarehouseDialog());
-
-    // if (createNewEmployeeResponse.success === true) {
-    //   yield put(
-    //     AppActions.openSnackBar({
-    //       open: true,
-    //       message: createNewEmployeeResponse.message,
-    //       status: 'success',
-    //     }),
-    //   );
-    // } else {
-    //   yield put(
-    //     AppActions.openSnackBar({
-    //       open: true,
-    //       message: createNewEmployeeResponse.message,
-    //       status: 'warning',
-    //     }),
-    //   );
-    // }
   } catch (err) {
     console.log(err);
     yield put(Actions.createNewWarehouseError(err));
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: `${err}`,
-    //     status: 'error',
-    //   }),
-    // );
   }
 }
 
