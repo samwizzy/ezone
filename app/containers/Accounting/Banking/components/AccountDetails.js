@@ -42,8 +42,12 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.main,
       '& .MuiTableCell-root': {
         color: theme.palette.common.white,
-        fontSize: theme.typography.fontSize + 2
+        fontSize: theme.typography.fontSize + 2,
+        padding: theme.spacing(4, 2),
       },
+      '& .MuiTableRow-root': {
+        borderRadius: `${theme.shape.borderRadius * 6} !important`  
+      }
     },
     "& th.MuiTableCell-root": {
       borderBottom: "none !important",
@@ -58,6 +62,10 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.text.secondary,
       fontSize: theme.typography.fontSize + 2
     },
+  },
+  paper: {
+    padding: theme.spacing(10, 0),
+    textAlign: 'center'
   }
 }));
 
@@ -181,12 +189,15 @@ const AccountDetails = props => {
         ) : (
           <Grid item xs={12}>
             <Grid container className={classes.grid}>
-              <Paper>
-                You haven’t recorded any transactions for this account
+              <Grid item xs={12}>
+              <Paper square className={classes.paper}>
+                <Typography variant="h6" gutterBottom>You haven’t recorded any transactions for this account</Typography>
                 <Button 
                   aria-controls="simple-menu" 
                   aria-haspopup="true" 
                   onClick={handleClick}
+                  color="primary"
+                  variant="contained"
                 >
                   Add Transactions
                 </Button>
@@ -209,6 +220,7 @@ const AccountDetails = props => {
                   </MenuItem>
                 </Menu>
               </Paper>
+              </Grid>
             </Grid>
           </Grid>
         )}
