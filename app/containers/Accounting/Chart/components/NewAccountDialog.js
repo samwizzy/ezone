@@ -91,6 +91,11 @@ const NewAccountDialog = props => {
     subAccount: false // This prop will be removed before payload is sent
   });
 
+  const canSubmitValues = () => {
+    const { accountCode, accountName, accountTypeId } = values;
+    return accountCode.length > 0 && accountName.length > 0 && accountTypeId.length > 0 ;
+  }
+
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
@@ -277,7 +282,7 @@ const NewAccountDialog = props => {
                     onChange={handleChange('description')}
                     margin="normal"
                     fullWidth
-                    rows={2}
+                    rows={3}
                     multiline
                   />
                 </Grid>
@@ -446,7 +451,7 @@ const NewAccountDialog = props => {
               }}
               color="primary"
               // variant="contained"
-              // disabled={!canBeSubmitted()}
+              disabled={!canSubmitValues()}
             >
               Save Account
             </Button>

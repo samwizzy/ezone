@@ -31,8 +31,7 @@ export function* getDashBoardDataSaga() {
 
 export function* getAllAccountTypeSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllAccountTypeApi}/${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetAllAccountTypeApi}`;
 
   try {
     const allAccountTypeResponse = yield call(request, requestURL, {

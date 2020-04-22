@@ -88,7 +88,7 @@ const AccountDetails = props => {
     openAccountTransferDialogAction
   } = props;
 
-  console.log('AccountDetails loaded');
+  console.log('ID -> ', props.location.accountDetailsData.id);
   console.log('accountDetailsData --> ', props.location.accountDetailsData);
   console.log('transfer --> ', props.location.accountDetailsData.transfers);
   console.log('bankTransferByOrgIdData from details.js --> ', bankTransferByOrgIdData);
@@ -241,7 +241,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openAccountTransferDialogAction: evt => dispatch(Actions.openAccountTransferDialog(evt)),
+    openAccountTransferDialogAction: (evt) => dispatch(Actions.openAccountTransferDialog(evt)),
   };
 }
 

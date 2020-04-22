@@ -76,7 +76,6 @@ export function createNewBankErrorAction(data) {
 
 // Get bank account 
 export function getAllBankAccountAction() {
-  console.log('getAllBankAccountAction triggered.');
   return {
     type: Constants.GET_ALL_BANK_ACCOUNT,
   };
