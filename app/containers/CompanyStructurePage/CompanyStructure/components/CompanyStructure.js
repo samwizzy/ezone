@@ -264,7 +264,8 @@ CompanyStructure.propTypes = {
   loading: PropTypes.bool,
   dispatchOpenNewPartyGroupAction: PropTypes.func,
   dispatchOpenNewPartyAction: PropTypes.func,
-  partyGroupData: PropTypes.oneOfType(PropTypes.array, PropTypes.bool),
+  partyGroupData: PropTypes.array,
+  // partyGroupData: PropTypes.oneOfType(PropTypes.array, PropTypes.bool),
   DispatchgetSelectedPartyGroupAction: PropTypes.func,
   selectedPartyGroupData: PropTypes.oneOfType(PropTypes.object, PropTypes.bool),
 };

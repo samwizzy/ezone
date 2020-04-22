@@ -279,7 +279,7 @@ const companyStructurePageReducer = (state = initialState, action) =>
       case Constants.GET_ALL_USERS_SUCCESS: {
         return {
           ...state,
-          loading: true,
+          loading: false,
           error: false,
           getAllUsersData: action.payload,
         };

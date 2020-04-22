@@ -94,12 +94,15 @@ const OrgInfo = props => {
                 alignItems="flex-start"
                 style={{ display: 'flex', alignItems: 'center' }}
               >
+                <img alt="Company Logo" src={companyInfo.logo} />
                 <ListItemAvatar>
-                  <Avatar
-                    alt="Company Logo"
-                    src={TaskIcon}
-                    className={classes.avatar}
-                  />
+                  {companyInfo && (
+                    <Avatar
+                      alt="Company Logo"
+                      src={companyInfo.logo}
+                      className={classes.avatar}
+                    />
+                  )}
                 </ListItemAvatar>
                 <ListItemText
                   primary={
@@ -134,7 +137,7 @@ const OrgInfo = props => {
                   href="#"
                   variant="body2"
                   color="inherit"
-                  onClick={openEditColorDialog}
+                  onClick={() => openEditColorDialog(companyInfo)}
                 >
                   Edit Logo and Color <EditOutlined />
                 </Link>

@@ -413,7 +413,6 @@ export function getCompanyInfoError(data) {
 }
 
 export function updateCompanyInfo(data) {
-  console.log(data, 'UPDATE_COMPANY_INFO')
   return {
     type: Constants.UPDATE_COMPANY_INFO,
     payload: data,
