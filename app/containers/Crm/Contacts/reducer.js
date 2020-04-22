@@ -65,7 +65,7 @@ const crmReducer = (state = initialState, action) =>
             props: {
               open: true,
             },
-            data: null,
+            data: action.payload,
           },
         };
       }

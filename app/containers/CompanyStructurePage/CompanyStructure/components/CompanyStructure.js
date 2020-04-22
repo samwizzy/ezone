@@ -196,8 +196,8 @@ const CompanyStructure = props => {
     ),
   };
 
-  // console.log(partyGroupData, 'partyGroupData');
-  // console.log(loading, 'loading');
+  console.log(partyGroupData, 'partyGroupData');
+  console.log(loading, 'loading');
 
   if (loading) {
     return <LoadingIndicator />;

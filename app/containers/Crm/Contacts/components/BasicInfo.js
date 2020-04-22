@@ -42,10 +42,10 @@ export const BasicInfo = props => {
   const canSubmitForm = () => {
     const { firstName, lastName, phoneNumber, emailAddress } = form;
     return (
-      firstName.length > 0 &&
-      lastName.length > 0 &&
-      phoneNumber.length > 0 &&
-      emailAddress.length > 0
+      firstName !== null &&
+      lastName !== null &&
+      phoneNumber !== null &&
+      emailAddress !== null
     );
   };
 

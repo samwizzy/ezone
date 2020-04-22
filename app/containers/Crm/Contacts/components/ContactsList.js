@@ -203,7 +203,6 @@ const ContactsList = props => {
                 Edit
               </Button>
               <FormControlLabel
-                // label="Edit"
                 className={classes.view}
                 control={<Visibility />}
                 onClick={evt => {
@@ -274,10 +273,10 @@ function mapDispatchToProps(dispatch) {
   return {
     openNewContactDialogAction: () =>
       dispatch(Actions.openNewContactDialog()),
-    openEditContactDialogAction: () =>
-      dispatch(Actions.openEditContactDialog()),
-    openContactDetailsDialogAction: () =>
-      dispatch(Actions.openContactDetailsDialog()),
+    openEditContactDialogAction: evt =>
+      dispatch(Actions.openEditContactDialog(evt)),
+    openContactDetailsDialogAction: evt =>
+      dispatch(Actions.openContactDetailsDialog(evt)),
     getAllContactsAction: () =>
       dispatch(Actions.getAllContacts()),
   };
