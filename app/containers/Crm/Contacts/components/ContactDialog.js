@@ -71,7 +71,7 @@ const ContactDialog = props => {
     lifeStage: '',
     associationType: '',
     contactGroup: '',
-    contactGroupId: '',
+    contactGroupId: 1,
     contactSource: '',
     address1: '',
     address2: '',
@@ -79,12 +79,12 @@ const ContactDialog = props => {
     state: '',
     city: '',
     fax: '',
-    dob: new Date(),
+    dob: moment(new Date()).format('YYYY-MM-DD'),
     image: '',
-    notes: '',
+    notes: 'note',
     ownerId: '',
     type: 'INDIVIDUAL',
-    website: '',
+    website: 1,
   });
 
   const {
@@ -121,7 +121,7 @@ const ContactDialog = props => {
   };
 
   const uploadFileAction = file => {
-    setForm({ ...form, attachments: [file] });
+    setForm({ ...form, image: file });
   };
 
   const handleNext = () => {
@@ -131,7 +131,7 @@ const ContactDialog = props => {
   };
 
   const handleDateChange = date => {
-    setForm({ ...form, dob: moment(date).format('MMMM Do YYYY, h:mm:ss a') });
+    setForm({ ...form, dob: moment(date).format('YYYY-MM-DD') });
   };
 
   const handlePrev = () => {
@@ -142,12 +142,12 @@ const ContactDialog = props => {
 
   React.useEffect(() => {
     if (contactDialog.type === 'edit') {
-      setForm({ ...form });
+      setForm({ ...contactDialog.data });
     }
   }, [contactDialog.data]);
 
   console.log(contactDialog, 'contactDialog');
-  console.log(form, 'form');
+  // console.log(form, 'form');
 
   return (
     <div>

@@ -84,8 +84,8 @@ const PartyDialog = props => {
   const canBeSubmitted = () => {
     const { partyHead, assistantPartyHead, name, description } = values;
     return (
-      partyHead !== '' &&
-      assistantPartyHead !== '' &&
+      // partyHead !== '' &&
+      // assistantPartyHead !== '' &&
       name !== '' &&
       description !== ''
     );
@@ -135,7 +135,9 @@ const PartyDialog = props => {
               <Autocomplete
                 id="combo-partyHead"
                 options={AllUserData}
-                getOptionLabel={option => option.firstName}
+                getOptionLabel={option =>
+                  `${option.firstName} ${option.lastName}`
+                }
                 onChange={(evt, ve) => handlePartyHeadChange(evt, ve)}
                 renderInput={params => (
                   <TextField
@@ -152,7 +154,9 @@ const PartyDialog = props => {
               <Autocomplete
                 id="combo-ass-partyHead"
                 options={AllUserData}
-                getOptionLabel={option => option.firstName}
+                getOptionLabel={option =>
+                  `${option.firstName} ${option.lastName}`
+                }
                 onChange={(evt, ve) => handlePartyAssHeadChange(evt, ve)}
                 renderInput={params => (
                   <TextField

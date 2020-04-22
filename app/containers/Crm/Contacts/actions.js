@@ -30,6 +30,19 @@ export function closeEditContactDialog() {
   };
 }
 
+export function openContactDetailsDialog(data) {
+  return {
+    type: Constants.OPEN_NEW_CONTACT_DETAILS_DIALOG,
+    payload: data,
+  };
+}
+
+export function closeContactDetailsDialog() {
+  return {
+    type: Constants.CLOSE_NEW_CONTACT_DETAILS_DIALOG,
+  };
+}
+
 export function getAllContacts() {
   return {
     type: Constants.GET_ALL_CONTACTS,

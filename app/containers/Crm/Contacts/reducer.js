@@ -23,7 +23,7 @@ export const initialState = {
   contactDetailsDialog: {
     type: 'new',
     props: {
-      open: true,
+      open: false,
     },
     data: null,
   },
@@ -69,18 +69,6 @@ const crmReducer = (state = initialState, action) =>
           },
         };
       }
-      case Constants.OPEN_NEW_CONTACT_DETAILS_DIALOG: {
-        return {
-          ...state,
-          contactDetailsDialog: {
-            type: 'new',
-            props: {
-              open: true,
-            },
-            data: null,
-          },
-        };
-      }
       case Constants.CLOSE_EDIT_CONTACT_DIALOG: {
         return {
           ...state,
@@ -90,8 +78,20 @@ const crmReducer = (state = initialState, action) =>
               open: false,
             },
             data: null,
-          }
-        }
+          },
+        };
+      }
+      case Constants.OPEN_NEW_CONTACT_DETAILS_DIALOG: {
+        return {
+          ...state,
+          contactDetailsDialog: {
+            type: 'new',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
       }
       case Constants.CLOSE_NEW_CONTACT_DETAILS_DIALOG: {
         return {

@@ -36,10 +36,10 @@ import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import MailOutline from '@material-ui/icons/MailOutline';
 import Smartphone from '@material-ui/icons/Smartphone';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import { lighten } from '@material-ui/core/styles/colorManipulator';
+import { blue } from '@material-ui/core/colors';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
-import { lighten } from '@material-ui/core/styles/colorManipulator'
-import { blue } from '@material-ui/core/colors'
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import user from '../../../../images/user.svg';
 
@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     width: theme.spacing(12),
     height: theme.spacing(12),
     marginRight: theme.spacing(1),
-    border: `1px solid ${lighten(theme.palette.primary.main, 0.3)}`
+    border: `1px solid ${lighten(theme.palette.primary.main, 0.3)}`,
   },
   button: {
     backgroundColor: blue[400],
@@ -97,7 +97,7 @@ const ExpansionPanelSummary = withStyles({
   expanded: {},
 })(MuiExpansionPanelSummary);
 
-const ExpansionPanelDetails = withStyles((theme) => ({
+const ExpansionPanelDetails = withStyles(theme => ({
   root: {
     padding: theme.spacing(2),
   },
@@ -109,10 +109,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const ContactDetailsDialog = props => {
   const classes = useStyles();
-  const { loading, contactDetailsDialog, closeNewContactDetailsDialog } = props;
+  const { loading, contactDetailsDialog, closeContactDetailsDialogAction } = props;
   const [expanded, setExpanded] = React.useState('panel1');
 
-  const handleChange = (panel) => (event, newExpanded) => {
+  const handleChange = panel => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
 
@@ -120,7 +120,7 @@ const ContactDetailsDialog = props => {
     <div>
       <Dialog
         {...contactDetailsDialog.props}
-        onClose={closeNewContactDetailsDialog}
+        onClose={closeContactDetailsDialogAction}
         keepMounted
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
@@ -137,7 +137,7 @@ const ContactDetailsDialog = props => {
                     <ListItemAvatar>
                       <Avatar
                         alt="Company Logo"
-                        src={<AccountCircle/>}
+                        src={<AccountCircle />}
                         className={classes.avatar}
                       />
                     </ListItemAvatar>
@@ -173,47 +173,67 @@ const ContactDetailsDialog = props => {
         <Divider />
 
         <DialogContent>
-          <ExpansionPanel square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-            <ExpansionPanelSummary aria-controls="panel1d-content" id="panel1d-header">
+          <ExpansionPanel
+            square
+            expanded={expanded === 'panel1'}
+            onChange={handleChange('panel1')}
+          >
+            <ExpansionPanelSummary
+              aria-controls="panel1d-content"
+              id="panel1d-header"
+            >
               <Typography>Basic Info #1</Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
               <Table className={classes.table}>
                 <TableBody>
                   <TableRow>
-                    <TableCell><MailOutline /></TableCell>
+                    <TableCell>
+                      <MailOutline />
+                    </TableCell>
                     <TableCell>info@firstmarine.ng</TableCell>
                     <TableCell align="right" colSpan={2}>
-                      <Button variant="contained" color="primary" disableElevation>Edit</Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        disableElevation
+                      >
+                        Edit
+                      </Button>
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell><Smartphone /></TableCell>
+                    <TableCell>
+                      <Smartphone />
+                    </TableCell>
                     <TableCell>+23408097864356</TableCell>
-                    <TableCell align="left" colSpan={2}></TableCell>
+                    <TableCell align="left" colSpan={2} />
                   </TableRow>
                   <TableRow>
-                    <TableCell></TableCell>
+                    <TableCell />
                     <TableCell>Life Stage</TableCell>
                     <TableCell>Customer</TableCell>
-                    <TableCell colSpan={2}></TableCell>
+                    <TableCell colSpan={2} />
                   </TableRow>
                   <TableRow>
-                    <TableCell></TableCell>
+                    <TableCell />
                     <TableCell>Contact Owner</TableCell>
                     <TableCell>Funke</TableCell>
-                    <TableCell></TableCell>
+                    <TableCell />
                   </TableRow>
                   <TableRow>
-                    <TableCell></TableCell>
+                    <TableCell />
                     <TableCell>Vendor</TableCell>
                     <TableCell>Funke</TableCell>
-                    <TableCell></TableCell>
+                    <TableCell />
                   </TableRow>
                 </TableBody>
               </Table>
             </ExpansionPanelDetails>
-            <ExpansionPanelSummary aria-controls="panel1d-content" id="panel1d-header">
+            <ExpansionPanelSummary
+              aria-controls="panel1d-content"
+              id="panel1d-header"
+            >
               <Typography>Additional Info #2</Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
@@ -233,7 +253,9 @@ const ContactDetailsDialog = props => {
                   </TableRow>
                   <TableRow>
                     <TableCell>Address</TableCell>
-                    <TableCell align="right">Suite 42, Adekunle Cresent, Ibeju Lekki, Lagos Nigera</TableCell>
+                    <TableCell align="right">
+                      Suite 42, Adekunle Cresent, Ibeju Lekki, Lagos Nigera
+                    </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>City</TableCell>
@@ -250,7 +272,10 @@ const ContactDetailsDialog = props => {
                 </TableBody>
               </Table>
             </ExpansionPanelDetails>
-            <ExpansionPanelSummary aria-controls="panel1d-content" id="panel1d-header">
+            <ExpansionPanelSummary
+              aria-controls="panel1d-content"
+              id="panel1d-header"
+            >
               <Typography>Contact Group #3</Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
@@ -263,7 +288,10 @@ const ContactDetailsDialog = props => {
                 </TableBody>
               </Table>
             </ExpansionPanelDetails>
-            <ExpansionPanelSummary aria-controls="panel1d-content" id="panel1d-header">
+            <ExpansionPanelSummary
+              aria-controls="panel1d-content"
+              id="panel1d-header"
+            >
               <Typography>Additional Info #4</Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
@@ -275,7 +303,9 @@ const ContactDetailsDialog = props => {
                   </TableRow>
                   <TableRow>
                     <TableCell>Note</TableCell>
-                    <TableCell align="right">This is an additional text about the contact</TableCell>
+                    <TableCell align="right">
+                      This is an additional text about the contact
+                    </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -283,8 +313,7 @@ const ContactDetailsDialog = props => {
           </ExpansionPanel>
         </DialogContent>
 
-        <DialogActions>
-        </DialogActions>
+        <DialogActions />
       </Dialog>
     </div>
   );
@@ -293,7 +322,7 @@ const ContactDetailsDialog = props => {
 ContactDetailsDialog.propTypes = {
   loading: PropTypes.bool,
   contactDetailsDialog: PropTypes.object,
-  closeNewContactDetailsDialog: PropTypes.func,
+  closeContactDetailsDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -303,7 +332,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeNewContactDetailsDialog: () => dispatch(Actions.closeNewContactDetailsDialog()),
+    closeContactDetailsDialogAction: () =>
+      dispatch(Actions.closeContactDetailsDialog()),
   };
 }
 

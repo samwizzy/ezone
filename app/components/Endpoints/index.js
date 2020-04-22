@@ -176,5 +176,5 @@ export const GetAdjustmentByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_adjustm
 // Contacts Apis
 export const CreateNewContactApi = `${BaseUrl}/crmserv/api/v1/add_contact`;
 export const UpdateContactApi = `${BaseUrl}/crmserv/api/v1/update_contact`;
-export const GetAllContactsApi = `${BaseUrl}/inventoryserv/api/v1/get_all_contacts`;
+export const GetAllContactsApi = `${BaseUrl}/crmserv/api/v1/get_all_contacts`;
 // export const UpdateWarehouseApi = `${BaseUrl}/inventoryserv/api/v1/update_warehouse`;

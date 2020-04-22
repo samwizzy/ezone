@@ -10,8 +10,9 @@ import * as Endpoints from '../../../components/Endpoints';
 
 export function* getAllContacts() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${Endpoints.GetEmployeesApi}`;
+  const requestURL = `${Endpoints.GetAllContactsApi}`;
 
+  console.log(requestURL, 'requestURL');
   try {
     const response = yield call(request, requestURL, {
       method: 'GET',
@@ -29,17 +30,39 @@ export function* getAllContacts() {
 
 export function* createNewContact() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  // const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
   const newContact = yield select(Selectors.makeSelectCreateNewContact());
+  newContact.orgId = currentUser.organisation.orgId;
 
-  console.log(newContact, 'newContact');
+  // console.log(newContact, 'newContact');
+
+  const {
+    orgId,
+    firstName,
+    lastName,
+    dob,
+    website,
+    contactGroupId,
+    emailAddress,
+    phoneNumber,
+    ownerId,
+    lifeStage,
+    type,
+    notes,
+    fax,
+    associationType,
+    image,
+  } = newContact;
+  const newData = { orgId, firstName, lastName, dob, website, contactGroupId, emailAddress, phoneNumber, ownerId, lifeStage, type, notes, fax, associationType, image};
+
+  console.log(newData, 'newData');
   const requestURL = `${Endpoints.CreateNewContactApi}`;
 
   try {
     const newContactResponse = yield call(request, requestURL, {
       method: 'POST',
-      body: JSON.stringify(newContact),
+      body: JSON.stringify(newData),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
