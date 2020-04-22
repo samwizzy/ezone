@@ -18,6 +18,7 @@ import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 // import * as Actions from '../actions';
 // import * as Selectors from '../selectors';
 // import AddBankAccountDialog from './AddBankAccountDialog';
@@ -44,7 +45,18 @@ const useStyles = makeStyles(theme => ({
   datatable: {
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
-    }
+    },
+    '& .MuiTableHead-root': {
+      '& .MuiTableCell-head': {
+        color: theme.palette.common.white,
+      },
+      '& .MuiTableCell-root:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+      },
+      '& .MuiTableCell-root:nth-child(even)': {
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
+      },
+    },
   },
   // button: {
   //   '&.favorite': { color: orange[300]},
@@ -213,6 +225,7 @@ const JournalListing = props => {
         <Grid container>
           <Grid item xs={12}>
             <MUIDataTable
+              className={classes.datatable}
               title="Journal"
               // data={bankAccountData}
               columns={columns}

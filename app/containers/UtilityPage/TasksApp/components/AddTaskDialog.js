@@ -52,7 +52,7 @@ function AddTaskDialog(props) {
       const { id, title, description, status, startDate, endDate, assignedTo, assignedToName, assignedToEmail, supervisedBy } = task
       setForm({...form, id, title, description, status, startDate: moment(startDate).format('YYYY-MM-DD'), endDate: moment(endDate).format('YYYY-MM-DD'), assignedTo, assignedToName, assignedToEmail, supervisedBy })
     }
-  }, [data])
+  }, [data]);
 
   const toBase64 = file => new Promise((resolve, reject) => {
     const reader = new FileReader();

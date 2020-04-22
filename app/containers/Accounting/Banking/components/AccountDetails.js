@@ -42,8 +42,12 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.main,
       '& .MuiTableCell-root': {
         color: theme.palette.common.white,
-        fontSize: theme.typography.fontSize + 2
+        fontSize: theme.typography.fontSize + 2,
+        padding: theme.spacing(4, 2),
       },
+      '& .MuiTableRow-root': {
+        borderRadius: `${theme.shape.borderRadius * 6} !important`  
+      }
     },
     "& th.MuiTableCell-root": {
       borderBottom: "none !important",
@@ -58,6 +62,10 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.text.secondary,
       fontSize: theme.typography.fontSize + 2
     },
+  },
+  paper: {
+    padding: theme.spacing(10, 0),
+    textAlign: 'center'
   }
 }));
 
@@ -82,6 +90,7 @@ const AccountDetails = props => {
 
   console.log('AccountDetails loaded');
   console.log('accountDetailsData --> ', props.location.accountDetailsData);
+  console.log('transfer --> ', props.location.accountDetailsData.transfers);
   console.log('bankTransferByOrgIdData from details.js --> ', bankTransferByOrgIdData);
 
   
@@ -98,25 +107,25 @@ const AccountDetails = props => {
                     <TableRow>
                       <TableCell component="th" scope="row">Account Name</TableCell>
                       <TableCell>
-                        { props.location.accountDetailsData.accountName }
+                        {/* { props.location.accountDetailsData.accountName } */}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">Account Code</TableCell>
                       <TableCell>
-                        { props.location.accountDetailsData.accountCode }
+                        {/* { props.location.accountDetailsData.accountCode } */}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">Account Type</TableCell>
                       <TableCell>
-                        { props.location.accountDetailsData.accountType.accountType }
+                        {/* { props.location.accountDetailsData.accountType.accountType } */}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">Description</TableCell>
                       <TableCell>
-                        { props.location.accountDetailsData.accountType.description }
+                        {/* { props.location.accountDetailsData.accountType.description } */}
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -128,7 +137,7 @@ const AccountDetails = props => {
                     <TableRow>
                         <TableCell component="th" scope="row">Closing Balance</TableCell>
                         <TableCell>
-                          NGN { props.location.accountDetailsData.accountType.openingBalance }
+                          {/* NGN { props.location.accountDetailsData.accountType.openingBalance } */}
                         </TableCell>
                     </TableRow>
                   </TableFooter>
@@ -138,7 +147,7 @@ const AccountDetails = props => {
           </Grid>
         </Grid>
 
-        {bankTransferByOrgIdData.length ? (
+        { props.location.accountDetailsData.transfers.length ? (
           <Grid item xs={12}>
             <Grid container className={classes.grid}>
               <Grid item xs={12}>
@@ -180,12 +189,15 @@ const AccountDetails = props => {
         ) : (
           <Grid item xs={12}>
             <Grid container className={classes.grid}>
-              <Paper>
-                You haven’t recorded any transactions for this account
+              <Grid item xs={12}>
+              <Paper square className={classes.paper}>
+                <Typography variant="h6" gutterBottom>You haven’t recorded any transactions for this account</Typography>
                 <Button 
                   aria-controls="simple-menu" 
                   aria-haspopup="true" 
                   onClick={handleClick}
+                  color="primary"
+                  variant="contained"
                 >
                   Add Transactions
                 </Button>
@@ -208,6 +220,7 @@ const AccountDetails = props => {
                   </MenuItem>
                 </Menu>
               </Paper>
+              </Grid>
             </Grid>
           </Grid>
         )}

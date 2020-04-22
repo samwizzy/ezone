@@ -15,6 +15,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
@@ -44,7 +45,18 @@ const useStyles = makeStyles(theme => ({
   datatable: {
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
-    }
+    },
+    '& .MuiTableHead-root': {
+      '& .MuiTableCell-head': {
+        color: theme.palette.common.white,
+      },
+      '& .MuiTableCell-root:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+      },
+      '& .MuiTableCell-root:nth-child(even)': {
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
+      },
+    },
   },
   // button: {
   //   '&.favorite': { color: orange[300]},
@@ -226,6 +238,7 @@ const AccountChart = props => {
         <Grid container>
           <Grid item xs={12}>
             <MUIDataTable
+              className={classes.datatable}
               title="Account Charts"
               data={chartOfAccountData}
               columns={columns}
