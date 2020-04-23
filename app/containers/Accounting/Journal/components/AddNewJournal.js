@@ -26,14 +26,10 @@ import { Autocomplete } from '@material-ui/lab';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-// import { useInjectSaga } from 'utils/injectSaga';
-// import { useInjectReducer } from 'utils/injectReducer';
 import { createStructuredSelector } from 'reselect';
-// import * as Actions from '../../actions';
-// import * as AppSelectors from '../../../App/selectors';
-// import * as Selectors from '../../selectors';
-import reducer from '../../reducer';
-import saga from '../../saga';
+import * as Actions from '../actions';
+import * as Selectors from '../selectors';
+import * as AppSelectors from '../../../App/selectors';
 // import LoadingIndicator from '../../../../components/LoadingIndicator';
 import ModuleLayout from '../../components/ModuleLayout';
 import moment from 'moment';
@@ -82,18 +78,18 @@ const AddNewJournal = props => {
   const classes = useStyles();
 
   const {
-    // currentUser,
-    // dispatchGetAccountPeriodAction,
-    // dispatchGetAllChartOfAccountTypeAction,
-    // chartOfAccountData,
-    // accountPeriodData,
-    // createNewAccountJournalAction
+    currentUser,
+    dispatchGetAccountPeriodAction,
+    dispatchGetAllChartOfAccountTypeAction,
+    chartOfAccountData,
+    accountPeriodData,
+    createNewAccountJournalAction
   } = props;
 
   const [values, setValues] = React.useState({
-    entries: [],
+    entries: [ ],
     note: '',
-    // orgId: currentUser.organisation.orgId,
+    orgId: currentUser.organisation.orgId,
     periodId: '',
     reference: '',
     transactionDate: moment(new Date()).format('YYYY-MM-DD'),
@@ -136,12 +132,33 @@ const AddNewJournal = props => {
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    // dispatchGetAccountPeriodAction();
-    // dispatchGetAllChartOfAccountTypeAction();
+    dispatchGetAccountPeriodAction();
+    dispatchGetAllChartOfAccountTypeAction();
   }, []);
 
-  // console.log('accountPeriodData > ', accountPeriodData);
-  // console.log('values-> ', values);
+  const toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = error => reject(error);
+  });
+
+  const handleImageChange = (ev) => { 
+    let fileNode = []
+    Object.keys(ev.target.files).map(index => {
+      const { name } = ev.target.files[index]
+      const result = toBase64(ev.target.files[index]);
+      result.then(rs => {
+        const file = Object.assign({}, { fileName: name, file: rs })
+        fileNode.push(file)
+      })   
+    })
+    setValues(_.set({ ...values }, event.target.name, fileNode))
+  }
+
+  console.log('chartOfAccountData from journal > ', chartOfAccountData);
+  console.log('accountPeriodData-> ', accountPeriodData);
+  console.log('values -> ', values);
 
   return (
     <ModuleLayout>
@@ -153,9 +170,9 @@ const AddNewJournal = props => {
               <Grid item xs={5}>
                 <Autocomplete
                   id="combo-box-demo"
-                  // options={accountPeriodData}
-                  // getOptionLabel={option => option.year}
-                  // onChange={(evt, value) => handleSelectChange(evt, value)}
+                  options={accountPeriodData}
+                  getOptionLabel={option => option.year}
+                  onChange={(evt, value) => handleSelectChange(evt, value)}
                   renderInput={params => (
                     <TextField
                       {...params}
@@ -221,8 +238,8 @@ const AddNewJournal = props => {
                   <TableCell align="center">
                     <Autocomplete
                       id={id}
-                      // options={chartOfAccountData}
-                      // getOptionLabel={option => option.accountNumber}
+                      options={chartOfAccountData}
+                      getOptionLabel={option => option.accountName}
                       onChange={(evt, value) => handleSelectChangeRows(evt, value, id)}
                       renderInput={params => (
                         <TextField
@@ -390,7 +407,7 @@ const AddNewJournal = props => {
                         name="attachments"
                         type="file"
                         style={{ display: 'none' }}
-                        onChange={() => {}}
+                        onChange={handleImageChange}
                         multiple
                       />
                     </Button>
@@ -405,20 +422,19 @@ const AddNewJournal = props => {
                     >
                       Cancel
                     </Button>
-                    <Button
+                    {/* <Button
                       variant="contained"
                       color="primary"
                       className={classes.button}
                     >
                       Save Draft
-                    </Button>
+                    </Button> */}
                     <Button
                       variant="contained"
                       color="primary"
                       className={classes.button}
                       onClick={() => {
-                        console.log('onclick');
-                        // createNewAccountJournalAction(values);
+                        createNewAccountJournalAction(values);
                       }}
                     >
                       Save and Submit
@@ -440,16 +456,16 @@ AddNewJournal.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   //   loading: Selectors.makeSelectLoading(),
-  // currentUser: AppSelectors.makeSelectCurrentUser(),
-  // chartOfAccountData: Selectors.makeSelectGetChartOfAccountData(),
-  // accountPeriodData: Selectors.makeSelectGetAccountPeriodData(),
+  currentUser: AppSelectors.makeSelectCurrentUser(),
+  chartOfAccountData: Selectors.makeSelectGetChartOfAccountData(),
+  accountPeriodData: Selectors.makeSelectGetAccountPeriodData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    // dispatchGetAllChartOfAccountTypeAction: () => dispatch(Actions.getAllChartOfAccountTypeAction()),
-    // dispatchGetAccountPeriodAction: () => dispatch(Actions.getAccountPeriodAction()),
-    // createNewAccountJournalAction: evt => dispatch(Actions.createNewAccountJournalAction(evt)),
+    dispatchGetAllChartOfAccountTypeAction: () => dispatch(Actions.getAllChartOfAccountTypeAction()),
+    dispatchGetAccountPeriodAction: () => dispatch(Actions.getAccountPeriodAction()),
+    createNewAccountJournalAction: evt => dispatch(Actions.createNewAccountJournalAction(evt)),
   };
 }
 

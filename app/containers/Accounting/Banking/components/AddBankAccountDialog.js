@@ -45,7 +45,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const AddBankAccountDialog = props => {
   const classes = useStyles();
 
-  const { 
+  const {
     loading,
     currentUser, 
     accountTypeData,
@@ -176,7 +176,7 @@ const AddBankAccountDialog = props => {
                     onChange={handleChange('description')}
                     margin="normal"
                     fullWidth
-                    rows={2}
+                    rows={3}
                     multiline
                   />
                 </Grid>
@@ -266,7 +266,7 @@ const AddBankAccountDialog = props => {
                     onChange={handleChange('description')}
                     margin="normal"
                     fullWidth
-                    rows={2}
+                    rows={3}
                     multiline
                   />
                 </Grid>

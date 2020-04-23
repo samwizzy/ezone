@@ -118,7 +118,7 @@ const TransactionTransferDialog = props => {
     setValues(_.set({ ...values }, event.target.name, fileNode))
   }
 
-  console.log('values: ', values);
+  console.log('transactionTransferDialog values: ', values);
 
 
   return (

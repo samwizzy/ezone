@@ -141,6 +141,7 @@ export const CreateNewBankApi = `${BaseUrl}/accountingserv/api/v1/bank/add_bank`
 export const GetAllBankAccount = `${BaseUrl}/accountingserv/api/v1/bank/get_All_bank_account_by_orgid`;
 export const GetAllTransferByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/bank/get_All_bank_transfers_by_orgid`;
 export const CreateBankTransferApi = `${BaseUrl}/accountingserv/api/v1/bank/transfer`;
+export const GetTransferByAccountIdApi = `${BaseUrl}/accountingserv/api/v1/bank/get_bank_transfer_by_id`;
 
 
 /** ***************************************************************** 
