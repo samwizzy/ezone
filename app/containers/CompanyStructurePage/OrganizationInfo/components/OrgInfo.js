@@ -81,6 +81,8 @@ const OrgInfo = props => {
     history,
   } = props;
 
+  console.log(companyInfo, 'companyInfo');
+
   if (loading) {
     return <LoadingIndicator />;
   }
@@ -94,7 +96,7 @@ const OrgInfo = props => {
                 alignItems="flex-start"
                 style={{ display: 'flex', alignItems: 'center' }}
               >
-                <img alt="Company Logo" src={companyInfo.logo} />
+                {/* <img alt="Company Logo" src={companyInfo.logo} /> */}
                 <ListItemAvatar>
                   {companyInfo && (
                     <Avatar

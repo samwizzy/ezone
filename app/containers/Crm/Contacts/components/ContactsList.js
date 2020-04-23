@@ -205,10 +205,7 @@ const ContactsList = props => {
               <FormControlLabel
                 className={classes.view}
                 control={<Visibility />}
-                onClick={evt => {
-                  evt.stopPropagation();
-                  openContactDetailsDialogAction(contac);
-                }}
+                onClick={() =>openContactDetailsDialogAction(contac)}
               />
             </div>
           );
@@ -236,7 +233,7 @@ const ContactsList = props => {
     elevation: 0
   };
 
-  console.log(allContacts, 'allContacts');
+  // console.log(allContacts, 'allContacts');
 
   return (
     <React.Fragment>

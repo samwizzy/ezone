@@ -177,4 +177,8 @@ export const GetAdjustmentByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_adjustm
 export const CreateNewContactApi = `${BaseUrl}/crmserv/api/v1/add_contact`;
 export const UpdateContactApi = `${BaseUrl}/crmserv/api/v1/update_contact`;
 export const GetAllContactsApi = `${BaseUrl}/crmserv/api/v1/get_all_contacts`;
-// export const UpdateWarehouseApi = `${BaseUrl}/inventoryserv/api/v1/update_warehouse`;
+
+// Contacts Group Apis
+export const CreateNewContactGroupApi = `${BaseUrl}/crmserv/api/v1/add_contact_group`;
+export const UpdateContactGroupApi = `${BaseUrl}/crmserv/api/v1/update_contact_group`;
+export const GetAllContactsGroupApi = `${BaseUrl}/crmserv/api/v1/get_all_contact_groups`;

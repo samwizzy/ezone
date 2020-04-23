@@ -19,7 +19,6 @@ export function closeNewContactDialog() {
 }
 
 export function openEditContactDialog(data) {
-  console.log(data, 'data');
   return {
     type: Constants.OPEN_EDIT_CONTACT_DIALOG,
     payload: data,

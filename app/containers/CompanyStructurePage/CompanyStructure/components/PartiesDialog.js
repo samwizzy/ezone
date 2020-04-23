@@ -54,12 +54,13 @@ const PartiesDialog = props => {
   const classes = useStyles();
   const [values, setValues] = React.useState({
     partyId: params.partyId,
-    partyHead: '',
-    assistantPartyHead: '',
+    partyHead: null,
+    assistantPartyHead: null,
     positions: null,
     parties: null,
     name: '',
     description: '',
+    tag: '',
   });
 
   const handlePartyHeadChange = (event, value) => {
@@ -91,6 +92,15 @@ const PartiesDialog = props => {
       name !== '' && description !== ''
     );
   };
+
+  const handleTagChange = (event, value) => {
+    setValues({
+      ...values,
+      tag: value.name,
+    });
+  };
+
+  const tags = [{ id: 1, name: 'department' }, { id: 1, name: 'branch' }];
 
   return (
     <div>
@@ -170,6 +180,23 @@ const PartiesDialog = props => {
                   />
                 )}
               />
+
+              <Autocomplete
+                id="combo-tag"
+                options={tags}
+                getOptionLabel={option => `${option.name}`}
+                onChange={(evt, ve) => handleTagChange(evt, ve)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    margin="normal"
+                    label="Select Tag"
+                    variant="outlined"
+                    placeholder="Select Tag"
+                    fullWidth
+                  />
+                )}
+              />
             </div>
           ) : null}
         </DialogContent>
@@ -178,17 +205,17 @@ const PartiesDialog = props => {
           {loading ? (
             <LoadingIndicator />
           ) : (
-            <Button
-              onClick={() => {
-                dispatchCreateNewPartiesAction(values);
-              }}
-              color="primary"
-              variant="contained"
-              disabled={!canBeSubmitted()}
-            >
-              {newPartiesDialog.type === 'new' ? 'Save' : 'Update'}
-            </Button>
-          )}
+              <Button
+                onClick={() => {
+                  dispatchCreateNewPartiesAction(values);
+                }}
+                color="primary"
+                variant="contained"
+                disabled={!canBeSubmitted()}
+              >
+                {newPartiesDialog.type === 'new' ? 'Save' : 'Update'}
+              </Button>
+            )}
           <Button
             onClick={() => dispatchCloseNewPartiesDialog()}
             color="primary"

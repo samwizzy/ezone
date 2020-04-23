@@ -54,7 +54,23 @@ export function* createNewContact() {
     associationType,
     image,
   } = newContact;
-  const newData = { orgId, firstName, lastName, dob, website, contactGroupId, emailAddress, phoneNumber, ownerId, lifeStage, type, notes, fax, associationType, image};
+  const newData = {
+    orgId,
+    firstName,
+    lastName,
+    dob,
+    website,
+    contactGroupId,
+    emailAddress,
+    phoneNumber,
+    ownerId,
+    lifeStage,
+    type,
+    notes,
+    fax,
+    associationType,
+    image,
+  };
 
   console.log(newData, 'newData');
   const requestURL = `${Endpoints.CreateNewContactApi}`;

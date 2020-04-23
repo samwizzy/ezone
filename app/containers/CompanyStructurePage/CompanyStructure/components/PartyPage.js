@@ -57,6 +57,9 @@ const useStyles = makeStyles(theme => ({
   table: {
     margin: theme.spacing(1),
   },
+  marginButton: {
+    margin: theme.spacing(1),
+  },
 }));
 
 const NoPartyGroup = props => {
@@ -165,6 +168,32 @@ const PartyPage = props => {
         sort: false,
       },
     },
+    {
+      name: 'tag',
+      label: 'Tag',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: 'id',
+      label: 'Action',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: value => (
+          <Button
+            variant="outlined"
+            size="small"
+            color="primary"
+            className={classes.marginButton}
+          >
+            Edit
+          </Button>
+        ),
+      },
+    },
   ];
 
   const options1 = {
@@ -220,19 +249,19 @@ const PartyPage = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => {
-          return (
-            <Button
-              variant="contained"
-              color="primary"
-              href={`/organization/company/structure/position/${
-                params.partyGroupId
-              }/${params.partyId}/${value}`}
-            >
-              View
-            </Button>
-          );
-        },
+        customBodyRender: value => (
+          <Button
+            variant="outlined"
+            size="small"
+            color="primary"
+            className={classes.marginButton}
+            href={`/organization/company/structure/position/${
+              params.partyGroupId
+            }/${params.partyId}/${value}`}
+          >
+            View
+          </Button>
+        ),
       },
     },
   ];

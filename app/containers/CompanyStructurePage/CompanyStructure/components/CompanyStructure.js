@@ -69,6 +69,9 @@ const useStyles = makeStyles(theme => ({
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
   },
+  marginButton: {
+    margin: theme.spacing(1),
+  },
 }));
 
 const NoPartyGroup = props => {
@@ -156,22 +159,52 @@ const CompanyStructure = props => {
       },
     },
     {
+      name: 'tag',
+      label: 'Tag',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
       name: 'id',
       label: 'Action',
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => (
-          <Button
-            variant="contained"
-            color="primary"
-            href={`/organization/company/structure/party/${
-              selectedPartyGroupData.id
-            }/${value}`}
-          >
-            View
-          </Button>
-        ),
+        customBodyRender: value => {
+          const par = selectedPartyGroupData.parties.find(
+            part => value === part.id,
+          );
+          if (value === '') {
+            return '';
+          }
+
+          return (
+            <div>
+              <Button
+                variant="outlined"
+                size="small"
+                color="primary"
+                className={classes.marginButton}
+                // onClick={() => openEditContactDialogAction(par)}
+              >
+                Edit
+              </Button>
+              <Button
+                variant="outlined"
+                size="small"
+                color="primary"
+                className={classes.marginButton}
+                href={`/organization/company/structure/party/${
+                  selectedPartyGroupData.id
+                }/${value}`}
+              >
+                View
+              </Button>
+            </div>
+          );
+        },
       },
     },
   ];
@@ -234,9 +267,17 @@ const CompanyStructure = props => {
                   <ListItemSecondaryAction
                     onClick={() => openEditPartyGroupAction(data)}
                   >
-                    <IconButton edge="end" aria-label="comments">
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      className={classes.marginButton}
+                    >
+                      Edit
+                    </Button>
+                    {/* <IconButton edge="end" aria-label="comments">
                       <Edit />
-                    </IconButton>
+                    </IconButton> */}
                   </ListItemSecondaryAction>
                 </ListItemLink>
               </List>

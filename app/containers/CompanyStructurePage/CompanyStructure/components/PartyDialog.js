@@ -54,10 +54,11 @@ const PartyDialog = props => {
   const classes = useStyles();
   const [values, setValues] = React.useState({
     partyGroupId: '', // this is appended inside saga file
-    partyHead: '',
-    assistantPartyHead: '',
+    partyHead: null,
+    assistantPartyHead: null,
     name: '',
     description: '',
+    tag: '',
   });
 
   const handleChange = name => event => {
@@ -81,16 +82,23 @@ const PartyDialog = props => {
     });
   };
 
+  const handleTagChange = (event, value) => {
+    setValues({
+      ...values,
+      tag: value.name,
+    });
+  };
+
   const canBeSubmitted = () => {
     const { partyHead, assistantPartyHead, name, description } = values;
     return (
       // partyHead !== '' &&
       // assistantPartyHead !== '' &&
-      name !== '' &&
-      description !== ''
+      name !== '' && description !== ''
     );
   };
 
+  const tags = [{ id: 1, name: 'department' }, { id: 1, name: 'branch' }];
   return (
     <div>
       <Dialog
@@ -165,6 +173,23 @@ const PartyDialog = props => {
                     label="Search Employee"
                     variant="outlined"
                     placeholder="Search Employee"
+                    fullWidth
+                  />
+                )}
+              />
+
+              <Autocomplete
+                id="combo-tag"
+                options={tags}
+                getOptionLabel={option => `${option.name}`}
+                onChange={(evt, ve) => handleTagChange(evt, ve)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    margin="normal"
+                    label="Select Tag"
+                    variant="outlined"
+                    placeholder="Select Tag"
                     fullWidth
                   />
                 )}
