@@ -220,28 +220,28 @@ export function* createAccountingSetupSaga() {
 }
 
 
-export function* getAccountPeriodSaga() {
-  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAccountPeriodApi}/${currentUser.organisation.orgId}`;
-  console.log('getAccountPeriodSaga requestURL', requestURL);
+// export function* getAccountPeriodSaga() {
+//   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+//   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+//   const requestURL = `${Endpoints.GetAccountPeriodApi}/${currentUser.organisation.orgId}`;
+//   console.log('getAccountPeriodSaga requestURL', requestURL);
 
-  try {
-    const accountPeriodResponse = yield call(request, requestURL, {
-      method: 'GET',
-      headers: new Headers({
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      }),
-    });
+//   try {
+//     const accountPeriodResponse = yield call(request, requestURL, {
+//       method: 'GET',
+//       headers: new Headers({
+//         Authorization: `Bearer ${accessToken}`,
+//         'Content-Type': 'application/json',
+//       }),
+//     });
 
-    console.log('accountPeriodResponse -->', accountPeriodResponse);
-    yield put(Actions.getAccountPeriodSuccessAction(accountPeriodResponse));
-  } catch (err) {
-    console.log('getAllAccountPeriodErrorAction--->', err);
-    yield put(Actions.getAccountPeriodErrorAction(err));
-  }
-}
+//     console.log('accountPeriodResponse -->', accountPeriodResponse);
+//     yield put(Actions.getAccountPeriodSuccessAction(accountPeriodResponse));
+//   } catch (err) {
+//     console.log('getAllAccountPeriodErrorAction--->', err);
+//     yield put(Actions.getAccountPeriodErrorAction(err));
+//   }
+// }
 
 
 // Create accounting setup
@@ -285,6 +285,6 @@ export default function* AccountingSaga() {
   yield takeLatest(Constants.DELETE_CHART_OF_ACCOUNT, deleteChartOfAccountSaga);
   yield takeLatest(Constants.GET_ACCOUNTING_SETUP, getAccountingSetupSaga);
   yield takeLatest(Constants.CREATE_ACCOUNTING_SETUP, createAccountingSetupSaga);
-  yield takeLatest(Constants.GET_ACCOUNT_PERIOD, getAccountPeriodSaga);
+  // yield takeLatest(Constants.GET_ACCOUNT_PERIOD, getAccountPeriodSaga);
   yield takeLatest(Constants.CREATE_NEW_ACCOUNT_JOURNAL, createAccountJournalSaga);
 }

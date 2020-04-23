@@ -22,7 +22,6 @@ const makeSelectAccounting = () =>
   );
 
 const makeSelectNewAccountDialog = () =>
-  console.log('makeSelectNewAccountDialog');
   createSelector(
     selectAccountingDomain,
     substate => substate.accountDialog,
@@ -70,17 +69,17 @@ const makeSelectAccountingSetupPostData = () =>
     subState => subState.accountSetupPostData,
 );
 
-const makeSelectGetAccountPeriodData = () =>
-  createSelector(
-    selectAccountingDomain,
-    substate => substate.accountPeriodData,
-  );
+// const makeSelectGetAccountPeriodData = () =>
+//   createSelector(
+//     selectAccountingDomain,
+//     substate => substate.accountPeriodData,
+//   );
 
-const makeSelectNewAccountJournalPostData = () =>
-  createSelector(
-    selectAccountingDomain,
-    subState => subState.accountJournalPostData,
-);
+// const makeSelectNewAccountJournalPostData = () =>
+//   createSelector(
+//     selectAccountingDomain,
+//     subState => subState.accountJournalPostData,
+// );
 
 const makeSelectAccountJournal = () =>
   createSelector(
@@ -101,7 +100,7 @@ export {
   makeSelectGetChartOfAccountData,
   makeSelectGetAccountingSetupData,
   makeSelectAccountingSetupPostData,
-  makeSelectGetAccountPeriodData,
-  makeSelectNewAccountJournalPostData,
+  // makeSelectGetAccountPeriodData,
+  // makeSelectNewAccountJournalPostData,
   makeSelectAccountJournal
 };

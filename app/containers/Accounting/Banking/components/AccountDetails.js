@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -84,14 +84,21 @@ const AccountDetails = props => {
 
   const { 
     bankTransferByOrgIdData,
+    transferByAccountIdData,
     // editOpenBankAccountDialogAction
-    openAccountTransferDialogAction
+    openAccountTransferDialogAction,
+    dispatchGetTransferByAccountIdAction
   } = props;
+
+  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {
+    dispatchGetTransferByAccountIdAction(props.location.accountDetailsData.id);
+  }, []);
 
   console.log('ID -> ', props.location.accountDetailsData.id);
   console.log('accountDetailsData --> ', props.location.accountDetailsData);
   console.log('transfer --> ', props.location.accountDetailsData.transfers);
-  console.log('bankTransferByOrgIdData from details.js --> ', bankTransferByOrgIdData);
+  console.log('transferByAccountIdData--> ', transferByAccountIdData);
 
   
   return (
@@ -107,30 +114,32 @@ const AccountDetails = props => {
                     <TableRow>
                       <TableCell component="th" scope="row">Account Name</TableCell>
                       <TableCell>
-                        {/* { props.location.accountDetailsData.accountName } */}
+                        { props.location.accountDetailsData.accountName }
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">Account Code</TableCell>
                       <TableCell>
-                        {/* { props.location.accountDetailsData.accountCode } */}
+                        { props.location.accountDetailsData.accountCode }
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">Account Type</TableCell>
                       <TableCell>
-                        {/* { props.location.accountDetailsData.accountType.accountType } */}
+                        {/* { props.location.accountDetailsData.accountType } */}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">Description</TableCell>
                       <TableCell>
-                        {/* { props.location.accountDetailsData.accountType.description } */}
+                        { props.location.accountDetailsData.description }
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">Transaction Period</TableCell>
-                      <TableCell></TableCell>
+                      <TableCell>
+                        { props.location.accountDetailsData.dateCreated }
+                      </TableCell>
                     </TableRow>
                   </TableBody>
                   <TableFooter>
@@ -211,12 +220,16 @@ const AccountDetails = props => {
                   <MenuItem onClick={() => {
                     openAccountTransferDialogAction(1);
                   }}>
-                    Transfer from another account
+                    <Typography>
+                      Transfer from another account
+                    </Typography>
                   </MenuItem>
                   <MenuItem onClick={() => {
                     openAccountTransferDialogAction();
                   }}>
-                    Transfer to another account
+                    <Typography>
+                      Transfer to another account
+                    </Typography>
                   </MenuItem>
                 </Menu>
               </Paper>
@@ -236,12 +249,13 @@ AccountDetails.propTypes = {
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
   bankTransferByOrgIdData: Selectors.makeSelectBankTransferByOrgIdData(),
-  // bankAccountDialog: Selectors.makeSelectBankAccountDialog(),
+  transferByAccountIdData: Selectors.makeSelectTransferByAccountIdData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openAccountTransferDialogAction: (evt) => dispatch(Actions.openAccountTransferDialog(evt)),
+    dispatchGetTransferByAccountIdAction: (evt) => dispatch(Actions.getTransferByAccountIdAction(evt)),
   };
 }
 

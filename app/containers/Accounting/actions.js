@@ -199,47 +199,47 @@ export function createAccountingSetupErrorAction(data) {
 }
 
 
-// Get accounting period
-export function getAccountPeriodAction() {
-  return {
-    type: Constants.GET_ACCOUNT_PERIOD,
-  };
-}
+// // Get accounting period
+// export function getAccountPeriodAction() {
+//   return {
+//     type: Constants.GET_ACCOUNT_PERIOD,
+//   };
+// }
 
-export function getAccountPeriodSuccessAction(data) {
-  return {
-    type: Constants.GET_ACCOUNT_PERIOD_SUCCESS,
-    payload: data,
-  };
-}
+// export function getAccountPeriodSuccessAction(data) {
+//   return {
+//     type: Constants.GET_ACCOUNT_PERIOD_SUCCESS,
+//     payload: data,
+//   };
+// }
 
-export function getAccountPeriodErrorAction(data) {
-  return {
-    type: Constants.GET_ACCOUNT_PERIOD_ERR,
-    payload: data,
-  };
-}
+// export function getAccountPeriodErrorAction(data) {
+//   return {
+//     type: Constants.GET_ACCOUNT_PERIOD_ERR,
+//     payload: data,
+//   };
+// }
 
 
-// Create new account journal
-export function createNewAccountJournalAction(data) {
-  console.log('createNewAccountJournalAction ', data);
-  return {
-    type: Constants.CREATE_NEW_ACCOUNT_JOURNAL,
-    payload: data,
-  };
-}
+// // Create new account journal
+// export function createNewAccountJournalAction(data) {
+//   console.log('createNewAccountJournalAction ', data);
+//   return {
+//     type: Constants.CREATE_NEW_ACCOUNT_JOURNAL,
+//     payload: data,
+//   };
+// }
 
-export function createNewAccountJournalSuccessAction(data) {
-  return {
-    type: Constants.CREATE_NEW_ACCOUNT_JOURNAL_SUCCESS,
-    payload: data,
-  };
-}
+// export function createNewAccountJournalSuccessAction(data) {
+//   return {
+//     type: Constants.CREATE_NEW_ACCOUNT_JOURNAL_SUCCESS,
+//     payload: data,
+//   };
+// }
 
-export function createNewAccountJournalErrorAction(data) {
-  return {
-    type: Constants.CREATE_NEW_ACCOUNT_JOURNAL_ERR,
-    payload: data,
-  };
-}
+// export function createNewAccountJournalErrorAction(data) {
+//   return {
+//     type: Constants.CREATE_NEW_ACCOUNT_JOURNAL_ERR,
+//     payload: data,
+//   };
+// }

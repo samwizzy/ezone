@@ -8,7 +8,6 @@ import * as Constants from './constants';
 
 // Chart dialog operations (Open new)
 export function openNewAccountDialog() {
-  console.log('openNewAccountDialog from chart module');
   return {
     type: Constants.OPEN_NEW_ACCOUNT_DIALOG,
   };
@@ -103,7 +102,6 @@ export function createNewChartOfAccountErrorAction(data) {
 
 // Get all chart of accounts
 export function getAllChartOfAccountTypeAction() {
-  console.log('getAllChartOfAccountTypeAction from chart module');
   return {
     type: Constants.GET_ALL_CHART_OF_ACCOUNT,
   };

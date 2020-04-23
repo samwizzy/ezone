@@ -177,3 +177,27 @@ export function createBankTransferErrorAction(data) {
     payload: data,
   };
 }
+
+
+// Get all bank transfers made account 
+export function getTransferByAccountIdAction(data) {
+  console.log('data getTransferByAccountIdAction -> ', data);
+  return {
+    type: Constants.GET_TRANSFERS_BY_ACCOUNT_ID,
+    payload: data,
+  };
+}
+
+export function getTransferByAccountIdSuccessAction(data) {
+  return {
+    type: Constants.GET_TRANSFERS_BY_ACCOUNT_ID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getTransferByAccountIdErrorAction(data) {
+  return {
+    type: Constants.GET_TRANSFERS_BY_ACCOUNT_ID_ERR,
+    payload: data,
+  };
+}

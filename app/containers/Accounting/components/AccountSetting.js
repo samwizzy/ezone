@@ -195,7 +195,6 @@ const AccountSetting = props => {
                             label="Select Date"
                             format="MM/dd/yyyy"
                             value={selectedDate}
-                            readOnly
                             onChange={handleFinancialYearDateChange}
                             KeyboardButtonProps={{
                               'aria-label': 'change date',

@@ -53,7 +53,7 @@ export function Accounting(props) {
   console.log('loading', loading);
   console.log('accountingSetupData index.js file', accountingSetupData);
 
-  return <Dashboard />
+  return <AccountSetting />
 
   // if (loading) {
   //   return <LoadingIndicator />;
