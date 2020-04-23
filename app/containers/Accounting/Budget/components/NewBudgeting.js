@@ -3,7 +3,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
+import DateFnsUtils from '@date-io/date-fns'; // choose your lib
+import {
+  DatePicker,
+  TimePicker,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+  DateTimePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
 import {
   Card, 
   CardContent, 
@@ -12,6 +20,7 @@ import {
   Typography,
   makeStyles,
   Button,
+  MenuItem, 
   Dialog,
   DialogContent,
   DialogActions,
@@ -20,7 +29,7 @@ import {
   Slide,
   Grid,
 } from '@material-ui/core';
-
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload'
 import * as AppSelectors from '../../../App/selectors';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
@@ -46,7 +55,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const AddBudgeting = props => {
+const NewBudgeting = props => {
   const classes = useStyles();
 
   const { 
@@ -75,195 +84,81 @@ const AddBudgeting = props => {
     setValues({ ...values, [name]: event.target.value });
   };
 
+  const handleDateChange = (date, formatted, name) => { 
+    // setForm(_.set({...form}, name, reformattedDate(date)))
+  }
+
   return (
     <div>
       <Card className={classes.card}>
-        <Typography variant="h6">
-          {budgetDialog.type === 'new' ? 'Add Budgeting' : 'Edit Budgeting'}
-        </Typography>
+        <CardContent>
+          <Typography variant="h6">
+            {budgetDialog.type === 'new' ? 'Add Budgeting' : 'Edit Budgeting'}
+          </Typography>
+        </CardContent>
         <Divider />
         <CardContent>
-          {budgetDialog.type === 'new' ? (
-            <form className={classes.root}>
-              <Grid container spacing={1}>
-                <Grid item xs={12}>
-                  <TextField
-                    id="standard-accountName"
-                    label="Account Name"
-                    type="name"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.accountName}
-                    onChange={handleChange('accountName')}
-                    margin="normal"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="standard-accountCode"
-                    label="Account Code"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.accountCode}
-                    onChange={handleChange('accountCode')}
-                    margin="normal"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="standard-bankName"
-                    label="Bank Name"
-                    type="name"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.bankName}
-                    onChange={handleChange('bankName')}
-                    margin="normal"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="standard-accountNumber"
-                    label="Bank Account Number"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.accountNumber}
-                    onChange={handleChange('accountNumber')}
-                    margin="normal"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="standard-bankBalance"
-                    label="Bank balance"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.bankBalance}
-                    onChange={handleChange('bankBalance')}
-                    margin="normal"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    id="standard-description"
-                    label="Description"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.description}
-                    onChange={handleChange('description')}
-                    margin="normal"
-                    fullWidth
-                    rows={2}
-                    multiline
-                  />
-                </Grid>
+          <form className={classes.root}>
+            <Grid container spacing={1}>
+              <Grid item xs={6}>
+                <TextField
+                  id="standard-accountCode"
+                  label="Account Code"
+                  type="number"
+                  variant="outlined"
+                  size="small"
+                  className={classes.textField}
+                  value={values.accountCode}
+                  onChange={handleChange('accountCode')}
+                  margin="normal"
+                  fullWidth
+                />
               </Grid>
-            </form>
-          ) : (
-            <form className={classes.root}>
-              <Grid container spacing={1}>
-                <Grid item xs={12}>
-                  <TextField
-                    id="standard-accountName"
-                    label="Account Name"
-                    type="name"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.accountName}
-                    onChange={handleChange('accountName')}
+              <Grid item xs={6}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    format="MM/dd/yyyy"
                     margin="normal"
+                    inputVariant="outlined"
+                    name="startDate"
+                    id="date-picker-startDate"
+                    label="Start Date"
+                    value={values.startDate}
+                    onChange={(date, formatted) => handleDateChange(date, formatted, 'startDate')}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
                     fullWidth
                   />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="standard-accountCode"
-                    label="Account Code"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.accountCode}
-                    onChange={handleChange('accountCode')}
-                    margin="normal"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="standard-bankName"
-                    label="Bank Name"
-                    type="name"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.bankName}
-                    onChange={handleChange('bankName')}
-                    margin="normal"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="standard-accountNumber"
-                    label="Bank Account Number"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.accountNumber}
-                    onChange={handleChange('accountNumber')}
-                    margin="normal"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="standard-bankBalance"
-                    label="Bank balance"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.bankBalance}
-                    onChange={handleChange('bankBalance')}
-                    margin="normal"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    id="standard-description"
-                    label="Description"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.description}
-                    onChange={handleChange('description')}
-                    margin="normal"
-                    fullWidth
-                    rows={2}
-                    multiline
-                  />
-                </Grid>
+                </MuiPickersUtilsProvider>
               </Grid>
-            </form>
-          )}
+              <Grid item xs={6}>
+                <TextField
+                  id="contact"
+                  name="contact"
+                  placeholder="Select Contact / Company"
+                  select
+                  fullWidth
+                  className={classes.textField}
+                  variant="outlined"
+                  size="small"
+                  label="Contact / Company"
+                  value={values.contact}
+                  onChange={handleChange}
+                >
+                  <MenuItem key={0} value="3">
+                    No record
+                  </MenuItem>
+                </TextField>
+              </Grid>
+              <Grid item xs={6}>
+                <Button variant="contained" color="primary" startIcon={<CloudDownloadIcon />}>Generate from previous year</Button>
+              </Grid>
+              <Grid item xs={12}>
+   
+              </Grid>
+            </Grid>
+          </form>
         </CardContent>
         <CardActions>
           {loading ? (
@@ -279,7 +174,7 @@ const AddBudgeting = props => {
             </Button>
           )}
           <Button
-            color="inherit"
+            color="primary"
             variant="outlined"
           >
             Cancel
@@ -290,7 +185,7 @@ const AddBudgeting = props => {
   );
 };
 
-AddBudgeting.propTypes = {
+NewBudgeting.propTypes = {
   loading: PropTypes.bool,
   budgetDialog: PropTypes.object,
 };
@@ -318,4 +213,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(AddBudgeting);
+)(NewBudgeting);
