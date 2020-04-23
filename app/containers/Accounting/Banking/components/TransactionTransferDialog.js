@@ -76,6 +76,9 @@ const TransactionTransferDialog = props => {
     transferDate: "",
     transferType: ""
   });
+
+  console.log('bankAccountData from dialog ', bankAccountData);
+  console.log('transactionTransferDialog ', transactionTransferDialog);
   
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
