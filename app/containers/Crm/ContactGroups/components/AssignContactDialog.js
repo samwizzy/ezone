@@ -28,32 +28,45 @@ import {
   IconButton,
   Typography,
   FormControlLabel,
-  Radio,
   Grid,
   FormControl,
   FormGroup,
   FormLabel,
-  RadioGroup,
 } from '@material-ui/core';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { Close } from '@material-ui/icons';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+  },
+  table: {
+    '& .MuiTableCell-body': {
+      fontSize: theme.typography.fontSize - 1,
+    },
+    '& .MuiTableRow-root:last-child': {
+      "& .MuiTableCell-root": {
+        verticalAlign: "text-top"
+      }
+    },
   },
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+
+const companies = [
+  {id: 1, title: "Optisoft Technology", year: "2015"},
+  {id: 2, title: "First Marine", year: "2015"},
+  {id: 3, title: "Union Bank", year: "2015"},
+]
 
 const AssignContactDialog = props => {
   const classes = useStyles();
@@ -62,7 +75,7 @@ const AssignContactDialog = props => {
 
   const [form, setForm] = React.useState({
     contact: '',
-    groups: []
+    groups: [{john: false, marine: false, optisoft: false, jitiful: false}]
   });
 
   const handleChange = event => {
@@ -70,8 +83,7 @@ const AssignContactDialog = props => {
     setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = () => {
-  }
+  const handleSubmit = () => {}
 
   const canSubmitForm = () => {
     return false
@@ -95,51 +107,58 @@ const AssignContactDialog = props => {
         </AppBar>
         <Divider />
 
-        <DialogContent>
+        <DialogContent style={{minWidth: 600}}>
           <form className={classes.root}>
             <Table className={classes.table}>
               <TableBody>
                 <TableRow>
-                  <TableCell><FormLabel component="legend">Contact / Company</FormLabel></TableCell>
+                  <TableCell component="th">
+                    <FormLabel component="legend">Contact / Company</FormLabel>
+                  </TableCell>
                   <TableCell>
-                    <TextField
-                      id="contact"
-                      name="contact"
-                      placeholder="Select Contact / Company"
-                      select
-                      fullWidth
-                      className={classes.textField}
-                      variant="outlined"
-                      size="small"
-                      label="Contact / Company"
-                      value={form.contact}
-                      onChange={handleChange}
-                    >
-                      <MenuItem key={0} value="3">
-                        No record
-                      </MenuItem>
-                    </TextField>
+                    <Autocomplete
+                      multiple
+                      id="checkboxes-tags-demo"
+                      options={companies}
+                      disableCloseOnSelect
+                      getOptionLabel={(option) => option.title}
+                      renderOption={(option, { selected }) => (
+                        <React.Fragment>
+                          <Checkbox
+                            icon={icon}
+                            checkedIcon={checkedIcon}
+                            style={{ marginRight: 8 }}
+                            checked={selected}
+                          />
+                          {option.title}
+                        </React.Fragment>
+                      )}
+                      style={{ width: "100%" }}
+                      renderInput={(params) => (
+                        <TextField {...params} variant="outlined" label="Companies" placeholder="Favorites" />
+                      )}
+                    />
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell><FormLabel component="legend">Assign Group</FormLabel></TableCell>
+                  <TableCell component="th"><FormLabel component="legend">Assign Group</FormLabel></TableCell>
                   <TableCell>
                     <FormControl component="fieldset" className={classes.formControl}>
                       <FormGroup>
                         <FormControlLabel
-                          control={<Checkbox checked={form.groups} onChange={handleChange} name="john" />}  
+                          control={<Checkbox checked={form.groups.john} onChange={handleChange} name="john" />}  
                           label="John Foundation"
                         />
                         <FormControlLabel
-                          control={<Checkbox checked={form.groups} onChange={handleChange} name="marine" />}
+                          control={<Checkbox checked={form.groups.marine} onChange={handleChange} name="marine" />}
                           label="First Marine"
                         />
                         <FormControlLabel
-                          control={<Checkbox checked={form.groups} onChange={handleChange} name="optisoft" />}
+                          control={<Checkbox checked={form.groups.optisoft} onChange={handleChange} name="optisoft" />}
                           label="Optisoft Technology"
                         />
                         <FormControlLabel
-                          control={<Checkbox checked={form.groups} onChange={handleChange} name="jitiful" />}
+                          control={<Checkbox checked={form.groups.jitiful} onChange={handleChange} name="jitiful" />}
                           label="Jitiful Technology"
                         />
                       </FormGroup>

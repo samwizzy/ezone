@@ -1,0 +1,15 @@
+/*
+ *
+ * Settings constants
+ *
+ */
+
+export const DEFAULT_ACTION = 'app/Settings/DEFAULT_ACTION';
+
+export const CREATE_ACCOUNTING_SETUP = 'app/Settings/CREATE_ACCOUNTING_SETUP';
+export const CREATE_ACCOUNTING_SETUP_SUCCESS = 'app/Settings/CREATE_ACCOUNTING_SETUP_SUCCESS';
+export const CREATE_ACCOUNTING_SETUP_ERR = 'app/Settings/CREATE_ACCOUNTING_SETUP_ERR';
+
+export const GET_ACCOUNTING_SETUP = 'app/Settings/GET_ACCOUNTING_SETUP';
+export const GET_ACCOUNTING_SETUP_SUCCESS = 'app/Settings/GET_ACCOUNTING_SETUP_SUCCESS';
+export const GET_ACCOUNTING_SETUP_ERR = 'app/Settings/GET_ACCOUNTING_SETUP_ERR';

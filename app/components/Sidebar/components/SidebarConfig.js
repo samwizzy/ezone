@@ -166,6 +166,8 @@ const SidebarConfig = [
       },
       { id: 3, name: 'Journal', url: '/account/journal', icon: 'menu_book' },
       { id: 4, name: 'Banking', url: '/account/banking', icon: 'group' },
+      { id: 4, name: 'Budgeting', url: '/account/budgeting', icon: 'account_balance_wallet' },
+      { id: 5, name: 'Settings', url: '/account/settings', icon: 'settings' },
     ],
   },
   {

@@ -24,7 +24,7 @@ export function* getAllAccountTypeSaga() {
 
     yield put(Actions.getAllAccountTypeSuccessAction(allAccountTypeResponse));
   } catch (err) {
-    alert('Something went wrong getAllAccountTypeSaga');
+    console.log('Something went wrong getAllAccountTypeSaga');
     yield put(Actions.getAllAccountTypeErrorAction(err));
   }
 }
@@ -127,13 +127,41 @@ export function* createBankTransferSaga() {
 }
 
 
+// Start here
+export function* getTransferByAccountIdSaga({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetTransferByAccountIdApi}`;
+
+  console.log('type saga -> ', type);
+  console.log('payload saga => ', payload);
+
+  try {
+    const transferByAccountIdResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log('transferByAccountIdResponse --> ', transferByAccountIdResponse);
+    yield put(Actions.getTransferByAccountIdSuccessAction(transferByAccountIdResponse));
+  } catch (err) {
+    console.log('getAllTransferByOrgIdErrorAction --> ', err);
+    yield put(Actions.getTransferByAccountIdErrorAction(err));
+  }
+}
+
+
 // Individual exports for testing
-export default function* AccountChartSaga() {
+export default function* BankingSaga() {
   // See example in containers/HomePage/saga.js
   yield takeLatest(Constants.GET_ALL_ACCOUNT_TYPES, getAllAccountTypeSaga);
   yield takeLatest(Constants.CREATE_NEW_BANK, createNewBankSaga);
   yield takeLatest(Constants.GET_ALL_BANK_ACCOUNT, getAllBankAccountSaga);
   yield takeLatest(Constants.GET_ALL_TRANSFER_BY_ORGID, getAllTransferByOrgIdSaga);
   yield takeLatest(Constants.CREATE_BANK_TRANSFER, createBankTransferSaga);
+  yield takeLatest(Constants.GET_TRANSFERS_BY_ACCOUNT_ID, getTransferByAccountIdSaga);
 }
 

@@ -44,9 +44,8 @@ export function* getAllAccountTypeSaga() {
 
     console.log('allAccountTypeResponse -->', allAccountTypeResponse);
     yield put(Actions.getAllAccountTypeSuccessAction(allAccountTypeResponse));
-
   } catch (err) {
-    alert('Something went wrong getAllAccountTypeSaga');
+    console.log('Something went wrong getAllAccountTypeSaga');
     yield put(Actions.getAllAccountTypeErrorAction(err));
   }
 }

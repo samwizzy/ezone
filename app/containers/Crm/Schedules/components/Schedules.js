@@ -288,7 +288,7 @@ const FlexibleSpace = withStyles(styles, { name: 'ToolbarRoot' })(({ classes, ..
   <Toolbar.FlexibleSpace {...restProps} className={classes.flexibleSpace}>
     <div className={classes.flexContainer}>
       <ColorLens fontSize="large" htmlColor="#FF7043" />
-      <Typography variant="h5" style={{ marginLeft: '10px' }}>Art School</Typography>
+      <Typography variant="h5" style={{ marginLeft: '10px' }}>Task Schedules</Typography>
     </div>
   </Toolbar.FlexibleSpace>
 ));

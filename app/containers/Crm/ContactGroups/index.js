@@ -19,11 +19,13 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from '../messages';
 import ContactGroupsList from './components/ContactGroupsList';
+import ContactGroupsDetails from './components/ContactGroupsDetails';
 import ModuleLayout from '../components/ModuleLayout';
 
 export function CrmContactGroups(props) {
   useInjectReducer({ key: 'crmContactGroups', reducer });
   useInjectSaga({ key: 'crmContactGroups', saga });
+  const { params } = props.match;
 
   const { getAllContactsGroupAction } = props;
   useEffect(() => {
@@ -38,7 +40,7 @@ export function CrmContactGroups(props) {
       </Helmet>
 
       <ModuleLayout>
-        <ContactGroupsList />
+        {params.contactId ? <ContactGroupsDetails /> : <ContactGroupsList />}
       </ModuleLayout>
     </div>
   );

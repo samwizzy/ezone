@@ -37,7 +37,7 @@ const apps = [
     icon: StoreIcon,
   },
   { id: 4, name: 'CRM', url: '/crm', icon: CRMIcon },
-  { id: 5, name: 'Budgeting', url: '/budgeting', icon: BudgetingIcon },
+  { id: 5, name: 'Budgeting', url: '/account/budgeting', icon: BudgetingIcon },
   { id: 6, name: 'Task management', url: '/dashboard/tasks', icon: TaskIcon },
   {
     id: 7,

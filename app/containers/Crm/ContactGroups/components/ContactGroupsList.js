@@ -3,13 +3,11 @@ import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
-  List,
-  FormControlLabel,
-  Icon,
   Button,
-  Menu,
-  MenuItem,
-  Typography,
+  Paper,
+  TableContainer, Table, TableBody, TableRow, TableCell,
+  Toolbar,
+  Typography
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import moment from 'moment';
@@ -133,7 +131,7 @@ const ContactGroupsList = props => {
   const options = {
     filterType: 'checkbox',
     responsive: 'scrollMaxHeight',
-    selectableRows: 'none',
+    selectableRows: 'multiple',
     customToolbar: () => (
       <Button
         variant="contained"
@@ -146,6 +144,9 @@ const ContactGroupsList = props => {
         New
       </Button>
     ),
+    onRowClick: (rowData, rowState) => {
+      props.history.push('/crm/contact-groups/' + rowData[0])
+    },
     elevation: 0
   };
 
