@@ -85,6 +85,7 @@ const NewAccountDialog = props => {
     accountTypeId: "",
     bankBalance: "",
     description: "",
+    openingBalance: "",
     ezoneBalance: "",
     orgId: "",
     // parentAccountId: 0,
@@ -92,8 +93,8 @@ const NewAccountDialog = props => {
   });
 
   const canSubmitValues = () => {
-    const { accountCode, accountName, accountTypeId } = values;
-    return accountCode.length > 0 && accountName.length > 0 && accountTypeId.length > 0 ;
+    const { accountCode, accountName, accountTypeId, openingBalance } = values;
+    return accountCode.length > 0 && accountName.length > 0 && accountTypeId.length > 0 && openingBalance.length > 0 ;
   }
 
   const handleChange = name => event => {
@@ -165,6 +166,20 @@ const NewAccountDialog = props => {
                     className={classes.textField}
                     value={values.accountCode}
                     onChange={handleChange('accountCode')}
+                    margin="normal"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    id="standard-openingBalance"
+                    label="Opening Balance"
+                    type="number"
+                    variant="outlined"
+                    size="small"
+                    className={classes.textField}
+                    value={values.openingBalance}
+                    onChange={handleChange('openingBalance')}
                     margin="normal"
                     fullWidth
                   />
@@ -315,6 +330,20 @@ const NewAccountDialog = props => {
                     className={classes.textField}
                     value={values.accountCode}
                     onChange={handleChange('accountCode')}
+                    margin="normal"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    id="standard-openingBalance"
+                    label="Opening Balance"
+                    type="number"
+                    variant="outlined"
+                    size="small"
+                    className={classes.textField}
+                    value={values.openingBalance}
+                    onChange={handleChange('openingBalance')}
                     margin="normal"
                     fullWidth
                   />

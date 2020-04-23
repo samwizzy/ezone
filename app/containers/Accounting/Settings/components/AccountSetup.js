@@ -37,9 +37,10 @@ import { createStructuredSelector } from 'reselect';
 import moment from 'moment';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import * as AppSelectors from '../../App/selectors';
-// import LoadingIndicator from '../../../components/LoadingIndicator';
-import Logo from '../../../images/logo.svg';
+import * as AppSelectors from '../../../App/selectors';
+import LoadingIndicator from '../../../../components/LoadingIndicator';
+import Logo from '../../../../images/Logo.svg';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -62,8 +63,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AccountSetting = props => {
+const AccountSetup = props => {
   const classes = useStyles();
+  
   const {} = props;
 
   const accountingMethodData = [
@@ -96,25 +98,21 @@ const AccountSetting = props => {
   ];
 
   const {
+    loading,
     currentUser,
-    accountingSetupData,
     createAccountingSetupAction,
   } = props;
 
-  console.log(props, 'props');
-
-  console.log('accountingSetupData setting.js -> ', accountingSetupData);
-
   const [values, setValues] = React.useState({
-    accountMethod: '',
-    companyStartDate: '',
-    currency: '',
+    accountMethod: "",
+    companyStartDate: "",
+    currency: "",
     orgId: currentUser.organisation && currentUser.organisation.orgId,
-    startDay: 0,
-    startMonth: 0,
-    taxDay: 0,
-    taxMonth: 0,
-    taxType: '',
+    startDay: "",
+    startMonth: "",
+    taxDay: "",
+    taxMonth: "",
+    taxType: "",
   });
 
   const [selectedDate, setSelectedDate] = React.useState(new Date());
@@ -149,13 +147,9 @@ const AccountSetting = props => {
 
   console.log('values -> ', values);
 
-  //   if (loading) {
-  //     return <LoadingIndicator />;
-  //   }
-
-  // if (accountingSetupData.id) {
-  //   return props.history.push({ pathname: '/dashboard' });
-  // }
+  if (loading) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <React.Fragment>
@@ -356,24 +350,18 @@ const AccountSetting = props => {
   );
 };
 
-AccountSetting.propTypes = {
-  //   loading: PropTypes.bool,
-  //   openNewAccountDialogAction: PropTypes.func,
-  //   editOpenAccountDialogAction: PropTypes.func,
+AccountSetup.propTypes = {
+  // loading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
-  // loading: Selectors.makeSelectLoading(),
+  loading: Selectors.makeSelectLoading(),
   currentUser: AppSelectors.makeSelectCurrentUser(),
-  accountingSetupData: Selectors.makeSelectGetAccountingSetupData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    // openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
-    // editOpenAccountDialogAction: evt => dispatch(Actions.editOpenAccountDialog(evt)),
-    createAccountingSetupAction: evt =>
-      dispatch(Actions.createAccountingSetupAction(evt)),
+    createAccountingSetupAction: evt => dispatch(Actions.createAccountingSetupAction(evt)),
   };
 }
 
@@ -385,4 +373,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(AccountSetting);
+)(AccountSetup);

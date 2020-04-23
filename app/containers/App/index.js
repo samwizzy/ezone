@@ -59,6 +59,7 @@ import ChartPage from '../Accounting/Chart/Loadable';
 import BankingPage from '../Accounting/Banking/Loadable';
 import BudgetPage from '../Accounting/Budget/Loadable';
 import SettingsPage from '../Accounting/Settings/Loadable';
+import AccountSetup from '../Accounting/Settings/components/AccountSetup';
 import AccountDetails from '../Accounting/Banking/components/AccountDetails';
 import DetailsOfAccountChart from '../Accounting/Chart/components/DetailsOfAccountChart';
 import JournalPage from '../Accounting/Journal/Loadable';
@@ -210,6 +211,7 @@ const App = props => {
                 <PrivateRoute exact path="/account/banking" component={BankingPage} />
                 <PrivateRoute exact path="/account/budgeting/:status?" component={BudgetPage} />
                 <PrivateRoute exact path="/account/settings/:status?" component={SettingsPage} />
+                <PrivateRoute exact path="/account/settings/setup" component={AccountSetup} />
                 <PrivateRoute exact path="/account/banking/details" component={AccountDetails} />
                 <PrivateRoute exact path="/account/journal" component={JournalPage} />
                 <PrivateRoute exact path="/account/journal/add" component={AddNewJournal} />

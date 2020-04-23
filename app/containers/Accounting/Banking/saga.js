@@ -155,7 +155,7 @@ export function* getTransferByAccountIdSaga({ type, payload }) {
 
 
 // Individual exports for testing
-export default function* AccountChartSaga() {
+export default function* BankingSaga() {
   // See example in containers/HomePage/saga.js
   yield takeLatest(Constants.GET_ALL_ACCOUNT_TYPES, getAllAccountTypeSaga);
   yield takeLatest(Constants.CREATE_NEW_BANK, createNewBankSaga);

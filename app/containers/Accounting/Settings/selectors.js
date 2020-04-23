@@ -2,83 +2,41 @@ import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
 /**
- * Direct selector to the banking state domain
+ * Direct selector to the settings state domain
  */
 
-const selectBankingDomain = state => state.banking || initialState;
+const selectSettingsDomain = state => state.settings || initialState;
 
 /**
  * Other specific selectors
  */
 
 /**
- * Default selector used by Banking
+ * Default selector used by Settings
  */
 
-const makeSelectBanking = () =>
+const makeSelectSettings = () =>
   createSelector(
-    selectBankingDomain,
+    selectSettingsDomain,
     substate => substate,
   );
 
 const makeSelectLoading = () =>
   createSelector(
-    selectBankingDomain,
+    selectSettingsDomain,
     subState => subState.loading,
   );
 
-const makeSelectBankAccountDialog = () =>
+  const makeSelectAccountingSetupPostData = () =>
   createSelector(
-    selectBankingDomain,
-    substate => substate.bankAccountDialog,
-  );
-
-const makeSelectAccountTypeData = () =>
-  createSelector(
-    selectBankingDomain,
-    substate => substate.accountTypeData,
-  );
-
-const makeSelectNewBankPostData = () =>
-  createSelector(
-    selectBankingDomain,
-    substate => substate.newBankPostData,
-  );
-
-const makeSelectBankAccountData = () =>
-  createSelector(
-    selectBankingDomain,
-    substate => substate.bankAccountData,
-  );
-
-const makeSelectBankTransferByOrgIdData= () =>
-  createSelector(
-    selectBankingDomain,
-    substate => substate.bankTransferByOrgIdData,
-  );
-
-const makeSelectTransactionTransferDialog = () =>
-  createSelector(
-    selectBankingDomain,
-    substate => substate.transactionTransferDialog,
-  );
-
-const makeSelectBankTransferPostData = () =>
-  createSelector(
-    selectBankingDomain,
-    substate => substate.bankTransferPostData,
-  );
+    selectSettingsDomain,
+    subState => subState.accountSetupPostData,
+);
   
-export default makeSelectBanking;
+export default makeSelectSettings;
 
 export { 
-  selectBankingDomain, 
+  selectSettingsDomain, 
   makeSelectLoading,
-  makeSelectBankAccountDialog,
-  makeSelectAccountTypeData,
-  makeSelectNewBankPostData,
-  makeSelectBankAccountData,
-  makeSelectBankTransferByOrgIdData,
-  makeSelectTransactionTransferDialog,
-  makeSelectBankTransferPostData
+  makeSelectAccountingSetupPostData,
 };

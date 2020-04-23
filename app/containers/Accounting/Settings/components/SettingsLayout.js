@@ -3,10 +3,33 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { createStructuredSelector } from 'reselect';
-import { makeStyles, Box, Button, Grid, Paper, Table, TableBody, TableRow, TableCell, TextField, Toolbar, Typography } from '@material-ui/core'
-import SettingsSideBar from './SettingsSideBar'
-import AddIcon from '@material-ui/icons/Add'
-import AccountingPeriod from './../AccountingPeriod'
+import DateFnsUtils from '@date-io/date-fns'; // choose your lib
+import {
+  DatePicker,
+  TimePicker,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+  DateTimePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
+
+import { 
+  makeStyles, 
+  Box, 
+  Button, 
+  Grid, 
+  Paper, 
+  Table, 
+  TableBody, 
+  TableRow, 
+  TableCell, 
+  TextField, 
+  Toolbar, 
+  Typography 
+} from '@material-ui/core';
+import SettingsSideBar from './SettingsSideBar';
+import AddIcon from '@material-ui/icons/Add';
+import AccountingPeriod from './AccountingPeriod';
 
 
 const useStyles = makeStyles(theme => ({

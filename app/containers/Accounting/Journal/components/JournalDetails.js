@@ -28,10 +28,10 @@ import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import * as Actions from '../actions';
-import * as AppSelectors from '../../App/selectors';
-import * as Selectors from '../selectors';
-import LoadingIndicator from '../../../components/LoadingIndicator';
+import * as Actions from '../../actions';
+import * as AppSelectors from '../../../App/selectors';
+import * as Selectors from '../../selectors';
+import LoadingIndicator from '../../../../components/LoadingIndicator';
 import moment from 'moment';
 
 const entries = [
