@@ -9,230 +9,17 @@ import * as Constants from './constants';
 export const initialState = {
   loading: false,
   error: false,
-  // accountTypeData: [],
-  detailTypeData: [],
-  chartOfAccPostData: false,
-  chartOfAccData: [],
-  accountPeriodData: [],
-  accountDialog: {
-    type: 'new',
-    props: {
-      open: false,
-    },
-    data: null,
-  },
   accountingSetupData: {},
-  accountSetupPostData: false,
-  accountJournalPostData: false,
-  accountJournals: [],
-  accountJournal: {},
+  // accountSetupPostData: false,
+  // accountJournalPostData: false,
+  // accountJournals: [],
+  // accountJournal: {},
 };
 
 /* eslint-disable default-case, no-param-reassign */
 const accountingReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
-
-      // Open dialog for new account
-      case Constants.OPEN_NEW_ACCOUNT_DIALOG: {
-        console.log('OPEN_NEW_ACCOUNT_DIALOG');
-        return {
-          ...state,
-          accountDialog: {
-            type: 'new',
-            props: {
-              open: true,
-            },
-            data: null,
-          },
-        };
-      }
-      case Constants.CLOSE_NEW_ACCOUNT_DIALOG: {
-        return {
-          ...state,
-          accountDialog: {
-            type: 'new',
-            props: {
-              open: false,
-            },
-            data: null,
-          },
-        };
-      }
-
-      // // Edit dialog for account
-      // case Constants.EDIT_OPEN_ACCOUNT_DIALOG: {
-      //   return {
-      //     ...state,
-      //     accountDialog: {
-      //       type: 'edit',
-      //       props: {
-      //         open: true,
-      //       },
-      //       data: action.payload,
-      //     },
-      //   };
-      // }
-      // case Constants.EDIT_CLOSE_ACCOUNT_DIALOG: {
-      //   return {
-      //     ...state,
-      //     accountDialog: {
-      //       type: 'edit',
-      //       props: {
-      //         open: false,
-      //       },
-      //       data: action.payload,
-      //     },
-      //   };
-      // }
-
-      // Case to get account type
-      // case Constants.GET_ALL_ACCOUNT_TYPES: {
-      //   return {
-      //     ...state,
-      //     loading: true,
-      //     error: false,
-      //   };
-      // }
-      // case Constants.GET_ALL_ACCOUNT_TYPES_SUCCESS: {
-      //   return {
-      //     ...state,
-      //     loading: false,
-      //     error: false,
-      //     accountTypeData: action.payload,
-      //   };
-      // }
-      // case Constants.GET_ALL_ACCOUNT_TYPES_ERR: {
-      //   return {
-      //     ...state,
-      //     loading: false,
-      //     error: action.payload,
-      //   };
-      // }
-
-      // Case to get detail type
-      // case Constants.GET_DETAIL_TYPES: {
-      //   return {
-      //     ...state,
-      //     loading: true,
-      //     error: false,
-      //     detailTypeData: action.payload,
-      //   };
-      // }
-      // case Constants.GET_DETAIL_TYPES_SUCCESS: {
-      //   return {
-      //     ...state,
-      //     loading: false,
-      //     error: false,
-      //     detailTypeData: action.payload,
-      //   };
-      // }
-      // case Constants.GET_DETAIL_TYPES_ERR: {
-      //   return {
-      //     ...state,
-      //     loading: false,
-      //     error: action.payload,
-      //   };
-      // }
-
-      // Case to create chart of account
-      // case Constants.CREATE_NEW_CHART_OF_ACCOUNT: {
-      //   return {
-      //     ...state,
-      //     loading: true,
-      //     error: false,
-      //     chartOfAccPostData: action.payload
-      //   };
-      // }
-      // case Constants.CREATE_NEW_CHART_OF_ACCOUNT_SUCCESS: {
-      //   return {
-      //     ...state,
-      //     loading: false,
-      //     error: false,
-      //     chartOfAccPostData: action.payload
-      //   };
-      // }
-      // case Constants.CREATE_NEW_CHART_OF_ACCOUNT_ERR: {
-      //   return {
-      //     ...state,
-      //     loading: false,
-      //     error: action.payload,
-      //   };
-      // }
-
-      // Case to update a chart of account
-      case Constants.UPDATE_CHART_OF_ACCOUNT: {
-        return {
-          ...state,
-          loading: true,
-          error: false,
-          chartOfAccPostData: action.payload
-        };
-      }
-      case Constants.UPDATE_CHART_OF_ACCOUNT_SUCCESS: {
-        return {
-          ...state,
-          loading: false,
-          error: false,
-          chartOfAccPostData: action.payload
-        };
-      }
-      case Constants.UPDATE_CHART_OF_ACCOUNT_ERR: {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload,
-        };
-      }
-
-      // Case to delete a chart of account
-      // case Constants.DELETE_CHART_OF_ACCOUNT: {
-      //   return {
-      //     ...state,
-      //     loading: true,
-      //     error: false,
-      //     chartOfAccPostData: action.payload
-      //   };
-      // }
-      // case Constants.DELETE_CHART_OF_ACCOUNT_SUCCESS: {
-      //   return {
-      //     ...state,
-      //     loading: false,
-      //     error: false,
-      //     chartOfAccPostData: action.payload
-      //   };
-      // }
-      // case Constants.DELETE_CHART_OF_ACCOUNT_ERR: {
-      //   return {
-      //     ...state,
-      //     loading: false,
-      //     error: action.payload,
-      //   };
-      // }
-
-      // Case to get all chart of accounts
-      // case Constants.GET_ALL_CHART_OF_ACCOUNT: {
-      //   return {
-      //     ...state,
-      //     loading: true,
-      //     error: false,
-      //   };
-      // }
-      // case Constants.GET_ALL_CHART_OF_ACCOUNT_SUCCESS: {
-      //   return {
-      //     ...state,
-      //     loading: false,
-      //     error: false,
-      //     chartOfAccData: action.payload,
-      //   };
-      // }
-      // case Constants.GET_ALL_CHART_OF_ACCOUNT_ERR: {
-      //   return {
-      //     ...state,
-      //     loading: false,
-      //     error: action.payload,
-      //   };
-      // }
 
       // Case to get accounting setup
       case Constants.GET_ACCOUNTING_SETUP: {
@@ -246,17 +33,10 @@ const accountingReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: false,
+          error: false,
           accountingSetupData: action.payload
         };
       }
-      // case Constants.GET_ALL_ACCOUNT_TYPES_SUCCESS: {
-      //   return {
-      //     ...state,
-      //     loading: false,
-      //     error: false,
-      //     accountTypeData: action.payload,
-      //   };
-      // }
       case Constants.GET_ACCOUNTING_SETUP_ERR: {
         return {
           ...state,
@@ -265,80 +45,33 @@ const accountingReducer = (state = initialState, action) =>
         };
       }
 
-      // Case to create accounting setup
-      case Constants.CREATE_ACCOUNTING_SETUP: {
-        return {
-          ...state,
-          loading: true,
-          error: false,
-          accountSetupPostData: action.payload
-        };
-      }
-      case Constants.CREATE_ACCOUNTING_SETUP_SUCCESS: {
-        console.log('action.payload ', action.payload);
-        return {
-          ...state,
-          loading: false,
-          error: false,
-          accountSetupPostData: action.payload
-        };
-      }
-      case Constants.CREATE_ACCOUNTING_SETUP_ERR: {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload,
-        };
-      }
+      
 
-      // // Case to get all account period
-      // case Constants.GET_ACCOUNT_PERIOD: {
+     
+      // Case to create account journal
+      // case Constants.CREATE_NEW_ACCOUNT_JOURNAL: {
       //   return {
       //     ...state,
       //     loading: true,
       //     error: false,
+      //     accountJournalPostData: action.payload
       //   };
       // }
-      // case Constants.GET_ACCOUNT_PERIOD_SUCCESS: {
+      // case Constants.CREATE_NEW_ACCOUNT_JOURNAL_SUCCESS: {
       //   return {
       //     ...state,
       //     loading: false,
       //     error: false,
-      //     accountPeriodData: action.payload,
+      //     accountJournalPostData: action.payload
       //   };
       // }
-      // case Constants.GET_ACCOUNT_PERIOD_ERR: {
+      // case Constants.CREATE_NEW_ACCOUNT_JOURNAL_ERR: {
       //   return {
       //     ...state,
       //     loading: false,
       //     error: action.payload,
       //   };
       // }
-
-      // Case to create account journal
-      case Constants.CREATE_NEW_ACCOUNT_JOURNAL: {
-        return {
-          ...state,
-          loading: true,
-          error: false,
-          accountJournalPostData: action.payload
-        };
-      }
-      case Constants.CREATE_NEW_ACCOUNT_JOURNAL_SUCCESS: {
-        return {
-          ...state,
-          loading: false,
-          error: false,
-          accountJournalPostData: action.payload
-        };
-      }
-      case Constants.CREATE_NEW_ACCOUNT_JOURNAL_ERR: {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload,
-        };
-      }
 
     }
   });

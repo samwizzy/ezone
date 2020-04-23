@@ -1,6 +1,6 @@
 /**
  *
- * Banking
+ * Settings
  *
  */
 
@@ -14,7 +14,7 @@ import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectBanking from './selectors';
+import makeSelectSettings from './selectors';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
 import reducer from './reducer';
@@ -25,10 +25,10 @@ import LoadingIndicator from './../../../components/LoadingIndicator';
 import SettingsLayout from './components/SettingsLayout';
 
 export function Settings(props) {
-  useInjectReducer({ key: 'banking', reducer });
-  useInjectSaga({ key: 'banking', saga });
+  useInjectReducer({ key: 'settings', reducer });
+  useInjectSaga({ key: 'settings', saga });
 
-  console.log('Banking index.js loaded');
+  console.log('Settings index.js loaded');
 
   const { loading } = props;
 
@@ -45,7 +45,7 @@ export function Settings(props) {
     <div>
       <Helmet>
         <title>Settings</title>
-        <meta name="description" content="Description of Settings" />
+        <meta name="description" content="Description of Settings." />
       </Helmet>
       <ModuleLayout>
         <SettingsLayout />
@@ -58,7 +58,7 @@ Settings.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(),
+  settings: makeSelectSettings()
 });
 
 function mapDispatchToProps(dispatch) {

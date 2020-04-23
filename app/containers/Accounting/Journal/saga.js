@@ -91,5 +91,4 @@ export default function* journalSaga() {
   yield takeLatest(Constants.GET_ALL_CHART_OF_ACCOUNT, getAllChartOfAccountSaga);
   yield takeLatest(Constants.GET_ACCOUNT_PERIOD, getAccountPeriodSaga);
   yield takeLatest(Constants.CREATE_NEW_ACCOUNT_JOURNAL, createAccountJournalSaga);
-  
 }

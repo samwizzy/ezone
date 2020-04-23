@@ -1,6 +1,19 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, Box, Button, Grid, Paper, Table, TableBody, TableRow, TableCell, TextField, Toolbar, Typography } from '@material-ui/core'
+import { 
+  makeStyles, 
+  Box, 
+  Button, 
+  Grid, 
+  Paper, 
+  Table, 
+  TableBody, 
+  TableRow, 
+  TableCell, 
+  TextField, 
+  Toolbar, 
+  Typography 
+} from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns'; // choose your lib
 import {
   DatePicker,
@@ -10,21 +23,14 @@ import {
   DateTimePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
-import classNames from 'classnames';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import AttachFileIcon from '@material-ui/icons/AttachFile';
-import AddIcon from '@material-ui/icons/Add';
-import { Autocomplete } from '@material-ui/lab';
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { useInjectSaga } from 'utils/injectSaga';
-import { useInjectReducer } from 'utils/injectReducer';
 import { createStructuredSelector } from 'reselect';
-import reducer from '../../reducer';
-import saga from '../../saga';
-import ModuleLayout from '../../components/ModuleLayout';
+import * as Actions from '../actions';
+import * as Selectors from '../selectors';
+// import reducer from '../../reducer';
+// import saga from '../../saga';
+// import ModuleLayout from '../../components/ModuleLayout';
 import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
@@ -62,7 +68,9 @@ const useStyles = makeStyles(theme => ({
 const AccountingPeriod = props => {
   const classes = useStyles();
 
-  const {} = props;
+  const {
+    dispatchGetAccountingSetupAction
+  } = props;
 
   const [values, setValues] = React.useState({
     entries: [],
@@ -73,43 +81,44 @@ const AccountingPeriod = props => {
     transactionDate: moment(new Date()).format('YYYY-MM-DD'),
   });
 
-  const addRow = () => {
-    const item = {
-      accountId: 0,
-      credit: 0,
-      debit: 0,
-      description: '',
-    };
-    setValues({...values, "entries": [ ...values.entries, item ]});
-  };
+  // const addRow = () => {
+  //   const item = {
+  //     accountId: 0,
+  //     credit: 0,
+  //     debit: 0,
+  //     description: '',
+  //   };
+  //   setValues({...values, "entries": [ ...values.entries, item ]});
+  // };
 
-  const removeRow = index => {
-    values.entries.splice(index, 1);
-    setValues({ ...values });
-  };
+  // const removeRow = index => {
+  //   values.entries.splice(index, 1);
+  //   setValues({ ...values });
+  // };
 
-  const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
-  };
+  // const handleChange = name => event => {
+  //   setValues({ ...values, [name]: event.target.value });
+  // };
 
-  const handleSelectChange = (name, value) => {
-    setValues({ ...values, periodId: value.id });
-  };
+  // const handleSelectChange = (name, value) => {
+  //   setValues({ ...values, periodId: value.id });
+  // };
 
-  const handleRowChange = (event, index) => {
-    const entries = [...values.entries]
-    entries[index][event.target.name] = event.target.value
-    setValues({...values, entries})
-  }
+  // const handleRowChange = (event, index) => {
+  //   const entries = [...values.entries]
+  //   entries[index][event.target.name] = event.target.value
+  //   setValues({...values, entries})
+  // }
 
-  const handleSelectChangeRows = (event, value, index) => {
-    const { entries } = values;
-    entries[index]["accountId"] = value.id;
-    setValues({ ...values, entries });
-  };
+  // const handleSelectChangeRows = (event, value, index) => {
+  //   const { entries } = values;
+  //   entries[index]["accountId"] = value.id;
+  //   setValues({ ...values, entries });
+  // };
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
+    dispatchGetAccountingSetupAction();
   }, []);
 
   return (
@@ -127,19 +136,27 @@ const AccountingPeriod = props => {
                 <TableBody>
                   <TableRow>
                     <TableCell>Financial Year Start</TableCell>
-                    <TableCell><Box className={classes.box} p={2}>15th July</Box></TableCell>
+                    <TableCell>
+                      <Box className={classes.box} p={2}>15th July</Box>
+                    </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>Accounting Method</TableCell>
-                    <TableCell><Box className={classes.box} p={2}>Accrual</Box></TableCell>
+                    <TableCell>
+                      <Box className={classes.box} p={2}>Accrual</Box>
+                    </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>Tax year starts</TableCell>
-                    <TableCell><Box className={classes.box} p={2}>15th July</Box></TableCell>
+                    <TableCell>
+                      <Box className={classes.box} p={2}>15th July</Box>
+                    </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>Tax Type</TableCell>
-                    <TableCell><Box className={classes.box} p={2}>Limited Liability</Box></TableCell>
+                    <TableCell>
+                      <Box className={classes.box} p={2}>Limited Liability</Box>
+                    </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -197,7 +214,11 @@ const AccountingPeriod = props => {
                         />
                       </MuiPickersUtilsProvider>
                     </TableCell>
-                    <TableCell component="th"><Typography variant="subtitle1">Opened</Typography></TableCell>
+                    <TableCell component="th">
+                      <Typography variant="subtitle1">
+                        Opened
+                      </Typography>
+                    </TableCell>
                   </TableRow>
                   ))}
                 </TableBody>
@@ -217,6 +238,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    dispatchGetAccountingSetupAction: () => dispatch(Actions.getAccountingSetupAction()),
   };
 }
 
