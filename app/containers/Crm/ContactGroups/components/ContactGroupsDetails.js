@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ContactGroupsList = props => {
+const ContactGroupsDetails = props => {
   const classes = useStyles();
   const { loading, openNewContactGroupsDialog } = props;
 
@@ -137,9 +137,6 @@ const ContactGroupsList = props => {
         New
       </Button>
     ),
-    onRowClick: (rowData, rowState) => {
-      props.history.push('/crm/contact-groups/' + rowData[0])
-    },
     elevation: 0
   };
 
@@ -149,6 +146,29 @@ const ContactGroupsList = props => {
 
   return (
     <React.Fragment>
+      <Paper square>
+        <Toolbar>
+          <Typography variant="h6">Contact Groups</Typography>
+        </Toolbar>
+        <TableContainer>
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell component="th">Group Name:</TableCell>
+                <TableCell>First Marine</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th">Description:</TableCell>
+                <TableCell>This is the description of contact group and it comes down here too</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th">Private:</TableCell>
+                <TableCell>Yes</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
       <MUIDataTable
         className={classes.datatable}
         title="All Contact Groups"
@@ -162,7 +182,7 @@ const ContactGroupsList = props => {
   );
 };
 
-ContactGroupsList.propTypes = {
+ContactGroupsDetails.propTypes = {
   loading: PropTypes.bool,
   openNewContactGroupsDialog: PropTypes.func,
 };
@@ -185,4 +205,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(ContactGroupsList);
+)(ContactGroupsDetails);
