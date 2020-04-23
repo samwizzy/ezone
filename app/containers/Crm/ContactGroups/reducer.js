@@ -30,10 +30,9 @@ const crmContactGroupsReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
       case Constants.OPEN_NEW_CONTACT_GROUPS_DIALOG: {
-        console.log("new contact groups reducer")
         return {
           ...state,
-          contactGroupsDialog: {...state.contactGroupsDialog, props: { open: true} },
+          contactGroupsDialog: {...state.contactGroupsDialog, props: { open: true } },
         };
       }
       case Constants.CLOSE_NEW_CONTACT_GROUPS_DIALOG: {

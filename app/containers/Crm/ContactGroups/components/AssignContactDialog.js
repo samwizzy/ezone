@@ -75,7 +75,7 @@ const AssignContactDialog = props => {
 
   const [form, setForm] = React.useState({
     contact: '',
-    groups: []
+    groups: [{john: false, marine: false, optisoft: false, jitiful: false}]
   });
 
   const handleChange = event => {
@@ -135,7 +135,7 @@ const AssignContactDialog = props => {
                       )}
                       style={{ width: "100%" }}
                       renderInput={(params) => (
-                        <TextField {...params} variant="outlined" label="Companies / Contacts" placeholder="Favorites" />
+                        <TextField {...params} variant="outlined" label="Companies" placeholder="Favorites" />
                       )}
                     />
                   </TableCell>
@@ -146,19 +146,19 @@ const AssignContactDialog = props => {
                     <FormControl component="fieldset" className={classes.formControl}>
                       <FormGroup>
                         <FormControlLabel
-                          control={<Checkbox checked={form.groups} onChange={handleChange} name="john" />}  
+                          control={<Checkbox checked={form.groups.john} onChange={handleChange} name="john" />}  
                           label="John Foundation"
                         />
                         <FormControlLabel
-                          control={<Checkbox checked={form.groups} onChange={handleChange} name="marine" />}
+                          control={<Checkbox checked={form.groups.marine} onChange={handleChange} name="marine" />}
                           label="First Marine"
                         />
                         <FormControlLabel
-                          control={<Checkbox checked={form.groups} onChange={handleChange} name="optisoft" />}
+                          control={<Checkbox checked={form.groups.optisoft} onChange={handleChange} name="optisoft" />}
                           label="Optisoft Technology"
                         />
                         <FormControlLabel
-                          control={<Checkbox checked={form.groups} onChange={handleChange} name="jitiful" />}
+                          control={<Checkbox checked={form.groups.jitiful} onChange={handleChange} name="jitiful" />}
                           label="Jitiful Technology"
                         />
                       </FormGroup>

@@ -270,7 +270,7 @@ const App = props => {
                 />
                 <PrivateRoute
                   exact
-                  path="/crm/contact-groups"
+                  path="/crm/contact-groups/:contactId?"
                   component={CrmContactGroups}
                 />
                 <PrivateRoute

@@ -35,8 +35,14 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center",
     alignItems: "center",
   },
+  card: {
+    "& .MuiCardActions-root": {
+      padding: theme.spacing(2),
+      justifyContent: "flex-end",
+    }
+  },
   tableContainer: {
-    margin: theme.spacing(5, 0)
+    marginTop: theme.spacing(5)
   },
   table: {
     whiteSpace: "nowrap",
@@ -104,7 +110,6 @@ const NewBudgeting = props => {
     loading,
     currentUser, 
     budgetDialog, 
-    closeNewBudgetingDialog,
   } = props;
 
   const [values, setValues] = React.useState({
