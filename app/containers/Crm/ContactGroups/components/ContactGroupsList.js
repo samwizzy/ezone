@@ -3,12 +3,11 @@ import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
-  List,
-  FormControlLabel,
-  Icon,
   Button,
-  Menu,
-  MenuItem,
+  Paper,
+  TableContainer, Table, TableBody, TableRow, TableCell,
+  Toolbar,
+  Typography
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
@@ -125,7 +124,7 @@ const ContactGroupsList = props => {
   const options = {
     filterType: 'checkbox',
     responsive: 'scrollMaxHeight',
-    selectableRows: 'none',
+    selectableRows: 'multiple',
     customToolbar: () => (
       <Button
         variant="contained"
@@ -147,6 +146,29 @@ const ContactGroupsList = props => {
 
   return (
     <React.Fragment>
+      <Paper square>
+        <Toolbar>
+          <Typography variant="h6">Contact Groups</Typography>
+        </Toolbar>
+        <TableContainer>
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell component="th">Group Name:</TableCell>
+                <TableCell>First Marine</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th">Description:</TableCell>
+                <TableCell>This is the description of contact group and it comes down here too</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th">Private:</TableCell>
+                <TableCell>Yes</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
       <MUIDataTable
         className={classes.datatable}
         title="All Contact Groups"
