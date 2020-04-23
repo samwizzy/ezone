@@ -6,13 +6,12 @@ import { List, ListItem, ListSubheader, ListItemText, ListItemIcon, Typography }
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import Description from '@material-ui/icons/Description'
+import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet'
 import * as Actions from '../actions';
 import * as Selectors from './../selectors';
 import * as AppSelectors from './../../../App/selectors'; 
-import Delete from '@material-ui/icons/Delete';  
-import Share from '@material-ui/icons/Share';  
-import StarOutlined from '@material-ui/icons/StarOutlined';
+import EventIcon from '@material-ui/icons/Event'; 
+import AssessmentIcon from '@material-ui/icons/Assessment';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -53,19 +52,19 @@ const SettingsSideBar = props => {
       >
         <ListItem button onClick={() => {}}>
           <ListItemIcon>
-            <Description />
+            <EventIcon />
           </ListItemIcon>
           <ListItemText primary="Accounting Period" />
         </ListItem>
         <ListItem button onClick={() => {}}>
           <ListItemIcon>
-            <StarOutlined />
+            <AccountBalanceWalletIcon />
           </ListItemIcon>
           <ListItemText primary="Opening Balances" />
         </ListItem>
         <ListItem button onClick={() => {}}>
           <ListItemIcon>
-            <Share />
+            <AssessmentIcon />
           </ListItemIcon>
           <ListItemText primary="Reports" />
         </ListItem>
