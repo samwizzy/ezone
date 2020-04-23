@@ -214,6 +214,7 @@ const BudgetingList = props => {
         </Button>
       </Tooltip>
     ),
+    elevation: 0
   };
 
   return (
