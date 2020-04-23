@@ -12,7 +12,20 @@ import {
   DateTimePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
-import { makeStyles, Box, Button, Grid, Paper, Table, TableBody, TableRow, TableCell, TextField, Toolbar, Typography } from '@material-ui/core'
+import { 
+  makeStyles, 
+  Box, 
+  Button, 
+  Grid, 
+  Paper, 
+  Table, 
+  TableBody, 
+  TableRow, 
+  TableCell, 
+  TextField, 
+  Toolbar, 
+  Typography 
+} from '@material-ui/core'
 import SettingsSideBar from './SettingsSideBar'
 import AddIcon from '@material-ui/icons/Add'
 
