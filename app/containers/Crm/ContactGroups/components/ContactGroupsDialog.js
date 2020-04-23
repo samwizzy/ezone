@@ -60,15 +60,13 @@ const ContactGroupsDialog = props => {
 
   const canSubmitForm = () => {
     const { groupName, groupDescription } = form;
-    return groupName !== null && groupDescription !== null;
+    return groupName !== '' && groupDescription !== '';
   };
 
   const handleChange = event => {
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
   };
-
-  console.log(contactGroupsDialog, 'contactGroupsDialog');
 
   return (
     <div>

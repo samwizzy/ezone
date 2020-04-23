@@ -12,7 +12,6 @@ export function* getAllContactsGroup() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.GetAllContactsGroupApi}`;
 
-  console.log(requestURL, 'requestURL');
   try {
     const response = yield call(request, requestURL, {
       method: 'GET',
@@ -37,8 +36,6 @@ export function* createNewContactGroup() {
   );
   newContactGroup.orgId = currentUser.organisation.orgId;
 
-  console.log(newContactGroup, 'newContactGroup');
-
   const requestURL = `${Endpoints.CreateNewContactGroupApi}`;
 
   try {
@@ -50,8 +47,6 @@ export function* createNewContactGroup() {
         'Content-Type': 'application/json',
       }),
     });
-
-    console.log(newContactGroupResponse, 'newContactGroupResponse');
 
     yield put(Actions.createNewContactGroupSuccess(newContactGroupResponse));
     yield put(Actions.getAllContactsGroup());

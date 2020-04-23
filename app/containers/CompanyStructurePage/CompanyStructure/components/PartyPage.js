@@ -2,6 +2,8 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
+  Backdrop,
+  CircularProgress,
   makeStyles,
   ListItem,
   Grid,
@@ -60,6 +62,10 @@ const useStyles = makeStyles(theme => ({
   marginButton: {
     margin: theme.spacing(1),
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
 const NoPartyGroup = props => {
@@ -94,6 +100,8 @@ const PartyPage = props => {
   useInjectSaga({ key: 'companyStructurePage', saga });
 
   const {
+    openEditPositionDialogAction,
+    openEditPartiesDialogAction,
     dispatchOpenNewPositionAction,
     dispatchGetAllUsersAction,
     dispatchGetPartyGroups,
@@ -182,16 +190,20 @@ const PartyPage = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => (
-          <Button
-            variant="outlined"
-            size="small"
-            color="primary"
-            className={classes.marginButton}
-          >
-            Edit
-          </Button>
-        ),
+        customBodyRender: value => {
+          const par = party.parties.find(part => value === part.id);
+          return (
+            <Button
+              variant="outlined"
+              size="small"
+              color="primary"
+              className={classes.marginButton}
+              onClick={() => openEditPartiesDialogAction(par)}
+            >
+              Edit
+            </Button>
+          );
+        },
       },
     },
   ];
@@ -249,19 +261,35 @@ const PartyPage = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => (
-          <Button
-            variant="outlined"
-            size="small"
-            color="primary"
-            className={classes.marginButton}
-            href={`/organization/company/structure/position/${
-              params.partyGroupId
-            }/${params.partyId}/${value}`}
-          >
-            View
-          </Button>
-        ),
+        customBodyRender: value => {
+          // if (party && party.positions) {
+          const positions = party.positions.find(posi => value === posi.id);
+          return (
+            <div>
+              <Button
+                variant="outlined"
+                size="small"
+                color="primary"
+                className={classes.marginButton}
+                onClick={() => openEditPositionDialogAction(positions)}
+              >
+                Edit
+              </Button>
+              <Button
+                variant="outlined"
+                size="small"
+                color="primary"
+                className={classes.marginButton}
+                href={`/organization/company/structure/position/${
+                  params.partyGroupId
+                  }/${params.partyId}/${value}`}
+              >
+                View
+              </Button>
+            </div>
+          );
+          // }
+        },
       },
     },
   ];
@@ -289,6 +317,9 @@ const PartyPage = props => {
   return (
     <React.Fragment>
       <Grid container spacing={0}>
+        <Backdrop className={classes.backdrop} open={loading}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
         <Grid item xs={12} md={6} lg={6}>
           <div className={classes.table}>
             {party && party.parties && (
@@ -336,6 +367,8 @@ PartyPage.propTypes = {
   DispatchgetSelectedPartyGroupAction: PropTypes.func,
   selectedPartyGroupData: PropTypes.object,
   allPositions: PropTypes.object,
+  openEditPartiesDialogAction: PropTypes.func,
+  openEditPositionDialogAction: PropTypes.func,
   // selectedPartyGroupData: PropTypes.oneOfType(PropTypes.object, PropTypes.bool),
   // allPositions: PropTypes.oneOfType(PropTypes.object, PropTypes.bool),
 };
@@ -349,6 +382,10 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    openEditPartiesDialogAction: evt =>
+      dispatch(Actions.openEditPartiesDialog(evt)),
+    openEditPositionDialogAction: evt =>
+      dispatch(Actions.openEditPositionDialog(evt)),
     dispatchOpenNewPositionAction: () =>
       dispatch(Actions.openNewPositionDialog()),
     dispatchOpenNewPartiesAction: () =>

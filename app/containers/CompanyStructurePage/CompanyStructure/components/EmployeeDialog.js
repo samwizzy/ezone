@@ -51,8 +51,6 @@ const EmployeeDialog = props => {
     params,
   } = props;
 
-  console.log(params, 'params');
-
   const classes = useStyles();
   const [values, setValues] = React.useState({
     positionId: params.positionId,

@@ -94,6 +94,12 @@ const makeSelectCreateNewPartyData = () =>
     subState => subState.createNewPartyData,
   );
 
+const makeSelectUpdatePartyData = () =>
+  createSelector(
+    selectCompanyStructurePageDomain,
+    subState => subState.updatePartyData,
+  );
+
 const makeSelectCreateNewPartiesData = () =>
   createSelector(
     selectCompanyStructurePageDomain,
@@ -106,6 +112,12 @@ const makeSelectNewPartiesDialog = () =>
     subState => subState.newPartiesDialog,
   );
 
+const makeSelectUpdatePartiesData = () =>
+  createSelector(
+    selectCompanyStructurePageDomain,
+    subState => subState.updatePartiesData,
+  );
+
 const makeSelectNewPositionDialog = () =>
   createSelector(
     selectCompanyStructurePageDomain,
@@ -116,6 +128,12 @@ const makeSelectCreateNewPositionData = () =>
   createSelector(
     selectCompanyStructurePageDomain,
     subState => subState.createNewPositionData,
+  );
+
+const makeSelectUpdatePositionData = () =>
+  createSelector(
+    selectCompanyStructurePageDomain,
+    subState => subState.updatePositionData,
   );
 
 const makeSelectGetAllPositions = () =>
@@ -220,4 +238,7 @@ export {
   makeSelectUpdateCompanyInfoData,
   makeSelectCreateNewPartiesData,
   makeSelectUpdatePartyGroupData,
+  makeSelectUpdatePartyData,
+  makeSelectUpdatePartiesData,
+  makeSelectUpdatePositionData,
 };

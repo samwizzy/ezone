@@ -76,7 +76,7 @@ const useStyles = makeStyles(theme => ({
 
 const NoPartyGroup = props => {
   const classes = useStyles();
-  const { dispatchOpenNewPartyGroupAction } = props;
+  const { dispatchOpenNewPartyGroupAction, loading } = props;
 
   return (
     <React.Fragment>
@@ -86,23 +86,29 @@ const NoPartyGroup = props => {
         alignItems="center"
         className={classes.root}
       >
-        <Grid item xs={12}>
-          <Box>
-            <Typography variant="h6">
-              You Do Not have company structure
-            </Typography>
+        {loading ? (
+          <Backdrop className={classes.backdrop} open={loading}>
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        ) : (
+          <Grid item xs={12}>
+            <Box>
+              <Typography variant="h6">
+                You Do Not have company structure
+              </Typography>
 
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => dispatchOpenNewPartyGroupAction()}
-              className={classes.button}
-              disableElevation
-            >
-              <Add /> Create Party Group
-            </Button>
-          </Box>
-        </Grid>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => dispatchOpenNewPartyGroupAction()}
+                className={classes.button}
+                disableElevation
+              >
+                <Add /> Create Party Group
+              </Button>
+            </Box>
+          </Grid>
+        )}
       </Grid>
     </React.Fragment>
   );
@@ -116,6 +122,7 @@ const ListItemLink = props => <ListItem button component="a" {...props} />;
 
 const CompanyStructure = props => {
   const {
+    openEditPartyDialogAction,
     openEditPartyGroupAction,
     dispatchGetAllUsersAction,
     selectedPartyGroupData,
@@ -127,7 +134,7 @@ const CompanyStructure = props => {
   } = props;
 
   useEffect(() => {
-    dispatchGetAllUsersAction();
+    // dispatchGetAllUsersAction();
   }, []);
   const classes = useStyles();
 
@@ -187,7 +194,7 @@ const CompanyStructure = props => {
                 size="small"
                 color="primary"
                 className={classes.marginButton}
-                // onClick={() => openEditContactDialogAction(par)}
+                onClick={() => openEditPartyDialogAction(par)}
               >
                 Edit
               </Button>
@@ -229,16 +236,19 @@ const CompanyStructure = props => {
     ),
   };
 
-  console.log(partyGroupData, 'partyGroupData');
-  console.log(loading, 'loading');
-
   if (loading) {
-    return <LoadingIndicator />;
+    // return <LoadingIndicator />;
+    return (
+      <Backdrop className={classes.backdrop} open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    );
   }
 
   if (!partyGroupData.length) {
     return (
       <NoPartyGroup
+        loading={loading}
         dispatchOpenNewPartyGroupAction={dispatchOpenNewPartyGroupAction}
       />
     );
@@ -248,6 +258,9 @@ const CompanyStructure = props => {
     <React.Fragment>
       <Grid container spacing={0}>
         <Grid item xs={12} md={4} lg={3}>
+          <Backdrop className={classes.backdrop} open={loading}>
+            <CircularProgress color="inherit" />
+          </Backdrop>
           <Button
             variant="contained"
             color="primary"
@@ -309,6 +322,7 @@ CompanyStructure.propTypes = {
   // partyGroupData: PropTypes.oneOfType(PropTypes.array, PropTypes.bool),
   DispatchgetSelectedPartyGroupAction: PropTypes.func,
   selectedPartyGroupData: PropTypes.oneOfType(PropTypes.object, PropTypes.bool),
+  openEditPartyDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -319,6 +333,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    openEditPartyDialogAction: evt =>
+      dispatch(Actions.openEditPartyDialog(evt)),
     dispatchOpenNewPartyGroupAction: () =>
       dispatch(Actions.openNewPartyGroupDialog()),
     openEditPartyGroupAction: evt =>

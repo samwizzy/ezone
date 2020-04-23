@@ -7,6 +7,8 @@ import produce from 'immer';
 import * as Constants from './constants';
 
 export const initialState = {
+  updatePositionData: {},
+  updatePartyData: {},
   allEmployees: false,
   addEmployeeToPositionData: false,
   allPositions: false,
@@ -173,6 +175,30 @@ const companyStructurePageReducer = (state = initialState, action) =>
           },
         };
       }
+      case Constants.OPEN_EDIT_PARTY_DIALOG: {
+        return {
+          ...state,
+          newPartyDialog: {
+            type: 'edit',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_EDIT_PARTY_DIALOG: {
+        return {
+          ...state,
+          newPartyDialog: {
+            type: 'edit',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
       case Constants.OPEN_NEW_ROLE_DIALOG: {
         return {
           ...state,
@@ -313,6 +339,28 @@ const companyStructurePageReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
+      case Constants.UPDATE_PARTY: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          updatePartyData: action.payload,
+        };
+      }
+      case Constants.UPDATE_PARTY_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.UPDATE_PARTY_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
       case Constants.SELECTED_PARTY: {
         return {
           ...state,
@@ -344,6 +392,30 @@ const companyStructurePageReducer = (state = initialState, action) =>
           },
         };
       }
+      case Constants.OPEN_EDIT_PARTIES_DIALOG: {
+        return {
+          ...state,
+          newPartiesDialog: {
+            type: 'edit',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_EDIT_PARTIES_DIALOG: {
+        return {
+          ...state,
+          newPartiesDialog: {
+            type: 'edit',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
       case Constants.CREATE_NEW_PARTIES: {
         return {
           ...state,
@@ -360,6 +432,28 @@ const companyStructurePageReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_NEW_PARTIES_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.UPDATE_PARTIES: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          updatePartiesData: action.payload,
+        };
+      }
+      case Constants.UPDATE_PARTIES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.UPDATE_PARTIES_ERROR: {
         return {
           ...state,
           loading: false,
@@ -390,6 +484,30 @@ const companyStructurePageReducer = (state = initialState, action) =>
           },
         };
       }
+      case Constants.OPEN_EDIT_POSITION_DIALOG: {
+        return {
+          ...state,
+          newPositionDialog: {
+            type: 'edit',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_EDIT_POSITION_DIALOG: {
+        return {
+          ...state,
+          newPositionDialog: {
+            type: 'edit',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
       case Constants.CREATE_NEW_POSITION: {
         return {
           ...state,
@@ -406,6 +524,28 @@ const companyStructurePageReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_NEW_POSITION_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.UPDATE_POSITION: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          updatePositionData: action.payload,
+        };
+      }
+      case Constants.UPDATE_POSITION_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.UPDATE_POSITION_ERROR: {
         return {
           ...state,
           loading: false,
