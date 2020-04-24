@@ -119,8 +119,6 @@ const PositionPage = props => {
 
   const { params } = match;
 
-  console.log(params, 'position params');
-
   useEffect(() => {
     dispatchGetPartyGroups();
     dispatchGetAllUsersAction();
@@ -151,14 +149,9 @@ const PositionPage = props => {
     }
   }
 
-  console.log(partyGroupData, 'partyGroupData');
-
   if (party === undefined) {
     return <LoadingIndicator />;
   }
-
-  // console.log(allPositions, 'allPositions');
-  console.log(party, 'selectedPartyGroupData party');
 
   if (!partyGroupData.length) {
     return (
@@ -231,7 +224,7 @@ const PositionPage = props => {
     ),
   };
 
-  console.log(selectedPartyGroupData, 'position selected value');
+  // console.log(selectedPartyGroupData, 'position selected value');
   return (
     <React.Fragment>
       <EmployeeDialog params={params} />

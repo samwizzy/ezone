@@ -42,10 +42,10 @@ export const BasicInfo = props => {
   const canSubmitForm = () => {
     const { firstName, lastName, phoneNumber, emailAddress } = form;
     return (
-      firstName.length > 0 &&
-      lastName.length > 0 &&
-      phoneNumber.length > 0 &&
-      emailAddress.length > 0
+      firstName !== null &&
+      lastName !== null &&
+      phoneNumber !== null &&
+      emailAddress !== null
     );
   };
 
@@ -57,9 +57,10 @@ export const BasicInfo = props => {
 
   const contactType = [
     { id: '1', name: 'CUSTOMER' },
-    { id: '2', name: 'VENDORS' },
+    { id: '2', name: 'VENDOR' },
   ];
 
+  console.log(form, 'form');
   return (
     <div>
       <AppBar className={classes.appBar}>
@@ -98,10 +99,10 @@ export const BasicInfo = props => {
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <TextField
-                name="emailAddress"
-                label="Email"
+                name="phoneNumber"
+                label="Mobile Number"
                 id="outlined-title"
                 fullWidth
                 variant="outlined"
@@ -113,8 +114,8 @@ export const BasicInfo = props => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                name="phoneNumber"
-                label="Phone Number"
+                name="emailAddress"
+                label="Email"
                 id="outlined-title"
                 fullWidth
                 variant="outlined"
@@ -184,7 +185,7 @@ export const BasicInfo = props => {
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={closeNewContactDialog} variant="outlined" color="primary">
+        <Button onClick={closeNewContactDialog} color="primary">
           Cancel
         </Button>
         <Button

@@ -2,6 +2,8 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
+  Backdrop,
+  CircularProgress,
   makeStyles,
   ListItem,
   Grid,
@@ -57,6 +59,13 @@ const useStyles = makeStyles(theme => ({
   table: {
     margin: theme.spacing(1),
   },
+  marginButton: {
+    margin: theme.spacing(1),
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
 const NoPartyGroup = props => {
@@ -91,6 +100,9 @@ const PartyPage = props => {
   useInjectSaga({ key: 'companyStructurePage', saga });
 
   const {
+    getAllTagsAction,
+    openEditPositionDialogAction,
+    openEditPartiesDialogAction,
     dispatchOpenNewPositionAction,
     dispatchGetAllUsersAction,
     dispatchGetPartyGroups,
@@ -106,6 +118,7 @@ const PartyPage = props => {
   useEffect(() => {
     dispatchGetPartyGroups();
     dispatchGetAllUsersAction();
+    getAllTagsAction();
   }, []);
   const classes = useStyles();
 
@@ -165,6 +178,36 @@ const PartyPage = props => {
         sort: false,
       },
     },
+    {
+      name: 'tag.name',
+      label: 'Tag',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: 'id',
+      label: 'Action',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: value => {
+          const par = party.parties.find(part => value === part.id);
+          return (
+            <Button
+              variant="outlined"
+              size="small"
+              color="primary"
+              className={classes.marginButton}
+              onClick={() => openEditPartiesDialogAction(par)}
+            >
+              Edit
+            </Button>
+          );
+        },
+      },
+    },
   ];
 
   const options1 = {
@@ -221,17 +264,33 @@ const PartyPage = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
+          // if (party && party.positions) {
+          const positions = party.positions.find(posi => value === posi.id);
           return (
-            <Button
-              variant="contained"
-              color="primary"
-              href={`/organization/company/structure/position/${
-                params.partyGroupId
-              }/${params.partyId}/${value}`}
-            >
-              View
-            </Button>
+            <div>
+              <Button
+                variant="outlined"
+                size="small"
+                color="primary"
+                className={classes.marginButton}
+                onClick={() => openEditPositionDialogAction(positions)}
+              >
+                Edit
+              </Button>
+              <Button
+                variant="outlined"
+                size="small"
+                color="primary"
+                className={classes.marginButton}
+                href={`/organization/company/structure/position/${
+                  params.partyGroupId
+                }/${params.partyId}/${value}`}
+              >
+                View
+              </Button>
+            </div>
           );
+          // }
         },
       },
     },
@@ -260,6 +319,9 @@ const PartyPage = props => {
   return (
     <React.Fragment>
       <Grid container spacing={0}>
+        <Backdrop className={classes.backdrop} open={loading}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
         <Grid item xs={12} md={6} lg={6}>
           <div className={classes.table}>
             {party && party.parties && (
@@ -307,6 +369,9 @@ PartyPage.propTypes = {
   DispatchgetSelectedPartyGroupAction: PropTypes.func,
   selectedPartyGroupData: PropTypes.object,
   allPositions: PropTypes.object,
+  openEditPartiesDialogAction: PropTypes.func,
+  openEditPositionDialogAction: PropTypes.func,
+  getAllTagsAction: PropTypes.func,
   // selectedPartyGroupData: PropTypes.oneOfType(PropTypes.object, PropTypes.bool),
   // allPositions: PropTypes.oneOfType(PropTypes.object, PropTypes.bool),
 };
@@ -316,10 +381,15 @@ const mapStateToProps = createStructuredSelector({
   partyGroupData: Selectors.makeSelectPartyGroupData(),
   selectedPartyGroupData: Selectors.makeSelectSelectedPartyGroupData(),
   allPositions: Selectors.makeSelectGetAllPositions(),
+  allTags: Selectors.makeSelectGetAllTags(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    openEditPartiesDialogAction: evt =>
+      dispatch(Actions.openEditPartiesDialog(evt)),
+    openEditPositionDialogAction: evt =>
+      dispatch(Actions.openEditPositionDialog(evt)),
     dispatchOpenNewPositionAction: () =>
       dispatch(Actions.openNewPositionDialog()),
     dispatchOpenNewPartiesAction: () =>
@@ -328,6 +398,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(Actions.getSelectedPartyGroupAction(evt)),
     dispatchGetPartyGroups: () => dispatch(Actions.getPartyGroupAction()),
     dispatchGetAllUsersAction: () => dispatch(Actions.getAllUsers()),
+    getAllTagsAction: () => dispatch(Actions.getAllTags()),
   };
 }
 

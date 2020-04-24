@@ -8,7 +8,6 @@ import { useDropzone } from 'react-dropzone';
 import RootRef from '@material-ui/core/RootRef';
 import styled from 'styled-components';
 import _ from 'lodash';
-import * as AppSelectors from '../../App/selectors';
 
 const getColor = props => {
   if (props.isDragAccept) {
@@ -70,9 +69,9 @@ const Container = styled.div`
   transition: border 0.24s ease-in-out;
 `;
 
-function PaperDropzone(props) {
+const PaperDropzone = props => {
   const [files, setFiles] = useState([]);
-  const { uploadFileAction, currentUser } = props;
+  const { uploadFileAction } = props;
   const [form, setForm] = useState({
     attachments: [],
   });
@@ -102,13 +101,14 @@ function PaperDropzone(props) {
         ),
       );
 
-      const image = {};
-      _.set(image, 'orgId', currentUser.organisation.orgId);
-      _.set(image, 'fileName', acceptedFiles[0].name);
-      _.set(image, 'format', acceptedFiles[0].type);
-      _.set(image, 'size', acceptedFiles[0].size);
-      getBase64(acceptedFiles[0], result => _.set(image, 'file', result));
-      uploadFileAction(image);
+      // const image = {};
+      // _.set(image, 'fileName', acceptedFiles[0].name);
+      // _.set(image, 'format', acceptedFiles[0].type);
+      // _.set(image, 'size', acceptedFiles[0].size);
+      // getBase64(acceptedFiles[0], result => _.set(image, 'file', result));
+      // uploadFileAction(image);
+
+      getBase64(acceptedFiles[0], result => uploadFileAction(result));
     },
   });
 
@@ -144,7 +144,6 @@ function PaperDropzone(props) {
   // console.log(acceptedFiles, 'References library');
   // console.log(inputRef, "inputRef library")
   // console.log(files, 'files state library');
-  console.log(form, 'form state form');
 
   return (
     <RootRef rootRef={ref}>
@@ -171,13 +170,10 @@ function PaperDropzone(props) {
 }
 
 PaperDropzone.propTypes = {
-  currentUser: PropTypes.object,
   uploadFileAction: PropTypes.func,
 };
 
-const mapStateToProps = createStructuredSelector({
-  currentUser: AppSelectors.makeSelectCurrentUser(),
-});
+const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
   return {

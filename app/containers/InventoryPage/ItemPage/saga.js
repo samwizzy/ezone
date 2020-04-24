@@ -127,6 +127,8 @@ export function* createNewTransferOrder() {
     Selectors.makeSelectTransferOrderDetails(),
   );
   createNewTransferOrderDetails.orgId = currentUser.organisation.orgId;
+
+  console.log(createNewTransferOrderDetails, 'createNewTransferOrderDetails');
   const requestURL = `${Endpoints.CreateNewTransferOrdersApi}`;
   try {
     const createNewTransferOrderResponse = yield call(request, requestURL, {

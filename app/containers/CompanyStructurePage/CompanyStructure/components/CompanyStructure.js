@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(5),
     "& .MuiCardActions-root": {
       justifyContent: "center"
-  }
+    }
   },
   button: {
     borderRadius: theme.shape.borderRadius * 5,
@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 
 const NoPartyGroup = props => {
   const classes = useStyles();
-  const { dispatchOpenNewPartyGroupAction } = props;
+  const { dispatchOpenNewPartyGroupAction, loading } = props;
 
   return (
     <React.Fragment>
@@ -83,6 +83,11 @@ const NoPartyGroup = props => {
           </Card>
         </Grid>
       </Grid>
+      
+      <Backdrop className={classes.backdrop} open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+        
     </React.Fragment>
   );
 };
@@ -95,6 +100,7 @@ const ListItemLink = props => <ListItem button component="a" {...props} />;
 
 const CompanyStructure = props => {
   const {
+    openEditPartyDialogAction,
     openEditPartyGroupAction,
     dispatchGetAllUsersAction,
     selectedPartyGroupData,
@@ -106,7 +112,7 @@ const CompanyStructure = props => {
   } = props;
 
   useEffect(() => {
-    dispatchGetAllUsersAction();
+    // dispatchGetAllUsersAction();
   }, []);
   const classes = useStyles();
 
@@ -138,22 +144,52 @@ const CompanyStructure = props => {
       },
     },
     {
+      name: 'tag.name',
+      label: 'Tag',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
       name: 'id',
       label: 'Action',
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => (
-          <Button
-            variant="contained"
-            color="primary"
-            href={`/organization/company/structure/party/${
-              selectedPartyGroupData.id
-            }/${value}`}
-          >
-            View
-          </Button>
-        ),
+        customBodyRender: value => {
+          const par = selectedPartyGroupData.parties.find(
+            part => value === part.id,
+          );
+          if (value === '') {
+            return '';
+          }
+
+          return (
+            <div>
+              <Button
+                variant="outlined"
+                size="small"
+                color="primary"
+                className={classes.marginButton}
+                onClick={() => openEditPartyDialogAction(par)}
+              >
+                Edit
+              </Button>
+              <Button
+                variant="outlined"
+                size="small"
+                color="primary"
+                className={classes.marginButton}
+                href={`/organization/company/structure/party/${
+                  selectedPartyGroupData.id
+                }/${value}`}
+              >
+                View
+              </Button>
+            </div>
+          );
+        },
       },
     },
   ];
@@ -171,32 +207,39 @@ const CompanyStructure = props => {
         color="primary"
         size="small"
         startIcon={<Add />}
-        onClick={() => dispatchOpenNewPartyAction(selectedPartyGroupData)}
+        onClick={() => dispatchOpenNewPartyAction({ partyGroupId: selectedPartyGroupData.id} )}
       >
         Add New Party
       </Button>
     ),
   };
 
-  // console.log(partyGroupData, 'partyGroupData');
-  // console.log(loading, 'loading');
-
   if (loading) {
-    return <LoadingIndicator />;
+    // return <LoadingIndicator />;
+    return (
+      <Backdrop className={classes.backdrop} open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    );
   }
 
   if (!partyGroupData.length) {
     return (
       <NoPartyGroup
+        loading={loading}
         dispatchOpenNewPartyGroupAction={dispatchOpenNewPartyGroupAction}
       />
     );
   }
 
+  // console.log(selectedPartyGroupData, 'selectedPartyGroupData');
   return (
     <React.Fragment>
       <Grid container spacing={0}>
         <Grid item xs={12} md={4} lg={3}>
+          <Backdrop className={classes.backdrop} open={loading}>
+            <CircularProgress color="inherit" />
+          </Backdrop>
           <Button
             variant="contained"
             color="primary"
@@ -216,9 +259,17 @@ const CompanyStructure = props => {
                   <ListItemSecondaryAction
                     onClick={() => openEditPartyGroupAction(data)}
                   >
-                    <IconButton edge="end" aria-label="comments">
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      className={classes.marginButton}
+                    >
+                      Edit
+                    </Button>
+                    {/* <IconButton edge="end" aria-label="comments">
                       <Edit />
-                    </IconButton>
+                    </IconButton> */}
                   </ListItemSecondaryAction>
                 </ListItemLink>
               </List>
@@ -246,9 +297,11 @@ CompanyStructure.propTypes = {
   loading: PropTypes.bool,
   dispatchOpenNewPartyGroupAction: PropTypes.func,
   dispatchOpenNewPartyAction: PropTypes.func,
-  partyGroupData: PropTypes.oneOfType(PropTypes.array, PropTypes.bool),
+  partyGroupData: PropTypes.array,
+  // partyGroupData: PropTypes.oneOfType(PropTypes.array, PropTypes.bool),
   DispatchgetSelectedPartyGroupAction: PropTypes.func,
   selectedPartyGroupData: PropTypes.oneOfType(PropTypes.object, PropTypes.bool),
+  openEditPartyDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -259,6 +312,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    openEditPartyDialogAction: evt =>
+      dispatch(Actions.openEditPartyDialog(evt)),
     dispatchOpenNewPartyGroupAction: () =>
       dispatch(Actions.openNewPartyGroupDialog()),
     openEditPartyGroupAction: evt =>

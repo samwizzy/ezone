@@ -51,8 +51,6 @@ const EmployeeDialog = props => {
     params,
   } = props;
 
-  console.log(params, 'params');
-
   const classes = useStyles();
   const [values, setValues] = React.useState({
     positionId: params.positionId,
@@ -98,7 +96,9 @@ const EmployeeDialog = props => {
               <Autocomplete
                 id="combo-partyHead"
                 options={AllUserData}
-                getOptionLabel={option => option.firstName}
+                getOptionLabel={option =>
+                  `${option.firstName} ${option.lastName}`
+                }
                 onChange={(evt, ve) => handleAddEmployeeChange(evt, ve)}
                 renderInput={param => (
                   <TextField

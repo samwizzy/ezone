@@ -4,28 +4,33 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
+import * as Actions from './actions';
 import makeSelectCrm from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from '../messages';
 import ContactGroupsList from './components/ContactGroupsList';
 import ContactGroupsDetails from './components/ContactGroupsDetails';
-import ModuleLayout from './../components/ModuleLayout';
+import ModuleLayout from '../components/ModuleLayout';
 
 export function CrmContactGroups(props) {
   useInjectReducer({ key: 'crmContactGroups', reducer });
   useInjectSaga({ key: 'crmContactGroups', saga });
-  const { params } = props.match
+  const { params } = props.match;
+
+  const { getAllContactsGroupAction } = props;
+  useEffect(() => {
+    getAllContactsGroupAction();
+  }, []);
 
   return (
     <div>
@@ -35,9 +40,7 @@ export function CrmContactGroups(props) {
       </Helmet>
 
       <ModuleLayout>
-        { params.contactId?
-        <ContactGroupsDetails /> : <ContactGroupsList />
-        }
+        {params.contactId ? <ContactGroupsDetails /> : <ContactGroupsList />}
       </ModuleLayout>
     </div>
   );
@@ -45,14 +48,16 @@ export function CrmContactGroups(props) {
 
 CrmContactGroups.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  getAllContactsGroupAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  crmContactGroups: makeSelectCrm(),
+  // crmContactGroups: makeSelectCrm(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    getAllContactsGroupAction: () => dispatch(Actions.getAllContactsGroup()),
     dispatch,
   };
 }

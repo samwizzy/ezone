@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import {
+  Backdrop,
+  CircularProgress,
   Divider,
   TextField,
   makeStyles,
@@ -34,6 +36,10 @@ const useStyles = makeStyles(theme => ({
   menu: {
     width: 200,
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -42,6 +48,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const PositionDialog = props => {
   const {
+    updatePositionAction,
     loading,
     partyGroupData,
     newPositionDialog,
@@ -58,6 +65,10 @@ const PositionDialog = props => {
     description: '',
     party_id: params.partyId,
   });
+
+  useEffect(() => {
+    setValues({ ...newPositionDialog.data });
+  }, [newPositionDialog.data]);
 
   const handleChange = name => event => {
     setValues({
@@ -80,6 +91,9 @@ const PositionDialog = props => {
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
       >
+        <Backdrop className={classes.backdrop} open={loading}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
         <DialogTitle id="alert-dialog-slide-title">
           {newPositionDialog.type === 'new' ? 'New Position' : 'Edit Position'}
         </DialogTitle>
@@ -87,41 +101,50 @@ const PositionDialog = props => {
         <Divider />
 
         <DialogContent>
-          {newPositionDialog.type === 'new' ? (
-            <div>
-              <TextField
-                id="subgroup-name"
-                label="Name"
-                className={classes.textField}
-                value={values.name}
-                variant="outlined"
-                onChange={handleChange('name')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="description"
-                label="Description"
-                className={classes.textField}
-                value={values.description}
-                onChange={handleChange('description')}
-                margin="normal"
-                variant="outlined"
-                fullWidth
-                multiline
-                rows="3"
-              />
-            </div>
-          ) : null}
+          <div>
+            <TextField
+              id="subgroup-name"
+              label="Name"
+              className={classes.textField}
+              value={values.name ? values.name : ''}
+              variant="outlined"
+              onChange={handleChange('name')}
+              margin="normal"
+              fullWidth
+            />
+            <TextField
+              id="description"
+              label="Description"
+              className={classes.textField}
+              value={values.description ? values.description : ''}
+              onChange={handleChange('description')}
+              margin="normal"
+              variant="outlined"
+              fullWidth
+              multiline
+              rows="3"
+            />
+          </div>
         </DialogContent>
 
         <DialogActions>
-          {loading ? (
-            <LoadingIndicator />
-          ) : (
+          {newPositionDialog.type === 'new' ? (
             <Button
               onClick={() => {
                 dispatchCreateNewPositionAction(values);
+                setValues('');
+              }}
+              color="primary"
+              variant="contained"
+              disabled={!canBeSubmitted()}
+            >
+              {newPositionDialog.type === 'new' ? 'Save' : 'Update'}
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                updatePositionAction(values);
+                setValues('');
               }}
               color="primary"
               variant="contained"
@@ -144,6 +167,7 @@ const PositionDialog = props => {
 };
 
 PositionDialog.propTypes = {
+  updatePositionAction: PropTypes.func,
   params: PropTypes.object,
   dispatchCloseNewPositionDialog: PropTypes.func,
   newPositionDialog: PropTypes.object,
@@ -166,6 +190,8 @@ function mapDispatchToProps(dispatch) {
       dispatch(Actions.closeNewPositionDialog()),
     dispatchCreateNewPositionAction: evt =>
       dispatch(Actions.createNewPosition(evt)),
+      updatePositionAction: evt =>
+      dispatch(Actions.updatePosition(evt)),
     dispatch,
   };
 }

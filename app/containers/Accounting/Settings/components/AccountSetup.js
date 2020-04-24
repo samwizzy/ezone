@@ -39,7 +39,7 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../../App/selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-import Logo from '../../../../images/Logo.svg';
+// import Logo from '../../../../images/Logo.svg';
 
 
 const useStyles = makeStyles(theme => ({
@@ -160,7 +160,9 @@ const AccountSetup = props => {
               <Paper square elevation={0} className={classes.paper}>
                 <Box p={2} my={2} className={classes.box}>
                   <Typography variant="h4" color="textSecondary">
-                    Welcome To <img src={Logo} height="40" /> Accounting
+                    Welcome To 
+                    {/* <img src={Logo} height="40" />  */}
+                    Accounting
                   </Typography>
                 </Box>
                 <Box p={2} my={2} className={classes.box}>

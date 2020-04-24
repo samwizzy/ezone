@@ -41,7 +41,7 @@ export const UtilityInfo = props => {
 
   const canSubmitForm = () => {
     const { notes } = form;
-    return notes.length > 0 || notes.length == 0;
+    return notes !== null;
   };
 
   return (

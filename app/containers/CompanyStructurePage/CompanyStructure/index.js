@@ -29,12 +29,17 @@ import PartyPage from './components/PartyPage';
 import * as Actions from '../actions';
 
 export function CompanyStructurePage(props) {
-  const { dispatchGetPartyGroups, dispatchGetAllUsersAction } = props;
+  const {
+    dispatchGetPartyGroups,
+    dispatchGetAllUsersAction,
+    getAllTagsAction,
+  } = props;
 
   useInjectReducer({ key: 'companyStructurePage', reducer });
   useInjectSaga({ key: 'companyStructurePage', saga });
 
   useEffect(() => {
+    getAllTagsAction();
     dispatchGetPartyGroups();
     dispatchGetAllUsersAction();
   }, []);
@@ -60,6 +65,7 @@ export function CompanyStructurePage(props) {
 CompanyStructurePage.propTypes = {
   dispatchGetPartyGroups: PropTypes.func,
   dispatchGetAllUsersAction: PropTypes.func,
+  getAllTagsAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -70,6 +76,7 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatchGetPartyGroups: () => dispatch(Actions.getPartyGroupAction()),
     dispatchGetAllUsersAction: () => dispatch(Actions.getAllUsers()),
+    getAllTagsAction: () => dispatch(Actions.getAllTags()),
   };
 }
 
