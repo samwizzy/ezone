@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import {makeStyles} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import { compose } from 'redux';
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(2),
+    padding: theme.spacing(2)
   },
   active: { 
     backgroundColor: theme.palette.common.white,  
@@ -30,23 +30,10 @@ function ModuleLayout(props) {
   return (
     <div className={classes.root}>
       <MenuBar
-        navigations={
-          <React.Fragment>
-            <NavLink to="/dashboard/chats" activeClassName={classes.active}>
-              Chats
-            </NavLink>
-            <NavLink to="/dashboard/tasks" activeClassName={classes.active}>
-              Tasks
-            </NavLink>
-            <NavLink to="/dashboard/folders" activeClassName={classes.active}>
-              Files
-            </NavLink>
-          </React.Fragment>
-        }
         content={
-          <div className={classes.content}>
-            {props.children}
-          </div>
+        <div className={classes.content}>
+          {props.children}
+        </div>
         }
       />
     </div>

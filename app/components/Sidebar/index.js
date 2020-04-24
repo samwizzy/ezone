@@ -11,6 +11,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Logo from '../../images/logo.svg';
 import AppSidebar from './components/AppSidebar';
+import Footer from '../Footer';
 import sidebarImage from '../../images/sidebarImage.jpg';
 
 const drawerWidth = 240;
@@ -132,6 +133,7 @@ function MiniDrawer(props) {
       </Drawer>
       <main className={classes.content}>
         {props.content}
+        <Footer />
       </main>
     </div>
   );

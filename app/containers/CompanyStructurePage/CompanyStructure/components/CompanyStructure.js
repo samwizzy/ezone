@@ -3,6 +3,7 @@ import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
+  Card, CardContent, CardActions,
   List,
   ListItem,
   ListItemText,
@@ -14,8 +15,7 @@ import {
   Icon,
   ListItemSecondaryAction,
   IconButton,
-  Backdrop,
-  CircularProgress,
+  Paper
 } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import MUIDataTable from 'mui-datatables';
@@ -27,48 +27,23 @@ import LoadingIndicator from '../../../../components/LoadingIndicator';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 
-const drawerWidth = '100%';
-
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1,
-    textAlign: 'center',
-    height: '80%',
-    // height: '100vh',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    minHeight: `calc(100vh - 120px)`,
+  },
+  card: {
+    padding: theme.spacing(5),
+    "& .MuiCardActions-root": {
+      justifyContent: "center"
+  }
   },
   button: {
-    borderRadius: '20px',
-    margin: theme.spacing(5, 0),
-    padding: theme.spacing(1, 15),
-  },
-  paper: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: drawerWidth, // works better without position:fixed
-    flexShrink: 0,
-    overflowY: 'auto',
-    height: '600px',
-    '& .MuiListSubheader-root': {
-      backgroundColor: theme.palette.common.white,
-    },
-    '&::-webkit-scrollbar': {
-      width: '6px',
-      backgroundColor: '#F5F5F5',
-    },
-    '&::-webkit-scrollbar-track': {
-      '-webkitBoxShadow': 'inset 0 0 6px rgba(0,0,0,0.3)',
-      borderRadius: '10px',
-    },
-    '&::-webkit-scrollbar-thumb': {
-      borderRadius: '10px',
-      '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.5)',
-      backgroundColor: theme.palette.primary.main,
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: '#fff',
-  },
+    borderRadius: theme.shape.borderRadius * 5,
+  }
 }));
 
 const NoPartyGroup = props => {
@@ -83,22 +58,29 @@ const NoPartyGroup = props => {
         alignItems="center"
         className={classes.root}
       >
-        <Grid item xs={12}>
-          <Box>
-            <Typography variant="h6">
-              You Do Not have company structure
-            </Typography>
+        <Grid item>
+          <Card square className={classes.card}>
+            <CardContent>
+              <Box my={2}>
+                <Typography variant="h6" component="h1" gutterBottom>
+                  You have no company structure yet
+                </Typography>
+              </Box>
+            </CardContent>
 
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => dispatchOpenNewPartyGroupAction()}
-              className={classes.button}
-              disableElevation
-            >
-              <Add /> Create Party Group
-            </Button>
-          </Box>
+            <CardActions>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => dispatchOpenNewPartyGroupAction()}
+                className={classes.button}
+                disableElevation
+                startIcon={<Add />}
+              >
+                Create Party Group
+              </Button>
+            </CardActions>
+          </Card>
         </Grid>
       </Grid>
     </React.Fragment>

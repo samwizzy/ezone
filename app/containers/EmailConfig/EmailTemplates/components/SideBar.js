@@ -95,7 +95,7 @@ const SideBar = props => {
 
   const handleSelectedById = url => {
     setSelectedIndex(url)
-    props.history.push({pathname: '/email/template/' + url})
+    props.history.push({pathname: '/settings/email/template/' + url})
   }
 
   const drawer = (

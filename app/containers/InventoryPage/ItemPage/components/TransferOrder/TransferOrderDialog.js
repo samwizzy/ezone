@@ -6,20 +6,24 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
 import {
+  makeStyles,
+  Box,
+  Button,
   Card,
   CardContent,
   CardActions,
+  Divider,
+  Grid,
+  Paper,
   Table,
   TableHead,
   TableBody,
   TableFooter,
   TableRow,
   TableCell,
-  Paper,
   TextField,
-  makeStyles,
-  Button,
-  Grid,
+  Toolbar,
+  Typography
 } from '@material-ui/core';
 import {
   MuiPickersUtilsProvider,
@@ -43,6 +47,16 @@ const useStyles = makeStyles(theme => ({
       padding: theme.spacing(2),
       borderTop: `1px solid ${theme.palette.divider}`
     }
+  },
+  textField: {},
+  formTable: {
+    width: 500,
+    "& th.MuiTableCell-root": {
+      fontWeight: theme.typography.fontWeightMedium
+    },
+    "& .MuiTableCell-root": {
+      borderBottom: "none !important"
+    },
   },
   table: {
     marginTop: theme.spacing(2),
@@ -174,102 +188,132 @@ const TransferOrderDialog = props => {
   return (
     <div>
       <Card elevation={0} className={classes.card}>
+        <Toolbar>
+          <Typography variant="h6" color="textPrimary">New Transfer Order</Typography>
+        </Toolbar>
+        <Divider />
+
         <CardContent>
           <Grid container spacing={2}>
             {transferOrderDialog.type === 'new' ? (
               <React.Fragment>
                 <Grid item xs={12}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-referenceNumber"
-                        label="Reference Number"
-                        value={values.referenceNumber}
-                        onChange={handleChange('referenceNumber')}
-                        variant="outlined"
-                        className={classes.textField}
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-transfer-order"
-                        label="Transfer Order"
-                        value={values.transferOrder}
-                        onChange={handleChange('transferOrder')}
-                        variant="outlined"
-                        className={classes.textField}
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker
-                          autoOk
-                          variant="inline"
-                          inputVariant="outlined"
-                          label="Date"
-                          format="dd/MM/yyyy"
-                          value={selectedDate}
-                          InputAdornmentProps={{ position: 'end' }}
-                          onChange={date => handleDateChange(date)}
-                          className={classes.textField}
-                          fullWidth
-                        />
-                      </MuiPickersUtilsProvider>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        id="outlined-reason"
-                        label="Reason"
-                        value={values.reason}
-                        onChange={handleChange('reason')}
-                        fullWidth
-                        variant="outlined"
-                        className={classes.textField}
-                        multiline
-                        rows={2}
-                      />
-                    </Grid>
-                  </Grid>
+                  <Table size="small" className={classes.formTable} style={{width: 500}}>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell>Reference Number</TableCell>
+                        <TableCell>
+                          <TextField
+                            id="outlined-referenceNumber"
+                            label="Reference Number"
+                            value={values.referenceNumber}
+                            style={{ width: 300 }}
+                            onChange={handleChange('referenceNumber')}
+                            variant="outlined"
+                            className={classes.textField}
+                          />
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Transfer Order</TableCell>
+                        <TableCell>
+                          <TextField
+                            id="outlined-transfer-order"
+                            label="Transfer Order"
+                            value={values.transferOrder}
+                            style={{ width: 300 }}
+                            onChange={handleChange('transferOrder')}
+                            variant="outlined"
+                            className={classes.textField}
+                          />
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Selected Date</TableCell>
+                        <TableCell>
+                          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <KeyboardDatePicker
+                              autoOk
+                              variant="inline"
+                              inputVariant="outlined"
+                              style={{ width: 300 }}
+                              label="Date"
+                              format="dd/MM/yyyy"
+                              value={selectedDate}
+                              InputAdornmentProps={{ position: 'end' }}
+                              onChange={date => handleDateChange(date)}
+                              className={classes.textField}
+                            />
+                          </MuiPickersUtilsProvider>
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Source Warehouse</TableCell>
+                        <TableCell>
+                          <Autocomplete
+                            id="combo-source"
+                            options={getAllWarehouses}
+                            getOptionLabel={option => option.name}
+                            onChange={(evt, ve) => handleSourceChange(evt, ve)}
+                            style={{ width: 300 }}
+                            renderInput={params => (
+                              <TextField
+                                {...params}
+                                label="Source Warehouse"
+                                variant="outlined"
+                                placeholder="Source Warehouse"
+                                className={classes.textField}
+                              />
+                            )}
+                          />
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Destination Warehouse</TableCell>
+                        <TableCell>
+                          <Autocomplete
+                            id="combo-destination"
+                            options={getAllWarehouses}
+                            getOptionLabel={option => option.name}
+                            onChange={(evt, ve) => handleDestinationChange(evt, ve)}
+                            style={{ width: 300 }}
+                            renderInput={params => (
+                              <TextField
+                                {...params}
+                                label="Destination Warehouse"
+                                variant="outlined"
+                                placeholder="Destination Warehouse"
+                                className={classes.textField}
+                              />
+                            )}
+                          />
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Reason</TableCell>
+                        <TableCell>
+                          <TextField
+                            id="outlined-reason"
+                            label="Reason"
+                            value={values.reason}
+                            onChange={handleChange('reason')}
+                            variant="outlined"
+                            style={{width: 300}}
+                            multiline
+                            rows={3}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
                 </Grid>
                 <Grid item xs={12}>
                   <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <Autocomplete
-                        id="combo-source"
-                        options={getAllWarehouses}
-                        getOptionLabel={option => option.name}
-                        onChange={(evt, ve) => handleSourceChange(evt, ve)}
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            label="Source Warehouse"
-                            variant="outlined"
-                            placeholder="Source Warehouse"
-                            fullWidth
-                            className={classes.textField}
-                          />
-                        )}
-                      />
+                    <Grid item xs={3}>
+                      
                     </Grid>
-                    <Grid item xs={6}>
-                      <Autocomplete
-                        id="combo-destination"
-                        options={getAllWarehouses}
-                        getOptionLabel={option => option.name}
-                        onChange={(evt, ve) => handleDestinationChange(evt, ve)}
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            label="Destination Warehouse"
-                            variant="outlined"
-                            placeholder="Destination Warehouse"
-                            fullWidth
-                            className={classes.textField}
-                          />
-                        )}
-                      />
+                    <Grid item xs={3}>
+                      
                     </Grid>
                   </Grid>
                 </Grid>

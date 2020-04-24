@@ -7,11 +7,10 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundColor: '#344655',
-    display: 'flex',
+    flexGrow: 1,
+    backgroundColor: theme.palette.grey[300],
+    color: theme.palette.text.secondary,
     [theme.breakpoints.up('sm')]: {
-      // width: '100%',
-      marginLeft: theme.spacing(3),
     },
   },
   footer: {
@@ -20,14 +19,9 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     padding: theme.spacing(2),
-    color: theme.palette.grey[400],
     boxShadow: theme.shadows[0],
     background: 'none',
-  },
-  header: {
-    color: theme.palette.grey[100],
-    padding: theme.spacing(0),
-  },
+  }
 }));
 
 function Footer() {
@@ -42,9 +36,8 @@ function Footer() {
               <Typography
                 variant="body2"
                 align="center"
-                className={classes.header}
               >
-                Copyright © 2019 Blue
+                Copyright © 2020 Ezone
               </Typography>
             </Paper>
           </Grid>

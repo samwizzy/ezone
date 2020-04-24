@@ -9,6 +9,7 @@ import {
   Card,
   CardContent,
   CardActions,
+  Divider,
   Table,
   TableHead,
   TableBody,
@@ -16,6 +17,7 @@ import {
   TableRow,
   TableCell,
   TextField,
+  Toolbar,
   makeStyles,
   Button,
   Typography,
@@ -45,6 +47,15 @@ const useStyles = makeStyles(theme => ({
   },
   grid: {
     marginBottom: theme.spacing(2),
+  },
+  formTable: {
+    width: 500,
+    "& th.MuiTableCell-root": {
+      fontWeight: theme.typography.fontWeightMedium
+    },
+    "& .MuiTableCell-root": {
+      borderBottom: "none !important"
+    },
   },
   table: {
     marginTop: theme.spacing(2),
@@ -169,81 +180,96 @@ const InventoryAdjustmentDialog = props => {
   return (
     <div className={classes.root}>
       <Card className={classes.card} elevation={0}>
+        <Toolbar>
+          <Typography
+            variant="h5"
+            color="textPrimary"
+            className={classes.title}
+          >
+            {inventoryAdjustDialog.type === 'new'
+              ? 'Inventory Adjustment'
+              : 'Edit Inventory Adjustment'}
+          </Typography>
+        </Toolbar>
+        <Divider />
+
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Typography
-                variant="h5"
-                color="textPrimary"
-                className={classes.title}
-              >
-                {inventoryAdjustDialog.type === 'new'
-                  ? 'Inventory Adjustment'
-                  : 'Edit Inventory Adjustment'}
-              </Typography>
-            </Grid>
-
-            <Grid item xs={12}>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextField
-                    id="outlined-transfer-order"
-                    label="Transfer Order"
-                    value={values.transferOrder}
-                    onChange={handleChange('transferOrder')}
-                    variant="outlined"
-                    className={classes.textField}
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                      autoOk
-                      variant="inline"
-                      inputVariant="outlined"
-                      label="Date"
-                      format="dd/MM/yyyy"
-                      value={selectedDate}
-                      InputAdornmentProps={{ position: 'end' }}
-                      onChange={date => handleDateChange(date)}
-                      className={classes.textField}
-                      fullWidth
-                    />
-                  </MuiPickersUtilsProvider>
-                </Grid>
-                <Grid item xs={6}>
-                  <Autocomplete
-                    id="combo-Source"
-                    options={getAllWarehouses}
-                    getOptionLabel={option => option.name}
-                    onChange={(evt, ve) => handleSourceChange(evt, ve)}
-                    renderInput={params => (
+              <Table container size="small" className={classes.formTable} spacing={2}>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Transfer Order</TableCell>
+                    <TableCell>
                       <TextField
-                        {...params}
-                        label="Source Warehouse"
+                        id="outlined-transfer-order"
+                        label="Transfer Order"
+                        style={{width: 300}}
+                        value={values.transferOrder}
+                        onChange={handleChange('transferOrder')}
                         variant="outlined"
-                        placeholder="Source Warehouse"
-                        fullWidth
                         className={classes.textField}
                       />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    id="outlined-reason"
-                    label="Reason"
-                    value={values.reason}
-                    onChange={handleChange('reason')}
-                    fullWidth
-                    variant="outlined"
-                    className={classes.textField}
-                    multiline
-                    rows={2}
-                  />
-                </Grid>
-              </Grid>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Date</TableCell>
+                    <TableCell>
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                          autoOk
+                          variant="inline"
+                          inputVariant="outlined"
+                          label="Date"
+                          style={{width: 300}}
+                          format="dd/MM/yyyy"
+                          value={selectedDate}
+                          InputAdornmentProps={{ position: 'end' }}
+                          onChange={date => handleDateChange(date)}
+                          className={classes.textField}
+                        />
+                      </MuiPickersUtilsProvider>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Source Warehouse</TableCell>
+                    <TableCell>
+                      <Autocomplete
+                        id="combo-Source"
+                        options={getAllWarehouses}
+                        getOptionLabel={option => option.name}
+                        onChange={(evt, ve) => handleSourceChange(evt, ve)}
+                        renderInput={params => (
+                          <TextField
+                            {...params}
+                            label="Source Warehouse"
+                            variant="outlined"
+                            style={{width: 300}}
+                            placeholder="Source Warehouse"
+                            className={classes.textField}
+                          />
+                        )}
+                      />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Reason</TableCell>
+                    <TableCell>
+                      <TextField
+                        id="outlined-reason"
+                        label="Reason"
+                        value={values.reason}
+                        style={{width: 300}}
+                        onChange={handleChange('reason')}
+                        variant="outlined"
+                        className={classes.textField}
+                        multiline
+                        rows={3}
+                      />
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
             </Grid>
 
             <Grid item xs={12}>

@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import {
   makeStyles,
   List,
@@ -8,8 +9,11 @@ import {
   Button,
   Menu,
   MenuItem,
+  Grid,
+  Tooltip
 } from '@material-ui/core';
 
+import AddIcon from '@material-ui/icons/Add';
 import MUIDataTable from 'mui-datatables';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
@@ -17,13 +21,25 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import LoadingIndicator from '../../../components/LoadingIndicator';
-import { AddButton } from './AddButton';
-
+// import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+  },
+  flex: {
+    display: "flex",
+    alignItems: "center",
+    alignContent: "center",
+  }, 
+  table: {
+    marginTop: theme.spacing(2),
+    '& .MuiTableCell-body': {
+      fontSize: theme.typography.fontSize - 1,
+    },
+    '& .MuiTableRow-root:hover': {
+      cursor: 'pointer'
+    },
   },
   datatable: {
     '& .MuiTableRow-root:hover': {
@@ -40,19 +56,36 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
-  }
+  },
+  cardRoot: {
+    maxWidth: '100%',
+  },
+  media: {
+    height: 140,
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
-const WorkOrderList = props => {
+const BudgetingList = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [account, setAccount] = React.useState('');
 
-  const handleClick = (event, id) => {
-    setAnchorEl(event.currentTarget);
-    console.log("id value is -> ", id);
+  const {
+    loading,
+    history,
+		openNewBankAccountDialogAction,
+		editOpenBankAccountDialogAction,
+    bankAccountData,
+  } = props;
 
-    const selectedAccount = listOfWorkOrderData && listOfWorkOrderData.find(acc => id === acc.id);
+  const handleClick = (event, id) => {
+    console.log("id value -> ", id);
+    setAnchorEl(event.currentTarget);
+    const selectedAccount = bankAccountData && bankAccountData.find(acc => id === acc.id);
     setAccount(selectedAccount);
   };
 
@@ -60,77 +93,55 @@ const WorkOrderList = props => {
     setAnchorEl(null);
   };
 
-  const {
-    loading,
-    openNewWorkOrderDialogAction,
-    editOpenWorkOrderDialogAction,
-    deleteWorkOrderAction,
-    openVendorDialogAction,
-    listOfWorkOrderData,
-  } = props;
-
-
-  console.log('listOfWorkOrderData--> ', listOfWorkOrderData);
-
+  
   const columns = [
     {
-      name: 'Id',
-      label: 'S/N',
-      options: {
-        filter: true,
-        customBodyRender: (value, tableMeta) => {
-          if (value === '') {
-            return '';
-          }
-          return (
-            <FormControlLabel
-              label={tableMeta.rowIndex + 1}
-              control={<Icon />}
-            />
-          );
-        },
-      },
-    },
-    {
-      name: 'status',
-      label: 'Status',
+      name: 'budgetName',
+      label: 'Budget Name',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'cost',
-      label: 'Cost',
+      name: 'year',
+      label: 'Financial Year',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'amountPaid',
-      label: 'Amount Paid',
+      name: 'budgetPeriod',
+      label: 'Budget Period',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'priority',
-      label: 'Priority',
+      name: 'createdOn',
+      label: 'Created On',
       options: {
         filter: true,
         sort: false,
       },
     },
+    {
+			name: 'lastUpdated',
+			label: 'Last Updated',
+			options: {
+				filter: true,
+				sort: false,
+			},
+		},
     {
       name: 'id',
-      label: ' ',
+      label: '.',
       options: {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          // const AllCharts = chartOfAccountData && chartOfAccountData.find(post => value === post.id);
           if (value === '') {
             return '';
           }
@@ -151,17 +162,17 @@ const WorkOrderList = props => {
                 onClose={handleClose}
               >
                 <MenuItem onClick={() => {
-                  editOpenWorkOrderDialogAction(account);
+                  editOpenBankAccountDialogAction(account);
                 }}>
                   Edit
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  View Details
-                </MenuItem>
                 <MenuItem onClick={() => {
-                  deleteWorkOrderAction(account);
+                  history.push({
+                    pathname: '/account/budgeting/new',
+                    accountDetailsData: account,
+                  });
                 }}>
-                  Delete 
+                  View Details
                 </MenuItem>
               </Menu>
             </div>
@@ -176,45 +187,57 @@ const WorkOrderList = props => {
     responsive: 'scrollMaxHeight',
     selectableRows: 'none',
     customToolbar: () => (
-      <AddButton openNewWorkOrderDialogAction={openNewWorkOrderDialogAction} openVendorDialogAction={openVendorDialogAction} />
+      <Tooltip title="Create New Chart">
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          className={classes.button}
+          startIcon={<AddIcon />}
+          onClick={() => history.push('/account/budgeting/new')}
+        >
+          New Budget
+        </Button>
+      </Tooltip>
     ),
+    onRowClick: (rowData, rowState) => {
+      props.history.push('/account/budgeting/' + rowData[0])
+    },
     elevation: 0
   };
 
-  if (loading) {
-    return <LoadingIndicator />;
-  }
-
   return (
     <React.Fragment>
-      <MUIDataTable
-        className={classes.datatable}
-        title="Work Order"
-        data={listOfWorkOrderData}
-        columns={columns}
-        options={options}
-      />
+      <div className={classes.root}>
+        <Grid container>
+          <Grid item xs={12}>
+            <MUIDataTable
+              className={classes.datatable}
+              title="Budgeting"
+              data={bankAccountData}
+              columns={columns}
+              options={options}
+            />
+          </Grid>
+        </Grid>
+      </div>
     </React.Fragment>
   );
 };
 
-WorkOrderList.propTypes = {
+BudgetingList.propTypes = {
   loading: PropTypes.bool,
-  listOfWorkOrderData: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  workOrderDialog: Selectors.makeSelectWorkOrderDialog(),
-  listOfWorkOrderData: Selectors.makeSelectGetListOfWorkOrderData(),
+  budgetDialog: Selectors.makeSelectBudgetingDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewWorkOrderDialogAction: () => dispatch(Actions.openCreateWorkOrderDialog()),
-    editOpenWorkOrderDialogAction: evt => dispatch(Actions.editOpenWorkOrderDialog(evt)),
-    deleteWorkOrderAction: evt => dispatch(Actions.deleteWorkOrderAction(evt)),
-    openVendorDialogAction: () => dispatch(Actions.openVendorDialog()),
+    openNewBudgetingDialog: () => dispatch(Actions.openNewBudgetingDialog()),
+    editOpenBudgetingDialog: () => dispatch(Actions.editOpenBudgetingDialog()),
   };
 }
 
@@ -224,6 +247,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
-)(WorkOrderList);
+)(BudgetingList);

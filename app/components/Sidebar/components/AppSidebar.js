@@ -38,13 +38,15 @@ function AppSidebar(props) {
     <AppContext.Consumer>
       {value => {
         const { sideBarconfig } = value;
+        let menus = []
         const pathName = location.pathname.replace(/^\/|\/$/g, '').split('/')[0]
-        const sideMenu = sideBarconfig.find(sidebar => sidebar.module == pathName);
+        const sideMenu = sideBarconfig.find(sidebar => sidebar.module.includes(pathName));
+        menus = sideMenu && sideMenu.menus.length > 0? sideMenu.menus : sideBarconfig.find(sidebar => sidebar.module.includes("utility")).menus
 
         return (
           <div className={classes.root}>
             <List className={classes.list}>
-              {sideMenu.menus.map((menu, index) => {
+              {menus.map((menu, index) => {
                 return (
                   <ListItem button key={index} component="a" href={menu.url}>
                     <ListItemIcon>

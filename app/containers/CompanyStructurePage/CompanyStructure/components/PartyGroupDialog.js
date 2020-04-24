@@ -138,7 +138,7 @@ const PartyGroupDialog = props => {
           <Button
             onClick={() => dispatchCloseNewPartyPartyDialog()}
             color="primary"
-            variant="contained"
+            variant="outlined"
           >
             Cancel
           </Button>

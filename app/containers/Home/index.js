@@ -1,6 +1,6 @@
 /**
  *
- * OrgPage
+ * Home
  *
  */
 
@@ -15,44 +15,39 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import reducer from './reducer';
 import saga from './saga';
-import makeSelectUtilityPage from './selectors';
+import makeSelectHome from './selectors';
 import * as Actions from './actions';
+import ProjectsApp from './ProjectsApp';
 
-export function UtilityPage(props) {
-  useInjectReducer({ key: 'utilityPage', reducer });
-  useInjectSaga({ key: 'utilityPage', saga });
+export function Home(props) {
+  useInjectReducer({ key: 'home', reducer });
+  useInjectSaga({ key: 'home', saga });
 
-  const { dispatchGetUserChats, dispatchGetAllEmployees } = props;
+  const {} = props;
 
   React.useEffect(() => {
-    dispatchGetAllEmployees();
-    dispatchGetUserChats();
   }, []);
 
   return (
     <div>
       <Helmet>
-        <title>Utility Page</title>
-        <meta name="description" content="Utility Page" />
+        <title>Home</title>
+        <meta name="description" content="Home" />
       </Helmet>
+      <ProjectsApp />
     </div>
   );
 }
 
-UtilityPage.propTypes = {
-  dispatchGetAllEmployees: PropTypes.func,
-  dispatchGetUserChats: PropTypes.func,
-  dispatch: PropTypes.func.isRequired,
+Home.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  utilityPage: makeSelectUtilityPage(),
+  home: makeSelectHome(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchGetAllEmployees: () => dispatch(Actions.getAllUsers()),
-    dispatchGetUserChats: () => dispatch(Actions.getAllUsersChat()),
     dispatch,
   };
 }
@@ -65,4 +60,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(UtilityPage);
+)(Home);

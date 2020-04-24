@@ -8,7 +8,6 @@
 
 import React, { useEffect, memo } from 'react';
 import { Helmet } from 'react-helmet';
-// import styled from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
 import { CssBaseline } from '@material-ui/core';
 import { connect } from 'react-redux';
@@ -16,7 +15,8 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import HomePage from '../HomePage/Loadable';
+// import HomePage from '../HomePage/Loadable';
+import Home from '../Home/Loadable';
 import NotFoundPage from '../NotFoundPage/Loadable';
 import Registration from '../AuthorizationPage/Register/Loadable';
 import Login from '../AuthorizationPage/Login/Loadable';
@@ -116,11 +116,13 @@ const App = props => {
 
             {/* <Auth> */}
             <Switch>
+              {/* <PrivateRoute exact path="/home" component={HomePage} /> */}
               <Route exact path="/login" component={Login} />
               <Route exact path="/" component={Login} />
               <Route exact path="/forgot-password" component={ForgotPassword} />
               <Route exact path="/register" component={Registration} />
               <Layout3>
+                <PrivateRoute exact path="/home" component={Home} />
                 <PrivateRoute
                   exact
                   path="/organization"
@@ -134,7 +136,7 @@ const App = props => {
                 />
                 <PrivateRoute
                   exact
-                  path="/users/profile"
+                  path="/user-profile"
                   component={UserProfilePage}
                 />
                 <PrivateRoute
@@ -185,22 +187,21 @@ const App = props => {
                   component={ChatApp}
                 />
 
-                <PrivateRoute exact path="/email" component={EmailConfig} />
+                <PrivateRoute exact path="/settings/email" component={EmailConfig} />
                 <PrivateRoute
-                  path="/email/configuration"
+                  path="/settings/email/configuration"
                   component={EmailConfigs}
                 />
                 <PrivateRoute
-                  path="/email/template/:emailType?"
+                  path="/settings/email/template/:emailType?"
                   component={EmailTemplates}
                 />
-                {/* <PrivateRoute exact path="/email/template/:emailType" component={EmailTemplates} /> */}
+                {/* <PrivateRoute exact path="settings/email/template/:emailType" component={EmailTemplates} /> */}
                 <PrivateRoute
-                  path="/email/password/template"
+                  path="/settings/email/password/template"
                   component={EmailPasswordTemplate}
                 />
-                <PrivateRoute exact path="/home" component={HomePage} />
-                <PrivateRoute exact path="/WorkOrder" component={WorkOrderPage} />
+                <PrivateRoute exact path="/work-order" component={WorkOrderPage} />
                 <PrivateRoute
                   path="/hr/:sectionId?/:status?"
                   component={HRPage}
@@ -215,25 +216,11 @@ const App = props => {
                 <PrivateRoute exact path="/account/banking/details" component={AccountDetails} />
                 <PrivateRoute exact path="/account/journal" component={JournalPage} />
                 <PrivateRoute exact path="/account/journal/add" component={AddNewJournal} />
-                <PrivateRoute
-                  exact
-                  path="/inventory"
-                  component={InventoryPage}
-                />
-                <PrivateRoute
-                  path="/inventory/warehouses"
-                  component={WarehousePage}
-                />
-                <PrivateRoute
-                  exact
-                  path="/inventory/items/:statusId?"
-                  component={ItemPage}
-                />
-                <PrivateRoute
-                  exact
-                  path="/inventory/item/:statusId?/:sku?"
-                  component={ItemPage}
-                />
+
+                <PrivateRoute exact path="/inventory/dashboard" component={InventoryPage} />
+                <PrivateRoute path="/inventory/warehouses" component={WarehousePage} />
+                <PrivateRoute exact path="/inventory/items/:statusId?" component={ItemPage} />
+                <PrivateRoute exact path="/inventory/item/:statusId?/:sku?" component={ItemPage} />
                 {/* <PrivateRoute
                   exact
                   path="/inventory/item/:statusId?"

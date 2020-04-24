@@ -23,6 +23,7 @@ import messages from './messages';
 import ModuleLayout from '../components/ModuleLayout';
 import LoadingIndicator from './../../../components/LoadingIndicator';
 import SettingsLayout from './components/SettingsLayout';
+import AccountingPeriod from './components/AccountingPeriod';
 
 export function Settings(props) {
   useInjectReducer({ key: 'settings', reducer });
@@ -30,10 +31,11 @@ export function Settings(props) {
 
   console.log('Settings index.js loaded');
 
-  const { loading } = props;
+  const { loading, getAccountingSetupAction } = props;
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
+    // getAccountingSetupAction()
   }, []);
 
 
@@ -48,13 +50,16 @@ export function Settings(props) {
         <meta name="description" content="Description of Settings." />
       </Helmet>
       <ModuleLayout>
-        <SettingsLayout />
+        <SettingsLayout>
+          <AccountingPeriod />
+        </SettingsLayout>
       </ModuleLayout>
     </div>
   );
 }
 
 Settings.propTypes = {
+
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -63,6 +68,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    getAccountingSetupAction: () => dispatch(Actions.getAccountingSetupAction()),
     dispatch,
   };
 }

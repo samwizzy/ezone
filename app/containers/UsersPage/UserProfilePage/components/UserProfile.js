@@ -66,6 +66,9 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     margin: theme.spacing(2),
   },
+  list: {
+    color: theme.palette.common.white
+  },
   sidebar: {
     padding: theme.spacing(2),
   },
@@ -157,26 +160,22 @@ const UserProfile = props => {
                         </Typography>
                       }
                       secondary={
-                        <React.Fragment>
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            className={classes.inline}
-                            color="textPrimary"
-                          >
-                            UI/UX Designer
-                          </Typography>
-                        </React.Fragment>
+                        <Typography
+                          variant="body2"
+                          color="inherit"
+                        >
+                          UI/UX Designer
+                        </Typography>
                       }
                     />
                     <Button
+                      color="primary"
+                      variant="contained"
                       onClick={() =>
                         openEditUserProfileDialogAction(currentUser)
                       }
                     >
-                      <Typography variant="p" className={classes.editButton}>
-                        Edit Profile
-                      </Typography>
+                      Edit Profile
                     </Button>
                   </ListItem>
                 </List>
