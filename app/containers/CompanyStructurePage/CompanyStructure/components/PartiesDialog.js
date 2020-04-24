@@ -49,6 +49,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const PartiesDialog = props => {
   const {
+    allTags,
     updatePartiesAction,
     loading,
     newPartiesDialog,
@@ -67,7 +68,7 @@ const PartiesDialog = props => {
     parties: null,
     name: '',
     description: '',
-    tag: '',
+    tag: null,
   });
 
   useEffect(() => {
@@ -85,6 +86,7 @@ const PartiesDialog = props => {
     setValues({
       ...values,
       assistantPartyHead: { id: value.id },
+      partyId: params.partyId,
     });
   };
 
@@ -92,6 +94,7 @@ const PartiesDialog = props => {
     setValues({
       ...values,
       [name]: event.target.value,
+      partyId: params.partyId,
     });
   };
 
@@ -105,19 +108,13 @@ const PartiesDialog = props => {
   };
 
   const handleTagChange = (event, value) => {
-    setValues({
-      ...values,
-      tag: value.name,
-    });
+    if (newPartiesDialog.type === 'edit') {
+      setValues({ ...values, tag: { id: value.id }, partyId: params.partyId });
+    }
+    if (newPartiesDialog.type === 'new') {
+      setValues({ ...values, tagId: value.id, partyId: params.partyId });
+    }
   };
-
-  const tags = [
-    { id: 1, name: 'Department' },
-    { id: 2, name: 'Branch' },
-    { id: 3, name: 'Section' },
-    { id: 4, name: 'Unit' },
-    { id: 5, name: 'Industry' },
-  ];
 
   return (
     <div>
@@ -202,7 +199,7 @@ const PartiesDialog = props => {
 
             <Autocomplete
               id="combo-tag"
-              options={tags}
+              options={allTags}
               getOptionLabel={option => `${option.name}`}
               onChange={(evt, ve) => handleTagChange(evt, ve)}
               renderInput={params => (
@@ -232,17 +229,18 @@ const PartiesDialog = props => {
               {newPartiesDialog.type === 'new' ? 'Save' : 'Update'}
             </Button>
           ) : (
-              <Button
-                onClick={() => {
-                  updatePartiesAction(values);
-                }}
-                color="primary"
-                variant="contained"
-                disabled={!canBeSubmitted()}
-              >
-                {newPartiesDialog.type === 'new' ? 'Save' : 'Update'}
-              </Button>
-            )}
+            <Button
+              onClick={() => {
+                updatePartiesAction(values);
+                setValues('');
+              }}
+              color="primary"
+              variant="contained"
+              disabled={!canBeSubmitted()}
+            >
+              {newPartiesDialog.type === 'new' ? 'Save' : 'Update'}
+            </Button>
+          )}
           <Button
             onClick={() => dispatchCloseNewPartiesDialog()}
             color="primary"
@@ -265,6 +263,7 @@ PartiesDialog.propTypes = {
   dispatchCreateNewPartiesAction: PropTypes.func,
   loading: PropTypes.bool,
   updatePartiesAction: PropTypes.func,
+  allTags: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -272,6 +271,7 @@ const mapStateToProps = createStructuredSelector({
   newPartiesDialog: Selectors.makeSelectNewPartiesDialog(),
   partyGroupData: Selectors.makeSelectPartyGroupData(),
   AllUserData: Selectors.makeSelectAllUsersData(),
+  allTags: Selectors.makeSelectGetAllTags(),
 });
 
 function mapDispatchToProps(dispatch) {

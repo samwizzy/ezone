@@ -116,6 +116,7 @@ const PartyGroupDialog = props => {
             <Button
               onClick={() => {
                 dispatchCreateNewPartyGroupAction(values);
+                setValues('');
               }}
               color="primary"
               variant="contained"
@@ -127,6 +128,7 @@ const PartyGroupDialog = props => {
             <Button
               onClick={() => {
                 updatePartyGroupAction(values);
+                setValues('');
               }}
               color="primary"
               variant="contained"

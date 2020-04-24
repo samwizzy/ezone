@@ -7,6 +7,8 @@ import produce from 'immer';
 import * as Constants from './constants';
 
 export const initialState = {
+  updatePartiesData: {},
+  allTags: [],
   updatePositionData: {},
   updatePartyData: {},
   allEmployees: false,
@@ -318,6 +320,7 @@ const companyStructurePageReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_NEW_PARTY: {
+        console.log(action.payload, 'action.payload');
         return {
           ...state,
           loading: true,
@@ -439,6 +442,7 @@ const companyStructurePageReducer = (state = initialState, action) =>
         };
       }
       case Constants.UPDATE_PARTIES: {
+        console.log(action.payload, 'action.payload')
         return {
           ...state,
           loading: true,
@@ -622,28 +626,27 @@ const companyStructurePageReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
-      // case Constants.GET_EMPLOYEES: {
-      //   return {
-      //     ...state,
-      //     loading: true,
-      //     error: false,
-      //     allEmployees: action.payload,
-      //   };
-      // }
-      // case Constants.GET_EMPLOYEES_SUCCESS: {
-      //   return {
-      //     ...state,
-      //     loading: false,
-      //     error: false,
-      //   };
-      // }
-      // case Constants.GET_EMPLOYEES_ERROR: {
-      //   return {
-      //     ...state,
-      //     loading: false,
-      //     error: action.payload,
-      //   };
-      // }
+      case Constants.GET_ALL_TAGS: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_ALL_TAGS_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          allTags: action.payload,
+        };
+      }
+      case Constants.GET_ALL_TAGS_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
 
       /** *****************************************************************
        * Organization constants

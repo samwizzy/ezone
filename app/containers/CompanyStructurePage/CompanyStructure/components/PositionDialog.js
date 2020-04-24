@@ -132,6 +132,7 @@ const PositionDialog = props => {
             <Button
               onClick={() => {
                 dispatchCreateNewPositionAction(values);
+                setValues('');
               }}
               color="primary"
               variant="contained"
@@ -143,6 +144,7 @@ const PositionDialog = props => {
             <Button
               onClick={() => {
                 updatePositionAction(values);
+                setValues('');
               }}
               color="primary"
               variant="contained"

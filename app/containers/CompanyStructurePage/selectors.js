@@ -154,11 +154,11 @@ const makeSelectAddEmployeeToPositionData = () =>
     subState => subState.addEmployeeToPositionData,
   );
 
-// const makeSelectGetAllEmployees = () =>
-//   createSelector(
-//     selectCompanyStructurePageDomain,
-//     subState => subState.allEmployees,
-//   );
+const makeSelectGetAllTags = () =>
+  createSelector(
+    selectCompanyStructurePageDomain,
+    subState => subState.allTags,
+  );
 
 // const makeSelectSelectedParty = () =>
 //   createSelector(
@@ -241,4 +241,5 @@ export {
   makeSelectUpdatePartyData,
   makeSelectUpdatePartiesData,
   makeSelectUpdatePositionData,
+  makeSelectGetAllTags,
 };

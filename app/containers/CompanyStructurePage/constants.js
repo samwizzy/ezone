@@ -133,6 +133,11 @@ export const ADD_EMPLOYEE_TO_POSITION_SUCCESS =
 export const ADD_EMPLOYEE_TO_POSITION_ERROR =
   'app/CompanyStructurePage/ADD_EMPLOYEE_TO_POSITION_ERROR';
 
+export const GET_ALL_TAGS = 'app/CompanyStructurePage/GET_ALL_TAGS';
+export const GET_ALL_TAGS_SUCCESS =
+  'app/CompanyStructurePage/GET_ALL_TAGS_SUCCESS';
+export const GET_ALL_TAGS_ERROR = 'app/CompanyStructurePage/GET_ALL_TAGS_ERROR';
+
 /** *****************************************************************
  * Organization constants
  ******************************************************************* */

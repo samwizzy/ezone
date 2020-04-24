@@ -100,6 +100,7 @@ const PartyPage = props => {
   useInjectSaga({ key: 'companyStructurePage', saga });
 
   const {
+    getAllTagsAction,
     openEditPositionDialogAction,
     openEditPartiesDialogAction,
     dispatchOpenNewPositionAction,
@@ -117,6 +118,7 @@ const PartyPage = props => {
   useEffect(() => {
     dispatchGetPartyGroups();
     dispatchGetAllUsersAction();
+    getAllTagsAction();
   }, []);
   const classes = useStyles();
 
@@ -177,7 +179,7 @@ const PartyPage = props => {
       },
     },
     {
-      name: 'tag',
+      name: 'tag.name',
       label: 'Tag',
       options: {
         filter: true,
@@ -282,7 +284,7 @@ const PartyPage = props => {
                 className={classes.marginButton}
                 href={`/organization/company/structure/position/${
                   params.partyGroupId
-                  }/${params.partyId}/${value}`}
+                }/${params.partyId}/${value}`}
               >
                 View
               </Button>
@@ -369,6 +371,7 @@ PartyPage.propTypes = {
   allPositions: PropTypes.object,
   openEditPartiesDialogAction: PropTypes.func,
   openEditPositionDialogAction: PropTypes.func,
+  getAllTagsAction: PropTypes.func,
   // selectedPartyGroupData: PropTypes.oneOfType(PropTypes.object, PropTypes.bool),
   // allPositions: PropTypes.oneOfType(PropTypes.object, PropTypes.bool),
 };
@@ -378,6 +381,7 @@ const mapStateToProps = createStructuredSelector({
   partyGroupData: Selectors.makeSelectPartyGroupData(),
   selectedPartyGroupData: Selectors.makeSelectSelectedPartyGroupData(),
   allPositions: Selectors.makeSelectGetAllPositions(),
+  allTags: Selectors.makeSelectGetAllTags(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -394,6 +398,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(Actions.getSelectedPartyGroupAction(evt)),
     dispatchGetPartyGroups: () => dispatch(Actions.getPartyGroupAction()),
     dispatchGetAllUsersAction: () => dispatch(Actions.getAllUsers()),
+    getAllTagsAction: () => dispatch(Actions.getAllTags()),
   };
 }
 

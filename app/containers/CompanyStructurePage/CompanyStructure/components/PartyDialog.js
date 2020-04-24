@@ -56,6 +56,7 @@ const PartyDialog = props => {
     dispatchCloseNewPartyDialog,
     AllUserData,
     dispatchCreateNewPartyAction,
+    allTags,
   } = props;
 
   const classes = useStyles();
@@ -65,7 +66,7 @@ const PartyDialog = props => {
     assistantPartyHead: null,
     name: '',
     description: '',
-    tag: '',
+    tagId: '',
   });
 
   useEffect(() => {
@@ -94,10 +95,12 @@ const PartyDialog = props => {
   };
 
   const handleTagChange = (event, value) => {
-    setValues({
-      ...values,
-      tag: value.name,
-    });
+    if (newPartyDialog.type === 'new') {
+      setValues({ ...values, tagId: value.id });
+    }
+    if (newPartyDialog.type === 'edit') {
+      setValues({ ...values, tag: { id: value.id } });
+    }
   };
 
   const canBeSubmitted = () => {
@@ -109,13 +112,8 @@ const PartyDialog = props => {
     );
   };
 
-  const tags = [
-    { id: 1, name: 'Department' },
-    { id: 2, name: 'Branch' },
-    { id: 3, name: 'Section' },
-    { id: 4, name: 'Unit' },
-    { id: 5, name: 'Industry' },
-  ];
+  console.log(values, 'values');
+
   return (
     <div>
       <Dialog
@@ -199,7 +197,7 @@ const PartyDialog = props => {
 
             <Autocomplete
               id="combo-tag"
-              options={tags}
+              options={allTags}
               getOptionLabel={option => `${option.name}`}
               onChange={(evt, ve) => handleTagChange(evt, ve)}
               renderInput={params => (
@@ -221,6 +219,7 @@ const PartyDialog = props => {
             <Button
               onClick={() => {
                 dispatchCreateNewPartyAction(values);
+                setValues('');
               }}
               color="primary"
               variant="contained"
@@ -232,6 +231,7 @@ const PartyDialog = props => {
             <Button
               onClick={() => {
                 updatePartyAction(values);
+                setValues('');
               }}
               color="primary"
               variant="contained"
@@ -262,6 +262,7 @@ PartyDialog.propTypes = {
   dispatchCreateNewPartyAction: PropTypes.func,
   loading: PropTypes.bool,
   selectedPartyGroupData: PropTypes.oneOfType(PropTypes.object, PropTypes.bool),
+  allTags: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -269,6 +270,7 @@ const mapStateToProps = createStructuredSelector({
   newPartyDialog: Selectors.makeSelectNewPartyDialog(),
   partyGroupData: Selectors.makeSelectPartyGroupData(),
   AllUserData: Selectors.makeSelectAllUsersData(),
+  allTags: Selectors.makeSelectGetAllTags(),
   selectedPartyGroupData: Selectors.makeSelectSelectedPartyGroupData(),
 });
 

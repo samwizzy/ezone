@@ -166,7 +166,7 @@ const CompanyStructure = props => {
       },
     },
     {
-      name: 'tag',
+      name: 'tag.name',
       label: 'Tag',
       options: {
         filter: true,
@@ -229,7 +229,7 @@ const CompanyStructure = props => {
         color="primary"
         size="small"
         startIcon={<Add />}
-        onClick={() => dispatchOpenNewPartyAction(selectedPartyGroupData)}
+        onClick={() => dispatchOpenNewPartyAction({ partyGroupId: selectedPartyGroupData.id} )}
       >
         Add New Party
       </Button>
@@ -254,6 +254,7 @@ const CompanyStructure = props => {
     );
   }
 
+  // console.log(selectedPartyGroupData, 'selectedPartyGroupData');
   return (
     <React.Fragment>
       <Grid container spacing={0}>

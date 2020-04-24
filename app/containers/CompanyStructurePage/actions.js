@@ -395,25 +395,25 @@ export function addEmployeeToPositionError(data) {
   };
 }
 
-// export function getAllEmployees() {
-//   return {
-//     type: Constants.GET_EMPLOYEES,
-//   };
-// }
+export function getAllTags() {
+  return {
+    type: Constants.GET_ALL_TAGS,
+  };
+}
 
-// export function getAllEmployeesSuccess(data) {
-//   return {
-//     type: Constants.GET_EMPLOYEES_SUCCESS,
-//     payload: data,
-//   };
-// }
+export function getAllTagsSuccess(data) {
+  return {
+    type: Constants.GET_ALL_TAGS_SUCCESS,
+    payload: data,
+  };
+}
 
-// export function getAllEmployeesError(data) {
-//   return {
-//     type: Constants.GET_EMPLOYEES_ERROR,
-//     payload: data,
-//   };
-// }
+export function getAllTagsError(data) {
+  return {
+    type: Constants.GET_ALL_TAGS_ERROR,
+    payload: data,
+  };
+}
 
 /** *****************************************************************
  * Organization constants

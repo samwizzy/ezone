@@ -22,11 +22,12 @@ export const UpdatePartyGroup = `${BaseUrl}/authserv/api/v1/partygroup`;
 export const CreateNewPartyApi = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_group`;
 export const UpdatePartyApi = `${BaseUrl}/authserv/api/v1/party`;
 export const CreateNewPartiesApi = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_party`;
-export const UpdatePartiesApi = `${BaseUrl}/authserv/api/v1/parties`;
+export const UpdatePartiesApi = `${BaseUrl}/authserv/api/v1/party`;
 export const CreateNewPositionApi = `${BaseUrl}/authserv/api/v1/position`;
 export const UpdatePositionApi = `${BaseUrl}/authserv/api/v1/position/update_position`;
 export const GetAllPositionsApi = `${BaseUrl}/authserv/api/v1/position/get_position_by_orgId`;
 export const AddNewEmployeeToPositionApi = `${BaseUrl}/authserv/api/v1/user/add_to_position`;
+export const GetAllTagsApi = `${BaseUrl}/authserv/api/v1/party_tags`;
 
 /** *****************************************************************
  * User endpoint
