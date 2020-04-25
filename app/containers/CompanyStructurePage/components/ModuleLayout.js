@@ -1,12 +1,14 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import {makeStyles} from '@material-ui/core';
+import {
+  makeStyles,
+  Grid,
+} from '@material-ui/core';
 import { compose } from 'redux';
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
-import * as Actions from '../actions';
 import MenuBar from '../../../components/MenuBar'
 
 const useStyles = makeStyles(theme => ({
@@ -14,7 +16,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   content: {
-    flexGrow: 1,
     padding: theme.spacing(2),
   },
   active: { 
@@ -23,26 +24,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-
 function ModuleLayout(props) {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <MenuBar
-        navigations={
-          <React.Fragment>
-            <NavLink to="/chats" activeClassName={classes.active}>
-              Chats
-            </NavLink>
-            <NavLink to="/task-manager/tasks" activeClassName={classes.active}>
-              Tasks
-            </NavLink>
-            <NavLink to="/file-manager/folders" activeClassName={classes.active}>
-              Files
-            </NavLink>
-          </React.Fragment>
-        }
         content={
           <div className={classes.content}>
             {props.children}
@@ -53,8 +40,11 @@ function ModuleLayout(props) {
   );
 }
 
-const mapStateToProps = createStructuredSelector({
-});
+ModuleLayout.propTypes = {
+  children: PropTypes.node,
+};
+
+const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
   return {};

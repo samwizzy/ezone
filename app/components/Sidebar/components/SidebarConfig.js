@@ -7,7 +7,7 @@ const SidebarConfig = [
     ],
   },
   {
-    module: ['dashboard'],
+    module: ['dashboard', 'folders', 'tasks'],
     menus: [
       { id: 1, name: 'Home', url: '/', icon: 'home' },
       { id: 2, name: 'Dashboard', url: '/dashboard', icon: 'build' },
@@ -19,7 +19,7 @@ const SidebarConfig = [
     menus: [
       { id: 1, name: 'Dashboard', url: '/dashboard', icon: 'dashboard' },
       { id: 2, name: 'Organization', url: '/organization', icon: 'business_center' },
-      { id: 3, name: 'Applications', url: '/utility', icon: 'apps' },
+      { id: 3, name: 'Applications', url: '/home', icon: 'apps' },
       { id: 4, name: 'Employees', url: '/users/employees', icon: 'group' },
       { id: 5, name: 'User Profile', url: '/user-profile', icon: 'person' },
       { id: 6, name: 'Work Order', url: '/work-order', icon: 'list_alt' },

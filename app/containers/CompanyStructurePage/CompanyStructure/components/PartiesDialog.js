@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import {
+  AppBar, Toolbar,
   Backdrop,
   CircularProgress,
   Divider,
@@ -125,12 +126,13 @@ const PartiesDialog = props => {
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
       >
-        <Backdrop className={classes.backdrop} open={loading}>
-          <CircularProgress color="inherit" />
-        </Backdrop>
-        <DialogTitle id="alert-dialog-slide-title">
-          {newPartiesDialog.type === 'new' ? 'New Parties' : 'Edit Parties'}
-        </DialogTitle>
+        <AppBar position="relative">
+          <Toolbar>
+            <Typography variant="h6" className={classes.title}>
+              {newPartiesDialog.type === 'new' ? 'New Parties' : 'Edit Parties'}
+            </Typography>
+          </Toolbar>
+        </AppBar>
 
         <Divider />
 
@@ -244,7 +246,7 @@ const PartiesDialog = props => {
           <Button
             onClick={() => dispatchCloseNewPartiesDialog()}
             color="primary"
-            variant="contained"
+            variant="outlined"
           >
             Cancel
           </Button>

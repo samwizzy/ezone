@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import {
+  AppBar, Toolbar,
   Backdrop,
   CircularProgress,
   Divider,
@@ -91,12 +92,13 @@ const PositionDialog = props => {
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
       >
-        <Backdrop className={classes.backdrop} open={loading}>
-          <CircularProgress color="inherit" />
-        </Backdrop>
-        <DialogTitle id="alert-dialog-slide-title">
-          {newPositionDialog.type === 'new' ? 'New Position' : 'Edit Position'}
-        </DialogTitle>
+        <AppBar position="relative">
+          <Toolbar>
+            <Typography variant="h6" className={classes.title}>
+              {newPositionDialog.type === 'new' ? 'New Position' : 'Edit Position'}
+            </Typography>
+          </Toolbar>
+        </AppBar>
 
         <Divider />
 

@@ -23,6 +23,10 @@ const useStyles = makeStyles(theme => ({
     borderRight: `1px solid ${theme.palette.grey[200]}`,
     minHeight: `calc(100vh - 128px)`,
     padding: theme.spacing(2, 0),
+    "& .MuiListSubheader-root": {
+      backgroundColor: theme.palette.background.paper,
+      padding: theme.spacing(2),
+    },
     "& .MuiListItem-root": {
       "& .MuiListItemIcon-root": {
         minWidth: "40px !important"
@@ -42,7 +46,7 @@ const FolderSideBar = props => {
   const { loading, folders, folder, user, getAllFoldersAndDocs, getFavoriteDocuments } = props
 
   const getAllFolders = () => {
-    props.history.push('/dashboard/folders')
+    props.history.push('/file-manager/folders')
     getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
   }
   

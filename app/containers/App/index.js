@@ -159,31 +159,31 @@ const App = props => {
                   path="/organization/company/structure/position/:partyGroupId/:partyId/:positionId"
                   component={CompanyStructurePosition}
                 />
-                {/* <PrivateRoute exact path="/dashboard" component={UtilityPage} /> */}
-                <PrivateRoute exact path="/dashboard" component={UtilityPage} />
+
+                <PrivateRoute exact path="/utility" component={UtilityPage} />
                 <PrivateRoute
                   exact
-                  path="/dashboard/tasks"
+                  path="/task-manager/tasks"
                   component={TasksPage}
                 />
                 <PrivateRoute
                   exact
-                  path="/dashboard/task/:id"
+                  path="/task-manager/task/:id"
                   component={TasksPage}
                 />
                 <PrivateRoute
                   exact
-                  path="/dashboard/folders"
+                  path="/file-manager/folders"
                   component={FilesApp}
                 />
                 <PrivateRoute
                   exact
-                  path="/dashboard/folder/:folderId"
+                  path="/file-manager/folder/:folderId"
                   component={FilesApp}
                 />
                 <PrivateRoute
                   exact
-                  path="/dashboard/chats"
+                  path="/chats"
                   component={ChatApp}
                 />
 

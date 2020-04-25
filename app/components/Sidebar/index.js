@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
     ...theme.mixins.toolbar,
   },
   content: {
-    flexGrow: 1,
+    // flexGrow: 1,
     width: `calc(100% - ${drawerWidth}px)`,
   },
   logo: {
@@ -132,7 +132,9 @@ function MiniDrawer(props) {
         <Divider />
       </Drawer>
       <main className={classes.content}>
-        {props.content}
+        <div style={{minHeight: `calc(100vh - 140px)`}}>
+          {props.content}
+        </div>
         <Footer />
       </main>
     </div>

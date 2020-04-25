@@ -4,10 +4,12 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import {
+  AppBar, Toolbar,
   Backdrop,
   CircularProgress,
   Divider,
   TextField,
+  Typography,
   makeStyles,
   Button,
   Dialog,
@@ -123,9 +125,13 @@ const PartyDialog = props => {
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="alert-dialog-slide-title">
-          {newPartyDialog.type === 'new' ? 'New Party' : 'Edit Party'}
-        </DialogTitle>
+        <AppBar position="relative">
+          <Toolbar>
+            <Typography variant="h6" className={classes.title}>
+              {newPartyDialog.type === 'new' ? 'New Party' : 'Edit Party'}
+            </Typography>
+          </Toolbar>
+        </AppBar>
 
         <Divider />
 
@@ -243,7 +249,7 @@ const PartyDialog = props => {
           <Button
             onClick={() => dispatchCloseNewPartyDialog()}
             color="primary"
-            variant="contained"
+            variant="outlined"
           >
             Cancel
           </Button>

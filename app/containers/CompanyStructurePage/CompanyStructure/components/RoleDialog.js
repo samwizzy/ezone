@@ -5,7 +5,9 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { makeStyles } from '@material-ui/core/styles' 
 import {
+  AppBar, Toolbar,
   TextField,
+  Typography,
   Button,
   Dialog,
   DialogTitle,
@@ -72,9 +74,13 @@ const RoleDialog = props => {
         keepMounted
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="alert-dialog-slide-title">
-          {roleDialog.type === 'new' ? 'New Role' : 'Edit Role'}
-        </DialogTitle>
+        <AppBar position="relative">
+          <Toolbar>
+            <Typography variant="h6" className={classes.title}>
+              {roleDialog.type === 'new' ? 'New Role' : 'Edit Role'}
+            </Typography>
+          </Toolbar>
+        </AppBar>
 
         <DialogContent>
           {roleDialog.type === 'new' ? (

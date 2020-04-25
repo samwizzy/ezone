@@ -22,6 +22,7 @@ import PartyDialog from './components/PartyDialog';
 import RoleDialog from './components/RoleDialog';
 import CompanyStructure from './components/CompanyStructure';
 import PartyPage from './components/PartyPage';
+import ModuleLayout from './../components/ModuleLayout';
 
 // import PartyGroupDialog from './components/PartyGroupDialog';
 // import PartyDialog from './components/PartyDialog';
@@ -53,7 +54,10 @@ export function CompanyStructurePage(props) {
           content="Description of CompanyStructurePage"
         />
       </Helmet>
-      <CompanyStructure />
+
+      <ModuleLayout>
+        <CompanyStructure />
+      </ModuleLayout>
 
       <PartyGroupDialog />
       <PartyDialog />

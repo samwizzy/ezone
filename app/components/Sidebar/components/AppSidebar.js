@@ -41,7 +41,7 @@ function AppSidebar(props) {
         let menus = []
         const pathName = location.pathname.replace(/^\/|\/$/g, '').split('/')[0]
         const sideMenu = sideBarconfig.find(sidebar => sidebar.module.includes(pathName));
-        menus = sideMenu && sideMenu.menus.length > 0? sideMenu.menus : sideBarconfig.find(sidebar => sidebar.module.includes("utility")).menus
+        menus = sideMenu && sideMenu.menus.length > 0? sideMenu.menus : sideBarconfig.find(sidebar => sidebar.module.includes("home")).menus
 
         return (
           <div className={classes.root}>

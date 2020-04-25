@@ -32,12 +32,12 @@ const apps = [
   { id: 2, name: 'Accounting', url: '/account', icon: AcctIcon },
   { id: 3, name: 'Budgeting', url: '/account/budgeting', icon: BudgetingIcon },
   { id: 4, name: 'CRM', url: '/crm', icon: CRMIcon },
-  { id: 5, name: 'File Management', url: '/dashboard/folders', icon: FileIcon },
+  { id: 5, name: 'File Management', url: '/file-manager/folders', icon: FileIcon },
   { id: 6, name: 'Human Resources', url: '/hr', icon: AppIcon1 },
   { id: 7, name: 'Process Workflow', url: '/workflow', icon: ProjectsIcon },
   { id: 8, name: 'Store Management', url: '/inventory/items', icon: StoreIcon},
-  { id: 9, name: 'Task management', url: '/dashboard/tasks', icon: TaskIcon },
-  { id: 10, name: 'Work Order', url: '/workorder', icon: ProjectsIcon },
+  { id: 9, name: 'Task management', url: '/task-manager/tasks', icon: TaskIcon },
+  { id: 10, name: 'Work Order', url: '/work-order', icon: ProjectsIcon },
 ];
 
 export default apps;
