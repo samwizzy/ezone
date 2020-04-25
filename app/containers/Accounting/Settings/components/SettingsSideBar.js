@@ -56,7 +56,7 @@ const SettingsSideBar = props => {
           </ListItemIcon>
           <ListItemText primary="Accounting Period" />
         </ListItem>
-        <ListItem button onClick={() => {}}>
+        {/* <ListItem button onClick={() => {}}>
           <ListItemIcon>
             <AccountBalanceWalletIcon />
           </ListItemIcon>
@@ -67,7 +67,7 @@ const SettingsSideBar = props => {
             <AssessmentIcon />
           </ListItemIcon>
           <ListItemText primary="Reports" />
-        </ListItem>
+        </ListItem> */}
       </List>
     </div>
   );

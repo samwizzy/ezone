@@ -142,6 +142,10 @@ export const GetAllBankAccount = `${BaseUrl}/accountingserv/api/v1/bank/get_All_
 export const GetAllTransferByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/bank/get_All_bank_transfers_by_orgid`;
 export const CreateBankTransferApi = `${BaseUrl}/accountingserv/api/v1/bank/transfer`;
 export const GetTransferByAccountIdApi = `${BaseUrl}/accountingserv/api/v1/bank/get_bank_transfer_by_id`;
+export const GetJounalListApi = `${BaseUrl}/accountingserv/api/v1/journal/get_journals_by_orgid`;
+export const GetAllAccountingPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/get_periods_by_orgid`;
+export const CreateAccountPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/add_account_period`;
+
 
 
 /** ***************************************************************** 

@@ -475,11 +475,9 @@ const NewAccountDialog = props => {
           ) : (
             <Button
               onClick={() => {
-                // accountDialog.type === 'new' ? createChartOfAccountAction(values) : updateChartOfAccountAction(values);
                 createChartOfAccountAction(values);
               }}
               color="primary"
-              // variant="contained"
               disabled={!canSubmitValues()}
             >
               Save Account
@@ -488,7 +486,6 @@ const NewAccountDialog = props => {
           <Button
             onClick={closeNewAccountDialogAction}
             color="inherit"
-            // variant="contained"
           >
             Cancel
           </Button>

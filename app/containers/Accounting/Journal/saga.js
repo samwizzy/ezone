@@ -62,7 +62,6 @@ export function* createAccountJournalSaga() {
     Selectors.makeSelectNewAccountJournalPostData(),
   );
   const requestURL = `${Endpoints.CreateAccountJournalApi}`;
-  console.log('requestURL from journal.js', requestURL);
 
   try {
     const accountJournalResponse = yield call(request, requestURL, {
@@ -85,10 +84,36 @@ export function* createAccountJournalSaga() {
 }
 
 
+export function* getJournalListSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetJounalListApi}?orgId=${currentUser.organisation.orgId}`;
+
+  console.log('journal requestURL --> ', requestURL);
+
+  try {
+    const journalListResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log('journalListResponse ', journalListResponse);
+    yield put(Actions.getJournalListSuccessAction(journalListResponse));
+  } catch (err) {
+    console.log('getJournalListErrorAction--->', err);
+    yield put(Actions.getJournalListErrorAction(err));
+  }
+}
+
+
 // Individual exports for testing
 export default function* journalSaga() {
   // See example in containers/HomePage/saga.js
   yield takeLatest(Constants.GET_ALL_CHART_OF_ACCOUNT, getAllChartOfAccountSaga);
   yield takeLatest(Constants.GET_ACCOUNT_PERIOD, getAccountPeriodSaga);
   yield takeLatest(Constants.CREATE_NEW_ACCOUNT_JOURNAL, createAccountJournalSaga);
+  yield takeLatest(Constants.GET_JOURNAL_LIST, getJournalListSaga);
 }

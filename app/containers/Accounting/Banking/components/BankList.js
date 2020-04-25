@@ -246,7 +246,7 @@ BankList.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
-  bankAccountDialog: Selectors.makeSelectBankAccountDialog(),
+  // bankAccountDialog: Selectors.makeSelectBankAccountDialog(),
   bankAccountData: Selectors.makeSelectBankAccountData()
 });
 

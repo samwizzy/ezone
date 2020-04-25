@@ -12,6 +12,7 @@ export const initialState = {
   chartOfAccountData: [],
   accountPeriodData: [],
   accountJournalPostData: {},
+  journalListData: []
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -86,6 +87,31 @@ const journalReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_NEW_ACCOUNT_JOURNAL_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+
+      // Case to get list of journals
+      case Constants.GET_JOURNAL_LIST: {
+        console.log('GET_JOURNAL_LIST reducer');
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_JOURNAL_LIST_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          journalListData: action.payload,
+        };
+      }
+      case Constants.GET_JOURNAL_LIST_ERR: {
         return {
           ...state,
           loading: false,
