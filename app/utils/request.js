@@ -25,6 +25,7 @@ function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
   }else if(response.status >= 401 && response.status < 408){
+    console.log(response.status, 'response.status');
     console.log("We got a 401 status error y'all")
     store.dispatch(AppActions.logout())
     return

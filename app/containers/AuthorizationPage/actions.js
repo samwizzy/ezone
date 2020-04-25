@@ -27,3 +27,25 @@ export function signupErrorRequest(data) {
     payload: data,
   };
 }
+
+export function forgotPassword(data) {
+  console.log(data, 'data');
+  return {
+    type: Constants.FORGOT_PASSWORD,
+    payload: data,
+  };
+}
+
+export function forgotPasswordSuccess(data) {
+  return {
+    type: Constants.FORGOT_PASSWORD_SUCCESS,
+    payload: data,
+  };
+}
+
+export function forgotPasswordError(data) {
+  return {
+    type: Constants.FORGOT_PASSWORD_ERROR,
+    payload: data,
+  };
+}

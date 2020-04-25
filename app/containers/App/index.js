@@ -20,7 +20,7 @@ import HomePage from '../HomePage/Loadable';
 import NotFoundPage from '../NotFoundPage/Loadable';
 import Registration from '../AuthorizationPage/Register/Loadable';
 import Login from '../AuthorizationPage/Login/Loadable';
-import ForgotPassword from '../AuthorizationPage/Login/components/ForgotPasswordForm';
+import ForgotPassword from '../AuthorizationPage/ForgotPassword/Loadable';
 import organizationPage from '../CompanyStructurePage/OrganizationInfo/Loadable';
 import CompanyStructure from '../CompanyStructurePage/CompanyStructure/Loadable';
 // import PartyPage from '../CompanyStructurePage/CompanyStructure/components/PartyPage';
