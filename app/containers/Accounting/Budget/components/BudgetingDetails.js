@@ -9,9 +9,11 @@ import {
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 import {
+  Avatar,
   Card, 
   CardContent, 
   CardActions,
+  List, ListItem, ListItemText, ListItemAvatar,
   TextField,
   Typography,
   makeStyles,
@@ -21,11 +23,13 @@ import {
   Grid,
   Paper, TableContainer, Table, TableBody, TableHead, TableRow, TableCell, TableFooter
 } from '@material-ui/core';
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload'
 import * as AppSelectors from '../../../App/selectors';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
+import TaskIcon from '../../../../images/TaskIcon.svg';
+import BudgetIcon from '../../../../images/budgetIcon.svg';
+import BudgetIcon2 from '../../../../images/budgetIcon2.svg';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,6 +38,11 @@ const useStyles = makeStyles(theme => ({
   grid: {
     justifyContent: "center",
     alignItems: "center",
+  },
+  list: {
+    width: '100%',
+    minWidth: 360,
+    backgroundColor: theme.palette.background.paper,
   },
   card: {
     "& .MuiCardActions-root": {
@@ -100,7 +109,12 @@ const useStyles = makeStyles(theme => ({
     "& .MuiFormControl-root": {
       marginLeft: theme.spacing(2)
     }
-  }
+  },
+  avatar: {
+    width: theme.spacing(8),
+    height: theme.spacing(8),
+    marginRight: theme.spacing(2)
+  },
 }));
 
 const BudgetingDetails = props => {
@@ -140,78 +154,49 @@ const BudgetingDetails = props => {
       <Card square className={classes.card}>
         <CardContent>
           <Typography variant="h6">
-            {budgetDialog.type === 'new' ? 'Add Budgeting' : 'Edit Budgeting'}
+            Budgeting Details
           </Typography>
         </CardContent>
         <Divider />
         <CardContent>
           <Grid container spacing={1} className={classes.grid}>
-            <Grid item xs={6}>
-              <TextField
-                id="standard-accountCode"
-                label="Account Code"
-                type="number"
-                variant="outlined"
-                size="small"
-                value={values.accountCode}
-                onChange={handleChange('accountCode')}
-                margin="normal"
-                fullWidth
-              />
+            <Grid item xs={12}>
+              <Grid container>
+                <Grid item xs>
+                  <List className={classes.list}>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <Avatar 
+                        className={classes.avatar} 
+                        src={BudgetIcon}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText 
+                        primary={<Typography variant="subtitle1">Financial year</Typography>} 
+                        secondary={<Typography variant="h6">6th Jan 2020 - 6th Dec 2020</Typography>} 
+                      />
+                    </ListItem>
+                  </List>
+                </Grid>
+                <Grid item xs>
+                  <List className={classes.list}>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <Avatar 
+                          className={classes.avatar} 
+                          src={BudgetIcon2}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText 
+                        primary={<Typography variant="subtitle1">Period</Typography>} 
+                        secondary={<Typography variant="h6">Monthly</Typography>} 
+                      />
+                    </ListItem>
+                  </List>
+                </Grid>
+              </Grid>
             </Grid>
-            <Grid item xs={6}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <div className={classes.dateWrapper}>
-                  <KeyboardDatePicker
-                    format="MM/dd/yyyy"
-                    inputVariant="outlined"
-                    name="startDate"
-                    id="date-picker-startDate"
-                    size="small"
-                    label="Start Date"
-                    value={values.startDate}
-                    onChange={(date, formatted) => handleDateChange(date, formatted, 'startDate')}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date',
-                    }}
-                  />
-                  <KeyboardDatePicker
-                    format="MM/dd/yyyy"
-                    inputVariant="outlined"
-                    name="endDate"
-                    id="date-picker-endDate"
-                    size="small"
-                    label="End Date"
-                    value={values.endDate}
-                    onChange={(date, formatted) => handleDateChange(date, formatted, 'endDate')}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date',
-                    }}
-                  />
-                </div>
-              </MuiPickersUtilsProvider>
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                id="contact"
-                name="contact"
-                placeholder="Select Contact / Company"
-                select
-                fullWidth
-                variant="outlined"
-                size="small"
-                label="Contact / Company"
-                value={values.contact}
-                onChange={handleChange}
-              >
-                <MenuItem key={0} value="3">
-                  No record
-                </MenuItem>
-              </TextField>
-            </Grid>
-            <Grid item xs={6} style={{textAlign: "right"}}>
-              <Button variant="contained" color="primary" startIcon={<CloudDownloadIcon />}>Generate from previous year</Button>
-            </Grid>
+            
             <Grid item xs={12}>
               <TableContainer component={Paper} elevation={0} className={classes.tableContainer}> 
                 <Table className={classes.table}>
@@ -236,8 +221,8 @@ const BudgetingDetails = props => {
                     <TableRow>
                       <TableCell component="th" scope="row" colSpan={13}>Income</TableCell>
                     </TableRow>
-                    {[0,1,2,3].map(row => (     
-                    <TableRow>
+                    {[0,1,2,3].map((row, i) => (     
+                    <TableRow key={i}>
                       <TableCell>Income</TableCell>
                       <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
                       <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
@@ -259,8 +244,8 @@ const BudgetingDetails = props => {
                     <TableRow>
                       <TableCell component="th" scope="row" colSpan={13}>Expense</TableCell>
                     </TableRow>
-                    {[0,1,2,3].map(row => (     
-                    <TableRow>
+                    {[0,1,2,3].map((row, i) => (     
+                    <TableRow key={i}>
                       <TableCell>Expense</TableCell>
                       <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
                       <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>

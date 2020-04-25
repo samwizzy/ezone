@@ -157,8 +157,7 @@ const FilesList = props => {
       getNestedFoldersAndDocs({folderId: prevIds[prevIds.length - 2], type: 'FOLDER'})
       removePrevIds()
     }else{
-      props.history.push('/dashboard/folders')
-      // prevIds.splice(prevIds.length - 1, 1)
+      props.history.push('/file-manager/folders')
     }
   }
 
@@ -181,7 +180,7 @@ const FilesList = props => {
     
     selectedDoc.type == 'File'? getUtilityFile(folderId) : (
       getNestedFoldersAndDocs({folderId, type: 'FOLDER'}),
-      props.history.push('/dashboard/folder/' + folderId)
+      props.history.push('/file-manager/folder/' + folderId)
     )
     getFolderById(selectedDoc)
   }

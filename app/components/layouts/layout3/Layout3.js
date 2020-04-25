@@ -6,7 +6,6 @@ import {
   ThemeProvider
 } from '@material-ui/core/styles';
 import Header from '../../Header';
-import Footer from '../../Footer';
 import Sidebar from '../../Sidebar';
 import theme from './../themeConfig'
 import Backdrop from  './../../Backdrop/Loadable'

@@ -166,6 +166,7 @@ const styles = theme => ({
 function Header(props) {
   const { classes, location } = props;
   const pathName = location.pathname.replace(/^\/|\/$/g, '').split('/')[0]
+  const title = pathName.replace(/-/g, ' ');
   console.log(pathName, "pathName from header")
 
   const [state, setState] = React.useState({ open: false });
@@ -236,7 +237,7 @@ function Header(props) {
             </Grid>
             <Grid item>
               <Typography variant="h6" color="inherit">
-                {pathName && pathName.toUpperCase()}
+                {title && title.toUpperCase()}
               </Typography>
             </Grid>
 

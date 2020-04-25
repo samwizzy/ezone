@@ -17,7 +17,6 @@ import reducer from './reducer';
 import saga from './saga';
 import makeSelectUtilityPage from './selectors';
 import * as Actions from './actions';
-import ProjectsApp from './ProjectsApp';
 
 export function UtilityPage(props) {
   useInjectReducer({ key: 'utilityPage', reducer });
@@ -36,7 +35,6 @@ export function UtilityPage(props) {
         <title>Utility Page</title>
         <meta name="description" content="Utility Page" />
       </Helmet>
-      <ProjectsApp />
     </div>
   );
 }

@@ -23,7 +23,8 @@ import saga from './saga';
 import messages from './messages';
 import ModuleLayout from '../components/ModuleLayout';
 import LoadingIndicator from './../../../components/LoadingIndicator';
-import BugdetingList from './components/BugdetingList';
+import BudgetingList from './components/BudgetingList';
+import BudgetingDetails from './components/BudgetingDetails';
 import NewBudgeting from './components/NewBudgeting';
 
 export function Budgeting(props) {
@@ -52,8 +53,9 @@ export function Budgeting(props) {
       </Helmet>
 
       <ModuleLayout>
-        { params.status?
-          <NewBudgeting /> : <BugdetingList />
+        { params.status == 'new'?
+          <NewBudgeting /> : 
+          params.status? <BudgetingDetails /> : <BudgetingList />
         }
       </ModuleLayout>
     </div>

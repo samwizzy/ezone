@@ -20,6 +20,7 @@ import saga from './saga';
 import ModuleLayout from './components/ModuleLayout';
 import WarehousePage from './WarehousePage/index';
 import ItemPage from './ItemPage/index';
+import Dashboard from './Dashboard'
 
 export function InventoryPage() {
   useInjectReducer({ key: 'inventoryPage', reducer });
@@ -32,8 +33,9 @@ export function InventoryPage() {
           <title>InventoryPage</title>
           <meta name="description" content="Description of InventoryPage" />
         </Helmet>
-        <WarehousePage />
-        <ItemPage />
+        <Dashboard />
+        {/* <WarehousePage />
+        <ItemPage /> */}
       </ModuleLayout>
     </div>
   );

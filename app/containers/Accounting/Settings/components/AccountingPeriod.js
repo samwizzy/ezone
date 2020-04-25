@@ -172,8 +172,8 @@ const AccountingPeriod = props => {
               </Toolbar>
               <Table size="small" className={classes.table}>
                 <TableBody>
-                  {[0,1,2].map(filed => (
-                  <TableRow>
+                  {[0,1,2].map((field, i) => (
+                  <TableRow key={i}>
                     <TableCell component="th">Name</TableCell>
                     <TableCell><TextField id="outlined-basic" label="Outlined" variant="outlined" /></TableCell>
                     <TableCell component="th">Start Date</TableCell>

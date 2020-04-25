@@ -6,23 +6,16 @@ import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
-import RefreshSharp from '@material-ui/icons/RefreshSharp';
 import * as Actions from '../actions';
-import UserMenu from '../../../components/layouts/shared-components/UserMenu';
-import navBarImage from '../../../images/navbarImage.jpg';
 import MenuBar from '../../../components/MenuBar'
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
-  appBar: {
-    background: `${theme.palette.primary.main} url(${navBarImage}) no-repeat right top`,
-    backgroundSize: "100%",
-  },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3, 2, 3, 0),
+    padding: theme.spacing(2),
   },
   active: { 
     backgroundColor: theme.palette.common.white,  
@@ -39,34 +32,32 @@ function ModuleLayout(props) {
       <MenuBar
         navigations={
           <React.Fragment>
-            <NavLink exact to="/dashboard" activeClassName={classes.active}>
-              Project
-            </NavLink>
-            <NavLink to="/dashboard/chats" activeClassName={classes.active}>
+            <NavLink to="/chats" activeClassName={classes.active}>
               Chats
             </NavLink>
-            <NavLink to="/dashboard/tasks" activeClassName={classes.active}>
+            <NavLink to="/task-manager/tasks" activeClassName={classes.active}>
               Tasks
             </NavLink>
-            <NavLink to="/dashboard/folders" activeClassName={classes.active}>
+            <NavLink to="/file-manager/folders" activeClassName={classes.active}>
               Files
             </NavLink>
           </React.Fragment>
         }
-        content={props.children}
+        content={
+          <div className={classes.content}>
+            {props.children}
+          </div>
+        }
       />
     </div>
   );
 }
 
 const mapStateToProps = createStructuredSelector({
-  // loginPage: makeSelectLoginPage(),
 });
 
 function mapDispatchToProps(dispatch) {
-  return {
-    getUtilityTasks: evt => dispatch(Actions.getUtilityTasks(evt)),
-  };
+  return {};
 }
 
 const withConnect = connect(

@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   content: {
-    paddingTop: theme.spacing(2),
+    padding: theme.spacing(2),
   },
   active: { 
     backgroundColor: theme.palette.common.white,  
@@ -37,11 +37,9 @@ function ModuleLayout(props) {
     <div className={classes.root}>
       <MenuBar
         content={
-          <Grid container className={classes.content}>
-            <Grid item xs={12}>
-              {props.children}
-            </Grid>
-          </Grid>
+          <div className={classes.content}>
+            {props.children}
+          </div>
         }
       />
     </div>

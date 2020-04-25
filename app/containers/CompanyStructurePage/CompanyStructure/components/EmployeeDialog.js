@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import {
+  AppBar, Toolbar,
   Divider,
   TextField,
   makeStyles,
@@ -82,11 +83,15 @@ const EmployeeDialog = props => {
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="alert-dialog-slide-title">
-          {addEmployeeToPositionDialog.type === 'new'
-            ? 'Add Employee To Position'
-            : 'Edit Employee'}
-        </DialogTitle>
+        <AppBar position="relative">
+          <Toolbar>
+            <Typography variant="h6" className={classes.title}>
+              {addEmployeeToPositionDialog.type === 'new'
+              ? 'Add Employee To Position'
+              : 'Edit Employee'}
+            </Typography>
+          </Toolbar>
+        </AppBar>
 
         <Divider />
 
@@ -134,7 +139,7 @@ const EmployeeDialog = props => {
           <Button
             onClick={() => dispatchCloseAddEmployeeToPositionDialogAction()}
             color="primary"
-            variant="contained"
+            variant="outlined"
           >
             Cancel
           </Button>

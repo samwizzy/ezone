@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 
 import MUIDataTable from 'mui-datatables';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -22,55 +23,24 @@ import { AddButton } from './AddButton';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: theme.spacing(5, 5, 5, 20),
-    marginBottom: theme.spacing(4),
+    flexGrow: 1
   },
-  image: {
-    position: 'absolute',
-    width: '100px',
-    height: '100px',
-    left: '150px',
-    top: '180px',
-    border: '1px solid #C4C4C4',
-    borderRadius: '155px',
-    padding: '25px',
-  },
-  edit: {
-    position: 'absolute',
-    height: '100px',
-    left: '1280px',
-    top: '180px',
-    color: '#1A88E1',
-    fontStyle: 'normal',
-    fontWeight: '600',
-    fontSize: '13px',
-    lineHeight: '16px',
-    // border: '2px solid #1A88E1',
-    [theme.breakpoints.down('md')]: {
-      position: 'absolute',
-      height: '100px',
-      left: '265px',
-      top: '150px',
-      color: '#1A88E1',
+  datatable: {
+    '& .MuiTableRow-root:hover': {
+      cursor: 'pointer'
     },
-  },
-  orgContainer: {
-    padding: theme.spacing(0, 5, 0, 5),
-  },
-  demo: {
-    backgroundColor: theme.palette.background.paper,
-  },
-  editButton: {
-    width: '117px',
-    height: '40px',
-    background: '#1A88E1',
-    borderRadius: '10px',
-    align: 'right',
-  },
-  listFormat: {
-    marginBottom: '10px',
-    marginTop: '10px',
-  },
+    '& .MuiTableHead-root': {
+      '& .MuiTableCell-head': {
+        color: theme.palette.common.white,
+      },
+      '& .MuiTableCell-root:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+      },
+      '& .MuiTableCell-root:nth-child(even)': {
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
+      },
+    },
+  }
 }));
 
 const WorkOrderList = props => {
@@ -155,7 +125,7 @@ const WorkOrderList = props => {
     },
     {
       name: 'id',
-      label: '.',
+      label: ' ',
       options: {
         filter: true,
         sort: false,
@@ -218,6 +188,7 @@ const WorkOrderList = props => {
   return (
     <React.Fragment>
       <MUIDataTable
+        className={classes.datatable}
         title="Work Order"
         data={listOfWorkOrderData}
         columns={columns}
