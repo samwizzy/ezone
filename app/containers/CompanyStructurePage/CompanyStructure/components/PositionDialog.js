@@ -158,7 +158,7 @@ const PositionDialog = props => {
           <Button
             onClick={() => dispatchCloseNewPositionDialog()}
             color="primary"
-            variant="contained"
+            variant="outlined"
           >
             Cancel
           </Button>

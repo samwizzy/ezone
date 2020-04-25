@@ -2,6 +2,7 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
+  AppBar, Toolbar,
   Backdrop,
   CircularProgress,
   makeStyles,
@@ -22,6 +23,7 @@ import Add from '@material-ui/icons/Add';
 import saga from '../../saga';
 import reducer from '../../reducer';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator'
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import PartiesDialog from './PartiesDialog';
@@ -30,7 +32,6 @@ import PositionDialog from './PositionDialog';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    width: '100%',
   },
   list: {
     width: '100%',
@@ -38,6 +39,22 @@ const useStyles = makeStyles(theme => ({
     '& :hover': {
       backgroundColor: theme.palette.primary.main,
       color: theme.palette.common.white,
+    },
+  },
+  datatable: {
+    '& .MuiTableRow-root:hover': {
+      cursor: 'pointer'
+    },
+    '& .MuiTableHead-root': {
+      '& .MuiTableCell-head': {
+        color: theme.palette.common.white,
+      },
+      '& .MuiTableCell-root:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+      },
+      '& .MuiTableCell-root:nth-child(even)': {
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
+      },
     },
   },
   breadcrumbs: {
@@ -220,14 +237,16 @@ const PartyPage = props => {
     customToolbar: () => (
       <Button
         variant="contained"
+        style={{marginLeft: 5}}
         color="primary"
         size="small"
         startIcon={<Add />}
         onClick={() => dispatchOpenNewPartiesAction()}
       >
-        Add New Parties
+        New Party
       </Button>
     ),
+    elevation: 0
   };
 
   const columns2 = [
@@ -307,13 +326,15 @@ const PartyPage = props => {
       <Button
         variant="contained"
         color="primary"
+        style={{marginLeft: 5}}
         size="small"
         startIcon={<Add />}
         onClick={() => dispatchOpenNewPositionAction()}
       >
-        Add New Position
+        New Position
       </Button>
     ),
+    elevation: 0
   };
 
   return (
@@ -322,10 +343,11 @@ const PartyPage = props => {
         <Backdrop className={classes.backdrop} open={loading}>
           <CircularProgress color="inherit" />
         </Backdrop>
-        <Grid item xs={12} md={6} lg={6}>
+        <Grid item xs={12}>
           <div className={classes.table}>
             {party && party.parties && (
               <MUIDataTable
+                className={classes.datatable}
                 // title={`All ${selectedPartyGroupData.name} Parties`}
                 title="All Parties"
                 data={party.parties}
@@ -335,10 +357,11 @@ const PartyPage = props => {
             )}
           </div>
         </Grid>
-        <Grid item xs={12} md={6} lg={6}>
+        <Grid item xs={12}>
           <div className={classes.table}>
             {party && party.positions && (
               <MUIDataTable
+                className={classes.datatable}
                 // title={`All ${selectedPartyGroupData.name} Positions`}
                 title="All Positions"
                 data={party.positions}
