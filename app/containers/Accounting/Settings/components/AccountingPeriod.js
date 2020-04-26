@@ -156,7 +156,6 @@ const AccountingPeriod = props => {
             </Table>
           </Paper>
         </Grid>
-<<<<<<< HEAD
         <Grid item xs={7}></Grid>
       </Grid>
       <Grid container>
@@ -243,57 +242,6 @@ const AccountingPeriod = props => {
                           Close Period
                         </MenuItem>
                       </Menu>
-=======
-        <Grid container>
-          <Grid item xs={12}>
-            <Paper square elevation={0}>
-              <Toolbar>
-                <Typography variant="h6">Accounting Years</Typography>
-              </Toolbar>
-              <Table size="small" className={classes.table}>
-                <TableBody>
-                  {[0,1,2].map((field, i) => (
-                  <TableRow key={i}>
-                    <TableCell component="th">Name</TableCell>
-                    <TableCell><TextField id="outlined-basic" label="Outlined" variant="outlined" /></TableCell>
-                    <TableCell component="th">Start Date</TableCell>
-                    <TableCell>
-                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker
-                          format="MM/dd/yyyy"
-                          margin="normal"
-                          inputVariant="outlined"
-                          name="startDate"
-                          id="date-picker-startDate"
-                          label="Start Date"
-                          value={values.startDate}
-                          onChange={(date, formatted) => handleDateChange(date, formatted, 'startDate')}
-                          KeyboardButtonProps={{
-                            'aria-label': 'change date',
-                          }}
-                          fullWidth
-                        />
-                      </MuiPickersUtilsProvider>
-                    </TableCell>
-                    <TableCell component="th">End Date</TableCell>
-                    <TableCell>
-                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker
-                          format="MM/dd/yyyy"
-                          margin="normal"
-                          inputVariant="outlined"
-                          name="startDate"
-                          id="date-picker-startDate"
-                          label="Start Date"
-                          value={values.startDate}
-                          onChange={(date, formatted) => handleDateChange(date, formatted, 'startDate')}
-                          KeyboardButtonProps={{
-                            'aria-label': 'change date',
-                          }}
-                          fullWidth
-                        />
-                      </MuiPickersUtilsProvider>
->>>>>>> 374db27f008a02151226d466427d01c0ce5d5b9f
                     </TableCell>
                   ) : (
                     <TableCell component="th">
