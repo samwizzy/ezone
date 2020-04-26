@@ -1,64 +1,25 @@
 import React, {memo} from 'react'
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { createStructuredSelector } from 'reselect';
-import DateFnsUtils from '@date-io/date-fns'; // choose your lib
-import {
-  DatePicker,
-  TimePicker,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-  DateTimePicker,
-  MuiPickersUtilsProvider,
-} from '@material-ui/pickers';
-
 import { 
   makeStyles, 
-  Box, 
-  Button, 
   Grid, 
-  Paper, 
-  Table, 
-  TableBody, 
-  TableRow, 
-  TableCell, 
-  TextField, 
-  Toolbar, 
-  Typography 
 } from '@material-ui/core';
 import SettingsSideBar from './SettingsSideBar';
-import AddIcon from '@material-ui/icons/Add';
 import AccountingPeriod from './AccountingPeriod';
-
 
 const useStyles = makeStyles(theme => ({
 	root: {
 		flexGrow: 1
-	},
-	box: {
-		backgroundColor: theme.palette.grey[200]
-	},
-	table: {
-    '& .MuiTableFooter-root': {},
-    '& th.MuiTableCell-root': {
-			borderBottom: 'none !important',
-			width: '10%'
-    },
-    '& .MuiTableCell-root': {
-      borderBottom: 'none !important'
-    },
-  },
+	}
 }))
 
 const SettingsLayout = props => {
 	const classes = useStyles()
 	const {} = props 
-	const [form, setForm] = React.useState({})
-
-	const handleDateChange = (date, formatted, name) => { 
-    // setForm(_.set({...form}, name, reformattedDate(date)))
-  }
 
 	return (
 		<div className={classes.root}>
@@ -67,14 +28,34 @@ const SettingsLayout = props => {
 					<SettingsSideBar />
 				</Grid>
 				<Grid item xs={10}>
-					<AccountingPeriod />
+					{/* <AccountingPeriod /> */}
+					{props.children}
 				</Grid>
 			</Grid>
 		</div>
 	)
 }
 
+SettingsLayout.propTypes = {
+
+};
+
+const mapStateToProps = createStructuredSelector({
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+  };
+}
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
 export default compose(
 	withRouter,
+	withConnect,
 	memo
 )(SettingsLayout)

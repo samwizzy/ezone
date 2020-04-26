@@ -18,15 +18,29 @@ export function closeNewContactDialog() {
   };
 }
 
-export function openEditContactDialog() {
+export function openEditContactDialog(data) {
   return {
     type: Constants.OPEN_EDIT_CONTACT_DIALOG,
+    payload: data,
   };
 }
 
 export function closeEditContactDialog() {
   return {
     type: Constants.CLOSE_EDIT_CONTACT_DIALOG,
+  };
+}
+
+export function openContactDetailsDialog(data) {
+  return {
+    type: Constants.OPEN_NEW_CONTACT_DETAILS_DIALOG,
+    payload: data,
+  };
+}
+
+export function closeContactDetailsDialog() {
+  return {
+    type: Constants.CLOSE_NEW_CONTACT_DETAILS_DIALOG,
   };
 }
 

@@ -60,14 +60,14 @@ export const AdvanceInfo = props => {
     } = form;
     return (
       dob !== null &&
-      fax.length > 0 &&
-      website.length > 0 &&
-      address1.length > 0 &&
-      address2.length > 0 &&
-      mobileNo.length > 0 &&
+      fax !== null &&
+      website !== null &&
+      address1 !== null &&
+      address2 !== null &&
+      mobileNo !== null &&
       country !== null &&
-      state.length > 0 &&
-      city.length > 0
+      state !== null &&
+      city !== null
     );
   };
 

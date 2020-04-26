@@ -153,7 +153,7 @@ const FilesList = props => {
 
   const getAllFolders = () => {
     getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
-    props.history.push('/dashboard/folders')
+    props.history.push('/file-manager/folders')
   }
 
   const handleRowClick = folderId => {
@@ -161,7 +161,7 @@ const FilesList = props => {
     selectedDoc.type == 'File'? getUtilityFile(folderId) : 
     (
       getAllFoldersAndDocs({folderId, type: 'FOLDER'}), 
-      props.history.push('/dashboard/folder/' + folderId)
+      props.history.push('/file-manager/folder/' + folderId)
     )
   }
 

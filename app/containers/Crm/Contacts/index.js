@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -14,16 +14,21 @@ import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectCrm from '../selectors';
+import * as Actions from './actions';
+import * as Selectors from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from '../messages';
 import ContactsList from './components/ContactsList';
-import ModuleLayout from './../components/ModuleLayout';
+import ModuleLayout from '../components/ModuleLayout';
 
-export function Crm() {
+export function Crm(props) {
   useInjectReducer({ key: 'crmContacts', reducer });
   useInjectSaga({ key: 'crmContacts', saga });
+
+  const { getAllContactsAction } = props;
+  useEffect(() => {
+    getAllContactsAction();
+  }, []);
 
   return (
     <div>
@@ -40,14 +45,16 @@ export function Crm() {
 
 Crm.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  getAllContactsAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  crmContacts: makeSelectCrm(),
+  // crmContacts: Selectors.makeSelectCrm(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    getAllContactsAction: () => dispatch(Actions.getAllContacts()),
     dispatch,
   };
 }

@@ -1,8 +1,14 @@
-import React, { useMemo, useRef, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
 import { useDropzone } from 'react-dropzone';
 import RootRef from '@material-ui/core/RootRef';
 import styled from 'styled-components';
 import _ from 'lodash';
+import * as AppSelectors from '../../App/selectors';
 
 const getColor = props => {
   if (props.isDragAccept) {
@@ -66,7 +72,7 @@ const Container = styled.div`
 
 function PaperDropzone(props) {
   const [files, setFiles] = useState([]);
-  const { uploadFileAction } = props;
+  const { uploadFileAction, currentUser } = props;
   const [form, setForm] = useState({
     attachments: [],
   });
@@ -96,12 +102,13 @@ function PaperDropzone(props) {
         ),
       );
 
-      const attachment = {};
-      _.set(attachment, 'fileName', acceptedFiles[0].name);
-      _.set(attachment, 'format', acceptedFiles[0].type);
-      _.set(attachment, 'size', acceptedFiles[0].size);
-      getBase64(acceptedFiles[0], result => _.set(attachment, 'file', result));
-      uploadFileAction(attachment);
+      const image = {};
+      _.set(image, 'orgId', currentUser.organisation.orgId);
+      _.set(image, 'fileName', acceptedFiles[0].name);
+      _.set(image, 'format', acceptedFiles[0].type);
+      _.set(image, 'size', acceptedFiles[0].size);
+      getBase64(acceptedFiles[0], result => _.set(image, 'file', result));
+      uploadFileAction(image);
     },
   });
 
@@ -163,4 +170,28 @@ function PaperDropzone(props) {
   );
 }
 
-export default PaperDropzone;
+PaperDropzone.propTypes = {
+  currentUser: PropTypes.object,
+  uploadFileAction: PropTypes.func,
+};
+
+const mapStateToProps = createStructuredSelector({
+  currentUser: AppSelectors.makeSelectCurrentUser(),
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+  };
+}
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+export default compose(
+  withRouter,
+  withConnect,
+  memo,
+)(PaperDropzone);

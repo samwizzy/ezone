@@ -31,7 +31,7 @@ export function LoginPage(props) {
   console.log(tokens, 'tokens');
 
   if (tokens) {
-    return <Redirect to="/dashboard" />;
+    return <Redirect to="/home" />;
   }
 
   return (

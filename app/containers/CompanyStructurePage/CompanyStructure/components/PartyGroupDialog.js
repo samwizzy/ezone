@@ -5,8 +5,10 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { makeStyles } from '@material-ui/core/styles';
 import {
+  AppBar, Toolbar,
   Divider,
   TextField,
+  Typography,
   Button,
   Dialog,
   DialogTitle,
@@ -75,11 +77,15 @@ const PartyGroupDialog = props => {
         keepMounted
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="alert-dialog-slide-title">
-          {newPartyGroupDialog.type === 'new'
-            ? 'New Party Group'
-            : 'Edit Party Group'}
-        </DialogTitle>
+        <AppBar position="relative">
+          <Toolbar>
+            <Typography variant="h6" className={classes.title}>
+              {newPartyGroupDialog.type === 'new'
+              ? 'New Party Group'
+              : 'Edit Party Group'}
+            </Typography>
+          </Toolbar>
+        </AppBar>
 
         <Divider />
 
@@ -116,6 +122,7 @@ const PartyGroupDialog = props => {
             <Button
               onClick={() => {
                 dispatchCreateNewPartyGroupAction(values);
+                setValues('');
               }}
               color="primary"
               variant="contained"
@@ -127,6 +134,7 @@ const PartyGroupDialog = props => {
             <Button
               onClick={() => {
                 updatePartyGroupAction(values);
+                setValues('');
               }}
               color="primary"
               variant="contained"
@@ -138,7 +146,7 @@ const PartyGroupDialog = props => {
           <Button
             onClick={() => dispatchCloseNewPartyPartyDialog()}
             color="primary"
-            variant="contained"
+            variant="outlined"
           >
             Cancel
           </Button>

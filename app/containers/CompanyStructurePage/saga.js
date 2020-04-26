@@ -93,27 +93,17 @@ export function* updatePartyGroupSaga() {
     Selectors.makeSelectUpdatePartyGroupData(),
   );
 
-  console.log(updatePartyGroupParams, 'updatePartyGroupParams');
-  const { name, description } = updatePartyGroupParams;
-  const newData = {
-    name,
-    description,
-    organisation: { orgId: currentUser.organisation.orgId }, // TODO: user object clear from store
-  };
-
   const requestURL = `${Endpoints.UpdatePartyGroup}`;
 
   try {
     const createPartyGroupResponse = yield call(request, requestURL, {
       method: 'PUT',
-      body: JSON.stringify(newData),
+      body: JSON.stringify(updatePartyGroupParams),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/Json',
       }),
     });
-
-    console.log(createPartyGroupResponse, 'createPartyGroupResponse');
 
     yield put(Actions.updatePartyGroupSuccessAction(createPartyGroupResponse));
     yield put(Actions.getPartyGroupAction());
@@ -144,6 +134,26 @@ export function* getAllUsers() {
     yield put(Actions.getAllUsersSuccess(getAllUsersResponse));
   } catch (err) {
     yield put(Actions.getAllUsersError(err));
+  }
+}
+
+export function* getAllTags() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+
+  const requestURL = `${Endpoints.GetAllTagsApi}`;
+
+  try {
+    const getAllTagsResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getAllTagsSuccess(getAllTagsResponse));
+  } catch (err) {
+    yield put(Actions.getAllTagsError(err));
   }
 }
 
@@ -191,6 +201,31 @@ export function* createNewParty() {
   }
 }
 
+export function* updatePartySaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+
+  const updatePartyParams = yield select(Selectors.makeSelectUpdatePartyData());
+  const requestURL = `${Endpoints.UpdatePartyApi}`;
+
+  try {
+    const createPartyResponse = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(updatePartyParams),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/Json',
+      }),
+    });
+
+    yield put(Actions.updatePartyGroupSuccessAction(createPartyResponse));
+    yield put(Actions.getPartyGroupAction());
+    yield put(Actions.closeEditPartyDialog());
+  } catch (err) {
+    console.log(err, 'errrrrrrr');
+    yield put(Actions.updatePartyError(err));
+  }
+}
+
 export function* createNewParties() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const createNewPartiesData = yield select(
@@ -228,6 +263,34 @@ export function* createNewParties() {
     //     status: 'error',
     //   }),
     // );
+  }
+}
+
+export function* updatePartiesSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+
+  const updatePartiesParams = yield select(
+    Selectors.makeSelectUpdatePartiesData(),
+  );
+
+  const requestURL = `${Endpoints.UpdatePartiesApi}`;
+
+  try {
+    const createPartyGroupResponse = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(updatePartiesParams),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/Json',
+      }),
+    });
+
+    yield put(Actions.updatePartiesSuccess(createPartyGroupResponse));
+    yield put(Actions.getPartyGroupAction());
+    yield put(Actions.closeEditPartiesDialog());
+  } catch (err) {
+    console.log(err, 'errrrrrrr');
+    yield put(Actions.updatePartiesError(err));
   }
 }
 
@@ -269,6 +332,34 @@ export function* createNewPosition() {
         status: 'error',
       }),
     );
+  }
+}
+
+export function* updatePositionSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+
+  const updatePositionParams = yield select(
+    Selectors.makeSelectUpdatePositionData(),
+  );
+
+  const requestURL = `${Endpoints.UpdatePositionApi}`;
+
+  try {
+    const createPartyGroupResponse = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(updatePositionParams),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/Json',
+      }),
+    });
+
+    yield put(Actions.updatePositionSuccess(createPartyGroupResponse));
+    yield put(Actions.getPartyGroupAction());
+    yield put(Actions.closeEditPositionDialog());
+  } catch (err) {
+    console.log(err, 'errrrrrrr');
+    yield put(Actions.updatePositionError(err));
   }
 }
 
@@ -423,6 +514,10 @@ export function* updateCompanyDetail() {
 
 // Individual exports for testing
 export default function* companyStructureSaga() {
+  yield takeLatest(Constants.GET_ALL_TAGS, getAllTags);
+  yield takeLatest(Constants.UPDATE_POSITION, updatePositionSaga);
+  yield takeLatest(Constants.UPDATE_PARTIES, updatePartiesSaga);
+  yield takeLatest(Constants.UPDATE_PARTY, updatePartySaga);
   yield takeLatest(Constants.UPDATE_PARTY_GROUP, updatePartyGroupSaga);
   yield takeLatest(Constants.GET_PARTY_GROUP, getPartyGroupSaga);
   yield takeLatest(Constants.GET_ALL_USERS, getAllUsers);

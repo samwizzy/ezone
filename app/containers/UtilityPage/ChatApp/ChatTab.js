@@ -279,7 +279,7 @@ const ChatTab = props => {
             // <NoAvailableChats />
             <div />
           ) : (
-            <Grid justify="center" container>
+            <Grid justify="center" container justify="space-between" alignItems="center">
               <Grid item xs={12} md={4}>
                 <Paper square>
                   <div
@@ -386,7 +386,6 @@ const ChatTab = props => {
                             </Paper>
                           </div>
                         ))}
-                      {/* <ChatFooter /> */}
                     </div>
                     <ChatFooter />
                   </Grid>

@@ -607,7 +607,7 @@ const WorkOrderDialog = props => {
           <Button
             onClick={() => closeWorkOrderDialogAction()}
             color="primary"
-            variant="contained"
+            variant="outlined"
           >
             Cancel
           </Button>

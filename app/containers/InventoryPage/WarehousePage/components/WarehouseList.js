@@ -10,6 +10,7 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator' 
 import AddIcon from '@material-ui/icons/Add';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
@@ -19,7 +20,27 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 
-const useStyles = makeStyles(theme => ({}));
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1
+  },
+  datatable: {
+    '& .MuiTableRow-root:hover': {
+      cursor: 'pointer'
+    },
+    '& .MuiTableHead-root': {
+      '& .MuiTableCell-head': {
+        color: theme.palette.common.white,
+      },
+      '& .MuiTableCell-root:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+      },
+      '& .MuiTableCell-root:nth-child(even)': {
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
+      },
+    },
+  },
+}));
 
 const WarehouseList = props => {
   const classes = useStyles();
@@ -161,6 +182,7 @@ const WarehouseList = props => {
   return (
     <React.Fragment>
       <MUIDataTable
+        className={classes.datatable}
         title="All Warehouses"
         data={getAllWarehouses}
         columns={columns}

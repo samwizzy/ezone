@@ -8,8 +8,9 @@ import {
   FormControlLabel,
   Icon,
   Button,
+  Typography,
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+import { Add, Visibility } from '@material-ui/icons';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
@@ -51,17 +52,19 @@ const useStyles = makeStyles(theme => ({
   margin: {
     margin: theme.spacing(1),
   },
+  view: {
+    margin: theme.spacing(1),
+  },
 }));
 
 const ContactsList = props => {
   const classes = useStyles();
-  const dd = [
-    { id: 1, name: 'cust1', phone: '0810132', emailAddress: 'cust1@gmail.com' },
-  ];
 
   const {
     loading,
+    allContacts,
     openNewContactDialogAction,
+    openContactDetailsDialogAction,
     openEditContactDialogAction,
     getAllContactsAction,
   } = props;
@@ -90,11 +93,24 @@ const ContactsList = props => {
       },
     },
     {
-      name: 'name',
+      name: 'id',
       label: 'Name',
       options: {
         filter: true,
         sort: false,
+        customBodyRender: value => {
+          const contac = allContacts.find(contact => value === contact.id);
+          if (value === '') {
+            return '';
+          }
+          return (
+            <div>
+              <Typography variant="subtitle2" gutterBottom>
+                {`${contac.firstName} ${contac.lastName}`}
+              </Typography>
+            </div>
+          );
+        },
       },
     },
     {
@@ -106,7 +122,7 @@ const ContactsList = props => {
       },
     },
     {
-      name: 'phone',
+      name: 'phoneNumber',
       label: 'Phone Number',
       options: {
         filter: true,
@@ -139,8 +155,16 @@ const ContactsList = props => {
       },
     },
     {
-      name: 'referenceNumber',
-      label: 'Reference Number',
+      name: 'lifeStage',
+      label: 'Life Stage',
+      options: {
+        filter: true,
+        sort: false,
+      }
+    },
+    {
+      name: 'associationType',
+      label: 'Association Type',
       options: {
         filter: true,
         sort: false,
@@ -164,20 +188,25 @@ const ContactsList = props => {
     },
     {
       name: 'id',
-      label: '',
+      label: 'Action',
       options: {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const d = dd.find(post => value === post.id);
+          const contac = allContacts.find(contact => value === contact.id);
           if (value === '') {
             return '';
           }
           return (
             <div>
-              <Button variant="outlined" size="small" color="primary" className={classes.margin} onClick={() => openEditContactDialogAction(d)}>
+              <Button variant="outlined" size="small" color="primary" className={classes.margin} onClick={() => openEditContactDialogAction(contac)}>
                 Edit
               </Button>
+              <FormControlLabel
+                className={classes.view}
+                control={<Visibility />}
+                onClick={() =>openContactDetailsDialogAction(contac)}
+              />
             </div>
           );
         },
@@ -195,7 +224,7 @@ const ContactsList = props => {
         color="primary"
         size="small"
         className={classes.button}
-        startIcon={<AddIcon />}
+        startIcon={<Add />}
         onClick={() => openNewContactDialogAction()}
       >
         New
@@ -203,6 +232,8 @@ const ContactsList = props => {
     ),
     elevation: 0
   };
+
+  // console.log(allContacts, 'allContacts');
 
   return (
     <React.Fragment>
@@ -212,7 +243,7 @@ const ContactsList = props => {
       <MUIDataTable
         className={classes.datatable}
         title="All Contacts"
-        data={dd}
+        data={allContacts}
         columns={columns}
         options={options}
       />
@@ -226,20 +257,23 @@ ContactsList.propTypes = {
   loading: PropTypes.bool,
   openNewContactDialogAction: PropTypes.func,
   openEditContactDialogAction: PropTypes.func,
+  openContactDetailsDialogAction: PropTypes.func,
   getAllContactsAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  // getAllInventoryAdjusts: Selectors.makeSelectGetAllInventoryAdjustments(),
+  allContacts: Selectors.makeSelectAllContacts(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openNewContactDialogAction: () =>
       dispatch(Actions.openNewContactDialog()),
-    openEditContactDialogAction: () =>
-      dispatch(Actions.openEditContactDialog()),
+    openEditContactDialogAction: evt =>
+      dispatch(Actions.openEditContactDialog(evt)),
+    openContactDetailsDialogAction: evt =>
+      dispatch(Actions.openContactDetailsDialog(evt)),
     getAllContactsAction: () =>
       dispatch(Actions.getAllContacts()),
   };

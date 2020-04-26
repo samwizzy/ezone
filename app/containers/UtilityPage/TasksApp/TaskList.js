@@ -234,7 +234,7 @@ const TaskList = props => {
   const handleTaskById = id => {
     setSelectedIndex(id)
     getUtilityTask(id)
-    props.history.push({pathname: '/dashboard/task/' + id})
+    props.history.push({pathname: '/task-manager/task/' + id})
   }
 
   const drawer = (

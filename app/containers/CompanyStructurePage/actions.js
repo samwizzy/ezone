@@ -44,6 +44,19 @@ export function closeNewPartyDialog() {
   };
 }
 
+export function openEditPartyDialog(data) {
+  return {
+    type: Constants.OPEN_EDIT_PARTY_DIALOG,
+    payload: data,
+  };
+}
+
+export function closeEditPartyDialog() {
+  return {
+    type: Constants.CLOSE_EDIT_PARTY_DIALOG,
+  };
+}
+
 export function openNewRoleDialog() {
   return {
     type: Constants.OPEN_NEW_ROLE_DIALOG,
@@ -166,6 +179,27 @@ export function createNewPartyError(data) {
   };
 }
 
+export function updateParty(data) {
+  return {
+    type: Constants.UPDATE_PARTY,
+    payload: data,
+  };
+}
+
+export function updatePartySuccess(data) {
+  return {
+    type: Constants.UPDATE_PARTY_SUCCESS,
+    payload: data,
+  };
+}
+
+export function updatePartyError(data) {
+  return {
+    type: Constants.UPDATE_PARTY_ERROR,
+    payload: data,
+  };
+}
+
 export function selectedParty(data) {
   return {
     type: Constants.SELECTED_PARTY,
@@ -182,6 +216,19 @@ export function openNewPartiesDialog() {
 export function closeNewPartiesDialog() {
   return {
     type: Constants.CLOSE_NEW_PARTIES_DIALOG,
+  };
+}
+
+export function openEditPartiesDialog(data) {
+  return {
+    type: Constants.OPEN_EDIT_PARTIES_DIALOG,
+    payload: data,
+  };
+}
+
+export function closeEditPartiesDialog() {
+  return {
+    type: Constants.CLOSE_EDIT_PARTIES_DIALOG,
   };
 }
 
@@ -206,6 +253,28 @@ export function createNewPartiesError(data) {
   };
 }
 
+export function updateParties(data) {
+  console.log(data, 'data');
+  return {
+    type: Constants.UPDATE_PARTIES,
+    payload: data,
+  };
+}
+
+export function updatePartiesSuccess(data) {
+  return {
+    type: Constants.UPDATE_PARTIES_SUCCESS,
+    payload: data,
+  };
+}
+
+export function updatePartiesError(data) {
+  return {
+    type: Constants.UPDATE_PARTIES_ERROR,
+    payload: data,
+  };
+}
+
 export function openNewPositionDialog() {
   return {
     type: Constants.OPEN_NEW_POSITION_DIALOG,
@@ -215,6 +284,19 @@ export function openNewPositionDialog() {
 export function closeNewPositionDialog() {
   return {
     type: Constants.CLOSE_NEW_POSITION_DIALOG,
+  };
+}
+
+export function openEditPositionDialog(data) {
+  return {
+    type: Constants.OPEN_EDIT_POSITION_DIALOG,
+    payload: data,
+  };
+}
+
+export function closeEditPositionDialog() {
+  return {
+    type: Constants.CLOSE_EDIT_POSITION_DIALOG,
   };
 }
 
@@ -235,6 +317,27 @@ export function createNewPositionSuccess(data) {
 export function createNewPositionError(data) {
   return {
     type: Constants.CREATE_NEW_POSITION_ERROR,
+    payload: data,
+  };
+}
+
+export function updatePosition(data) {
+  return {
+    type: Constants.UPDATE_POSITION,
+    payload: data,
+  };
+}
+
+export function updatePositionSuccess(data) {
+  return {
+    type: Constants.UPDATE_POSITION_SUCCESS,
+    payload: data,
+  };
+}
+
+export function updatePositionError(data) {
+  return {
+    type: Constants.UPDATE_POSITION_ERROR,
     payload: data,
   };
 }
@@ -292,25 +395,25 @@ export function addEmployeeToPositionError(data) {
   };
 }
 
-// export function getAllEmployees() {
-//   return {
-//     type: Constants.GET_EMPLOYEES,
-//   };
-// }
+export function getAllTags() {
+  return {
+    type: Constants.GET_ALL_TAGS,
+  };
+}
 
-// export function getAllEmployeesSuccess(data) {
-//   return {
-//     type: Constants.GET_EMPLOYEES_SUCCESS,
-//     payload: data,
-//   };
-// }
+export function getAllTagsSuccess(data) {
+  return {
+    type: Constants.GET_ALL_TAGS_SUCCESS,
+    payload: data,
+  };
+}
 
-// export function getAllEmployeesError(data) {
-//   return {
-//     type: Constants.GET_EMPLOYEES_ERROR,
-//     payload: data,
-//   };
-// }
+export function getAllTagsError(data) {
+  return {
+    type: Constants.GET_ALL_TAGS_ERROR,
+    payload: data,
+  };
+}
 
 /** *****************************************************************
  * Organization constants
@@ -413,7 +516,6 @@ export function getCompanyInfoError(data) {
 }
 
 export function updateCompanyInfo(data) {
-  console.log(data, 'UPDATE_COMPANY_INFO')
   return {
     type: Constants.UPDATE_COMPANY_INFO,
     payload: data,

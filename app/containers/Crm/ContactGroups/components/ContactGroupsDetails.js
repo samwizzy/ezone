@@ -48,7 +48,10 @@ const useStyles = makeStyles(theme => ({
 
 const ContactGroupsDetails = props => {
   const classes = useStyles();
-  const { loading, openNewContactGroupsDialog } = props;
+  const { loading, openNewContactGroupsDialog, match } = props;
+  const { params } = match
+
+  // params.contactId = {your contact-groups id}
 
   useEffect(() => {
 

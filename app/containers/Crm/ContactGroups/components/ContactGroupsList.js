@@ -10,6 +10,7 @@ import {
   Typography
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import moment from 'moment';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
@@ -44,11 +45,14 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
+  marginButton: {
+    margin: theme.spacing(1),
+  },
 }));
 
 const ContactGroupsList = props => {
   const classes = useStyles();
-  const { loading, openNewContactGroupsDialog } = props;
+  const { loading, openNewContactGroupsDialog, allContactGroups } = props;
 
   useEffect(() => {
 
@@ -59,12 +63,12 @@ const ContactGroupsList = props => {
       name: 'id',
       label: 'S/N',
       options: {
-        display: "excluded",
+        // display: "excluded",
         filter: true,
       },
     },
     {
-      name: 'groupname',
+      name: 'groupName',
       label: 'Group Name',
       options: {
         filter: true,
@@ -72,27 +76,23 @@ const ContactGroupsList = props => {
       },
     },
     {
-      name: 'Subscribers',
-      label: 'Subscribers',
+      name: 'id',
+      label: 'Number Of Contacts',
       options: {
         filter: true,
         sort: false,
-      },
-    },
-    {
-      name: 'Unconfirmed',
-      label: 'Unconfirmed',
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: 'status',
-      label: 'Unsubscribed',
-      options: {
-        filter: true,
-        sort: false,
+        customBodyRender: value => {
+          const contactGp = allContactGroups.find(contact => value === contact.id);
+
+          if (value === '') {
+            return '';
+          }
+          return (
+            <Typography>
+              {contactGp.contacts.length}
+            </Typography>
+          );
+        },
       },
     },
     {
@@ -101,23 +101,30 @@ const ContactGroupsList = props => {
       options: {
         filter: true,
         sort: false,
+        customBodyRender: value => (
+          <Typography>
+            {moment(value).format("MMM Do YYYY")}
+          </Typography>
+        ),
       }
     },
     {
-      name: 'type',
-      label: 'Type',
+      name: 'id',
+      label: 'Action',
       options: {
         filter: true,
         sort: false,
-      }
-    },
-    {
-      name: 'addedBy',
-      label: 'Adjusted By',
-      options: {
-        filter: true,
-        sort: false,
-      }
+        customBodyRender: value => (
+          <div>
+            <Button variant="outlined" size="small" color="primary" className={classes.marginButton}>
+              Edit
+            </Button>
+            <Button variant="outlined" size="small" color="primary" className={classes.marginButton}>
+              View
+            </Button>
+          </div>
+        ),
+      },
     },
   ];
 
@@ -152,7 +159,7 @@ const ContactGroupsList = props => {
       <MUIDataTable
         className={classes.datatable}
         title="All Contact Groups"
-        data={[]}
+        data={allContactGroups}
         columns={columns}
         options={options}
       />
@@ -165,10 +172,12 @@ const ContactGroupsList = props => {
 ContactGroupsList.propTypes = {
   loading: PropTypes.bool,
   openNewContactGroupsDialog: PropTypes.func,
+  allContactGroups: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading()
+  loading: Selectors.makeSelectLoading(),
+  allContactGroups: Selectors.makeSelectAllContactsGroup()
 });
 
 function mapDispatchToProps(dispatch) {

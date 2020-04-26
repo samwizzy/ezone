@@ -23,10 +23,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     position: 'relative',
   },
-  title: {
-    flexGrow: 1,
-    marginLeft: theme.spacing(1),
-  },
   textField: {
     flex: 1,
   },
