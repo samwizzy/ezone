@@ -44,7 +44,6 @@ const authorizationPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.FORGOT_PASSWORD: {
-        console.log(action.payload, 'action.payload');
         return {
           ...state,
           loading: true,

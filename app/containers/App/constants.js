@@ -14,3 +14,7 @@ export const LOG_OUT = 'app/App/LOG_OUT';
 export const POST_FCM_TOKEN = 'app/App/POST_FCM_TOKEN';
 export const POST_FCM_TOKEN_SUCCESS = 'app/App/POST_FCM_TOKEN_SUCCESS';
 export const POST_FCM_TOKEN_ERROR = 'app/App/POST_FCM_TOKEN_ERROR';
+
+export const REFRESH_TOKEN = 'app/App/REFRESH_TOKEN';
+export const REFRESH_TOKEN_SUCCESS = 'app/App/REFRESH_TOKEN_SUCCESS';
+export const REFRESH_TOKEN_ERROR = 'app/App/REFRESH_TOKEN_ERROR';

@@ -29,7 +29,6 @@ export function signupErrorRequest(data) {
 }
 
 export function forgotPassword(data) {
-  console.log(data, 'data');
   return {
     type: Constants.FORGOT_PASSWORD,
     payload: data,

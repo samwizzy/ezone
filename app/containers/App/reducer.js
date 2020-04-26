@@ -120,7 +120,6 @@ const appReducer = (state = initialState, action) =>
         return {};
       }
       case Constants.POST_FCM_TOKEN: {
-        console.log(action.payload, 'action.payload');
         return {
           ...state,
           loading: true,
@@ -141,6 +140,32 @@ const appReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: action.payload,
+        };
+      }
+      case Constants.REFRESH_TOKEN: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.REFRESH_TOKEN_SUCCESS: {
+        localStorage.setItem('access_token', action.payload.access_token);
+        localStorage.setItem('refresh_token', action.payload.refresh_token);
+        localStorage.setItem('expires_in', action.payload.expires_in);
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          message: action.payload,
+        };
+      }
+      case Constants.REFRESH_TOKEN_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          message: action.payload,
         };
       }
     }
