@@ -91,7 +91,6 @@ export function closeAccountPeriodDialog() {
 
 // Edit account period dialog
 export function editOpenAccountPeriodDialog() {
-  console.log('editOpenAccountPeriodDialog');
   return {
     type: Constants.EDIT_OPEN_ACCOUNT_PERIOD_DIALOG,
   };
@@ -125,3 +124,28 @@ export function createAccountPeriodErrorAction(data) {
     payload: data,
   };
 }
+
+
+// Create accounting period
+export function updateAccountPeriodAction(data) {
+  console.log('updateAccountPeriodAction data ', data);
+  return {
+    type: Constants.UPDATE_ACCOUNT_PERIOD,
+    payload: data,
+  };
+}
+
+export function updateAccountPeriodSuccessAction(data) {
+  return {
+    type: Constants.UPDATE_ACCOUNT_PERIOD_SUCCESS,
+    payload: data,
+  };
+}
+
+export function updateAccountPeriodErrorAction(data) {
+  return {
+    type: Constants.UPDATE_ACCOUNT_PERIOD_ERR,
+    payload: data,
+  };
+}
+

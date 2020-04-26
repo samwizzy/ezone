@@ -177,6 +177,31 @@ const settingsReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
+
+      // Case to create accounting period
+      case Constants.UPDATE_ACCOUNT_PERIOD: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          periodOfAccountPostData: action.payload
+        };
+      }
+      case Constants.UPDATE_ACCOUNT_PERIOD_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          periodOfAccountPostData: action.payload
+        };
+      }
+      case Constants.UPDATE_ACCOUNT_PERIOD_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
     }
   });
 

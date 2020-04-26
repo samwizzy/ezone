@@ -47,7 +47,9 @@ export function* createNewBankSaga() {
     });
 
     yield put(Actions.createNewBankSuccessAction(newBankResponse));
+    alert('Account Created Successfully.');
     yield put(Actions.getAllBankAccountAction());
+    yield put(Actions.closeNewBankAccountDialog());
   } catch (err) {
     yield put(Actions.createNewBankErrorAction(err));
   }
@@ -127,7 +129,6 @@ export function* createBankTransferSaga() {
 }
 
 
-// Start here
 export function* getTransferByAccountIdSaga({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());

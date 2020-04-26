@@ -73,68 +73,36 @@ const useStyles = makeStyles(theme => ({
 const AccountingPeriod = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  
+  const {
+    accountingSetupData,
+    allAccountingPeriodData,
+    openAccountPeriodDialogAction,
+    editOpenAccountPeriodDialogAction,
+    dispatchUpdateAccountPeriodAction
+  } = props;
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const {
-    accountingSetupData,
-    allAccountingPeriodData,
-    openAccountPeriodDialogAction,
-    editOpenAccountPeriodDialogAction
-  } = props;
-
   const [values, setValues] = React.useState({
-    dateCreated: "",
-    endDate: "",
     orgId: "",
-    startDate: "",
-    status: "",
     year: ""
   });
 
+  const [accountToUpdate, setAccountToUpdate] = React.useState({
+    id: ""
+  });
+
+  const handleClick = (event, id) => {
+    setAnchorEl(event.currentTarget);
+    const selectedAccountPeriod = allAccountingPeriodData && allAccountingPeriodData.find(acc => id === acc.id);
+    setAccountToUpdate({ ...accountToUpdate, id: selectedAccountPeriod.id });
+  };
+
   console.log('allAccountingPeriodData period file -> ', allAccountingPeriodData);
-  console.log('status -> ', allAccountingPeriodData[0].status);
-
-  // const addRow = () => {
-  //   const item = {
-  //     accountId: 0,
-  //     credit: 0,
-  //     debit: 0,
-  //     description: '',
-  //   };
-  //   setValues({...values, "entries": [ ...values.entries, item ]});
-  // };
-
-  // const removeRow = index => {
-  //   values.entries.splice(index, 1);
-  //   setValues({ ...values });
-  // };
-
-  // const handleChange = name => event => {
-  //   setValues({ ...values, [name]: event.target.value });
-  // };
-
-  // const handleSelectChange = (name, value) => {
-  //   setValues({ ...values, periodId: value.id });
-  // };
-
-  // const handleRowChange = (event, index) => {
-  //   const entries = [...values.entries]
-  //   entries[index][event.target.name] = event.target.value
-  //   setValues({...values, entries})
-  // }
-
-  // const handleSelectChangeRows = (event, value, index) => {
-  //   const { entries } = values;
-  //   entries[index]["accountId"] = value.id;
-  //   setValues({ ...values, entries });
-  // };
+  console.log('accountToUpdate state -> ', accountToUpdate);
 
 
   return (
@@ -247,12 +215,12 @@ const AccountingPeriod = props => {
                       />
                     </MuiPickersUtilsProvider>
                   </TableCell>
-                  {allAccountingPeriodData.status ? (
+                  {item.status ? (
                     <TableCell component="th">
                       <Button 
                         aria-controls="simple-menu" 
                         aria-haspopup="true" 
-                        onClick={handleClick}
+                        onClick={event => handleClick(event, item.id)}
                       >
                         Open
                       </Button>
@@ -263,9 +231,16 @@ const AccountingPeriod = props => {
                         open={Boolean(anchorEl)}
                         onClose={handleClose}
                       >
-                        <MenuItem onClick={handleClose}>Edit</MenuItem>
-                        <MenuItem onClick={handleClose}>View</MenuItem>
-                        <MenuItem onClick={handleClose}>Delete</MenuItem>
+                        <MenuItem 
+                          onClick={() => editOpenAccountPeriodDialogAction()}
+                        >
+                          Edit
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() => dispatchUpdateAccountPeriodAction(accountToUpdate)}
+                        >
+                          Close Period
+                        </MenuItem>
                       </Menu>
                     </TableCell>
                   ) : (
@@ -273,7 +248,7 @@ const AccountingPeriod = props => {
                       <Button 
                         aria-controls="simple-menu" 
                         aria-haspopup="true" 
-                        onClick={handleClick}
+                        onClick={event => handleClick(event, item.id)}
                       >
                         Closed
                       </Button>
@@ -285,11 +260,6 @@ const AccountingPeriod = props => {
                         onClose={handleClose}
                       >
                         <MenuItem onClick={handleClose}>View</MenuItem>
-                        <MenuItem 
-                          onClick={() => editOpenAccountPeriodDialogAction()}
-                        >
-                          Edit
-                        </MenuItem>
                       </Menu>
                     </TableCell>
                   )}
@@ -330,6 +300,7 @@ function mapDispatchToProps(dispatch) {
   return {
     openAccountPeriodDialogAction: () => dispatch(Actions.openAccountPeriodDialog()),
     editOpenAccountPeriodDialogAction: () => dispatch(Actions.editOpenAccountPeriodDialog()),
+    dispatchUpdateAccountPeriodAction: evt => dispatch(Actions.updateAccountPeriodAction(evt)),
   };
 }
 

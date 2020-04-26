@@ -283,10 +283,9 @@ const AddBankAccountDialog = props => {
                 bankAccountDialog.type === 'new' ? dispatchCreateNewBankAction(values) : dispatchUpdateBankAccountAction(values);
               }}
               color="primary"
-              // variant="contained"
               disabled={!canSubmitValues()}
             >
-              Save
+              { bankAccountDialog.type === 'new' ? 'Save' : 'Update' }
             </Button>
           )}
           <Button

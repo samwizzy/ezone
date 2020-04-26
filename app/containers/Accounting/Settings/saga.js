@@ -94,8 +94,6 @@ export function* createAccountPeriodSaga() {
   );
   const requestURL = `${Endpoints.CreateAccountPeriodApi}`;
 
-  console.log('createAccountPeriodSaga triggered');
-
   try {
     const accountPeriodResponse = yield call(request, requestURL, {
       method: 'POST',
@@ -107,12 +105,47 @@ export function* createAccountPeriodSaga() {
     });
 
     console.log('accountPeriodResponse -> ', accountPeriodResponse);
-    alert(`Accounting period successful!`);
+    alert(`Accounting period created successfully!`);
+    yield put(Actions.getAllAccountingPeriodAction());
     yield put(Actions.createAccountPeriodSuccessAction(accountPeriodResponse));
+    yield put(Actions.closeAccountPeriodDialog());
   } catch (err) {
     console.log('createAccountPeriodErrorAction -> ', err);
     alert(`Something went wrong.`);
     yield put(Actions.createAccountPeriodErrorAction(err));
+  }
+}
+
+
+// Create accounting period
+export function* updateAccountPeriodSaga({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const accountPeriodPostData = yield select(
+    Selectors.makeSelectAccountPeriodPostData(),
+  );
+  const requestURL = `${Endpoints.UpdateAccountPeriodApi}?id=${payload.id}&status=false`;
+
+  console.log('payload -> ', payload);
+
+  try {
+    const updatedAccountPeriodResponse = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(accountPeriodPostData),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log('updatedAccountPeriodResponse -> ', updatedAccountPeriodResponse);
+    alert(`Accounting period updated successfully!`);
+    yield put(Actions.getAllAccountingPeriodAction());
+    yield put(Actions.updateAccountPeriodSuccessAction(accountPeriodResponse));
+    yield put(Actions.closeAccountPeriodDialog());
+  } catch (err) {
+    console.log('updateAccountPeriodErrorAction -> ', err);
+    alert(`Something went wrong.`);
+    yield put(Actions.updateAccountPeriodErrorAction(err));
   }
 }
 
@@ -124,5 +157,6 @@ export default function* SettingsSaga() {
   yield takeLatest(Constants.GET_ACCOUNTING_SETUP, getAccountingSetupSaga);
   yield takeLatest(Constants.GET_ALL_ACCOUNTING_PERIOD, getAllAccountingPeriodSaga);
   yield takeLatest(Constants.CREATE_ACCOUNT_PERIOD, createAccountPeriodSaga);
+  yield takeLatest(Constants.UPDATE_ACCOUNT_PERIOD, updateAccountPeriodSaga);
 }
 

@@ -58,6 +58,7 @@ const DialogOfAccountPeriod = props => {
     loading,
     currentUser,
     accountPeriodDialog, 
+    allAccountingPeriodData,
     closeAccountPeriodDialogAction,
     dispatchCreateAccountPeriodAction
   } = props;
@@ -71,18 +72,12 @@ const DialogOfAccountPeriod = props => {
   };
 
   const [values, setValues] = React.useState({
-    endDate: "",
-    orgId: "",
-    startDate: "",
-    year: ""
+    orgId: currentUser.organisation.orgId,
+    // year: Number(allAccountingPeriodData[allAccountingPeriodData.length - 1].year) + 1
   });
-
-  // const canSubmitValues = () => {
-    // const { accountCode, accountName, accountNumber, bankBalance, bankName, description } = values;
-    // return accountCode.length > 0 && accountName.length > 0 && accountNumber.length > 0 && bankBalance.length > 0 && bankName.length > 0 && description.length > 0;
-  // }
   
-  console.log('values is: ', values);
+  console.log(' dialogfilevalues is : ', values);
+  console.log('dialogfile data-> ', allAccountingPeriodData);
 
   return (
     <div>
@@ -102,39 +97,19 @@ const DialogOfAccountPeriod = props => {
           {accountPeriodDialog.type === 'new' ? (
             <form className={classes.root}>
               <Grid container spacing={1}>
-                <Grid item xs={6}>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <Grid container justify="space-around">
-                      <KeyboardDatePicker
-                        margin="normal"
-                        id="date-picker-dialog"
-                        label="Start Date"
-                        format="MM/dd/yyyy"
-                        value={selectedDate}
-                        onChange={handleDateChange}
-                        KeyboardButtonProps={{
-                          'aria-label': 'change date',
-                        }}
-                      />
-                    </Grid>
-                  </MuiPickersUtilsProvider>
-                </Grid>
-                <Grid item xs={6}>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <Grid container justify="space-around">
-                      <KeyboardDatePicker
-                        margin="normal"
-                        id="date-picker-dialog"
-                        label="End Date"
-                        format="MM/dd/yyyy"
-                        value={selectedDate}
-                        onChange={handleDateChange}
-                        KeyboardButtonProps={{
-                          'aria-label': 'change date',
-                        }}
-                      />
-                    </Grid>
-                  </MuiPickersUtilsProvider>
+                <Grid item xs={12}>
+                  <TextField
+                    id="standard-amount"
+                    // label={Number(allAccountingPeriodData[allAccountingPeriodData.length - 1].year) + 1}
+                    type="number"
+                    variant="outlined"
+                    size="small"
+                    className={classes.textField}
+                    // value={allAccountingPeriodData[0].year}
+                    // onChange={handleChange('amount')}
+                    margin="normal"
+                    fullWidth
+                  />
                 </Grid>
               </Grid>
             </form>
@@ -215,6 +190,7 @@ const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   currentUser: AppSelectors.makeSelectCurrentUser(),
   accountPeriodDialog: Selectors.makeSelectAccountPeriodDialog(),
+  allAccountingPeriodData: Selectors.makeSelectGetAllAccountingPeriodData(),
 });
 
 

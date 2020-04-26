@@ -126,7 +126,13 @@ const AccountDetails = props => {
                     <TableRow>
                       <TableCell component="th" scope="row">Account Type</TableCell>
                       <TableCell>
-                        {/* { props.location.accountDetailsData.accountType } */}
+                        { props.location.accountDetailsData.accountType }
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row">Bank Name</TableCell>
+                      <TableCell>
+                        { props.location.accountDetailsData.bankName }
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -136,7 +142,7 @@ const AccountDetails = props => {
                       </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell component="th" scope="row">Transaction Period</TableCell>
+                      <TableCell component="th" scope="row">Date Created</TableCell>
                       <TableCell>
                         { props.location.accountDetailsData.dateCreated }
                       </TableCell>
@@ -146,7 +152,7 @@ const AccountDetails = props => {
                     <TableRow>
                         <TableCell component="th" scope="row">Closing Balance</TableCell>
                         <TableCell>
-                          {/* NGN { props.location.accountDetailsData.accountType.openingBalance } */}
+                          NGN { props.location.accountDetailsData.bankBalance }
                         </TableCell>
                     </TableRow>
                   </TableFooter>

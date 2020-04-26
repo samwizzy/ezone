@@ -115,6 +115,11 @@ const AccountSetup = props => {
     taxType: "",
   });
 
+  const canSubmitValues = () => {
+    const { accountMethod, companyStartDate, taxType, currency } = values;
+    return accountMethod.length > 0 && companyStartDate.length > 0 && taxType.length > 0 && currency.length > 0 ;
+  }
+
   const [selectedDate, setSelectedDate] = React.useState(new Date());
   const handleAccountingMethodSelectChange = (name, value) => {
     setValues({ ...values, accountMethod: value.value });
@@ -333,6 +338,7 @@ const AccountSetup = props => {
                       <Button
                         variant="contained"
                         color="primary"
+                        disabled={!canSubmitValues()}
                         onClick={() => createAccountingSetupAction(values)}
                         endIcon={<SendIcon />}
                       >

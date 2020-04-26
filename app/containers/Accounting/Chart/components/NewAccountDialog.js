@@ -88,14 +88,13 @@ const NewAccountDialog = props => {
     openingBalance: "",
     ezoneBalance: "",
     orgId: "",
-    // parentAccountId: 0,
     subAccount: false // This prop will be removed before payload is sent
   });
 
-  const canSubmitValues = () => {
-    const { accountCode, accountName, accountTypeId, openingBalance } = values;
-    return accountCode.length > 0 && accountName.length > 0 && accountTypeId.length > 0 && openingBalance.length > 0 ;
-  }
+  // const canSubmitValues = () => {
+  //   const { accountCode, accountName, accountTypeId } = values;
+  //   return accountCode.length > 0 && accountName.length > 0 && accountTypeId.length > 0;
+  // }
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
@@ -478,7 +477,7 @@ const NewAccountDialog = props => {
                 createChartOfAccountAction(values);
               }}
               color="primary"
-              disabled={!canSubmitValues()}
+              // disabled={!canSubmitValues()}
             >
               Save Account
             </Button>
