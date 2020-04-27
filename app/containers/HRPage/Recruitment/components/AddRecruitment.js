@@ -34,8 +34,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function getSteps() {
-  return ['Job Description', 'Hiring Workflow', 'Job Information', 'Basic Information'];
+  return ['Job Description', 'Hiring Workflow', 'Job Information'/*, 'Basic Information'*/];
 }
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -43,11 +44,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function AddRecruitment(props) {
   const classes = useStyles();
+  const { departments, enrollmentTypes, dialog, createJobOpening } = props;
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
   const maxSteps = steps.length;
   const [form, setForm] = React.useState({
+    /*
     firstname: '',
     lastname: '',
     email: '',
@@ -57,27 +60,29 @@ function AddRecruitment(props) {
     dateHired: moment(new Date()).format('YYYY-MM-DD'),
     branch: '',
     employmentStatus: '',
-    employmentType: '',
-    department: '',
-    reportTo: '',
-    payRate: '',
-    payType: '',
-    role: '',
-    dateOfBirth: moment(new Date('01-01-1980')).format('YYYY-MM-DD'),
-    maritalStatus: '',
-    gender: '',
+    */
+    
     address: '',
-    jobDescription: '',
-    bio: '',
+    country: '',
+    enrollmentTypeId:  '',
+    departmentId: '',
+    jobDescription: "",
+    jobTitle: "",
+    noOfVancancy: '1',
+    orgId: "ORG-1582035732806",
+    //state: "Lagos",
+    hiringSteps: [],
+    submissionDeadline: "2020-04-28",
+    steps: ""
+    
   });
 
   React.useEffect(() => {
   }, [])
 
   const canSubmitForm = () => {
-    const { employeeId, role, department, branch, employmentType, employmentStatus, payRate, payType } = form
-    return employeeId.length > 0 && role.length > 0 && department.length > 0 && branch.length > 0 && employmentType.length > 0
-    && employmentStatus.length > 0 && payRate.length > 0 && payType.length > 0  
+    const { address, country, departmentId, enrollmentTypeId, jobDescription, jobTitle, noOfVancancies, orgId, submissionDeadline  } = form
+    return address.length > 0 && country.length > 0 && departmenIid && enrollmentTypeId && jobDescription.length > 0 && jobTitle.length > 0 && noOfVancancies
   }
 
   const handleChange = (event) => {
@@ -85,11 +90,41 @@ function AddRecruitment(props) {
     setForm({...form, [name]: value});
   }
 
+  const handleSelectChange = (event) => {
+    const { name, value } = event.target
+    setForm({...form, [name]:  value  });
+  };
+  const handleDateChange = (date, formatted, name) => { 
+    setForm(_.set({...form}, name, reformattedDate(date)))
+  }
+
+  const handleStepChange = (event) => {
+    const { name, value } = event.target
+    var str_array = value.split(',');
+    for(var i = 0; i < str_array.length; i++) {
+      var obj = new Object;
+      obj.title = str_array[i];
+    }
+    setForm({...form, ['hiringSteps']: { id: value } });
+  };
+
+
   const handleSubmit = () => {
+    
+      //console.log(form, "Job submit")
+      createJobOpening(form);
   }
 
   const handleNext = () => {
-    setActiveStep(prevActiveStep => prevActiveStep + 1);
+    console.log(activeStep);
+    if(activeStep > -1 && activeStep < 2){ 
+      //setStep(activeStep + 1) 
+      setActiveStep(prevActiveStep => prevActiveStep + 1);
+    }else{
+      console.log(form, "Job submit")
+      createJobOpening(form);
+    }
+    
   };
 
   const handleBack = () => {
@@ -108,6 +143,7 @@ function AddRecruitment(props) {
             handleChange={handleChange}
             form={form}
             handleSubmit={handleSubmit}
+            handleSelectChange={handleSelectChange}
             handleBack={handleBack}
             handleNext={handleNext}
             handleReset={handleReset}
@@ -117,6 +153,7 @@ function AddRecruitment(props) {
         return (
           <HiringWorkFlowForm 
             handleChange={handleChange}
+            handleSelectChange={handleSelectChange}
             form={form}
             handleSubmit={handleSubmit}
           />
@@ -125,10 +162,14 @@ function AddRecruitment(props) {
         return (
           <JobInfoForm 
             handleChange={handleChange}
+            handleSelectChange={handleSelectChange}
             form={form}
+            departments={departments}
+            enrollmentTypes={enrollmentTypes}
             handleSubmit={handleSubmit}
           />
         );
+        /*
       case 3:
         return (
           <BasicInfoForm 
@@ -137,6 +178,7 @@ function AddRecruitment(props) {
             handleSubmit={handleSubmit}
           />
         );
+        */
       default:
         return 'Unknown stepIndex';
     }
@@ -152,12 +194,15 @@ function AddRecruitment(props) {
         ))}
       </Stepper>
       <div>
-        {activeStep === steps.length ? (
+        {activeStep === steps.length ? 
+          handleSubmit()
+          /*
           <div>
             <Typography className={classes.instructions}>All steps completed</Typography>
             <Button onClick={handleReset}>Reset</Button>
           </div>
-        ) : (
+          */
+          : (
           <div>
             <Card className={classes.instructions}>{getStepContent(activeStep)}</Card>
             {/* <div>
@@ -178,7 +223,7 @@ function AddRecruitment(props) {
               variant="text"
               activeStep={activeStep}
               nextButton={
-                <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
+                <Button size="small" onClick={handleNext} >
                   Next
                   {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
                 </Button>
@@ -202,10 +247,13 @@ AddRecruitment.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
+  enrollmentTypes: Selectors.makeSelectEnrollmentTypes(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    createJobOpening: (ev) => dispatch(Actions.createJobOpening(ev)),
     dispatch,
   };
 }

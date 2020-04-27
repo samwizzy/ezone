@@ -75,18 +75,124 @@ const hrReducer = (state = initialState, action) =>
           departments: action.payload
         };
         break;
-        case Constants.GET_DEPARTMENTS_BY_ORGID_API_SUCCESS:
+      case Constants.GET_DEPARTMENTS_BY_ORGID_API_SUCCESS:
         return {
           ...state,
           departments: action.payload
         };
-        break;
+      break;
       case Constants.GET_BRANCHES_SUCCESS:
         return {
           ...state,
           branches: action.payload
         };
-        break;
+      break;
+      case Constants.GET_PARTY_TAGS_SUCCESS:
+        return {
+          ...state,
+          party_tags: action.payload
+        };
+      break;
+      
+      case Constants.CREATE_EMPLOYEE: {
+        // console.log(action.payload, 'reducer data');
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          createEmployee: action.payload,
+        };
+      }
+      case Constants.CREATE_EMPLOYEE_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getCreateEmployee: action.payload,
+        };
+      }
+      case Constants.CREATE_BRANCH: {
+        // console.log(action.payload, 'reducer data');
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          createBranch: action.payload,
+        };
+      }
+      case Constants.CREATE_BRANCH_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getCreateBranch: action.payload,
+        };
+      }
+      case Constants.CREATE_JOBOPENING: {
+        // console.log(action.payload, 'reducer data');
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          createJobOpening: action.payload,
+        };
+      }
+      case Constants.CREATE_JOBOPENING_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getCreateJobOpening: action.payload,
+        };
+      }
+      case Constants.CREATE_DEPARTMENT: {
+        // console.log(action.payload, 'reducer data');
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          createDepartment: action.payload,
+        };
+      }
+      case Constants.CREATE_DEPARTMENT_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getCreateDepartment: action.payload,
+        };
+      }
+      case Constants.GET_EMPLOYEETYPES_SUCCESS:
+        return {
+          ...state,
+          employeeTypes: action.payload
+        };
+      break;
+      case Constants.GET_ENROLLMENTTYPES_SUCCESS:
+        return {
+          ...state,
+          enrollmentTypes: action.payload
+        };
+      break;
+      case Constants.GET_LOCATIONS_SUCCESS:
+        return {
+          ...state,
+          locations: action.payload
+        };
+      break;
+      case Constants.GET_JOBOPENINGS_SUCCESS:
+        return {
+          ...state,
+          jobOpenings: action.payload
+        };
+      break;
+      case Constants.GET_ROLES_SUCCESS:
+        return {
+          ...state,
+          roles: action.payload
+        };
+      break;
+      
       case Constants.GET_ROLES_SUCCESS:
         return {
           ...state,

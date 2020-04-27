@@ -24,8 +24,8 @@ export const JobDescForm = props => {
     const classes = useStyles()
 
     const canSubmitForm = () => {
-        const {firstname, lastname, phoneNumber, email, nickname } = form
-        return firstname.length > 0 && lastname.length > 0 && phoneNumber.length > 0 && email.length > 0
+        const {jobTitle, jobDescription } = form
+        return jobTitle.length > 0 && jobDescription > 0
     }
 
     return (
@@ -68,6 +68,7 @@ export const JobDescForm = props => {
             </Grid>
         </Box>
         </Container>
+        
 
         </Paper>
     )

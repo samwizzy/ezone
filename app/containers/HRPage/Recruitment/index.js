@@ -8,6 +8,7 @@ import { createStructuredSelector } from 'reselect';
 import * as Selectors from '../selectors';
 import AddRecruitment from './components/AddRecruitment'
 import RecruitmentList from './RecruitmentList'
+import JobOpenings from './JobOpenings'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -18,8 +19,9 @@ const useStyles = makeStyles(theme => ({
 
 const RecruitmentApp = props => {
   const classes = useStyles();
-  const { loading, match } = props;
+  const { loading, match, getJobOpenings, jobOpenings, } = props;
   const { params } = match
+  console.log(jobOpenings, "Job openings")
 
   console.log(params, "param recruitment")
 
@@ -30,7 +32,10 @@ const RecruitmentApp = props => {
     <div className={classes.root}>
       {
         params.status === 'new'?
+        <AddRecruitment /> : <JobOpenings/>
+        /*
         <AddRecruitment /> : <RecruitmentList />
+        */
       }
     </div>
   );
@@ -43,6 +48,7 @@ RecruitmentApp.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
+  jobOpenings : Selectors.makeSelectJobOpenings(),
 });
 
 function mapDispatchToProps(dispatch) {

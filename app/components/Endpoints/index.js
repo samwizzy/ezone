@@ -98,13 +98,33 @@ export const GetEmployeeByDeptApi = `${BaseUrl}/hrserv/api/v1/employees/by_depar
 export const GetEmployeeByTypeApi = `${BaseUrl}/hrserv/api/v1/employees/by_employee_type`;
 export const GetEmployeeByLocationApi = `${BaseUrl}/hrserv/api/v1/employees/by_location`;
 export const GetEmployeeByRoleApi = `${BaseUrl}/hrserv/api/v1/employees/by_role`;
+
+export const GetEmployeeTypes = `${BaseUrl}/authserv/api/v1/generic_entities/for_organinisation`;
+export const CreateEmployee = `${BaseUrl}/authserv/api/v1/user`;
+
+export const GetEnrollmentTypes = `${BaseUrl}/authserv/api/v1/generic_entities/for_organinisation`;
+export const GetLocations = `${BaseUrl}/authserv/api/v1/generic_entities/for_organinisation`;
+
+//Job openings
+export const GetJobOpenings = `${BaseUrl}/authserv/api/v1/job_openings/for_organinisation`;
+export const CreateJobOpening = `${BaseUrl}/authserv/api/v1/job_opening`;
+
+//Roles
+export const GetRoles = `${BaseUrl}/authserv/api/v1/generic_entities/for_organinisation`;
+export const CreateRole = `${BaseUrl}/authserv/api/v1/generic_entity/add`;
+
+
 // Department
 export const DepartmentApi = `${BaseUrl}/hrserv/api/v1/department`;
 export const DepartmentsApi = `${BaseUrl}/hrserv/api/v1/departments`;
 export const GetDepartmentsByIdApi = `${BaseUrl}/hrserv/api/v1/departments/{id}`;
 export const GetDepartmentsByParentIdApi = `${BaseUrl}/hrserv/api/v1/departments/by_parent/{parentId}`;
-export const GetDepartmentsByOrgIdApi = `${BaseUrl}/hrserv/api/v1/departments/for_organinisation`;
-
+//export const GetDepartmentsByOrgIdApi = `${BaseUrl}/authserv/api/v1/organisation/parties`;
+export const GetDepartmentsByOrgIdApi = `${BaseUrl}/authserv/api/v1/organisation_and_tag/parties`;
+export const GetBranches = `${BaseUrl}/authserv/api/v1/organisation_and_tag/parties`;
+export const CreateDepartment = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_party`;
+export const CreateBranch = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_party`;
+//
 // App Api
 export const GetOrgAppsApi = `${BaseUrl}/utilityserv/api/v1/organisation/orgApps`;
 

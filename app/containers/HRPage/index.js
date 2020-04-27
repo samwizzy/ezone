@@ -31,13 +31,27 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function HRPage(props) {
+<<<<<<< HEAD
+  const {getEmployees, getDepartmentsByOrgIdApi, getEnrollmentTypes, getLocations, getJobOpenings, getEmployeeTypes, getRoles, getBranches} = props
+=======
   const {getEmployees, getDepartmentsByOrgIdApi} = props
+>>>>>>> 2a6078522d30a417cd4d0ce5e2f181662d41fa4c
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
   React.useEffect(() => {
     getEmployees()
     getDepartmentsByOrgIdApi()
+<<<<<<< HEAD
+    getEmployeeTypes()
+    getRoles()
+    getBranches()
+    getEnrollmentTypes()
+    getLocations()
+    getJobOpenings()
+    
+=======
+>>>>>>> 2a6078522d30a417cd4d0ce5e2f181662d41fa4c
   }, [])
 
   return (
@@ -66,7 +80,13 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
   return {
     getEmployees: () => dispatch(Actions.getEmployees()),
-    getDepartmentsByOrgIdApi: () => dispatch(Actions.getDepartmentsByOrgIdApi()),
+    getDepartmentsByOrgIdApi: () =>dispatch(Actions.getDepartmentsByOrgIdApi()),
+    getEmployeeTypes: () =>dispatch(Actions.getEmployeeTypes()),
+    getRoles: () =>dispatch(Actions.getRoles()),
+    getBranches: () =>dispatch(Actions.getBranches()),
+    getEnrollmentTypes: () =>dispatch(Actions.getEnrollmentTypes()),
+    getLocations: () =>dispatch(Actions.getLocations()),
+    getJobOpenings: () =>dispatch(Actions.getJobOpenings()),
   };
 }
 
