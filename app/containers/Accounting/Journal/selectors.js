@@ -21,6 +21,12 @@ const makeSelectJournal = () =>
     substate => substate,
   );
 
+const makeSelectLoading = () =>
+  createSelector(
+    selectJournalDomain,
+    subState => subState.loading,
+  );
+
 const makeSelectGetChartOfAccountData = () =>
   createSelector(
     selectJournalDomain,
@@ -39,11 +45,19 @@ const makeSelectNewAccountJournalPostData = () =>
     subState => subState.accountJournalPostData,
 );
 
+const makeSelectJournalListData = () =>
+  createSelector(
+    selectJournalDomain,
+    subState => subState.journalListData,
+);
+
 export default makeSelectJournal;
 
 export { 
   selectJournalDomain,
+  makeSelectLoading,
   makeSelectGetChartOfAccountData,
   makeSelectGetAccountPeriodData,
-  makeSelectNewAccountJournalPostData
+  makeSelectNewAccountJournalPostData,
+  makeSelectJournalListData
 };

@@ -240,13 +240,11 @@ const BankList = props => {
 
 BankList.propTypes = {
 //   loading: PropTypes.bool,
-//   openNewAccountDialogAction: PropTypes.func,
-//   editOpenAccountDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
-  bankAccountDialog: Selectors.makeSelectBankAccountDialog(),
+  // bankAccountDialog: Selectors.makeSelectBankAccountDialog(),
   bankAccountData: Selectors.makeSelectBankAccountData()
 });
 

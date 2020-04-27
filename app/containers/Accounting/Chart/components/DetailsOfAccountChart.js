@@ -154,8 +154,6 @@ DetailsOfAccountChart.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
-//   bankTransferByOrgIdData: Selectors.makeSelectBankTransferByOrgIdData(),
-  // bankAccountDialog: Selectors.makeSelectBankAccountDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
