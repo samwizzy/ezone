@@ -176,9 +176,9 @@ const PartyDialog = props => {
                 <TextField
                   {...params}
                   margin="normal"
-                  label="Search Employee"
+                  label="Select Head"
                   variant="outlined"
-                  placeholder="Search Employee"
+                  placeholder="Select Head"
                   fullWidth
                 />
               )}
@@ -195,9 +195,9 @@ const PartyDialog = props => {
                 <TextField
                   {...params}
                   margin="normal"
-                  label="Search Employee"
+                  label="Select Head Assistance"
                   variant="outlined"
-                  placeholder="Search Employee"
+                  placeholder="Select Head Assistance"
                   fullWidth
                 />
               )}

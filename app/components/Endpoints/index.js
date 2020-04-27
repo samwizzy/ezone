@@ -186,4 +186,5 @@ export const GetAllContactsApi = `${BaseUrl}/crmserv/api/v1/get_all_contacts`;
 // Contacts Group Apis
 export const CreateNewContactGroupApi = `${BaseUrl}/crmserv/api/v1/add_contact_group`;
 export const UpdateContactGroupApi = `${BaseUrl}/crmserv/api/v1/update_contact_group`;
+export const GetContactGroupByIdApi = `${BaseUrl}/crmserv/api/v1/get_contact_group_by_id`;
 export const GetAllContactsGroupApi = `${BaseUrl}/crmserv/api/v1/get_all_contact_groups`;

@@ -173,7 +173,7 @@ const ContactGroupsList = props => {
 ContactGroupsList.propTypes = {
   loading: PropTypes.bool,
   openNewContactGroupsDialog: PropTypes.func,
-  allContactGroups: PropTypes.func,
+  allContactGroups: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
