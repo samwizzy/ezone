@@ -7,6 +7,7 @@ import { createStructuredSelector } from 'reselect';
 import SockJS from 'sockjs-client';
 import Stomp from 'webstomp-client';
 import firebaseService from '../services/firebaseService';
+// import stompService from '../services/Stomp/stomp';
 import * as AppSelectors from '../containers/App/selectors';
 // import auth0Service from 'app/services/auth0Service';
 // import jwtService from 'app/services/jwtService';
@@ -16,19 +17,6 @@ class Auth extends Component {
   constructor(props) {
     super(props);
 
-    /**
-     * Comment the line if you do not use JWt
-     */
-    // this.jwtCheck();
-
-    /**
-     * Comment the line if you do not use Auth0
-     */
-    // this.auth0Check();
-
-    /**
-     * Comment the line if you do not use Firebase
-     */
     // this.firebaseCheck();
 
     this.StompConnect();
@@ -60,56 +48,6 @@ class Auth extends Component {
       },
     );
   };
-
-  // jwtCheck = () => {
-  //     jwtService.on('onAutoLogin', () => {
-
-  //         this.props.showMessage({message: 'Logging in with JWT'});
-
-  //         /**
-  //          * Sign in and retrieve user data from Api
-  //          */
-  //         jwtService.signInWithToken()
-  //             .then(user => {
-  //                 this.props.setUserData(user);
-
-  //                 this.props.showMessage({message: 'Logged in with JWT'});
-  //             })
-  //             .catch(error => {
-  //                 this.props.showMessage({message: error});
-  //             })
-  //     });
-
-  //     jwtService.on('onAutoLogout', (message) => {
-  //         if ( message )
-  //         {
-  //             this.props.showMessage({message});
-  //         }
-  //         this.props.logout();
-  //     });
-
-  //     jwtService.init();
-  // };
-
-  // auth0Check = () => {
-
-  //     auth0Service.init();
-
-  //     if ( auth0Service.isAuthenticated() )
-  //     {
-  //         this.props.showMessage({message: 'Logging in with Auth0'});
-
-  //         /**
-  //          * Retrieve user data from Auth0
-  //          */
-  //         auth0Service.getUserData().then(tokenData => {
-
-  //             this.props.setUserDataAuth0(tokenData);
-
-  //             this.props.showMessage({message: 'Logged in with Auth0'});
-  //         })
-  //     }
-  // };
 
   firebaseCheck = () => {
     firebaseService.init();
