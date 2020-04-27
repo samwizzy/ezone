@@ -9,6 +9,7 @@ import {
   Toolbar,
   Typography
 } from '@material-ui/core';
+import { withRouter } from 'react-router-dom';
 import AddIcon from '@material-ui/icons/Add';
 import moment from 'moment';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
@@ -145,7 +146,7 @@ const ContactGroupsList = props => {
       </Button>
     ),
     onRowClick: (rowData, rowState) => {
-      props.history.push('/crm/contact-groups/' + rowData[0])
+      props.history.push(`/crm/contact-groups/${rowData[0]}`);
     },
     elevation: 0
   };
@@ -192,6 +193,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(ContactGroupsList);

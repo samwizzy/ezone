@@ -143,6 +143,7 @@ const appReducer = (state = initialState, action) =>
         };
       }
       case Constants.REFRESH_TOKEN: {
+        console.log('reduce come here');
         return {
           ...state,
           loading: true,

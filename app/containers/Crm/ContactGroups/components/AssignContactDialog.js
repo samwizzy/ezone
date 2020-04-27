@@ -51,9 +51,9 @@ const useStyles = makeStyles(theme => ({
       fontSize: theme.typography.fontSize - 1,
     },
     '& .MuiTableRow-root:last-child': {
-      "& .MuiTableCell-root": {
-        verticalAlign: "text-top"
-      }
+      '& .MuiTableCell-root': {
+        verticalAlign: 'text-top',
+      },
     },
   },
 }));
@@ -63,10 +63,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const companies = [
-  {id: 1, title: "Optisoft Technology", year: "2015"},
-  {id: 2, title: "First Marine", year: "2015"},
-  {id: 3, title: "Union Bank", year: "2015"},
-]
+  { id: 1, title: 'Optisoft Technology', year: '2015' },
+  { id: 2, title: 'First Marine', year: '2015' },
+  { id: 3, title: 'Union Bank', year: '2015' },
+];
 
 const AssignContactDialog = props => {
   const classes = useStyles();
@@ -75,7 +75,7 @@ const AssignContactDialog = props => {
 
   const [form, setForm] = React.useState({
     contact: '',
-    groups: [{john: false, marine: false, optisoft: false, jitiful: false}]
+    groups: [{ john: false, marine: false, optisoft: false, jitiful: false }],
   });
 
   const handleChange = event => {
@@ -83,11 +83,9 @@ const AssignContactDialog = props => {
     setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = () => {}
+  const handleSubmit = () => {};
 
-  const canSubmitForm = () => {
-    return false
-  }
+  const canSubmitForm = () => false;
 
   return (
     <div>
@@ -100,14 +98,12 @@ const AssignContactDialog = props => {
       >
         <AppBar position="relative">
           <Toolbar>
-            <Typography variant="h6">
-              Assign a Contact
-            </Typography>
+            <Typography variant="h6">Assign a Contact</Typography>
           </Toolbar>
         </AppBar>
         <Divider />
 
-        <DialogContent style={{minWidth: 600}}>
+        <DialogContent style={{ minWidth: 600 }}>
           <form className={classes.root}>
             <Table className={classes.table}>
               <TableBody>
@@ -121,7 +117,7 @@ const AssignContactDialog = props => {
                       id="checkboxes-tags-demo"
                       options={companies}
                       disableCloseOnSelect
-                      getOptionLabel={(option) => option.title}
+                      getOptionLabel={option => option.title}
                       renderOption={(option, { selected }) => (
                         <React.Fragment>
                           <Checkbox
@@ -133,32 +129,66 @@ const AssignContactDialog = props => {
                           {option.title}
                         </React.Fragment>
                       )}
-                      style={{ width: "100%" }}
-                      renderInput={(params) => (
-                        <TextField {...params} variant="outlined" label="Companies" placeholder="Favorites" />
+                      style={{ width: '100%' }}
+                      renderInput={params => (
+                        <TextField
+                          {...params}
+                          variant="outlined"
+                          label="Companies"
+                          placeholder="Favorites"
+                        />
                       )}
                     />
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell component="th"><FormLabel component="legend">Assign Group</FormLabel></TableCell>
+                  <TableCell component="th">
+                    <FormLabel component="legend">Assign Group</FormLabel>
+                  </TableCell>
                   <TableCell>
-                    <FormControl component="fieldset" className={classes.formControl}>
+                    <FormControl
+                      component="fieldset"
+                      className={classes.formControl}
+                    >
                       <FormGroup>
                         <FormControlLabel
-                          control={<Checkbox checked={form.groups.john} onChange={handleChange} name="john" />}  
+                          control={
+                            <Checkbox
+                              checked={form.groups.john}
+                              onChange={handleChange}
+                              name="john"
+                            />
+                          }
                           label="John Foundation"
                         />
                         <FormControlLabel
-                          control={<Checkbox checked={form.groups.marine} onChange={handleChange} name="marine" />}
+                          control={
+                            <Checkbox
+                              checked={form.groups.marine}
+                              onChange={handleChange}
+                              name="marine"
+                            />
+                          }
                           label="First Marine"
                         />
                         <FormControlLabel
-                          control={<Checkbox checked={form.groups.optisoft} onChange={handleChange} name="optisoft" />}
+                          control={
+                            <Checkbox
+                              checked={form.groups.optisoft}
+                              onChange={handleChange}
+                              name="optisoft"
+                            />
+                          }
                           label="Optisoft Technology"
                         />
                         <FormControlLabel
-                          control={<Checkbox checked={form.groups.jitiful} onChange={handleChange} name="jitiful" />}
+                          control={
+                            <Checkbox
+                              checked={form.groups.jitiful}
+                              onChange={handleChange}
+                              name="jitiful"
+                            />
+                          }
                           label="Jitiful Technology"
                         />
                       </FormGroup>
@@ -200,7 +230,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeNewAssignContactDialog: () => dispatch(Actions.closeNewAssignContactDialog()),
+    closeNewAssignContactDialog: () =>
+      dispatch(Actions.closeNewAssignContactDialog()),
   };
 }
 

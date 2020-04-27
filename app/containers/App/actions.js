@@ -84,10 +84,10 @@ export function postFcmTokenError(data) {
   };
 }
 
-export function refreshToken(data) {
+export function refreshToken() {
+  console.log('is comming here');
   return {
     type: Constants.REFRESH_TOKEN,
-    payload: data,
   };
 }
 
@@ -104,4 +104,3 @@ export function refreshTokenError(data) {
     payload: data,
   };
 }
-

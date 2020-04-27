@@ -166,10 +166,43 @@ const ChatTab = props => {
     dispatchGetUserChatData,
   } = props;
 
+  const socket = new SockJS(
+    'https://dev.ezoneapps.com/gateway/utilityserv/messages',
+  );
+  const stompClient = Stomp.over(socket);
+  const chatConnect = () => {
+    stompClient.connect(
+      {
+        'X-Authorization': 'Bearer ' + `${accessToken}`,
+        login: 'admin',
+        passcode: 'admin',
+      },
+      frame => {
+        const connected = true;
+        console.log(frame, 'frame');
+        stompClient.subscribe(`/queue/${currentUser.uuId}`, tick => {
+          console.log(tick, 'tick');
+          console.log(JSON.parse(tick.body), 'tick');
+          userChatReversedData.push(tick.body);
+        });
+      },
+      error => {
+        console.log(error);
+        const connected = false;
+      },
+    );
+  };
+
+  // stompClient.subscribe(`/queue/${currentUser.uuId}`, tick => {
+  //   console.log(tick, 'tick');
+  //   console.log(JSON.parse(tick.body), 'tick');
+  //   userChatReversedData.push(tick.body);
+  // });
+
   useEffect(() => {
     dispatchGetAllEmployees();
     dispatchGetUserChats();
-    chatConnect();
+    // chatConnect();
     handleScrollToBottom();
   }, []);
 
@@ -204,21 +237,12 @@ const ChatTab = props => {
     setNewChat(initNewChat);
   };
 
-  navigator.serviceWorker.addEventListener('message', message => {
-    if (message) {
-      getAllUserChatData.messages.push(
-        JSON.parse(message.data['firebase-messaging-msg-data'].data.payload),
-      );
-      // console.log(getAllUserChatData.messages, 'getAllUserChatData.messages');
-      dispatchGetUserChatData(
-        JSON.parse(message.data['firebase-messaging-msg-data'].data.payload),
-      );
-    }
-  });
+  let userChatReversedData = [];
+  let allUserReversedData = [];
 
   // reversed datas
   if (getAllUserChatData) {
-    var reversedData = _.orderBy(
+    userChatReversedData = _.orderBy(
       getAllUserChatData.messages,
       ['dateCreated'],
       ['asc'],
@@ -226,42 +250,10 @@ const ChatTab = props => {
   }
 
   if (allUsersChat) {
-    var allUserReversedData = _.orderBy(
-      allUsersChat,
-      ['dateCreated'],
-      ['desc'],
-    );
+    allUserReversedData = _.orderBy(allUsersChat, ['dateCreated'], ['desc']);
   }
 
-  // console.log(currentUser, 'currentUser');
-  // console.log(accessToken, 'accessToken');
-
-  const chatConnect = () => {
-    const socket = new SockJS(
-      'https://dev.ezoneapps.com/gateway/utilityserv/messages',
-    );
-    const stompClient = Stomp.over(socket);
-    stompClient.connect(
-      {
-        'X-Authorization': 'Bearer ' + `${accessToken}`,
-        login: 'admin',
-        passcode: 'admin',
-      },
-      frame => {
-        const connected = true;
-        console.log(frame, 'frame');
-        stompClient.subscribe(`/queue/${currentUser.uuId}`, tick => {
-          console.log(tick, 'tick');
-        });
-      },
-      error => {
-        console.log(error);
-        const connected = false;
-      },
-    );
-  };
-
-  // console.log(ref, "ref")
+  console.log(userChatReversedData, "userChatReversedData");
 
   // console.log(userChatData, 'userChatData');
   // console.log(newChat, 'newChat');
@@ -279,7 +271,12 @@ const ChatTab = props => {
             // <NoAvailableChats />
             <div />
           ) : (
-            <Grid justify="center" container justify="space-between" alignItems="center">
+            <Grid
+              justify="center"
+              container
+              justify="space-between"
+              alignItems="center"
+            >
               <Grid item xs={12} md={4}>
                 <Paper square>
                   <div
@@ -306,7 +303,7 @@ const ChatTab = props => {
                         />
                       )}
                     />
-                    <IconButton onClick={() => send()}>
+                    <IconButton>
                       <Add />
                     </IconButton>
                   </div>
@@ -347,8 +344,8 @@ const ChatTab = props => {
                   </Grid>
                   <Grid item xs={12}>
                     <div className={classes.msgBody} ref={ref}>
-                      {reversedData &&
-                        reversedData.map(chat => (
+                      {userChatReversedData &&
+                        userChatReversedData.map(chat => (
                           <div
                             key={chat.id}
                             className={classNames(

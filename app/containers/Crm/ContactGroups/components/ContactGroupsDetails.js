@@ -49,10 +49,11 @@ const useStyles = makeStyles(theme => ({
 const ContactGroupsDetails = props => {
   const classes = useStyles();
   const { loading, openNewContactGroupsDialog, match } = props;
-  const { params } = match
+  // const { params } = match
 
   // params.contactId = {your contact-groups id}
 
+  // console.log(match, 'match');
   useEffect(() => {
 
   }, []);

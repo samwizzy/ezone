@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 // import * as userActions from 'app/auth/store/actions';
 // import { bindActionCreators } from 'redux';
 // import * as Actions from 'app/store/actions';
+import SockJS from 'sockjs-client';
+import Stomp from 'webstomp-client';
 import firebaseService from '../services/firebaseService';
+import * as AppSelectors from '../containers/App/selectors';
 // import auth0Service from 'app/services/auth0Service';
 // import jwtService from 'app/services/jwtService';
 
@@ -25,8 +29,37 @@ class Auth extends Component {
     /**
      * Comment the line if you do not use Firebase
      */
-    this.firebaseCheck();
+    // this.firebaseCheck();
+
+    this.StompConnect();
   }
+
+  StompConnect = () => {
+    console.log('request come here');
+    const socket = new SockJS(
+      'https://dev.ezoneapps.com/gateway/utilityserv/messages',
+    );
+    const stompClient = Stomp.over(socket);
+    stompClient.connect(
+      {
+        'X-Authorization': 'Bearer ' + `${this.props.accessToken}`,
+        login: 'admin',
+        passcode: 'admin',
+      },
+      frame => {
+        const connected = true;
+        console.log(frame, 'frame');
+        stompClient.subscribe(`/queue/${this.props.currentUser.uuId}`, tick => {
+          console.log(tick, 'tick');
+          console.log(JSON.parse(tick.body), 'tick');
+        });
+      },
+      error => {
+        console.log(error);
+        const connected = false;
+      },
+    );
+  };
 
   // jwtCheck = () => {
   //     jwtService.on('onAutoLogin', () => {
@@ -89,10 +122,10 @@ class Auth extends Component {
          * Retrieve user data from Firebase
          */
         firebaseService.getUserData(authUser.uid).then(user => {
-        console.log(user, 'user');
-        //   this.props.setUserDataFirebase(user, authUser);
+          console.log(user, 'user');
+          //   this.props.setUserDataFirebase(user, authUser);
 
-        //   this.props.showMessage({ message: 'Logged in with Firebase' });
+          //   this.props.showMessage({ message: 'Logged in with Firebase' });
         });
       }
     });
@@ -104,6 +137,11 @@ class Auth extends Component {
     return <React.Fragment>{children}</React.Fragment>;
   }
 }
+
+const mapStateToProps = createStructuredSelector({
+  accessToken: AppSelectors.makeSelectAccessToken(),
+  currentUser: AppSelectors.makeSelectCurrentUser(),
+});
 
 // function mapDispatchToProps(dispatch)
 // {
@@ -118,5 +156,8 @@ class Auth extends Component {
 //         dispatch);
 // }
 
-export default Auth;
-// export default connect(null, mapDispatchToProps)(Auth);
+// export default Auth;
+export default connect(
+  null,
+  mapStateToProps,
+)(Auth);
