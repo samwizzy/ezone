@@ -16,6 +16,18 @@ export const GET_EMPLOYEE_SUCCESS  = 'boilerplate/HRPage/GET EMPLOYEE SUCCESS';
 export const CREATE_EMPLOYEE = 'boilerplate/HRPage/CREATE EMPLOYEE';
 export const CREATE_EMPLOYEE_SUCCESS = 'boilerplate/HRPage/CREATE EMPLOYEE SUCCESS';
 
+export const GET_EMPLOYEETYPES         = 'boilerplate/HRPage/GET EMPLOYEETYPES';
+export const GET_EMPLOYEETYPES_SUCCESS = 'boilerplate/HRPage/GET EMPLOYEETYPES SUCCESS';
+
+export const GET_ENROLLMENTTYPES         = 'boilerplate/HRPage/GET ENROLLMENTTYPES';
+export const GET_ENROLLMENTTYPES_SUCCESS = 'boilerplate/HRPage/GET ENROLLMENTTYPES SUCCESS';
+
+export const GET_LOCATIONS         = 'boilerplate/HRPage/GET LOCATIONS';
+export const GET_LOCATIONS_SUCCESS = 'boilerplate/HRPage/GET LOCATIONS SUCCESS';
+
+export const GET_JOBOPENINGS         = 'boilerplate/HRPage/GET JOBOPENINGS';
+export const GET_JOBOPENINGS_SUCCESS = 'boilerplate/HRPage/GET JOBOPENINGS SUCCESS';
+
 export const OPEN_NEW_EMPLOYEE_DIALOG   = 'boilerplate/HRPage/OPEN NEW EMPLOYEE DIALOG';
 export const CLOSE_NEW_EMPLOYEE_DIALOG  = 'boilerplate/HRPage/CLOSE NEW EMPLOYEE DIALOG';
 export const OPEN_EDIT_EMPLOYEE_DIALOG  = 'boilerplate/HRPage/OPEN EDIT EMPLOYEE DIALOG';
@@ -72,6 +84,13 @@ export const CREATE_ROLE = 'boilerplate/HRPage/CREATE ROLE';
 export const CREATE_ROLE_SUCCESS = 'boilerplate/HRPage/CREATE ROLE SUCCESS';
 export const EDIT_ROLE = 'boilerplate/HRPage/EDIT ROLE';
 export const EDIT_ROLE_SUCCESS = 'boilerplate/HRPage/EDIT ROLE SUCCESS';
+
+
+export const CREATE_JOBOPENING = 'boilerplate/HRPage/CREATE JOBOPENING';
+export const CREATE_JOBOPENING_SUCCESS = 'boilerplate/HRPage/CREATE OPENING SUCCESS';
+
+export const GET_PARTY_TAGS = 'boilerplate/HRPage/GET PARTY TAGS';
+export const GET_PARTY_TAGS_SUCCESS = 'boilerplate/HRPage/GET PARTY TAGS SUCCESS';
 
 export const GET_BRANCHES = 'boilerplate/HRPage/GET BRANCHES';
 export const GET_BRANCHES_SUCCESS = 'boilerplate/HRPage/GET BRANCHES SUCCESS';

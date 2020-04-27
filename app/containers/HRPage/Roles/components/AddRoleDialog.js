@@ -24,11 +24,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function AddRoleDialog(props) {
   const classes = useStyles();
-  const { closeNewRoleDialog, dialog } = props;
+  const { closeNewRoleDialog, dialog, createRole } = props;
   const [form, setForm] = React.useState({
     name: '',
-    description: '',
-    head: '',
+    type: 'ROLE'
   });
 
   console.log(dialog, "dialog checking")
@@ -40,8 +39,8 @@ function AddRoleDialog(props) {
   }, [dialog])
 
   const canSubmitForm = () => {
-    const {name, description, head } = form
-    return name.length > 0 && description.length > 0 && head.length > 0
+    const {name } = form
+    return name.length > 0 
   }
 
   const handleChange = (event) => {
@@ -50,9 +49,10 @@ function AddRoleDialog(props) {
   }
 
   const handleSubmit = () => {
+    createRole(form)
   }
 
-  console.log(form, 'checking form employee...')
+  console.log(form, 'checking form role...')
 
   return (
     <div>
@@ -80,7 +80,7 @@ function AddRoleDialog(props) {
                 <Grid item xs={12}>
                     <TextField
                     name="name"
-                    label="Firstname"
+                    label="Role name"
                     id="outlined-title"
                     fullWidth
                     variant="outlined"
@@ -88,40 +88,6 @@ function AddRoleDialog(props) {
                     value={form.name}
                     onChange={handleChange}
                     />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                    name="Description"
-                    label="description"
-                    id="outlined-title"
-                    fullWidth
-                    multiline
-                    rows="4"
-                    rowsMax="4"
-                    variant="outlined"
-                    size="small"
-                    value={form.description}
-                    onChange={handleChange}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    id="head"
-                    name="head"
-                    placeholder="Contact person"
-                    select
-                    fullWidth
-                    className={classes.textField}
-                    variant="outlined"
-                    size="small"
-                    label="Contact Person"
-                    value={form.head}
-                    onChange={handleChange}
-                  >
-                    <MenuItem key={0} value="1">
-                        No record
-                    </MenuItem>
-                  </TextField>
                 </Grid>
             </Grid>
           </form>
@@ -152,6 +118,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     closeNewRoleDialog: () => dispatch(Actions.closeNewRoleDialog()),
+    createRole: (data) => dispatch(Actions.createRole(data)),
     dispatch,
   };
 }

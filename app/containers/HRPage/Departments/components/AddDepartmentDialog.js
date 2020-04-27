@@ -7,6 +7,7 @@ import { compose } from 'redux';
 import _ from 'lodash';
 import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, MenuItem, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
+
 import * as Actions from '../../actions';
 import moment from 'moment'
 
@@ -24,13 +25,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function AddDepartmentDialog(props) {
   const classes = useStyles();
-  const { closeNewDepartmentDialog, createDepartment, dialog } = props;
+  const { closeNewDepartmentDialog, createDepartment,  getEmployees, party_tags, PartyTags, employees, employee, getBranches, branches, departments,  dialog } = props;
   const [form, setForm] = React.useState({
-    mailAlias: "",
-    deptName: '',
-    deptLead: {id: ''},
+    name: '',
+    description: '',
+    partyHead: {id: ''},
+    assistantPartyHead: {id: ''},
+    partyId: '',
+    tagId: 5
   });
-
+  
   console.log(dialog, "dialog checking")
 
   React.useEffect(() => {
@@ -40,9 +44,10 @@ function AddDepartmentDialog(props) {
   }, [dialog])
 
   const canSubmitForm = () => {
-    const {deptName, deptLead, mailAlias } = form
-    return deptName.length > 0 && mailAlias.length > 0 && Object.values(deptLead)[0].length > 0
+    const {name, description, partyId, partyHead, assistantPartyHead, tag } = form
+    return name.length > 0 && partyHead && partyId && assistantPartyHead
   }
+   
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -84,32 +89,32 @@ function AddDepartmentDialog(props) {
             <Grid container spacing={1}>
                 <Grid item xs={12}>
                     <TextField
-                    name="deptName"
+                    name="name"
                     label="Department Name"
                     id="outlined-title"
                     fullWidth
                     variant="outlined"
                     size="small"
-                    value={form.deptName}
+                    value={form.name}
                     onChange={handleChange}
                     />
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                    name="mailAlias"
-                    label="Mail Alias"
+                    name="description"
+                    label="Description"
                     id="outlined-title"
                     fullWidth
                     variant="outlined"
                     size="small"
-                    value={form.mailAlias}
+                    value={form.description}
                     onChange={handleChange}
                     />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    id="dept-lead"
-                    name="deptLead"
+                    id="partyHead"
+                    name="partyHead"
                     placeholder="Department Lead"
                     select
                     fullWidth
@@ -117,12 +122,56 @@ function AddDepartmentDialog(props) {
                     variant="outlined"
                     size="small"
                     label="Department Lead"
-                    value={form.deptLead.id}
+                    value={form.partyHead.id}
                     onChange={handleSelectChange}
                   >
-                    <MenuItem key={0} value="1">
-                        No record
+                    {employees.map((employee) => (
+                    <MenuItem key={employee.id} value={employee.id}>
+                        {employee.firstName} {employee.lastName}
                     </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    id="assistantPartyHead"
+                    name="assistantPartyHead"
+                    placeholder="Assistant Department Lead"
+                    select
+                    fullWidth
+                    className={classes.textField}
+                    variant="outlined"
+                    size="small"
+                    label="Assistant Department Lead"
+                    value={form.assistantPartyHead.id}
+                    onChange={handleSelectChange}
+                  >
+                    {employees.map((employee) => (
+                    <MenuItem key={employee.id} value={employee.id}>
+                        {employee.firstName} {employee.lastName}
+                    </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    id="partyId"
+                    name="partyId"
+                    placeholder="Branch"
+                    select
+                    fullWidth
+                    className={classes.textField}
+                    variant="outlined"
+                    size="small"
+                    label="Branch"
+                    value={form.partyId}
+                    onChange={handleChange}
+                  >
+                    {branches.map((branch) => (
+                        <MenuItem key={branch.id} value={branch.id}>
+                            {branch.name}
+                        </MenuItem>
+                        ))};
                   </TextField>
                 </Grid>
             </Grid>
@@ -149,6 +198,12 @@ AddDepartmentDialog.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   dialog: Selectors.makeSelectDeptDialog(),
+  loading: Selectors.makeSelectLoading(),
+  employees: Selectors.makeSelectEmployees(),
+  employee : Selectors.makeSelectEmployee(),
+  departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
+  branches: Selectors.makeSelectBranches(),
+  party_tags: Selectors.makeSelectPartyTags(),
 });
 
 function mapDispatchToProps(dispatch) {

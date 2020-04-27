@@ -92,13 +92,13 @@ const EmployeesApp = props => {
     getEmployee,
     employees,
     departments,
+    employeeTypes,
+    roles,
     employee,
+    //getDepartmentsByOrgIdApi,
   } = props;
-  console.log(departments, 'departments');
-  React.useEffect(() => {}, [employee]);
-
-  console.log(employee, 'employee');
-
+  React.useEffect(() => {/*getDepartmentsByOrgIdApi()*/}, [employee, employees, departments, employeeTypes, roles]);
+  console.log(employees);
   const toTitleCase = str => (str ? str[0].toUpperCase() + str.slice(1) : '');
 
   const columns = [
@@ -228,6 +228,7 @@ const mapStateToProps = createStructuredSelector({
   employees: Selectors.makeSelectEmployees(),
   employee: Selectors.makeSelectEmployee(),
   user: AppSelectors.makeSelectCurrentUser(),
+  departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -236,8 +237,9 @@ function mapDispatchToProps(dispatch) {
     openEditEmployeeDialog: () => dispatch(Actions.openEditEmployeeDialog()),
     getEmployees: () => dispatch(Actions.getEmployees()),
     getEmployee: uuid => dispatch(Actions.getEmployee(uuid)),
-    getDepartmentsByOrgIdApi: () =>
-      dispatch(Actions.getDepartmentsByOrgIdApi()),
+    getPartyTags: () => dispatch(Actions.getPartyTags()),
+    // getDepartmentsByOrgIdApi: () =>
+    //   dispatch(Actions.getDepartmentsByOrgIdApi()),
   };
 }
 
