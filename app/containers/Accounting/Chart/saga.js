@@ -90,8 +90,6 @@ export function* createNewChartOfAccountSaga({ type, payload }) {
 
   chartOfAccountPostData.orgId = currentUser.organisation.orgId;
   const requestURL = `${Endpoints.CreateChartOfAccountApi}`;
-
-  console.log('requestURL createNewChartOfAccountSaga', requestURL)
   
   try {
     const chartOfAccountResponse = yield call(request, requestURL, {
@@ -104,9 +102,10 @@ export function* createNewChartOfAccountSaga({ type, payload }) {
     });
 
     console.log('chartOfAccountResponse -> ', chartOfAccountResponse);
-    // alert(`Account Name: ${chartOfAccountResponse.accountName} was saved successfully!`);
+    alert(`Account Name: ${chartOfAccountResponse.accountName} was saved successfully!`);
     yield put(Actions.createNewChartOfAccountSuccessAction(chartOfAccountResponse));
     yield put(Actions.getAllChartOfAccountTypeAction());
+    yield put(Actions.closeNewAccountDialog());
   } catch (err) {
     console.log('createNewChartOfAccountErrorAction -> ', err);
     alert(`Something went wrong.`);
