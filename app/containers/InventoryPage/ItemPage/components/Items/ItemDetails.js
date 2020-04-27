@@ -378,7 +378,12 @@ const ItemDetails = props => {
                   aria-label="small outlined button group"
                 >
                   <Button
-                    onClick={() => {}}
+                    onClick={() =>
+                      props.history.push(
+                        // i convert the sku to id for me to be able to access the edit page
+                        `/inventory/item/edit/${getItemById.id}`,
+                      )
+                    }
                     startIcon={<EditOutlinedIcon className={classes.icon} />}
                   >
                     Edit

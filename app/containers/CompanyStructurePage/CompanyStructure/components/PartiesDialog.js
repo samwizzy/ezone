@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import {
+  AppBar, Toolbar,
+  Backdrop,
+  CircularProgress,
   Divider,
   TextField,
   makeStyles,
@@ -35,6 +38,10 @@ const useStyles = makeStyles(theme => ({
   menu: {
     width: 200,
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -43,6 +50,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const PartiesDialog = props => {
   const {
+    allTags,
+    updatePartiesAction,
     loading,
     newPartiesDialog,
     dispatchCloseNewPartiesDialog,
@@ -54,13 +63,18 @@ const PartiesDialog = props => {
   const classes = useStyles();
   const [values, setValues] = React.useState({
     partyId: params.partyId,
-    partyHead: '',
-    assistantPartyHead: '',
+    partyHead: null,
+    assistantPartyHead: null,
     positions: null,
     parties: null,
     name: '',
     description: '',
+    tag: null,
   });
+
+  useEffect(() => {
+    setValues({ ...newPartiesDialog.data });
+  }, [newPartiesDialog.data]);
 
   const handlePartyHeadChange = (event, value) => {
     setValues({
@@ -73,6 +87,7 @@ const PartiesDialog = props => {
     setValues({
       ...values,
       assistantPartyHead: { id: value.id },
+      partyId: params.partyId,
     });
   };
 
@@ -80,17 +95,26 @@ const PartiesDialog = props => {
     setValues({
       ...values,
       [name]: event.target.value,
+      partyId: params.partyId,
     });
   };
 
   const canBeSubmitted = () => {
     const { partyHead, assistantPartyHead, name, description } = values;
     return (
-      partyHead !== '' &&
-      assistantPartyHead !== '' &&
-      name !== '' &&
-      description !== ''
+      // partyHead !== '' &&
+      // assistantPartyHead !== '' &&
+      name !== '' && description !== ''
     );
+  };
+
+  const handleTagChange = (event, value) => {
+    if (newPartiesDialog.type === 'edit') {
+      setValues({ ...values, tag: { id: value.id }, partyId: params.partyId });
+    }
+    if (newPartiesDialog.type === 'new') {
+      setValues({ ...values, tagId: value.id, partyId: params.partyId });
+    }
   };
 
   return (
@@ -102,82 +126,115 @@ const PartiesDialog = props => {
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="alert-dialog-slide-title">
-          {newPartiesDialog.type === 'new' ? 'New Parties' : 'Edit Parties'}
-        </DialogTitle>
+        <AppBar position="relative">
+          <Toolbar>
+            <Typography variant="h6" className={classes.title}>
+              {newPartiesDialog.type === 'new' ? 'New Parties' : 'Edit Parties'}
+            </Typography>
+          </Toolbar>
+        </AppBar>
 
         <Divider />
 
         <DialogContent>
-          {newPartiesDialog.type === 'new' ? (
-            <div>
-              <TextField
-                id="name"
-                label="Name"
-                className={classes.textField}
-                value={values.name}
-                variant="outlined"
-                onChange={handleChange('name')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="description"
-                label="Description"
-                className={classes.textField}
-                value={values.description}
-                onChange={handleChange('description')}
-                margin="normal"
-                variant="outlined"
-                fullWidth
-                multiline
-                rows="3"
-              />
+          <div>
+            <TextField
+              id="name"
+              label="Name"
+              className={classes.textField}
+              value={values.name ? values.name : ''}
+              variant="outlined"
+              onChange={handleChange('name')}
+              margin="normal"
+              fullWidth
+            />
+            <TextField
+              id="description"
+              label="Description"
+              className={classes.textField}
+              value={values.description ? values.description : ''}
+              onChange={handleChange('description')}
+              margin="normal"
+              variant="outlined"
+              fullWidth
+              multiline
+              rows="3"
+            />
 
-              <Autocomplete
-                id="combo-ass-partyHead"
-                options={AllUserData}
-                getOptionLabel={option => option.firstName}
-                onChange={(evt, ve) => handlePartyHeadChange(evt, ve)}
-                renderInput={param => (
-                  <TextField
-                    {...param}
-                    margin="normal"
-                    label="Search Head"
-                    variant="outlined"
-                    placeholder="Search Head"
-                    fullWidth
-                  />
-                )}
-              />
+            <Autocomplete
+              id="combo-ass-partyHead"
+              options={AllUserData}
+              getOptionLabel={option =>
+                `${option.firstName} ${option.lastName}`
+              }
+              onChange={(evt, ve) => handlePartyHeadChange(evt, ve)}
+              renderInput={param => (
+                <TextField
+                  {...param}
+                  margin="normal"
+                  label="Search Head"
+                  variant="outlined"
+                  placeholder="Search Head"
+                  fullWidth
+                />
+              )}
+            />
 
-              <Autocomplete
-                id="combo-ass-partyHead-assistant"
-                options={AllUserData}
-                getOptionLabel={option => option.firstName}
-                onChange={(evt, ve) => handlePartyAssHeadChange(evt, ve)}
-                renderInput={param => (
-                  <TextField
-                    {...param}
-                    margin="normal"
-                    label="Search Head Assistant"
-                    variant="outlined"
-                    placeholder="Search Head Assistant"
-                    fullWidth
-                  />
-                )}
-              />
-            </div>
-          ) : null}
+            <Autocomplete
+              id="combo-ass-partyHead-assistant"
+              options={AllUserData}
+              getOptionLabel={option =>
+                `${option.firstName} ${option.lastName}`
+              }
+              onChange={(evt, ve) => handlePartyAssHeadChange(evt, ve)}
+              renderInput={param => (
+                <TextField
+                  {...param}
+                  margin="normal"
+                  label="Search Head Assistant"
+                  variant="outlined"
+                  placeholder="Search Head Assistant"
+                  fullWidth
+                />
+              )}
+            />
+
+            <Autocomplete
+              id="combo-tag"
+              options={allTags}
+              getOptionLabel={option => `${option.name}`}
+              onChange={(evt, ve) => handleTagChange(evt, ve)}
+              renderInput={params => (
+                <TextField
+                  {...params}
+                  margin="normal"
+                  label="Select Tag"
+                  variant="outlined"
+                  placeholder="Select Tag"
+                  fullWidth
+                />
+              )}
+            />
+          </div>
         </DialogContent>
 
         <DialogActions>
-          {loading ? (
-            <LoadingIndicator />
-          ) : (
+          {newPartiesDialog.type === 'new' ? (
             <Button
               onClick={() => {
                 dispatchCreateNewPartiesAction(values);
+              }}
+              color="primary"
+              variant="contained"
+              disabled={!canBeSubmitted()}
+            >
+              {newPartiesDialog.type === 'new' ? 'Save' : 'Update'}
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                updatePartiesAction(values);
+                setValues('');
               }}
               color="primary"
               variant="contained"
@@ -189,7 +246,7 @@ const PartiesDialog = props => {
           <Button
             onClick={() => dispatchCloseNewPartiesDialog()}
             color="primary"
-            variant="contained"
+            variant="outlined"
           >
             Cancel
           </Button>
@@ -207,6 +264,8 @@ PartiesDialog.propTypes = {
   AllUserData: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   dispatchCreateNewPartiesAction: PropTypes.func,
   loading: PropTypes.bool,
+  updatePartiesAction: PropTypes.func,
+  allTags: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -214,6 +273,7 @@ const mapStateToProps = createStructuredSelector({
   newPartiesDialog: Selectors.makeSelectNewPartiesDialog(),
   partyGroupData: Selectors.makeSelectPartyGroupData(),
   AllUserData: Selectors.makeSelectAllUsersData(),
+  allTags: Selectors.makeSelectGetAllTags(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -222,6 +282,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(Actions.closeNewPartiesDialog()),
     dispatchCreateNewPartiesAction: evt =>
       dispatch(Actions.createNewParties(evt)),
+    updatePartiesAction: evt => dispatch(Actions.updateParties(evt)),
     dispatch,
   };
 }

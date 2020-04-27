@@ -11,6 +11,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Logo from '../../images/logo.svg';
 import AppSidebar from './components/AppSidebar';
+import Footer from '../Footer';
 import sidebarImage from '../../images/sidebarImage.jpg';
 
 const drawerWidth = 240;
@@ -62,7 +63,7 @@ const useStyles = makeStyles(theme => ({
     ...theme.mixins.toolbar,
   },
   content: {
-    flexGrow: 1,
+    // flexGrow: 1,
     width: `calc(100% - ${drawerWidth}px)`,
   },
   logo: {
@@ -131,7 +132,10 @@ function MiniDrawer(props) {
         <Divider />
       </Drawer>
       <main className={classes.content}>
-        {props.content}
+        <div style={{minHeight: `calc(100vh - 140px)`}}>
+          {props.content}
+        </div>
+        <Footer />
       </main>
     </div>
   );

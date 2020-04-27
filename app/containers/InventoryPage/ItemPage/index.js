@@ -47,6 +47,8 @@ export function ItemPage(props) {
         </Helmet>
         {params.statusId == 'new' ? (
           <ItemDialog />
+        ) : params.statusId == 'edit' ? (
+          <ItemDialog />
         ) : params.statusId ? (
           <ItemDetails />
         ) : (

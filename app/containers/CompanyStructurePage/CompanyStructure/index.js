@@ -22,6 +22,7 @@ import PartyDialog from './components/PartyDialog';
 import RoleDialog from './components/RoleDialog';
 import CompanyStructure from './components/CompanyStructure';
 import PartyPage from './components/PartyPage';
+import ModuleLayout from './../components/ModuleLayout';
 
 // import PartyGroupDialog from './components/PartyGroupDialog';
 // import PartyDialog from './components/PartyDialog';
@@ -29,12 +30,17 @@ import PartyPage from './components/PartyPage';
 import * as Actions from '../actions';
 
 export function CompanyStructurePage(props) {
-  const { dispatchGetPartyGroups, dispatchGetAllUsersAction } = props;
+  const {
+    dispatchGetPartyGroups,
+    dispatchGetAllUsersAction,
+    getAllTagsAction,
+  } = props;
 
   useInjectReducer({ key: 'companyStructurePage', reducer });
   useInjectSaga({ key: 'companyStructurePage', saga });
 
   useEffect(() => {
+    getAllTagsAction();
     dispatchGetPartyGroups();
     dispatchGetAllUsersAction();
   }, []);
@@ -48,7 +54,10 @@ export function CompanyStructurePage(props) {
           content="Description of CompanyStructurePage"
         />
       </Helmet>
-      <CompanyStructure />
+
+      <ModuleLayout>
+        <CompanyStructure />
+      </ModuleLayout>
 
       <PartyGroupDialog />
       <PartyDialog />
@@ -60,6 +69,7 @@ export function CompanyStructurePage(props) {
 CompanyStructurePage.propTypes = {
   dispatchGetPartyGroups: PropTypes.func,
   dispatchGetAllUsersAction: PropTypes.func,
+  getAllTagsAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -70,6 +80,7 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatchGetPartyGroups: () => dispatch(Actions.getPartyGroupAction()),
     dispatchGetAllUsersAction: () => dispatch(Actions.getAllUsers()),
+    getAllTagsAction: () => dispatch(Actions.getAllTags()),
   };
 }
 

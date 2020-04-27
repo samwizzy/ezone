@@ -31,13 +31,18 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function HRPage(props) {
+<<<<<<< HEAD
   const {getEmployees, getDepartmentsByOrgIdApi, getEnrollmentTypes, getLocations, getJobOpenings, getEmployeeTypes, getRoles, getBranches} = props
+=======
+  const {getEmployees, getDepartmentsByOrgIdApi} = props
+>>>>>>> 2a6078522d30a417cd4d0ce5e2f181662d41fa4c
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
   React.useEffect(() => {
     getEmployees()
     getDepartmentsByOrgIdApi()
+<<<<<<< HEAD
     getEmployeeTypes()
     getRoles()
     getBranches()
@@ -45,6 +50,8 @@ export function HRPage(props) {
     getLocations()
     getJobOpenings()
     
+=======
+>>>>>>> 2a6078522d30a417cd4d0ce5e2f181662d41fa4c
   }, [])
 
   return (

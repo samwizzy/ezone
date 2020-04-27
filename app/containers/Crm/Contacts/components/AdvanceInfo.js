@@ -14,6 +14,14 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import { Autocomplete } from '@material-ui/lab';
+import CountriesAndStates from '../../../../utils/countries_states.json';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,21 +35,39 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const AdvanceInfo = props => {
-  const { handleChange, closeNewContactDialog, handleNext, handlePrev, form } = props;
+  const {
+    handleDateChange,
+    handleChange,
+    handleSelectCountry,
+    closeNewContactDialog,
+    handleNext,
+    handlePrev,
+    form,
+  } = props;
   const classes = useStyles();
 
   const canSubmitForm = () => {
-    const { dob, fax, website, address1, address2, mobileNo, country, state, city } = form;
+    const {
+      dob,
+      fax,
+      website,
+      address1,
+      address2,
+      mobileNo,
+      country,
+      state,
+      city,
+    } = form;
     return (
-      dob.length > 0 &&
-      fax.length > 0 &&
-      website.length > 0 &&
-      address1.length > 0 &&
-      address2.length > 0 &&
-      mobileNo.length > 0 &&
-      country.length > 0 &&
-      state.length > 0 &&
-      city.length > 0
+      dob !== null &&
+      fax !== null &&
+      website !== null &&
+      address1 !== null &&
+      address2 !== null &&
+      mobileNo !== null &&
+      country !== null &&
+      state !== null &&
+      city !== null
     );
   };
 
@@ -67,21 +93,27 @@ export const AdvanceInfo = props => {
                 fullWidth
                 variant="outlined"
                 size="small"
+                type="number"
                 value={form.mobileNo}
                 onChange={handleChange}
               />
             </Grid>
             <Grid item xs={6}>
-              <TextField
-                name="dob"
-                label="Date Of Birth"
-                id="outlined-dob"
-                fullWidth
-                variant="outlined"
-                size="small"
-                value={form.dob}
-                onChange={handleChange}
-              />
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  autoOk
+                  variant="inline"
+                  // inputVariant="outlined"
+                  label="Date"
+                  size="small"
+                  format="dd/MM/yyyy"
+                  value={form.dob ? form.dob : ''}
+                  // InputAdornmentProps={{ position: 'end' }}
+                  onChange={date => handleDateChange(date)}
+                  className={classes.textField}
+                  fullWidth
+                />
+              </MuiPickersUtilsProvider>
             </Grid>
             <Grid item xs={6}>
               <TextField
@@ -136,23 +168,24 @@ export const AdvanceInfo = props => {
               />
             </Grid>
             <Grid item xs={6}>
-              <TextField
-                id="country"
-                name="country"
-                placeholder="Select country"
-                select
-                fullWidth
-                className={classes.textField}
-                variant="outlined"
-                size="small"
-                label="Country"
-                value={form.country}
-                onChange={handleChange}
-              >
-                <MenuItem key={0} value="3">
-                  No record
-                </MenuItem>
-              </TextField>
+              <Autocomplete
+                id="combo-country"
+                options={CountriesAndStates}
+                getOptionLabel={option => option.name}
+                onChange={(evt, value) => handleSelectCountry(evt, value)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Life Stage"
+                    variant="outlined"
+                    placeholder="Select Country"
+                    fullWidth
+                    name="country"
+                    size="small"
+                    value={form.country}
+                  />
+                )}
+              />
             </Grid>
             <Grid item xs={6}>
               <TextField

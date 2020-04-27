@@ -21,5 +21,43 @@ const makeSelectJournal = () =>
     substate => substate,
   );
 
+const makeSelectLoading = () =>
+  createSelector(
+    selectJournalDomain,
+    subState => subState.loading,
+  );
+
+const makeSelectGetChartOfAccountData = () =>
+  createSelector(
+    selectJournalDomain,
+    substate => substate.chartOfAccountData,
+  );
+
+const makeSelectGetAccountPeriodData = () =>
+  createSelector(
+    selectJournalDomain,
+    substate => substate.accountPeriodData,
+  );
+
+const makeSelectNewAccountJournalPostData = () =>
+  createSelector(
+    selectJournalDomain,
+    subState => subState.accountJournalPostData,
+);
+
+const makeSelectJournalListData = () =>
+  createSelector(
+    selectJournalDomain,
+    subState => subState.journalListData,
+);
+
 export default makeSelectJournal;
-export { selectJournalDomain };
+
+export { 
+  selectJournalDomain,
+  makeSelectLoading,
+  makeSelectGetChartOfAccountData,
+  makeSelectGetAccountPeriodData,
+  makeSelectNewAccountJournalPostData,
+  makeSelectJournalListData
+};

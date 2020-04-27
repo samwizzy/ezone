@@ -76,6 +76,12 @@ const createNewPartyGroupData = () =>
     subState => subState.createNewPartyGroupData,
   );
 
+const makeSelectUpdatePartyGroupData = () =>
+  createSelector(
+    selectCompanyStructurePageDomain,
+    subState => subState.updatePartyGroupData,
+  );
+
 const makeSelectAllUsersData = () =>
   createSelector(
     selectCompanyStructurePageDomain,
@@ -86,6 +92,12 @@ const makeSelectCreateNewPartyData = () =>
   createSelector(
     selectCompanyStructurePageDomain,
     subState => subState.createNewPartyData,
+  );
+
+const makeSelectUpdatePartyData = () =>
+  createSelector(
+    selectCompanyStructurePageDomain,
+    subState => subState.updatePartyData,
   );
 
 const makeSelectCreateNewPartiesData = () =>
@@ -100,6 +112,12 @@ const makeSelectNewPartiesDialog = () =>
     subState => subState.newPartiesDialog,
   );
 
+const makeSelectUpdatePartiesData = () =>
+  createSelector(
+    selectCompanyStructurePageDomain,
+    subState => subState.updatePartiesData,
+  );
+
 const makeSelectNewPositionDialog = () =>
   createSelector(
     selectCompanyStructurePageDomain,
@@ -110,6 +128,12 @@ const makeSelectCreateNewPositionData = () =>
   createSelector(
     selectCompanyStructurePageDomain,
     subState => subState.createNewPositionData,
+  );
+
+const makeSelectUpdatePositionData = () =>
+  createSelector(
+    selectCompanyStructurePageDomain,
+    subState => subState.updatePositionData,
   );
 
 const makeSelectGetAllPositions = () =>
@@ -130,11 +154,11 @@ const makeSelectAddEmployeeToPositionData = () =>
     subState => subState.addEmployeeToPositionData,
   );
 
-// const makeSelectGetAllEmployees = () =>
-//   createSelector(
-//     selectCompanyStructurePageDomain,
-//     subState => subState.allEmployees,
-//   );
+const makeSelectGetAllTags = () =>
+  createSelector(
+    selectCompanyStructurePageDomain,
+    subState => subState.allTags,
+  );
 
 // const makeSelectSelectedParty = () =>
 //   createSelector(
@@ -213,4 +237,9 @@ export {
   makeSelectCompanyInfo,
   makeSelectUpdateCompanyInfoData,
   makeSelectCreateNewPartiesData,
+  makeSelectUpdatePartyGroupData,
+  makeSelectUpdatePartyData,
+  makeSelectUpdatePartiesData,
+  makeSelectUpdatePositionData,
+  makeSelectGetAllTags,
 };

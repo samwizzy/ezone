@@ -687,7 +687,7 @@ const AddVendorDialog = props => {
           <Button
             onClick={() => closeVendorDialogAction() }
             color="primary"
-            variant="contained"
+            variant="outlined"
           >
             Cancel
           </Button>

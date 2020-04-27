@@ -85,11 +85,16 @@ const NewAccountDialog = props => {
     accountTypeId: "",
     bankBalance: "",
     description: "",
+    openingBalance: "",
     ezoneBalance: "",
     orgId: "",
-    // parentAccountId: 0,
     subAccount: false // This prop will be removed before payload is sent
   });
+
+  // const canSubmitValues = () => {
+  //   const { accountCode, accountName, accountTypeId } = values;
+  //   return accountCode.length > 0 && accountName.length > 0 && accountTypeId.length > 0;
+  // }
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
@@ -160,6 +165,20 @@ const NewAccountDialog = props => {
                     className={classes.textField}
                     value={values.accountCode}
                     onChange={handleChange('accountCode')}
+                    margin="normal"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    id="standard-openingBalance"
+                    label="Opening Balance"
+                    type="number"
+                    variant="outlined"
+                    size="small"
+                    className={classes.textField}
+                    value={values.openingBalance}
+                    onChange={handleChange('openingBalance')}
                     margin="normal"
                     fullWidth
                   />
@@ -277,7 +296,7 @@ const NewAccountDialog = props => {
                     onChange={handleChange('description')}
                     margin="normal"
                     fullWidth
-                    rows={2}
+                    rows={3}
                     multiline
                   />
                 </Grid>
@@ -310,6 +329,20 @@ const NewAccountDialog = props => {
                     className={classes.textField}
                     value={values.accountCode}
                     onChange={handleChange('accountCode')}
+                    margin="normal"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    id="standard-openingBalance"
+                    label="Opening Balance"
+                    type="number"
+                    variant="outlined"
+                    size="small"
+                    className={classes.textField}
+                    value={values.openingBalance}
+                    onChange={handleChange('openingBalance')}
                     margin="normal"
                     fullWidth
                   />
@@ -441,12 +474,10 @@ const NewAccountDialog = props => {
           ) : (
             <Button
               onClick={() => {
-                // accountDialog.type === 'new' ? createChartOfAccountAction(values) : updateChartOfAccountAction(values);
                 createChartOfAccountAction(values);
               }}
               color="primary"
-              // variant="contained"
-              // disabled={!canBeSubmitted()}
+              // disabled={!canSubmitValues()}
             >
               Save Account
             </Button>
@@ -454,7 +485,6 @@ const NewAccountDialog = props => {
           <Button
             onClick={closeNewAccountDialogAction}
             color="inherit"
-            // variant="contained"
           >
             Cancel
           </Button>

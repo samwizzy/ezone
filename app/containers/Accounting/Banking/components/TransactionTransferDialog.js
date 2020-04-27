@@ -76,6 +76,9 @@ const TransactionTransferDialog = props => {
     transferDate: "",
     transferType: ""
   });
+
+  console.log('bankAccountData from dialog ', bankAccountData);
+  console.log('transactionTransferDialog ', transactionTransferDialog);
   
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
@@ -105,7 +108,7 @@ const TransactionTransferDialog = props => {
   const handleImageChange = (ev) => { 
     let fileNode = []
     Object.keys(ev.target.files).map(index => {
-      const { name, size, type } = ev.target.files[index]
+      const { name } = ev.target.files[index]
       const result = toBase64(ev.target.files[index]);
       result.then(rs => {
         const file = Object.assign({}, { fileName: name, file: rs })
@@ -115,7 +118,8 @@ const TransactionTransferDialog = props => {
     setValues(_.set({ ...values }, event.target.name, fileNode))
   }
 
-  console.log('values: ', values);
+  console.log('transactionTransferDialog values: ', values);
+
 
   return (
     <div>

@@ -46,25 +46,27 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const ContactGroupsDialog = props => {
   const classes = useStyles();
-  const { loading, contactGroupsDialog, closeNewContactGroupsDialog } = props;
+  const {
+    loading,
+    contactGroupsDialog,
+    closeNewContactGroupsDialog,
+    createNewContactGroupAction,
+  } = props;
   const [form, setForm] = React.useState({
-    name: '',
-    description: '',
-    private: '',
+    groupName: '',
+    groupDescription: '',
+    contactIds: [],
   });
 
   const canSubmitForm = () => {
-    return false
-  }
+    const { groupName, groupDescription } = form;
+    return groupName !== '' && groupDescription !== '';
+  };
 
   const handleChange = event => {
     const { name, value } = event.target;
-    setForm({...form, [name]: value });
+    setForm({ ...form, [name]: value });
   };
-
-  const handleSubmit = () => {}
-
-  console.log(contactGroupsDialog, "contactGroupsDialog")
 
   return (
     <div>
@@ -77,9 +79,7 @@ const ContactGroupsDialog = props => {
       >
         <AppBar position="relative">
           <Toolbar>
-            <Typography variant="h6">
-              Add Contact Groups
-            </Typography>
+            <Typography variant="h6">Add Contact Groups</Typography>
           </Toolbar>
         </AppBar>
         <Divider />
@@ -89,46 +89,65 @@ const ContactGroupsDialog = props => {
             <Table className={classes.table}>
               <TableBody>
                 <TableRow>
-                  <TableCell><FormLabel component="legend">Name</FormLabel></TableCell>
+                  <TableCell>
+                    <FormLabel component="legend">Name</FormLabel>
+                  </TableCell>
                   <TableCell>
                     <TextField
-                      name="name"
+                      name="groupName"
                       label="Name"
                       id="outlined-title"
                       fullWidth
                       variant="outlined"
                       size="small"
-                      value={form.name}
+                      value={form.groupName}
                       onChange={handleChange}
                     />
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell><FormLabel component="legend">Description</FormLabel></TableCell>
+                  <TableCell>
+                    <FormLabel component="legend">Description</FormLabel>
+                  </TableCell>
                   <TableCell>
                     <TextField
-                      name="description"
+                      name="groupDescription"
                       label="Description"
                       id="outlined-title"
                       fullWidth
                       variant="outlined"
                       size="small"
-                      value={form.description}
+                      value={form.groupDescription}
                       onChange={handleChange}
                     />
                   </TableCell>
                 </TableRow>
-                <TableRow>
-                  <TableCell><FormLabel component="legend">Private</FormLabel></TableCell>
+                {/* <TableRow>
+                  <TableCell>
+                    <FormLabel component="legend">Private</FormLabel>
+                  </TableCell>
                   <TableCell>
                     <FormControl component="fieldset">
-                      <RadioGroup aria-label="gender" name="private" value={form.private} onChange={handleChange}>
-                        <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-                        <FormControlLabel value="no" control={<Radio />} label="No" />
+                      <RadioGroup
+                        aria-label="gender"
+                        name="private"
+                        value={form.private}
+                        onChange={handleChange}
+                      >
+                        <FormControlLabel
+                          value="yes"
+                          control={<Radio />}
+                          label="Yes"
+                        />
+                        <FormControlLabel
+                          value="no"
+                          control={<Radio />}
+                          label="No"
+                        />
                       </RadioGroup>
                     </FormControl>
                   </TableCell>
-                </TableRow>
+                </TableRow> */}
               </TableBody>
             </Table>
           </form>
@@ -139,7 +158,7 @@ const ContactGroupsDialog = props => {
             Cancel
           </Button>
           <Button
-            onClick={handleSubmit}
+            onClick={() => createNewContactGroupAction(form)}
             disabled={!canSubmitForm()}
             color="primary"
           >
@@ -155,6 +174,7 @@ ContactGroupsDialog.propTypes = {
   loading: PropTypes.bool,
   contactGroupsDialog: PropTypes.object,
   closeNewContactGroupsDialog: PropTypes.func,
+  createNewContactGroupAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -164,7 +184,10 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeNewContactGroupsDialog: () => dispatch(Actions.closeNewContactGroupsDialog()),
+    closeNewContactGroupsDialog: () =>
+      dispatch(Actions.closeNewContactGroupsDialog()),
+    createNewContactGroupAction: evt =>
+      dispatch(Actions.createNewContactGroup(evt)),
   };
 }
 

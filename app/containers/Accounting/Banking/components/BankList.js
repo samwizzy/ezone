@@ -10,11 +10,12 @@ import {
   Menu,
   MenuItem,
   Grid,
-  Tooltip
+  Tooltip,
 } from '@material-ui/core';
 
 import AddIcon from '@material-ui/icons/Add';
 import MUIDataTable from 'mui-datatables';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -44,7 +45,18 @@ const useStyles = makeStyles(theme => ({
   datatable: {
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
-    }
+    },
+    '& .MuiTableHead-root': {
+      '& .MuiTableCell-head': {
+        color: theme.palette.common.white,
+      },
+      '& .MuiTableCell-root:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+      },
+      '& .MuiTableCell-root:nth-child(even)': {
+        // backgroundColor: darken(theme.palette.primary.main, 0.1),
+      },
+    },
   },
   // button: {
   //   '&.favorite': { color: orange[300]},
@@ -213,6 +225,7 @@ const BankList = props => {
         <Grid container>
           <Grid item xs={12}>
             <MUIDataTable
+              className={classes.datatable}
               title="Banking"
               data={bankAccountData}
               columns={columns}
@@ -227,13 +240,11 @@ const BankList = props => {
 
 BankList.propTypes = {
 //   loading: PropTypes.bool,
-//   openNewAccountDialogAction: PropTypes.func,
-//   editOpenAccountDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
-  bankAccountDialog: Selectors.makeSelectBankAccountDialog(),
+  // bankAccountDialog: Selectors.makeSelectBankAccountDialog(),
   bankAccountData: Selectors.makeSelectBankAccountData()
 });
 

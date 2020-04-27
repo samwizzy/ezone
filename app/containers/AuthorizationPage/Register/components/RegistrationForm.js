@@ -120,6 +120,9 @@ const useStyles = makeStyles(theme => ({
   label: {
     fontSize: 10,
   },
+  span: {
+    color: 'red',
+  },
 }));
 
 const RegistrationForm = props => {
@@ -143,9 +146,12 @@ const RegistrationForm = props => {
 
   const canBeSubmitted = () => {
     const { companyName, country, email, password } = values;
+    const passwordPattern = new RegExp(
+      '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$',
+    );
+    const pass = passwordPattern.test(password);
     return (
-      companyName !== '' && country !== '' && email !== '' && password !== ''
-      // companyName !== null && country !== null && email !== null && password !== null
+      companyName !== '' && country !== '' && email !== '' && pass !== false
     );
   };
 
@@ -236,9 +242,9 @@ const RegistrationForm = props => {
                         onClick={handleVisibility}
                       >
                         {visibility ? (
-                          <VisibilityOffOutlined />
-                        ) : (
                           <VisibilityOutlined />
+                        ) : (
+                          <VisibilityOffOutlined />
                         )}
                       </IconButton>
                     </Tooltip>
@@ -249,6 +255,10 @@ const RegistrationForm = props => {
                 }}
                 onChange={handleChange('password')}
               />
+              <span className={classes.span}>
+                Password must contain at least one upper case, lower case,
+                symbol,number and can not be less than 6 digits
+              </span>
               <Autocomplete
                 id="combo-itemCategory"
                 options={CountriesAndStates}

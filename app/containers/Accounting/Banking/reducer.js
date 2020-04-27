@@ -28,6 +28,7 @@ export const initialState = {
     data: null,
   },
   bankTransferPostData: {},
+  transferByAccountIdData: {}
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -259,6 +260,29 @@ const bankingReducer = (state = initialState, action) =>
         };
       }
 
+      // Get transfers by account
+      case Constants.GET_TRANSFERS_BY_ACCOUNT_ID: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_TRANSFERS_BY_ACCOUNT_ID_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          transferByAccountIdData: action.payload,
+        };
+      }
+      case Constants.GET_TRANSFERS_BY_ACCOUNT_ID_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
     }
   });
 

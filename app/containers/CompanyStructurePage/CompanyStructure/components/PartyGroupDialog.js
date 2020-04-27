@@ -1,12 +1,14 @@
-import React, { memo } from 'react'; // eslint-disable-next-line no-unused-expressions
+import React, { memo, useEffect } from 'react'; // eslint-disable-next-line no-unused-expressions
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { makeStyles } from '@material-ui/core/styles';
 import {
+  AppBar, Toolbar,
   Divider,
   TextField,
+  Typography,
   Button,
   Dialog,
   DialogTitle,
@@ -45,8 +47,12 @@ const PartyGroupDialog = props => {
     loading,
     newPartyGroupDialog,
     dispatchCloseNewPartyPartyDialog,
+    updatePartyGroupAction,
   } = props;
 
+  useEffect(() => {
+    setValues({ ...newPartyGroupDialog.data });
+  }, [newPartyGroupDialog.data]);
   const classes = useStyles();
   const [values, setValues] = React.useState({
     name: '',
@@ -71,51 +77,64 @@ const PartyGroupDialog = props => {
         keepMounted
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="alert-dialog-slide-title">
-          {newPartyGroupDialog.type === 'new'
-            ? 'New Party Group'
-            : 'Edit Party Group'}
-        </DialogTitle>
+        <AppBar position="relative">
+          <Toolbar>
+            <Typography variant="h6" className={classes.title}>
+              {newPartyGroupDialog.type === 'new'
+              ? 'New Party Group'
+              : 'Edit Party Group'}
+            </Typography>
+          </Toolbar>
+        </AppBar>
 
         <Divider />
 
         <DialogContent>
-          {newPartyGroupDialog.type === 'new' ? (
-            <div>
-              <TextField
-                id="party-group"
-                label="Party Group"
-                className={classes.textField}
-                value={values.name}
-                onChange={handleChange('name')}
-                margin="normal"
-                variant="outlined"
-                size="small"
-                fullWidth
-              />
+          <div>
+            <TextField
+              id="party-group"
+              label="Party Group"
+              className={classes.textField}
+              value={values.name ? values.name : ''}
+              onChange={handleChange('name')}
+              margin="normal"
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
 
-              <TextField
-                id="description"
-                label="Description"
-                className={classes.textField}
-                value={values.description}
-                variant="outlined"
-                onChange={handleChange('description')}
-                margin="normal"
-                fullWidth
-                multiline
-                rows="3"
-              />
-            </div>
-          ) : null}
+            <TextField
+              id="description"
+              label="Description"
+              className={classes.textField}
+              value={values.description ? values.description : ''}
+              variant="outlined"
+              onChange={handleChange('description')}
+              margin="normal"
+              fullWidth
+              multiline
+              rows="3"
+            />
+          </div>
         </DialogContent>
         <DialogActions>
-          {loading ? (
-            <LoadingIndicator />
-          ) : (
+          {newPartyGroupDialog.type === 'new' ? (
             <Button
               onClick={() => {
                 dispatchCreateNewPartyGroupAction(values);
+                setValues('');
+              }}
+              color="primary"
+              variant="contained"
+              disabled={!canBeSubmitted()}
+            >
+              {newPartyGroupDialog.type === 'new' ? 'Save' : 'Update'}
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                updatePartyGroupAction(values);
+                setValues('');
               }}
               color="primary"
               variant="contained"
@@ -127,7 +146,7 @@ const PartyGroupDialog = props => {
           <Button
             onClick={() => dispatchCloseNewPartyPartyDialog()}
             color="primary"
-            variant="contained"
+            variant="outlined"
           >
             Cancel
           </Button>
@@ -138,6 +157,7 @@ const PartyGroupDialog = props => {
 };
 
 PartyGroupDialog.propTypes = {
+  updatePartyGroupAction: PropTypes.func,
   dispatchCloseNewPartyPartyDialog: PropTypes.func,
   newPartyGroupDialog: PropTypes.object,
   loading: PropTypes.bool,
@@ -155,6 +175,8 @@ function mapDispatchToProps(dispatch) {
       dispatch(Actions.closeNewPartyGroupDialog()),
     dispatchCreateNewPartyGroupAction: evt =>
       dispatch(Actions.createNewPartyGroupAction(evt)),
+    updatePartyGroupAction: evt =>
+      dispatch(Actions.updatePartyGroupAction(evt)),
     dispatch,
   };
 }

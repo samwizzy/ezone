@@ -65,7 +65,7 @@ const EmailHome = props => {
             className={classes.card}
             variant="outlined"
           >
-            <CardContent component={RouterLink} to="/email/configuration">
+            <CardContent component={RouterLink} to="/settings/email/configuration">
               <List className={classes.list}>
                 <ListItem>
                   <ListItemAvatar>
@@ -82,7 +82,7 @@ const EmailHome = props => {
             className={classes.card}
             variant="outlined"
           >
-            <CardContent component={RouterLink} to="/email">
+            <CardContent component={RouterLink} to="/settings/email">
               <List className={classes.list}>
                 <ListItem>
                   <ListItemAvatar>
@@ -99,7 +99,7 @@ const EmailHome = props => {
             className={classes.card}
             variant="outlined"
           >
-            <CardContent component={RouterLink} to="/email/template">
+            <CardContent component={RouterLink} to="/settings/email/template">
               <List className={classes.list}>
                 <ListItem>
                   <ListItemAvatar>

@@ -217,9 +217,9 @@ const AddItemDialog = props => {
           <Button
             onClick={() => { closeAddItemDialogAction(), setValues('') }}
             color="primary"
-            variant="contained"
+            variant="outlined"
           >
-            Cancel item
+            Cancel
           </Button>
         </DialogActions>
       </Dialog>

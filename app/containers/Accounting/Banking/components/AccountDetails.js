@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -42,8 +42,12 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.main,
       '& .MuiTableCell-root': {
         color: theme.palette.common.white,
-        fontSize: theme.typography.fontSize + 2
+        fontSize: theme.typography.fontSize + 2,
+        padding: theme.spacing(4, 2),
       },
+      '& .MuiTableRow-root': {
+        borderRadius: `${theme.shape.borderRadius * 6} !important`  
+      }
     },
     "& th.MuiTableCell-root": {
       borderBottom: "none !important",
@@ -58,6 +62,10 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.text.secondary,
       fontSize: theme.typography.fontSize + 2
     },
+  },
+  paper: {
+    padding: theme.spacing(10, 0),
+    textAlign: 'center'
   }
 }));
 
@@ -76,13 +84,21 @@ const AccountDetails = props => {
 
   const { 
     bankTransferByOrgIdData,
+    transferByAccountIdData,
     // editOpenBankAccountDialogAction
-    openAccountTransferDialogAction
+    openAccountTransferDialogAction,
+    dispatchGetTransferByAccountIdAction
   } = props;
 
-  console.log('AccountDetails loaded');
+  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {
+    dispatchGetTransferByAccountIdAction(props.location.accountDetailsData.id);
+  }, []);
+
+  console.log('ID -> ', props.location.accountDetailsData.id);
   console.log('accountDetailsData --> ', props.location.accountDetailsData);
-  console.log('bankTransferByOrgIdData from details.js --> ', bankTransferByOrgIdData);
+  console.log('transfer --> ', props.location.accountDetailsData.transfers);
+  console.log('transferByAccountIdData--> ', transferByAccountIdData);
 
   
   return (
@@ -110,25 +126,33 @@ const AccountDetails = props => {
                     <TableRow>
                       <TableCell component="th" scope="row">Account Type</TableCell>
                       <TableCell>
-                        { props.location.accountDetailsData.accountType.accountType }
+                        { props.location.accountDetailsData.accountType }
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row">Bank Name</TableCell>
+                      <TableCell>
+                        { props.location.accountDetailsData.bankName }
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">Description</TableCell>
                       <TableCell>
-                        { props.location.accountDetailsData.accountType.description }
+                        { props.location.accountDetailsData.description }
                       </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell component="th" scope="row">Transaction Period</TableCell>
-                      <TableCell></TableCell>
+                      <TableCell component="th" scope="row">Date Created</TableCell>
+                      <TableCell>
+                        { props.location.accountDetailsData.dateCreated }
+                      </TableCell>
                     </TableRow>
                   </TableBody>
                   <TableFooter>
                     <TableRow>
                         <TableCell component="th" scope="row">Closing Balance</TableCell>
                         <TableCell>
-                          NGN { props.location.accountDetailsData.accountType.openingBalance }
+                          NGN { props.location.accountDetailsData.bankBalance }
                         </TableCell>
                     </TableRow>
                   </TableFooter>
@@ -138,7 +162,7 @@ const AccountDetails = props => {
           </Grid>
         </Grid>
 
-        {bankTransferByOrgIdData.length ? (
+        { props.location.accountDetailsData.transfers.length ? (
           <Grid item xs={12}>
             <Grid container className={classes.grid}>
               <Grid item xs={12}>
@@ -180,12 +204,15 @@ const AccountDetails = props => {
         ) : (
           <Grid item xs={12}>
             <Grid container className={classes.grid}>
-              <Paper>
-                You haven’t recorded any transactions for this account
+              <Grid item xs={12}>
+              <Paper square className={classes.paper}>
+                <Typography variant="h6" gutterBottom>You haven’t recorded any transactions for this account</Typography>
                 <Button 
                   aria-controls="simple-menu" 
                   aria-haspopup="true" 
                   onClick={handleClick}
+                  color="primary"
+                  variant="contained"
                 >
                   Add Transactions
                 </Button>
@@ -199,15 +226,20 @@ const AccountDetails = props => {
                   <MenuItem onClick={() => {
                     openAccountTransferDialogAction(1);
                   }}>
-                    Transfer from another account
+                    <Typography>
+                      Transfer from another account
+                    </Typography>
                   </MenuItem>
                   <MenuItem onClick={() => {
                     openAccountTransferDialogAction();
                   }}>
-                    Transfer to another account
+                    <Typography>
+                      Transfer to another account
+                    </Typography>
                   </MenuItem>
                 </Menu>
               </Paper>
+              </Grid>
             </Grid>
           </Grid>
         )}
@@ -223,12 +255,13 @@ AccountDetails.propTypes = {
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
   bankTransferByOrgIdData: Selectors.makeSelectBankTransferByOrgIdData(),
-  // bankAccountDialog: Selectors.makeSelectBankAccountDialog(),
+  transferByAccountIdData: Selectors.makeSelectTransferByAccountIdData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openAccountTransferDialogAction: evt => dispatch(Actions.openAccountTransferDialog(evt)),
+    openAccountTransferDialogAction: (evt) => dispatch(Actions.openAccountTransferDialog(evt)),
+    dispatchGetTransferByAccountIdAction: (evt) => dispatch(Actions.getTransferByAccountIdAction(evt)),
   };
 }
 

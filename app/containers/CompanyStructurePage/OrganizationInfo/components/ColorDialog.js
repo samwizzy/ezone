@@ -24,7 +24,7 @@ import {
 import ColorPicker from 'material-ui-color-picker';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
-import ColorDropZone from './DropZone';
+import PaperDropzone from './PaperDropzone';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -43,21 +43,28 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ColorDialog = props => {
-  const {
-    colorDialog,
-    closeEditColorDialog,
-    // dispatchNewPostAction,
-    // dispatchUpdatePostAction,
-  } = props;
+  const { colorDialog, closeEditColorDialog, updateCompanyInfoAction } = props;
   const classes = useStyles();
+
+  console.log(colorDialog, 'colorDialog');
 
   const [values, setValues] = useState({
     color: '',
     logo: '',
+    id: '',
   });
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event });
+  };
+
+  const uploadFileAction = file => {
+    setValues({
+      ...values,
+      ...colorDialog.data,
+      logo: file,
+      id: colorDialog.data.id,
+    });
   };
 
   // useEffect(() => {
@@ -93,11 +100,7 @@ const ColorDialog = props => {
             {colorDialog.type === 'new' ? (
               <div />
             ) : (
-              <div>
-                <ColorDropZone
-                  handleChange={handleChange('logo')}
-                  logo={values.logo}
-                />
+              <React.Fragment>
                 <ColorPicker
                   name="color"
                   defaultValue="#000"
@@ -109,7 +112,8 @@ const ColorDialog = props => {
                   margin="normal"
                   fullWidth
                 />
-              </div>
+                <PaperDropzone uploadFileAction={uploadFileAction} />
+              </React.Fragment>
             )}
           </DialogContent>
           {colorDialog.type === 'new' ? (
@@ -118,7 +122,7 @@ const ColorDialog = props => {
             <DialogActions>
               <Button
                 onClick={() => {
-                  dispatchUpdatePostAction(values);
+                  updateCompanyInfoAction(values);
                   closeComposeDialog();
                 }}
                 color="primary"
@@ -142,10 +146,9 @@ const ColorDialog = props => {
 };
 
 ColorDialog.propTypes = {
-  dispatchNewPostAction: PropTypes.func,
-  closeNewPostDialog: PropTypes.func,
   closeEditColorDialog: PropTypes.func,
   colorDialog: PropTypes.object,
+  updateCompanyInfoAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -154,10 +157,9 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    // dispatchNewPostAction: evt => dispatch(Actions.saveNewPost(evt)),
     openEditColorDialog: evt => dispatch(Actions.openEditColorDialog(evt)),
     closeEditColorDialog: () => dispatch(Actions.closeEditColorDialog()),
-    // dispatchUpdatePostAction: evt => dispatch(Actions.updatePost(evt)),
+    updateCompanyInfoAction: evt => dispatch(Actions.updateCompanyInfo(evt)),
     dispatch,
   };
 }

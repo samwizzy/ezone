@@ -153,8 +153,9 @@ function a11yProps(index) {
 const ref = React.createRef();
 
 const ChatTab = props => {
-  let stompClient = null;
+  // let stompClient = null;
   const {
+    accessToken,
     allEmployees,
     allUsersChat,
     currentUser,
@@ -168,7 +169,7 @@ const ChatTab = props => {
   useEffect(() => {
     dispatchGetAllEmployees();
     dispatchGetUserChats();
-    // chatConnect();
+    chatConnect();
     handleScrollToBottom();
   }, []);
 
@@ -232,6 +233,34 @@ const ChatTab = props => {
     );
   }
 
+  // console.log(currentUser, 'currentUser');
+  // console.log(accessToken, 'accessToken');
+
+  const chatConnect = () => {
+    const socket = new SockJS(
+      'https://dev.ezoneapps.com/gateway/utilityserv/messages',
+    );
+    const stompClient = Stomp.over(socket);
+    stompClient.connect(
+      {
+        'X-Authorization': 'Bearer ' + `${accessToken}`,
+        login: 'admin',
+        passcode: 'admin',
+      },
+      frame => {
+        const connected = true;
+        console.log(frame, 'frame');
+        stompClient.subscribe(`/queue/${currentUser.uuId}`, tick => {
+          console.log(tick, 'tick');
+        });
+      },
+      error => {
+        console.log(error);
+        const connected = false;
+      },
+    );
+  };
+
   // console.log(ref, "ref")
 
   // console.log(userChatData, 'userChatData');
@@ -250,7 +279,7 @@ const ChatTab = props => {
             // <NoAvailableChats />
             <div />
           ) : (
-            <Grid justify="center" container>
+            <Grid justify="center" container justify="space-between" alignItems="center">
               <Grid item xs={12} md={4}>
                 <Paper square>
                   <div
@@ -357,7 +386,6 @@ const ChatTab = props => {
                             </Paper>
                           </div>
                         ))}
-                      {/* <ChatFooter /> */}
                     </div>
                     <ChatFooter />
                   </Grid>
@@ -400,6 +428,7 @@ const mapStateToProps = createStructuredSelector({
   allEmployees: Selectors.makeSelectAllEmployees(),
   allUsersChat: Selectors.makeSelectAllUsersChat(),
   currentUser: AppSelectors.makeSelectCurrentUser(),
+  accessToken: AppSelectors.makeSelectAccessToken(),
 });
 
 function mapDispatchToProps(dispatch) {

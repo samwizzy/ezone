@@ -18,11 +18,16 @@ export const CompanyInfoUrl = `${BaseUrl}/authserv/api/v1/organisation`;
 export const UpdateCompanyInfoUrl = `${BaseUrl}/authserv/api/v1/update_organization`;
 export const GetPartyGroup = `${BaseUrl}/authserv/api/v1/organisation/partygroups`;
 export const CreateNewPartyGroup = `${BaseUrl}/authserv/api/v1/partygroup`;
+export const UpdatePartyGroup = `${BaseUrl}/authserv/api/v1/partygroup`;
 export const CreateNewPartyApi = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_group`;
+export const UpdatePartyApi = `${BaseUrl}/authserv/api/v1/party`;
 export const CreateNewPartiesApi = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_party`;
+export const UpdatePartiesApi = `${BaseUrl}/authserv/api/v1/party`;
 export const CreateNewPositionApi = `${BaseUrl}/authserv/api/v1/position`;
+export const UpdatePositionApi = `${BaseUrl}/authserv/api/v1/position/update_position`;
 export const GetAllPositionsApi = `${BaseUrl}/authserv/api/v1/position/get_position_by_orgId`;
 export const AddNewEmployeeToPositionApi = `${BaseUrl}/authserv/api/v1/user/add_to_position`;
+export const GetAllTagsApi = `${BaseUrl}/authserv/api/v1/party_tags`;
 
 /** *****************************************************************
  * User endpoint
@@ -160,6 +165,11 @@ export const CreateNewBankApi = `${BaseUrl}/accountingserv/api/v1/bank/add_bank`
 export const GetAllBankAccount = `${BaseUrl}/accountingserv/api/v1/bank/get_All_bank_account_by_orgid`;
 export const GetAllTransferByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/bank/get_All_bank_transfers_by_orgid`;
 export const CreateBankTransferApi = `${BaseUrl}/accountingserv/api/v1/bank/transfer`;
+export const GetTransferByAccountIdApi = `${BaseUrl}/accountingserv/api/v1/bank/get_bank_transfer_by_id`;
+export const GetJounalListApi = `${BaseUrl}/accountingserv/api/v1/journal/get_journals_by_orgid`;
+export const GetAllAccountingPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/get_periods_by_orgid`;
+export const CreateAccountPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/add_account_period`;
+export const UpdateAccountPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/update_account_period_status`;
 
 
 /** ***************************************************************** 
@@ -187,3 +197,17 @@ export const GetTransferOrderByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_by_i
 export const CreateNewInventoryAdjustApi = `${BaseUrl}/inventoryserv/api/v1/do_many_adjustments_per_warehouse`;
 export const GetAllInventoryAdjustsApi = `${BaseUrl}/inventoryserv/api/v1/get_all_adjustments`;
 export const GetAdjustmentByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_adjustment_by_id`;
+
+/** ***************************************************************** 
+ * CRM endpoint
+ ******************************************************************* */
+
+// Contacts Apis
+export const CreateNewContactApi = `${BaseUrl}/crmserv/api/v1/add_contact`;
+export const UpdateContactApi = `${BaseUrl}/crmserv/api/v1/update_contact`;
+export const GetAllContactsApi = `${BaseUrl}/crmserv/api/v1/get_all_contacts`;
+
+// Contacts Group Apis
+export const CreateNewContactGroupApi = `${BaseUrl}/crmserv/api/v1/add_contact_group`;
+export const UpdateContactGroupApi = `${BaseUrl}/crmserv/api/v1/update_contact_group`;
+export const GetAllContactsGroupApi = `${BaseUrl}/crmserv/api/v1/get_all_contact_groups`;

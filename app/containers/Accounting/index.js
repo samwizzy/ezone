@@ -11,59 +11,45 @@ import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
-import { Redirect } from 'react-router-dom';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectAccounting from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
-// import AccountChart from './Chart/components/AccountChart';
-// import AccountJournal from './components/AccountJournal';
-// import JournalListing from './components/JournalListing';
-// import NewAccountDialog from './components/NewAccountDialog';
-import AccountSetting from './components/AccountSetting';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
+import AccountSetup from './Settings/components/AccountSetup';
+import Dashboard from './Dashboard';
 import LoadingIndicator from './../../components/LoadingIndicator';
-import Dashboard from './Dashboard'
-import Chart from './Chart'
-import Router from './components/Router';
 
 export function Accounting(props) {
   useInjectReducer({ key: 'accounting', reducer });
   useInjectSaga({ key: 'accounting', saga });
 
-  // Similar to componentDidMount and componentDidUpdate:
-  useEffect(() => {
-    // dispatchGetAccountPeriodAction();
-    // getAccountingSetupAction();
-    // dispatchGetAllAccountTypeAction();
-  }, []);
+  console.log('Accounting index.js loaded');
 
   const {
     loading,
     accountingSetupData,
-    getAccountingSetupAction,
-    dispatchGetAllAccountTypeAction,
-    dispatchGetAccountPeriodAction,
+    dispatchGetAccountingSetupAction,
   } = props;
 
-  console.log('loading', loading);
-  console.log('accountingSetupData index.js file', accountingSetupData);
+  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {
+    dispatchGetAccountingSetupAction();
+  }, []);
 
-  return <Dashboard />
+  console.log('accountingSetupData main index.js', accountingSetupData);
 
-  // if (loading) {
-  //   return <LoadingIndicator />;
-  // }
-
-  // if (accountingSetupData.id) {
-  //   return <Dashboard />;
-  // }
-
-  // return <AccountSetting />;
+  // Routing based on api response
+  if (loading) {
+    return <LoadingIndicator />;
+  }
+  else if (accountingSetupData === null) {
+    return <AccountSetup />
+  } 
+  else {
+    return <Dashboard />
+  }
 }
 
 Accounting.propTypes = {
@@ -71,15 +57,13 @@ Accounting.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   // accounting: makeSelectAccounting(),
-  // loading: Selectors.makeSelectLoading(),
-  // accountingSetupData: Selectors.makeSelectGetAccountingSetupData(),
+  loading: Selectors.makeSelectLoading(),
+  accountingSetupData: Selectors.makeSelectGetAccountingSetupData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    // getAccountingSetupAction: () => dispatch(Actions.getAccountingSetupAction()),
-    // dispatchGetAllAccountTypeAction: () => dispatch(Actions.getAllAccountTypeAction()),
-    // dispatchGetAccountPeriodAction: () => dispatch(Actions.getAccountPeriodAction()),
+    dispatchGetAccountingSetupAction: () => dispatch(Actions.getAccountingSetupAction()),
     dispatch,
   };
 }

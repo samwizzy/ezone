@@ -225,6 +225,7 @@ EmployeesApp.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
+  departments: Selectors.makeSelectDepartments(),
   employees: Selectors.makeSelectEmployees(),
   employee: Selectors.makeSelectEmployee(),
   user: AppSelectors.makeSelectCurrentUser(),
@@ -248,9 +249,8 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(
-  compose(
-    withConnect,
-    memo,
-  )(EmployeesApp),
-);
+export default compose(
+  withRouter,
+  withConnect,
+  memo,
+)(EmployeesApp);

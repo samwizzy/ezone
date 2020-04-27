@@ -1,5 +1,6 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import {
   makeStyles,
   List,
@@ -15,6 +16,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
@@ -44,7 +46,18 @@ const useStyles = makeStyles(theme => ({
   datatable: {
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
-    }
+    },
+    '& .MuiTableHead-root': {
+      '& .MuiTableCell-head': {
+        color: theme.palette.common.white,
+      },
+      '& .MuiTableCell-root:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+      },
+      '& .MuiTableCell-root:nth-child(even)': {
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
+      },
+    },
   },
   // button: {
   //   '&.favorite': { color: orange[300]},
@@ -79,6 +92,7 @@ const AccountChart = props => {
 
   const {
     loading,
+    history,
     openNewAccountDialogAction,
     editOpenAccountDialogAction,
     deleteChartOfAccountAction,
@@ -86,7 +100,7 @@ const AccountChart = props => {
   } = props;
 
   const handleClick = (event, id) => {
-    console.log("id value -> ", id);
+    console.log("id value --> ", id);
     setAnchorEl(event.currentTarget);
     const selectedAccount = chartOfAccountData && chartOfAccountData.find(acc => id === acc.id);
     setAccount(selectedAccount);
@@ -97,26 +111,26 @@ const AccountChart = props => {
   };
 
   const columns = [
-    {
-      name: 'Id',
-      label: 'S/N',
-      options: {
-        filter: true,
-        customBodyRender: (value, tableMeta) => {
-          if (value === '') {
-            return '';
-          }
-          return (
-            <div>
-              <FormControlLabel
-                label={tableMeta.rowIndex + 1}
-                control={<Icon />}
-              />
-            </div>
-          );
-        },
-      },
-    },
+    // {
+    //   name: 'Id',
+    //   label: 'S/N',
+    //   options: {
+    //     filter: true,
+    //     customBodyRender: (value, tableMeta) => {
+    //       if (value === '') {
+    //         return '';
+    //       }
+    //       return (
+    //         <div>
+    //           <FormControlLabel
+    //             label={tableMeta.rowIndex + 1}
+    //             control={<Icon />}
+    //           />
+    //         </div>
+    //       );
+    //     },
+    //   },
+    // },
     {
       name: 'accountCode',
       label: 'Account Code',
@@ -141,14 +155,14 @@ const AccountChart = props => {
         sort: false,
       },
     },
-    // {
-    //   name: 'accountType.description',
-    //   label: 'Account Description',
-    //   options: {
-    //     filter: true,
-    //     sort: false,
-    //   },
-    // },
+    {
+      name: 'accountType.description',
+      label: 'Account Description',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
     {
       name: 'id',
       label: '.',
@@ -181,8 +195,11 @@ const AccountChart = props => {
                   Edit
                 </MenuItem>
                 <MenuItem onClick={() => {
-                  // history.push(AccountDetails);
-                  // return <AccountDetails />
+                  console.log('account that was clicked ', account);
+                  history.push({
+                    pathname: '/account/chart/details',
+                    chartDetailsData: account,
+                  });
                 }}>
                   View Details
                 </MenuItem>
@@ -226,6 +243,7 @@ const AccountChart = props => {
         <Grid container>
           <Grid item xs={12}>
             <MUIDataTable
+              className={classes.datatable}
               title="Account Charts"
               data={chartOfAccountData}
               columns={columns}
@@ -264,6 +282,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(AccountChart);

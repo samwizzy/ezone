@@ -35,10 +35,11 @@ import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import MailOutline from '@material-ui/icons/MailOutline';
 import Smartphone from '@material-ui/icons/Smartphone';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import { lighten } from '@material-ui/core/styles/colorManipulator';
+import { blue } from '@material-ui/core/colors';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
-import { lighten } from '@material-ui/core/styles/colorManipulator'
-import { blue } from '@material-ui/core/colors'
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import user from '../../../../images/user.svg';
 
@@ -50,13 +51,13 @@ const useStyles = makeStyles(theme => ({
     width: theme.spacing(12),
     height: theme.spacing(12),
     marginRight: theme.spacing(1),
-    border: `1px solid ${lighten(theme.palette.primary.main, 0.3)}`
+    border: `1px solid ${lighten(theme.palette.primary.main, 0.3)}`,
   },
   button: {
-    backgroundColor: blue[500],
+    backgroundColor: blue[400],
     color: theme.palette.common.white,
     '&:hover': {
-      backgroundColor: blue[700],
+      backgroundColor: blue[500],
     },
   },
 }));
@@ -96,7 +97,7 @@ const ExpansionPanelSummary = withStyles({
   expanded: {},
 })(MuiExpansionPanelSummary);
 
-const ExpansionPanelDetails = withStyles((theme) => ({
+const ExpansionPanelDetails = withStyles(theme => ({
   root: {
     padding: theme.spacing(2),
   },
@@ -108,152 +109,245 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const ContactDetailsDialog = props => {
   const classes = useStyles();
-  const { loading, contactDetailsDialog, closeNewContactDetailsDialog } = props;
+  const {
+    loading,
+    contactDetailsDialog,
+    closeContactDetailsDialogAction,
+  } = props;
   const [expanded, setExpanded] = React.useState('panel1');
 
-  const handleChange = (panel) => (event, newExpanded) => {
+  const handleChange = panel => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
 
+  console.log(contactDetailsDialog, 'contactDetailsDialog');
   return (
     <div>
       <Dialog
         {...contactDetailsDialog.props}
-        onClose={closeNewContactDetailsDialog}
+        onClose={closeContactDetailsDialogAction}
         keepMounted
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
       >
-        <AppBar position="relative">
-          <Toolbar>
-            <Grid container justify="space-between" alignItems="center">
-              <Grid item>
-                <List className={classes.list}>
-                  <ListItem
-                    alignItems="flex-start"
-                    style={{ display: 'flex', alignItems: 'center' }}
-                  >
-                    <ListItemAvatar>
-                      <Avatar
-                        alt="Company Logo"
-                        src={user}
-                        className={classes.avatar}
+        {contactDetailsDialog.data && (
+          <AppBar position="relative">
+            <Toolbar>
+              <Grid container justify="space-between" alignItems="center">
+                <Grid item>
+                  <List className={classes.list}>
+                    <ListItem
+                      alignItems="flex-start"
+                      style={{ display: 'flex', alignItems: 'center' }}
+                    >
+                      <ListItemAvatar>
+                        <Avatar
+                          alt="Company Logo"
+                          src={contactDetailsDialog.data.imageUrl}
+                          className={classes.avatar}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={
+                          <Typography variant="h6" color="inherit">
+                            {contactDetailsDialog.data.firstName}{' '}
+                            {contactDetailsDialog.data.lastName}
+                          </Typography>
+                        }
+                        secondary={
+                          <Typography variant="subtitle1" color="inherit">
+                            {contactDetailsDialog.data.emailAddress}
+                          </Typography>
+                        }
                       />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={
-                        <Typography variant="h6" color="inherit">
-                          First Marine
-                        </Typography>
-                      }
-                      secondary={
-                        <Typography variant="subtitle1" color="inherit">
-                          info@firstmarine.ng
-                        </Typography>
-                      }
-                    />
-                  </ListItem>
-                </List>
+                    </ListItem>
+                  </List>
+                </Grid>
+                <Grid item>
+                  <Button
+                    className={classes.button}
+                    disableElevation
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {}}
+                  >
+                    Assign Contact Group
+                  </Button>
+                </Grid>
               </Grid>
-              <Grid item>
-                <Button
-                  className={classes.button}
-                  disableElevation
-                  variant="contained"
-                  color="primary"
-                  onClick={() => {}}
-                >
-                  Assign Contact Group
-                </Button>
-              </Grid>
-            </Grid>
-          </Toolbar>
-        </AppBar>
+            </Toolbar>
+          </AppBar>
+        )}
         <Divider />
 
         <DialogContent>
-          <ExpansionPanel square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-            <ExpansionPanelSummary aria-controls="panel1d-content" id="panel1d-header">
-              <Typography>Basic Info #1</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <Table className={classes.table}>
-                <TableBody>
-                  <TableRow>
-                    <TableCell><MailOutline /></TableCell>
-                    <TableCell>info@firstmarine.ng</TableCell>
-                    <TableCell align="right" colSpan={2}>
-                      <Button variant="contained" color="primary" disableElevation>Edit</Button>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><Smartphone /></TableCell>
-                    <TableCell>+23408097864356</TableCell>
-                    <TableCell align="left" colSpan={2}></TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell></TableCell>
-                    <TableCell>Life Stage</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell colSpan={2}></TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell></TableCell>
-                    <TableCell>Contact Owner</TableCell>
-                    <TableCell>Funke</TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell></TableCell>
-                    <TableCell>Vendor</TableCell>
-                    <TableCell>Funke</TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </ExpansionPanelDetails>
-            <ExpansionPanelSummary aria-controls="panel1d-content" id="panel1d-header">
-              <Typography>Additional Info #2</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <Table className={classes.table}>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>DOB</TableCell>
-                    <TableCell align="right">Aug 17, 2020</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Fax</TableCell>
-                    <TableCell align="right">Aug 17, 2020</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Website</TableCell>
-                    <TableCell align="right">Aug 17, 2020</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Address</TableCell>
-                    <TableCell align="right">Suite 42, Adekunle Cresent, Ibeju Lekki, Lagos Nigera</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>City</TableCell>
-                    <TableCell align="right">Ibeju Lekki</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>State</TableCell>
-                    <TableCell align="right">Lagos State</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Country</TableCell>
-                    <TableCell align="right">Nigeria</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
+          {contactDetailsDialog.data && (
+            <ExpansionPanel
+              square
+              expanded={expanded === 'panel1'}
+              onChange={handleChange('panel1')}
+            >
+              <ExpansionPanelSummary
+                aria-controls="panel1d-content"
+                id="panel1d-header"
+              >
+                <Typography>Basic Info #1</Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <Table className={classes.table}>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>
+                        <MailOutline />
+                      </TableCell>
+                      <TableCell>
+                        {contactDetailsDialog.data.emailAddress}
+                      </TableCell>
+                      <TableCell align="right" colSpan={2}>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          disableElevation
+                        >
+                          Edit
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>
+                        <Smartphone />
+                      </TableCell>
+                      <TableCell>
+                        {contactDetailsDialog.data.phoneNumber}
+                      </TableCell>
+                      <TableCell align="left" colSpan={2} />
+                    </TableRow>
+                    <TableRow>
+                      <TableCell />
+                      <TableCell>Life Stage</TableCell>
+                      <TableCell>
+                        {contactDetailsDialog.data.lifeStage}
+                      </TableCell>
+                      <TableCell colSpan={2} />
+                    </TableRow>
+                    <TableRow>
+                      <TableCell />
+                      <TableCell>Contact Owner</TableCell>
+                      <TableCell>{contactDetailsDialog.data.ownerId}</TableCell>
+                      <TableCell />
+                    </TableRow>
+                    <TableRow>
+                      <TableCell />
+                      <TableCell>Vendor</TableCell>
+                      <TableCell>
+                        {contactDetailsDialog.data.associationType}
+                      </TableCell>
+                      <TableCell />
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </ExpansionPanelDetails>
+              <ExpansionPanelSummary
+                aria-controls="panel1d-content"
+                id="panel1d-header"
+              >
+                <Typography>Additional Info #2</Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <Table className={classes.table}>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>DOB</TableCell>
+                      <TableCell align="right">
+                        {contactDetailsDialog.data.dob}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Fax</TableCell>
+                      <TableCell align="right">
+                        {contactDetailsDialog.data.fax}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Website</TableCell>
+                      <TableCell align="right">
+                        {contactDetailsDialog.data.website}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Address</TableCell>
+                      <TableCell align="right">
+                        {contactDetailsDialog.data.address}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>City</TableCell>
+                      <TableCell align="right">
+                        {contactDetailsDialog.data.city}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>State</TableCell>
+                      <TableCell align="right">
+                        {contactDetailsDialog.data.state}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Country</TableCell>
+                      <TableCell align="right">
+                        {contactDetailsDialog.data.country}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </ExpansionPanelDetails>
+              <ExpansionPanelSummary
+                aria-controls="panel1d-content"
+                id="panel1d-header"
+              >
+                <Typography>Contact Group #3</Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <Table className={classes.table}>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>Contact Group</TableCell>
+                      <TableCell align="right">
+                        {contactDetailsDialog.data.contactGroup}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </ExpansionPanelDetails>
+              <ExpansionPanelSummary
+                aria-controls="panel1d-content"
+                id="panel1d-header"
+              >
+                <Typography>Additional Info #4</Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <Table className={classes.table}>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>Contact Source</TableCell>
+                      <TableCell align="right">
+                        {contactDetailsDialog.data.contactSource}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Note</TableCell>
+                      <TableCell align="right">
+                        {contactDetailsDialog.data.note}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+          )}
         </DialogContent>
 
-        <DialogActions>
-        </DialogActions>
+        <DialogActions />
       </Dialog>
     </div>
   );
@@ -262,7 +356,7 @@ const ContactDetailsDialog = props => {
 ContactDetailsDialog.propTypes = {
   loading: PropTypes.bool,
   contactDetailsDialog: PropTypes.object,
-  closeNewContactDetailsDialog: PropTypes.func,
+  closeContactDetailsDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -272,7 +366,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeNewContactDetailsDialog: () => dispatch(Actions.closeNewContactDetailsDialog()),
+    closeContactDetailsDialogAction: () =>
+      dispatch(Actions.closeContactDetailsDialog()),
   };
 }
 

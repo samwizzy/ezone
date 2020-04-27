@@ -33,20 +33,23 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
+  grid: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
   card: {
-    "& .MuiCardActions-root": {
+    '& .MuiCardActions-root': {
       // padding: theme.spacing(2),
-      justifyContent: "flex-end",
-      borderTop: `1px solid ${theme.palette.divider}`
-    }
+      justifyContent: 'flex-end',
+      borderTop: `1px solid ${theme.palette.divider}`,
+      "& button": {
+        marginLeft: theme.spacing(1)
+      }
+    },
   },
   title: {
     color: theme.typography.fontWeightBold,
-  },
-  textField: {},
-  button: {
-    marginRight: theme.spacing(1),
-  },
+  }
 }));
 
 const category = [
@@ -56,14 +59,16 @@ const category = [
 
 const ItemDialog = props => {
   const {
+    match,
     history,
     message,
     loading,
     itemDialog,
     getAllWarehouses,
-    closeNewItemDialogAction,
     closeEditEmployeeDialogAction,
     dispatchCreateNewItemAction,
+    getItemByIdAction,
+    getItemById,
   } = props;
 
   const classes = useStyles();
@@ -130,476 +135,503 @@ const ItemDialog = props => {
     // setValues({ ...values, attachments: file });
   };
 
-  console.log(values, 'values');
+  const { params } = match;
+  useEffect(() => {
+    getItemByIdAction(params.sku);
+  }, []);
 
-  // if (message.id) {
-  //   return <Redirect to="/inventory/items" />;
-  // }
+  useEffect(() => {
+    setValues({ ...getItemById });
+  }, [getItemById]);
 
   return (
-    <div>
-      <Card elevation={0} className={classes.card}>
-        <CardContent>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
+    <div className={classes.root}>
+      <Grid container className={classes.grid}>
+        <Grid item xs={6}>
+          <Card square className={classes.card}>
+            <CardContent>
               <Typography
                 variant="h5"
                 className={classes.title}
                 color="textPrimary"
-                gutterBottom
               >
                 {itemDialog.type === 'new' ? 'New Item' : 'Edit Item'}
               </Typography>
-            </Grid>
+            </CardContent>
+            <Divider />
 
-            {itemDialog.type === 'new' ? (
-              <React.Fragment>
-                <Grid item xs={12}>
-                  <FormControl component="fieldset">
-                    <FormLabel component="legend" className={classes.textField}>
-                      <Typography
-                        variant="subtitle1"
-                        className={classes.title}
-                        color="textSecondary"
+            <CardContent>
+              <Grid container spacing={2}>
+                {itemDialog.type === 'new' ? (
+                  <React.Fragment>
+                    <Grid item xs={12}>
+                      <FormControl component="fieldset">
+                        <FormLabel component="legend" className={classes.textField}>
+                          <Typography
+                            variant="subtitle1"
+                            className={classes.title}
+                            color="textSecondary"
+                          >
+                            Item Type
+                          </Typography>
+                        </FormLabel>
+                        <RadioGroup
+                          row
+                          aria-label="position"
+                          name="position"
+                          defaultValue="top"
+                        >
+                          <FormControlLabel
+                            value="GROUP"
+                            control={<Radio color="primary" />}
+                            label="Group"
+                            onChange={handleChange('itemType')}
+                          />
+                          <FormControlLabel
+                            value="SERVICE"
+                            control={<Radio color="primary" />}
+                            label="Services"
+                            onChange={handleChange('itemType')}
+                          />
+                        </RadioGroup>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Grid container spacing={2}>
+                        <Grid item xs={6}>
+                          <TextField
+                            id="outlined-itemName"
+                            label="Item Name"
+                            value={values.itemName}
+                            onChange={handleChange('itemName')}
+                            variant="outlined"
+                            className={classes.textField}
+                            fullWidth
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <TextField
+                            id="outlined-SKU"
+                            label="SKU"
+                            value={values.sku}
+                            onChange={handleChange('sku')}
+                            fullWidth
+                            variant="outlined"
+                            className={classes.textField}
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <TextField
+                            id="outlined-barcode"
+                            label="Barcode"
+                            value={values.barcode}
+                            onChange={handleChange('barcode')}
+                            fullWidth
+                            variant="outlined"
+                            className={classes.textField}
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <TextField
+                            id="outlined-Unit"
+                            label="Unit"
+                            value={values.unit}
+                            onChange={handleChange('unit')}
+                            fullWidth
+                            variant="outlined"
+                            className={classes.textField}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12} lg={12}>
+                      <PaperDropzone uploadFileAction={uploadFileAction} />
+                    </Grid>
+                    <Divider />
+                    <Grid item xs={12}>
+                      <Grid container spacing={2}>
+                        <Grid item xs={6}>
+                          <TextField
+                            id="outlined-Dimensions"
+                            label="Dimensions (cm)"
+                            value={values.itemDimension}
+                            onChange={handleChange('itemDimension')}
+                            fullWidth
+                            variant="outlined"
+                            className={classes.textField}
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <TextField
+                            id="outlined-Manufacturer"
+                            label="Manufacturer"
+                            value={values.manufacturer}
+                            onChange={handleChange('manufacturer')}
+                            fullWidth
+                            variant="outlined"
+                            className={classes.textField}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                          <TextField
+                            id="outlined-Weight"
+                            label="Weight (kg)"
+                            value={values.itemWeight}
+                            onChange={handleChange('itemWeight')}
+                            fullWidth
+                            variant="outlined"
+                            className={classes.textField}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Grid container spacing={2}>
+                        <Grid item xs={6}>
+                          <TextField
+                            id="outlined-Selling-Price"
+                            label="Selling Price"
+                            value={values.sellingPrice}
+                            onChange={handleChange('sellingPrice')}
+                            fullWidth
+                            variant="outlined"
+                            className={classes.textField}
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <TextField
+                            id="outlined-Cost-Price"
+                            label="Cost Price"
+                            value={values.costPrice}
+                            onChange={handleChange('costPrice')}
+                            fullWidth
+                            variant="outlined"
+                            className={classes.textField}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Grid container spacing={2}>
+                        <Grid item xs={6}>
+                          <Autocomplete
+                            id="combo-itemCategory"
+                            options={category}
+                            getOptionLabel={option => option.name}
+                            onChange={(evt, ve) => handleCategoryChange(evt, ve)}
+                            renderInput={params => (
+                              <TextField
+                                {...params}
+                                label="Select Category"
+                                variant="outlined"
+                                placeholder="Select Category"
+                                fullWidth
+                                className={classes.textField}
+                              />
+                            )}
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Autocomplete
+                            id="combo-wareHouseId"
+                            options={getAllWarehouses}
+                            getOptionLabel={option => option.name}
+                            onChange={(evt, ve) => handleWarehouseChange(evt, ve)}
+                            renderInput={params => (
+                              <TextField
+                                {...params}
+                                label="Select WareHouse"
+                                variant="outlined"
+                                placeholder="Select WareHouse"
+                                fullWidth
+                                className={classes.textField}
+                              />
+                            )}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                          <TextField
+                            id="standard-description"
+                            label="Description"
+                            variant="outlined"
+                            className={classes.textField}
+                            value={values.description}
+                            onChange={handleChange('description')}
+                            margin="normal"
+                            fullWidth
+                            rows={2}
+                            multiline
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </React.Fragment>
+                ) : (
+                  <div>
+                    <Grid item xs={12}>
+                      <FormControl component="fieldset">
+                        <FormLabel component="legend" className={classes.textField}>
+                          Item Type
+                        </FormLabel>
+                        <RadioGroup
+                          row
+                          aria-label="position"
+                          name="position"
+                          defaultValue="top"
+                        >
+                          <FormControlLabel
+                            value="GROUP"
+                            control={<Radio color="primary" />}
+                            label="Group"
+                            onChange={handleChange('itemType')}
+                          />
+                          <FormControlLabel
+                            value="SERVICE"
+                            control={<Radio color="primary" />}
+                            label="Services"
+                            onChange={handleChange('itemType')}
+                          />
+                        </RadioGroup>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Grid container spacing={2}>
+                        <Grid item xs={6}>
+                          <TextField
+                            id="outlined-itemName"
+                            label="Item Name"
+                            value={values.itemName}
+                            onChange={handleChange('itemName')}
+                            variant="outlined"
+                            className={classes.textField}
+                            fullWidth
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <TextField
+                            id="outlined-SKU"
+                            label="SKU"
+                            value={values.sku}
+                            onChange={handleChange('sku')}
+                            fullWidth
+                            variant="outlined"
+                            className={classes.textField}
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <TextField
+                            id="outlined-barcode"
+                            label="Barcode"
+                            value={values.barcode}
+                            onChange={handleChange('barcode')}
+                            fullWidth
+                            variant="outlined"
+                            className={classes.textField}
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <TextField
+                            id="outlined-Unit"
+                            label="Unit"
+                            value={values.unit}
+                            onChange={handleChange('unit')}
+                            fullWidth
+                            variant="outlined"
+                            className={classes.textField}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12} lg={12}>
+                      <PaperDropzone uploadFileAction={uploadFileAction} />
+                      <Divider />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Grid container spacing={2}>
+                        <Grid item xs={6}>
+                          <TextField
+                            id="outlined-Dimensions"
+                            label="Dimensions (cm)"
+                            value={values.itemDimension}
+                            onChange={handleChange('itemDimension')}
+                            fullWidth
+                            variant="outlined"
+                            className={classes.textField}
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <TextField
+                            id="outlined-Manufacturer"
+                            label="Manufacturer"
+                            value={values.manufacturer}
+                            onChange={handleChange('manufacturer')}
+                            fullWidth
+                            variant="outlined"
+                            className={classes.textField}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                          <TextField
+                            id="outlined-Weight"
+                            label="Weight (kg)"
+                            value={values.itemWeight}
+                            onChange={handleChange('itemWeight')}
+                            fullWidth
+                            variant="outlined"
+                            className={classes.textField}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Grid container spacing={2}>
+                        <Grid item xs={6}>
+                          <TextField
+                            id="outlined-Selling-Price"
+                            label="Selling Price"
+                            value={values.sellingPrice}
+                            onChange={handleChange('sellingPrice')}
+                            fullWidth
+                            variant="outlined"
+                            className={classes.textField}
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <TextField
+                            id="outlined-Cost-Price"
+                            label="Cost Price"
+                            value={values.costPrice}
+                            onChange={handleChange('costPrice')}
+                            fullWidth
+                            variant="outlined"
+                            className={classes.textField}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Grid container spacing={2}>
+                        <Grid item xs={6}>
+                          <Autocomplete
+                            id="combo-itemCategory"
+                            options={category}
+                            getOptionLabel={option => option.name}
+                            onChange={(evt, ve) => handleCategoryChange(evt, ve)}
+                            renderInput={params => (
+                              <TextField
+                                {...params}
+                                label="Select Category"
+                                variant="outlined"
+                                placeholder="Select Category"
+                                fullWidth
+                                className={classes.textField}
+                              />
+                            )}
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Autocomplete
+                            id="combo-wareHouseId"
+                            options={getAllWarehouses}
+                            getOptionLabel={option => option.name}
+                            onChange={(evt, ve) => handleWarehouseChange(evt, ve)}
+                            renderInput={params => (
+                              <TextField
+                                {...params}
+                                label="Select WareHouse"
+                                variant="outlined"
+                                placeholder="Select WareHouse"
+                                fullWidth
+                                className={classes.textField}
+                              />
+                            )}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                          <TextField
+                            id="standard-description"
+                            label="Description"
+                            variant="outlined"
+                            className={classes.textField}
+                            value={values.description}
+                            onChange={handleChange('description')}
+                            margin="normal"
+                            fullWidth
+                            rows={2}
+                            multiline
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </div>
+                )}
+              </Grid>
+            </CardContent>
+
+            <CardActions>
+              {params.statusId === 'new' ? (
+                <div>
+                  {loading ? (
+                    <LoadingIndicator />
+                  ) : (
+                    <div>
+                      <Button
+                        color="primary"
+                        variant="outlined"
                       >
-                        Item Type
-                      </Typography>
-                    </FormLabel>
-                    <RadioGroup
-                      row
-                      aria-label="position"
-                      name="position"
-                      defaultValue="top"
+                        Cancel
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          dispatchCreateNewItemAction(values);
+                        }}
+                        color="primary"
+                        variant="contained"
+                        disabled={!canBeSubmitted()}
+                      >
+                        Save
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div>
+                  {loading ? (
+                    <LoadingIndicator />
+                  ) : (
+                    <Button
+                      onClick={() => {
+                        dispatchCreateNewItemAction(values);
+                      }}
+                      color="primary"
+                      variant="contained"
+                      disabled={!canBeSubmitted()}
                     >
-                      <FormControlLabel
-                        value="GROUP"
-                        control={<Radio color="primary" />}
-                        label="Group"
-                        onChange={handleChange('itemType')}
-                      />
-                      <FormControlLabel
-                        value="SERVICE"
-                        control={<Radio color="primary" />}
-                        label="Services"
-                        onChange={handleChange('itemType')}
-                      />
-                    </RadioGroup>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-itemName"
-                        label="Item Name"
-                        value={values.itemName}
-                        onChange={handleChange('itemName')}
-                        variant="outlined"
-                        className={classes.textField}
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-SKU"
-                        label="SKU"
-                        value={values.sku}
-                        onChange={handleChange('sku')}
-                        fullWidth
-                        variant="outlined"
-                        className={classes.textField}
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-barcode"
-                        label="Barcode"
-                        value={values.barcode}
-                        onChange={handleChange('barcode')}
-                        fullWidth
-                        variant="outlined"
-                        className={classes.textField}
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-Unit"
-                        label="Unit"
-                        value={values.unit}
-                        onChange={handleChange('unit')}
-                        fullWidth
-                        variant="outlined"
-                        className={classes.textField}
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12} sm={12} md={12} lg={12}>
-                  <PaperDropzone uploadFileAction={uploadFileAction} />
-                </Grid>
-                <Divider />
-                <Grid item xs={12}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-Dimensions"
-                        label="Dimensions (cm)"
-                        value={values.itemDimension}
-                        onChange={handleChange('itemDimension')}
-                        fullWidth
-                        variant="outlined"
-                        className={classes.textField}
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-Manufacturer"
-                        label="Manufacturer"
-                        value={values.manufacturer}
-                        onChange={handleChange('manufacturer')}
-                        fullWidth
-                        variant="outlined"
-                        className={classes.textField}
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <TextField
-                        id="outlined-Weight"
-                        label="Weight (kg)"
-                        value={values.itemWeight}
-                        onChange={handleChange('itemWeight')}
-                        fullWidth
-                        variant="outlined"
-                        className={classes.textField}
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-Selling-Price"
-                        label="Selling Price"
-                        value={values.sellingPrice}
-                        onChange={handleChange('sellingPrice')}
-                        fullWidth
-                        variant="outlined"
-                        className={classes.textField}
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-Cost-Price"
-                        label="Cost Price"
-                        value={values.costPrice}
-                        onChange={handleChange('costPrice')}
-                        fullWidth
-                        variant="outlined"
-                        className={classes.textField}
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <Autocomplete
-                        id="combo-itemCategory"
-                        options={category}
-                        getOptionLabel={option => option.name}
-                        onChange={(evt, ve) => handleCategoryChange(evt, ve)}
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            label="Select Category"
-                            variant="outlined"
-                            placeholder="Select Category"
-                            fullWidth
-                            className={classes.textField}
-                          />
-                        )}
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Autocomplete
-                        id="combo-wareHouseId"
-                        options={getAllWarehouses}
-                        getOptionLabel={option => option.name}
-                        onChange={(evt, ve) => handleWarehouseChange(evt, ve)}
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            label="Select WareHouse"
-                            variant="outlined"
-                            placeholder="Select WareHouse"
-                            fullWidth
-                            className={classes.textField}
-                          />
-                        )}
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <TextField
-                        id="standard-description"
-                        label="Description"
-                        variant="outlined"
-                        className={classes.textField}
-                        value={values.description}
-                        onChange={handleChange('description')}
-                        margin="normal"
-                        fullWidth
-                        rows={2}
-                        multiline
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </React.Fragment>
-            ) : (
-              <div>
-                <Grid item xs={12}>
-                  <FormControl component="fieldset">
-                    <FormLabel component="legend" className={classes.textField}>
-                      Item Type
-                    </FormLabel>
-                    <RadioGroup
-                      row
-                      aria-label="position"
-                      name="position"
-                      defaultValue="top"
-                    >
-                      <FormControlLabel
-                        value="GROUP"
-                        control={<Radio color="primary" />}
-                        label="Group"
-                        onChange={handleChange('itemType')}
-                      />
-                      <FormControlLabel
-                        value="SERVICE"
-                        control={<Radio color="primary" />}
-                        label="Services"
-                        onChange={handleChange('itemType')}
-                      />
-                    </RadioGroup>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-itemName"
-                        label="Item Name"
-                        value={values.itemName}
-                        onChange={handleChange('itemName')}
-                        variant="outlined"
-                        className={classes.textField}
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-SKU"
-                        label="SKU"
-                        value={values.sku}
-                        onChange={handleChange('sku')}
-                        fullWidth
-                        variant="outlined"
-                        className={classes.textField}
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-barcode"
-                        label="Barcode"
-                        value={values.barcode}
-                        onChange={handleChange('barcode')}
-                        fullWidth
-                        variant="outlined"
-                        className={classes.textField}
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-Unit"
-                        label="Unit"
-                        value={values.unit}
-                        onChange={handleChange('unit')}
-                        fullWidth
-                        variant="outlined"
-                        className={classes.textField}
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12} sm={12} md={12} lg={12}>
-                  <PaperDropzone uploadFileAction={uploadFileAction} />
-                  <Divider />
-                </Grid>
-                <Grid item xs={12}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-Dimensions"
-                        label="Dimensions (cm)"
-                        value={values.itemDimension}
-                        onChange={handleChange('itemDimension')}
-                        fullWidth
-                        variant="outlined"
-                        className={classes.textField}
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-Manufacturer"
-                        label="Manufacturer"
-                        value={values.manufacturer}
-                        onChange={handleChange('manufacturer')}
-                        fullWidth
-                        variant="outlined"
-                        className={classes.textField}
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <TextField
-                        id="outlined-Weight"
-                        label="Weight (kg)"
-                        value={values.itemWeight}
-                        onChange={handleChange('itemWeight')}
-                        fullWidth
-                        variant="outlined"
-                        className={classes.textField}
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-Selling-Price"
-                        label="Selling Price"
-                        value={values.sellingPrice}
-                        onChange={handleChange('sellingPrice')}
-                        fullWidth
-                        variant="outlined"
-                        className={classes.textField}
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-Cost-Price"
-                        label="Cost Price"
-                        value={values.costPrice}
-                        onChange={handleChange('costPrice')}
-                        fullWidth
-                        variant="outlined"
-                        className={classes.textField}
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <Autocomplete
-                        id="combo-itemCategory"
-                        options={category}
-                        getOptionLabel={option => option.name}
-                        onChange={(evt, ve) => handleCategoryChange(evt, ve)}
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            label="Select Category"
-                            variant="outlined"
-                            placeholder="Select Category"
-                            fullWidth
-                            className={classes.textField}
-                          />
-                        )}
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Autocomplete
-                        id="combo-wareHouseId"
-                        options={getAllWarehouses}
-                        getOptionLabel={option => option.name}
-                        onChange={(evt, ve) => handleWarehouseChange(evt, ve)}
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            label="Select WareHouse"
-                            variant="outlined"
-                            placeholder="Select WareHouse"
-                            fullWidth
-                            className={classes.textField}
-                          />
-                        )}
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <TextField
-                        id="standard-description"
-                        label="Description"
-                        variant="outlined"
-                        className={classes.textField}
-                        value={values.description}
-                        onChange={handleChange('description')}
-                        margin="normal"
-                        fullWidth
-                        rows={2}
-                        multiline
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </div>
-            )}
+                      Update
+                    </Button>
+                  )}
+                </div>
+              )}
+            </CardActions>
+          </Card>
           </Grid>
-        </CardContent>
-
-        <CardActions>
-          {loading ? (
-            <LoadingIndicator />
-          ) : (
-            <Button
-              className={classes.button}
-              onClick={() => {
-                dispatchCreateNewItemAction(values);
-              }}
-              color="primary"
-              variant="contained"
-              // disabled={!canBeSubmitted()}
-            >
-              Save
-            </Button>
-          )}
-          {/* <Button
-            className={classes.button}
-            onClick={() => closeNewItemDialogAction()}
-            color="primary"
-            variant="outlined"
-          >
-            Cancel
-          </Button> */}
-        </CardActions>
-      </Card>
+      </Grid>
     </div>
   );
 };
@@ -610,7 +642,8 @@ ItemDialog.propTypes = {
   itemDialog: PropTypes.object,
   getAllWarehouses: PropTypes.array,
   dispatchCreateNewItemAction: PropTypes.func,
-  closeNewItemDialogAction: PropTypes.func,
+  getItemByIdAction: PropTypes.func,
+  getItemById: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -618,12 +651,13 @@ const mapStateToProps = createStructuredSelector({
   message: Selectors.makeSelectMessage(),
   itemDialog: Selectors.makeSelectItemDialog(),
   getAllWarehouses: Selectors.makeSelectGetAllWarehouses(),
+  getItemById: Selectors.makeSelectGetItemByIdResponse(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     dispatchCreateNewItemAction: evt => dispatch(Actions.createNewItem(evt)),
-    closeNewItemDialogAction: () => dispatch(Actions.closeNewItemDialog()),
+    getItemByIdAction: evt => dispatch(Actions.getItemById(evt)),
     dispatch,
   };
 }

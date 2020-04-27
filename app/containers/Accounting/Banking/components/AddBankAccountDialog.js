@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -45,7 +45,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const AddBankAccountDialog = props => {
   const classes = useStyles();
 
-  const { 
+  const {
     loading,
     currentUser, 
     accountTypeData,
@@ -59,18 +59,22 @@ const AddBankAccountDialog = props => {
     accountCode: "",
     accountName: "",
     accountNumber: "",
-    accountTypeId: 4, // working on changing this
     bankBalance: "",
     bankName: "",
     description: "",
     orgId: currentUser.organisation.orgId,
   });
+
+  const canSubmitValues = () => {
+    const { accountCode, accountName, accountNumber, bankBalance, bankName, description } = values;
+    return accountCode.length > 0 && accountName.length > 0 && accountNumber.length > 0 && bankBalance.length > 0 && bankName.length > 0 && description.length > 0;
+  }
   
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  // console.log('values: ', values);
+  console.log('values is: ', values);
   // console.log('dialog data --> ', accountTypeData);
 
   return (
@@ -172,7 +176,7 @@ const AddBankAccountDialog = props => {
                     onChange={handleChange('description')}
                     margin="normal"
                     fullWidth
-                    rows={2}
+                    rows={3}
                     multiline
                   />
                 </Grid>
@@ -262,7 +266,7 @@ const AddBankAccountDialog = props => {
                     onChange={handleChange('description')}
                     margin="normal"
                     fullWidth
-                    rows={2}
+                    rows={3}
                     multiline
                   />
                 </Grid>
@@ -279,14 +283,13 @@ const AddBankAccountDialog = props => {
                 bankAccountDialog.type === 'new' ? dispatchCreateNewBankAction(values) : dispatchUpdateBankAccountAction(values);
               }}
               color="primary"
-              // variant="contained"
-              // disabled={!canBeSubmitted()}
+              disabled={!canSubmitValues()}
             >
-              Save
+              { bankAccountDialog.type === 'new' ? 'Save' : 'Update' }
             </Button>
           )}
           <Button
-            onClick={closeNewBankAccountDialogAction}
+            onClick={ closeNewBankAccountDialogAction }
             color="inherit"
             // variant="contained"
           >

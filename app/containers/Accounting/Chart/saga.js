@@ -31,8 +31,7 @@ export function* getDashBoardDataSaga() {
 
 export function* getAllAccountTypeSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllAccountTypeApi}/${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetAllAccountTypeApi}`;
 
   try {
     const allAccountTypeResponse = yield call(request, requestURL, {
@@ -45,9 +44,8 @@ export function* getAllAccountTypeSaga() {
 
     console.log('allAccountTypeResponse -->', allAccountTypeResponse);
     yield put(Actions.getAllAccountTypeSuccessAction(allAccountTypeResponse));
-
   } catch (err) {
-    alert('Something went wrong getAllAccountTypeSaga');
+    console.log('Something went wrong getAllAccountTypeSaga');
     yield put(Actions.getAllAccountTypeErrorAction(err));
   }
 }

@@ -7,6 +7,10 @@ import produce from 'immer';
 import * as Constants from './constants';
 
 export const initialState = {
+  updatePartiesData: {},
+  allTags: [],
+  updatePositionData: {},
+  updatePartyData: {},
   allEmployees: false,
   addEmployeeToPositionData: false,
   allPositions: false,
@@ -15,6 +19,7 @@ export const initialState = {
   createNewPartiesData: false,
   createNewPositionData: false,
   createNewPartyGroupData: false,
+  updatePartyGroupData: false,
   partyGroupData: false,
   loading: false,
   error: false,
@@ -124,6 +129,30 @@ const companyStructurePageReducer = (state = initialState, action) =>
           },
         };
       }
+      case Constants.OPEN_EDIT_PARTY_GROUP_DIALOG: {
+        return {
+          ...state,
+          newPartyGroupDialog: {
+            type: 'edit',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_EDIT_PARTY_GROUP_DIALOG: {
+        return {
+          ...state,
+          newPartyGroupDialog: {
+            type: 'edit',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
       case Constants.OPEN_NEW_PARTY_DIALOG: {
         return {
           ...state,
@@ -141,6 +170,30 @@ const companyStructurePageReducer = (state = initialState, action) =>
           ...state,
           newPartyDialog: {
             type: 'new',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.OPEN_EDIT_PARTY_DIALOG: {
+        return {
+          ...state,
+          newPartyDialog: {
+            type: 'edit',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_EDIT_PARTY_DIALOG: {
+        return {
+          ...state,
+          newPartyDialog: {
+            type: 'edit',
             props: {
               open: false,
             },
@@ -180,7 +233,6 @@ const companyStructurePageReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_PARTY_GROUP_SUCCESS: {
-        console.log(action, 'action.payload');
         return {
           ...state,
           loading: false,
@@ -223,6 +275,28 @@ const companyStructurePageReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
+      case Constants.UPDATE_PARTY_GROUP: {
+        return {
+          ...state,
+          loading: true,
+          updatePartyGroupData: action.payload,
+        };
+      }
+      case Constants.UPDATE_PARTY_GROUP_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          // success: action.payload,
+        };
+      }
+      case Constants.UPDATE_PARTY_GROUP_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
       case Constants.GET_ALL_USERS: {
         return {
           ...state,
@@ -233,7 +307,7 @@ const companyStructurePageReducer = (state = initialState, action) =>
       case Constants.GET_ALL_USERS_SUCCESS: {
         return {
           ...state,
-          loading: true,
+          loading: false,
           error: false,
           getAllUsersData: action.payload,
         };
@@ -246,6 +320,7 @@ const companyStructurePageReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_NEW_PARTY: {
+        console.log(action.payload, 'action.payload');
         return {
           ...state,
           loading: true,
@@ -261,6 +336,28 @@ const companyStructurePageReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_NEW_PARTY_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.UPDATE_PARTY: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          updatePartyData: action.payload,
+        };
+      }
+      case Constants.UPDATE_PARTY_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.UPDATE_PARTY_ERROR: {
         return {
           ...state,
           loading: false,
@@ -298,6 +395,30 @@ const companyStructurePageReducer = (state = initialState, action) =>
           },
         };
       }
+      case Constants.OPEN_EDIT_PARTIES_DIALOG: {
+        return {
+          ...state,
+          newPartiesDialog: {
+            type: 'edit',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_EDIT_PARTIES_DIALOG: {
+        return {
+          ...state,
+          newPartiesDialog: {
+            type: 'edit',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
       case Constants.CREATE_NEW_PARTIES: {
         return {
           ...state,
@@ -314,6 +435,29 @@ const companyStructurePageReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_NEW_PARTIES_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.UPDATE_PARTIES: {
+        console.log(action.payload, 'action.payload')
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          updatePartiesData: action.payload,
+        };
+      }
+      case Constants.UPDATE_PARTIES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.UPDATE_PARTIES_ERROR: {
         return {
           ...state,
           loading: false,
@@ -344,6 +488,30 @@ const companyStructurePageReducer = (state = initialState, action) =>
           },
         };
       }
+      case Constants.OPEN_EDIT_POSITION_DIALOG: {
+        return {
+          ...state,
+          newPositionDialog: {
+            type: 'edit',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_EDIT_POSITION_DIALOG: {
+        return {
+          ...state,
+          newPositionDialog: {
+            type: 'edit',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
       case Constants.CREATE_NEW_POSITION: {
         return {
           ...state,
@@ -360,6 +528,28 @@ const companyStructurePageReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_NEW_POSITION_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.UPDATE_POSITION: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          updatePositionData: action.payload,
+        };
+      }
+      case Constants.UPDATE_POSITION_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.UPDATE_POSITION_ERROR: {
         return {
           ...state,
           loading: false,
@@ -436,28 +626,27 @@ const companyStructurePageReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
-      // case Constants.GET_EMPLOYEES: {
-      //   return {
-      //     ...state,
-      //     loading: true,
-      //     error: false,
-      //     allEmployees: action.payload,
-      //   };
-      // }
-      // case Constants.GET_EMPLOYEES_SUCCESS: {
-      //   return {
-      //     ...state,
-      //     loading: false,
-      //     error: false,
-      //   };
-      // }
-      // case Constants.GET_EMPLOYEES_ERROR: {
-      //   return {
-      //     ...state,
-      //     loading: false,
-      //     error: action.payload,
-      //   };
-      // }
+      case Constants.GET_ALL_TAGS: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_ALL_TAGS_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          allTags: action.payload,
+        };
+      }
+      case Constants.GET_ALL_TAGS_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
 
       /** *****************************************************************
        * Organization constants

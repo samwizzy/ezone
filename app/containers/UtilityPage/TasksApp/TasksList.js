@@ -207,7 +207,7 @@ console.log(tasks, "tasks")
     rowsPerPage: 25,
     rowsPerPageOptions: [25,50,100],
     onRowClick: (rowData, rowState) => {
-      props.history.push('/dashboard/task/' + rowData[0])
+      props.history.push('/task-manager/task/' + rowData[0])
     },
     isRowSelectable: (dataIndex, selectedRows) => {
       //prevents selection of any additional row after the third

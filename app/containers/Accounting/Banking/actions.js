@@ -76,7 +76,6 @@ export function createNewBankErrorAction(data) {
 
 // Get bank account 
 export function getAllBankAccountAction() {
-  console.log('getAllBankAccountAction triggered.');
   return {
     type: Constants.GET_ALL_BANK_ACCOUNT,
   };
@@ -175,6 +174,30 @@ export function createBankTransferSuccessAction(data) {
 export function createBankTransferErrorAction(data) {
   return {
     type: Constants.CREATE_BANK_TRANSFER_ERR,
+    payload: data,
+  };
+}
+
+
+// Get all bank transfers made account 
+export function getTransferByAccountIdAction(data) {
+  console.log('data getTransferByAccountIdAction -> ', data);
+  return {
+    type: Constants.GET_TRANSFERS_BY_ACCOUNT_ID,
+    payload: data,
+  };
+}
+
+export function getTransferByAccountIdSuccessAction(data) {
+  return {
+    type: Constants.GET_TRANSFERS_BY_ACCOUNT_ID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getTransferByAccountIdErrorAction(data) {
+  return {
+    type: Constants.GET_TRANSFERS_BY_ACCOUNT_ID_ERR,
     payload: data,
   };
 }

@@ -20,8 +20,12 @@ import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import classNames from 'classnames';
 import EditOutlined from '@material-ui/icons/EditOutlined';
+import {
+  fade,
+  darken,
+  lighten,
+} from '@material-ui/core/styles/colorManipulator';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-import { fade, darken, lighten } from '@material-ui/core/styles/colorManipulator';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import firstmarine from '../../../../images/firstmarine.svg';
@@ -45,7 +49,7 @@ const useStyles = makeStyles(theme => ({
     width: theme.spacing(12),
     height: theme.spacing(12),
     marginRight: theme.spacing(1),
-    border: `1px solid ${lighten(theme.palette.primary.main, 0.3)}`
+    border: `1px solid ${lighten(theme.palette.primary.main, 0.3)}`,
   },
   paper: {
     padding: theme.spacing(4, 8),
@@ -77,6 +81,8 @@ const OrgInfo = props => {
     history,
   } = props;
 
+  console.log(companyInfo, 'companyInfo');
+
   if (loading) {
     return <LoadingIndicator />;
   }
@@ -90,12 +96,15 @@ const OrgInfo = props => {
                 alignItems="flex-start"
                 style={{ display: 'flex', alignItems: 'center' }}
               >
+                {/* <img alt="Company Logo" src={companyInfo.logo} /> */}
                 <ListItemAvatar>
-                  <Avatar
-                    alt="Company Logo"
-                    src={TaskIcon}
-                    className={classes.avatar}
-                  />
+                  {companyInfo && (
+                    <Avatar
+                      alt="Company Logo"
+                      src={companyInfo.logo}
+                      className={classes.avatar}
+                    />
+                  )}
                 </ListItemAvatar>
                 <ListItemText
                   primary={
@@ -130,7 +139,7 @@ const OrgInfo = props => {
                   href="#"
                   variant="body2"
                   color="inherit"
-                  onClick={openEditColorDialog}
+                  onClick={() => openEditColorDialog(companyInfo)}
                 >
                   Edit Logo and Color <EditOutlined />
                 </Link>
