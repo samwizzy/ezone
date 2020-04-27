@@ -98,10 +98,14 @@ const PartyDialog = props => {
 
   const handleTagChange = (event, value) => {
     if (newPartyDialog.type === 'new') {
-      setValues({ ...values, tagId: value.id });
+      if (value) {
+        setValues({ ...values, tagId: value.id });
+      }
     }
     if (newPartyDialog.type === 'edit') {
-      setValues({ ...values, tag: { id: value.id } });
+      if (value) {
+        setValues({ ...values, tag: { id: value.id } });
+      }
     }
   };
 
@@ -113,8 +117,6 @@ const PartyDialog = props => {
       name !== '' && description !== ''
     );
   };
-
-  console.log(values, 'values');
 
   return (
     <div>
@@ -174,9 +176,9 @@ const PartyDialog = props => {
                 <TextField
                   {...params}
                   margin="normal"
-                  label="Search Employee"
+                  label="Select Head"
                   variant="outlined"
-                  placeholder="Search Employee"
+                  placeholder="Select Head"
                   fullWidth
                 />
               )}
@@ -193,9 +195,9 @@ const PartyDialog = props => {
                 <TextField
                   {...params}
                   margin="normal"
-                  label="Search Employee"
+                  label="Select Head Assistance"
                   variant="outlined"
-                  placeholder="Search Employee"
+                  placeholder="Select Head Assistance"
                   fullWidth
                 />
               )}
@@ -206,6 +208,7 @@ const PartyDialog = props => {
               options={allTags}
               getOptionLabel={option => `${option.name}`}
               onChange={(evt, ve) => handleTagChange(evt, ve)}
+              freeSolo
               renderInput={params => (
                 <TextField
                   {...params}
@@ -234,18 +237,18 @@ const PartyDialog = props => {
               {newPartyDialog.type === 'new' ? 'Save' : 'Update'}
             </Button>
           ) : (
-            <Button
-              onClick={() => {
-                updatePartyAction(values);
-                setValues('');
-              }}
-              color="primary"
-              variant="contained"
-              disabled={!canBeSubmitted()}
-            >
-              {newPartyDialog.type === 'new' ? 'Save' : 'Update'}
-            </Button>
-          )}
+              <Button
+                onClick={() => {
+                  updatePartyAction(values);
+                  setValues('');
+                }}
+                color="primary"
+                variant="contained"
+                disabled={!canBeSubmitted()}
+              >
+                {newPartyDialog.type === 'new' ? 'Save' : 'Update'}
+              </Button>
+            )}
           <Button
             onClick={() => dispatchCloseNewPartyDialog()}
             color="primary"

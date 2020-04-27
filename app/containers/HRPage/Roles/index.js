@@ -74,7 +74,7 @@ const useStyles = makeStyles(theme => ({
 
 const HumanResource = props => {
   const classes = useStyles();
-  const { loading, openNewRoleDialog, getEmployees, getEmployee, employees, employee } = props;
+  const { loading, openNewRoleDialog, getEmployees, roles, getEmployee, employees, employee } = props;
 
   React.useEffect(() => {
   }, [employee]);
@@ -89,20 +89,22 @@ const HumanResource = props => {
         },
     },
     {
-        name: 'Rolename',
-        label: 'Role Name',
-        options: {
-        filter: true,
-        sort: true,
-        customBodyRender: Rolename => {
-          return  (
-          <Typography variant="inherit" color="textSecondary">
-              <AssignmentInd /> {Rolename}
-          </Typography>
-          )
-        }
-        },
+      name: 'name',
+      label: 'Department Name',
+      options: {
+      filter: true,
+      sort: true,
+      },
     },
+    {
+      name: 'dateCreated',
+      label: 'Created',
+      options: {
+      filter: true,
+      sort: true,
+      },
+    },
+    /*
     {
         name: 'description',
         label: 'Description',
@@ -119,6 +121,7 @@ const HumanResource = props => {
             sort: true,
         },
     },
+    */
   ];
 
   const options = {
@@ -150,7 +153,7 @@ const HumanResource = props => {
             <MUIDataTable
                 className={classes.datatable}
                 title="Roles List"
-                data={employees}
+                data={roles}
                 columns={columns}
                 options={options}
             />
@@ -175,6 +178,7 @@ const mapStateToProps = createStructuredSelector({
   employees: Selectors.makeSelectEmployees(),
   employee : Selectors.makeSelectEmployee(),
   user: AppSelectors.makeSelectCurrentUser(),
+  roles : Selectors.makeSelectRoles(),
 });
 
 function mapDispatchToProps(dispatch) {

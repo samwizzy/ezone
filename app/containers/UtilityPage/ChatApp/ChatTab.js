@@ -178,8 +178,38 @@ const ChatTab = props => {
 
   const [value, setValue] = React.useState(0);
   const [newChat, setNewChat] = useState();
+  const [messages, setMessages] = useState([]);
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const socket = new SockJS(
+    'https://dev.ezoneapps.com/gateway/utilityserv/messages',
+  );
+  const stompClient = Stomp.over(socket);
+  const chatConnect = () => {
+    stompClient.connect(
+      {
+        'X-Authorization': 'Bearer ' + `${accessToken}`,
+        login: 'admin',
+        passcode: 'admin',
+      },
+      frame => {
+        const connected = true;
+        console.log(frame, 'frame');
+        stompClient.subscribe(`/queue/${currentUser.uuId}`, tick => {
+          console.log(tick, 'tick');
+          const newMesg = JSON.parse(tick.body);
+          // if (newMesg) {
+          //   setMessages({ ...messages, newMesg });
+          // }
+        });
+      },
+      error => {
+        console.log(error);
+        const connected = false;
+      },
+    );
   };
 
   const handleScrollToBottom = () => {
@@ -204,64 +234,24 @@ const ChatTab = props => {
     setNewChat(initNewChat);
   };
 
-  navigator.serviceWorker.addEventListener('message', message => {
-    if (message) {
-      getAllUserChatData.messages.push(
-        JSON.parse(message.data['firebase-messaging-msg-data'].data.payload),
-      );
-      // console.log(getAllUserChatData.messages, 'getAllUserChatData.messages');
-      dispatchGetUserChatData(
-        JSON.parse(message.data['firebase-messaging-msg-data'].data.payload),
-      );
-    }
-  });
+  let userChatReversedData = [];
+  let allUserReversedData = [];
 
   // reversed datas
   if (getAllUserChatData) {
-    var reversedData = _.orderBy(
+    userChatReversedData = _.orderBy(
       getAllUserChatData.messages,
       ['dateCreated'],
       ['asc'],
     );
+    setMessages(userChatReversedData);
   }
 
   if (allUsersChat) {
-    var allUserReversedData = _.orderBy(
-      allUsersChat,
-      ['dateCreated'],
-      ['desc'],
-    );
+    allUserReversedData = _.orderBy(allUsersChat, ['dateCreated'], ['desc']);
   }
 
-  // console.log(currentUser, 'currentUser');
-  // console.log(accessToken, 'accessToken');
-
-  const chatConnect = () => {
-    const socket = new SockJS(
-      'https://dev.ezoneapps.com/gateway/utilityserv/messages',
-    );
-    const stompClient = Stomp.over(socket);
-    stompClient.connect(
-      {
-        'X-Authorization': 'Bearer ' + `${accessToken}`,
-        login: 'admin',
-        passcode: 'admin',
-      },
-      frame => {
-        const connected = true;
-        console.log(frame, 'frame');
-        stompClient.subscribe(`/queue/${currentUser.uuId}`, tick => {
-          console.log(tick, 'tick');
-        });
-      },
-      error => {
-        console.log(error);
-        const connected = false;
-      },
-    );
-  };
-
-  // console.log(ref, "ref")
+  console.log(messages, 'messages');
 
   // console.log(userChatData, 'userChatData');
   // console.log(newChat, 'newChat');
@@ -279,7 +269,12 @@ const ChatTab = props => {
             // <NoAvailableChats />
             <div />
           ) : (
-            <Grid justify="center" container justify="space-between" alignItems="center">
+            <Grid
+              justify="center"
+              container
+              justify="space-between"
+              alignItems="center"
+            >
               <Grid item xs={12} md={4}>
                 <Paper square>
                   <div
@@ -293,7 +288,9 @@ const ChatTab = props => {
                     <Autocomplete
                       id="combo-box-demo"
                       options={allEmployees}
-                      getOptionLabel={option => option.firstName}
+                      getOptionLabel={option =>
+                        `${option.firstName} ${option.lastName}`
+                      }
                       style={{ width: '100%' }}
                       onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
                       renderInput={params => (
@@ -306,7 +303,7 @@ const ChatTab = props => {
                         />
                       )}
                     />
-                    <IconButton onClick={() => send()}>
+                    <IconButton>
                       <Add />
                     </IconButton>
                   </div>
@@ -347,8 +344,8 @@ const ChatTab = props => {
                   </Grid>
                   <Grid item xs={12}>
                     <div className={classes.msgBody} ref={ref}>
-                      {reversedData &&
-                        reversedData.map(chat => (
+                      {messages &&
+                        messages.map(chat => (
                           <div
                             key={chat.id}
                             className={classNames(

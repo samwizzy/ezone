@@ -104,10 +104,56 @@ export function* login() {
   }
 }
 
+export function* refreshToken() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+
+  console.log('Refresh token called');
+
+  const newData = { refresh_token: accessToken, grant_type: 'password' };
+  const requestURL = `${EndPoints.LoginUrl}`;
+
+  const decode = decodeURIComponent(qs.stringify(newData));
+
+  try {
+    const refreshTokenRes = yield call(request, requestURL, {
+      method: 'POST',
+      body: decode,
+      headers: new Headers({
+        Authorization: `Basic ${btoa('web-client:password')}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }),
+    });
+
+    console.log(refreshTokenRes, 'refreshTokenRes');
+
+    // if login is success get user profile with access token
+    yield put(AppActions.refreshTokenSuccess(refreshTokenRes));
+    // yield put(
+    //   Actions.openSnackBar({
+    //     open: true,
+    //     message: `Welcome back ${loginResponse.firstName} ${
+    //       loginResponse.lastName
+    //     }`,
+    //     status: 'success',
+    //   }),
+    // );
+  } catch (err) {
+    console.log(err, 'err');
+    yield put(AppActions.refreshTokenError(err));
+    yield put(
+      AppActions.openSnackBar({
+        open: true,
+        message: 'Error getting token',
+        status: 'error',
+      }),
+    );
+  }
+}
+
 export function* logOut() {
   try {
     // yield put(AppActions.getUserProfileAction(loginResponse));
-    console.log("I am in logout saga...")
+    console.log('I am in logout saga...');
   } catch (err) {
     console.log(err, 'err');
     // yield put(AppActions.loginErrorAction(err));
@@ -139,6 +185,51 @@ export function* userProfile() {
   }
 }
 
+export function* forgotPassword() {
+  const forgotPasswordDetails = yield select(
+    Selectors.makeSelectForgotPasswordData(),
+  );
+
+  const requestURL = `${EndPoints.ForgotPasswordApi}`;
+
+  try {
+    const forgotPasswordResponse = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(forgotPasswordDetails),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    console.log(forgotPasswordResponse, 'loginResponse');
+
+    // yield put(Actions.loginSuccessAction(loginResponse));
+    // yield put(Actions.saveToken(loginResponse.access_token));
+
+    // if login is success get user profile with access token
+    yield put(Actions.forgotPasswordSuccess(forgotPasswordResponse));
+    // yield put(
+    //   Actions.openSnackBar({
+    //     open: true,
+    //     message: `Welcome back ${loginResponse.firstName} ${
+    //       loginResponse.lastName
+    //     }`,
+    //     status: 'success',
+    //   }),
+    // );
+  } catch (err) {
+    console.log(err, 'err');
+    yield put(Actions.forgotPasswordError(err));
+    yield put(
+      AppActions.openSnackBar({
+        open: true,
+        message: 'Not Working Yet',
+        status: 'error',
+      }),
+    );
+  }
+}
+
 // Individual exports for testing
 export default function* authorizationPageSaga() {
   // register actions
@@ -147,4 +238,6 @@ export default function* authorizationPageSaga() {
   yield takeLatest(AppConstants.LOGIN, login);
   yield takeLatest(AppConstants.LOG_OUT, logOut);
   yield takeLatest(AppConstants.GET_USER_PROFILE, userProfile);
+  yield takeLatest(AppConstants.REFRESH_TOKEN, refreshToken);
+  yield takeLatest(Constants.FORGOT_PASSWORD, forgotPassword);
 }

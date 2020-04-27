@@ -41,6 +41,18 @@ const makeSelectSignupResData = () =>
     substate => substate.signupResData,
   );
 
+const makeSelectForgotPasswordData = () =>
+  createSelector(
+    selectAuthorizationPageDomain,
+    substate => substate.forgotPassword,
+  );
+
+const makeSelectMessage = () =>
+  createSelector(
+    selectAuthorizationPageDomain,
+    substate => substate.message,
+  );
+
 export default makeSelectAuthorizationPage;
 export {
   selectAuthorizationPageDomain,
@@ -48,4 +60,6 @@ export {
   makeSelectLoading,
   makeSelectSignupReqData,
   makeSelectSignupResData,
+  makeSelectForgotPasswordData,
+  makeSelectMessage,
 };

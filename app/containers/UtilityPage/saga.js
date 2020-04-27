@@ -628,6 +628,9 @@ export function* getUserChat() {
   const requestURL = `${Endpoints.GetUserChatApi}/?userUid=${currentUser &&
     currentUser.uuId}`;
 
+    // const requestURL = `${Endpoints.GetUserChatApi}/?userUid=${currentUser &&
+    //   currentUser.uuId}`;
+  
   try {
     const getUserChatResponse = yield call(request, requestURL, {
       method: 'GET',

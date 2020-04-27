@@ -20,7 +20,7 @@ import Home from '../Home/Loadable';
 import NotFoundPage from '../NotFoundPage/Loadable';
 import Registration from '../AuthorizationPage/Register/Loadable';
 import Login from '../AuthorizationPage/Login/Loadable';
-import ForgotPassword from '../AuthorizationPage/Login/components/ForgotPasswordForm';
+import ForgotPassword from '../AuthorizationPage/ForgotPassword/Loadable';
 import organizationPage from '../CompanyStructurePage/OrganizationInfo/Loadable';
 import CompanyStructure from '../CompanyStructurePage/CompanyStructure/Loadable';
 // import PartyPage from '../CompanyStructurePage/CompanyStructure/components/PartyPage';
@@ -77,28 +77,6 @@ import { Auth } from '../../auth';
 
 const App = props => {
   const { currentUser, accessToken } = props;
-
-  // useEffect(() => {
-  //   messaging.requestPermission()
-  //   .then(async function() {
-  // 		await messaging.getToken().then(token => {
-  //       fetch('https://dev.ezoneapps.com/gateway/utilityserv/api/v1/fcm/update_client_fcm_token',{
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: `Bearer ${accessToken}`,
-  //         },
-  //         body: JSON.stringify({ sessionId: token, userUuid: currentUser.uuId }),
-  //       })
-  //       .then(response => response.json())
-  //       // .then(data => console.log(data, 'dont bother for this response'));
-  //     });
-  //     })
-  //   .catch(function(err) {
-  //     console.log("Unable to get permission to notify.", err);
-  //   });
-  //   // navigator.serviceWorker.addEventListener("message", (message) => console.log(message));
-  // }, []);
 
   return (
     <div>

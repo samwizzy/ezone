@@ -9,6 +9,7 @@ import {
   Toolbar,
   Typography
 } from '@material-ui/core';
+import { withRouter } from 'react-router-dom';
 import AddIcon from '@material-ui/icons/Add';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import MUIDataTable from 'mui-datatables';
@@ -48,13 +49,12 @@ const useStyles = makeStyles(theme => ({
 
 const ContactGroupsDetails = props => {
   const classes = useStyles();
-  const { loading, openNewContactGroupsDialog, match } = props;
+  const { loading, openNewContactGroupsDialog, match, getContactGroupByIdAction, getContactGroup } = props;
   const { params } = match
 
-  // params.contactId = {your contact-groups id}
-
+  // console.log(getContactGroup, 'getContactGroup');
   useEffect(() => {
-
+    getContactGroupByIdAction(params.contactId)
   }, []);
 
   const columns = [
@@ -158,24 +158,24 @@ const ContactGroupsDetails = props => {
             <TableBody>
               <TableRow>
                 <TableCell component="th">Group Name:</TableCell>
-                <TableCell>First Marine</TableCell>
+                <TableCell>{getContactGroup.groupName}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th">Description:</TableCell>
-                <TableCell>This is the description of contact group and it comes down here too</TableCell>
+                <TableCell>{getContactGroup.groupDescription}</TableCell>
               </TableRow>
-              <TableRow>
+              {/* <TableRow>
                 <TableCell component="th">Private:</TableCell>
                 <TableCell>Yes</TableCell>
-              </TableRow>
+              </TableRow> */}
             </TableBody>
           </Table>
         </TableContainer>
       </Paper>
       <MUIDataTable
         className={classes.datatable}
-        title="All Contact Groups"
-        data={[]}
+        title="All Contacts"
+        data={getContactGroup.contacts}
         columns={columns}
         options={options}
       />
@@ -188,15 +188,19 @@ const ContactGroupsDetails = props => {
 ContactGroupsDetails.propTypes = {
   loading: PropTypes.bool,
   openNewContactGroupsDialog: PropTypes.func,
+  getContactGroupByIdAction: PropTypes.func,
+  getContactGroup: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading()
+  loading: Selectors.makeSelectLoading(),
+  getContactGroup: Selectors.makeSelectContactGroup()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openNewContactGroupsDialog: () => dispatch(Actions.openNewContactGroupsDialog()),
+    getContactGroupByIdAction: evt => dispatch(Actions.getContactGroupById(evt)),
   };
 }
 
@@ -206,6 +210,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(ContactGroupsDetails);

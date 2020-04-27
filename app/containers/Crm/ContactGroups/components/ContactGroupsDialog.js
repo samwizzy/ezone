@@ -96,7 +96,7 @@ const ContactGroupsDialog = props => {
                     <TextField
                       name="groupName"
                       label="Name"
-                      id="outlined-title"
+                      id="outlined-groupName"
                       fullWidth
                       variant="outlined"
                       size="small"
@@ -113,7 +113,7 @@ const ContactGroupsDialog = props => {
                     <TextField
                       name="groupDescription"
                       label="Description"
-                      id="outlined-title"
+                      id="outlined-Description"
                       fullWidth
                       variant="outlined"
                       size="small"

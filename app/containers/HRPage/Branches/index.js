@@ -72,7 +72,7 @@ const useStyles = makeStyles(theme => ({
 
 const BranchesApp = props => {
   const classes = useStyles();
-  const { loading, openNewBranchDialog, getEmployee, employees, employee } = props;
+  const { loading, openNewBranchDialog, getEmployee, employees, getEmployees, employee, getBranches, branches } = props;
 
   React.useEffect(() => {
   }, [employee]);
@@ -91,56 +91,35 @@ const BranchesApp = props => {
       },
     },
     {
-      name: 'id',
-      label: 'Employee Name',
+      name: 'name',
+      label: 'Department Name',
+      options: {
+      filter: true,
+      sort: true,
+      },
+    },
+    {
+      name: 'employeeCount',
+      label: 'Employee count',
+     
       options: {
       filter: true,
       sort: true,
       customBodyRender: id => {
-        const emp = employees && employees.find(e => e.id == id)
         return (
-          <span>{`${toTitleCase(emp.firstName)} ${toTitleCase(emp.lastName)}`}</span>
+          <span>0</span>
         )
-      }
+        }
       },
     },
     {
-      name: 'employeeId',
-      label: 'Employee ID',
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: 'type',
-      label: 'Type',
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: 'department',
-      label: 'Department ',
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: 'enabled',
-      label: 'Status',
+      name: 'dateCreated',
+      label: 'Created',
       options: {
       filter: true,
       sort: true,
-      customBodyRender: enabled => {
-        return (
-          <span>{enabled?"Active":"Inactive"}</span>
-        )
-      }
       },
-    }
+    },
   ];
 
   const options = {
@@ -173,7 +152,7 @@ const BranchesApp = props => {
             <MUIDataTable
                 className={classes.datatable}
                 title="Branch List"
-                data={employees}
+                data={branches}
                 columns={columns}
                 options={options}
             />
@@ -198,6 +177,7 @@ const mapStateToProps = createStructuredSelector({
   employees: Selectors.makeSelectEmployees(),
   employee : Selectors.makeSelectEmployee(),
   user: AppSelectors.makeSelectCurrentUser(),
+  branches: Selectors.makeSelectBranches(),
 });
 
 function mapDispatchToProps(dispatch) {

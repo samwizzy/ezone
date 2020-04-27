@@ -24,11 +24,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function AddBranchDialog(props) {
   const classes = useStyles();
-  const { closeNewBranchDialog, dialog } = props;
+  const { closeNewBranchDialog, createBranch, getEmployees, employees, employee, getBranches, branches, departments,  dialog } = props;
   const [form, setForm] = React.useState({
     name: '',
     description: '',
-    head: '',
+    partyHead: {id: ''},
+    assistantPartyHead: {id: ''},
+    partyId: 1,
+    tagId: 1
   });
 
   console.log(dialog, "dialog checking")
@@ -40,8 +43,8 @@ function AddBranchDialog(props) {
   }, [dialog])
 
   const canSubmitForm = () => {
-    const {name, description, head } = form
-    return name.length > 0 && description.length > 0 && head.length > 0
+    const {name, description, partyId, partyHead, assistantPartyHead, tag } = form
+    return name.length > 0 && partyHead && partyId && assistantPartyHead
   }
 
   const handleChange = (event) => {
@@ -49,7 +52,12 @@ function AddBranchDialog(props) {
     setForm({...form, [name]: value});
   }
 
-  const handleSubmit = () => {
+  const handleSelectChange = (event) => {
+    setForm({...form, [event.target.name]: {id: event.target.value}});
+  }
+
+  const handleSubmit = event => {
+    createBranch(form)
   }
 
   console.log(form, 'checking form employee...')
@@ -75,12 +83,12 @@ function AddBranchDialog(props) {
         <Divider />
 
         <DialogContent>
-          <form className={classes.root}>
+        <form className={classes.root}>
             <Grid container spacing={1}>
                 <Grid item xs={12}>
                     <TextField
                     name="name"
-                    label="Firstname"
+                    label="Branch Name"
                     id="outlined-title"
                     fullWidth
                     variant="outlined"
@@ -91,13 +99,10 @@ function AddBranchDialog(props) {
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                    name="Description"
-                    label="description"
+                    name="description"
+                    label="Description"
                     id="outlined-title"
                     fullWidth
-                    multiline
-                    rows="4"
-                    rowsMax="4"
                     variant="outlined"
                     size="small"
                     value={form.description}
@@ -106,23 +111,47 @@ function AddBranchDialog(props) {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    id="head"
-                    name="head"
-                    placeholder="Contact person"
+                    id="partyHead"
+                    name="partyHead"
+                    placeholder="Branch Lead"
                     select
                     fullWidth
                     className={classes.textField}
                     variant="outlined"
                     size="small"
-                    label="Contact Person"
-                    value={form.head}
-                    onChange={handleChange}
+                    label="Branch Lead"
+                    value={form.partyHead.id}
+                    onChange={handleSelectChange}
                   >
-                    <MenuItem key={0} value="1">
-                        No record
+                    {employees.map((employee) => (
+                    <MenuItem key={employee.id} value={employee.id}>
+                        {employee.firstName} {employee.lastName}
                     </MenuItem>
+                    ))}
                   </TextField>
                 </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    id="assistantPartyHead"
+                    name="assistantPartyHead"
+                    placeholder="Assistant Branch Lead"
+                    select
+                    fullWidth
+                    className={classes.textField}
+                    variant="outlined"
+                    size="small"
+                    label="Assistant Branch Lead"
+                    value={form.assistantPartyHead.id}
+                    onChange={handleSelectChange}
+                  >
+                    {employees.map((employee) => (
+                    <MenuItem key={employee.id} value={employee.id}>
+                        {employee.firstName} {employee.lastName}
+                    </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+                
             </Grid>
           </form>
         </DialogContent>
@@ -147,11 +176,16 @@ AddBranchDialog.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   dialog: Selectors.makeSelectBranchDialog(),
+  employees: Selectors.makeSelectEmployees(),
+  employee : Selectors.makeSelectEmployee(),
+  departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
+  branches: Selectors.makeSelectBranches(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     closeNewBranchDialog: () => dispatch(Actions.closeNewBranchDialog()),
+    createBranch: (data) => dispatch(Actions.createBranch(data)),
     dispatch,
   };
 }

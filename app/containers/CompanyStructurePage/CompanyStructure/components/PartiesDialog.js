@@ -223,6 +223,7 @@ const PartiesDialog = props => {
             <Button
               onClick={() => {
                 dispatchCreateNewPartiesAction(values);
+                setValues('');
               }}
               color="primary"
               variant="contained"

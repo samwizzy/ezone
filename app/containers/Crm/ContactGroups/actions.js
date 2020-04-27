@@ -90,3 +90,24 @@ export function updateContactGroupError(data) {
     payload: data,
   };
 }
+
+export function getContactGroupById(data) {
+  return {
+    type: Constants.GET_CONTACT_GROUP_BY_ID,
+    payload: data,
+  };
+}
+
+export function getContactGroupByIdSuccess(data) {
+  return {
+    type: Constants.GET_CONTACT_GROUP_BY_ID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getContactGroupByIdError(data) {
+  return {
+    type: Constants.GET_CONTACT_GROUP_BY_ID_ERROR,
+    payload: data,
+  };
+}

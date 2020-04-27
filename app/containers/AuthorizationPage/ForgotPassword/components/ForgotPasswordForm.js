@@ -18,7 +18,7 @@ import {
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-// import * as Actions from '../../App/actions';
+import * as Actions from '../../actions';
 import logo from '../../../../images/logo.svg';
 import banner from '../../../../images/banner.svg';
 
@@ -136,12 +136,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ForgotPasswordForm = ({ loginAction }) => {
+const ForgotPasswordForm = props => {
   const classes = useStyles();
 
+  const { forgotPasswordAction } = props;
   const [values, setValues] = React.useState({
-    email: '',
-    password: '',
+    username: '',
   });
 
   const handleChange = name => event => {
@@ -149,9 +149,8 @@ const ForgotPasswordForm = ({ loginAction }) => {
   };
 
   const canBeSubmitted = () => {
-    const { email, password } = values;
-    return !email.length && !password.length;
-    // return email !== null && password !== null;
+    const { username } = values;
+    return username !== '';
   };
 
   return (
@@ -166,35 +165,39 @@ const ForgotPasswordForm = ({ loginAction }) => {
               <Box className={classes.avatar}>
                 <img src={logo} alt="" />
               </Box>
-              <form className={classes.form} noValidate>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  InputProps={{
-                    className: classes.input,
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                >
-                  Rest Password
-                </Button>
-                <Box mt={5}>
-                  <Copyright />
-                </Box>
-              </form>
+              {/* <form> */}
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="username"
+                label="Email Address"
+                type="email"
+                onChange={handleChange('username')}
+                value={values.username ? values.username : ''}
+                InputProps={{
+                  className: classes.input,
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                disabled={!canBeSubmitted()}
+                onClick={() => forgotPasswordAction(values)}
+              >
+                Reset Password
+              </Button>
+              <Box mt={5}>
+                <Copyright />
+              </Box>
+              {/* </form> */}
             </div>
           </Grid>
         </Grid>
@@ -205,6 +208,7 @@ const ForgotPasswordForm = ({ loginAction }) => {
 
 ForgotPasswordForm.propTypes = {
   loginAction: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+  forgotPasswordAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -213,7 +217,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    // loginAction: evt => dispatch(Actions.loginAction(evt)),
+    forgotPasswordAction: evt => dispatch(Actions.forgotPassword(evt)),
   };
 }
 

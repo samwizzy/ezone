@@ -9,6 +9,8 @@ import * as Constants from './constants';
 export const initialState = {
   loading: false,
   error: false,
+  getContactGroupById: {},
+  getContactGroup: false,
   allContactsGroup: [],
   createNewContactGroup: {},
   updateContactGroup: {},
@@ -137,6 +139,27 @@ const crmContactGroupsReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_ALL_CONTACTS_GROUP_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          message: action.payload,
+        };
+      }
+      case Constants.GET_CONTACT_GROUP_BY_ID: {
+        return {
+          ...state,
+          loading: true,
+          getContactGroupById: action.payload,
+        };
+      }
+      case Constants.GET_CONTACT_GROUP_BY_ID_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          getContactGroup: action.payload,
+        };
+      }
+      case Constants.GET_CONTACT_GROUP_BY_ID_ERROR: {
         return {
           ...state,
           loading: false,

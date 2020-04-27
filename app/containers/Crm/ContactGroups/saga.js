@@ -89,8 +89,36 @@ export function* updateContactGroup() {
   }
 }
 
+export function* getContactGroup() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  // const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+
+  const getContactGroupById = yield select(
+    Selectors.makeSelectContactGroupById(),
+  );
+
+  const requestURL = `${
+    Endpoints.GetContactGroupByIdApi
+  }/${getContactGroupById}`;
+
+  try {
+    const getContactGroupByIdResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getContactGroupByIdSuccess(getContactGroupByIdResponse));
+  } catch (err) {
+    yield put(Actions.getContactGroupByIdError(err));
+  }
+}
+
 // Individual exports for testing
 export default function* crmContactsSaga() {
+  yield takeLatest(Constants.GET_CONTACT_GROUP_BY_ID, getContactGroup);
   yield takeLatest(Constants.CREATE_NEW_CONTACT_GROUP, createNewContactGroup);
   yield takeLatest(Constants.UPDATE_CONTACT_GROUP, updateContactGroup);
   yield takeLatest(Constants.GET_ALL_CONTACTS_GROUP, getAllContactsGroup);

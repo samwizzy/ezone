@@ -32,14 +32,17 @@ function countryToFlag(isoCode) {
 }
 
 export const JobInfoForm = props => {
-    const {handleChange, handleDateChange, form } = props
+    const {handleChange, handleDateChange, handleSelectChange, departments, enrollmentTypes, form } = props
     const classes = useStyles()
-
+    const canSubmitForm = () => {
+        const { departmentId, enrollmentTypeId, submissionDeadline, noOfVacancy, address, country} = form
+        return departmentId && enrollmentTypeId && noOfVacancy && address.length > 0
+    }
     return (
         <Paper>
         <AppBar position='relative'>
           <Toolbar>
-            <Typography variant="h6" gutterBottom>Hiring Workflow</Typography>
+            <Typography variant="h6" gutterBottom>More information</Typography>
           </Toolbar>
         </AppBar>
 
@@ -50,7 +53,7 @@ export const JobInfoForm = props => {
                 <Grid item xs={6}>
                     <TextField
                     id="department"
-                    name="department"
+                    name="departmentId"
                     placeholder="Select department"
                     select
                     fullWidth
@@ -58,33 +61,38 @@ export const JobInfoForm = props => {
                     variant="outlined"
                     size="small"
                     label="Department"
-                    value={form.department}
-                    onChange={handleChange}
+                    value={form.departmentId}
+                    onChange={handleSelectChange}
                     >
-                    <MenuItem key={0} value="1">
-                        No record
-                    </MenuItem>
+                    {departments.map((dept) => (
+                        <MenuItem key={dept.id} value={dept.id}>
+                            {dept.name}
+                        </MenuItem>
+                        ))};
                     </TextField>
                 </Grid>
                 <Grid item xs={6}>
                     <TextField
-                    id="enrolment-type"
-                    name="enrolmentType"
+                    id="enrollment-type"
+                    name="enrollmentTypeId"
                     placeholder="Select enrolment type"
                     select
                     fullWidth
                     className={classes.textField}
                     variant="outlined"
                     size="small"
-                    label="Enrolment Type"
-                    value={form.enrolmentType}
-                    onChange={handleChange}
+                    label="Enrollment Type"
+                    value={form.enrollmentTypeId}
+                    onChange={handleSelectChange}
                     >
-                    <MenuItem key={0} value="1">
-                        No record
+                    {enrollmentTypes.map((enrollmentType) => (
+                    <MenuItem key={enrollmentType.id} value={enrollmentType.id}>
+                        {enrollmentType.name}
                     </MenuItem>
+                    ))}
                     </TextField>
                 </Grid>
+                {/*
                 <Grid item xs={6}>
                     <TextField
                     id="experience"
@@ -104,25 +112,27 @@ export const JobInfoForm = props => {
                     </MenuItem>
                     </TextField>
                 </Grid>
+                */}
                 <Grid item xs={6}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
                             disableToolbar
                             variant="inline"
-                            format="MM/dd/yyyy"
+                            format="yyyy-MM-dd"
                             margin="normal"
                             fullWidth
-                            name="startDate"
+                            name="submissionDeadline"
                             id="date-picker-startDate"
                             label="Submission Deadline"
-                            value={form.deadline}
-                            onChange={(date, formatted) => handleDateChange(date, formatted, 'deadline')}
+                            value={form.submissionDeadline}
+                            onChange={(date, formatted) => handleDateChange(date, formatted, 'submissionDeadline')}
                             KeyboardButtonProps={{
                             'aria-label': 'change date',
                             }}
                         />
                     </MuiPickersUtilsProvider>
                 </Grid>
+                {/*
                 <Grid item xs={6}>
                     <TextField
                     id="location"
@@ -142,32 +152,77 @@ export const JobInfoForm = props => {
                     </MenuItem>
                     </TextField>
                 </Grid>
+                */}
                 <Grid item xs={6}>
                     <TextField
                     id="no-of-vacation"
-                    name="vacancyNum"
+                    name="noOfVacancy"
                     placeholder="Select number of vacancy"
-                    select
                     fullWidth
                     className={classes.textField}
                     variant="outlined"
                     size="small"
                     label="Number of vacancy"
-                    value={form.vacancyNum}
+                    value={form.noOfVacancy}
                     onChange={handleChange}
                     >
+                        {/*
                     {[...Array(20).keys()].map(i => 
                     <MenuItem key={i} value={i}>
                         {i}
                     </MenuItem>
                     )}
+                    */}
                     </TextField>
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                    name="address"
+                    label="Address"
+                    id="outlined-title"
+                    fullWidth
+                    variant="outlined"
+                    size="small"
+                    value={form.address}
+                    onChange={handleChange}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                <Autocomplete
+                id="country-select-demo"
+                style={{ width: '100%' }}
+                options={countries}
+                classes={{
+                    option: classes.option,
+                }}
+                autoHighlight
+                getOptionLabel={option => option.label}
+                renderOption={option => (
+                    <React.Fragment>
+                    <span>{countryToFlag(option.code)}</span>
+                    {option.label} ({option.code}) +{option.phone}
+                    </React.Fragment>
+                )}
+                renderInput={params => (
+                    <TextField
+                    {...params}
+                    label="Choose a country"
+                    variant="outlined"
+                    size="small"
+                    name="country"
+                    inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password', // disable autocomplete and autofill
+                    }}
+                    />
+                )}
+                />
                 </Grid>
             </Grid>
             </div>
         </Box>
         </Container>
-
+        {/*
         <AppBar position='relative' color="inherit" elevation={0}>
           <Toolbar variant="dense">
             <Typography variant="h6" gutterBottom>Job Schema Information ( Optional )</Typography>
@@ -294,6 +349,7 @@ export const JobInfoForm = props => {
             </Grid>
             </Box>
         </Container>
+                */}
         </Paper>
     )
 }
