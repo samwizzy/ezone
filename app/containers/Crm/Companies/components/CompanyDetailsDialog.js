@@ -120,7 +120,6 @@ const CompanyDetailsDialog = props => {
     setExpanded(newExpanded ? panel : false);
   };
 
-  console.log(companyDetailsDialog, 'companyDetailsDialog');
   return (
     <div>
       {companyDetailsDialog && (

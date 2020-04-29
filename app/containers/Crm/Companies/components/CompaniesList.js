@@ -71,7 +71,6 @@ const CompaniesList = props => {
     getAllCompaniesAction();
   }, []);
 
-  console.log(getAllCompanies, 'getAllCompanies');
   const columns = [
     {
       name: 'Id',

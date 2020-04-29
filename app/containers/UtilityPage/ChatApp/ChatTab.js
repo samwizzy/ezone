@@ -168,21 +168,9 @@ const ChatTab = props => {
   useEffect(() => {
     dispatchGetAllEmployees();
     dispatchGetUserChats();
-    chatConnect();
     handleScrollToBottom();
-  }, []);
+    // chatConnect();
 
-  const classes = useStyles();
-  const [status, setStatus] = React.useState(false);
-
-  const [chatLog, setChatLog] = useState(getAllUserChatData.messages);
-  const [value, setValue] = React.useState(0);
-  const [newChat, setNewChat] = useState();
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  const chatConnect = () => {
     const socket = new SockJS(
       'https://dev.ezoneapps.com/gateway/utilityserv/messages',
     );
@@ -200,6 +188,7 @@ const ChatTab = props => {
           const newMsg = JSON.parse(tick.body);
           console.log(newMsg, 'newMsg');
           setChatLog(prevChatLog => [...prevChatLog, newMsg]);
+          // setChatLog(prevChatLog => console.log(prevChatLog, 'prevChatLog'));
         });
       },
       error => {
@@ -207,7 +196,49 @@ const ChatTab = props => {
         const connected = false;
       },
     );
+  }, []);
+
+  useEffect(() => {
+    setChatLog(getAllUserChatData.messages);
+  }, [getAllUserChatData.messages]);
+
+  const classes = useStyles();
+  const [status, setStatus] = React.useState(false);
+
+  const [chatLog, setChatLog] = useState([]);
+  const [value, setValue] = React.useState(0);
+  const [newChat, setNewChat] = useState();
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
+
+  // const chatConnect = () => {
+  //   const socket = new SockJS(
+  //     'https://dev.ezoneapps.com/gateway/utilityserv/messages',
+  //   );
+  //   const stompClient = Stomp.over(socket);
+  //   stompClient.connect(
+  //     {
+  //       'X-Authorization': 'Bearer ' + `${accessToken}`,
+  //       login: 'admin',
+  //       passcode: 'admin',
+  //     },
+  //     frame => {
+  //       const connected = true;
+  //       console.log(frame, 'frame');
+  //       stompClient.subscribe(`/queue/${currentUser.uuId}`, tick => {
+  //         const newMsg = JSON.parse(tick.body);
+  //         console.log(newMsg, 'newMsg');
+  //         // setChatLog(prevChatLog => [...prevChatLog, newMsg]);
+  //         setChatLog(prevChatLog => console.log(prevChatLog, 'prevChatLog'));
+  //       });
+  //     },
+  //     error => {
+  //       console.log(error);
+  //       const connected = false;
+  //     },
+  //   );
+  // };
 
   const handleScrollToBottom = () => {
     ref.current.scrollTop = ref.current.scrollHeight;
@@ -231,16 +262,12 @@ const ChatTab = props => {
     setNewChat(initNewChat);
   };
 
-  var userChatReversedData = [];
+  let chatLogReverse = [];
   let allUserReversedData = [];
 
   // reversed datas
-  if (getAllUserChatData) {
-    userChatReversedData = _.orderBy(
-      getAllUserChatData.messages,
-      ['dateCreated'],
-      ['asc'],
-    );
+  if (chatLog) {
+    chatLogReverse = _.orderBy(chatLog, ['dateCreated'], ['asc']);
   }
 
   if (allUsersChat) {
@@ -248,17 +275,8 @@ const ChatTab = props => {
   }
 
   console.log(chatLog, 'chatLog in if');
-    // console.log('setChatLog in if');
-  console.log(userChatReversedData, 'userChatReversedData');
+  console.log(chatLogReverse, 'userChatReversedData');
 
-  // console.log(userChatData, 'userChatData');
-  // console.log(newChat, 'newChat');
-  // console.log(currentUser, 'currentUser');
-  // console.log(getAllUserChatData, 'getAllUserChatData');
-
-  // if (loading) {
-  //   return <LoadingIndicator />;
-  // }
   return (
     <React.Fragment>
       <ModuleLayout>
@@ -340,45 +358,47 @@ const ChatTab = props => {
                   </Grid>
                   <Grid item xs={12}>
                     <div className={classes.msgBody} ref={ref}>
-                      {userChatReversedData &&
-                        userChatReversedData.map(chat => (
-                          <div
-                            key={chat.id}
-                            className={classNames(
-                              classes.messageRow,
-                              { me: currentUser.uuId === chat.senderId },
-                              { contact: currentUser.uuId !== chat.senderId },
-                              {
-                                'first-of-group': isFirstMessageOfGroup(
-                                  'item',
-                                  'i',
-                                ),
-                              },
-                              {
-                                'last-of-group': isLastMessageOfGroup(
-                                  'item',
-                                  'i',
-                                ),
-                              },
-                            )}
-                          >
-                            <Paper className={classes.chatPane} key={chat.id}>
-                              <Typography variant="subtitle1" key={chat.id}>
-                                {chat.chatMessage}
-                              </Typography>
-                              <Typography
-                                variant="caption"
-                                style={{
-                                  position: 'absolute',
-                                  right: 12,
-                                  bottom: 0,
-                                }}
-                              >
-                                {moment(chat.dateCreated).format('LT')}
-                              </Typography>
-                            </Paper>
-                          </div>
-                        ))}
+                      {chatLog &&
+                        _.orderBy(chatLog, ['dateCreated'], ['asc']).map(
+                          chat => (
+                            <div
+                              key={chat.id}
+                              className={classNames(
+                                classes.messageRow,
+                                { me: currentUser.uuId !== chat.senderId },
+                                { contact: currentUser.uuId === chat.senderId },
+                                {
+                                  'first-of-group': isFirstMessageOfGroup(
+                                    'item',
+                                    'i',
+                                  ),
+                                },
+                                {
+                                  'last-of-group': isLastMessageOfGroup(
+                                    'item',
+                                    'i',
+                                  ),
+                                },
+                              )}
+                            >
+                              <Paper className={classes.chatPane} key={chat.id}>
+                                <Typography variant="subtitle1" key={chat.id}>
+                                  {chat.chatMessage}
+                                </Typography>
+                                <Typography
+                                  variant="caption"
+                                  style={{
+                                    position: 'absolute',
+                                    right: 12,
+                                    bottom: 0,
+                                  }}
+                                >
+                                  {/* {moment(chat.dateCreated).format('LT')} */}
+                                </Typography>
+                              </Paper>
+                            </div>
+                          ),
+                        )}
                     </div>
                     <ChatFooter />
                   </Grid>
