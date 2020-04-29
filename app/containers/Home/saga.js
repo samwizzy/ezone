@@ -7,7 +7,7 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 import * as Endpoints from '../../components/Endpoints';
 
-export function* getDashboardAnalytics({ type, payload }) {
+export function* getApplications({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
   try {
@@ -28,5 +28,5 @@ export function* getDashboardAnalytics({ type, payload }) {
 
 // Individual exports for testing
 export default function* HomeSaga() {
-  yield takeLatest(Constants.GET_DASHBOARD_ANALYTICS, getDashboardAnalytics);
+  yield takeLatest(Constants.GET_APPLICATIONS, getApplications);
 }

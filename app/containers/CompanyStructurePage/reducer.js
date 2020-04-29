@@ -15,6 +15,7 @@ export const initialState = {
   addEmployeeToPositionData: false,
   allPositions: false,
   selectedParty: false,
+  selectedPosition: false,
   createNewPartyData: false,
   createNewPartiesData: false,
   createNewPositionData: false,
@@ -245,6 +246,18 @@ const companyStructurePageReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: action.payload,
+        };
+      }
+      case Constants.GET_SELECTED_POSITION: {
+        return {
+          ...state,
+          selectedPosition: action.payload,
+        };
+      }
+      case Constants.GET_SELECTED_PARTY: {
+        return {
+          ...state,
+          selectedParty: action.payload,
         };
       }
       case Constants.GET_SELECTED_PARTY_GROUP: {

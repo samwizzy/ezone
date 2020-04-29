@@ -7,15 +7,14 @@ const SidebarConfig = [
     ],
   },
   {
-    module: ['dashboard', 'folders', 'tasks'],
+    module: ['utility', 'folders', 'tasks'],
     menus: [
       { id: 1, name: 'Home', url: '/', icon: 'home' },
       { id: 2, name: 'Dashboard', url: '/dashboard', icon: 'build' },
-      { id: 3, name: 'Organization', url: '/organization', icon: 'business_center' },
     ],
   },
   {
-    module: ['employees', 'users', 'user', 'organization', 'work-order', 'email', 'profile', 'settings', 'user-profile'],
+    module: ['dashboard', 'employees', 'users', 'user', 'organization', 'work-order', 'email', 'profile', 'settings', 'user-profile'],
     menus: [
       { id: 1, name: 'Dashboard', url: '/dashboard', icon: 'dashboard' },
       { id: 2, name: 'Organization', url: '/organization', icon: 'business_center' },

@@ -20,6 +20,7 @@ import saga from './saga';
 import messages from './messages';
 import ModuleLayout from '../components/ModuleLayout';
 import JournalListing from './components/JournalListing';
+import JournalDetails from './components/JournalDetails';
 
 export function Journal() {
   useInjectReducer({ key: 'journal', reducer });
@@ -34,7 +35,7 @@ export function Journal() {
         <meta name="description" content="Description of Journal" />
       </Helmet>
       <ModuleLayout>
-        <JournalListing />
+        <JournalDetails />
       </ModuleLayout>
     </div>
   );

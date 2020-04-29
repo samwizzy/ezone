@@ -6,17 +6,17 @@
 import produce from 'immer';
 import * as Constants from './constants';
 export const initialState = {
-  dashboard: []
+  applications: []
 };
 
 /* eslint-disable default-case, no-param-reassign */
 const homeReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
-      case Constants.GET_DASHBOARD_ANALYTICS: {
+      case Constants.GET_APPLICATIONS: {
         return {
           ...state,
-          dashboard: action.payload
+          applications: action.payload
         };
       }
     }

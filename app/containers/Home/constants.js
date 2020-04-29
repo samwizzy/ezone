@@ -4,4 +4,5 @@
  *
  */
 
-export const GET_DASHBOARD_ANALYTICS = 'app/UtilityPage/GET_DASHBOARD_ANALYTICS';
+export const GET_APPLICATIONS = 'app/Home/GET_APPLICATIONS';
+export const GET_APPLICATION  = 'app/Home/GET_APPLICATION';

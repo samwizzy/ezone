@@ -58,10 +58,6 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
-  // button: {
-  //   '&.favorite': { color: orange[300]},
-  //   '&.shared': { color: orange[500]},
-  // },
   // iconButton: {
   //   '&.favorite': { color: orange[300]},
   //   '&.shared': { color: orange[500]},
@@ -72,6 +68,9 @@ const useStyles = makeStyles(theme => ({
   //   '&.shared': { color: orange[500]},
   //   '&.delete': { color: theme.status.danger},
   // },
+  button: {
+    marginLeft: theme.spacing(1)
+  },
   cardRoot: {
     maxWidth: '100%',
   },
@@ -215,7 +214,7 @@ const JournalListing = props => {
     // onRowClick: (rowData, rowState) => {
     //   props.history.push('/inventory/item/' + rowData[0])
     // },
-    // elevation: 0
+    elevation: 0
   };
 
   return (

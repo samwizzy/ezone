@@ -32,6 +32,7 @@ import * as Actions from '../../actions';
 import * as AppSelectors from '../../../App/selectors';
 import * as Selectors from '../../selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
+import journalStatusPane from '../../../../images/journalStatusPane.jpg';
 import moment from 'moment';
 
 const entries = [
@@ -44,6 +45,26 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(3),
+  },
+  flex: {
+    position: "relative",
+    padding: theme.spacing(8, 5)
+  },
+  status: {
+    padding: theme.spacing(2, 4),
+    position: "absolute",
+    backgroundColor: '#6DCC4C',
+    color: theme.palette.common.white,
+    top: 0, left: 0,
+    "& :after": {
+      content: "",
+      position: "absolute",
+      zIndex: 9999,
+      width: 0,
+      height: 0,
+      borderTop: "100px solid red",
+      borderRight: "100px solid transparent"
+    }
   },
   paper: {
     padding: theme.spacing(1, 2),
@@ -67,12 +88,13 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.primary.main,
       },
       '& .MuiTableCell-root:nth-child(even)': {
-        backgroundColor: darken(theme.palette.primary.main, 0.5),
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
     '& .MuiTableFooter-root': {},
     '& .MuiTableCell-root': {
-        fontSize: theme.typography.fontSize + 2,
+      // border: "none !important",
+      fontSize: theme.typography.fontSize + 2,
       '& button:nth-child(n+2)': {
         marginLeft: theme.spacing(1),
       },
@@ -82,7 +104,8 @@ const useStyles = makeStyles(theme => ({
     }
   },
   iconPaper: {
-      textAlign: "right"
+    padding: theme.spacing(1),
+    textAlign: "right"
   }
 }));
 
@@ -114,27 +137,26 @@ const JournalDetails = props => {
                 </Paper>
             </Grid>
             <Grid item xs={12} className={classNames(classes.gridMargin)}>
-                <Paper square>
-                    <div className={classes.flex}>
-                        <Table className={classes.table}>
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell component="th">Date</TableCell>
-                                    <TableCell align="left">3rd Jul 2019</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th">Ref. No.</TableCell>
-                                    <TableCell align="left">029993939YU</TableCell>
-                                </TableRow>
-                                <TableRow><TableCell colSpan={2} component="th">Note</TableCell></TableRow>
-                                <TableRow>
-                                    <TableCell>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                                    </TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                    </div>
+                <Paper square className={classes.flex}>
+                  <div className={classes.status}><Typography variant="h6">Approved</Typography></div>
+                  <Table className={classes.table}>
+                      <TableBody>
+                          <TableRow>
+                              <TableCell component="th">Date</TableCell>
+                              <TableCell align="left">3rd Jul 2019</TableCell>
+                          </TableRow>
+                          <TableRow>
+                              <TableCell component="th">Ref. No.</TableCell>
+                              <TableCell align="left">029993939YU</TableCell>
+                          </TableRow>
+                          <TableRow><TableCell colSpan={2} component="th">Note</TableCell></TableRow>
+                          <TableRow>
+                              <TableCell>
+                                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                              </TableCell>
+                          </TableRow>
+                      </TableBody>
+                  </Table>
                 </Paper>
             </Grid>
         </Grid>

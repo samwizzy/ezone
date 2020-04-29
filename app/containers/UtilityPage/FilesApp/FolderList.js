@@ -4,12 +4,11 @@ import { makeStyles } from '@material-ui/core/styles'
 import { orange } from '@material-ui/core/colors'
 import { withRouter } from 'react-router-dom'
 import classNames from 'classnames'
-import { Backdrop, Button, Box, CircularProgress, Card, CardContent, CardActionArea, CardMedia, Grid, Menu, MenuItem, List, ListItem, ListSubheader, ListItemText, ListItemIcon, Collapse, Icon, IconButton, Typography, TableContainer, Table, TableBody, TableRow, TableCell, Tooltip, Paper } from '@material-ui/core';
+import { Backdrop, Button, Box, CircularProgress, Card, CardMedia, Grid, List, ListItem, ListItemText, ListItemIcon, Collapse, Icon, IconButton, Typography, TableContainer, Table, TableBody, TableRow, TableCell, Tooltip, Toolbar, Paper } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import LoadingIndicator from '../../../components/LoadingIndicator';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import Description from '@material-ui/icons/Description'
@@ -379,8 +378,10 @@ const FilesList = props => {
           }
         </Grid>
         <Grid item md={3}>
-          <Box p={1}>
-          <Typography variant="h6" color="textSecondary">Document Details</Typography>
+          <Box px={1}>
+            <Toolbar>
+              <Typography variant="subtitle1" color="textSecondary">Document Details</Typography>
+            </Toolbar>
           {file && Object.keys(file).length > 0 &&
           <div>
           <Card className={classes.cardRoot} elevation={0}>

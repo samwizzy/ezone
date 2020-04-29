@@ -64,9 +64,8 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(
-  compose(
-    withConnect,
-    memo,
-  )(ChatsApp),
-);
+export default compose(
+  withRouter,
+  withConnect,
+  memo,
+)(ChatsApp);
