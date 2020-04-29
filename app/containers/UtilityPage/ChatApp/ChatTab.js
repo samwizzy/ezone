@@ -154,6 +154,7 @@ const ref = React.createRef();
 
 const ChatTab = props => {
   const {
+    newMsgRes,
     accessToken,
     allEmployees,
     allUsersChat,
@@ -188,7 +189,6 @@ const ChatTab = props => {
           const newMsg = JSON.parse(tick.body);
           console.log(newMsg, 'newMsg');
           setChatLog(prevChatLog => [...prevChatLog, newMsg]);
-          // setChatLog(prevChatLog => console.log(prevChatLog, 'prevChatLog'));
         });
       },
       error => {
@@ -197,6 +197,11 @@ const ChatTab = props => {
       },
     );
   }, []);
+
+  if (newMsgRes) {
+    console.log(newMsgRes, 'newMsgRes');
+    getAllUserChatData.messages.push(newMsgRes);
+  }
 
   useEffect(() => {
     setChatLog(getAllUserChatData.messages);
@@ -245,11 +250,16 @@ const ChatTab = props => {
   };
 
   const isFirstMessageOfGroup = (item, i) => {
-    // return (i === 0 || (props.chat.dialog[i - 1] && props.chat.dialog[i - 1].who !== item.who));
+    return (
+      i === 0 || (chatLog[i - 1] && chatLog[i - 1].senderId !== item.senderId)
+    );
   };
 
   const isLastMessageOfGroup = (item, i) => {
-    // return (i === props.chat.dialog.length - 1 || (props.chat.dialog[i + 1] && props.chat.dialog[i + 1].who !== item.who));
+    return (
+      i === chatLog.length - 1 ||
+      (chatLog[i + 1] && chatLog[i + 1].senderId !== item.senderId)
+    );
   };
 
   const handleEmployeeChange = (event, vl) => {
@@ -360,29 +370,29 @@ const ChatTab = props => {
                     <div className={classes.msgBody} ref={ref}>
                       {chatLog &&
                         _.orderBy(chatLog, ['dateCreated'], ['asc']).map(
-                          chat => (
+                          (chat, i) => (
                             <div
                               key={chat.id}
                               className={classNames(
                                 classes.messageRow,
-                                { me: currentUser.uuId !== chat.senderId },
-                                { contact: currentUser.uuId === chat.senderId },
+                                { me: currentUser.uuId === chat.senderId },
+                                { contact: currentUser.uuId !== chat.senderId },
                                 {
                                   'first-of-group': isFirstMessageOfGroup(
-                                    'item',
-                                    'i',
+                                    chat,
+                                    i,
                                   ),
                                 },
                                 {
                                   'last-of-group': isLastMessageOfGroup(
-                                    'item',
-                                    'i',
+                                    chat,
+                                    i,
                                   ),
                                 },
                               )}
                             >
-                              <Paper className={classes.chatPane} key={chat.id}>
-                                <Typography variant="subtitle1" key={chat.id}>
+                              <Paper className={classes.chatPane} key={chat.id + 1}>
+                                <Typography variant="subtitle1" key={chat.id + 1}>
                                   {chat.chatMessage}
                                 </Typography>
                                 <Typography
@@ -393,7 +403,7 @@ const ChatTab = props => {
                                     bottom: 0,
                                   }}
                                 >
-                                  {/* {moment(chat.dateCreated).format('LT')} */}
+                                  {moment(chat.dateCreated).format('LT')}
                                 </Typography>
                               </Paper>
                             </div>
@@ -426,6 +436,7 @@ const ChatTab = props => {
 };
 
 ChatTab.propTypes = {
+  newMsgRes: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
   dispatchGetAllEmployees: PropTypes.func,
   dispatchGetUserChats: PropTypes.func,
   allEmployees: PropTypes.array,
@@ -436,6 +447,7 @@ ChatTab.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  newMsgRes: Selectors.makeSelectGetPostMsg(),
   userChatData: Selectors.makeSelectGetUserChatData(),
   getAllUserChatData: Selectors.makeSelectGetAllUserChatData(),
   allEmployees: Selectors.makeSelectAllEmployees(),
