@@ -14,9 +14,7 @@ import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectSettings from './selectors';
 import * as Actions from './actions';
-import * as Selectors from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
@@ -25,17 +23,23 @@ import LoadingIndicator from './../../../components/LoadingIndicator';
 import SettingsLayout from './components/SettingsLayout';
 import AccountingPeriod from './components/AccountingPeriod';
 
+
 export function Settings(props) {
   useInjectReducer({ key: 'settings', reducer });
   useInjectSaga({ key: 'settings', saga });
 
   console.log('Settings index.js loaded');
 
-  const { loading, getAccountingSetupAction } = props;
+  const { 
+    loading,
+    dispatchGetAccountingSetupAction,
+    dispatchGetAllAccountingPeriodAction 
+  } = props;
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    // getAccountingSetupAction()
+    dispatchGetAccountingSetupAction();
+    dispatchGetAllAccountingPeriodAction();
   }, []);
 
 
@@ -63,12 +67,13 @@ Settings.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  settings: makeSelectSettings()
+  // loading: Selectors.makeSelectLoading(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAccountingSetupAction: () => dispatch(Actions.getAccountingSetupAction()),
+    dispatchGetAccountingSetupAction: () => dispatch(Actions.getAccountingSetupAction()),
+    dispatchGetAllAccountingPeriodAction: () => dispatch(Actions.getAllAccountingPeriodAction()),
     dispatch,
   };
 }

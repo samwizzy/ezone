@@ -71,11 +71,9 @@ const useStyles = makeStyles(theme => ({
 
 const DepartmentsApp = props => {
   const classes = useStyles();
-  const { loading, openNewDepartmentDialog, getEmployee, employees, employee } = props;
-
+  const { loading, openNewDepartmentDialog, getEmployee, getEmployees, employees, employee, getBranches, branches, departments } = props;
   React.useEffect(() => {
-  }, [employee]);
-
+  }, [employee, departments, employees]);
   const columns = [
     {
       name: 'id',
@@ -86,13 +84,36 @@ const DepartmentsApp = props => {
       },
     },
     {
-      name: 'firstName',
+      name: 'name',
       label: 'Department Name',
       options: {
       filter: true,
       sort: true,
       },
     },
+    {
+      name: 'employeeCount',
+      label: 'Employee count',
+     
+      options: {
+      filter: true,
+      sort: true,
+      customBodyRender: id => {
+        return (
+          <span>0</span>
+        )
+        }
+      },
+    },
+    {
+      name: 'dateCreated',
+      label: 'Created',
+      options: {
+      filter: true,
+      sort: true,
+      },
+    },
+    /*
     {
       name: 'id',
       label: 'Employee Count',
@@ -101,6 +122,7 @@ const DepartmentsApp = props => {
         sort: true,
       },
     },
+    */
   ];
 
   const options = {
@@ -132,7 +154,7 @@ const DepartmentsApp = props => {
             <MUIDataTable
                 className={classes.datatable}
                 title="Departments List"
-                data={employees}
+                data={departments}
                 columns={columns}
                 options={options}
             />
@@ -157,6 +179,8 @@ const mapStateToProps = createStructuredSelector({
   employees: Selectors.makeSelectEmployees(),
   employee : Selectors.makeSelectEmployee(),
   user: AppSelectors.makeSelectCurrentUser(),
+  departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
+  branches: Selectors.makeSelectBranches(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -164,6 +188,7 @@ function mapDispatchToProps(dispatch) {
     getEmployees: () => dispatch(Actions.getEmployees()),
     getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
     openNewDepartmentDialog: () => dispatch(Actions.openNewDepartmentDialog()),
+    getBranches: () => dispatch(Actions.getBranches()),
   };
 }
 

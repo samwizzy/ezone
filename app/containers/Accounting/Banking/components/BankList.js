@@ -203,7 +203,7 @@ const BankList = props => {
     responsive: 'scrollMaxHeight',
     selectableRows: 'none',
     customToolbar: () => (
-      <Tooltip title="Create New Chart">
+      <Tooltip title="Create New Account">
         <Button
           variant="contained"
           color="primary"
@@ -241,13 +241,10 @@ const BankList = props => {
 
 BankList.propTypes = {
 //   loading: PropTypes.bool,
-//   openNewAccountDialogAction: PropTypes.func,
-//   editOpenAccountDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
-  bankAccountDialog: Selectors.makeSelectBankAccountDialog(),
   bankAccountData: Selectors.makeSelectBankAccountData()
 });
 

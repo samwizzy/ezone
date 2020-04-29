@@ -81,10 +81,10 @@ const ContactDialog = props => {
     fax: '',
     dob: moment(new Date()).format('YYYY-MM-DD'),
     image: '',
-    notes: 'note',
+    notes: '',
     ownerId: '',
     type: 'INDIVIDUAL',
-    website: 1,
+    website: '',
   });
 
   const {
@@ -146,7 +146,7 @@ const ContactDialog = props => {
     }
   }, [contactDialog.data]);
 
-  console.log(contactDialog, 'contactDialog');
+  // console.log(contactDialog, 'contactDialog');
   // console.log(form, 'form');
 
   return (
@@ -203,6 +203,7 @@ const ContactDialog = props => {
             handleChange={handleChange}
             handlePrev={handlePrev}
             form={form}
+            setForm={setForm}
             closeNewContactDialog={closeNewContactDialogAction}
           />
         )}

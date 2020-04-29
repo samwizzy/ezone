@@ -2,6 +2,8 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
+  Backdrop,
+  CircularProgress,
   makeStyles,
   List,
   FormControlLabel,
@@ -10,16 +12,16 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+import { Add, Visibility } from '@material-ui/icons';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import * as Actions from '../../actions';
-import * as Selectors from '../../selectors';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
-// import InventoryAdjustmentDialog from './ContactDialog';
+import * as Actions from '../actions';
+import * as Selectors from '../selectors';
+import CompaniesDialog from './CompaniesDialog';
+import CompanyDetailsDialog from './CompanyDetailsDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -44,39 +46,31 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
+  view: {
+    margin: theme.spacing(1),
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
 const CompaniesList = props => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const {
     loading,
-    // getAllEmployees,
-    // openNewInventoryAdjustDialogAction,
-    // getAllWarehousesAction,
-    // getAllItemsAction,
-    // getAllInventoryAdjustmentsAction,
-    // getAllInventoryAdjusts,
-    // openEditEmployeeDialogAction,
-    // openViewEmployeeDialogAction,
+    getAllCompaniesAction,
+    getAllCompanies,
+    openNewCompanyDialogAction,
+    openEditCompanyDialogAction,
+    openCompanyDetailsDialogAction,
   } = props;
 
   useEffect(() => {
-    // getAllItemsAction();
-    // getAllWarehousesAction();
-    // getAllInventoryAdjustmentsAction();
+    getAllCompaniesAction();
   }, []);
 
-  // console.log(getAllInventoryAdjusts, 'getAllInventoryAdjusts');
   const columns = [
     {
       name: 'Id',
@@ -97,120 +91,84 @@ const CompaniesList = props => {
       },
     },
     {
-      name: 'inventoryAdjustedDate',
-      label: 'Adjusted Date',
+      name: 'firstName',
+      label: 'Company Name',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'reason',
-      label: 'Reason',
+      name: 'phoneNumber',
+      label: 'Phone Number',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'reasonDescription',
-      label: 'Reason Description',
+      name: 'emailAddress',
+      label: 'Email',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'status',
-      label: 'Status',
+      name: 'lifeStage',
+      label: 'Life Stage',
       options: {
         filter: true,
         sort: false,
-        // customBodyRender: value => {
-        //   const Post = getAllPosts.find(post => value === post.id);
-
-        //   if (value === '') {
-        //     return '';
-        //   }
-        //   return (
-        //     <FormControlLabel
-        //       label="Edit"
-        //       control={<Icon>create</Icon>}
-        //       onClick={evt => {
-        //         evt.stopPropagation();
-        //         openEditPostDialog(Post);
-        //       }}
-        //     />
-        //   );
-        // },
       },
     },
     {
-      name: 'referenceNumber',
-      label: 'Reference Number',
+      name: 'ownerName',
+      label: 'Owner',
       options: {
         filter: true,
         sort: false,
       }
     },
     {
-      name: 'type',
-      label: 'Type',
+      name: 'dateCreated',
+      label: 'Created At',
       options: {
         filter: true,
         sort: false,
       }
     },
     {
-      name: 'addedBy',
-      label: 'Adjusted By',
+      name: 'id',
+      label: 'Action',
       options: {
         filter: true,
         sort: false,
-      }
+        customBodyRender: value => {
+          const contac = getAllCompanies.find(company => value === company.id);
+          if (value === '') {
+            return '';
+          }
+          return (
+            <div>
+              <Button
+                variant="outlined" size="small" color="primary" className={classes.margin}
+                onClick={() => openEditCompanyDialogAction(contac)}
+              >
+                Edit
+              </Button>
+              <FormControlLabel
+                className={classes.view}
+                control={<Visibility />}
+                onClick={() => openCompanyDetailsDialogAction(contac)}
+              >
+                Edit
+              </FormControlLabel>
+            </div>
+          );
+        },
+      },
     },
-    // {
-    //   name: 'id',
-    //   label: '',
-    //   options: {
-    //     filter: true,
-    //     sort: false,
-    //     customBodyRender: value => {
-    //       const Post = datas.find(post => value === post.id);
-    //       if (value === '') {
-    //         return '';
-    //       }
-    //       return (
-    //         <div>
-    //           <Button
-    //             aria-controls="simple-menu"
-    //             aria-haspopup="true"
-    //             onClick={handleClick}
-    //           >
-    //             Options
-    //           </Button>
-    //           <Menu
-    //             id="simple-menu"
-    //             anchorEl={anchorEl}
-    //             keepMounted
-    //             open={Boolean(anchorEl)}
-    //             onClose={handleClose}
-    //           >
-    //             <MenuItem onClick={handleClose}>Assign Role</MenuItem>
-    //             <MenuItem onClick={handleClose}>Assign Apps</MenuItem>
-    //             <MenuItem onClick={() => openEditEmployeeDialogAction(Post)}>
-    //               Edit
-    //             </MenuItem>
-    //             <MenuItem onClick={() => openViewEmployeeDialogAction(Post)}>
-    //               View Details
-    //             </MenuItem>
-    //             <MenuItem onClick={handleClose}>Deactivate</MenuItem>
-    //           </Menu>
-    //         </div>
-    //       );
-    //     },
-    //   },
-    // },
   ];
 
   const options = {
@@ -223,56 +181,60 @@ const CompaniesList = props => {
         color="primary"
         size="small"
         className={classes.button}
-        startIcon={<AddIcon />}
-        // onClick={() => openNewInventoryAdjustDialogAction()}
+        startIcon={<Add />}
+        onClick={() => openNewCompanyDialogAction()}
       >
         New
       </Button>
     ),
   };
 
-  if (loading) {
-    return <LoadingIndicator />;
-  }
+  // if (loading) {
+  //   return <LoadingIndicator />;
+  // }
 
   return (
     <React.Fragment>
+      <Backdrop className={classes.backdrop} open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <MUIDataTable
         className={classes.datatable}
         title="All Companies"
-        data={[]}
+        data={getAllCompanies}
         columns={columns}
         options={options}
       />
+      <CompaniesDialog />
+      <CompanyDetailsDialog />
     </React.Fragment>
   );
 };
 
 CompaniesList.propTypes = {
   loading: PropTypes.bool,
-  getAllEmployees: PropTypes.array,
-  openNewInventoryAdjustDialogAction: PropTypes.func,
-  getAllWarehousesAction: PropTypes.func,
-  getAllItemsAction: PropTypes.func,
-  getAllInventoryAdjustmentsAction: PropTypes.func,
-  getAllInventoryAdjusts: PropTypes.array,
-  // openEditEmployeeDialogAction: PropTypes.func,
-  // openViewEmployeeDialogAction: PropTypes.func,
+  getAllCompaniesAction: PropTypes.func,
+  openNewCompanyDialogAction: PropTypes.func,
+  openEditCompanyDialogAction: PropTypes.func,
+  openCompanyDetailsDialogAction: PropTypes.func,
+  getAllCompanies: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
-  // loading: Selectors.makeSelectLoading(),
-  // getAllInventoryAdjusts: Selectors.makeSelectGetAllInventoryAdjustments(),
+  loading: Selectors.makeSelectLoading(),
+  getAllCompanies: Selectors.makeSelectGetAllCompanies(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    // getAllInventoryAdjustmentsAction: () =>
-    //   dispatch(Actions.getAllInventoryAdjustments()),
-    // openNewInventoryAdjustDialogAction: () =>
-    //   dispatch(Actions.openNewInventoryAdjustDialog()),
-    // getAllWarehousesAction: () => dispatch(Actions.getAllWarehouse()),
-    // getAllItemsAction: () => dispatch(Actions.getAllItems()),
+    openNewCompanyDialogAction: () =>
+      dispatch(Actions.openNewCompanyDialog()),
+    openEditCompanyDialogAction: evt =>
+      dispatch(Actions.openEditCompanyDialog(evt)),
+    openCompanyDetailsDialogAction: evt =>
+      dispatch(Actions.openCompanyDetailsDialog(evt)),
+    getAllCompaniesAction: () =>
+      dispatch(Actions.getAllCompanies()),
   };
 }
 

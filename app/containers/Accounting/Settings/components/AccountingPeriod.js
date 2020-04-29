@@ -4,15 +4,19 @@ import {
   makeStyles, 
   Box, 
   Button, 
+  Menu,
+  MenuItem,
   Grid, 
   Paper, 
   Table, 
-  TableBody, 
+  TableBody,
+  TableFooter, 
   TableRow, 
   TableCell, 
   TextField, 
   Toolbar, 
-  Typography 
+  Typography,
+  Tooltip
 } from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns'; // choose your lib
 import {
@@ -28,10 +32,11 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
+import DialogOfAccountPeriod from './DialogOfAccountPeriod';
 // import reducer from '../../reducer';
 // import saga from '../../saga';
 // import ModuleLayout from '../../components/ModuleLayout';
-import moment from 'moment';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -67,166 +72,219 @@ const useStyles = makeStyles(theme => ({
 
 const AccountingPeriod = props => {
   const classes = useStyles();
-
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  
   const {
-    dispatchGetAccountingSetupAction
+    accountingSetupData,
+    allAccountingPeriodData,
+    openAccountPeriodDialogAction,
+    editOpenAccountPeriodDialogAction,
+    dispatchUpdateAccountPeriodAction
   } = props;
 
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const [values, setValues] = React.useState({
-    entries: [],
-    note: '',
-    // orgId: currentUser.organisation.orgId,
-    periodId: '',
-    reference: '',
-    transactionDate: moment(new Date()).format('YYYY-MM-DD'),
+    orgId: "",
+    year: ""
   });
 
-  // const addRow = () => {
-  //   const item = {
-  //     accountId: 0,
-  //     credit: 0,
-  //     debit: 0,
-  //     description: '',
-  //   };
-  //   setValues({...values, "entries": [ ...values.entries, item ]});
-  // };
+  const [accountToUpdate, setAccountToUpdate] = React.useState({
+    id: ""
+  });
 
-  // const removeRow = index => {
-  //   values.entries.splice(index, 1);
-  //   setValues({ ...values });
-  // };
+  const handleClick = (event, id) => {
+    setAnchorEl(event.currentTarget);
+    const selectedAccountPeriod = allAccountingPeriodData && allAccountingPeriodData.find(acc => id === acc.id);
+    setAccountToUpdate({ ...accountToUpdate, id: selectedAccountPeriod.id });
+  };
 
-  // const handleChange = name => event => {
-  //   setValues({ ...values, [name]: event.target.value });
-  // };
+  console.log('allAccountingPeriodData period file -> ', allAccountingPeriodData);
+  console.log('accountToUpdate state -> ', accountToUpdate);
 
-  // const handleSelectChange = (name, value) => {
-  //   setValues({ ...values, periodId: value.id });
-  // };
-
-  // const handleRowChange = (event, index) => {
-  //   const entries = [...values.entries]
-  //   entries[index][event.target.name] = event.target.value
-  //   setValues({...values, entries})
-  // }
-
-  // const handleSelectChangeRows = (event, value, index) => {
-  //   const { entries } = values;
-  //   entries[index]["accountId"] = value.id;
-  //   setValues({ ...values, entries });
-  // };
-
-  // Similar to componentDidMount and componentDidUpdate:
-  useEffect(() => {
-    dispatchGetAccountingSetupAction();
-  }, []);
 
   return (
+    <React.Fragment>
+      <DialogOfAccountPeriod />
       <div className={classes.root}>
-        <Grid container>
-          <Grid item xs={5}>
+      <Grid container>
+        <Grid item xs={5}>
+          <Toolbar>
+            <Typography variant="h4">Settings</Typography>
+          </Toolbar>
+          <Paper square elevation={0}>
             <Toolbar>
-              <Typography variant="h4">Settings</Typography>
+              <Typography variant="h6">Accounting Period</Typography>
             </Toolbar>
-            <Paper square elevation={0}>
-              <Toolbar>
-                <Typography variant="h6">Accounting Period</Typography>
-              </Toolbar>
-              <Table size="small" className={classes.table}>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>Financial Year Start</TableCell>
-                    <TableCell>
-                      <Box className={classes.box} p={2}>15th July</Box>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Accounting Method</TableCell>
-                    <TableCell>
-                      <Box className={classes.box} p={2}>Accrual</Box>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Tax year starts</TableCell>
-                    <TableCell>
-                      <Box className={classes.box} p={2}>15th July</Box>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Tax Type</TableCell>
-                    <TableCell>
-                      <Box className={classes.box} p={2}>Limited Liability</Box>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </Paper>
-          </Grid>
-          <Grid item xs={7}></Grid>
+            <Table size="small" className={classes.table}>
+              <TableBody>
+                <TableRow>
+                  <TableCell>Financial Year Start</TableCell>
+                  <TableCell>
+                    <Box className={classes.box} p={2}>
+                      { accountingSetupData.companyStartDate }
+                    </Box>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Accounting Method</TableCell>
+                  <TableCell>
+                    <Box className={classes.box} p={2}>
+                      { accountingSetupData.accountMethod }
+                    </Box>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Tax year starts</TableCell>
+                  <TableCell>
+                    <Box className={classes.box} p={2}>
+                      { accountingSetupData.taxDay }-{ accountingSetupData.taxMonth }
+                    </Box>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Tax Type</TableCell>
+                  <TableCell>
+                    <Box className={classes.box} p={2}>
+                      { accountingSetupData.taxType }
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </Paper>
         </Grid>
-        <Grid container>
-          <Grid item xs={12}>
-            <Paper square elevation={0}>
-              <Toolbar>
-                <Typography variant="h6">Accounting Years</Typography>
-              </Toolbar>
-              <Table size="small" className={classes.table}>
-                <TableBody>
-                  {[0,1,2].map((field, i) => (
-                  <TableRow key={i}>
-                    <TableCell component="th">Name</TableCell>
-                    <TableCell><TextField id="outlined-basic" label="Outlined" variant="outlined" /></TableCell>
-                    <TableCell component="th">Start Date</TableCell>
-                    <TableCell>
-                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker
-                          format="MM/dd/yyyy"
-                          margin="normal"
-                          inputVariant="outlined"
-                          name="startDate"
-                          id="date-picker-startDate"
-                          label="Start Date"
-                          value={values.startDate}
-                          onChange={(date, formatted) => handleDateChange(date, formatted, 'startDate')}
-                          KeyboardButtonProps={{
-                            'aria-label': 'change date',
-                          }}
-                          fullWidth
-                        />
-                      </MuiPickersUtilsProvider>
-                    </TableCell>
-                    <TableCell component="th">End Date</TableCell>
-                    <TableCell>
-                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker
-                          format="MM/dd/yyyy"
-                          margin="normal"
-                          inputVariant="outlined"
-                          name="startDate"
-                          id="date-picker-startDate"
-                          label="Start Date"
-                          value={values.startDate}
-                          onChange={(date, formatted) => handleDateChange(date, formatted, 'startDate')}
-                          KeyboardButtonProps={{
-                            'aria-label': 'change date',
-                          }}
-                          fullWidth
-                        />
-                      </MuiPickersUtilsProvider>
-                    </TableCell>
+        <Grid item xs={7}></Grid>
+      </Grid>
+      <Grid container>
+        <Grid item xs={12}>
+          <Paper square elevation={0}>
+            <Toolbar>
+              <Typography variant="h6">Accounting Years</Typography>
+            </Toolbar>
+            <Table size="small" className={classes.table}>
+              <TableBody>
+                {allAccountingPeriodData.map(item => (
+                <TableRow>
+                  <TableCell component="th">Name</TableCell>
+                  <TableCell>
+                    <TextField 
+                      id="outlined-basic" 
+                      label="Outlined" 
+                      variant="outlined" 
+                      value={item.year}
+                    />
+                  </TableCell>
+                  <TableCell component="th">Start Date</TableCell>
+                  <TableCell>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <KeyboardDatePicker
+                        format="MM/dd/yyyy"
+                        margin="normal"
+                        inputVariant="outlined"
+                        name="startDate"
+                        id="date-picker-startDate"
+                        label="Start Date"
+                        value={values.startDate}
+                        onChange={(date, formatted) => handleDateChange(date, formatted, 'startDate')}
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                        }}
+                        fullWidth
+                      />
+                    </MuiPickersUtilsProvider>
+                  </TableCell>
+                  <TableCell component="th">End Date</TableCell>
+                  <TableCell>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <KeyboardDatePicker
+                        format="MM/dd/yyyy"
+                        margin="normal"
+                        inputVariant="outlined"
+                        name="startDate"
+                        id="date-picker-startDate"
+                        label="Start Date"
+                        value={values.startDate}
+                        onChange={(date, formatted) => handleDateChange(date, formatted, 'startDate')}
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                        }}
+                        fullWidth
+                      />
+                    </MuiPickersUtilsProvider>
+                  </TableCell>
+                  {item.status ? (
                     <TableCell component="th">
-                      <Typography variant="subtitle1">
-                        Opened
-                      </Typography>
+                      <Button 
+                        aria-controls="simple-menu" 
+                        aria-haspopup="true" 
+                        onClick={event => handleClick(event, item.id)}
+                      >
+                        Open
+                      </Button>
+                      <Menu
+                        id="simple-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                      >
+                        <MenuItem 
+                          onClick={() => editOpenAccountPeriodDialogAction()}
+                        >
+                          Edit
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() => dispatchUpdateAccountPeriodAction(accountToUpdate)}
+                        >
+                          Close Period
+                        </MenuItem>
+                      </Menu>
                     </TableCell>
-                  </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Paper>
-          </Grid>
+                  ) : (
+                    <TableCell component="th">
+                      <Button 
+                        aria-controls="simple-menu" 
+                        aria-haspopup="true" 
+                        onClick={event => handleClick(event, item.id)}
+                      >
+                        Closed
+                      </Button>
+                      <Menu
+                        id="simple-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                      >
+                        <MenuItem onClick={handleClose}>View</MenuItem>
+                      </Menu>
+                    </TableCell>
+                  )}
+                </TableRow>
+                ))}
+              </TableBody>
+              <TableFooter>
+              <Tooltip title="Create Account Period">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  className={classes.button}
+                  onClick={() => openAccountPeriodDialogAction()}
+                >
+                  Add more
+                </Button>
+              </Tooltip>
+              </TableFooter>
+            </Table>
+          </Paper>
         </Grid>
-      </div>
+      </Grid>
+    </div>
+  </React.Fragment>
   );
 };
 
@@ -234,11 +292,15 @@ AccountingPeriod.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  accountingSetupData: Selectors.makeSelectGetAccountingSetupData(),
+  allAccountingPeriodData: Selectors.makeSelectGetAllAccountingPeriodData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchGetAccountingSetupAction: () => dispatch(Actions.getAccountingSetupAction()),
+    openAccountPeriodDialogAction: () => dispatch(Actions.openAccountPeriodDialog()),
+    editOpenAccountPeriodDialogAction: () => dispatch(Actions.editOpenAccountPeriodDialog()),
+    dispatchUpdateAccountPeriodAction: evt => dispatch(Actions.updateAccountPeriodAction(evt)),
   };
 }
 

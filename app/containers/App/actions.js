@@ -29,6 +29,7 @@ export function getUserProfileAction(data) {
 }
 
 export function getUserProfileSuccessAction(data) {
+  console.log(data, 'user profile data');
   return {
     type: Constants.GET_USER_PROFILE_SUCCESS,
     payload: data,
@@ -63,7 +64,6 @@ export function logout() {
 }
 
 export function postFcmToken(data) {
-  console.log(data, 'action data');
   return {
     type: Constants.POST_FCM_TOKEN,
     payload: data,
@@ -84,3 +84,23 @@ export function postFcmTokenError(data) {
   };
 }
 
+export function refreshToken() {
+  console.log('is comming here');
+  return {
+    type: Constants.REFRESH_TOKEN,
+  };
+}
+
+export function refreshTokenSuccess(data) {
+  return {
+    type: Constants.REFRESH_TOKEN_SUCCESS,
+    payload: data,
+  };
+}
+
+export function refreshTokenError(data) {
+  return {
+    type: Constants.REFRESH_TOKEN_ERROR,
+    payload: data,
+  };
+}

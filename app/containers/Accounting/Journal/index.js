@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -20,13 +20,32 @@ import saga from './saga';
 import messages from './messages';
 import ModuleLayout from '../components/ModuleLayout';
 import JournalListing from './components/JournalListing';
+<<<<<<< HEAD
 import JournalDetails from './components/JournalDetails';
+=======
+import * as Actions from './actions';
+import * as Selectors from './selectors';
+import LoadingIndicator from '../../../components/LoadingIndicator';
+>>>>>>> 0e8f12818250e91b543dc81b9044f9f09cee5f65
 
-export function Journal() {
+export function Journal(props) {
   useInjectReducer({ key: 'journal', reducer });
   useInjectSaga({ key: 'journal', saga });
 
+  const {
+    loading,
+    dispatchGetJournalListAction
+  } = props;
+
   console.log('Journal index.js loaded');
+
+  useEffect(() => {
+    dispatchGetJournalListAction();
+  }, []);
+
+  if (loading) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <div>
@@ -47,10 +66,12 @@ Journal.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   journal: makeSelectJournal(),
+  loading: Selectors.makeSelectLoading()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    dispatchGetJournalListAction: () => dispatch(Actions.getJournalListAction()),
     dispatch,
   };
 }

@@ -152,8 +152,8 @@ function a11yProps(index) {
 const ref = React.createRef();
 
 const ChatTab = props => {
-  // let stompClient = null;
   const {
+    newMsgRes,
     accessToken,
     allEmployees,
     allUsersChat,
@@ -168,74 +168,9 @@ const ChatTab = props => {
   useEffect(() => {
     dispatchGetAllEmployees();
     dispatchGetUserChats();
-    chatConnect();
     handleScrollToBottom();
-  }, []);
+    // chatConnect();
 
-  const classes = useStyles();
-  const [status, setStatus] = React.useState(false);
-
-  const [value, setValue] = React.useState(0);
-  const [newChat, setNewChat] = useState();
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  const handleScrollToBottom = () => {
-    ref.current.scrollTop = ref.current.scrollHeight;
-  };
-
-  const isFirstMessageOfGroup = (item, i) => {
-    // return (i === 0 || (props.chat.dialog[i - 1] && props.chat.dialog[i - 1].who !== item.who));
-  };
-
-  const isLastMessageOfGroup = (item, i) => {
-    // return (i === props.chat.dialog.length - 1 || (props.chat.dialog[i + 1] && props.chat.dialog[i + 1].who !== item.who));
-  };
-
-  const handleEmployeeChange = (event, vl) => {
-    const initNewChat = {
-      initiator: currentUser.uuId,
-      initiatorName: (currentUser.firstName, currentUser.lastName),
-      responder: vl.uuId,
-      responderName: (vl.firstName, vl.lastName),
-    };
-    setNewChat(initNewChat);
-  };
-
-  navigator.serviceWorker.addEventListener('message', message => {
-    if (message) {
-      getAllUserChatData.messages.push(
-        JSON.parse(message.data['firebase-messaging-msg-data'].data.payload),
-      );
-      // console.log(getAllUserChatData.messages, 'getAllUserChatData.messages');
-      dispatchGetUserChatData(
-        JSON.parse(message.data['firebase-messaging-msg-data'].data.payload),
-      );
-    }
-  });
-
-  // reversed datas
-  if (getAllUserChatData) {
-    var reversedData = _.orderBy(
-      getAllUserChatData.messages,
-      ['dateCreated'],
-      ['asc'],
-    );
-  }
-
-  if (allUsersChat) {
-    var allUserReversedData = _.orderBy(
-      allUsersChat,
-      ['dateCreated'],
-      ['desc'],
-    );
-  }
-
-  // console.log(currentUser, 'currentUser');
-  // console.log(accessToken, 'accessToken');
-
-  const chatConnect = () => {
     const socket = new SockJS(
       'https://dev.ezoneapps.com/gateway/utilityserv/messages',
     );
@@ -250,7 +185,9 @@ const ChatTab = props => {
         const connected = true;
         console.log(frame, 'frame');
         stompClient.subscribe(`/queue/${currentUser.uuId}`, tick => {
-          console.log(tick, 'tick');
+          const newMsg = JSON.parse(tick.body);
+          console.log(newMsg, 'newMsg');
+          setChatLog(prevChatLog => [...prevChatLog, newMsg]);
         });
       },
       error => {
@@ -258,18 +195,97 @@ const ChatTab = props => {
         const connected = false;
       },
     );
+  }, []);
+
+  if (newMsgRes) {
+    console.log(newMsgRes, 'newMsgRes');
+    getAllUserChatData.messages.push(newMsgRes);
+  }
+
+  useEffect(() => {
+    setChatLog(getAllUserChatData.messages);
+  }, [getAllUserChatData.messages]);
+
+  const classes = useStyles();
+  const [status, setStatus] = React.useState(false);
+
+  const [chatLog, setChatLog] = useState([]);
+  const [value, setValue] = React.useState(0);
+  const [newChat, setNewChat] = useState();
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
-  // console.log(ref, "ref")
+  // const chatConnect = () => {
+  //   const socket = new SockJS(
+  //     'https://dev.ezoneapps.com/gateway/utilityserv/messages',
+  //   );
+  //   const stompClient = Stomp.over(socket);
+  //   stompClient.connect(
+  //     {
+  //       'X-Authorization': 'Bearer ' + `${accessToken}`,
+  //       login: 'admin',
+  //       passcode: 'admin',
+  //     },
+  //     frame => {
+  //       const connected = true;
+  //       console.log(frame, 'frame');
+  //       stompClient.subscribe(`/queue/${currentUser.uuId}`, tick => {
+  //         const newMsg = JSON.parse(tick.body);
+  //         console.log(newMsg, 'newMsg');
+  //         // setChatLog(prevChatLog => [...prevChatLog, newMsg]);
+  //         setChatLog(prevChatLog => console.log(prevChatLog, 'prevChatLog'));
+  //       });
+  //     },
+  //     error => {
+  //       console.log(error);
+  //       const connected = false;
+  //     },
+  //   );
+  // };
 
-  // console.log(userChatData, 'userChatData');
-  // console.log(newChat, 'newChat');
-  // console.log(currentUser, 'currentUser');
-  // console.log(getAllUserChatData, 'getAllUserChatData');
+  const handleScrollToBottom = () => {
+    ref.current.scrollTop = ref.current.scrollHeight;
+  };
 
-  // if (loading) {
-  //   return <LoadingIndicator />;
-  // }
+  const isFirstMessageOfGroup = (item, i) => {
+    return (
+      i === 0 || (chatLog[i - 1] && chatLog[i - 1].senderId !== item.senderId)
+    );
+  };
+
+  const isLastMessageOfGroup = (item, i) => {
+    return (
+      i === chatLog.length - 1 ||
+      (chatLog[i + 1] && chatLog[i + 1].senderId !== item.senderId)
+    );
+  };
+
+  const handleEmployeeChange = (event, vl) => {
+    const initNewChat = {
+      initiator: currentUser.uuId,
+      initiatorName: (currentUser.firstName, currentUser.lastName),
+      responder: vl.uuId,
+      responderName: (vl.firstName, vl.lastName),
+    };
+    setNewChat(initNewChat);
+  };
+
+  let chatLogReverse = [];
+  let allUserReversedData = [];
+
+  // reversed datas
+  if (chatLog) {
+    chatLogReverse = _.orderBy(chatLog, ['dateCreated'], ['asc']);
+  }
+
+  if (allUsersChat) {
+    allUserReversedData = _.orderBy(allUsersChat, ['dateCreated'], ['desc']);
+  }
+
+  console.log(chatLog, 'chatLog in if');
+  console.log(chatLogReverse, 'userChatReversedData');
+
   return (
     <React.Fragment>
       <div>
@@ -410,6 +426,7 @@ const ChatTab = props => {
 };
 
 ChatTab.propTypes = {
+  newMsgRes: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
   dispatchGetAllEmployees: PropTypes.func,
   dispatchGetUserChats: PropTypes.func,
   allEmployees: PropTypes.array,
@@ -420,6 +437,7 @@ ChatTab.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  newMsgRes: Selectors.makeSelectGetPostMsg(),
   userChatData: Selectors.makeSelectGetUserChatData(),
   getAllUserChatData: Selectors.makeSelectGetAllUserChatData(),
   allEmployees: Selectors.makeSelectAllEmployees(),

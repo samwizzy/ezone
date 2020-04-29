@@ -28,12 +28,12 @@ export const Form = props => {
   const classes = useStyles();
 
   const canSubmitForm = () => {
-    const { firstName, lastName, mobileNo, email, nickName } = form;
+    const { firstName, lastName, phoneNumber, emailAddress, nickName } = form;
     return (
       firstName.length > 0 &&
-      lastName.length > 0 &&
-      mobileNo.length > 0 &&
-      email.length > 0
+      lastName.length > 0 && 
+      phoneNumber.length > 0 &&
+      emailAddress.length > 0
     );
   };
 
@@ -78,25 +78,25 @@ export const Form = props => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                name="mobileNo"
+                name="phoneNumber"
                 label="Mobile Number"
                 id="outlined-title"
                 fullWidth
                 variant="outlined"
                 size="small"
-                value={form.mobileNo}
+                value={form.phoneNumber}
                 onChange={handleChange}
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
-                name="email"
+                name="emailAddress"
                 label="Email"
                 id="outlined-title"
                 fullWidth
                 variant="outlined"
                 size="small"
-                value={form.email}
+                value={form.emailAddress}
                 onChange={handleChange}
               />
             </Grid>

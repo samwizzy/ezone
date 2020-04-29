@@ -102,7 +102,7 @@ const AddNewJournal = props => {
       debit: 0,
       description: '',
     };
-    setValues({...values, "entries": [ ...values.entries, item ]});
+    setValues({ ...values, "entries": [ ...values.entries, item ] });
   };
 
   const removeRow = index => {

@@ -28,29 +28,32 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function AddEmployeeDialog(props) {
   const classes = useStyles();
-  const { closeNewEmployeeDialog, departments, dialog } = props;
+  const { closeNewEmployeeDialog, createEmployee, departments, roles, employeeTypes, employees, dialog } = props;
+
   const [step, setStep] = React.useState(0)
-  const [form, setForm] = React.useState({
+  const [form, setForm, values, setValues] = React.useState({
     firstName: '',
     lastName: '',
-    email: '',
+    emailAddress: '',
     mobileNo: '',
+    phoneNumber: '',
     workPhone: '',
     nickName: '',
     employeeId: '',
     dateOfJoining: moment(new Date()).format('YYYY-MM-DD'),
-    branch: '',
+    //branch: '',
     employmentStatus: '',
-    employmentType: '',
+    employeeType: {id: ''},
     employeeType: "",
     seatingLocation: '',
     extension: '',
-    department: '', // {id: 1}
-    designation: '', // {id: 1}
-    reportTo: '',
+    department:  {id: ''},
+    password: 'Ezone123$',
+    //designation: '', // {id: 1}
+    reportTo: {id: ''},
     payRate: '',
     payType: '',
-    role: '', // {id: 1}
+    role: '',
     dob: moment(new Date('01-01-1980')).format('YYYY-MM-DD'),
     maritalStatus: '',
     gender: '',
@@ -58,8 +61,6 @@ function AddEmployeeDialog(props) {
     jobDesc: '',
     about: '',
   });
-
-  console.log(departments, "departments")
 
   React.useEffect(() => {
     if(dialog.type == 'edit'){
@@ -78,6 +79,10 @@ function AddEmployeeDialog(props) {
     const { name, value } = event.target
     setForm({...form, [name]: value});
   }
+  const handleSelectChange = (event) => {
+    const { name, value } = event.target
+    setForm({...form, [name]: { id: value } });
+  };
 
   const reformattedDate = (date) => {
     var month = date.getMonth() + 1; //months from 1-12
@@ -96,7 +101,11 @@ function AddEmployeeDialog(props) {
   }
 
   const handleSubmit = () => {
-    if(step > -1 && step < 3){ setStep(step + 1) }
+    if(step > -1 && step < 3){ 
+      setStep(step + 1) 
+    }else{
+      createEmployee(form);
+    }
   }
 
   const handlePrev = () => {
@@ -130,7 +139,12 @@ function AddEmployeeDialog(props) {
             <WorkForm
             handleDateChange={handleDateChange}
             handleChange={handleChange}
+            handleSelectChange={handleSelectChange}
             form={form}
+            departments={departments}
+            roles={roles}
+            employeeTypes={employeeTypes}
+            employees={employees}
             closeNewEmployeeDialog={closeNewEmployeeDialog}
             handleSubmit={handleSubmit}
             handlePrev={handlePrev}
@@ -168,12 +182,17 @@ AddEmployeeDialog.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   dialog: Selectors.makeSelectEmpDialog(),
-  departments: Selectors.makeSelectDepartments(),
+  employees: Selectors.makeSelectEmployees(),
+  departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
+  employeeTypes: Selectors.makeSelectEmployeeTypes(),
+  roles: Selectors.makeSelectRoles(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     closeNewEmployeeDialog: () => dispatch(Actions.closeNewEmployeeDialog()),
+    getEmployees: () => dispatch(Actions.getEmployees()),
+    createEmployee: (ev) => dispatch(Actions.createEmployee(ev)),
     dispatch,
   };
 }

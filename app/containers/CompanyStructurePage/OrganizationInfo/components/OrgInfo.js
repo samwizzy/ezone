@@ -85,8 +85,6 @@ const OrgInfo = props => {
     history,
   } = props;
 
-  console.log(companyInfo, 'companyInfo');
-
   if (loading) {
     return <LoadingIndicator />;
   }

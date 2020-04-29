@@ -54,8 +54,14 @@ export const PersonalForm = props => {
                     value={form.maritalStatus}
                     onChange={handleChange}
                     >
-                    <MenuItem key={0} value="2">
-                        No record
+                    <MenuItem key={0} value="Single">
+                        Single
+                    </MenuItem>
+                    <MenuItem key={1} value="Married">
+                        Married
+                    </MenuItem>
+                    <MenuItem key={2} value="Divorced">
+                        Divorced
                     </MenuItem>
                     </TextField>
                 </Grid>
@@ -73,8 +79,11 @@ export const PersonalForm = props => {
                     value={form.gender}
                     onChange={handleChange}
                     >
-                    <MenuItem key={0} value="1">
-                        No record
+                    <MenuItem key={0} value="Male">
+                        Male
+                    </MenuItem>
+                    <MenuItem key={1} value="Female">
+                        Female
                     </MenuItem>
                     </TextField>
                 </Grid>

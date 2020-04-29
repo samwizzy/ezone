@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import {
@@ -19,8 +19,8 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
-// import * as Actions from '../actions';
-// import * as Selectors from '../selectors';
+import * as Actions from '../actions';
+import * as Selectors from '../selectors';
 // import AddBankAccountDialog from './AddBankAccountDialog';
 // import LoadingIndicator from '../../../../components/LoadingIndicator';
 
@@ -90,16 +90,16 @@ const JournalListing = props => {
 
   const {
     history,
-    // loading,
-		// openNewBankAccountDialogAction,
-		// editOpenBankAccountDialogAction,
-    // bankAccountData,
+    journalListData,
   } = props;
+
+  console.log('journalListData -> ', journalListData);
+
 
   const handleClick = (event, id) => {
 		console.log("id value -> ", id);
     setAnchorEl(event.currentTarget);
-    const selectedAccount = bankAccountData && bankAccountData.find(acc => id === acc.id);
+    const selectedAccount = journalListData && journalListData.find(acc => id === acc.id);
     setAccount(selectedAccount);
   };
 
@@ -109,40 +109,32 @@ const JournalListing = props => {
 
   const columns = [
     {
-      name: 'accountName',
-      label: 'Account Name',
+      name: 'transactionDate',
+      label: 'Date',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'accountCode',
-      label: 'Account Code',
+      name: 'reference',
+      label: 'Reference number',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'accountNumber',
-      label: 'Account Number',
+      name: 'status',
+      label: 'Status',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'bankName',
-      label: 'Bank Name',
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-			name: 'bankBalance',
-			label: 'Bank Balance',
+			name: 'note',
+			label: 'Note',
 			options: {
 				filter: true,
 				sort: false,
@@ -205,28 +197,29 @@ const JournalListing = props => {
           className={classes.button}
           startIcon={<AddIcon />}
           onClick={() => history.push('/account/journal/add')}
-          // onClick={() => openNewBankAccountDialogAction()}
         >
           New Journal
         </Button>
       </Tooltip>
     ),
+<<<<<<< HEAD
     // onRowClick: (rowData, rowState) => {
     //   props.history.push('/inventory/item/' + rowData[0])
     // },
     elevation: 0
+=======
+>>>>>>> 0e8f12818250e91b543dc81b9044f9f09cee5f65
   };
 
   return (
     <React.Fragment>
-      {/* <AddBankAccountDialog /> */}
       <div className={classes.root}>
         <Grid container>
           <Grid item xs={12}>
             <MUIDataTable
               className={classes.datatable}
               title="Journal"
-              // data={bankAccountData}
+              data={journalListData}
               columns={columns}
               options={options}
             />
@@ -239,20 +232,16 @@ const JournalListing = props => {
 
 JournalListing.propTypes = {
 //   loading: PropTypes.bool,
-//   openNewAccountDialogAction: PropTypes.func,
-//   editOpenAccountDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   // loading: Selectors.makeSelectLoading(),
-  // bankAccountDialog: Selectors.makeSelectBankAccountDialog(),
-  // bankAccountData: Selectors.makeSelectBankAccountData()
+  journalListData: Selectors.makeSelectJournalListData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    // openNewBankAccountDialogAction: () => dispatch(Actions.openNewBankAccountDialog()),
-    // editOpenBankAccountDialogAction: () => dispatch(Actions.editOpenBankAccountDialog()),
+    dispatch
   };
 }
 

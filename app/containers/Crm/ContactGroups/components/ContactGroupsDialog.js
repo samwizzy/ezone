@@ -6,6 +6,8 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
 import {
+  Backdrop,
+  CircularProgress,
   makeStyles,
   Table,
   TableBody,
@@ -38,6 +40,10 @@ const useStyles = makeStyles(theme => ({
   textField: {
     margin: theme.spacing(1),
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -58,6 +64,12 @@ const ContactGroupsDialog = props => {
     contactIds: [],
   });
 
+  useEffect(() => {
+    if (contactGroupsDialog.type === 'edit') {
+      setForm({ ...contactGroupsDialog.data });
+    }
+  }, [contactGroupsDialog.data]);
+
   const canSubmitForm = () => {
     const { groupName, groupDescription } = form;
     return groupName !== '' && groupDescription !== '';
@@ -77,6 +89,9 @@ const ContactGroupsDialog = props => {
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
       >
+        <Backdrop className={classes.backdrop} open={loading}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
         <AppBar position="relative">
           <Toolbar>
             <Typography variant="h6">Add Contact Groups</Typography>
@@ -96,7 +111,7 @@ const ContactGroupsDialog = props => {
                     <TextField
                       name="groupName"
                       label="Name"
-                      id="outlined-title"
+                      id="outlined-groupName"
                       fullWidth
                       variant="outlined"
                       size="small"
@@ -113,7 +128,7 @@ const ContactGroupsDialog = props => {
                     <TextField
                       name="groupDescription"
                       label="Description"
-                      id="outlined-title"
+                      id="outlined-Description"
                       fullWidth
                       variant="outlined"
                       size="small"

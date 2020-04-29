@@ -7,6 +7,10 @@ import {
 } from '@material-ui/pickers';
 import _ from 'lodash';
 import {AppBar, Button, Grid, MenuItem, TextField, Typography, DialogTitle, DialogContent, DialogActions, Divider, Toolbar} from '@material-ui/core';
+import { createStructuredSelector } from 'reselect';
+import * as Actions from '../../actions';
+import * as Selectors from '../../selectors';
+import * as AppSelectors from '../../../App/selectors';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -17,15 +21,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const WorkForm = props => {
-    const {handleChange, handleDateChange, closeNewEmployeeDialog, handleSubmit, handlePrev, form} = props
+    const {handleChange, handleSelectChange, handleDateChange, closeNewEmployeeDialog, handleSubmit, handlePrev, form, employees, departments, roles, employeeTypes} = props
     const classes = useStyles()
-
     const canSubmitForm = () => {
-        const { employeeId, role, department, branch, employmentType, employmentStatus, payRate, payType } = form
-        return employeeId.length > 0 && role.length > 0 && department.length > 0 && branch.length > 0 && employmentType.length > 0
-        && employmentStatus.length > 0 && payRate.length > 0 && payType.length > 0  
+        const { employeeId, role, department, /*branch,*/ employeeType, employmentStatus,/* payRate, payType*/ } = form
+        return employeeId && role && department /*&& branch.length > 0 */&& employeeType
+        && employmentStatus.length > 0 /*&& payRate.length > 0 && payType.length > 0  */
     }
-
     return (
         <React.Fragment>
             <AppBar position="relative">
@@ -53,6 +55,7 @@ export const WorkForm = props => {
                         onChange={handleChange}
                         />
                     </Grid>
+                    {/*
                     <Grid item xs={6}>
                         <TextField
                         id="branch"
@@ -72,6 +75,7 @@ export const WorkForm = props => {
                         </MenuItem>
                         </TextField>
                     </Grid>
+                    */}
                     <Grid item xs={6}>
                         <TextField
                         id="department"
@@ -83,12 +87,14 @@ export const WorkForm = props => {
                         variant="outlined"
                         size="small"
                         label="Department"
-                        value={form.department}
-                        onChange={handleChange}
+                        value={form.department.id}
+                        onChange={handleSelectChange}
                         >
-                        <MenuItem key={0} value="1">
-                            No record
+                        {departments.map((dept) => (
+                        <MenuItem key={dept.id} value={dept.id}>
+                            {dept.name}
                         </MenuItem>
+                        ))};
                         </TextField>
                     </Grid>
                     <Grid item xs={6}>
@@ -105,30 +111,36 @@ export const WorkForm = props => {
                         value={form.employmentStatus}
                         onChange={handleChange}
                         >
-                        <MenuItem key={0} value="2">
-                            No record
+                        <MenuItem key={0} value="Active">
+                            Active
+                        </MenuItem>
+                        <MenuItem key={1} value="Inactive">
+                            Inactive
                         </MenuItem>
                         </TextField>
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
                         id="employment-type"
-                        name="employmentType"
-                        placeholder="Select Employment Type"
+                        name="employeeType"
+                        placeholder="Select Employee Type"
                         select
                         fullWidth
                         className={classes.textField}
                         variant="outlined"
                         size="small"
-                        label="Employment Type"
-                        value={form.employmentType}
-                        onChange={handleChange}
+                        label="Employee Type"
+                        value={form.employeeType.id}
+                        onChange={handleSelectChange}
                         >
-                        <MenuItem key={0} value="3">
-                            No record
+                        {employeeTypes.map((employeeType) => (
+                        <MenuItem key={employeeType.id} value={employeeType.id}>
+                            {employeeType.name}
                         </MenuItem>
+                        ))}
                         </TextField>
                     </Grid>
+                    {/*
                     <Grid item xs={6}>
                         <TextField
                         id="pay-rate"
@@ -167,6 +179,7 @@ export const WorkForm = props => {
                         </MenuItem>
                         </TextField>
                     </Grid>
+                    */}
                     <Grid item xs={6}>
                         <TextField
                         id="role"
@@ -178,12 +191,14 @@ export const WorkForm = props => {
                         variant="outlined"
                         size="small"
                         label="Role"
-                        value={form.role}
+                        value={form.role.id}
                         onChange={handleChange}
                         >
-                        <MenuItem key={0} value="2">
-                            No record
+                        {roles.map((role) => (
+                        <MenuItem key={role.id} value={role.id}>
+                            {role.name}
                         </MenuItem>
+                        ))}
                         </TextField>
                     </Grid>
                     <Grid item xs={12}>
@@ -217,12 +232,14 @@ export const WorkForm = props => {
                         variant="outlined"
                         size="small"
                         label="Reporting To"
-                        value={form.reportTo}
-                        onChange={handleChange}
+                        value={form.reportTo.id}
+                        onChange={handleSelectChange}
                         >
-                        <MenuItem key={0} value="1">
-                            No record
+                        {employees.map((employee) => (
+                        <MenuItem key={employee.id} value={employee.id}>
+                            {employee.firstName} {employee.lastName}
                         </MenuItem>
+                        ))}
                         </TextField>
                     </Grid>
 
@@ -244,3 +261,14 @@ export const WorkForm = props => {
         </React.Fragment>
     )
 }
+/*
+const mapStateToProps = createStructuredSelector({
+  loading: Selectors.makeSelectLoading(),
+  employees: Selectors.makeSelectEmployees(),
+  employee: Selectors.makeSelectEmployee(),
+  user: AppSelectors.makeSelectCurrentUser(),
+  departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
+  employeeTypes: Selectors.makeSelectEmployeeTypes(),
+  roles: Selectors.makeSelectRoles(),
+});
+*/

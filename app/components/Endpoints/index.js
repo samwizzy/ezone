@@ -98,13 +98,33 @@ export const GetEmployeeByDeptApi = `${BaseUrl}/hrserv/api/v1/employees/by_depar
 export const GetEmployeeByTypeApi = `${BaseUrl}/hrserv/api/v1/employees/by_employee_type`;
 export const GetEmployeeByLocationApi = `${BaseUrl}/hrserv/api/v1/employees/by_location`;
 export const GetEmployeeByRoleApi = `${BaseUrl}/hrserv/api/v1/employees/by_role`;
+
+export const GetEmployeeTypes = `${BaseUrl}/authserv/api/v1/generic_entities/for_organinisation`;
+export const CreateEmployee = `${BaseUrl}/authserv/api/v1/user`;
+
+export const GetEnrollmentTypes = `${BaseUrl}/authserv/api/v1/generic_entities/for_organinisation`;
+export const GetLocations = `${BaseUrl}/authserv/api/v1/generic_entities/for_organinisation`;
+
+//Job openings
+export const GetJobOpenings = `${BaseUrl}/authserv/api/v1/job_openings/for_organinisation`;
+export const CreateJobOpening = `${BaseUrl}/authserv/api/v1/job_opening`;
+
+//Roles
+export const GetRoles = `${BaseUrl}/authserv/api/v1/generic_entities/for_organinisation`;
+export const CreateRole = `${BaseUrl}/authserv/api/v1/generic_entity/add`;
+
+
 // Department
 export const DepartmentApi = `${BaseUrl}/hrserv/api/v1/department`;
 export const DepartmentsApi = `${BaseUrl}/hrserv/api/v1/departments`;
 export const GetDepartmentsByIdApi = `${BaseUrl}/hrserv/api/v1/departments/{id}`;
 export const GetDepartmentsByParentIdApi = `${BaseUrl}/hrserv/api/v1/departments/by_parent/{parentId}`;
-export const GetDepartmentsByOrgIdApi = `${BaseUrl}/hrserv/api/v1/departments/for_organinisation`;
-
+//export const GetDepartmentsByOrgIdApi = `${BaseUrl}/authserv/api/v1/organisation/parties`;
+export const GetDepartmentsByOrgIdApi = `${BaseUrl}/authserv/api/v1/organisation_and_tag/parties`;
+export const GetBranches = `${BaseUrl}/authserv/api/v1/organisation_and_tag/parties`;
+export const CreateDepartment = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_party`;
+export const CreateBranch = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_party`;
+//
 // App Api
 export const GetOrgAppsApi = `${BaseUrl}/utilityserv/api/v1/organisation/orgApps`;
 
@@ -146,6 +166,10 @@ export const GetAllBankAccount = `${BaseUrl}/accountingserv/api/v1/bank/get_All_
 export const GetAllTransferByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/bank/get_All_bank_transfers_by_orgid`;
 export const CreateBankTransferApi = `${BaseUrl}/accountingserv/api/v1/bank/transfer`;
 export const GetTransferByAccountIdApi = `${BaseUrl}/accountingserv/api/v1/bank/get_bank_transfer_by_id`;
+export const GetJounalListApi = `${BaseUrl}/accountingserv/api/v1/journal/get_journals_by_orgid`;
+export const GetAllAccountingPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/get_periods_by_orgid`;
+export const CreateAccountPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/add_account_period`;
+export const UpdateAccountPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/update_account_period_status`;
 
 
 /** ***************************************************************** 
@@ -181,9 +205,11 @@ export const GetAdjustmentByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_adjustm
 // Contacts Apis
 export const CreateNewContactApi = `${BaseUrl}/crmserv/api/v1/add_contact`;
 export const UpdateContactApi = `${BaseUrl}/crmserv/api/v1/update_contact`;
-export const GetAllContactsApi = `${BaseUrl}/crmserv/api/v1/get_all_contacts`;
+export const GetAllContactsApi = `${BaseUrl}/crmserv/api/v1/get_all_individual_contacts_by_orgid`;
+export const GetAllCompaniesApi = `${BaseUrl}/crmserv/api/v1/get_all_company_contacts_by_orgid`;
 
 // Contacts Group Apis
 export const CreateNewContactGroupApi = `${BaseUrl}/crmserv/api/v1/add_contact_group`;
 export const UpdateContactGroupApi = `${BaseUrl}/crmserv/api/v1/update_contact_group`;
+export const GetContactGroupByIdApi = `${BaseUrl}/crmserv/api/v1/get_contact_group_by_id`;
 export const GetAllContactsGroupApi = `${BaseUrl}/crmserv/api/v1/get_all_contact_groups`;

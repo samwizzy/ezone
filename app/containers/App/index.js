@@ -21,7 +21,7 @@ import Dashboard from '../Dashboard/Loadable';
 import NotFoundPage from '../NotFoundPage/Loadable';
 import Registration from '../AuthorizationPage/Register/Loadable';
 import Login from '../AuthorizationPage/Login/Loadable';
-import ForgotPassword from '../AuthorizationPage/Login/components/ForgotPasswordForm';
+import ForgotPassword from '../AuthorizationPage/ForgotPassword/Loadable';
 import organizationPage from '../CompanyStructurePage/OrganizationInfo/Loadable';
 import CompanyStructure from '../CompanyStructurePage/CompanyStructure/Loadable';
 // import PartyPage from '../CompanyStructurePage/CompanyStructure/components/PartyPage';
@@ -78,28 +78,6 @@ import { Auth } from '../../auth';
 
 const App = props => {
   const { currentUser, accessToken } = props;
-
-  // useEffect(() => {
-  //   messaging.requestPermission()
-  //   .then(async function() {
-  // 		await messaging.getToken().then(token => {
-  //       fetch('https://dev.ezoneapps.com/gateway/utilityserv/api/v1/fcm/update_client_fcm_token',{
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: `Bearer ${accessToken}`,
-  //         },
-  //         body: JSON.stringify({ sessionId: token, userUuid: currentUser.uuId }),
-  //       })
-  //       .then(response => response.json())
-  //       // .then(data => console.log(data, 'dont bother for this response'));
-  //     });
-  //     })
-  //   .catch(function(err) {
-  //     console.log("Unable to get permission to notify.", err);
-  //   });
-  //   // navigator.serviceWorker.addEventListener("message", (message) => console.log(message));
-  // }, []);
 
   return (
     <div>
@@ -188,13 +166,13 @@ const App = props => {
                   path="/file-manager/folder/:folderId"
                   component={FilesApp}
                 />
+                <PrivateRoute exact path="/chats" component={ChatApp} />
+
                 <PrivateRoute
                   exact
-                  path="/chats"
-                  component={ChatApp}
+                  path="/settings/email"
+                  component={EmailConfig}
                 />
-
-                <PrivateRoute exact path="/settings/email" component={EmailConfig} />
                 <PrivateRoute
                   path="/settings/email/configuration"
                   component={EmailConfigs}
@@ -208,26 +186,81 @@ const App = props => {
                   path="/settings/email/password/template"
                   component={EmailPasswordTemplate}
                 />
-                <PrivateRoute exact path="/work-order" component={WorkOrderPage} />
+                <PrivateRoute
+                  exact
+                  path="/work-order"
+                  component={WorkOrderPage}
+                />
                 <PrivateRoute
                   path="/hr/:sectionId?/:status?"
                   component={HRPage}
                 />
                 <PrivateRoute exact path="/account" component={AccountPage} />
-                <PrivateRoute exact path="/account/chart" component={ChartPage} />
-                <PrivateRoute exact path="/account/chart/details" component={DetailsOfAccountChart} />
-                <PrivateRoute exact path="/account/banking" component={BankingPage} />
-                <PrivateRoute exact path="/account/budgeting/:status?" component={BudgetPage} />
-                <PrivateRoute exact path="/account/settings/:status?" component={SettingsPage} />
-                <PrivateRoute exact path="/account/settings/setup" component={AccountSetup} />
-                <PrivateRoute exact path="/account/banking/details" component={AccountDetails} />
-                <PrivateRoute exact path="/account/journal" component={JournalPage} />
-                <PrivateRoute exact path="/account/journal/add" component={AddNewJournal} />
+                <PrivateRoute
+                  exact
+                  path="/account/chart"
+                  component={ChartPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/chart/details"
+                  component={DetailsOfAccountChart}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/banking"
+                  component={BankingPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/budgeting/:status?"
+                  component={BudgetPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/settings/:status?"
+                  component={SettingsPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/settings/setup"
+                  component={AccountSetup}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/banking/details"
+                  component={AccountDetails}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/journal"
+                  component={JournalPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/journal/add"
+                  component={AddNewJournal}
+                />
 
-                <PrivateRoute exact path="/inventory/dashboard" component={InventoryPage} />
-                <PrivateRoute path="/inventory/warehouses" component={WarehousePage} />
-                <PrivateRoute exact path="/inventory/items/:statusId?" component={ItemPage} />
-                <PrivateRoute exact path="/inventory/item/:statusId?/:sku?" component={ItemPage} />
+                <PrivateRoute
+                  exact
+                  path="/inventory/dashboard"
+                  component={InventoryPage}
+                />
+                <PrivateRoute
+                  path="/inventory/warehouses"
+                  component={WarehousePage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/inventory/items/:statusId?"
+                  component={ItemPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/inventory/item/:statusId?/:sku?"
+                  component={ItemPage}
+                />
                 {/* <PrivateRoute
                   exact
                   path="/inventory/item/:statusId?"

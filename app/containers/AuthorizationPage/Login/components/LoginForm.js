@@ -209,9 +209,9 @@ const LoginForm = props => {
                           onClick={handleVisibility}
                         >
                           {visibility ? (
-                            <VisibilityOffOutlined />
-                          ) : (
                             <VisibilityOutlined />
+                          ) : (
+                            <VisibilityOffOutlined />
                           )}
                         </IconButton>
                       </Tooltip>

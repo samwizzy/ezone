@@ -77,3 +77,25 @@ export function createNewAccountJournalErrorAction(data) {
     payload: data,
   };
 }
+
+// Get accounting period
+export function getJournalListAction() {
+  console.log('getJournalListAction triggered');
+  return {
+    type: Constants.GET_JOURNAL_LIST,
+  };
+}
+
+export function getJournalListSuccessAction(data) {
+  return {
+    type: Constants.GET_JOURNAL_LIST_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getJournalListErrorAction(data) {
+  return {
+    type: Constants.GET_JOURNAL_LIST_ERR,
+    payload: data,
+  };
+}
