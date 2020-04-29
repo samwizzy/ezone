@@ -94,6 +94,10 @@ const PartyGroupDetails = props => {
 		getSelectedParty(partyFound)
     props.history.push(`/organization/company/structure/${groupId}/party/${partyId}`)
   } 
+
+  const handleBackToRoot = () => {
+    props.history.push("/organization/company/structure")
+  }
 	
 	console.log(partyGroupData, "partyGroupData")
 	console.log(selectedPartyGroupData, "selectedPartyGroupData details")
@@ -232,7 +236,7 @@ const PartyGroupDetails = props => {
 					className={classes.datatable}
 					title={
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
-              <Link color="inherit" href="/organization/company/structure" className={classes.link}>
+              <Link color="inherit" onClick={handleBackToRoot} className={classes.link}>
                 Party Groups
               </Link>
               <Typography color="textPrimary" variant="h6">{selectedPartyGroupData.name}</Typography>
