@@ -17,20 +17,10 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectOrgPage from '../selectors';
 import reducer from '../reducer';
 import saga from '../saga';
-
-// import PartyGroupDialog from './components/PartyGroupDialog';
-// import PartyDialog from './components/PartyDialog';
-// import RoleDialog from './components/RoleDialog';
-// import CompanyStructure from './components/CompanyStructure';
-// import PartyPage from './components/PartyPage';
 import ModuleLayout from './../components/ModuleLayout';
 import PartyGroup from './PartyGroup/Loadable'
 import Party from './Party/Loadable'
 import * as Actions from '../actions';
-
-// import PartyGroupDialog from './components/PartyGroupDialog';
-// import PartyDialog from './components/PartyDialog';
-
 
 export function CompanyStructurePage(props) {
   useInjectReducer({ key: 'companyStructurePage', reducer });
@@ -58,15 +48,11 @@ export function CompanyStructurePage(props) {
       </Helmet>
 
       <ModuleLayout>
-        {/* <CompanyStructure /> */}
         {params.partyId?
         <Party /> : <PartyGroup />
         }
       </ModuleLayout>
-
-      {/* <PartyGroupDialog />
-      <PartyDialog />
-      <RoleDialog /> */}
+      {/* <RoleDialog />  */}
     </div>
   );
 }
