@@ -30,6 +30,7 @@ import UserChat from './components/UserChat';
 import NoAvailableChats from './components/NoAvailableChats';
 import ChatHeader from './components/ChatHeader';
 import ChatFooter from './components/ChatFooter';
+import ModuleLayout from '../components/ModuleLayout';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -198,7 +199,6 @@ const ChatTab = props => {
   }, []);
 
   if (newMsgRes) {
-    console.log(newMsgRes, 'newMsgRes');
     getAllUserChatData.messages.push(newMsgRes);
   }
 
@@ -288,139 +288,148 @@ const ChatTab = props => {
 
   return (
     <React.Fragment>
-      <div>
-        {!status === false ? (
-          // <NoAvailableChats />
-          <div />
-        ) : (
-          <Grid justify="center" container justify="space-between">
-            <Grid item xs={12} md={4}>
-              <Paper square>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: '3px 7px',
-                  }}
-                >
-                  <Autocomplete
-                    id="combo-box-demo"
-                    options={allEmployees}
-                    getOptionLabel={option => option.firstName}
-                    style={{ width: '100%' }}
-                    onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
-                    renderInput={params => (
-                      <TextField
-                        {...params}
-                        label="Search contacts"
-                        variant="outlined"
-                        placeholder="Search Contacts"
-                        fullWidth
-                      />
-                    )}
-                  />
-                  <IconButton onClick={() => send()}>
-                    <Add />
-                  </IconButton>
-                </div>
+      <ModuleLayout>
+        <div>
+          {!status === false ? (
+            // <NoAvailableChats />
+            <div />
+          ) : (
+            <Grid
+              justify="center"
+              container
+              justify="space-between"
+              alignItems="center"
+            >
+              <Grid item xs={12} md={4}>
+                <Paper square>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '3px 7px',
+                    }}
+                  >
+                    <Autocomplete
+                      id="combo-box-demo"
+                      options={allEmployees}
+                      getOptionLabel={option => option.firstName}
+                      style={{ width: '100%' }}
+                      onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
+                      renderInput={params => (
+                        <TextField
+                          {...params}
+                          label="Search contacts"
+                          variant="outlined"
+                          placeholder="Search Contacts"
+                          fullWidth
+                        />
+                      )}
+                    />
+                    <IconButton>
+                      <Add />
+                    </IconButton>
+                  </div>
 
-                <Tabs
-                  variant="fullWidth"
-                  value={value}
-                  indicatorColor="primary"
-                  textColor="primary"
-                  onChange={handleChange}
-                  aria-label="disabled tabs example"
-                  className={classes.tabs}
-                >
-                  <Tab label="Active" {...a11yProps(1)} />
-                  <Tab label="Group" {...a11yProps(1)} />
-                  <Tab label="Archive" {...a11yProps(1)} />
-                </Tabs>
-              </Paper>
-              <TabPanel value={value} index={0}>
-                <UserChat
-                  allUsersChat={allUserReversedData}
-                  newChat={newChat}
-                />
-              </TabPanel>
-              <TabPanel value={value} index={1}>
-                <UserChat />
-              </TabPanel>
-              <TabPanel value={value} index={2}>
-                <UserChat />
-              </TabPanel>
-            </Grid>
-            <Grid item xs={12} md={8} component={Paper}>
-              {/* {getAllUserChatData &&
-              getAllUserChatData.messages.length > 0 ? ( */}
-              <Grid container justify="center">
-                <Grid item xs={12}>
-                  <ChatHeader userChatData={userChatData} />
-                </Grid>
-                <Grid item xs={12}>
-                  <div className={classes.msgBody} ref={ref}>
-                    {reversedData &&
-                      reversedData.map(chat => (
-                        <div
-                          key={chat.id}
-                          className={classNames(
-                            classes.messageRow,
-                            { me: currentUser.uuId === chat.senderId },
-                            { contact: currentUser.uuId !== chat.senderId },
-                            {
-                              'first-of-group': isFirstMessageOfGroup(
-                                'item',
-                                'i',
-                              ),
-                            },
-                            {
-                              'last-of-group': isLastMessageOfGroup(
-                                'item',
-                                'i',
-                              ),
-                            },
-                          )}
-                        >
-                          <Paper className={classes.chatPane} key={chat.id}>
-                            <Typography variant="subtitle1" key={chat.id}>
-                              {chat.chatMessage}
-                            </Typography>
-                            <Typography
-                              variant="caption"
-                              style={{
-                                position: 'absolute',
-                                right: 12,
-                                bottom: 0,
-                              }}
+                  <Tabs
+                    variant="fullWidth"
+                    value={value}
+                    indicatorColor="primary"
+                    textColor="primary"
+                    onChange={handleChange}
+                    aria-label="disabled tabs example"
+                    className={classes.tabs}
+                  >
+                    <Tab label="Active" {...a11yProps(1)} />
+                    <Tab label="Group" {...a11yProps(1)} />
+                    <Tab label="Archive" {...a11yProps(1)} />
+                  </Tabs>
+                </Paper>
+                <TabPanel value={value} index={0}>
+                  <UserChat
+                    allUsersChat={allUserReversedData}
+                    newChat={newChat}
+                  />
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                  <UserChat />
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                  <UserChat />
+                </TabPanel>
+              </Grid>
+              <Grid item xs={12} md={8} component={Paper}>
+                {/* {getAllUserChatData &&
+                getAllUserChatData.messages.length > 0 ? ( */}
+                <Grid container justify="center">
+                  <Grid item xs={12}>
+                    <ChatHeader userChatData={userChatData} />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <div className={classes.msgBody} ref={ref}>
+                      {chatLog &&
+                        _.orderBy(chatLog, ['dateCreated'], ['asc']).map(
+                          (chat, i) => (
+                            <div
+                              key={chat.id}
+                              className={classNames(
+                                classes.messageRow,
+                                { me: currentUser.uuId === chat.senderId },
+                                { contact: currentUser.uuId !== chat.senderId },
+                                {
+                                  'first-of-group': isFirstMessageOfGroup(
+                                    chat,
+                                    i,
+                                  ),
+                                },
+                                {
+                                  'last-of-group': isLastMessageOfGroup(
+                                    chat,
+                                    i,
+                                  ),
+                                },
+                              )}
                             >
-                              {moment(chat.dateCreated).format('LT')}
+                              <Paper className={classes.chatPane} key={chat.id + 1}>
+                                <Typography variant="subtitle1" key={chat.id + 1}>
+                                  {chat.chatMessage}
+                                </Typography>
+                                <Typography
+                                  variant="caption"
+                                  style={{
+                                    position: 'absolute',
+                                    right: 12,
+                                    bottom: 0,
+                                  }}
+                                >
+                                  {moment(chat.dateCreated).format('LT')}
+                                </Typography>
+                              </Paper>
+                            </div>
+                          ),
+                        )}
+                    </div>
+                    <ChatFooter />
+                  </Grid>
+                </Grid>
+                {/* ) : (
+                    <Grid container justify="center">
+                      <Grid item xs={12}>
+                        <div className={classes.msgBody}>
+                          <Paper className={classes.chatPane}>
+                            <Typography variant="subtitle1">
+                            Start a new conversation
                             </Typography>
                           </Paper>
                         </div>
-                      ))}
-                  </div>
-                  <ChatFooter />
-                </Grid>
-              </Grid>
-              {/* ) : (
-                  <Grid container justify="center">
-                    <Grid item xs={12}>
-                      <div className={classes.msgBody}>
-                        <Paper className={classes.chatPane}>
-                          <Typography variant="subtitle1">
-                          Start a new conversation
-                          </Typography>
-                        </Paper>
-                      </div>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                )} */}
+                  )} */}
+              </Grid>
             </Grid>
-          </Grid>
-        )}
-      </div>
+          )}
+        </div>
+      </ModuleLayout>
     </React.Fragment>
   );
 };
