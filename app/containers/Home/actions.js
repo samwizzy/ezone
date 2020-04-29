@@ -6,8 +6,8 @@
 
 import * as Constants from './constants';
 
-export function closeNewFileDialog() {
+export function getApplications() {
   return {
-    type: Constants.CLOSE_NEW_FILE_DIALOG,
+    type: Constants.GET_APPLICATIONS,
   };
 }

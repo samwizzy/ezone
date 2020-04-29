@@ -41,21 +41,17 @@ const useStyles = makeStyles(theme => ({
     "& .MuiIconButton-label": {
       color: theme.palette.common.white,
     },
-    '& > div': {
-      display: 'flex',
-    },
     '& > div:first-child': {
+      // flexGrow: 1, 
       display: 'flex',
-      justifyContent: 'space-between',
       color: theme.palette.common.white,
       '& a': {
-        display: "block",
+        display: "flex",
         color: theme.palette.common.white,
         marginLeft: '20px',
-        marginBottom: '-1px',
+        marginBottom: '-4px',
         borderRadius: theme.spacing(2, 2, 0, 0),
         textDecoration: 'none',
-        display: 'flex',
         alignItems: 'center',
         textTransform: 'uppercase',
         padding: theme.spacing(0, 4),
@@ -93,11 +89,11 @@ function MenuBar(props) {
     <div className={classes.root}>
       <AppBar position="relative" elevation={0} color="inherit" className={classes.appBar}>
         <Toolbar variant="dense" className={classes.toolbar}>
+
           <div>
             <IconButton aria-label="delete" onClick={refreshPage}>
               <RefreshSharp />
             </IconButton>
-
             {props.navigations}
           </div>
 

@@ -88,7 +88,7 @@ function TabsPage() {
             centered
           >
             <Tab
-              label="First Marine And Engineering Services"
+              label="FirstMarine Info"
               {...a11yProps(0)}
             />
           </Tabs>
