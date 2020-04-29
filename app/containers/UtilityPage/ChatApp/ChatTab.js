@@ -199,7 +199,6 @@ const ChatTab = props => {
   }, []);
 
   if (newMsgRes) {
-    console.log(newMsgRes, 'newMsgRes');
     getAllUserChatData.messages.push(newMsgRes);
   }
 
