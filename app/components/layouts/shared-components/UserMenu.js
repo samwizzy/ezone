@@ -79,7 +79,7 @@ const UserMenu = props => {
         </IconButton>
 
         <Button className="h-64" onClick={userMenuClick} endIcon={<KeyboardArrowDownIcon />}>
-          {currentUser.organisation && currentUser.organisation.logo? (
+          {currentUser && currentUser.organisation.logo? (
             <Avatar className={classes.avatar} alt="user photo" src={`data:image/jpg;base64,${currentUser.organisation.logo}`} />
           ) : (
             <Avatar className={classes.avatar}>{currentUser.lastName}</Avatar>
