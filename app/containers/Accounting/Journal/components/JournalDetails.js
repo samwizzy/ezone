@@ -51,19 +51,31 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(8, 5)
   },
   status: {
-    padding: theme.spacing(2, 4),
+    textAlign: "center",
+    padding: theme.spacing(2, 5),
     position: "absolute",
     backgroundColor: '#6DCC4C',
     color: theme.palette.common.white,
     top: 0, left: 0,
-    "& :after": {
-      content: "",
+    "&::after": {
+      content: "''",
       position: "absolute",
-      zIndex: 9999,
+      top: 0, 
+      right: "-60px",
       width: 0,
       height: 0,
-      borderTop: "100px solid red",
-      borderRight: "100px solid transparent"
+      borderTop: "60px solid #6DCC4C",
+      borderRight: "60px solid transparent"
+    },
+    "&::before": {
+      content: "''",
+      position: "absolute",
+      top: 0, 
+      right: "-60px",
+      width: 0,
+      height: 0,
+      borderBottom: "60px solid #6DCC4C",
+      borderRight: "60px solid transparent"
     }
   },
   paper: {
@@ -139,6 +151,7 @@ const JournalDetails = props => {
             <Grid item xs={12} className={classNames(classes.gridMargin)}>
                 <Paper square className={classes.flex}>
                   <div className={classes.status}><Typography variant="h6">Approved</Typography></div>
+
                   <Table className={classes.table}>
                       <TableBody>
                           <TableRow>
