@@ -35,9 +35,9 @@ const ChatsApp = props => {
   // }, []);
 
   return (
-    <ModuleLayout>
+    // <ModuleLayout>
       <ChatTab />
-    </ModuleLayout>
+    // </ModuleLayout>
   );
 };
 
