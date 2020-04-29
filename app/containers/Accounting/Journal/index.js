@@ -20,13 +20,10 @@ import saga from './saga';
 import messages from './messages';
 import ModuleLayout from '../components/ModuleLayout';
 import JournalListing from './components/JournalListing';
-<<<<<<< HEAD
 import JournalDetails from './components/JournalDetails';
-=======
 import * as Actions from './actions';
 import * as Selectors from './selectors';
 import LoadingIndicator from '../../../components/LoadingIndicator';
->>>>>>> 0e8f12818250e91b543dc81b9044f9f09cee5f65
 
 export function Journal(props) {
   useInjectReducer({ key: 'journal', reducer });

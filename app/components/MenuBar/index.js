@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
         display: "flex",
         color: theme.palette.common.white,
         marginLeft: '20px',
-        marginBottom: '-1px',
+        marginBottom: '-4px',
         borderRadius: theme.spacing(2, 2, 0, 0),
         textDecoration: 'none',
         alignItems: 'center',
