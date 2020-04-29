@@ -153,7 +153,6 @@ function a11yProps(index) {
 const ref = React.createRef();
 
 const ChatTab = props => {
-  // let stompClient = null;
   const {
     accessToken,
     allEmployees,
@@ -176,18 +175,18 @@ const ChatTab = props => {
   const classes = useStyles();
   const [status, setStatus] = React.useState(false);
 
+  const [chatLog, setChatLog] = useState(getAllUserChatData.messages);
   const [value, setValue] = React.useState(0);
   const [newChat, setNewChat] = useState();
-  const [messages, setMessages] = useState([]);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const socket = new SockJS(
-    'https://dev.ezoneapps.com/gateway/utilityserv/messages',
-  );
-  const stompClient = Stomp.over(socket);
   const chatConnect = () => {
+    const socket = new SockJS(
+      'https://dev.ezoneapps.com/gateway/utilityserv/messages',
+    );
+    const stompClient = Stomp.over(socket);
     stompClient.connect(
       {
         'X-Authorization': 'Bearer ' + `${accessToken}`,
@@ -198,11 +197,9 @@ const ChatTab = props => {
         const connected = true;
         console.log(frame, 'frame');
         stompClient.subscribe(`/queue/${currentUser.uuId}`, tick => {
-          console.log(tick, 'tick');
-          const newMesg = JSON.parse(tick.body);
-          // if (newMesg) {
-          //   setMessages({ ...messages, newMesg });
-          // }
+          const newMsg = JSON.parse(tick.body);
+          console.log(newMsg, 'newMsg');
+          setChatLog(prevChatLog => [...prevChatLog, newMsg]);
         });
       },
       error => {
@@ -234,7 +231,7 @@ const ChatTab = props => {
     setNewChat(initNewChat);
   };
 
-  let userChatReversedData = [];
+  var userChatReversedData = [];
   let allUserReversedData = [];
 
   // reversed datas
@@ -244,14 +241,15 @@ const ChatTab = props => {
       ['dateCreated'],
       ['asc'],
     );
-    setMessages(userChatReversedData);
   }
 
   if (allUsersChat) {
     allUserReversedData = _.orderBy(allUsersChat, ['dateCreated'], ['desc']);
   }
 
-  console.log(messages, 'messages');
+  console.log(chatLog, 'chatLog in if');
+    // console.log('setChatLog in if');
+  console.log(userChatReversedData, 'userChatReversedData');
 
   // console.log(userChatData, 'userChatData');
   // console.log(newChat, 'newChat');
@@ -288,9 +286,7 @@ const ChatTab = props => {
                     <Autocomplete
                       id="combo-box-demo"
                       options={allEmployees}
-                      getOptionLabel={option =>
-                        `${option.firstName} ${option.lastName}`
-                      }
+                      getOptionLabel={option => option.firstName}
                       style={{ width: '100%' }}
                       onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
                       renderInput={params => (
@@ -344,8 +340,8 @@ const ChatTab = props => {
                   </Grid>
                   <Grid item xs={12}>
                     <div className={classes.msgBody} ref={ref}>
-                      {messages &&
-                        messages.map(chat => (
+                      {userChatReversedData &&
+                        userChatReversedData.map(chat => (
                           <div
                             key={chat.id}
                             className={classNames(

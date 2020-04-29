@@ -29,14 +29,14 @@ const useStyles = makeStyles(theme => ({
 
 export const ImageUpload = props => {
   const {
-    setForm,
     uploadFileAction,
-    closeNewContactDialog,
+    closeNewCompanyDialog,
     handlePrev,
     form,
-    createNewContactAction,
-    updateContactAction,
-    contactDialog,
+    setForm,
+    createNewCompanyAction,
+    updateCompanyAction,
+    companyDialog,
   } = props;
   const classes = useStyles();
 
@@ -62,9 +62,9 @@ export const ImageUpload = props => {
       </DialogContent>
 
       <DialogActions>
-        {contactDialog.type === 'new' ? (
+        {companyDialog.type === 'new' ? (
           <div>
-            <Button onClick={() => closeNewContactDialog()} color="primary">
+            <Button onClick={() => closeNewCompanyDialog()} color="primary">
               Cancel
             </Button>
             <Button onClick={handlePrev} color="primary">
@@ -72,7 +72,7 @@ export const ImageUpload = props => {
             </Button>
             <Button
               onClick={() => {
-                createNewContactAction(form);
+                createNewCompanyAction(form);
                 setForm('');
               }}
               color="primary"
@@ -82,7 +82,7 @@ export const ImageUpload = props => {
           </div>
         ) : (
           <div>
-            <Button onClick={() => closeNewContactDialog()} color="primary">
+            <Button onClick={() => closeNewCompanyDialog()} color="primary">
               Cancel
             </Button>
             <Button onClick={handlePrev} color="primary">
@@ -90,7 +90,7 @@ export const ImageUpload = props => {
             </Button>
             <Button
               onClick={() => {
-                updateContactAction(form);
+                updateCompanyAction(form);
                 setForm('');
               }}
               color="primary"

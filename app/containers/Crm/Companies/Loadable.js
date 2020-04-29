@@ -1,6 +1,6 @@
 /**
  *
- * Asynchronously loads the component for Crm
+ * Asynchronously loads the component for Companies
  *
  */
 

@@ -205,7 +205,8 @@ export const GetAdjustmentByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_adjustm
 // Contacts Apis
 export const CreateNewContactApi = `${BaseUrl}/crmserv/api/v1/add_contact`;
 export const UpdateContactApi = `${BaseUrl}/crmserv/api/v1/update_contact`;
-export const GetAllContactsApi = `${BaseUrl}/crmserv/api/v1/get_all_contacts`;
+export const GetAllContactsApi = `${BaseUrl}/crmserv/api/v1/get_all_individual_contacts_by_orgid`;
+export const GetAllCompaniesApi = `${BaseUrl}/crmserv/api/v1/get_all_company_contacts_by_orgid`;
 
 // Contacts Group Apis
 export const CreateNewContactGroupApi = `${BaseUrl}/crmserv/api/v1/add_contact_group`;

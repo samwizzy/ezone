@@ -159,13 +159,13 @@ const App = props => {
                   path="/file-manager/folder/:folderId"
                   component={FilesApp}
                 />
+                <PrivateRoute exact path="/chats" component={ChatApp} />
+
                 <PrivateRoute
                   exact
-                  path="/chats"
-                  component={ChatApp}
+                  path="/settings/email"
+                  component={EmailConfig}
                 />
-
-                <PrivateRoute exact path="/settings/email" component={EmailConfig} />
                 <PrivateRoute
                   path="/settings/email/configuration"
                   component={EmailConfigs}
@@ -179,26 +179,81 @@ const App = props => {
                   path="/settings/email/password/template"
                   component={EmailPasswordTemplate}
                 />
-                <PrivateRoute exact path="/work-order" component={WorkOrderPage} />
+                <PrivateRoute
+                  exact
+                  path="/work-order"
+                  component={WorkOrderPage}
+                />
                 <PrivateRoute
                   path="/hr/:sectionId?/:status?"
                   component={HRPage}
                 />
                 <PrivateRoute exact path="/account" component={AccountPage} />
-                <PrivateRoute exact path="/account/chart" component={ChartPage} />
-                <PrivateRoute exact path="/account/chart/details" component={DetailsOfAccountChart} />
-                <PrivateRoute exact path="/account/banking" component={BankingPage} />
-                <PrivateRoute exact path="/account/budgeting/:status?" component={BudgetPage} />
-                <PrivateRoute exact path="/account/settings/:status?" component={SettingsPage} />
-                <PrivateRoute exact path="/account/settings/setup" component={AccountSetup} />
-                <PrivateRoute exact path="/account/banking/details" component={AccountDetails} />
-                <PrivateRoute exact path="/account/journal" component={JournalPage} />
-                <PrivateRoute exact path="/account/journal/add" component={AddNewJournal} />
+                <PrivateRoute
+                  exact
+                  path="/account/chart"
+                  component={ChartPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/chart/details"
+                  component={DetailsOfAccountChart}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/banking"
+                  component={BankingPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/budgeting/:status?"
+                  component={BudgetPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/settings/:status?"
+                  component={SettingsPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/settings/setup"
+                  component={AccountSetup}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/banking/details"
+                  component={AccountDetails}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/journal"
+                  component={JournalPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/journal/add"
+                  component={AddNewJournal}
+                />
 
-                <PrivateRoute exact path="/inventory/dashboard" component={InventoryPage} />
-                <PrivateRoute path="/inventory/warehouses" component={WarehousePage} />
-                <PrivateRoute exact path="/inventory/items/:statusId?" component={ItemPage} />
-                <PrivateRoute exact path="/inventory/item/:statusId?/:sku?" component={ItemPage} />
+                <PrivateRoute
+                  exact
+                  path="/inventory/dashboard"
+                  component={InventoryPage}
+                />
+                <PrivateRoute
+                  path="/inventory/warehouses"
+                  component={WarehousePage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/inventory/items/:statusId?"
+                  component={ItemPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/inventory/item/:statusId?/:sku?"
+                  component={ItemPage}
+                />
                 {/* <PrivateRoute
                   exact
                   path="/inventory/item/:statusId?"

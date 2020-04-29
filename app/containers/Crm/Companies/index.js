@@ -1,10 +1,10 @@
 /**
  *
- * Crm
+ * Companies
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -14,39 +14,45 @@ import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectCrm from '../selectors';
-import reducer from '../reducer';
-import saga from '../saga';
-import messages from '../messages';
-import CompaniesDialog from './components/CompaniesDialog';
+import makeSelectCompanies from './selectors';
+import reducer from './reducer';
+import saga from './saga';
+import * as Actions from './actions';
 import CompaniesList from './components/CompaniesList';
 
-export function Crm() {
-  useInjectReducer({ key: 'crm', reducer });
-  useInjectSaga({ key: 'crm', saga });
+export function Companies(props) {
+  useInjectReducer({ key: 'crmCompanies', reducer });
+  useInjectSaga({ key: 'crmCompanies', saga });
+
+  const { getAllCompaniesAction } = props;
+
+  useEffect(() => {
+    getAllCompaniesAction();
+  }, []);
 
   return (
     <div>
       <Helmet>
-        <title>Crm - Contacts</title>
-        <meta name="description" content="Description of Crm" />
+        <title>Companies</title>
+        <meta name="description" content="Description of Companies" />
       </Helmet>
-      {/* <CompaniesDialog /> */}
       <CompaniesList />
     </div>
   );
 }
 
-Crm.propTypes = {
+Companies.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  getAllCompaniesAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  crm: makeSelectCrm(),
+  companies: makeSelectCompanies(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    getAllCompaniesAction: () => dispatch(Actions.getAllCompanies()),
     dispatch,
   };
 }
@@ -59,4 +65,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(Crm);
+)(Companies);

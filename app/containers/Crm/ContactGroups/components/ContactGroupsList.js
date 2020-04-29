@@ -2,6 +2,8 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
+  Backdrop,
+  CircularProgress,
   makeStyles,
   Button,
   Paper,
@@ -49,11 +51,15 @@ const useStyles = makeStyles(theme => ({
   marginButton: {
     margin: theme.spacing(1),
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
 const ContactGroupsList = props => {
   const classes = useStyles();
-  const { loading, openNewContactGroupsDialog, allContactGroups } = props;
+  const { loading, openNewContactGroupsDialog, allContactGroups, openEditContactGroupsDialog } = props;
 
   useEffect(() => {
 
@@ -115,16 +121,22 @@ const ContactGroupsList = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => (
-          <div>
-            <Button variant="outlined" size="small" color="primary" className={classes.marginButton}>
-              Edit
-            </Button>
-            <Button variant="outlined" size="small" color="primary" className={classes.marginButton}>
-              View
-            </Button>
-          </div>
-        ),
+        customBodyRender: value => {
+          const contactGp = allContactGroups.find(contact => value === contact.id);
+          if (value === '') {
+            return '';
+          }
+          return (
+            <div>
+              <Button variant="outlined" size="small" color="primary" className={classes.marginButton} onClick={() => openEditContactGroupsDialog(contactGp)}>
+                Edit
+              </Button>
+              <Button variant="outlined" size="small" color="primary" className={classes.marginButton} onClick={() => props.history.push(`/crm/contact-groups/${contactGp.id}`)}>
+                View
+              </Button>
+            </div>
+          );
+        },
       },
     },
   ];
@@ -145,18 +157,21 @@ const ContactGroupsList = props => {
         New
       </Button>
     ),
-    onRowClick: (rowData, rowState) => {
-      props.history.push(`/crm/contact-groups/${rowData[0]}`);
-    },
+    // onRowClick: (rowData, rowState) => {
+    //   props.history.push(`/crm/contact-groups/${rowData[0]}`);
+    // },
     elevation: 0
   };
 
-  if (loading) {
-    return <LoadingIndicator />;
-  }
+  // if (loading) {
+  //   return <LoadingIndicator />;
+  // }
 
   return (
     <React.Fragment>
+      <Backdrop className={classes.backdrop} open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <MUIDataTable
         className={classes.datatable}
         title="All Contact Groups"
@@ -173,6 +188,7 @@ const ContactGroupsList = props => {
 ContactGroupsList.propTypes = {
   loading: PropTypes.bool,
   openNewContactGroupsDialog: PropTypes.func,
+  openEditContactGroupsDialog: PropTypes.func,
   allContactGroups: PropTypes.array,
 };
 
@@ -184,6 +200,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewContactGroupsDialog: () => dispatch(Actions.openNewContactGroupsDialog()),
+    openEditContactGroupsDialog: evt => dispatch(Actions.openEditContactGroupsDialog(evt)),
   };
 }
 
