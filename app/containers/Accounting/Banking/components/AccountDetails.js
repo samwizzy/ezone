@@ -178,6 +178,7 @@ const AccountDetails = props => {
                         <TableCell>Balance</TableCell>
                       </TableRow>
                     </TableHead>
+
                     <TableBody>
                       <TableRow>
                         <TableCell>3rd, June, 2019</TableCell>
@@ -188,6 +189,7 @@ const AccountDetails = props => {
                         <TableCell>$1200</TableCell>
                       </TableRow>
                     </TableBody>
+
                     <TableFooter>
                       <TableRow>
                         <TableCell colSpan={3}></TableCell>
@@ -196,6 +198,7 @@ const AccountDetails = props => {
                         <TableCell>NGN 200,000.00</TableCell>
                       </TableRow>
                     </TableFooter>
+                    
                   </Table>
                 </Paper>
               </Grid>

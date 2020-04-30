@@ -19,15 +19,42 @@ export function closeNewBankAccountDialog() {
   };
 }
 
-export function editOpenBankAccountDialog() {
+export function editOpenBankAccountDialog(data) {
   return {
     type: Constants.EDIT_OPEN_ACCOUNT_DIALOG,
+    payload: data,
   };
 }
 
 export function editCloseBankAccountDialog() {
   return {
     type: Constants.EDIT_CLOSE_ACCOUNT_DIALOG,
+  };
+}
+
+export function openDeleteBankAccountDialog(data) {
+  return {
+    type: Constants.OPEN_DELETE_BANK_ACCOUNT_DIALOG,
+    payload: data,
+  };
+}
+
+export function closeDeleteBankAccountDialog() {
+  return {
+    type: Constants.CLOSE_DELETE_BANK_ACCOUNT_DIALOG,
+  };
+}
+
+export function openActivateBankAccountDialog(data) {
+  return {
+    type: Constants.OPEN_ACTIVATE_BANK_ACCOUNT_DIALOG,
+    payload: data,
+  };
+}
+
+export function closeActivateBankAccountDialog() {
+  return {
+    type: Constants.CLOSE_ACTIVATE_BANK_ACCOUNT_DIALOG,
   };
 }
 
@@ -198,6 +225,52 @@ export function getTransferByAccountIdSuccessAction(data) {
 export function getTransferByAccountIdErrorAction(data) {
   return {
     type: Constants.GET_TRANSFERS_BY_ACCOUNT_ID_ERR,
+    payload: data,
+  };
+}
+
+
+// Set bank account active status
+export function setBankAccountActiveStatusAction(data) {
+  return {
+    type: Constants.SET_BANKACCOUNT_ACTIVE_STATUS,
+    payload: data,
+  };
+}
+
+export function setBankAccountActiveStatusSuccessAction(data) {
+  return {
+    type: Constants.SET_BANKACCOUNT_ACTIVE_STATUS_SUCCESS,
+    payload: data,
+  };
+}
+
+export function setBankAccountActiveStatusErrorAction(data) {
+  return {
+    type: Constants.SET_BANKACCOUNT_ACTIVE_STATUS_ERR,
+    payload: data,
+  };
+}
+
+
+// Delete a bank account
+export function deleteBankAccountAction(data) {
+  return {
+    type: Constants.DELETE_BANK_ACCOUNT,
+    payload: data,
+  };
+}
+
+export function deleteBankAccountSuccessAction(data) {
+  return {
+    type: Constants.DELETE_BANK_ACCOUNT_SUCCESS,
+    payload: data,
+  };
+}
+
+export function deleteBankAccountErrorAction(data) {
+  return {
+    type: Constants.DELETE_BANK_ACCOUNT_ERR,
     payload: data,
   };
 }

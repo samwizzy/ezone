@@ -35,11 +35,15 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import moment from 'moment';
+import reducer from '../reducer';
+import saga from '../saga';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../../App/selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import Logo from '../../../../images/Logo.svg';
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
 
 
 const useStyles = makeStyles(theme => ({
@@ -65,6 +69,9 @@ const useStyles = makeStyles(theme => ({
 
 const AccountSetup = props => {
   const classes = useStyles();
+
+  useInjectReducer({ key: 'settings', reducer });
+  useInjectSaga({ key: 'settings', saga });
   
   const {} = props;
 

@@ -86,13 +86,18 @@ const AddNewJournal = props => {
     createNewAccountJournalAction
   } = props;
 
+  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {
+    dispatchGetAccountPeriodAction();
+    dispatchGetAllChartOfAccountTypeAction();
+  }, []);
+
   const [values, setValues] = React.useState({
     entries: [ ],
-    note: '',
+    note: "",
     orgId: currentUser.organisation.orgId,
-    periodId: '',
-    reference: '',
-    transactionDate: moment(new Date()).format('YYYY-MM-DD'),
+    periodId: "",
+    transactionDate: "",
   });
 
   const addRow = () => {
@@ -100,10 +105,16 @@ const AddNewJournal = props => {
       accountId: 0,
       credit: 0,
       debit: 0,
-      description: '',
+      description: "",
     };
     setValues({ ...values, "entries": [ ...values.entries, item ] });
   };
+
+  // Filter all periods with status -> true
+  const filteredAccountPeriodData = accountPeriodData.filter((item) => item.status);
+
+  // Select current financial year
+  const currentAccountPeriod = accountPeriodData.filter((item) => item.status && item.activeYear)[0];
 
   const removeRow = index => {
     values.entries.splice(index, 1);
@@ -115,13 +126,13 @@ const AddNewJournal = props => {
   };
 
   const handleSelectChange = (name, value) => {
-    setValues({ ...values, periodId: value.id });
+    setValues({ ...values, periodId: value.id, transactionDate: value.startDate });
   };
 
   const handleRowChange = (event, index) => {
-    const entries = [...values.entries]
-    entries[index][event.target.name] = event.target.value
-    setValues({...values, entries})
+    const entries = [...values.entries];
+    entries[index][event.target.name] = event.target.value;
+    setValues({...values, entries});
   }
 
   const handleSelectChangeRows = (event, value, index) => {
@@ -129,12 +140,6 @@ const AddNewJournal = props => {
     entries[index]["accountId"] = value.id;
     setValues({ ...values, entries });
   };
-
-  // Similar to componentDidMount and componentDidUpdate:
-  useEffect(() => {
-    dispatchGetAccountPeriodAction();
-    dispatchGetAllChartOfAccountTypeAction();
-  }, []);
 
   const toBase64 = file => new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -156,27 +161,30 @@ const AddNewJournal = props => {
     setValues(_.set({ ...values }, event.target.name, fileNode))
   }
 
-  console.log('chartOfAccountData from journal > ', chartOfAccountData);
-  console.log('accountPeriodData-> ', accountPeriodData);
   console.log('values -> ', values);
+  console.log('currentAccountPeriod -> ', currentAccountPeriod);
 
+  
   return (
     <ModuleLayout>
       <div className={classes.root}>
         <Grid container>
           <Grid item xs={12} className={classNames(classes.gridMargin)}>
-            <Typography variant="h6">New Journal</Typography>
+            <Typography variant="h6">New Posting</Typography>
+            <Typography variant="h6">
+              FY: {moment(currentAccountPeriod.startDate).format('dddd do-MMM-YYYY')} - {moment(currentAccountPeriod.endDate).format('dddd do-MMM-YYYY')}
+            </Typography>
             <Grid container className={classes.grid}>
               <Grid item xs={5}>
                 <Autocomplete
                   id="combo-box-demo"
-                  options={accountPeriodData}
+                  options={filteredAccountPeriodData}
                   getOptionLabel={option => option.year}
                   onChange={(evt, value) => handleSelectChange(evt, value)}
                   renderInput={params => (
                     <TextField
                       {...params}
-                      label="Transaction Date"
+                      label="Financial Year"
                       size="small"
                       className={classes.textField}
                       variant="outlined"
@@ -185,20 +193,6 @@ const AddNewJournal = props => {
                       fullWidth
                     />
                   )}
-                />
-              </Grid>
-              <Grid item xs={5}>
-                <TextField
-                  id="standard-reference"
-                  label="Reference Number"
-                  size="small"
-                  type="name"
-                  variant="outlined"
-                  className={classes.textField}
-                  value={values.reference}
-                  onChange={handleChange('reference')}
-                  margin="normal"
-                  fullWidth
                 />
               </Grid>
             </Grid>
@@ -239,7 +233,7 @@ const AddNewJournal = props => {
                     <Autocomplete
                       id={id}
                       options={chartOfAccountData}
-                      getOptionLabel={option => option.accountName}
+                      getOptionLabel={option => option.accountCode}
                       onChange={(evt, value) => handleSelectChangeRows(evt, value, id)}
                       renderInput={params => (
                         <TextField
@@ -254,24 +248,6 @@ const AddNewJournal = props => {
                         />
                       )}
                     />
-                    {/* <Autocomplete
-                      id="combo-box-demo"
-                      options={chartOfAccountData}
-                      getOptionLabel={option => option.accountNumber}
-                      onChange={(evt, value) => handleSelectChangeRows(evt, value, id)}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          label="Account"
-                          size="small"
-                          className={classes.textField}
-                          variant="outlined"
-                          placeholder="Search"
-                          margin="normal"
-                          fullWidth
-                        />
-                      )}
-                    /> */}
                   </TableCell>
                   <TableCell align="center">
                     <TextField
@@ -287,18 +263,6 @@ const AddNewJournal = props => {
                       margin="normal"
                       fullWidth
                     />
-                    {/* <TextField
-                      id="standard-accountName"
-                      label="Description"
-                      size="small"
-                      type="name"
-                      variant="outlined"
-                      className={classes.textField}
-                      value={row.description}
-                      onChange={(event) => handleRowChange(event, id)}
-                      margin="normal"
-                      fullWidth
-                    /> */}
                   </TableCell>
                   <TableCell align="center">
                     <TextField
@@ -310,23 +274,11 @@ const AddNewJournal = props => {
                       className={classes.textField}
                       name="debit"
                       value={row.debit}
+                      disabled={row.credit}
                       onChange={(event) => handleRowChange(event, id)}
                       margin="normal"
                       fullWidth
                     />
-                    {/* <TextField
-                      id="standard-accountName"
-                      label="Debit"
-                      size="small"
-                      type="number"
-                      variant="outlined"
-                      className={classes.textField}
-                      name="debit"
-                      value={row.debit}
-                      onChange={handleChange('accountName')}
-                      margin="normal"
-                      fullWidth
-                    /> */}
                   </TableCell>
                   <TableCell align="center">
                     <TextField
@@ -338,23 +290,11 @@ const AddNewJournal = props => {
                       className={classes.textField}
                       name="credit"
                       value={row.credit}
+                      disabled={row.debit}
                       onChange={(event) => handleRowChange(event, id)}
                       margin="normal"
                       fullWidth
                     />
-                    {/* <TextField
-                      id="standard-accountName"
-                      label="Credit"
-                      size="small"
-                      type="number"
-                      variant="outlined"
-                      className={classes.textField}
-                      name="credit"
-                      value={row.credit}
-                      onChange={(event) => handleRowChange(event, id)}
-                      margin="normal"
-                      fullWidth
-                    /> */}
                   </TableCell>
                   <TableCell align="center">
                     <IconButton aria-label="delete" onClick={() => removeRow(id)}>
@@ -371,12 +311,16 @@ const AddNewJournal = props => {
                   </TableCell>
                   <TableCell>
                     <Paper elevation={0} square className={classes.paper}>
-                      <Typography variant="h6">0</Typography>
+                      <Typography variant="h6">
+                        { values.entries.reduce((a, b) => a + Number(b.debit), 0) }
+                      </Typography>
                     </Paper>
                   </TableCell>
                   <TableCell>
                     <Paper elevation={0} square className={classes.paper}>
-                      <Typography variant="h6">0</Typography>
+                      <Typography variant="h6">
+                        { values.entries.reduce((a, b) => a + Number(b.credit), 0) }
+                      </Typography>
                     </Paper>
                   </TableCell>
                   <TableCell />

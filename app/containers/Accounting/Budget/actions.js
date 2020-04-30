@@ -1,6 +1,6 @@
 /*
  *
- * Banking actions
+ * Budget actions
  *
  */
 
