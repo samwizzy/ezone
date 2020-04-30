@@ -277,7 +277,9 @@ const ChatTab = props => {
                     <Autocomplete
                       id="combo-box-demo"
                       options={allEmployees}
-                      getOptionLabel={option => option.firstName}
+                      getOptionLabel={option =>
+                        `${option.firstName} ${option.lastName}`
+                      }
                       style={{ width: '100%' }}
                       onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
                       renderInput={params => (
