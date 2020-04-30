@@ -10,7 +10,7 @@ import {
   Menu,
   MenuItem,
   Grid,
-  Tooltip,
+  Tooltip
 } from '@material-ui/core';
 
 import AddIcon from '@material-ui/icons/Add';
@@ -93,7 +93,9 @@ const BankList = props => {
     loading,
     history,
 		openNewBankAccountDialogAction,
-		editOpenBankAccountDialogAction,
+    editOpenBankAccountDialogAction,
+    openDeleteBankAccountDialogAction,
+    openActivateBankAccountDialogAction,
     bankAccountData,
   } = props;
 
@@ -149,7 +151,15 @@ const BankList = props => {
 				filter: true,
 				sort: false,
 			},
-		},
+    },
+    {
+      name: 'status',
+      label: 'Status',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
     {
       name: 'id',
       label: '.',
@@ -176,6 +186,21 @@ const BankList = props => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
+                <MenuItem onClick={() => {
+                  openActivateBankAccountDialogAction(account);
+                }}>
+                  Activate
+                </MenuItem>
+                <MenuItem onClick={() => {
+                  // editOpenBankAccountDialogAction(account);
+                }}>
+                  Deactivate
+                </MenuItem>
+                <MenuItem onClick={() => {
+                  openDeleteBankAccountDialogAction(account);
+                }}>
+                  Delete
+                </MenuItem>
                 <MenuItem onClick={() => {
                   editOpenBankAccountDialogAction(account);
                 }}>
@@ -250,7 +275,9 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewBankAccountDialogAction: () => dispatch(Actions.openNewBankAccountDialog()),
-    editOpenBankAccountDialogAction: () => dispatch(Actions.editOpenBankAccountDialog()),
+    editOpenBankAccountDialogAction: evt => dispatch(Actions.editOpenBankAccountDialog(evt)),
+    openDeleteBankAccountDialogAction: evt => dispatch(Actions.openDeleteBankAccountDialog(evt)),
+    openActivateBankAccountDialogAction: evt => dispatch(Actions.openActivateBankAccountDialog(evt)),
   };
 }
 

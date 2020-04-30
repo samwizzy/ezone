@@ -56,7 +56,6 @@ export function getAllAccountTypeErrorAction(data) {
 
 // Get parent account types 
 export function getParentAccountTypeAction(data) {
-  console.log('getParentAccountTypeAction triggered ', data);
   return {
     type: Constants.GET_PARENT_ACCOUNT_TYPES,
     payload: data,
@@ -164,5 +163,20 @@ export function updateChartOfAccountErrorAction(data) {
   return {
     type: Constants.UPDATE_CHART_OF_ACCOUNT_ERR,
     payload: data,
+  };
+}
+
+
+// Confirm delete dialog
+export function openDeleteAccountDialog(data) {
+  return {
+    type: Constants.OPEN_DELETE_ACCOUNT_DIALOG,
+    payload: data,
+  };
+}
+
+export function closeDeleteAccountDialog() {
+  return {
+    type: Constants.CLOSE_DELETE_ACCOUNT_DIALOG,
   };
 }

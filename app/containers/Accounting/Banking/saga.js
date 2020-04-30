@@ -8,6 +8,7 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 
 
+
 export function* getAllAccountTypeSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
@@ -28,7 +29,6 @@ export function* getAllAccountTypeSaga() {
     yield put(Actions.getAllAccountTypeErrorAction(err));
   }
 }
-
 
 // Create new chart of account
 export function* createNewBankSaga() {
@@ -78,7 +78,6 @@ export function* getAllBankAccountSaga() {
   }
 }
 
-
 // Get all bank transactions made by organisation 
 export function* getAllTransferByOrgIdSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
@@ -101,7 +100,6 @@ export function* getAllTransferByOrgIdSaga() {
     yield put(Actions.getAllTransferByOrgIdErrorAction(err));
   }
 }
-
 
 // Create new chart of account
 export function* createBankTransferSaga() {
@@ -127,7 +125,6 @@ export function* createBankTransferSaga() {
     yield put(Actions.createBankTransferErrorAction(err));
   }
 }
-
 
 export function* getTransferByAccountIdSaga({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
@@ -155,6 +152,35 @@ export function* getTransferByAccountIdSaga({ type, payload }) {
 }
 
 
+// Delete bank account
+export function* deleteBankAccountSaga({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());  
+  const requestURL = `${Endpoints.DeleteBankAccountApi}/${payload.id}`;
+
+  console.log('deleteBankAccountSaga saga payload ', payload);
+
+  try {
+    const deleteAccountResponse = yield call(request, requestURL, {
+      method: 'PUT',
+      body: "",
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log('deleteAccountResponse -> ', deleteAccountResponse);
+    yield put(Actions.getAllBankAccountAction());
+    alert(`Accounting period set successfully!`);
+    yield put(Actions.deleteBankAccountSuccessAction(deleteAccountResponse));
+    yield put(Actions.closeDeleteBankAccountDialog());
+  } catch (err) {
+    console.log('deleteBankAccountErrorAction -> ', err);
+    alert(`Something went wrong.`);
+    yield put(Actions.deleteBankAccountErrorAction(err));
+  }
+}
+
 // Individual exports for testing
 export default function* BankingSaga() {
   // See example in containers/HomePage/saga.js
@@ -164,5 +190,6 @@ export default function* BankingSaga() {
   yield takeLatest(Constants.GET_ALL_TRANSFER_BY_ORGID, getAllTransferByOrgIdSaga);
   yield takeLatest(Constants.CREATE_BANK_TRANSFER, createBankTransferSaga);
   yield takeLatest(Constants.GET_TRANSFERS_BY_ACCOUNT_ID, getTransferByAccountIdSaga);
+  yield takeLatest(Constants.DELETE_BANK_ACCOUNT, deleteBankAccountSaga);
 }
 

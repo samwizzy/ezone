@@ -87,6 +87,56 @@ const bankingReducer = (state = initialState, action) =>
         };
       }
 
+      case Constants.OPEN_DELETE_BANK_ACCOUNT_DIALOG: {
+        return {
+          ...state,
+          bankAccountDialog: {
+            type: 'delete',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_DELETE_BANK_ACCOUNT_DIALOG: {
+        return {
+          ...state,
+          bankAccountDialog: {
+            type: 'delete',
+            props: {
+              open: false,
+            },
+            data: action.payload,
+          },
+        };
+      }
+
+      case Constants.OPEN_ACTIVATE_BANK_ACCOUNT_DIALOG: {
+        return {
+          ...state,
+          bankAccountDialog: {
+            type: 'activate',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_ACTIVATE_BANK_ACCOUNT_DIALOG: {
+        return {
+          ...state,
+          bankAccountDialog: {
+            type: 'activate',
+            props: {
+              open: false,
+            },
+            data: action.payload,
+          },
+        };
+      }
+
       // Case to get account type data
       case Constants.GET_ALL_ACCOUNT_TYPES: {
         return {
@@ -178,6 +228,31 @@ const bankingReducer = (state = initialState, action) =>
         };
       }
       case Constants.UPDATE_BANK_ACCOUNT_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+
+      // Case to delete bank account
+      case Constants.DELETE_BANK_ACCOUNT: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          newBankPostData: action.payload
+        };
+      }
+      case Constants.DELETE_BANK_ACCOUNT_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          newBankPostData: action.payload
+        };
+      }
+      case Constants.DELETE_BANK_ACCOUNT_ERR: {
         return {
           ...state,
           loading: false,
