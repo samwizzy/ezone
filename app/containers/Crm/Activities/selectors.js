@@ -39,10 +39,17 @@ const makeSelectActivitiesDialog = () =>
     subState => subState.activitiesDialog,
   );
 
+const makeSelectGetAllCrmActivities = () =>
+  createSelector(
+    selectCrmDomain,
+    subState => subState.getAllCrmActivites,
+  );
+
 export default makeSelectCrm;
 export {
   selectCrmDomain,
   makeSelectLoading,
   makeSelectError,
   makeSelectActivitiesDialog,
+  makeSelectGetAllCrmActivities,
 };

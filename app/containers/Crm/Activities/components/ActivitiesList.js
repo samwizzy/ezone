@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { memo, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { object } from 'prop-types';
 import {
   makeStyles,
   List,
@@ -20,8 +20,8 @@ import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import * as Actions from '../../actions';
-import * as Selectors from '../../selectors';
+import * as Actions from '../actions';
+import * as Selectors from '../selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import ContactDialog from './ContactDialog';
 import VerticalTimeline from './VerticalTimeline';
@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 
 const ActivitiesList = props => {
   const classes = useStyles();
-  const { loading } = props;
+  const { loading, GetAllCrmActivities } = props;
   const [form, setForm] = React.useState({})
 
   useEffect(() => {}, []);
@@ -136,7 +136,7 @@ const ActivitiesList = props => {
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <VerticalTimeline />
+          <VerticalTimeline GetAllCrmActivities={GetAllCrmActivities} />
         </Grid>
       </Grid>
     </div>
@@ -145,10 +145,12 @@ const ActivitiesList = props => {
 
 ActivitiesList.propTypes = {
   loading: PropTypes.bool,
+  GetAllCrmActivities: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
+  GetAllCrmActivities: Selectors.makeSelectGetAllCrmActivities(),
 });
 
 function mapDispatchToProps(dispatch) {

@@ -9,6 +9,8 @@ import * as Constants from './constants';
 export const initialState = {
   loading: false,
   error: false,
+  message: false,
+  getAllCrmActivites: [],
   activitiesDialog: {
     type: 'new',
     props: {
@@ -44,6 +46,27 @@ const crmActivitiesReducer = (state = initialState, action) =>
             },
             data: null,
           },
+        };
+      }
+      case Constants.GET_ALL_CRM_ACTIVITIES: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.GET_ALL_CRM_ACTIVITIES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          getAllCrmActivites: action.payload,
+        };
+      }
+      case Constants.GET_ALL_CRM_ACTIVITIES_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          message: action.payload,
         };
       }
     }
