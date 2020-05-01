@@ -85,11 +85,11 @@ const App = props => {
     checkSession,
   } = props;
 
-  useEffect(() => {
-    checkActiveSessionAction();
-  }, []);
+  // useEffect(() => {
+  //   checkActiveSessionAction();
+  // }, []);
 
-  console.log(checkSession, 'checkSession');
+  // console.log(checkSession, 'checkSession');
 
   // if (checkSession) {
   //   return <Redirect to={{ pathname: '/login' }} />;

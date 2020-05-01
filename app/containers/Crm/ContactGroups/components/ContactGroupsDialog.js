@@ -53,11 +53,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const ContactGroupsDialog = props => {
   const classes = useStyles();
   const {
+    updateContactGroupAction,
     loading,
     contactGroupsDialog,
     closeNewContactGroupsDialog,
     createNewContactGroupAction,
   } = props;
+
   const [form, setForm] = React.useState({
     groupName: '',
     groupDescription: '',
@@ -94,7 +96,11 @@ const ContactGroupsDialog = props => {
         </Backdrop>
         <AppBar position="relative">
           <Toolbar>
-            <Typography variant="h6">Add Contact Groups</Typography>
+            <Typography variant="h6">
+              {contactGroupsDialog.type === 'new'
+                ? 'Add Contact Groups'
+                : 'Edit Contact Groups'}
+            </Typography>
           </Toolbar>
         </AppBar>
         <Divider />
@@ -169,16 +175,33 @@ const ContactGroupsDialog = props => {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={closeNewContactGroupsDialog} color="primary">
-            Cancel
-          </Button>
-          <Button
-            onClick={() => createNewContactGroupAction(form)}
-            disabled={!canSubmitForm()}
-            color="primary"
-          >
-            Save
-          </Button>
+          {contactGroupsDialog.type === 'new' ? (
+            <div>
+              <Button onClick={closeNewContactGroupsDialog} color="primary">
+                Cancel
+              </Button>
+              <Button
+                onClick={() => createNewContactGroupAction(form)}
+                disabled={!canSubmitForm()}
+                color="primary"
+              >
+                Save
+              </Button>
+            </div>
+          ) : (
+            <div>
+              <Button onClick={closeNewContactGroupsDialog} color="primary">
+                Cancel
+              </Button>
+              <Button
+                onClick={() => updateContactGroupAction(form)}
+                disabled={!canSubmitForm()}
+                color="primary"
+              >
+                Update
+              </Button>
+            </div>
+          )}
         </DialogActions>
       </Dialog>
     </div>
@@ -190,6 +213,7 @@ ContactGroupsDialog.propTypes = {
   contactGroupsDialog: PropTypes.object,
   closeNewContactGroupsDialog: PropTypes.func,
   createNewContactGroupAction: PropTypes.func,
+  updateContactGroupAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -203,6 +227,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(Actions.closeNewContactGroupsDialog()),
     createNewContactGroupAction: evt =>
       dispatch(Actions.createNewContactGroup(evt)),
+    updateContactGroupAction: evt => dispatch(Actions.updateContactGroup(evt)),
   };
 }
 
