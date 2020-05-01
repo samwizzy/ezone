@@ -8,6 +8,7 @@ import { BaseUrl } from '../BaseUrl';
 export const RegistrationUrl = `${BaseUrl}/authserv/api/v1/register`;
 export const LoginUrl = `${BaseUrl}/authserv/oauth/token`;
 export const UserProfileUrl = `${BaseUrl}/authserv/api/v1/users/profile`;
+export const CheckSessionApi = `${BaseUrl}/authserv/api/v1/users/get_by_uuid`;
 
 /** *****************************************************************
  * Organization and Company structure endpoint

@@ -8,7 +8,7 @@
 
 import React, { useEffect, memo } from 'react';
 import { Helmet } from 'react-helmet';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { CssBaseline } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -51,6 +51,7 @@ import Layout1 from '../../components/layouts/layout1/Layout1';
 import Layout2 from '../../components/layouts/layout2/Layout2';
 import Layout3 from '../../components/layouts/layout3/Layout3';
 import * as Selectors from './selectors';
+import * as Actions from './actions';
 import PrivateRoute from '../AuthProvider/PrivateRoute';
 import Snackbar from './components/Snackbar';
 import { AppContext } from '../context/AppContext';
@@ -77,7 +78,22 @@ import CrmActivities from '../Crm/Activities/Loadable';
 import { Auth } from '../../auth';
 
 const App = props => {
-  const { currentUser, accessToken } = props;
+  const {
+    currentUser,
+    accessToken,
+    checkActiveSessionAction,
+    checkSession,
+  } = props;
+
+  useEffect(() => {
+    checkActiveSessionAction();
+  }, []);
+
+  console.log(checkSession, 'checkSession');
+
+  // if (checkSession) {
+  //   return <Redirect to={{ pathname: '/login' }} />;
+  // }
 
   return (
     <div>
@@ -145,7 +161,11 @@ const App = props => {
                   component={CompanyStructurePosition}
                 /> */}
 
-                <PrivateRoute exact path="/utility/:tab?" component={UtilityPage} />
+                <PrivateRoute
+                  exact
+                  path="/utility/:tab?"
+                  component={UtilityPage}
+                />
                 <PrivateRoute
                   exact
                   path="/task-manager/tasks"
@@ -327,11 +347,12 @@ const App = props => {
 const mapStateToProps = createStructuredSelector({
   currentUser: Selectors.makeSelectCurrentUser(),
   accessToken: Selectors.makeSelectAccessToken(),
+  checkSession: Selectors.makeSelectCheckActiveSession(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    // getUserStatusAction: () => dispatch(getUserStatus()),
+    checkActiveSessionAction: () => dispatch(Actions.checkActiveSession()),
   };
 }
 
