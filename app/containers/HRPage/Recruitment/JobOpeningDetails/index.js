@@ -5,11 +5,9 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import * as Selectors from '../selectors';
-import AddRecruitment from './components/AddRecruitment'
-import RecruitmentList from './RecruitmentList'
-import JobOpenings from './JobOpenings'
-import JobOpeningDetails from './JobOpeningDetails/'
+import * as Selectors from '../../selectors';
+import JobOpeningDetails from './JobOpeningDetails'
+import ApplicantDetails from './ApplicantDetails'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -18,32 +16,25 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const RecruitmentApp = props => {
+const JobOpeningDetailsApp = props => {
   const classes = useStyles();
   const { loading, match, getJobOpenings, jobOpenings, } = props;
   const { params } = match
-  console.log(jobOpenings, "Job openings")
-
-  console.log(params, "param recruitment")
 
   React.useEffect(() => {
   }, []);
 
   return (
     <div className={classes.root}>
-      {
-        params.status === 'new'?
-        <AddRecruitment /> :
-        params.status? <JobOpeningDetails /> : <JobOpenings/>
-        /*
-        <AddRecruitment /> : <RecruitmentList />
-        */
-      }
+			{
+				params.applicantId?
+				<ApplicantDetails /> : <JobOpeningDetails />
+			}
     </div>
   );
 };
 
-RecruitmentApp.propTypes = {
+JobOpeningDetailsApp.propTypes = {
   loading: PropTypes.bool,
   getEmployees: PropTypes.func,
 };
@@ -67,4 +58,4 @@ export default compose(
   withRouter,
   withConnect,
   memo,
-)(RecruitmentApp);
+)(JobOpeningDetailsApp);

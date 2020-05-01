@@ -30,7 +30,7 @@ const HumanResourcePage = props => {
 
     console.log(params, "params tired")
 
-    switch(params.sectionId){
+    switch(params.section){
         case 'employees':
             return <EmployeesApp />
             break;
