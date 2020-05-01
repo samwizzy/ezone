@@ -82,7 +82,7 @@ const UserMenu = props => {
           {currentUser && currentUser.organisation.logo? (
             <Avatar className={classes.avatar} alt="user photo" src={`data:image/jpg;base64,${currentUser.organisation.logo}`} />
           ) : (
-            <Avatar className={classes.avatar}>{currentUser.lastName}</Avatar>
+            <Avatar className={classes.avatar}>{currentUser && currentUser.lastName}</Avatar>
           )}
 
           <div className="hidden md:flex flex-col ml-12 items-start">

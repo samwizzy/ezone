@@ -162,11 +162,14 @@ export function* createNewParty() {
   const createNewPartyData = yield select(
     Selectors.makeSelectCreateNewPartyData(),
   );
+  const selectedParty = yield select(
+    Selectors.makeSelectSelectedParty(),
+  );
   const selectedPartyGroupData = yield select(
     Selectors.makeSelectSelectedPartyGroupData(),
   );
 
-  createNewPartyData.partyGroupId = selectedPartyGroupData.id;
+  createNewPartyData.partyGroupId = selectedParty.id;
   const requestURL = `${Endpoints.CreateNewPartyApi}`;
 
   try {
