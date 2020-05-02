@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
 import {
   TextField,
   makeStyles,
@@ -78,7 +77,7 @@ const TransactionTransferDialog = props => {
   });
 
   console.log('bankAccountData from dialog ', bankAccountData);
-  console.log('transactionTransferDialog ', transactionTransferDialog);
+  // console.log('transactionTransferDialog ', transactionTransferDialog);
   
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });

@@ -60,7 +60,8 @@ const DialogOfAccountPeriod = props => {
     accountPeriodDialog, 
     allAccountingPeriodData,
     closeAccountPeriodDialogAction,
-    dispatchCreateAccountPeriodAction
+    dispatchCreateAccountPeriodAction,
+    dispatchSetAccountPeriodAsActiveAction
   } = props;
 
   const handleChange = name => event => {
@@ -76,8 +77,9 @@ const DialogOfAccountPeriod = props => {
     // year: Number(allAccountingPeriodData[allAccountingPeriodData.length - 1].year) + 1
   });
   
-  console.log(' dialogfilevalues is : ', values);
+  console.log(' values is : ', values);
   console.log('dialogfile data-> ', allAccountingPeriodData);
+  console.log('selected data-> ', accountPeriodDialog.data);
 
   return (
     <div>
@@ -90,7 +92,7 @@ const DialogOfAccountPeriod = props => {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {accountPeriodDialog.type === 'new' ? 'Add Accounting Period' : 'Edit Accounting Period'}
+          {accountPeriodDialog.type === 'new' ? 'Add Accounting Period' : 'Mark Accounting Period As Active'}
         </DialogTitle>
         <Divider />
         <DialogContent>
@@ -105,7 +107,7 @@ const DialogOfAccountPeriod = props => {
                     variant="outlined"
                     size="small"
                     className={classes.textField}
-                    // value={allAccountingPeriodData[0].year}
+                    // value={Number(allAccountingPeriodData[allAccountingPeriodData.length - 1].year) + 1}
                     // onChange={handleChange('amount')}
                     margin="normal"
                     fullWidth
@@ -160,7 +162,7 @@ const DialogOfAccountPeriod = props => {
           ) : (
             <Button
               onClick={() => {
-                accountPeriodDialog.type === 'new' ? dispatchCreateAccountPeriodAction(values) : dispatchUpdateBankAccountAction(values);
+                accountPeriodDialog.type === 'new' ? dispatchCreateAccountPeriodAction(values) : dispatchSetAccountPeriodAsActiveAction(accountPeriodDialog.data);
               }}
               color="primary"
               // variant="contained"
@@ -199,6 +201,7 @@ function mapDispatchToProps(dispatch) {
   return {
     closeAccountPeriodDialogAction: () => dispatch(Actions.closeAccountPeriodDialog()),
     dispatchCreateAccountPeriodAction: evt => dispatch(Actions.createAccountPeriodAction(evt)),
+    dispatchSetAccountPeriodAsActiveAction: evt => dispatch(Actions.setAccountPeriodAsActiveAction(evt)),
     dispatch,
   };
 }

@@ -172,7 +172,10 @@ const JournalListing = props => {
                   Edit
                 </MenuItem>
                 <MenuItem onClick={() => {
-                  // history.push(AccountDetails);
+                  history.push({
+                    pathname: '/account/journal/details',
+                    journalDetailsData: account,
+                  });
                 }}>
                   View Details
                 </MenuItem>
@@ -189,7 +192,7 @@ const JournalListing = props => {
     responsive: 'scrollMaxHeight',
     selectableRows: 'none',
     customToolbar: () => (
-      <Tooltip title="Create New Chart">
+      <Tooltip title="Post New Journal">
         <Button
           variant="contained"
           color="primary"
@@ -198,7 +201,7 @@ const JournalListing = props => {
           startIcon={<AddIcon />}
           onClick={() => history.push('/account/journal/add')}
         >
-          New Journal
+          New Posting
         </Button>
       </Tooltip>
     ),
