@@ -32,6 +32,7 @@ export function editCloseBankAccountDialog() {
   };
 }
 
+// Delete bank account action
 export function openDeleteBankAccountDialog(data) {
   return {
     type: Constants.OPEN_DELETE_BANK_ACCOUNT_DIALOG,
@@ -45,6 +46,7 @@ export function closeDeleteBankAccountDialog() {
   };
 }
 
+// Activate bank account action
 export function openActivateBankAccountDialog(data) {
   return {
     type: Constants.OPEN_ACTIVATE_BANK_ACCOUNT_DIALOG,
@@ -55,6 +57,20 @@ export function openActivateBankAccountDialog(data) {
 export function closeActivateBankAccountDialog() {
   return {
     type: Constants.CLOSE_ACTIVATE_BANK_ACCOUNT_DIALOG,
+  };
+}
+
+// Deactivate bank account action
+export function deactivateBankAccountDialogOpen(data) {
+  return {
+    type: Constants.DEACTIVATE_BANK_ACCOUNT_DIALOG_OPEN,
+    payload: data,
+  };
+}
+
+export function deactivateBankAccountDialogClose() {
+  return {
+    type: Constants.DEACTIVATE_BANK_ACCOUNT_DIALOG_CLOSE,
   };
 }
 
@@ -230,24 +246,47 @@ export function getTransferByAccountIdErrorAction(data) {
 }
 
 
-// Set bank account active status
-export function setBankAccountActiveStatusAction(data) {
+// Activate bank account
+export function activateBankAccountAction(data) {
   return {
-    type: Constants.SET_BANKACCOUNT_ACTIVE_STATUS,
+    type: Constants.ACTIVATE_BANK_ACCOUNT,
     payload: data,
   };
 }
 
-export function setBankAccountActiveStatusSuccessAction(data) {
+export function activateBankAccountSuccessAction(data) {
   return {
-    type: Constants.SET_BANKACCOUNT_ACTIVE_STATUS_SUCCESS,
+    type: Constants.ACTIVATE_BANK_ACCOUNT_SUCCESS,
     payload: data,
   };
 }
 
-export function setBankAccountActiveStatusErrorAction(data) {
+export function activateBankAccountErrorAction(data) {
   return {
-    type: Constants.SET_BANKACCOUNT_ACTIVE_STATUS_ERR,
+    type: Constants.ACTIVATE_BANK_ACCOUNT_ERR,
+    payload: data,
+  };
+}
+
+
+// Deactivate bank account
+export function deactivateBankAccountAction(data) {
+  return {
+    type: Constants.DEACTIVATE_BANK_ACCOUNT,
+    payload: data,
+  };
+}
+
+export function deactivateBankAccountSuccessAction(data) {
+  return {
+    type: Constants.DEACTIVATE_BANK_ACCOUNT_SUCCESS,
+    payload: data,
+  };
+}
+
+export function deactivateBankAccountErrorAction(data) {
+  return {
+    type: Constants.DEACTIVATE_BANK_ACCOUNT_ERR,
     payload: data,
   };
 }

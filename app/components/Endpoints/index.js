@@ -172,6 +172,8 @@ export const CreateAccountPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/
 export const UpdateAccountPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/update_account_period_status`;
 export const SetAccountPeriodAsActiveApi = `${BaseUrl}/accountingserv/api/v1/account/update_account_active_year`;
 export const DeleteBankAccountApi = `${BaseUrl}/accountingserv/api/v1/bank/delete_bank`;
+export const UpdateBankAccountApi = `${BaseUrl}/accountingserv/api/v1/bank/update_bank`;
+export const SetActiveStatusForBankAccountApi = `${BaseUrl}/accountingserv/api/v1/bank/acivate_or_deactivate_bank`;
 
 
 /** ***************************************************************** 

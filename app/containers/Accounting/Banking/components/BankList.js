@@ -58,20 +58,6 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
-  // button: {
-  //   '&.favorite': { color: orange[300]},
-  //   '&.shared': { color: orange[500]},
-  // },
-  // iconButton: {
-  //   '&.favorite': { color: orange[300]},
-  //   '&.shared': { color: orange[500]},
-  //   '&.delete': { color: theme.status.danger},
-  // },
-  // icon: {
-  //   '&.favorite': { color: orange[300]},
-  //   '&.shared': { color: orange[500]},
-  //   '&.delete': { color: theme.status.danger},
-  // },
   cardRoot: {
     maxWidth: '100%',
   },
@@ -96,6 +82,7 @@ const BankList = props => {
     editOpenBankAccountDialogAction,
     openDeleteBankAccountDialogAction,
     openActivateBankAccountDialogAction,
+    deactivateBankAccountDialogOpenAction,
     bankAccountData,
   } = props;
 
@@ -186,14 +173,14 @@ const BankList = props => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={() => {
-                  openActivateBankAccountDialogAction(account);
-                }}>
+                <MenuItem onClick={() => openActivateBankAccountDialogAction(account) }
+                  disabled={account.status}
+                >
                   Activate
                 </MenuItem>
-                <MenuItem onClick={() => {
-                  // editOpenBankAccountDialogAction(account);
-                }}>
+                <MenuItem onClick={() => deactivateBankAccountDialogOpenAction(account) }
+                  disabled={!account.status}
+                >
                   Deactivate
                 </MenuItem>
                 <MenuItem onClick={() => {
@@ -207,7 +194,6 @@ const BankList = props => {
                   Edit
                 </MenuItem>
                 <MenuItem onClick={() => {
-                  console.log('account that was clicked ', account);
                   history.push({
                     pathname: '/account/banking/details',
                     accountDetailsData: account,
@@ -278,6 +264,7 @@ function mapDispatchToProps(dispatch) {
     editOpenBankAccountDialogAction: evt => dispatch(Actions.editOpenBankAccountDialog(evt)),
     openDeleteBankAccountDialogAction: evt => dispatch(Actions.openDeleteBankAccountDialog(evt)),
     openActivateBankAccountDialogAction: evt => dispatch(Actions.openActivateBankAccountDialog(evt)),
+    deactivateBankAccountDialogOpenAction: evt => dispatch(Actions.deactivateBankAccountDialogOpen(evt)),
   };
 }
 

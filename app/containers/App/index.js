@@ -64,6 +64,7 @@ import AccountDetails from '../Accounting/Banking/components/AccountDetails';
 import DetailsOfAccountChart from '../Accounting/Chart/components/DetailsOfAccountChart';
 import JournalPage from '../Accounting/Journal/Loadable';
 import AddNewJournal from '../Accounting/Journal/components/AddNewJournal';
+import JournalDetails from '../Accounting/Journal/components/JournalDetails';
 import CrmDashboard from '../Crm/Dashboard/Loadable';
 import CrmContacts from '../Crm/Contacts/Loadable';
 import CrmCompanies from '../Crm/Companies/Loadable';
@@ -194,11 +195,34 @@ const App = props => {
                 <PrivateRoute exact path="/account/banking/details" component={AccountDetails} />
                 <PrivateRoute exact path="/account/journal" component={JournalPage} />
                 <PrivateRoute exact path="/account/journal/add" component={AddNewJournal} />
+<<<<<<< HEAD
 
                 <PrivateRoute exact path="/inventory/dashboard" component={InventoryPage} />
                 <PrivateRoute path="/inventory/warehouses" component={WarehousePage} />
                 <PrivateRoute exact path="/inventory/items/:statusId?" component={ItemPage} />
                 <PrivateRoute exact path="/inventory/item/:statusId?/:sku?" component={ItemPage} />
+=======
+                <PrivateRoute exact path="/account/journal/details" component={JournalDetails} />
+                <PrivateRoute
+                  exact
+                  path="/inventory"
+                  component={InventoryPage}
+                />
+                <PrivateRoute
+                  path="/inventory/warehouses"
+                  component={WarehousePage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/inventory/items/:statusId?"
+                  component={ItemPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/inventory/item/:statusId?/:sku?"
+                  component={ItemPage}
+                />
+>>>>>>> account
                 {/* <PrivateRoute
                   exact
                   path="/inventory/item/:statusId?"

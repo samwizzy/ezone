@@ -63,6 +63,9 @@ export function* createAccountJournalSaga() {
   );
   const requestURL = `${Endpoints.CreateAccountJournalApi}`;
 
+  console.log("journal request ", requestURL);
+  console.log("accountJournalPostData ", accountJournalPostData);
+
   try {
     const accountJournalResponse = yield call(request, requestURL, {
       method: 'POST',

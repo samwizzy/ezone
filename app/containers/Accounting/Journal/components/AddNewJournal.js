@@ -102,9 +102,9 @@ const AddNewJournal = props => {
 
   const addRow = () => {
     const item = {
-      accountId: 0,
-      credit: 0,
-      debit: 0,
+      accountId: "",
+      credit: "",
+      debit: "",
       description: "",
     };
     setValues({ ...values, "entries": [ ...values.entries, item ] });
@@ -172,7 +172,7 @@ const AddNewJournal = props => {
           <Grid item xs={12} className={classNames(classes.gridMargin)}>
             <Typography variant="h6">New Posting</Typography>
             <Typography variant="h6">
-              FY: {moment(currentAccountPeriod.startDate).format('dddd do-MMM-YYYY')} - {moment(currentAccountPeriod.endDate).format('dddd do-MMM-YYYY')}
+              {/* FY: {moment(currentAccountPeriod.startDate).format('dddd do-MMM-YYYY')} - {moment(currentAccountPeriod.endDate).format('dddd do-MMM-YYYY')} */}
             </Typography>
             <Grid container className={classes.grid}>
               <Grid item xs={5}>

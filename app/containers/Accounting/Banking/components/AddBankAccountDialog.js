@@ -54,7 +54,9 @@ const AddBankAccountDialog = props => {
     closeNewBankAccountDialogAction,
     dispatchCreateNewBankAction,
     dispatchUpdateBankAccountAction,
-    dispatchDeleteBankAccountAction
+    dispatchDeleteBankAccountAction,
+    dispatchActivateBankAccountAction,
+    dispatchDeactivateBankAccountAction
   } = props;
 
   const [values, setValues] = React.useState({
@@ -74,7 +76,6 @@ const AddBankAccountDialog = props => {
 
   React.useEffect(() => {
     if (bankAccountDialog.type == 'edit') {
-      console.log('useEffect bankAccountDialog.data >', bankAccountDialog.data);
       const { accountCode, accountName, accountNumber, bankBalance, bankName, description } = bankAccountDialog.data;
       setValues({ ...values, accountCode, accountName, accountNumber, bankBalance, bankName, description });
     }
@@ -98,7 +99,7 @@ const AddBankAccountDialog = props => {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          { bankAccountDialog.type === 'new' ? "Add Bank Account" : bankAccountDialog.type === 'edit' ? "Edit Bank Account" : bankAccountDialog.type === 'delete' ? "Delete Account" : bankAccountDialog.type === "activate" ? "Activate Account" : "" }
+          { bankAccountDialog.type === 'new' ? "Add Bank Account" : bankAccountDialog.type === 'edit' ? "Edit Bank Account" : bankAccountDialog.type === 'delete' ? "Delete Account" : bankAccountDialog.type === "activate" ? "Activate Account" : bankAccountDialog.type === "deactivate" ? "De-activate Account" : "" }
         </DialogTitle>
         <Divider />
         <DialogContent>
@@ -286,20 +287,42 @@ const AddBankAccountDialog = props => {
               <Typography>Are you sure you want to delete this item?</Typography>
             ) : bankAccountDialog.type === 'activate' ? (
               <Typography>Are you sure you want to activate this account?</Typography>
-            ) : null}
+            ) : bankAccountDialog.type === 'deactivate' ? (
+              <Typography>Are you sure you want to de-activate this account?</Typography>
+            ) : null }
         </DialogContent>
         <DialogActions>
           {loading ? (
             <LoadingIndicator />
           ) : (
             <Button
-              onClick={() => {
-                bankAccountDialog.type === 'new' ? dispatchCreateNewBankAction(values) : bankAccountDialog.type === 'edit' ? dispatchUpdateBankAccountAction(values) : bankAccountDialog.type === 'delete' ? dispatchDeleteBankAccountAction(bankAccountDialog.data) : "" ; 
+              onClick={() => { 
+                // bankAccountDialog.type === 'new' ? dispatchCreateNewBankAction(values) : bankAccountDialog.type === 'edit' ? dispatchUpdateBankAccountAction(values) : bankAccountDialog.type === "delete" ? dispatchDeleteBankAccountAction(bankAccountDialog.data) : bankAccountDialog.type === "activate" ? dispatchActivateBankAccountAction(`id=${bankAccountDialog.data.id}&status=true`) : bankAccountDialog.type === "deactivate" ? dispatchDeactivateBankAccountAction(`id=${bankAccountDialog.data.id}&status=false`) : "" ; 
+                switch (bankAccountDialog.type) {
+                  case 'new':
+                    dispatchCreateNewBankAction(values);
+                    break;
+                  case 'edit':
+                    values.id = bankAccountDialog.data.id // Assign id to values object
+                    dispatchUpdateBankAccountAction(values);
+                    break;
+                  case 'delete':
+                    dispatchDeleteBankAccountAction(bankAccountDialog.data)
+                    break;
+                  case 'activate':
+                    dispatchActivateBankAccountAction(`id=${bankAccountDialog.data.id}&status=true`)
+                    break;
+                  case 'delete':
+                    dispatchDeactivateBankAccountAction(`id=${bankAccountDialog.data.id}&status=false`)
+                    break;
+                  default:
+                    console.log("Not a valid type");
+                }
               }}
               color="primary"
               disabled={ bankAccountDialog.type === 'new' ? !canSubmitValues() : canSubmitValues() }
             >
-              { bankAccountDialog.type === "new" ? "Save" : bankAccountDialog.type === "edit" ? "Update" : bankAccountDialog.type === "delete" ? "Delete" : bankAccountDialog.type === "activate" ? "Activate" : "" }
+              { bankAccountDialog.type === "new" ? "Save" : bankAccountDialog.type === "edit" ? "Update" : bankAccountDialog.type === "delete" ? "Delete" : bankAccountDialog.type === "activate" ? "Activate" : bankAccountDialog.type === "deactivate" ? "De-activate" : "" }
             </Button>
           )}
           <Button
@@ -317,7 +340,6 @@ const AddBankAccountDialog = props => {
 AddBankAccountDialog.propTypes = {
   loading: PropTypes.bool,
   bankAccountDialog: PropTypes.object,
-//   accountTypeData: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -325,8 +347,6 @@ const mapStateToProps = createStructuredSelector({
   currentUser: AppSelectors.makeSelectCurrentUser(),
   bankAccountDialog: Selectors.makeSelectBankAccountDialog(),
   accountTypeData: Selectors.makeSelectAccountTypeData(),
-//   accountTypeData: Selectors.makeSelectAccountTypeData(),
-//   parentAccountTypeData: Selectors.makeSelectParentAccountTypeData(),
 });
 
 
@@ -337,6 +357,8 @@ function mapDispatchToProps(dispatch) {
     dispatchCreateNewBankAction: evt => dispatch(Actions.createNewBankAction(evt)),
     dispatchUpdateBankAccountAction: evt => dispatch(Actions.updateBankAccountAction(evt)),
     dispatchDeleteBankAccountAction: evt => dispatch(Actions.deleteBankAccountAction(evt)),
+    dispatchActivateBankAccountAction: evt => dispatch(Actions.activateBankAccountAction(evt)),
+    dispatchDeactivateBankAccountAction: evt => dispatch(Actions.deactivateBankAccountAction(evt)),
     dispatch,
   };
 }

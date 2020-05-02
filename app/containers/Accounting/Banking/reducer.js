@@ -137,6 +137,31 @@ const bankingReducer = (state = initialState, action) =>
         };
       }
 
+      case Constants.DEACTIVATE_BANK_ACCOUNT_DIALOG_OPEN: {
+        return {
+          ...state,
+          bankAccountDialog: {
+            type: 'deactivate',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.DEACTIVATE_BANK_ACCOUNT_DIALOG_CLOSE: {
+        return {
+          ...state,
+          bankAccountDialog: {
+            type: 'deactivate',
+            props: {
+              open: false,
+            },
+            data: action.payload,
+          },
+        };
+      }
+
       // Case to get account type data
       case Constants.GET_ALL_ACCOUNT_TYPES: {
         return {
@@ -358,6 +383,54 @@ const bankingReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
+
+      // Activate bank account (query params request)
+      case Constants.ACTIVATE_BANK_ACCOUNT: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.ACTIVATE_BANK_ACCOUNT_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.ACTIVATE_BANK_ACCOUNT_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+
+
+      // Deactivate bank account (query params request)
+      case Constants.DEACTIVATE_BANK_ACCOUNT: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.DEACTIVATE_BANK_ACCOUNT_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.DEACTIVATE_BANK_ACCOUNT_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+
     }
   });
 
