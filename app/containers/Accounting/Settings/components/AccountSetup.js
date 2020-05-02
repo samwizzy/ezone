@@ -162,7 +162,7 @@ const AccountSetup = props => {
   if (loading) {
     return <LoadingIndicator />;
   }
-
+  
   return (
     <React.Fragment>
       <div className={classes.root}>
@@ -173,7 +173,7 @@ const AccountSetup = props => {
                 <Box p={2} my={2} className={classes.box}>
                   <Typography variant="h4" color="textSecondary">
                     Welcome To 
-                    {/* <img src={Logo} height="40" />  */}
+                    <img src={Logo} height="40" /> 
                     Accounting
                   </Typography>
                 </Box>
