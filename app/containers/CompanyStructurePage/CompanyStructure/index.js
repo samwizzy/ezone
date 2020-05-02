@@ -53,7 +53,6 @@ export function CompanyStructurePage(props) {
       </Helmet>
 
       <ModuleLayout>{params.partyId ? <Party /> : <PartyGroup />}</ModuleLayout>
-      {/* <RoleDialog />  */}
     </div>
   );
 }
