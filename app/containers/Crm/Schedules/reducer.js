@@ -12,7 +12,7 @@ export const initialState = {
   scheduleDialog: {
     type: 'new',
     props: {
-      open: false,
+      open: true,
     },
     data: null,
   },

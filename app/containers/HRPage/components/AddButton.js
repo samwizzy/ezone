@@ -37,7 +37,6 @@ export function AddDepartment(props) {
     </React.Fragment>
   );
 }
-
 export function AddRole(props) {
   const { openDialog } = props;
   const classes = useStyles()
@@ -144,6 +143,29 @@ export function AddPayroll(props) {
           className={classes.button}
           onClick={openDialog}
           startIcon={<PersonAdd className={classes.icon} />}
+          disableElevation
+        >
+          New
+        </Button>
+      </Tooltip>
+    </React.Fragment>
+  );
+}
+
+export function AddAnnouncement(props) {
+  const { openDialog } = props;
+  const classes = useStyles()
+
+  return (
+    <React.Fragment>
+      <Tooltip title="New Announcement">
+        <Button
+          size="small"
+          color="primary"
+          variant="contained"
+          className={classes.button}
+          onClick={openDialog}
+          startIcon={<Add className={classes.icon} />}
           disableElevation
         >
           New

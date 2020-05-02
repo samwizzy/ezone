@@ -3,18 +3,15 @@ import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
-  List,
-  FormControlLabel,
-  Icon,
+  Card, CardHeader, CardContent,
   Grid,
   Button,
-  Menu,
-  MenuItem,
-  TextField,
-  Typography
+  Table, TableBody, TableRow, TableCell,
+  Toolbar,
+  Typography,
+  Paper
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { blue } from '@material-ui/core/colors';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -33,28 +30,45 @@ const useStyles = makeStyles(theme => ({
   },
   grid: {
     justifyContent: "space-between",
-    alignItems: "center",
     "& .MuiGrid-container": {
       backgroundImage: `linear-gradient(to bottom, ${blue[50]}, #fff 80%, ${blue[50]})`,
       '& .MuiGrid-item': {
         flex: 1,
-        margin: theme.spacing(0, 4),
       }
     }
   },
-  textField: {
-    borderRadius: theme.shape.borderRadius * 5,
+  table: {
+    "& th.MuiTableCell-root": {
+      fontWeight: theme.typography.fontWeightBold,
+      fontSize: theme.typography.h6.fontSize
+    },
+    "& .MuiTableCell-root": {
+      border: "0 !important",
+      fontSize: theme.typography.subtitle1.fontSize
+    }
+  },
+  card: {
+    "& .MuiCardHeader-root": {
+      borderBottom: `1px solid ${theme.palette.divider}`
+    }
+  },
+  paper: {
+    borderRadius: theme.shape.borderRadius * 4,
+    backgroundColor: theme.palette.grey[50],
+    padding: theme.spacing(2),
+    margin: theme.spacing(2, 0),
+    boxShadow: theme.shadows[0]
+  },
+  title: {
+    flexGrow: 1
   }
 }));
 
 const SchedulesList = props => {
   const classes = useStyles();
   const { loading } = props;
-  const [form, setForm] = React.useState({})
 
   useEffect(() => {}, []);
-
-  const handleChange = () => {}
 
   if (loading) {
     return <LoadingIndicator />;
@@ -62,9 +76,12 @@ const SchedulesList = props => {
 
   return (
     <div className={classes.root}>
-      <Grid container className={classes.grid} spacing={3}>
+      <Grid container className={classes.grid}>
         <Grid item xs={12}>
-          <Typography variant="h6">Schedules</Typography>
+          <Toolbar>
+            <Typography variant="h6" className={classes.title}>Schedules</Typography>
+            <Button variant="contained" color="primary" startIcon={<AddIcon />} disableElevation>Create New Schedule</Button>
+          </Toolbar>
         </Grid>
         <Grid item xs={12}>
           <Grid container>
@@ -72,10 +89,40 @@ const SchedulesList = props => {
               <Schedules />
             </Grid>
             <Grid item xs={4}>
-            
+              <Card className={classes.card}>
+                <CardHeader title="Today's Schedule" subheader="" />
+
+                <CardContent>
+                  <Paper className={classes.paper}>
+                    <Table className={classes.table}>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell component="th">Daily Stand-Up</TableCell>
+                          <TableCell component="th">8:00</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell colSpan={2}>Invite team members for Skype meeting</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </Paper>
+                  <Paper className={classes.paper}>
+                    <Table className={classes.table}>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell component="th">Daily Stand-Up</TableCell>
+                          <TableCell component="th">8:00</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell colSpan={2}>Invite team members for Skype meeting</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </Paper>
+                </CardContent>
+              </Card>
             </Grid>
           </Grid>
-          
         </Grid>
       </Grid>
 

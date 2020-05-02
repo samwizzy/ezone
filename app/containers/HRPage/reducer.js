@@ -63,6 +63,13 @@ export const initialState = {
     },
     data: null,
   },
+  announcementDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
 };
 
 /* eslint-disable default-case, no-param-reassign */
