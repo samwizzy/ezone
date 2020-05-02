@@ -3,11 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import DateFnsUtils from '@date-io/date-fns'; // choose your lib
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider,
-} from '@material-ui/pickers';
+import { Autocomplete } from '@material-ui/lab';
+
 import {
   Card, 
   CardContent, 
@@ -19,12 +16,21 @@ import {
   MenuItem, 
   Divider,
   Grid,
-  Paper, TableContainer, Table, TableBody, TableHead, TableRow, TableCell, TableFooter
+  Paper, 
+  TableContainer, 
+  Table, 
+  TableBody, 
+  TableHead, 
+  TableRow, 
+  TableCell, 
+  TableFooter
 } from '@material-ui/core';
+
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload'
 import * as AppSelectors from '../../../App/selectors';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
+import moment from 'moment';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
@@ -105,7 +111,81 @@ const NewBudgeting = props => {
     currentUser, 
     budgetDialog, 
     closeNewBudgetingDialog,
+    accountingPeriodData
   } = props;
+
+  const budgetPeriod = [
+    {
+      value: 'Monthly',
+      label: 'Monthly',
+    },
+    {
+      value: 'Quaterly',
+      label: 'Quaterly',
+    },
+    {
+      value: 'Yearly',
+      label: 'Yearly',
+    }
+  ];
+
+  const budgetMonth = [
+    {
+      value: '1',
+      label: '1',
+    },
+    {
+      value: '2',
+      label: '2',
+    },
+    {
+      value: '3',
+      label: '3',
+    },
+    {
+      value: '4',
+      label: '4',
+    },
+    {
+      value: '5',
+      label: '5',
+    },
+    {
+      value: '6',
+      label: '6',
+    },
+    {
+      value: '7',
+      label: '7',
+    },
+    {
+      value: '8',
+      label: '8',
+    },
+    {
+      value: '9',
+      label: '9',
+    },
+    {
+      value: '10',
+      label: '10',
+    },
+    {
+      value: '11',
+      label: '11',
+    },
+    {
+      value: '12',
+      label: '12',
+    }
+  ];
+
+  
+  var monthArray = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
+
+  const [month, setMonth] = React.useState({
+    financialMonth: "",
+  });
 
   const [values, setValues] = React.useState({
     accountCode: "",
@@ -126,9 +206,16 @@ const NewBudgeting = props => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const handleDateChange = (date, formatted, name) => { 
-    // setForm(_.set({...form}, name, reformattedDate(date)))
-  }
+  const handleSelectChange = (name, value) => {
+    setMonth({ 
+      ...month, 
+      financialMonth: value.label,
+    });
+  };
+
+  console.log("new array -> ", monthArray.slice(monthArray.indexOf(month["financialMonth"])).concat(monthArray.slice(0, monthArray.indexOf(month["financialMonth"]))));
+  var newCopyArray = monthArray.slice(monthArray.indexOf(month["financialMonth"])).concat(monthArray.slice(0, monthArray.indexOf(month["financialMonth"])));
+
 
   return (
     <div>
@@ -155,54 +242,43 @@ const NewBudgeting = props => {
               />
             </Grid>
             <Grid item xs={6}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <div className={classes.dateWrapper}>
-                  <KeyboardDatePicker
-                    format="MM/dd/yyyy"
-                    inputVariant="outlined"
-                    name="startDate"
-                    id="date-picker-startDate"
-                    size="small"
-                    label="Start Date"
-                    value={values.startDate}
-                    onChange={(date, formatted) => handleDateChange(date, formatted, 'startDate')}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date',
-                    }}
+              <Autocomplete
+                id="combo-box-demo"
+                size="small"
+                options={budgetMonth}
+                getOptionLabel={option => option.label}
+                onChange={(evt, value) => handleSelectChange(evt, value)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Financial year"
+                    className={classes.textField}
+                    variant="outlined"
+                    placeholder="Search"
+                    fullWidth
                   />
-                  <KeyboardDatePicker
-                    format="MM/dd/yyyy"
-                    inputVariant="outlined"
-                    name="endDate"
-                    id="date-picker-endDate"
-                    size="small"
-                    label="End Date"
-                    value={values.endDate}
-                    onChange={(date, formatted) => handleDateChange(date, formatted, 'endDate')}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date',
-                    }}
-                  />
-                </div>
-              </MuiPickersUtilsProvider>
+                )}
+              />
             </Grid>
             <Grid item xs={6}>
-              <TextField
-                id="contact"
-                name="contact"
-                placeholder="Select Contact / Company"
-                select
-                fullWidth
-                variant="outlined"
+              <Autocomplete
+                id="combo-box-demo"
                 size="small"
-                label="Contact / Company"
-                value={values.contact}
-                onChange={handleChange}
-              >
-                <MenuItem key={0} value="3">
-                  No record
-                </MenuItem>
-              </TextField>
+                margin="normal"
+                options={budgetPeriod}
+                getOptionLabel={option => option.label}
+                onChange={(evt, value) => handleSelectChange(evt, value)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Period"
+                    className={classes.textField}
+                    variant="outlined"
+                    placeholder="Search"
+                    fullWidth
+                  />
+                )}
+              />
             </Grid>
             <Grid item xs={6} style={{textAlign: "right"}}>
               <Button variant="contained" color="primary" startIcon={<CloudDownloadIcon />}>Generate from previous year</Button>
@@ -213,18 +289,10 @@ const NewBudgeting = props => {
                   <TableHead>
                     <TableRow>
                       <TableCell component="th" scope="row">Accounts</TableCell>
-                      <TableCell align="left">Jan</TableCell>
-                      <TableCell align="left">Feb</TableCell>
-                      <TableCell align="left">March</TableCell>
-                      <TableCell align="left">April</TableCell>
-                      <TableCell align="left">May</TableCell>
-                      <TableCell align="left">June</TableCell>
-                      <TableCell align="left">July</TableCell>
-                      <TableCell align="left">Aug</TableCell>
-                      <TableCell align="left">Sept</TableCell>
-                      <TableCell align="left">Oct</TableCell>
-                      <TableCell align="left">Nov</TableCell>
-                      <TableCell align="left">Dec</TableCell>
+                      {newCopyArray.map((item) => {
+                        console.log("item -->", item);
+                        <TableCell align="left">{ item }</TableCell>
+                      })}
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -232,21 +300,21 @@ const NewBudgeting = props => {
                       <TableCell component="th" scope="row" colSpan={13}>Income</TableCell>
                     </TableRow>
                     {[0,1,2,3].map(row => (     
-                    <TableRow>
-                      <TableCell>Income</TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                    </TableRow>
+                      <TableRow>
+                        <TableCell>Income</TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
+                      </TableRow>
                     ))}
                     <TableRow>
                       <TableCell colSpan={13}>Total Income</TableCell>
@@ -255,21 +323,21 @@ const NewBudgeting = props => {
                       <TableCell component="th" scope="row" colSpan={13}>Expense</TableCell>
                     </TableRow>
                     {[0,1,2,3].map(row => (     
-                    <TableRow>
-                      <TableCell>Expense</TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                      <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                    </TableRow>
+                      <TableRow>
+                        <TableCell>Expense</TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
+                      </TableRow>
                     ))}
                     <TableRow>
                       <TableCell colSpan={13}>Total Expense</TableCell>
@@ -320,8 +388,8 @@ const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   currentUser: AppSelectors.makeSelectCurrentUser(),
   budgetDialog: Selectors.makeSelectBudgetingDialog(),
+  accountingPeriodData: Selectors.makeSelectGetAllAccountingPeriodData(),
 });
-
 
 
 function mapDispatchToProps(dispatch) {

@@ -159,7 +159,10 @@ const JournalListing = props => {
                   Edit
                 </MenuItem>
                 <MenuItem onClick={() => {
-                  // history.push(AccountDetails);
+                  history.push({
+                    pathname: '/account/journal/details',
+                    journalDetailsData: account,
+                  });
                 }}>
                   View Details
                 </MenuItem>
