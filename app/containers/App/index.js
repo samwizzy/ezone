@@ -223,7 +223,7 @@ const App = props => {
                   component={HRPage}
                 />
                 <PrivateRoute exact path="/account" component={AccountPage} />
-<<<<<<< HEAD
+
                 <PrivateRoute exact path="/account/chart" component={ChartPage} />
                 <PrivateRoute exact path="/account/chart/details" component={DetailsOfAccountChart} />
                 <PrivateRoute exact path="/account/banking" component={BankingPage} />
@@ -233,18 +233,12 @@ const App = props => {
                 <PrivateRoute exact path="/account/banking/details" component={AccountDetails} />
                 <PrivateRoute exact path="/account/journal" component={JournalPage} />
                 <PrivateRoute exact path="/account/journal/add" component={AddNewJournal} />
-<<<<<<< HEAD
-
-                <PrivateRoute exact path="/inventory/dashboard" component={InventoryPage} />
-                <PrivateRoute path="/inventory/warehouses" component={WarehousePage} />
-                <PrivateRoute exact path="/inventory/items/:statusId?" component={ItemPage} />
-                <PrivateRoute exact path="/inventory/item/:statusId?/:sku?" component={ItemPage} />
-=======
                 <PrivateRoute exact path="/account/journal/details" component={JournalDetails} />
                 <PrivateRoute
                   exact
                   path="/inventory"
-=======
+                />
+
                 <PrivateRoute
                   exact
                   path="/account/chart"
@@ -294,7 +288,6 @@ const App = props => {
                 <PrivateRoute
                   exact
                   path="/inventory/dashboard"
->>>>>>> f96298fe2976054cf2970e698684f9dac74320cc
                   component={InventoryPage}
                 />
                 <PrivateRoute
@@ -311,10 +304,7 @@ const App = props => {
                   path="/inventory/item/:statusId?/:sku?"
                   component={ItemPage}
                 />
-<<<<<<< HEAD
->>>>>>> account
-=======
->>>>>>> f96298fe2976054cf2970e698684f9dac74320cc
+
                 {/* <PrivateRoute
                   exact
                   path="/inventory/item/:statusId?"

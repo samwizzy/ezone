@@ -116,11 +116,6 @@ const NewBudgeting = props => {
     loading,
     currentUser, 
     budgetDialog, 
-<<<<<<< HEAD
-=======
-    closeNewBudgetingDialog,
-    accountingPeriodData
->>>>>>> account
   } = props;
 
   const budgetPeriod = [
