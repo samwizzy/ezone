@@ -28,16 +28,16 @@ import TaskIcon from '../../../../images/TaskIcon.svg';
 import ProjectsIcon from '../../../../images/ProjectsIcon.svg';
 
 const apps = [
-  { id: 1, name: 'Home', url: '/home', icon: ProjectsIcon },
-  { id: 2, name: 'Accounting', url: '/account', icon: AcctIcon },
-  { id: 3, name: 'Budgeting', url: '/account/budgeting', icon: BudgetingIcon },
-  { id: 4, name: 'CRM', url: '/crm', icon: CRMIcon },
-  { id: 5, name: 'File Management', url: '/file-manager/folders', icon: FileIcon },
-  { id: 6, name: 'Human Resources', url: '/hr', icon: AppIcon1 },
-  { id: 7, name: 'Process Workflow', url: '/workflow', icon: ProjectsIcon },
-  { id: 8, name: 'Store Management', url: '/inventory/items', icon: StoreIcon},
-  { id: 9, name: 'Task management', url: '/task-manager/tasks', icon: TaskIcon },
-  { id: 10, name: 'Work Order', url: '/work-order', icon: ProjectsIcon },
+  { id: 1, name: 'Home', url: '/home', icon: ProjectsIcon, img: 'home' },
+  { id: 2, name: 'Accounting', url: '/account', icon: AcctIcon, img: 'account_tree' },
+  { id: 3, name: 'Budgeting', url: '/account/budgeting', icon: BudgetingIcon, img: 'menu_book' },
+  { id: 4, name: 'CRM', url: '/crm', icon: CRMIcon, img: 'contacts' },
+  { id: 5, name: 'File Management', url: '/file-manager/folders', icon: FileIcon, img: 'folder_open' },
+  { id: 6, name: 'Human Resources', url: '/hr', icon: AppIcon1, img: 'person' },
+  { id: 7, name: 'Process Workflow', url: '/workflow', icon: ProjectsIcon, img: 'all_inclusive' },
+  { id: 8, name: 'Store Management', url: '/inventory/items', icon: StoreIcon, img: 'store' },
+  { id: 9, name: 'Task management', url: '/task-manager/tasks', icon: TaskIcon, img: 'list_alt' },
+  { id: 10, name: 'Work Order', url: '/work-order', icon: ProjectsIcon, img: 'ballot' },
 ];
 
 export default apps;

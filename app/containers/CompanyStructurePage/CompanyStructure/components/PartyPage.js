@@ -2,7 +2,8 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
-  AppBar, Toolbar,
+  AppBar,
+  Toolbar,
   Backdrop,
   CircularProgress,
   makeStyles,
@@ -20,10 +21,10 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import Add from '@material-ui/icons/Add';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import saga from '../../saga';
 import reducer from '../../reducer';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-import { fade, darken } from '@material-ui/core/styles/colorManipulator'
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import PartiesDialog from './PartiesDialog';
@@ -43,7 +44,7 @@ const useStyles = makeStyles(theme => ({
   },
   datatable: {
     '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
@@ -237,7 +238,7 @@ const PartyPage = props => {
     customToolbar: () => (
       <Button
         variant="contained"
-        style={{marginLeft: 5}}
+        style={{ marginLeft: 5 }}
         color="primary"
         size="small"
         startIcon={<Add />}
@@ -246,7 +247,7 @@ const PartyPage = props => {
         New Party
       </Button>
     ),
-    elevation: 0
+    elevation: 0,
   };
 
   const columns2 = [
@@ -326,7 +327,7 @@ const PartyPage = props => {
       <Button
         variant="contained"
         color="primary"
-        style={{marginLeft: 5}}
+        style={{ marginLeft: 5 }}
         size="small"
         startIcon={<Add />}
         onClick={() => dispatchOpenNewPositionAction()}
@@ -334,7 +335,7 @@ const PartyPage = props => {
         New Position
       </Button>
     ),
-    elevation: 0
+    elevation: 0,
   };
 
   return (

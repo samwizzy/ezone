@@ -18,15 +18,28 @@ export function closeNewContactGroupsDialog() {
   };
 }
 
+export function openEditContactGroupsDialog(data) {
+  return {
+    type: Constants.OPEN_EDIT_CONTACT_GROUPS_DIALOG,
+    payload: data,
+  };
+}
+
+export function closeEditContactGroupsDialog() {
+  return {
+    type: Constants.CLOSE_EDIT_CONTACT_GROUPS_DIALOG,
+  };
+}
+
 export function openNewAssignContactDialog() {
   return {
-    type: Constants.OPEN_NEW_ASSIGN_CONTACT_DIALOG,
+    type: Constants.OPEN_ASSIGN_CONTACT_DIALOG,
   };
 }
 
 export function closeNewAssignContactDialog() {
   return {
-    type: Constants.CLOSE_NEW_ASSIGN_CONTACT_DIALOG,
+    type: Constants.CLOSE_ASSIGN_CONTACT_DIALOG,
   };
 }
 
@@ -108,6 +121,47 @@ export function getContactGroupByIdSuccess(data) {
 export function getContactGroupByIdError(data) {
   return {
     type: Constants.GET_CONTACT_GROUP_BY_ID_ERROR,
+    payload: data,
+  };
+}
+
+export function assignContactToGroup(data) {
+  return {
+    type: Constants.ASSIGN_CONTACT_TO_GROUP,
+    payload: data,
+  };
+}
+
+export function assignContactToGroupSuccess(data) {
+  return {
+    type: Constants.ASSIGN_CONTACT_TO_GROUP_SUCCESS,
+    payload: data,
+  };
+}
+
+export function assignContactToGroupError(data) {
+  return {
+    type: Constants.ASSIGN_CONTACT_TO_GROUP_ERROR,
+    payload: data,
+  };
+}
+
+export function getContacts() {
+  return {
+    type: Constants.GET_ALL_CONTACTS,
+  };
+}
+
+export function getContactsSuccess(data) {
+  return {
+    type: Constants.GET_ALL_CONTACTS_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getContactsError(data) {
+  return {
+    type: Constants.GET_ALL_CONTACTS_ERROR,
     payload: data,
   };
 }

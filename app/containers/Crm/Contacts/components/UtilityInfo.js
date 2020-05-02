@@ -100,7 +100,7 @@ export const UtilityInfo = props => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                name="description"
+                name="notes"
                 label="Description"
                 id="outlined-description"
                 fullWidth

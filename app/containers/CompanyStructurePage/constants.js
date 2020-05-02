@@ -48,6 +48,9 @@ export const UPDATE_PARTY_GROUP_SUCCESS =
 export const UPDATE_PARTY_GROUP_ERROR =
   'app/CompanyStructurePage/UPDATE_PARTY_GROUP_ERROR';
 
+export const GET_SELECTED_POSITION = 'app/CompanyStructurePage/GET_SELECTED_POSITION';
+export const GET_SELECTED_PARTY = 'app/CompanyStructurePage/GET_SELECTED_PARTY';
+
 export const GET_SELECTED_PARTY_GROUP =
   'app/CompanyStructurePage/GET_SELECTED_PARTY_GROUP';
 

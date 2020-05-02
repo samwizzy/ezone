@@ -1,4 +1,6 @@
 class EzoneUtils {
+
+    toTitleCase = str => (str ? str[0].toUpperCase() + str.slice(1) : '');
     
     toBase64(file){
         return new Promise((resolve, reject) => {

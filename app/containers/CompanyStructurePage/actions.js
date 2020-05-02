@@ -6,6 +6,20 @@
 
 import * as Constants from './constants';
 
+export function getSelectedParty(payload) {
+  return {
+    type: Constants.GET_SELECTED_PARTY,
+    payload
+  };
+}
+
+export function getSelectedPosition(payload) {
+  return {
+    type: Constants.GET_SELECTED_POSITION,
+    payload
+  };
+}
+
 export function openNewPartyGroupDialog() {
   return {
     type: Constants.OPEN_NEW_PARTY_GROUP_DIALOG,

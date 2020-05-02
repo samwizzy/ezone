@@ -25,6 +25,14 @@ import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+<<<<<<< HEAD
+=======
+import * as Actions from '../../actions';
+import * as AppSelectors from '../../../App/selectors';
+import * as Selectors from '../../selectors';
+import LoadingIndicator from '../../../../components/LoadingIndicator';
+import journalStatusPane from '../../../../images/journalStatusPane.jpg';
+>>>>>>> f96298fe2976054cf2970e698684f9dac74320cc
 import moment from 'moment';
 
 
@@ -33,6 +41,38 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(3),
+  },
+  flex: {
+    position: "relative",
+    padding: theme.spacing(8, 5)
+  },
+  status: {
+    textAlign: "center",
+    padding: theme.spacing(2, 5),
+    position: "absolute",
+    backgroundColor: '#6DCC4C',
+    color: theme.palette.common.white,
+    top: 0, left: 0,
+    "&::after": {
+      content: "''",
+      position: "absolute",
+      top: 0, 
+      right: "-60px",
+      width: 0,
+      height: 0,
+      borderTop: "60px solid #6DCC4C",
+      borderRight: "60px solid transparent"
+    },
+    "&::before": {
+      content: "''",
+      position: "absolute",
+      top: 0, 
+      right: "-60px",
+      width: 0,
+      height: 0,
+      borderBottom: "60px solid #6DCC4C",
+      borderRight: "60px solid transparent"
+    }
   },
   paper: {
     padding: theme.spacing(1, 2),
@@ -56,12 +96,13 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.primary.main,
       },
       '& .MuiTableCell-root:nth-child(even)': {
-        backgroundColor: darken(theme.palette.primary.main, 0.5),
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
     '& .MuiTableFooter-root': {},
     '& .MuiTableCell-root': {
-        fontSize: theme.typography.fontSize + 2,
+      // border: "none !important",
+      fontSize: theme.typography.fontSize + 2,
       '& button:nth-child(n+2)': {
         marginLeft: theme.spacing(1),
       },
@@ -71,7 +112,8 @@ const useStyles = makeStyles(theme => ({
     }
   },
   iconPaper: {
-      textAlign: "right"
+    padding: theme.spacing(1),
+    textAlign: "right"
   }
 }));
 
@@ -84,6 +126,7 @@ const JournalDetails = props => {
   console.log("Journal entries ", props.location.journalDetailsData.entries);
 
   return (
+<<<<<<< HEAD
     <div className={classes.root}>
       <Grid container>
         <Grid item xs={12} className={classNames(classes.gridMargin)}>
@@ -95,6 +138,44 @@ const JournalDetails = props => {
               <IconButton><Icon>cloud_download</Icon></IconButton>
             </div>
           </Paper>
+=======
+      <div className={classes.root}>
+        <Grid container>
+            <Grid item xs={12} className={classNames(classes.gridMargin)}>
+                <Paper square className={classes.iconPaper}>
+                    <div>
+                        <IconButton><Icon>add</Icon></IconButton>
+                        <IconButton><Icon>person</Icon></IconButton>
+                        <IconButton><Icon>edit</Icon></IconButton>
+                        <IconButton><Icon>cloud_download</Icon></IconButton>
+                    </div>
+                </Paper>
+            </Grid>
+            <Grid item xs={12} className={classNames(classes.gridMargin)}>
+                <Paper square className={classes.flex}>
+                  <div className={classes.status}><Typography variant="h6">Approved</Typography></div>
+
+                  <Table className={classes.table}>
+                      <TableBody>
+                          <TableRow>
+                              <TableCell component="th">Date</TableCell>
+                              <TableCell align="left">3rd Jul 2019</TableCell>
+                          </TableRow>
+                          <TableRow>
+                              <TableCell component="th">Ref. No.</TableCell>
+                              <TableCell align="left">029993939YU</TableCell>
+                          </TableRow>
+                          <TableRow><TableCell colSpan={2} component="th">Note</TableCell></TableRow>
+                          <TableRow>
+                              <TableCell>
+                                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                              </TableCell>
+                          </TableRow>
+                      </TableBody>
+                  </Table>
+                </Paper>
+            </Grid>
+>>>>>>> f96298fe2976054cf2970e698684f9dac74320cc
         </Grid>
         <Grid item xs={12} className={classNames(classes.gridMargin)}>
           <Paper square>

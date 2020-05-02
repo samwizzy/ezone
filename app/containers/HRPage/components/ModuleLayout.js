@@ -1,24 +1,11 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import {
-  IconButton,
-  Typography,
-  Grid,
-  makeStyles,
-  AppBar,
-  Toolbar,
-} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import { compose } from 'redux';
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import {
-  fade,
-  darken,
-} from '@material-ui/core/styles/colorManipulator';
-import RefreshSharp from '@material-ui/icons/RefreshSharp';
-import * as Actions from '../actions';
-import UserMenu from '../../../components/layouts/shared-components/UserMenu';
+import { darken } from '@material-ui/core/styles/colorManipulator';
 import SideBar from './SideBar'
 import MenuBar from '../../../components/MenuBar'
 
@@ -27,9 +14,8 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   content: {
-    display: 'flex',
-    flexDirection: 'column',
-    padding: theme.spacing(3, 0),
+    flexGrow: 1,
+    // padding: theme.spacing(2),
   },
   active: {
     backgroundColor: theme.palette.common.white,  
@@ -60,14 +46,9 @@ function ModuleLayout(props) {
           </React.Fragment>
         }
         content={
-          <Grid container>
-            {/* <Grid item xs={2} md={2}>
-              <SideBar />
-            </Grid> */}
-            <Grid item xs={12} md={12}>
-              {props.children}
-            </Grid>
-          </Grid>
+          <div className={classes.content}>
+            {props.children}
+          </div>
         }
       />
     </div>

@@ -17,6 +17,7 @@ import BranchesApp from './Branches'
 import RecruitmentApp from './Recruitment'
 import AttendanceApp from './Attendance'
 import PayrollApp from './Payroll'
+import AnnouncementApp from './Announcement'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,7 +31,7 @@ const HumanResourcePage = props => {
 
     console.log(params, "params tired")
 
-    switch(params.sectionId){
+    switch(params.section){
         case 'employees':
             return <EmployeesApp />
             break;
@@ -51,6 +52,9 @@ const HumanResourcePage = props => {
             break;
         case 'payroll':
             return <PayrollApp /> 
+            break;
+        case 'announcement':
+            return <AnnouncementApp /> 
             break;
         default:
             return <EmployeesApp /> 

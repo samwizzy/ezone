@@ -2,6 +2,8 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
+  Backdrop,
+  CircularProgress,
   makeStyles,
   Button,
   Paper,
@@ -21,6 +23,9 @@ import * as Selectors from '../selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import ContactGroupsDialog from './ContactGroupsDialog';
 import AssignContactDialog from './AssignContactDialog';
+
+// import * as ContactActions from '../../../Crm/Contacts/actions';
+// import * as ContactReducers from '../../../Crm/Contacts/reducer';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -45,16 +50,20 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
 const ContactGroupsDetails = props => {
   const classes = useStyles();
-  const { loading, openNewContactGroupsDialog, match, getContactGroupByIdAction, getContactGroup } = props;
+  const { loading, openNewAssignContactDialog, match, getContactGroupByIdAction, getContactGroup, getContactsAction, getAllContacts } = props;
   const { params } = match
 
-  // console.log(getContactGroup, 'getContactGroup');
   useEffect(() => {
-    getContactGroupByIdAction(params.contactId)
+    getContactGroupByIdAction(params.contactId);
+    getContactsAction();
   }, []);
 
   const columns = [
@@ -67,56 +76,52 @@ const ContactGroupsDetails = props => {
       },
     },
     {
-      name: 'groupname',
-      label: 'Group Name',
+      name: 'id',
+      label: 'Contact Name',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: value => {
+          const contactGp = getContactGroup.contacts.find(contact => value === contact.id);
+
+          if (value === '') {
+            return '';
+          }
+          return (
+            <Typography>
+              {contactGp.firstName} {contactGp.lastName}
+            </Typography>
+          );
+        },
+      },
+    },
+    {
+      name: 'phoneNumber',
+      label: 'Phone Number',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'Subscribers',
-      label: 'Subscribers',
+      name: 'emailAddress',
+      label: 'Email',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'Unconfirmed',
-      label: 'Unconfirmed',
+      name: 'lifeStage',
+      label: 'Life Stage',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'status',
-      label: 'Unsubscribed',
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: 'createdAt',
-      label: 'Created At',
-      options: {
-        filter: true,
-        sort: false,
-      }
-    },
-    {
-      name: 'type',
-      label: 'Type',
-      options: {
-        filter: true,
-        sort: false,
-      }
-    },
-    {
-      name: 'addedBy',
-      label: 'Adjusted By',
+      name: 'ownerName',
+      label: 'Owner',
       options: {
         filter: true,
         sort: false,
@@ -135,7 +140,7 @@ const ContactGroupsDetails = props => {
         size="small"
         className={classes.button}
         startIcon={<AddIcon />}
-        onClick={() => openNewContactGroupsDialog()}
+        onClick={() => openNewAssignContactDialog()}
       >
         New
       </Button>
@@ -143,12 +148,11 @@ const ContactGroupsDetails = props => {
     elevation: 0
   };
 
-  if (loading) {
-    return <LoadingIndicator />;
-  }
-
   return (
     <React.Fragment>
+      <Backdrop className={classes.backdrop} open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Paper square>
         <Toolbar>
           <Typography variant="h6">Contact Groups</Typography>
@@ -180,27 +184,31 @@ const ContactGroupsDetails = props => {
         options={options}
       />
       <ContactGroupsDialog />
-      <AssignContactDialog />
+      <AssignContactDialog params={params} getAllContacts={getAllContacts} />
     </React.Fragment>
   );
 };
 
 ContactGroupsDetails.propTypes = {
   loading: PropTypes.bool,
-  openNewContactGroupsDialog: PropTypes.func,
+  openNewAssignContactDialog: PropTypes.func,
   getContactGroupByIdAction: PropTypes.func,
   getContactGroup: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+  getContactsAction: PropTypes.func,
+  getAllContacts: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  getContactGroup: Selectors.makeSelectContactGroup()
+  getContactGroup: Selectors.makeSelectContactGroup(),
+  getAllContacts: Selectors.makeSelectGetContacts(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewContactGroupsDialog: () => dispatch(Actions.openNewContactGroupsDialog()),
+    openNewAssignContactDialog: () => dispatch(Actions.openNewAssignContactDialog()),
     getContactGroupByIdAction: evt => dispatch(Actions.getContactGroupById(evt)),
+    getContactsAction: () => dispatch(Actions.getContacts()),
   };
 }
 

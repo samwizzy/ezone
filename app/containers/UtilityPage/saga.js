@@ -695,18 +695,18 @@ export function* getUserChatData() {
 
 export function* postMsg() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  // const userChatDetails = yield select(Selectors.makeSelectGetUserChatData());
   // const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
   // console.log(currentUser, 'currentUser');
 
   const userChatData = yield select(Selectors.makeSelectGetUserChatData());
   const postMsgDetails = yield select(Selectors.makeSelectPostMsg());
-  postMsgDetails.recipientId = userChatData.initiator;
+  postMsgDetails.recipientId = userChatData.responder;
   postMsgDetails.recipientName = userChatData.responderName;
-  postMsgDetails.senderId = userChatData.responder;
+  postMsgDetails.senderId = userChatData.initiator;
   postMsgDetails.senderName = userChatData.initiatorName;
 
-  
   console.log(postMsgDetails, 'postMsgDetails');
 
   // console.log(userChatDetails, 'lunch this in userChatDetails');
@@ -724,7 +724,7 @@ export function* postMsg() {
       }),
     });
 
-    // console.log(postMsgResponse, 'postMsgResponse');
+    console.log(postMsgResponse, 'postMsgResponse');
 
     // yield put(Actions.getUserChatData(userChatDetails));
     yield put(Actions.postMsgSuccess(postMsgResponse));

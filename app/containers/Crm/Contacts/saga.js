@@ -10,7 +10,10 @@ import * as Endpoints from '../../../components/Endpoints';
 
 export function* getAllContacts() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${Endpoints.GetAllContactsApi}`;
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAllContactsApi}/?orgId=${
+    currentUser.organisation.orgId
+  }`;
 
   console.log(requestURL, 'requestURL');
   try {

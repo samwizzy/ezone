@@ -58,6 +58,18 @@ const makeSelectParty = () =>
     subState => subState.party,
   );
 
+const makeSelectSelectedParty = () =>
+  createSelector(
+    selectCompanyStructurePageDomain,
+    subState => subState.selectedParty,
+  );
+
+const makeSelectSelectedPosition = () =>
+  createSelector(
+    selectCompanyStructurePageDomain,
+    subState => subState.selectedPosition,
+  );
+
 const makeSelectPartyGroupData = () =>
   createSelector(
     selectCompanyStructurePageDomain,
@@ -160,12 +172,6 @@ const makeSelectGetAllTags = () =>
     subState => subState.allTags,
   );
 
-// const makeSelectSelectedParty = () =>
-//   createSelector(
-//     selectCompanyStructurePageDomain,
-//     subState => subState.selectedParty,
-//   );
-
 /** *****************************************************************
  * Organization constants
  ******************************************************************* */
@@ -228,7 +234,8 @@ export {
   makeSelectAddEmployeeToPositionDialog,
   makeSelectAddEmployeeToPositionData,
   // makeSelectGetAllEmployees,
-  // makeSelectSelectedParty,
+  makeSelectSelectedParty,
+  makeSelectSelectedPosition,
   // organization export function
   makeSelectEditColorDialog,
   makeSelectEditCompanyDialog,

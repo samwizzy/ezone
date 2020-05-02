@@ -22,6 +22,12 @@ import ContactGroupsList from './components/ContactGroupsList';
 import ContactGroupsDetails from './components/ContactGroupsDetails';
 import ModuleLayout from '../components/ModuleLayout';
 
+// import * as ContactActions from '../Contacts/actions';
+// import * as ContactSelector from '../Contacts/selectors';
+
+// import contactReducer from '../Contacts/reducer';
+// import contactSaga from '../Contacts/saga';
+
 export function CrmContactGroups(props) {
   useInjectReducer({ key: 'crmContactGroups', reducer });
   useInjectSaga({ key: 'crmContactGroups', saga });
@@ -48,7 +54,6 @@ export function CrmContactGroups(props) {
 
 CrmContactGroups.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  getAllContactsGroupAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -58,6 +63,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getAllContactsGroupAction: () => dispatch(Actions.getAllContactsGroup()),
+    // getAllContacts: () => dispatch(ContactActions.getAllContacts()),
     dispatch,
   };
 }
@@ -67,7 +73,15 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
+// const withContactSaga = useInjectReducer({
+//   key: 'crmContacts',
+//   contactReducer,
+// });
+// const withContactReducer = useInjectSaga({ key: 'crmContacts', contactSaga });
+
 export default compose(
+  // withContactSaga,
+  // withContactReducer,
   withConnect,
   memo,
 )(CrmContactGroups);

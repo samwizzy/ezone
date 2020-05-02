@@ -227,6 +227,7 @@ const BankList = props => {
         </Button>
       </Tooltip>
     ),
+    elevation: 0
   };
 
   return (

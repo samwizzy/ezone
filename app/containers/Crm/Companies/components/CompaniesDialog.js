@@ -4,43 +4,25 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { Autocomplete } from '@material-ui/lab';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  TextField,
   makeStyles,
-  Button,
+  Backdrop,
+  CircularProgress,
   Dialog,
-  DialogContent,
-  DialogActions,
-  Divider,
   Slide,
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-  FormControlLabel,
-  Radio,
-  Grid,
-  FormControl,
-  FormLabel,
-  RadioGroup,
 } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
+import moment from 'moment';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import * as Selectors from '../../selectors';
-import * as Actions from '../../actions';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
+import * as Selectors from '../selectors';
+import * as Actions from '../actions';
+import { CompanyInfo } from './CompanyInfo';
+import { OtherInfo } from './OtherInfo';
+import { ImageUpload } from './ImageUpload';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -64,6 +46,10 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -71,333 +57,135 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const CompaniesDialog = props => {
-  const {
-    loading,
-    inventoryAdjustDialog,
-    getAllItems,
-    getAllWarehouses,
-    closeNewInventoryAdjustDialogAction,
-    closeEditEmployeeDialogAction,
-    dispatchCreateNewInventoryAdjustmentAction,
-  } = props;
-
-  console.log(inventoryAdjustDialog, 'inventoryAdjustDialog');
   const classes = useStyles();
-  const [selectedDate, handleDateChange] = React.useState(new Date());
 
-  const [rows, setRows] = React.useState([{}]);
-  const [values, setValues] = React.useState({
-    transferOrder: '',
-    destinationWarehouseUuId: '',
-    reason: '',
-    sourceWareHouseUuid: '',
-    // itemId: '',
-    // itemSku: '',
-    // transferQuantity: '',
+  const [step, setStep] = React.useState(0);
+  const [form, setForm] = React.useState({
+    firstName: '',
+    emailAddress: '',
+    phoneNumber: '',
+    mobileNo: '',
+    lifeStage: '',
+    associationType: '',
+    address1: '',
+    fax: '',
+    image: '',
+    ownerId: '',
+    type: 'COMPANY',
+    website: '',
   });
 
-  const canBeSubmitted = () => {
-    const {
-      name,
-      firstStreet,
-      secondStreet,
-      city,
-      state,
-      zipCode,
-      warehousePhoneNumber,
-      wareHouseContactEmail,
-      headOfWareHouseId,
-    } = values;
-    return (
-      name !== '' &&
-      firstStreet !== '' &&
-      secondStreet !== '' &&
-      city !== '' &&
-      state !== '' &&
-      zipCode !== '' &&
-      warehousePhoneNumber !== '' &&
-      wareHouseContactEmail !== '' &&
-      headOfWareHouseId !== ''
-    );
+  const {
+    loading,
+    companyDialog,
+    createNewCompanyAction,
+    updateCompanyAction,
+    closeNewCompanyDialogAction,
+    closeEditEmployeeDialogAction,
+  } = props;
+
+  console.log(companyDialog, 'companyDialog');
+
+  const handleChange = event => {
+    const { name, value } = event.target;
+    setForm({ ...form, [name]: value });
   };
 
-  const handleQuantityChange = idx => e => {
-    const { value } = e.target;
-    const newRow = rows;
-    newRow[idx].transferQuantity = parseFloat(value);
-    setRows(newRow);
+  const handleSelectLifeStage = (evt, value) => {
+    setForm({ ...form, lifeStage: value.name });
+  };
+  const handleSelectOwnerId = (evt, value) => {
+    setForm({ ...form, ownerId: value.id });
+  };
+  const handleSelectAssociateId = (evt, value) => {
+    setForm({ ...form, associationType: value.name });
+  };
+  const handleSelectCountry = (evt, value) => {
+    setForm({ ...form, country: value.name });
+  };
+  const handleSelectContactGroup = (evt, value) => {
+    setForm({ ...form, contactGroup: value.id });
+  };
+  const handleSelectContactSource = (evt, value) => {
+    setForm({ ...form, contactSource: value.id });
   };
 
-  const handleItemChange = (e, value, idx) => {
-    const newRoww = rows;
-    newRoww[idx] = {
-      itemId: value.id,
-      itemSku: value.sku,
-    };
-    setRows(newRoww);
+  const uploadFileAction = file => {
+    setForm({ ...form, image: file });
   };
 
-  const addRow = () => {
-    console.log(rows, 'rows values');
-    const item = {
-      itemId: '',
-      itemSku: '',
-      transferQuantity: '',
-    };
-    setRows([...rows, item]);
+  const handleNext = () => {
+    if (step > -1 && step <= 3) {
+      setStep(step + 1);
+    }
   };
 
-  const removeRow = idx => {
-    setRows(rows.filter((item, id) => id !== idx));
+  const handleDateChange = date => {
+    setForm({ ...form, dob: moment(date).format('YYYY-MM-DD') });
   };
 
-  const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
+  const handlePrev = () => {
+    if (step => 1 && step <= 3) {
+      setStep(step - 1);
+    }
   };
 
-  const handleSourceChange = (evt, value) => {
-    setValues({ ...values, sourceWareHouseUuid: value.id });
-  };
+  React.useEffect(() => {
+    if (companyDialog.type === 'edit') {
+      setForm({ ...companyDialog.data });
+    }
+  }, [companyDialog.data]);
 
-  const handleDestinationChange = (evt, value) => {
-    setValues({ ...values, destinationWarehouseUuId: value.id });
-  };
+  // console.log(companyDialog, 'companyDialog');
+  console.log(form, 'form');
 
-  // console.log(values, 'values');
   return (
     <div>
       <Dialog
-        {...inventoryAdjustDialog.props}
-        onClose={closeNewInventoryAdjustDialogAction}
+        {...companyDialog.props}
+        onClose={closeNewCompanyDialogAction}
         keepMounted
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
       >
-        <AppBar className={classes.appBar}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={closeNewInventoryAdjustDialogAction}
-              aria-label="close"
-            >
-              <Close />
-            </IconButton>
-            <Typography variant="h6" className={classes.title}>
-              {inventoryAdjustDialog.type === 'new'
-                ? 'Inventory Adjustment'
-                : 'Edit Inventory Adjustment'}
-            </Typography>
-            <Button
-              autoFocus
-              color="inherit"
-              onClick={closeNewInventoryAdjustDialogAction}
-            >
-              save
-            </Button>
-          </Toolbar>
-        </AppBar>
-
-        <Divider />
-
-        <DialogContent>
-          {inventoryAdjustDialog.type === 'new' ? (
-            <div>
-              <Grid item xs={12}>
-                <Grid container spacing={2}>
-                  <TextField
-                    id="outlined-transfer-order"
-                    label="Transfer Order"
-                    value={values.transferOrder}
-                    onChange={handleChange('transferOrder')}
-                    variant="outlined"
-                    className={classes.textField}
-                    fullWidth
-                  />
-                  <Grid item xs={6}>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <KeyboardDatePicker
-                        autoOk
-                        variant="inline"
-                        inputVariant="outlined"
-                        label="Date"
-                        format="dd/MM/yyyy"
-                        value={selectedDate}
-                        InputAdornmentProps={{ position: 'end' }}
-                        onChange={date => handleDateChange(date)}
-                        className={classes.textField}
-                        fullWidth
-                      />
-                    </MuiPickersUtilsProvider>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Autocomplete
-                      id="combo-itemCategory"
-                      options={getAllWarehouses}
-                      getOptionLabel={option => option.name}
-                      onChange={(evt, ve) => handleSourceChange(evt, ve)}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          label="Source Warehouse"
-                          variant="outlined"
-                          placeholder="Source Warehouse"
-                          fullWidth
-                          className={classes.textField}
-                        />
-                      )}
-                    />
-                  </Grid>
-                  <TextField
-                    id="outlined-reason"
-                    label="Reason"
-                    value={values.reason}
-                    onChange={handleChange('reason')}
-                    fullWidth
-                    variant="outlined"
-                    className={classes.textField}
-                    multiline
-                    rows={2}
-                  />
-                </Grid>
-              </Grid>
-              <Divider />
-              <Grid container spacing={0}>
-                <Grid item xs={12} md={12} lg={12}>
-                  {/* <TableTransfer
-                    getAllItems={getAllItems}
-                    values={values}
-                    setValues={setValues}
-                    addRow={addRow}
-                    removeRow={removeRow}
-                    handleItemChange={handleItemChange}
-                    handleQuantityChange={handleQuantityChange}
-                  /> */}
-
-                  <TableContainer component={Paper}>
-                    <Table className={classes.table} aria-label="simple table">
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>Item Details</TableCell>
-                          <TableCell align="center">
-                            Quantity Available
-                          </TableCell>
-                          <TableCell align="center">
-                            New Quantity on hand
-                          </TableCell>
-                          <TableCell align="center">
-                            Quantity Adjusted
-                          </TableCell>
-                          <TableCell align="center" />
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {rows.map((row, id) => (
-                          <TableRow key={id}>
-                            <TableCell component="th" scope="row">
-                              <Autocomplete
-                                id="combo-itemCategory"
-                                options={getAllItems}
-                                getOptionLabel={option => option.itemName}
-                                onChange={(evt, ve) =>
-                                  handleItemChange(evt, ve, id)
-                                }
-                                renderInput={params => (
-                                  <TextField
-                                    {...params}
-                                    label="Items"
-                                    variant="outlined"
-                                    name="itemId"
-                                    placeholder="Items"
-                                    fullWidth
-                                  />
-                                )}
-                              />
-                            </TableCell>
-                            <TableCell align="center">
-                              <TextField
-                                disabled
-                                id="filled-disabled"
-                                label=""
-                                // defaultValue="0.00"
-                                variant="filled"
-                                placeholder="0.00"
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                id="filled-disabled"
-                                label=""
-                                defaultValue="0.00"
-                                variant="filled"
-                                placeholder="0.00"
-                              />
-                            </TableCell>
-                            <TableCell align="center">
-                              <TextField
-                                id="filled-disabled"
-                                label=""
-                                defaultValue="1.00"
-                                variant="outlined"
-                                name="transferQuantity"
-                                onChange={handleQuantityChange(id)}
-                              />
-                            </TableCell>
-                            <TableCell align="center">
-                              <Button
-                                variant="outlined"
-                                color="secondary"
-                                onClick={() => removeRow(id)}
-                              >
-                                Remove
-                              </Button>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => addRow()}
-                  >
-                    Add Row
-                  </Button>
-                </Grid>
-              </Grid>
-              <Divider />
-            </div>
-          ) : (
-            <div />
-          )}
-        </DialogContent>
-
-        <DialogActions>
-          {loading ? (
-            <LoadingIndicator />
-          ) : (
-            <Button
-              onClick={() => {
-                dispatchCreateNewInventoryAdjustmentAction(
-                  Object.assign(values, { items: rows }),
-                );
-              }}
-              color="primary"
-              variant="contained"
-              // disabled={!canBeSubmitted()}
-            >
-              Save
-            </Button>
-          )}
-          <Button
-            onClick={() => closeNewInventoryAdjustDialogAction()}
-            color="primary"
-            variant="contained"
-          >
-            Cancel
-          </Button>
-        </DialogActions>
+        <Backdrop className={classes.backdrop} open={loading}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+        {step === 0 && (
+          <CompanyInfo
+            handleChange={handleChange}
+            handleSelectLifeStage={handleSelectLifeStage}
+            handleSelectOwnerId={handleSelectOwnerId}
+            handleSelectAssociateId={handleSelectAssociateId}
+            form={form}
+            closeNewCompanyDialog={closeNewCompanyDialogAction}
+            handleNext={handleNext}
+          />
+        )}
+        {step === 1 && (
+          <OtherInfo
+            handleChange={handleChange}
+            handleDateChange={handleDateChange}
+            handleSelectCountry={handleSelectCountry}
+            form={form}
+            closeNewCompanyDialog={closeNewCompanyDialogAction}
+            handleNext={handleNext}
+            handlePrev={handlePrev}
+          />
+        )}
+        {step === 2 && (
+          <ImageUpload
+            companyDialog={companyDialog}
+            updateCompanyAction={updateCompanyAction}
+            createNewCompanyAction={createNewCompanyAction}
+            uploadFileAction={uploadFileAction}
+            handleChange={handleChange}
+            handlePrev={handlePrev}
+            form={form}
+            setForm={setForm}
+            closeNewCompanyDialog={closeNewCompanyDialogAction}
+          />
+        )}
       </Dialog>
     </div>
   );
@@ -405,26 +193,25 @@ const CompaniesDialog = props => {
 
 CompaniesDialog.propTypes = {
   loading: PropTypes.bool,
-  inventoryAdjustDialog: PropTypes.object,
+  companyDialog: PropTypes.object,
   getAllWarehouses: PropTypes.array,
   getAllItems: PropTypes.array,
   dispatchCreateNewInventoryAdjustmentAction: PropTypes.func,
-  closeNewInventoryAdjustDialogAction: PropTypes.func,
+  closeNewCompanyDialogAction: PropTypes.func,
+  updateCompanyAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  // loading: Selectors.makeSelectLoading(),
-  // inventoryAdjustDialog: Selectors.makeSelectInventoryAdjustDialog(),
-  // getAllWarehouses: Selectors.makeSelectGetAllWarehouses(),
-  // getAllItems: Selectors.makeSelectGetAllItems(),
+  loading: Selectors.makeSelectLoading(),
+  companyDialog: Selectors.makeSelectCompanyDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchCreateNewInventoryAdjustmentAction: evt =>
-      dispatch(Actions.createNewInventoryAdjustment(evt)),
-    closeNewInventoryAdjustDialogAction: () =>
-      dispatch(Actions.closeNewInventoryAdjustDialog()),
+    createNewCompanyAction: evt => dispatch(Actions.createNewCompany(evt)),
+    updateCompanyAction: evt => dispatch(Actions.updateCompany(evt)),
+    closeNewCompanyDialogAction: () =>
+      dispatch(Actions.closeNewCompanyDialog()),
   };
 }
 

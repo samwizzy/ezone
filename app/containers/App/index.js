@@ -17,6 +17,7 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 // import HomePage from '../HomePage/Loadable';
 import Home from '../Home/Loadable';
+import Dashboard from '../Dashboard/Loadable';
 import NotFoundPage from '../NotFoundPage/Loadable';
 import Registration from '../AuthorizationPage/Register/Loadable';
 import Login from '../AuthorizationPage/Login/Loadable';
@@ -30,7 +31,7 @@ import UsersPage from '../UsersPage/Loadable';
 import Employees from '../UsersPage/EmployeePage/Loadable';
 import UserProfilePage from '../UsersPage/UserProfilePage/Loadable';
 import UtilityPage from '../UtilityPage/Loadable';
-import ChatApp from '../UtilityPage/ChatApp/ChatTab';
+import ChatApp from '../UtilityPage/ChatApp/Loadable';
 import TasksPage from '../UtilityPage/TasksApp/Loadable';
 import FilesApp from '../UtilityPage/FilesApp/Loadable';
 import HRPage from '../HRPage/Loadable';
@@ -102,6 +103,7 @@ const App = props => {
               <Route exact path="/register" component={Registration} />
               <Layout3>
                 <PrivateRoute exact path="/home" component={Home} />
+                <PrivateRoute exact path="/dashboard" component={Dashboard} />
                 <PrivateRoute
                   exact
                   path="/organization"
@@ -120,15 +122,20 @@ const App = props => {
                 />
                 <PrivateRoute
                   exact
-                  path="/organization/company/structure"
+                  path="/organization/company/structure/:groupId?"
+                  component={CompanyStructure}
+                />
+                <PrivateRoute
+                  exact
+                  path="/organization/company/structure/:groupId?/party/:partyId?"
+                  component={CompanyStructure}
+                />
+                <PrivateRoute
+                  exact
+                  path="/organization/company/structure/:groupId?/party/:partyId?/position/:positionId?"
                   component={CompanyStructure}
                 />
                 {/* <PrivateRoute
-                  exact
-                  path="/organization/company/structure/:partyGroupId"
-                  component={PartyPage}
-                /> */}
-                <PrivateRoute
                   exact
                   path="/organization/company/structure/party/:partyGroupId/:partyId"
                   component={CompanyStructureParty}
@@ -137,9 +144,9 @@ const App = props => {
                   exact
                   path="/organization/company/structure/position/:partyGroupId/:partyId/:positionId"
                   component={CompanyStructurePosition}
-                />
+                /> */}
 
-                <PrivateRoute exact path="/utility" component={UtilityPage} />
+                <PrivateRoute exact path="/utility/:tab?" component={UtilityPage} />
                 <PrivateRoute
                   exact
                   path="/task-manager/tasks"
@@ -160,13 +167,13 @@ const App = props => {
                   path="/file-manager/folder/:folderId"
                   component={FilesApp}
                 />
+                <PrivateRoute exact path="/chats" component={ChatApp} />
+
                 <PrivateRoute
                   exact
-                  path="/chats"
-                  component={ChatApp}
+                  path="/settings/email"
+                  component={EmailConfig}
                 />
-
-                <PrivateRoute exact path="/settings/email" component={EmailConfig} />
                 <PrivateRoute
                   path="/settings/email/configuration"
                   component={EmailConfigs}
@@ -180,12 +187,23 @@ const App = props => {
                   path="/settings/email/password/template"
                   component={EmailPasswordTemplate}
                 />
-                <PrivateRoute exact path="/work-order" component={WorkOrderPage} />
                 <PrivateRoute
-                  path="/hr/:sectionId?/:status?"
+                  exact
+                  path="/work-order"
+                  component={WorkOrderPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/hr/:section?/:status?"
+                  component={HRPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/hr/:section?/:status?/applicant/:applicantId?"
                   component={HRPage}
                 />
                 <PrivateRoute exact path="/account" component={AccountPage} />
+<<<<<<< HEAD
                 <PrivateRoute exact path="/account/chart" component={ChartPage} />
                 <PrivateRoute exact path="/account/chart/details" component={DetailsOfAccountChart} />
                 <PrivateRoute exact path="/account/banking" component={BankingPage} />
@@ -206,6 +224,57 @@ const App = props => {
                 <PrivateRoute
                   exact
                   path="/inventory"
+=======
+                <PrivateRoute
+                  exact
+                  path="/account/chart"
+                  component={ChartPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/chart/details"
+                  component={DetailsOfAccountChart}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/banking"
+                  component={BankingPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/budgeting/:status?"
+                  component={BudgetPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/settings/:status?"
+                  component={SettingsPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/settings/setup"
+                  component={AccountSetup}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/banking/details"
+                  component={AccountDetails}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/journal"
+                  component={JournalPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/account/journal/add"
+                  component={AddNewJournal}
+                />
+
+                <PrivateRoute
+                  exact
+                  path="/inventory/dashboard"
+>>>>>>> f96298fe2976054cf2970e698684f9dac74320cc
                   component={InventoryPage}
                 />
                 <PrivateRoute
@@ -222,7 +291,10 @@ const App = props => {
                   path="/inventory/item/:statusId?/:sku?"
                   component={ItemPage}
                 />
+<<<<<<< HEAD
 >>>>>>> account
+=======
+>>>>>>> f96298fe2976054cf2970e698684f9dac74320cc
                 {/* <PrivateRoute
                   exact
                   path="/inventory/item/:statusId?"

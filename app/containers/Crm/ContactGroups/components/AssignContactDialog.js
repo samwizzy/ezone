@@ -6,6 +6,8 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
 import {
+  Backdrop,
+  CircularProgress,
   Checkbox,
   Table,
   TableBody,
@@ -56,36 +58,40 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const companies = [
-  { id: 1, title: 'Optisoft Technology', year: '2015' },
-  { id: 2, title: 'First Marine', year: '2015' },
-  { id: 3, title: 'Union Bank', year: '2015' },
-];
-
 const AssignContactDialog = props => {
   const classes = useStyles();
-  const { loading, assignContactDialog, closeNewAssignContactDialog } = props;
-  const [selectedDate, handleDateChange] = React.useState(new Date());
+  const {
+    loading,
+    assignContactDialog,
+    closeNewAssignContactDialog,
+    getAllContacts,
+    assignContactToGroupAction,
+    params,
+  } = props;
 
   const [form, setForm] = React.useState({
-    contact: '',
-    groups: [{ john: false, marine: false, optisoft: false, jitiful: false }],
+    contactIds: [],
+    id: '',
   });
 
-  const handleChange = event => {
-    const { name, value } = event.target;
-    setForm({ ...form, [name]: value });
+  const handleSelectChange = (evt, value) => {
+    setForm({ ...form, contactIds: value, id: params.contactId });
   };
 
-  const handleSubmit = () => {};
-
-  const canSubmitForm = () => false;
+  const canSubmitForm = () => {
+    const { contactIds } = form;
+    return contactIds.length > 0;
+  };
 
   return (
     <div>
@@ -96,6 +102,9 @@ const AssignContactDialog = props => {
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
       >
+        <Backdrop className={classes.backdrop} open={loading}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
         <AppBar position="relative">
           <Toolbar>
             <Typography variant="h6">Assign a Contact</Typography>
@@ -115,9 +124,12 @@ const AssignContactDialog = props => {
                     <Autocomplete
                       multiple
                       id="checkboxes-tags-demo"
-                      options={companies}
+                      options={getAllContacts}
                       disableCloseOnSelect
-                      getOptionLabel={option => option.title}
+                      getOptionLabel={option =>
+                        `${option.firstName} ${option.lastName}`
+                      }
+                      onChange={(evt, value) => handleSelectChange(evt, value)}
                       renderOption={(option, { selected }) => (
                         <React.Fragment>
                           <Checkbox
@@ -126,7 +138,7 @@ const AssignContactDialog = props => {
                             style={{ marginRight: 8 }}
                             checked={selected}
                           />
-                          {option.title}
+                          {option.firstName} {option.lastName}
                         </React.Fragment>
                       )}
                       style={{ width: '100%' }}
@@ -141,7 +153,7 @@ const AssignContactDialog = props => {
                     />
                   </TableCell>
                 </TableRow>
-                <TableRow>
+                {/* <TableRow>
                   <TableCell component="th">
                     <FormLabel component="legend">Assign Group</FormLabel>
                   </TableCell>
@@ -194,7 +206,7 @@ const AssignContactDialog = props => {
                       </FormGroup>
                     </FormControl>
                   </TableCell>
-                </TableRow>
+                </TableRow> */}
               </TableBody>
             </Table>
           </form>
@@ -205,7 +217,7 @@ const AssignContactDialog = props => {
             Cancel
           </Button>
           <Button
-            onClick={handleSubmit}
+            onClick={() => assignContactToGroupAction(form)}
             disabled={!canSubmitForm()}
             color="primary"
           >
@@ -221,6 +233,7 @@ AssignContactDialog.propTypes = {
   loading: PropTypes.bool,
   assignContactDialog: PropTypes.object,
   closeNewAssignContactDialog: PropTypes.func,
+  assignContactToGroupAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -232,6 +245,8 @@ function mapDispatchToProps(dispatch) {
   return {
     closeNewAssignContactDialog: () =>
       dispatch(Actions.closeNewAssignContactDialog()),
+    assignContactToGroupAction: evt =>
+      dispatch(Actions.assignContactToGroup(evt)),
   };
 }
 

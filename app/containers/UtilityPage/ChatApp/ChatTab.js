@@ -153,8 +153,9 @@ function a11yProps(index) {
 const ref = React.createRef();
 
 const ChatTab = props => {
-  // let stompClient = null;
   const {
+    resetPostMsgAction,
+    newMsgRes,
     accessToken,
     allEmployees,
     allUsersChat,
@@ -169,47 +170,48 @@ const ChatTab = props => {
   useEffect(() => {
     dispatchGetAllEmployees();
     dispatchGetUserChats();
-    chatConnect();
     handleScrollToBottom();
-  }, []);
 
-  const classes = useStyles();
-  const [status, setStatus] = React.useState(false);
-
-  const [value, setValue] = React.useState(0);
-  const [newChat, setNewChat] = useState();
-  const [messages, setMessages] = useState([]);
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  const socket = new SockJS(
-    'https://dev.ezoneapps.com/gateway/utilityserv/messages',
-  );
-  const stompClient = Stomp.over(socket);
-  const chatConnect = () => {
+    const socket = new SockJS(
+      'https://dev.ezoneapps.com/gateway/utilityserv/messages',
+    );
+    const header = {
+      'X-Authorization': `Bearer ${accessToken}`,
+      login: 'admin',
+      passcode: 'admin',
+    };
+    const stompClient = Stomp.over(socket);
     stompClient.connect(
-      {
-        'X-Authorization': 'Bearer ' + `${accessToken}`,
-        login: 'admin',
-        passcode: 'admin',
-      },
+      header,
       frame => {
-        const connected = true;
-        console.log(frame, 'frame');
         stompClient.subscribe(`/queue/${currentUser.uuId}`, tick => {
-          console.log(tick, 'tick');
-          const newMesg = JSON.parse(tick.body);
-          // if (newMesg) {
-          //   setMessages({ ...messages, newMesg });
-          // }
+          const newMsg = JSON.parse(tick.body);
+          console.log(newMsg, 'newMsg');
+          setChatLog(prevChatLog => [...prevChatLog, newMsg]);
         });
       },
       error => {
         console.log(error);
-        const connected = false;
       },
     );
+  }, []);
+
+  if (newMsgRes) {
+    getAllUserChatData.messages.push(newMsgRes);
+  }
+
+  useEffect(() => {
+    setChatLog(getAllUserChatData.messages);
+  }, [getAllUserChatData.messages]);
+
+  const classes = useStyles();
+  const [status, setStatus] = React.useState(false);
+
+  const [chatLog, setChatLog] = useState([]);
+  const [value, setValue] = React.useState(0);
+  const [newChat, setNewChat] = useState();
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
   const handleScrollToBottom = () => {
@@ -217,11 +219,16 @@ const ChatTab = props => {
   };
 
   const isFirstMessageOfGroup = (item, i) => {
-    // return (i === 0 || (props.chat.dialog[i - 1] && props.chat.dialog[i - 1].who !== item.who));
+    return (
+      i === 0 || (chatLog[i - 1] && chatLog[i - 1].senderId !== item.senderId)
+    );
   };
 
   const isLastMessageOfGroup = (item, i) => {
-    // return (i === props.chat.dialog.length - 1 || (props.chat.dialog[i + 1] && props.chat.dialog[i + 1].who !== item.who));
+    return (
+      i === chatLog.length - 1 ||
+      (chatLog[i + 1] && chatLog[i + 1].senderId !== item.senderId)
+    );
   };
 
   const handleEmployeeChange = (event, vl) => {
@@ -234,33 +241,21 @@ const ChatTab = props => {
     setNewChat(initNewChat);
   };
 
-  let userChatReversedData = [];
+  let chatLogReverse = [];
   let allUserReversedData = [];
 
   // reversed datas
-  if (getAllUserChatData) {
-    userChatReversedData = _.orderBy(
-      getAllUserChatData.messages,
-      ['dateCreated'],
-      ['asc'],
-    );
-    setMessages(userChatReversedData);
+  if (chatLog) {
+    chatLogReverse = _.orderBy(chatLog, ['dateCreated'], ['asc']);
   }
 
   if (allUsersChat) {
     allUserReversedData = _.orderBy(allUsersChat, ['dateCreated'], ['desc']);
   }
 
-  console.log(messages, 'messages');
+  console.log(chatLog, 'chatLog in if');
+  console.log(chatLogReverse, 'userChatReversedData');
 
-  // console.log(userChatData, 'userChatData');
-  // console.log(newChat, 'newChat');
-  // console.log(currentUser, 'currentUser');
-  // console.log(getAllUserChatData, 'getAllUserChatData');
-
-  // if (loading) {
-  //   return <LoadingIndicator />;
-  // }
   return (
     <React.Fragment>
       <ModuleLayout>
@@ -269,125 +264,125 @@ const ChatTab = props => {
             // <NoAvailableChats />
             <div />
           ) : (
-            <Grid
-              justify="center"
-              container
-              justify="space-between"
-              alignItems="center"
-            >
-              <Grid item xs={12} md={4}>
-                <Paper square>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: '3px 7px',
-                    }}
-                  >
-                    <Autocomplete
-                      id="combo-box-demo"
-                      options={allEmployees}
-                      getOptionLabel={option =>
-                        `${option.firstName} ${option.lastName}`
-                      }
-                      style={{ width: '100%' }}
-                      onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          label="Search contacts"
-                          variant="outlined"
-                          placeholder="Search Contacts"
-                          fullWidth
-                        />
-                      )}
-                    />
-                    <IconButton>
-                      <Add />
-                    </IconButton>
-                  </div>
-
-                  <Tabs
-                    variant="fullWidth"
-                    value={value}
-                    indicatorColor="primary"
-                    textColor="primary"
-                    onChange={handleChange}
-                    aria-label="disabled tabs example"
-                    className={classes.tabs}
-                  >
-                    <Tab label="Active" {...a11yProps(1)} />
-                    <Tab label="Group" {...a11yProps(1)} />
-                    <Tab label="Archive" {...a11yProps(1)} />
-                  </Tabs>
-                </Paper>
-                <TabPanel value={value} index={0}>
-                  <UserChat
-                    allUsersChat={allUserReversedData}
-                    newChat={newChat}
-                  />
-                </TabPanel>
-                <TabPanel value={value} index={1}>
-                  <UserChat />
-                </TabPanel>
-                <TabPanel value={value} index={2}>
-                  <UserChat />
-                </TabPanel>
-              </Grid>
-              <Grid item xs={12} md={8} component={Paper}>
-                {/* {getAllUserChatData &&
-                getAllUserChatData.messages.length > 0 ? ( */}
-                <Grid container justify="center">
-                  <Grid item xs={12}>
-                    <ChatHeader userChatData={userChatData} />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <div className={classes.msgBody} ref={ref}>
-                      {messages &&
-                        messages.map(chat => (
-                          <div
-                            key={chat.id}
-                            className={classNames(
-                              classes.messageRow,
-                              { me: currentUser.uuId === chat.senderId },
-                              { contact: currentUser.uuId !== chat.senderId },
-                              {
-                                'first-of-group': isFirstMessageOfGroup(
-                                  'item',
-                                  'i',
-                                ),
-                              },
-                              {
-                                'last-of-group': isLastMessageOfGroup(
-                                  'item',
-                                  'i',
-                                ),
-                              },
-                            )}
-                          >
-                            <Paper className={classes.chatPane} key={chat.id}>
-                              <Typography variant="subtitle1" key={chat.id}>
-                                {chat.chatMessage}
-                              </Typography>
-                              <Typography
-                                variant="caption"
-                                style={{
-                                  position: 'absolute',
-                                  right: 12,
-                                  bottom: 0,
-                                }}
-                              >
-                                {moment(chat.dateCreated).format('LT')}
-                              </Typography>
-                            </Paper>
-                          </div>
-                        ))}
+              <Grid
+                justify="center"
+                container
+                justify="space-between"
+                alignItems="center"
+              >
+                <Grid item xs={12} md={4}>
+                  <Paper square>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        padding: '3px 7px',
+                      }}
+                    >
+                      <Autocomplete
+                        id="combo-box-demo"
+                        options={allEmployees}
+                        getOptionLabel={option => option.firstName}
+                        style={{ width: '100%' }}
+                        onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
+                        renderInput={params => (
+                          <TextField
+                            {...params}
+                            label="Search contacts"
+                            variant="outlined"
+                            placeholder="Search Contacts"
+                            fullWidth
+                          />
+                        )}
+                      />
+                      <IconButton>
+                        <Add />
+                      </IconButton>
                     </div>
-                    <ChatFooter />
-                  </Grid>
+
+                    <Tabs
+                      variant="fullWidth"
+                      value={value}
+                      indicatorColor="primary"
+                      textColor="primary"
+                      onChange={handleChange}
+                      aria-label="disabled tabs example"
+                      className={classes.tabs}
+                    >
+                      <Tab label="Active" {...a11yProps(1)} />
+                      <Tab label="Group" {...a11yProps(1)} />
+                      <Tab label="Archive" {...a11yProps(1)} />
+                    </Tabs>
+                  </Paper>
+                  <TabPanel value={value} index={0}>
+                    <UserChat
+                      allUsersChat={allUserReversedData}
+                      newChat={newChat}
+                    />
+                  </TabPanel>
+                  <TabPanel value={value} index={1}>
+                    <UserChat />
+                  </TabPanel>
+                  <TabPanel value={value} index={2}>
+                    <UserChat />
+                  </TabPanel>
                 </Grid>
-                {/* ) : (
+                <Grid item xs={12} md={8} component={Paper}>
+                  {/* {getAllUserChatData &&
+                getAllUserChatData.messages.length > 0 ? ( */}
+                  <Grid container justify="center">
+                    <Grid item xs={12}>
+                      <ChatHeader userChatData={userChatData} />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <div className={classes.msgBody} ref={ref}>
+                        {chatLog &&
+                          _.orderBy(chatLog, ['dateCreated'], ['asc']).map(
+                            (chat, i) => (
+                              <div
+                                key={chat.id}
+                                className={classNames(
+                                  classes.messageRow,
+                                  { me: currentUser.uuId === chat.senderId },
+                                  { contact: currentUser.uuId !== chat.senderId },
+                                  {
+                                    'first-of-group': isFirstMessageOfGroup(
+                                      chat,
+                                      i,
+                                    ),
+                                  },
+                                  {
+                                    'last-of-group': isLastMessageOfGroup(
+                                      chat,
+                                      i,
+                                    ),
+                                  },
+                                )}
+                              >
+                                <Paper className={classes.chatPane} key={chat.id + 1}>
+                                  <Typography variant="subtitle1" key={chat.id + 1}>
+                                    {chat.chatMessage}
+                                  </Typography>
+                                  <Typography
+                                    variant="caption"
+                                    style={{
+                                      position: 'absolute',
+                                      right: 12,
+                                      bottom: 0,
+                                    }}
+                                  >
+                                    {moment(chat.dateCreated).format('LT')}
+                                  </Typography>
+                                </Paper>
+                              </div>
+                            ),
+                          )}
+                      </div>
+                      <ChatFooter />
+                    </Grid>
+                  </Grid>
+                  {/* ) : (
                     <Grid container justify="center">
                       <Grid item xs={12}>
                         <div className={classes.msgBody}>
@@ -400,9 +395,9 @@ const ChatTab = props => {
                       </Grid>
                     </Grid>
                   )} */}
+                </Grid>
               </Grid>
-            </Grid>
-          )}
+            )}
         </div>
       </ModuleLayout>
     </React.Fragment>
@@ -410,6 +405,8 @@ const ChatTab = props => {
 };
 
 ChatTab.propTypes = {
+  resetPostMsgAction: PropTypes.func,
+  newMsgRes: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
   dispatchGetAllEmployees: PropTypes.func,
   dispatchGetUserChats: PropTypes.func,
   allEmployees: PropTypes.array,
@@ -420,6 +417,7 @@ ChatTab.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  newMsgRes: Selectors.makeSelectGetPostMsg(),
   userChatData: Selectors.makeSelectGetUserChatData(),
   getAllUserChatData: Selectors.makeSelectGetAllUserChatData(),
   allEmployees: Selectors.makeSelectAllEmployees(),
@@ -433,6 +431,7 @@ function mapDispatchToProps(dispatch) {
     dispatchGetAllEmployees: () => dispatch(Actions.getAllUsers()),
     dispatchGetUserChats: () => dispatch(Actions.getAllUsersChat()),
     dispatchGetUserChatData: evt => dispatch(Actions.getUserChatData(evt)),
+    resetPostMsgAction: () => dispatch(Actions.resetPostMsg()),
     dispatch,
   };
 }
