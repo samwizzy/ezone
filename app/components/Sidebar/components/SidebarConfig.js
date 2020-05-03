@@ -32,7 +32,7 @@ const SidebarConfig = [
     ],
   },
   {
-    module: ['hr'],
+    module: ['hr', 'human-resource'],
     menus: [
       { id: 1, name: 'Dashboard', url: '/hr/employee', icon: 'dashboard' },
       {
