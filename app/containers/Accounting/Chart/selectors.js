@@ -33,6 +33,12 @@ const makeSelectNewAccountDialog = () =>
     substate => substate.accountDialog,
   );
 
+const makeSelectConfirmAccountDeleteDialog = () =>
+  createSelector(
+    selectChartDomain,
+    substate => substate.confirmDeleteDialog,
+  );
+
 const makeSelectAccountTypeData = () =>
   createSelector(
     selectChartDomain,
@@ -64,6 +70,7 @@ export {
   selectChartDomain,
   makeSelectLoading,
   makeSelectNewAccountDialog,
+  makeSelectConfirmAccountDeleteDialog,
   makeSelectAccountTypeData,
   makeSelectParentAccountTypeData,
   makeSelectChartOfAccountPostData,

@@ -45,7 +45,7 @@ export function Accounting(props) {
     return <LoadingIndicator />;
   }
   else if (accountingSetupData === null) {
-    return <AccountSetup />
+    return <AccountSetup /> 
   } 
   else {
     return <Dashboard />

@@ -10,7 +10,7 @@ import {
   Menu,
   MenuItem,
   Grid,
-  Tooltip,
+  Tooltip
 } from '@material-ui/core';
 
 import AddIcon from '@material-ui/icons/Add';
@@ -58,20 +58,6 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
-  // button: {
-  //   '&.favorite': { color: orange[300]},
-  //   '&.shared': { color: orange[500]},
-  // },
-  // iconButton: {
-  //   '&.favorite': { color: orange[300]},
-  //   '&.shared': { color: orange[500]},
-  //   '&.delete': { color: theme.status.danger},
-  // },
-  // icon: {
-  //   '&.favorite': { color: orange[300]},
-  //   '&.shared': { color: orange[500]},
-  //   '&.delete': { color: theme.status.danger},
-  // },
   cardRoot: {
     maxWidth: '100%',
   },
@@ -93,7 +79,10 @@ const BankList = props => {
     loading,
     history,
 		openNewBankAccountDialogAction,
-		editOpenBankAccountDialogAction,
+    editOpenBankAccountDialogAction,
+    openDeleteBankAccountDialogAction,
+    openActivateBankAccountDialogAction,
+    deactivateBankAccountDialogOpenAction,
     bankAccountData,
   } = props;
 
@@ -149,7 +138,15 @@ const BankList = props => {
 				filter: true,
 				sort: false,
 			},
-		},
+    },
+    {
+      name: 'status',
+      label: 'Status',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
     {
       name: 'id',
       label: '.',
@@ -176,13 +173,27 @@ const BankList = props => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
+                <MenuItem onClick={() => openActivateBankAccountDialogAction(account) }
+                  disabled={account.status}
+                >
+                  Activate
+                </MenuItem>
+                <MenuItem onClick={() => deactivateBankAccountDialogOpenAction(account) }
+                  disabled={!account.status}
+                >
+                  Deactivate
+                </MenuItem>
+                <MenuItem onClick={() => {
+                  openDeleteBankAccountDialogAction(account);
+                }}>
+                  Delete
+                </MenuItem>
                 <MenuItem onClick={() => {
                   editOpenBankAccountDialogAction(account);
                 }}>
                   Edit
                 </MenuItem>
                 <MenuItem onClick={() => {
-                  console.log('account that was clicked ', account);
                   history.push({
                     pathname: '/account/banking/details',
                     accountDetailsData: account,
@@ -251,7 +262,10 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewBankAccountDialogAction: () => dispatch(Actions.openNewBankAccountDialog()),
-    editOpenBankAccountDialogAction: () => dispatch(Actions.editOpenBankAccountDialog()),
+    editOpenBankAccountDialogAction: evt => dispatch(Actions.editOpenBankAccountDialog(evt)),
+    openDeleteBankAccountDialogAction: evt => dispatch(Actions.openDeleteBankAccountDialog(evt)),
+    openActivateBankAccountDialogAction: evt => dispatch(Actions.openActivateBankAccountDialog(evt)),
+    deactivateBankAccountDialogOpenAction: evt => dispatch(Actions.deactivateBankAccountDialogOpen(evt)),
   };
 }
 

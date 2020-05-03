@@ -84,7 +84,6 @@ export function* createNewChartOfAccountSaga({ type, payload }) {
 
   // Delete payload prop not using
   delete payload.subAccount;
-  delete payload.accountType;
 
   console.log('new payload ', payload);
 
@@ -160,6 +159,7 @@ export function* deleteChartOfAccountSaga() {
     alert(`Account deleted successfully!`);
     yield put(Actions.deleteChartOfAccountSuccessAction(deleteChartOfAccountResponse));
     yield put(Actions.getAllChartOfAccountTypeAction());
+    yield put(Actions.closeDeleteAccountDialog());
   } catch (err) {
     alert(`Something went wrong.`);
     yield put(Actions.deleteChartOfAccountErrorAction(err));
@@ -171,7 +171,6 @@ export function* deleteChartOfAccountSaga() {
 export function* updateChartOfAccountSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.UpdateChartOfAccountApi}`;
-
   const updateChartOfAccountData = yield select(
     Selectors.makeSelectChartOfAccountPostData(),
   );
@@ -190,6 +189,7 @@ export function* updateChartOfAccountSaga() {
     alert(`Account was updated successfully!`);
     yield put(Actions.updateChartOfAccountSuccessAction(updateChartOfAccountResponse));
     yield put(Actions.getAllChartOfAccountTypeAction());
+    yield put(Actions.closeNewAccountDialog());
   } catch (err) {
     alert(`Something went wrong.`);
     yield put(Actions.updateChartOfAccountErrorAction(err));

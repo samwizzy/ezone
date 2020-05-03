@@ -66,6 +66,7 @@ import AccountDetails from '../Accounting/Banking/components/AccountDetails';
 import DetailsOfAccountChart from '../Accounting/Chart/components/DetailsOfAccountChart';
 import JournalPage from '../Accounting/Journal/Loadable';
 import AddNewJournal from '../Accounting/Journal/components/AddNewJournal';
+import JournalDetails from '../Accounting/Journal/components/JournalDetails';
 import CrmDashboard from '../Crm/Dashboard/Loadable';
 import CrmContacts from '../Crm/Contacts/Loadable';
 import CrmCompanies from '../Crm/Companies/Loadable';
@@ -195,6 +196,22 @@ const App = props => {
                 <PrivateRoute exact path="/hr/:section?/:status?/applicant/:applicantId?" component={HRPage} />
 
                 <PrivateRoute exact path="/account" component={AccountPage} />
+
+                <PrivateRoute exact path="/account/chart" component={ChartPage} />
+                <PrivateRoute exact path="/account/chart/details" component={DetailsOfAccountChart} />
+                <PrivateRoute exact path="/account/banking" component={BankingPage} />
+                <PrivateRoute exact path="/account/budgeting/:status?" component={BudgetPage} />
+                <PrivateRoute exact path="/account/settings/:status?" component={SettingsPage} />
+                <PrivateRoute exact path="/account/settings/setup" component={AccountSetup} />
+                <PrivateRoute exact path="/account/banking/details" component={AccountDetails} />
+                <PrivateRoute exact path="/account/journal" component={JournalPage} />
+                <PrivateRoute exact path="/account/journal/add" component={AddNewJournal} />
+                <PrivateRoute exact path="/account/journal/details" component={JournalDetails} />
+                <PrivateRoute
+                  exact
+                  path="/inventory"
+                />
+
                 <PrivateRoute
                   exact
                   path="/account/chart"
@@ -260,6 +277,7 @@ const App = props => {
                   path="/inventory/item/:statusId?/:sku?"
                   component={ItemPage}
                 />
+
                 {/* <PrivateRoute
                   exact
                   path="/inventory/item/:statusId?"
