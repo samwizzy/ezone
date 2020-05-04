@@ -24,7 +24,7 @@ export function* getPartyGroupSaga() {
       }),
     });
 
-    // console.log(userPartyGroupResponse, 'userPartyGroupResponse');
+    console.log(userPartyGroupResponse, 'userPartyGroupResponse');
 
     yield put(Actions.getPartyGroupSuccessAction(userPartyGroupResponse));
   } catch (err) {
@@ -162,14 +162,8 @@ export function* createNewParty() {
   const createNewPartyData = yield select(
     Selectors.makeSelectCreateNewPartyData(),
   );
-  const selectedParty = yield select(
-    Selectors.makeSelectSelectedParty(),
-  );
-  const selectedPartyGroupData = yield select(
-    Selectors.makeSelectSelectedPartyGroupData(),
-  );
 
-  createNewPartyData.partyGroupId = selectedParty.id;
+  console.log(createNewPartyData, 'createNewPartyData');
   const requestURL = `${Endpoints.CreateNewPartyApi}`;
 
   try {
@@ -235,6 +229,7 @@ export function* createNewParties() {
     Selectors.makeSelectCreateNewPartiesData(),
   );
 
+  console.log(createNewPartiesData, 'createNewPartiesData');
   const requestURL = `${Endpoints.CreateNewPartiesApi}`;
 
   try {
@@ -319,22 +314,22 @@ export function* createNewPosition() {
     yield put(Actions.getPartyGroupAction());
     // yield put(Actions.getAllPositions());
     yield put(Actions.closeNewPositionDialog());
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: 'Position Created Successfully',
-        status: 'success',
-      }),
-    );
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: 'Position Created Successfully',
+    //     status: 'success',
+    //   }),
+    // );
   } catch (err) {
     yield put(Actions.createNewPositionError(err));
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: `${err}`,
-        status: 'error',
-      }),
-    );
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: `${err}`,
+    //     status: 'error',
+    //   }),
+    // );
   }
 }
 

@@ -40,7 +40,7 @@ export function CompanyStructurePage(props) {
     dispatchGetAllUsersAction();
   }, []);
 
-  console.log(params, 'home params');
+  // console.log(params, 'home params');
 
   return (
     <div>

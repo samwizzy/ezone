@@ -80,37 +80,38 @@ const PartyList = props => {
     partyGroupData,
     partyData,
     dispatchOpenNewPartyGroupAction,
-    dispatchOpenNewPartyAction,
+    openNewPartiesDialogAction,
     loading,
     match,
   } = props;
   const { params } = match;
 
   console.log(partyData, 'partyData');
+  console.log(params, 'params');
 
-  useEffect(() => {
-    partyData ? null : fetchPartyById(params.groupId, params.partyId);
-  }, [params.partyId]);
+  // useEffect(() => {
+  //   partyData ? null : fetchPartyById(params.groupId, params.partyId);
+  // }, [partyGroupData]);
 
-  const fetchPartyById = (groupId, partyId) => {
-    const data =
-      partyGroupData &&
-      partyGroupData.find(group => group.id === parseInt(groupId, 10));
-    console.log(data, 'data');
-    // DispatchgetSelectedPartyGroupAction(data)
-    const partyFound =
-      data && data.parties.find(party => party.id === parseInt(partyId, 10));
-    console.log(partyFound, 'partyFound');
-    getSelectedParty(partyFound);
-  };
+  // useEffect(() => {
+  //   partyData ? null : fetchPartyById(params.groupId, params.partyId);
+  // }, [params.partyId]);
 
-  const handleRoute = (groupId, partyId) => {
-    console.log(partyData, 'partyData handleroute');
-    const partyFound =
-      partyData &&
-      partyData.parties.find(party => party.id === parseInt(partyId, 10));
-    getSelectedParty(partyFound);
-    // props.history.push(`/organization/company/structure/${groupId}/party/${partyId}`)
+  // const fetchPartyById = (groupId, partyId) => {
+  //   const data =
+  //     partyGroupData &&
+  //     partyGroupData.find(group => group.id === parseInt(groupId, 10));
+  //   // DispatchgetSelectedPartyGroupAction(data)
+  //   const partyFound =
+  //     data && data.parties.find(party => party.id === parseInt(partyId, 10));
+  //   getSelectedParty(partyFound);
+  // };
+
+  const handleRoute = (data, groupId, partyId) => {
+    getSelectedParty(data);
+    props.history.push(
+      `/organization/company/structure/${groupId}/party/${partyId}`,
+    );
   };
 
   const handlePrev = () => {
@@ -194,18 +195,22 @@ const PartyList = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => (
-          <Button
-            variant="outlined"
-            size="small"
-            color="primary"
-            onClick={event => (
-              event.stopPropagation(), handleRoute(partyData.id, value)
-            )}
-          >
-            View
-          </Button>
-        ),
+        customBodyRender: value => {
+          const data = partyData.parties.find(party => value === party.id);
+          return (
+            <Button
+              variant="outlined"
+              size="small"
+              color="primary"
+              onClick={event => {
+                event.stopPropagation();
+                handleRoute(data, partyData.id, value);
+              }}
+            >
+              View
+            </Button>
+          );
+        },
       },
     },
   ];
@@ -225,7 +230,7 @@ const PartyList = props => {
         size="small"
         startIcon={<Add />}
         onClick={() =>
-          dispatchOpenNewPartyAction({ partyGroupId: partyData.id })
+          openNewPartiesDialogAction({ partyGroupId: partyData.id })
         }
       >
         New Party
@@ -238,9 +243,9 @@ const PartyList = props => {
         columnHeaderTooltip: column => `Sort for ${column.label}`,
       },
     },
-    onRowClick: (rowData, rowState) => {
-      handleRoute(partyData.id, rowData[0]);
-    },
+    // onRowClick: (rowData, rowState) => {
+    //   handleRoute(partyData.id, rowData[0]);
+    // },
     elevation: 0,
   };
 
@@ -293,7 +298,7 @@ PartyList.propTypes = {
   dispatchGetAllUsersAction: PropTypes.func,
   loading: PropTypes.bool,
   dispatchOpenNewPartyGroupAction: PropTypes.func,
-  dispatchOpenNewPartyAction: PropTypes.func,
+  openNewPartiesDialogAction: PropTypes.func,
   partyGroupData: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   DispatchgetSelectedPartyGroupAction: PropTypes.func,
   selectedPartyGroupData: PropTypes.oneOfType([
@@ -318,8 +323,8 @@ function mapDispatchToProps(dispatch) {
       dispatch(Actions.openNewPartyGroupDialog()),
     openEditPartyGroupAction: evt =>
       dispatch(Actions.openEditPartyGroupDialog(evt)),
-    dispatchOpenNewPartyAction: evt =>
-      dispatch(Actions.openNewPartyDialog(evt)),
+    openNewPartiesDialogAction: evt =>
+      dispatch(Actions.openNewPartiesDialog(evt)),
     openNewRoleDialog: () => dispatch(Actions.openNewRoleDialog()),
     DispatchgetSelectedPartyGroupAction: evt =>
       dispatch(Actions.getSelectedPartyGroupAction(evt)),

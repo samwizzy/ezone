@@ -9,13 +9,13 @@ import {
   CircularProgress,
   Divider,
   TextField,
-  Typography,
   makeStyles,
   Button,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
+  Typography,
   MenuItem,
   Slide,
 } from '@material-ui/core';
@@ -48,39 +48,33 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const PartyDialog = props => {
+const PartiesDialog = props => {
   const {
-    updatePartyAction,
-    selectedPartyGroupData,
-    loading,
-    partyGroupData,
-    newPartyDialog,
-    dispatchCloseNewPartyDialog,
-    AllUserData,
-    dispatchCreateNewPartyAction,
     allTags,
+    updatePartiesAction,
+    loading,
+    newPartiesDialog,
+    dispatchCloseNewPartiesDialog,
+    AllUserData,
+    dispatchCreateNewPartiesAction,
+    params,
   } = props;
 
   const classes = useStyles();
   const [values, setValues] = React.useState({
-    partyGroupId: '',
+    partyId: '',
     partyHead: null,
     assistantPartyHead: null,
+    positions: null,
+    parties: null,
     name: '',
     description: '',
-    tagId: '',
+    tag: null,
   });
 
   useEffect(() => {
-    setValues({ ...newPartyDialog.data });
-  }, [newPartyDialog.data]);
-
-  const handleChange = name => event => {
-    setValues({
-      ...values,
-      [name]: event.target.value,
-    });
-  };
+    setValues({ ...newPartiesDialog.data });
+  }, [newPartiesDialog.data]);
 
   const handlePartyHeadChange = (event, value) => {
     setValues({
@@ -93,16 +87,16 @@ const PartyDialog = props => {
     setValues({
       ...values,
       assistantPartyHead: { id: value.id },
+      partyId: params.partyId,
     });
   };
 
-  const handleTagChange = (event, value) => {
-    if (newPartyDialog.type === 'new') {
-      setValues({ ...values, tagId: value.id });
-    }
-    if (newPartyDialog.type === 'edit') {
-      setValues({ ...values, tag: { id: value.id } });
-    }
+  const handleChange = name => event => {
+    setValues({
+      ...values,
+      [name]: event.target.value,
+      partyId: params.partyId,
+    });
   };
 
   const canBeSubmitted = () => {
@@ -114,11 +108,22 @@ const PartyDialog = props => {
     );
   };
 
+  const handleTagChange = (event, value) => {
+    if (newPartiesDialog.type === 'edit') {
+      setValues({ ...values, tag: { id: value.id }, partyId: params.partyId });
+    }
+    if (newPartiesDialog.type === 'new') {
+      setValues({ ...values, tagId: value.id, partyId: params.partyId });
+    }
+  };
+
+  console.log(values, 'values');
+
   return (
     <div>
       <Dialog
-        {...newPartyDialog.props}
-        onClose={dispatchCloseNewPartyDialog}
+        {...newPartiesDialog.props}
+        onClose={dispatchCloseNewPartiesDialog}
         keepMounted
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
@@ -126,7 +131,7 @@ const PartyDialog = props => {
         <AppBar position="relative">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
-              {newPartyDialog.type === 'new' ? 'New Party' : 'Edit Party'}
+              {newPartiesDialog.type === 'new' ? 'New Parties' : 'Edit Parties'}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -134,12 +139,9 @@ const PartyDialog = props => {
         <Divider />
 
         <DialogContent>
-          <Backdrop className={classes.backdrop} open={loading}>
-            <CircularProgress color="inherit" />
-          </Backdrop>
           <div>
             <TextField
-              id="subgroup-name"
+              id="name"
               label="Name"
               className={classes.textField}
               value={values.name ? values.name : ''}
@@ -162,38 +164,38 @@ const PartyDialog = props => {
             />
 
             <Autocomplete
-              id="combo-partyHead"
+              id="combo-ass-partyHead"
               options={AllUserData}
               getOptionLabel={option =>
                 `${option.firstName} ${option.lastName}`
               }
               onChange={(evt, ve) => handlePartyHeadChange(evt, ve)}
-              renderInput={params => (
+              renderInput={param => (
                 <TextField
-                  {...params}
+                  {...param}
                   margin="normal"
-                  label="Search Employee"
+                  label="Search Head"
                   variant="outlined"
-                  placeholder="Search Employee"
+                  placeholder="Search Head"
                   fullWidth
                 />
               )}
             />
 
             <Autocomplete
-              id="combo-ass-partyHead"
+              id="combo-ass-partyHead-assistant"
               options={AllUserData}
               getOptionLabel={option =>
                 `${option.firstName} ${option.lastName}`
               }
               onChange={(evt, ve) => handlePartyAssHeadChange(evt, ve)}
-              renderInput={params => (
+              renderInput={param => (
                 <TextField
-                  {...params}
+                  {...param}
                   margin="normal"
-                  label="Search Employee"
+                  label="Search Head Assistant"
                   variant="outlined"
-                  placeholder="Search Employee"
+                  placeholder="Search Head Assistant"
                   fullWidth
                 />
               )}
@@ -219,33 +221,33 @@ const PartyDialog = props => {
         </DialogContent>
 
         <DialogActions>
-          {newPartyDialog.type === 'new' ? (
+          {newPartiesDialog.type === 'new' ? (
             <Button
               onClick={() => {
-                dispatchCreateNewPartyAction(values);
+                dispatchCreateNewPartiesAction(values);
                 setValues('');
               }}
               color="primary"
               variant="contained"
               disabled={!canBeSubmitted()}
             >
-              {newPartyDialog.type === 'new' ? 'Save' : 'Update'}
+              {newPartiesDialog.type === 'new' ? 'Save' : 'Update'}
             </Button>
           ) : (
             <Button
               onClick={() => {
-                updatePartyAction(values);
+                updatePartiesAction(values);
                 setValues('');
               }}
               color="primary"
               variant="contained"
               disabled={!canBeSubmitted()}
             >
-              {newPartyDialog.type === 'new' ? 'Save' : 'Update'}
+              {newPartiesDialog.type === 'new' ? 'Save' : 'Update'}
             </Button>
           )}
           <Button
-            onClick={() => dispatchCloseNewPartyDialog()}
+            onClick={() => dispatchCloseNewPartiesDialog()}
             color="primary"
             variant="outlined"
           >
@@ -257,32 +259,33 @@ const PartyDialog = props => {
   );
 };
 
-PartyDialog.propTypes = {
-  updatePartyAction: PropTypes.func,
-  dispatchCloseNewPartyDialog: PropTypes.func,
-  newPartyDialog: PropTypes.object,
+PartiesDialog.propTypes = {
+  params: PropTypes.object,
+  dispatchCloseNewPartiesDialog: PropTypes.func,
+  newPartiesDialog: PropTypes.object,
   partyGroupData: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-  AllUserData: PropTypes.array,
-  dispatchCreateNewPartyAction: PropTypes.func,
+  AllUserData: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  dispatchCreateNewPartiesAction: PropTypes.func,
   loading: PropTypes.bool,
-  selectedPartyGroupData: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+  updatePartiesAction: PropTypes.func,
   allTags: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  newPartyDialog: Selectors.makeSelectNewPartyDialog(),
+  newPartiesDialog: Selectors.makeSelectNewPartiesDialog(),
   partyGroupData: Selectors.makeSelectPartyGroupData(),
   AllUserData: Selectors.makeSelectAllUsersData(),
   allTags: Selectors.makeSelectGetAllTags(),
-  selectedPartyGroupData: Selectors.makeSelectSelectedPartyGroupData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchCloseNewPartyDialog: () => dispatch(Actions.closeNewPartyDialog()),
-    dispatchCreateNewPartyAction: evt => dispatch(Actions.createNewParty(evt)),
-    updatePartyAction: evt => dispatch(Actions.updateParty(evt)),
+    dispatchCloseNewPartiesDialog: () =>
+      dispatch(Actions.closeNewPartiesDialog()),
+    dispatchCreateNewPartiesAction: evt =>
+      dispatch(Actions.createNewParties(evt)),
+    updatePartiesAction: evt => dispatch(Actions.updateParties(evt)),
     dispatch,
   };
 }
@@ -295,4 +298,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(PartyDialog);
+)(PartiesDialog);

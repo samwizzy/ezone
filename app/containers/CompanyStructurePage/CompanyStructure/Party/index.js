@@ -15,33 +15,26 @@ import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import PartyList from './PartyList';
 import EmployeesList from './EmployeesList';
+import PartiesDialog from './components/PartiesDialog';
 import PartyDialog from './components/PartyDialog';
 import EmployeeDialog from './components/EmployeeDialog';
 
-export function PartyApp({match}) {
+export function PartyApp({ match }) {
   const { params } = match;
 
-  useEffect(() => {
-  }, []);
-
-
+  useEffect(() => {}, []);
 
   return (
     <div>
       <Helmet>
         <title>Party Page</title>
-        <meta
-          name="description"
-          content="Description of Party"
-        />
+        <meta name="description" content="Description of Party" />
       </Helmet>
 
-      {
-        params.positionId?
-			  <EmployeesList /> : <PartyList />
-      }
+      {params.positionId ? <EmployeesList /> : <PartyList />}
 
-      <PartyDialog />
+      <PartyDialog params={params} />
+      <PartiesDialog params={params} />
     </div>
   );
 }

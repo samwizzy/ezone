@@ -16,28 +16,21 @@ import * as Actions from '../../actions';
 import PartyGroupList from './PartyGroupList';
 import PartyGroupDetails from './PartyGroupDetails';
 import PartyGroupDialog from './components/PartyGroupDialog';
-import PartyDialog from  '../Party/components/PartyDialog'
+import PartyDialog from '../Party/components/PartyDialog';
 
 export function PartyGroupApp(props) {
-  const {match} = props;
-  const {params} = match;
+  const { match } = props;
+  const { params } = match;
 
-  useEffect(() => {
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <div>
       <Helmet>
         <title>Party Group Page</title>
-        <meta
-          name="description"
-          content="Description of Party Group"
-        />
+        <meta name="description" content="Description of Party Group" />
       </Helmet>
-			{
-				params.groupId?
-				<PartyGroupDetails /> : <PartyGroupList />
-			}
+      {params.groupId ? <PartyGroupDetails /> : <PartyGroupList />}
       <PartyDialog />
       <PartyGroupDialog />
     </div>
@@ -66,7 +59,7 @@ const withConnect = connect(
 );
 
 export default compose(
-	withRouter,
+  withRouter,
   withConnect,
   memo,
 )(PartyGroupApp);

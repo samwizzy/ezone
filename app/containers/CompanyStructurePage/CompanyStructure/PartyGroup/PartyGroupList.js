@@ -5,12 +5,14 @@ import {
   makeStyles,
   Backdrop,
   CircularProgress,
-  Card, CardContent, CardActions,
+  Card,
+  CardContent,
+  CardActions,
   Link,
   List,
   ListItem,
   ListItemText,
-  ListSubheader, 
+  ListSubheader,
   Grid,
   Button,
   Typography,
@@ -19,12 +21,12 @@ import {
   Icon,
   ListItemSecondaryAction,
   IconButton,
-  Paper
+  Paper,
 } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import MUIDataTable from 'mui-datatables';
 import { Add, Edit } from '@material-ui/icons';
-import { fade, darken } from '@material-ui/core/styles/colorManipulator'
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -34,20 +36,20 @@ import * as Selectors from '../../selectors';
 import NoPartyDialog from './components/NoPartyDialog';
 
 const useStyles = makeStyles(theme => ({
-  root: { 
-    flexGrow: 1 
+  root: {
+    flexGrow: 1,
   },
   cardRoot: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
     minHeight: `calc(100vh - 120px)`,
   },
   flex: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   listRoot: {
     width: '100%',
@@ -56,34 +58,34 @@ const useStyles = makeStyles(theme => ({
     overflow: 'auto',
     borderRight: `1px solid ${theme.palette.divider}`,
     height: `calc(100vh - 128px)`,
-    "& .MuiListSubheader-root": {
+    '& .MuiListSubheader-root': {
       backgroundColor: theme.palette.grey[100],
       padding: theme.spacing(2),
     },
-    "& .MuiListItem-root": {
-      "& .MuiListItemIcon-root": {
-        minWidth: "40px !important"
+    '& .MuiListItem-root': {
+      '& .MuiListItemIcon-root': {
+        minWidth: '40px !important',
       },
-      "&:hover > .MuiListItemIcon-root": {
-        color: theme.palette.primary.main
+      '&:hover > .MuiListItemIcon-root': {
+        color: theme.palette.primary.main,
       },
-      "&:hover": {
+      '&:hover': {
         color: theme.palette.primary.main,
       },
     },
-    "&:hover": {
+    '&:hover': {
       overflowY: 'auto',
-    }
+    },
   },
   card: {
     padding: theme.spacing(5),
-    "& .MuiCardActions-root": {
-      justifyContent: "center"
-    }
+    '& .MuiCardActions-root': {
+      justifyContent: 'center',
+    },
   },
   datatable: {
     '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
@@ -103,7 +105,7 @@ const useStyles = makeStyles(theme => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
-  }
+  },
 }));
 
 const ListItemLink = props => <ListItem button component="a" {...props} />;
@@ -119,28 +121,28 @@ const PartyGroupList = props => {
     partyGroupData,
     dispatchOpenNewPartyGroupAction,
     dispatchOpenNewPartyAction,
-		loading,
-		match,
+    loading,
+    match,
   } = props;
 
-  useEffect(() => {
-  }, []);
+  useEffect(() => {}, []);
 
   const handleRoute = groupId => {
-    const data = partyGroupData && partyGroupData.find(group => group.id === groupId)
-    DispatchgetSelectedPartyGroupAction(data)
-    props.history.push(`/organization/company/structure/${groupId}`)
-  } 
+    const data =
+      partyGroupData && partyGroupData.find(group => group.id === groupId);
+    DispatchgetSelectedPartyGroupAction(data);
+    props.history.push(`/organization/company/structure/${groupId}`);
+  };
 
-  console.log(partyGroupData, "partyGroupData")
-  console.log(selectedPartyGroupData, "selectedPartyGroupData")
+  // console.log(partyGroupData, "partyGroupData")
+  // console.log(selectedPartyGroupData, "selectedPartyGroupData")
 
   const columns = [
     {
       name: 'id',
       label: ' ',
       options: {
-        display: "excluded",
+        display: 'excluded',
         filter: true,
         sort: false,
       },
@@ -186,8 +188,9 @@ const PartyGroupList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const data = partyGroupData && partyGroupData.find(group => group.id === value)
-        
+          const data =
+            partyGroupData && partyGroupData.find(group => group.id === value);
+
           return (
             <div>
               <Button
@@ -209,23 +212,18 @@ const PartyGroupList = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => {
-          return (
-            <div>
-              <Button
-                variant="outlined"
-                size="small"
-                color="primary"
-                onClick={event => (
-                  event.stopPropagation(),
-                  handleRoute(value)
-                )}
-              >
-                View
-              </Button>
-            </div>
-          );
-        },
+        customBodyRender: value => (
+          <div>
+            <Button
+              variant="outlined"
+              size="small"
+              color="primary"
+              onClick={event => (event.stopPropagation(), handleRoute(value))}
+            >
+              View
+            </Button>
+          </div>
+        ),
       },
     },
   ];
@@ -240,7 +238,7 @@ const PartyGroupList = props => {
     customToolbar: () => (
       <Button
         variant="contained"
-        style={{marginLeft: 5}}
+        style={{ marginLeft: 5 }}
         color="primary"
         size="small"
         startIcon={<Add />}
@@ -249,10 +247,10 @@ const PartyGroupList = props => {
         New Party Group
       </Button>
     ),
-    onRowClick: (rowData, rowState) => {
-      handleRoute(rowData[0])
-    },
-    elevation: 0
+    // onRowClick: (rowData, rowState) => {
+    //   handleRoute(rowData[0]);
+    // },
+    elevation: 0,
   };
 
   if (!partyGroupData.length) {
@@ -273,8 +271,8 @@ const PartyGroupList = props => {
       <Grid container>
         <Grid item xs={12} md={4} lg={3}>
           <div className={classes.listRoot}>
-            <List 
-              component="nav" 
+            <List
+              component="nav"
               subheader={
                 <ListSubheader component="div" id="nested-list-subheader">
                   <div className={classes.flex}>
@@ -293,14 +291,15 @@ const PartyGroupList = props => {
               }
             >
               {partyGroupData.map((data, i) => (
-                <ListItemLink key={i} onClick={() => DispatchgetSelectedPartyGroupAction(data)}>
+                <ListItemLink
+                  key={i}
+                  onClick={() => DispatchgetSelectedPartyGroupAction(data)}
+                >
                   <ListItemText primary={data.name} />
-                  <ListItemSecondaryAction onClick={() => openEditPartyGroupAction(data)}>
-                    <IconButton
-                      variant="outlined"
-                      size="small"
-                      color="primary"
-                    >
+                  <ListItemSecondaryAction
+                    onClick={() => openEditPartyGroupAction(data)}
+                  >
+                    <IconButton variant="outlined" size="small" color="primary">
                       <Edit />
                     </IconButton>
                   </ListItemSecondaryAction>
@@ -310,13 +309,13 @@ const PartyGroupList = props => {
           </div>
         </Grid>
         <Grid item xs={12} md={8} lg={9}>
-            <MUIDataTable
-              className={classes.datatable}
-              title="Party Groups"
-              data={partyGroupData}
-              columns={columns}
-              options={options}
-            />
+          <MUIDataTable
+            className={classes.datatable}
+            title="Party Groups"
+            data={partyGroupData}
+            columns={columns}
+            options={options}
+          />
         </Grid>
       </Grid>
     </React.Fragment>
@@ -331,7 +330,10 @@ PartyGroupList.propTypes = {
   dispatchOpenNewPartyAction: PropTypes.func,
   partyGroupData: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   DispatchgetSelectedPartyGroupAction: PropTypes.func,
-  selectedPartyGroupData: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+  selectedPartyGroupData: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.bool,
+  ]),
   openEditPartyDialogAction: PropTypes.func,
 };
 
