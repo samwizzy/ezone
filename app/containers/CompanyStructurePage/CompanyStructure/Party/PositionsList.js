@@ -73,8 +73,8 @@ const PositionsList = props => {
   } = props;
 
   const { params } = match;
-  console.log(positions, 'positions from positionlist');
-  console.log(selectedPosition, 'selectedPosition from positionlist');
+  // console.log(positions, 'positions from positionlist');
+  // console.log(selectedPosition, 'selectedPosition from positionlist');
 
   useEffect(() => {
     dispatchGetPartyGroups();
@@ -83,7 +83,7 @@ const PositionsList = props => {
   }, []);
 
   const handleRoute = positionId => {
-    console.log(positions, 'positions handleroute');
+    // console.log(positions, 'positions handleroute');
     const positionFound =
       positions &&
       positions.find(position => position.id === parseInt(positionId, 10));

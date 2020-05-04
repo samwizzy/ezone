@@ -117,7 +117,7 @@ const PartiesDialog = props => {
     }
   };
 
-  console.log(values, 'values');
+  // console.log(values, 'values');
 
   return (
     <div>

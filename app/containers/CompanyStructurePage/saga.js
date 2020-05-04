@@ -237,8 +237,11 @@ export function* updatePartySaga() {
       }),
     });
 
-    yield put(Actions.updatePartyGroupSuccessAction(createPartyResponse));
-    yield put(Actions.getPartyGroupAction());
+    console.log(createPartyResponse, 'createPartyResponse');
+    console.log(updatePartyParams, 'updatePartyParams');
+    // yield put(Actions.updatePartyGroupSuccessAction(createPartyResponse));
+    // yield put(Actions.getPartyGroupAction());
+    yield put(Actions.getPartyById(createPartyResponse.id));
     yield put(Actions.closeEditPartyDialog());
   } catch (err) {
     console.log(err, 'errrrrrrr');
@@ -265,8 +268,10 @@ export function* createNewParties() {
       }),
     });
 
-    yield put(Actions.createNewPartiesSuccess(createNewPartiesResponse));
-    yield put(Actions.getPartyGroupAction());
+    console.log(createNewPartiesResponse, 'createNewPartiesResponse');
+    // yield put(Actions.createNewPartiesSuccess(createNewPartiesResponse));
+    // yield put(Actions.getPartyGroupAction());
+    yield put(Actions.getPartyById(createNewPartiesData.partyId));
     yield put(Actions.closeNewPartiesDialog());
     // yield put(
     //   AppActions.openSnackBar({
@@ -333,9 +338,7 @@ export function* createNewPosition() {
       }),
     });
 
-    yield put(Actions.createNewPositionSuccess(createNewPositionResponse));
-    yield put(Actions.getPartyGroupAction());
-    // yield put(Actions.getAllPositions());
+    yield put(Actions.getPartyById(createNewPositionData.party_id));
     yield put(Actions.closeNewPositionDialog());
     // yield put(
     //   AppActions.openSnackBar({
@@ -377,6 +380,7 @@ export function* updatePositionSaga() {
 
     yield put(Actions.updatePositionSuccess(createPartyGroupResponse));
     yield put(Actions.getPartyGroupAction());
+    yield put(Actions.getPartyById(updatePositionParams.id));
     yield put(Actions.closeEditPositionDialog());
   } catch (err) {
     console.log(err, 'errrrrrrr');

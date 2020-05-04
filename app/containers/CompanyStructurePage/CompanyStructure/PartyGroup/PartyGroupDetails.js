@@ -59,13 +59,7 @@ const PartyGroupDetails = props => {
 
   const {
     openEditPartyDialogAction,
-    openEditPartyGroupAction,
-    dispatchGetAllUsersAction,
-    selectedPartyGroupData,
-    DispatchgetSelectedPartyGroupAction,
-    getSelectedParty,
     partyGroupData,
-    dispatchOpenNewPartyGroupAction,
     dispatchOpenNewPartyAction,
     loading,
     match,
@@ -84,25 +78,7 @@ const PartyGroupDetails = props => {
     }
   }, [partyGroupData]);
 
-  // const fetchPartyGroupById = groupId => {
-  //   const data =
-  //     partyGroupData &&
-  //     partyGroupData.find(group => group.id === parseInt(groupId, 10));
-  //   // console.log(data, "data details")
-  //   DispatchgetSelectedPartyGroupAction(data);
-  // };
-
-  // const fetchPartyById = (groupId, partyId) => {
-  //   const data =
-  //     partyGroupData &&
-  //     partyGroupData.find(group => group.id === parseInt(groupId, 10));
-  //   const partyFound =
-  //     data && data.parties.find(party => party.id === parseInt(partyId, 10));
-  //   getSelectedParty(partyFound);
-  // };
-
-  const handleRoute = (data, groupId, partyId) => {
-    getSelectedParty(data);
+  const handleRoute = (groupId, partyId) => {
     getPartyByIdAction(partyId);
     props.history.push(
       `/organization/company/structure/${groupId}/party/${partyId}`,
@@ -112,13 +88,6 @@ const PartyGroupDetails = props => {
   const handleBackToRoot = () => {
     props.history.push('/organization/company/structure');
   };
-
-  // console.log(partyGroupData, "partyGroupData")
-  // console.log(selectedPartyGroupData, "selectedPartyGroupData details")
-
-  // if (!selectedPartyGroupData) {
-  //   return '';
-  // }
 
   const columns = [
     {
@@ -194,25 +163,21 @@ const PartyGroupDetails = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => {
-          const data = newParties.parties.find(party => value === party.id);
-
-          return (
-            <div>
-              <Button
-                variant="outlined"
-                size="small"
-                color="primary"
-                onClick={event => {
-                  event.stopPropagation();
-                  handleRoute(data, selectedPartyGroupData.id, value);
-                }}
-              >
-                View
-              </Button>
-            </div>
-          );
-        },
+        customBodyRender: value => (
+          <div>
+            <Button
+              variant="outlined"
+              size="small"
+              color="primary"
+              onClick={event => {
+                event.stopPropagation();
+                handleRoute(newParties.id, value);
+              }}
+            >
+              View
+            </Button>
+          </div>
+        ),
       },
     },
   ];
@@ -233,7 +198,7 @@ const PartyGroupDetails = props => {
         startIcon={<Add />}
         onClick={() =>
           dispatchOpenNewPartyAction({
-            partyGroupId: selectedPartyGroupData.id,
+            partyGroupId: newParties.id,
           })
         }
       >
@@ -253,7 +218,6 @@ const PartyGroupDetails = props => {
       </Backdrop>
 
       {newParties && (
-
         <MUIDataTable
           className={classes.datatable}
           title={

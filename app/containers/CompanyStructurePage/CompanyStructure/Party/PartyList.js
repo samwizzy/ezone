@@ -68,7 +68,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-let parties = '';
+const parties = '';
 const PartyList = props => {
   const classes = useStyles();
   const {
@@ -89,28 +89,25 @@ const PartyList = props => {
   } = props;
   const { params } = match;
 
-  // console.log(partyData, 'partyData');
-  // console.log(params, 'params');
-  console.log(getPartyById, 'getPartyById');
-
   const [newParties, setNewParties] = React.useState();
 
   useEffect(() => {
     getPartyByIdAction(params.partyId);
   }, []);
 
-  useEffect(() => {
-    parties =
-      partyGroupData &&
-      partyGroupData.find(group => group.id === parseInt(params.groupId, 10));
-    if (parties) {
-      setNewParties(parties);
-    }
-  }, [partyGroupData]);
+  // useEffect(() => {
+  //   if (getPartyById) {
+  //     setNewParties(getPartyById);
+  //   }
+  // }, [getPartyById]);
 
-  console.log(newParties, 'newParties');
-  const handleRoute = (data, groupId, partyId) => {
-    getSelectedParty(data);
+  // console.log(newParties, 'newParties');
+
+  console.log(params, 'params getPartyById');
+  console.log(getPartyById, 'getPartyById');
+
+  const handleRoute = (groupId, partyId) => {
+    console.log(groupId, partyId, 'groupId, partyId');
     getPartyByIdAction(partyId);
     props.history.push(
       `/organization/company/structure/${groupId}/party/${partyId}`,
@@ -123,10 +120,6 @@ const PartyList = props => {
   const handleBackToRoot = () => {
     props.history.push('/organization/company/structure');
   };
-
-  console.log(partyGroupData, 'partyGroupData partylist');
-  console.log(partyData, 'partyData');
-  console.log(selectedPartyGroupData, 'selectedPartyGroupData partylist');
 
   const columns = [
     {
@@ -171,7 +164,7 @@ const PartyList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const data = partyData.parties.find(party => value === party.id);
+          const data = getPartyById.parties.find(party => value === party.id);
 
           return (
             <div>
@@ -194,22 +187,19 @@ const PartyList = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => {
-          const data = partyData.parties.find(party => value === party.id);
-          return (
-            <Button
-              variant="outlined"
-              size="small"
-              color="primary"
-              onClick={event => {
-                event.stopPropagation();
-                handleRoute(data, partyData.id, value);
-              }}
-            >
-              View
-            </Button>
-          );
-        },
+        customBodyRender: value => (
+          <Button
+            variant="outlined"
+            size="small"
+            color="primary"
+            onClick={event => {
+              event.stopPropagation();
+              handleRoute(getPartyById.id, value);
+            }}
+          >
+            View
+          </Button>
+        ),
       },
     },
   ];
@@ -229,7 +219,7 @@ const PartyList = props => {
         size="small"
         startIcon={<Add />}
         onClick={() =>
-          openNewPartiesDialogAction({ partyGroupId: partyData.id })
+          openNewPartiesDialogAction({ partyGroupId: getPartyById.id })
         }
       >
         New Party
@@ -253,41 +243,44 @@ const PartyList = props => {
       <Backdrop className={classes.backdrop} open={loading}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      {getPartyById && (
+        <div>
+          <MUIDataTable
+            className={classes.datatable}
+            title={
+              <div className={classes.flex}>
+                <Link color="inherit" onClick={handlePrev}>
+                  <IconButton>
+                    <KeyboardReturnIcon />
+                  </IconButton>
+                </Link>
+                <Breadcrumbs
+                  separator={<NavigateNextIcon fontSize="small" />}
+                  aria-label="breadcrumb"
+                >
+                  <Link
+                    color="inherit"
+                    onClick={handleBackToRoot}
+                    className={classes.link}
+                  >
+                    {'> Party Groups'}
+                  </Link>
+                  <Typography color="textPrimary" variant="h6">
+                    {EzoneUtils.toTitleCase(getPartyById.name)}
+                  </Typography>
+                </Breadcrumbs>
+              </div>
+            }
+            data={getPartyById.parties}
+            columns={columns}
+            options={options}
+          />
 
-      <MUIDataTable
-        className={classes.datatable}
-        title={
-          <div className={classes.flex}>
-            <Link color="inherit" onClick={handlePrev}>
-              <IconButton>
-                <KeyboardReturnIcon />
-              </IconButton>
-            </Link>
-            <Breadcrumbs
-              separator={<NavigateNextIcon fontSize="small" />}
-              aria-label="breadcrumb"
-            >
-              <Link
-                color="inherit"
-                onClick={handleBackToRoot}
-                className={classes.link}
-              >
-                {'> Party Groups'}
-              </Link>
-              <Typography color="textPrimary" variant="h6">
-                {EzoneUtils.toTitleCase(partyData.name)}
-              </Typography>
-            </Breadcrumbs>
-          </div>
-        }
-        data={partyData.parties}
-        columns={columns}
-        options={options}
-      />
+          <Divider className={classes.divider} />
 
-      <Divider className={classes.divider} />
-
-      <PositionsList positions={partyData.positions} />
+          <PositionsList positions={getPartyById.positions} />
+        </div>
+      )}
     </React.Fragment>
   );
 };
