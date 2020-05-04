@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Button, ButtonGroup, TableContainer, Table, TableRow, TableCell, TableBody, TextField, Grid, Paper, Typography } from '@material-ui/core';
+import { Button, TextField, Grid, Paper, Typography } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -67,8 +67,16 @@ const ShiftList = props => {
       },
     },
     {
-      name: 'createdAt',
-      label: 'Date',
+      name: 'name',
+      label: 'Shift name',
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: 'startTime',
+      label: 'Start time',
       options: {
         filter: true,
         sort: true,
@@ -80,28 +88,30 @@ const ShiftList = props => {
       }
     },
     {
-      name: 'attended',
-      label: 'Attended',
+      name: 'endTime',
+      label: 'End time',
       options: {
         filter: true,
         sort: true,
-      },
+        customBodyRender: createdAt => {
+          return (
+            <Typography color='textSecondary'>{moment(createdAt).format('ll')}</Typography>
+          )
+        }
+      }
     },
     {
-      name: 'absent',
-      label: 'Absent',
+      name: 'endDate',
+      label: 'End Date',
       options: {
         filter: true,
         sort: true,
-      },
-    },
-    {
-      name: 'present',
-      label: 'Present',
-      options: {
-      filter: true,
-      sort: true,
-      },
+        customBodyRender: createdAt => {
+          return (
+            <Typography color='textSecondary'>{moment(createdAt).format('ll')}</Typography>
+          )
+        }
+      }
     }
   ];
 

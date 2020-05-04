@@ -207,56 +207,8 @@ const App = props => {
                 <PrivateRoute exact path="/account/journal" component={JournalPage} />
                 <PrivateRoute exact path="/account/journal/add" component={AddNewJournal} />
                 <PrivateRoute exact path="/account/journal/details" component={JournalDetails} />
-                <PrivateRoute
-                  exact
-                  path="/inventory"
-                />
 
-                <PrivateRoute
-                  exact
-                  path="/account/chart"
-                  component={ChartPage}
-                />
-                <PrivateRoute
-                  exact
-                  path="/account/chart/details"
-                  component={DetailsOfAccountChart}
-                />
-                <PrivateRoute
-                  exact
-                  path="/account/banking"
-                  component={BankingPage}
-                />
-                <PrivateRoute
-                  exact
-                  path="/account/budgeting/:status?"
-                  component={BudgetPage}
-                />
-                <PrivateRoute
-                  exact
-                  path="/account/settings/:status?"
-                  component={SettingsPage}
-                />
-                <PrivateRoute
-                  exact
-                  path="/account/settings/setup"
-                  component={AccountSetup}
-                />
-                <PrivateRoute
-                  exact
-                  path="/account/banking/details"
-                  component={AccountDetails}
-                />
-                <PrivateRoute
-                  exact
-                  path="/account/journal"
-                  component={JournalPage}
-                />
-                <PrivateRoute
-                  exact
-                  path="/account/journal/add"
-                  component={AddNewJournal}
-                />
+                <PrivateRoute exact path="/inventory" />
 
                 <PrivateRoute
                   exact

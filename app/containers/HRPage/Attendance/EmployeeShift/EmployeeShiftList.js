@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Button, ButtonGroup, TableContainer, Table, TableRow, TableCell, TableBody, TextField, Grid, Paper, Typography } from '@material-ui/core';
+import { Avatar, Button, TextField, Grid, Paper, Typography } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -14,9 +14,6 @@ import MUIDataTable from 'mui-datatables'
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
 import * as AppSelectors from '../../../App/selectors';
-import EditSharp from '@material-ui/icons/EditSharp';
-import Assignment from '@material-ui/icons/Assignment';
-import Person from '@material-ui/icons/Person';
 import {AssignShift} from '../components/AddButton'
 import AssignShiftDialog from './components/AssignShiftDialog'
 
@@ -67,37 +64,37 @@ const EmployeeShiftList = props => {
       },
     },
     {
-      name: 'createdAt',
-      label: 'Date',
+      name: 'avi',
+      label: ' ',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: createdAt => {
+        customBodyRender: avi => {
           return (
-            <Typography color='textSecondary'>{moment(createdAt).format('ll')}</Typography>
+            <Avatar src='' />
           )
         }
       }
     },
     {
-      name: 'attended',
-      label: 'Attended',
+      name: 'employee',
+      label: 'Employee',
       options: {
         filter: true,
         sort: true,
       },
     },
     {
-      name: 'absent',
-      label: 'Absent',
+      name: 'shift',
+      label: 'Shift',
       options: {
         filter: true,
         sort: true,
       },
     },
     {
-      name: 'present',
-      label: 'Present',
+      name: 'duration',
+      label: 'Duration',
       options: {
       filter: true,
       sort: true,
