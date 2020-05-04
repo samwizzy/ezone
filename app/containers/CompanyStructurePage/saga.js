@@ -240,8 +240,8 @@ export function* updatePartySaga() {
     console.log(createPartyResponse, 'createPartyResponse');
     console.log(updatePartyParams, 'updatePartyParams');
     // yield put(Actions.updatePartyGroupSuccessAction(createPartyResponse));
-    // yield put(Actions.getPartyGroupAction());
-    yield put(Actions.getPartyById(createPartyResponse.id));
+    // yield put(Actions.getPartyById(createPartyResponse.id));
+    yield put(Actions.getPartyGroupAction());
     yield put(Actions.closeEditPartyDialog());
   } catch (err) {
     console.log(err, 'errrrrrrr');
