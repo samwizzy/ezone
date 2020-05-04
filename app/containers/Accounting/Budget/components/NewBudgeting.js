@@ -219,7 +219,7 @@ const NewBudgeting = props => {
 
   console.log("new array -> ", monthArray.slice(monthArray.indexOf(month["financialMonth"])).concat(monthArray.slice(0, monthArray.indexOf(month["financialMonth"]))));
   var newCopyArray = monthArray.slice(monthArray.indexOf(month["financialMonth"])).concat(monthArray.slice(0, monthArray.indexOf(month["financialMonth"])));
-
+  
 
   return (
     <div>
