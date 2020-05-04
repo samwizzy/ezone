@@ -68,6 +68,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+let parties = '';
 const PartyList = props => {
   const classes = useStyles();
   const {
@@ -83,32 +84,34 @@ const PartyList = props => {
     openNewPartiesDialogAction,
     loading,
     match,
+    getPartyByIdAction,
+    getPartyById,
   } = props;
   const { params } = match;
 
-  console.log(partyData, 'partyData');
-  console.log(params, 'params');
+  // console.log(partyData, 'partyData');
+  // console.log(params, 'params');
+  console.log(getPartyById, 'getPartyById');
 
-  // useEffect(() => {
-  //   partyData ? null : fetchPartyById(params.groupId, params.partyId);
-  // }, [partyGroupData]);
+  const [newParties, setNewParties] = React.useState();
 
-  // useEffect(() => {
-  //   partyData ? null : fetchPartyById(params.groupId, params.partyId);
-  // }, [params.partyId]);
+  useEffect(() => {
+    getPartyByIdAction(params.partyId);
+  }, []);
 
-  // const fetchPartyById = (groupId, partyId) => {
-  //   const data =
-  //     partyGroupData &&
-  //     partyGroupData.find(group => group.id === parseInt(groupId, 10));
-  //   // DispatchgetSelectedPartyGroupAction(data)
-  //   const partyFound =
-  //     data && data.parties.find(party => party.id === parseInt(partyId, 10));
-  //   getSelectedParty(partyFound);
-  // };
+  useEffect(() => {
+    parties =
+      partyGroupData &&
+      partyGroupData.find(group => group.id === parseInt(params.groupId, 10));
+    if (parties) {
+      setNewParties(parties);
+    }
+  }, [partyGroupData]);
 
+  console.log(newParties, 'newParties');
   const handleRoute = (data, groupId, partyId) => {
     getSelectedParty(data);
+    getPartyByIdAction(partyId);
     props.history.push(
       `/organization/company/structure/${groupId}/party/${partyId}`,
     );
@@ -124,10 +127,6 @@ const PartyList = props => {
   console.log(partyGroupData, 'partyGroupData partylist');
   console.log(partyData, 'partyData');
   console.log(selectedPartyGroupData, 'selectedPartyGroupData partylist');
-
-  if (!partyData) {
-    return '';
-  }
 
   const columns = [
     {
@@ -273,7 +272,7 @@ const PartyList = props => {
                 onClick={handleBackToRoot}
                 className={classes.link}
               >
-                > Party Groups
+                {'> Party Groups'}
               </Link>
               <Typography color="textPrimary" variant="h6">
                 {EzoneUtils.toTitleCase(partyData.name)}
@@ -306,6 +305,7 @@ PartyList.propTypes = {
     PropTypes.bool,
   ]),
   openEditPartyDialogAction: PropTypes.func,
+  getPartyByIdAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -313,6 +313,7 @@ const mapStateToProps = createStructuredSelector({
   partyGroupData: Selectors.makeSelectPartyGroupData(),
   partyData: Selectors.makeSelectSelectedParty(),
   selectedPartyGroupData: Selectors.makeSelectSelectedPartyGroupData(),
+  getPartyById: Selectors.makeSelectGetPartyById(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -330,6 +331,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(Actions.getSelectedPartyGroupAction(evt)),
     getSelectedParty: evt => dispatch(Actions.getSelectedParty(evt)),
     dispatchGetAllUsersAction: () => dispatch(Actions.getAllUsers()),
+    getPartyByIdAction: evt => dispatch(Actions.getPartyById(evt)),
   };
 }
 

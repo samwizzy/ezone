@@ -198,6 +198,29 @@ export function* createNewParty() {
   }
 }
 
+export function* getPartyById() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const partyId = yield select(Selectors.makeSelectPartyId());
+
+  const requestURL = `${Endpoints.GetPartyByIdApi}/${partyId}`;
+
+  try {
+    const getPartyByIdResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(getPartyByIdResponse, 'getPartyByIdResponse');
+
+    yield put(Actions.getPartyByIdSuccess(getPartyByIdResponse));
+  } catch (err) {
+    yield put(Actions.getPartyByIdError(err));
+  }
+}
+
 export function* updatePartySaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
 
@@ -512,6 +535,7 @@ export function* updateCompanyDetail() {
 
 // Individual exports for testing
 export default function* companyStructureSaga() {
+  yield takeLatest(Constants.GET_PARTY_BY_ID, getPartyById);
   yield takeLatest(Constants.GET_ALL_TAGS, getAllTags);
   yield takeLatest(Constants.UPDATE_POSITION, updatePositionSaga);
   yield takeLatest(Constants.UPDATE_PARTIES, updatePartiesSaga);

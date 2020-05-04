@@ -23,6 +23,7 @@ export const UpdatePartyGroup = `${BaseUrl}/authserv/api/v1/partygroup`;
 export const CreateNewPartyApi = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_group`;
 export const UpdatePartyApi = `${BaseUrl}/authserv/api/v1/party`;
 export const CreateNewPartiesApi = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_party`;
+export const GetPartyByIdApi = `${BaseUrl}/authserv/api/v1/party/get_by_id`;
 export const UpdatePartiesApi = `${BaseUrl}/authserv/api/v1/party`;
 export const CreateNewPositionApi = `${BaseUrl}/authserv/api/v1/position`;
 export const UpdatePositionApi = `${BaseUrl}/authserv/api/v1/position/update_position`;

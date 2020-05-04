@@ -289,6 +289,27 @@ export function updatePartiesError(data) {
   };
 }
 
+export function getPartyById(data) {
+  return {
+    type: Constants.GET_PARTY_BY_ID,
+    payload: data,
+  };
+}
+
+export function getPartyByIdSuccess(data) {
+  return {
+    type: Constants.GET_PARTY_BY_ID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getPartyByIdError(data) {
+  return {
+    type: Constants.GET_PARTY_BY_ID_ERROR,
+    payload: data,
+  };
+}
+
 export function openNewPositionDialog() {
   return {
     type: Constants.OPEN_NEW_POSITION_DIALOG,

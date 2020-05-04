@@ -69,6 +69,7 @@ const PartyGroupDetails = props => {
     dispatchOpenNewPartyAction,
     loading,
     match,
+    getPartyByIdAction,
   } = props;
   const { params } = match;
 
@@ -102,6 +103,7 @@ const PartyGroupDetails = props => {
 
   const handleRoute = (data, groupId, partyId) => {
     getSelectedParty(data);
+    getPartyByIdAction(partyId);
     props.history.push(
       `/organization/company/structure/${groupId}/party/${partyId}`,
     );
@@ -293,6 +295,7 @@ PartyGroupDetails.propTypes = {
     PropTypes.bool,
   ]),
   openEditPartyDialogAction: PropTypes.func,
+  getPartyByIdAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -316,6 +319,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(Actions.getSelectedPartyGroupAction(evt)),
     getSelectedParty: evt => dispatch(Actions.getSelectedParty(evt)),
     dispatchGetAllUsersAction: () => dispatch(Actions.getAllUsers()),
+    getPartyByIdAction: evt => dispatch(Actions.getPartyById(evt)),
   };
 }
 

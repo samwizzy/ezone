@@ -333,7 +333,6 @@ const companyStructurePageReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_NEW_PARTY: {
-        console.log(action.payload, 'action.payload');
         return {
           ...state,
           loading: true,
@@ -349,6 +348,29 @@ const companyStructurePageReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_NEW_PARTY_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_PARTY_BY_ID: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          partyId: action.payload,
+        };
+      }
+      case Constants.GET_PARTY_BY_ID_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getPartyById: action.payload,
+        };
+      }
+      case Constants.GET_PARTY_BY_ID_ERROR: {
         return {
           ...state,
           loading: false,
