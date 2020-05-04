@@ -53,6 +53,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+let parties = '';
 const PartyGroupDetails = props => {
   const classes = useStyles();
 
@@ -71,34 +72,36 @@ const PartyGroupDetails = props => {
   } = props;
   const { params } = match;
 
+  const [newParties, setNewParties] = React.useState();
+
   useEffect(() => {
-    // console.log(params.groupId, "params.groupId")
-    fetchPartyGroupById(params.groupId);
-  }, []);
-
-  const fetchPartyGroupById = groupId => {
-    const data =
+    parties =
       partyGroupData &&
-      partyGroupData.find(group => group.id === parseInt(groupId, 10));
-    // console.log(data, "data details")
-    DispatchgetSelectedPartyGroupAction(data);
-  };
+      partyGroupData.find(group => group.id === parseInt(params.groupId, 10));
+    if (parties) {
+      setNewParties(parties);
+    }
+  }, [partyGroupData]);
 
-  const fetchPartyById = (groupId, partyId) => {
-    const data =
-      partyGroupData &&
-      partyGroupData.find(group => group.id === parseInt(groupId, 10));
-    const partyFound =
-      data && data.parties.find(party => party.id === parseInt(partyId, 10));
-    getSelectedParty(partyFound);
-  };
+  // const fetchPartyGroupById = groupId => {
+  //   const data =
+  //     partyGroupData &&
+  //     partyGroupData.find(group => group.id === parseInt(groupId, 10));
+  //   // console.log(data, "data details")
+  //   DispatchgetSelectedPartyGroupAction(data);
+  // };
 
-  const handleRoute = (groupId, partyId) => {
-    const data =
-      partyGroupData && partyGroupData.find(group => group.id === groupId);
-    const partyFound =
-      data && data.parties.find(party => party.id === parseInt(partyId, 10));
-    getSelectedParty(partyFound);
+  // const fetchPartyById = (groupId, partyId) => {
+  //   const data =
+  //     partyGroupData &&
+  //     partyGroupData.find(group => group.id === parseInt(groupId, 10));
+  //   const partyFound =
+  //     data && data.parties.find(party => party.id === parseInt(partyId, 10));
+  //   getSelectedParty(partyFound);
+  // };
+
+  const handleRoute = (data, groupId, partyId) => {
+    getSelectedParty(data);
     props.history.push(
       `/organization/company/structure/${groupId}/party/${partyId}`,
     );
@@ -166,9 +169,7 @@ const PartyGroupDetails = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const data = selectedPartyGroupData.parties.find(
-            party => value === party.id,
-          );
+          const data = newParties.parties.find(party => value === party.id);
 
           return (
             <div>
@@ -191,21 +192,25 @@ const PartyGroupDetails = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => (
-          <div>
-            <Button
-              variant="outlined"
-              size="small"
-              color="primary"
-              onClick={event => (
-                event.stopPropagation(),
-                handleRoute(selectedPartyGroupData.id, value)
-              )}
-            >
-              View
-            </Button>
-          </div>
-        ),
+        customBodyRender: value => {
+          const data = newParties.parties.find(party => value === party.id);
+
+          return (
+            <div>
+              <Button
+                variant="outlined"
+                size="small"
+                color="primary"
+                onClick={event => {
+                  event.stopPropagation();
+                  handleRoute(data, selectedPartyGroupData.id, value);
+                }}
+              >
+                View
+              </Button>
+            </div>
+          );
+        },
       },
     },
   ];
@@ -245,29 +250,32 @@ const PartyGroupDetails = props => {
         <CircularProgress color="inherit" />
       </Backdrop>
 
-      <MUIDataTable
-        className={classes.datatable}
-        title={
-          <Breadcrumbs
-            separator={<NavigateNextIcon fontSize="small" />}
-            aria-label="breadcrumb"
-          >
-            <Link
-              color="inherit"
-              onClick={handleBackToRoot}
-              className={classes.link}
+      {newParties && (
+
+        <MUIDataTable
+          className={classes.datatable}
+          title={
+            <Breadcrumbs
+              separator={<NavigateNextIcon fontSize="small" />}
+              aria-label="breadcrumb"
             >
-              > Party Groups
-            </Link>
-            <Typography color="textPrimary" variant="h6">
-              {selectedPartyGroupData.name}
-            </Typography>
-          </Breadcrumbs>
-        }
-        data={selectedPartyGroupData.parties}
-        columns={columns}
-        options={options}
-      />
+              <Link
+                color="inherit"
+                onClick={handleBackToRoot}
+                className={classes.link}
+              >
+                {'> Party Groups'}
+              </Link>
+              <Typography color="textPrimary" variant="h6">
+                {newParties.name}
+              </Typography>
+            </Breadcrumbs>
+          }
+          data={newParties.parties}
+          columns={columns}
+          options={options}
+        />
+      )}
     </React.Fragment>
   );
 };

@@ -9,14 +9,14 @@ import * as Constants from './constants';
 export function getSelectedParty(payload) {
   return {
     type: Constants.GET_SELECTED_PARTY,
-    payload
+    payload,
   };
 }
 
 export function getSelectedPosition(payload) {
   return {
     type: Constants.GET_SELECTED_POSITION,
-    payload
+    payload,
   };
 }
 
