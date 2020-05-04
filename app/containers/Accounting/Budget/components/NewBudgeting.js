@@ -97,7 +97,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   textField: {
-    width: theme.spacing(20)
+    width: theme.spacing(40)
   },
   dateWrapper: {
     display: 'flex',
@@ -245,7 +245,7 @@ const NewBudgeting = props => {
                 fullWidth
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={6} style={{textAlign: "right"}}>
               <Autocomplete
                 id="combo-box-demo"
                 size="small"
@@ -259,6 +259,7 @@ const NewBudgeting = props => {
                     className={classes.textField}
                     variant="outlined"
                     placeholder="Search"
+                    margin="normal"
                     fullWidth
                   />
                 )}
@@ -268,7 +269,6 @@ const NewBudgeting = props => {
               <Autocomplete
                 id="combo-box-demo"
                 size="small"
-                margin="normal"
                 options={budgetPeriod}
                 getOptionLabel={option => option.label}
                 onChange={(evt, value) => handleSelectChange(evt, value)}
@@ -279,6 +279,7 @@ const NewBudgeting = props => {
                     className={classes.textField}
                     variant="outlined"
                     placeholder="Search"
+                    margin="normal"
                     fullWidth
                   />
                 )}
@@ -293,10 +294,7 @@ const NewBudgeting = props => {
                   <TableHead>
                     <TableRow>
                       <TableCell component="th" scope="row">Accounts</TableCell>
-                      {newCopyArray.map((item) => {
-                        console.log("item -->", item);
-                        <TableCell align="left">{ item }</TableCell>
-                      })}
+                      {newCopyArray.map((item, i) => <TableCell key={i} align="left">{ item }</TableCell>)}
                     </TableRow>
                   </TableHead>
                   <TableBody>

@@ -49,6 +49,13 @@ export const initialState = {
     },
     data: null,
   },
+  attdDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
   payrollDialog: {
     type: 'new',
     props: {
@@ -270,6 +277,18 @@ const hrReducer = (state = initialState, action) =>
         return {
           ...state,
           roleDialog: {...state.roleDialog, props: { open: false }},
+        };
+        break;
+      case Constants.OPEN_NEW_ATTENDANCE_DIALOG:
+        return {
+          ...state,
+          attdDialog: {...state.attdDialog, props: { open: true }},
+        };
+        break;
+      case Constants.CLOSE_NEW_ATTENDANCE_DIALOG:
+        return {
+          ...state,
+          attdDialog: {...state.attdDialog, props: { open: false }},
         };
         break;
       case Constants.OPEN_NEW_PAYROLL_DIALOG:

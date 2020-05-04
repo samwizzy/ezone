@@ -7,21 +7,14 @@ import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { makeStyles } from '@material-ui/core/styles';
-// import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import { useInjectReducer } from 'utils/injectReducer';
-import { useInjectSaga } from 'utils/injectSaga';
-import * as AppSelectors from '../../App/selectors';
-import * as AppActions from '../../App/actions';
-import * as Actions from './actions';
-import makeSelectAttendancePage from './selectors';
-import reducer from './reducer';
-import saga from './saga';
-import ModuleLayout from './components/ModuleLayout';
-
-const key = 'attendance';
+import * as AppSelectors from '../../../App/selectors';
+import * as AppActions from '../../../App/actions';
+import * as Actions from './../actions';
+import * as Selectors from './../selectors';
+import EmployeeShiftList from './EmployeeShiftList'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,10 +22,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function AttendancePage(props) {
+export function EmployeeShiftPage(props) {
   const { getAttendance } = props;
-  useInjectReducer({ key, reducer });
-  useInjectSaga({ key, saga });
 
   React.useEffect(() => {
     getAttendance();  
@@ -41,21 +32,21 @@ export function AttendancePage(props) {
   return (
     <React.Fragment>
       <Helmet>
-        <title>Attendance Page</title>
-        <meta name="description" content="ezone application attendance page" />
+        <title>Employee Shift Page</title>
+        <meta name="description" content="ezone application employee shift page" />
       </Helmet>
 
-      <ModuleLayout />
+      <EmployeeShiftList />
+
     </React.Fragment>
   );
 }
 
-AttendancePage.propTypes = {
+EmployeeShiftPage.propTypes = {
   token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 const mapStateToProps = createStructuredSelector({
-  attendance: makeSelectAttendancePage(),
   token: AppSelectors.makeSelectAccessToken(),
 });
 
@@ -73,4 +64,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(AttendancePage);
+)(EmployeeShiftPage);

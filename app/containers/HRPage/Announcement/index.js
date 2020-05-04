@@ -20,6 +20,7 @@ import AssignmentInd from '@material-ui/icons/AssignmentInd';
 import Person from '@material-ui/icons/Person';
 import { AddAnnouncement } from '../components/AddButton'
 import AddAnnouncementDialog from './components/AddAnnouncementDialog'
+import AnnouncementViewDialog from './components/AnnouncementViewDialog'
 
 const drawerWidth = '100%';
 
@@ -48,33 +49,21 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
   },
-  gridRoot: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    padding: theme.spacing(2, 1),
-    overflow: 'hidden',
-    backgroundColor: theme.palette.background.paper,
-  },
   icon: {
-    width: 14,
-    height: 14,
     color: theme.palette.grey[800],
     '&.approved': { color: theme.palette.primary.main},
     '&.inProgress': { color: orange[500]},
     '&.done': { color: green[500]},
   },
-  buttonGroup: {
-    marginBottom: theme.spacing(1),
-    '& .MuiButtonGroup-root:last-child': {
-      marginLeft: '10px'
-    }
-  }
 }));
+
+const announcements = [
+  {id: 1, title: "Stand Up starts by 5:00", sentTo: "Yinka", msgType: "Email", date: "May 3rd 2020"}
+]
 
 const Announcement = props => {
   const classes = useStyles();
-  const { loading, openNewRoleDialog, getEmployees, roles, getEmployee, employees, employee } = props;
+  const { loading, openNewAnnouncementDialog, openAnnouncementViewDialog, getEmployees, roles, getEmployee, employees, employee } = props;
 
   React.useEffect(() => {
   }, [employee]);
@@ -89,7 +78,7 @@ const Announcement = props => {
       },
     },
     {
-      name: 'name',
+      name: 'title',
       label: 'Title',
       options: {
       filter: true,
@@ -125,16 +114,16 @@ const Announcement = props => {
   const options = {
       filterType: 'checkbox',
       responsive: 'scrollMaxHeight',
-      selectableRows: 'single', // none, multiple
+      selectableRows: 'none',
       print: false,
       download: true,
       viewColumns: false,
       filter: false,
-      customToolbar: () => <AddAnnouncement openDialog={openNewRoleDialog} />,
+      customToolbar: () => <AddAnnouncement openDialog={openNewAnnouncementDialog} />,
       rowsPerPage: 10,
       rowsPerPageOptions: [10,25,50,100],
       onRowClick: (rowData, rowState) => {
-        getEmployee(rowData[0])
+        openAnnouncementViewDialog()
       },
       elevation: 0
   };
@@ -147,20 +136,19 @@ const Announcement = props => {
       >
         <Grid item md={12}>
           <div className={classes.content}>
-            
             <MUIDataTable
                 className={classes.datatable}
                 title="Announcement List"
-                data={roles}
+                data={announcements}
                 columns={columns}
                 options={options}
             />
-
           </div>
         </Grid>
       </Grid>
 
       <AddAnnouncementDialog />
+      <AnnouncementViewDialog />
     </div>
   );
 };
@@ -168,7 +156,8 @@ const Announcement = props => {
 Announcement.propTypes = {
   loading: PropTypes.bool,
   getEmployees: PropTypes.func,
-  openNewRoleDialog: PropTypes.func,
+  openNewAnnouncementDialog: PropTypes.func,
+  openAnnouncementViewDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -183,7 +172,8 @@ function mapDispatchToProps(dispatch) {
   return {
     getEmployees: () => dispatch(Actions.getEmployees()),
     getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
-    openNewRoleDialog: () => dispatch(Actions.openNewRoleDialog()),
+    openNewAnnouncementDialog: () => dispatch(Actions.openNewAnnouncementDialog()),
+    openAnnouncementViewDialog: () => dispatch(Actions.openAnnouncementViewDialog()),
   };
 }
 

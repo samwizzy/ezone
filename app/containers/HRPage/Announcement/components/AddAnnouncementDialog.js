@@ -5,15 +5,24 @@ import { makeStyles } from '@material-ui/core/styles'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
-import {AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, MenuItem, Slide, Typography, TextField, Toolbar} from '@material-ui/core';
+import {AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, MenuItem, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar} from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
+import AddCircleIcon from '@material-ui/icons/AddCircle'
 
 const useStyles = makeStyles(theme => ({
   root: {
     '& .MuiTextField-root': {
       margin: theme.spacing(1, 0)
+    },
+  },
+  table: {
+    "& .MuiTableCell-root": {
+      border: "0 !important",
+      padding: 0,
+      display: "inline-block"
     },
   }
 }));
@@ -24,7 +33,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function AddAnnouncementDialog(props) {
   const classes = useStyles();
-  const { closeNewRoleDialog, dialog, createRole } = props;
+  const { closeNewAnnouncementDialog, dialog, createRole } = props;
   const [form, setForm] = React.useState({
     name: '',
     type: 'ROLE'
@@ -53,12 +62,12 @@ function AddAnnouncementDialog(props) {
   }
 
   return (
-    <div>
+    <div className={classes.root}>
       <Dialog
         {...dialog.props}
         TransitionComponent={Transition}
         keepMounted
-        onClose={closeNewRoleDialog}
+        onClose={closeNewAnnouncementDialog}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
@@ -73,30 +82,127 @@ function AddAnnouncementDialog(props) {
         <Divider />
 
         <DialogContent>
-          <form className={classes.root}>
-            <Grid container spacing={1}>
-                <Grid item xs={12}>
-                    <TextField
-                    name="name"
-                    label="Role name"
-                    id="outlined-title"
-                    fullWidth
-                    variant="outlined"
-                    size="small"
-                    value={form.name}
-                    onChange={handleChange}
-                    />
-                </Grid>
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <TextField
+              name="name"
+              label="Title"
+              id="outlined-title"
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              size="small"
+              value={form.name}
+              onChange={handleChange}
+              />
             </Grid>
-          </form>
+            <Grid item xs={12}>
+              <TextField
+              name="message"
+              label="Message"
+              id="outlined-title"
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              multiline
+              rows={10}
+              size="small"
+              value={form.message}
+              onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Toolbar style={{paddingLeft: 0}}>
+                <Typography variant="h6">Announcement Settings</Typography></Toolbar>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id="send-to"
+                name="SendTo"
+                placeholder="Select Employee"
+                select
+                margin="normal"
+                variant="outlined"
+                size="small"
+                label="Send to"
+                helperText="Please select an employee to send to"
+                value={form.sendTo}
+                onChange={handleChange}
+              >
+                <MenuItem key={0} value="3">
+                  No record
+                </MenuItem>
+              </TextField>
+            </Grid>
+            <Grid item xs={12}>
+              <Table className={classes.table}>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>
+                      <TextField
+                      name="message"
+                      label="Add Employee"
+                      id="outlined-title"
+                      variant="outlined"
+                      size="small"
+                      value={form.employee}
+                      onChange={handleChange}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <IconButton><DeleteOutlinedIcon /></IconButton>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      <TextField
+                      name="message"
+                      label="Add Employee"
+                      id="outlined-title"
+                      variant="outlined"
+                      size="small"
+                      value={form.employee}
+                      onChange={handleChange}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <IconButton><AddCircleIcon /></IconButton>
+                    </TableCell>
+                    <TableCell>
+                      <IconButton><DeleteOutlinedIcon /></IconButton>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id="send-to"
+                name="messageType"
+                placeholder="Message Type"
+                select
+                margin="normal"
+                variant="outlined"
+                size="small"
+                label="Message Type"
+                helperText="Please select a message type"
+                value={form.messageType}
+                onChange={handleChange}
+              >
+                <MenuItem key={0} value="0">
+                  No record
+                </MenuItem>
+              </TextField>
+            </Grid>
+          </Grid>
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={closeNewRoleDialog} color="primary">
+          <Button onClick={closeNewAnnouncementDialog} color="primary">
             Cancel
           </Button>
           <Button onClick={handleSubmit} disabled={!canSubmitForm()} color="primary">
-            Next
+            Save
           </Button>
         </DialogActions>
       </Dialog>
@@ -106,16 +212,16 @@ function AddAnnouncementDialog(props) {
 
 
 AddAnnouncementDialog.propTypes = {
-  closeNewRoleDialog: PropTypes.func,
+  closeNewAnnouncementDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  dialog: Selectors.makeSelectRoleDialog(),
+  dialog: Selectors.makeSelectAnnouncementDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeNewRoleDialog: () => dispatch(Actions.closeNewRoleDialog()),
+    closeNewAnnouncementDialog: () => dispatch(Actions.closeNewAnnouncementDialog()),
     createRole: (data) => dispatch(Actions.createRole(data)),
     dispatch,
   };
