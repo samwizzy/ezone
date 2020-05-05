@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import {
-  AppBar, Toolbar,
+  AppBar,
+  Toolbar,
   Backdrop,
   CircularProgress,
   Divider,
@@ -100,11 +101,11 @@ const PartiesDialog = props => {
   };
 
   const canBeSubmitted = () => {
-    const { partyHead, assistantPartyHead, name, description } = values;
+    const { partyHead, assistantPartyHead, name, description, tag } = values;
     return (
       // partyHead !== '' &&
       // assistantPartyHead !== '' &&
-      name !== '' && description !== ''
+      name !== '' && description !== '' && tag !== null
     );
   };
 
@@ -116,9 +117,6 @@ const PartiesDialog = props => {
       setValues({ ...values, tagId: value.id, partyId: params.partyId });
     }
   };
-
-  // console.log(newPartiesDialog, 'newPartiesDialog');
-  console.log(values, 'values');
 
   return (
     <div>
@@ -237,7 +235,7 @@ const PartiesDialog = props => {
           ) : (
             <Button
               onClick={() => {
-                updatePartiesAction(values);
+                updatePartiesAction({ ...values, ...params });
                 setValues('');
               }}
               color="primary"

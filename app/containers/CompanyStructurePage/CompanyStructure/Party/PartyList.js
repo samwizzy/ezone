@@ -68,19 +68,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const parties = '';
 const PartyList = props => {
   const classes = useStyles();
   const {
-    openEditPartyDialogAction,
-    openEditPartyGroupAction,
-    dispatchGetAllUsersAction,
-    selectedPartyGroupData,
-    getSelectedParty,
-    DispatchgetSelectedPartyGroupAction,
-    partyGroupData,
-    partyData,
-    dispatchOpenNewPartyGroupAction,
+    openEditPartiesDialogAction,
     openNewPartiesDialogAction,
     loading,
     match,
@@ -89,25 +80,11 @@ const PartyList = props => {
   } = props;
   const { params } = match;
 
-  const [newParties, setNewParties] = React.useState();
-
   useEffect(() => {
     getPartyByIdAction(params.partyId);
   }, []);
 
-  // useEffect(() => {
-  //   if (getPartyById) {
-  //     setNewParties(getPartyById);
-  //   }
-  // }, [getPartyById]);
-
-  // console.log(newParties, 'newParties');
-
-  console.log(params, 'params getPartyById');
-  console.log(getPartyById, 'getPartyById');
-
   const handleRoute = (groupId, partyId) => {
-    console.log(groupId, partyId, 'groupId, partyId');
     getPartyByIdAction(partyId);
     props.history.push(
       `/organization/company/structure/${groupId}/party/${partyId}`,
@@ -172,7 +149,7 @@ const PartyList = props => {
                 variant="outlined"
                 size="small"
                 color="primary"
-                onClick={() => openEditPartyDialogAction(data)}
+                onClick={() => openEditPartiesDialogAction(data)}
               >
                 Edit
               </Button>
@@ -232,9 +209,6 @@ const PartyList = props => {
         columnHeaderTooltip: column => `Sort for ${column.label}`,
       },
     },
-    // onRowClick: (rowData, rowState) => {
-    //   handleRoute(partyData.id, rowData[0]);
-    // },
     elevation: 0,
   };
 
@@ -286,44 +260,25 @@ const PartyList = props => {
 };
 
 PartyList.propTypes = {
-  openEditPartyGroupAction: PropTypes.func,
-  dispatchGetAllUsersAction: PropTypes.func,
+  getPartyById: PropTypes.object,
   loading: PropTypes.bool,
-  dispatchOpenNewPartyGroupAction: PropTypes.func,
   openNewPartiesDialogAction: PropTypes.func,
-  partyGroupData: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-  DispatchgetSelectedPartyGroupAction: PropTypes.func,
-  selectedPartyGroupData: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.bool,
-  ]),
-  openEditPartyDialogAction: PropTypes.func,
+  openEditPartiesDialogAction: PropTypes.func,
   getPartyByIdAction: PropTypes.func,
+  match: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  partyGroupData: Selectors.makeSelectPartyGroupData(),
-  partyData: Selectors.makeSelectSelectedParty(),
-  selectedPartyGroupData: Selectors.makeSelectSelectedPartyGroupData(),
   getPartyById: Selectors.makeSelectGetPartyById(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openEditPartyDialogAction: evt =>
-      dispatch(Actions.openEditPartyDialog(evt)),
-    dispatchOpenNewPartyGroupAction: () =>
-      dispatch(Actions.openNewPartyGroupDialog()),
-    openEditPartyGroupAction: evt =>
-      dispatch(Actions.openEditPartyGroupDialog(evt)),
+    openEditPartiesDialogAction: evt =>
+      dispatch(Actions.openEditPartiesDialog(evt)),
     openNewPartiesDialogAction: evt =>
       dispatch(Actions.openNewPartiesDialog(evt)),
-    openNewRoleDialog: () => dispatch(Actions.openNewRoleDialog()),
-    DispatchgetSelectedPartyGroupAction: evt =>
-      dispatch(Actions.getSelectedPartyGroupAction(evt)),
-    getSelectedParty: evt => dispatch(Actions.getSelectedParty(evt)),
-    dispatchGetAllUsersAction: () => dispatch(Actions.getAllUsers()),
     getPartyByIdAction: evt => dispatch(Actions.getPartyById(evt)),
   };
 }

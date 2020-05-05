@@ -477,7 +477,6 @@ const companyStructurePageReducer = (state = initialState, action) =>
         };
       }
       case Constants.UPDATE_PARTIES: {
-        console.log(action.payload, 'action.payload')
         return {
           ...state,
           loading: true,

@@ -85,7 +85,6 @@ const PositionDialog = props => {
     return name !== '' && description !== '';
   };
 
-  console.log(values, 'values');
   return (
     <div>
       <Dialog

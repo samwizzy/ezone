@@ -24,8 +24,6 @@ export function* getPartyGroupSaga() {
       }),
     });
 
-    console.log(userPartyGroupResponse, 'userPartyGroupResponse');
-
     yield put(Actions.getPartyGroupSuccessAction(userPartyGroupResponse));
   } catch (err) {
     yield put(Actions.getPartyGroupErrorAction(err));
@@ -163,7 +161,6 @@ export function* createNewParty() {
     Selectors.makeSelectCreateNewPartyData(),
   );
 
-  console.log(createNewPartyData, 'createNewPartyData');
   const requestURL = `${Endpoints.CreateNewPartyApi}`;
 
   try {
@@ -213,8 +210,6 @@ export function* getPartyById() {
       }),
     });
 
-    console.log(getPartyByIdResponse, 'getPartyByIdResponse');
-
     yield put(Actions.getPartyByIdSuccess(getPartyByIdResponse));
   } catch (err) {
     yield put(Actions.getPartyByIdError(err));
@@ -237,10 +232,6 @@ export function* updatePartySaga() {
       }),
     });
 
-    console.log(createPartyResponse, 'createPartyResponse');
-    console.log(updatePartyParams, 'updatePartyParams');
-    // yield put(Actions.updatePartyGroupSuccessAction(createPartyResponse));
-    // yield put(Actions.getPartyById(createPartyResponse.id));
     yield put(Actions.getPartyGroupAction());
     yield put(Actions.closeEditPartyDialog());
   } catch (err) {
@@ -255,7 +246,6 @@ export function* createNewParties() {
     Selectors.makeSelectCreateNewPartiesData(),
   );
 
-  console.log(createNewPartiesData, 'createNewPartiesData');
   const requestURL = `${Endpoints.CreateNewPartiesApi}`;
 
   try {
@@ -268,9 +258,6 @@ export function* createNewParties() {
       }),
     });
 
-    console.log(createNewPartiesResponse, 'createNewPartiesResponse');
-    // yield put(Actions.createNewPartiesSuccess(createNewPartiesResponse));
-    // yield put(Actions.getPartyGroupAction());
     yield put(Actions.getPartyById(createNewPartiesData.partyId));
     yield put(Actions.closeNewPartiesDialog());
     // yield put(
@@ -311,8 +298,7 @@ export function* updatePartiesSaga() {
       }),
     });
 
-    yield put(Actions.updatePartiesSuccess(createPartyGroupResponse));
-    yield put(Actions.getPartyGroupAction());
+    yield put(Actions.getPartyById(updatePartiesParams.partyId));
     yield put(Actions.closeEditPartiesDialog());
   } catch (err) {
     console.log(err, 'errrrrrrr');

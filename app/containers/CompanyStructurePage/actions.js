@@ -268,7 +268,6 @@ export function createNewPartiesError(data) {
 }
 
 export function updateParties(data) {
-  console.log(data, 'data');
   return {
     type: Constants.UPDATE_PARTIES,
     payload: data,

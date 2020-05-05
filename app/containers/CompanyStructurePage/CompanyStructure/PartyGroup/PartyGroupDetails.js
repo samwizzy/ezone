@@ -205,9 +205,6 @@ const PartyGroupDetails = props => {
         New Party
       </Button>
     ),
-    // onRowClick: (rowData, rowState) => {
-    //   handleRoute(selectedPartyGroupData.id, rowData[0]);
-    // },
     elevation: 0,
   };
 
@@ -247,19 +244,12 @@ const PartyGroupDetails = props => {
 };
 
 PartyGroupDetails.propTypes = {
-  openEditPartyGroupAction: PropTypes.func,
-  dispatchGetAllUsersAction: PropTypes.func,
   loading: PropTypes.bool,
-  dispatchOpenNewPartyGroupAction: PropTypes.func,
   dispatchOpenNewPartyAction: PropTypes.func,
   partyGroupData: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-  DispatchgetSelectedPartyGroupAction: PropTypes.func,
-  selectedPartyGroupData: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.bool,
-  ]),
   openEditPartyDialogAction: PropTypes.func,
   getPartyByIdAction: PropTypes.func,
+  match: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -272,17 +262,8 @@ function mapDispatchToProps(dispatch) {
   return {
     openEditPartyDialogAction: evt =>
       dispatch(Actions.openEditPartyDialog(evt)),
-    dispatchOpenNewPartyGroupAction: () =>
-      dispatch(Actions.openNewPartyGroupDialog()),
-    openEditPartyGroupAction: evt =>
-      dispatch(Actions.openEditPartyGroupDialog(evt)),
     dispatchOpenNewPartyAction: evt =>
       dispatch(Actions.openNewPartyDialog(evt)),
-    openNewRoleDialog: () => dispatch(Actions.openNewRoleDialog()),
-    DispatchgetSelectedPartyGroupAction: evt =>
-      dispatch(Actions.getSelectedPartyGroupAction(evt)),
-    getSelectedParty: evt => dispatch(Actions.getSelectedParty(evt)),
-    dispatchGetAllUsersAction: () => dispatch(Actions.getAllUsers()),
     getPartyByIdAction: evt => dispatch(Actions.getPartyById(evt)),
   };
 }

@@ -113,16 +113,11 @@ const ListItemLink = props => <ListItem button component="a" {...props} />;
 const PartyGroupList = props => {
   const classes = useStyles();
   const {
-    openEditPartyDialogAction,
     openEditPartyGroupAction,
-    dispatchGetAllUsersAction,
-    selectedPartyGroupData,
     DispatchgetSelectedPartyGroupAction,
     partyGroupData,
     dispatchOpenNewPartyGroupAction,
-    dispatchOpenNewPartyAction,
     loading,
-    match,
   } = props;
 
   useEffect(() => {}, []);
@@ -133,9 +128,6 @@ const PartyGroupList = props => {
     DispatchgetSelectedPartyGroupAction(data);
     props.history.push(`/organization/company/structure/${groupId}`);
   };
-
-  // console.log(partyGroupData, "partyGroupData")
-  // console.log(selectedPartyGroupData, "selectedPartyGroupData")
 
   const columns = [
     {
@@ -247,9 +239,6 @@ const PartyGroupList = props => {
         New Party Group
       </Button>
     ),
-    // onRowClick: (rowData, rowState) => {
-    //   handleRoute(rowData[0]);
-    // },
     elevation: 0,
   };
 
@@ -324,17 +313,10 @@ const PartyGroupList = props => {
 
 PartyGroupList.propTypes = {
   openEditPartyGroupAction: PropTypes.func,
-  dispatchGetAllUsersAction: PropTypes.func,
   loading: PropTypes.bool,
   dispatchOpenNewPartyGroupAction: PropTypes.func,
-  dispatchOpenNewPartyAction: PropTypes.func,
   partyGroupData: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   DispatchgetSelectedPartyGroupAction: PropTypes.func,
-  selectedPartyGroupData: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.bool,
-  ]),
-  openEditPartyDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -345,18 +327,12 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openEditPartyDialogAction: evt =>
-      dispatch(Actions.openEditPartyDialog(evt)),
     dispatchOpenNewPartyGroupAction: () =>
       dispatch(Actions.openNewPartyGroupDialog()),
     openEditPartyGroupAction: evt =>
       dispatch(Actions.openEditPartyGroupDialog(evt)),
-    dispatchOpenNewPartyAction: evt =>
-      dispatch(Actions.openNewPartyDialog(evt)),
-    openNewRoleDialog: () => dispatch(Actions.openNewRoleDialog()),
     DispatchgetSelectedPartyGroupAction: evt =>
       dispatch(Actions.getSelectedPartyGroupAction(evt)),
-    dispatchGetAllUsersAction: () => dispatch(Actions.getAllUsers()),
   };
 }
 
