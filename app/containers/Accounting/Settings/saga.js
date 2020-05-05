@@ -150,6 +150,34 @@ export function* updateAccountPeriodSaga({ type, payload }) {
 }
 
 
+// Set accounting period as active
+export function* setAccountPeriodAsActiveSaga({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());  
+  const requestURL = `${Endpoints.SetAccountPeriodAsActiveApi}?id=${payload.id}&orgId=${payload.orgId}&year=true`;
+
+  try {
+    const accountActiveResponse = yield call(request, requestURL, {
+      method: 'PUT',
+      body: "",
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log('accountActiveResponse -> ', accountActiveResponse);
+    alert(`Accounting period set successfully!`);
+    yield put(Actions.getAllAccountingPeriodAction());
+    yield put(Actions.setAccountPeriodAsActiveSuccessAction(accountActiveResponse));
+    yield put(Actions.closeAccountPeriodDialog());
+  } catch (err) {
+    console.log('updateAccountPeriodErrorAction -> ', err);
+    alert(`Something went wrong.`);
+    yield put(Actions.setAccountPeriodAsActiveErrorAction(err));
+  }
+}
+
+
 // Individual exports for testing
 export default function* SettingsSaga() {
   // See example in containers/HomePage/saga.js
@@ -158,5 +186,6 @@ export default function* SettingsSaga() {
   yield takeLatest(Constants.GET_ALL_ACCOUNTING_PERIOD, getAllAccountingPeriodSaga);
   yield takeLatest(Constants.CREATE_ACCOUNT_PERIOD, createAccountPeriodSaga);
   yield takeLatest(Constants.UPDATE_ACCOUNT_PERIOD, updateAccountPeriodSaga);
+  yield takeLatest(Constants.SET_ACCOUNT_PERIOD_AS_ACTIVE, setAccountPeriodAsActiveSaga);
 }
 

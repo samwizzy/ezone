@@ -20,32 +20,40 @@ import makeSelectHRPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import ModuleLayout from './components/ModuleLayout';
-import HumanResourcePage from './HumanResourcePage'
+import HumanResourcePage from './HumanResourcePage';
 
 const key = 'hrPage';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
 }));
 
 export function HRPage(props) {
-  const {getEmployees, getDepartmentsByOrgIdApi, getEnrollmentTypes, getLocations, getJobOpenings, getEmployeeTypes, getRoles, getBranches} = props
+  const {
+    getEmployees,
+    getDepartmentsByOrgIdApi,
+    getEnrollmentTypes,
+    getLocations,
+    getJobOpenings,
+    getEmployeeTypes,
+    getRoles,
+    getBranches,
+  } = props;
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
   React.useEffect(() => {
-    getEmployees()
-    getDepartmentsByOrgIdApi()
-    getEmployeeTypes()
-    getRoles()
-    getBranches()
-    getEnrollmentTypes()
-    getLocations()
-    getJobOpenings()
-    
-  }, [])
+    getEmployees();
+    getDepartmentsByOrgIdApi();
+    getEmployeeTypes();
+    getRoles();
+    getBranches();
+    getEnrollmentTypes();
+    getLocations();
+    getJobOpenings();
+  }, []);
 
   return (
     <React.Fragment>
@@ -73,13 +81,14 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
   return {
     getEmployees: () => dispatch(Actions.getEmployees()),
-    getDepartmentsByOrgIdApi: () =>dispatch(Actions.getDepartmentsByOrgIdApi()),
-    getEmployeeTypes: () =>dispatch(Actions.getEmployeeTypes()),
-    getRoles: () =>dispatch(Actions.getRoles()),
-    getBranches: () =>dispatch(Actions.getBranches()),
-    getEnrollmentTypes: () =>dispatch(Actions.getEnrollmentTypes()),
-    getLocations: () =>dispatch(Actions.getLocations()),
-    getJobOpenings: () =>dispatch(Actions.getJobOpenings()),
+    getDepartmentsByOrgIdApi: () =>
+      dispatch(Actions.getDepartmentsByOrgIdApi()),
+    getEmployeeTypes: () => dispatch(Actions.getEmployeeTypes()),
+    getRoles: () => dispatch(Actions.getRoles()),
+    getBranches: () => dispatch(Actions.getBranches()),
+    getEnrollmentTypes: () => dispatch(Actions.getEnrollmentTypes()),
+    getLocations: () => dispatch(Actions.getLocations()),
+    getJobOpenings: () => dispatch(Actions.getJobOpenings()),
   };
 }
 

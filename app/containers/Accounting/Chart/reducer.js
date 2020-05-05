@@ -16,6 +16,13 @@ export const initialState = {
     },
     data: null,
   },
+  confirmDeleteDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
   accountTypeData: [],
   parentAccountTypeData: [],
   chartOfAccountPostData: {},
@@ -29,7 +36,6 @@ const accountChartReducer = (state = initialState, action) =>
 
       // Open dialog for adding new account to chart of account
       case Constants.OPEN_NEW_ACCOUNT_DIALOG: {
-        console.log('OPEN_NEW_ACCOUNT_DIALOG');
         return {
           ...state,
           accountDialog: {
@@ -80,6 +86,31 @@ const accountChartReducer = (state = initialState, action) =>
         };
       }
 
+      // Confirm delete dialog
+      case Constants.OPEN_DELETE_ACCOUNT_DIALOG: {
+        return {
+          ...state,
+          confirmDeleteDialog: {
+            type: 'new',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_DELETE_ACCOUNT_DIALOG: {
+        return {
+          ...state,
+          confirmDeleteDialog: {
+            type: 'new',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
 
       // Case to get account type data
       case Constants.GET_ALL_ACCOUNT_TYPES: {

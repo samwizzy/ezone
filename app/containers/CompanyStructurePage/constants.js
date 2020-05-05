@@ -48,6 +48,10 @@ export const UPDATE_PARTY_GROUP_SUCCESS =
 export const UPDATE_PARTY_GROUP_ERROR =
   'app/CompanyStructurePage/UPDATE_PARTY_GROUP_ERROR';
 
+export const GET_SELECTED_POSITION =
+  'app/CompanyStructurePage/GET_SELECTED_POSITION';
+export const GET_SELECTED_PARTY = 'app/CompanyStructurePage/GET_SELECTED_PARTY';
+
 export const GET_SELECTED_PARTY_GROUP =
   'app/CompanyStructurePage/GET_SELECTED_PARTY_GROUP';
 
@@ -137,6 +141,12 @@ export const GET_ALL_TAGS = 'app/CompanyStructurePage/GET_ALL_TAGS';
 export const GET_ALL_TAGS_SUCCESS =
   'app/CompanyStructurePage/GET_ALL_TAGS_SUCCESS';
 export const GET_ALL_TAGS_ERROR = 'app/CompanyStructurePage/GET_ALL_TAGS_ERROR';
+
+export const GET_PARTY_BY_ID = 'app/CompanyStructurePage/GET_PARTY_BY_ID';
+export const GET_PARTY_BY_ID_SUCCESS =
+  'app/CompanyStructurePage/GET_PARTY_BY_ID_SUCCESS';
+export const GET_PARTY_BY_ID_ERROR =
+  'app/CompanyStructurePage/GET_PARTY_BY_ID_ERROR';
 
 /** *****************************************************************
  * Organization constants

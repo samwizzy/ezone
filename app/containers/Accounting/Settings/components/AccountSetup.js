@@ -35,12 +35,15 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import moment from 'moment';
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
+import reducer from '../reducer';
+import saga from '../saga';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../../App/selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 // import Logo from '../../../../images/Logo.svg';
-
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -65,7 +68,10 @@ const useStyles = makeStyles(theme => ({
 
 const AccountSetup = props => {
   const classes = useStyles();
-  
+
+  useInjectReducer({ key: 'settings', reducer });
+  useInjectSaga({ key: 'settings', saga });
+
   const {} = props;
 
   const accountingMethodData = [
@@ -97,28 +103,29 @@ const AccountSetup = props => {
     },
   ];
 
-  const {
-    loading,
-    currentUser,
-    createAccountingSetupAction,
-  } = props;
+  const { loading, currentUser, createAccountingSetupAction } = props;
 
   const [values, setValues] = React.useState({
-    accountMethod: "",
-    companyStartDate: "",
-    currency: "",
+    accountMethod: '',
+    companyStartDate: '',
+    currency: '',
     orgId: currentUser.organisation && currentUser.organisation.orgId,
-    startDay: "",
-    startMonth: "",
-    taxDay: "",
-    taxMonth: "",
-    taxType: "",
+    startDay: '',
+    startMonth: '',
+    taxDay: '',
+    taxMonth: '',
+    taxType: '',
   });
 
   const canSubmitValues = () => {
     const { accountMethod, companyStartDate, taxType, currency } = values;
-    return accountMethod.length > 0 && companyStartDate.length > 0 && taxType.length > 0 && currency.length > 0 ;
-  }
+    return (
+      accountMethod.length > 0 &&
+      companyStartDate.length > 0 &&
+      taxType.length > 0 &&
+      currency.length > 0
+    );
+  };
 
   const [selectedDate, setSelectedDate] = React.useState(new Date());
   const handleAccountingMethodSelectChange = (name, value) => {
@@ -165,7 +172,7 @@ const AccountSetup = props => {
               <Paper square elevation={0} className={classes.paper}>
                 <Box p={2} my={2} className={classes.box}>
                   <Typography variant="h4" color="textSecondary">
-                    Welcome To 
+                    Welcome To
                     {/* <img src={Logo} height="40" />  */}
                     Accounting
                   </Typography>
@@ -369,7 +376,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    createAccountingSetupAction: evt => dispatch(Actions.createAccountingSetupAction(evt)),
+    createAccountingSetupAction: evt =>
+      dispatch(Actions.createAccountingSetupAction(evt)),
   };
 }
 

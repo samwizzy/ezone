@@ -7,6 +7,7 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -16,34 +17,30 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectOrgPage from '../selectors';
 import reducer from '../reducer';
 import saga from '../saga';
-
-import PartyGroupDialog from './components/PartyGroupDialog';
-import PartyDialog from './components/PartyDialog';
-import RoleDialog from './components/RoleDialog';
-import CompanyStructure from './components/CompanyStructure';
-import PartyPage from './components/PartyPage';
-import ModuleLayout from './../components/ModuleLayout';
-
-// import PartyGroupDialog from './components/PartyGroupDialog';
-// import PartyDialog from './components/PartyDialog';
-
+import ModuleLayout from '../components/ModuleLayout';
+import PartyGroup from './PartyGroup/Loadable';
+import Party from './Party/Loadable';
 import * as Actions from '../actions';
 
 export function CompanyStructurePage(props) {
+  useInjectReducer({ key: 'companyStructurePage', reducer });
+  useInjectSaga({ key: 'companyStructurePage', saga });
+
   const {
     dispatchGetPartyGroups,
     dispatchGetAllUsersAction,
     getAllTagsAction,
+    match,
   } = props;
-
-  useInjectReducer({ key: 'companyStructurePage', reducer });
-  useInjectSaga({ key: 'companyStructurePage', saga });
+  const { params } = match;
 
   useEffect(() => {
     getAllTagsAction();
     dispatchGetPartyGroups();
     dispatchGetAllUsersAction();
   }, []);
+
+  // console.log(params, 'home params');
 
   return (
     <div>
@@ -55,13 +52,7 @@ export function CompanyStructurePage(props) {
         />
       </Helmet>
 
-      <ModuleLayout>
-        <CompanyStructure />
-      </ModuleLayout>
-
-      <PartyGroupDialog />
-      <PartyDialog />
-      <RoleDialog />
+      <ModuleLayout>{params.partyId ? <Party /> : <PartyGroup />}</ModuleLayout>
     </div>
   );
 }
@@ -90,6 +81,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(CompanyStructurePage);

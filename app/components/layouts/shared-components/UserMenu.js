@@ -10,31 +10,37 @@ import {
   ListItemText,
   Popover,
   MenuItem,
-  Typography
+  Typography,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { Link } from 'react-router-dom';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import _ from 'lodash';
 import * as AppSelectors from '../../../containers/App/selectors';
 import * as AppActions from '../../../containers/App/actions';
 
-
 const useStyles = makeStyles(theme => ({
   root: {
-    "& .MuiIconButton-label": {
+    '& .MuiIconButton-label': {
       color: theme.palette.common.white,
     },
-    "& .MuiButton-label": {
+    '& .MuiButton-label': {
       color: theme.palette.common.white,
     },
-  }
-}))
+  },
+  name: {
+    color: theme.palette.common.white,
+  },
+  avatar: {
+    marginRight: theme.spacing(1),
+  },
+}));
 // class UserMenu extends Component {
 const UserMenu = props => {
-  const classes = useStyles()
+  const classes = useStyles();
   //   state = {
   //     userMenu: null,
   //   };
@@ -60,6 +66,8 @@ const UserMenu = props => {
   //   return '';
   // }
 
+  // console.log(currentUser, "currentUser")
+
   return (
     <React.Fragment>
       <div className={classes.root}>
@@ -69,28 +77,28 @@ const UserMenu = props => {
           </Badge>
         </IconButton>
 
-        <Button className="h-64" onClick={userMenuClick}>
-          {/* {user.data.photoURL ? (
-              <Avatar className="" alt="user photo" src={user.data.photoURL} />
-            ) : (
-              <Avatar className="">{user.data.userName}</Avatar>
-            )} */}
+        <Button
+          className="h-64"
+          onClick={userMenuClick}
+          endIcon={<KeyboardArrowDownIcon />}
+        >
+          {currentUser && currentUser.organisation.logo ? (
+            <Avatar
+              className={classes.avatar}
+              alt="user photo"
+              src={`data:image/jpg;base64,${currentUser.organisation.logo}`}
+            />
+          ) : (
+            <Avatar className={classes.avatar}>
+              {currentUser && currentUser.lastName}
+            </Avatar>
+          )}
 
           <div className="hidden md:flex flex-col ml-12 items-start">
-            {/* <Typography
-                component="span"
-                className="normal-case font-600 flex"
-              >
-                {user.data.firstName}
-              </Typography>
-              <Typography className="text-11 capitalize" color="textSecondary">
-                {user.data.lastName}
-              </Typography> */}
+            <Typography className={classes.name} color="textSecondary">
+              {/* {currentUser && currentUser.lastName} */}
+            </Typography>
           </div>
-
-          <Icon className="text-16 ml-12 hidden sm:flex" variant="action">
-            keyboard_arrow_down
-          </Icon>
         </Button>
 
         <Popover
@@ -127,7 +135,11 @@ const UserMenu = props => {
             )} */}
           {currentUser && (
             <React.Fragment>
-              <MenuItem component={Link} to="/login" onClick={() => logoutAction()}>
+              <MenuItem
+                component={Link}
+                to="/login"
+                onClick={() => logoutAction()}
+              >
                 <ListItemIcon>
                   <Icon>exit_to_app</Icon>
                 </ListItemIcon>

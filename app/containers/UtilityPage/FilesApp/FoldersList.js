@@ -5,7 +5,7 @@ import { orange } from '@material-ui/core/colors'
 import { Route, MemoryRouter } from 'react-router';
 import { withRouter, Link as RouterLink } from 'react-router-dom'
 import classNames from 'classnames'
-import { Backdrop, Button, Box, CircularProgress, Card, CardContent, CardActionArea, CardMedia, Grid, Menu, MenuItem, Link, List, ListItem, ListSubheader, ListItemText, ListItemIcon, Collapse, Icon, IconButton, Typography, TableContainer, Table, TableBody, TableRow, TableCell, Tooltip, Paper } from '@material-ui/core';
+import { Backdrop, Button, Box, CircularProgress, Card, CardContent, CardActionArea, CardMedia, Grid, Menu, MenuItem, Link, List, ListItem, ListSubheader, ListItemText, ListItemIcon, Collapse, Icon, IconButton, Typography, TableContainer, Table, TableBody, TableRow, TableCell, Tooltip, Toolbar, Paper } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -337,8 +337,10 @@ const FilesList = props => {
           />
         </Grid>
         <Grid item md={3}>
-          <Box p={1}>
-            <Typography variant="h6" color="inherit">Document Details</Typography>
+          <Box px={1}>
+            <Toolbar>
+              <Typography variant="subtitle1" color="textSecondary">Document Details</Typography>
+            </Toolbar>
             {file && Object.keys(file).length > 0 &&
             <div>
             <Card className={classes.cardRoot} elevation={0}>

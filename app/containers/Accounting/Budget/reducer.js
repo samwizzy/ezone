@@ -1,6 +1,6 @@
 /*
  *
- * Banking reducer
+ * Budget reducer
  *
  */
 import produce from 'immer';
@@ -17,11 +17,12 @@ export const initialState = {
     data: null,
   },
   budgetData: [],
-  budgetingPostData: {}
+  budgetingPostData: {},
+  accountingPeriodData: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
-const bankingReducer = (state = initialState, action) =>
+const budgetReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
       
@@ -101,7 +102,31 @@ const bankingReducer = (state = initialState, action) =>
         };
       }
 
+      // Case to get all accounting periods
+      case Constants.GET_ALL_ACCOUNTING_PERIOD: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_ALL_ACCOUNTING_PERIOD_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          accountingPeriodData: action.payload
+        };
+      }
+      case Constants.GET_ALL_ACCOUNTING_PERIOD_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+
     }
   });
 
-export default bankingReducer;
+export default budgetReducer;

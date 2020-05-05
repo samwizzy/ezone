@@ -106,15 +106,20 @@ const makeSelectRoleDialog = () =>
     selectHR,
     hrState => hrState.roleDialog,
   );
-const makeSelectAttendanceDialog = () =>
-  createSelector(
-    selectHR,
-    hrState => hrState.attdDialog,
-  );
 const makeSelectPayrollDialog = () =>
   createSelector(
     selectHR,
     hrState => hrState.payrollDialog,
+  );
+const makeSelectAnnouncementDialog = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.announcementDialog,
+  );
+const makeSelectAnnouncementViewDialog = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.announcementViewDialog,
   );
 
 const makeSelectCreateEmployee = () =>
@@ -188,6 +193,7 @@ export {
   makeSelectDeptDialog,
   makeSelectBranchDialog,
   makeSelectRoleDialog,
-  makeSelectAttendanceDialog,
   makeSelectPayrollDialog,
+  makeSelectAnnouncementDialog,
+  makeSelectAnnouncementViewDialog,
 };

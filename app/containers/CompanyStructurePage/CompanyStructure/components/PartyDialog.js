@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import {
-  AppBar, Toolbar,
+  AppBar,
+  Toolbar,
   Backdrop,
   CircularProgress,
   Divider,
@@ -98,10 +99,14 @@ const PartyDialog = props => {
 
   const handleTagChange = (event, value) => {
     if (newPartyDialog.type === 'new') {
-      setValues({ ...values, tagId: value.id });
+      if (value) {
+        setValues({ ...values, tagId: value.id });
+      }
     }
     if (newPartyDialog.type === 'edit') {
-      setValues({ ...values, tag: { id: value.id } });
+      if (value) {
+        setValues({ ...values, tag: { id: value.id } });
+      }
     }
   };
 
@@ -113,8 +118,6 @@ const PartyDialog = props => {
       name !== '' && description !== ''
     );
   };
-
-  console.log(values, 'values');
 
   return (
     <div>
@@ -174,9 +177,9 @@ const PartyDialog = props => {
                 <TextField
                   {...params}
                   margin="normal"
-                  label="Search Employee"
+                  label="Select Head"
                   variant="outlined"
-                  placeholder="Search Employee"
+                  placeholder="Select Head"
                   fullWidth
                 />
               )}
@@ -193,9 +196,9 @@ const PartyDialog = props => {
                 <TextField
                   {...params}
                   margin="normal"
-                  label="Search Employee"
+                  label="Select Head Assistance"
                   variant="outlined"
-                  placeholder="Search Employee"
+                  placeholder="Select Head Assistance"
                   fullWidth
                 />
               )}
@@ -206,6 +209,7 @@ const PartyDialog = props => {
               options={allTags}
               getOptionLabel={option => `${option.name}`}
               onChange={(evt, ve) => handleTagChange(evt, ve)}
+              freeSolo
               renderInput={params => (
                 <TextField
                   {...params}

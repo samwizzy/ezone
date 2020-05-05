@@ -29,6 +29,7 @@ const useStyles = makeStyles(theme => ({
 
 export const ImageUpload = props => {
   const {
+    setForm,
     uploadFileAction,
     closeNewContactDialog,
     handlePrev,
@@ -70,7 +71,10 @@ export const ImageUpload = props => {
               Prev
             </Button>
             <Button
-              onClick={() => createNewContactAction(form)}
+              onClick={() => {
+                createNewContactAction(form);
+                setForm('');
+              }}
               color="primary"
             >
               Save
@@ -84,7 +88,13 @@ export const ImageUpload = props => {
             <Button onClick={handlePrev} color="primary">
               Prev
             </Button>
-            <Button onClick={() => updateContactAction(form)} color="primary">
+            <Button
+              onClick={() => {
+                updateContactAction(form);
+                setForm('');
+              }}
+              color="primary"
+            >
               Update
             </Button>
           </div>

@@ -20,6 +20,7 @@ import saga from './saga';
 import messages from './messages';
 import ModuleLayout from '../components/ModuleLayout';
 import JournalListing from './components/JournalListing';
+import JournalDetails from './components/JournalDetails';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
 import LoadingIndicator from '../../../components/LoadingIndicator';
@@ -50,7 +51,7 @@ export function Journal(props) {
         <meta name="description" content="Description of Journal" />
       </Helmet>
       <ModuleLayout>
-        <JournalListing />
+        <JournalDetails />
       </ModuleLayout>
     </div>
   );

@@ -1,6 +1,6 @@
 /**
  *
- * Banking
+ * Budget
  *
  */
 
@@ -31,13 +31,18 @@ export function Budgeting(props) {
   useInjectReducer({ key: 'budgeting', reducer });
   useInjectSaga({ key: 'budgeting', saga });
 
-  const { loading, match } = props;
+  const { 
+    loading, 
+    match,
+    dispatchGetAllAccountingPeriodAction 
+  } = props;
 
   const { params } = match
   console.log(params, "params budgeting")
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
+    dispatchGetAllAccountingPeriodAction();
   }, []);
 
 
@@ -73,6 +78,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    dispatchGetAllAccountingPeriodAction: () => dispatch(Actions.getAllAccountingPeriodAction()),
     dispatch,
   };
 }

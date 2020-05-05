@@ -719,6 +719,11 @@ const utilityPageReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
+      case Constants.RESET_POST_MSG: {
+        return {
+          getPostMsg: false,
+        };
+      }
       case Constants.POST_FCM_TOKEN: {
         console.log(action.payload, 'action.payload');
         return {

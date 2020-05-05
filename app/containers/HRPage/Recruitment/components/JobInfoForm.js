@@ -117,11 +117,12 @@ export const JobInfoForm = props => {
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
                             disableToolbar
-                            variant="inline"
-                            format="yyyy-MM-dd"
+                            inputVariant="outlined"
+                            format="MM/dd/yyyy"
                             margin="normal"
                             fullWidth
-                            name="submissionDeadline"
+                            size="small"
+                            name="startDate"
                             id="date-picker-startDate"
                             label="Submission Deadline"
                             value={form.submissionDeadline}

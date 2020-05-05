@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     backgroundColor: theme.palette.background.paper,
     position: 'relative',
-    overflowY: 'auto',
+    overflow: 'hidden',
     borderRight: `1px solid ${theme.palette.divider}`,
     height: `calc(100vh - 128px)`,
     "& .MuiListSubheader-root": {
@@ -68,6 +68,9 @@ const useStyles = makeStyles(theme => ({
       "&:hover": {
         color: theme.palette.primary.main,
       },
+    },
+    "&:hover": {
+      overflowY: 'auto',
     }
   },
   card: {

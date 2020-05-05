@@ -623,6 +623,12 @@ export function postMsgError(data) {
   };
 }
 
+export function resetPostMsg() {
+  return {
+    type: Constants.RESET_POST_MSG,
+  };
+}
+
 export function postFcmToken(data) {
   // console.log(data, 'action data');
   return {

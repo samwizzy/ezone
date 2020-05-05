@@ -49,17 +49,24 @@ export const initialState = {
     },
     data: null,
   },
-  attdDialog: {
+  payrollDialog: {
     type: 'new',
     props: {
       open: false,
     },
     data: null,
   },
-  payrollDialog: {
+  announcementDialog: {
     type: 'new',
     props: {
       open: false,
+    },
+    data: null,
+  },
+  announcementViewDialog: {
+    type: 'new',
+    props: {
+      open: true,
     },
     data: null,
   },
@@ -242,8 +249,6 @@ const hrReducer = (state = initialState, action) =>
         };
         break;
       case Constants.OPEN_NEW_BRANCH_DIALOG:
-        console.log('we opening the dialog in reducer')
-
         return {
           ...state,
           branchDialog: {...state.branchDialog, props: { open: true }},
@@ -267,18 +272,6 @@ const hrReducer = (state = initialState, action) =>
           roleDialog: {...state.roleDialog, props: { open: false }},
         };
         break;
-      case Constants.OPEN_NEW_ATTENDANCE_DIALOG:
-        return {
-          ...state,
-          attdDialog: {...state.attdDialog, props: { open: true }},
-        };
-        break;
-      case Constants.CLOSE_NEW_ATTENDANCE_DIALOG:
-        return {
-          ...state,
-          attdDialog: {...state.attdDialog, props: { open: false }},
-        };
-        break;
       case Constants.OPEN_NEW_PAYROLL_DIALOG:
         return {
           ...state,
@@ -289,6 +282,30 @@ const hrReducer = (state = initialState, action) =>
         return {
           ...state,
           payrollDialog: {...state.payrollDialog, props: { open: false }},
+        };
+        break;
+      case Constants.OPEN_NEW_ANNOUNCEMENT_DIALOG:
+        return {
+          ...state,
+          announcementDialog: {...state.announcementDialog, props: { open: true }},
+        };
+        break;
+      case Constants.CLOSE_NEW_ANNOUNCEMENT_DIALOG:
+        return {
+          ...state,
+          announcementDialog: {...state.announcementDialog, props: { open: false }},
+        };
+        break;
+      case Constants.OPEN_ANNOUNCEMENT_VIEW_DIALOG:
+        return {
+          ...state,
+          announcementViewDialog: {...state.announcementViewDialog, props: { open: true }},
+        };
+        break;
+      case Constants.CLOSE_ANNOUNCEMENT_VIEW_DIALOG:
+        return {
+          ...state,
+          announcementViewDialog: {...state.announcementViewDialog, props: { open: false }},
         };
         break;
     }

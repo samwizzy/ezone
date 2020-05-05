@@ -8,7 +8,7 @@
 
 import React, { useEffect, memo } from 'react';
 import { Helmet } from 'react-helmet';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { CssBaseline } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -17,10 +17,11 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 // import HomePage from '../HomePage/Loadable';
 import Home from '../Home/Loadable';
+import Dashboard from '../Dashboard/Loadable';
 import NotFoundPage from '../NotFoundPage/Loadable';
 import Registration from '../AuthorizationPage/Register/Loadable';
 import Login from '../AuthorizationPage/Login/Loadable';
-import ForgotPassword from '../AuthorizationPage/Login/components/ForgotPasswordForm';
+import ForgotPassword from '../AuthorizationPage/ForgotPassword/Loadable';
 import organizationPage from '../CompanyStructurePage/OrganizationInfo/Loadable';
 import CompanyStructure from '../CompanyStructurePage/CompanyStructure/Loadable';
 // import PartyPage from '../CompanyStructurePage/CompanyStructure/components/PartyPage';
@@ -30,10 +31,11 @@ import UsersPage from '../UsersPage/Loadable';
 import Employees from '../UsersPage/EmployeePage/Loadable';
 import UserProfilePage from '../UsersPage/UserProfilePage/Loadable';
 import UtilityPage from '../UtilityPage/Loadable';
-import ChatApp from '../UtilityPage/ChatApp/ChatTab';
+import ChatApp from '../UtilityPage/ChatApp/Loadable';
 import TasksPage from '../UtilityPage/TasksApp/Loadable';
 import FilesApp from '../UtilityPage/FilesApp/Loadable';
 import HRPage from '../HRPage/Loadable';
+import AttendancePage from '../HRPage/Attendance/Loadable';
 import EmailConfig from '../EmailConfig/Loadable';
 import EmailConfigs from '../EmailConfig/components/TabsPage';
 import EmailTemplate from '../EmailConfig/components/EmailTemplate';
@@ -50,6 +52,7 @@ import Layout1 from '../../components/layouts/layout1/Layout1';
 import Layout2 from '../../components/layouts/layout2/Layout2';
 import Layout3 from '../../components/layouts/layout3/Layout3';
 import * as Selectors from './selectors';
+import * as Actions from './actions';
 import PrivateRoute from '../AuthProvider/PrivateRoute';
 import Snackbar from './components/Snackbar';
 import { AppContext } from '../context/AppContext';
@@ -64,6 +67,7 @@ import AccountDetails from '../Accounting/Banking/components/AccountDetails';
 import DetailsOfAccountChart from '../Accounting/Chart/components/DetailsOfAccountChart';
 import JournalPage from '../Accounting/Journal/Loadable';
 import AddNewJournal from '../Accounting/Journal/components/AddNewJournal';
+import JournalDetails from '../Accounting/Journal/components/JournalDetails';
 import CrmDashboard from '../Crm/Dashboard/Loadable';
 import CrmContacts from '../Crm/Contacts/Loadable';
 import CrmCompanies from '../Crm/Companies/Loadable';
@@ -76,29 +80,22 @@ import CrmActivities from '../Crm/Activities/Loadable';
 import { Auth } from '../../auth';
 
 const App = props => {
-  const { currentUser, accessToken } = props;
+  const {
+    currentUser,
+    accessToken,
+    checkActiveSessionAction,
+    checkSession,
+  } = props;
 
   // useEffect(() => {
-  //   messaging.requestPermission()
-  //   .then(async function() {
-  // 		await messaging.getToken().then(token => {
-  //       fetch('https://dev.ezoneapps.com/gateway/utilityserv/api/v1/fcm/update_client_fcm_token',{
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: `Bearer ${accessToken}`,
-  //         },
-  //         body: JSON.stringify({ sessionId: token, userUuid: currentUser.uuId }),
-  //       })
-  //       .then(response => response.json())
-  //       // .then(data => console.log(data, 'dont bother for this response'));
-  //     });
-  //     })
-  //   .catch(function(err) {
-  //     console.log("Unable to get permission to notify.", err);
-  //   });
-  //   // navigator.serviceWorker.addEventListener("message", (message) => console.log(message));
+  //   checkActiveSessionAction();
   // }, []);
+
+  // console.log(checkSession, 'checkSession');
+
+  // if (checkSession) {
+  //   return <Redirect to={{ pathname: '/login' }} />;
+  // }
 
   return (
     <div>
@@ -123,6 +120,7 @@ const App = props => {
               <Route exact path="/register" component={Registration} />
               <Layout3>
                 <PrivateRoute exact path="/home" component={Home} />
+                <PrivateRoute exact path="/dashboard" component={Dashboard} />
                 <PrivateRoute
                   exact
                   path="/organization"
@@ -141,15 +139,20 @@ const App = props => {
                 />
                 <PrivateRoute
                   exact
-                  path="/organization/company/structure"
+                  path="/organization/company/structure/:groupId?"
+                  component={CompanyStructure}
+                />
+                <PrivateRoute
+                  exact
+                  path="/organization/company/structure/:groupId?/party/:partyId?"
+                  component={CompanyStructure}
+                />
+                <PrivateRoute
+                  exact
+                  path="/organization/company/structure/:groupId?/party/:partyId?/position/:positionId?"
                   component={CompanyStructure}
                 />
                 {/* <PrivateRoute
-                  exact
-                  path="/organization/company/structure/:partyGroupId"
-                  component={PartyPage}
-                /> */}
-                <PrivateRoute
                   exact
                   path="/organization/company/structure/party/:partyGroupId/:partyId"
                   component={CompanyStructureParty}
@@ -158,9 +161,13 @@ const App = props => {
                   exact
                   path="/organization/company/structure/position/:partyGroupId/:partyId/:positionId"
                   component={CompanyStructurePosition}
-                />
+                /> */}
 
-                <PrivateRoute exact path="/utility" component={UtilityPage} />
+                <PrivateRoute
+                  exact
+                  path="/utility/:tab?"
+                  component={UtilityPage}
+                />
                 <PrivateRoute
                   exact
                   path="/task-manager/tasks"
@@ -181,13 +188,13 @@ const App = props => {
                   path="/file-manager/folder/:folderId"
                   component={FilesApp}
                 />
+                <PrivateRoute exact path="/chats" component={ChatApp} />
+
                 <PrivateRoute
                   exact
-                  path="/chats"
-                  component={ChatApp}
+                  path="/settings/email"
+                  component={EmailConfig}
                 />
-
-                <PrivateRoute exact path="/settings/email" component={EmailConfig} />
                 <PrivateRoute
                   path="/settings/email/configuration"
                   component={EmailConfigs}
@@ -202,11 +209,14 @@ const App = props => {
                   component={EmailPasswordTemplate}
                 />
                 <PrivateRoute exact path="/work-order" component={WorkOrderPage} />
-                <PrivateRoute
-                  path="/hr/:sectionId?/:status?"
-                  component={HRPage}
-                />
+
+                <PrivateRoute exact path="/human-resource/attendance" component={AttendancePage} />
+                <PrivateRoute exact path="/hr/:section?/:status?" component={HRPage} />
+
+                <PrivateRoute exact path="/hr/:section?/:status?/applicant/:applicantId?" component={HRPage} />
+
                 <PrivateRoute exact path="/account" component={AccountPage} />
+
                 <PrivateRoute exact path="/account/chart" component={ChartPage} />
                 <PrivateRoute exact path="/account/chart/details" component={DetailsOfAccountChart} />
                 <PrivateRoute exact path="/account/banking" component={BankingPage} />
@@ -216,11 +226,30 @@ const App = props => {
                 <PrivateRoute exact path="/account/banking/details" component={AccountDetails} />
                 <PrivateRoute exact path="/account/journal" component={JournalPage} />
                 <PrivateRoute exact path="/account/journal/add" component={AddNewJournal} />
+                <PrivateRoute exact path="/account/journal/details" component={JournalDetails} />
 
-                <PrivateRoute exact path="/inventory/dashboard" component={InventoryPage} />
-                <PrivateRoute path="/inventory/warehouses" component={WarehousePage} />
-                <PrivateRoute exact path="/inventory/items/:statusId?" component={ItemPage} />
-                <PrivateRoute exact path="/inventory/item/:statusId?/:sku?" component={ItemPage} />
+                <PrivateRoute exact path="/inventory" />
+
+                <PrivateRoute
+                  exact
+                  path="/inventory/dashboard"
+                  component={InventoryPage}
+                />
+                <PrivateRoute
+                  path="/inventory/warehouses"
+                  component={WarehousePage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/inventory/items/:statusId?"
+                  component={ItemPage}
+                />
+                <PrivateRoute
+                  exact
+                  path="/inventory/item/:statusId?/:sku?"
+                  component={ItemPage}
+                />
+
                 {/* <PrivateRoute
                   exact
                   path="/inventory/item/:statusId?"
@@ -287,11 +316,12 @@ const App = props => {
 const mapStateToProps = createStructuredSelector({
   currentUser: Selectors.makeSelectCurrentUser(),
   accessToken: Selectors.makeSelectAccessToken(),
+  checkSession: Selectors.makeSelectCheckActiveSession(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    // getUserStatusAction: () => dispatch(getUserStatus()),
+    checkActiveSessionAction: () => dispatch(Actions.checkActiveSession()),
   };
 }
 

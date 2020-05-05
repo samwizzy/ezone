@@ -163,17 +163,6 @@ const ContactDetailsDialog = props => {
                     </ListItem>
                   </List>
                 </Grid>
-                <Grid item>
-                  <Button
-                    className={classes.button}
-                    disableElevation
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {}}
-                  >
-                    Assign Contact Group
-                  </Button>
-                </Grid>
               </Grid>
             </Toolbar>
           </AppBar>
@@ -202,15 +191,6 @@ const ContactDetailsDialog = props => {
                       </TableCell>
                       <TableCell>
                         {contactDetailsDialog.data.emailAddress}
-                      </TableCell>
-                      <TableCell align="right" colSpan={2}>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          disableElevation
-                        >
-                          Edit
-                        </Button>
                       </TableCell>
                     </TableRow>
                     <TableRow>

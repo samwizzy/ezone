@@ -84,14 +84,11 @@ export function* createNewChartOfAccountSaga({ type, payload }) {
 
   // Delete payload prop not using
   delete payload.subAccount;
-  delete payload.accountType;
 
   console.log('new payload ', payload);
 
   chartOfAccountPostData.orgId = currentUser.organisation.orgId;
   const requestURL = `${Endpoints.CreateChartOfAccountApi}`;
-
-  console.log('requestURL createNewChartOfAccountSaga', requestURL)
   
   try {
     const chartOfAccountResponse = yield call(request, requestURL, {
@@ -104,9 +101,10 @@ export function* createNewChartOfAccountSaga({ type, payload }) {
     });
 
     console.log('chartOfAccountResponse -> ', chartOfAccountResponse);
-    // alert(`Account Name: ${chartOfAccountResponse.accountName} was saved successfully!`);
+    alert(`Account Name: ${chartOfAccountResponse.accountName} was saved successfully!`);
     yield put(Actions.createNewChartOfAccountSuccessAction(chartOfAccountResponse));
     yield put(Actions.getAllChartOfAccountTypeAction());
+    yield put(Actions.closeNewAccountDialog());
   } catch (err) {
     console.log('createNewChartOfAccountErrorAction -> ', err);
     alert(`Something went wrong.`);
@@ -161,6 +159,7 @@ export function* deleteChartOfAccountSaga() {
     alert(`Account deleted successfully!`);
     yield put(Actions.deleteChartOfAccountSuccessAction(deleteChartOfAccountResponse));
     yield put(Actions.getAllChartOfAccountTypeAction());
+    yield put(Actions.closeDeleteAccountDialog());
   } catch (err) {
     alert(`Something went wrong.`);
     yield put(Actions.deleteChartOfAccountErrorAction(err));
@@ -172,7 +171,6 @@ export function* deleteChartOfAccountSaga() {
 export function* updateChartOfAccountSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.UpdateChartOfAccountApi}`;
-
   const updateChartOfAccountData = yield select(
     Selectors.makeSelectChartOfAccountPostData(),
   );
@@ -191,6 +189,7 @@ export function* updateChartOfAccountSaga() {
     alert(`Account was updated successfully!`);
     yield put(Actions.updateChartOfAccountSuccessAction(updateChartOfAccountResponse));
     yield put(Actions.getAllChartOfAccountTypeAction());
+    yield put(Actions.closeNewAccountDialog());
   } catch (err) {
     alert(`Something went wrong.`);
     yield put(Actions.updateChartOfAccountErrorAction(err));

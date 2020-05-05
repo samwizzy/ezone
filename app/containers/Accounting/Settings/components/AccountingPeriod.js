@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { 
   makeStyles, 
@@ -18,6 +18,7 @@ import {
   Typography,
   Tooltip
 } from '@material-ui/core';
+import { CheckIcon, DeleteIcon } from '@material-ui/icons';
 import DateFnsUtils from '@date-io/date-fns'; // choose your lib
 import {
   DatePicker,
@@ -33,8 +34,7 @@ import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import DialogOfAccountPeriod from './DialogOfAccountPeriod';
-// import reducer from '../../reducer';
-// import saga from '../../saga';
+import moment from 'moment';
 // import ModuleLayout from '../../components/ModuleLayout';
 
 
@@ -92,13 +92,20 @@ const AccountingPeriod = props => {
   });
 
   const [accountToUpdate, setAccountToUpdate] = React.useState({
-    id: ""
+    id: "",
+    orgId: "",
+    year: ""
   });
 
   const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
     const selectedAccountPeriod = allAccountingPeriodData && allAccountingPeriodData.find(acc => id === acc.id);
-    setAccountToUpdate({ ...accountToUpdate, id: selectedAccountPeriod.id });
+    setAccountToUpdate({ 
+      ...accountToUpdate, 
+      id: selectedAccountPeriod.id,  
+      orgId: selectedAccountPeriod.orgId,
+      year: selectedAccountPeriod.year
+    });
   };
 
   console.log('allAccountingPeriodData period file -> ', allAccountingPeriodData);
@@ -124,7 +131,7 @@ const AccountingPeriod = props => {
                   <TableCell>Financial Year Start</TableCell>
                   <TableCell>
                     <Box className={classes.box} p={2}>
-                      { accountingSetupData.companyStartDate }
+                      {moment(accountingSetupData.companyStartDate).format('dddd do-MMM-YYYY')}
                     </Box>
                   </TableCell>
                 </TableRow>
@@ -215,14 +222,16 @@ const AccountingPeriod = props => {
                       />
                     </MuiPickersUtilsProvider>
                   </TableCell>
-                  {item.status ? (
+
+                  {item.status && item.activeYear ? (
                     <TableCell component="th">
                       <Button 
                         aria-controls="simple-menu" 
                         aria-haspopup="true" 
+                        // endIcon={<CheckIcon />}
                         onClick={event => handleClick(event, item.id)}
                       >
-                        Open
+                        Open Active
                       </Button>
                       <Menu
                         id="simple-menu"
@@ -232,9 +241,38 @@ const AccountingPeriod = props => {
                         onClose={handleClose}
                       >
                         <MenuItem 
-                          onClick={() => editOpenAccountPeriodDialogAction()}
+                          onClick={() => editOpenAccountPeriodDialogAction(accountToUpdate)}
                         >
-                          Edit
+                          Set As Active 
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() => dispatchUpdateAccountPeriodAction(accountToUpdate)}
+                        >
+                          Close Period
+                        </MenuItem>
+                      </Menu>
+                    </TableCell>
+                  ) : item.status && !item.activeYear ? (
+                    <TableCell component="th">
+                      <Button 
+                        aria-controls="simple-menu" 
+                        aria-haspopup="true" 
+                        // endIcon={<CheckIcon />}
+                        onClick={event => handleClick(event, item.id)}
+                      >
+                        Open Inactive
+                      </Button>
+                      <Menu
+                        id="simple-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                      >
+                        <MenuItem 
+                          onClick={() => editOpenAccountPeriodDialogAction(accountToUpdate)}
+                        >
+                          Set As Active 
                         </MenuItem>
                         <MenuItem
                           onClick={() => dispatchUpdateAccountPeriodAction(accountToUpdate)}
@@ -248,6 +286,7 @@ const AccountingPeriod = props => {
                       <Button 
                         aria-controls="simple-menu" 
                         aria-haspopup="true" 
+                        // endIcon={<DeleteIcon />}
                         onClick={event => handleClick(event, item.id)}
                       >
                         Closed
@@ -299,7 +338,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openAccountPeriodDialogAction: () => dispatch(Actions.openAccountPeriodDialog()),
-    editOpenAccountPeriodDialogAction: () => dispatch(Actions.editOpenAccountPeriodDialog()),
+    editOpenAccountPeriodDialogAction: evt => dispatch(Actions.editOpenAccountPeriodDialog(evt)),
     dispatchUpdateAccountPeriodAction: evt => dispatch(Actions.updateAccountPeriodAction(evt)),
   };
 }

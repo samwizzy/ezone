@@ -151,7 +151,6 @@ export function getPartyTagsSuccess(data) {
 }
 
 export function getDepartmentsByOrgIdApi() {
-  console.log("i am trying the department")
   return {
     type: Constants.GET_DEPARTMENTS_BY_ORGID_API,
   };
@@ -292,16 +291,6 @@ export function closeNewRoleDialog() {
   };
 }
 
-export function openNewAttendanceDialog() {
-  return {
-    type: Constants.OPEN_NEW_ATTENDANCE_DIALOG,
-  };
-}
-export function closeNewAttendanceDialog() {
-  return {
-    type: Constants.CLOSE_NEW_ATTENDANCE_DIALOG,
-  };
-}
 export function openNewPayrollDialog() {
   return {
     type: Constants.OPEN_NEW_PAYROLL_DIALOG,
@@ -310,5 +299,25 @@ export function openNewPayrollDialog() {
 export function closeNewPayrollDialog() {
   return {
     type: Constants.CLOSE_NEW_PAYROLL_DIALOG,
+  };
+}
+export function openNewAnnouncementDialog() {
+  return {
+    type: Constants.OPEN_NEW_ANNOUNCEMENT_DIALOG,
+  };
+}
+export function closeNewAnnouncementDialog() {
+  return {
+    type: Constants.CLOSE_NEW_ANNOUNCEMENT_DIALOG,
+  };
+}
+export function openAnnouncementViewDialog() {
+  return {
+    type: Constants.OPEN_ANNOUNCEMENT_VIEW_DIALOG,
+  };
+}
+export function closeAnnouncementViewDialog() {
+  return {
+    type: Constants.CLOSE_ANNOUNCEMENT_VIEW_DIALOG,
   };
 }

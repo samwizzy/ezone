@@ -18,11 +18,12 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     width: '100%',
+    backgroundColor: theme.palette.background.paper,
     position: 'relative',
     overflowY: 'auto',
-    borderRight: `1px solid ${theme.palette.grey[200]}`,
+    // borderRight: `1px solid ${theme.palette.divider}`,
     minHeight: `calc(100vh - 128px)`,
-    padding: theme.spacing(2, 0),
+    // minHeight: '100vh',
     "& .MuiListSubheader-root": {
       backgroundColor: theme.palette.background.paper,
       padding: theme.spacing(2),

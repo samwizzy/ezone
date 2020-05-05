@@ -139,13 +139,15 @@ const CompanyDialog = props => {
 
   if (getCountry) {
     getCountry.map(data => {
-      getStates = data.states.map(data2 => {
-        return data2;
-      });
+      getStates = data.states.map(data2 => data2);
     });
   }
 
   useEffect(() => {
+    // trigger this action to pre-populate state for edit
+    if (companyDialog.data) {
+      SelectState(companyDialog.data.country);
+    }
     setValues({
       ...companyDialog.data,
     });
@@ -183,7 +185,7 @@ const CompanyDialog = props => {
                   variant="outlined"
                   label="Company Name"
                   className={classes.textField}
-                  value={values.companyName}
+                  value={values.companyName ? values.companyName : ''}
                   onChange={handleChange('companyName')}
                   margin="normal"
                   fullWidth
@@ -193,7 +195,7 @@ const CompanyDialog = props => {
                   variant="outlined"
                   label="Company Short Name"
                   className={classes.textField}
-                  value={values.companyShortName}
+                  value={values.companyShortName ? values.companyShortName : ''}
                   onChange={handleChange('companyShortName')}
                   margin="normal"
                   fullWidth
@@ -203,7 +205,7 @@ const CompanyDialog = props => {
                   variant="outlined"
                   label="Company Email"
                   className={classes.textField}
-                  value={values.emailAddress}
+                  value={values.emailAddress ? values.emailAddress : ''}
                   type="email"
                   onChange={handleChange('emailAddress')}
                   margin="normal"
@@ -217,7 +219,7 @@ const CompanyDialog = props => {
                         variant="outlined"
                         label="Phone Number"
                         className={classes.textField}
-                        value={values.phoneNumber}
+                        value={values.phoneNumber ? values.phoneNumber : ''}
                         type="number"
                         onChange={handleChange('phoneNumber')}
                         margin="normal"
@@ -234,7 +236,7 @@ const CompanyDialog = props => {
                         variant="outlined"
                         label="Number Of Employees"
                         className={classes.textField}
-                        value={values.noOfEmployees}
+                        value={values.noOfEmployees ? values.noOfEmployees : ''}
                         type="number"
                         onChange={handleChange('noOfEmployees')}
                         margin="normal"
@@ -260,7 +262,7 @@ const CompanyDialog = props => {
                   variant="outlined"
                   label="website"
                   className={classes.textField}
-                  value={values.website}
+                  value={values.website ? values.website : ''}
                   onChange={handleChange('website')}
                   margin="normal"
                   fullWidth
@@ -270,7 +272,7 @@ const CompanyDialog = props => {
                   variant="outlined"
                   label="Contact Person Name"
                   className={classes.textField}
-                  value={values.contactPersonName}
+                  value={values.contactPersonName ? values.contactPersonName : ''}
                   onChange={handleChange('contactPersonName')}
                   margin="normal"
                   fullWidth
@@ -280,7 +282,7 @@ const CompanyDialog = props => {
                   variant="outlined"
                   label="Contact Person Email"
                   className={classes.textField}
-                  value={values.contactPersonEmail}
+                  value={values.contactPersonEmail ? values.contactPersonEmail : ''}
                   onChange={handleChange('contactPersonEmail')}
                   margin="normal"
                   fullWidth
@@ -293,7 +295,7 @@ const CompanyDialog = props => {
                         variant="outlined"
                         label="Contact Person Phone"
                         className={classes.textField}
-                        value={values.contactPersonPhone}
+                        value={values.contactPersonPhone ? values.contactPersonPhone : ''}
                         type="number"
                         onChange={handleChange('contactPersonPhone')}
                         margin="normal"
@@ -306,7 +308,7 @@ const CompanyDialog = props => {
                         variant="outlined"
                         label="Contact Person Tel"
                         className={classes.textField}
-                        value={values.contactPersonTel}
+                        value={values.contactPersonTel ? values.contactPersonTel : ''}
                         onChange={handleChange('contactPersonTel')}
                         margin="normal"
                         type="number"
@@ -320,7 +322,7 @@ const CompanyDialog = props => {
                   label="Address"
                   variant="outlined"
                   className={classes.textField}
-                  value={values.address}
+                  value={values.address ? values.address : ''}
                   onChange={handleChange('address')}
                   margin="normal"
                   fullWidth
@@ -438,7 +440,7 @@ const CompanyDialog = props => {
                         fullWidth
                         variant="outlined"
                         label="Select City"
-                        value={values.city}
+                        value={values.city ? values.city : ''}
                         onChange={handleChange('city')}
                       />
                     </Grid>

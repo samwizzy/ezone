@@ -22,7 +22,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function AddAttendanceDialog(props) {
+function AssignShiftDialog(props) {
   const classes = useStyles();
   const { closeNewAttendanceDialog, dialog } = props;
   const [form, setForm] = React.useState({
@@ -73,60 +73,58 @@ function AddAttendanceDialog(props) {
         <Divider />
 
         <DialogContent>
-          <form className={classes.root}>
-            <Grid container spacing={1}>
-                <Grid item xs={12}>
-                    <TextField
-                    name="title"
-                    label="Title"
-                    id="outlined-title"
-                    fullWidth
-                    variant="outlined"
-                    size="small"
-                    value={form.title}
-                    onChange={handleChange}
-                    />
-                </Grid>
-                <Grid item xs={12}>
+          <Grid container spacing={1}>
+              <Grid item xs={12}>
                   <TextField
-                    id="send-to"
-                    name="sendTo"
-                    placeholder="Send To"
-                    select
-                    fullWidth
-                    className={classes.textField}
-                    variant="outlined"
-                    size="small"
-                    label="Send To"
-                    value={form.sendTo}
-                    onChange={handleChange}
-                  >
-                    <MenuItem key={0} value="1">
-                        No record
-                    </MenuItem>
-                  </TextField>
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    id="message-type"
-                    name="messageType"
-                    placeholder="Message Type"
-                    select
-                    fullWidth
-                    className={classes.textField}
-                    variant="outlined"
-                    size="small"
-                    label="Message Type"
-                    value={form.messageType}
-                    onChange={handleChange}
-                  >
-                    <MenuItem key={0} value="1">
-                        No record
-                    </MenuItem>
-                  </TextField>
-                </Grid>
-            </Grid>
-          </form>
+                  name="title"
+                  label="Title"
+                  id="outlined-title"
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                  value={form.title}
+                  onChange={handleChange}
+                  />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="send-to"
+                  name="sendTo"
+                  placeholder="Send To"
+                  select
+                  fullWidth
+                  className={classes.textField}
+                  variant="outlined"
+                  size="small"
+                  label="Send To"
+                  value={form.sendTo}
+                  onChange={handleChange}
+                >
+                  <MenuItem key={0} value="1">
+                      No record
+                  </MenuItem>
+                </TextField>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="message-type"
+                  name="messageType"
+                  placeholder="Message Type"
+                  select
+                  fullWidth
+                  className={classes.textField}
+                  variant="outlined"
+                  size="small"
+                  label="Message Type"
+                  value={form.messageType}
+                  onChange={handleChange}
+                >
+                  <MenuItem key={0} value="1">
+                    No record
+                  </MenuItem>
+                </TextField>
+              </Grid>
+          </Grid>
         </DialogContent>
 
         <DialogActions>
@@ -143,7 +141,7 @@ function AddAttendanceDialog(props) {
 }
 
 
-AddAttendanceDialog.propTypes = {
+AssignShiftDialog.propTypes = {
   closeNewAttendanceDialog: PropTypes.func,
 };
 
@@ -166,4 +164,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(AddAttendanceDialog);
+)(AssignShiftDialog);

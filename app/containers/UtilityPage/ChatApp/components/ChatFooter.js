@@ -79,8 +79,8 @@ const ChatFooter = props => {
         onSubmit={onMessageSubmit}
         // className="absolute bottom-0 right-0 left-0 py-16 px-8"
       >
-        <AppBar className={classes.appBar} position="absolute" color="inherit">
-          <Toolbar dense className={classes.toolbar}>
+        <AppBar className={classes.appBar} position="absolute" color="inherit" elevation={0}>
+          <Toolbar className={classes.toolbar}>
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -90,7 +90,6 @@ const ChatFooter = props => {
               <AttachFile />
             </IconButton>
             <Paper
-              component="form"
               style={{
                 display: 'flex',
                 justifyContent: 'center',

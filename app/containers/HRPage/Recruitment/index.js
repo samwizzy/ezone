@@ -9,11 +9,12 @@ import * as Selectors from '../selectors';
 import AddRecruitment from './components/AddRecruitment'
 import RecruitmentList from './RecruitmentList'
 import JobOpenings from './JobOpenings'
+import JobOpeningDetails from './JobOpeningDetails/'
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.common.white
+    backgroundColor: theme.palette.grey[50]
   }
 }));
 
@@ -32,7 +33,8 @@ const RecruitmentApp = props => {
     <div className={classes.root}>
       {
         params.status === 'new'?
-        <AddRecruitment /> : <JobOpenings/>
+        <AddRecruitment /> :
+        params.status? <JobOpeningDetails /> : <JobOpenings/>
         /*
         <AddRecruitment /> : <RecruitmentList />
         */
@@ -61,8 +63,8 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(
-  compose(
-    withConnect,
-    memo,
-)(RecruitmentApp));
+export default compose(
+  withRouter,
+  withConnect,
+  memo,
+)(RecruitmentApp);

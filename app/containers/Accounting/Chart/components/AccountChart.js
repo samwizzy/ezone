@@ -3,9 +3,6 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import {
   makeStyles,
-  List,
-  FormControlLabel,
-  Icon,
   Button,
   Menu,
   MenuItem,
@@ -22,7 +19,7 @@ import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import NewAccountDialog from './NewAccountDialog';
-// import AccountDetails from './AccountDetails';
+import ConfirmDeleteAccountDialog from './ConfirmDeleteAccountDialog';
 // import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
@@ -59,20 +56,6 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
-  // button: {
-  //   '&.favorite': { color: orange[300]},
-  //   '&.shared': { color: orange[500]},
-  // },
-  // iconButton: {
-  //   '&.favorite': { color: orange[300]},
-  //   '&.shared': { color: orange[500]},
-  //   '&.delete': { color: theme.status.danger},
-  // },
-  // icon: {
-  //   '&.favorite': { color: orange[300]},
-  //   '&.shared': { color: orange[500]},
-  //   '&.delete': { color: theme.status.danger},
-  // },
   cardRoot: {
     maxWidth: '100%',
   },
@@ -94,6 +77,7 @@ const AccountChart = props => {
     loading,
     history,
     openNewAccountDialogAction,
+    openDeleteAccountDialogAction,
     editOpenAccountDialogAction,
     deleteChartOfAccountAction,
     chartOfAccountData,
@@ -111,26 +95,6 @@ const AccountChart = props => {
   };
 
   const columns = [
-    // {
-    //   name: 'Id',
-    //   label: 'S/N',
-    //   options: {
-    //     filter: true,
-    //     customBodyRender: (value, tableMeta) => {
-    //       if (value === '') {
-    //         return '';
-    //       }
-    //       return (
-    //         <div>
-    //           <FormControlLabel
-    //             label={tableMeta.rowIndex + 1}
-    //             control={<Icon />}
-    //           />
-    //         </div>
-    //       );
-    //     },
-    //   },
-    // },
     {
       name: 'accountCode',
       label: 'Account Code',
@@ -148,7 +112,7 @@ const AccountChart = props => {
       },
     },
     {
-      name: 'accountType.accountType',
+      name: 'accountType',
       label: 'Account Type',
       options: {
         filter: true,
@@ -156,7 +120,7 @@ const AccountChart = props => {
       },
     },
     {
-      name: 'accountType.description',
+      name: 'description',
       label: 'Account Description',
       options: {
         filter: true,
@@ -195,7 +159,6 @@ const AccountChart = props => {
                   Edit
                 </MenuItem>
                 <MenuItem onClick={() => {
-                  console.log('account that was clicked ', account);
                   history.push({
                     pathname: '/account/chart/details',
                     chartDetailsData: account,
@@ -204,7 +167,7 @@ const AccountChart = props => {
                   View Details
                 </MenuItem>
                 <MenuItem onClick={() => {
-                  deleteChartOfAccountAction(account);
+                  openDeleteAccountDialogAction(account);
                 }}>
                   Delete 
                 </MenuItem>
@@ -234,11 +197,13 @@ const AccountChart = props => {
         </Button>
       </Tooltip>
     ),
+    elevation: 0
   };
 
   return (
     <React.Fragment>
       <NewAccountDialog />
+      <ConfirmDeleteAccountDialog />
       <div className={classes.root}>
         <Grid container>
           <Grid item xs={12}>
@@ -271,7 +236,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
-    deleteChartOfAccountAction: evt => dispatch(Actions.deleteChartOfAccountAction(evt)),
+    openDeleteAccountDialogAction: evt => dispatch(Actions.openDeleteAccountDialog(evt)),
     editOpenAccountDialogAction: evt => dispatch(Actions.editOpenAccountDialog(evt)),
   };
 }

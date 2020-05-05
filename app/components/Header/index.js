@@ -236,7 +236,7 @@ function Header(props) {
               </Typography>
             </Grid>
             <Grid item>
-              <Typography variant="h6" color="inherit">
+              <Typography variant="h6" color="textSecondary">
                 {title && title.toUpperCase()}
               </Typography>
             </Grid>

@@ -39,6 +39,7 @@ import web from '../../../../images/web.svg';
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
+    minHeight: 180,
     color: theme.palette.common.white,
     padding: theme.spacing(3),
     marginBottom: theme.spacing(4),
@@ -64,7 +65,10 @@ const useStyles = makeStyles(theme => ({
     },
   },
   editButton: {
-    color: theme.palette.primary.main,
+    backgroundColor: theme.palette.common.white,
+    "&: hover": {
+      color: theme.palette.common.white,
+    }
   },
   inline: {
     color: theme.palette.common.white,
@@ -81,8 +85,6 @@ const OrgInfo = props => {
     history,
   } = props;
 
-  console.log(companyInfo, 'companyInfo');
-
   if (loading) {
     return <LoadingIndicator />;
   }
@@ -98,13 +100,18 @@ const OrgInfo = props => {
               >
                 {/* <img alt="Company Logo" src={companyInfo.logo} /> */}
                 <ListItemAvatar>
-                  {companyInfo && (
+                  {companyInfo?
                     <Avatar
                       alt="Company Logo"
                       src={companyInfo.logo}
                       className={classes.avatar}
                     />
-                  )}
+                    :
+                    <Avatar
+                      alt="Company Logo"
+                      className={classes.avatar}
+                    />
+                  }
                 </ListItemAvatar>
                 <ListItemText
                   primary={
@@ -155,17 +162,15 @@ const OrgInfo = props => {
                 </Button>
 
                 <Button
-                  variant="contained"
-                  color="inherit"
+                  // variant="contained"
+                  variant="outlined"
+                  color="primary"
                   className={classNames(classes.button, classes.editButton)}
                   onClick={() =>
                     history.push('/organization/company/structure')
                   }
-                  href="/organization/company/structure"
                 >
-                  {/* <Link href="/organization/company/structure"> */}
                   Company Structure
-                  {/* </Link> */}
                 </Button>
               </Grid>
             </Grid>

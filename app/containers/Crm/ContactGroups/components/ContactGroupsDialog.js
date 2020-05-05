@@ -6,6 +6,8 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
 import {
+  Backdrop,
+  CircularProgress,
   makeStyles,
   Table,
   TableBody,
@@ -38,6 +40,10 @@ const useStyles = makeStyles(theme => ({
   textField: {
     margin: theme.spacing(1),
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -47,16 +53,24 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const ContactGroupsDialog = props => {
   const classes = useStyles();
   const {
+    updateContactGroupAction,
     loading,
     contactGroupsDialog,
     closeNewContactGroupsDialog,
     createNewContactGroupAction,
   } = props;
+
   const [form, setForm] = React.useState({
     groupName: '',
     groupDescription: '',
     contactIds: [],
   });
+
+  useEffect(() => {
+    if (contactGroupsDialog.type === 'edit') {
+      setForm({ ...contactGroupsDialog.data });
+    }
+  }, [contactGroupsDialog.data]);
 
   const canSubmitForm = () => {
     const { groupName, groupDescription } = form;
@@ -77,9 +91,16 @@ const ContactGroupsDialog = props => {
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
       >
+        <Backdrop className={classes.backdrop} open={loading}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
         <AppBar position="relative">
           <Toolbar>
-            <Typography variant="h6">Add Contact Groups</Typography>
+            <Typography variant="h6">
+              {contactGroupsDialog.type === 'new'
+                ? 'Add Contact Groups'
+                : 'Edit Contact Groups'}
+            </Typography>
           </Toolbar>
         </AppBar>
         <Divider />
@@ -96,7 +117,7 @@ const ContactGroupsDialog = props => {
                     <TextField
                       name="groupName"
                       label="Name"
-                      id="outlined-title"
+                      id="outlined-groupName"
                       fullWidth
                       variant="outlined"
                       size="small"
@@ -113,7 +134,7 @@ const ContactGroupsDialog = props => {
                     <TextField
                       name="groupDescription"
                       label="Description"
-                      id="outlined-title"
+                      id="outlined-Description"
                       fullWidth
                       variant="outlined"
                       size="small"
@@ -154,16 +175,33 @@ const ContactGroupsDialog = props => {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={closeNewContactGroupsDialog} color="primary">
-            Cancel
-          </Button>
-          <Button
-            onClick={() => createNewContactGroupAction(form)}
-            disabled={!canSubmitForm()}
-            color="primary"
-          >
-            Save
-          </Button>
+          {contactGroupsDialog.type === 'new' ? (
+            <div>
+              <Button onClick={closeNewContactGroupsDialog} color="primary">
+                Cancel
+              </Button>
+              <Button
+                onClick={() => createNewContactGroupAction(form)}
+                disabled={!canSubmitForm()}
+                color="primary"
+              >
+                Save
+              </Button>
+            </div>
+          ) : (
+            <div>
+              <Button onClick={closeNewContactGroupsDialog} color="primary">
+                Cancel
+              </Button>
+              <Button
+                onClick={() => updateContactGroupAction(form)}
+                disabled={!canSubmitForm()}
+                color="primary"
+              >
+                Update
+              </Button>
+            </div>
+          )}
         </DialogActions>
       </Dialog>
     </div>
@@ -175,6 +213,7 @@ ContactGroupsDialog.propTypes = {
   contactGroupsDialog: PropTypes.object,
   closeNewContactGroupsDialog: PropTypes.func,
   createNewContactGroupAction: PropTypes.func,
+  updateContactGroupAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -188,6 +227,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(Actions.closeNewContactGroupsDialog()),
     createNewContactGroupAction: evt =>
       dispatch(Actions.createNewContactGroup(evt)),
+    updateContactGroupAction: evt => dispatch(Actions.updateContactGroup(evt)),
   };
 }
 

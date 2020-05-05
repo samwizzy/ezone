@@ -68,6 +68,7 @@ const NewAccountDialog = props => {
     parentAccountTypeData,
     dispatchGetParentAccountTypeAction,
     createChartOfAccountAction,
+    updateChartOfAccountAction
   } = props;
 
   console.log('accountTypeData from chart module: ', accountTypeData);
@@ -82,30 +83,29 @@ const NewAccountDialog = props => {
     accountName: "",
     accountNumber: "",
     accountType: "",
-    accountTypeId: "",
     bankBalance: "",
     description: "",
     openingBalance: "",
-    ezoneBalance: "",
     orgId: "",
     subAccount: false // This prop will be removed before payload is sent
   });
 
-  // const canSubmitValues = () => {
-  //   const { accountCode, accountName, accountTypeId } = values;
-  //   return accountCode.length > 0 && accountName.length > 0 && accountTypeId.length > 0;
-  // }
+  const canSubmitValues = () => {
+    const { accountCode, accountName, accountType, openingBalance } = values;
+    return accountCode.length > 0 && accountName.length > 0 && accountType.length > 0 && openingBalance.length > 0;
+  }
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
 
   const handleSelectChange = (name, value) => {
+    console.log('selected value -> ', value)
     setValues({ 
       ...values, 
-      accountType: value.accountType, 
-      accountTypeId: value.id,
+      accountType: value.accountType,
       subAccount: value.subAccount, 
+      description: value.description
       // parentAccountId: value.id
     });
   };
@@ -119,7 +119,15 @@ const NewAccountDialog = props => {
     }
   };
 
-  console.log('values: ', values);
+  React.useEffect(() => {
+    if (accountDialog.type == 'edit') {
+      console.log('accountDialog.data ', accountDialog.data);
+      const { id, orgId, accountName, accountCode, openingBalance, accountType, bankBalance, description } = accountDialog.data
+      setValues({ ...values, id, orgId, accountName, accountCode, openingBalance, accountType, bankBalance, description });
+    }
+  }, [accountDialog.data]);
+
+  console.log('values : ', values);
   console.log('checkBox: ', checkBox);
 
 
@@ -159,7 +167,7 @@ const NewAccountDialog = props => {
                   <TextField
                     id="standard-accountCode"
                     label="Account Code"
-                    type="number"
+                    type="name"
                     variant="outlined"
                     size="small"
                     className={classes.textField}
@@ -179,20 +187,6 @@ const NewAccountDialog = props => {
                     className={classes.textField}
                     value={values.openingBalance}
                     onChange={handleChange('openingBalance')}
-                    margin="normal"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="standard-ezoneBalance"
-                    label="E-Zone Balance"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.ezoneBalance}
-                    onChange={handleChange('ezoneBalance')}
                     margin="normal"
                     fullWidth
                   />
@@ -295,6 +289,9 @@ const NewAccountDialog = props => {
                     value={values.description}
                     onChange={handleChange('description')}
                     margin="normal"
+                    InputProps={{
+                      readOnly: true,
+                    }}
                     fullWidth
                     rows={3}
                     multiline
@@ -323,7 +320,7 @@ const NewAccountDialog = props => {
                   <TextField
                     id="standard-accountCode"
                     label="Account Code"
-                    type="number"
+                    type="name"
                     variant="outlined"
                     size="small"
                     className={classes.textField}
@@ -343,20 +340,6 @@ const NewAccountDialog = props => {
                     className={classes.textField}
                     value={values.openingBalance}
                     onChange={handleChange('openingBalance')}
-                    margin="normal"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="standard-ezoneBalance"
-                    label="E-Zone Balance"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.ezoneBalance}
-                    onChange={handleChange('ezoneBalance')}
                     margin="normal"
                     fullWidth
                   />
@@ -459,6 +442,9 @@ const NewAccountDialog = props => {
                     value={values.description}
                     onChange={handleChange('description')}
                     margin="normal"
+                    InputProps={{
+                      readOnly: true,
+                    }}
                     fullWidth
                     rows={2}
                     multiline
@@ -473,17 +459,15 @@ const NewAccountDialog = props => {
             <LoadingIndicator />
           ) : (
             <Button
-              onClick={() => {
-                createChartOfAccountAction(values);
-              }}
+              onClick={() => { accountDialog.type === 'new' ? createChartOfAccountAction(values) : updateChartOfAccountAction(values) }}
               color="primary"
-              // disabled={!canSubmitValues()}
+              disabled={!canSubmitValues()}
             >
-              Save Account
+              { accountDialog.type === 'new' ? 'Save Account' : 'Update Account' }
             </Button>
           )}
           <Button
-            onClick={closeNewAccountDialogAction}
+            onClick={ closeNewAccountDialogAction }
             color="inherit"
           >
             Cancel
@@ -513,6 +497,7 @@ function mapDispatchToProps(dispatch) {
     closeNewAccountDialogAction: () => dispatch(Actions.closeNewAccountDialog()),
     dispatchGetParentAccountTypeAction: evt => dispatch(Actions.getParentAccountTypeAction(evt)),
     createChartOfAccountAction: evt => dispatch(Actions.createNewChartOfAccountAction(evt)),
+    updateChartOfAccountAction: evt => dispatch(Actions.updateChartOfAccountAction(evt)),
     dispatch,
   };
 }

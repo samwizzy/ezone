@@ -31,12 +31,11 @@ if (!localStorage.getItem('access_token')) {
 }
 
 export const initialState = {
+  checkActiveSession: false,
   loading: false,
   error: false,
-  // user: userActive,
   user: userActive,
   loginDetails: {},
-  // accessToken: false,
   accessToken: userToken,
   saveToken: false,
   getSaveToken: {},
@@ -120,7 +119,6 @@ const appReducer = (state = initialState, action) =>
         return {};
       }
       case Constants.POST_FCM_TOKEN: {
-        console.log(action.payload, 'action.payload');
         return {
           ...state,
           loading: true,
@@ -141,6 +139,55 @@ const appReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: action.payload,
+        };
+      }
+      case Constants.REFRESH_TOKEN: {
+        console.log('reduce come here');
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.REFRESH_TOKEN_SUCCESS: {
+        localStorage.setItem('access_token', action.payload.access_token);
+        localStorage.setItem('refresh_token', action.payload.refresh_token);
+        localStorage.setItem('expires_in', action.payload.expires_in);
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          message: action.payload,
+        };
+      }
+      case Constants.REFRESH_TOKEN_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          message: action.payload,
+        };
+      }
+      case Constants.CHECK_ACTIVE_SESSION: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.CHECK_ACTIVE_SESSION_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          checkActiveSession: action.payload,
+        };
+      }
+      case Constants.CHECK_ACTIVE_SESSION_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          message: action.payload,
         };
       }
     }

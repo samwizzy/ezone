@@ -90,9 +90,11 @@ export function closeAccountPeriodDialog() {
 
 
 // Edit account period dialog
-export function editOpenAccountPeriodDialog() {
+export function editOpenAccountPeriodDialog(data) {
+  console.log('editOpenAccountPeriodDialog data ', data);
   return {
     type: Constants.EDIT_OPEN_ACCOUNT_PERIOD_DIALOG,
+    payload: data,
   };
 }
 
@@ -145,6 +147,30 @@ export function updateAccountPeriodSuccessAction(data) {
 export function updateAccountPeriodErrorAction(data) {
   return {
     type: Constants.UPDATE_ACCOUNT_PERIOD_ERR,
+    payload: data,
+  };
+}
+
+
+// Set accounting period as active
+export function setAccountPeriodAsActiveAction(data) {
+  console.log('setAccountPeriodAsActiveAction data ->', data);
+  return {
+    type: Constants.SET_ACCOUNT_PERIOD_AS_ACTIVE,
+    payload: data,
+  };
+}
+
+export function setAccountPeriodAsActiveSuccessAction(data) {
+  return {
+    type: Constants.SET_ACCOUNT_PERIOD_AS_ACTIVE_SUCCESS,
+    payload: data,
+  };
+}
+
+export function setAccountPeriodAsActiveErrorAction(data) {
+  return {
+    type: Constants.SET_ACCOUNT_PERIOD_AS_ACTIVE_ERR,
     payload: data,
   };
 }

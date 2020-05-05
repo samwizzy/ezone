@@ -8,6 +8,7 @@ import { BaseUrl } from '../BaseUrl';
 export const RegistrationUrl = `${BaseUrl}/authserv/api/v1/register`;
 export const LoginUrl = `${BaseUrl}/authserv/oauth/token`;
 export const UserProfileUrl = `${BaseUrl}/authserv/api/v1/users/profile`;
+export const CheckSessionApi = `${BaseUrl}/authserv/api/v1/users/get_by_uuid`;
 
 /** *****************************************************************
  * Organization and Company structure endpoint
@@ -22,6 +23,7 @@ export const UpdatePartyGroup = `${BaseUrl}/authserv/api/v1/partygroup`;
 export const CreateNewPartyApi = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_group`;
 export const UpdatePartyApi = `${BaseUrl}/authserv/api/v1/party`;
 export const CreateNewPartiesApi = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_party`;
+export const GetPartyByIdApi = `${BaseUrl}/authserv/api/v1/party/get_by_id`;
 export const UpdatePartiesApi = `${BaseUrl}/authserv/api/v1/party`;
 export const CreateNewPositionApi = `${BaseUrl}/authserv/api/v1/position`;
 export const UpdatePositionApi = `${BaseUrl}/authserv/api/v1/position/update_position`;
@@ -170,6 +172,10 @@ export const GetJounalListApi = `${BaseUrl}/accountingserv/api/v1/journal/get_jo
 export const GetAllAccountingPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/get_periods_by_orgid`;
 export const CreateAccountPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/add_account_period`;
 export const UpdateAccountPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/update_account_period_status`;
+export const SetAccountPeriodAsActiveApi = `${BaseUrl}/accountingserv/api/v1/account/update_account_active_year`;
+export const DeleteBankAccountApi = `${BaseUrl}/accountingserv/api/v1/bank/delete_bank`;
+export const UpdateBankAccountApi = `${BaseUrl}/accountingserv/api/v1/bank/update_bank`;
+export const SetActiveStatusForBankAccountApi = `${BaseUrl}/accountingserv/api/v1/bank/acivate_or_deactivate_bank`;
 
 
 /** ***************************************************************** 
@@ -205,9 +211,14 @@ export const GetAdjustmentByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_adjustm
 // Contacts Apis
 export const CreateNewContactApi = `${BaseUrl}/crmserv/api/v1/add_contact`;
 export const UpdateContactApi = `${BaseUrl}/crmserv/api/v1/update_contact`;
-export const GetAllContactsApi = `${BaseUrl}/crmserv/api/v1/get_all_contacts`;
+export const GetAllContactsApi = `${BaseUrl}/crmserv/api/v1/get_all_individual_contacts_by_orgid`;
+export const GetAllCompaniesApi = `${BaseUrl}/crmserv/api/v1/get_all_company_contacts_by_orgid`;
 
 // Contacts Group Apis
 export const CreateNewContactGroupApi = `${BaseUrl}/crmserv/api/v1/add_contact_group`;
 export const UpdateContactGroupApi = `${BaseUrl}/crmserv/api/v1/update_contact_group`;
+export const GetContactGroupByIdApi = `${BaseUrl}/crmserv/api/v1/get_contact_group_by_id`;
 export const GetAllContactsGroupApi = `${BaseUrl}/crmserv/api/v1/get_all_contact_groups`;
+
+// Crm Activities Apis
+export const GetCrmActivitiesApi = `${BaseUrl}/utilityserv/api/v1/find_by_orgid_and_module`;

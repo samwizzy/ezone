@@ -51,11 +51,11 @@ const makeSelectPostFcmToken = () =>
     subState => subState.postFcmToken,
   );
 
-// const makeSelectLocation = () =>
-//   createSelector(
-//     selectRouter,
-//     routerState => routerState.location,
-//   );
+const makeSelectCheckActiveSession = () =>
+  createSelector(
+    selectGlobal,
+    subState => subState.checkActiveSession,
+  );
 
 export {
   selectGlobal,
@@ -63,8 +63,8 @@ export {
   makeSelectCurrentUser,
   makeSelectLoading,
   makeSelectError,
-  // makeSelectLocation,
   makeSelectLoginDetails,
   makeSelectAccessToken,
   makeSelectSnackBar,
+  makeSelectCheckActiveSession,
 };
