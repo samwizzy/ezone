@@ -102,11 +102,11 @@ export const HiringWorkFlowForm = props => {
                     </Button>
                 </Grid>
                 <Grid item xs={12}>
-                    <FormControl component="fieldset">
-                        <FormLabel component="legend">Hiring WorkFlow</FormLabel>
+                    
+                        <FormLabel component="legend">Hiring Steps(Comma separated)</FormLabel>
                         <TextField
                             name="steps"
-                            label="Steps"
+                            label="eg. Screening, Face to face, Offer"
                             id="outlined-name"
                             fullWidth
                             variant="outlined"
@@ -152,7 +152,6 @@ export const HiringWorkFlowForm = props => {
                             />
                         */}
 
-                    </FormControl>
                 </Grid>
             </Grid>
         </Box>

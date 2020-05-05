@@ -54,13 +54,13 @@ export const JobDescForm = props => {
                 <Grid item xs={12}>
                     <TextField
                     id="outlined-multiline-desc"
-                    name="jobDesc"
+                    name="jobDescription"
                     label="Job Description"
                     multiline
                     fullWidth
                     rows="4"
                     rowsMax="4"
-                    value={form.jobDesc}
+                    value={form.jobDescription}
                     onChange={handleChange}
                     variant="outlined"
                     />

@@ -35,8 +35,8 @@ export const JobInfoForm = props => {
     const {handleChange, handleDateChange, handleSelectChange, departments, enrollmentTypes, form } = props
     const classes = useStyles()
     const canSubmitForm = () => {
-        const { departmentId, enrollmentTypeId, submissionDeadline, noOfVacancy, address, country} = form
-        return departmentId && enrollmentTypeId && noOfVacancy && address.length > 0
+        const { departmentId, enrollmentTypeId, submissionDeadline, noOfVancancies, address, country} = form
+        return departmentId && enrollmentTypeId && noOfVancancies && address.length > 0
     }
     return (
         <Paper>
@@ -156,14 +156,14 @@ export const JobInfoForm = props => {
                 <Grid item xs={6}>
                     <TextField
                     id="no-of-vacation"
-                    name="noOfVacancy"
+                    name="noOfVancancies"
                     placeholder="Select number of vacancy"
                     fullWidth
                     className={classes.textField}
                     variant="outlined"
                     size="small"
                     label="Number of vacancy"
-                    value={form.noOfVacancy}
+                    value={form.noOfVancancies}
                     onChange={handleChange}
                     >
                         {/*
@@ -210,6 +210,8 @@ export const JobInfoForm = props => {
                     variant="outlined"
                     size="small"
                     name="country"
+                    value={form.country}
+                    onChange={handleChange}
                     inputProps={{
                         ...params.inputProps,
                         autoComplete: 'new-password', // disable autocomplete and autofill

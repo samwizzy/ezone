@@ -72,6 +72,7 @@ export const GET_DEPARTMENTS_BY_ORGID_API = 'boilerplate/HRPage/GET DEPARTMENTS 
 export const GET_DEPARTMENTS_BY_ORGID_API_SUCCESS = 'boilerplate/HRPage/GET DEPARTMENTS BY ORGID API SUCCESS';
 
 export const GET_DEPARTMENT = 'boilerplate/HRPage/GET DEPARTMENT';
+export const GET_DEPARTMENT_SUCCESS = 'boilerplate/HRPage/GET DEPARTMENT SUCCESS';
 export const CREATE_DEPARTMENT = 'boilerplate/HRPage/CREATE DEPARTMENT';
 export const CREATE_DEPARTMENT_SUCCESS = 'boilerplate/HRPage/CREATE DEPARTMENT SUCCESS';
 export const EDIT_DEPARTMENT = 'boilerplate/HRPage/EDIT DEPARTMENT';

@@ -153,6 +153,28 @@ export function* getDepartmentsByOrgIdApi() {
   }
 }
 
+export function* getDepartment(id) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetDepartment}?orgId=${user.organisation.id}&tagId=5`;
+  
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'DEPARTMENT RESPONSE');
+    yield put(Actions.getDepartmentsByOrgIdApiSuccess(response));
+  } catch (err) {
+    // yield put(Actions.getUtilityFilesError(err));
+    console.log(err.message, "dept error message")
+  }
+}
+
 export function* getBranches() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
@@ -370,9 +392,10 @@ export function* createJobOpening({ type, payload }) {
   var obj = new Object;
     for(var i = 0; i < str_array.length; i++) {
       console.log(i, "i");
-      obj.title = str_array[i];
+      obj['title'] = str_array[i];
       arr.push(obj);
     }
+    delete payload.steps;
     payload.hiringSteps = arr;
     console.log(payload, "Entire job payload");
     //setForm({...form, ['hiringSteps']: obj });

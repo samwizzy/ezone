@@ -113,6 +113,20 @@ export function getDepartmentsSuccess(data) {
     payload: data
   };
 }
+
+export function getDepartment(id) {
+  return {
+    type: Constants.GET_DEPARTMENT,
+    payload: id
+  };
+}
+
+export function getDepartmentSuccess(data) {
+  return {
+    type: Constants.GET_DEPARTMENT_SUCCESS,
+    payload: data
+  };
+}
 export function getBranches() {
   return {
     type: Constants.GET_BRANCHES,

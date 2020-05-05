@@ -188,8 +188,8 @@ const EmployeesApp = props => {
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
-      console.log(rowData[0], 'rowData[0]');
-      getEmployee(rowData[0]);
+      
+      //getEmployee(rowData[0]);
     },
     elevation: 0,
   };

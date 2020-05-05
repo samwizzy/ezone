@@ -137,7 +137,7 @@ const DepartmentsApp = props => {
     rowsPerPage: 10,
     rowsPerPageOptions: [10,25,50,100],
     onRowClick: (rowData, rowState) => {
-      getEmployee(rowData[0])
+      getDepartment(rowData[0])
     },
     elevation: 0
   };
@@ -189,6 +189,7 @@ function mapDispatchToProps(dispatch) {
     getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
     openNewDepartmentDialog: () => dispatch(Actions.openNewDepartmentDialog()),
     getBranches: () => dispatch(Actions.getBranches()),
+    getDepartment: (id) => dispatch(Actions.getDepartment(id)),
   };
 }
 
