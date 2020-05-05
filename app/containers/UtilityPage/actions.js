@@ -539,12 +539,14 @@ export function closeEditDepartmentDialog() {
 
 // get all users
 export function getAllUsers() {
+  console.log('fexc data');
   return {
     type: Constants.GET_ALL_USERS,
   };
 }
 
 export function getAllUsersSuccess(data) {
+  // console.log(data, 'fexc data');
   return {
     type: Constants.GET_ALL_USERS_SUCCESS,
     payload: data,
