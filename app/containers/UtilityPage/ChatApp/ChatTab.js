@@ -199,8 +199,8 @@ const ChatTab = props => {
 
   if (newMsgRes) {
     // dispatchGetUserChatData(newMsgRes);
-    // getAllUserChatData.messages.push(newMsgRes);
-    getAllUserChatData.messages[getAllUserChatData.messages.length] = newMsgRes;
+    getAllUserChatData.messages.push(newMsgRes);
+    // getAllUserChatData.messages[getAllUserChatData.messages.length] = newMsgRes;
   }
 
   useEffect(() => {
