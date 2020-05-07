@@ -144,7 +144,7 @@ function PaperDropzone(props) {
   // console.log(acceptedFiles, 'References library');
   // console.log(inputRef, "inputRef library")
   // console.log(files, 'files state library');
-  console.log(form, 'form state form');
+  // console.log(form, 'form state form');
 
   return (
     <RootRef rootRef={ref}>

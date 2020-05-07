@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -17,13 +17,20 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectCrm from './selectors';
 import reducer from './reducer';
 import saga from './saga';
+import * as Actions from './actions';
 import messages from '../messages';
 import ActivitiesList from './components/ActivitiesList';
-import ModuleLayout from './../components/ModuleLayout';
+import ModuleLayout from '../components/ModuleLayout';
 
-export function Activities() {
+export function Activities(props) {
   useInjectReducer({ key: 'crmActivities', reducer });
   useInjectSaga({ key: 'crmActivities', saga });
+
+  const { getAllCrmActivities } = props;
+
+  useEffect(() => {
+    getAllCrmActivities();
+  }, []);
 
   return (
     <div>
@@ -41,6 +48,7 @@ export function Activities() {
 
 Activities.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  getAllCrmActivities: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -49,6 +57,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    getAllCrmActivities: () => dispatch(Actions.getAllCrmActivities()),
     dispatch,
   };
 }

@@ -104,6 +104,48 @@ export function* login() {
   }
 }
 
+export function* checkActiveSession() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const userData = yield select(AppSelectors.makeSelectCheckActiveSession());
+
+  console.log(userData, 'makeSelectCheckActiveSession');
+  const requestURL = `${EndPoints.CheckSessionApi}/${userData.uuId}`;
+
+  try {
+    const activeSessionResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }),
+    });
+
+    console.log(activeSessionResponse, 'activeSessionResponse');
+
+    // if login is success get user profile with access token
+    yield put(AppActions.checkActiveSessionSuccess(activeSessionResponse));
+    // yield put(
+    //   Actions.openSnackBar({
+    //     open: true,
+    //     message: `Welcome back ${loginResponse.firstName} ${
+    //       loginResponse.lastName
+    //     }`,
+    //     status: 'success',
+    //   }),
+    // );
+  } catch (err) {
+    console.log(err, 'err');
+    yield put(AppActions.checkActiveSessionError(err));
+    yield put(
+      AppActions.openSnackBar({
+        open: true,
+        message: 'Error getting token',
+        status: 'error',
+      }),
+    );
+  }
+}
+
 export function* refreshToken() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
 
@@ -240,4 +282,5 @@ export default function* authorizationPageSaga() {
   yield takeLatest(AppConstants.GET_USER_PROFILE, userProfile);
   yield takeLatest(AppConstants.REFRESH_TOKEN, refreshToken);
   yield takeLatest(Constants.FORGOT_PASSWORD, forgotPassword);
+  yield takeLatest(AppConstants.CHECK_ACTIVE_SESSION, checkActiveSession);
 }

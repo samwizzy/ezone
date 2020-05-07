@@ -31,12 +31,11 @@ if (!localStorage.getItem('access_token')) {
 }
 
 export const initialState = {
+  checkActiveSession: false,
   loading: false,
   error: false,
-  // user: userActive,
   user: userActive,
   loginDetails: {},
-  // accessToken: false,
   accessToken: userToken,
   saveToken: false,
   getSaveToken: {},
@@ -162,6 +161,28 @@ const appReducer = (state = initialState, action) =>
         };
       }
       case Constants.REFRESH_TOKEN_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          message: action.payload,
+        };
+      }
+      case Constants.CHECK_ACTIVE_SESSION: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.CHECK_ACTIVE_SESSION_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          checkActiveSession: action.payload,
+        };
+      }
+      case Constants.CHECK_ACTIVE_SESSION_ERROR: {
         return {
           ...state,
           loading: false,

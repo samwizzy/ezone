@@ -60,7 +60,7 @@ export const BasicInfo = props => {
     { id: '2', name: 'VENDOR' },
   ];
 
-  console.log(form, 'form');
+  // console.log(form, 'form');
   return (
     <div>
       <AppBar className={classes.appBar}>

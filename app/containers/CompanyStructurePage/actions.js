@@ -9,14 +9,14 @@ import * as Constants from './constants';
 export function getSelectedParty(payload) {
   return {
     type: Constants.GET_SELECTED_PARTY,
-    payload
+    payload,
   };
 }
 
 export function getSelectedPosition(payload) {
   return {
     type: Constants.GET_SELECTED_POSITION,
-    payload
+    payload,
   };
 }
 
@@ -268,7 +268,6 @@ export function createNewPartiesError(data) {
 }
 
 export function updateParties(data) {
-  console.log(data, 'data');
   return {
     type: Constants.UPDATE_PARTIES,
     payload: data,
@@ -285,6 +284,27 @@ export function updatePartiesSuccess(data) {
 export function updatePartiesError(data) {
   return {
     type: Constants.UPDATE_PARTIES_ERROR,
+    payload: data,
+  };
+}
+
+export function getPartyById(data) {
+  return {
+    type: Constants.GET_PARTY_BY_ID,
+    payload: data,
+  };
+}
+
+export function getPartyByIdSuccess(data) {
+  return {
+    type: Constants.GET_PARTY_BY_ID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getPartyByIdError(data) {
+  return {
+    type: Constants.GET_PARTY_BY_ID_ERROR,
     payload: data,
   };
 }

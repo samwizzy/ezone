@@ -233,7 +233,7 @@ const ContactsList = props => {
     elevation: 0
   };
 
-  // console.log(allContacts, 'allContacts');
+  console.log(allContacts, 'allContacts');
 
   return (
     <React.Fragment>

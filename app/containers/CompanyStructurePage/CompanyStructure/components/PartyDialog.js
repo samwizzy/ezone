@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import {
-  AppBar, Toolbar,
+  AppBar,
+  Toolbar,
   Backdrop,
   CircularProgress,
   Divider,
@@ -237,18 +238,18 @@ const PartyDialog = props => {
               {newPartyDialog.type === 'new' ? 'Save' : 'Update'}
             </Button>
           ) : (
-              <Button
-                onClick={() => {
-                  updatePartyAction(values);
-                  setValues('');
-                }}
-                color="primary"
-                variant="contained"
-                disabled={!canBeSubmitted()}
-              >
-                {newPartyDialog.type === 'new' ? 'Save' : 'Update'}
-              </Button>
-            )}
+            <Button
+              onClick={() => {
+                updatePartyAction(values);
+                setValues('');
+              }}
+              color="primary"
+              variant="contained"
+              disabled={!canBeSubmitted()}
+            >
+              {newPartyDialog.type === 'new' ? 'Save' : 'Update'}
+            </Button>
+          )}
           <Button
             onClick={() => dispatchCloseNewPartyDialog()}
             color="primary"

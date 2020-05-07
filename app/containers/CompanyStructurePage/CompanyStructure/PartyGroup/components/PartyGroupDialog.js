@@ -5,7 +5,8 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  AppBar, Toolbar,
+  AppBar,
+  Toolbar,
   Divider,
   TextField,
   Typography,
@@ -81,8 +82,8 @@ const PartyGroupDialog = props => {
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
               {newPartyGroupDialog.type === 'new'
-              ? 'New Party Group'
-              : 'Edit Party Group'}
+                ? 'New Party Group'
+                : 'Edit Party Group'}
             </Typography>
           </Toolbar>
         </AppBar>

@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import {
-  AppBar, Toolbar,
+  AppBar,
+  Toolbar,
   Backdrop,
   CircularProgress,
   Divider,
@@ -64,7 +65,7 @@ const PositionDialog = props => {
   const [values, setValues] = React.useState({
     name: '',
     description: '',
-    party_id: params.partyId,
+    party_id: '',
   });
 
   useEffect(() => {
@@ -75,6 +76,7 @@ const PositionDialog = props => {
     setValues({
       ...values,
       [name]: event.target.value,
+      party_id: params.partyId,
     });
   };
 
@@ -95,7 +97,9 @@ const PositionDialog = props => {
         <AppBar position="relative">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
-              {newPositionDialog.type === 'new' ? 'New Position' : 'Edit Position'}
+              {newPositionDialog.type === 'new'
+                ? 'New Position'
+                : 'Edit Position'}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -192,8 +196,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(Actions.closeNewPositionDialog()),
     dispatchCreateNewPositionAction: evt =>
       dispatch(Actions.createNewPosition(evt)),
-      updatePositionAction: evt =>
-      dispatch(Actions.updatePosition(evt)),
+    updatePositionAction: evt => dispatch(Actions.updatePosition(evt)),
     dispatch,
   };
 }
