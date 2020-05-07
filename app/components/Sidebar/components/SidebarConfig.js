@@ -40,8 +40,8 @@ const SidebarConfig = [
       { id: 4, name: 'Attendance', url: '/human-resource/attendance', icon: 'person' },
       { id: 5, name: 'Payroll', url: '/hr/payroll', icon: 'payment' },
       { id: 6, name: 'Announcements', url: '/hr/announcement', icon: 'announcement' },
-      { id: 7, name: 'Performance', url: '/hr/performance', icon: 'local_activity' },
-      { id: 7, name: 'Leave Management', url: '/human-resource/leave-management', icon: 'local_activity' },
+      { id: 7, name: 'Performance', url: '/hr/performance', icon: 'thumb_up' },
+      { id: 7, name: 'Leave Management', url: '/human-resource/leave-management', icon: 'single_bed' },
     ],
   },
   {

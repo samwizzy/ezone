@@ -68,29 +68,16 @@ const HolidaysList = props => {
       },
     },
     {
-      name: 'avi',
-      label: ' ',
-      options: {
-        filter: true,
-        sort: true,
-        customBodyRender: avi => {
-          return (
-            <Avatar src='' />
-          )
-        }
-      }
-    },
-    {
-      name: 'employee',
-      label: 'Employee',
+      name: 'name',
+      label: 'Name',
       options: {
         filter: true,
         sort: true,
       },
     },
     {
-      name: 'shift',
-      label: 'Shift',
+      name: 'date',
+      label: 'Date',
       options: {
         filter: true,
         sort: true,

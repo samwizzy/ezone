@@ -214,9 +214,9 @@ const App = props => {
                 <PrivateRoute exact path="/human-resource/leave-management" component={LeaveManagementPage} />
 
                 <PrivateRoute exact path="/human-resource/attendance" component={AttendancePage} />
-                <PrivateRoute exact path="/human-resource/attendance/:attendanceId?" component={AttendancePage} />
+                {/* <PrivateRoute exact path="/human-resource/attendance/:attendanceId?" component={AttendancePage} />
                 <PrivateRoute exact path="/human-resource/attendance/shift/:shiftId?" component={AttendancePage} />
-                <PrivateRoute exact path="/human-resource/attendance/employee-shift/:empshiftId?" component={AttendancePage} />
+                <PrivateRoute exact path="/human-resource/attendance/employee-shift/:empshiftId?" component={AttendancePage} /> */}
 
                 <PrivateRoute exact path="/hr/:section?/:status?" component={HRPage} />
 

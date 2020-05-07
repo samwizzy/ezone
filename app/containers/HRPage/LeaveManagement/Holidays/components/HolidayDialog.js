@@ -154,7 +154,7 @@ function HolidayDialog(props) {
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
-              Assign Shift
+              New Holiday
             </Typography>
           </Toolbar>
         </AppBar>
