@@ -79,6 +79,21 @@ const useStyles = makeStyles(theme => ({
 
 const ProjectsList = () => {
   const classes = useStyles();
+  const [state, setState] = React.useState({ apps: '', text: '' });
+
+  const handleTextChange = (e) => {
+    const value = e.target.value;
+    let apps = [];
+    if(value.length > 0){
+        const regex = new RegExp(`^${value}`, 'i');
+        apps = apps.sort().filter(v => regex.test(v.name))
+    }
+
+    setState(() => ({
+      apps,
+      text: value
+    }))
+  }
 
   return (
     <React.Fragment>
@@ -93,6 +108,8 @@ const ProjectsList = () => {
                   label="Search Apps"
                   type="search"
                   variant="outlined"
+                  value={state.text}
+                  onChange={handleTextChange}
                   size="small"
                 />
               </Grid>

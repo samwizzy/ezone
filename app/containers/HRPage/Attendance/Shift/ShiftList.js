@@ -50,9 +50,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const shifts = [
+  {id: 1, name: 'General', startTime: '2010-01-01T05:06:07', endTime: '2010-01-01T05:06:07', endDate: '2010-01-01T05:06:07'}
+]
+
 const ShiftList = props => {
   const classes = useStyles();
-  const { loading, openNewAttendanceDialog, getAttendance, getAttendanceById, attendance } = props;
+  const { loading, openNewShiftDialog, getAttendance, getAttendanceById, attendance } = props;
 
   React.useEffect(() => {
   }, []);
@@ -82,7 +86,7 @@ const ShiftList = props => {
         sort: true,
         customBodyRender: createdAt => {
           return (
-            <Typography color='textSecondary'>{moment(createdAt).format('ll')}</Typography>
+            <Typography color='textSecondary'>{moment(createdAt).format('LT')}</Typography>
           )
         }
       }
@@ -95,7 +99,7 @@ const ShiftList = props => {
         sort: true,
         customBodyRender: createdAt => {
           return (
-            <Typography color='textSecondary'>{moment(createdAt).format('ll')}</Typography>
+            <Typography color='textSecondary'>{moment(createdAt).format('LT')}</Typography>
           )
         }
       }
@@ -108,7 +112,7 @@ const ShiftList = props => {
         sort: true,
         customBodyRender: createdAt => {
           return (
-            <Typography color='textSecondary'>{moment(createdAt).format('ll')}</Typography>
+            <Typography color='textSecondary'>{moment(createdAt).format('L')}</Typography>
           )
         }
       }
@@ -123,7 +127,7 @@ const ShiftList = props => {
     download: true,
     viewColumns: false,
     filter: false,
-    customToolbar: () => <AddShift openDialog={openNewAttendanceDialog} />,
+    customToolbar: () => <AddShift openDialog={openNewShiftDialog} />,
     rowsPerPage: 10,
     rowsPerPageOptions: [10,25,50,100],
     onRowClick: (rowData, rowState) => {
@@ -142,7 +146,7 @@ const ShiftList = props => {
           <MUIDataTable
             className={classes.datatable}
             title="Shifts"
-            data={attendance}
+            data={shifts}
             columns={columns}
             options={options}
           />
@@ -156,7 +160,7 @@ const ShiftList = props => {
 
 ShiftList.propTypes = {
   loading: PropTypes.bool,
-  openNewAttendanceDialog: PropTypes.func,
+  openNewShiftDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -169,7 +173,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getAttendance: () => dispatch(Actions.getAttendance()),
     getAttendanceById: (uuid) => dispatch(Actions.getAttendanceById(uuid)),
-    openNewAttendanceDialog: () => dispatch(Actions.openNewAttendanceDialog()),
+    openNewShiftDialog: () => dispatch(Actions.openNewShiftDialog()),
   };
 }
 

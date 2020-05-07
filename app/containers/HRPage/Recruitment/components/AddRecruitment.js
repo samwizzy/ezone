@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function getSteps() {
-  return ['Job Description', 'Hiring Workflow', 'Job Information'/*, 'Basic Information'*/];
+  return ['Job Description', 'Hiring Workflow', 'Job Information', 'Basic Information'];
 }
 
 
@@ -169,7 +169,6 @@ function AddRecruitment(props) {
             handleSubmit={handleSubmit}
           />
         );
-        /*
       case 3:
         return (
           <BasicInfoForm 
@@ -178,7 +177,6 @@ function AddRecruitment(props) {
             handleSubmit={handleSubmit}
           />
         );
-        */
       default:
         return 'Unknown stepIndex';
     }
