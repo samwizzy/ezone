@@ -287,6 +287,7 @@ const AccountingPeriod = props => {
                         aria-controls="simple-menu" 
                         aria-haspopup="true" 
                         // endIcon={<DeleteIcon />}
+                        disabled={true}
                         onClick={event => handleClick(event, item.id)}
                       >
                         Closed

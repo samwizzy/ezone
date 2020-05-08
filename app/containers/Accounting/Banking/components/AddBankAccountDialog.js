@@ -319,7 +319,7 @@ const AddBankAccountDialog = props => {
                 }
               }}
               color="primary"
-              disabled={ bankAccountDialog.type === 'new' ? !canSubmitValues() : canSubmitValues() }
+              disabled={ bankAccountDialog.type === 'new' ? !canSubmitValues() : "" }
             >
               { bankAccountDialog.type === "new" ? "Save" : bankAccountDialog.type === "edit" ? "Update" : bankAccountDialog.type === "delete" ? "Delete" : bankAccountDialog.type === "activate" ? "Activate" : bankAccountDialog.type === "deactivate" ? "De-activate" : "" }
             </Button>

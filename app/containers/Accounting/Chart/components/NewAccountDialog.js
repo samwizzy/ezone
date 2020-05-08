@@ -114,14 +114,13 @@ const NewAccountDialog = props => {
     setCheckBox({ ...checkBox, [event.target.name]: event.target.checked });
 
     // Call parent type api if checked
-    if (!checkBox.checkedG) {
-      dispatchGetParentAccountTypeAction(values);
-    }
+    // if (!checkBox.checkedG) {
+    //   dispatchGetParentAccountTypeAction(values);
+    // }
   };
 
   React.useEffect(() => {
     if (accountDialog.type == 'edit') {
-      console.log('accountDialog.data ', accountDialog.data);
       const { id, orgId, accountName, accountCode, openingBalance, accountType, bankBalance, description } = accountDialog.data
       setValues({ ...values, id, orgId, accountName, accountCode, openingBalance, accountType, bankBalance, description });
     }
@@ -461,7 +460,7 @@ const NewAccountDialog = props => {
             <Button
               onClick={() => { accountDialog.type === 'new' ? createChartOfAccountAction(values) : updateChartOfAccountAction(values) }}
               color="primary"
-              disabled={!canSubmitValues()}
+              disabled={ accountDialog.type === "new" ? !canSubmitValues() : "" }
             >
               { accountDialog.type === 'new' ? 'Save Account' : 'Update Account' }
             </Button>

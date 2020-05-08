@@ -205,9 +205,6 @@ const JournalListing = props => {
         </Button>
       </Tooltip>
     ),
-    // onRowClick: (rowData, rowState) => {
-    //   props.history.push('/inventory/item/' + rowData[0])
-    // },
     elevation: 0
   };
 

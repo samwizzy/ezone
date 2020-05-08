@@ -115,7 +115,7 @@ const JournalDetails = props => {
   const { } = props;
 
   console.log("Selected journal data ", props.location.journalDetailsData);
-  console.log("Journal entries ", props.location.journalDetailsData.entries);
+  // console.log("Journal entries ", props.location.journalDetailsData.entries);
 
   return (
     <div className={classes.root}>
@@ -141,7 +141,9 @@ const JournalDetails = props => {
                   </TableRow>
                   <TableRow>
                     <TableCell component="th">Ref. No.</TableCell>
-                    <TableCell align="left">{props.location.journalDetailsData.reference}</TableCell>
+                    <TableCell align="left">
+                      {props.location.journalDetailsData.reference}
+                    </TableCell>
                   </TableRow>
                   <TableRow><TableCell colSpan={2} component="th">Note</TableCell></TableRow>
                   <TableRow>
@@ -194,14 +196,14 @@ const JournalDetails = props => {
               <TableCell>
                 <Paper elevation={0} square className={classes.paper}>
                   <Typography variant="h6">
-                    NGN { props.location.journalDetailsData.entries.reduce((a, b) => a + Number(b.debit), 0) }
+                    {/* NGN { props.location.journalDetailsData.entries.reduce((a, b) => a + Number(b.debit), 0) } */}
                   </Typography>
                 </Paper>
               </TableCell>
               <TableCell>
                 <Paper elevation={0} square className={classes.paper}>
                   <Typography variant="h6">
-                    NGN { props.location.journalDetailsData.entries.reduce((a, b) => a + Number(b.credit), 0) }
+                    {/* NGN { props.location.journalDetailsData.entries.reduce((a, b) => a + Number(b.credit), 0) } */}
                   </Typography>
                 </Paper>
               </TableCell>
