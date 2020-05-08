@@ -24,10 +24,10 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     flexWrap: 'wrap',
     alignItems: 'center',
-    padding: theme.spacing(4),
+    padding: theme.spacing(2),
     backgroundColor: theme.palette.grey[100],
     // height: `calc(100vh - 350px)`,
     overflowY: 'auto',
@@ -62,8 +62,8 @@ const useStyles = makeStyles(theme => ({
   box: {
     width: theme.spacing(20),
     height: theme.spacing(20),
-    //flex: '1 0 12em', // flex-grow flex-shrink flex-basis
-    margin: theme.spacing(1, 0),
+    //flex: '0 1 10em', // flex-grow flex-shrink flex-basis
+    margin: theme.spacing(1),
     padding: theme.spacing(2),
     borderRadius: '10px',
     display: 'flex',
@@ -79,18 +79,20 @@ const useStyles = makeStyles(theme => ({
 
 const ProjectsList = () => {
   const classes = useStyles();
-  const [state, setState] = React.useState({ apps: '', text: '' });
+  const [state, setState] = React.useState({ apps, text: '' });
 
   const handleTextChange = (e) => {
     const value = e.target.value;
-    let apps = [];
+    let filteredApps = [];
     if(value.length > 0){
         const regex = new RegExp(`^${value}`, 'i');
-        apps = apps.sort().filter(v => regex.test(v.name))
+        filteredApps = apps.sort().filter(v => regex.test(v.name))
+    }else{
+      filteredApps = [...apps]
     }
 
     setState(() => ({
-      apps,
+      apps: filteredApps,
       text: value
     }))
   }
@@ -140,14 +142,14 @@ const ProjectsList = () => {
                 <Grid container justify="space-between">
                   <Grid item sm={12} md={12} lg={12}>
                     <Paper square className={classes.paper} elevation={0}>
-                      {apps.map(app => (
+                      {state.apps.map(app => (
                         <Paper
                           key={app.id}
                           component={Link}
                           href={app.url}
                           className={classes.box}
                         >
-                          <img src={app.icon} alt="" />
+                          <img src={app.icon} alt={app.name} />
                           <Typography variant="body2">{app.name}</Typography>
                         </Paper>
                       ))}

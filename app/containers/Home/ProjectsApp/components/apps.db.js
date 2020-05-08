@@ -36,7 +36,7 @@ const apps = [
   { id: 6, name: 'File Management', url: '/file-manager/folders', icon: FileIcon, img: 'folder_open' },
   { id: 7, name: 'Human Resources', url: '/hr', icon: AppIcon1, img: 'person' },
   { id: 8, name: 'Process Workflow', url: '/workflow', icon: ProjectsIcon, img: 'all_inclusive' },
-  { id: 9, name: 'Store Management', url: '/inventory/items', icon: StoreIcon, img: 'store' },
+  { id: 9, name: 'Store Management', url: '/inventory/dashboard', icon: StoreIcon, img: 'store' },
   { id: 10, name: 'Task management', url: '/task-manager/tasks', icon: TaskIcon, img: 'list_alt' },
   { id: 11, name: 'Work Order', url: '/work-order', icon: ProjectsIcon, img: 'ballot' },
 ];

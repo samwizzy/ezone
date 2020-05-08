@@ -1,7 +1,9 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles'
 import _ from 'lodash';
-import {AppBar, Box, Button, Container, Divider, FormControl, InputLabel, Input, Grid, MenuItem, TextField, Toolbar, Typography, CardContent, CardActions, Paper } from '@material-ui/core';
+import {AppBar, Box, Button, Checkbox, Container, Divider, FormControlLabel, FormControl, IconButton, MenuItem, Table, TableBody, TableRow, TableCell, TextField, Toolbar, Typography, RadioGroup, Radio, Paper } from '@material-ui/core';
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
+import AddIcon from '@material-ui/icons/Add'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -9,14 +11,22 @@ const useStyles = makeStyles(theme => ({
       margin: theme.spacing(1, 0)
     },
   },
-  bullet: {
+  table: {
+    display: 'flex',
+    "& td": {
+      padding: theme.spacing(1, 2),
+    },
+    "& tr:last-child": {
+      "& td": {
+        border: "0 !important",
+      }
+    }
+  },
+  box: {
     display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 14,
-  },
+    backgroundColor: theme.palette.grey[100],
+    minWidth: 300
+  }
 }));
 
 export const BasicInfoForm = props => {
@@ -24,119 +34,153 @@ export const BasicInfoForm = props => {
     const classes = useStyles()
 
     const canSubmitForm = () => {
-        const {jobDescription, bio } = form
+        const { jobDescription, bio } = form
         return jobDescription.length > 0 && bio.length > 0
     }
 
     return (
-        <Paper>
-        <AppBar position='relative'>
+      <Paper className={classes.root}>
+        <AppBar position='static'>
           <Toolbar>
-            <Typography variant="h6" gutterBottom>Basic Information</Typography>
+            <Typography variant="h6">Basic Information</Typography>
           </Toolbar>
         </AppBar>
 
         <Container>
-        <Box p={3} className={classes.root}>
-            <Grid container spacing={1}>
-                <Grid item xs={6}>
-                    <TextField
-                    name="name"
-                    label="Name"
-                    id="outlined-name"
-                    fullWidth
-                    variant="outlined"
-                    size="small"
-                    value={form.name}
-                    onChange={handleChange}
+          <Box p={3}>
+            <Table className={classes.table}>
+              <TableBody>
+                <TableRow>
+                  <TableCell>
+                    <Box p={2} className={classes.box}>Name</Box>
+                  </TableCell>
+                  <TableCell align='right'>
+                    <FormControlLabel
+                      control={<Checkbox checked={form.bio} onChange={handleChange} name="required" color="primary" />}
+                      label="Required"
                     />
-                </Grid>
-                <Grid item xs={6}>
-                    <TextField
-                    name="email"
-                    label="Email"
-                    id="outlined-email"
-                    fullWidth
-                    variant="outlined"
-                    size="small"
-                    value={form.email}
-                    onChange={handleChange}
+                  </TableCell>
+                  <TableCell align='right'>
+                    <FormControl component="fieldset">
+                      <RadioGroup row aria-label="position" name="position" defaultValue="top">
+                        <FormControlLabel value="text" control={<Radio color="primary" />} label="Text" />
+                        <FormControlLabel value="file" control={<Radio color="primary" />} label="File" />
+                      </RadioGroup>
+                    </FormControl>
+                  </TableCell>
+                  <TableCell align='right'><IconButton><DeleteOutlineIcon /></IconButton></TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <Box p={2} className={classes.box}>Email</Box>
+                  </TableCell>
+                  <TableCell align='right'>
+                    <FormControlLabel
+                      control={<Checkbox checked={form.bio} onChange={handleChange} name="required" color="primary" />}
+                      label="Required"
                     />
-                </Grid>
-                <Grid item xs={6}>
-                  <FormControl variant="outlined">
-                    <TextField
-                    id="outlined-cv"
-                    name="cv"
-                    type="file"
-                    label="Upload CV"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    fullWidth
-                    value={form.cv}
-                    onChange={handleChange}
-                    variant="outlined"
+                  </TableCell>
+                  <TableCell align='right'>
+                    <FormControl component="fieldset">
+                      <RadioGroup row aria-label="position" name="position" defaultValue="top">
+                        <FormControlLabel value="text" control={<Radio color="primary" />} label="Text" />
+                        <FormControlLabel value="file" control={<Radio color="primary" />} label="File" />
+                      </RadioGroup>
+                    </FormControl>
+                  </TableCell>
+                  <TableCell align='right'><IconButton><DeleteOutlineIcon /></IconButton></TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <Box p={2} className={classes.box}>Upload CV</Box>
+                  </TableCell>
+                  <TableCell align='right'>
+                    <FormControlLabel
+                      control={<Checkbox checked={form.bio} onChange={handleChange} name="required" color="primary" />}
+                      label="Required"
                     />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6}>
-                  <FormControl variant="outlined">
-                    <TextField
-                    id="outlined-cover-letter"
-                    name="coverLetter"
-                    type="file"
-                    label="Cover Letter"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    fullWidth
-                    value={form.coverLetter}
-                    onChange={handleChange}
-                    variant="outlined"
+                  </TableCell>
+                  <TableCell align='right'>
+                    <FormControl component="fieldset">
+                      <RadioGroup row aria-label="position" name="position" defaultValue="top">
+                        <FormControlLabel value="text" control={<Radio color="primary" />} label="Text" />
+                        <FormControlLabel value="file" control={<Radio color="primary" />} label="File" />
+                      </RadioGroup>
+                    </FormControl>
+                  </TableCell>
+                  <TableCell align='right'><IconButton><DeleteOutlineIcon /></IconButton></TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <Box p={2} className={classes.box}>Cover Letter</Box>
+                  </TableCell>
+                  <TableCell align='right'>
+                    <FormControlLabel
+                      control={<Checkbox checked={form.bio} onChange={handleChange} name="required" color="primary" />}
+                      label="Required"
                     />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6}>
-                    <TextField
-                    name="mobile"
-                    label="Mobile"
-                    id="outlined-mobile"
-                    fullWidth
-                    variant="outlined"
-                    size="small"
-                    value={form.mobile}
-                    onChange={handleChange}
+                  </TableCell>
+                  <TableCell align='right'>
+                    <FormControl component="fieldset">
+                      <RadioGroup row aria-label="position" name="position" defaultValue="top">
+                        <FormControlLabel value="text" control={<Radio color="primary" />} label="Text" />
+                        <FormControlLabel value="file" control={<Radio color="primary" />} label="File" />
+                      </RadioGroup>
+                    </FormControl>
+                  </TableCell>
+                  <TableCell align='right'><IconButton><DeleteOutlineIcon /></IconButton></TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <Box p={2} className={classes.box}>Mobile</Box>
+                  </TableCell>
+                  <TableCell align='right'>
+                    <FormControlLabel
+                      control={<Checkbox checked={form.bio} onChange={handleChange} name="required" color="primary" />}
+                      label="Required"
                     />
-                </Grid>
-                <Grid item xs={6}>
-                    <TextField
-                    id="gender"
-                    name="gender"
-                    placeholder="Select gender"
-                    select
-                    fullWidth
-                    className={classes.textField}
-                    variant="outlined"
-                    size="small"
-                    label="Gender"
-                    value={form.gender}
-                    onChange={handleChange}
-                    >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-
-                    {['male', 'female'].map((sex, i) => 
-                    <MenuItem key={i} value={sex}>
-                      {sex}
-                    </MenuItem>
-                    )}
-                    </TextField>
-                </Grid>
-            </Grid>
-        </Box>
+                  </TableCell>
+                  <TableCell align='right'>
+                    <FormControl component="fieldset">
+                      <RadioGroup row aria-label="position" name="position" defaultValue="top">
+                        <FormControlLabel value="text" control={<Radio color="primary" />} label="Text" />
+                        <FormControlLabel value="file" control={<Radio color="primary" />} label="File" />
+                      </RadioGroup>
+                    </FormControl>
+                  </TableCell>
+                  <TableCell align='right'><IconButton><DeleteOutlineIcon /></IconButton></TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <Box p={2} className={classes.box}>Gender</Box>
+                  </TableCell>
+                  <TableCell align='right'>
+                    <FormControlLabel
+                      control={<Checkbox checked={form.bio} onChange={handleChange} name="required" color="primary" />}
+                      label="Required"
+                    />
+                  </TableCell>
+                  <TableCell align='right'>
+                    <FormControl component="fieldset">
+                      <RadioGroup row aria-label="position" name="position" defaultValue="top">
+                        <FormControlLabel value="text" control={<Radio color="primary" />} label="Text" />
+                        <FormControlLabel value="file" control={<Radio color="primary" />} label="File" />
+                      </RadioGroup>
+                    </FormControl>
+                  </TableCell>
+                  <TableCell align='right'><IconButton><DeleteOutlineIcon /></IconButton></TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <Button variant='contained' color='primary' startIcon={<AddIcon />}>
+                      Add field
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </Box>
         </Container>
-        </Paper>
+      </Paper>
     )
 }

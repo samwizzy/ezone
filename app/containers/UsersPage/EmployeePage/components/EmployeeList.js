@@ -191,6 +191,7 @@ const EmployeeList = props => {
     customToolbar: () => (
       <AddButton openNewEmployeeDialogAction={openNewEmployeeDialogAction} />
     ),
+    elevation: 0
   };
 
   if (loading) {

@@ -34,20 +34,6 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(2),
     flex: 1,
   },
-  container: {
-    // width: 400,
-  },
-  textField: {
-    margin: theme.spacing(1),
-  },
-  divider: {
-    margin: theme.spacing(1),
-    border: '1px solid red',
-  },
-  buttonStyle: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',

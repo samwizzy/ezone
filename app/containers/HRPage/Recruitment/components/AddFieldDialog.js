@@ -22,16 +22,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function AddBranchDialog(props) {
+function AddFieldDialog(props) {
   const classes = useStyles();
   const { closeNewBranchDialog, createBranch, getEmployees, employees, employee, getBranches, branches, departments,  dialog } = props;
   const [form, setForm] = React.useState({
     name: '',
     description: '',
-    partyHead: {id: ''},
-    assistantPartyHead: {id: ''},
-    partyId: 1,
-    tagId: 1
   });
 
   console.log(dialog, "dialog checking")
@@ -50,10 +46,6 @@ function AddBranchDialog(props) {
   const handleChange = (event) => {
     const { name, value } = event.target
     setForm({...form, [name]: value});
-  }
-
-  const handleSelectChange = (event) => {
-    setForm({...form, [event.target.name]: {id: event.target.value}});
   }
 
   const handleSubmit = event => {
@@ -75,19 +67,17 @@ function AddBranchDialog(props) {
         <AppBar position="relative">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
-              Add branch
+              Add New Field
             </Typography>
           </Toolbar>
         </AppBar>
-        
-        <Divider />
 
-        <DialogContent>
+        <DialogContent dividers>
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <TextField
               name="name"
-              label="Branch Name"
+              label="Name"
               id="outlined-title"
               fullWidth
               variant="outlined"
@@ -102,53 +92,13 @@ function AddBranchDialog(props) {
               label="Description"
               id="outlined-title"
               fullWidth
+              rows={4}
+              multiline
               variant="outlined"
               size="small"
               value={form.description}
               onChange={handleChange}
               />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="partyHead"
-                name="partyHead"
-                placeholder="Branch Lead"
-                select
-                fullWidth
-                className={classes.textField}
-                variant="outlined"
-                size="small"
-                label="Branch Lead"
-                value={form.partyHead.id}
-                onChange={handleSelectChange}
-              >
-                {employees.map((employee) => (
-                <MenuItem key={employee.id} value={employee.id}>
-                    {employee.firstName} {employee.lastName}
-                </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="assistantPartyHead"
-                name="assistantPartyHead"
-                placeholder="Assistant Branch Lead"
-                select
-                fullWidth
-                className={classes.textField}
-                variant="outlined"
-                size="small"
-                label="Assistant Branch Lead"
-                value={form.assistantPartyHead.id}
-                onChange={handleSelectChange}
-              >
-                {employees.map((employee) => (
-                <MenuItem key={employee.id} value={employee.id}>
-                    {employee.firstName} {employee.lastName}
-                </MenuItem>
-                ))}
-              </TextField>
             </Grid>
           </Grid>
         </DialogContent>
@@ -158,7 +108,7 @@ function AddBranchDialog(props) {
             Cancel
           </Button>
           <Button onClick={handleSubmit} disabled={!canSubmitForm()} color="primary">
-            Next
+            Add
           </Button>
         </DialogActions>
       </Dialog>
@@ -167,7 +117,7 @@ function AddBranchDialog(props) {
 }
 
 
-AddBranchDialog.propTypes = {
+AddFieldDialog.propTypes = {
   closeNewBranchDialog: PropTypes.func,
 };
 
@@ -195,4 +145,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(AddBranchDialog);
+)(AddFieldDialog);

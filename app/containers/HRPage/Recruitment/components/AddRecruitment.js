@@ -117,7 +117,7 @@ function AddRecruitment(props) {
 
   const handleNext = () => {
     console.log(activeStep);
-    if(activeStep > -1 && activeStep < 2){ 
+    if(activeStep > -1 && activeStep < 3){ 
       //setStep(activeStep + 1) 
       setActiveStep(prevActiveStep => prevActiveStep + 1);
     }else{
