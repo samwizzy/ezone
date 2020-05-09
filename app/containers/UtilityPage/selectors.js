@@ -27,12 +27,6 @@ const makeSelectLoading = () =>
     subState => subState.loading,
   );
 
-const makeSelectData = () =>
-  createSelector(
-    selectUtilityPageDomain,
-    subState => subState.data,
-  );
-
 const makeSelectTasks = () =>
   createSelector(
     selectUtilityPageDomain,
@@ -141,6 +135,12 @@ const makeSelectNewTaskDialog = () =>
     subState => subState.taskDialog,
   );
 
+const makeSelectConfirmTaskDeleteDialog = () =>
+  createSelector(
+    selectUtilityPageDomain,
+    subState => subState.confirmTaskDeleteDialog,
+  );
+
 const makeSelectPreviewTaskDialog = () =>
   createSelector(
     selectUtilityPageDomain,
@@ -212,7 +212,6 @@ export {
   selectUtilityPageDomain,
   makeSelectPostFcmToken,
   makeSelectLoading,
-  makeSelectData,
   makeSelectTask,
   makeSelectTasks,
   makeSelectTaskComments,
@@ -226,6 +225,7 @@ export {
   makeSelectFileUploadDialog,
   makeSelectFilePreviewDialog,
   makeSelectNewTaskDialog,
+  makeSelectConfirmTaskDeleteDialog,
   makeSelectPreviewTaskDialog,
   makeSelectShareFileDialog,
   makeSelectAssignTaskDialog,

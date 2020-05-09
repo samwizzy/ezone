@@ -487,8 +487,8 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(
-  compose(
-    withConnect,
-    memo,
-)(TaskList));
+export default compose(
+  withRouter,
+  withConnect,
+  memo,
+)(TaskList);

@@ -161,6 +161,7 @@ export function* addUtilityTasks({ type, payload }) {
     });
 
     yield put({ type: Constants.GET_UTILITY_TASKS });
+    yield put(Actions.createUtilityTaskSuccess());
     yield put(Actions.closeNewTaskDialog());
     yield put(
       AppActions.openSnackBar({

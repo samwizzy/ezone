@@ -8,7 +8,6 @@ import { createStructuredSelector } from 'reselect';
 import tasksIcon from '../../../../images/tasksIcon.svg'
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
-import AddTaskDialog from './AddTaskDialog'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,21 +28,20 @@ const NoTasksList = props => {
 
   return (
     <React.Fragment>
-        <Grid container justify='center' alignItems='center' className={classes.root}>
-            <Grid item>
-                <Box my={4}>
-                    <img src={tasksIcon} />
-                </Box>
-                <Box>
-                    <Typography variant='h6'>No task yet</Typography>
+      <Grid container justify='center' alignItems='center' className={classes.root}>
+        <Grid item>
+          <Box my={4}>
+            <img src={tasksIcon} />
+          </Box>
+          <Box>
+            <Typography variant='h6'>No task yet</Typography>
 
-                    <Button variant="contained" color="primary" onClick={props.openNewTaskDialog} className={classes.button} disableElevation>
-                        Create a new task
-                    </Button>
-                </Box>
-            </Grid>
+            <Button variant="contained" color="primary" onClick={props.openNewTaskDialog} className={classes.button} disableElevation>
+              Create a new task
+            </Button>
+          </Box>
         </Grid>
-        <AddTaskDialog />
+      </Grid>
     </React.Fragment>
   )
 }
