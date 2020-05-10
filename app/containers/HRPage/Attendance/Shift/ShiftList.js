@@ -67,7 +67,7 @@ const ShiftList = props => {
       },
     },
     {
-      name: 'name',
+      name: 'shiftName',
       label: 'Shift name',
       options: {
         filter: true,
