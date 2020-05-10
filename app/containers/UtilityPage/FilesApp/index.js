@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import * as Actions from '../actions';
-import * as Selectors from '../selectors';
+import makeSelectUtilityPage, * as Selectors from '../selectors';
 import saga from './../saga';
 import reducer from './../reducer';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -59,8 +59,9 @@ FilesApp.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-    loading: Selectors.makeSelectLoading(),
-    files: Selectors.makeSelectFiles(),
+  utilityPage: makeSelectUtilityPage(),
+  loading: Selectors.makeSelectLoading(),
+  files: Selectors.makeSelectFiles(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -77,8 +78,8 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(
-  compose(
-    withConnect,
-    memo,
-)(FilesApp));
+export default compose(
+  withRouter,
+  withConnect,
+  memo,
+)(FilesApp);
