@@ -34,7 +34,6 @@ export function EmployeePage(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
-<<<<<<< HEAD
   const columns = [
     {
       name: 'uuId',
@@ -127,11 +126,6 @@ export function EmployeePage(props) {
     },
     elevation: 0,
   };
-=======
-  React.useEffect(() => {
-    getEmployees();
-  }, []);
->>>>>>> 6071e0663911bb51f055bdbfcc2c7e0c722723ff
 
   return (
     <React.Fragment>

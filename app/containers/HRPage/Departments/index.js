@@ -35,7 +35,6 @@ export function DepartmentPage(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
-<<<<<<< HEAD
   const options = {
     filterType: 'checkbox',
     responsive: 'scrollMaxHeight',
@@ -52,11 +51,6 @@ export function DepartmentPage(props) {
     },
     elevation: 0
   };
-=======
-  React.useEffect(() => {
-    getEmployees();
-  }, []);
->>>>>>> 6071e0663911bb51f055bdbfcc2c7e0c722723ff
 
   return (
     <React.Fragment>
@@ -84,13 +78,10 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
   return {
     getEmployees: () => dispatch(Actions.getEmployees()),
-<<<<<<< HEAD
     getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
     openNewDepartmentDialog: () => dispatch(Actions.openNewDepartmentDialog()),
     getBranches: () => dispatch(Actions.getBranches()),
     getDepartment: (id) => dispatch(Actions.getDepartment(id)),
-=======
->>>>>>> 6071e0663911bb51f055bdbfcc2c7e0c722723ff
   };
 }
 
