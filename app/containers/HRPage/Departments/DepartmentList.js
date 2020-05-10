@@ -71,9 +71,11 @@ const useStyles = makeStyles(theme => ({
 
 const DepartmentsApp = props => {
   const classes = useStyles();
-  const { loading, openNewDepartmentDialog, getEmployee, getEmployees, employees, employee, getBranches, branches, departments } = props;
+  const { loading, openNewDepartmentDialog, getDepartment, getEmployees, employees, employee, getBranches, branches, departments } = props;
+
   React.useEffect(() => {
   }, [employee, departments, employees]);
+
   const columns = [
     {
       name: 'id',
@@ -137,7 +139,7 @@ const DepartmentsApp = props => {
     rowsPerPage: 10,
     rowsPerPageOptions: [10,25,50,100],
     onRowClick: (rowData, rowState) => {
-      getEmployee(rowData[0])
+      getDepartment(rowData[0])
     },
     elevation: 0
   };
@@ -146,20 +148,15 @@ const DepartmentsApp = props => {
     <div className={classes.root}>
       <Grid
         container
-        justify='space-around'
       >
         <Grid item md={12}>
-          <div className={classes.content}>
-            
-            <MUIDataTable
-                className={classes.datatable}
-                title="Departments List"
-                data={departments}
-                columns={columns}
-                options={options}
-            />
-
-          </div>
+          <MUIDataTable
+            className={classes.datatable}
+            title="Departments List"
+            data={departments}
+            columns={columns}
+            options={options}
+          />
         </Grid>
       </Grid>
 
@@ -186,9 +183,9 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getEmployees: () => dispatch(Actions.getEmployees()),
-    getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
     openNewDepartmentDialog: () => dispatch(Actions.openNewDepartmentDialog()),
     getBranches: () => dispatch(Actions.getBranches()),
+    getDepartment: (id) => dispatch(Actions.getDepartment(id)),
   };
 }
 
@@ -197,8 +194,8 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(
-  compose(
-    withConnect,
-    memo,
-)(DepartmentsApp));
+export default compose(
+  withRouter,
+  withConnect,
+  memo,
+)(DepartmentsApp);

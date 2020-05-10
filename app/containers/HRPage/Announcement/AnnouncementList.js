@@ -14,13 +14,7 @@ import MUIDataTable from 'mui-datatables'
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../App/selectors';
-import EditSharp from '@material-ui/icons/EditSharp';
-import Assignment from '@material-ui/icons/Assignment';
-import AssignmentInd from '@material-ui/icons/AssignmentInd';
-import Person from '@material-ui/icons/Person';
 import { AddAnnouncement } from '../components/AddButton'
-import AddAnnouncementDialog from './components/AddAnnouncementDialog'
-import AnnouncementViewDialog from './components/AnnouncementViewDialog'
 
 const drawerWidth = '100%';
 
@@ -57,10 +51,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-// const announcements = [
-//   {id: 1, title: "Stand Up starts by 5:00", sentTo: "Yinka", msgType: "Email", date: "May 3rd 2020"}
-// ]
-
+/*
+const announcements = [
+  {id: 1, title: "Stand Up starts by 5:00", sentTo: "Yinka", msgType: "Email", date: "May 3rd 2020"}
+]
+*/
 const Announcement = props => {
   const classes = useStyles();
   const { loading, openNewAnnouncementDialog, openAnnouncementViewDialog, getEmployees, announcements, getEmployee, employees, employee } = props;
@@ -135,20 +130,15 @@ const Announcement = props => {
         justify='space-around'
       >
         <Grid item md={12}>
-          <div className={classes.content}>
-            <MUIDataTable
-                className={classes.datatable}
-                title="Announcement List"
-                data={announcements}
-                columns={columns}
-                options={options}
-            />
-          </div>
+          <MUIDataTable
+              className={classes.datatable}
+              title="Announcement List"
+              data={announcements}
+              columns={columns}
+              options={options}
+          />
         </Grid>
       </Grid>
-
-      <AddAnnouncementDialog />
-      <AnnouncementViewDialog />
     </div>
   );
 };

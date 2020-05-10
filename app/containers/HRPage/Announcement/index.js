@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
+import * as Selectors from './../selectors';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import * as AppSelectors from '../../App/selectors';
@@ -20,6 +21,8 @@ import reducer from './../reducer';
 import saga from './../saga';
 import ModuleLayout from './ModuleLayout'
 import AnnouncementList from './AnnouncementList';
+import AddAnnouncementDialog from './components/AddAnnouncementDialog';
+import AnnouncementViewDialog from './components/AnnouncementViewDialog';
 
 const key = 'hrPage';
 
@@ -28,11 +31,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
 }));
-/*
-const announcements = [
-  {id: 1, title: "Stand Up starts by 5:00", sentTo: "Yinka", msgType: "Email", date: "May 3rd 2020"}
-]
-*/
+
 const AnnouncementPage = props => {
   const classes = useStyles();
   const { loading, openNewAnnouncementDialog, announcements, getAnnouncements, openAnnouncementViewDialog, getEmployees, roles, getEmployee, employees, employee } = props;
@@ -47,7 +46,10 @@ const AnnouncementPage = props => {
       <ModuleLayout>
         <AnnouncementList />
       </ModuleLayout>
-
+      
+      <AnnouncementViewDialog />
+      <AddAnnouncementDialog />
+     
     </React.Fragment>
   );
 }
