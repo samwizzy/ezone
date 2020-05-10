@@ -56,8 +56,8 @@ const shifts = [
 
 const ShiftList = props => {
   const classes = useStyles();
-  const { loading, openNewShiftDialog, getAttendance, getAttendanceById, attendance } = props;
-
+  const { loading, openNewAttendanceDialog, getAttendances, getShifts, shifts, getAttendanceById, attendance } = props;
+  console.log(shifts, "shifts in list");
   React.useEffect(() => {
   }, []);
 
@@ -79,30 +79,30 @@ const ShiftList = props => {
       },
     },
     {
-      name: 'startTime',
-      label: 'Start time',
+      name: 'resumptionTime',
+      label: 'Resumption time',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: createdAt => {
-          return (
-            <Typography color='textSecondary'>{moment(createdAt).format('LT')}</Typography>
-          )
-        }
+        
       }
     },
     {
-      name: 'endTime',
-      label: 'End time',
+      name: 'closeTime',
+      label: 'Close time',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: createdAt => {
-          return (
-            <Typography color='textSecondary'>{moment(createdAt).format('LT')}</Typography>
-          )
-        }
+        
       }
+    },
+    {
+      name: 'startDate',
+      label: 'Start name',
+      options: {
+        filter: true,
+        sort: true,
+      },
     },
     {
       name: 'endDate',
@@ -110,11 +110,7 @@ const ShiftList = props => {
       options: {
         filter: true,
         sort: true,
-        customBodyRender: createdAt => {
-          return (
-            <Typography color='textSecondary'>{moment(createdAt).format('L')}</Typography>
-          )
-        }
+        
       }
     }
   ];
@@ -166,12 +162,14 @@ ShiftList.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   user: AppSelectors.makeSelectCurrentUser(),
-  attendance: Selectors.makeSelectAttendance(),
+  attendances: Selectors.makeSelectAttendances(),
+  shifts: Selectors.makeSelectShifts(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAttendance: () => dispatch(Actions.getAttendance()),
+    getAttendances: () => dispatch(Actions.getAttendances()),
+    getShifts: () => dispatch(Actions.getShifts()),
     getAttendanceById: (uuid) => dispatch(Actions.getAttendanceById(uuid)),
     openNewShiftDialog: () => dispatch(Actions.openNewShiftDialog()),
   };

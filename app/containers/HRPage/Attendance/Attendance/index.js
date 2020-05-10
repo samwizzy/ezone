@@ -25,11 +25,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function AttendancePage(props) {
-  const { getAttendance, match } = props;
-  const { params } = match
+  const { getAttendances } = props;
 
   React.useEffect(() => {
-    getAttendance();  
+    getAttendances();  
   }, []);
 
   return (
@@ -57,7 +56,7 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
-    getAttendance: () => dispatch(Actions.getAttendance()),
+    getAttendances: () => dispatch(Actions.getAttendances()),
   };
 }
 

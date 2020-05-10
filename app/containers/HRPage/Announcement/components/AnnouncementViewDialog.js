@@ -40,7 +40,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function AnnouncementViewDialog(props) {
   const classes = useStyles();
   const { closeAnnouncementViewDialog, dialog } = props;
-
+  console.log(dialog);
   return (
     <div className={classes.root}>
       <Dialog

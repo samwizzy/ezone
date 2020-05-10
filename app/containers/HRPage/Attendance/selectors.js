@@ -23,6 +23,33 @@ const makeSelectAttendance = () =>
     selectAttendance,
     subState => subState.attendance,
   );
+
+  const makeSelectDays = () =>
+    createSelector(
+      selectAttendance,
+      subState => subState.days,
+    );
+  const makeSelectShifts = () =>
+    createSelector(
+      selectAttendance,
+      subState => subState.shifts,
+    );
+    const makeSelectCreateShift = () =>
+    createSelector(
+      selectAttendance,
+      subState => subState.createShift,
+    );
+  const makeSelectCreateShiftSuccess = () =>
+    createSelector(
+      selectAttendance,
+      subState => subState.getCreateShift,
+    );
+  
+  const makeSelectAttendances = () =>
+  createSelector(
+    selectAttendance,
+    subState => subState.attendances,
+  );
 const makeSelectAttendanceDialog = () =>
   createSelector(
     selectAttendance,
@@ -45,6 +72,9 @@ export {
   makeSelectLoading,
   makeSelectAttendance,
   makeSelectAttendanceDialog,
-  makeSelectShiftDialog,
-  makeSelectEmployeeShiftDialog,
+  makeSelectAttendances,
+  makeSelectDays,
+  makeSelectShifts,
+  makeSelectCreateShift,
+  makeSelectCreateShiftSuccess
 };

@@ -3,6 +3,7 @@
  */
 
 import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { push } from 'connected-react-router';
 import request from '../../utils/request';
 import * as AppActions from '../App/actions';
 import * as AppSelectors from '../App/selectors';
@@ -18,7 +19,7 @@ import * as Endpoints from '../../components/Endpoints';
 export function* getEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEmployeesApi}`;
+  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}/${user.organisation.orgId}`;
 
   console.log(user, "currentUser")
 
@@ -30,9 +31,10 @@ export function* getEmployees() {
         'Content-Type': 'application/json',
       }),
     });
-
+    console.log(employeesResponse, "emplyees response");
     yield put(Actions.getEmployeesSuccess(employeesResponse));
   } catch (err) {
+    console.log(err, "emplyees error");
     // yield put(Actions.getEmployeesError(err));
   }
 }
@@ -135,6 +137,49 @@ export function* getDepartmentsByOrgIdApi() {
   console.log(accessToken);
   const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetDepartmentsByOrgIdApi}?orgId=${user.organisation.id}&tagId=5`;
+  
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'DEPARTMENT RESPONSE');
+    yield put(Actions.getDepartmentsByOrgIdApiSuccess(response));
+  } catch (err) {
+    // yield put(Actions.getUtilityFilesError(err));
+    console.log(err.message, "dept error message")
+  }
+}
+export function* getPartyGroups() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetPartyGroups}?orgId=${user.organisation.orgId}`;
+  
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'PARTYGROUPS RESPONSE');
+    yield put(Actions.getPartyGroupsSuccess(response));
+  } catch (err) {
+    // yield put(Actions.getUtilityFilesError(err));
+    console.log(err.message, "Party groups error message")
+  }
+}
+
+export function* getDepartment(id) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetDepartment}?orgId=${user.organisation.id}&tagId=5`;
   
   try {
     const response = yield call(request, requestURL, {
@@ -309,6 +354,31 @@ export function* getRoles() {
   }
 }
 
+export function* getAnnouncements() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  console.log('Announcements-SAGA');
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAnnouncements}/${user.organisation.orgId}?start=0&limit=50`;
+  
+  
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'ANNOUNCEMENTS RESPONSE');
+    yield put(Actions.getAnnouncementsSuccess(response.content));
+  } catch (err) {
+    // yield put(Actions.getUtilityFilesError(err));
+    console.log(err.message, "Announcements err message")
+  }
+}
+
+
 export function* createDepartment({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
@@ -359,6 +429,32 @@ export function* createBranch({ type, payload }) {
   }
 }
 
+export function* createAnnouncement({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.CreateAnnouncement}`;
+  
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'Announcement RESPONSE');
+    alert("Announcement created");
+    yield put({type: Constants.CLOSE_NEW_ANNOUNCEMENT_DIALOG});
+    yield put({type: Constants.GET_ANNOUNCEMENTS});
+  } catch (err) {
+    // yield put(Actions.getUtilityFilesError(err));
+    console.log(err.message, "err message")
+  }
+}
+
 export function* createJobOpening({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
@@ -370,9 +466,10 @@ export function* createJobOpening({ type, payload }) {
   var obj = new Object;
     for(var i = 0; i < str_array.length; i++) {
       console.log(i, "i");
-      obj.title = str_array[i];
+      obj['title'] = str_array[i];
       arr.push(obj);
     }
+    delete payload.steps;
     payload.hiringSteps = arr;
     console.log(payload, "Entire job payload");
     //setForm({...form, ['hiringSteps']: obj });
@@ -387,7 +484,8 @@ export function* createJobOpening({ type, payload }) {
         'Content-Type': 'application/json',
       }),
     });
-
+    yield put(push('/hr/recruitment'));
+    
     console.log(response, 'JOB OPENING RESPONSE');
     alert("Job opening created");
     //yield put({type: Constants.CLOSE_NEW_BRANCH_DIALOG});
@@ -395,8 +493,7 @@ export function* createJobOpening({ type, payload }) {
   } catch (err) {
     // yield put(Actions.getUtilityFilesError(err));
     console.log(err.message, "err message")
-  }
-  
+  }  
 }
 
 /**
@@ -408,15 +505,18 @@ export default function* HRRootSaga() {
   yield takeLatest(Constants.GET_DEPARTMENTS, getDepartments);
   yield takeLatest(Constants.CREATE_DEPARTMENT, createDepartment);
   yield takeLatest(Constants.GET_DEPARTMENTS_BY_ORGID_API, getDepartmentsByOrgIdApi);
+  yield takeLatest(Constants.GET_PARTYGROUPS, getPartyGroups);
   yield takeLatest(Constants.GET_EMPLOYEETYPES, getEmployeeTypes);
   yield takeLatest(Constants.GET_ENROLLMENTTYPES, getEnrollmentTypes);
   yield takeLatest(Constants.GET_LOCATIONS, getLocations);
   yield takeLatest(Constants.GET_JOBOPENINGS, getJobOpenings);
   yield takeLatest(Constants.GET_ROLES, getRoles);
+  yield takeLatest(Constants.GET_ANNOUNCEMENTS, getAnnouncements);
   yield takeLatest(Constants.CREATE_EMPLOYEE, createEmployee);
   yield takeLatest(Constants.GET_BRANCHES, getBranches);
   yield takeLatest(Constants.CREATE_BRANCH, createBranch);
   yield takeLatest(Constants.CREATE_ROLE, createRole);
   yield takeLatest(Constants.GET_PARTY_TAGS, getPartyTags);
   yield takeLatest(Constants.CREATE_JOBOPENING, createJobOpening);
+  yield takeLatest(Constants.CREATE_ANNOUNCEMENT, createAnnouncement);
 }

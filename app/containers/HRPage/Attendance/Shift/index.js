@@ -23,10 +23,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function ShiftPage(props) {
-  const { getAttendance } = props;
+  const { getAttendances, getDays } = props;
 
   React.useEffect(() => {
-    getAttendance();  
+    getAttendances();
+    getDays();  
   }, []);
 
   return (
@@ -52,7 +53,8 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
-    getAttendance: () => dispatch(Actions.getAttendance()),
+    getAttendances: () => dispatch(Actions.getAttendances()),
+    getDays: () => dispatch(Actions.getDays()),
   };
 }
 

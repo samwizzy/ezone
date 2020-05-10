@@ -35,9 +35,28 @@ export function DepartmentPage(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
+<<<<<<< HEAD
+  const options = {
+    filterType: 'checkbox',
+    responsive: 'scrollMaxHeight',
+    selectableRows: 'none', // single, multiple
+    print: false,
+    download: true,
+    viewColumns: false,
+    filter: false,
+    customToolbar: () => <AddDepartment openDialog={openNewDepartmentDialog} />,
+    rowsPerPage: 10,
+    rowsPerPageOptions: [10,25,50,100],
+    onRowClick: (rowData, rowState) => {
+      getDepartment(rowData[0])
+    },
+    elevation: 0
+  };
+=======
   React.useEffect(() => {
     getEmployees();
   }, []);
+>>>>>>> 6071e0663911bb51f055bdbfcc2c7e0c722723ff
 
   return (
     <React.Fragment>
@@ -65,6 +84,13 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
   return {
     getEmployees: () => dispatch(Actions.getEmployees()),
+<<<<<<< HEAD
+    getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
+    openNewDepartmentDialog: () => dispatch(Actions.openNewDepartmentDialog()),
+    getBranches: () => dispatch(Actions.getBranches()),
+    getDepartment: (id) => dispatch(Actions.getDepartment(id)),
+=======
+>>>>>>> 6071e0663911bb51f055bdbfcc2c7e0c722723ff
   };
 }
 

@@ -53,7 +53,7 @@ const employeeShifts = [
 
 const EmployeeShiftList = props => {
   const classes = useStyles();
-  const { loading, openNewEmployeeShiftDialog, getAttendance, getAttendanceById, attendance } = props;
+  const { loading, openNewAttendanceDialog, getAttendances, getAttendanceById, attendance } = props;
 
   React.useEffect(() => {
   }, []);
@@ -153,12 +153,12 @@ EmployeeShiftList.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   user: AppSelectors.makeSelectCurrentUser(),
-  attendance: Selectors.makeSelectAttendance(),
+  attendances: Selectors.makeSelectAttendances(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAttendance: () => dispatch(Actions.getAttendance()),
+    getAttendances: () => dispatch(Actions.getAttendances()),
     getAttendanceById: (uuid) => dispatch(Actions.getAttendanceById(uuid)),
     openNewEmployeeShiftDialog: () => dispatch(Actions.openNewEmployeeShiftDialog()),
   };

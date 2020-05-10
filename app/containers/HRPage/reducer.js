@@ -94,6 +94,18 @@ const hrReducer = (state = initialState, action) =>
           branches: action.payload
         };
       break;
+      case Constants.GET_ANNOUNCEMENTS_SUCCESS:
+        return {
+          ...state,
+          announcements: action.payload
+        };
+      break;
+      case Constants.GET_PARTYGROUPS_SUCCESS:
+        return {
+          ...state,
+          partyGroups: action.payload
+        };
+      break;
       case Constants.GET_PARTY_TAGS_SUCCESS:
         return {
           ...state,
@@ -116,6 +128,23 @@ const hrReducer = (state = initialState, action) =>
           loading: false,
           error: false,
           getCreateEmployee: action.payload,
+        };
+      }
+      case Constants.CREATE_ANNOUNCEMENT: {
+        // console.log(action.payload, 'reducer data');
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          createAnnouncement: action.payload,
+        };
+      }
+      case Constants.CREATE_ANNOUNCEMENT_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getCreateAnnouncement: action.payload,
         };
       }
       case Constants.CREATE_BRANCH: {
@@ -299,7 +328,7 @@ const hrReducer = (state = initialState, action) =>
       case Constants.OPEN_ANNOUNCEMENT_VIEW_DIALOG:
         return {
           ...state,
-          announcementViewDialog: {...state.announcementViewDialog, props: { open: true }},
+          announcementViewDialog: {...state.announcementViewDialog, props: { open: true,data: action.payload }},
         };
         break;
       case Constants.CLOSE_ANNOUNCEMENT_VIEW_DIALOG:

@@ -15,22 +15,89 @@ import * as Endpoints from '../../../components/Endpoints';
 /**
  * Github repos request/response handler
  */
-export function* getAttendance() {
+export function* getAttendances() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEmployeesApi}`;
+  const requestURL = `${Endpoints.GetAttendances}`;
 
   try {
-    const employeesResponse = yield call(request, requestURL, {
+    const attendancesResponse = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
-
-    yield put(Actions.getEmployeesSuccess(employeesResponse));
+    console.log(attendancesResponse, "Attendances response")
+    yield put(Actions.getAttendancesSuccess(attendancesResponse));
   } catch (err) {
+    console.log(err, "attd error")
+  }
+}
+
+export function* getDays() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetDays}`;
+
+  try {
+    const daysResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+    console.log(daysResponse, "Days response")
+    yield put(Actions.getDaysSuccess(daysResponse));
+  } catch (err) {
+    console.log(err, "Days error")
+  }
+}
+
+export function* getShifts() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetShifts}?orgId=${user.organisation.orgId}`;
+  
+  try {
+    const shiftsResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+    console.log(shiftsResponse, "Shifts response")
+    yield put(Actions.getShiftsSuccess(shiftsResponse));
+  } catch (err) {
+    console.log(err, "Shifts error")
+  }
+}
+
+export function* createShift({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.CreateShift}`;
+  payload.orgId = user.organisation.orgId;
+  console.log(payload, "shift payload")
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'SHIFT RESPONSE');
+    alert("SHIFT created");
+    yield put({type: Constants.CLOSE_NEW_ATTENDANCE_DIALOG});
+    yield put({type: Constants.GET_SHIFTS});
+  } catch (err) {
+    // yield put(Actions.getUtilityFilesError(err));
+    console.log(err.message, "shift err message")
   }
 }
 
@@ -38,5 +105,8 @@ export function* getAttendance() {
  * Root saga manages watcher lifecycle
  */
 export default function* AttendanceRootSaga() {
-  yield takeLatest(Constants.GET_ATTENDANCE, getAttendance);
+  yield takeLatest(Constants.GET_ATTENDANCES, getAttendances);
+  yield takeLatest(Constants.GET_SHIFTS, getShifts);
+  yield takeLatest(Constants.GET_DAYS, getDays);
+  yield takeLatest(Constants.CREATE_SHIFT, createShift);
 }

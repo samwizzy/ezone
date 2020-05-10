@@ -39,6 +39,8 @@ export function HRPage(props) {
     getEmployeeTypes,
     getRoles,
     getBranches,
+    getPartyGroups,
+    getAnnouncements,
   } = props;
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
@@ -52,6 +54,8 @@ export function HRPage(props) {
     getEnrollmentTypes();
     getLocations();
     getJobOpenings();
+    getPartyGroups();
+    getAnnouncements();
   }, []);
 
   return (
@@ -86,6 +90,8 @@ export function mapDispatchToProps(dispatch) {
     getEnrollmentTypes: () => dispatch(Actions.getEnrollmentTypes()),
     getLocations: () => dispatch(Actions.getLocations()),
     getJobOpenings: () => dispatch(Actions.getJobOpenings()),
+    getPartyGroups: () => dispatch(Actions.getPartyGroups()),
+    getAnnouncements: () => dispatch(Actions.getAnnouncements()),
   };
 }
 
