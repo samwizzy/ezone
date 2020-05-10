@@ -57,13 +57,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const announcements = [
-  {id: 1, title: "Stand Up starts by 5:00", sentTo: "Yinka", msgType: "Email", date: "May 3rd 2020"}
-]
+// const announcements = [
+//   {id: 1, title: "Stand Up starts by 5:00", sentTo: "Yinka", msgType: "Email", date: "May 3rd 2020"}
+// ]
 
 const Announcement = props => {
   const classes = useStyles();
-  const { loading, openNewAnnouncementDialog, openAnnouncementViewDialog, getEmployees, roles, getEmployee, employees, employee } = props;
+  const { loading, openNewAnnouncementDialog, openAnnouncementViewDialog, getEmployees, announcements, getEmployee, employees, employee } = props;
 
   React.useEffect(() => {
   }, [employee]);
@@ -164,6 +164,7 @@ const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   employees: Selectors.makeSelectEmployees(),
   employee : Selectors.makeSelectEmployee(),
+  announcements : Selectors.makeSelectAnnouncements(),
   user: AppSelectors.makeSelectCurrentUser(),
   roles : Selectors.makeSelectRoles(),
 });
