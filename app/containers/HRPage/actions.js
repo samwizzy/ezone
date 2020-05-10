@@ -102,6 +102,18 @@ export function getEmployeeSuccess(data) {
   };
 }
 
+export function getPartyGroups() {
+  return {
+    type: Constants.GET_PARTYGROUPS,
+  };
+}
+export function getPartyGroupsSuccess(data) {
+  return {
+    type: Constants.GET_PARTYGROUPS_SUCCESS,
+    payload: data
+  };
+}
+
 export function getDepartments() {
   return {
     type: Constants.GET_DEPARTMENTS,
@@ -113,6 +125,19 @@ export function getDepartmentsSuccess(data) {
     payload: data
   };
 }
+
+export function getAnnouncements() {
+  return {
+    type: Constants.GET_ANNOUNCEMENTS,
+  };
+}
+export function getAnnouncementsSuccess(data) {
+  return {
+    type: Constants.GET_ANNOUNCEMENTS_SUCCESS,
+    payload: data
+  };
+}
+
 
 export function getDepartment(id) {
   return {
@@ -170,6 +195,19 @@ export function createBranch(data) {
 export function createBranchSuccess(data) {
   return {
     type: Constants.CREATE_BRANCH_SUCCESS,
+    payload: data
+  };
+}
+
+export function createAnnouncement(data) {
+  return {
+    type: Constants.CREATE_ANNOUNCEMENT,
+    payload: data
+  };
+}
+export function createAnnouncementSuccess(data) {
+  return {
+    type: Constants.CREATE_ANNOUNCEMENT_SUCCESS,
     payload: data
   };
 }
@@ -311,9 +349,10 @@ export function closeNewAnnouncementDialog() {
     type: Constants.CLOSE_NEW_ANNOUNCEMENT_DIALOG,
   };
 }
-export function openAnnouncementViewDialog() {
+export function openAnnouncementViewDialog(data) {
   return {
     type: Constants.OPEN_ANNOUNCEMENT_VIEW_DIALOG,
+    payload: data
   };
 }
 export function closeAnnouncementViewDialog() {

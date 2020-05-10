@@ -84,6 +84,17 @@ const makeSelectEmployeeTypes = () =>
     selectHR,
     hrState => hrState.jobOpenings,
   );
+  const makeSelectAnnouncements = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.announcements,
+  );
+
+  const makeSelectPartyGroups = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.partyGroups,
+  );
 
 
 const makeSelectEmpDialog = () =>
@@ -132,6 +143,17 @@ const makeSelectCreateEmployeeSuccess = () =>
     selectHR,
     hrState => hrState.getCreateEmployee,
   );
+
+  const makeSelectCreateAnnouncement = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.createAnnouncement,
+  );
+const makeSelectCreateAnnouncementSuccess = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.getCreateAnnouncement,
+  );
 const makeSelectCreateBranch = () =>
   createSelector(
     selectHR,
@@ -179,6 +201,7 @@ export {
   makeSelectCreateJobOpeningSuccess,
   makeSelectLoading,
   makeSelectEmployees,
+  makeSelectPartyGroups,
   makeSelectDepartments,
   makeSelectEmployeeTypes,
   makeSelectJobOpenings,
@@ -194,6 +217,9 @@ export {
   makeSelectBranchDialog,
   makeSelectRoleDialog,
   makeSelectPayrollDialog,
+  makeSelectAnnouncements,
   makeSelectAnnouncementDialog,
   makeSelectAnnouncementViewDialog,
+  makeSelectCreateAnnouncement,
+  makeSelectCreateAnnouncementSuccess,
 };

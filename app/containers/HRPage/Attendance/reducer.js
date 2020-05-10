@@ -219,6 +219,26 @@ const hrReducer = (state = initialState, action) =>
           employees: action.payload
         };
         break;
+        case Constants.GET_DAYS_SUCCESS:
+        return {
+          ...state,
+          days: action.payload
+        };
+        break;
+        case Constants.GET_SHIFTS_SUCCESS:
+        return {
+          ...state,
+          shifts: action.payload
+        };
+        break;
+        case Constants.CREATE_SHIFT_SUCCESS: {
+          return {
+            ...state,
+            loading: false,
+            error: false,
+            getCreateShift: action.payload,
+          };
+        }
       case Constants.GET_EMPLOYEE_SUCCESS:
         return {
           ...state,
@@ -325,6 +345,12 @@ const hrReducer = (state = initialState, action) =>
         return {
           ...state,
           announcementViewDialog: {...state.announcementViewDialog, props: { open: false }},
+        };
+        break;
+        case Constants.GET_ATTENDANCES_SUCCESS:
+        return {
+          ...state,
+          attendances: action.payload
         };
         break;
     }

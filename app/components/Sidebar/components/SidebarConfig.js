@@ -47,7 +47,7 @@ const SidebarConfig = [
         url: '/hr/recruitment',
         icon: 'find_in_page',
       },
-      { id: 4, name: 'Attendance', url: '/hr/attendance', icon: 'person' },
+      { id: 4, name: 'Attendance', url: '/human-resource/attendance', icon: 'person' },
       { id: 5, name: 'Payroll', url: '/hr/payroll', icon: 'payment' },
       {
         id: 6,

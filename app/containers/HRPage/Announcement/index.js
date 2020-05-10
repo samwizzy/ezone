@@ -56,18 +56,19 @@ const useStyles = makeStyles(theme => ({
     '&.done': { color: green[500]},
   },
 }));
-
+/*
 const announcements = [
   {id: 1, title: "Stand Up starts by 5:00", sentTo: "Yinka", msgType: "Email", date: "May 3rd 2020"}
 ]
-
+*/
 const Announcement = props => {
   const classes = useStyles();
-  const { loading, openNewAnnouncementDialog, openAnnouncementViewDialog, getEmployees, roles, getEmployee, employees, employee } = props;
+  const { loading, openNewAnnouncementDialog, announcements, getAnnouncements, openAnnouncementViewDialog, getEmployees, roles, getEmployee, employees, employee } = props;
 
   React.useEffect(() => {
   }, [employee]);
 
+  console.log(announcements, "announcement inside view");
   const columns = [
     {
       name: 'id',
@@ -85,6 +86,7 @@ const Announcement = props => {
       sort: true,
       },
     },
+    /*
     {
       name: 'sentTo',
       label: 'Sent to',
@@ -93,8 +95,9 @@ const Announcement = props => {
       sort: true,
       },
     },
+    */
     {
-      name: 'msgType',
+      name: 'type',
       label: 'Message type',
       options: {
         filter: true,
@@ -102,7 +105,7 @@ const Announcement = props => {
       },
     },
     {
-      name: 'date',
+      name: 'dateCreated',
       label: 'Published date',
       options: {
         filter: true,
@@ -123,7 +126,8 @@ const Announcement = props => {
       rowsPerPage: 10,
       rowsPerPageOptions: [10,25,50,100],
       onRowClick: (rowData, rowState) => {
-        openAnnouncementViewDialog()
+        console.log(rowData)
+        openAnnouncementViewDialog(rowData[0])
       },
       elevation: 0
   };
@@ -148,7 +152,9 @@ const Announcement = props => {
       </Grid>
 
       <AddAnnouncementDialog />
+      {/*
       <AnnouncementViewDialog />
+      */}
     </div>
   );
 };
@@ -164,6 +170,7 @@ const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   employees: Selectors.makeSelectEmployees(),
   employee : Selectors.makeSelectEmployee(),
+  announcements : Selectors.makeSelectAnnouncements(),
   user: AppSelectors.makeSelectCurrentUser(),
   roles : Selectors.makeSelectRoles(),
 });
@@ -173,7 +180,7 @@ function mapDispatchToProps(dispatch) {
     getEmployees: () => dispatch(Actions.getEmployees()),
     getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
     openNewAnnouncementDialog: () => dispatch(Actions.openNewAnnouncementDialog()),
-    openAnnouncementViewDialog: () => dispatch(Actions.openAnnouncementViewDialog()),
+    openAnnouncementViewDialog: (data) => dispatch(Actions.openAnnouncementViewDialog(data)),
   };
 }
 

@@ -211,6 +211,7 @@ const App = props => {
                 <PrivateRoute exact path="/work-order" component={WorkOrderPage} />
 
                 <PrivateRoute exact path="/human-resource/attendance" component={AttendancePage} />
+                {/*<PrivateRoute exact path="/hr/attendance" component={AttendancePage} />*/}
                 <PrivateRoute exact path="/hr/:section?/:status?" component={HRPage} />
 
                 <PrivateRoute exact path="/hr/:section?/:status?/applicant/:applicantId?" component={HRPage} />

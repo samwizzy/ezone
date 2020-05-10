@@ -52,8 +52,8 @@ const useStyles = makeStyles(theme => ({
 
 const AttendanceList = props => {
   const classes = useStyles();
-  const { loading, openNewAttendanceDialog, getAttendance, getAttendanceById, attendance } = props;
-
+  const { loading, openNewAttendanceDialog, getAttendances, attendances, getAttendanceById, attendance } = props;
+  console.log(attendances)
   React.useEffect(() => {
   }, []);
 
@@ -67,7 +67,7 @@ const AttendanceList = props => {
       },
     },
     {
-      name: 'createdAt',
+      name: 'dateCreated',
       label: 'Date',
       options: {
         filter: true,
@@ -80,24 +80,32 @@ const AttendanceList = props => {
       }
     },
     {
-      name: 'attended',
-      label: 'Attended',
+      name: 'status',
+      label: 'Status',
       options: {
         filter: true,
         sort: true,
       },
     },
     {
-      name: 'absent',
-      label: 'Absent',
+      name: 'shift',
+      label: 'Shift',
       options: {
         filter: true,
         sort: true,
       },
     },
     {
-      name: 'present',
-      label: 'Present',
+      name: 'logInTime',
+      label: 'Log in time',
+      options: {
+      filter: true,
+      sort: true,
+      },
+    },
+    {
+      name: 'logOutTime',
+      label: 'Log out time',
       options: {
       filter: true,
       sort: true,
@@ -157,7 +165,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAttendance: () => dispatch(Actions.getAttendance()),
+    getAttendances: () => dispatch(Actions.getAttendances()),
     getAttendanceById: (uuid) => dispatch(Actions.getAttendanceById(uuid)),
     openNewAttendanceDialog: () => dispatch(Actions.openNewAttendanceDialog()),
   };

@@ -25,7 +25,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function AddDepartmentDialog(props) {
   const classes = useStyles();
-  const { closeNewDepartmentDialog, createDepartment,  getEmployees, party_tags, PartyTags, employees, employee, getBranches, branches, departments,  dialog } = props;
+  const { closeNewDepartmentDialog, createDepartment,  getEmployees, party_tags, PartyTags, employees,  employee, getBranches, branches, departments,  dialog } = props;
   const [form, setForm] = React.useState({
     name: '',
     description: '',
@@ -36,6 +36,7 @@ function AddDepartmentDialog(props) {
   });
   
   console.log(dialog, "dialog checking")
+  
 
   React.useEffect(() => {
     if(dialog.type == 'edit'){
