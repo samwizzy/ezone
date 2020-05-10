@@ -57,10 +57,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+/*
 const announcements = [
   {id: 1, title: "Stand Up starts by 5:00", sentTo: "Yinka", msgType: "Email", date: "May 3rd 2020"}
 ]
-
+*/
 const Announcement = props => {
   const classes = useStyles();
   const { loading, openNewAnnouncementDialog, openAnnouncementViewDialog, getEmployees, roles, getEmployee, employees, employee } = props;
@@ -148,7 +149,9 @@ const Announcement = props => {
       </Grid>
 
       <AddAnnouncementDialog />
+      {/*
       <AnnouncementViewDialog />
+      */}
     </div>
   );
 };
