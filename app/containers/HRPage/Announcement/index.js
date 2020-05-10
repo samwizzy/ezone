@@ -86,16 +86,16 @@ const Announcement = props => {
       sort: true,
       },
     },
-    /*
     {
-      name: 'sentTo',
-      label: 'Sent to',
+      name: 'message',
+      label: 'Message',
       options: {
+      display: 'excluded',
       filter: true,
       sort: true,
       },
     },
-    */
+    
     {
       name: 'type',
       label: 'Message type',
@@ -127,7 +127,7 @@ const Announcement = props => {
       rowsPerPageOptions: [10,25,50,100],
       onRowClick: (rowData, rowState) => {
         console.log(rowData)
-        openAnnouncementViewDialog(rowData[0])
+        openAnnouncementViewDialog(rowData)
       },
       elevation: 0
   };
@@ -152,9 +152,9 @@ const Announcement = props => {
       </Grid>
 
       <AddAnnouncementDialog />
-      {/*
+      
       <AnnouncementViewDialog />
-      */}
+      
     </div>
   );
 };

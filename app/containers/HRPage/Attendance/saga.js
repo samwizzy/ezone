@@ -74,6 +74,26 @@ export function* getShifts() {
     console.log(err, "Shifts error")
   }
 }
+export function* getEmployees() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}/${user.organisation.orgId}`;
+
+  try {
+    const employeesResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+    console.log(employeesResponse, "emplyees response");
+    yield put(Actions.getEmployeesSuccess(employeesResponse));
+  } catch (err) {
+    console.log(err, "emplyees error");
+    // yield put(Actions.getEmployeesError(err));
+  }
+}
 
 export function* createShift({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
@@ -109,4 +129,5 @@ export default function* AttendanceRootSaga() {
   yield takeLatest(Constants.GET_SHIFTS, getShifts);
   yield takeLatest(Constants.GET_DAYS, getDays);
   yield takeLatest(Constants.CREATE_SHIFT, createShift);
+  yield takeLatest(Constants.GET_EMPLOYEES, getEmployees);
 }

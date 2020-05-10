@@ -24,6 +24,19 @@ export function getAttendancesSuccess(data) {
   };
 }
 
+export function getEmployees() {
+  return {
+    type: Constants.GET_EMPLOYEES,
+  };
+}
+
+export function getEmployeesSuccess(data) {
+  return {
+    type: Constants.GET_EMPLOYEES_SUCCESS,
+    payload: data
+  };
+}
+
 export function getDays() {
   return {
     type: Constants.GET_DAYS,

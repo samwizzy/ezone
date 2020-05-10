@@ -56,6 +56,12 @@ const makeSelectAttendanceDialog = () =>
     subState => subState.attdDialog,
   );
 
+  const makeSelectEmployees = () =>
+  createSelector(
+    selectAttendance,
+    subState => subState.employees,
+  );
+
 export default makeSelectAttendancePage;
 export { 
   selectAttendance,
@@ -66,5 +72,6 @@ export {
   makeSelectDays,
   makeSelectShifts,
   makeSelectCreateShift,
-  makeSelectCreateShiftSuccess
+  makeSelectCreateShiftSuccess,
+  makeSelectEmployees,
 };

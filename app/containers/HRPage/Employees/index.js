@@ -156,11 +156,17 @@ const EmployeesApp = props => {
       },
     },
     {
-      name: 'department',
+      name: 'id',
       label: 'Department ',
       options: {
         filter: true,
         sort: true,
+        customBodyRender: id => {
+          const emp = employees && employees.find(e => e.id == id);
+          return (
+            emp.department && <span>{`${toTitleCase(emp.department.name)}`}</span>
+          );
+        },
       },
     },
     {

@@ -49,8 +49,9 @@ const useStyles = makeStyles(theme => ({
 
 const EmployeeShiftList = props => {
   const classes = useStyles();
-  const { loading, openNewAttendanceDialog, getAttendances, getAttendanceById, attendance } = props;
-
+  const { loading, openNewAttendanceDialog, getAttendances, getAttendanceById, attendance, employees } = props;
+  console.log(employees, "Employees in employeeShift");
+  const toTitleCase = str => (str ? str[0].toUpperCase() + str.slice(1) : '');
   React.useEffect(() => {
   }, []);
 
@@ -63,6 +64,7 @@ const EmployeeShiftList = props => {
         filter: true,
       },
     },
+    /*
     {
       name: 'avi',
       label: ' ',
@@ -76,28 +78,49 @@ const EmployeeShiftList = props => {
         }
       }
     },
+    */
     {
-      name: 'employee',
-      label: 'Employee',
+      name: 'id',
+      label: 'Name',
       options: {
         filter: true,
         sort: true,
+        customBodyRender: id => {
+          const emp = employees && employees.find(e => e.id == id);
+          return (
+            <span>{`${toTitleCase(emp.firstName)} ${toTitleCase(
+              emp.lastName,
+            )}`}</span>
+          );
+        },
       },
     },
     {
-      name: 'shift',
+      name: 'id',
       label: 'Shift',
       options: {
         filter: true,
         sort: true,
+        customBodyRender: id => {
+          const emp = employees && employees.find(e => e.id == id);
+          return (
+            emp.workShift && <span>{`${toTitleCase(emp.workShift.shiftName)}`}</span>
+          );
+        },
       },
     },
     {
-      name: 'duration',
-      label: 'Duration',
+      name: 'id',
+      label: 'End date',
       options: {
       filter: true,
       sort: true,
+      customBodyRender: id => {
+        const emp = employees && employees.find(e => e.id == id);
+        return (
+          emp.workShift && <span>{`${toTitleCase(emp.workShift.endDate)}`}</span>
+        );
+      },
       },
     }
   ];
@@ -114,7 +137,7 @@ const EmployeeShiftList = props => {
     rowsPerPage: 10,
     rowsPerPageOptions: [10,25,50,100],
     onRowClick: (rowData, rowState) => {
-      getAttendanceById(rowData[0])
+     // getAttendanceById(rowData[0])
     },
     elevation: 0
   };
@@ -129,7 +152,7 @@ const EmployeeShiftList = props => {
           <MUIDataTable
             className={classes.datatable}
             title="Employee Shifts"
-            data={attendance}
+            data={employees}
             columns={columns}
             options={options}
           />
@@ -150,6 +173,7 @@ const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   user: AppSelectors.makeSelectCurrentUser(),
   attendances: Selectors.makeSelectAttendances(),
+  employees: Selectors.makeSelectEmployees(),
 });
 
 function mapDispatchToProps(dispatch) {

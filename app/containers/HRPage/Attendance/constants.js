@@ -12,6 +12,9 @@
 export const GET_ATTENDANCES        = 'boilerplate/HRPage/GET ATTENDANCES';
 export const GET_ATTENDANCES_SUCCESS = 'boilerplate/HRPage/GET ATTENDANCES SUCCESS';
 
+export const GET_EMPLOYEES         = 'boilerplate/HRPage/GET EMPLOYEES';
+export const GET_EMPLOYEES_SUCCESS = 'boilerplate/HRPage/GET EMPLOYEES SUCCESS';
+
 export const GET_DAYS        = 'boilerplate/HRPage/GET DAYS';
 export const GET_DAYS_SUCCESS = 'boilerplate/HRPage/GET DAYS SUCCESS';
 

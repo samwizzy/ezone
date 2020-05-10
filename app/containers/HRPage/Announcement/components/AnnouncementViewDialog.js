@@ -40,21 +40,22 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function AnnouncementViewDialog(props) {
   const classes = useStyles();
   const { closeAnnouncementViewDialog, dialog } = props;
-  console.log(dialog);
   return (
     <div className={classes.root}>
       <Dialog
         {...dialog.props}
         TransitionComponent={Transition}
-        keepMounted
+        
         onClose={closeAnnouncementViewDialog}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle  disableTypography>
+        {dialog.props.data && 
           <Typography variant="h6">
-            Project Design Team Meeting at 5:00pm
+            {dialog.props.data[1]}
           </Typography>
+        }
           <IconButton aria-label="close" className={classes.closeButton} onClick={closeAnnouncementViewDialog}><CloseIcon /></IconButton>
         </DialogTitle>
 
@@ -62,9 +63,11 @@ function AnnouncementViewDialog(props) {
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <DialogContentText>
+              {dialog.props.data && 
                 <Typography variant="subtitle1">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                {dialog.props.data[1]}
                 </Typography>
+              }
               </DialogContentText>
             </Grid>
           </Grid>

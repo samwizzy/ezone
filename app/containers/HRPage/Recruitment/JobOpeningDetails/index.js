@@ -20,6 +20,7 @@ const JobOpeningDetailsApp = props => {
   const classes = useStyles();
   const { loading, match, getJobOpenings, jobOpenings, } = props;
   const { params } = match
+  console.log(params);
 
   React.useEffect(() => {
   }, []);

@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function AttendancePage(props) {
-  const { getAttendances, getDays, getShifts, days } = props;
+  const { getAttendances, getDays, getShifts, days, getEmployees, } = props;
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
   console.log(days, "Index attd");
@@ -38,6 +38,7 @@ export function AttendancePage(props) {
     getAttendances(); 
     getDays(); 
     getShifts();
+    getEmployees();
   }, []);
 
   return (
@@ -66,6 +67,7 @@ export function mapDispatchToProps(dispatch) {
     getAttendances: () => dispatch(Actions.getAttendances()),
     getDays: () => dispatch(Actions.getDays()),
     getShifts: () => dispatch(Actions.getShifts()),
+    getEmployees: () => dispatch(Actions.getEmployees()),
   };
 }
 

@@ -70,7 +70,7 @@ const useStyles = makeStyles(theme => ({
 
 const JobOpening = props => {
   const classes = useStyles();
-  const { loading, openNewEmployeeDialog, getEmployee, employees, employee, getJobOpenings, jobOpenings } = props;
+  const { loading, openNewEmployeeDialog, getEmployee, employees, employee, getJobOpenings, jobOpenings, history } = props;
 
   React.useEffect(() => {
   }, [employee]);
@@ -191,8 +191,9 @@ const JobOpening = props => {
     rowsPerPage: 10,
     rowsPerPageOptions: [10,25,50,100],
     onRowClick: (rowData, rowState) => {
-      console.log(rowData[0], "rowData[0]")
-      getEmployee(rowData[0])
+      //console.log(rowData[0], "rowData[0]")
+      //getEmployee(rowData[0])
+      history.push(`/hr/recruitment/${rowData[0]}`);
     },
     elevation: 0
   };
