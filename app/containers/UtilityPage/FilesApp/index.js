@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles'
 import { compose } from 'redux';
@@ -23,25 +24,32 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const FilesApp = props => {
-    useInjectReducer({ key: 'utilityPage', reducer });
-    useInjectSaga({ key: 'utilityPage', saga });
+  useInjectReducer({ key: 'utilityPage', reducer });
+  useInjectSaga({ key: 'utilityPage', saga });
 
-    const classes = useStyles();
-    const { loading, getAllFoldersAndDocs, getEmployees, match } = props;
-    const { params } = match
+  const classes = useStyles();
+  const { loading, getAllFoldersAndDocs, getEmployees, match } = props;
+  const { params } = match
 
-    React.useEffect(() => {
-        getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
-        getEmployees()
-    }, []);
+  React.useEffect(() => {
+    getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
+    getEmployees()
+  }, []);
 
-    return (
-        <ModuleLayout>
-          { params.folderId? 
-            <FileList /> : <FilesList />
-          }
-        </ModuleLayout>
-    );
+  return (
+    <div>
+      <Helmet>
+        <title>Documents - Index</title>
+        <meta name="description" content="Utility Documents Page" />
+      </Helmet>
+
+      <ModuleLayout>
+        { params.folderId? 
+          <FileList /> : <FilesList />
+        }
+      </ModuleLayout>
+    </div>
+  );
 };
 
 FilesApp.propTypes = {

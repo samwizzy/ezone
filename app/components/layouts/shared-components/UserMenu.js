@@ -96,7 +96,7 @@ const UserMenu = props => {
 
           <div className="hidden md:flex flex-col ml-12 items-start">
             <Typography className={classes.name} color="textSecondary">
-              {/* {currentUser && currentUser.lastName} */}
+              {currentUser && currentUser.lastName}
             </Typography>
           </div>
         </Button>

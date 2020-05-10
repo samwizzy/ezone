@@ -24,7 +24,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function AssignToDialog(props) {
   const classes = useStyles()
-  const { closeAssignToDialog, shareDocument, data, users, files } = props
+  const { closeAssignToDialog, shareDocument, dialog, users, files } = props
   const [form, setForm] = React.useState({
     docId: "",
     name: "",
@@ -32,11 +32,11 @@ function AssignToDialog(props) {
   })
 
   React.useEffect(() => {
-    if(data.data != null){
-      setForm(_.set(form, "docId", data.data.id))
-      setForm(_.set(form, "name", data.data.docName))
+    if(dialog.data != null){
+      setForm(_.set(form, "docId", dialog.data.id))
+      setForm(_.set(form, "name", dialog.data.docName))
     }
-  }, [data])
+  }, [dialog])
 
   const handleChange = (event) => {
     setForm(_.set({...form}, event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value));
@@ -46,13 +46,13 @@ function AssignToDialog(props) {
     shareDocument(form)
   }
 
-  console.log(data, 'checking shared...')
+  console.log(dialog, 'checking shared dialog...')
   console.log(form, 'checking form...')
 
   return (
-    <div>
+    <div className={classes.root}>
       <Dialog
-        {...data.props}
+        {...dialog.props}
         TransitionComponent={Transition}
         keepMounted
         onClose={closeAssignToDialog}
@@ -60,29 +60,27 @@ function AssignToDialog(props) {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle id="alert-dialog-slide-title">Assign Task</DialogTitle>
-        <Divider />
+        
         <DialogContent>
-          <form className={classes.root}>
-            <TextField
-              id="select-head"
-              name="sharedTo"
-              placeholder="Select employee to assign to task"
-              select
-              fullWidth
-              className={classes.textField}
-              variant="outlined"
-              size="small"
-              label="Share To"
-              value={form.sharedTo}
-              onChange={handleChange}
-            >
-              {users && users.map(user => (
-                <MenuItem key={user.uuId} value={user.uuId}>
-                  {user.emailAddress}
-                </MenuItem>
-              ))}
-            </TextField>
-          </form>
+          <TextField
+            id="select-head"
+            name="sharedTo"
+            placeholder="Select employee to assign to task"
+            select
+            fullWidth
+            className={classes.textField}
+            variant="outlined"
+            size="small"
+            label="Share To"
+            value={form.sharedTo}
+            onChange={handleChange}
+          >
+            {users && users.map(user => (
+              <MenuItem key={user.uuId} value={user.uuId}>
+                {user.emailAddress}
+              </MenuItem>
+            ))}
+          </TextField>
         </DialogContent>
         <DialogActions>
           <Button variant="outlined" onClick={closeAssignToDialog} color="primary">
@@ -104,7 +102,7 @@ AssignToDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  data: Selectors.makeSelectAssignTaskDialog(),
+  dialog: Selectors.makeSelectAssignTaskDialog(),
   users: Selectors.makeSelectEmployees(),
   files: Selectors.makeSelectFiles(),
 });

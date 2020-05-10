@@ -5,7 +5,15 @@ import { makeStyles } from '@material-ui/core/styles'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
-import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, MenuItem, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import ScheduleIcon from '@material-ui/icons/Schedule'
+import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, MenuItem, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
@@ -13,9 +21,14 @@ import moment from 'moment'
 const useStyles = makeStyles(theme => ({
   root: {
     '& .MuiTextField-root': {
-      margin: theme.spacing(1, 0)
+      // margin: theme.spacing(1, 0)
     },
   },
+  table: {
+    "& td": {
+      border: "0 !important"
+    }
+  }
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -26,9 +39,12 @@ function AddAttendanceDialog(props) {
   const classes = useStyles();
   const { closeNewAttendanceDialog, dialog } = props;
   const [form, setForm] = React.useState({
-    title: '',
-    sendTo: '',
-    messageType: '',
+    employee: '',
+    date: new Date,
+    status: '',
+    loginTime: new Date,
+    logoutTime: new Date,
+    comment: '',
   });
 
   React.useEffect(() => {
@@ -38,8 +54,8 @@ function AddAttendanceDialog(props) {
   }, [dialog])
 
   const canSubmitForm = () => {
-    const {title, messageType, sendTo } = form
-    return title.length > 0 && messageType.length > 0 && sendTo.length > 0
+    const {employee, date, status, loginTime, logoutTime, comment } = form
+    return employee.length > 0 && date.length > 0 && status.length > 0
   }
 
   const handleChange = (event) => {
@@ -47,10 +63,11 @@ function AddAttendanceDialog(props) {
     setForm({...form, [name]: value});
   }
 
-  const handleSubmit = () => {
-  }
+  const handleSelectChange = () => {}
 
-  console.log(form, 'checking form employee...')
+  const handleDateChange = () => {}
+
+  const handleSubmit = () => {}
 
   return (
     <div>
@@ -62,69 +79,134 @@ function AddAttendanceDialog(props) {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <AppBar position="relative">
+        <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
               Add attendance
             </Typography>
           </Toolbar>
         </AppBar>
-        
-        <Divider />
 
-        <DialogContent>
-          <Grid container spacing={1}>
-              <Grid item xs={12}>
-                  <TextField
-                  name="title"
-                  label="Title"
-                  id="outlined-title"
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                  value={form.title}
-                  onChange={handleChange}
+        <DialogContent dividers>
+          <Table className={classes.table} size="small">
+            <TableBody>
+              <TableRow>
+                <TableCell>
+                  <Autocomplete
+                    id="combo-box-demo"
+                    size="small"
+                    options={[]}
+                    getOptionLabel={option => option.label}
+                    onChange={(evt, value) => handleSelectChange(evt, value)}
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        label="Employee"
+                        variant="outlined"
+                        placeholder="Search"
+                        margin="normal"
+                        fullWidth
+                      />
+                    )}
                   />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  id="send-to"
-                  name="sendTo"
-                  placeholder="Send To"
-                  select
-                  fullWidth
-                  className={classes.textField}
-                  variant="outlined"
-                  size="small"
-                  label="Send To"
-                  value={form.sendTo}
-                  onChange={handleChange}
-                >
-                  <MenuItem key={0} value="1">
-                      No record
-                  </MenuItem>
-                </TextField>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  id="message-type"
-                  name="messageType"
-                  placeholder="Message Type"
-                  select
-                  fullWidth
-                  className={classes.textField}
-                  variant="outlined"
-                  size="small"
-                  label="Message Type"
-                  value={form.messageType}
-                  onChange={handleChange}
-                >
-                  <MenuItem key={0} value="1">
-                    No record
-                  </MenuItem>
-                </TextField>
-              </Grid>
-          </Grid>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      margin="normal"
+                      inputVariant="outlined"
+                      id="date-picker-dialog"
+                      label="Date"
+                      size="small"
+                      format="MM/dd/yyyy"
+                      value={form.date}
+                      onChange={handleDateChange}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                  <TextField
+                    id="status"
+                    name="status"
+                    placeholder="Status"
+                    select
+                    fullWidth
+                    variant="outlined"
+                    margin="normal"
+                    size="small"
+                    label="Status"
+                    value={form.status}
+                    onChange={handleChange}
+                  >
+                    <MenuItem key={0} value="">
+                        No record
+                    </MenuItem>
+                  </TextField>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardTimePicker
+                      margin="normal"
+                      inputVariant="outlined"
+                      id="time-picker"
+                      label="Login Time"
+                      size="small"
+                      value={form.loginTime}
+                      onChange={handleDateChange}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change time',
+                      }}
+                      keyboardIcon={<ScheduleIcon />}
+                    />
+                  </MuiPickersUtilsProvider>
+                </TableCell>
+                <TableCell>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardTimePicker
+                      margin="normal"
+                      inputVariant="outlined"
+                      id="time-picker"
+                      label="Logout Time"
+                      size="small"
+                      value={form.logoutTime}
+                      onChange={handleDateChange}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change time',
+                      }}
+                      keyboardIcon={<ScheduleIcon />}
+                    />
+                  </MuiPickersUtilsProvider>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell colSpan={2}>
+                  <TextField
+                    id="comment"
+                    name="comment"
+                    placeholder="Comment"
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                    multiline
+                    rows={3}
+                    size="small"
+                    label="Comment"
+                    value={form.comment}
+                    onChange={handleChange}
+                  />
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
         </DialogContent>
 
         <DialogActions>
@@ -132,7 +214,7 @@ function AddAttendanceDialog(props) {
             Cancel
           </Button>
           <Button onClick={handleSubmit} disabled={!canSubmitForm()} color="primary">
-            Next
+            Mark
           </Button>
         </DialogActions>
       </Dialog>

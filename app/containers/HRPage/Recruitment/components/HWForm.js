@@ -89,7 +89,7 @@ export const HiringWorkFlowForm = props => {
         <Card>
         <AppBar position='relative'>
           <Toolbar>
-            <Typography variant="h6" gutterBottom>Hiring Steps</Typography>
+            <Typography variant="h6">Hiring Steps</Typography>
           </Toolbar>
         </AppBar>
 

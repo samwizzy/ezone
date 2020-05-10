@@ -1,14 +1,14 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Button, ButtonGroup, Icon, IconButton, TableContainer, Table, TableRow, TableCell, TableBody, TextField, Grid, Paper, Typography } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors'
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
+import { darken } from '@material-ui/core/styles/colorManipulator';
 import moment from 'moment'
 import MUIDataTable from 'mui-datatables'
 import * as Actions from '../actions';
@@ -16,7 +16,6 @@ import * as Selectors from '../selectors';
 import * as AppSelectors from '../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
-import {AddEmployee} from '../components/AddButton'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -187,7 +186,9 @@ const JobOpening = props => {
     download: true,
     viewColumns: false,
     filter: false,
-    customToolbar: () => <IconButton component={Link} to="/hr/recruitment/new"><Icon color="primary">add_circle</Icon></IconButton>,
+    customToolbar: () => (
+      <Button component={Link} to="/hr/recruitment/new" variant="contained" color="primary" startIcon={<Icon>add</Icon>}>New</Button>
+    ),
     rowsPerPage: 10,
     rowsPerPageOptions: [10,25,50,100],
     onRowClick: (rowData, rowState) => {
@@ -203,76 +204,14 @@ const JobOpening = props => {
         container
         justify='space-around'
       >
-        <Grid item md={12}>
-          <div className={classes.content}>
-        
-            <MUIDataTable
-                className={classes.datatable}
-                title="Recruitment"
-                data={jobOpenings}
-                columns={columns}
-                options={options}
-            />
-
-          </div>
-        </Grid>
-        <Grid item md={3}>
-          <div className={classes.gridRoot}>
-            <div className={classes.buttonGroup}>
-              <ButtonGroup size="small" aria-label="small outlined button group">
-                <Button onClick={()=>{}}><EditSharp className={classes.icon} />Edit</Button>
-                <Button onClick={()=>{}}><Assignment className={classes.icon} />Assign</Button>
-              </ButtonGroup>
-            </div>
-
-            <TableContainer component={Paper} square>
-                <Table className={classes.table} size="small" aria-label="a dense table">
-                <TableBody>
-                    {employee && Object.keys(employee).length > 0 && (
-                    <React.Fragment>  
-                      <TableRow key='0'>
-                          <TableCell component="th" scope="row">
-                              Name
-                          </TableCell>
-                          <TableCell align="right">
-                            {`${toTitleCase(employee.firstName)} ${toTitleCase(employee.lastName)}`}
-                          </TableCell>
-                      </TableRow>
-                      <TableRow key='1'>
-                          <TableCell component="th" scope="row">
-                              Email Address
-                          </TableCell>
-                          <TableCell align="right">{employee.emailAddress}</TableCell>
-                      </TableRow>
-                      <TableRow key='2'>
-                          <TableCell component="th" scope="row">
-                              Phone Number
-                          </TableCell>
-                          <TableCell align="right">{employee.phoneNumber}</TableCell>
-                      </TableRow>
-                      <TableRow key='3'>
-                          <TableCell component="th" scope="row">
-                              Gender
-                          </TableCell>
-                          <TableCell align="right">{employee.gender}</TableCell>
-                      </TableRow>
-                      <TableRow key='4'>
-                          <TableCell component="th" scope="row">
-                              Address
-                          </TableCell>
-                          <TableCell align="right">{`${employee.city?employee.city:""} ${employee.state?employee.state:""} ${employee.country}`}</TableCell>
-                      </TableRow>
-                      <TableRow key='5'>
-                          <TableCell component="th" scope="row">
-                              Created On                          </TableCell>
-                          <TableCell align="right">{moment(employee.dateCreated).format('ll')}</TableCell>
-                      </TableRow>
-                    </React.Fragment>
-                    )}
-                </TableBody>
-                </Table>
-            </TableContainer>
-          </div>
+        <Grid item xs={12}>
+          <MUIDataTable
+            className={classes.datatable}
+            title="Recruitment"
+            data={jobOpenings}
+            columns={columns}
+            options={options}
+          />
         </Grid>
       </Grid>
     </div>

@@ -15,6 +15,7 @@ import * as AppActions from '../../../App/actions';
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
 import EmployeeShiftList from './EmployeeShiftList'
+import AssignShiftDialog from './components/AssignShiftDialog'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -37,6 +38,8 @@ export function EmployeeShiftPage(props) {
       </Helmet>
 
       <EmployeeShiftList />
+      
+      <AssignShiftDialog />
 
     </React.Fragment>
   );

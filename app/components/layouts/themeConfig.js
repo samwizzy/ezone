@@ -32,6 +32,13 @@ const themesConfig = {
       ongoing: '#1EE11A',
       completed: '#C2C2C2',
     },
+    overrides: {
+      MUIDataTableBodyCell: {
+        root: {
+          // backgroundColor: "#FFFFFF"
+        }
+      }
+    },
     // MUIDataTable: {
     //   root: {
     //     backgroundColor: "#AAF",

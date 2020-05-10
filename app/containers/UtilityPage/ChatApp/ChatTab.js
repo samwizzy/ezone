@@ -167,6 +167,7 @@ const ChatTab = props => {
     dispatchGetUserChatData,
   } = props;
 
+  console.log(allEmployees, 'allEmployees');
   useEffect(() => {
     dispatchGetAllEmployees();
     dispatchGetUserChats();
@@ -199,6 +200,7 @@ const ChatTab = props => {
   if (newMsgRes) {
     // dispatchGetUserChatData(newMsgRes);
     getAllUserChatData.messages.push(newMsgRes);
+    // getAllUserChatData.messages[getAllUserChatData.messages.length] = newMsgRes;
   }
 
   useEffect(() => {
@@ -260,10 +262,8 @@ const ChatTab = props => {
             <div />
           ) : (
             <Grid
-              justify="center"
               container
               justify="space-between"
-              alignItems="center"
             >
               <Grid item xs={12} md={4}>
                 <Paper square>
@@ -338,7 +338,7 @@ const ChatTab = props => {
                         _.orderBy(chatLog, ['dateCreated'], ['asc']).map(
                           (chat, i) => (
                             <div
-                              key={chat.id}
+                              key={chat.dateCreated.toString() + 10}
                               className={classNames(
                                 classes.messageRow,
                                 { me: currentUser.uuId === chat.senderId },
@@ -357,13 +357,10 @@ const ChatTab = props => {
                                 },
                               )}
                             >
-                              <Paper
-                                className={classes.chatPane}
-                                key={chat.id + 1}
-                              >
+                              <Paper className={classes.chatPane} key={chat.id}>
                                 <Typography
                                   variant="subtitle1"
-                                  key={chat.id + 1}
+                                  key={chat.toString()}
                                 >
                                   {chat.chatMessage}
                                 </Typography>

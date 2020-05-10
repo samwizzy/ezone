@@ -121,7 +121,7 @@ const ContactGroupsDialog = props => {
                       fullWidth
                       variant="outlined"
                       size="small"
-                      value={form.groupName}
+                      value={form.groupName ? form.groupName : ''}
                       onChange={handleChange}
                     />
                   </TableCell>
@@ -138,7 +138,7 @@ const ContactGroupsDialog = props => {
                       fullWidth
                       variant="outlined"
                       size="small"
-                      value={form.groupDescription}
+                      value={form.groupDescription ? form.groupDescription : ''}
                       onChange={handleChange}
                     />
                   </TableCell>
@@ -181,7 +181,10 @@ const ContactGroupsDialog = props => {
                 Cancel
               </Button>
               <Button
-                onClick={() => createNewContactGroupAction(form)}
+                onClick={() => {
+                  createNewContactGroupAction(form);
+                  setForm('');
+                }}
                 disabled={!canSubmitForm()}
                 color="primary"
               >
@@ -194,7 +197,10 @@ const ContactGroupsDialog = props => {
                 Cancel
               </Button>
               <Button
-                onClick={() => updateContactGroupAction(form)}
+                onClick={() => {
+                  updateContactGroupAction(form);
+                  setForm('');
+                }}
                 disabled={!canSubmitForm()}
                 color="primary"
               >

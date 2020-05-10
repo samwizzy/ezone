@@ -17,7 +17,6 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectCrm from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from '../messages';
 import SchedulesList from './components/SchedulesList';
 import ModuleLayout from './../components/ModuleLayout';
 

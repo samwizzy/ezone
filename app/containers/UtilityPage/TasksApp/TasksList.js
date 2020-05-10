@@ -71,7 +71,7 @@ const useStyles = makeStyles(theme => ({
 
 const TasksList = props => {
   const classes = useStyles();
-  const { loading, getUtilityTasks, getUtilityTasksByStatus, openNewTaskDialog, deleteTask, tasks, users } = props;
+  const { loading, getUtilityTasks, getUtilityTasksByStatus, openNewTaskDialog, openConfirmTaskDeleteDialog, deleteTask, tasks, users } = props;
 
 console.log(tasks, "tasks")
 
@@ -186,8 +186,9 @@ console.log(tasks, "tasks")
         filter: true,
         sort: false,
         customBodyRender: id => {
+          const selectedTask = tasks && tasks.find(task => task.id === id)
           return (
-            <IconButton onClick={event => {event.stopPropagation(), deleteTask(id)}} className={classNames(classes.iconButton, {'delete': true})}>
+            <IconButton onClick={event => (event.stopPropagation(), openConfirmTaskDeleteDialog(selectedTask))} className={classNames(classes.iconButton, {'delete': true})}>
               <DeleteOutline />
             </IconButton>
           )
@@ -297,6 +298,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewTaskDialog: () => dispatch(Actions.openNewTaskDialog()),
+    openConfirmTaskDeleteDialog: (data) => dispatch(Actions.openConfirmTaskDeleteDialog(data)),
     getUtilityTasks: () => dispatch(Actions.getUtilityTasks()),
     getEmployees: () => dispatch(Actions.getEmployees()),
     getUtilityTasks: () => dispatch(Actions.getUtilityTasks()),
@@ -310,8 +312,8 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(
-  compose(
-    withConnect,
-    memo,
-)(TasksList));
+export default compose(
+  withRouter,
+  withConnect,
+  memo,
+)(TasksList);

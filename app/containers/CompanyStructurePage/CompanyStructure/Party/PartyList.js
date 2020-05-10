@@ -237,7 +237,7 @@ const PartyList = props => {
                     onClick={handleBackToRoot}
                     className={classes.link}
                   >
-                    {'> Party Groups'}
+                    {'Party Groups'}
                   </Link>
                   <Typography color="textPrimary" variant="h6">
                     {EzoneUtils.toTitleCase(getPartyById.name)}

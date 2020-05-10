@@ -97,3 +97,48 @@ export function closeEditAttendanceDialog(data) {
     type: Constants.CLOSE_EDIT_ATTENDANCE_DIALOG,
   };
 }
+
+export function openNewShiftDialog() {
+  console.log("open shift dialog")
+  return {
+    type: Constants.OPEN_NEW_SHIFT_DIALOG,
+  };
+}
+export function closeNewShiftDialog() {
+  return {
+    type: Constants.CLOSE_NEW_SHIFT_DIALOG,
+  };
+}
+
+export function openEditShiftDialog(data) {
+  return {
+    type: Constants.OPEN_EDIT_SHIFT_DIALOG,
+  };
+}
+export function closeEditShiftDialog(data) {
+  return {
+    type: Constants.CLOSE_EDIT_SHIFT_DIALOG,
+  };
+}
+
+export function openNewEmployeeShiftDialog() {
+  return {
+    type: Constants.OPEN_NEW_EMPLOYEE_SHIFT_DIALOG,
+  };
+}
+export function closeNewEmployeeShiftDialog() {
+  return {
+    type: Constants.CLOSE_NEW_EMPLOYEE_SHIFT_DIALOG,
+  };
+}
+
+export function openEditEmployeeShiftDialog(data) {
+  return {
+    type: Constants.OPEN_EDIT_EMPLOYEE_SHIFT_DIALOG,
+  };
+}
+export function closeEditEmployeeShiftDialog(data) {
+  return {
+    type: Constants.CLOSE_EDIT_EMPLOYEE_SHIFT_DIALOG,
+  };
+}

@@ -50,6 +50,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const shifts = [
+  {id: 1, name: 'General', startTime: '2010-01-01T05:06:07', endTime: '2010-01-01T05:06:07', endDate: '2010-01-01T05:06:07'}
+]
+
 const ShiftList = props => {
   const classes = useStyles();
   const { loading, openNewAttendanceDialog, getAttendances, getShifts, shifts, getAttendanceById, attendance } = props;
@@ -119,7 +123,7 @@ const ShiftList = props => {
     download: true,
     viewColumns: false,
     filter: false,
-    customToolbar: () => <AddShift openDialog={openNewAttendanceDialog} />,
+    customToolbar: () => <AddShift openDialog={openNewShiftDialog} />,
     rowsPerPage: 10,
     rowsPerPageOptions: [10,25,50,100],
     onRowClick: (rowData, rowState) => {
@@ -152,7 +156,7 @@ const ShiftList = props => {
 
 ShiftList.propTypes = {
   loading: PropTypes.bool,
-  openNewAttendanceDialog: PropTypes.func,
+  openNewShiftDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -167,7 +171,7 @@ function mapDispatchToProps(dispatch) {
     getAttendances: () => dispatch(Actions.getAttendances()),
     getShifts: () => dispatch(Actions.getShifts()),
     getAttendanceById: (uuid) => dispatch(Actions.getAttendanceById(uuid)),
-    openNewAttendanceDialog: () => dispatch(Actions.openNewAttendanceDialog()),
+    openNewShiftDialog: () => dispatch(Actions.openNewShiftDialog()),
   };
 }
 

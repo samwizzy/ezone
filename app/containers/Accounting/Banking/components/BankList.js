@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.primary.main,
       },
       '& .MuiTableCell-root:nth-child(even)': {
-        // backgroundColor: darken(theme.palette.primary.main, 0.1),
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
   },
@@ -149,7 +149,7 @@ const BankList = props => {
     },
     {
       name: 'id',
-      label: '.',
+      label: ' ',
       options: {
         filter: true,
         sort: false,

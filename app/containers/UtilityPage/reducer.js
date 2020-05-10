@@ -15,27 +15,6 @@ export const initialState = {
   getAllEmployees: [],
   loading: false,
   error: { success: '', message: '' },
-  data: [
-    {
-      id: 1,
-      name: 'Samuel',
-      format: 'PDF',
-      size: '12mb',
-      modified_by: 'Christian',
-      date_uploaded: '3rd, Jul 2019',
-    },
-  ],
-  data1: [
-    {
-      id: 1,
-      name: 'Invoicing',
-      description: 'Lorem ipsum flora iregi',
-      assignedTo: 'Christian, Tina..',
-      dateAssigned: '3rd, Jul 19',
-      dueDate: '3rd, Jul 2019',
-      status: 'expired',
-    },
-  ],
   fileDialog: {
     type: 'new',
     props: {
@@ -76,6 +55,13 @@ export const initialState = {
     data: null,
   },
   taskDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
+  confirmTaskDeleteDialog: {
     type: 'new',
     props: {
       open: false,
@@ -160,6 +146,20 @@ const utilityPageReducer = (state = initialState, action) =>
         return {
           ...state,
           task: action.payload,
+          loading: true
+        };
+      }
+      case Constants.CREATE_UTILITY_TASKS_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+        };
+      }
+      case Constants.CREATE_UTILITY_TASKS_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: {...state.error, success: false, message: action.payload},
         };
       }
       case Constants.UPDATE_UTILITY_TASK: {
@@ -247,18 +247,6 @@ const utilityPageReducer = (state = initialState, action) =>
           ...state,
           tasks: action.payload,
           loading: false
-        };
-      }
-      case Constants.CREATE_UTILITY_TASKS_SUCCESS: {
-        return {
-          ...state,
-          error: {...state.error, success: true, message: action.payload},
-        };
-      }
-      case Constants.CREATE_UTILITY_TASKS_ERROR: {
-        return {
-          ...state,
-          error: {...state.error, success: false, message: action.payload},
         };
       }
       case Constants.GET_TASK_COMMENTS_SUCCESS: {
@@ -421,6 +409,30 @@ const utilityPageReducer = (state = initialState, action) =>
         return {
           ...state,
           taskDialog: {
+            type: 'new',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.OPEN_CONFIRM_TASK_DELETE_DIALOG: {
+        return {
+          ...state,
+          confirmTaskDeleteDialog: {
+            type: 'new',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_CONFIRM_TASK_DELETE_DIALOG: {
+        return {
+          ...state,
+          confirmTaskDeleteDialog: {
             type: 'new',
             props: {
               open: false,
@@ -635,6 +647,7 @@ const utilityPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_ALL_USERS_SUCCESS: {
+        console.log(action.payload, 'action.payload');
         return {
           ...state,
           loading: false,

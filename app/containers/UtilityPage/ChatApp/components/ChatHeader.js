@@ -35,7 +35,7 @@ const ChatHeader = props => {
   return (
     <React.Fragment>
       <div className={classes.root}>
-        <AppBar position="relative" color="inherit">
+        <AppBar position="relative" color="inherit" elevation={1}>
           <Toolbar>
             <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
             <Typography variant="h6" className={classes.title}>

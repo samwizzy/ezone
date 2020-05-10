@@ -14,10 +14,11 @@ import {
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 import _ from 'lodash';
-import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, Grid, MenuItem, Slide, Toolbar, Typography, TextField } from '@material-ui/core';
+import { AppBar, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, Grid, MenuItem, Slide, Toolbar, Typography, TextField } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
+import AttachFileIcon from '@material-ui/icons/AttachFile';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,34 +26,45 @@ const useStyles = makeStyles(theme => ({
       margin: theme.spacing(1, 0)
     },
   },
+  title: {
+    flexGrow: 1
+  }
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const initialState = {
+  title: '',
+  description: '',
+  startDate: moment(new Date()).format('YYYY-MM-DD'),
+  endDate: moment(new Date()).format('YYYY-MM-DD'),
+  status: "PENDING",
+  assignedTo: "",
+  assignedToName: "",
+  assignedToEmail: "",
+  supervisedBy: "",
+  attachments: []
+} 
+
 function AddTaskDialog(props) {
   const classes = useStyles();
-  const { closeNewTaskDialog, createUtilityTask, updateUtilityTask, data, users, task } = props;
-  const [form, setForm] = React.useState({
-    title: '',
-    description: '',
-    startDate: moment(new Date()).format('YYYY-MM-DD'),
-    endDate: moment(new Date()).format('YYYY-MM-DD'),
-    status: "PENDING",
-    assignedTo: "",
-    assignedToName: "",
-    assignedToEmail: "",
-    supervisedBy: "",
-    attachments: []
-  });
+  const { loading, closeNewTaskDialog, createUtilityTask, updateUtilityTask, dialog, users, task } = props;
+  const [form, setForm] = React.useState({...initialState});
 
   React.useEffect(() => {
-    if(task && data.type == 'edit'){
+    if(task && dialog.type === 'edit'){
       const { id, title, description, status, startDate, endDate, assignedTo, assignedToName, assignedToEmail, supervisedBy } = task
       setForm({...form, id, title, description, status, startDate: moment(startDate).format('YYYY-MM-DD'), endDate: moment(endDate).format('YYYY-MM-DD'), assignedTo, assignedToName, assignedToEmail, supervisedBy })
     }
-  }, [data]);
+  }, []);
+
+  React.useEffect(() => {
+    if(!loading){
+      setForm(initialState)
+    }
+  }, [loading])
 
   const toBase64 = file => new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -66,25 +78,13 @@ function AddTaskDialog(props) {
     setForm({...form, [name]: value});
   }
 
-  const reformattedDate = (date) => {
-    var month = date.getMonth() + 1; //months from 1-12
-    var day = date.getDate();
-    var year = date.getFullYear();
-    
-    var day = day.length > 0? day : day.toString().padStart(2, '0')
-    var month = month.length > 0? month : month.toString().padStart(2, '0')
-    
-    const newdate = year + "-" + month + "-" + day;
-    return newdate;
-  }
-
   const canSubmitForm = () => {
     const {title, description, startDate, endDate } = form
     return title.length > 0 && description.length > 0
   }
 
-  const handleDateChange = (date, formatted, name) => { 
-    setForm(_.set({...form}, name, reformattedDate(date)))
+  const handleDateChange = (date, name) => { 
+    setForm(_.set({...form}, name, moment(date).format('YYYY-MM-DD')))
   }
 
   const handleImageChange = (ev) => { 
@@ -101,35 +101,34 @@ function AddTaskDialog(props) {
   }
 
   const handleSubmit = () => {
-    data.type === 'new'?
+    dialog.type === 'new'?
     createUtilityTask(form) :
     updateUtilityTask(form)
   }
 
   console.log(form, 'checking form task...')
-  console.log(data, 'checking data dialog...')
+  console.log(dialog, 'checking task dialog...')
+  console.log(task, 'checking task data...')
 
   return (
     <div>
       <Dialog
-        {...data.props}
+        {...dialog.props}
         TransitionComponent={Transition}
         keepMounted
         onClose={closeNewTaskDialog}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <AppBar position="relative">
+        <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
-              {data.type === 'new'? "Add Task" : "Edit Task"}
+              {dialog.type === 'new'? "Add Task" : "Edit Task"}
             </Typography>
           </Toolbar>
         </AppBar>
         
-        <Divider />
-        <DialogContent>
-          <form className={classes.root}>
+        <DialogContent dividers>
           <Grid container>
             <Grid item xs={12}>
               <TextField
@@ -137,6 +136,7 @@ function AddTaskDialog(props) {
                 label="Title"
                 id="outlined-title"
                 fullWidth
+                margin="normal"
                 variant="outlined"
                 size="small"
                 value={form.title}
@@ -150,6 +150,7 @@ function AddTaskDialog(props) {
                 label="Description"
                 multiline
                 fullWidth
+                margin="normal"
                 rows="4"
                 rowsMax="4"
                 value={form.description}
@@ -163,14 +164,18 @@ function AddTaskDialog(props) {
                 <Grid item xs={6}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
+                      autoOk
+                      disableToolbar
+                      disablePast
                       format="MM/dd/yyyy"
                       margin="normal"
                       inputVariant="outlined"
+                      size="small"
                       name="startDate"
                       id="date-picker-startDate"
                       label="Start Date"
                       value={form.startDate}
-                      onChange={(date, formatted) => handleDateChange(date, formatted, 'startDate')}
+                      onChange={(date) => handleDateChange(date, 'startDate')}
                       KeyboardButtonProps={{
                         'aria-label': 'change date',
                       }}
@@ -181,14 +186,18 @@ function AddTaskDialog(props) {
                 <Grid item xs={6}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
+                      autoOk
+                      disableToolbar
+                      disablePast
                       format="MM/dd/yyyy"
                       inputVariant="outlined"
+                      size="small"
                       margin="normal"
                       name="endDate"
                       id="date-picker-endDate"
                       label="End Date"
                       value={form.endDate}
-                      onChange={(date, formatted) => handleDateChange(date, formatted, 'endDate')}
+                      onChange={(date) => handleDateChange(date, 'endDate')}
                       KeyboardButtonProps={{
                         'aria-label': 'change date',
                       }}
@@ -206,6 +215,7 @@ function AddTaskDialog(props) {
                 placeholder="Select employee to assign to task"
                 select
                 fullWidth
+                margin="normal"
                 className={classes.textField}
                 variant="outlined"
                 size="small"
@@ -222,7 +232,7 @@ function AddTaskDialog(props) {
             </Grid>
 
             <Grid item xs={12}>
-              {/* <FormControl variant="outlined" className={classes.formControl}>
+              {/* <FormControl variant="outlined" className={classes.formControl} margin="normal">
                 <TextField
                   id="outlined-attachments"
                   name="attachments"
@@ -237,10 +247,11 @@ function AddTaskDialog(props) {
                   multiple
                 />
               </FormControl> */}
-              <FormControl variant="outlined" className={classes.formControl}>
+              <FormControl variant="outlined" className={classes.formControl} margin="normal">
                 <Button
                   variant="outlined"
                   component="label"
+                  startIcon={<AttachFileIcon />}
                 >
                   Upload File
                   <input
@@ -254,13 +265,12 @@ function AddTaskDialog(props) {
               </FormControl>
             </Grid>
           </Grid>
-          </form>
         </DialogContent>
         <DialogActions>
           <Button onClick={closeNewTaskDialog} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={!canSubmitForm()} color="primary">
+          <Button onClick={handleSubmit} disabled={!canSubmitForm()} disabled={loading} color="primary" endIcon={loading && <CircularProgress size={20} />}>
             Save
           </Button>
         </DialogActions>
@@ -269,14 +279,14 @@ function AddTaskDialog(props) {
   );
 }
 
-
 AddTaskDialog.propTypes = {
   openNewTaskDialog: PropTypes.func,
   closeNewTaskDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  data: Selectors.makeSelectNewTaskDialog(),
+  loading: Selectors.makeSelectLoading(),
+  dialog: Selectors.makeSelectNewTaskDialog(),
   users: Selectors.makeSelectEmployees(),
   task: Selectors.makeSelectTask(),
 });

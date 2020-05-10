@@ -19,6 +19,7 @@ import reducer from './reducer';
 import saga from './saga';
 import * as Actions from './actions';
 import CompaniesList from './components/CompaniesList';
+import ModuleLayout from '../components/ModuleLayout';
 
 export function Companies(props) {
   useInjectReducer({ key: 'crmCompanies', reducer });
@@ -36,7 +37,10 @@ export function Companies(props) {
         <title>Companies</title>
         <meta name="description" content="Description of Companies" />
       </Helmet>
-      <CompaniesList />
+      
+      <ModuleLayout>
+        <CompaniesList />
+      </ModuleLayout>
     </div>
   );
 }

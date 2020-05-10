@@ -161,6 +161,7 @@ export function* addUtilityTasks({ type, payload }) {
     });
 
     yield put({ type: Constants.GET_UTILITY_TASKS });
+    yield put(Actions.createUtilityTaskSuccess());
     yield put(Actions.closeNewTaskDialog());
     yield put(
       AppActions.openSnackBar({
@@ -606,6 +607,9 @@ export function* getAllUsers() {
 
   const requestURL = `${Endpoints.GetAllUsersApi}/${currentUser &&
     currentUser.organisation.orgId}`;
+
+  console.log(requestURL, 'requestURL');
+
   try {
     const getAllUsersResponse = yield call(request, requestURL, {
       method: 'GET',
@@ -615,8 +619,11 @@ export function* getAllUsers() {
       }),
     });
 
+    console.log(getAllUsersResponse, 'getAllUsersResponse');
+
     yield put(Actions.getAllUsersSuccess(getAllUsersResponse));
   } catch (err) {
+    console.log(err, 'errrrrrrrrrrrrr');
     yield put(Actions.getAllUsersError(err));
   }
 }

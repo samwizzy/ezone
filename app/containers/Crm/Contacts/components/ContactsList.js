@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   button: {
-    margin: theme.spacing(1),
+    marginLeft: theme.spacing(2),
   },
   datatable: {
     '& .MuiTableRow-root:hover': {
@@ -48,13 +48,7 @@ const useStyles = makeStyles(theme => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
-  },
-  margin: {
-    margin: theme.spacing(1),
-  },
-  view: {
-    margin: theme.spacing(1),
-  },
+  }
 }));
 
 const ContactsList = props => {
@@ -75,14 +69,19 @@ const ContactsList = props => {
 
   const columns = [
     {
+      name: 'id',
+      label: ' ',
+      options: {
+        display: 'excluded',
+        filter: true,
+      },
+    },
+    {
       name: 'Id',
       label: 'S/N',
       options: {
         filter: true,
         customBodyRender: (value, tableMeta) => {
-          if (value === '') {
-            return '';
-          }
           return (
             <FormControlLabel
               label={tableMeta.rowIndex + 1}
@@ -100,15 +99,10 @@ const ContactsList = props => {
         sort: false,
         customBodyRender: value => {
           const contac = allContacts.find(contact => value === contact.id);
-          if (value === '') {
-            return '';
-          }
           return (
-            <div>
-              <Typography variant="subtitle2" gutterBottom>
-                {`${contac.firstName} ${contac.lastName}`}
-              </Typography>
-            </div>
+            <Typography variant="subtitle2">
+              {`${contac.firstName} ${contac.lastName}`}
+            </Typography>
           );
         },
       },
@@ -194,18 +188,15 @@ const ContactsList = props => {
         sort: false,
         customBodyRender: value => {
           const contac = allContacts.find(contact => value === contact.id);
-          if (value === '') {
-            return '';
-          }
           return (
             <div>
-              <Button variant="outlined" size="small" color="primary" className={classes.margin} onClick={() => openEditContactDialogAction(contac)}>
+              <Button variant="outlined" size="small" color="primary" onClick={() => openEditContactDialogAction(contac)}>
                 Edit
               </Button>
               <FormControlLabel
-                className={classes.view}
-                control={<Visibility />}
-                onClick={() =>openContactDetailsDialogAction(contac)}
+                className={classes.button}
+                control={<Visibility fontSize="small" />}
+                onClick={() => openContactDetailsDialogAction(contac)}
               />
             </div>
           );
@@ -233,7 +224,7 @@ const ContactsList = props => {
     elevation: 0
   };
 
-  // console.log(allContacts, 'allContacts');
+  console.log(allContacts, 'allContacts');
 
   return (
     <React.Fragment>

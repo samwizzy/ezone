@@ -1,106 +1,40 @@
-import React, { memo } from 'react';
+/*
+ * HRPage Employee
+ *
+ * This is the first thing users see of our App, at the '/' route
+ */
+import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {
-  Avatar,
-  Button,
-  ButtonGroup,
-  TableContainer,
-  Table,
-  TableRow,
-  TableCell,
-  TableBody,
-  TextField,
-  Grid,
-  Paper,
-  Typography,
-} from '@material-ui/core';
-import { compose } from 'redux';
+import { Helmet } from 'react-helmet';
+import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
+import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import { green, orange } from '@material-ui/core/colors'
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
-import moment from 'moment'
-import MUIDataTable from 'mui-datatables'
-import * as Actions from '../actions';
-import * as Selectors from '../selectors';
+import { useInjectReducer } from 'utils/injectReducer';
+import { useInjectSaga } from 'utils/injectSaga';
 import * as AppSelectors from '../../App/selectors';
-import EditSharp from '@material-ui/icons/EditSharp';
-import Assignment from '@material-ui/icons/Assignment';
-import Person from '@material-ui/icons/Person';
-import { AddEmployee } from '../components/AddButton';
-import AddEmployeeDialog from './components/AddEmployeeDialog';
+import * as AppActions from '../../App/actions';
+import * as Actions from './../actions';
+import makeSelectHRPage from './../selectors';
+import reducer from './../reducer';
+import saga from './../saga';
+import ModuleLayout from './ModuleLayout'
+import EmployeeList from './EmployeeList';
+
+const key = 'hrPage';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
-    backgroundColor: theme.palette.common.white,
-  },
-  datatable: {
-    '& .MuiTableHead-root': {
-      '& .MuiTableCell-head': {
-        color: theme.palette.common.white,
-      },
-      '& .MuiTableCell-root:nth-child(odd)': {
-        backgroundColor: theme.palette.primary.main,
-      },
-      '& .MuiTableCell-root:nth-child(even)': {
-        backgroundColor: darken(theme.palette.primary.main, 0.1),
-      },
-    },
-  },
-  table: {
-    border: 0,
-    whiteSpace: 'nowrap',
-    overflowX: 'auto',
-  },
-  avatar: {
-    width: theme.spacing(3),
-    height: theme.spacing(3),
-  },
-  toolbar: theme.mixins.toolbar,
-  content: {
     flexGrow: 1,
-  },
-  gridRoot: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    padding: theme.spacing(2, 1),
-    backgroundColor: theme.palette.background.paper,
-  },
-  icon: {
-    width: 14,
-    height: 14,
-    color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main },
-    '&.inProgress': { color: orange[500] },
-    '&.done': { color: green[500] },
-  },
-  buttonGroup: {
-    marginBottom: theme.spacing(1),
   },
 }));
 
-const EmployeesApp = props => {
-  const classes = useStyles();
-  const {
-    loading,
-    openNewEmployeeDialog,
-    getEmployee,
-    employees,
-    departments,
-    employeeTypes,
-    roles,
-    employee,
-    //getDepartmentsByOrgIdApi,
-  } = props;
-  React.useEffect(() => {/*getDepartmentsByOrgIdApi()*/}, [employee, employees, departments, employeeTypes, roles]);
-  console.log(employees);
-  const toTitleCase = str => (str ? str[0].toUpperCase() + str.slice(1) : '');
+export function EmployeePage(props) {
+  const { getEmployees } = props;
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
 
+<<<<<<< HEAD
   const columns = [
     {
       name: 'uuId',
@@ -193,54 +127,38 @@ const EmployeesApp = props => {
     },
     elevation: 0,
   };
+=======
+  React.useEffect(() => {
+    getEmployees();
+  }, []);
+>>>>>>> 6071e0663911bb51f055bdbfcc2c7e0c722723ff
 
   return (
-    <div className={classes.root}>
-      <Grid
-        container
-        justify='space-around'
-      >
-        <Grid item md={12}>
-          <div className={classes.content}>
-            <MUIDataTable
-              className={classes.datatable}
-              title="Employee List"
-              data={employees}
-              columns={columns}
-              options={options}
-            />
-          </div>
-        </Grid>
-      </Grid>
+    <React.Fragment>
+      <Helmet>
+        <title>Employee Page</title>
+        <meta name="description" content="ezone application employee page" />
+      </Helmet>
 
-      <AddEmployeeDialog />
-    </div>
+      <ModuleLayout>
+        <EmployeeList />
+      </ModuleLayout>
+    </React.Fragment>
   );
-};
+}
 
-EmployeesApp.propTypes = {
-  loading: PropTypes.bool,
-  getEmployees: PropTypes.func,
+EmployeePage.propTypes = {
+  token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(),
-  departments: Selectors.makeSelectDepartments(),
-  employees: Selectors.makeSelectEmployees(),
-  employee: Selectors.makeSelectEmployee(),
-  user: AppSelectors.makeSelectCurrentUser(),
-  departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
+  hrPage: makeSelectHRPage(),
+  token: AppSelectors.makeSelectAccessToken(),
 });
 
-function mapDispatchToProps(dispatch) {
+export function mapDispatchToProps(dispatch) {
   return {
-    openNewEmployeeDialog: () => dispatch(Actions.openNewEmployeeDialog()),
-    openEditEmployeeDialog: () => dispatch(Actions.openEditEmployeeDialog()),
     getEmployees: () => dispatch(Actions.getEmployees()),
-    getEmployee: uuid => dispatch(Actions.getEmployee(uuid)),
-    getPartyTags: () => dispatch(Actions.getPartyTags()),
-    // getDepartmentsByOrgIdApi: () =>
-    //   dispatch(Actions.getDepartmentsByOrgIdApi()),
   };
 }
 
@@ -250,7 +168,6 @@ const withConnect = connect(
 );
 
 export default compose(
-  withRouter,
   withConnect,
   memo,
-)(EmployeesApp);
+)(EmployeePage);

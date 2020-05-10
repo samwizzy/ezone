@@ -17,7 +17,6 @@ import {
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
-
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -25,7 +24,6 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-
 import moment from 'moment';
 import * as AppSelectors from '../../../App/selectors';
 import * as Selectors from '../selectors';
@@ -34,18 +32,8 @@ import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    margin: theme.spacing(1.5, 0),
-  },
-  dense: {
-    marginTop: 19,
-  },
-  menu: {
-    width: 100,
+  root: {
+    flexGrow: 1,
   },
 }));
 
@@ -72,7 +60,7 @@ const TransactionTransferDialog = props => {
     description: "",
     orgId: currentUser.organisation.orgId,
     referenceNumber: "",
-    transferDate: "",
+    transferDate: new Date(),
     transferType: ""
   });
 
@@ -140,6 +128,7 @@ const TransactionTransferDialog = props => {
               <Grid item xs={6}>
                 <Autocomplete
                   id="combo-box-demo"
+                  size="small"
                   options={bankAccountData}
                   getOptionLabel={option => option.accountName}
                   onChange={(evt, value) => handleSelectChange(evt, value)}
@@ -147,8 +136,6 @@ const TransactionTransferDialog = props => {
                     <TextField
                       {...params}
                       label="Select Account"
-                      size="small"
-                      className={classes.textField}
                       variant="outlined"
                       placeholder="Date"
                       margin="normal"
@@ -158,21 +145,21 @@ const TransactionTransferDialog = props => {
                 />
               </Grid>
               <Grid item xs={6}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <Grid container justify="space-around">
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
                     margin="normal"
+                    inputVariant="outlined"
+                    size="small"
                     id="date-picker-dialog"
-                    label="Date picker dialog"
+                    label="Transfer Date"
                     format="MM/dd/yyyy"
-                    value={selectedDate}
+                    value={values.transferDate}
                     onChange={handleDateChange}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
                     }}
                   />
-                </Grid>
-              </MuiPickersUtilsProvider>
+                </MuiPickersUtilsProvider>
               </Grid>
               <Grid item xs={6}>
                 <TextField
@@ -181,7 +168,6 @@ const TransactionTransferDialog = props => {
                   type="number"
                   variant="outlined"
                   size="small"
-                  className={classes.textField}
                   value={values.amount}
                   onChange={handleChange('amount')}
                   margin="normal"
@@ -195,7 +181,6 @@ const TransactionTransferDialog = props => {
                   type="number"
                   variant="outlined"
                   size="small"
-                  className={classes.textField}
                   value={values.referenceNumber}
                   onChange={handleChange('referenceNumber')}
                   margin="normal"
@@ -208,7 +193,6 @@ const TransactionTransferDialog = props => {
                   label="Description"
                   variant="outlined"
                   size="small"
-                  className={classes.textField}
                   value={values.description}
                   onChange={handleChange('description')}
                   margin="normal"

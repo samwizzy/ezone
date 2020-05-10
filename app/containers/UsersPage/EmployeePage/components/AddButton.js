@@ -24,6 +24,7 @@ export function AddButton(props) {
           variant="contained"
           color="primary"
           onClick={() => openNewEmployeeDialogAction()}
+          startIcon={<Add />}
         >
           Add User
         </Button>

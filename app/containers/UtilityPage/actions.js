@@ -436,16 +436,30 @@ export function openNewTaskDialog(data) {
   };
 }
 
+export function closeNewTaskDialog() {
+  return {
+    type: Constants.CLOSE_NEW_TASK_DIALOG,
+  };
+}
+
+export function openConfirmTaskDeleteDialog(id) {
+  console.log("open confirm dialog")
+  return {
+    type: Constants.OPEN_CONFIRM_TASK_DELETE_DIALOG,
+    payload: id,
+  };
+}
+
+export function closeConfirmTaskDeleteDialog() {
+  return {
+    type: Constants.CLOSE_CONFIRM_TASK_DELETE_DIALOG,
+  };
+}
+
 export function openEditTaskDialog(data) {
   return {
     type: Constants.OPEN_EDIT_TASK_DIALOG,
     payload: data,
-  };
-}
-
-export function closeNewTaskDialog() {
-  return {
-    type: Constants.CLOSE_NEW_TASK_DIALOG,
   };
 }
 
@@ -539,12 +553,14 @@ export function closeEditDepartmentDialog() {
 
 // get all users
 export function getAllUsers() {
+  console.log('fexc data');
   return {
     type: Constants.GET_ALL_USERS,
   };
 }
 
 export function getAllUsersSuccess(data) {
+  // console.log(data, 'fexc data');
   return {
     type: Constants.GET_ALL_USERS_SUCCESS,
     payload: data,
