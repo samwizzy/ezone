@@ -27,8 +27,6 @@ function ConfirmTaskDeleteDialog(props) {
   const classes = useStyles()
   const { closeConfirmTaskDeleteDialog, deleteTask, dialog } = props
 
-  console.log(dialog, 'checking confirm dialog...')
-
   return (
     <div className={classes.root}>
       <Dialog

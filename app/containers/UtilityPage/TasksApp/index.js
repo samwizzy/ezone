@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import * as Actions from '../actions';
-import * as Selectors from '../selectors';
+import makeSelectUtilityPage, * as Selectors from '../selectors';
 import saga from './../saga';
 import reducer from './../reducer';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -20,6 +20,8 @@ import AddTaskDialog from './components/AddTaskDialog'
 import ConfirmTaskDeleteDialog from './components/ConfirmTaskDeleteDialog'
 import TaskPreviewDialog from './components/TaskPreviewDialog'
 import AssignToDialog from './components/AssignToDialog'
+
+const key = "utilityPage";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -68,6 +70,7 @@ TasksApp.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  utilityPage: makeSelectUtilityPage(),
   loading: Selectors.makeSelectLoading(),
   tasks: Selectors.makeSelectTasks(),
   users: Selectors.makeSelectEmployees(),

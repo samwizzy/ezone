@@ -151,18 +151,6 @@ const AntTab = withStyles((theme) => ({
     minWidth: 72,
     fontWeight: theme.typography.fontWeightRegular,
     marginRight: theme.spacing(4),
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(','),
     '&:hover': {
       color: '#40a9ff',
       opacity: 1,
@@ -374,7 +362,7 @@ const TaskList = props => {
                   onChange={handleChange}
                   variant="outlined"
                 />
-                <Button className={classes.submitButton} variant="outlined" onClick={handleSubmit} color="primary">
+                <Button className={classes.submitButton} variant="outlined" onClick={handleSubmit} color="primary" disabled={loading} endIcon={loading && <CircularProgress size={20} />}>
                   Post
                 </Button>
               </Box>

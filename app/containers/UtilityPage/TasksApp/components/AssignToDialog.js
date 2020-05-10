@@ -46,9 +46,6 @@ function AssignToDialog(props) {
     shareDocument(form)
   }
 
-  console.log(dialog, 'checking shared dialog...')
-  console.log(form, 'checking form...')
-
   return (
     <div className={classes.root}>
       <Dialog

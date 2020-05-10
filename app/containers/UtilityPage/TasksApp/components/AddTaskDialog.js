@@ -106,10 +106,6 @@ function AddTaskDialog(props) {
     updateUtilityTask(form)
   }
 
-  console.log(form, 'checking form task...')
-  console.log(dialog, 'checking task dialog...')
-  console.log(task, 'checking task data...')
-
   return (
     <div>
       <Dialog
@@ -270,7 +266,7 @@ function AddTaskDialog(props) {
           <Button onClick={closeNewTaskDialog} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={!canSubmitForm()} disabled={loading} color="primary" endIcon={loading && <CircularProgress size={20} />}>
+          <Button onClick={handleSubmit} disabled={loading? loading : !canSubmitForm()} color="primary" endIcon={loading && <CircularProgress size={20} />}>
             Save
           </Button>
         </DialogActions>
