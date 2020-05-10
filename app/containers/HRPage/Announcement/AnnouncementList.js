@@ -16,8 +16,6 @@ import * as Selectors from '../selectors';
 import * as AppSelectors from '../../App/selectors';
 import { AddAnnouncement } from '../components/AddButton'
 
-const drawerWidth = '100%';
-
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
@@ -51,17 +49,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-/*
-const announcements = [
-  {id: 1, title: "Stand Up starts by 5:00", sentTo: "Yinka", msgType: "Email", date: "May 3rd 2020"}
-]
-*/
 const Announcement = props => {
   const classes = useStyles();
   const { loading, openNewAnnouncementDialog, openAnnouncementViewDialog, getEmployees, announcements, getEmployee, employees, employee } = props;
 
   React.useEffect(() => {
-  }, [employee]);
+  }, []);
 
   const columns = [
     {

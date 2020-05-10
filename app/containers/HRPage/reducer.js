@@ -66,7 +66,7 @@ export const initialState = {
   announcementViewDialog: {
     type: 'new',
     props: {
-      open: true,
+      open: false,
     },
     data: null,
   },
