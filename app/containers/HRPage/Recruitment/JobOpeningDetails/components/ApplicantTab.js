@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Grid, IconButton, List, ListItem, ListItemText, ListItemIcon, Paper, Typography } from '@material-ui/core';
+import { Grid, List, ListItem, ListItemText, ListItemIcon, IconButton, Paper, Typography } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables'
 import { green } from '@material-ui/core/colors';
 import MailIcon from '@material-ui/icons/Mail';
@@ -95,7 +95,7 @@ const ApplicantTab = props => {
 			customBodyRender: date => {
 				return (
 					<Typography variant="inherit" color="textSecondary">
-							{moment(day).format('lll')}
+							{/*moment(day).format('lll')*/}
 					</Typography>
 				)
 			}
