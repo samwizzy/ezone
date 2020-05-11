@@ -37,10 +37,14 @@ export function AttendancePage(props) {
         <title>Attendance Page</title>
         <meta name="description" content="ezone application attendance page" />
       </Helmet>
-
+      {/*
       { params.attendanceId?
-        <AttendanceDetails /> : <AttendanceList />
-      }
+        <AttendanceDetails /> :
+      */}
+        <AttendanceList />
+      {/*
+        } 
+      */}
 
     </React.Fragment>
   );

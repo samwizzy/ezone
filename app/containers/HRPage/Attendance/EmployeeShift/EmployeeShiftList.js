@@ -53,7 +53,7 @@ const employeeShifts = [
 
 const EmployeeShiftList = props => {
   const classes = useStyles();
-  const { loading, openNewAttendanceDialog, getAttendances, getAttendanceById, attendance, employees } = props;
+  const { loading, openNewAttendanceDialog, getAttendances, getAttendanceById, attendance, employees, openNewEmployeeShiftDialog } = props;
   console.log(employees, "Employees in employeeShift");
   const toTitleCase = str => (str ? str[0].toUpperCase() + str.slice(1) : '');
   React.useEffect(() => {

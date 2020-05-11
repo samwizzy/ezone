@@ -56,7 +56,7 @@ const shifts = [
 
 const ShiftList = props => {
   const classes = useStyles();
-  const { loading, openNewAttendanceDialog, getAttendances, getShifts, shifts, getAttendanceById, attendance } = props;
+  const { loading, openNewAttendanceDialog, getAttendances, getShifts, shifts, getAttendanceById, attendance, openNewShiftDialog } = props;
   console.log(shifts, "shifts in list");
   React.useEffect(() => {
   }, []);

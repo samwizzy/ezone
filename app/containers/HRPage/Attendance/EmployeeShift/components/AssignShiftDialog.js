@@ -122,9 +122,11 @@ function AssignShiftDialog(props) {
   const id = open ? 'simple-popover' : undefined;
 
   React.useEffect(() => {
+    /*
     if(dialog.type == 'edit'){
       setForm({...form})
     }
+    */
   }, [dialog])
 
   const canSubmitForm = () => {
@@ -144,9 +146,8 @@ function AssignShiftDialog(props) {
   return (
     <div>
       <Dialog
-        {...dialog.props}
+       /* {...dialog.props } */
         TransitionComponent={Transition}
-        keepMounted
         onClose={closeNewEmployeeShiftDialog}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
@@ -378,7 +379,7 @@ AssignShiftDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  dialog: Selectors.makeSelectEmployeeShiftDialog(),
+  //dialog: Selectors.makeSelectEmployeeShiftDialog(),
 });
 
 function mapDispatchToProps(dispatch) {

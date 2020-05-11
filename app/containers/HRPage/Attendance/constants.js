@@ -30,6 +30,10 @@ export const CLOSE_EDIT_ATTENDANCE_DIALOG = 'boilerplate/HRPage/CLOSE EDIT ATTEN
 
 export const OPEN_NEW_SHIFT_DIALOG   = 'boilerplate/HRPage/OPEN NEW SHIFT DIALOG';
 export const CLOSE_NEW_SHIFT_DIALOG  = 'boilerplate/HRPage/CLOSE NEW SHIFT DIALOG';
+
+export const OPEN_NEW_EMPLOYEE_SHIFT_DIALOG   = 'boilerplate/HRPage/OPEN NEW SHIFT DIALOG';
+export const CLOSE_NEW_EMPLOYEE_SHIFT_DIALOG  = 'boilerplate/HRPage/CLOSE NEW SHIFT DIALOG';
+
 export const OPEN_EDIT_SHIFT_DIALOG  = 'boilerplate/HRPage/OPEN EDIT SHIFT DIALOG';
 export const CLOSE_EDIT_SHIFT_DIALOG = 'boilerplate/HRPage/CLOSE EDIT SHIFT DIALOG';
 export const CREATE_SHIFT        = 'boilerplate/HRPage/CREATE SHIFT';

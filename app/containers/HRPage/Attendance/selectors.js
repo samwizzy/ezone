@@ -78,6 +78,7 @@ export {
   makeSelectLoading,
   makeSelectAttendance,
   makeSelectAttendanceDialog,
+  makeSelectShiftDialog,
   makeSelectAttendances,
   makeSelectDays,
   makeSelectShifts,

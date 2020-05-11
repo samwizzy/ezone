@@ -8,7 +8,13 @@ import _ from 'lodash';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import ScheduleIcon from '@material-ui/icons/Schedule';
-import { AppBar, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormLabel, FormControlLabel, MenuItem, Radio, RadioGroup, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
+import { AppBar, Button, Checkbox, Grid, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormLabel, FormControlLabel, MenuItem, Radio, RadioGroup, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
@@ -39,7 +45,7 @@ const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 
 
 function AddShiftDialog(props) {
   const classes = useStyles();
-  const { closeNewAttendanceDialog, dialog, days, createShift } = props;
+  const { closeNewShiftDialog, dialog, days, createShift } = props;
   const [form, setForm] = React.useState({
     resumptionTime: '',
     closeTime: '',

@@ -35,6 +35,7 @@ export const initialState = {
     },
     data: null,
   },
+  
   announcementViewDialog: {
     type: 'new',
     props: {
