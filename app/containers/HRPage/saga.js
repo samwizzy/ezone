@@ -330,6 +330,29 @@ export function* getJobOpenings() {
     console.log(err.message, "err message")
   }
 }
+
+export function* getJobOpeningDetails({ type, payload }) {
+  console.log(payload, "payload inside saga jobopening");
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetJobOpeningDetails}/${payload}`;
+  
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'Job opening details RESPONSE');
+    yield put(Actions.getJobOpeningDetailsSuccess(response));
+  } catch (err) {
+    // yield put(Actions.getUtilityFilesError(err));
+    console.log(err.message, "err message job opening details")
+  }
+}
 export function* getRoles() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   console.log('ROLES-SAGA');
@@ -510,6 +533,7 @@ export default function* HRRootSaga() {
   yield takeLatest(Constants.GET_ENROLLMENTTYPES, getEnrollmentTypes);
   yield takeLatest(Constants.GET_LOCATIONS, getLocations);
   yield takeLatest(Constants.GET_JOBOPENINGS, getJobOpenings);
+  yield takeLatest(Constants.GET_JOBOPENINGDETAILS, getJobOpeningDetails);
   yield takeLatest(Constants.GET_ROLES, getRoles);
   yield takeLatest(Constants.GET_ANNOUNCEMENTS, getAnnouncements);
   yield takeLatest(Constants.CREATE_EMPLOYEE, createEmployee);

@@ -84,6 +84,11 @@ const makeSelectEmployeeTypes = () =>
     selectHR,
     hrState => hrState.jobOpenings,
   );
+  const makeSelectJobOpeningDetails = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.jobOpeningDetails,
+  );
   const makeSelectAnnouncements = () =>
   createSelector(
     selectHR,
@@ -222,4 +227,5 @@ export {
   makeSelectAnnouncementViewDialog,
   makeSelectCreateAnnouncement,
   makeSelectCreateAnnouncementSuccess,
+  makeSelectJobOpeningDetails,
 };

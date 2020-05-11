@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import { Helmet } from 'react-helmet';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { compose } from 'redux';
@@ -11,7 +10,6 @@ import AddRecruitment from './components/AddRecruitment'
 import RecruitmentList from './RecruitmentList'
 import JobOpenings from './JobOpenings'
 import JobOpeningDetails from './JobOpeningDetails/'
-import ModuleLayout from './ModuleLayout'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,12 +30,7 @@ const RecruitmentApp = props => {
   }, []);
 
   return (
-    <React.Fragment>
-      <Helmet>
-        <title>Recruitment Page</title>
-        <meta name="description" content="ezone application recruitment page" />
-      </Helmet>
-      <ModuleLayout>
+    <div className={classes.root}>
       {
         params.status === 'new'?
         <AddRecruitment /> :
@@ -46,8 +39,7 @@ const RecruitmentApp = props => {
         <AddRecruitment /> : <RecruitmentList />
         */
       }
-      </ModuleLayout>
-    </React.Fragment>
+    </div>
   );
 };
 

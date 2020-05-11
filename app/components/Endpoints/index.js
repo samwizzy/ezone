@@ -109,8 +109,9 @@ export const GetEnrollmentTypes = `${BaseUrl}/authserv/api/v1/generic_entities/f
 export const GetLocations = `${BaseUrl}/authserv/api/v1/generic_entities/for_organinisation`;
 
 //Job openings
-export const GetJobOpenings = `${BaseUrl}/authserv/api/v1/job_openings/for_organinisation`;
+export const GetJobOpenings = `${BaseUrl}/authserv/api/v1/job_openings/for_organisation`;
 export const CreateJobOpening = `${BaseUrl}/authserv/api/v1/job_opening`;
+export const GetJobOpeningDetails = `${BaseUrl}/authserv/api/v1/job_openings/get_by_id`;
 
 //Roles
 export const GetRoles = `${BaseUrl}/authserv/api/v1/generic_entities/for_organinisation`;

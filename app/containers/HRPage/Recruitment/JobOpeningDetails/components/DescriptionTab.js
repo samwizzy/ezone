@@ -62,8 +62,8 @@ const useStyles = makeStyles(theme => ({
 
 const DescriptionTab = props => {
   const classes = useStyles();
-	const { loading, openNewEmployeeDialog, getEmployee, employees, employee, getJobOpenings, jobOpenings } = props;
-
+	const { loading, openNewEmployeeDialog, getEmployee, employees, employee, getJobOpenings, jobOpenings, jobOpeningDetails } = props;
+  console.log(jobOpeningDetails, "job details inside desc tab");
   React.useEffect(() => {
   }, [employee]);
 
@@ -71,6 +71,7 @@ const DescriptionTab = props => {
 
   return (
     <div className={classes.root}>
+      {jobOpeningDetails &&
       <Grid
         container
         justify='space-between'
@@ -82,8 +83,8 @@ const DescriptionTab = props => {
                 <TableRow>
                   <TableCell align="right">
                     <div className={classes.dateline}>
-                      <Typography variant="subtitle1"><TodayIcon/> Published 3rd Jul, 2019</Typography>
-                      <Typography variant="subtitle1"><TodayIcon/> Expires 3rd Jul, 2019</Typography>
+                      <Typography variant="subtitle1"><TodayIcon/> Published {jobOpeningDetails.dateCreated}</Typography>
+                      {/* <Typography variant="subtitle1"><TodayIcon/> Expires {jobOpeningDetails.department.name}</Typography> */}
                     </div>
                   </TableCell>
                 </TableRow>
@@ -91,7 +92,7 @@ const DescriptionTab = props => {
                   <TableCell component="th" scope="row" colSpan={3}>Job Title</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell colSpan={2}><Box p={1} className={classes.box}>Accountant</Box></TableCell>
+                  <TableCell colSpan={2}><Box p={1} className={classes.box}>{jobOpeningDetails.jobTitle}</Box></TableCell>
                   <TableCell></TableCell>
                 </TableRow>
                 <TableRow>
@@ -114,15 +115,12 @@ const DescriptionTab = props => {
             <Typography variant="subtitle1">Hiring Workflow</Typography>
             <div className={classes.breadcrumbs}>
               <Breadcrumbs separator={<ArrowRightAltIcon fontSize="small" />} aria-label="breadcrumb">
-                <Link color="inherit" onClick={handleRoute}>
-                  Screening
+              {jobOpeningDetails.hiringSteps.map((jod, index) => (
+                <Link color="inherit" key={index} onClick={handleRoute}>
+                  {jod.title}
                 </Link>
-                <Link color="inherit" onClick={handleRoute}>
-                  Phone Interview
-                </Link>
-                <Link color="inherit" onClick={handleRoute}>
-                  Face to Face
-                </Link>
+              ))}
+                
                 <Typography color="textPrimary">Make an offer</Typography>
               </Breadcrumbs>
             </div>
@@ -137,33 +135,33 @@ const DescriptionTab = props => {
                 <TableRow>
                   <TableCell component="th" scope="row">
                     <Typography variant="subtitle1">Department</Typography>
-                    <Box p={1} className={classes.box}>Accountant</Box>
+                    <Box p={1} className={classes.box}>{jobOpeningDetails.department.name}</Box>
                   </TableCell>
                   <TableCell component="th" scope="row">
                     <Typography variant="subtitle1">Enrolment Type</Typography>
-                    <Box p={1} className={classes.box}>Accountant</Box>
+                    <Box p={1} className={classes.box}>{jobOpeningDetails.enrollmentType.name}</Box>
                   </TableCell>
                   <TableCell></TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">
-                    <Typography variant="subtitle1">Experience</Typography>
-                    <Box p={1} className={classes.box}>2 to 3 years</Box>
+                    <Typography variant="subtitle1">No of vacancy</Typography>
+                    <Box p={1} className={classes.box}>{jobOpeningDetails.noOfVacancy}</Box>
                   </TableCell>
                   <TableCell component="th" scope="row">
                     <Typography variant="subtitle1">Submission Deadline</Typography>
-                    <Box p={1} className={classes.box}>3rd Jul 2019</Box>
+                    <Box p={1} className={classes.box}>{jobOpeningDetails.submissionDeadline}</Box>
                   </TableCell>
                   <TableCell></TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">
-                    <Typography variant="subtitle1">Salary</Typography>
-                    <Box p={1} className={classes.box}>N  300,000</Box>
+                    <Typography variant="subtitle1">Location</Typography>
+                    <Box p={1} className={classes.box}>{jobOpeningDetails.location.name}</Box>
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    <Typography variant="subtitle1">Salary Type</Typography>
-                    <Box p={1} className={classes.box}>Employee payment</Box>
+                    <Typography variant="subtitle1">Created</Typography>
+                    <Box p={1} className={classes.box}>{jobOpeningDetails.dateCreated}</Box>
                   </TableCell>
                   <TableCell></TableCell>
                 </TableRow>
@@ -172,6 +170,7 @@ const DescriptionTab = props => {
           </div>
         </Grid>
       </Grid>
+      }
     </div>
   );
 };
@@ -187,6 +186,7 @@ const mapStateToProps = createStructuredSelector({
   employee : Selectors.makeSelectEmployee(),
   user: AppSelectors.makeSelectCurrentUser(),
   jobOpenings : Selectors.makeSelectJobOpenings(),
+  jobOpeningDetails : Selectors.makeSelectJobOpeningDetails(),
 });
 
 function mapDispatchToProps(dispatch) {

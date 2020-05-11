@@ -73,6 +73,7 @@ const Announcement = props => {
       sort: true,
       },
     },
+    /*
     {
       name: 'sentTo',
       label: 'Sent to',
@@ -81,8 +82,9 @@ const Announcement = props => {
       sort: true,
       },
     },
+    */
     {
-      name: 'msgType',
+      name: 'announcementType',
       label: 'Message type',
       options: {
         filter: true,
@@ -90,7 +92,7 @@ const Announcement = props => {
       },
     },
     {
-      name: 'date',
+      name: 'dateCreated',
       label: 'Published date',
       options: {
         filter: true,
@@ -111,7 +113,7 @@ const Announcement = props => {
       rowsPerPage: 10,
       rowsPerPageOptions: [10,25,50,100],
       onRowClick: (rowData, rowState) => {
-        openAnnouncementViewDialog()
+        openAnnouncementViewDialog(rowData)
       },
       elevation: 0
   };
@@ -157,7 +159,7 @@ function mapDispatchToProps(dispatch) {
     getEmployees: () => dispatch(Actions.getEmployees()),
     getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
     openNewAnnouncementDialog: () => dispatch(Actions.openNewAnnouncementDialog()),
-    openAnnouncementViewDialog: () => dispatch(Actions.openAnnouncementViewDialog()),
+    openAnnouncementViewDialog: (data) => dispatch(Actions.openAnnouncementViewDialog(data)),
   };
 }
 

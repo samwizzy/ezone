@@ -222,6 +222,12 @@ const hrReducer = (state = initialState, action) =>
           jobOpenings: action.payload
         };
       break;
+      case Constants.GET_JOBOPENINGDETAILS_SUCCESS:
+        return {
+          ...state,
+          jobOpeningDetails: action.payload
+        };
+      break;
       case Constants.GET_ROLES_SUCCESS:
         return {
           ...state,

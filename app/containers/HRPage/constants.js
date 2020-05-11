@@ -28,6 +28,9 @@ export const GET_LOCATIONS_SUCCESS = 'boilerplate/HRPage/GET LOCATIONS SUCCESS';
 export const GET_JOBOPENINGS         = 'boilerplate/HRPage/GET JOBOPENINGS';
 export const GET_JOBOPENINGS_SUCCESS = 'boilerplate/HRPage/GET JOBOPENINGS SUCCESS';
 
+export const GET_JOBOPENINGDETAILS         = 'boilerplate/HRPage/GET JOBOPENINGDETAILS';
+export const GET_JOBOPENINGDETAILS_SUCCESS = 'boilerplate/HRPage/GET JOBOPENINGDETAILS SUCCESS';
+
 export const OPEN_NEW_EMPLOYEE_DIALOG   = 'boilerplate/HRPage/OPEN NEW EMPLOYEE DIALOG';
 export const CLOSE_NEW_EMPLOYEE_DIALOG  = 'boilerplate/HRPage/CLOSE NEW EMPLOYEE DIALOG';
 export const OPEN_EDIT_EMPLOYEE_DIALOG  = 'boilerplate/HRPage/OPEN EDIT EMPLOYEE DIALOG';

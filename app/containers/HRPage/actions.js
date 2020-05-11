@@ -75,6 +75,21 @@ export function getJobOpeningsSuccess(data) {
   };
 }
 
+export function getJobOpeningDetails(id) {
+  console.log(id);
+  return {
+    type: Constants.GET_JOBOPENINGDETAILS,
+    payload: id
+  };
+}
+
+export function getJobOpeningDetailsSuccess(data) {
+  return {
+    type: Constants.GET_JOBOPENINGDETAILS_SUCCESS,
+    payload: data
+  };
+}
+
 export function getRoles() {
   return {
     type: Constants.GET_ROLES,
