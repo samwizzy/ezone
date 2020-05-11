@@ -20,6 +20,7 @@ import saga from '../saga';
 import SignatureDialog from './components/SignatureDialog';
 import UserProfileDialog from './components/UserProfileDialog';
 import UserProfile from './components/UserProfile';
+import ModuleLayout from './../components/ModuleLayout';
 
 export function EmployeePage(props) {
   useInjectReducer({ key: 'usersPage', reducer });
@@ -37,7 +38,11 @@ export function EmployeePage(props) {
         <title>User Profile</title>
         <meta name="description" content="Description of EmployeePage" />
       </Helmet>
-      <UserProfile />
+      
+      <ModuleLayout>
+        <UserProfile />
+      </ModuleLayout>
+
       <SignatureDialog />
       <UserProfileDialog />
     </div>

@@ -131,6 +131,7 @@ const attdReducer = (state = initialState, action) =>
         }
       };
       case Constants.OPEN_NEW_EMPLOYEE_SHIFT_DIALOG: {
+        console.log("i am open reducer employee shift")
         return {
           ...state,
           employeeShiftDialog: {...state.employeeShiftDialog, props: { open: true }},

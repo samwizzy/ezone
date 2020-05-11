@@ -286,13 +286,13 @@ AddShiftDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  dialog: Selectors.makeSelectAttendanceDialog(),
+  dialog: Selectors.makeSelectShiftDialog(),
   days: Selectors.makeSelectDays(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeNewAttendanceDialog: () => dispatch(Actions.closeNewAttendanceDialog()),
+    closeNewShiftDialog: () => dispatch(Actions.closeNewShiftDialog()),
     createShift: (data) => dispatch(Actions.createShift(data)),
     dispatch,
   };

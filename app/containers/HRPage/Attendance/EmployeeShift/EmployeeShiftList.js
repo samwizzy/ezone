@@ -15,7 +15,6 @@ import * as Actions from './../actions';
 import * as Selectors from './../selectors';
 import * as AppSelectors from '../../../App/selectors';
 import {AssignShift} from '../components/AddButton'
-import AssignShiftDialog from './components/AssignShiftDialog'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -162,8 +161,6 @@ const EmployeeShiftList = props => {
           />
         </Grid>
       </Grid>
-
-      <AssignShiftDialog />
     </div>
   );
 };
