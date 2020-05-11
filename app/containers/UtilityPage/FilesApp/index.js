@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles'
 import { compose } from 'redux';
@@ -7,7 +8,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import * as Actions from '../actions';
-import * as Selectors from '../selectors';
+import makeSelectUtilityPage, * as Selectors from '../selectors';
 import saga from './../saga';
 import reducer from './../reducer';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -23,25 +24,32 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const FilesApp = props => {
-    useInjectReducer({ key: 'utilityPage', reducer });
-    useInjectSaga({ key: 'utilityPage', saga });
+  useInjectReducer({ key: 'utilityPage', reducer });
+  useInjectSaga({ key: 'utilityPage', saga });
 
-    const classes = useStyles();
-    const { loading, getAllFoldersAndDocs, getEmployees, match } = props;
-    const { params } = match
+  const classes = useStyles();
+  const { loading, getAllFoldersAndDocs, getEmployees, match } = props;
+  const { params } = match
 
-    React.useEffect(() => {
-        getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
-        getEmployees()
-    }, []);
+  React.useEffect(() => {
+    getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
+    getEmployees()
+  }, []);
 
-    return (
-        <ModuleLayout>
-          { params.folderId? 
-            <FileList /> : <FilesList />
-          }
-        </ModuleLayout>
-    );
+  return (
+    <div>
+      <Helmet>
+        <title>Documents - Index</title>
+        <meta name="description" content="Utility Documents Page" />
+      </Helmet>
+
+      <ModuleLayout>
+        { params.folderId? 
+          <FileList /> : <FilesList />
+        }
+      </ModuleLayout>
+    </div>
+  );
 };
 
 FilesApp.propTypes = {
@@ -51,8 +59,9 @@ FilesApp.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-    loading: Selectors.makeSelectLoading(),
-    files: Selectors.makeSelectFiles(),
+  utilityPage: makeSelectUtilityPage(),
+  loading: Selectors.makeSelectLoading(),
+  files: Selectors.makeSelectFiles(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -69,8 +78,8 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(
-  compose(
-    withConnect,
-    memo,
-)(FilesApp));
+export default compose(
+  withRouter,
+  withConnect,
+  memo,
+)(FilesApp);

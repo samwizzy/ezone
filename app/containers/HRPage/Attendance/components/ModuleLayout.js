@@ -17,7 +17,6 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(2),
   }
 }));
 
@@ -80,7 +79,7 @@ function ModuleLayout(props) {
               textColor="primary"
               centered
             >
-              <AntTab label="Attendance" {...a11yProps(0)} />
+              <AntTab label="Attendance" {...a11yProps(0)}  />
               <AntTab label="Shift" {...a11yProps(1)} />
               <AntTab label="Employee Shifts" {...a11yProps(2)} />
             </AntTabs>

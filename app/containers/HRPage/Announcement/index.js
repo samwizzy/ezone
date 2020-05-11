@@ -1,67 +1,38 @@
-import React, { memo } from 'react';
+/*
+ * HRPage
+ *
+ * This is the first thing users see of our App, at the '/' route
+ */
+import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Grid, Paper, Typography } from '@material-ui/core';
-import { compose } from 'redux';
+import { Helmet } from 'react-helmet';
+import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
+import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import { green, orange } from '@material-ui/core/colors'
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
-import moment from 'moment'
-import MUIDataTable from 'mui-datatables'
-import * as Actions from '../actions';
-import * as Selectors from '../selectors';
+import * as Selectors from './../selectors';
+import { useInjectReducer } from 'utils/injectReducer';
+import { useInjectSaga } from 'utils/injectSaga';
 import * as AppSelectors from '../../App/selectors';
-import EditSharp from '@material-ui/icons/EditSharp';
-import Assignment from '@material-ui/icons/Assignment';
-import AssignmentInd from '@material-ui/icons/AssignmentInd';
-import Person from '@material-ui/icons/Person';
-import { AddAnnouncement } from '../components/AddButton'
-import AddAnnouncementDialog from './components/AddAnnouncementDialog'
-import AnnouncementViewDialog from './components/AnnouncementViewDialog'
+import * as AppActions from '../../App/actions';
+import * as Actions from './../actions';
+import makeSelectHRPage from './../selectors';
+import reducer from './../reducer';
+import saga from './../saga';
+import ModuleLayout from './ModuleLayout'
+import AnnouncementList from './AnnouncementList';
+import AddAnnouncementDialog from './components/AddAnnouncementDialog';
+import AnnouncementViewDialog from './components/AnnouncementViewDialog';
 
-const drawerWidth = '100%';
+const key = 'hrPage';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
-    backgroundColor: theme.palette.common.white
-  },
-  datatable: {
-    '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
-    },
-    '& .MuiTableHead-root': {
-      '& .MuiTableCell-head': {
-        color: theme.palette.common.white,
-      },
-      '& .MuiTableCell-root:nth-child(odd)': {
-        backgroundColor: theme.palette.primary.main,
-      },
-      '& .MuiTableCell-root:nth-child(even)': {
-        backgroundColor: darken(theme.palette.primary.main, 0.1),
-      },
-    },
-  },
-  toolbar: theme.mixins.toolbar,
-  content: {
     flexGrow: 1,
   },
-  icon: {
-    color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.done': { color: green[500]},
-  },
 }));
-/*
-const announcements = [
-  {id: 1, title: "Stand Up starts by 5:00", sentTo: "Yinka", msgType: "Email", date: "May 3rd 2020"}
-]
-*/
-const Announcement = props => {
+
+const AnnouncementPage = props => {
   const classes = useStyles();
   const { loading, openNewAnnouncementDialog, announcements, getAnnouncements, openAnnouncementViewDialog, getEmployees, roles, getEmployee, employees, employee } = props;
 
@@ -133,49 +104,32 @@ const Announcement = props => {
   };
 
   return (
-    <div className={classes.root}>
-      <Grid
-        container
-        justify='space-around'
-      >
-        <Grid item md={12}>
-          <div className={classes.content}>
-            <MUIDataTable
-                className={classes.datatable}
-                title="Announcement List"
-                data={announcements}
-                columns={columns}
-                options={options}
-            />
-          </div>
-        </Grid>
-      </Grid>
+    <React.Fragment>
+      <Helmet>
+        <title>Announcement Page</title>
+        <meta name="description" content="ezone application announcement page" />
+      </Helmet>
 
-      <AddAnnouncementDialog />
+      <ModuleLayout>
+        <AnnouncementList />
+      </ModuleLayout>
       
       <AnnouncementViewDialog />
-      
-    </div>
+      <AddAnnouncementDialog />
+     
+    </React.Fragment>
   );
-};
+}
 
-Announcement.propTypes = {
-  loading: PropTypes.bool,
-  getEmployees: PropTypes.func,
-  openNewAnnouncementDialog: PropTypes.func,
-  openAnnouncementViewDialog: PropTypes.func,
+AnnouncementPage.propTypes = {
+  token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(),
-  employees: Selectors.makeSelectEmployees(),
-  employee : Selectors.makeSelectEmployee(),
-  announcements : Selectors.makeSelectAnnouncements(),
-  user: AppSelectors.makeSelectCurrentUser(),
-  roles : Selectors.makeSelectRoles(),
+  hrPage: makeSelectHRPage(),
 });
 
-function mapDispatchToProps(dispatch) {
+export function mapDispatchToProps(dispatch) {
   return {
     getEmployees: () => dispatch(Actions.getEmployees()),
     getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
@@ -190,7 +144,6 @@ const withConnect = connect(
 );
 
 export default compose(
-  withRouter,
   withConnect,
   memo,
-)(Announcement);
+)(AnnouncementPage);

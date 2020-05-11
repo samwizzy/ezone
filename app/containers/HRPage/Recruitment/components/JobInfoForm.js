@@ -64,7 +64,7 @@ export const JobInfoForm = props => {
                     value={form.departmentId}
                     onChange={handleSelectChange}
                     >
-                    {departments.map((dept) => (
+                    {departments && departments.map((dept) => (
                         <MenuItem key={dept.id} value={dept.id}>
                             {dept.name}
                         </MenuItem>
@@ -85,7 +85,7 @@ export const JobInfoForm = props => {
                     value={form.enrollmentTypeId}
                     onChange={handleSelectChange}
                     >
-                    {enrollmentTypes.map((enrollmentType) => (
+                    {enrollmentTypes && enrollmentTypes.map((enrollmentType) => (
                     <MenuItem key={enrollmentType.id} value={enrollmentType.id}>
                         {enrollmentType.name}
                     </MenuItem>

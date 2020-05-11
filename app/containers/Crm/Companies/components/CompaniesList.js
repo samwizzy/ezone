@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   button: {
-    margin: theme.spacing(1),
+    marginLeft: theme.spacing(2),
   },
   datatable: {
     '& .MuiTableRow-root:hover': {
@@ -45,9 +45,6 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
-  },
-  view: {
-    margin: theme.spacing(1),
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -152,13 +149,13 @@ const CompaniesList = props => {
           return (
             <div>
               <Button
-                variant="outlined" size="small" color="primary" className={classes.margin}
+                variant="outlined" size="small" color="primary"
                 onClick={() => openEditCompanyDialogAction(contac)}
               >
                 Edit
               </Button>
               <FormControlLabel
-                className={classes.view}
+                className={classes.button}
                 control={<Visibility />}
                 onClick={() => openCompanyDetailsDialogAction(contac)}
               >
@@ -187,6 +184,7 @@ const CompaniesList = props => {
         New
       </Button>
     ),
+    elevation: 0
   };
 
   // if (loading) {

@@ -98,12 +98,11 @@ const OrgInfo = props => {
                 alignItems="flex-start"
                 style={{ display: 'flex', alignItems: 'center' }}
               >
-                {/* <img alt="Company Logo" src={companyInfo.logo} /> */}
                 <ListItemAvatar>
                   {companyInfo?
                     <Avatar
                       alt="Company Logo"
-                      src={companyInfo.logo}
+                      src={`data:image/jpg;base64,${companyInfo.logo}`}
                       className={classes.avatar}
                     />
                     :

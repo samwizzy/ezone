@@ -55,6 +55,16 @@ const makeSelectAttendanceDialog = () =>
     selectAttendance,
     subState => subState.attdDialog,
   );
+const makeSelectShiftDialog = () =>
+  createSelector(
+    selectAttendance,
+    subState => subState.shiftDialog,
+  );
+const makeSelectEmployeeShiftDialog = () =>
+  createSelector(
+    selectAttendance,
+    subState => subState.employeeShiftDialog,
+  );
 
   const makeSelectEmployees = () =>
   createSelector(

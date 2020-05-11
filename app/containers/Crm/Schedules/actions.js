@@ -7,6 +7,7 @@
 import * as Constants from './constants';
 
 export function openNewScheduleDialog() {
+  console.log('open schedules')
   return {
     type: Constants.OPEN_NEW_SCHEDULE_DIALOG,
   };

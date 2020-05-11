@@ -26,17 +26,18 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.common.white
   },
   datatable: {
-    '& .MuiTableRow-root:hover': {
+    '& tr:hover': {
       cursor: 'pointer'
     },
-    '& .MuiTableHead-root': {
-      '& .MuiTableCell-head': {
+    '& thead': {
+      '& th': {
         color: theme.palette.common.white,
+        textTransform: 'capitalize'
       },
-      '& .MuiTableCell-root:nth-child(odd)': {
+      '& th:nth-child(odd)': {
         backgroundColor: theme.palette.primary.main,
       },
-      '& .MuiTableCell-root:nth-child(even)': {
+      '& th:nth-child(even)': {
         backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
@@ -49,6 +50,28 @@ const useStyles = makeStyles(theme => ({
     '&.done': { color: green[500]},
   }
 }));
+
+function YourCustomRowComponent(props) {
+  const { id, createdAt, attended, absent, present } = props;
+
+  return (
+    <div>
+      <h1>
+        {createdAt}
+      </h1>
+      <div>
+        Attended: {attended} <br/>
+        Absent: {absent} <br/>
+        Present: {present}
+      </div>
+    </div>
+  );
+}
+
+const attendanceList = [
+  {id: 1, createdAt: '2010-01-01T05:06:07', attended: '75%', absent: 'No', present: 'Yes'},
+  {id: 2, createdAt: '2020-08-01T08:19:07', attended: '45%', absent: 'Yes', present: 'Yes'},
+]
 
 const AttendanceList = props => {
   const classes = useStyles();
@@ -85,6 +108,11 @@ const AttendanceList = props => {
       options: {
         filter: true,
         sort: true,
+        // customHeadRender: (columnMeta, updateDirection) => (
+        //   <th key={2} onClick={() => updateDirection(2)} style={{ cursor: 'pointer' }}>
+        //     {columnMeta.name}
+        //   </th>
+        // )
       },
     },
     {
@@ -127,6 +155,22 @@ const AttendanceList = props => {
     onRowClick: (rowData, rowState) => {
       getAttendanceById(rowData[0])
     },
+    // customRowRender: data => {
+    //   const [ id, createdAt, attended, absent, present ] = data;
+          
+    //   return (
+    //     <tr key={createdAt.props.children}>
+    //       <td colSpan={4} style={{ paddingTop: "10px"}}>
+    //         <YourCustomRowComponent
+    //           createdAt={createdAt}
+    //           attended={attended}
+    //           absent={absent}
+    //           present={present}
+    //         />
+    //       </td>
+    //     </tr>
+    //   );
+    // },
     elevation: 0
   };
 
@@ -140,7 +184,7 @@ const AttendanceList = props => {
           <MUIDataTable
             className={classes.datatable}
             title="Attendance List"
-            data={attendance}
+            data={attendanceList}
             columns={columns}
             options={options}
           />

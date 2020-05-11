@@ -18,6 +18,7 @@ import makeSelectUsersPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
+import ModuleLayout from './components/ModuleLayout';
 
 export function UsersPage() {
   useInjectReducer({ key: 'usersPage', reducer });
@@ -29,7 +30,10 @@ export function UsersPage() {
         <title>UsersPage</title>
         <meta name="description" content="Description of UsersPage" />
       </Helmet>
-      <FormattedMessage {...messages.header} />
+
+      <ModuleLayout>
+        <FormattedMessage {...messages.header} />
+      </ModuleLayout>
     </div>
   );
 }

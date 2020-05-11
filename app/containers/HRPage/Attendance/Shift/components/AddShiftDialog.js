@@ -2,30 +2,40 @@ import React, {memo} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider,
-} from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
-import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, MenuItem, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+
+import ScheduleIcon from '@material-ui/icons/Schedule';
+import { AppBar, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormLabel, FormControlLabel, MenuItem, Radio, RadioGroup, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const useStyles = makeStyles(theme => ({
   root: {
     '& .MuiTextField-root': {
-      margin: theme.spacing(1, 0)
+      // margin: theme.spacing(1, 0)
     },
   },
+  table: {
+    "& td": {
+      border: "0 !important"
+    }
+  }
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+
+const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 function AddShiftDialog(props) {
   const classes = useStyles();
@@ -84,14 +94,14 @@ function AddShiftDialog(props) {
         {...dialog.props}
         TransitionComponent={Transition}
         keepMounted
-        onClose={closeNewAttendanceDialog}
+        onClose={closeNewShiftDialog}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <AppBar position="relative">
+        <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
-              Add attendance
+              Add Shift
             </Typography>
           </Toolbar>
         </AppBar>
@@ -252,11 +262,11 @@ function AddShiftDialog(props) {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={closeNewAttendanceDialog} color="primary">
+          <Button onClick={closeNewShiftDialog} color="primary">
             Cancel
           </Button>
           <Button onClick={handleSubmit} disabled={!canSubmitForm()} color="primary">
-            Next
+            Save
           </Button>
         </DialogActions>
       </Dialog>
@@ -266,7 +276,7 @@ function AddShiftDialog(props) {
 
 
 AddShiftDialog.propTypes = {
-  closeNewAttendanceDialog: PropTypes.func,
+  closeNewShiftDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({

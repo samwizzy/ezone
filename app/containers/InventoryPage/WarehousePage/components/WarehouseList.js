@@ -173,6 +173,7 @@ const WarehouseList = props => {
         Add New Warehouse
       </Button>
     ),
+    elevation: 0
   };
 
   if (loading) {

@@ -5,31 +5,121 @@ import { makeStyles } from '@material-ui/core/styles'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
-import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, MenuItem, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import { withStyles, AppBar, Box, Button, Checkbox, Dialog, DialogActions, DialogContent, Divider, MenuItem, Popover, Slide, Tabs, Tab, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
-import moment from 'moment'
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const useStyles = makeStyles(theme => ({
   root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1, 0)
-    },
+    flexGrow: 1
+  },
+  table: {
+    minWidth: 350,
+    "& td": {
+      border: "0 !important"
+    }
+  },
+  tabsRoot: {
+    minWidth: 500,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  tabs: {
+    borderLeft: `1px solid ${theme.palette.divider}`,
+    borderRight: `1px solid ${theme.palette.divider}`,
+  },
+  toolbar : { 
+    flexGrow: 1,
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    ...theme.mixins.toolbar
+  },
+  typography: {
+    padding: theme.spacing(2),
   },
 }));
+
+const AntTabs = withStyles({
+	flexContainer: {
+    flexDirection: 'column',
+  },
+  indicator: {
+    backgroundColor: '#1890ff',
+    left: 0,
+    top: 0,
+  },
+})(Tabs);
+
+const AntTab = withStyles(theme => ({
+  root: {
+		backgroundColor: 'rgba(26, 136, 225, 0.1)',
+		borderRadius: '0px 30px 30px 0px',
+    textTransform: 'none',
+    minWidth: 92,
+    fontWeight: theme.typography.fontWeightRegular,
+    padding: theme.spacing(2, 4),
+    marginRight: theme.spacing(1),
+    '&:hover': {
+      color: '#40a9ff',
+      opacity: 1,
+    },
+    '&$selected': {
+      color: '#1890ff',
+			fontWeight: theme.typography.fontWeightMedium,
+    },
+    '&:focus': {
+      color: '#40a9ff',
+    },
+	},
+	wrapper: {
+		alignItems: 'flex-start',
+  },
+  selected: {},
+}))(props => <Tab disableRipple {...props} />);
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+function a11yProps(index) {
+  return {
+    id: `vertical-tab-${index}`,
+    'aria-controls': `vertical-tabpanel-${index}`,
+  };
+}
+
+const employees = [{label: 'Sunday'}, {label: 'Monday'}, {label: 'Tuesday'}, {label: 'Wednesday'}, {label: 'Thursday'}, {label: 'Friday'}];
+
 function AssignShiftDialog(props) {
   const classes = useStyles();
-  const { closeNewAttendanceDialog, dialog } = props;
+  const { closeNewEmployeeShiftDialog, dialog } = props;
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [value, setValue] = React.useState(0);
   const [form, setForm] = React.useState({
-    title: '',
-    sendTo: '',
-    messageType: '',
+    employee: '',
+    shift: '',
   });
+  
+  const handleTabChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
 
   React.useEffect(() => {
     if(dialog.type == 'edit'){
@@ -38,8 +128,8 @@ function AssignShiftDialog(props) {
   }, [dialog])
 
   const canSubmitForm = () => {
-    const {title, messageType, sendTo } = form
-    return title.length > 0 && messageType.length > 0 && sendTo.length > 0
+    const {employee, shift } = form
+    return employee.length > 0 && shift.length > 0
   }
 
   const handleChange = (event) => {
@@ -47,10 +137,9 @@ function AssignShiftDialog(props) {
     setForm({...form, [name]: value});
   }
 
-  const handleSubmit = () => {
-  }
+  const handleSelectChange = () => {}
 
-  console.log(form, 'checking form employee...')
+  const handleSubmit = () => {}
 
   return (
     <div>
@@ -58,81 +147,224 @@ function AssignShiftDialog(props) {
         {...dialog.props}
         TransitionComponent={Transition}
         keepMounted
-        onClose={closeNewAttendanceDialog}
+        onClose={closeNewEmployeeShiftDialog}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <AppBar position="relative">
+        <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
-              Add attendance
+              Assign Shift
             </Typography>
           </Toolbar>
         </AppBar>
-        
-        <Divider />
 
-        <DialogContent>
-          <Grid container spacing={1}>
-              <Grid item xs={12}>
+        <DialogContent dividers>
+          <Table className={classes.table} size="small">
+            <TableBody>
+              <TableRow>
+                <TableCell>
                   <TextField
-                  name="title"
-                  label="Title"
-                  id="outlined-title"
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                  value={form.title}
-                  onChange={handleChange}
-                  />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  id="send-to"
-                  name="sendTo"
-                  placeholder="Send To"
-                  select
-                  fullWidth
-                  className={classes.textField}
-                  variant="outlined"
-                  size="small"
-                  label="Send To"
-                  value={form.sendTo}
-                  onChange={handleChange}
-                >
-                  <MenuItem key={0} value="1">
+                    id="status"
+                    name="status"
+                    placeholder="Status"
+                    select
+                    fullWidth
+                    variant="outlined"
+                    margin="normal"
+                    size="small"
+                    label="Status"
+                    value={form.shift}
+                    onChange={handleChange}
+                  >
+                    <MenuItem key={0} value="">
                       No record
-                  </MenuItem>
-                </TextField>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  id="message-type"
-                  name="messageType"
-                  placeholder="Message Type"
-                  select
-                  fullWidth
-                  className={classes.textField}
-                  variant="outlined"
-                  size="small"
-                  label="Message Type"
-                  value={form.messageType}
-                  onChange={handleChange}
-                >
-                  <MenuItem key={0} value="1">
-                    No record
-                  </MenuItem>
-                </TextField>
-              </Grid>
-          </Grid>
+                    </MenuItem>
+                  </TextField>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                  <Autocomplete
+                    id="combo-box-demo"
+                    size="small"
+                    options={employees}
+                    getOptionLabel={option => option.label}
+                    onChange={(evt, value) => handleSelectChange(evt, value)}
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        label="Employee"
+                        variant="outlined"
+                        placeholder="Search"
+                        margin="normal"
+                        value={form.employee}
+                        fullWidth
+                      />
+                    )}
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                  <TextField
+                    id="employee-select"
+                    name="employee"
+                    placeholder="Employee"
+                    fullWidth
+                    variant="outlined"
+                    margin="normal"
+                    size="small"
+                    label="Employee"
+                    value={form.employee}
+                    onClick={handleClick}
+                  />
+                  <Popover
+                    id={id}
+                    open={open}
+                    anchorEl={anchorEl}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'center',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'center',
+                    }}
+                  >
+                    <div className={classes.tabsRoot}>
+                      <AntTabs
+                        orientation="vertical"
+                        variant="scrollable"
+                        value={value}
+                        onChange={handleTabChange}
+                        aria-label="ant example"
+                        className={classes.tabs}
+                      >
+                        <AntTab label="Employees" {...a11yProps(0)} />
+                        <AntTab label="Department" {...a11yProps(1)} />
+                        <AntTab label="Branch" {...a11yProps(2)} />
+                        <AntTab label="Roles" {...a11yProps(3)} />
+                      </AntTabs>
+                      {value === 0 && 
+                      <Box px={2} className={classes.toolbar}>
+                        <Autocomplete
+                          multiple
+                          id="employee"
+                          size="small"
+                          options={employees}
+                          disableCloseOnSelect
+                          getOptionLabel={(option) => option.label}
+                          renderOption={(option, { selected }) => (
+                            <React.Fragment>
+                              <Checkbox
+                                icon={icon}
+                                checkedIcon={checkedIcon}
+                                style={{ marginRight: 8 }}
+                                checked={selected}
+                              />
+                              {option.label}
+                            </React.Fragment>
+                          )}
+                          renderInput={(params) => (
+                            <TextField {...params} variant="outlined" label="Employees" placeholder="Employees" margin="normal" />
+                          )}
+                        />
+                      </Box>
+                      }
+                      {value === 1 && 
+                      <Box px={2} className={classes.toolbar}>
+                        <Autocomplete
+                          multiple
+                          id="checkboxes-tags-demo"
+                          size="small"
+                          options={employees}
+                          disableCloseOnSelect
+                          getOptionLabel={(option) => option.label}
+                          renderOption={(option, { selected }) => (
+                            <React.Fragment>
+                              <Checkbox
+                                icon={icon}
+                                checkedIcon={checkedIcon}
+                                style={{ marginRight: 8 }}
+                                checked={selected}
+                              />
+                              {option.label}
+                            </React.Fragment>
+                          )}
+                          renderInput={(params) => (
+                            <TextField {...params} variant="outlined" label="Department" placeholder="Department" margin="normal" />
+                          )}
+                        />
+                      </Box>
+                      }
+                      {value === 2 && 
+                      <Box px={2} className={classes.toolbar}>
+                        <Autocomplete
+                          multiple
+                          id="checkboxes-tags-demo"
+                          size="small"
+                          options={employees}
+                          disableCloseOnSelect
+                          getOptionLabel={(option) => option.label}
+                          renderOption={(option, { selected }) => (
+                            <React.Fragment>
+                              <Checkbox
+                                icon={icon}
+                                checkedIcon={checkedIcon}
+                                style={{ marginRight: 8 }}
+                                checked={selected}
+                              />
+                              {option.label}
+                            </React.Fragment>
+                          )}
+                          renderInput={(params) => (
+                            <TextField {...params} variant="outlined" label="Branch" placeholder="Branch" margin="normal" />
+                          )}
+                        />
+                      </Box>
+                      }
+                      {value === 3 && 
+                      <Box px={2} className={classes.toolbar}>
+                        <Autocomplete
+                          multiple
+                          id="checkboxes-tags-demo"
+                          size="small"
+                          options={employees}
+                          disableCloseOnSelect
+                          getOptionLabel={(option) => option.label}
+                          renderOption={(option, { selected }) => (
+                            <React.Fragment>
+                              <Checkbox
+                                icon={icon}
+                                checkedIcon={checkedIcon}
+                                style={{ marginRight: 8 }}
+                                checked={selected}
+                              />
+                              {option.label}
+                            </React.Fragment>
+                          )}
+                          renderInput={(params) => (
+                            <TextField {...params} variant="outlined" label="Roles" placeholder="Roles" margin="normal" />
+                          )}
+                        />
+                      </Box>
+                      }
+                    </div>
+                  </Popover>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={closeNewAttendanceDialog} color="primary">
+          <Button onClick={closeNewEmployeeShiftDialog} color="primary">
             Cancel
           </Button>
           <Button onClick={handleSubmit} disabled={!canSubmitForm()} color="primary">
-            Next
+            Save
           </Button>
         </DialogActions>
       </Dialog>
@@ -142,16 +374,16 @@ function AssignShiftDialog(props) {
 
 
 AssignShiftDialog.propTypes = {
-  closeNewAttendanceDialog: PropTypes.func,
+  closeNewEmployeeShiftDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  dialog: Selectors.makeSelectAttendanceDialog(),
+  dialog: Selectors.makeSelectEmployeeShiftDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeNewAttendanceDialog: () => dispatch(Actions.closeNewAttendanceDialog()),
+    closeNewEmployeeShiftDialog: () => dispatch(Actions.closeNewEmployeeShiftDialog()),
     dispatch,
   };
 }

@@ -294,7 +294,7 @@ const NewBudgeting = props => {
                   <TableHead>
                     <TableRow>
                       <TableCell component="th" scope="row">Accounts</TableCell>
-                      {newCopyArray.map((item, i) => <TableCell key={i} align="left">{ item }</TableCell>)}
+                      {newCopyArray.map((item, i) => <TableCell key={i} align="center">{ item }</TableCell>)}
                     </TableRow>
                   </TableHead>
                   <TableBody>

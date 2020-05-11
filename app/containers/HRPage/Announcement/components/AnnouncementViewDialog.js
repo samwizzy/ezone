@@ -60,7 +60,7 @@ function AnnouncementViewDialog(props) {
         </DialogTitle>
 
         <DialogContent dividers>
-          <Grid container spacing={1}>
+          <Grid container>
             <Grid item xs={12}>
               <DialogContentText>
               {dialog.props.data && 
