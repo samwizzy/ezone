@@ -6,7 +6,7 @@ import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { darken } from '@material-ui/core/styles/colorManipulator';
-import MenuBar from '../../../components/MenuBar'
+import MenuBar from '../../../../components/MenuBar'
 
 const useStyles = makeStyles(theme => ({
   root: {

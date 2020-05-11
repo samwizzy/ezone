@@ -68,9 +68,8 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(
-  compose(
-    withConnect,
-    memo,
-  )(ModuleLayout),
-);
+export default compose(
+  withRouter,
+  withConnect,
+  memo,
+)(ModuleLayout);
