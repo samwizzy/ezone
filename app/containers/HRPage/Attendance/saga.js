@@ -113,7 +113,7 @@ export function* createShift({ type, payload }) {
 
     console.log(response, 'SHIFT RESPONSE');
     alert("SHIFT created");
-    yield put({type: Constants.CLOSE_NEW_ATTENDANCE_DIALOG});
+    yield put({type: Constants.CLOSE_NEW_SHIFT_DIALOG});
     yield put({type: Constants.GET_SHIFTS});
   } catch (err) {
     // yield put(Actions.getUtilityFilesError(err));

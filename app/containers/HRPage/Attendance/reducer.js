@@ -61,6 +61,18 @@ const attdReducer = (state = initialState, action) =>
           attendances: action.payload
         }
       };
+      case Constants.GET_EMPLOYEES: {
+        return {
+          ...state,
+          loading: true
+        }
+      };
+      case Constants.GET_EMPLOYEES_SUCCESS: {
+        return {
+          ...state,
+          employees: action.payload
+        }
+      };
       case Constants.GET_ATTENDANCE: {
         return {
           ...state,
