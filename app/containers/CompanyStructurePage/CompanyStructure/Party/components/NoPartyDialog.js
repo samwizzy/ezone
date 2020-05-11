@@ -20,7 +20,7 @@ import {
   IconButton,
   Paper
 } from '@material-ui/core';
-import { Add } from '@material-ui/icons'
+import { Add } from '@material-ui/icons';
 
 
 const useStyles = makeStyles(theme => ({
