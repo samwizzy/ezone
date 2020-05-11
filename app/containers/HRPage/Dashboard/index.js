@@ -1,6 +1,6 @@
 /**
  *
- * Crm
+ * HR Dashboard
  *
  */
 
@@ -11,13 +11,11 @@ import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import * as Selectors from '../selectors';
-import messages from '../messages';
 import Dashboard from './Dashboard'
-import ModuleLayout from './../components/ModuleLayout'
+import ModuleLayout from './components/ModuleLayout'
 
 export function DashboardPage() {
 
@@ -25,7 +23,7 @@ export function DashboardPage() {
     <div>
       <Helmet>
         <title>HR - Dashboard</title>
-        <meta name="description" content="Description of Crm" />
+        <meta name="description" content="Description of HR Dashboard" />
       </Helmet>
 
       <ModuleLayout>

@@ -135,6 +135,7 @@ export function closeEditShiftDialog(data) {
 }
 
 export function openNewEmployeeShiftDialog() {
+  console.assertlog("trying employee shift dialog")
   return {
     type: Constants.OPEN_NEW_EMPLOYEE_SHIFT_DIALOG,
   };

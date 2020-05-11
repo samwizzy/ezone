@@ -122,7 +122,6 @@ const Announcement = props => {
     <div className={classes.root}>
       <Grid
         container
-        justify='space-around'
       >
         <Grid item md={12}>
           <MUIDataTable

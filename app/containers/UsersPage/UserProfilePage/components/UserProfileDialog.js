@@ -4,28 +4,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
 import {
   TextField,
   makeStyles,
   Button,
+  CircularProgress,
   Dialog,
   DialogContent,
   DialogActions,
-  AppBar,
-  Toolbar,
-  Typography,
   MenuItem,
-  Tabs,
-  Tab,
-  Box,
-  Card,
-  CardActionArea,
-  CardMedia,
-  CardContent,
-  Grid,
   DialogTitle,
-  Divider,
   Slide,
 } from '@material-ui/core';
 import * as Selectors from '../../selectors';
@@ -102,11 +90,11 @@ const UserProfileDialog = props => {
   };
 
   const handleSelectChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
+    setValues({...values, [name]: event.target.value});
   };
 
   const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
+    setValues({...values, [name]: event.target.value});
   };
 
   return (
@@ -122,9 +110,7 @@ const UserProfileDialog = props => {
           {updateUserProfileDialog.type === 'new' ? '' : 'Edit User Profile'}
         </DialogTitle>
 
-        <Divider />
-
-        <DialogContent>
+        <DialogContent dividers>
           {updateUserProfileDialog.type === 'edit' ? (
             <div>
               <TextField
@@ -192,24 +178,21 @@ const UserProfileDialog = props => {
         </DialogContent>
 
         <DialogActions>
-          {loading ? (
-            <LoadingIndicator />
-          ) : (
-            <Button
-              onClick={() => {
-                updateUserProfileAction(values);
-              }}
-              color="primary"
-              variant="contained"
-              disabled={!canBeSubmitted()}
-            >
-              Save
-            </Button>
-          )}
+          <Button
+            onClick={() => {
+              updateUserProfileAction(values);
+            }}
+            color="primary"
+            variant="contained"
+            disabled={loading? loading : !canBeSubmitted()}
+            endIcon={loading && <CircularProgress size={20} />}
+          >
+            Save
+          </Button>
           <Button
             onClick={() => closeEditUserProfileDialogAction()}
             color="primary"
-            variant="contained"
+            variant="outlined"
           >
             Cancel
           </Button>

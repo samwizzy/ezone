@@ -8,14 +8,13 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 
 
-// Get list of accounting period data
-export function* getAllAccountingPeriodSaga() {
+export function* getBudgetingSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllAccountingPeriodApi}/${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetAllAccountTypeApi}/${currentUser.organisation.orgId}`;
 
   try {
-    const accountingPeriodResponse = yield call(request, requestURL, {
+    const allAccountTypeResponse = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -23,19 +22,15 @@ export function* getAllAccountingPeriodSaga() {
       }),
     });
 
-    console.log('bugdet accountingPeriodResponse -> ', accountingPeriodResponse);
-    yield put(Actions.getAllAccountingPeriodSuccessAction(accountingPeriodResponse));
+    yield put(Actions.getAllAccountTypeSuccessAction(allAccountTypeResponse));
   } catch (err) {
-    console.log('getAllAccountingPeriodErrorAction --> ', err);
-    yield put(Actions.getAllAccountingPeriodErrorAction(err));
+    alert('Something went wrong getAllAccountTypeSaga');
+    yield put(Actions.getAllAccountTypeErrorAction(err));
   }
 }
 
-
-
 // Individual exports for testing
-export default function* AccountChartSaga() {
+export default function* BudgetingSaga() {
   // See example in containers/HomePage/saga.js
-  yield takeLatest(Constants.GET_ALL_ACCOUNTING_PERIOD, getAllAccountingPeriodSaga);
 }
 

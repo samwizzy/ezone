@@ -146,7 +146,7 @@ function AssignShiftDialog(props) {
   return (
     <div>
       <Dialog
-       /* {...dialog.props } */
+        {...dialog.props}
         TransitionComponent={Transition}
         onClose={closeNewEmployeeShiftDialog}
         aria-labelledby="alert-dialog-slide-title"
@@ -379,7 +379,7 @@ AssignShiftDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  //dialog: Selectors.makeSelectEmployeeShiftDialog(),
+  dialog: Selectors.makeSelectEmployeeShiftDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
