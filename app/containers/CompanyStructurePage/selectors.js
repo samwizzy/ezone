@@ -106,6 +106,18 @@ const makeSelectCreateNewPartyData = () =>
     subState => subState.createNewPartyData,
   );
 
+const makeSelectPartyId = () =>
+  createSelector(
+    selectCompanyStructurePageDomain,
+    subState => subState.partyId,
+  );
+
+const makeSelectGetPartyById = () =>
+  createSelector(
+    selectCompanyStructurePageDomain,
+    subState => subState.getPartyById,
+  );
+
 const makeSelectUpdatePartyData = () =>
   createSelector(
     selectCompanyStructurePageDomain,
@@ -249,4 +261,6 @@ export {
   makeSelectUpdatePartiesData,
   makeSelectUpdatePositionData,
   makeSelectGetAllTags,
+  makeSelectPartyId,
+  makeSelectGetPartyById,
 };

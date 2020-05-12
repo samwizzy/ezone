@@ -1,190 +1,70 @@
-import React, { memo } from 'react';
+/*
+ * HRPage
+ *
+ * This is the first thing users see of our App, at the '/' route
+ */
+import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Avatar, Button, ButtonGroup, TableContainer, Table, TableRow, TableCell, TableBody, TextField, Grid, Paper, Typography } from '@material-ui/core';
-import { compose } from 'redux';
+import { Helmet } from 'react-helmet';
+import { makeStyles } from '@material-ui/core/styles';
+// import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
+import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import { green, orange } from '@material-ui/core/colors'
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
-import moment from 'moment'
-import MUIDataTable from 'mui-datatables'
-import * as Actions from '../actions';
-import * as Selectors from '../selectors';
+import { useInjectReducer } from 'utils/injectReducer';
+import { useInjectSaga } from 'utils/injectSaga';
 import * as AppSelectors from '../../App/selectors';
-import EditSharp from '@material-ui/icons/EditSharp';
-import Assignment from '@material-ui/icons/Assignment';
-import Person from '@material-ui/icons/Person';
-import {AddBranch} from '../components/AddButton'
-import AddBranchDialog from './components/AddBranchDialog'
+import * as AppActions from '../../App/actions';
+import * as Actions from './../actions';
+import makeSelectHRPage from './../selectors';
+import reducer from './../reducer';
+import saga from './../saga';
+import ModuleLayout from './ModuleLayout'
+import BranchList from './BranchList';
+
+const key = 'hrPage';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
-    backgroundColor: theme.palette.common.white
-  },
-  datatable: {
-    '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
-    },
-    '& .MuiTableHead-root': {
-      '& .MuiTableCell-head': {
-        color: theme.palette.common.white,
-      },
-      '& .MuiTableCell-root:nth-child(odd)': {
-        backgroundColor: theme.palette.primary.main,
-      },
-      '& .MuiTableCell-root:nth-child(even)': {
-        backgroundColor: darken(theme.palette.primary.main, 0.1),
-      },
-    },
-  },
-  table: { 
-    border: 0, 
-    whiteSpace: 'nowrap',
-    overflowX: 'auto',
-  },
-  toolbar: theme.mixins.toolbar,
-  content: {
     flexGrow: 1,
   },
-  gridRoot: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    padding: theme.spacing(2, 1),
-    backgroundColor: theme.palette.background.paper,
-  },
-  icon: {
-    width: 14,
-    height: 14,
-    color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.done': { color: green[500]},
-  },
-  buttonGroup: {
-    marginBottom: theme.spacing(1),
-  }
 }));
 
-const BranchesApp = props => {
-  const classes = useStyles();
-  const { loading, openNewBranchDialog, getEmployee, employees, getEmployees, employee, getBranches, branches } = props;
+export function BranchPage(props) {
+  const { getEmployees } = props;
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
 
   React.useEffect(() => {
-  }, [employee]);
-
-  const toTitleCase = (str) => { 
-    return str? str[0].toUpperCase() + str.slice(1) : ""; 
-  }
-
-  const columns = [
-    {
-      name: 'uuId',
-      label: 'Id',
-      options: {
-        display: 'excluded',
-        filter: true,
-      },
-    },
-    {
-      name: 'name',
-      label: 'Department Name',
-      options: {
-      filter: true,
-      sort: true,
-      },
-    },
-    {
-      name: 'employeeCount',
-      label: 'Employee count',
-     
-      options: {
-      filter: true,
-      sort: true,
-      customBodyRender: id => {
-        return (
-          <span>0</span>
-        )
-        }
-      },
-    },
-    {
-      name: 'dateCreated',
-      label: 'Created',
-      options: {
-      filter: true,
-      sort: true,
-      },
-    },
-  ];
-
-  const options = {
-    filterType: 'checkbox',
-    responsive: 'scrollMaxHeight',
-    selectableRows: 'none', // single, multiple
-    print: false,
-    download: true,
-    viewColumns: false,
-    filter: false,
-    customToolbar: () => <AddBranch openDialog={openNewBranchDialog} />,
-    rowsPerPage: 10,
-    rowsPerPageOptions: [10,25,50,100],
-    onRowClick: (rowData, rowState) => {
-      console.log(rowData[0], "rowData[0]")
-      getEmployee(rowData[0])
-    },
-    elevation: 0
-  };
+    getEmployees();
+  }, []);
 
   return (
-    <div className={classes.root}>
-      <Grid
-        container
-        justify='space-around'
-      >
-        <Grid item md={12}>
-          <div className={classes.content}>
-        
-            <MUIDataTable
-                className={classes.datatable}
-                title="Branch List"
-                data={branches}
-                columns={columns}
-                options={options}
-            />
+    <React.Fragment>
+      <Helmet>
+        <title>Branch Page</title>
+        <meta name="description" content="ezone application employee branch page" />
+      </Helmet>
 
-          </div>
-        </Grid>
-      </Grid>
-
-      <AddBranchDialog />
-    </div>
+      <ModuleLayout>
+        <BranchList />
+      </ModuleLayout>
+    </React.Fragment>
   );
-};
+}
 
-BranchesApp.propTypes = {
-  loading: PropTypes.bool,
-  getEmployees: PropTypes.func,
-  openNewBranchDialog: PropTypes.func,
+BranchPage.propTypes = {
+  token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(),
-  employees: Selectors.makeSelectEmployees(),
-  employee : Selectors.makeSelectEmployee(),
-  user: AppSelectors.makeSelectCurrentUser(),
-  branches: Selectors.makeSelectBranches(),
+  hrPage: makeSelectHRPage(),
+  token: AppSelectors.makeSelectAccessToken(),
 });
 
-function mapDispatchToProps(dispatch) {
+export function mapDispatchToProps(dispatch) {
   return {
     getEmployees: () => dispatch(Actions.getEmployees()),
-    getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
-    openNewBranchDialog: () => dispatch(Actions.openNewBranchDialog()),
   };
 }
 
@@ -193,8 +73,7 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(
-  compose(
-    withConnect,
-    memo,
-)(BranchesApp));
+export default compose(
+  withConnect,
+  memo,
+)(BranchPage);

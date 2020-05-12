@@ -83,77 +83,74 @@ function AddBranchDialog(props) {
         <Divider />
 
         <DialogContent>
-        <form className={classes.root}>
-            <Grid container spacing={1}>
-                <Grid item xs={12}>
-                    <TextField
-                    name="name"
-                    label="Branch Name"
-                    id="outlined-title"
-                    fullWidth
-                    variant="outlined"
-                    size="small"
-                    value={form.name}
-                    onChange={handleChange}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                    name="description"
-                    label="Description"
-                    id="outlined-title"
-                    fullWidth
-                    variant="outlined"
-                    size="small"
-                    value={form.description}
-                    onChange={handleChange}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    id="partyHead"
-                    name="partyHead"
-                    placeholder="Branch Lead"
-                    select
-                    fullWidth
-                    className={classes.textField}
-                    variant="outlined"
-                    size="small"
-                    label="Branch Lead"
-                    value={form.partyHead.id}
-                    onChange={handleSelectChange}
-                  >
-                    {employees.map((employee) => (
-                    <MenuItem key={employee.id} value={employee.id}>
-                        {employee.firstName} {employee.lastName}
-                    </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    id="assistantPartyHead"
-                    name="assistantPartyHead"
-                    placeholder="Assistant Branch Lead"
-                    select
-                    fullWidth
-                    className={classes.textField}
-                    variant="outlined"
-                    size="small"
-                    label="Assistant Branch Lead"
-                    value={form.assistantPartyHead.id}
-                    onChange={handleSelectChange}
-                  >
-                    {employees.map((employee) => (
-                    <MenuItem key={employee.id} value={employee.id}>
-                        {employee.firstName} {employee.lastName}
-                    </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-                
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <TextField
+              name="name"
+              label="Branch Name"
+              id="outlined-title"
+              fullWidth
+              variant="outlined"
+              size="small"
+              value={form.name}
+              onChange={handleChange}
+              />
             </Grid>
-          </form>
+            <Grid item xs={12}>
+              <TextField
+              name="description"
+              label="Description"
+              id="outlined-title"
+              fullWidth
+              variant="outlined"
+              size="small"
+              value={form.description}
+              onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id="partyHead"
+                name="partyHead"
+                placeholder="Branch Lead"
+                select
+                fullWidth
+                className={classes.textField}
+                variant="outlined"
+                size="small"
+                label="Branch Lead"
+                value={form.partyHead.id}
+                onChange={handleSelectChange}
+              >
+                {employees.map((employee) => (
+                <MenuItem key={employee.id} value={employee.id}>
+                    {employee.firstName} {employee.lastName}
+                </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id="assistantPartyHead"
+                name="assistantPartyHead"
+                placeholder="Assistant Branch Lead"
+                select
+                fullWidth
+                className={classes.textField}
+                variant="outlined"
+                size="small"
+                label="Assistant Branch Lead"
+                value={form.assistantPartyHead.id}
+                onChange={handleSelectChange}
+              >
+                {employees.map((employee) => (
+                <MenuItem key={employee.id} value={employee.id}>
+                    {employee.firstName} {employee.lastName}
+                </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+          </Grid>
         </DialogContent>
 
         <DialogActions>

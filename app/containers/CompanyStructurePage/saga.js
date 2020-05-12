@@ -24,8 +24,6 @@ export function* getPartyGroupSaga() {
       }),
     });
 
-    // console.log(userPartyGroupResponse, 'userPartyGroupResponse');
-
     yield put(Actions.getPartyGroupSuccessAction(userPartyGroupResponse));
   } catch (err) {
     yield put(Actions.getPartyGroupErrorAction(err));
@@ -162,14 +160,7 @@ export function* createNewParty() {
   const createNewPartyData = yield select(
     Selectors.makeSelectCreateNewPartyData(),
   );
-  const selectedParty = yield select(
-    Selectors.makeSelectSelectedParty(),
-  );
-  const selectedPartyGroupData = yield select(
-    Selectors.makeSelectSelectedPartyGroupData(),
-  );
 
-  createNewPartyData.partyGroupId = selectedParty.id;
   const requestURL = `${Endpoints.CreateNewPartyApi}`;
 
   try {
@@ -204,6 +195,27 @@ export function* createNewParty() {
   }
 }
 
+export function* getPartyById() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const partyId = yield select(Selectors.makeSelectPartyId());
+
+  const requestURL = `${Endpoints.GetPartyByIdApi}/${partyId}`;
+
+  try {
+    const getPartyByIdResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getPartyByIdSuccess(getPartyByIdResponse));
+  } catch (err) {
+    yield put(Actions.getPartyByIdError(err));
+  }
+}
+
 export function* updatePartySaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
 
@@ -220,7 +232,6 @@ export function* updatePartySaga() {
       }),
     });
 
-    yield put(Actions.updatePartyGroupSuccessAction(createPartyResponse));
     yield put(Actions.getPartyGroupAction());
     yield put(Actions.closeEditPartyDialog());
   } catch (err) {
@@ -247,8 +258,7 @@ export function* createNewParties() {
       }),
     });
 
-    yield put(Actions.createNewPartiesSuccess(createNewPartiesResponse));
-    yield put(Actions.getPartyGroupAction());
+    yield put(Actions.getPartyById(createNewPartiesData.partyId));
     yield put(Actions.closeNewPartiesDialog());
     // yield put(
     //   AppActions.openSnackBar({
@@ -288,8 +298,7 @@ export function* updatePartiesSaga() {
       }),
     });
 
-    yield put(Actions.updatePartiesSuccess(createPartyGroupResponse));
-    yield put(Actions.getPartyGroupAction());
+    yield put(Actions.getPartyById(updatePartiesParams.partyId));
     yield put(Actions.closeEditPartiesDialog());
   } catch (err) {
     console.log(err, 'errrrrrrr');
@@ -315,26 +324,24 @@ export function* createNewPosition() {
       }),
     });
 
-    yield put(Actions.createNewPositionSuccess(createNewPositionResponse));
-    yield put(Actions.getPartyGroupAction());
-    // yield put(Actions.getAllPositions());
+    yield put(Actions.getPartyById(createNewPositionData.party_id));
     yield put(Actions.closeNewPositionDialog());
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: 'Position Created Successfully',
-        status: 'success',
-      }),
-    );
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: 'Position Created Successfully',
+    //     status: 'success',
+    //   }),
+    // );
   } catch (err) {
     yield put(Actions.createNewPositionError(err));
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: `${err}`,
-        status: 'error',
-      }),
-    );
+    // yield put(
+    //   AppActions.openSnackBar({
+    //     open: true,
+    //     message: `${err}`,
+    //     status: 'error',
+    //   }),
+    // );
   }
 }
 
@@ -359,6 +366,7 @@ export function* updatePositionSaga() {
 
     yield put(Actions.updatePositionSuccess(createPartyGroupResponse));
     yield put(Actions.getPartyGroupAction());
+    yield put(Actions.getPartyById(updatePositionParams.id));
     yield put(Actions.closeEditPositionDialog());
   } catch (err) {
     console.log(err, 'errrrrrrr');
@@ -517,6 +525,7 @@ export function* updateCompanyDetail() {
 
 // Individual exports for testing
 export default function* companyStructureSaga() {
+  yield takeLatest(Constants.GET_PARTY_BY_ID, getPartyById);
   yield takeLatest(Constants.GET_ALL_TAGS, getAllTags);
   yield takeLatest(Constants.UPDATE_POSITION, updatePositionSaga);
   yield takeLatest(Constants.UPDATE_PARTIES, updatePartiesSaga);

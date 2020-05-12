@@ -17,6 +17,7 @@ import makeSelectEmployeePage from '../selectors';
 import * as Actions from '../actions';
 import reducer from '../reducer';
 import saga from '../saga';
+import ModuleLayout from './../components/ModuleLayout';
 import EmployeeDialog from './components/EmployeeDialog';
 import EmployeeList from './components/EmployeeList';
 import AddButton from './components/AddButton';
@@ -34,10 +35,13 @@ export function EmployeePage(props) {
   return (
     <div>
       <Helmet>
-        <title>EmployeePage</title>
+        <title>Employee Page</title>
         <meta name="description" content="Description of EmployeePage" />
       </Helmet>
-      <EmployeeList />
+
+      <ModuleLayout>
+        <EmployeeList />
+      </ModuleLayout>
       <EmployeeDialog />
     </div>
   );

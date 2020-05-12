@@ -606,6 +606,9 @@ export function* getAllUsers() {
 
   const requestURL = `${Endpoints.GetAllUsersApi}/${currentUser &&
     currentUser.organisation.orgId}`;
+
+  console.log(requestURL, 'requestURL');
+
   try {
     const getAllUsersResponse = yield call(request, requestURL, {
       method: 'GET',
@@ -615,8 +618,11 @@ export function* getAllUsers() {
       }),
     });
 
+    console.log(getAllUsersResponse, 'getAllUsersResponse');
+
     yield put(Actions.getAllUsersSuccess(getAllUsersResponse));
   } catch (err) {
+    console.log(err, 'errrrrrrrrrrrrr');
     yield put(Actions.getAllUsersError(err));
   }
 }

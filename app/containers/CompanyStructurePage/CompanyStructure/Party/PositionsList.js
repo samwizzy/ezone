@@ -9,14 +9,14 @@ import {
   Button,
   FormControlLabel,
   Icon,
-  Typography
+  Typography,
 } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import Add from '@material-ui/icons/Add';
-import { darken } from '@material-ui/core/styles/colorManipulator'
+import { darken } from '@material-ui/core/styles/colorManipulator';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import PositionDialog from './components/PositionDialog';
@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   },
   datatable: {
     '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
@@ -73,8 +73,8 @@ const PositionsList = props => {
   } = props;
 
   const { params } = match;
-  console.log(positions, "positions from positionlist")
-  console.log(selectedPosition, "selectedPosition from positionlist")
+  // console.log(positions, 'positions from positionlist');
+  // console.log(selectedPosition, 'selectedPosition from positionlist');
 
   useEffect(() => {
     dispatchGetPartyGroups();
@@ -82,19 +82,25 @@ const PositionsList = props => {
     getAllTagsAction();
   }, []);
 
-  const handleRoute = (positionId) => {
-    console.log(positions, "positions handleroute")
-    const positionFound = positions && positions.find(position => position.id === parseInt(positionId, 10))
-		getSelectedPosition(positionFound)
-    props.history.push(`/organization/company/structure/${params.groupId}/party/${params.partyId}/position/${positionId}`)
-  } 
+  const handleRoute = positionId => {
+    // console.log(positions, 'positions handleroute');
+    const positionFound =
+      positions &&
+      positions.find(position => position.id === parseInt(positionId, 10));
+    getSelectedPosition(positionFound);
+    props.history.push(
+      `/organization/company/structure/${params.groupId}/party/${
+        params.partyId
+      }/position/${positionId}`,
+    );
+  };
 
   const columns = [
     {
       name: 'id',
       label: ' ',
       options: {
-        display: "excluded",
+        display: 'excluded',
         filter: true,
         sort: false,
       },
@@ -131,9 +137,9 @@ const PositionsList = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => {
-        return <Typography>{value && value.length}</Typography>
-        }
+        customBodyRender: value => (
+          <Typography>{value && value.length}</Typography>
+        ),
       },
     },
     {
@@ -150,10 +156,7 @@ const PositionsList = props => {
                 variant="outlined"
                 size="small"
                 color="primary"
-                onClick={event => (
-                  event.stopPropagation(),
-                  handleRoute(value)
-                )}
+                onClick={event => (event.stopPropagation(), handleRoute(value))}
               >
                 View
               </Button>
@@ -175,7 +178,7 @@ const PositionsList = props => {
       <Button
         variant="contained"
         color="primary"
-        style={{marginLeft: 5}}
+        style={{ marginLeft: 5 }}
         size="small"
         startIcon={<Add />}
         onClick={() => dispatchOpenNewPositionAction()}
@@ -184,16 +187,16 @@ const PositionsList = props => {
       </Button>
     ),
     textLabels: {
-			body: {
-				noMatch: "Sorry, no matching positions found",
-				toolTip: "Sort",
-				columnHeaderTooltip: column => `Sort for ${column.label}`
-			},
+      body: {
+        noMatch: 'Sorry, no matching positions found',
+        toolTip: 'Sort',
+        columnHeaderTooltip: column => `Sort for ${column.label}`,
+      },
     },
-    onRowClick: (rowData, rowState) => {
-      handleRoute(rowData[0])
-    },
-    elevation: 0
+    // onRowClick: (rowData, rowState) => {
+    //   handleRoute(rowData[0]);
+    // },
+    elevation: 0,
   };
 
   return (
@@ -201,7 +204,7 @@ const PositionsList = props => {
       <Backdrop className={classes.backdrop} open={loading}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      
+
       <MUIDataTable
         className={classes.datatable}
         title="All Positions"
@@ -225,7 +228,10 @@ PositionsList.propTypes = {
   openNewRoleDialog: PropTypes.func,
   partyGroupData: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   DispatchgetSelectedPartyGroupAction: PropTypes.func,
-  selectedPartyGroupData: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+  selectedPartyGroupData: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.bool,
+  ]),
   allPositions: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   openEditPartiesDialogAction: PropTypes.func,
   openEditPositionDialogAction: PropTypes.func,
@@ -243,11 +249,16 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openEditPartiesDialogAction: evt => dispatch(Actions.openEditPartiesDialog(evt)),
-    openEditPositionDialogAction: evt => dispatch(Actions.openEditPositionDialog(evt)),
-    dispatchOpenNewPositionAction: () => dispatch(Actions.openNewPositionDialog()),
-    dispatchOpenNewPartiesAction: () => dispatch(Actions.openNewPartiesDialog()),
-    DispatchgetSelectedPartyGroupAction: evt => dispatch(Actions.getSelectedPartyGroupAction(evt)),
+    openEditPartiesDialogAction: evt =>
+      dispatch(Actions.openEditPartiesDialog(evt)),
+    openEditPositionDialogAction: evt =>
+      dispatch(Actions.openEditPositionDialog(evt)),
+    dispatchOpenNewPositionAction: () =>
+      dispatch(Actions.openNewPositionDialog()),
+    dispatchOpenNewPartiesAction: () =>
+      dispatch(Actions.openNewPartiesDialog()),
+    DispatchgetSelectedPartyGroupAction: evt =>
+      dispatch(Actions.getSelectedPartyGroupAction(evt)),
     getSelectedPosition: evt => dispatch(Actions.getSelectedPosition(evt)),
     dispatchGetPartyGroups: () => dispatch(Actions.getPartyGroupAction()),
     dispatchGetAllUsersAction: () => dispatch(Actions.getAllUsers()),

@@ -90,7 +90,7 @@ export const WorkForm = props => {
                         value={form.department.id}
                         onChange={handleSelectChange}
                         >
-                        {departments.map((dept) => (
+                        {departments && departments.map((dept) => (
                         <MenuItem key={dept.id} value={dept.id}>
                             {dept.name}
                         </MenuItem>
@@ -133,7 +133,7 @@ export const WorkForm = props => {
                         value={form.employeeType.id}
                         onChange={handleSelectChange}
                         >
-                        {employeeTypes.map((employeeType) => (
+                        {employeeTypes && employeeTypes.map((employeeType) => (
                         <MenuItem key={employeeType.id} value={employeeType.id}>
                             {employeeType.name}
                         </MenuItem>
@@ -194,20 +194,25 @@ export const WorkForm = props => {
                         value={form.role.id}
                         onChange={handleChange}
                         >
-                        {roles.map((role) => (
+                        <MenuItem key={0} value="">
+                            No record
+                        </MenuItem>
+                        {roles && roles.map((role) => (
                         <MenuItem key={role.id} value={role.id}>
                             {role.name}
                         </MenuItem>
                         ))}
                         </TextField>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={6}>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <KeyboardDatePicker
                                 disableToolbar
                                 variant="inline"
                                 format="MM/dd/yyyy"
                                 margin="normal"
+                                size="small"
+                                inputVariant="outlined"
                                 fullWidth
                                 name="dateOfJoining"
                                 id="date-picker-startDate"
@@ -235,7 +240,7 @@ export const WorkForm = props => {
                         value={form.reportTo.id}
                         onChange={handleSelectChange}
                         >
-                        {employees.map((employee) => (
+                        {employees && employees.map((employee) => (
                         <MenuItem key={employee.id} value={employee.id}>
                             {employee.firstName} {employee.lastName}
                         </MenuItem>

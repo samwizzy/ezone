@@ -72,7 +72,7 @@ const NewAccountDialog = props => {
   } = props;
 
   console.log('accountTypeData from chart module: ', accountTypeData);
-  console.log('parentAccountTypeData from chart module: ', parentAccountTypeData);
+  console.log('parentAccountTypeData -> : ', parentAccountTypeData);
 
   const [checkBox, setCheckBox] = React.useState({
     checkedG: false,
@@ -105,18 +105,20 @@ const NewAccountDialog = props => {
       ...values, 
       accountType: value.accountType,
       subAccount: value.subAccount, 
-      description: value.description
-      // parentAccountId: value.id
+      description: value.description,
+      parentAccountId: value.id
     });
   };
 
   const handleCheckBoxChange = (event) => {
     setCheckBox({ ...checkBox, [event.target.name]: event.target.checked });
 
+    console.log("accountType from checkbox ", values);
+
     // Call parent type api if checked
-    // if (!checkBox.checkedG) {
-    //   dispatchGetParentAccountTypeAction(values);
-    // }
+    if (!checkBox.checkedG) {
+      dispatchGetParentAccountTypeAction(values);
+    }
   };
 
   React.useEffect(() => {
@@ -240,9 +242,7 @@ const NewAccountDialog = props => {
                       />
                     </Grid>
                   </Grid>
-                ): null}
-
-                {values.subAccount ? (
+                ): values.subAccount ? (
                   <Grid container spacing={1}>
                     <Grid item xs={6}>
                       <FormGroup row>
@@ -266,14 +266,14 @@ const NewAccountDialog = props => {
                         renderInput={params => (
                           <TextField
                             {...params}
-                            label="Select Account Type"
+                            label="Select Parent Type"
                             className={classes.textField}
                             variant="outlined"
                             placeholder="Search"
                             fullWidth
                           />
                         )}
-                    />
+                      />
                     </Grid>
                   </Grid>
                 ): null}
@@ -393,9 +393,7 @@ const NewAccountDialog = props => {
                       />
                     </Grid>
                   </Grid>
-                ): null}
-
-                {values.subAccount ? (
+                ): values.subAccount ? (
                   <Grid container spacing={1}>
                     <Grid item xs={6}>
                       <FormGroup row>
@@ -419,7 +417,7 @@ const NewAccountDialog = props => {
                         renderInput={params => (
                           <TextField
                             {...params}
-                            label="Select Account Type"
+                            label="Select Parent Type"
                             className={classes.textField}
                             variant="outlined"
                             placeholder="Search"

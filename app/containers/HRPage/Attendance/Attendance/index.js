@@ -6,6 +6,7 @@
 import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
+import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -15,6 +16,7 @@ import * as AppActions from '../../../App/actions';
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
 import AttendanceList from './AttendanceList'
+import AttendanceDetails from './AttendanceDetails'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,7 +25,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function AttendancePage(props) {
-  const { getAttendance } = props;
+  const { getAttendance, match } = props;
+  const { params } = match
 
   React.useEffect(() => {
     getAttendance();  
@@ -36,7 +39,9 @@ export function AttendancePage(props) {
         <meta name="description" content="ezone application attendance page" />
       </Helmet>
 
-      <AttendanceList />
+      { params.attendanceId?
+        <AttendanceDetails /> : <AttendanceList />
+      }
 
     </React.Fragment>
   );
@@ -62,6 +67,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(AttendancePage);

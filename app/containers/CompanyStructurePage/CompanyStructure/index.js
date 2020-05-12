@@ -17,17 +17,22 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectOrgPage from '../selectors';
 import reducer from '../reducer';
 import saga from '../saga';
-import ModuleLayout from './../components/ModuleLayout';
-import PartyGroup from './PartyGroup/Loadable'
-import Party from './Party/Loadable'
+import ModuleLayout from '../components/ModuleLayout';
+import PartyGroup from './PartyGroup/Loadable';
+import Party from './Party/Loadable';
 import * as Actions from '../actions';
 
 export function CompanyStructurePage(props) {
   useInjectReducer({ key: 'companyStructurePage', reducer });
   useInjectSaga({ key: 'companyStructurePage', saga });
 
-  const { dispatchGetPartyGroups, dispatchGetAllUsersAction, getAllTagsAction, match } = props;
-  const { params } = match
+  const {
+    dispatchGetPartyGroups,
+    dispatchGetAllUsersAction,
+    getAllTagsAction,
+    match,
+  } = props;
+  const { params } = match;
 
   useEffect(() => {
     getAllTagsAction();
@@ -35,7 +40,7 @@ export function CompanyStructurePage(props) {
     dispatchGetAllUsersAction();
   }, []);
 
-  console.log(params, "home params")
+  // console.log(params, 'home params');
 
   return (
     <div>
@@ -47,12 +52,7 @@ export function CompanyStructurePage(props) {
         />
       </Helmet>
 
-      <ModuleLayout>
-        {params.partyId?
-        <Party /> : <PartyGroup />
-        }
-      </ModuleLayout>
-      {/* <RoleDialog />  */}
+      <ModuleLayout>{params.partyId ? <Party /> : <PartyGroup />}</ModuleLayout>
     </div>
   );
 }

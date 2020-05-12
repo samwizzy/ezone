@@ -31,13 +31,14 @@ const apps = [
   { id: 1, name: 'Home', url: '/home', icon: ProjectsIcon, img: 'home' },
   { id: 2, name: 'Accounting', url: '/account', icon: AcctIcon, img: 'account_tree' },
   { id: 3, name: 'Budgeting', url: '/account/budgeting', icon: BudgetingIcon, img: 'menu_book' },
-  { id: 4, name: 'CRM', url: '/crm', icon: CRMIcon, img: 'contacts' },
-  { id: 5, name: 'File Management', url: '/file-manager/folders', icon: FileIcon, img: 'folder_open' },
-  { id: 6, name: 'Human Resources', url: '/hr', icon: AppIcon1, img: 'person' },
-  { id: 7, name: 'Process Workflow', url: '/workflow', icon: ProjectsIcon, img: 'all_inclusive' },
-  { id: 8, name: 'Store Management', url: '/inventory/items', icon: StoreIcon, img: 'store' },
-  { id: 9, name: 'Task management', url: '/task-manager/tasks', icon: TaskIcon, img: 'list_alt' },
-  { id: 10, name: 'Work Order', url: '/work-order', icon: ProjectsIcon, img: 'ballot' },
+  { id: 4, name: 'Chat', url: '/chats', icon: BudgetingIcon, img: 'chat' },
+  { id: 5, name: 'CRM', url: '/crm', icon: CRMIcon, img: 'contacts' },
+  { id: 6, name: 'File Management', url: '/file-manager/folders', icon: FileIcon, img: 'folder_open' },
+  { id: 7, name: 'Human Resources', url: '/hr', icon: AppIcon1, img: 'person' },
+  { id: 8, name: 'Process Workflow', url: '/workflow', icon: ProjectsIcon, img: 'all_inclusive' },
+  { id: 9, name: 'Store Management', url: '/inventory/dashboard', icon: StoreIcon, img: 'store' },
+  { id: 10, name: 'Task management', url: '/task-manager/tasks', icon: TaskIcon, img: 'list_alt' },
+  { id: 11, name: 'Work Order', url: '/work-order', icon: ProjectsIcon, img: 'ballot' },
 ];
 
 export default apps;

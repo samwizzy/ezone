@@ -28,6 +28,16 @@ const makeSelectAttendanceDialog = () =>
     selectAttendance,
     subState => subState.attdDialog,
   );
+const makeSelectShiftDialog = () =>
+  createSelector(
+    selectAttendance,
+    subState => subState.shiftDialog,
+  );
+const makeSelectEmployeeShiftDialog = () =>
+  createSelector(
+    selectAttendance,
+    subState => subState.employeeShiftDialog,
+  );
 
 export default makeSelectAttendancePage;
 export { 
@@ -35,4 +45,6 @@ export {
   makeSelectLoading,
   makeSelectAttendance,
   makeSelectAttendanceDialog,
+  makeSelectShiftDialog,
+  makeSelectEmployeeShiftDialog,
 };

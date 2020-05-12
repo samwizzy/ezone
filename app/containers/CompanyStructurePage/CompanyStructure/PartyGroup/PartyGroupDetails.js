@@ -5,7 +5,7 @@ import {
   makeStyles,
   Backdrop,
   Breadcrumbs,
-	CircularProgress,
+  CircularProgress,
   Button,
   Link,
   Typography,
@@ -15,7 +15,7 @@ import {
 import { withRouter } from 'react-router-dom';
 import MUIDataTable from 'mui-datatables';
 import { Add } from '@material-ui/icons';
-import { darken } from '@material-ui/core/styles/colorManipulator'
+import { darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -25,12 +25,12 @@ import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 
 const useStyles = makeStyles(theme => ({
-  root: { 
-    flexGrow: 1 
+  root: {
+    flexGrow: 1,
   },
   datatable: {
     '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
@@ -50,68 +50,51 @@ const useStyles = makeStyles(theme => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
-  }
+  },
 }));
 
+let parties = '';
 const PartyGroupDetails = props => {
   const classes = useStyles();
-  
+
   const {
     openEditPartyDialogAction,
-    openEditPartyGroupAction,
-    dispatchGetAllUsersAction,
-    selectedPartyGroupData,
-    DispatchgetSelectedPartyGroupAction,
-    getSelectedParty,
     partyGroupData,
-    dispatchOpenNewPartyGroupAction,
     dispatchOpenNewPartyAction,
-		loading,
-		match
-	} = props;
-	const { params } = match 
+    loading,
+    match,
+    getPartyByIdAction,
+  } = props;
+  const { params } = match;
+
+  const [newParties, setNewParties] = React.useState();
 
   useEffect(() => {
-    console.log(params.groupId, "params.groupId")
-		fetchPartyGroupById(params.groupId)
-  }, []);
+    parties =
+      partyGroupData &&
+      partyGroupData.find(group => group.id === parseInt(params.groupId, 10));
+    if (parties) {
+      setNewParties(parties);
+    }
+  }, [partyGroupData]);
 
-  const fetchPartyGroupById = (groupId) => {
-    const data = partyGroupData && partyGroupData.find(group => group.id === parseInt(groupId, 10))
-    console.log(data, "data details")
-		DispatchgetSelectedPartyGroupAction(data)
-  }
-  
-  const fetchPartyById = (groupId, partyId) => {
-		const data = partyGroupData && partyGroupData.find(group => group.id === parseInt(groupId, 10))
-		const partyFound = data && data.parties.find(party => party.id === parseInt(partyId, 10))
-		getSelectedParty(partyFound)
-  }
-  
   const handleRoute = (groupId, partyId) => {
-    const data = partyGroupData && partyGroupData.find(group => group.id === groupId)
-    const partyFound = data && data.parties.find(party => party.id === parseInt(partyId, 10))
-		getSelectedParty(partyFound)
-    props.history.push(`/organization/company/structure/${groupId}/party/${partyId}`)
-  } 
+    getPartyByIdAction(partyId);
+    props.history.push(
+      `/organization/company/structure/${groupId}/party/${partyId}`,
+    );
+  };
 
   const handleBackToRoot = () => {
-    props.history.push("/organization/company/structure")
-  }
-	
-	console.log(partyGroupData, "partyGroupData")
-	console.log(selectedPartyGroupData, "selectedPartyGroupData details")
-
-	if(!selectedPartyGroupData){
-		return ''
-	}
+    props.history.push('/organization/company/structure');
+  };
 
   const columns = [
-		{
+    {
       name: 'id',
       label: ' ',
       options: {
-				display: "excluded",
+        display: 'excluded',
         filter: true,
         sort: false,
       },
@@ -157,8 +140,8 @@ const PartyGroupDetails = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const data = selectedPartyGroupData.parties.find(party => value === party.id);
-      
+          const data = newParties.parties.find(party => value === party.id);
+
           return (
             <div>
               <Button
@@ -180,23 +163,21 @@ const PartyGroupDetails = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => {
-          return (
-            <div>
-              <Button
-                variant="outlined"
-                size="small"
-                color="primary"
-                onClick={event => (
-                  event.stopPropagation(),
-                  handleRoute(selectedPartyGroupData.id, value)
-                )}
-              >
-                View
-              </Button>
-            </div>
-          );
-        },
+        customBodyRender: value => (
+          <div>
+            <Button
+              variant="outlined"
+              size="small"
+              color="primary"
+              onClick={event => {
+                event.stopPropagation();
+                handleRoute(newParties.id, value);
+              }}
+            >
+              View
+            </Button>
+          </div>
+        ),
       },
     },
   ];
@@ -211,19 +192,20 @@ const PartyGroupDetails = props => {
     customToolbar: () => (
       <Button
         variant="contained"
-        style={{marginLeft: 5}}
+        style={{ marginLeft: 5 }}
         color="primary"
         size="small"
         startIcon={<Add />}
-        onClick={() => dispatchOpenNewPartyAction({ partyGroupId: selectedPartyGroupData.id })}
+        onClick={() =>
+          dispatchOpenNewPartyAction({
+            partyGroupId: newParties.id,
+          })
+        }
       >
         New Party
       </Button>
     ),
-    onRowClick: (rowData, rowState) => {
-      handleRoute(selectedPartyGroupData.id, rowData[0])
-    },
-    elevation: 0
+    elevation: 0,
   };
 
   return (
@@ -232,34 +214,42 @@ const PartyGroupDetails = props => {
         <CircularProgress color="inherit" />
       </Backdrop>
 
-			<MUIDataTable
-					className={classes.datatable}
-					title={
-            <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
-              <Link color="inherit" onClick={handleBackToRoot} className={classes.link}>
-                Party Groups
+      {newParties && (
+        <MUIDataTable
+          className={classes.datatable}
+          title={
+            <Breadcrumbs
+              separator={<NavigateNextIcon fontSize="small" />}
+              aria-label="breadcrumb"
+            >
+              <Link
+                color="inherit"
+                onClick={handleBackToRoot}
+                className={classes.link}
+              >
+                {'> Party Groups'}
               </Link>
-              <Typography color="textPrimary" variant="h6">{selectedPartyGroupData.name}</Typography>
+              <Typography color="textPrimary" variant="h6">
+                {newParties.name}
+              </Typography>
             </Breadcrumbs>
           }
-					data={selectedPartyGroupData.parties}
-					columns={columns}
-					options={options}
-			/>
+          data={newParties.parties}
+          columns={columns}
+          options={options}
+        />
+      )}
     </React.Fragment>
   );
 };
 
 PartyGroupDetails.propTypes = {
-  openEditPartyGroupAction: PropTypes.func,
-  dispatchGetAllUsersAction: PropTypes.func,
   loading: PropTypes.bool,
-  dispatchOpenNewPartyGroupAction: PropTypes.func,
   dispatchOpenNewPartyAction: PropTypes.func,
   partyGroupData: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-  DispatchgetSelectedPartyGroupAction: PropTypes.func,
-  selectedPartyGroupData: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   openEditPartyDialogAction: PropTypes.func,
+  getPartyByIdAction: PropTypes.func,
+  match: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -270,14 +260,11 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openEditPartyDialogAction: evt =>  dispatch(Actions.openEditPartyDialog(evt)),
-    dispatchOpenNewPartyGroupAction: () => dispatch(Actions.openNewPartyGroupDialog()),
-    openEditPartyGroupAction: evt => dispatch(Actions.openEditPartyGroupDialog(evt)),
-    dispatchOpenNewPartyAction: evt => dispatch(Actions.openNewPartyDialog(evt)),
-    openNewRoleDialog: () => dispatch(Actions.openNewRoleDialog()),
-    DispatchgetSelectedPartyGroupAction: evt => dispatch(Actions.getSelectedPartyGroupAction(evt)),
-    getSelectedParty: evt => dispatch(Actions.getSelectedParty(evt)),
-    dispatchGetAllUsersAction: () => dispatch(Actions.getAllUsers()),
+    openEditPartyDialogAction: evt =>
+      dispatch(Actions.openEditPartyDialog(evt)),
+    dispatchOpenNewPartyAction: evt =>
+      dispatch(Actions.openNewPartyDialog(evt)),
+    getPartyByIdAction: evt => dispatch(Actions.getPartyById(evt)),
   };
 }
 

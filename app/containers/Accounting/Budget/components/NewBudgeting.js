@@ -185,24 +185,17 @@ const NewBudgeting = props => {
   ];
   
   var monthArray = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
-  let charts = ['Sales', 'Market', 'Inventory', 'Budget'];
+  let chartOfAccount = ["Sales", "Finance"];
 
   const [values, setValues] = React.useState({
-    account: [
-      {
-        accountName: "",
-        id: "",
-        values: [{
-          amount: "",
-          period: ""
-        }]
-      }
-    ],
+    account: chartOfAccount.map(num => ({
+      accountName: "",
+      value: monthArray.map(month => ({ amount: "", period: "" }))
+    })),
     budgetName: "",
     budgetPeriod: "MONTHLY",
     financialYear: "",
-    orgId: "",
-    rollover: true
+    orgId: currentUser.organisation.orgId,
   });
   
   const handleChange = name => event => {
@@ -217,24 +210,34 @@ const NewBudgeting = props => {
     setValues({ ...values, budgetPeriod: value.label });
   };
 
-  const handleRowChange = (event, index) => {
-    console.log("event ", event.target.value);
-    const account = [...values.account];
-    // account[index][event.target.name] = event.target.value;
-    setValues({ ...values, account });
+  // const handleRowChange = (event, index) => {
+  //   const account = [...values.account];
+  //   // account[index][event.target.name] = event.target.value;
+  //   setValues({ ...values, account });
 
-    console.log("setValues ", values);
+  //   console.log("setValues ", values);
 
-    // const entries = [...values.entries];
-    // entries[index][event.target.name] = event.target.value;
-    // setValues({ ...values, entries });
+  //   // const entries = [...values.entries];
+  //   // entries[index][event.target.name] = event.target.value;
+  //   // setValues({ ...values, entries });
+  // }
+
+  const handleRowChange = (event, chart, month, ci, mi) => {
+    const { name, value } = event.target
+    console.log(chart, "charts")
+    console.log(month, "month")
+    console.log(ci, "chart index")
+    console.log(mi, "month index")
+    const accountClone = [...values.account]
+    accountClone[ci].accountName = chart
+    accountClone[ci].value[mi].amount = value
+    accountClone[ci].value[mi].period = month
+    setValues({
+      ...values,
+      account: accountClone
+    })
   }
 
-  // const handleSelectChangeRows = (event, value, index) => {
-  //   const { entries } = values;
-  //   entries[index]["accountId"] = value.id;
-  //   setValues({ ...values, entries });
-  // };
 
   function chunkArray(myArray, chunk_size){
     var results = [];
@@ -242,7 +245,6 @@ const NewBudgeting = props => {
     while (myArray.length) {
         results.push(myArray.splice(0, chunk_size));
     }
-    console.log("results 0-> ", results);
     return results;
 }
 
@@ -252,11 +254,9 @@ const NewBudgeting = props => {
     console.log("selected MONTHLY");
   } 
   else if (values["budgetPeriod"] == "QUATERLY") {
-    console.log("selected QUATERLY");
     newCopyArray = chunkArray(newCopyArray, 3);
   } 
   else {
-    console.log("selected YEARLY");
     newCopyArray = chunkArray(newCopyArray, 12);
   } 
 
@@ -336,32 +336,32 @@ const NewBudgeting = props => {
                   <TableHead>
                     <TableRow>
                       <TableCell component="th" scope="row">Accounts</TableCell>
-                      { newCopyArray.map((item, i) => <TableCell key={i} align="left">{ item }</TableCell>) }
+                      {newCopyArray.map((item, i) => <TableCell key={i} align="center">{ item }</TableCell>)}
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     <TableRow>
                       <TableCell component="th" scope="row" colSpan={13}>Income</TableCell>
                     </TableRow>
-                    {[0,1,2,3].map(row => (     
-                      <TableRow>
-                        <TableCell>Income</TableCell>
-                        {newCopyArray.map((item, id) => 
-                        <TableCell>
-                          <TextField 
-                            id="outlined-basic" 
-                            size="small" 
-                            label="Outlined" 
-                            variant="outlined" 
-                            className={classes.textField} 
-                            name="description"
-                            value={item.description}
-                            value1={console.log("event ", event)}
-                            onChange={(event) => handleRowChange(event)}
-                            margin="normal"
-                            fullWidth
-                          />
-                        </TableCell>)}
+                    {chartOfAccount.map((chart, ci) => (     
+                      <TableRow key={ci}>
+                        <TableCell>{chart}</TableCell>
+                        {newCopyArray.map((m, mi) => 
+                          <TableCell>
+                            <TextField 
+                              id="outlined-basic" 
+                              size="small" 
+                              label="Outlined" 
+                              variant="outlined" 
+                              className={classes.textField} 
+                              name="amount"
+                              value={values.account[ci].value[mi].amount}
+                              onChange={(event) => handleRowChange(event, chart, m, ci, mi)}
+                              margin="normal"
+                              fullWidth
+                            />
+                          </TableCell>
+                        )}
                       </TableRow>
                     ))}
                     <TableRow>

@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router-dom'
+import DashboardApp from './Dashboard'
 import EmployeesApp from './Employees'
 import RolesApp from './Roles'
 import DepartmentsApp from './Departments'
@@ -31,6 +32,9 @@ const HumanResourcePage = props => {
     console.log(params, "params tired")
 
     switch(params.section){
+        case 'dashboard':
+            return <DashboardApp />
+            break;
         case 'employees':
             return <EmployeesApp />
             break;
@@ -53,7 +57,7 @@ const HumanResourcePage = props => {
             return <AnnouncementApp /> 
             break;
         default:
-            return false
+            return <EmployeesApp />
     }
 }
 

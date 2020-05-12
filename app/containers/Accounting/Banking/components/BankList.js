@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.primary.main,
       },
       '& .MuiTableCell-root:nth-child(even)': {
-        // backgroundColor: darken(theme.palette.primary.main, 0.1),
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
   },
@@ -144,12 +144,15 @@ const BankList = props => {
       label: 'Status',
       options: {
         filter: true,
-        sort: false,
+        sort: true,
+        customBodyRender: status => (
+          <span>{status ? 'Active' : 'Inactive'}</span>
+        ),
       },
     },
     {
       name: 'id',
-      label: '.',
+      label: ' ',
       options: {
         filter: true,
         sort: false,

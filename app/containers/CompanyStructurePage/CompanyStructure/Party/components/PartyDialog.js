@@ -63,7 +63,7 @@ const PartyDialog = props => {
 
   const classes = useStyles();
   const [values, setValues] = React.useState({
-    partyGroupId: '', // this is appended inside saga file
+    partyGroupId: '',
     partyHead: null,
     assistantPartyHead: null,
     name: '',
@@ -113,8 +113,6 @@ const PartyDialog = props => {
       name !== '' && description !== ''
     );
   };
-
-  console.log(values, 'values');
 
   return (
     <div>

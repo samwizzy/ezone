@@ -19,7 +19,6 @@ import * as Actions from './actions';
 import makeSelectHRPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import ModuleLayout from './components/ModuleLayout';
 import HumanResourcePage from './HumanResourcePage';
 
 const key = 'hrPage';
@@ -59,12 +58,11 @@ export function HRPage(props) {
     <React.Fragment>
       <Helmet>
         <title>Human Resource Page</title>
-        <meta name="description" content="ezone application homepage" />
+        <meta name="description" content="ezone application human resource" />
       </Helmet>
 
-      <ModuleLayout>
-        <HumanResourcePage />
-      </ModuleLayout>
+      <HumanResourcePage />
+
     </React.Fragment>
   );
 }
@@ -81,8 +79,7 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
   return {
     getEmployees: () => dispatch(Actions.getEmployees()),
-    getDepartmentsByOrgIdApi: () =>
-      dispatch(Actions.getDepartmentsByOrgIdApi()),
+    getDepartmentsByOrgIdApi: () => dispatch(Actions.getDepartmentsByOrgIdApi()),
     getEmployeeTypes: () => dispatch(Actions.getEmployeeTypes()),
     getRoles: () => dispatch(Actions.getRoles()),
     getBranches: () => dispatch(Actions.getBranches()),

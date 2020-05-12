@@ -39,7 +39,7 @@ export function AddShift(props) {
 
   return (
     <React.Fragment>
-      <Tooltip title="New Attendance">
+      <Tooltip title="New Shift">
         <Button
           size="small"
           color="primary"
@@ -61,7 +61,7 @@ export function AssignShift(props) {
 
   return (
     <React.Fragment>
-      <Tooltip title="New Attendance">
+      <Tooltip title="Assign Shift">
         <Button
           size="small"
           color="primary"

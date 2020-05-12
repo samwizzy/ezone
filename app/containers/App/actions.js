@@ -104,3 +104,23 @@ export function refreshTokenError(data) {
     payload: data,
   };
 }
+
+export function checkActiveSession() {
+  return {
+    type: Constants.CHECK_ACTIVE_SESSION,
+  };
+}
+
+export function checkActiveSessionSuccess(data) {
+  return {
+    type: Constants.CHECK_ACTIVE_SESSION_SUCCESS,
+    payload: data,
+  };
+}
+
+export function checkActiveSessionError(data) {
+  return {
+    type: Constants.CHECK_ACTIVE_SESSION_ERROR,
+    payload: data,
+  };
+}

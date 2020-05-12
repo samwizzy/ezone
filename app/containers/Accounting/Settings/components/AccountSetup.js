@@ -35,16 +35,15 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import moment from 'moment';
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
 import reducer from '../reducer';
 import saga from '../saga';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../../App/selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-import Logo from '../../../../images/Logo.svg';
-import { useInjectSaga } from 'utils/injectSaga';
-import { useInjectReducer } from 'utils/injectReducer';
-
+// import Logo from '../../../../images/Logo.svg';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -72,7 +71,7 @@ const AccountSetup = props => {
 
   useInjectReducer({ key: 'settings', reducer });
   useInjectSaga({ key: 'settings', saga });
-  
+
   const {} = props;
 
   const accountingMethodData = [
@@ -80,12 +79,28 @@ const AccountSetup = props => {
       value: 'Accural',
       label: 'Accural',
     },
+    {
+      value: 'Cash basis',
+      label: 'Cash basis',
+    },
   ];
 
   const taxTypeData = [
     {
       value: 'Limited liability',
       label: 'Limited liability',
+    },
+    {
+      value: 'Sole proprietorship',
+      label: 'Sole proprietorship',
+    },
+    {
+      value: 'Partnership',
+      label: 'Partnership',
+    },
+    {
+      value: 'Corporation',
+      label: 'Corporation',
     },
   ];
 
@@ -104,30 +119,32 @@ const AccountSetup = props => {
     },
   ];
 
-  const {
-    loading,
-    currentUser,
-    createAccountingSetupAction,
-  } = props;
+  const { loading, currentUser, createAccountingSetupAction } = props;
 
   const [values, setValues] = React.useState({
-    accountMethod: "",
-    companyStartDate: "",
-    currency: "",
+    accountMethod: '',
+    companyStartDate: '',
+    currency: '',
     orgId: currentUser.organisation && currentUser.organisation.orgId,
-    startDay: "",
-    startMonth: "",
-    taxDay: "",
-    taxMonth: "",
-    taxType: "",
+    startDay: '',
+    startMonth: '',
+    taxDay: '',
+    taxMonth: '',
+    taxType: '',
   });
 
   const canSubmitValues = () => {
     const { accountMethod, companyStartDate, taxType, currency } = values;
-    return accountMethod.length > 0 && companyStartDate.length > 0 && taxType.length > 0 && currency.length > 0 ;
-  }
+    return (
+      accountMethod.length > 0 &&
+      companyStartDate.length > 0 &&
+      taxType.length > 0 &&
+      currency.length > 0
+    );
+  };
 
   const [selectedDate, setSelectedDate] = React.useState(new Date());
+  const [selectedTaxDate, setSelectedTaxDate] = React.useState(new Date());
   const handleAccountingMethodSelectChange = (name, value) => {
     setValues({ ...values, accountMethod: value.value });
   };
@@ -147,6 +164,7 @@ const AccountSetup = props => {
       startDay: Number(moment(date).format('D')),
       startMonth: Number(moment(date).format('M')),
     });
+    setSelectedDate(date);
   };
 
   const handleTaxYearDateChange = date => {
@@ -155,6 +173,7 @@ const AccountSetup = props => {
       taxDay: Number(moment(date).format('D')),
       taxMonth: Number(moment(date).format('M')),
     });
+    setSelectedTaxDate(date);
   };
 
   console.log('values -> ', values);
@@ -173,7 +192,7 @@ const AccountSetup = props => {
                 <Box p={2} my={2} className={classes.box}>
                   <Typography variant="h4" color="textSecondary">
                     Welcome To 
-                    <img src={Logo} height="40" /> 
+                    {/* <img src={Logo} height="40" />  */}
                     Accounting
                   </Typography>
                 </Box>
@@ -282,7 +301,7 @@ const AccountSetup = props => {
                             id="date-picker-dialog"
                             label="Select Date"
                             format="MM/dd/yyyy"
-                            value={selectedDate}
+                            value={selectedTaxDate}
                             onChange={handleTaxYearDateChange}
                             KeyboardButtonProps={{
                               'aria-label': 'change date',
@@ -376,7 +395,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    createAccountingSetupAction: evt => dispatch(Actions.createAccountingSetupAction(evt)),
+    createAccountingSetupAction: evt =>
+      dispatch(Actions.createAccountingSetupAction(evt)),
   };
 }
 

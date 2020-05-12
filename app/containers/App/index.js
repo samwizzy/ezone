@@ -8,7 +8,7 @@
 
 import React, { useEffect, memo } from 'react';
 import { Helmet } from 'react-helmet';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { CssBaseline } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -36,6 +36,7 @@ import TasksPage from '../UtilityPage/TasksApp/Loadable';
 import FilesApp from '../UtilityPage/FilesApp/Loadable';
 import HRPage from '../HRPage/Loadable';
 import AttendancePage from '../HRPage/Attendance/Loadable';
+import LeaveManagementPage from '../HRPage/LeaveManagement/Loadable';
 import EmailConfig from '../EmailConfig/Loadable';
 import EmailConfigs from '../EmailConfig/components/TabsPage';
 import EmailTemplate from '../EmailConfig/components/EmailTemplate';
@@ -52,6 +53,7 @@ import Layout1 from '../../components/layouts/layout1/Layout1';
 import Layout2 from '../../components/layouts/layout2/Layout2';
 import Layout3 from '../../components/layouts/layout3/Layout3';
 import * as Selectors from './selectors';
+import * as Actions from './actions';
 import PrivateRoute from '../AuthProvider/PrivateRoute';
 import Snackbar from './components/Snackbar';
 import { AppContext } from '../context/AppContext';
@@ -79,7 +81,22 @@ import CrmActivities from '../Crm/Activities/Loadable';
 import { Auth } from '../../auth';
 
 const App = props => {
-  const { currentUser, accessToken } = props;
+  const {
+    currentUser,
+    accessToken,
+    checkActiveSessionAction,
+    checkSession,
+  } = props;
+
+  // useEffect(() => {
+  //   checkActiveSessionAction();
+  // }, []);
+
+  // console.log(checkSession, 'checkSession');
+
+  // if (checkSession) {
+  //   return <Redirect to={{ pathname: '/login' }} />;
+  // }
 
   return (
     <div>
@@ -147,7 +164,11 @@ const App = props => {
                   component={CompanyStructurePosition}
                 /> */}
 
-                <PrivateRoute exact path="/utility/:tab?" component={UtilityPage} />
+                <PrivateRoute
+                  exact
+                  path="/utility/:tab?"
+                  component={UtilityPage}
+                />
                 <PrivateRoute
                   exact
                   path="/task-manager/tasks"
@@ -190,7 +211,13 @@ const App = props => {
                 />
                 <PrivateRoute exact path="/work-order" component={WorkOrderPage} />
 
+                <PrivateRoute exact path="/human-resource/leave-management" component={LeaveManagementPage} />
+
                 <PrivateRoute exact path="/human-resource/attendance" component={AttendancePage} />
+                {/* <PrivateRoute exact path="/human-resource/attendance/:attendanceId?" component={AttendancePage} />
+                <PrivateRoute exact path="/human-resource/attendance/shift/:shiftId?" component={AttendancePage} />
+                <PrivateRoute exact path="/human-resource/attendance/employee-shift/:empshiftId?" component={AttendancePage} /> */}
+
                 <PrivateRoute exact path="/hr/:section?/:status?" component={HRPage} />
 
                 <PrivateRoute exact path="/hr/:section?/:status?/applicant/:applicantId?" component={HRPage} />
@@ -296,11 +323,12 @@ const App = props => {
 const mapStateToProps = createStructuredSelector({
   currentUser: Selectors.makeSelectCurrentUser(),
   accessToken: Selectors.makeSelectAccessToken(),
+  checkSession: Selectors.makeSelectCheckActiveSession(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    // getUserStatusAction: () => dispatch(getUserStatus()),
+    checkActiveSessionAction: () => dispatch(Actions.checkActiveSession()),
   };
 }
 
