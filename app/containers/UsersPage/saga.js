@@ -99,6 +99,7 @@ export function* updateUserProfile() {
   );
 
   console.log(updateUserProfileData, 'updateUserProfileData');
+  console.log(accessToken, 'accessToken profile');
   const requestURL = `${Endpoints.UpdateUserProfileApi}`;
 
   try {

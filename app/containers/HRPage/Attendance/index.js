@@ -30,12 +30,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function AttendancePage(props) {
-  const { getAttendance } = props;
+  const { getAttendances, getDays, getShifts, days, getEmployees, } = props;
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
-
+  console.log(days, "Index attd");
   React.useEffect(() => {
-    getAttendance();  
+    getAttendances(); 
+    getDays(); 
+    getShifts();
+    getEmployees();
   }, []);
 
   return (
@@ -56,12 +59,15 @@ AttendancePage.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   attendance: makeSelectAttendancePage(),
-  token: AppSelectors.makeSelectAccessToken(),
+  token: AppSelectors.makeSelectAccessToken()
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
-    getAttendance: () => dispatch(Actions.getAttendance()),
+    getAttendances: () => dispatch(Actions.getAttendances()),
+    getDays: () => dispatch(Actions.getDays()),
+    getShifts: () => dispatch(Actions.getShifts()),
+    getEmployees: () => dispatch(Actions.getEmployees()),
   };
 }
 

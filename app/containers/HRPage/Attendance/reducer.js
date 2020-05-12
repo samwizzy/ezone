@@ -35,25 +35,57 @@ export const initialState = {
     },
     data: null,
   },
+  
+  announcementViewDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null, 
+  },
 };
 
 /* eslint-disable default-case, no-param-reassign */
 const attdReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
-      case Constants.GET_ATTENDANCE:
+      case Constants.GET_ATTENDANCES: {
         return {
           ...state,
           loading: true
-        };
-        break;
-      case Constants.GET_ATTENDANCE_SUCCESS:
+        }
+      };
+      case Constants.GET_ATTENDANCES_SUCCESS: {
+        return {
+          ...state,
+          attendances: action.payload
+        }
+      };
+      case Constants.GET_EMPLOYEES: {
+        return {
+          ...state,
+          loading: true
+        }
+      };
+      case Constants.GET_EMPLOYEES_SUCCESS: {
+        return {
+          ...state,
+          employees: action.payload
+        }
+      };
+      case Constants.GET_ATTENDANCE: {
+        return {
+          ...state,
+          loading: true
+        }
+      };
+      case Constants.GET_ATTENDANCE_SUCCESS: {
         return {
           ...state,
           loading: false,
           attendance: action.payload
-        };
-        break;
+        }
+      };
       case Constants.CREATE_ATTENDANCE: {
         return {
           ...state,
@@ -66,42 +98,80 @@ const attdReducer = (state = initialState, action) =>
           loading: false,
         };
       }
-      case Constants.OPEN_NEW_ATTENDANCE_DIALOG:
+
+      case Constants.ASSIGN_SHIFT: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          assignShift: action.payload,
+        };
+      }
+      case Constants.ASSIGN_SHIFT_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getAssignShift: action.payload,
+        };
+      }
+      case Constants.GET_DAYS_SUCCESS: {
+        return {
+          ...state,
+          days: action.payload
+        }
+      };
+      case Constants.GET_SHIFTS_SUCCESS: {
+        return {
+          ...state,
+          shifts: action.payload
+        }
+      };
+      case Constants.CREATE_SHIFT_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getCreateShift: action.payload,
+        };
+      }
+      case Constants.OPEN_NEW_ATTENDANCE_DIALOG: {
         return {
           ...state,
           attdDialog: {...state.attdDialog, props: { open: true }},
-        };
-        break;
-      case Constants.CLOSE_NEW_ATTENDANCE_DIALOG:
+        }
+      };
+      case Constants.CLOSE_NEW_ATTENDANCE_DIALOG: {
         return {
           ...state,
           attdDialog: {...state.attdDialog, props: { open: false }},
-        };
-        break;
-      case Constants.OPEN_NEW_SHIFT_DIALOG:
+        }
+      };
+      case Constants.OPEN_NEW_SHIFT_DIALOG: {
         return {
           ...state,
           shiftDialog: {...state.shiftDialog, props: { open: true }},
-        };
-        break;
-      case Constants.CLOSE_NEW_SHIFT_DIALOG:
+        }
+      };
+      case Constants.CLOSE_NEW_SHIFT_DIALOG: {
         return {
           ...state,
           shiftDialog: {...state.shiftDialog, props: { open: false }},
-        };
-        break;
-      case Constants.OPEN_NEW_EMPLOYEE_SHIFT_DIALOG:
+        }
+      };
+      case Constants.OPEN_NEW_EMPLOYEE_SHIFT_DIALOG: {
+        console.log("i am open reducer employee shift")
         return {
           ...state,
           employeeShiftDialog: {...state.employeeShiftDialog, props: { open: true }},
-        };
-        break;
-      case Constants.CLOSE_NEW_EMPLOYEE_SHIFT_DIALOG:
+        }
+      };
+      case Constants.CLOSE_NEW_EMPLOYEE_SHIFT_DIALOG: {
         return {
           ...state,
           employeeShiftDialog: {...state.employeeShiftDialog, props: { open: false }},
-        };
-        break;
+        }
+      };
     }
   });
 

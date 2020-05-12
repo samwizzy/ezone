@@ -15,6 +15,7 @@ import {JobDescForm} from './JobDescForm'
 import {JobInfoForm} from './JobInfoForm'
 import {HiringWorkFlowForm} from './HWForm'
 import {BasicInfoForm} from './BasicInfoForm'
+import JobOpenings from '../JobOpenings'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function getSteps() {
-  return ['Job Description', 'Hiring Workflow', 'Job Information', 'Basic Information'];
+  return ['Job Description', 'Hiring Workflow', 'Job Information', /*'Basic Information'*/];
 }
 
 
@@ -44,7 +45,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function AddRecruitment(props) {
   const classes = useStyles();
-  const { departments, enrollmentTypes, dialog, createJobOpening } = props;
+  const { departments, enrollmentTypes, dialog, jobOpenings, createJobOpening } = props;
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
@@ -65,10 +66,11 @@ function AddRecruitment(props) {
     address: '',
     country: '',
     enrollmentTypeId:  '',
+    locationId: 4,
     departmentId: '',
     jobDescription: "",
     jobTitle: "",
-    noOfVancancy: '1',
+    noOfVancancies: '1',
     orgId: "ORG-1582035732806",
     //state: "Lagos",
     hiringSteps: [],
@@ -117,12 +119,13 @@ function AddRecruitment(props) {
 
   const handleNext = () => {
     console.log(activeStep);
-    if(activeStep > -1 && activeStep < 3){ 
+    if(activeStep > -1 && activeStep < 2){ 
       //setStep(activeStep + 1) 
       setActiveStep(prevActiveStep => prevActiveStep + 1);
     }else{
       console.log(form, "Job submit")
       createJobOpening(form);
+      
     }
     
   };
@@ -169,6 +172,7 @@ function AddRecruitment(props) {
             handleSubmit={handleSubmit}
           />
         );
+      /*
       case 3:
         return (
           <BasicInfoForm 
@@ -177,6 +181,7 @@ function AddRecruitment(props) {
             handleSubmit={handleSubmit}
           />
         );
+      */
       default:
         return 'Unknown stepIndex';
     }
@@ -194,6 +199,8 @@ function AddRecruitment(props) {
       <div>
         {activeStep === steps.length ? 
           handleSubmit()
+          (
+          <JobOpenings/>)
           /*
           <div>
             <Typography className={classes.instructions}>All steps completed</Typography>
@@ -247,6 +254,7 @@ AddRecruitment.propTypes = {
 const mapStateToProps = createStructuredSelector({
   departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
   enrollmentTypes: Selectors.makeSelectEnrollmentTypes(),
+  jobOpenings : Selectors.makeSelectJobOpenings(),
 });
 
 function mapDispatchToProps(dispatch) {

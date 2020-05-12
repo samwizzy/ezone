@@ -25,11 +25,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function AttendancePage(props) {
-  const { getAttendance, match } = props;
-  const { params } = match
+  const { getAttendances } = props;
 
   React.useEffect(() => {
-    getAttendance();  
+    getAttendances();  
   }, []);
 
   return (
@@ -38,10 +37,14 @@ export function AttendancePage(props) {
         <title>Attendance Page</title>
         <meta name="description" content="ezone application attendance page" />
       </Helmet>
-
+      {/*
       { params.attendanceId?
-        <AttendanceDetails /> : <AttendanceList />
-      }
+        <AttendanceDetails /> :
+      */}
+        <AttendanceList />
+      {/*
+        } 
+      */}
 
     </React.Fragment>
   );
@@ -57,7 +60,7 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
-    getAttendance: () => dispatch(Actions.getAttendance()),
+    getAttendances: () => dispatch(Actions.getAttendances()),
   };
 }
 

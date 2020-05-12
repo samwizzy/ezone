@@ -75,6 +75,21 @@ export function getJobOpeningsSuccess(data) {
   };
 }
 
+export function getJobOpeningDetails(id) {
+  console.log(id);
+  return {
+    type: Constants.GET_JOBOPENINGDETAILS,
+    payload: id
+  };
+}
+
+export function getJobOpeningDetailsSuccess(data) {
+  return {
+    type: Constants.GET_JOBOPENINGDETAILS_SUCCESS,
+    payload: data
+  };
+}
+
 export function getRoles() {
   return {
     type: Constants.GET_ROLES,
@@ -102,6 +117,18 @@ export function getEmployeeSuccess(data) {
   };
 }
 
+export function getPartyGroups() {
+  return {
+    type: Constants.GET_PARTYGROUPS,
+  };
+}
+export function getPartyGroupsSuccess(data) {
+  return {
+    type: Constants.GET_PARTYGROUPS_SUCCESS,
+    payload: data
+  };
+}
+
 export function getDepartments() {
   return {
     type: Constants.GET_DEPARTMENTS,
@@ -110,6 +137,33 @@ export function getDepartments() {
 export function getDepartmentsSuccess(data) {
   return {
     type: Constants.GET_DEPARTMENTS_SUCCESS,
+    payload: data
+  };
+}
+
+export function getAnnouncements() {
+  return {
+    type: Constants.GET_ANNOUNCEMENTS,
+  };
+}
+export function getAnnouncementsSuccess(data) {
+  return {
+    type: Constants.GET_ANNOUNCEMENTS_SUCCESS,
+    payload: data
+  };
+}
+
+
+export function getDepartment(id) {
+  return {
+    type: Constants.GET_DEPARTMENT,
+    payload: id
+  };
+}
+
+export function getDepartmentSuccess(data) {
+  return {
+    type: Constants.GET_DEPARTMENT_SUCCESS,
     payload: data
   };
 }
@@ -156,6 +210,19 @@ export function createBranch(data) {
 export function createBranchSuccess(data) {
   return {
     type: Constants.CREATE_BRANCH_SUCCESS,
+    payload: data
+  };
+}
+
+export function createAnnouncement(data) {
+  return {
+    type: Constants.CREATE_ANNOUNCEMENT,
+    payload: data
+  };
+}
+export function createAnnouncementSuccess(data) {
+  return {
+    type: Constants.CREATE_ANNOUNCEMENT_SUCCESS,
     payload: data
   };
 }
@@ -297,13 +364,37 @@ export function closeNewAnnouncementDialog() {
     type: Constants.CLOSE_NEW_ANNOUNCEMENT_DIALOG,
   };
 }
-export function openAnnouncementViewDialog() {
+export function openAnnouncementViewDialog(data) {
   return {
     type: Constants.OPEN_ANNOUNCEMENT_VIEW_DIALOG,
+    payload: data
   };
 }
 export function closeAnnouncementViewDialog() {
   return {
     type: Constants.CLOSE_ANNOUNCEMENT_VIEW_DIALOG,
+  };
+}
+export function openWorkExperienceDialog(data) {
+  return {
+    type: Constants.OPEN_WORK_EXPERIENCE_DIALOG,
+    payload: data
+  };
+}
+export function closeWorkExperienceDialog() {
+  return {
+    type: Constants.CLOSE_WORK_EXPERIENCE_DIALOG,
+  };
+}
+export function openEducationBackgroundDialog(data) {
+  console.log("open education dialog")
+  return {
+    type: Constants.OPEN_EDUCATION_BACKGROUND_DIALOG,
+    payload: data
+  };
+}
+export function closeEducationBackgroundDialog() {
+  return {
+    type: Constants.CLOSE_EDUCATION_BACKGROUND_DIALOG,
   };
 }

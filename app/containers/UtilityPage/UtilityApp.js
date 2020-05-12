@@ -63,8 +63,7 @@ function UtilityApp({history, match, location}) {
   const classes = useStyles();
 	const theme = useTheme();
   const [value, setValue] = React.useState('tasks');
-	const mountTabValueFactory = (location, tabId) => (route) => !!matchPath(location.pathname, { path: route, exact: true }) ? value : Infinity;
-	const tabId = 'myTabId';
+	const mountTabValueFactory = (location, value) => (route) => !!matchPath(location.pathname, { path: route, exact: true }) ? value : Infinity;
 	const getTabValue = mountTabValueFactory(location, value);
 
   const handleChange = (event, newValue) => {
@@ -84,17 +83,6 @@ function UtilityApp({history, match, location}) {
     <div className={classes.root}>
       <MenuBar
         navigations={
-          // <React.Fragment>
-          //   <NavLink to="/chats" activeClassName={classes.active}>
-          //     Chats
-          //   </NavLink>
-          //   <NavLink to="/task-manager/tasks" activeClassName={classes.active}>
-          //     Tasks
-          //   </NavLink>
-          //   <NavLink to="/file-manager/folders" activeClassName={classes.active}>
-          //     Files
-          //   </NavLink>
-          // </React.Fragment>
           <Tabs
             style={{backgroundColor: '#fff'}}
             value={value}
@@ -103,18 +91,13 @@ function UtilityApp({history, match, location}) {
             textColor="primary"
             centered
           >
-            <Tab label="Chats" {...a11yProps('chats')} onClick={() => history.push(`/utility/chats`)} value='chats' />
-            <Tab label="Tasks" {...a11yProps('tasks')} onClick={() => history.push(`/utility/tasks`)} value='tasks' />
-            <Tab label="Files" {...a11yProps('files')} onClick={() => history.push(`/utility/files`)} value='files' />
+            <Tab label="Chats" {...a11yProps('chats')} onClick={() => history.push(`${match.path}/chats`)} value='chats' />
+            <Tab label="Tasks" {...a11yProps('tasks')} onClick={() => history.push(`${match.path}/tasks`)} value='tasks' />
+            <Tab label="Files" {...a11yProps('files')} onClick={() => history.push(`${match.path}/files`)} value='files' />
           </Tabs>
         }
         content={   
 					<div>
-          {/* <SwipeableViews
-            axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-            index={value}
-            onChangeIndex={handleChangeIndex}
-          > */}
             <TabPanel value={value} index={'chats'} dir={theme.direction}>
               <ChatApp />
             </TabPanel>
@@ -124,7 +107,6 @@ function UtilityApp({history, match, location}) {
             <TabPanel value={value} index={'files'} dir={theme.direction}>
               <FilesApp />
             </TabPanel>
-          {/* </SwipeableViews> */}
 					</div>
         }
       />

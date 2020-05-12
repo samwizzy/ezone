@@ -7,12 +7,9 @@ import NoteAdd from '@material-ui/icons/NoteAdd';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 
 const useStyles = makeStyles(theme => ({
-  iconButton: {
-    color: theme.palette.primary.main,
-  },
+  iconButton: {},
   button: {
-    "& :nth-child(odd)": {
-    },
+    marginLeft: theme.spacing(2)
   },
   icon: {}
 }));
@@ -52,18 +49,19 @@ export function AddFile(props) {
             className={classes.button}
             onClick={openFileDialog}
             color="primary"
+            size="small"
             variant="contained"
             startIcon={<Add className={classes.icon} />}
           >
             New File
           </Button>
         </Tooltip>
-        &nbsp;
         <Tooltip title="New Folder">
           <Button
             className={classes.button}
             onClick={openFolderDialog}
             variant="contained"
+            size="small"
             color="primary"
             startIcon={<Add className={classes.icon} />}
           >

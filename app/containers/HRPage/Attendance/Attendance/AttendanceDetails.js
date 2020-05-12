@@ -152,6 +152,7 @@ const AttendanceDetails = props => {
         container
         justify='space-around'
       >
+        {/*
         <Grid item md={12}>
           <Grid container>
             <Grid item xs={6}>
@@ -214,6 +215,7 @@ const AttendanceDetails = props => {
             </Grid>
           </Grid>
         </Grid>
+                */}
         <Grid item md={12}>
           <MUIDataTable
             className={classes.datatable}

@@ -57,7 +57,7 @@ const HumanResourcePage = props => {
             return <AnnouncementApp /> 
             break;
         default:
-            return <EmployeesApp />
+            return <DashboardApp />
     }
 }
 

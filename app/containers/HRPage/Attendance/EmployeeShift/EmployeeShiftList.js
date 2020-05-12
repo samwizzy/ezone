@@ -15,7 +15,6 @@ import * as Actions from './../actions';
 import * as Selectors from './../selectors';
 import * as AppSelectors from '../../../App/selectors';
 import {AssignShift} from '../components/AddButton'
-import AssignShiftDialog from './components/AssignShiftDialog'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -53,8 +52,9 @@ const employeeShifts = [
 
 const EmployeeShiftList = props => {
   const classes = useStyles();
-  const { loading, openNewEmployeeShiftDialog, getAttendance, getAttendanceById, attendance } = props;
-
+  const { loading, openNewAttendanceDialog, getAttendances, getAttendanceById, attendance, employees, openNewEmployeeShiftDialog } = props;
+  console.log(employees, "Employees in employeeShift");
+  const toTitleCase = str => (str ? str[0].toUpperCase() + str.slice(1) : '');
   React.useEffect(() => {
   }, []);
 
@@ -67,6 +67,7 @@ const EmployeeShiftList = props => {
         filter: true,
       },
     },
+    /*
     {
       name: 'avi',
       label: ' ',
@@ -80,28 +81,49 @@ const EmployeeShiftList = props => {
         }
       }
     },
+    */
     {
-      name: 'employee',
-      label: 'Employee',
+      name: 'id',
+      label: 'Name',
       options: {
         filter: true,
         sort: true,
+        customBodyRender: id => {
+          const emp = employees && employees.find(e => e.id == id);
+          return (
+            <span>{`${toTitleCase(emp.firstName)} ${toTitleCase(
+              emp.lastName,
+            )}`}</span>
+          );
+        },
       },
     },
     {
-      name: 'shift',
+      name: 'id',
       label: 'Shift',
       options: {
         filter: true,
         sort: true,
+        customBodyRender: id => {
+          const emp = employees && employees.find(e => e.id == id);
+          return (
+            emp.workShift && <span>{`${toTitleCase(emp.workShift.shiftName)}`}</span>
+          );
+        },
       },
     },
     {
-      name: 'duration',
-      label: 'Duration',
+      name: 'id',
+      label: 'End date',
       options: {
       filter: true,
       sort: true,
+      customBodyRender: id => {
+        const emp = employees && employees.find(e => e.id == id);
+        return (
+          emp.workShift && <span>{`${toTitleCase(emp.workShift.endDate)}`}</span>
+        );
+      },
       },
     }
   ];
@@ -118,7 +140,7 @@ const EmployeeShiftList = props => {
     rowsPerPage: 10,
     rowsPerPageOptions: [10,25,50,100],
     onRowClick: (rowData, rowState) => {
-      getAttendanceById(rowData[0])
+     // getAttendanceById(rowData[0])
     },
     elevation: 0
   };
@@ -127,20 +149,17 @@ const EmployeeShiftList = props => {
     <div className={classes.root}>
       <Grid
         container
-        justify='space-around'
       >
         <Grid item md={12}>
           <MUIDataTable
             className={classes.datatable}
             title="Employee Shifts"
-            data={employeeShifts}
+            data={employees}
             columns={columns}
             options={options}
           />
         </Grid>
       </Grid>
-
-      <AssignShiftDialog />
     </div>
   );
 };
@@ -153,12 +172,13 @@ EmployeeShiftList.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   user: AppSelectors.makeSelectCurrentUser(),
-  attendance: Selectors.makeSelectAttendance(),
+  attendances: Selectors.makeSelectAttendances(),
+  employees: Selectors.makeSelectEmployees(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAttendance: () => dispatch(Actions.getAttendance()),
+    getAttendances: () => dispatch(Actions.getAttendances()),
     getAttendanceById: (uuid) => dispatch(Actions.getAttendanceById(uuid)),
     openNewEmployeeShiftDialog: () => dispatch(Actions.openNewEmployeeShiftDialog()),
   };

@@ -11,15 +11,54 @@ import * as Constants from './constants';
  *
  * @return {object} An action object with a type of CHANGE_USERNAME
  */
-export function getAttendance() {
+export function getAttendances() {
   return {
     type: Constants.GET_ATTENDANCES,
   };
 }
 
-export function getAttendanceSuccess(data) {
+export function getAttendancesSuccess(data) {
   return {
     type: Constants.GET_ATTENDANCES_SUCCESS,
+    payload: data
+  };
+}
+
+export function getEmployees() {
+  return {
+    type: Constants.GET_EMPLOYEES,
+  };
+}
+
+export function getEmployeesSuccess(data) {
+  return {
+    type: Constants.GET_EMPLOYEES_SUCCESS,
+    payload: data
+  };
+}
+
+export function getDays() {
+  return {
+    type: Constants.GET_DAYS,
+  };
+}
+
+export function getDaysSuccess(data) {
+  return {
+    type: Constants.GET_DAYS_SUCCESS,
+    payload: data
+  };
+}
+
+export function getShifts() {
+  return {
+    type: Constants.GET_SHIFTS,
+  };
+}
+
+export function getShiftsSuccess(data) {
+  return {
+    type: Constants.GET_SHIFTS_SUCCESS,
     payload: data
   };
 }
@@ -33,6 +72,33 @@ export function createAttendance(data) {
 export function createAttendanceSuccess(data) {
   return {
     type: Constants.CREATE_ATTENDANCE_SUCCESS,
+    payload: data
+  };
+}
+
+export function createShift(data) {
+  return {
+    type: Constants.CREATE_SHIFT,
+    payload: data
+  };
+}
+export function createShiftSuccess(data) {
+  return {
+    type: Constants.CREATE_SHIFT_SUCCESS,
+    payload: data
+  };
+}
+
+export function assignShift(data) {
+  console.log(data, "action assign shift")
+  return {
+    type: Constants.ASSIGN_SHIFT,
+    payload: data
+  };
+}
+export function assignShiftSuccess(data) {
+  return {
+    type: Constants.ASSIGN_SHIFT_SUCCESS,
     payload: data
   };
 }
@@ -60,7 +126,6 @@ export function closeEditAttendanceDialog(data) {
 }
 
 export function openNewShiftDialog() {
-  console.log("open shift dialog")
   return {
     type: Constants.OPEN_NEW_SHIFT_DIALOG,
   };

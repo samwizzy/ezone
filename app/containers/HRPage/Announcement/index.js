@@ -7,10 +7,10 @@ import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { makeStyles } from '@material-ui/core/styles';
-// import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
+import * as Selectors from './../selectors';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import * as AppSelectors from '../../App/selectors';
@@ -21,6 +21,8 @@ import reducer from './../reducer';
 import saga from './../saga';
 import ModuleLayout from './ModuleLayout'
 import AnnouncementList from './AnnouncementList';
+import AddAnnouncementDialog from './components/AddAnnouncementDialog';
+import AnnouncementViewDialog from './components/AnnouncementViewDialog';
 
 const key = 'hrPage';
 
@@ -30,14 +32,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function AnnouncementPage(props) {
-  const { getEmployees } = props;
-  useInjectReducer({ key, reducer });
-  useInjectSaga({ key, saga });
-
-  React.useEffect(() => {
-    getEmployees();
-  }, []);
+const AnnouncementPage = props => {
+  const classes = useStyles();
+  const { loading } = props;
 
   return (
     <React.Fragment>
@@ -49,6 +46,10 @@ export function AnnouncementPage(props) {
       <ModuleLayout>
         <AnnouncementList />
       </ModuleLayout>
+      
+      <AnnouncementViewDialog />
+      <AddAnnouncementDialog />
+     
     </React.Fragment>
   );
 }
@@ -59,12 +60,14 @@ AnnouncementPage.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   hrPage: makeSelectHRPage(),
-  token: AppSelectors.makeSelectAccessToken(),
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
     getEmployees: () => dispatch(Actions.getEmployees()),
+    getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
+    openNewAnnouncementDialog: () => dispatch(Actions.openNewAnnouncementDialog()),
+    openAnnouncementViewDialog: (data) => dispatch(Actions.openAnnouncementViewDialog(data)),
   };
 }
 

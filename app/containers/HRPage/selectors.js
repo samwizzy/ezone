@@ -84,6 +84,22 @@ const makeSelectEmployeeTypes = () =>
     selectHR,
     hrState => hrState.jobOpenings,
   );
+  const makeSelectJobOpeningDetails = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.jobOpeningDetails,
+  );
+  const makeSelectAnnouncements = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.announcements,
+  );
+
+  const makeSelectPartyGroups = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.partyGroups,
+  );
 
 
 const makeSelectEmpDialog = () =>
@@ -116,6 +132,16 @@ const makeSelectAnnouncementDialog = () =>
     selectHR,
     hrState => hrState.announcementDialog,
   );
+const makeSelectWorkExperienceDialog = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.workExperienceDialog,
+  );
+const makeSelectEducationBackgroundDialog = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.educationBackgroundDialog,
+  );
 const makeSelectAnnouncementViewDialog = () =>
   createSelector(
     selectHR,
@@ -131,6 +157,17 @@ const makeSelectCreateEmployeeSuccess = () =>
   createSelector(
     selectHR,
     hrState => hrState.getCreateEmployee,
+  );
+
+  const makeSelectCreateAnnouncement = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.createAnnouncement,
+  );
+const makeSelectCreateAnnouncementSuccess = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.getCreateAnnouncement,
   );
 const makeSelectCreateBranch = () =>
   createSelector(
@@ -179,6 +216,7 @@ export {
   makeSelectCreateJobOpeningSuccess,
   makeSelectLoading,
   makeSelectEmployees,
+  makeSelectPartyGroups,
   makeSelectDepartments,
   makeSelectEmployeeTypes,
   makeSelectJobOpenings,
@@ -194,6 +232,12 @@ export {
   makeSelectBranchDialog,
   makeSelectRoleDialog,
   makeSelectPayrollDialog,
+  makeSelectAnnouncements,
   makeSelectAnnouncementDialog,
   makeSelectAnnouncementViewDialog,
+  makeSelectCreateAnnouncement,
+  makeSelectCreateAnnouncementSuccess,
+  makeSelectJobOpeningDetails,
+  makeSelectWorkExperienceDialog,
+  makeSelectEducationBackgroundDialog,
 };

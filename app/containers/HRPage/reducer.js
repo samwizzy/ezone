@@ -66,7 +66,21 @@ export const initialState = {
   announcementViewDialog: {
     type: 'new',
     props: {
-      open: true,
+      open: false,
+    },
+    data: null,
+  },
+  workExperienceDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
+  educationBackgroundDialog: {
+    type: 'new',
+    props: {
+      open: false,
     },
     data: null,
   },
@@ -94,6 +108,18 @@ const hrReducer = (state = initialState, action) =>
           branches: action.payload
         };
       break;
+      case Constants.GET_ANNOUNCEMENTS_SUCCESS:
+        return {
+          ...state,
+          announcements: action.payload
+        };
+      break;
+      case Constants.GET_PARTYGROUPS_SUCCESS:
+        return {
+          ...state,
+          partyGroups: action.payload
+        };
+      break;
       case Constants.GET_PARTY_TAGS_SUCCESS:
         return {
           ...state,
@@ -116,6 +142,23 @@ const hrReducer = (state = initialState, action) =>
           loading: false,
           error: false,
           getCreateEmployee: action.payload,
+        };
+      }
+      case Constants.CREATE_ANNOUNCEMENT: {
+        // console.log(action.payload, 'reducer data');
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          createAnnouncement: action.payload,
+        };
+      }
+      case Constants.CREATE_ANNOUNCEMENT_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getCreateAnnouncement: action.payload,
         };
       }
       case Constants.CREATE_BRANCH: {
@@ -191,6 +234,12 @@ const hrReducer = (state = initialState, action) =>
         return {
           ...state,
           jobOpenings: action.payload
+        };
+      break;
+      case Constants.GET_JOBOPENINGDETAILS_SUCCESS:
+        return {
+          ...state,
+          jobOpeningDetails: action.payload
         };
       break;
       case Constants.GET_ROLES_SUCCESS:
@@ -299,13 +348,38 @@ const hrReducer = (state = initialState, action) =>
       case Constants.OPEN_ANNOUNCEMENT_VIEW_DIALOG:
         return {
           ...state,
-          announcementViewDialog: {...state.announcementViewDialog, props: { open: true }},
+          announcementViewDialog: {...state.announcementViewDialog, props: { open: true }, data: action.payload },
         };
         break;
       case Constants.CLOSE_ANNOUNCEMENT_VIEW_DIALOG:
         return {
           ...state,
           announcementViewDialog: {...state.announcementViewDialog, props: { open: false }},
+        };
+        break;
+      case Constants.OPEN_WORK_EXPERIENCE_DIALOG:
+        return {
+          ...state,
+          workExperienceDialog: {...state.workExperienceDialog, props: { open: true }, data: action.payload },
+        };
+        break;
+      case Constants.CLOSE_WORK_EXPERIENCE_DIALOG:
+        return {
+          ...state,
+          workExperienceDialog: {...state.workExperienceDialog, props: { open: false }},
+        };
+        break;
+      case Constants.OPEN_EDUCATION_BACKGROUND_DIALOG:
+        console.log("open education dialog in reducer")
+        return {
+          ...state,
+          educationBackgroundDialog: {...state.educationBackgroundDialog, props: { open: true }, data: action.payload },
+        };
+        break;
+      case Constants.CLOSE_EDUCATION_BACKGROUND_DIALOG:
+        return {
+          ...state,
+          educationBackgroundDialog: {...state.educationBackgroundDialog, props: { open: false }},
         };
         break;
     }

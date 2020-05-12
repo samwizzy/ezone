@@ -25,17 +25,18 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function AddDepartmentDialog(props) {
   const classes = useStyles();
-  const { closeNewDepartmentDialog, createDepartment,  getEmployees, party_tags, PartyTags, employees, employee, getBranches, branches, departments,  dialog } = props;
+  const { closeNewDepartmentDialog, createDepartment, partyGroups,  getEmployees, party_tags, PartyTags, employees,  employee, getBranches, branches, departments,  dialog } = props;
   const [form, setForm] = React.useState({
     name: '',
     description: '',
     partyHead: {id: ''},
     assistantPartyHead: {id: ''},
-    partyId: '',
+    partyGroupId: '',
     tagId: 5
   });
   
   console.log(dialog, "dialog checking")
+  
 
   React.useEffect(() => {
     if(dialog.type == 'edit'){
@@ -44,8 +45,8 @@ function AddDepartmentDialog(props) {
   }, [dialog])
 
   const canSubmitForm = () => {
-    const {name, description, partyId, partyHead, assistantPartyHead, tag } = form
-    return name.length > 0 && partyHead && partyId && assistantPartyHead
+    const {name, description, partyGroupId, partyHead, assistantPartyHead, tag } = form
+    return name.length > 0 && partyHead && partyGroupId && assistantPartyHead
   }
    
 
@@ -100,6 +101,27 @@ function AddDepartmentDialog(props) {
                     />
                 </Grid>
                 <Grid item xs={12}>
+                <TextField
+                  id="partyGroupId"
+                  name="partyGroupId"
+                  placeholder="Party group"
+                  select
+                  fullWidth
+                  className={classes.textField}
+                  variant="outlined"
+                  size="small"
+                  label="Party group"
+                  value={form.partyGroupId}
+                  onChange={handleChange}
+                >
+                  {partyGroups.map((partyGroup) => (
+                    <MenuItem key={partyGroup.id} value={partyGroup.id}>
+                        {partyGroup.name}
+                    </MenuItem>
+                  ))};
+                </TextField>
+              </Grid>
+                <Grid item xs={12}>
                     <TextField
                     name="description"
                     label="Description"
@@ -153,6 +175,7 @@ function AddDepartmentDialog(props) {
                     ))}
                   </TextField>
                 </Grid>
+                {/*
                 <Grid item xs={12}>
                   <TextField
                     id="partyId"
@@ -174,6 +197,7 @@ function AddDepartmentDialog(props) {
                         ))};
                   </TextField>
                 </Grid>
+                    */}
             </Grid>
           </form>
         </DialogContent>
@@ -204,6 +228,7 @@ const mapStateToProps = createStructuredSelector({
   departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
   branches: Selectors.makeSelectBranches(),
   party_tags: Selectors.makeSelectPartyTags(),
+  partyGroups: Selectors.makeSelectPartyGroups(),
 });
 
 function mapDispatchToProps(dispatch) {

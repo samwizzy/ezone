@@ -86,9 +86,9 @@ const AntTab = withStyles(theme => ({
 
 const JobOpeningDetails = props => {
   const classes = useStyles();
-	const { loading, openNewEmployeeDialog, getEmployee, employees, employee, getJobOpenings, jobOpenings } = props;
+	const { loading, openNewEmployeeDialog, getEmployee, employees, employee, getJobOpenings, jobOpenings, /* jobOpeningDetails */ } = props;
 	const [value, setValue] = React.useState(0);
-
+  //console.log(jobOpeningDetails, "job details inside job openingdetails");
   React.useEffect(() => {
   }, [employee]);
 
@@ -145,6 +145,7 @@ const mapStateToProps = createStructuredSelector({
   employee : Selectors.makeSelectEmployee(),
   user: AppSelectors.makeSelectCurrentUser(),
   jobOpenings : Selectors.makeSelectJobOpenings(),
+  jobOpeningDetails : Selectors.makeSelectJobOpeningDetails(),
 });
 
 function mapDispatchToProps(dispatch) {

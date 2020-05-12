@@ -7,11 +7,11 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Selectors from '../selectors';
+import ModuleLayout from './ModuleLayout'
 import AddRecruitment from './components/AddRecruitment'
 import RecruitmentList from './RecruitmentList'
 import JobOpenings from './JobOpenings'
 import JobOpeningDetails from './JobOpeningDetails/'
-import ModuleLayout from './ModuleLayout'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,9 +34,10 @@ const RecruitmentApp = props => {
   return (
     <React.Fragment>
       <Helmet>
-        <title>Recruitment Page</title>
-        <meta name="description" content="ezone application recruitment page" />
+        <title>Employee Page</title>
+        <meta name="description" content="ezone application employee page" />
       </Helmet>
+
       <ModuleLayout>
       {
         params.status === 'new'?

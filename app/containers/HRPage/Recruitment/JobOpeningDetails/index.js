@@ -8,6 +8,7 @@ import { createStructuredSelector } from 'reselect';
 import * as Selectors from '../../selectors';
 import JobOpeningDetails from './JobOpeningDetails'
 import ApplicantDetails from './ApplicantDetails'
+import * as Actions from '../../actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -18,9 +19,11 @@ const useStyles = makeStyles(theme => ({
 
 const JobOpeningDetailsApp = props => {
   const classes = useStyles();
-  const { loading, match, getJobOpenings, jobOpenings, } = props;
+  const { loading, match, getJobOpenings, jobOpenings, getJobOpeningDetails, /* jobOpeningDetails */ } = props;
   const { params } = match
-
+  console.log(params);
+  getJobOpeningDetails(params.status);
+  //console.log(jobOpeningDetails, "job details inside job openingdetails index");
   React.useEffect(() => {
   }, []);
 
@@ -42,10 +45,12 @@ JobOpeningDetailsApp.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   jobOpenings : Selectors.makeSelectJobOpenings(),
+  //jobOpeningDetails : Selectors.makeSelectJobOpeningDetails(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    getJobOpeningDetails : (id) => dispatch(Actions.getJobOpeningDetails(id)),
   };
 }
 

@@ -14,7 +14,6 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    // padding: theme.spacing(2),
   },
   active: {
     backgroundColor: theme.palette.common.white,  
@@ -69,9 +68,8 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(
-  compose(
-    withConnect,
-    memo,
-  )(ModuleLayout),
-);
+export default compose(
+  withRouter,
+  withConnect,
+  memo,
+)(ModuleLayout);

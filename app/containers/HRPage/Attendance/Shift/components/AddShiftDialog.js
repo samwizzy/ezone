@@ -6,14 +6,15 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+
+import ScheduleIcon from '@material-ui/icons/Schedule';
+import { AppBar, Button, Checkbox, Grid, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormLabel, FormControlLabel, MenuItem, Radio, RadioGroup, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import ScheduleIcon from '@material-ui/icons/Schedule';
-import { AppBar, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormLabel, FormControlLabel, MenuItem, Radio, RadioGroup, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
@@ -44,17 +45,19 @@ const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 
 
 function AddShiftDialog(props) {
   const classes = useStyles();
-  const { closeNewShiftDialog, dialog } = props;
-  const [option, setOption] = React.useState({shiftDays: false})
+  const { closeNewShiftDialog, dialog, days, createShift } = props;
   const [form, setForm] = React.useState({
-    employee: '',
-    date: new Date,
-    startTime: new Date,
-    endTime: new Date,
-    startDate: new Date,
-    endDate: new Date,
+    resumptionTime: '',
+    closeTime: '',
+    startDate: '',
+    endDate: '',
+    offDays: [],
+    shiftName: '',
+    createdBy: 'Admin',
+
   });
 
+  console.log(days, "shift dialogue");
   React.useEffect(() => {
     if(dialog.type == 'edit'){
       setForm({...form})
@@ -62,8 +65,8 @@ function AddShiftDialog(props) {
   }, [dialog])
 
   const canSubmitForm = () => {
-    const {employee, date, status, loginTime, logoutTime, comment } = form
-    return employee.length > 0 && date.length > 0 && status.length > 0
+    const { resumptionTime,closeTime,startDate,endDate,shiftName } = form
+    return resumptionTime && closeTime && startDate && endDate && shiftName
   }
 
   const handleChange = (event) => {
@@ -71,11 +74,25 @@ function AddShiftDialog(props) {
     setForm({...form, [name]: value});
   }
 
-  const handleSelectChange = () => {}
+  const reformattedDate = (date) => {
+    var month = date.getMonth() + 1; //months from 1-12
+    var day = date.getDate();
+    var year = date.getFullYear();
+    
+    var day = day.length > 0? day : day.toString().padStart(2, '0')
+    var month = month.length > 0? month : month.toString().padStart(2, '0')
+    
+    const newdate = year + "-" + month + "-" + day;
+    return newdate;
+  }
+  const handleDateChange = (date, formatted, name) => { 
+    setForm(_.set({...form}, name, reformattedDate(date)))
+  }
 
-  const handleDateChange = () => {}
+  const handleSubmit = () => {
+    createShift(form)
+  }
 
-  const handleSubmit = () => {}
 
   return (
     <div>
@@ -94,158 +111,160 @@ function AddShiftDialog(props) {
             </Typography>
           </Toolbar>
         </AppBar>
+        
+        <Divider />
 
-        <DialogContent dividers>
-          <Table className={classes.table} size="small">
-            <TableBody>
-              <TableRow>
-                <TableCell colSpan={2}>
-                  <Autocomplete
-                    id="combo-box-demo"
-                    size="small"
-                    options={[]}
-                    getOptionLabel={option => option.label}
-                    onChange={(evt, value) => handleSelectChange(evt, value)}
-                    renderInput={params => (
-                      <TextField
-                        {...params}
-                        label="Employee"
-                        variant="outlined"
-                        placeholder="Search"
-                        margin="normal"
-                        fullWidth
+        <DialogContent>
+          <Grid container spacing={1}>
+              <Grid item xs={12}>
+                  <TextField
+                  name="shiftName"
+                  label="Shift name"
+                  id="outlined-title"
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                  value={form.shiftName}
+                  onChange={handleChange}
+                  />
+              </Grid>
+              <Grid item xs={12}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <KeyboardDatePicker
+                          disableToolbar
+                          variant="inline"
+                          format="MM/dd/yyyy"
+                          margin="normal"
+                          fullWidth
+                          name="startDate"
+                          id="date-picker-startDate"
+                          label="Start Date"
+                          value={form.startDate}
+                          onChange={(date, formatted) => handleDateChange(date, formatted, 'startDate')}
+                          KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                          }}
                       />
-                    )}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardTimePicker
-                      margin="normal"
-                      inputVariant="outlined"
-                      id="time-picker"
-                      label="Start Time"
-                      size="small"
-                      value={form.loginTime}
-                      onChange={handleDateChange}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change time',
-                      }}
-                      keyboardIcon={<ScheduleIcon />}
-                    />
                   </MuiPickersUtilsProvider>
-                </TableCell>
-                <TableCell>
+              </Grid>
+              <Grid item xs={12}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardTimePicker
-                      margin="normal"
-                      inputVariant="outlined"
-                      id="time-picker"
-                      label="End Time"
-                      size="small"
-                      value={form.logoutTime}
-                      onChange={handleDateChange}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change time',
-                      }}
-                      keyboardIcon={<ScheduleIcon />}
-                    />
-                  </MuiPickersUtilsProvider>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell colSpan={2}>
-                  <FormControl component="fieldset">
-                    <FormLabel component="legend">Shift Period</FormLabel>
-                    <RadioGroup row aria-label="position" name="position" defaultValue="top">
-                      <FormControlLabel value="weekends" control={<Radio color="primary" />} label="Weekends" />
-                      <FormControlLabel value="off-days" control={<Radio color="primary" />} label="Shift off days" />
-                    </RadioGroup>
-                  </FormControl>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell colSpan={2}>
-                  <Autocomplete
-                    multiple
-                    id="checkboxes-tags-demo"
-                    options={days}
-                    size="small"
-                    disableCloseOnSelect
-                    getOptionLabel={(option) => option}
-                    defaultValue={[days[0]]}
-                    renderOption={(option, { selected }) => (
-                      <React.Fragment>
-                        <Checkbox
-                          icon={icon}
-                          checkedIcon={checkedIcon}
-                          style={{ marginRight: 8 }}
-                          checked={selected}
-                        />
-                        {option}
-                      </React.Fragment>
-                    )}
-                    renderInput={(params) => (
-                      <TextField {...params} variant="outlined" label="Off Days" placeholder="Off Days" margin="none" />
-                    )}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={option.shiftDays}
-                        onChange={handleChange}
-                        name="shiftDays"
-                        color="primary"
+                      <KeyboardDatePicker
+                          disableToolbar
+                          variant="inline"
+                          format="MM/dd/yyyy"
+                          margin="normal"
+                          fullWidth
+                          name="endDate"
+                          id="date-picker-endtDate"
+                          label="End Date"
+                          value={form.endDate}
+                          onChange={(date, formatted) => handleDateChange(date, formatted, 'endDate')}
+                          KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                          }}
                       />
-                    }
-                    label="Enter Shift Days"
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                      margin="normal"
-                      inputVariant="outlined"
-                      id="date-picker-dialog"
-                      label="Start Date"
-                      size="small"
-                      format="MM/dd/yyyy"
-                      value={form.startDate}
-                      onChange={handleDateChange}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                      }}
-                    />
                   </MuiPickersUtilsProvider>
-                </TableCell>
-                <TableCell>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                      margin="normal"
-                      inputVariant="outlined"
-                      id="date-picker-dialog"
-                      label="End Date"
-                      size="small"
-                      format="MM/dd/yyyy"
-                      value={form.endDate}
-                      onChange={handleDateChange}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                      }}
-                    />
-                  </MuiPickersUtilsProvider>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="resumptionTime"
+                  name="resumptionTime"
+                  placeholder="Resumption Time"
+                  select
+                  fullWidth
+                  className={classes.textField}
+                  variant="outlined"
+                  size="small"
+                  label="Resumption Time"
+                  value={form.resumptionTime}
+                  onChange={handleChange}
+                >
+                  <MenuItem key={0} value="2020-05-09T08:00:00.000Z">
+                    08:00:00
+                  </MenuItem>
+                  <MenuItem key={1} value="2020-05-09T09:00:00.000Z">
+                    09:00:00
+                  </MenuItem>
+                  <MenuItem key={2} value="2020-05-09T10:00:00.000Z">
+                    10:00:00
+                  </MenuItem>
+                  <MenuItem key={3} value="2020-05-09T11:00:00.000Z">
+                    11:00:00
+                  </MenuItem>
+                  <MenuItem key={4} value="2020-05-09T12:00:00.000Z">
+                    12:00:00
+                  </MenuItem>
+                  <MenuItem key={5} value="2020-05-09T01:00:00.000Z">
+                    01:00:00
+                  </MenuItem>
+                  <MenuItem key={6} value="2020-05-09T02:00:00.000Z">
+                    02:00:00
+                  </MenuItem>
+                  <MenuItem key={7} value="2020-05-09T03:00:00.000Z">
+                    03:00:00
+                  </MenuItem>
+                  <MenuItem key={8} value="2020-05-09T04:00:00.000Z">
+                    04:00:00
+                  </MenuItem>
+                  <MenuItem key={9} value="2020-05-09T05:00:00.000Z">
+                    05:00:00
+                  </MenuItem>
+                  <MenuItem key={10} value="2020-05-09T06:00:00.000Z">
+                    06:00:00
+                  </MenuItem>
+                </TextField>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="closeTime"
+                  name="closeTime"
+                  placeholder="Close Time"
+                  select
+                  fullWidth
+                  className={classes.textField}
+                  variant="outlined"
+                  size="small"
+                  label="Close Time"
+                  value={form.closeTime}
+                  onChange={handleChange}
+                >
+                  <MenuItem key={0} value="2020-05-09T08:00:00.000Z">
+                    08:00:00
+                  </MenuItem>
+                  <MenuItem key={1} value="2020-05-09T09:00:00.000Z">
+                    09:00:00
+                  </MenuItem>
+                  <MenuItem key={2} value="2020-05-09T10:00:00.000Z">
+                    10:00:00
+                  </MenuItem>
+                  <MenuItem key={3} value="2020-05-09T11:00:00.000Z">
+                    11:00:00
+                  </MenuItem>
+                  <MenuItem key={4} value="2020-05-09T12:00:00.000Z">
+                    12:00:00
+                  </MenuItem>
+                  <MenuItem key={5} value="2020-05-09T01:00:00.000Z">
+                    01:00:00
+                  </MenuItem>
+                  <MenuItem key={6} value="2020-05-09T02:00:00.000Z">
+                    02:00:00
+                  </MenuItem>
+                  <MenuItem key={7} value="2020-05-09T03:00:00.000Z">
+                    03:00:00
+                  </MenuItem>
+                  <MenuItem key={8} value="2020-05-09T04:00:00.000Z">
+                    04:00:00
+                  </MenuItem>
+                  <MenuItem key={9} value="2020-05-09T05:00:00.000Z">
+                    05:00:00
+                  </MenuItem>
+                  <MenuItem key={10} value="2020-05-09T06:00:00.000Z">
+                    06:00:00
+                  </MenuItem>
+                </TextField>
+              </Grid>
+          </Grid>
         </DialogContent>
 
         <DialogActions>
@@ -268,11 +287,13 @@ AddShiftDialog.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   dialog: Selectors.makeSelectShiftDialog(),
+  days: Selectors.makeSelectDays(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     closeNewShiftDialog: () => dispatch(Actions.closeNewShiftDialog()),
+    createShift: (data) => dispatch(Actions.createShift(data)),
     dispatch,
   };
 }

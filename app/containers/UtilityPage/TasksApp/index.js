@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles'
 import { compose } from 'redux';
@@ -7,7 +8,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import * as Actions from '../actions';
-import * as Selectors from '../selectors';
+import makeSelectUtilityPage, * as Selectors from '../selectors';
 import saga from './../saga';
 import reducer from './../reducer';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -16,8 +17,11 @@ import TasksList from './TasksList'
 import TaskList from './TaskList'
 import ModuleLayout from '../components/ModuleLayout' 
 import AddTaskDialog from './components/AddTaskDialog'
+import ConfirmTaskDeleteDialog from './components/ConfirmTaskDeleteDialog'
 import TaskPreviewDialog from './components/TaskPreviewDialog'
 import AssignToDialog from './components/AssignToDialog'
+
+const key = "utilityPage";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,29 +31,37 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const TasksApp = props => {
-    useInjectReducer({ key: 'utilityPage', reducer });
-    useInjectSaga({ key: 'utilityPage', saga });
+  useInjectReducer({ key: 'utilityPage', reducer });
+  useInjectSaga({ key: 'utilityPage', saga });
 
-    const classes = useStyles();
-    const { loading, getUtilityTasks, getEmployees, tasks, match } = props;
-    const { params } = match
+  const classes = useStyles();
+  const { loading, getUtilityTasks, getEmployees, tasks, match } = props;
+  const { params } = match
 
-    React.useEffect(() => {
-        getUtilityTasks()
-        getEmployees()
-    }, []);
+  React.useEffect(() => {
+    getUtilityTasks()
+    getEmployees()
+  }, []);
 
-    return (
+  return (
+    <div>
+      <Helmet>
+        <title>Tasks - Index</title>
+        <meta name="description" content="Description of Tasks" />
+      </Helmet>
+
       <ModuleLayout>
         { params.id? 
           <TaskList /> : <TasksList />
         }
-        
-        <AddTaskDialog />
-        <TaskPreviewDialog />
-        <AssignToDialog />
       </ModuleLayout>
-    );
+      
+      <AddTaskDialog />
+      <ConfirmTaskDeleteDialog />
+      <TaskPreviewDialog />
+      <AssignToDialog />
+    </div>
+  );
 };
 
 TasksApp.propTypes = {
@@ -58,6 +70,7 @@ TasksApp.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  utilityPage: makeSelectUtilityPage(),
   loading: Selectors.makeSelectLoading(),
   tasks: Selectors.makeSelectTasks(),
   users: Selectors.makeSelectEmployees(),

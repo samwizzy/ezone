@@ -33,10 +33,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function AddAnnouncementDialog(props) {
   const classes = useStyles();
-  const { closeNewAnnouncementDialog, dialog, createRole } = props;
+  const { closeNewAnnouncementDialog, dialog, createAnnouncement } = props;
   const [form, setForm] = React.useState({
-    name: '',
-    type: 'ROLE'
+    title: '',
+    message: '',
+    expiryDate: "2020-05-27",
+    notifyAllLocations: true,
+    notifyOthers: "true",
+    orgId: "ORG-1582035732806",
+    type: '',
   });
 
   console.log(dialog, "dialog checking")
@@ -48,8 +53,8 @@ function AddAnnouncementDialog(props) {
   }, [dialog])
 
   const canSubmitForm = () => {
-    const {name } = form
-    return name.length > 0 
+    const {title, message, type } = form
+    return title.length > 0 
   }
 
   const handleChange = (event) => {
@@ -58,7 +63,7 @@ function AddAnnouncementDialog(props) {
   }
 
   const handleSubmit = () => {
-    createRole(form)
+    createAnnouncement(form)
   }
 
   return (
@@ -85,14 +90,14 @@ function AddAnnouncementDialog(props) {
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <TextField
-              name="name"
+              name="title"
               label="Title"
               id="outlined-title"
               fullWidth
               margin="normal"
               variant="outlined"
               size="small"
-              value={form.name}
+              value={form.title}
               onChange={handleChange}
               />
             </Grid>
@@ -111,6 +116,7 @@ function AddAnnouncementDialog(props) {
               onChange={handleChange}
               />
             </Grid>
+            {/*
             <Grid item xs={12}>
               <Toolbar style={{paddingLeft: 0}}>
                 <Typography variant="h6">Announcement Settings</Typography></Toolbar>
@@ -175,10 +181,11 @@ function AddAnnouncementDialog(props) {
                 </TableBody>
               </Table>
             </Grid>
+            */}
             <Grid item xs={12}>
               <TextField
-                id="send-to"
-                name="messageType"
+                id="type"
+                name="type"
                 placeholder="Message Type"
                 select
                 margin="normal"
@@ -186,11 +193,17 @@ function AddAnnouncementDialog(props) {
                 size="small"
                 label="Message Type"
                 helperText="Please select a message type"
-                value={form.messageType}
+                value={form.type}
                 onChange={handleChange}
               >
-                <MenuItem key={0} value="0">
-                  No record
+                <MenuItem key={0} value="SMS">
+                    SMS
+                </MenuItem>
+                <MenuItem key={1} value="Email">
+                    Email
+                </MenuItem>
+                <MenuItem key={2} value="SMS/Email">
+                    SMS/Email
                 </MenuItem>
               </TextField>
             </Grid>
@@ -222,7 +235,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     closeNewAnnouncementDialog: () => dispatch(Actions.closeNewAnnouncementDialog()),
-    createRole: (data) => dispatch(Actions.createRole(data)),
+    createAnnouncement: (data) => dispatch(Actions.createAnnouncement(data)),
     dispatch,
   };
 }

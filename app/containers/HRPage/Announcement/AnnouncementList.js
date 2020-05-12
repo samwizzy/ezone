@@ -14,15 +14,7 @@ import MUIDataTable from 'mui-datatables'
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../App/selectors';
-import EditSharp from '@material-ui/icons/EditSharp';
-import Assignment from '@material-ui/icons/Assignment';
-import AssignmentInd from '@material-ui/icons/AssignmentInd';
-import Person from '@material-ui/icons/Person';
 import { AddAnnouncement } from '../components/AddButton'
-import AddAnnouncementDialog from './components/AddAnnouncementDialog'
-import AnnouncementViewDialog from './components/AnnouncementViewDialog'
-
-const drawerWidth = '100%';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -57,16 +49,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const announcements = [
-  {id: 1, title: "Stand Up starts by 5:00", sentTo: "Yinka", msgType: "Email", date: "May 3rd 2020"}
-]
-
 const Announcement = props => {
   const classes = useStyles();
-  const { loading, openNewAnnouncementDialog, openAnnouncementViewDialog, getEmployees, roles, getEmployee, employees, employee } = props;
+  const { loading, openNewAnnouncementDialog, openAnnouncementViewDialog, getEmployees, announcements, getEmployee, employees, employee } = props;
 
   React.useEffect(() => {
-  }, [employee]);
+  }, []);
 
   const columns = [
     {
@@ -85,6 +73,7 @@ const Announcement = props => {
       sort: true,
       },
     },
+    /*
     {
       name: 'sentTo',
       label: 'Sent to',
@@ -93,8 +82,9 @@ const Announcement = props => {
       sort: true,
       },
     },
+    */
     {
-      name: 'msgType',
+      name: 'announcementType',
       label: 'Message type',
       options: {
         filter: true,
@@ -102,7 +92,7 @@ const Announcement = props => {
       },
     },
     {
-      name: 'date',
+      name: 'dateCreated',
       label: 'Published date',
       options: {
         filter: true,
@@ -123,7 +113,7 @@ const Announcement = props => {
       rowsPerPage: 10,
       rowsPerPageOptions: [10,25,50,100],
       onRowClick: (rowData, rowState) => {
-        openAnnouncementViewDialog()
+        openAnnouncementViewDialog(rowData)
       },
       elevation: 0
   };
@@ -132,23 +122,17 @@ const Announcement = props => {
     <div className={classes.root}>
       <Grid
         container
-        justify='space-around'
       >
         <Grid item md={12}>
-          <div className={classes.content}>
-            <MUIDataTable
-                className={classes.datatable}
-                title="Announcement List"
-                data={announcements}
-                columns={columns}
-                options={options}
-            />
-          </div>
+          <MUIDataTable
+              className={classes.datatable}
+              title="Announcement List"
+              data={announcements}
+              columns={columns}
+              options={options}
+          />
         </Grid>
       </Grid>
-
-      <AddAnnouncementDialog />
-      <AnnouncementViewDialog />
     </div>
   );
 };
@@ -164,6 +148,7 @@ const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   employees: Selectors.makeSelectEmployees(),
   employee : Selectors.makeSelectEmployee(),
+  announcements : Selectors.makeSelectAnnouncements(),
   user: AppSelectors.makeSelectCurrentUser(),
   roles : Selectors.makeSelectRoles(),
 });
@@ -173,7 +158,7 @@ function mapDispatchToProps(dispatch) {
     getEmployees: () => dispatch(Actions.getEmployees()),
     getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
     openNewAnnouncementDialog: () => dispatch(Actions.openNewAnnouncementDialog()),
-    openAnnouncementViewDialog: () => dispatch(Actions.openAnnouncementViewDialog()),
+    openAnnouncementViewDialog: (data) => dispatch(Actions.openAnnouncementViewDialog(data)),
   };
 }
 
