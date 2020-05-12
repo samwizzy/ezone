@@ -126,7 +126,6 @@ export function closeEditAttendanceDialog(data) {
 }
 
 export function openNewShiftDialog() {
-  console.log("open shift dialog")
   return {
     type: Constants.OPEN_NEW_SHIFT_DIALOG,
   };
@@ -149,7 +148,6 @@ export function closeEditShiftDialog(data) {
 }
 
 export function openNewEmployeeShiftDialog() {
-  console.log("trying employee shift dialog")
   return {
     type: Constants.OPEN_NEW_EMPLOYEE_SHIFT_DIALOG,
   };

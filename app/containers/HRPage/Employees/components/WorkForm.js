@@ -38,9 +38,7 @@ export const WorkForm = props => {
                 </Toolbar>
             </AppBar>
 
-            <Divider />   
-
-            <DialogContent>
+            <DialogContent dividers>
             <form className={classes.root}>
                 <Grid container spacing={1}>
                     <Grid item xs={6}>
@@ -55,7 +53,7 @@ export const WorkForm = props => {
                         onChange={handleChange}
                         />
                     </Grid>
-                    {/*
+                    
                     <Grid item xs={6}>
                         <TextField
                         id="branch"
@@ -75,7 +73,7 @@ export const WorkForm = props => {
                         </MenuItem>
                         </TextField>
                     </Grid>
-                    */}
+                   
                     <Grid item xs={6}>
                         <TextField
                         id="department"
@@ -90,6 +88,9 @@ export const WorkForm = props => {
                         value={form.department.id}
                         onChange={handleSelectChange}
                         >
+                        <MenuItem key={0} value="1">
+                            No record
+                        </MenuItem>
                         {departments && departments.map((dept) => (
                         <MenuItem key={dept.id} value={dept.id}>
                             {dept.name}
@@ -133,6 +134,9 @@ export const WorkForm = props => {
                         value={form.employeeType.id}
                         onChange={handleSelectChange}
                         >
+                        <MenuItem key={0} value="1">
+                            No record
+                        </MenuItem>
                         {employeeTypes && employeeTypes.map((employeeType) => (
                         <MenuItem key={employeeType.id} value={employeeType.id}>
                             {employeeType.name}
@@ -140,7 +144,7 @@ export const WorkForm = props => {
                         ))}
                         </TextField>
                     </Grid>
-                    {/*
+                    
                     <Grid item xs={6}>
                         <TextField
                         id="pay-rate"
@@ -179,7 +183,7 @@ export const WorkForm = props => {
                         </MenuItem>
                         </TextField>
                     </Grid>
-                    */}
+                   
                     <Grid item xs={6}>
                         <TextField
                         id="role"
@@ -194,7 +198,7 @@ export const WorkForm = props => {
                         value={form.role.id}
                         onChange={handleChange}
                         >
-                        <MenuItem key={0} value="">
+                        <MenuItem key={0} value="0">
                             No record found
                         </MenuItem>
                         {roles && roles.map((role) => (
@@ -225,8 +229,7 @@ export const WorkForm = props => {
                             />
                         </MuiPickersUtilsProvider>
                     </Grid>
-
-                    <Grid item xs={12}>
+                    <Grid item xs={6}>
                         <TextField
                         id="reportTo"
                         name="reportTo"
@@ -240,12 +243,50 @@ export const WorkForm = props => {
                         value={form.reportTo.id}
                         onChange={handleSelectChange}
                         >
+                        <MenuItem key={0} value="1">
+                            No record
+                        </MenuItem>
                         {employees && employees.map((employee) => (
                         <MenuItem key={employee.id} value={employee.id}>
                             {employee.firstName} {employee.lastName}
                         </MenuItem>
                         ))}
                         </TextField>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                        id="job-level"
+                        name="job-level"
+                        placeholder="Select employee job level"
+                        select
+                        fullWidth
+                        className={classes.textField}
+                        variant="outlined"
+                        size="small"
+                        label="Job Level"
+                        value={form.jobLevel}
+                        onChange={handleSelectChange}
+                        >
+   
+                        <MenuItem key={0} value={""}>
+                            No record
+                        </MenuItem>
+                        </TextField>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <TextField
+                        id="outlined-multiline-desc"
+                        name="jobDesc"
+                        label="Job Description"
+                        multiline
+                        fullWidth
+                        rows="4"
+                        rowsMax="4"
+                        value={form.jobDesc}
+                        onChange={handleChange}
+                        variant="outlined"
+                        />
                     </Grid>
 
                 </Grid>

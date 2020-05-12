@@ -57,9 +57,17 @@ function AddEmployeeDialog(props) {
     dob: moment(new Date('01-01-1980')).format('YYYY-MM-DD'),
     maritalStatus: '',
     gender: '',
+    country: '',
+    city: '',
+    website: '',
+    website: '',
     address: '',
+    address2: '',
+    postalCode: '',
+    jobLevel: '',
     jobDesc: '',
     about: '',
+    otherEmail: ''
   });
 
   React.useEffect(() => {
@@ -153,6 +161,7 @@ function AddEmployeeDialog(props) {
           {step === 2 && (
             <PersonalForm
             handleDateChange={handleDateChange}
+            handleSelectChange={handleSelectChange}
             handleChange={handleChange}
             form={form}
             closeNewEmployeeDialog={closeNewEmployeeDialog}
