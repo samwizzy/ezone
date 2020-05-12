@@ -212,9 +212,30 @@ const AccountingPeriod = props => {
                       </MuiPickersUtilsProvider>
                     </TableCell>
                     <TableCell component="th">
+<<<<<<< HEAD
+                      <Button 
+                        aria-controls="simple-menu" 
+                        aria-haspopup="true" 
+                        // endIcon={<DeleteIcon />}
+                        disabled={true}
+                        onClick={event => handleClick(event, item.id)}
+                      >
+                        Closed
+                      </Button>
+                      <Menu
+                        id="simple-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                      >
+                        <MenuItem onClick={handleClose}>View</MenuItem>
+                      </Menu>
+=======
                       <Typography variant="subtitle1">
                         Opened
                       </Typography>
+>>>>>>> 17f179ab44e3e6191bffdeaf274f5a7357aa90d9
                     </TableCell>
                   </TableRow>
                   ))}

@@ -79,7 +79,6 @@ const AccountChart = props => {
     openNewAccountDialogAction,
     openDeleteAccountDialogAction,
     editOpenAccountDialogAction,
-    deleteChartOfAccountAction,
     chartOfAccountData,
   } = props;
 
@@ -129,7 +128,7 @@ const AccountChart = props => {
     },
     {
       name: 'id',
-      label: '.',
+      label: ' ',
       options: {
         filter: true,
         sort: false,

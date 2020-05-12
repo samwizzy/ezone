@@ -297,7 +297,6 @@ const AddBankAccountDialog = props => {
           ) : (
             <Button
               onClick={() => { 
-                // bankAccountDialog.type === 'new' ? dispatchCreateNewBankAction(values) : bankAccountDialog.type === 'edit' ? dispatchUpdateBankAccountAction(values) : bankAccountDialog.type === "delete" ? dispatchDeleteBankAccountAction(bankAccountDialog.data) : bankAccountDialog.type === "activate" ? dispatchActivateBankAccountAction(`id=${bankAccountDialog.data.id}&status=true`) : bankAccountDialog.type === "deactivate" ? dispatchDeactivateBankAccountAction(`id=${bankAccountDialog.data.id}&status=false`) : "" ; 
                 switch (bankAccountDialog.type) {
                   case 'new':
                     dispatchCreateNewBankAction(values);
@@ -312,7 +311,7 @@ const AddBankAccountDialog = props => {
                   case 'activate':
                     dispatchActivateBankAccountAction(`id=${bankAccountDialog.data.id}&status=true`)
                     break;
-                  case 'delete':
+                  case 'deactivate':
                     dispatchDeactivateBankAccountAction(`id=${bankAccountDialog.data.id}&status=false`)
                     break;
                   default:
@@ -320,7 +319,7 @@ const AddBankAccountDialog = props => {
                 }
               }}
               color="primary"
-              disabled={ bankAccountDialog.type === 'new' ? !canSubmitValues() : canSubmitValues() }
+              disabled={ bankAccountDialog.type === 'new' ? !canSubmitValues() : "" }
             >
               { bankAccountDialog.type === "new" ? "Save" : bankAccountDialog.type === "edit" ? "Update" : bankAccountDialog.type === "delete" ? "Delete" : bankAccountDialog.type === "activate" ? "Activate" : bankAccountDialog.type === "deactivate" ? "De-activate" : "" }
             </Button>

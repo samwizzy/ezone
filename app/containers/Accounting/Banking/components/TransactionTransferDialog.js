@@ -64,9 +64,10 @@ const TransactionTransferDialog = props => {
     transferType: ""
   });
 
-  console.log('bankAccountData from dialog ', bankAccountData);
-  // console.log('transactionTransferDialog ', transactionTransferDialog);
+  console.log('bankAccountData from dialog -> ', bankAccountData);
   
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
+
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
@@ -75,14 +76,13 @@ const TransactionTransferDialog = props => {
     setValues({ ...values, bankId: value.id });
   };
 
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
-
   const handleDateChange = date => {
     setValues({
       ...values,
       transferDate: moment(date).format('YYYY-MM-DD'),
       transferType: transactionTransferDialog.data == 1 ? "TRANSFERIN" : "TRANSFEROUT"
     });
+    setSelectedDate(date);
   };
 
   const toBase64 = file => new Promise((resolve, reject) => {
@@ -153,7 +153,7 @@ const TransactionTransferDialog = props => {
                     id="date-picker-dialog"
                     label="Transfer Date"
                     format="MM/dd/yyyy"
-                    value={values.transferDate}
+                    value={selectedDate}
                     onChange={handleDateChange}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',

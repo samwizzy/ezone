@@ -144,7 +144,10 @@ const BankList = props => {
       label: 'Status',
       options: {
         filter: true,
-        sort: false,
+        sort: true,
+        customBodyRender: status => (
+          <span>{status ? 'Active' : 'Inactive'}</span>
+        ),
       },
     },
     {

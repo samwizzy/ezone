@@ -66,7 +66,6 @@ export function* getParentAccountTypeSaga({ type, payload} ) {
 
     console.log('parentAccountTypeResponse -->', parentAccountTypeResponse);
     yield put(Actions.getParentAccountTypeSuccessAction(parentAccountTypeResponse));
-
   } catch (err) {
     alert('Something went wrong from getParentAccountTypeSaga');
     yield put(Actions.getParentAccountTypeErrorAction(err));

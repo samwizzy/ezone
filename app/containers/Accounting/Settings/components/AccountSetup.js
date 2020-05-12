@@ -79,12 +79,28 @@ const AccountSetup = props => {
       value: 'Accural',
       label: 'Accural',
     },
+    {
+      value: 'Cash basis',
+      label: 'Cash basis',
+    },
   ];
 
   const taxTypeData = [
     {
       value: 'Limited liability',
       label: 'Limited liability',
+    },
+    {
+      value: 'Sole proprietorship',
+      label: 'Sole proprietorship',
+    },
+    {
+      value: 'Partnership',
+      label: 'Partnership',
+    },
+    {
+      value: 'Corporation',
+      label: 'Corporation',
     },
   ];
 
@@ -128,6 +144,7 @@ const AccountSetup = props => {
   };
 
   const [selectedDate, setSelectedDate] = React.useState(new Date());
+  const [selectedTaxDate, setSelectedTaxDate] = React.useState(new Date());
   const handleAccountingMethodSelectChange = (name, value) => {
     setValues({ ...values, accountMethod: value.value });
   };
@@ -147,6 +164,7 @@ const AccountSetup = props => {
       startDay: Number(moment(date).format('D')),
       startMonth: Number(moment(date).format('M')),
     });
+    setSelectedDate(date);
   };
 
   const handleTaxYearDateChange = date => {
@@ -155,6 +173,7 @@ const AccountSetup = props => {
       taxDay: Number(moment(date).format('D')),
       taxMonth: Number(moment(date).format('M')),
     });
+    setSelectedTaxDate(date);
   };
 
   console.log('values -> ', values);
@@ -162,7 +181,7 @@ const AccountSetup = props => {
   if (loading) {
     return <LoadingIndicator />;
   }
-
+  
   return (
     <React.Fragment>
       <div className={classes.root}>
@@ -172,7 +191,7 @@ const AccountSetup = props => {
               <Paper square elevation={0} className={classes.paper}>
                 <Box p={2} my={2} className={classes.box}>
                   <Typography variant="h4" color="textSecondary">
-                    Welcome To
+                    Welcome To 
                     {/* <img src={Logo} height="40" />  */}
                     Accounting
                   </Typography>
@@ -282,7 +301,7 @@ const AccountSetup = props => {
                             id="date-picker-dialog"
                             label="Select Date"
                             format="MM/dd/yyyy"
-                            value={selectedDate}
+                            value={selectedTaxDate}
                             onChange={handleTaxYearDateChange}
                             KeyboardButtonProps={{
                               'aria-label': 'change date',

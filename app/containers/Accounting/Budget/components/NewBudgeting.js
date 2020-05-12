@@ -118,18 +118,18 @@ const NewBudgeting = props => {
     budgetDialog, 
   } = props;
 
-  const budgetPeriod = [
+  const budgetPeriodMonthList = [
     {
-      value: 'Monthly',
-      label: 'Monthly',
+      value: "MONTHLY",
+      label: "MONTHLY",
     },
     {
-      value: 'Quaterly',
-      label: 'Quaterly',
+      value: "QUATERLY",
+      label: "QUATERLY",
     },
     {
-      value: 'Yearly',
-      label: 'Yearly',
+      value: "YEARLY",
+      label: "YEARLY",
     }
   ];
 
@@ -183,43 +183,85 @@ const NewBudgeting = props => {
       label: '12',
     }
   ];
-
   
   var monthArray = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
-
-  const [month, setMonth] = React.useState({
-    financialMonth: "",
-  });
+  let chartOfAccount = ["Sales", "Finance"];
 
   const [values, setValues] = React.useState({
-    accountCode: "",
-    accountName: "",
-    accountNumber: "",
-    bankBalance: "",
-    bankName: "",
-    description: "",
+    account: chartOfAccount.map(num => ({
+      accountName: "",
+      value: monthArray.map(month => ({ amount: "", period: "" }))
+    })),
+    budgetName: "",
+    budgetPeriod: "MONTHLY",
+    financialYear: "",
     orgId: currentUser.organisation.orgId,
   });
-
-  const canSubmitValues = () => {
-    const { accountCode, accountName, accountNumber, bankBalance, bankName, description } = values;
-    return accountCode.length > 0 && accountName.length > 0 && accountNumber.length > 0 && bankBalance.length > 0 && bankName.length > 0 && description.length > 0;
-  }
   
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const handleSelectChange = (name, value) => {
-    setMonth({ 
-      ...month, 
-      financialMonth: value.label,
-    });
+  const handleSelectFinancialYearChange = (name, value) => {
+    setValues({ ...values, financialYear: value.label });
   };
 
-  console.log("new array -> ", monthArray.slice(monthArray.indexOf(month["financialMonth"])).concat(monthArray.slice(0, monthArray.indexOf(month["financialMonth"]))));
-  var newCopyArray = monthArray.slice(monthArray.indexOf(month["financialMonth"])).concat(monthArray.slice(0, monthArray.indexOf(month["financialMonth"])));
+  const handleSelectBudgetPeriodChange = (name, value) => {
+    setValues({ ...values, budgetPeriod: value.label });
+  };
 
+  // const handleRowChange = (event, index) => {
+  //   const account = [...values.account];
+  //   // account[index][event.target.name] = event.target.value;
+  //   setValues({ ...values, account });
+
+  //   console.log("setValues ", values);
+
+  //   // const entries = [...values.entries];
+  //   // entries[index][event.target.name] = event.target.value;
+  //   // setValues({ ...values, entries });
+  // }
+
+  const handleRowChange = (event, chart, month, ci, mi) => {
+    const { name, value } = event.target
+    console.log(chart, "charts")
+    console.log(month, "month")
+    console.log(ci, "chart index")
+    console.log(mi, "month index")
+    const accountClone = [...values.account]
+    accountClone[ci].accountName = chart
+    accountClone[ci].value[mi].amount = value
+    accountClone[ci].value[mi].period = month
+    setValues({
+      ...values,
+      account: accountClone
+    })
+  }
+
+
+  function chunkArray(myArray, chunk_size){
+    var results = [];
+
+    while (myArray.length) {
+        results.push(myArray.splice(0, chunk_size));
+    }
+    return results;
+}
+
+  var newCopyArray = monthArray.slice(monthArray.indexOf(values["financialYear"])).concat(monthArray.slice(0, monthArray.indexOf(values["financialYear"])));
+
+  if (values["budgetPeriod"] == "MONTHLY") {
+    console.log("selected MONTHLY");
+  } 
+  else if (values["budgetPeriod"] == "QUATERLY") {
+    newCopyArray = chunkArray(newCopyArray, 3);
+  } 
+  else {
+    newCopyArray = chunkArray(newCopyArray, 12);
+  } 
+
+  console.log("newCopyArray state -> ", newCopyArray);
+  console.log("values --> ", values);
 
   return (
     <div>
@@ -234,13 +276,13 @@ const NewBudgeting = props => {
           <Grid container spacing={1} className={classes.grid}>
             <Grid item xs={6}>
               <TextField
-                id="standard-accountCode"
-                label="Account Code"
-                type="number"
+                id="standard-budgetName"
+                label="Budget name"
+                type="name"
                 variant="outlined"
                 size="small"
-                value={values.accountCode}
-                onChange={handleChange('accountCode')}
+                value={values.budgetName}
+                onChange={handleChange('budgetName')}
                 margin="normal"
                 fullWidth
               />
@@ -251,7 +293,7 @@ const NewBudgeting = props => {
                 size="small"
                 options={budgetMonth}
                 getOptionLabel={option => option.label}
-                onChange={(evt, value) => handleSelectChange(evt, value)}
+                onChange={(evt, value) => handleSelectFinancialYearChange(evt, value)}
                 renderInput={params => (
                   <TextField
                     {...params}
@@ -269,9 +311,9 @@ const NewBudgeting = props => {
               <Autocomplete
                 id="combo-box-demo"
                 size="small"
-                options={budgetPeriod}
+                options={budgetPeriodMonthList}
                 getOptionLabel={option => option.label}
-                onChange={(evt, value) => handleSelectChange(evt, value)}
+                onChange={(evt, value) => handleSelectBudgetPeriodChange(evt, value)}
                 renderInput={params => (
                   <TextField
                     {...params}
@@ -301,21 +343,25 @@ const NewBudgeting = props => {
                     <TableRow>
                       <TableCell component="th" scope="row" colSpan={13}>Income</TableCell>
                     </TableRow>
-                    {[0,1,2,3].map(row => (     
-                      <TableRow>
-                        <TableCell>Income</TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>
+                    {chartOfAccount.map((chart, ci) => (     
+                      <TableRow key={ci}>
+                        <TableCell>{chart}</TableCell>
+                        {newCopyArray.map((m, mi) => 
+                          <TableCell>
+                            <TextField 
+                              id="outlined-basic" 
+                              size="small" 
+                              label="Outlined" 
+                              variant="outlined" 
+                              className={classes.textField} 
+                              name="amount"
+                              value={values.account[ci].value[mi].amount}
+                              onChange={(event) => handleRowChange(event, chart, m, ci, mi)}
+                              margin="normal"
+                              fullWidth
+                            />
+                          </TableCell>
+                        )}
                       </TableRow>
                     ))}
                     <TableRow>
@@ -327,18 +373,8 @@ const NewBudgeting = props => {
                     {[0,1,2,3].map(row => (     
                       <TableRow>
                         <TableCell>Expense</TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" /></TableCell>
+                        { newCopyArray.map((item, i) => 
+                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>) }
                       </TableRow>
                     ))}
                     <TableRow>
@@ -364,7 +400,7 @@ const NewBudgeting = props => {
               onClick={() => {}}
               color="primary"
               variant="contained"
-              disabled={!canSubmitValues()}
+              // disabled={!canSubmitValues()}
             >
               Save
             </Button>
