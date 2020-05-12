@@ -193,8 +193,8 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(
-  compose(
-    withConnect,
-    memo,
-)(BranchesApp));
+export default compose(
+  withRouter,
+  withConnect,
+  memo,
+)(BranchesApp);

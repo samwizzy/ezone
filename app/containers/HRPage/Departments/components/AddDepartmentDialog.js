@@ -114,7 +114,7 @@ function AddDepartmentDialog(props) {
                   value={form.partyGroupId}
                   onChange={handleChange}
                 >
-                  {partyGroups.map((partyGroup) => (
+                  {partyGroups && partyGroups.map((partyGroup) => (
                     <MenuItem key={partyGroup.id} value={partyGroup.id}>
                         {partyGroup.name}
                     </MenuItem>
@@ -147,9 +147,9 @@ function AddDepartmentDialog(props) {
                     value={form.partyHead.id}
                     onChange={handleSelectChange}
                   >
-                    {employees.map((employee) => (
+                    {employees && employees.map((employee) => (
                     <MenuItem key={employee.id} value={employee.id}>
-                        {employee.firstName} {employee.lastName}
+                      {employee.firstName} {employee.lastName}
                     </MenuItem>
                     ))}
                   </TextField>
@@ -168,7 +168,7 @@ function AddDepartmentDialog(props) {
                     value={form.assistantPartyHead.id}
                     onChange={handleSelectChange}
                   >
-                    {employees.map((employee) => (
+                    {employees && employees.map((employee) => (
                     <MenuItem key={employee.id} value={employee.id}>
                         {employee.firstName} {employee.lastName}
                     </MenuItem>
