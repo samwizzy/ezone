@@ -39,5 +39,8 @@ export const CLOSE_EDIT_SHIFT_DIALOG = 'boilerplate/HRPage/CLOSE EDIT SHIFT DIAL
 export const CREATE_SHIFT        = 'boilerplate/HRPage/CREATE SHIFT';
 export const CREATE_SHIFT_SUCCESS = 'boilerplate/HRPage/CREATE SHIFT SUCCESS';
 
+export const ASSIGN_SHIFT        = 'boilerplate/HRPage/ASSIGN SHIFT';
+export const ASSIGN_SHIFT_SUCCESS = 'boilerplate/HRPage/ASSIGN SHIFT SUCCESS';
+
 export const GET_SHIFTS        = 'boilerplate/HRPage/GET SHIFTS';
 export const GET_SHIFTS_SUCCESS = 'boilerplate/HRPage/GET SHIFTS SUCCESS';

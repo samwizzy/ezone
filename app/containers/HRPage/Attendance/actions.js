@@ -89,6 +89,20 @@ export function createShiftSuccess(data) {
   };
 }
 
+export function assignShift(data) {
+  console.log(data, "action assign shift")
+  return {
+    type: Constants.ASSIGN_SHIFT,
+    payload: data
+  };
+}
+export function assignShiftSuccess(data) {
+  return {
+    type: Constants.ASSIGN_SHIFT_SUCCESS,
+    payload: data
+  };
+}
+
 export function openNewAttendanceDialog() {
   return {
     type: Constants.OPEN_NEW_ATTENDANCE_DIALOG,

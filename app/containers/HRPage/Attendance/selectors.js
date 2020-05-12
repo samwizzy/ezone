@@ -44,6 +44,17 @@ const makeSelectAttendance = () =>
       selectAttendance,
       subState => subState.getCreateShift,
     );
+
+  const makeSelectAssignShift = () =>
+    createSelector(
+      selectAttendance,
+      subState => subState.assignShift,
+    );
+  const makeSelectAssignShiftSuccess = () =>
+    createSelector(
+      selectAttendance,
+      subState => subState.getAssignShift,
+    );
   
   const makeSelectAttendances = () =>
   createSelector(
@@ -86,4 +97,6 @@ export {
   makeSelectCreateShift,
   makeSelectCreateShiftSuccess,
   makeSelectEmployees,
+  makeSelectAssignShift,
+  makeSelectAssignShiftSuccess,
 };
