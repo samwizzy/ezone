@@ -11,6 +11,7 @@ import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import { AssignShift } from '../../components/AddButton';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -94,17 +95,18 @@ function a11yProps(index) {
   };
 }
 
-const employees = [{label: 'Sunday'}, {label: 'Monday'}, {label: 'Tuesday'}, {label: 'Wednesday'}, {label: 'Thursday'}, {label: 'Friday'}];
+//const employees = [{label: 'Sunday'}, {label: 'Monday'}, {label: 'Tuesday'}, {label: 'Wednesday'}, {label: 'Thursday'}, {label: 'Friday'}];
 
 function AssignShiftDialog(props) {
   const classes = useStyles();
-  const { closeNewEmployeeShiftDialog, dialog } = props;
+  const { closeNewEmployeeShiftDialog, dialog, employees, assignShift, shifts } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [value, setValue] = React.useState(0);
   const [form, setForm] = React.useState({
-    employee: '',
-    shift: '',
+    userId: '',
+    shiftId: '',
   });
+  console.log(shifts, "shifts in assign")
   
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
@@ -122,6 +124,7 @@ function AssignShiftDialog(props) {
   const id = open ? 'simple-popover' : undefined;
 
   React.useEffect(() => {
+    //assignShift();
     /*
     if(dialog.type == 'edit'){
       setForm({...form})
@@ -130,8 +133,8 @@ function AssignShiftDialog(props) {
   }, [dialog])
 
   const canSubmitForm = () => {
-    const {employee, shift } = form
-    return employee.length > 0 && shift.length > 0
+    const {userId, shiftId } = form
+    return userId && shiftId
   }
 
   const handleChange = (event) => {
@@ -139,9 +142,12 @@ function AssignShiftDialog(props) {
     setForm({...form, [name]: value});
   }
 
-  const handleSelectChange = () => {}
-
-  const handleSubmit = () => {}
+  const handleSelectChange = (event) => {
+    setForm({...form, [event.target.name]: {id: event.target.value}});
+  }
+  const handleSubmit = () => {
+    assignShift(form)
+  }
 
   return (
     <div>
@@ -166,194 +172,47 @@ function AssignShiftDialog(props) {
               <TableRow>
                 <TableCell>
                   <TextField
-                    id="status"
-                    name="status"
-                    placeholder="Status"
+                    id="shiftId"
+                    name="shiftId"
+                    placeholder="Shift"
                     select
                     fullWidth
                     variant="outlined"
                     margin="normal"
                     size="small"
-                    label="Status"
-                    value={form.shift}
+                    label="Shift"
+                    value={form.shiftId}
                     onChange={handleChange}
                   >
-                    <MenuItem key={0} value="">
-                      No record
+                    {shifts && shifts.map((shift) => (
+                    <MenuItem key={shifts.id} value={shift.id}>
+                      {shift.shiftName}
                     </MenuItem>
+                    ))}
                   </TextField>
                 </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>
-                  <Autocomplete
-                    id="combo-box-demo"
-                    size="small"
-                    options={employees}
-                    getOptionLabel={option => option.label}
-                    onChange={(evt, value) => handleSelectChange(evt, value)}
-                    renderInput={params => (
-                      <TextField
-                        {...params}
-                        label="Employee"
-                        variant="outlined"
-                        placeholder="Search"
-                        margin="normal"
-                        value={form.employee}
-                        fullWidth
-                      />
-                    )}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  <TextField
-                    id="employee-select"
-                    name="employee"
+                <TextField
+                    id="userId"
+                    name="userId"
                     placeholder="Employee"
+                    select
                     fullWidth
                     variant="outlined"
                     margin="normal"
                     size="small"
                     label="Employee"
-                    value={form.employee}
-                    onClick={handleClick}
-                  />
-                  <Popover
-                    id={id}
-                    open={open}
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'center',
-                    }}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'center',
-                    }}
+                    value={form.userId}
+                    onChange={handleChange}
                   >
-                    <div className={classes.tabsRoot}>
-                      <AntTabs
-                        orientation="vertical"
-                        variant="scrollable"
-                        value={value}
-                        onChange={handleTabChange}
-                        aria-label="ant example"
-                        className={classes.tabs}
-                      >
-                        <AntTab label="Employees" {...a11yProps(0)} />
-                        <AntTab label="Department" {...a11yProps(1)} />
-                        <AntTab label="Branch" {...a11yProps(2)} />
-                        <AntTab label="Roles" {...a11yProps(3)} />
-                      </AntTabs>
-                      {value === 0 && 
-                      <Box px={2} className={classes.toolbar}>
-                        <Autocomplete
-                          multiple
-                          id="employee"
-                          size="small"
-                          options={employees}
-                          disableCloseOnSelect
-                          getOptionLabel={(option) => option.label}
-                          renderOption={(option, { selected }) => (
-                            <React.Fragment>
-                              <Checkbox
-                                icon={icon}
-                                checkedIcon={checkedIcon}
-                                style={{ marginRight: 8 }}
-                                checked={selected}
-                              />
-                              {option.label}
-                            </React.Fragment>
-                          )}
-                          renderInput={(params) => (
-                            <TextField {...params} variant="outlined" label="Employees" placeholder="Employees" margin="normal" />
-                          )}
-                        />
-                      </Box>
-                      }
-                      {value === 1 && 
-                      <Box px={2} className={classes.toolbar}>
-                        <Autocomplete
-                          multiple
-                          id="checkboxes-tags-demo"
-                          size="small"
-                          options={employees}
-                          disableCloseOnSelect
-                          getOptionLabel={(option) => option.label}
-                          renderOption={(option, { selected }) => (
-                            <React.Fragment>
-                              <Checkbox
-                                icon={icon}
-                                checkedIcon={checkedIcon}
-                                style={{ marginRight: 8 }}
-                                checked={selected}
-                              />
-                              {option.label}
-                            </React.Fragment>
-                          )}
-                          renderInput={(params) => (
-                            <TextField {...params} variant="outlined" label="Department" placeholder="Department" margin="normal" />
-                          )}
-                        />
-                      </Box>
-                      }
-                      {value === 2 && 
-                      <Box px={2} className={classes.toolbar}>
-                        <Autocomplete
-                          multiple
-                          id="checkboxes-tags-demo"
-                          size="small"
-                          options={employees}
-                          disableCloseOnSelect
-                          getOptionLabel={(option) => option.label}
-                          renderOption={(option, { selected }) => (
-                            <React.Fragment>
-                              <Checkbox
-                                icon={icon}
-                                checkedIcon={checkedIcon}
-                                style={{ marginRight: 8 }}
-                                checked={selected}
-                              />
-                              {option.label}
-                            </React.Fragment>
-                          )}
-                          renderInput={(params) => (
-                            <TextField {...params} variant="outlined" label="Branch" placeholder="Branch" margin="normal" />
-                          )}
-                        />
-                      </Box>
-                      }
-                      {value === 3 && 
-                      <Box px={2} className={classes.toolbar}>
-                        <Autocomplete
-                          multiple
-                          id="checkboxes-tags-demo"
-                          size="small"
-                          options={employees}
-                          disableCloseOnSelect
-                          getOptionLabel={(option) => option.label}
-                          renderOption={(option, { selected }) => (
-                            <React.Fragment>
-                              <Checkbox
-                                icon={icon}
-                                checkedIcon={checkedIcon}
-                                style={{ marginRight: 8 }}
-                                checked={selected}
-                              />
-                              {option.label}
-                            </React.Fragment>
-                          )}
-                          renderInput={(params) => (
-                            <TextField {...params} variant="outlined" label="Roles" placeholder="Roles" margin="normal" />
-                          )}
-                        />
-                      </Box>
-                      }
-                    </div>
-                  </Popover>
+                    {employees && employees.map((employee) => (
+                    <MenuItem key={employee.id} value={employee.id}>
+                      {employee.firstName} {employee.lastName}
+                    </MenuItem>
+                    ))}
+                  </TextField>
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -380,11 +239,14 @@ AssignShiftDialog.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   dialog: Selectors.makeSelectEmployeeShiftDialog(),
+  employees: Selectors.makeSelectEmployees(),
+  shifts: Selectors.makeSelectShifts(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     closeNewEmployeeShiftDialog: () => dispatch(Actions.closeNewEmployeeShiftDialog()),
+    assignShift: (data) => dispatch(Actions.assignShift(data)),
     dispatch,
   };
 }

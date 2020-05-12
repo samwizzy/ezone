@@ -109,7 +109,7 @@ export const GetEnrollmentTypes = `${BaseUrl}/authserv/api/v1/generic_entities/f
 export const GetLocations = `${BaseUrl}/authserv/api/v1/generic_entities/for_organinisation`;
 
 //Job openings
-export const GetJobOpenings = `${BaseUrl}/authserv/api/v1/job_openings/for_organisation`;
+export const GetJobOpenings = `${BaseUrl}/authserv/api/v1/job_openings/for_organinisation`;
 export const CreateJobOpening = `${BaseUrl}/authserv/api/v1/job_opening`;
 export const GetJobOpeningDetails = `${BaseUrl}/authserv/api/v1/job_openings/get_by_id`;
 
@@ -127,7 +127,7 @@ export const GetDepartmentsByParentIdApi = `${BaseUrl}/hrserv/api/v1/departments
 export const GetPartyGroups = `${BaseUrl}/authserv/api/v1/organisation/partygroups`;
 export const GetDepartmentsByOrgIdApi = `${BaseUrl}/authserv/api/v1/organisation_and_tag/parties`;
 export const GetBranches = `${BaseUrl}/authserv/api/v1/organisation_and_tag/parties`;
-export const CreateDepartment = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_party`;
+export const CreateDepartment = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_group`;
 export const CreateBranch = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_group`;
 
 export const CreateAnnouncement = `${BaseUrl}/authserv/api/v1/announcement`;
@@ -138,6 +138,7 @@ export const GetAttendances = `${BaseUrl}/authserv/api/v1/find_attendance_by_org
 export const GetDays = `${BaseUrl}/authserv/api/v1/all_days`
 export const CreateShift = `${BaseUrl}/authserv/api/v1/add_shift`
 export const GetShifts = `${BaseUrl}/authserv/api/v1/find_shift_by_orgid`;
+export const AssignShift = `${BaseUrl}/authserv/api/v1/assign_shift_to_users`
 //
 // App Api
 export const GetOrgAppsApi = `${BaseUrl}/utilityserv/api/v1/organisation/orgApps`;

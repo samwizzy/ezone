@@ -175,6 +175,7 @@ function AddBranchDialog(props) {
                 </Grid>
                 
             </Grid>
+            {/*
             <Grid item xs={12}>
               <TextField
               name="description"
@@ -229,6 +230,7 @@ function AddBranchDialog(props) {
                 ))}
               </TextField>
             </Grid>
+                */}
             </form>
         </DialogContent>
 

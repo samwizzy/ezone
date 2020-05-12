@@ -98,6 +98,23 @@ const attdReducer = (state = initialState, action) =>
           loading: false,
         };
       }
+
+      case Constants.ASSIGN_SHIFT: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          assignShift: action.payload,
+        };
+      }
+      case Constants.ASSIGN_SHIFT_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          getAssignShift: action.payload,
+        };
+      }
       case Constants.GET_DAYS_SUCCESS: {
         return {
           ...state,
