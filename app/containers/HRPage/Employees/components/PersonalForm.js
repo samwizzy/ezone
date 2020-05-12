@@ -111,7 +111,7 @@ export const PersonalForm = props => {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                  name="Website"
+                  name="website"
                   label="Website"
                   id="outlined-website"
                   fullWidth
@@ -123,7 +123,7 @@ export const PersonalForm = props => {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                  name="email"
+                  name="otherEmail"
                   label="Other Email"
                   id="outlined-email"
                   fullWidth

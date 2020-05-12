@@ -28,7 +28,6 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
-import Assignment from '@material-ui/icons/Assignment';
 import Person from '@material-ui/icons/Person';
 import { AddEmployee } from '../components/AddButton';
 import AddEmployeeDialog from './components/AddEmployeeDialog';
@@ -75,12 +74,15 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
   },
   icon: {
-    width: 14,
-    height: 14,
+    width: 20,
+    height: 20,
     color: theme.palette.grey[800],
     '&.approved': { color: theme.palette.primary.main },
     '&.inProgress': { color: orange[500] },
     '&.done': { color: green[500] },
+  },
+  active: {
+    color: green[500]
   },
   buttonGroup: {
     marginBottom: theme.spacing(1),
@@ -101,9 +103,8 @@ const EmployeesApp = props => {
     employee,
     //getDepartmentsByOrgIdApi,
   } = props;
-  React.useEffect(() => {/*getDepartmentsByOrgIdApi()*/}, [employee, employees, departments, employeeTypes, roles]);
+  // React.useEffect(() => {/*getDepartmentsByOrgIdApi()*/}, [employee, employees, departments, employeeTypes, roles]);
   console.log(employees);
-  const toTitleCase = str => (str ? str[0].toUpperCase() + str.slice(1) : '');
 
   const handleRoute = (id) => {
     getEmployee(id);
@@ -141,10 +142,8 @@ const EmployeesApp = props => {
         customBodyRender: id => {
           const emp = employees && employees.find(e => e.id == id);
           return (
-            <span>{`${toTitleCase(emp.firstName)} ${toTitleCase(
-              emp.lastName,
-            )}`}</span>
-          );
+            <Typography>{`${emp.firstName} ${emp.lastName}`}</Typography>
+          )
         },
       },
     },
@@ -157,7 +156,7 @@ const EmployeesApp = props => {
       },
     },
     {
-      name: 'type',
+      name: 'employeeType.name',
       label: 'Type',
       options: {
         filter: true,
@@ -165,7 +164,7 @@ const EmployeesApp = props => {
       },
     },
     {
-      name: 'department',
+      name: 'department.name',
       label: 'Department ',
       options: {
         filter: true,
@@ -179,20 +178,20 @@ const EmployeesApp = props => {
         filter: true,
         sort: true,
         customBodyRender: enabled => (
-          <span>{enabled ? 'Active' : 'Inactive'}</span>
+          <Typography className={classes.active}>{enabled ? 'Active' : 'Inactive'}</Typography>
         ),
       },
     },
   ];
 
   const options = {
-    filterType: 'checkbox',
+    filterType: 'dropdown', // checkbox
     responsive: 'scrollMaxHeight',
     selectableRows: 'none', // single, multiple
     print: false,
     download: true,
     viewColumns: false,
-    filter: false,
+    // filter: false,
     customToolbar: () => <AddEmployee openDialog={openNewEmployeeDialog} />,
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
@@ -209,15 +208,13 @@ const EmployeesApp = props => {
         justify='space-around'
       >
         <Grid item md={12}>
-          <div className={classes.content}>
-            <MUIDataTable
-              className={classes.datatable}
-              title="Employee List"
-              data={employees}
-              columns={columns}
-              options={options}
-            />
-          </div>
+          <MUIDataTable
+            className={classes.datatable}
+            title="Employee List"
+            data={employees && employees}
+            columns={columns}
+            options={options}
+          />
         </Grid>
       </Grid>
 

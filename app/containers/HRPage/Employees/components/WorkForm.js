@@ -68,7 +68,7 @@ export const WorkForm = props => {
                         value={form.branch}
                         onChange={handleChange}
                         >
-                        <MenuItem key={0} value="1">
+                        <MenuItem key={0} value="">
                             No record
                         </MenuItem>
                         </TextField>
@@ -88,7 +88,7 @@ export const WorkForm = props => {
                         value={form.department.id}
                         onChange={handleSelectChange}
                         >
-                        <MenuItem key={0} value="1">
+                        <MenuItem key={0} value="">
                             No record
                         </MenuItem>
                         {departments && departments.map((dept) => (
@@ -134,7 +134,7 @@ export const WorkForm = props => {
                         value={form.employeeType.id}
                         onChange={handleSelectChange}
                         >
-                        <MenuItem key={0} value="1">
+                        <MenuItem key={0} value="">
                             No record
                         </MenuItem>
                         {employeeTypes && employeeTypes.map((employeeType) => (
@@ -159,7 +159,7 @@ export const WorkForm = props => {
                         value={form.payRate}
                         onChange={handleChange}
                         >
-                        <MenuItem key={0} value="1">
+                        <MenuItem key={0} value="">
                             No record
                         </MenuItem>
                         </TextField>
@@ -178,7 +178,7 @@ export const WorkForm = props => {
                         value={form.payType}
                         onChange={handleChange}
                         >
-                        <MenuItem key={0} value="1">
+                        <MenuItem key={0} value="">
                             No record
                         </MenuItem>
                         </TextField>
@@ -198,7 +198,7 @@ export const WorkForm = props => {
                         value={form.role.id}
                         onChange={handleChange}
                         >
-                        <MenuItem key={0} value="0">
+                        <MenuItem key={0} value="">
                             No record found
                         </MenuItem>
                         {roles && roles.map((role) => (
@@ -243,7 +243,7 @@ export const WorkForm = props => {
                         value={form.reportTo.id}
                         onChange={handleSelectChange}
                         >
-                        <MenuItem key={0} value="1">
+                        <MenuItem key={0} value="">
                             No record
                         </MenuItem>
                         {employees && employees.map((employee) => (
