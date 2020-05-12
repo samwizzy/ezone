@@ -13,6 +13,7 @@ import {Form} from './Form'
 import {WorkForm} from './WorkForm'
 import {PersonalForm} from './PersonalForm'
 import {AdditionalForm} from './AdditionalForm'
+import {EducationForm} from './EducationForm'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -47,6 +48,10 @@ function AddEmployeeDialog(props) {
     employeeType: "",
     seatingLocation: '',
     extension: '',
+    education: [
+      {degree: '', fieldOfStudy: ''},
+      {degree: '', fieldOfStudy: ''},
+    ],
     department:  {id: ''},
     password: 'Ezone123$',
     //designation: '', // {id: 1}
@@ -90,6 +95,19 @@ function AddEmployeeDialog(props) {
   const handleSelectChange = (event) => {
     const { name, value } = event.target
     setForm({...form, [name]: { id: value } });
+  };
+  const handleAddRow = (event) => {
+    const newObj = {degree: '', fieldOfStudy: ''};
+    const { education } = form
+    const newEducation = [...education, newObj]
+    console.log(newEducation, "newEducation")
+
+    setForm({...form, 'education': newEducation });
+  };
+
+  const handleRemoveRow = index => {
+    form.education.splice(index, 1);
+    setForm({ ...form });
   };
 
   const reformattedDate = (date) => {
@@ -169,6 +187,17 @@ function AddEmployeeDialog(props) {
             handlePrev={handlePrev}
             />
           )}
+          {/* {step === 0 && (
+            <EducationForm
+            handleAddRow={handleAddRow}
+            handleRemoveRow={handleRemoveRow}
+            handleChange={handleChange}
+            form={form}
+            closeNewEmployeeDialog={closeNewEmployeeDialog}
+            handleSubmit={handleSubmit}
+            handlePrev={handlePrev}
+            />
+          )} */}
           {step === 3 && (
             <AdditionalForm
             handleDateChange={handleDateChange}

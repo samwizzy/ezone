@@ -375,3 +375,26 @@ export function closeAnnouncementViewDialog() {
     type: Constants.CLOSE_ANNOUNCEMENT_VIEW_DIALOG,
   };
 }
+export function openWorkExperienceDialog(data) {
+  return {
+    type: Constants.OPEN_WORK_EXPERIENCE_DIALOG,
+    payload: data
+  };
+}
+export function closeWorkExperienceDialog() {
+  return {
+    type: Constants.CLOSE_WORK_EXPERIENCE_DIALOG,
+  };
+}
+export function openEducationBackgroundDialog(data) {
+  console.log("open education dialog")
+  return {
+    type: Constants.OPEN_EDUCATION_BACKGROUND_DIALOG,
+    payload: data
+  };
+}
+export function closeEducationBackgroundDialog() {
+  return {
+    type: Constants.CLOSE_EDUCATION_BACKGROUND_DIALOG,
+  };
+}

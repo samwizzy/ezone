@@ -6,6 +6,7 @@
 import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
+import { withRouter } from 'react-router-dom'; 
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -20,6 +21,9 @@ import reducer from './../reducer';
 import saga from './../saga';
 import ModuleLayout from './ModuleLayout'
 import EmployeeList from './EmployeeList';
+import EmployeeDetails from './EmployeeDetails';
+import WorkExperienceDialog from './components/WorkExperienceDialog';
+import EducationBackgroundDialog from './components/EducationBackgroundDialog';
 
 const key = 'hrPage';
 
@@ -30,7 +34,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function EmployeePage(props) {
-  const { getEmployees } = props;
+  const { getEmployees, match } = props;
+  const { params } = match
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
@@ -42,8 +47,13 @@ export function EmployeePage(props) {
       </Helmet>
 
       <ModuleLayout>
-        <EmployeeList />
+        {params.status?
+        <EmployeeDetails /> : <EmployeeList />
+        }
       </ModuleLayout>
+
+      <WorkExperienceDialog />
+      <EducationBackgroundDialog />
     </React.Fragment>
   );
 }
@@ -69,6 +79,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(EmployeePage);

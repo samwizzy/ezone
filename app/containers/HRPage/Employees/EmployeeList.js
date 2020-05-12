@@ -39,6 +39,9 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.common.white,
   },
   datatable: {
+    '& .MuiTableRow-root:hover': {
+      cursor: 'pointer'
+    },
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
         color: theme.palette.common.white,
@@ -88,6 +91,7 @@ const EmployeesApp = props => {
   const classes = useStyles();
   const {
     loading,
+    history,
     openNewEmployeeDialog,
     getEmployee,
     employees,
@@ -100,6 +104,11 @@ const EmployeesApp = props => {
   React.useEffect(() => {/*getDepartmentsByOrgIdApi()*/}, [employee, employees, departments, employeeTypes, roles]);
   console.log(employees);
   const toTitleCase = str => (str ? str[0].toUpperCase() + str.slice(1) : '');
+
+  const handleRoute = (id) => {
+    getEmployee(id);
+    history.push(`/hr/employees/${id}`)
+  }
 
   const columns = [
     {
@@ -188,8 +197,7 @@ const EmployeesApp = props => {
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
-      console.log(rowData[0], 'rowData[0]');
-      getEmployee(rowData[0]);
+      handleRoute(rowData[0])
     },
     elevation: 0,
   };

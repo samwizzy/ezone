@@ -1,11 +1,13 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Selectors from '../selectors';
+import ModuleLayout from './ModuleLayout'
 import AddRecruitment from './components/AddRecruitment'
 import RecruitmentList from './RecruitmentList'
 import JobOpenings from './JobOpenings'
@@ -30,7 +32,13 @@ const RecruitmentApp = props => {
   }, []);
 
   return (
-    <div className={classes.root}>
+    <React.Fragment>
+      <Helmet>
+        <title>Employee Page</title>
+        <meta name="description" content="ezone application employee page" />
+      </Helmet>
+
+      <ModuleLayout>
       {
         params.status === 'new'?
         <AddRecruitment /> :
@@ -39,7 +47,8 @@ const RecruitmentApp = props => {
         <AddRecruitment /> : <RecruitmentList />
         */
       }
-    </div>
+      </ModuleLayout>
+    </React.Fragment>
   );
 };
 
