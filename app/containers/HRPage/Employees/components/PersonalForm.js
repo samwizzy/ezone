@@ -197,7 +197,7 @@ export const PersonalForm = props => {
                   variant="outlined"
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                   <TextField
                     id="outlined-multiline-address2"
                     name="address2"
