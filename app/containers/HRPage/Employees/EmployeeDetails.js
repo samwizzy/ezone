@@ -141,13 +141,13 @@ const EmployeeDetails = props => {
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Email</TableCell>
-                  <TableCell>Joy Essien</TableCell>
+                  <TableCell>joyessien@gmail.com</TableCell>
                   <TableCell component="th">Phone Number</TableCell>
-                  <TableCell>Joy Essien</TableCell>
+                  <TableCell>09123566788</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Nickname</TableCell>
-                  <TableCell>Joy Essien</TableCell>
+                  <TableCell>Jessieny</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -162,29 +162,33 @@ const EmployeeDetails = props => {
                   <TableCell component="th">Employee ID</TableCell>
                   <TableCell>Joy Essien</TableCell>
                   <TableCell component="th">Date Hired</TableCell>
-                  <TableCell>Joy Essien</TableCell>
+                  <TableCell>09, May 2029</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Branch</TableCell>
-                  <TableCell>Joy Essien</TableCell>
+                  <TableCell>Lagos</TableCell>
                   <TableCell component="th">Employment Status</TableCell>
-                  <TableCell>Joy Essien</TableCell>
+                  <TableCell>Active</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Department</TableCell>
-                  <TableCell>Joy Essien</TableCell>
+                  <TableCell>Marketing</TableCell>
                   <TableCell component="th">Employment Type</TableCell>
-                  <TableCell>Joy Essien</TableCell>
+                  <TableCell>Full time</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Reporting To</TableCell>
                   <TableCell>Joy Essien</TableCell>
                   <TableCell component="th">Job Role</TableCell>
-                  <TableCell>Joy Essien</TableCell>
+                  <TableCell>Accountant</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Job Level</TableCell>
                   <TableCell>Beginner</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell component="th">Job Description</TableCell>
+                  <TableCell>I am the best there is, don't say i didn't tell you</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -197,41 +201,41 @@ const EmployeeDetails = props => {
               <TableBody>
                 <TableRow>
                   <TableCell component="th">Date of Birth</TableCell>
-                  <TableCell>Joy Essien</TableCell>
+                  <TableCell>11th, June 1990</TableCell>
                   <TableCell component="th">Marital Status</TableCell>
-                  <TableCell>Joy Essien</TableCell>
+                  <TableCell>Single</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Gender</TableCell>
-                  <TableCell>Joy Essien</TableCell>
+                  <TableCell>Male</TableCell>
                   <TableCell component="th">State of Origin</TableCell>
-                  <TableCell>Joy Essien</TableCell>
+                  <TableCell>Akwa-Ibom</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Website</TableCell>
-                  <TableCell>Joy Essien</TableCell>
+                  <TableCell>optisoft.ng</TableCell>
                   <TableCell component="th">Other Email</TableCell>
-                  <TableCell>Joy Essien</TableCell>
+                  <TableCell>jessieny@gmail.com</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Country</TableCell>
-                  <TableCell>Joy Essien</TableCell>
+                  <TableCell>Nigeria</TableCell>
                   <TableCell component="th">City</TableCell>
-                  <TableCell>Joy Essien</TableCell>
+                  <TableCell>Victoria Island</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Postal Code</TableCell>
-                  <TableCell>Joy Essien</TableCell>
+                  <TableCell>101241</TableCell>
                   <TableCell component="th">Address 1</TableCell>
-                  <TableCell>Joy Essien</TableCell>
+                  <TableCell>36 Marina</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Address 2</TableCell>
-                  <TableCell>Joy Essien</TableCell>
+                  <TableCell>808 Marina</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Bio</TableCell>
-                  <TableCell>Joy Essien</TableCell>
+                  <TableCell>We tell you what we can do but we deliver what you weren't expecting</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
