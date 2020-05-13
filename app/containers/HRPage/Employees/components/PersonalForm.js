@@ -87,27 +87,27 @@ export const PersonalForm = props => {
                     </TextField>
                 </Grid>
                 <Grid item xs={6}>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker
-                            autoOk
-                            disableToolbar
-                            disableFuture
-                            format="MM/dd/yyyy"
-                            inputVariant="outlined"
-                            format="MM/dd/yyyy"
-                            margin="normal"
-                            size="small"
-                            fullWidth
-                            name="dateOfBirth"
-                            id="date-picker-startDate"
-                            label="Date Of Birth"
-                            value={form.dob}
-                            onChange={(date) => handleDateChange(date, 'dob')}
-                            KeyboardButtonProps={{
-                            'aria-label': 'change date',
-                            }}
-                        />
-                    </MuiPickersUtilsProvider>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      autoOk
+                      disableToolbar
+                      disableFuture
+                      format="MM/dd/yyyy"
+                      inputVariant="outlined"
+                      format="MM/dd/yyyy"
+                      margin="normal"
+                      size="small"
+                      fullWidth
+                      name="dateOfBirth"
+                      id="date-picker-startDate"
+                      label="Date Of Birth"
+                      value={form.dob}
+                      onChange={(date) => handleDateChange(date, 'dob')}
+                      KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
@@ -124,7 +124,7 @@ export const PersonalForm = props => {
                 <Grid item xs={6}>
                   <TextField
                   name="otherEmail"
-                  label="Other Email"
+                  label="Personal Email"
                   id="outlined-email"
                   fullWidth
                   variant="outlined"

@@ -7,6 +7,7 @@ import PersonAdd from '@material-ui/icons/PersonAdd';
 import AssignmentInd from '@material-ui/icons/AssignmentInd';
 import GroupAdd from '@material-ui/icons/GroupAdd';
 import AddBox from '@material-ui/icons/AddBox';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 const useStyles = makeStyles(theme => ({
   iconButton: {},
@@ -100,6 +101,19 @@ export function AddEmployee(props) {
           disableElevation
         >
           New
+        </Button>
+      </Tooltip>
+      <Tooltip title="Upload CSV">
+        <Button
+          size="small"
+          color="primary"
+          variant="contained"
+          className={classes.button}
+          onClick={openDialog}
+          startIcon={<CloudUploadIcon className={classes.icon} />}
+          disableElevation
+        >
+          Upload CSV
         </Button>
       </Tooltip>
     </React.Fragment>

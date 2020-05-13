@@ -92,6 +92,14 @@ const Announcement = props => {
       },
     },
     {
+      name: 'severity',
+      label: 'Severity',
+      options: {
+        filter: true,
+        sort: true
+      },
+    },
+    {
       name: 'dateCreated',
       label: 'Published date',
       options: {

@@ -226,11 +226,11 @@ const EmployeeDetails = props => {
                 <TableRow>
                   <TableCell component="th">Postal Code</TableCell>
                   <TableCell>101241</TableCell>
-                  <TableCell component="th">Address 1</TableCell>
+                  <TableCell component="th">Location 1</TableCell>
                   <TableCell>36 Marina</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell component="th">Address 2</TableCell>
+                  <TableCell component="th">Location 2</TableCell>
                   <TableCell>808 Marina</TableCell>
                 </TableRow>
                 <TableRow>
