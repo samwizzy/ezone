@@ -20,6 +20,7 @@ import * as Selectors from './selectors';
 import AccountSetup from './Settings/components/AccountSetup';
 import Dashboard from './Dashboard';
 import LoadingIndicator from './../../components/LoadingIndicator';
+import ModuleLayout from './components/ModuleLayout';
 
 export function Accounting(props) {
   useInjectReducer({ key: 'accounting', reducer });
@@ -44,8 +45,12 @@ export function Accounting(props) {
   if (loading) {
     return <LoadingIndicator />;
   }
-  else if (accountingSetupData === null) {
-    return <AccountSetup /> 
+  else if (accountingSetupData != null) {
+    return (
+      <ModuleLayout>
+        <AccountSetup />
+      </ModuleLayout>
+    ) 
   } 
   else {
     return <Dashboard />
