@@ -196,14 +196,14 @@ const JournalDetails = props => {
               <TableCell>
                 <Paper elevation={0} square className={classes.paper}>
                   <Typography variant="h6">
-                    {/* NGN { props.location.journalDetailsData.entries.reduce((a, b) => a + Number(b.debit), 0) } */}
+                    NGN { props.location.journalDetailsData.entries.reduce((a, b) => a + Number(b.debit), 0) }
                   </Typography>
                 </Paper>
               </TableCell>
               <TableCell>
                 <Paper elevation={0} square className={classes.paper}>
                   <Typography variant="h6">
-                    {/* NGN { props.location.journalDetailsData.entries.reduce((a, b) => a + Number(b.credit), 0) } */}
+                    NGN { props.location.journalDetailsData.entries.reduce((a, b) => a + Number(b.credit), 0) }
                   </Typography>
                 </Paper>
               </TableCell>

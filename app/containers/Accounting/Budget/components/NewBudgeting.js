@@ -185,7 +185,7 @@ const NewBudgeting = props => {
   ];
   
   var monthArray = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
-  let chartOfAccount = ["Sales", "Finance"];
+  let chartOfAccount = ["Sales"];
 
   const [values, setValues] = React.useState({
     account: chartOfAccount.map(num => ({
@@ -209,18 +209,6 @@ const NewBudgeting = props => {
   const handleSelectBudgetPeriodChange = (name, value) => {
     setValues({ ...values, budgetPeriod: value.label });
   };
-
-  // const handleRowChange = (event, index) => {
-  //   const account = [...values.account];
-  //   // account[index][event.target.name] = event.target.value;
-  //   setValues({ ...values, account });
-
-  //   console.log("setValues ", values);
-
-  //   // const entries = [...values.entries];
-  //   // entries[index][event.target.name] = event.target.value;
-  //   // setValues({ ...values, entries });
-  // }
 
   const handleRowChange = (event, chart, month, ci, mi) => {
     const { name, value } = event.target

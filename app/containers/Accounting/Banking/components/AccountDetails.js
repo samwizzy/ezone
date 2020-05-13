@@ -82,8 +82,12 @@ const useStyles = makeStyles(theme => ({
 
 const AccountDetails = props => {
   const classes = useStyles();
-
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const { 
+    history,
+    openAccountTransferDialogAction
+  } = props;
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -93,19 +97,28 @@ const AccountDetails = props => {
     setAnchorEl(null);
   };
 
-  const { 
-    openAccountTransferDialogAction
-  } = props;
+  const handleBack = () => {
+    history.goBack();
+  }
 
   console.log('accountDetailsData -> ', props.location.accountDetailsData);
-  // console.log("Selected journal data ", props.location.journalDetailsData);
-  // console.log("Journal entries ", props.location.journalDetailsData.entries);
 
   return (
     <div className={classes.root}>
       <TransactionTransferDialog />
       <Grid container>
-        <Grid item xs={12} className={classNames(classes.gridMargin)}>
+        <Grid item xs={6} className={classNames(classes.gridMargin)}>
+          <Paper square className={classes.iconPaper}>
+            <div>
+              <IconButton
+                onClick={handleBack}
+              >
+                <Icon>person</Icon> Back
+              </IconButton>
+            </div>
+          </Paper>
+        </Grid>
+        <Grid item xs={6} className={classNames(classes.gridMargin)}>
           <Paper square className={classes.iconPaper}>
             <div>
               <IconButton><Icon>add</Icon></IconButton>
@@ -222,6 +235,26 @@ const AccountDetails = props => {
             </TableRow>
           </TableFooter>
         </Table>
+        <Grid item xs={12}>
+        <Grid container className={classes.grid}>
+          <Grid item xs={12}>
+            <Paper square className={classes.paper}>
+              <Button 
+                aria-controls="simple-menu" 
+                aria-haspopup="true" 
+                onClick={() => {
+                  openAccountTransferDialogAction(props.location.accountDetailsData);
+                }}
+                color="primary"
+                variant="contained"
+                disabled={!props.location.accountDetailsData.status}
+              >
+                Transfer
+              </Button>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Grid>
       </Grid>
     </Grid>
     ) : (
@@ -233,13 +266,16 @@ const AccountDetails = props => {
             <Button 
               aria-controls="simple-menu" 
               aria-haspopup="true" 
-              onClick={handleClick}
+              onClick={() => {
+                openAccountTransferDialogAction(props.location.accountDetailsData);
+              }}
               color="primary"
               variant="contained"
+              disabled={!props.location.accountDetailsData.status}
             >
-              Add Transactions
+              Transfer
             </Button>
-            <Menu
+            {/* <Menu
               id="simple-menu"
               anchorEl={anchorEl}
               keepMounted
@@ -260,17 +296,14 @@ const AccountDetails = props => {
                   Transfer to another account
                 </Typography>
               </MenuItem>
-            </Menu>
+            </Menu> */}
           </Paper>
           </Grid>
         </Grid>
       </Grid>
     )}
-
-    
   </div>
-  );
-};
+)};
 
 AccountDetails.propTypes = {};
 

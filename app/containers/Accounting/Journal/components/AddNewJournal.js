@@ -78,6 +78,7 @@ const AddNewJournal = props => {
   const classes = useStyles();
 
   const {
+    history,
     currentUser,
     dispatchGetAccountPeriodAction,
     dispatchGetAllChartOfAccountTypeAction,
@@ -103,8 +104,8 @@ const AddNewJournal = props => {
   const addRow = () => {
     const item = {
       accountId: "",
-      credit: "",
-      debit: "",
+      credit: 0,
+      debit: 0,
       description: "",
     };
     setValues({ ...values, "entries": [ ...values.entries, item ] });
@@ -132,7 +133,7 @@ const AddNewJournal = props => {
   const handleRowChange = (event, index) => {
     const entries = [...values.entries];
     entries[index][event.target.name] = event.target.value;
-    setValues({...values, entries});
+    setValues({ ...values, entries });
   }
 
   const handleSelectChangeRows = (event, value, index) => {
@@ -147,6 +148,10 @@ const AddNewJournal = props => {
     reader.onload = () => resolve(reader.result.split(',')[1]);
     reader.onerror = error => reject(error);
   });
+
+  const isDisabled = () => {
+    return values.entries.reduce((a, b) => a + Number(b.credit), 0) != values.entries.reduce((a, b) => a + Number(b.debit), 0) || (values.entries.reduce((a, b) => a + Number(b.credit), 0) + values.entries.reduce((a, b) => a + Number(b.debit), 0)) === 0;
+  }
 
   const handleImageChange = (ev) => { 
     let fileNode = []
@@ -363,6 +368,7 @@ const AddNewJournal = props => {
                       variant="contained"
                       color="inherit"
                       className={classes.button}
+                      onClick={() => history.goBack()}
                     >
                       Cancel
                     </Button>
@@ -380,6 +386,7 @@ const AddNewJournal = props => {
                       onClick={() => {
                         createNewAccountJournalAction(values);
                       }}
+                      disabled={isDisabled()}
                     >
                       Save and Submit
                     </Button>

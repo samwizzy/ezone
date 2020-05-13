@@ -1,165 +1,226 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import {
   makeStyles,
+  Button,
+  Icon,
+  IconButton,
   Paper,
   Grid,
   Table,
-  TableHead,
   TableBody,
-  TableFooter,
-  TableRow,
   TableCell,
-  Tooltip,
-  Typography,
+  TableContainer,
+  TableHead,
+  TableRow,
 } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-
+import classNames from 'classnames';
+import DeleteIcon from '@material-ui/icons/Delete';
+import AttachFileIcon from '@material-ui/icons/AttachFile';
+import AddIcon from '@material-ui/icons/Add';
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-// import * as Actions from '../actions';
-// import * as Selectors from '../selectors';
-// import TransactionTransferDialog from './TransactionTransferDialog';
+import moment from 'moment';
 
-const useStyles = makeStyles((theme) => ({
+
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(3),
+  },
+  flex: {
+    position: "relative",
+    padding: theme.spacing(8, 5)
+  },
+  status: {
+    textAlign: "center",
+    padding: theme.spacing(2, 5),
+    position: "absolute",
+    backgroundColor: '#6DCC4C',
+    color: theme.palette.common.white,
+    top: 0, left: 0,
+    "&::after": {
+      content: "''",
+      position: "absolute",
+      top: 0, 
+      right: "-60px",
+      width: 0,
+      height: 0,
+      borderTop: "60px solid #6DCC4C",
+      borderRight: "60px solid transparent"
+    },
+    "&::before": {
+      content: "''",
+      position: "absolute",
+      top: 0, 
+      right: "-60px",
+      width: 0,
+      height: 0,
+      borderBottom: "60px solid #6DCC4C",
+      borderRight: "60px solid transparent"
+    }
+  },
+  paper: {
+    padding: theme.spacing(1, 2),
+    backgroundColor: theme.palette.grey[100],
   },
   grid: {
     justifyContent: "space-between",
-    borderBottom: `1px solid ${theme.palette.divider}`,
     '& .MuiGrid-item': {
       flex: 1,
-      margin: theme.spacing(3, 2),
+      margin: theme.spacing(2, 0),
     }
   },
+  gridMargin: { marginBottom: theme.spacing(2) },
+  label: { marginLeft: theme.spacing(1) },
   table: {
-    "& .MuiTableFooter-root": {
-      fontSize: theme.typography.fontSize + 2,
-      color: theme.palette.common.white,
-      borderTop: `1px solid ${theme.palette.grey[400]} !important`,
-      backgroundColor: theme.palette.primary.main,
-      '& .MuiTableCell-root': {
+    '& .MuiTableHead-root': {
+      '& .MuiTableCell-head': {
         color: theme.palette.common.white,
-        fontSize: theme.typography.fontSize + 2,
-        padding: theme.spacing(4, 2),
       },
-      '& .MuiTableRow-root': {
-        borderRadius: `${theme.shape.borderRadius * 6} !important`  
-      }
+      '& .MuiTableCell-root:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+      },
+      '& .MuiTableCell-root:nth-child(even)': {
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
+      },
     },
-    "& th.MuiTableCell-root": {
-      borderBottom: "none !important",
+    '& .MuiTableFooter-root': {},
+    '& .MuiTableCell-root': {
+      // border: "none !important",
       fontSize: theme.typography.fontSize + 2,
-      fontWeight: theme.typography.fontWeightBold //fontWeightMedium
+      '& button:nth-child(n+2)': {
+        marginLeft: theme.spacing(1),
+      },
     },
-    "& .MuiTableCell-root": {
-      borderBottom: "none !important"
-    },
-    '& .MuiTableCell-body': {
-      border: 0,
-      color: theme.palette.text.secondary,
-      fontSize: theme.typography.fontSize + 2
-    },
+    '& th.MuiTableCell-root': {
+        fontWeight: theme.typography.fontWeightBold
+    }
   },
-  paper: {
-    padding: theme.spacing(10, 0),
-    textAlign: 'center'
+  iconPaper: {
+    padding: theme.spacing(1),
+    textAlign: "right"
   }
 }));
 
 const DetailsOfAccountChart = props => {
   const classes = useStyles();
 
-  const { 
-    history,
+  const {
+    history
   } = props;
 
-  console.log('chartDetailsData --> ', props.location.chartDetailsData);
-//   console.log('transfer --> ', props.location.accountDetailsData.transfers);
-//   console.log('bankTransferByOrgIdData from details.js --> ', bankTransferByOrgIdData);
+  const handleBack = () => {
+    history.goBack();
+  }
 
-const handleBack = () => {
-  history.goBack();
-}
+  console.log("Selected journal data ", props.location.chartDetailsData);
+  
 
   return (
     <div className={classes.root}>
       <Grid container>
-        <Grid item xs={12}>
-          <Grid container className={classes.grid}>
-            <Grid item xs={12}>
-              <Paper>
-                <Table className={classes.table}>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell component="th" scope="row">Account Name</TableCell>
-                      <TableCell>
-                        { props.location.chartDetailsData.accountName }
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell component="th" scope="row">Account Code</TableCell>
-                      <TableCell>
-                        { props.location.chartDetailsData.accountCode }
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell component="th" scope="row">Account Type</TableCell>
-                      <TableCell>
-                        { props.location.chartDetailsData.accountType }
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell component="th" scope="row">Description</TableCell>
-                      <TableCell>
-                        { props.location.chartDetailsData.description }
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell component="th" scope="row">Date Created</TableCell>
-                      <TableCell>
-                      { props.location.chartDetailsData.dateCreated }
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                  <TableFooter>
-                    <TableRow>
-                        <TableCell component="th" scope="row"></TableCell>
-                        <TableCell>
-                          <Tooltip title="Go Back">
-                            <ArrowBackIcon 
-                              onClick={handleBack}
-                            />
-                          </Tooltip>
-                          {/* NGN { props.location.accountDetailsData.accountType.openingBalance } */}
-                        </TableCell>
-                    </TableRow>
-                  </TableFooter>
-                </Table>
-              </Paper>
-            </Grid>
-          </Grid>
+        <Grid item xs={6} className={classNames(classes.gridMargin)}>
+          <Paper square className={classes.iconPaper}>
+            <div>
+              <IconButton
+                onClick={handleBack}
+              >
+                <Icon>add</Icon> Back
+              </IconButton>
+            </div>
+          </Paper>
         </Grid>
-      </Grid>
-    </div>
+        <Grid item xs={6} className={classNames(classes.gridMargin)}>
+          <Paper square className={classes.iconPaper}>
+            <div>
+              <IconButton><Icon>add</Icon></IconButton>
+              <IconButton><Icon>person</Icon></IconButton>
+              <IconButton><Icon>edit</Icon></IconButton>
+              <IconButton><Icon>cloud_download</Icon></IconButton>
+            </div>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} className={classNames(classes.gridMargin)}>
+          <Paper square>
+            <div className={classes.flex}>
+              <Table className={classes.table}>
+                <TableBody>
+                  <TableRow>
+                    <TableCell component="th">Account Name</TableCell>
+                    <TableCell align="left">
+                      {props.location.chartDetailsData.accountName}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell component="th">Account Code</TableCell>
+                    <TableCell align="left">
+                      { props.location.chartDetailsData.accountCode }
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell component="th">Account Type</TableCell>
+                    <TableCell align="left">
+                      { props.location.chartDetailsData.accountType }
+                    </TableCell>
+                  </TableRow>
+
+                  { props.location.chartDetailsData.accountType === "Bank" ? (
+                    <TableBody>
+                      <TableRow>
+                        <TableCell component="th">Account Number</TableCell>
+                        <TableCell align="left">
+                          { props.location.chartDetailsData.accountNumber }
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell component="th">Bank Balance</TableCell>
+                        <TableCell align="left">
+                          { props.location.chartDetailsData.bankBalance }
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  ) : null}
+
+                  <TableRow>
+                    <TableCell component="th">Description</TableCell>
+                    <TableCell align="left">
+                      { props.location.chartDetailsData.description }
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell component="th">Date Created</TableCell>
+                    <TableCell align="left">
+                      { moment(props.location.chartDetailsData.dateCreated).format('dddd do-MMM-YYYY') }
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell component="th">Closing Balance</TableCell>
+                    <TableCell align="left">
+                      { props.location.chartDetailsData.openingBalance }
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </div>
+          </Paper>
+        </Grid>
+    </Grid>
+  </div>
   );
 };
 
-DetailsOfAccountChart.propTypes = {
-  // loading: PropTypes.bool,
-};
+DetailsOfAccountChart.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
-  // loading: Selectors.makeSelectLoading(),
+  //   loading: Selectors.makeSelectLoading(),
 });
 
 function mapDispatchToProps(dispatch) {
-  return {
-    // openAccountTransferDialogAction: (evt) => dispatch(Actions.openAccountTransferDialog(evt)),
-  };
+  return {};
 }
 
 const withConnect = connect(
@@ -168,7 +229,6 @@ const withConnect = connect(
 );
 
 export default compose(
-  withRouter,
   withConnect,
   memo,
 )(DetailsOfAccountChart);

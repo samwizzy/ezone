@@ -28,6 +28,7 @@ export function* createAccountSetupSaga() {
 
     console.log('accountingSetupResponse -> ', accountingSetupResponse);
     alert(`Accounting setup successful!`);
+    yield put(Actions.getAccountingSetupAction());
     yield put(Actions.createAccountingSetupSuccessAction(accountingSetupResponse));
   } catch (err) {
     console.log('createAccountingSetupErrorAction -> ', err);

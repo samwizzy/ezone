@@ -106,18 +106,31 @@ const NewAccountDialog = props => {
       accountType: value.accountType,
       subAccount: value.subAccount, 
       description: value.description,
+      parentAccountId: ""
+    });
+  };
+
+  const handleSelectParentAccountType = (name, value) => {
+    console.log('ParentAcc type -> ', value)
+    setValues({ 
+      ...values, 
       parentAccountId: value.id
     });
   };
+  
 
   const handleCheckBoxChange = (event) => {
     setCheckBox({ ...checkBox, [event.target.name]: event.target.checked });
 
-    console.log("accountType from checkbox ", values);
-
     // Call parent type api if checked
     if (!checkBox.checkedG) {
       dispatchGetParentAccountTypeAction(values);
+    } else {
+      console.log("unchecked");
+      setValues({ 
+        ...values, 
+        parentAccountId: ""
+      });
     }
   };
 
@@ -147,7 +160,7 @@ const NewAccountDialog = props => {
         </DialogTitle>
         <Divider />
         <DialogContent>
-          {accountDialog.type === 'new' ? (
+          {accountDialog.type === 'new' || accountDialog.type === 'edit' ? (
             <form className={classes.root}>
               <Grid container spacing={1}>
                 <Grid item xs={12}>
@@ -262,7 +275,7 @@ const NewAccountDialog = props => {
                         size="small"
                         options={parentAccountTypeData}
                         getOptionLabel={option => option.name}
-                        onChange={(evt, value) => handleSelectChange(evt, value)}
+                        onChange={(evt, value) => handleSelectParentAccountType(evt, value)}
                         renderInput={params => (
                           <TextField
                             {...params}
@@ -298,158 +311,7 @@ const NewAccountDialog = props => {
                 </Grid>
               </Grid>
             </form>
-          ) : (
-            <form className={classes.root}>
-              <Grid container spacing={1}>
-                <Grid item xs={12}>
-                  <TextField
-                    id="standard-accountName"
-                    label="Account Name"
-                    type="name"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.accountName}
-                    onChange={handleChange('accountName')}
-                    margin="normal"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="standard-accountCode"
-                    label="Account Code"
-                    type="name"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.accountCode}
-                    onChange={handleChange('accountCode')}
-                    margin="normal"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="standard-openingBalance"
-                    label="Opening Balance"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.openingBalance}
-                    onChange={handleChange('openingBalance')}
-                    margin="normal"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <Autocomplete
-                    id="combo-box-demo"
-                    size="small"
-                    options={accountTypeData}
-                    getOptionLabel={option => option.accountType}
-                    onChange={(evt, value) => handleSelectChange(evt, value)}
-                    renderInput={params => (
-                      <TextField
-                        {...params}
-                        label="Select Account Type"
-                        className={classes.textField}
-                        variant="outlined"
-                        placeholder="Search"
-                        fullWidth
-                      />
-                    )}
-                  />
-                </Grid>
-                {values.accountType == "Bank" ? (
-                  <Grid container spacing={1}>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="standard-bankBalance"
-                        label="Bank balance"
-                        type="number"
-                        variant="outlined"
-                        size="small"
-                        className={classes.textField}
-                        value={values.bankBalance}
-                        onChange={handleChange('bankBalance')}
-                        margin="normal"
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="standard-accountNumber"
-                        label="Account Number"
-                        type="number"
-                        variant="outlined"
-                        size="small"
-                        className={classes.textField}
-                        value={values.accountNumber}
-                        onChange={handleChange('accountNumber')}
-                        margin="normal"
-                        fullWidth
-                      />
-                    </Grid>
-                  </Grid>
-                ): values.subAccount ? (
-                  <Grid container spacing={1}>
-                    <Grid item xs={6}>
-                      <FormGroup row>
-                        <FormControlLabel
-                          control={<GreenCheckbox 
-                            checked={checkBox.checkedG} 
-                            onChange={handleCheckBoxChange} 
-                            name="checkedG" 
-                          />}
-                          label="Make parent account."
-                        />
-                      </FormGroup>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Autocomplete
-                        id="combo-box-demo"
-                        size="small"
-                        options={parentAccountTypeData}
-                        getOptionLabel={option => option.name}
-                        onChange={(evt, value) => handleSelectChange(evt, value)}
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            label="Select Parent Type"
-                            className={classes.textField}
-                            variant="outlined"
-                            placeholder="Search"
-                            fullWidth
-                          />
-                        )}
-                    />
-                    </Grid>
-                  </Grid>
-                ): null}
-
-                <Grid item xs={12}>
-                  <TextField
-                    id="standard-description"
-                    label="Description"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.description}
-                    onChange={handleChange('description')}
-                    margin="normal"
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    fullWidth
-                    rows={2}
-                    multiline
-                  />
-                </Grid>
-              </Grid>
-            </form>
-          )}
+          ) : null}
         </DialogContent>
         <DialogActions>
           {loading ? (

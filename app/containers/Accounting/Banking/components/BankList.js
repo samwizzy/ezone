@@ -87,7 +87,7 @@ const BankList = props => {
   } = props;
 
   const handleClick = (event, id) => {
-    console.log("id value -> ", id);
+    console.log("account id -> ", id);
     setAnchorEl(event.currentTarget);
     const selectedAccount = bankAccountData && bankAccountData.find(acc => id === acc.id);
     setAccount(selectedAccount);
@@ -186,14 +186,14 @@ const BankList = props => {
                 >
                   Deactivate
                 </MenuItem>
-                <MenuItem onClick={() => {
-                  openDeleteBankAccountDialogAction(account);
-                }}>
+                <MenuItem onClick={() => openDeleteBankAccountDialogAction(account) }
+                  disabled={account && account.transfers.length}
+                >
                   Delete
                 </MenuItem>
-                <MenuItem onClick={() => {
-                  editOpenBankAccountDialogAction(account);
-                }}>
+                <MenuItem onClick={() => editOpenBankAccountDialogAction(account) }
+                  disabled={account && account.transfers.length}
+                >
                   Edit
                 </MenuItem>
                 <MenuItem onClick={() => {

@@ -57,14 +57,13 @@ const TransactionTransferDialog = props => {
     amount: "",
     attachments: [ ],
     bankId: "",
+    currentBankId: "",
     description: "",
     orgId: currentUser.organisation.orgId,
     referenceNumber: "",
     transferDate: new Date(),
-    transferType: ""
+    // transferType: ""
   });
-
-  console.log('bankAccountData from dialog -> ', bankAccountData);
   
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
@@ -80,7 +79,7 @@ const TransactionTransferDialog = props => {
     setValues({
       ...values,
       transferDate: moment(date).format('YYYY-MM-DD'),
-      transferType: transactionTransferDialog.data == 1 ? "TRANSFERIN" : "TRANSFEROUT"
+      // transferType: transactionTransferDialog.data == 1 ? "TRANSFERIN" : "TRANSFEROUT"
     });
     setSelectedDate(date);
   };
@@ -105,7 +104,11 @@ const TransactionTransferDialog = props => {
     setValues(_.set({ ...values }, event.target.name, fileNode))
   }
 
-  console.log('transactionTransferDialog values: ', values);
+  console.log('transactionTransferDialog data: ', transactionTransferDialog.data);
+  console.log('bankAccountData from dialog -> ', bankAccountData);
+
+  // const filteredBank = bankAccountData.filter((item) => bankAccountData &&item.id != transactionTransferDialog.data.id);
+  // console.log("filteredBank ", filteredBank);
 
 
   return (
@@ -119,7 +122,7 @@ const TransactionTransferDialog = props => {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          { transactionTransferDialog.data == 1 ? 'Transfer from Another Account' : 'Transfer to Another Account' } 
+          { "Account Transfer" } 
         </DialogTitle>
         <Divider />
         <DialogContent>
@@ -137,7 +140,7 @@ const TransactionTransferDialog = props => {
                       {...params}
                       label="Select Account"
                       variant="outlined"
-                      placeholder="Date"
+                      placeholder="Account"
                       margin="normal"
                       fullWidth
                     />
@@ -178,7 +181,7 @@ const TransactionTransferDialog = props => {
                 <TextField
                   id="standard-referenceNumber"
                   label="Reference Number"
-                  type="number"
+                  type="name"
                   variant="outlined"
                   size="small"
                   value={values.referenceNumber}
@@ -210,11 +213,12 @@ const TransactionTransferDialog = props => {
           ) : (
             <Button
               onClick={() => {
+                values.amount = Number(values.amount)
+                values.currentBankId = transactionTransferDialog.data.id
+                console.log("values before submit ", values);
                 dispatchCreateBankTransferAction(values);
               }}
               color="primary"
-              // variant="contained"
-              // disabled={!canBeSubmitted()}
             >
               Save
             </Button>
@@ -251,7 +255,6 @@ const TransactionTransferDialog = props => {
 TransactionTransferDialog.propTypes = {
   loading: PropTypes.bool,
   transactionTransferDialog: PropTypes.object,
-//   accountTypeData: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -259,11 +262,7 @@ const mapStateToProps = createStructuredSelector({
   currentUser: AppSelectors.makeSelectCurrentUser(),
   bankAccountData: Selectors.makeSelectBankAccountData(),
   transactionTransferDialog: Selectors.makeSelectTransactionTransferDialog(),
-//   accountTypeData: Selectors.makeSelectAccountTypeData(),
-//   accountTypeData: Selectors.makeSelectAccountTypeData(),
-//   parentAccountTypeData: Selectors.makeSelectParentAccountTypeData(),
 });
-
 
 
 function mapDispatchToProps(dispatch) {
