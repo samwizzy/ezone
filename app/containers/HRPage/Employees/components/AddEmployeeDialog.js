@@ -122,8 +122,9 @@ function AddEmployeeDialog(props) {
     return newdate;
   }
 
-  const handleDateChange = (date, formatted, name) => { 
-    setForm(_.set({...form}, name, reformattedDate(date)))
+  const handleDateChange = (date, name) => { 
+    // setForm(_.set({...form}, name, reformattedDate(date)))
+    setForm(_.set({...form}, name, moment(date).format('YYYY-MM-DD')))
   }
 
   const handleSubmit = () => {

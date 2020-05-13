@@ -90,10 +90,10 @@ const NewAccountDialog = props => {
     subAccount: false // This prop will be removed before payload is sent
   });
 
-  const canSubmitValues = () => {
-    const { accountCode, accountName, accountType, openingBalance } = values;
-    return accountCode.length > 0 && accountName.length > 0 && accountType.length > 0 && openingBalance.length > 0;
-  }
+  // const canSubmitValues = () => {
+  //   const { accountCode, accountName, accountType, openingBalance } = values;
+  //   return accountCode.length > 0 && accountName.length > 0 && accountType.length > 0 && openingBalance.length > 0;
+  // }
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
@@ -320,7 +320,7 @@ const NewAccountDialog = props => {
             <Button
               onClick={() => { accountDialog.type === 'new' ? createChartOfAccountAction(values) : updateChartOfAccountAction(values) }}
               color="primary"
-              disabled={ accountDialog.type === "new" ? !canSubmitValues() : "" }
+              // disabled={ accountDialog.type === "new" ? !canSubmitValues() : "" }
             >
               { accountDialog.type === 'new' ? 'Save Account' : 'Update Account' }
             </Button>

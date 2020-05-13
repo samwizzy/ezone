@@ -7,6 +7,7 @@ import {
   MenuItem,
   Paper,
   Grid,
+  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -17,8 +18,13 @@ import {
   Typography,
   TableFooter,
 } from '@material-ui/core';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import classNames from 'classnames';
-import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import AddIcon from '@material-ui/icons/Add';
@@ -43,6 +49,11 @@ const useStyles = makeStyles(theme => ({
   paper: {
     padding: theme.spacing(1, 2),
     backgroundColor: theme.palette.grey[100],
+  },
+  flex: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   grid: {
     justifyContent: "space-between",
@@ -93,12 +104,18 @@ const AddNewJournal = props => {
     dispatchGetAllChartOfAccountTypeAction();
   }, []);
 
+  // Select current financial year
+  const currentAccountPeriod = accountPeriodData.find((item) => item.status && item.activeYear);
+    // Filter all periods with status -> true
+    const filteredAccountPeriodData = accountPeriodData.filter((item) => item.status);
+
   const [values, setValues] = React.useState({
-    entries: [ ],
+    entries: [],
     note: "",
     orgId: currentUser.organisation.orgId,
     periodId: "",
-    transactionDate: "",
+    transactionDate: new Date,
+    reference: ""
   });
 
   const addRow = () => {
@@ -110,12 +127,6 @@ const AddNewJournal = props => {
     };
     setValues({ ...values, "entries": [ ...values.entries, item ] });
   };
-
-  // Filter all periods with status -> true
-  const filteredAccountPeriodData = accountPeriodData.filter((item) => item.status);
-
-  // Select current financial year
-  const currentAccountPeriod = accountPeriodData.filter((item) => item.status && item.activeYear)[0];
 
   const removeRow = index => {
     values.entries.splice(index, 1);
@@ -134,6 +145,9 @@ const AddNewJournal = props => {
     const entries = [...values.entries];
     entries[index][event.target.name] = event.target.value;
     setValues({ ...values, entries });
+  }
+  const handleDateChange = (date, name) => {
+    setValues({...values, [name]: moment(date).format('YYYY-MM-DD') })
   }
 
   const handleSelectChangeRows = (event, value, index) => {
@@ -169,18 +183,33 @@ const AddNewJournal = props => {
   console.log('values -> ', values);
   console.log('currentAccountPeriod -> ', currentAccountPeriod);
 
-  
   return (
     <ModuleLayout>
       <div className={classes.root}>
         <Grid container>
           <Grid item xs={12} className={classNames(classes.gridMargin)}>
-            <Typography variant="h6">New Posting</Typography>
-            <Typography variant="h6">
-              {/* FY: {moment(currentAccountPeriod.startDate).format('dddd do-MMM-YYYY')} - {moment(currentAccountPeriod.endDate).format('dddd do-MMM-YYYY')} */}
-            </Typography>
-            <Grid container className={classes.grid}>
-              <Grid item xs={5}>
+            <div className={classes.flex}>
+              <Typography variant="h6">New Posting</Typography>
+              {/* <TextField
+                id="financial-year"
+                name="periodId"
+                placeholder="Select your financial year"
+                select
+                style={{width: 300}}
+                variant="outlined"
+                size="small"
+                label="Financial Year"
+                // value={values.periodId}
+                onChange={handleSelectChange}
+              > */}
+                {/* FY: {moment(currentAccountPeriod.startDate).format('dddd do-MMM-YYYY')} - {moment(currentAccountPeriod.endDate).format('dddd do-MMM-YYYY')} */}
+                {/* {accountPeriodData && accountPeriodData.map((period, i) => (
+                  <MenuItem key={i} value={period.id}>
+                    {moment(period.startDate).format('dddd do-MMM-YYYY')} - {moment(period.endDate).format('dddd do-MMM-YYYY')}
+                  </MenuItem>
+                ))}
+              </TextField> */}
+              <Grid item xs={6}>
                 <Autocomplete
                   id="combo-box-demo"
                   options={filteredAccountPeriodData}
@@ -198,6 +227,42 @@ const AddNewJournal = props => {
                       fullWidth
                     />
                   )}
+                />
+              </Grid>
+              
+            </div>
+            <Grid container className={classes.grid}>
+              <Grid item xs={5}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    autoOk
+                    disableFuture
+                    margin="normal"
+                    inputVariant="outlined"
+                    id="date-picker-dialog"
+                    label="Transaction Date"
+                    size="small"
+                    format="MM/dd/yyyy"
+                    fullWidth
+                    value={values.transactionDate}
+                    onChange={(date) => handleDateChange(date, "transactionDate")}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
+              </Grid>
+              <Grid item xs={5}>
+                <TextField
+                  id="standard-note"
+                  label="Reference Number"
+                  size="small"
+                  variant="outlined"
+                  className={classes.textField}
+                  value={values.reference}
+                  onChange={handleChange('reference')}
+                  margin="normal"
+                  fullWidth
                 />
               </Grid>
             </Grid>
@@ -365,8 +430,8 @@ const AddNewJournal = props => {
                 <TableRow>
                   <TableCell colSpan={5} align="right">
                     <Button
-                      variant="contained"
-                      color="inherit"
+                      variant="outlined"
+                      color="primary"
                       className={classes.button}
                       onClick={() => history.goBack()}
                     >

@@ -107,8 +107,8 @@ const TransactionTransferDialog = props => {
   console.log('transactionTransferDialog data: ', transactionTransferDialog.data);
   console.log('bankAccountData from dialog -> ', bankAccountData);
 
-  // const filteredBank = bankAccountData.filter((item) => bankAccountData &&item.id != transactionTransferDialog.data.id);
-  // console.log("filteredBank ", filteredBank);
+  // const filteredBank = bankAccountData && bankAccountData.filter((item) => bankAccountData &&item.id != transactionTransferDialog.data.id);
+  // console.log("filteredBank --> ", filteredBank);
 
 
   return (
