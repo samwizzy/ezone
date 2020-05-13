@@ -28,7 +28,7 @@ export const PersonalForm = props => {
 
     return (
         <div>
-        <AppBar position="relative">
+        <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
               Personal Information
@@ -102,7 +102,7 @@ export const PersonalForm = props => {
                             id="date-picker-startDate"
                             label="Date Of Birth"
                             value={form.dob}
-                            onChange={(date, formatted) => handleDateChange(date, formatted, 'dob')}
+                            onChange={(date) => handleDateChange(date, 'dob')}
                             KeyboardButtonProps={{
                             'aria-label': 'change date',
                             }}

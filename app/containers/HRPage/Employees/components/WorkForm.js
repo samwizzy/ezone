@@ -222,7 +222,7 @@ export const WorkForm = props => {
                                 id="date-picker-startDate"
                                 label="Hired Date"
                                 value={form.dateOfJoining}
-                                onChange={(date, formatted) => handleDateChange(date, formatted, 'dateOfJoining')}
+                                onChange={(date) => handleDateChange(date, 'dateOfJoining')}
                                 KeyboardButtonProps={{
                                 'aria-label': 'change date',
                                 }}
