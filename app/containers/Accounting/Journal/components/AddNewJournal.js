@@ -89,6 +89,7 @@ const AddNewJournal = props => {
   const classes = useStyles();
 
   const {
+    history,
     currentUser,
     dispatchGetAccountPeriodAction,
     dispatchGetAllChartOfAccountTypeAction,
@@ -112,7 +113,7 @@ const AddNewJournal = props => {
     entries: [],
     note: "",
     orgId: currentUser.organisation.orgId,
-    periodId: currentAccountPeriod && currentAccountPeriod.id,
+    periodId: "",
     transactionDate: new Date,
     reference: ""
   });
@@ -120,8 +121,8 @@ const AddNewJournal = props => {
   const addRow = () => {
     const item = {
       accountId: "",
-      credit: "",
-      debit: "",
+      credit: 0,
+      debit: 0,
       description: "",
     };
     setValues({ ...values, "entries": [ ...values.entries, item ] });
@@ -143,7 +144,7 @@ const AddNewJournal = props => {
   const handleRowChange = (event, index) => {
     const entries = [...values.entries];
     entries[index][event.target.name] = event.target.value;
-    setValues({...values, entries});
+    setValues({ ...values, entries });
   }
   const handleDateChange = (date, name) => {
     setValues({...values, [name]: moment(date).format('YYYY-MM-DD') })
@@ -161,6 +162,10 @@ const AddNewJournal = props => {
     reader.onload = () => resolve(reader.result.split(',')[1]);
     reader.onerror = error => reject(error);
   });
+
+  const isDisabled = () => {
+    return values.entries.reduce((a, b) => a + Number(b.credit), 0) != values.entries.reduce((a, b) => a + Number(b.debit), 0) || (values.entries.reduce((a, b) => a + Number(b.credit), 0) + values.entries.reduce((a, b) => a + Number(b.debit), 0)) === 0;
+  }
 
   const handleImageChange = (ev) => { 
     let fileNode = []
@@ -185,7 +190,7 @@ const AddNewJournal = props => {
           <Grid item xs={12} className={classNames(classes.gridMargin)}>
             <div className={classes.flex}>
               <Typography variant="h6">New Posting</Typography>
-              <TextField
+              {/* <TextField
                 id="financial-year"
                 name="periodId"
                 placeholder="Select your financial year"
@@ -194,16 +199,37 @@ const AddNewJournal = props => {
                 variant="outlined"
                 size="small"
                 label="Financial Year"
-                value={values.periodId}
-                onChange={handleChange}
-                >
+                // value={values.periodId}
+                onChange={handleSelectChange}
+              > */}
                 {/* FY: {moment(currentAccountPeriod.startDate).format('dddd do-MMM-YYYY')} - {moment(currentAccountPeriod.endDate).format('dddd do-MMM-YYYY')} */}
-                {accountPeriodData && accountPeriodData.map((period, i) => (
+                {/* {accountPeriodData && accountPeriodData.map((period, i) => (
                   <MenuItem key={i} value={period.id}>
                     {moment(period.startDate).format('dddd do-MMM-YYYY')} - {moment(period.endDate).format('dddd do-MMM-YYYY')}
                   </MenuItem>
                 ))}
-              </TextField>
+              </TextField> */}
+              <Grid item xs={6}>
+                <Autocomplete
+                  id="combo-box-demo"
+                  options={filteredAccountPeriodData}
+                  getOptionLabel={option => option.year}
+                  onChange={(evt, value) => handleSelectChange(evt, value)}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label="Financial Year"
+                      size="small"
+                      className={classes.textField}
+                      variant="outlined"
+                      placeholder="Date"
+                      margin="normal"
+                      fullWidth
+                    />
+                  )}
+                />
+              </Grid>
+              
             </div>
             <Grid container className={classes.grid}>
               <Grid item xs={5}>
@@ -407,6 +433,7 @@ const AddNewJournal = props => {
                       variant="outlined"
                       color="primary"
                       className={classes.button}
+                      onClick={() => history.goBack()}
                     >
                       Cancel
                     </Button>
@@ -424,6 +451,7 @@ const AddNewJournal = props => {
                       onClick={() => {
                         createNewAccountJournalAction(values);
                       }}
+                      disabled={isDisabled()}
                     >
                       Save and Submit
                     </Button>

@@ -141,8 +141,8 @@ const accountChartReducer = (state = initialState, action) =>
         return {
           ...state,
           // loading: true,
-          // error: false,
-          // parentAccountTypeData: action.payload,
+          error: false,
+          parentAccountTypeData: action.payload,
         };
       }
       case Constants.GET_PARENT_ACCOUNT_TYPES_SUCCESS: {

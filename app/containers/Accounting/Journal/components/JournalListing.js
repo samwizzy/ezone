@@ -142,7 +142,7 @@ const JournalListing = props => {
 		},
     {
       name: 'id',
-      label: '.',
+      label: ' ',
       options: {
         filter: true,
         sort: false,

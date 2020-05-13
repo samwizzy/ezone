@@ -124,7 +124,7 @@ const AddBankAccountDialog = props => {
                   <TextField
                     id="standard-accountCode"
                     label="Account Code"
-                    type="number"
+                    type="name"
                     variant="outlined"
                     size="small"
                     className={classes.textField}

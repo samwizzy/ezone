@@ -146,6 +146,7 @@ export function* createBankTransferSaga() {
     });
 
     console.log('bankTransferResponse -> ', bankTransferResponse);
+    alert("Transaction successful");
     yield put(Actions.createBankTransferSuccessAction(bankTransferResponse));
     yield put(Actions.getAllTransferByOrgIdAction());
     yield put(Actions.closeAccountTransferDialog());

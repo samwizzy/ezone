@@ -46,9 +46,9 @@ export function Budgeting(props) {
   }, []);
 
 
-  if (loading) {
-    return <LoadingIndicator />;
-  }
+  // if (loading) {
+  //   return <LoadingIndicator />;
+  // }
 
   return (
     <div>

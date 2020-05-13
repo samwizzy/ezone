@@ -63,9 +63,6 @@ export function* createAccountJournalSaga() {
   );
   const requestURL = `${Endpoints.CreateAccountJournalApi}`;
 
-  console.log("journal request ", requestURL);
-  console.log("accountJournalPostData ", accountJournalPostData);
-
   try {
     const accountJournalResponse = yield call(request, requestURL, {
       method: 'POST',
@@ -77,10 +74,9 @@ export function* createAccountJournalSaga() {
     });
 
     console.log('accountJournalResponse -> ', accountJournalResponse);
-    alert(`Account journal successful!`);
+    alert(`Account journal posted successful!`);
     yield put(Actions.createNewAccountJournalSuccessAction(accountJournalResponse));
   } catch (err) {
-    console.log('createAccountingSetupErrorAction -> ', err);
     alert(`Something went wrong.`);
     yield put(Actions.createNewAccountJournalErrorAction(err));
   }
