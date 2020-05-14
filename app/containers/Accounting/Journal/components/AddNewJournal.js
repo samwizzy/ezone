@@ -8,6 +8,7 @@ import {
   Paper,
   Grid,
   IconButton,
+  InputAdornment,
   Table,
   TableBody,
   TableCell,
@@ -189,7 +190,7 @@ const AddNewJournal = props => {
         <Grid container>
           <Grid item xs={12} className={classNames(classes.gridMargin)}>
             <div className={classes.flex}>
-              <Typography variant="h6">New Posting</Typography>
+              <Typography variant="h5">New Posting</Typography>
               {/* <TextField
                 id="financial-year"
                 name="periodId"
@@ -209,27 +210,25 @@ const AddNewJournal = props => {
                   </MenuItem>
                 ))}
               </TextField> */}
-              <Grid item xs={6}>
-                <Autocomplete
-                  id="combo-box-demo"
-                  options={filteredAccountPeriodData}
-                  getOptionLabel={option => option.year}
-                  onChange={(evt, value) => handleSelectChange(evt, value)}
-                  renderInput={params => (
-                    <TextField
-                      {...params}
-                      label="Financial Year"
-                      size="small"
-                      className={classes.textField}
-                      variant="outlined"
-                      placeholder="Date"
-                      margin="normal"
-                      fullWidth
-                    />
-                  )}
-                />
-              </Grid>
-              
+              <Autocomplete
+                id="combo-box-demo"
+                options={filteredAccountPeriodData}
+                style={{width: 300}}
+                getOptionLabel={option => option.year}
+                onChange={(evt, value) => handleSelectChange(evt, value)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Financial Year"
+                    size="small"
+                    placeholder="Date"
+                    margin="normal"
+                    SelectProps={{
+                      disableUnderline: true,
+                    }}
+                  />
+                )}
+              />
             </div>
             <Grid container className={classes.grid}>
               <Grid item xs={5}>

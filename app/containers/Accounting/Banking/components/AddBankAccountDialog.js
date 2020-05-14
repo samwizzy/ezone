@@ -24,19 +24,10 @@ import * as Actions from '../actions';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
+  root: {
+    flexGrow: 1,
   },
-  textField: {
-    margin: theme.spacing(1.5, 0),
-  },
-  dense: {
-    marginTop: 19,
-  },
-  menu: {
-    width: 100,
-  },
+  textField: {},
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -101,8 +92,8 @@ const AddBankAccountDialog = props => {
         <DialogTitle id="alert-dialog-slide-title">
           { bankAccountDialog.type === 'new' ? "Add Bank Account" : bankAccountDialog.type === 'edit' ? "Edit Bank Account" : bankAccountDialog.type === 'delete' ? "Delete Account" : bankAccountDialog.type === "activate" ? "Activate Account" : bankAccountDialog.type === "deactivate" ? "De-activate Account" : "" }
         </DialogTitle>
-        <Divider />
-        <DialogContent>
+
+        <DialogContent dividers>
           {bankAccountDialog.type === 'new' ? (
             <form className={classes.root}>
               <Grid container spacing={1}>

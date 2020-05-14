@@ -14,6 +14,7 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Toolbar,
   Typography,
   TableFooter,
   Menu,
@@ -22,6 +23,8 @@ import {
 import classNames from 'classnames';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
+import TrendingFlatIcon from '@material-ui/icons/TrendingFlat';
 import AddIcon from '@material-ui/icons/Add';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
@@ -31,7 +34,6 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import TransactionTransferDialog from './TransactionTransferDialog';
 import moment from 'moment';
-
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,8 +53,10 @@ const useStyles = makeStyles(theme => ({
     }
   },
   gridMargin: { marginBottom: theme.spacing(2) },
+  title: { flexGrow: 1 },
   label: { marginLeft: theme.spacing(1) },
   table: {
+    whiteSpace: "nowrap",
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
         color: theme.palette.common.white,
@@ -61,12 +65,12 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.primary.main,
       },
       '& .MuiTableCell-root:nth-child(even)': {
-        backgroundColor: darken(theme.palette.primary.main, 0.5),
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
     '& .MuiTableFooter-root': {},
     '& .MuiTableCell-root': {
-        fontSize: theme.typography.fontSize + 2,
+        fontSize: theme.typography.fontSize,
       '& button:nth-child(n+2)': {
         marginLeft: theme.spacing(1),
       },
@@ -76,7 +80,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   iconPaper: {
-    textAlign: "right"
+    boxShadow: theme.shadows[1]
   }
 }));
 
@@ -107,26 +111,19 @@ const AccountDetails = props => {
     <div className={classes.root}>
       <TransactionTransferDialog />
       <Grid container>
-        <Grid item xs={6} className={classNames(classes.gridMargin)}>
-          <Paper square className={classes.iconPaper}>
-            <div>
-              <IconButton
-                onClick={handleBack}
-              >
-                <Icon>person</Icon> Back
-              </IconButton>
-            </div>
-          </Paper>
-        </Grid>
-        <Grid item xs={6} className={classNames(classes.gridMargin)}>
-          <Paper square className={classes.iconPaper}>
-            <div>
-              <IconButton><Icon>add</Icon></IconButton>
-              <IconButton><Icon>person</Icon></IconButton>
-              <IconButton><Icon>edit</Icon></IconButton>
-              <IconButton><Icon>cloud_download</Icon></IconButton>
-            </div>
-          </Paper>
+        <Grid item xs={12} className={classNames(classes.gridMargin)}>
+          <Toolbar className={classes.iconPaper} variant="dense">
+            <Typography>
+              <IconButton onClick={handleBack}>
+                <KeyboardBackspaceIcon />
+              </IconButton> Back
+            </Typography>
+            <Typography className={classes.title} />
+            <IconButton><Icon>add</Icon></IconButton>
+            <IconButton><Icon>person</Icon></IconButton>
+            <IconButton><Icon>edit</Icon></IconButton>
+            <IconButton><Icon>cloud_download</Icon></IconButton>
+          </Toolbar>
         </Grid>
         <Grid item xs={12} className={classNames(classes.gridMargin)}>
           <Paper square>
@@ -248,6 +245,7 @@ const AccountDetails = props => {
                 color="primary"
                 variant="contained"
                 disabled={!props.location.accountDetailsData.status}
+                endIcon={<TrendingFlatIcon />}
               >
                 Transfer
               </Button>
@@ -272,6 +270,7 @@ const AccountDetails = props => {
               color="primary"
               variant="contained"
               disabled={!props.location.accountDetailsData.status}
+              endIcon={<TrendingFlatIcon />}
             >
               Transfer
             </Button>

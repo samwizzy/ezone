@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
+  Box,
   Button,
   Icon,
   IconButton,
@@ -10,16 +11,17 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
   TextField,
   Typography,
   TableFooter,
+  Toolbar,
 } from '@material-ui/core';
 import classNames from 'classnames';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import AddIcon from '@material-ui/icons/Add';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
@@ -49,21 +51,21 @@ const useStyles = makeStyles(theme => ({
       content: "''",
       position: "absolute",
       top: 0, 
-      right: "-60px",
+      right: "-52.67px",
       width: 0,
       height: 0,
-      borderTop: "60px solid #6DCC4C",
-      borderRight: "60px solid transparent"
+      borderTop: "52.67px solid #6DCC4C", //52.67
+      borderRight: "52.67px solid transparent"
     },
     "&::before": {
       content: "''",
       position: "absolute",
       top: 0, 
-      right: "-60px",
+      right: "-52.67px",
       width: 0,
       height: 0,
-      borderBottom: "60px solid #6DCC4C",
-      borderRight: "60px solid transparent"
+      borderBottom: "52.67px solid #6DCC4C",
+      borderRight: "52.67px solid transparent"
     }
   },
   paper: {
@@ -79,7 +81,14 @@ const useStyles = makeStyles(theme => ({
   },
   gridMargin: { marginBottom: theme.spacing(2) },
   label: { marginLeft: theme.spacing(1) },
+  title: { flexGrow: 1 },
   table: {
+    // display: "flex",
+    "& td": {
+      border: "0 !important"
+    }
+  },
+  datatable: {
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
         color: theme.palette.common.white,
@@ -94,7 +103,7 @@ const useStyles = makeStyles(theme => ({
     '& .MuiTableFooter-root': {},
     '& .MuiTableCell-root': {
       // border: "none !important",
-      fontSize: theme.typography.fontSize + 2,
+      fontSize: theme.typography.fontSize,
       '& button:nth-child(n+2)': {
         marginLeft: theme.spacing(1),
       },
@@ -104,8 +113,10 @@ const useStyles = makeStyles(theme => ({
     }
   },
   iconPaper: {
-    padding: theme.spacing(1),
-    textAlign: "right"
+    boxShadow: theme.shadows[1]
+  },
+  bold: {
+    fontWeight: theme.typography.h6.fontWeightBold
   }
 }));
 
@@ -114,6 +125,10 @@ const JournalDetails = props => {
 
   const { } = props;
 
+  const handleBack = () => {
+    history.goBack();
+  }
+
   console.log("Selected journal data ", props.location.journalDetailsData);
   // console.log("Journal entries ", props.location.journalDetailsData.entries);
 
@@ -121,23 +136,33 @@ const JournalDetails = props => {
     <div className={classes.root}>
       <Grid container>
         <Grid item xs={12} className={classNames(classes.gridMargin)}>
-          <Paper square className={classes.iconPaper}>
-            <div>
-              <IconButton><Icon>add</Icon></IconButton>
-              <IconButton><Icon>person</Icon></IconButton>
-              <IconButton><Icon>edit</Icon></IconButton>
-              <IconButton><Icon>cloud_download</Icon></IconButton>
-            </div>
-          </Paper>
+          <Toolbar className={classes.iconPaper} variant="dense">
+            <Typography>
+              <IconButton onClick={handleBack}>
+                <KeyboardBackspaceIcon />
+              </IconButton> Back
+            </Typography>
+            <Typography className={classes.title} />
+            <IconButton><Icon>add</Icon></IconButton>
+            <IconButton><Icon>person</Icon></IconButton>
+            <IconButton><Icon>edit</Icon></IconButton>
+            <IconButton><Icon>cloud_download</Icon></IconButton>
+          </Toolbar>
         </Grid>
         <Grid item xs={12} className={classNames(classes.gridMargin)}>
           <Paper square>
             <div className={classes.flex}>
+              <div className={classes.status}>
+                <Typography>Published</Typography>
+              </div>
+              <Toolbar>
+                <Typography variant="h6" className={classes.bold}>Journal</Typography>
+              </Toolbar>
               <Table className={classes.table}>
                 <TableBody>
                   <TableRow>
-                    <TableCell component="th">Journal Created Date</TableCell>
-                    <TableCell align="left">{moment(props.location.journalDetailsData.dateCreated).format('dddd do-MMM-YYYY')}</TableCell>
+                    <TableCell component="th">Date</TableCell>
+                    <TableCell align="left">{moment(props.location.journalDetailsData.dateCreated).format('LLL')}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell component="th">Ref. No.</TableCell>
@@ -145,10 +170,10 @@ const JournalDetails = props => {
                       {props.location.journalDetailsData.reference}
                     </TableCell>
                   </TableRow>
-                  <TableRow><TableCell colSpan={2} component="th">Note</TableCell></TableRow>
                   <TableRow>
-                    <TableCell>
-                      {props.location.journalDetailsData.note}
+                    <TableCell colSpan={2} component="th">
+                      <Typography >Notes</Typography>
+                      <Box my={1}><Typography><em>{props.location.journalDetailsData.note}</em></Typography></Box>
                     </TableCell>
                   </TableRow>
                 </TableBody>
@@ -160,7 +185,7 @@ const JournalDetails = props => {
 
     <Grid container>
       <Grid item xs={12}>
-        <Table className={classes.table} aria-label="simple table">
+        <Table className={classes.datatable} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell component="th">Account</TableCell>
@@ -215,7 +240,7 @@ const JournalDetails = props => {
           <TableFooter>
             <TableRow>
               <TableCell colSpan={5} component="th">
-                  <Typography variant="subtitle1">Attachments</Typography>
+                <Typography variant="subtitle1">Attachments</Typography>
               </TableCell>
             </TableRow>
           </TableFooter>

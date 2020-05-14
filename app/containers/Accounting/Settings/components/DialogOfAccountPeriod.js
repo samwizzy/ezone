@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
 import {
+  CircularProgress,
   TextField,
   makeStyles,
   Button,
@@ -52,8 +52,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const DialogOfAccountPeriod = props => {
   const classes = useStyles();
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
-
   const {
     loading,
     currentUser,
@@ -64,6 +62,16 @@ const DialogOfAccountPeriod = props => {
     dispatchSetAccountPeriodAsActiveAction
   } = props;
 
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
+
+  const selectedYear = allAccountingPeriodData && allAccountingPeriodData[allAccountingPeriodData.length - 1];
+  console.log(selectedYear, "selectedYear")
+
+  const [values, setValues] = React.useState({
+    orgId: currentUser.organisation.orgId,
+    // year: selectedYear.year && Number(selectedYear.year) + 1
+  });
+
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
@@ -71,11 +79,6 @@ const DialogOfAccountPeriod = props => {
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
-
-  const [values, setValues] = React.useState({
-    orgId: currentUser.organisation.orgId,
-    // year: Number(allAccountingPeriodData[allAccountingPeriodData.length - 1].year) + 1
-  });
   
   console.log(' values is : ', values);
   console.log('dialogfile data-> ', allAccountingPeriodData);
@@ -107,7 +110,7 @@ const DialogOfAccountPeriod = props => {
                     variant="outlined"
                     size="small"
                     className={classes.textField}
-                    // value={Number(allAccountingPeriodData[allAccountingPeriodData.length - 1].year) + 1}
+                    value={values.year}
                     // onChange={handleChange('amount')}
                     margin="normal"
                     fullWidth
@@ -120,36 +123,32 @@ const DialogOfAccountPeriod = props => {
               <Grid container spacing={1}>
                 <Grid item xs={6}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <Grid container justify="space-around">
-                      <KeyboardDatePicker
-                        margin="normal"
-                        id="date-picker-dialog"
-                        label="Start Date"
-                        format="MM/dd/yyyy"
-                        value={selectedDate}
-                        onChange={handleDateChange}
-                        KeyboardButtonProps={{
-                          'aria-label': 'change date',
-                        }}
-                      />
-                    </Grid>
+                    <KeyboardDatePicker
+                      margin="normal"
+                      id="date-picker-dialog"
+                      label="Start Date"
+                      format="MM/dd/yyyy"
+                      value={selectedDate}
+                      onChange={handleDateChange}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                    />
                   </MuiPickersUtilsProvider>
                 </Grid>
                 <Grid item xs={6}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <Grid container justify="space-around">
-                      <KeyboardDatePicker
-                        margin="normal"
-                        id="date-picker-dialog"
-                        label="End Date"
-                        format="MM/dd/yyyy"
-                        value={selectedDate}
-                        onChange={handleDateChange}
-                        KeyboardButtonProps={{
-                          'aria-label': 'change date',
-                        }}
-                      />
-                    </Grid>
+                    <KeyboardDatePicker
+                      margin="normal"
+                      id="date-picker-dialog"
+                      label="End Date"
+                      format="MM/dd/yyyy"
+                      value={selectedDate}
+                      onChange={handleDateChange}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                    />
                   </MuiPickersUtilsProvider>
                 </Grid>
               </Grid>
@@ -157,24 +156,20 @@ const DialogOfAccountPeriod = props => {
           )}
         </DialogContent>
         <DialogActions>
-          {loading ? (
-            <LoadingIndicator />
-          ) : (
-            <Button
-              onClick={() => {
-                accountPeriodDialog.type === 'new' ? dispatchCreateAccountPeriodAction(values) : dispatchSetAccountPeriodAsActiveAction(accountPeriodDialog.data);
-              }}
-              color="primary"
-              // variant="contained"
-              // disabled={!canSubmitValues()}
-            >
-              Save
-            </Button>
-          )}
+          <Button
+            onClick={() => {
+              accountPeriodDialog.type === 'new' ? dispatchCreateAccountPeriodAction(values) : dispatchSetAccountPeriodAsActiveAction(accountPeriodDialog.data);
+            }}
+            color="primary"
+            // variant="contained"
+            // disabled={!canSubmitValues()}
+            endIcon={loading && <CircularProgress size={20} />}
+          >
+            Save
+          </Button>
           <Button
             onClick={ closeAccountPeriodDialogAction }
             color="inherit"
-            // variant="contained"
           >
             Cancel
           </Button>

@@ -18,7 +18,7 @@ import {
   Typography,
   Tooltip
 } from '@material-ui/core';
-import { CheckIcon, DeleteIcon } from '@material-ui/icons';
+import { Add, Check, Delete } from '@material-ui/icons';
 import DateFnsUtils from '@date-io/date-fns'; // choose your lib
 import {
   DatePicker,
@@ -36,6 +36,7 @@ import * as Selectors from '../selectors';
 import DialogOfAccountPeriod from './DialogOfAccountPeriod';
 import moment from 'moment';
 // import ModuleLayout from '../../components/ModuleLayout';
+import months from './../../../../utils/months';
 
 
 const useStyles = makeStyles(theme => ({
@@ -59,10 +60,10 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: theme.palette.grey[200]
 	},
 	table: {
+    whiteSpace: "nowrap",
     '& .MuiTableFooter-root': {},
     '& th.MuiTableCell-root': {
 			borderBottom: 'none !important',
-			width: '10%'
     },
     '& .MuiTableCell-root': {
       borderBottom: 'none !important'
@@ -131,7 +132,7 @@ const AccountingPeriod = props => {
                   <TableCell>Financial Year Start</TableCell>
                   <TableCell>
                     <Box className={classes.box} p={2}>
-                      {moment(accountingSetupData.companyStartDate).format('dddd do-MMM-YYYY')}
+                      {moment(accountingSetupData.companyStartDate).format('Do, MMM')}
                     </Box>
                   </TableCell>
                 </TableRow>
@@ -147,7 +148,7 @@ const AccountingPeriod = props => {
                   <TableCell>Tax year starts</TableCell>
                   <TableCell>
                     <Box className={classes.box} p={2}>
-                      { accountingSetupData.taxDay }-{ accountingSetupData.taxMonth }
+                      { accountingSetupData.taxDay }, { accountingSetupData.taxMonth }
                     </Box>
                   </TableCell>
                 </TableRow>
@@ -173,15 +174,17 @@ const AccountingPeriod = props => {
             </Toolbar>
             <Table size="small" className={classes.table}>
               <TableBody>
-                {allAccountingPeriodData.map(item => (
+                {allAccountingPeriodData && allAccountingPeriodData.map(item => (
                 <TableRow>
                   <TableCell component="th">Name</TableCell>
                   <TableCell>
                     <TextField 
                       id="outlined-basic" 
-                      label="Outlined" 
+                      label="Name" 
                       variant="outlined" 
                       value={item.year}
+                      size="small"
+                      margin="normal"
                     />
                   </TableCell>
                   <TableCell component="th">Start Date</TableCell>
@@ -191,6 +194,7 @@ const AccountingPeriod = props => {
                         format="MM/dd/yyyy"
                         margin="normal"
                         inputVariant="outlined"
+                        size="small"
                         name="startDate"
                         id="date-picker-startDate"
                         label="Start Date"
@@ -199,7 +203,6 @@ const AccountingPeriod = props => {
                         KeyboardButtonProps={{
                           'aria-label': 'change date',
                         }}
-                        fullWidth
                       />
                     </MuiPickersUtilsProvider>
                   </TableCell>
@@ -207,10 +210,12 @@ const AccountingPeriod = props => {
                   <TableCell>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
+                        autoOk
                         format="MM/dd/yyyy"
                         margin="normal"
                         inputVariant="outlined"
                         name="startDate"
+                        size="small"
                         id="date-picker-startDate"
                         label="Start Date"
                         value={values.startDate}
@@ -218,7 +223,6 @@ const AccountingPeriod = props => {
                         KeyboardButtonProps={{
                           'aria-label': 'change date',
                         }}
-                        fullWidth
                       />
                     </MuiPickersUtilsProvider>
                   </TableCell>
@@ -229,6 +233,7 @@ const AccountingPeriod = props => {
                         aria-controls="simple-menu" 
                         aria-haspopup="true" 
                         // endIcon={<CheckIcon />}
+                        size="small"
                         onClick={event => handleClick(event, item.id)}
                       >
                         Open Active
@@ -258,6 +263,7 @@ const AccountingPeriod = props => {
                         aria-controls="simple-menu" 
                         aria-haspopup="true" 
                         // endIcon={<CheckIcon />}
+                        size="small"
                         onClick={event => handleClick(event, item.id)}
                       >
                         Open Inactive
@@ -287,6 +293,7 @@ const AccountingPeriod = props => {
                         aria-controls="simple-menu" 
                         aria-haspopup="true" 
                         // endIcon={<DeleteIcon />}
+                        size="small"
                         onClick={event => handleClick(event, item.id)}
                       >
                         Closed
@@ -309,10 +316,12 @@ const AccountingPeriod = props => {
               <Tooltip title="Create Account Period">
                 <Button
                   variant="contained"
-                  color="primary"
-                  size="small"
+                  color="default"
+                  // size="small"
                   className={classes.button}
                   onClick={() => openAccountPeriodDialogAction()}
+                  startIcon={<Add />}
+                  disableElevation
                 >
                   Add more
                 </Button>

@@ -12,10 +12,11 @@ import {
   Grid,
   Tooltip
 } from '@material-ui/core';
-
+import classNames from 'classnames';
 import AddIcon from '@material-ui/icons/Add';
 import MUIDataTable from 'mui-datatables';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
+import { green, red } from '@material-ui/core/colors';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -58,11 +59,9 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
-  cardRoot: {
-    maxWidth: '100%',
-  },
-  media: {
-    height: 140,
+  status: {
+    '&.active': {color: green[500]},
+    '&.inactive': {color: theme.status.danger},
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -146,7 +145,7 @@ const BankList = props => {
         filter: true,
         sort: true,
         customBodyRender: status => (
-          <span>{status ? 'Active' : 'Inactive'}</span>
+          <span className={classNames(classes.status, {'active': status})}>{status ? 'Active' : 'Inactive'}</span>
         ),
       },
     },

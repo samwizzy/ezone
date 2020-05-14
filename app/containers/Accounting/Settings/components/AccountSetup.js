@@ -67,7 +67,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   sideDemo: {
-    backgroundImage: 'linear-gradient(13.98deg, #1A88E1 4.45%, rgba(255, 255, 255, 0) 85.58%)',
+    // backgroundImage: 'linear-gradient(13.98deg, #1A88E1 4.45%, rgba(255, 255, 255, 0) 85.58%)',
+    backgroundColor: theme.palette.background.paper
   },
   bgImage: {
     width: '100%',
@@ -205,7 +206,7 @@ const AccountSetup = props => {
           <Paper square elevation={0} className={classes.paper}>
             <Box p={1} mb={1} className={classes.box}>
               <Typography variant="h4" color="textPrimary">
-                Welcome To &nbsp;
+                Welcome To&nbsp;
                 {/* <img src={Logo} height="40" />  */}
                 Accounting
               </Typography>
@@ -235,6 +236,7 @@ const AccountSetup = props => {
                   <TableCell>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
+                        autoOk
                         margin="normal"
                         inputVariant="outlined"
                         id="date-picker-dialog"

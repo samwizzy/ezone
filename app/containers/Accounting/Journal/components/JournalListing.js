@@ -21,6 +21,7 @@ import { createStructuredSelector } from 'reselect';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
+import moment from 'moment';
 // import AddBankAccountDialog from './AddBankAccountDialog';
 // import LoadingIndicator from '../../../../components/LoadingIndicator';
 
@@ -71,12 +72,6 @@ const useStyles = makeStyles(theme => ({
   button: {
     marginLeft: theme.spacing(1)
   },
-  cardRoot: {
-    maxWidth: '100%',
-  },
-  media: {
-    height: 140,
-  },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
@@ -114,6 +109,9 @@ const JournalListing = props => {
       options: {
         filter: true,
         sort: false,
+        customBodyRender: value => {
+          return moment(value).format('LLL')
+        }
       },
     },
     {

@@ -16,7 +16,7 @@ import { useInjectReducer } from 'utils/injectReducer';
 import reducer from './reducer';
 import saga from './saga';
 import * as Actions from './actions';
-import * as Selectors from './selectors';
+import makeSelectAccounting, * as Selectors from './selectors';
 import AccountSetup from './Settings/components/AccountSetup';
 import Dashboard from './Dashboard';
 import LoadingIndicator from './../../components/LoadingIndicator';
@@ -45,7 +45,7 @@ export function Accounting(props) {
   if (loading) {
     return <LoadingIndicator />;
   }
-  else if (accountingSetupData != null) {
+  else if (accountingSetupData === null) {
     return (
       <ModuleLayout>
         <AccountSetup />
@@ -61,7 +61,7 @@ Accounting.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  // accounting: makeSelectAccounting(),
+  accounting: makeSelectAccounting(),
   loading: Selectors.makeSelectLoading(),
   accountingSetupData: Selectors.makeSelectGetAccountingSetupData(),
 });
