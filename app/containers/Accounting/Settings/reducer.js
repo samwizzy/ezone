@@ -79,6 +79,32 @@ const settingsReducer = (state = initialState, action) =>
         };
       }
 
+      // Close account period dialog
+      case Constants.OPEN_DIALOG_CLOSE_ACCOUNT_PERIOD: {
+        return {
+          ...state,
+          accountPeriodDialog: {
+            type: 'close',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_DIALOG_CLOSE_ACCOUNT_PERIOD: {
+        return {
+          ...state,
+          accountPeriodDialog: {
+            type: 'close',
+            props: {
+              open: false,
+            },
+            data: action.payload,
+          },
+        };
+      }
+
       // Case to create accounting setup
       case Constants.CREATE_ACCOUNTING_SETUP: {
         console.log('CREATE_ACCOUNTING_SETUP reducer');
