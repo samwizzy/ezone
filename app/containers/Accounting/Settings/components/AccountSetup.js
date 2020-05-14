@@ -44,25 +44,41 @@ import * as Selectors from '../selectors';
 import * as AppSelectors from '../../../App/selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 // import Logo from '../../../../images/Logo.svg';
+import accSettingDemo from '../../../../images/accSettingDemo.jpg';
+import accSettingDemo2 from '../../../../images/accSettingDemo2.svg';
+import accSettingDemo3 from '../../../../images/accSettingDemo3.svg';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    padding: theme.spacing(3, 0),
   },
   paper: {
     padding: theme.spacing(2, 0),
     color: theme.palette.text.secondary,
   },
   table: {
-    margin: theme.spacing(5, 1),
-    '& .MuiTableCell-body': {
+    '& tr:last-child': {
+      '& td': {
+        borderTop: `1px solid ${theme.palette.divider}`,
+      },
+    },
+    '& td': {
       border: 0,
     },
   },
+  sideDemo: {
+    backgroundImage: 'linear-gradient(13.98deg, #1A88E1 4.45%, rgba(255, 255, 255, 0) 85.58%)',
+  },
+  bgImage: {
+    width: '100%',
+    height: '493px',
+    backgroundImage: `url(${accSettingDemo2})`,
+    backgroundSize: '100%',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center'
+  },
   box: {
     textAlign: 'center',
-    border: `1px solid ${theme.palette.grey[100]}`,
   },
 }));
 
@@ -183,204 +199,195 @@ const AccountSetup = props => {
   }
   
   return (
-    <React.Fragment>
-      <div className={classes.root}>
-        <Grid container justify="center" alignItems="center">
-          <Grid item xs={6}>
-            <Paper square elevation={1} style={{ padding: '20px 10px' }}>
-              <Paper square elevation={0} className={classes.paper}>
-                <Box p={2} my={2} className={classes.box}>
-                  <Typography variant="h4" color="textSecondary">
-                    Welcome To 
-                    {/* <img src={Logo} height="40" />  */}
-                    Accounting
-                  </Typography>
-                </Box>
-                <Box p={2} my={2} className={classes.box}>
-                  <Typography variant="h6" color="textSecondary">
-                    SetUp Your Accounting Structure
-                  </Typography>
-                </Box>
-              </Paper>
-              <Divider />
-
-              <Table className={classes.table} aria-label="simple table">
-                <TableBody>
-                  <TableRow>
-                    <TableCell align="right">
-                      <Typography variant="subtitle1" color="textSecondary">
-                        Financial year starts
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="left">
-                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <Grid container justify="space-around">
-                          <KeyboardDatePicker
-                            margin="normal"
-                            inputVariant="outlined"
-                            id="date-picker-dialog"
-                            label="Select Date"
-                            format="MM/dd/yyyy"
-                            value={selectedDate}
-                            onChange={handleFinancialYearDateChange}
-                            KeyboardButtonProps={{
-                              'aria-label': 'change date',
-                            }}
-                            fullWidth
-                          />
-                        </Grid>
-                      </MuiPickersUtilsProvider>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell align="right">
-                      <Typography variant="subtitle1" color="textSecondary">
-                        Accounting method
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="left">
-                      <Autocomplete
-                        id="combo-box-demo"
-                        options={accountingMethodData}
-                        getOptionLabel={option => option.label}
-                        onChange={(evt, value) =>
-                          handleAccountingMethodSelectChange(evt, value)
-                        }
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            label="Select Method"
-                            className={classes.textField}
-                            variant="outlined"
-                            placeholder="Search"
-                            fullWidth
-                          />
-                        )}
-                      />
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell align="right">
-                      <Typography variant="subtitle1" color="textSecondary">
-                        Tax Type
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Autocomplete
-                        id="combo-box-demo"
-                        options={taxTypeData}
-                        getOptionLabel={option => option.label}
-                        onChange={(evt, value) =>
-                          handleTaxTypeSelectChange(evt, value)
-                        }
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            label="Select Tax"
-                            className={classes.textField}
-                            variant="outlined"
-                            placeholder="Search"
-                            fullWidth
-                          />
-                        )}
-                      />
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell align="right">
-                      <Typography variant="subtitle1" color="textSecondary">
-                        Tax year starts
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="left">
-                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <Grid container justify="space-around">
-                          <KeyboardDatePicker
-                            margin="normal"
-                            inputVariant="outlined"
-                            id="date-picker-dialog"
-                            label="Select Date"
-                            format="MM/dd/yyyy"
-                            value={selectedTaxDate}
-                            onChange={handleTaxYearDateChange}
-                            KeyboardButtonProps={{
-                              'aria-label': 'change date',
-                            }}
-                            fullWidth
-                            variant="outlined"
-                          />
-                        </Grid>
-                      </MuiPickersUtilsProvider>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell align="right">
-                      <Typography variant="subtitle1" color="textSecondary">
-                        Currency
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="left">
-                      <Autocomplete
-                        id="combo-box-demo"
-                        options={currencyData}
-                        getOptionLabel={option => option.value}
-                        onChange={(evt, value) =>
-                          handleCurrencySelectChange(evt, value)
-                        }
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            label="Select Currency"
-                            className={classes.textField}
-                            variant="outlined"
-                            placeholder="Search"
-                            fullWidth
-                          />
-                        )}
-                      />
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell align="right" />
-                    <TableCell align="left">
-                      <FormControl component="fieldset">
-                        <FormGroup aria-label="position" row>
-                          <FormControlLabel
-                            value="end"
-                            control={<Checkbox color="primary" />}
-                            label="Enable Multicurrency"
-                            labelPlacement="end"
-                          />
-                        </FormGroup>
-                      </FormControl>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell colSpan={2}>
-                      <Divider />
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell />
-                    <TableCell align="right">
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        disabled={!canSubmitValues()}
-                        onClick={() => createAccountingSetupAction(values)}
-                        endIcon={<SendIcon />}
-                      >
-                        Save And Continue
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </Paper>
-          </Grid>
+    <div className={classes.root}>
+      <Grid container>
+        <Grid item xs={12}>
+          <Paper square elevation={0} className={classes.paper}>
+            <Box p={1} mb={1} className={classes.box}>
+              <Typography variant="h4" color="textPrimary">
+                Welcome To &nbsp;
+                {/* <img src={Logo} height="40" />  */}
+                Accounting
+              </Typography>
+            </Box>
+            <Box p={1} className={classes.box}>
+              <Typography variant="h6" color="textSecondary">
+                SetUp Your Accounting Structure
+              </Typography>
+            </Box>
+          </Paper>
+          <Divider />
         </Grid>
-      </div>
-    </React.Fragment>
+
+        <Grid item xs={6} className={classes.sideDemo}>
+          <div className={classes.bgImage}></div>
+        </Grid>
+        <Grid item xs={6}>
+          <Paper square elevation={0} className={classes.paper}>
+            <Table className={classes.table} aria-label="simple table">
+              <TableBody>
+                <TableRow>
+                  <TableCell align="right">
+                    <Typography variant="subtitle1" color="textSecondary">
+                      Financial year starts
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <KeyboardDatePicker
+                        margin="normal"
+                        inputVariant="outlined"
+                        id="date-picker-dialog"
+                        label="Select Date"
+                        format="MM/dd/yyyy"
+                        value={selectedDate}
+                        onChange={handleFinancialYearDateChange}
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                        }}
+                      />
+                    </MuiPickersUtilsProvider>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell align="right">
+                    <Typography variant="subtitle1" color="textSecondary">
+                      Accounting method
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Autocomplete
+                      id="combo-box-demo"
+                      options={accountingMethodData}
+                      getOptionLabel={option => option.label}
+                      style={{width: 258.67}}
+                      onChange={(evt, value) =>
+                        handleAccountingMethodSelectChange(evt, value)
+                      }
+                      renderInput={params => (
+                        <TextField
+                          {...params}
+                          label="Select Method"
+                          variant="outlined"
+                          placeholder="Search"
+                        />
+                      )}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell align="right">
+                    <Typography variant="subtitle1" color="textSecondary">
+                      Tax Type
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Autocomplete
+                      id="combo-box-demo"
+                      options={taxTypeData}
+                      getOptionLabel={option => option.label}
+                      style={{width: 258.67}}
+                      onChange={(evt, value) =>
+                        handleTaxTypeSelectChange(evt, value)
+                      }
+                      renderInput={params => (
+                        <TextField
+                          {...params}
+                          label="Select Tax"
+                          variant="outlined"
+                          placeholder="Search"
+                        />
+                      )}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell align="right">
+                    <Typography variant="subtitle1" color="textSecondary">
+                      Tax year starts
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <KeyboardDatePicker
+                        autoOk
+                        margin="normal"
+                        inputVariant="outlined"
+                        id="date-picker-dialog"
+                        style={{width: 258.67}}
+                        label="Select Date"
+                        format="MM/dd/yyyy"
+                        value={selectedTaxDate}
+                        onChange={handleTaxYearDateChange}
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                        }}
+                        variant="outlined"
+                      />
+                    </MuiPickersUtilsProvider>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell align="right">
+                    <Typography variant="subtitle1" color="textSecondary">
+                      Currency
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Autocomplete
+                      id="combo-box-demo"
+                      options={currencyData}
+                      getOptionLabel={option => option.value}
+                      style={{width: 258.67}}
+                      onChange={(evt, value) =>
+                        handleCurrencySelectChange(evt, value)
+                      }
+                      renderInput={params => (
+                        <TextField
+                          {...params}
+                          label="Select Currency"
+                          variant="outlined"
+                          placeholder="Search"
+                        />
+                      )}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell align="right" />
+                  <TableCell>
+                    <FormControl component="fieldset">
+                      <FormGroup aria-label="position" row>
+                        <FormControlLabel
+                          value="end"
+                          control={<Checkbox color="primary" />}
+                          label="Enable Multicurrency"
+                          labelPlacement="end"
+                        />
+                      </FormGroup>
+                    </FormControl>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell />
+                  <TableCell align="right">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      disabled={!canSubmitValues()}
+                      onClick={() => createAccountingSetupAction(values)}
+                      endIcon={<SendIcon />}
+                    >
+                      Save And Continue
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </Paper>
+        </Grid>
+      </Grid>
+    </div>
   );
 };
 
