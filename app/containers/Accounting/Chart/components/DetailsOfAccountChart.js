@@ -13,10 +13,13 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
+  Toolbar,
 } from '@material-ui/core';
 import classNames from 'classnames';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import AddIcon from '@material-ui/icons/Add';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
@@ -46,21 +49,21 @@ const useStyles = makeStyles(theme => ({
       content: "''",
       position: "absolute",
       top: 0, 
-      right: "-60px",
+      right: "-52.67px",
       width: 0,
       height: 0,
-      borderTop: "60px solid #6DCC4C",
-      borderRight: "60px solid transparent"
+      borderTop: "52.67px solid #6DCC4C",
+      borderRight: "52.67px solid transparent"
     },
     "&::before": {
       content: "''",
       position: "absolute",
       top: 0, 
-      right: "-60px",
+      right: "-52.67px",
       width: 0,
       height: 0,
-      borderBottom: "60px solid #6DCC4C",
-      borderRight: "60px solid transparent"
+      borderBottom: "52.67px solid #6DCC4C",
+      borderRight: "52.67px solid transparent"
     }
   },
   paper: {
@@ -90,8 +93,8 @@ const useStyles = makeStyles(theme => ({
     },
     '& .MuiTableFooter-root': {},
     '& .MuiTableCell-root': {
-      // border: "none !important",
-      fontSize: theme.typography.fontSize + 2,
+      border: "none !important",
+      fontSize: theme.typography.fontSize,
       '& button:nth-child(n+2)': {
         marginLeft: theme.spacing(1),
       },
@@ -100,53 +103,47 @@ const useStyles = makeStyles(theme => ({
         fontWeight: theme.typography.fontWeightBold
     }
   },
+  title: { flexGrow: 1 },
   iconPaper: {
-    padding: theme.spacing(1),
-    textAlign: "right"
+    boxShadow: theme.shadows[1]
   }
 }));
 
 const DetailsOfAccountChart = props => {
   const classes = useStyles();
 
-  const {
-    history
-  } = props;
+  const {history} = props;
 
   const handleBack = () => {
     history.goBack();
   }
 
   console.log("Selected journal data ", props.location.chartDetailsData);
-  
 
   return (
     <div className={classes.root}>
       <Grid container>
-        <Grid item xs={6} className={classNames(classes.gridMargin)}>
-          <Paper square className={classes.iconPaper}>
-            <div>
-              <IconButton
-                onClick={handleBack}
-              >
-                <Icon>add</Icon> Back
-              </IconButton>
-            </div>
-          </Paper>
-        </Grid>
-        <Grid item xs={6} className={classNames(classes.gridMargin)}>
-          <Paper square className={classes.iconPaper}>
-            <div>
-              <IconButton><Icon>add</Icon></IconButton>
-              <IconButton><Icon>person</Icon></IconButton>
-              <IconButton><Icon>edit</Icon></IconButton>
-              <IconButton><Icon>cloud_download</Icon></IconButton>
-            </div>
-          </Paper>
+        <Grid item xs={12} className={classNames(classes.gridMargin)}>
+          <Toolbar className={classes.iconPaper} variant="dense">
+            <Typography>
+              <IconButton onClick={handleBack}>
+                <KeyboardBackspaceIcon />
+              </IconButton> Back
+            </Typography>
+            <Typography className={classes.title} />
+            <IconButton><Icon>add</Icon></IconButton>
+            <IconButton><Icon>person</Icon></IconButton>
+            <IconButton><Icon>edit</Icon></IconButton>
+            <IconButton><Icon>cloud_download</Icon></IconButton>
+          </Toolbar>
         </Grid>
         <Grid item xs={12} className={classNames(classes.gridMargin)}>
           <Paper square>
             <div className={classes.flex}>
+              <div className={classes.status}>
+                <Typography>Published</Typography>
+              </div>
+
               <Table className={classes.table}>
                 <TableBody>
                   <TableRow>
@@ -169,7 +166,7 @@ const DetailsOfAccountChart = props => {
                   </TableRow>
 
                   { props.location.chartDetailsData.accountType === "Bank" ? (
-                    <TableBody>
+                    <>
                       <TableRow>
                         <TableCell component="th">Account Number</TableCell>
                         <TableCell align="left">
@@ -182,7 +179,7 @@ const DetailsOfAccountChart = props => {
                           { props.location.chartDetailsData.bankBalance }
                         </TableCell>
                       </TableRow>
-                    </TableBody>
+                    </>
                   ) : null}
 
                   <TableRow>
