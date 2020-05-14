@@ -125,7 +125,6 @@ export function* updateAccountPeriodSaga({ type, payload }) {
     Selectors.makeSelectAccountPeriodPostData(),
   );
   const requestURL = `${Endpoints.UpdateAccountPeriodApi}?id=${payload.id}&status=false`;
-
   console.log('payload -> ', payload);
 
   try {
@@ -141,7 +140,7 @@ export function* updateAccountPeriodSaga({ type, payload }) {
     console.log('updatedAccountPeriodResponse -> ', updatedAccountPeriodResponse);
     alert(`Accounting period updated successfully!`);
     yield put(Actions.getAllAccountingPeriodAction());
-    yield put(Actions.updateAccountPeriodSuccessAction(accountPeriodResponse));
+    yield put(Actions.updateAccountPeriodSuccessAction(updatedAccountPeriodResponse));
     yield put(Actions.closeAccountPeriodDialog());
   } catch (err) {
     console.log('updateAccountPeriodErrorAction -> ', err);

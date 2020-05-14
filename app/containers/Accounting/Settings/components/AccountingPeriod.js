@@ -80,7 +80,7 @@ const AccountingPeriod = props => {
     allAccountingPeriodData,
     openAccountPeriodDialogAction,
     editOpenAccountPeriodDialogAction,
-    dispatchUpdateAccountPeriodAction
+    openDialogCloseAccountPeriodAction
   } = props;
 
   const handleClose = () => {
@@ -144,14 +144,14 @@ const AccountingPeriod = props => {
                     </Box>
                   </TableCell>
                 </TableRow>
-                <TableRow>
+                {/* <TableRow>
                   <TableCell>Tax year starts</TableCell>
                   <TableCell>
                     <Box className={classes.box} p={2}>
                       { accountingSetupData.taxDay }, { accountingSetupData.taxMonth }
                     </Box>
                   </TableCell>
-                </TableRow>
+                </TableRow> */}
                 <TableRow>
                   <TableCell>Tax Type</TableCell>
                   <TableCell>
@@ -227,7 +227,37 @@ const AccountingPeriod = props => {
                     </MuiPickersUtilsProvider>
                   </TableCell>
 
-                  {item.status && item.activeYear ? (
+                  {item.status && !item.activeYear ? (
+                    <TableCell component="th">
+                      <Button 
+                        aria-controls="simple-menu" 
+                        aria-haspopup="true" 
+                        // endIcon={<CheckIcon />}
+                        size="small"
+                        onClick={event => handleClick(event, item.id)}
+                      >
+                        Open InActive
+                      </Button>
+                      <Menu
+                        id="simple-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                      >
+                        <MenuItem 
+                          onClick={() => editOpenAccountPeriodDialogAction(accountToUpdate)}
+                        >
+                          Set As Active 
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() => openDialogCloseAccountPeriodAction(accountToUpdate)}
+                        >
+                          Close Period
+                        </MenuItem>
+                      </Menu>
+                    </TableCell>
+                  ) : item.status && item.activeYear ? (
                     <TableCell component="th">
                       <Button 
                         aria-controls="simple-menu" 
@@ -238,56 +268,8 @@ const AccountingPeriod = props => {
                       >
                         Open Active
                       </Button>
-                      <Menu
-                        id="simple-menu"
-                        anchorEl={anchorEl}
-                        keepMounted
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
-                      >
-                        <MenuItem 
-                          onClick={() => editOpenAccountPeriodDialogAction(accountToUpdate)}
-                        >
-                          Set As Active 
-                        </MenuItem>
-                        <MenuItem
-                          onClick={() => dispatchUpdateAccountPeriodAction(accountToUpdate)}
-                        >
-                          Close Period
-                        </MenuItem>
-                      </Menu>
                     </TableCell>
-                  ) : item.status && !item.activeYear ? (
-                    <TableCell component="th">
-                      <Button 
-                        aria-controls="simple-menu" 
-                        aria-haspopup="true" 
-                        // endIcon={<CheckIcon />}
-                        size="small"
-                        onClick={event => handleClick(event, item.id)}
-                      >
-                        Open Inactive
-                      </Button>
-                      <Menu
-                        id="simple-menu"
-                        anchorEl={anchorEl}
-                        keepMounted
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
-                      >
-                        <MenuItem 
-                          onClick={() => editOpenAccountPeriodDialogAction(accountToUpdate)}
-                        >
-                          Set As Active 
-                        </MenuItem>
-                        <MenuItem
-                          onClick={() => dispatchUpdateAccountPeriodAction(accountToUpdate)}
-                        >
-                          Close Period
-                        </MenuItem>
-                      </Menu>
-                    </TableCell>
-                  ) : (
+                  ) : !item.status && !item.activeYear ? (
                     <TableCell component="th">
                       <Button 
                         aria-controls="simple-menu" 
@@ -298,17 +280,8 @@ const AccountingPeriod = props => {
                       >
                         Closed
                       </Button>
-                      <Menu
-                        id="simple-menu"
-                        anchorEl={anchorEl}
-                        keepMounted
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
-                      >
-                        <MenuItem onClick={handleClose}>View</MenuItem>
-                      </Menu>
                     </TableCell>
-                  )}
+                  ) : null}
                 </TableRow>
                 ))}
               </TableBody>
@@ -348,7 +321,7 @@ function mapDispatchToProps(dispatch) {
   return {
     openAccountPeriodDialogAction: () => dispatch(Actions.openAccountPeriodDialog()),
     editOpenAccountPeriodDialogAction: evt => dispatch(Actions.editOpenAccountPeriodDialog(evt)),
-    dispatchUpdateAccountPeriodAction: evt => dispatch(Actions.updateAccountPeriodAction(evt)),
+    openDialogCloseAccountPeriodAction: evt => dispatch(Actions.openDialogCloseAccountPeriod(evt)),
   };
 }
 

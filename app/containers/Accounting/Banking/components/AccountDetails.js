@@ -106,6 +106,8 @@ const AccountDetails = props => {
   }
 
   console.log('accountDetailsData -> ', props.location.accountDetailsData);
+  console.log('props.location.accountDetailsData.accountNumber -> ', props.location.accountDetailsData.accountNumber);
+  
 
   return (
     <div className={classes.root}>
@@ -177,6 +179,7 @@ const AccountDetails = props => {
               <TableCell component="th">Description</TableCell>
               <TableCell component="th">Reference</TableCell>
               <TableCell component="th">Transfer Type</TableCell>
+              <TableCell component="th">Amount</TableCell>
               <TableCell component="th" />
             </TableRow>
           </TableHead>
@@ -184,7 +187,7 @@ const AccountDetails = props => {
           {props.location.accountDetailsData.transfers.map((entry, id) => (
             <TableRow key={id}>
               <TableCell align="left">
-                  {entry.orgId}
+                  {props.location.accountDetailsData.accountNumber}
               </TableCell>
               <TableCell align="left">
                 {entry.description}
@@ -195,29 +198,31 @@ const AccountDetails = props => {
               <TableCell align="left">
                 {entry.transferType}
               </TableCell>
+              <TableCell align="left">
+                {entry.amount}
+              </TableCell>
             </TableRow>
           ))}
           </TableBody>
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={2} align="right">
+              <TableCell colSpan={3} align="right">
                 <Typography variant="h6">Total</Typography>
               </TableCell>
               <TableCell>
                 <Paper elevation={0} square className={classes.paper}>
                   <Typography variant="h6">
-                    0
-                    {/* NGN { props.location.journalDetailsData.entries.reduce((a, b) => a + Number(b.debit), 0) } */}
+                    {/* { props.location.journalDetailsData.transfers.reduce((a, b) => a + Number(b.amount), 0) } */}
                   </Typography>
                 </Paper>
               </TableCell>
               <TableCell>
-                <Paper elevation={0} square className={classes.paper}>
+                {/* <Paper elevation={0} square className={classes.paper}>
                   <Typography variant="h6">
-                    0
+                    0 */}
                     {/* NGN { props.location.journalDetailsData.entries.reduce((a, b) => a + Number(b.credit), 0) } */}
-                  </Typography>
-                </Paper>
+                  {/* </Typography> */}
+                {/* </Paper> */}
               </TableCell>
               <TableCell />
             </TableRow>

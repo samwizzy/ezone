@@ -84,6 +84,7 @@ const NewAccountDialog = props => {
     accountNumber: "",
     accountType: "",
     bankBalance: "",
+    bankName: "",
     description: "",
     openingBalance: "",
     orgId: "",
@@ -226,6 +227,20 @@ const NewAccountDialog = props => {
                 </Grid>
                 {values.accountType == "Bank" ? (
                   <Grid container spacing={1}>
+                    <Grid item xs={6}>
+                      <TextField
+                        id="standard-bankName"
+                        label="Bank Name"
+                        type="name"
+                        variant="outlined"
+                        size="small"
+                        className={classes.textField}
+                        value={values.bankName}
+                        onChange={handleChange('bankName')}
+                        margin="normal"
+                        fullWidth
+                      />
+                    </Grid>
                     <Grid item xs={6}>
                       <TextField
                         id="standard-bankBalance"

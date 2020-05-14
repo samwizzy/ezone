@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+
 import {
-  CircularProgress,
   TextField,
+  Typography,
   makeStyles,
   Button,
   Dialog,
@@ -52,6 +53,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const DialogOfAccountPeriod = props => {
   const classes = useStyles();
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
+
   const {
     loading,
     currentUser,
@@ -59,18 +62,9 @@ const DialogOfAccountPeriod = props => {
     allAccountingPeriodData,
     closeAccountPeriodDialogAction,
     dispatchCreateAccountPeriodAction,
-    dispatchSetAccountPeriodAsActiveAction
+    dispatchSetAccountPeriodAsActiveAction,
+    dispatchUpdateAccountPeriodAction
   } = props;
-
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
-
-  const selectedYear = allAccountingPeriodData && allAccountingPeriodData[allAccountingPeriodData.length - 1];
-  console.log(selectedYear, "selectedYear")
-
-  const [values, setValues] = React.useState({
-    orgId: currentUser.organisation.orgId,
-    // year: selectedYear.year && Number(selectedYear.year) + 1
-  });
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
@@ -79,10 +73,16 @@ const DialogOfAccountPeriod = props => {
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
+
+  const [values, setValues] = React.useState({
+    orgId: currentUser.organisation.orgId,
+    year: Number(allAccountingPeriodData[allAccountingPeriodData.length - 1])
+  });
   
   console.log(' values is : ', values);
-  console.log('dialogfile data-> ', allAccountingPeriodData);
+  console.log('allAccountingPeriodData-> ', allAccountingPeriodData);
   console.log('selected data-> ', accountPeriodDialog.data);
+
 
   return (
     <div>
@@ -95,7 +95,7 @@ const DialogOfAccountPeriod = props => {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {accountPeriodDialog.type === 'new' ? 'Add Accounting Period' : 'Mark Accounting Period As Active'}
+          {accountPeriodDialog.type === 'new' ? 'Add Accounting Period' : accountPeriodDialog.type === 'new' ? 'Mark Accounting Period As Active' : accountPeriodDialog.type === 'close' ? "Close Accounting Period" : ""}
         </DialogTitle>
         <Divider />
         <DialogContent>
@@ -105,68 +105,58 @@ const DialogOfAccountPeriod = props => {
                 <Grid item xs={12}>
                   <TextField
                     id="standard-amount"
-                    // label={Number(allAccountingPeriodData[allAccountingPeriodData.length - 1].year) + 1}
                     type="number"
                     variant="outlined"
                     size="small"
+                    // InputProps={{
+                    //   readOnly: true,
+                    // }}
                     className={classes.textField}
-                    value={values.year}
-                    // onChange={handleChange('amount')}
+                    value={Number(allAccountingPeriodData[allAccountingPeriodData.length - 1])}
+                    onChange={handleChange('amount')}
                     margin="normal"
                     fullWidth
                   />
                 </Grid>
               </Grid>
             </form>
-          ) : (
+          ) : accountPeriodDialog.type === 'edit' ? (
             <form className={classes.root}>
               <Grid container spacing={1}>
-                <Grid item xs={6}>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                      margin="normal"
-                      id="date-picker-dialog"
-                      label="Start Date"
-                      format="MM/dd/yyyy"
-                      value={selectedDate}
-                      onChange={handleDateChange}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                      }}
-                    />
-                  </MuiPickersUtilsProvider>
-                </Grid>
-                <Grid item xs={6}>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                      margin="normal"
-                      id="date-picker-dialog"
-                      label="End Date"
-                      format="MM/dd/yyyy"
-                      value={selectedDate}
-                      onChange={handleDateChange}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                      }}
-                    />
-                  </MuiPickersUtilsProvider>
+                <Grid item xs={12}>
+                  <TextField
+                    id="standard-amount"
+                    label={accountPeriodDialog.data.year}
+                    type="number"
+                    variant="outlined"
+                    size="small"
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                    className={classes.textField}
+                    margin="normal"
+                    fullWidth
+                  />
                 </Grid>
               </Grid>
             </form>
-          )}
+          ) : accountPeriodDialog.type === 'close' ? (
+            <Typography>Are you sure you want to close this account period?</Typography>
+          ) : null}
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={() => {
-              accountPeriodDialog.type === 'new' ? dispatchCreateAccountPeriodAction(values) : dispatchSetAccountPeriodAsActiveAction(accountPeriodDialog.data);
-            }}
-            color="primary"
-            // variant="contained"
-            // disabled={!canSubmitValues()}
-            endIcon={loading && <CircularProgress size={20} />}
-          >
-            Save
-          </Button>
+          {loading ? (
+            <LoadingIndicator />
+          ) : (
+            <Button
+              onClick={() => {
+                accountPeriodDialog.type === 'new' ? dispatchCreateAccountPeriodAction(values) : accountPeriodDialog.type === 'edit' ? dispatchSetAccountPeriodAsActiveAction(accountPeriodDialog.data) : accountPeriodDialog.type === 'close' ? dispatchUpdateAccountPeriodAction(accountPeriodDialog.data) : "" ;
+              }}
+              color="primary"
+            >
+              {accountPeriodDialog.type === 'close' ? 'Close' : 'Save'}
+            </Button>
+          )}
           <Button
             onClick={ closeAccountPeriodDialogAction }
             color="inherit"
@@ -197,6 +187,7 @@ function mapDispatchToProps(dispatch) {
     closeAccountPeriodDialogAction: () => dispatch(Actions.closeAccountPeriodDialog()),
     dispatchCreateAccountPeriodAction: evt => dispatch(Actions.createAccountPeriodAction(evt)),
     dispatchSetAccountPeriodAsActiveAction: evt => dispatch(Actions.setAccountPeriodAsActiveAction(evt)),
+    dispatchUpdateAccountPeriodAction: evt => dispatch(Actions.updateAccountPeriodAction(evt)),
     dispatch,
   };
 }

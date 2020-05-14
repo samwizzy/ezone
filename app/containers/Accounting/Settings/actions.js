@@ -104,6 +104,20 @@ export function editCloseAccountPeriodDialog() {
   };
 }
 
+// Edit account period dialog
+export function openDialogCloseAccountPeriod(data) {
+  return {
+    type: Constants.OPEN_DIALOG_CLOSE_ACCOUNT_PERIOD,
+    payload: data,
+  };
+}
+
+export function closeDialogCloseAccountPeriod() {
+  return {
+    type: Constants.CLOSE_DIALOG_CLOSE_ACCOUNT_PERIOD,
+  };
+}
+
 
 // Create accounting period
 export function createAccountPeriodAction(data) {

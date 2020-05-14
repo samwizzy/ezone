@@ -115,7 +115,7 @@ const AddNewJournal = props => {
     note: "",
     orgId: currentUser.organisation.orgId,
     periodId: "",
-    transactionDate: new Date,
+    transactionDate: "",
     reference: ""
   });
 
@@ -148,7 +148,7 @@ const AddNewJournal = props => {
     setValues({ ...values, entries });
   }
   const handleDateChange = (date, name) => {
-    setValues({...values, [name]: moment(date).format('YYYY-MM-DD') })
+    setValues({...values, [name]: date })
   }
 
   const handleSelectChangeRows = (event, value, index) => {
@@ -214,7 +214,7 @@ const AddNewJournal = props => {
                 id="combo-box-demo"
                 options={filteredAccountPeriodData}
                 style={{width: 300}}
-                getOptionLabel={option => option.year}
+                getOptionLabel={option => `${moment(option.startDate).format('dddd do-MMM-YYYY')} - ${moment(option.endDate).format('dddd do-MMM-YYYY')}`}
                 onChange={(evt, value) => handleSelectChange(evt, value)}
                 renderInput={params => (
                   <TextField
@@ -223,9 +223,6 @@ const AddNewJournal = props => {
                     size="small"
                     placeholder="Date"
                     margin="normal"
-                    SelectProps={{
-                      disableUnderline: true,
-                    }}
                   />
                 )}
               />
@@ -243,7 +240,7 @@ const AddNewJournal = props => {
                     size="small"
                     format="MM/dd/yyyy"
                     fullWidth
-                    value={values.transactionDate}
+                    // value={values.transactionDate}
                     onChange={(date) => handleDateChange(date, "transactionDate")}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
