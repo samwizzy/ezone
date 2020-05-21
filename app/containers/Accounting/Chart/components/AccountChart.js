@@ -119,6 +119,14 @@ const AccountChart = props => {
       },
     },
     {
+      name: 'amount',
+      label: 'Amount',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
       name: 'description',
       label: 'Account Description',
       options: {

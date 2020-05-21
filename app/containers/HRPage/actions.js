@@ -238,6 +238,18 @@ export function createJobOpeningSuccess(data) {
     payload: data
   };
 }
+export function createApplicant(data) {
+  return {
+    type: Constants.CREATE_APPLICANT,
+    payload: data
+  };
+}
+export function createApplicantSuccess(data) {
+  return {
+    type: Constants.CREATE_APPLICANT_SUCCESS,
+    payload: data
+  };
+}
 export function createRole(data) {
   return {
     type: Constants.CREATE_ROLE,
@@ -387,7 +399,6 @@ export function closeWorkExperienceDialog() {
   };
 }
 export function openEducationBackgroundDialog(data) {
-  console.log("open education dialog")
   return {
     type: Constants.OPEN_EDUCATION_BACKGROUND_DIALOG,
     payload: data
@@ -396,5 +407,16 @@ export function openEducationBackgroundDialog(data) {
 export function closeEducationBackgroundDialog() {
   return {
     type: Constants.CLOSE_EDUCATION_BACKGROUND_DIALOG,
+  };
+}
+export function openNewApplicantDialog(data) {
+  return {
+    type: Constants.OPEN_NEW_APPLICANT_DIALOG,
+    payload: data
+  };
+}
+export function closeNewApplicantDialog() {
+  return {
+    type: Constants.CLOSE_NEW_APPLICANT_DIALOG,
   };
 }

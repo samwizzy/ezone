@@ -142,6 +142,11 @@ const makeSelectEducationBackgroundDialog = () =>
     selectHR,
     hrState => hrState.educationBackgroundDialog,
   );
+const makeSelectApplicantDialog = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.applicantDialog,
+  );
 const makeSelectAnnouncementViewDialog = () =>
   createSelector(
     selectHR,
@@ -240,4 +245,5 @@ export {
   makeSelectJobOpeningDetails,
   makeSelectWorkExperienceDialog,
   makeSelectEducationBackgroundDialog,
+  makeSelectApplicantDialog,
 };

@@ -13,6 +13,10 @@ import * as Constants from './constants';
 // The initial state of the App
 export const initialState = {
   loading: false,
+  goals: [],
+  recognitions: [],
+  feedbacks: [],
+  reviews: [],
   employees: [],
   leaveRequest: [],
   leaveRequestDialog: {
@@ -36,10 +40,17 @@ export const initialState = {
     },
     data: null,
   },
+  goalsDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
 };
 
 /* eslint-disable default-case, no-param-reassign */
-const leaveMgtReducer = (state = initialState, action) =>
+const performanceReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
       case Constants.GET_LEAVE_REQUEST:
@@ -103,7 +114,19 @@ const leaveMgtReducer = (state = initialState, action) =>
           holidayDialog: {...state.holidayDialog, props: { open: false }},
         };
         break;
+      case Constants.OPEN_NEW_GOALS_DIALOG:
+        return {
+          ...state,
+          goalsDialog: {...state.goalsDialog, props: { open: true }},
+        };
+        break;
+      case Constants.CLOSE_NEW_GOALS_DIALOG:
+        return {
+          ...state,
+          goalsDialog: {...state.goalsDialog, props: { open: false }},
+        };
+        break;
     }
   });
 
-export default leaveMgtReducer;
+export default performanceReducer;

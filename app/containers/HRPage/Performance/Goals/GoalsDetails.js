@@ -8,8 +8,8 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors'
 import classNames from 'classnames'
-import * as Actions from '../../actions';
-import * as Selectors from '../../selectors';
+import * as Actions from '../actions';
+import * as Selectors from '../selectors';
 import * as AppSelectors from '../../../App/selectors';
 import EditOutlined from '@material-ui/icons/EditOutlined';
 import DeleteOutlined from '@material-ui/icons/DeleteOutlined';
@@ -17,7 +17,6 @@ import RefreshSharp from '@material-ui/icons/RefreshSharp';
 import Check from '@material-ui/icons/Check';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import ApplicantDetailsTabs from './components/ApplicantDetailsTabs/'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -64,9 +63,9 @@ const menus = [
 	{id: 4, title: "History"},
 ]
 
-const ApplicantDetails = props => {
+const GoalsDetails = props => {
   const classes = useStyles();
-	const { loading, openNewEmployeeDialog, openNewApplicantDialog, getEmployee, employees, employee, getJobOpenings, jobOpenings } = props;
+	const { loading, openNewGoalsDialog } = props;
 	const [activeStep, setActiveStep] = React.useState(1);
   const steps = getSteps();
 
@@ -75,18 +74,14 @@ const ApplicantDetails = props => {
 
   return (
     <div className={classes.root}>
-      <Grid
-        container
-      >
+      <Grid container>
 				<Grid item xs={12}>
           <AppBar position="static" color="inherit" elevation={2}>
             <Toolbar variant="dense">
               <Typography variant="h6" className={classes.title}>
-                Applicant
+                Goals Details
               </Typography>
-              <IconButton onClick={()=>{}}><RefreshSharp /></IconButton>
-              <IconButton onClick={()=>{}}><EditOutlined /></IconButton>
-              <IconButton onClick={()=>{}}><DeleteOutlined /></IconButton>
+              <Button variant="contained" color="primary" onClick={openNewGoalsDialog}>Add Goal</Button>
             </Toolbar>
           </AppBar>
 				</Grid>
@@ -154,36 +149,24 @@ const ApplicantDetails = props => {
         </Grid>
         <Grid item xs={12}>
           <Paper square className={classes.paper}>
-            <ApplicantDetailsTabs />
           </Paper>
-
-          <Button variant="contained" color="primary" onClick={openNewApplicantDialog}>Add Applicant</Button>
         </Grid>
       </Grid>
     </div>
   );
 };
 
-ApplicantDetails.propTypes = {
+GoalsDetails.propTypes = {
   loading: PropTypes.bool,
-  getEmployees: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  employees: Selectors.makeSelectEmployees(),
-  employee : Selectors.makeSelectEmployee(),
-  user: AppSelectors.makeSelectCurrentUser(),
-  jobOpenings : Selectors.makeSelectJobOpenings(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewEmployeeDialog: () => dispatch(Actions.openNewEmployeeDialog()),
-    openEditEmployeeDialog: () => dispatch(Actions.openEditEmployeeDialog()),
-    openNewApplicantDialog: () => dispatch(Actions.openNewApplicantDialog()),
-    getEmployees: () => dispatch(Actions.getEmployees()),
-    getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
+    openNewGoalsDialog: () => dispatch(Actions.openNewGoalsDialog())
   };
 }
 
@@ -196,4 +179,4 @@ export default compose(
 	withRouter,
 	withConnect,
 	memo,
-)(ApplicantDetails);
+)(GoalsDetails);

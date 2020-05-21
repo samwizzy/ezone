@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import {
   makeStyles,
   Button,
@@ -56,6 +57,15 @@ const useStyles = makeStyles(theme => ({
   title: { flexGrow: 1 },
   label: { marginLeft: theme.spacing(1) },
   table: {
+    display: "flex",
+    "& td, & th": {
+      border: "0 !important"
+    },
+    "& td": {
+      color: theme.palette.text.secondary 
+    }
+  },
+  datatable: {
     whiteSpace: "nowrap",
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
@@ -133,33 +143,33 @@ const AccountDetails = props => {
               <Table className={classes.table}>
                 <TableBody>
                   <TableRow>
-                    <TableCell component="th">Account Name</TableCell>
+                    <TableCell component="th">Account Name:</TableCell>
                     <TableCell align="left">{ props.location.accountDetailsData.accountName }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell component="th">Account Code</TableCell>
+                    <TableCell component="th">Account Code:</TableCell>
                     <TableCell align="left">{ props.location.accountDetailsData.accountCode }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell component="th">Account Type</TableCell>
+                    <TableCell component="th">Account Type:</TableCell>
                     <TableCell align="left">{ props.location.accountDetailsData.accountType }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell component="th">Bank Name</TableCell>
+                    <TableCell component="th">Bank Name:</TableCell>
                     <TableCell align="left">{ props.location.accountDetailsData.bankName }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell component="th">Description</TableCell>
+                    <TableCell component="th">Description:</TableCell>
                     <TableCell align="left">{ props.location.accountDetailsData.description }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell component="th">Date Created</TableCell>
+                    <TableCell component="th">Date Created:</TableCell>
                     <TableCell align="left">
                       { moment(props.location.accountDetailsData.dateCreated).format('dddd do-MMM-YYYY') }
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell component="th">Closing Balance</TableCell>
+                    <TableCell component="th">Closing Balance:</TableCell>
                     <TableCell align="left">NGN { props.location.accountDetailsData.bankBalance }</TableCell>
                   </TableRow>
                 </TableBody>
@@ -172,7 +182,7 @@ const AccountDetails = props => {
     { props.location.accountDetailsData.transfers.length ? (
       <Grid container>
       <Grid item xs={12}>
-        <Table className={classes.table} aria-label="simple table">
+        <Table className={classes.datatable} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell component="th">Account</TableCell>
@@ -211,7 +221,7 @@ const AccountDetails = props => {
               </TableCell>
               <TableCell>
                 <Paper elevation={0} square className={classes.paper}>
-                  <Typography variant="h6">
+                  <Typography variant="button">
                     {/* { props.location.journalDetailsData.transfers.reduce((a, b) => a + Number(b.amount), 0) } */}
                   </Typography>
                 </Paper>
@@ -329,6 +339,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(AccountDetails);

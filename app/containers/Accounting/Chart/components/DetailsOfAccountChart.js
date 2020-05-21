@@ -191,7 +191,7 @@ const DetailsOfAccountChart = props => {
                   <TableRow>
                     <TableCell component="th">Date Created</TableCell>
                     <TableCell align="left">
-                      { moment(props.location.chartDetailsData.dateCreated).format('dddd do-MMM-YYYY') }
+                      { moment(props.location.chartDetailsData.dateCreated).format('LLL') }
                     </TableCell>
                   </TableRow>
                   <TableRow>

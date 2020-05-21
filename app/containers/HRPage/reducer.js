@@ -84,6 +84,13 @@ export const initialState = {
     },
     data: null,
   },
+  applicantDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -370,7 +377,6 @@ const hrReducer = (state = initialState, action) =>
         };
         break;
       case Constants.OPEN_EDUCATION_BACKGROUND_DIALOG:
-        console.log("open education dialog in reducer")
         return {
           ...state,
           educationBackgroundDialog: {...state.educationBackgroundDialog, props: { open: true }, data: action.payload },
@@ -380,6 +386,18 @@ const hrReducer = (state = initialState, action) =>
         return {
           ...state,
           educationBackgroundDialog: {...state.educationBackgroundDialog, props: { open: false }},
+        };
+        break;
+      case Constants.OPEN_NEW_APPLICANT_DIALOG:
+        return {
+          ...state,
+          applicantDialog: {...state.applicantDialog, props: { open: true }, data: action.payload },
+        };
+        break;
+      case Constants.CLOSE_NEW_APPLICANT_DIALOG:
+        return {
+          ...state,
+          applicantDialog: {...state.applicantDialog, props: { open: false }},
         };
         break;
     }

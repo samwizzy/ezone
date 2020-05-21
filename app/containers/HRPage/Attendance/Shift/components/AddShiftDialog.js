@@ -111,10 +111,8 @@ function AddShiftDialog(props) {
             </Typography>
           </Toolbar>
         </AppBar>
-        
-        <Divider />
 
-        <DialogContent>
+        <DialogContent dividers>
           <Grid container spacing={1}>
               <Grid item xs={12}>
                   <TextField

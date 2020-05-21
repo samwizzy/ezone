@@ -8,6 +8,7 @@ import { createStructuredSelector } from 'reselect';
 import * as Selectors from '../../selectors';
 import JobOpeningDetails from './JobOpeningDetails'
 import ApplicantDetails from './ApplicantDetails'
+import ApplicantDialog from './ApplicantDialog'
 import * as Actions from '../../actions';
 
 const useStyles = makeStyles(theme => ({
@@ -33,6 +34,8 @@ const JobOpeningDetailsApp = props => {
 				params.applicantId?
 				<ApplicantDetails /> : <JobOpeningDetails />
 			}
+
+      <ApplicantDialog />
     </div>
   );
 };

@@ -1,5 +1,3 @@
-import * as AppActions from '../containers/App/actions';
-import store from '../configureStore';
 /**
  * Parses the JSON returned by a network request
  *
@@ -22,24 +20,12 @@ function parseJSON(response) {
  * @return {object|undefined} Returns either the response, or throws an error
  */
 function checkStatus(response) {
-  // if (response.status >= 200 && response.status < 300) {
-  //   return response;
-  // }else if(response.status >= 401 && response.status < 408){
-  //   console.log(response.status, 'response.status');
-  //   console.log("We got a 401 status error y'all")
-  //   store.dispatch(AppActions.refreshToken())
-  //   // store.dispatch(AppActions.logout())
-  //   return
-  // }
-
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
-  // if (response.status === 401) {
-  //   console.log(response.status, 'response.status');
-  //   console.log("We got a 401 status error y'all");
-  //   return store.dispatch(AppActions.refreshToken());
-  // }
+  if (response.status === 401) {
+    console.log(response.status, 'response.status');
+  }
 
   const error = new Error(response.statusText);
   error.response = response;

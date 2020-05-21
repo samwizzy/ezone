@@ -60,6 +60,8 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: theme.palette.grey[200]
 	},
 	table: {
+    display: "flex",
+    flexDirection: "column",
     whiteSpace: "nowrap",
     '& .MuiTableFooter-root': {},
     '& th.MuiTableCell-root': {
@@ -232,7 +234,6 @@ const AccountingPeriod = props => {
                       <Button 
                         aria-controls="simple-menu" 
                         aria-haspopup="true" 
-                        // endIcon={<CheckIcon />}
                         size="small"
                         onClick={event => handleClick(event, item.id)}
                       >
@@ -262,7 +263,6 @@ const AccountingPeriod = props => {
                       <Button 
                         aria-controls="simple-menu" 
                         aria-haspopup="true" 
-                        // endIcon={<CheckIcon />}
                         size="small"
                         onClick={event => handleClick(event, item.id)}
                       >
@@ -274,31 +274,34 @@ const AccountingPeriod = props => {
                       <Button 
                         aria-controls="simple-menu" 
                         aria-haspopup="true" 
-                        // endIcon={<DeleteIcon />}
                         size="small"
                         onClick={event => handleClick(event, item.id)}
                       >
                         Closed
                       </Button>
                     </TableCell>
-                  ) : null}
+                  ) : null} 
                 </TableRow>
                 ))}
               </TableBody>
               <TableFooter>
-              <Tooltip title="Create Account Period">
-                <Button
-                  variant="contained"
-                  color="default"
-                  // size="small"
-                  className={classes.button}
-                  onClick={() => openAccountPeriodDialogAction()}
-                  startIcon={<Add />}
-                  disableElevation
-                >
-                  Add more
-                </Button>
-              </Tooltip>
+                <TableRow>
+                  <TableCell colSpan={7}>
+                    <Tooltip title="Create Account Period">
+                      <Button
+                        variant="contained"
+                        color="default"
+                        // size="small"
+                        className={classes.button}
+                        onClick={() => openAccountPeriodDialogAction()}
+                        startIcon={<Add />}
+                        disableElevation
+                      >
+                        Add more
+                      </Button>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
               </TableFooter>
             </Table>
           </Paper>

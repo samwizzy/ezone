@@ -38,6 +38,11 @@ const makeSelectHolidayDialog = () =>
     selectLeaveMgt,
     subState => subState.holidayDialog,
   );
+const makeSelectEmployees = () =>
+  createSelector(
+    selectLeaveMgt,
+    subState => subState.employees,
+  );
 
 export default makeSelectLeaveMgtPage;
 export { 
@@ -47,4 +52,5 @@ export {
   makeSelectLeaveRequestDialog,
   makeSelectLeaveTypeDialog,
   makeSelectHolidayDialog,
+  makeSelectEmployees,
 };

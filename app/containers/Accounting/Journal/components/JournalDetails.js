@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import {
   makeStyles,
   Box,
@@ -34,11 +35,11 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(3),
+    margin: theme.spacing(3),
   },
   flex: {
     position: "relative",
-    padding: theme.spacing(8, 5)
+    padding: theme.spacing(8, 2)
   },
   status: {
     textAlign: "center",
@@ -83,9 +84,12 @@ const useStyles = makeStyles(theme => ({
   label: { marginLeft: theme.spacing(1) },
   title: { flexGrow: 1 },
   table: {
-    // display: "flex",
-    "& td": {
+    display: "flex",
+    "& td, & th": {
       border: "0 !important"
+    },
+    "& td": {
+      color: theme.palette.text.secondary 
     }
   },
   datatable: {
@@ -123,7 +127,7 @@ const useStyles = makeStyles(theme => ({
 const JournalDetails = props => {
   const classes = useStyles();
 
-  const { } = props;
+  const { history } = props;
 
   const handleBack = () => {
     history.goBack();
@@ -156,24 +160,24 @@ const JournalDetails = props => {
                 <Typography>Published</Typography>
               </div>
               <Toolbar>
-                <Typography variant="h6" className={classes.bold}>Journal</Typography>
+                <Typography variant="h5" className={classes.bold}>Journal</Typography>
               </Toolbar>
               <Table className={classes.table}>
                 <TableBody>
                   <TableRow>
                     <TableCell component="th">Date</TableCell>
-                    <TableCell align="left">{moment(props.location.journalDetailsData.dateCreated).format('LLL')}</TableCell>
+                    <TableCell>{moment(props.location.journalDetailsData.dateCreated).format('LLL')}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell component="th">Ref. No.</TableCell>
-                    <TableCell align="left">
+                    <TableCell>
                       {props.location.journalDetailsData.reference}
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell colSpan={2} component="th">
                       <Typography >Notes</Typography>
-                      <Box my={1}><Typography><em>{props.location.journalDetailsData.note}</em></Typography></Box>
+                      <Box my={1}><Typography color="textSecondary"><em>{props.location.journalDetailsData.note}</em></Typography></Box>
                     </TableCell>
                   </TableRow>
                 </TableBody>
@@ -220,14 +224,14 @@ const JournalDetails = props => {
               </TableCell>
               <TableCell>
                 <Paper elevation={0} square className={classes.paper}>
-                  <Typography variant="h6">
+                  <Typography variant="button">
                     NGN { props.location.journalDetailsData.entries.reduce((a, b) => a + Number(b.debit), 0) }
                   </Typography>
                 </Paper>
               </TableCell>
               <TableCell>
                 <Paper elevation={0} square className={classes.paper}>
-                  <Typography variant="h6">
+                  <Typography variant="button">
                     NGN { props.location.journalDetailsData.entries.reduce((a, b) => a + Number(b.credit), 0) }
                   </Typography>
                 </Paper>
@@ -267,6 +271,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(JournalDetails);

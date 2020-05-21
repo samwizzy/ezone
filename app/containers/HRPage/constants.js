@@ -80,6 +80,16 @@ export const CREATE_RECRUITMENT = 'boilerplate/HRPage/CREATE RECRUITMENT';
 export const EDIT_RECRUITMENT   = 'boilerplate/HRPage/EDIT RECRUITMENT';
 export const DELETE_RECRUITMENT = 'boilerplate/HRPage/DELETE RECRUITMENT';
 
+export const CREATE_APPLICANT = 'boilerplate/HRPage/CREATE APPLICANT';
+export const CREATE_APPLICANT_SUCCESS = 'boilerplate/HRPage/CREATE APPLICANT SUCCESS';
+export const EDIT_APPLICANT   = 'boilerplate/HRPage/EDIT APPLICANT';
+export const EDIT_APPLICANT_SUCCESS   = 'boilerplate/HRPage/EDIT APPLICANT SUCCESS';
+export const DELETE_APPLICANT = 'boilerplate/HRPage/DELETE APPLICANT';
+export const DELETE_APPLICANT_SUCCESS = 'boilerplate/HRPage/DELETE APPLICANT SUCCESS';
+
+export const OPEN_NEW_APPLICANT_DIALOG  = 'boilerplate/HRPage/OPEN NEW APPLICANT DIALOG';
+export const CLOSE_NEW_APPLICANT_DIALOG = 'boilerplate/HRPage/CLOSE NEW APPLICANT DIALOG';
+
 export const GET_DEPARTMENTS = 'boilerplate/HRPage/GET DEPARTMENTS';
 export const GET_DEPARTMENTS_SUCCESS = 'boilerplate/HRPage/GET DEPARTMENTS SUCCESS';
 

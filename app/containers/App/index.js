@@ -37,6 +37,7 @@ import FilesApp from '../UtilityPage/FilesApp/Loadable';
 import HRPage from '../HRPage/Loadable';
 import AttendancePage from '../HRPage/Attendance/Loadable';
 import LeaveManagementPage from '../HRPage/LeaveManagement/Loadable';
+import PerformancePage from '../HRPage/Performance/Loadable';
 import EmailConfig from '../EmailConfig/Loadable';
 import EmailConfigs from '../EmailConfig/components/TabsPage';
 import EmailTemplate from '../EmailConfig/components/EmailTemplate';
@@ -212,6 +213,7 @@ const App = props => {
                 <PrivateRoute exact path="/work-order" component={WorkOrderPage} />
 
                 <PrivateRoute exact path="/human-resource/leave-management" component={LeaveManagementPage} />
+                <PrivateRoute exact path="/human-resource/performance" component={PerformancePage} />
 
                 <PrivateRoute exact path="/human-resource/attendance" component={AttendancePage} />
                 {/*<PrivateRoute exact path="/hr/attendance" component={AttendancePage} />*/}
