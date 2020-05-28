@@ -142,10 +142,10 @@ const makeSelectUpdatePartiesData = () =>
     subState => subState.updatePartiesData,
   );
 
-const makeSelectNewPositionDialog = () =>
+const makeSelectPositionDialog = () =>
   createSelector(
     selectCompanyStructurePageDomain,
-    subState => subState.newPositionDialog,
+    subState => subState.positionDialog,
   );
 
 const makeSelectCreateNewPositionData = () =>
@@ -240,7 +240,7 @@ export {
   makeSelectAllUsersData,
   makeSelectCreateNewPartyData,
   makeSelectNewPartiesDialog,
-  makeSelectNewPositionDialog,
+  makeSelectPositionDialog,
   makeSelectCreateNewPositionData,
   makeSelectGetAllPositions,
   makeSelectAddEmployeeToPositionDialog,

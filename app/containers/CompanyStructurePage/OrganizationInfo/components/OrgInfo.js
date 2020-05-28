@@ -1,25 +1,28 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import EzoneUtils from '../../../../utils/EzoneUtils'
 import {
   makeStyles,
   Avatar,
+  Button,
+  Grid,
+  IconButton,
   Link,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
   ListItemAvatar,
-  Grid,
-  Typography,
   Paper,
-  Button,
+  Typography,
 } from '@material-ui/core';
 import { compose } from 'redux';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import classNames from 'classnames';
 import EditOutlined from '@material-ui/icons/EditOutlined';
+import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import {
   fade,
   darken,
@@ -29,7 +32,6 @@ import LoadingIndicator from '../../../../components/LoadingIndicator';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import firstmarine from '../../../../images/firstmarine.svg';
-import TaskIcon from '../../../../images/TaskIcon.svg';
 import user from '../../../../images/user.svg';
 import msg from '../../../../images/msg.svg';
 import phone2 from '../../../../images/phone2.svg';
@@ -46,11 +48,42 @@ const useStyles = makeStyles(theme => ({
     backgroundImage:
       'linear-gradient(111.61deg, #1A88E1 38.84%, #3F0A96 101.73%)',
   },
+  list: {
+    "& .MuiListItemAvatar-root": {
+      marginRight: theme.spacing(2)
+    }
+  },
+  container: {
+    position: "relative",
+    "&:hover > $overlay": {
+      opacity: 1,
+    }
+  },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: "100%",
+    width: "100%",
+    opacity: 0,
+    transition: ".3s ease",
+  },
   avatar: {
     width: theme.spacing(12),
     height: theme.spacing(12),
-    marginRight: theme.spacing(1),
     border: `1px solid ${lighten(theme.palette.primary.main, 0.3)}`,
+  },
+  icon: {
+    color: theme.palette.text.secondary,
+    position: "absolute",
+    zIndex: theme.zIndex.drawer + 1,
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    "-ms-transform": "translate(-50%, -50%)",
+    textAlign: "center",
   },
   paper: {
     padding: theme.spacing(4, 8),
@@ -82,8 +115,20 @@ const OrgInfo = props => {
     loading,
     openEditColorDialog,
     openEditCompanyDialog,
+    updateCompanyInfo,
     history,
   } = props;
+
+  // const store = useSelector(state => state.loading)
+  // console.log(state, "useSelector check")
+
+  const handleImageChange = ({target}) => {
+    const { name, files } = target
+    const result = EzoneUtils.toBase64(files[0])
+    result.then(data => updateCompanyInfo({...companyInfo, logo: data}))
+  }
+
+  console.log(companyInfo, "companyInfo")
 
   if (loading) {
     return <LoadingIndicator />;
@@ -99,17 +144,36 @@ const OrgInfo = props => {
                 style={{ display: 'flex', alignItems: 'center' }}
               >
                 <ListItemAvatar>
-                  {companyInfo?
-                    <Avatar
-                      alt="Company Logo"
-                      src={`data:image/jpg;base64,${companyInfo.logo}`}
-                      className={classes.avatar}
-                    />
+                  {companyInfo.logo?
+                  <div className={classes.container}>
+                    <div className={classes.overlay}>
+                      <Button
+                        size="small"
+                        component="label"
+                        className={classes.icon}
+                      >
+                        <PhotoCameraIcon />
+                        <input
+                          name="attachments"
+                          type="file"
+                          style={{ display: "none" }}
+                          onChange={handleImageChange}
+                          multiple
+                        />
+                      </Button>
+                    </div>
+                    <label htmlFor="contained-button-file">
+                      <IconButton size="small">
+                        <Avatar
+                          alt="Company Logo"
+                          src={`data:image/jpg;base64,${companyInfo.logo}`}
+                          className={classes.avatar}
+                        />
+                      </IconButton>
+                    </label>
+                  </div>
                     :
-                    <Avatar
-                      alt="Company Logo"
-                      className={classes.avatar}
-                    />
+                    <Avatar className={classes.avatar}>D</Avatar>
                   }
                 </ListItemAvatar>
                 <ListItemText
@@ -308,6 +372,7 @@ function mapDispatchToProps(dispatch) {
   return {
     openEditCompanyDialog: evt => dispatch(Actions.openEditCompanyDialog(evt)),
     openEditColorDialog: evt => dispatch(Actions.openEditColorDialog(evt)),
+    updateCompanyInfo: evt => dispatch(Actions.updateCompanyInfo(evt)),
   };
 }
 
@@ -316,9 +381,8 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(
-  compose(
-    withConnect,
-    memo,
-  )(OrgInfo),
-);
+export default compose(
+  withRouter,
+  withConnect,
+  memo,
+)(OrgInfo);

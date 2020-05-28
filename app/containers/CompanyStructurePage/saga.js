@@ -202,7 +202,7 @@ export function* getPartyById() {
   const requestURL = `${Endpoints.GetPartyByIdApi}/${partyId}`;
 
   try {
-    const getPartyByIdResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -210,7 +210,9 @@ export function* getPartyById() {
       }),
     });
 
-    yield put(Actions.getPartyByIdSuccess(getPartyByIdResponse));
+    console.log(response, "getPartyByIdResponse")
+
+    yield put(Actions.getPartyByIdSuccess(response));
   } catch (err) {
     yield put(Actions.getPartyByIdError(err));
   }
@@ -345,28 +347,31 @@ export function* createNewPosition() {
   }
 }
 
-export function* updatePositionSaga() {
+export function* updatePositionSaga({payload}) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
 
   const updatePositionParams = yield select(
     Selectors.makeSelectUpdatePositionData(),
   );
+  const getPartyById = yield select(
+    Selectors.makeSelectGetPartyById(),
+  );
 
   const requestURL = `${Endpoints.UpdatePositionApi}`;
 
   try {
-    const createPartyGroupResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'PUT',
-      body: JSON.stringify(updatePositionParams),
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/Json',
       }),
     });
 
-    yield put(Actions.updatePositionSuccess(createPartyGroupResponse));
+    yield put(Actions.updatePositionSuccess(response));
     yield put(Actions.getPartyGroupAction());
-    yield put(Actions.getPartyById(updatePositionParams.id));
+    yield put(Actions.getPartyById(getPartyById.id));
     yield put(Actions.closeEditPositionDialog());
   } catch (err) {
     console.log(err, 'errrrrrrr');
@@ -492,7 +497,7 @@ export function* updateCompanyDetail() {
   const requestURL = `${Endpoints.UpdateCompanyInfoUrl}`;
 
   try {
-    const companyDetailResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'PUT',
       body: JSON.stringify(updateCompanyInfoData),
       headers: new Headers({
@@ -502,7 +507,7 @@ export function* updateCompanyDetail() {
     });
 
     yield put(Actions.getCompanyInfo());
-    yield put(Actions.updateCompanyInfoSuccess(companyDetailResponse));
+    yield put(Actions.updateCompanyInfoSuccess(response));
     yield put(Actions.closeEditCompanyDialog());
     // yield put(
     //   AppActions.openSnackBar({

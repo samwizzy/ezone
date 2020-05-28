@@ -103,7 +103,7 @@ export function* updateUserProfile() {
   const requestURL = `${Endpoints.UpdateUserProfileApi}`;
 
   try {
-    const updateUserProfileResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'PUT',
       body: JSON.stringify(updateUserProfileData),
       headers: new Headers({
@@ -112,15 +112,15 @@ export function* updateUserProfile() {
       }),
     });
 
-    console.log(updateUserProfileResponse, 'updateUserProfileResponse');
-    yield put(Actions.updateUserProfileSuccess(updateUserProfileResponse));
-    yield put(Actions.closeSignatureDialog());
-    // yield put(AppActions.getUserProfileAction(updateUserProfileResponse));
+    console.log(response, 'updateUserProfileResponse');
+    yield put(Actions.updateUserProfileSuccess(response));
+    yield put(Actions.closeEditUserProfileDialog());
+    // yield put(AppActions.getUserProfileAction(response));
 
     // yield put(
     //   AppActions.openSnackBar({
     //     open: true,
-    //     message: updateUserProfileResponse.message,
+    //     message: response.message,
     //     status: 'success',
     //   }),
     // );

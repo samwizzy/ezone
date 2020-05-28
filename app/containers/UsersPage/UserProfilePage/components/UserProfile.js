@@ -30,6 +30,7 @@ import Group266 from '../../../../images/Group266.svg';
 import UserDetail from './UserDetail';
 import NoSignature from './NoSignature';
 import Signature from './Signature';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -83,12 +84,7 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     width: theme.spacing(12),
     height: theme.spacing(12),
-    marginRight: theme.spacing(4),
-  },
-  editButton: {
-    background: theme.palette.primary.main,
-    color: '#ffffff',
-    borderRadius: '10px',
+    marginRight: theme.spacing(2),
   },
   tab: {
     marginTop: theme.spacing(5),
@@ -104,7 +100,7 @@ const UserProfile = props => {
     setValue(newValue);
   };
 
-  const { currentUser, openEditUserProfileDialogAction, loading } = props;
+  const { currentUser, openEditUserProfileDialog, loading } = props;
 
   if (loading) {
     return <LoadingIndicator />;
@@ -172,8 +168,9 @@ const UserProfile = props => {
                       color="primary"
                       variant="contained"
                       onClick={() =>
-                        openEditUserProfileDialogAction(currentUser)
+                        openEditUserProfileDialog(currentUser)
                       }
+                      startIcon={<EditOutlinedIcon />}
                     >
                       Edit Profile
                     </Button>
@@ -214,7 +211,7 @@ const UserProfile = props => {
 UserProfile.propTypes = {
   loading: PropTypes.bool,
   currentUser: PropTypes.object,
-  openEditUserProfileDialogAction: PropTypes.func,
+  openEditUserProfileDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -224,7 +221,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openEditUserProfileDialogAction: evt =>
+    openEditUserProfileDialog: evt =>
       dispatch(Actions.openEditUserProfileDialog(evt)),
   };
 }

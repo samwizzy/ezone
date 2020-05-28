@@ -11,6 +11,17 @@ class EzoneUtils {
         })
     }
 
+    getBase64 = (file, cb) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function() {
+          return cb(reader.result.split(',')[1]);
+        };
+        reader.onerror = function(error) {
+          console.log('Error: ', error);
+        };
+    };
+
     reformattedDate(date){
         var month = date.getMonth() + 1; //months from 1-12
         var day = date.getDate();

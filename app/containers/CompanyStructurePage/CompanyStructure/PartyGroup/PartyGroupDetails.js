@@ -85,7 +85,8 @@ const PartyGroupDetails = props => {
     );
   };
 
-  const handleBackToRoot = () => {
+  const handleBackToRoot = event => {
+    event.preventDefault()
     props.history.push('/organization/company/structure');
   };
 
@@ -135,7 +136,7 @@ const PartyGroupDetails = props => {
     },
     {
       name: 'id',
-      label: 'Action',
+      label: ' ',
       options: {
         filter: true,
         sort: false,
@@ -159,7 +160,7 @@ const PartyGroupDetails = props => {
     },
     {
       name: 'id',
-      label: 'Action',
+      label: ' ',
       options: {
         filter: true,
         sort: false,
@@ -227,7 +228,7 @@ const PartyGroupDetails = props => {
                 onClick={handleBackToRoot}
                 className={classes.link}
               >
-                {'> Party Groups'}
+                {'Party Groups'}
               </Link>
               <Typography color="textPrimary" variant="h6">
                 {newParties.name}

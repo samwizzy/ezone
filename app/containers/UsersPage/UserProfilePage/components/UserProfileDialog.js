@@ -18,21 +18,10 @@ import {
 } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    margin: theme.spacing(1.5, 0),
-  },
-  dense: {
-    marginTop: 19,
-  },
-  menu: {
-    width: 200,
+  root: {
+    flexGrow: 1
   },
 }));
 
@@ -55,8 +44,8 @@ const UserProfileDialog = props => {
   const {
     loading,
     updateUserProfileDialog,
-    closeEditUserProfileDialogAction,
-    updateUserProfileAction,
+    closeEditUserProfileDialog,
+    updateUserProfile,
   } = props;
 
   useEffect(() => {
@@ -97,11 +86,13 @@ const UserProfileDialog = props => {
     setValues({...values, [name]: event.target.value});
   };
 
+  console.log(values, "values")
+
   return (
     <div>
       <Dialog
         {...updateUserProfileDialog.props}
-        onClose={closeEditUserProfileDialogAction}
+        onClose={closeEditUserProfileDialog}
         keepMounted
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
@@ -179,9 +170,7 @@ const UserProfileDialog = props => {
 
         <DialogActions>
           <Button
-            onClick={() => {
-              updateUserProfileAction(values);
-            }}
+            onClick={() => updateUserProfile(values)}
             color="primary"
             variant="contained"
             disabled={loading? loading : !canBeSubmitted()}
@@ -190,7 +179,7 @@ const UserProfileDialog = props => {
             Save
           </Button>
           <Button
-            onClick={() => closeEditUserProfileDialogAction()}
+            onClick={() => closeEditUserProfileDialog()}
             color="primary"
             variant="outlined"
           >
@@ -205,8 +194,8 @@ const UserProfileDialog = props => {
 UserProfileDialog.propTypes = {
   loading: PropTypes.bool,
   updateUserProfileDialog: PropTypes.object,
-  updateUserProfileAction: PropTypes.func,
-  closeEditUserProfileDialogAction: PropTypes.func,
+  updateUserProfile: PropTypes.func,
+  closeEditUserProfileDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -216,10 +205,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateUserProfileAction: evt => dispatch(Actions.updateUserProfile(evt)),
-    closeEditUserProfileDialogAction: () =>
-      dispatch(Actions.closeEditUserProfileDialog()),
-    dispatch,
+    updateUserProfile: evt => dispatch(Actions.updateUserProfile(evt)),
+    closeEditUserProfileDialog: () => dispatch(Actions.closeEditUserProfileDialog()),
   };
 }
 

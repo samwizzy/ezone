@@ -5,10 +5,6 @@ import {
   makeStyles,
   Backdrop,
   CircularProgress,
-  Card,
-  CardContent,
-  CardActions,
-  Link,
   List,
   ListItem,
   ListItemText,
@@ -39,13 +35,6 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
-  cardRoot: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    minHeight: `calc(100vh - 120px)`,
-  },
   flex: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -75,12 +64,6 @@ const useStyles = makeStyles(theme => ({
     },
     '&:hover': {
       overflowY: 'auto',
-    },
-  },
-  card: {
-    padding: theme.spacing(5),
-    '& .MuiCardActions-root': {
-      justifyContent: 'center',
     },
   },
   datatable: {
@@ -266,15 +249,14 @@ const PartyGroupList = props => {
                 <ListSubheader component="div" id="nested-list-subheader">
                   <div className={classes.flex}>
                     <Typography variant="h6">Groups</Typography>
-                    <Button
+                    <IconButton
                       variant="contained"
                       color="primary"
                       size="small"
                       onClick={() => dispatchOpenNewPartyGroupAction()}
-                      startIcon={<Add />}
                     >
-                      Create Party Group
-                    </Button>
+                      <Add />
+                    </IconButton>
                   </div>
                 </ListSubheader>
               }

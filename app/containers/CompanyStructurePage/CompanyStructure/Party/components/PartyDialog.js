@@ -38,6 +38,9 @@ const useStyles = makeStyles(theme => ({
   menu: {
     width: 200,
   },
+  title: {
+    flexGrow: 1
+  },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
@@ -82,6 +85,12 @@ const PartyDialog = props => {
     });
   };
 
+  const handleSubmit = values => {
+    newPartyDialog.type === 'new' ? 
+    dispatchCreateNewPartyAction(values) : updatePartyAction(values);
+    setValues('');
+  }
+
   const handlePartyHeadChange = (event, value) => {
     setValues({
       ...values,
@@ -123,7 +132,7 @@ const PartyDialog = props => {
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
       >
-        <AppBar position="relative">
+        <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
               {newPartyDialog.type === 'new' ? 'New Party' : 'Edit Party'}
@@ -131,9 +140,7 @@ const PartyDialog = props => {
           </Toolbar>
         </AppBar>
 
-        <Divider />
-
-        <DialogContent>
+        <DialogContent dividers>
           <Backdrop className={classes.backdrop} open={loading}>
             <CircularProgress color="inherit" />
           </Backdrop>
@@ -219,31 +226,14 @@ const PartyDialog = props => {
         </DialogContent>
 
         <DialogActions>
-          {newPartyDialog.type === 'new' ? (
-            <Button
-              onClick={() => {
-                dispatchCreateNewPartyAction(values);
-                setValues('');
-              }}
-              color="primary"
-              variant="contained"
-              disabled={!canBeSubmitted()}
-            >
-              {newPartyDialog.type === 'new' ? 'Save' : 'Update'}
-            </Button>
-          ) : (
-            <Button
-              onClick={() => {
-                updatePartyAction(values);
-                setValues('');
-              }}
-              color="primary"
-              variant="contained"
-              disabled={!canBeSubmitted()}
-            >
-              {newPartyDialog.type === 'new' ? 'Save' : 'Update'}
-            </Button>
-          )}
+          <Button
+            onClick={() => handleSubmit(values)}
+            color="primary"
+            variant="contained"
+            disabled={!canBeSubmitted()}
+          >
+            {newPartyDialog.type === 'new' ? 'Save' : 'Update'}
+          </Button>
           <Button
             onClick={() => dispatchCloseNewPartyDialog()}
             color="primary"

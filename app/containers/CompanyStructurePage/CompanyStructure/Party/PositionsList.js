@@ -156,6 +156,29 @@ const PositionsList = props => {
                 variant="outlined"
                 size="small"
                 color="primary"
+                onClick={event => (event.stopPropagation(), openEditPositionDialogAction(selected))}
+              >
+                Edit
+              </Button>
+            </div>
+          );
+        },
+      },
+    },
+    {
+      name: 'id',
+      label: 'Action',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: value => {
+          const selected = positions.find(position => position.id === value);
+          return (
+            <div>
+              <Button
+                variant="outlined"
+                size="small"
+                color="primary"
                 onClick={event => (event.stopPropagation(), handleRoute(value))}
               >
                 View

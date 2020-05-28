@@ -25,19 +25,10 @@ import * as Actions from '../../../actions';
 import LoadingIndicator from '../../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
+  root: {
+    flexGrow: 1
   },
-  textField: {
-    margin: theme.spacing(1.5, 0),
-  },
-  dense: {
-    marginTop: 19,
-  },
-  menu: {
-    width: 200,
-  },
+  title: { flexGrow: 1 },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
@@ -50,14 +41,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const PositionDialog = props => {
   const {
-    updatePositionAction,
+    updatePosition,
     loading,
     partyGroupData,
-    newPositionDialog,
-    dispatchCloseNewPositionDialog,
-    // closeEditBranchDialogAction,
+    positionDialog,
+    closeNewPositionDialog,
     AllUserData,
-    dispatchCreateNewPositionAction,
+    createNewPosition,
     params,
   } = props;
 
@@ -69,8 +59,8 @@ const PositionDialog = props => {
   });
 
   useEffect(() => {
-    setValues({ ...newPositionDialog.data });
-  }, [newPositionDialog.data]);
+    setValues({ ...positionDialog.data });
+  }, [positionDialog.data]);
 
   const handleChange = name => event => {
     setValues({
@@ -80,6 +70,11 @@ const PositionDialog = props => {
     });
   };
 
+  const handleSubmit = () => {
+    positionDialog.type === 'new' ? createNewPosition(values) : updatePosition(values);
+    setValues('')
+  }
+
   const canBeSubmitted = () => {
     const { name, description } = values;
     return name !== '' && description !== '';
@@ -88,8 +83,8 @@ const PositionDialog = props => {
   return (
     <div>
       <Dialog
-        {...newPositionDialog.props}
-        onClose={dispatchCloseNewPositionDialog}
+        {...positionDialog.props}
+        onClose={closeNewPositionDialog}
         keepMounted
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
@@ -97,21 +92,18 @@ const PositionDialog = props => {
         <AppBar position="relative">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
-              {newPositionDialog.type === 'new'
+              {positionDialog.type === 'new'
                 ? 'New Position'
                 : 'Edit Position'}
             </Typography>
           </Toolbar>
         </AppBar>
 
-        <Divider />
-
-        <DialogContent>
+        <DialogContent dividers>
           <div>
             <TextField
               id="subgroup-name"
               label="Name"
-              className={classes.textField}
               value={values.name ? values.name : ''}
               variant="outlined"
               onChange={handleChange('name')}
@@ -121,7 +113,6 @@ const PositionDialog = props => {
             <TextField
               id="description"
               label="Description"
-              className={classes.textField}
               value={values.description ? values.description : ''}
               onChange={handleChange('description')}
               margin="normal"
@@ -134,33 +125,16 @@ const PositionDialog = props => {
         </DialogContent>
 
         <DialogActions>
-          {newPositionDialog.type === 'new' ? (
-            <Button
-              onClick={() => {
-                dispatchCreateNewPositionAction(values);
-                setValues('');
-              }}
-              color="primary"
-              variant="contained"
-              disabled={!canBeSubmitted()}
-            >
-              {newPositionDialog.type === 'new' ? 'Save' : 'Update'}
-            </Button>
-          ) : (
-            <Button
-              onClick={() => {
-                updatePositionAction(values);
-                setValues('');
-              }}
-              color="primary"
-              variant="contained"
-              disabled={!canBeSubmitted()}
-            >
-              {newPositionDialog.type === 'new' ? 'Save' : 'Update'}
-            </Button>
-          )}
           <Button
-            onClick={() => dispatchCloseNewPositionDialog()}
+            onClick={() => handleSubmit(values)}
+            color="primary"
+            variant="contained"
+            disabled={!canBeSubmitted()}
+          >
+            {positionDialog.type === 'new' ? 'Save' : 'Update'}
+          </Button>
+          <Button
+            onClick={() => closeNewPositionDialog()}
             color="primary"
             variant="outlined"
           >
@@ -173,31 +147,28 @@ const PositionDialog = props => {
 };
 
 PositionDialog.propTypes = {
-  updatePositionAction: PropTypes.func,
+  updatePosition: PropTypes.func,
   params: PropTypes.object,
-  dispatchCloseNewPositionDialog: PropTypes.func,
-  newPositionDialog: PropTypes.object,
+  closeNewPositionDialog: PropTypes.func,
+  positionDialog: PropTypes.object,
   partyGroupData: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   AllUserData: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-  dispatchCreateNewPositionAction: PropTypes.func,
+  createNewPosition: PropTypes.func,
   loading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  newPositionDialog: Selectors.makeSelectNewPositionDialog(),
+  positionDialog: Selectors.makeSelectPositionDialog(),
   partyGroupData: Selectors.makeSelectPartyGroupData(),
   AllUserData: Selectors.makeSelectAllUsersData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchCloseNewPositionDialog: () =>
-      dispatch(Actions.closeNewPositionDialog()),
-    dispatchCreateNewPositionAction: evt =>
-      dispatch(Actions.createNewPosition(evt)),
-    updatePositionAction: evt => dispatch(Actions.updatePosition(evt)),
-    dispatch,
+    closeNewPositionDialog: () => dispatch(Actions.closeNewPositionDialog()),
+    createNewPosition: evt => dispatch(Actions.createNewPosition(evt)),
+    updatePosition: evt => dispatch(Actions.updatePosition(evt)),
   };
 }
 

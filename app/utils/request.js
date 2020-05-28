@@ -25,6 +25,7 @@ function checkStatus(response) {
   }
   if (response.status === 401) {
     console.log(response.status, 'response.status');
+    return response;
   }
 
   const error = new Error(response.statusText);

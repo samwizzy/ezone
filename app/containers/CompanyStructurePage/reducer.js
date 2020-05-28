@@ -14,6 +14,7 @@ export const initialState = {
   allEmployees: false,
   addEmployeeToPositionData: false,
   allPositions: false,
+  getPartyById: false,
   selectedParty: false,
   selectedPosition: false,
   createNewPartyData: false,
@@ -93,7 +94,7 @@ export const initialState = {
     },
     data: null,
   },
-  newPositionDialog: {
+  positionDialog: {
     type: 'new',
     props: {
       open: false,
@@ -501,7 +502,7 @@ const companyStructurePageReducer = (state = initialState, action) =>
       case Constants.OPEN_NEW_POSITION_DIALOG: {
         return {
           ...state,
-          newPositionDialog: {
+          positionDialog: {
             type: 'new',
             props: {
               open: true,
@@ -513,7 +514,7 @@ const companyStructurePageReducer = (state = initialState, action) =>
       case Constants.CLOSE_NEW_POSITION_DIALOG: {
         return {
           ...state,
-          newPositionDialog: {
+          positionDialog: {
             type: 'new',
             props: {
               open: false,
@@ -525,7 +526,7 @@ const companyStructurePageReducer = (state = initialState, action) =>
       case Constants.OPEN_EDIT_POSITION_DIALOG: {
         return {
           ...state,
-          newPositionDialog: {
+          positionDialog: {
             type: 'edit',
             props: {
               open: true,
@@ -537,7 +538,7 @@ const companyStructurePageReducer = (state = initialState, action) =>
       case Constants.CLOSE_EDIT_POSITION_DIALOG: {
         return {
           ...state,
-          newPositionDialog: {
+          positionDialog: {
             type: 'edit',
             props: {
               open: false,

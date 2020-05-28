@@ -26,18 +26,8 @@ import * as Actions from '../../../actions';
 import LoadingIndicator from '../../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    margin: theme.spacing(1.5, 0),
-  },
-  dense: {
-    marginTop: 19,
-  },
-  menu: {
-    width: 200,
+  root: {
+    flexGrow: 1
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -127,7 +117,7 @@ const PartiesDialog = props => {
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
       >
-        <AppBar position="relative">
+        <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
               {newPartiesDialog.type === 'new' ? 'New Parties' : 'Edit Parties'}
@@ -135,9 +125,7 @@ const PartiesDialog = props => {
           </Toolbar>
         </AppBar>
 
-        <Divider />
-
-        <DialogContent>
+        <DialogContent dividers>
           <div>
             <TextField
               id="name"

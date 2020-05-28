@@ -23,18 +23,8 @@ import * as Actions from '../../../actions';
 import LoadingIndicator from '../../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    margin: theme.spacing(1.5, 0),
-  },
-  dense: {
-    marginTop: 19,
-  },
-  menu: {
-    width: 200,
+  root: {
+    flexGrow: 1
   },
 }));
 
@@ -93,9 +83,7 @@ const EmployeeDialog = props => {
           </Toolbar>
         </AppBar>
 
-        <Divider />
-
-        <DialogContent>
+        <DialogContent dividers>
           {addEmployeeToPositionDialog.type === 'new' ? (
             <div>
               <Autocomplete

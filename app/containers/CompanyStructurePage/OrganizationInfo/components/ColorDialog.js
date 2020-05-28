@@ -27,18 +27,8 @@ import * as Actions from '../../actions';
 import PaperDropzone from './PaperDropzone';
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    margin: theme.spacing(1),
-  },
-  dense: {
-    marginTop: 19,
-  },
-  menu: {
-    width: 200,
+  root: {
+    flexGrow: 1,
   },
 }));
 
@@ -46,33 +36,19 @@ const ColorDialog = props => {
   const { colorDialog, closeEditColorDialog, updateCompanyInfoAction } = props;
   const classes = useStyles();
 
-  console.log(colorDialog, 'colorDialog');
+  const [values, setValues] = useState({...colorDialog.data});
 
-  const [values, setValues] = useState({
-    color: '',
-    logo: '',
-    id: '',
-  });
-
-  const handleChange = name => event => {
-    setValues({ ...values, [name]: event });
+  const handleChange = name => color => {
+    console.log(color, "event fr color")
+    setValues({ ...values, [name]: color });
   };
 
   const uploadFileAction = file => {
     setValues({
       ...values,
-      ...colorDialog.data,
       logo: file,
-      id: colorDialog.data.id,
     });
   };
-
-  // useEffect(() => {
-  //   setValues({
-  //     ...colorDialog.data,
-  //   });
-  // }, []);
-  // }, [colorDialog.data]);
 
   const closeComposeDialog = () => {
     // eslint-disable-next-line no-unused-expressions
@@ -96,21 +72,22 @@ const ColorDialog = props => {
               </Typography>
             </Toolbar>
           </AppBar>
-          <DialogContent>
+
+          <DialogContent dividers>
             {colorDialog.type === 'new' ? (
               <div />
             ) : (
               <React.Fragment>
                 <ColorPicker
                   name="color"
-                  defaultValue="#000"
-                  value={values.color}
+                  defaultValue="#000000"
+                  value={values.color || ''}
                   variant="outlined"
                   onChange={handleChange('color')}
                   label="Choose Company Color"
-                  className={classes.textField}
                   margin="normal"
                   fullWidth
+                  helperText={`Color selected: ${values.color}`}
                 />
                 <PaperDropzone uploadFileAction={uploadFileAction} />
               </React.Fragment>
@@ -133,7 +110,7 @@ const ColorDialog = props => {
               <Button
                 onClick={() => closeComposeDialog()}
                 color="primary"
-                variant="contained"
+                variant="outlined"
               >
                 Cancel
               </Button>

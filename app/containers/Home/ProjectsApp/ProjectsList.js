@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     display: 'flex',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     flexWrap: 'wrap',
     alignItems: 'center',
     padding: theme.spacing(2),
@@ -62,7 +62,7 @@ const useStyles = makeStyles(theme => ({
   box: {
     width: theme.spacing(20),
     height: theme.spacing(20),
-    //flex: '0 1 10em', // flex-grow flex-shrink flex-basis
+    flex: '1 1 10em', // flex-grow flex-shrink flex-basis
     margin: theme.spacing(1),
     padding: theme.spacing(2),
     borderRadius: '10px',
