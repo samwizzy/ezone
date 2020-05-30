@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, Avatar, Breadcrumbs, Box, Button, IconButton, Link, List, ListItem, ListItemText, ListItemAvatar, Table, TableRow, TableCell, TableBody, Grid, Paper, Typography, Toolbar, Stepper, Step, StepLabel } from '@material-ui/core';
+import { AppBar, Avatar, Breadcrumbs, Box, Button, Divider, IconButton, Link, List, ListItem, ListItemText, ListItemAvatar, Table, TableRow, TableCell, TableBody, Grid, Paper, Typography, Toolbar, Stepper, Step, StepLabel } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -17,7 +17,8 @@ import DeleteOutlined from '@material-ui/icons/DeleteOutlined';
 import LensIcon from '@material-ui/icons/Lens';
 import Check from '@material-ui/icons/Check';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import TodayIcon from '@material-ui/icons/Today';
+import GoalsItem from './goals/GoalsItem'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,31 +31,8 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(4, 6),
     margin: theme.spacing(1, 0)
   },
-  table: {  
-    whiteSpace: 'nowrap',
-    '& .MuiTableCell-root': {
-      border: "0 !important"
-    },
-  },
   toolbar: theme.mixins.toolbar,
-  icon: {
-    width: 20,
-    height: 20,
-    marginRight: theme.spacing(0.5),
-    '&.active': {color: green[500]},
-  },
-  link: {
-    display: 'flex',
-  },
-  button: { 
-    borderRadius: theme.shape.borderRadius * 5,
-    padding: theme.spacing(1, 4)
-  },
 }));
-
-function getSteps() {
-  return ['Screening', 'Phone Interview', 'Face Interview', 'Make Offer'];
-}
 
 const menus = [
 	{id: 1, title: "Basic Information"},
@@ -66,13 +44,9 @@ const menus = [
 const GoalsList = props => {
   const classes = useStyles();
 	const { loading, openNewGoalsDialog } = props;
-	const [activeStep, setActiveStep] = React.useState(1);
-  const steps = getSteps();
 
   React.useEffect(() => {
   }, []);
-
-  const handleClick = () => {}
 
   return (
     <div className={classes.root}>
@@ -88,33 +62,9 @@ const GoalsList = props => {
           </AppBar>
 				</Grid>
         <Grid item md={12}>
-          <Paper square className={classes.paper}>
-            <Typography variant="h6" color="primary">Customer follow up session</Typography>
-            <Typography variant="body1" color="textPrimary">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-            </Typography>
-            <Breadcrumbs aria-label="breadcrumb">
-              <Link color="inherit" href="/" onClick={handleClick} className={classes.link}>
-                Priority :
-                <LensIcon className={classes.icon} />
-                Low
-              </Link>
-              <Link
-                color="inherit"
-                href="/getting-started/installation/"
-                onClick={handleClick}
-                className={classes.link}
-              >
-                <TodayIcon className={classes.icon} />
-                Due Date : 2020/06/23
-              </Link>
-              <Typography color="textPrimary" className={classes.link}>
-                Key Result :
-                <CheckCircleOutlineIcon className={classes.icon} />
-                7/10
-              </Typography>
-            </Breadcrumbs>
-          </Paper>
+          <GoalsItem />
+          <GoalsItem />
+          <GoalsItem />
         </Grid>
         <Grid item xs={12}>
           <Paper square className={classes.paper}>

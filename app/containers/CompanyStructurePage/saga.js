@@ -470,8 +470,10 @@ export function* companyDetail() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
+  console.log(accessToken, "accessToken accessToken accessToken")
+
   const requestURL = `${Endpoints.CompanyInfoUrl}/${
-    currentUser.organisation.orgId
+    currentUser && currentUser.organisation.orgId
   }`;
 
   try {

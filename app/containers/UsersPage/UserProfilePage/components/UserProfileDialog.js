@@ -51,7 +51,7 @@ const UserProfileDialog = props => {
   useEffect(() => {
     setValues({
       ...updateUserProfileDialog.data,
-    });
+    })
   }, [updateUserProfileDialog.data]);
 
   const classes = useStyles();
@@ -86,7 +86,7 @@ const UserProfileDialog = props => {
     setValues({...values, [name]: event.target.value});
   };
 
-  console.log(values, "values")
+  console.log(values, "values form")
 
   return (
     <div>

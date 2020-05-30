@@ -128,8 +128,6 @@ const OrgInfo = props => {
     result.then(data => updateCompanyInfo({...companyInfo, logo: data}))
   }
 
-  console.log(companyInfo, "companyInfo")
-
   if (loading) {
     return <LoadingIndicator />;
   }

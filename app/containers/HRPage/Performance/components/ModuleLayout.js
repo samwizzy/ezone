@@ -5,7 +5,6 @@ import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { darken } from '@material-ui/core/styles/colorManipulator';
 import MenuBar from '../../../../components/MenuBar'
 import Goals from './../Goals';
 import Recognition from './../Recognition';
@@ -61,12 +60,15 @@ function a11yProps(index) {
   };
 }
 
-function ModuleLayout(props) {
+function ModuleLayout({history, location, match}) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0)
+  const [value, setValue] = React.useState(location.pathname)
+
+  console.log(location, "location")
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
+    history.push(newValue)
   }
 
   return (
@@ -81,19 +83,19 @@ function ModuleLayout(props) {
               textColor="primary"
               centered
             >
-              <AntTab label="Goals" {...a11yProps(0)}  />
-              <AntTab label="Recognition" {...a11yProps(1)} />
-              <AntTab label="360 Feedback" {...a11yProps(2)} />
-              <AntTab label="Reviews" {...a11yProps(3)} />
+              <AntTab label="Goals" {...a11yProps(0)} value="/human-resource/performance/goals" />
+              <AntTab label="Recognition" {...a11yProps(1)} value="/human-resource/performance/recognitions" />
+              <AntTab label="360 Feedback" {...a11yProps(2)} value="/human-resource/performance/feedbacks" />
+              <AntTab label="Reviews" {...a11yProps(3)} value="/human-resource/performance/reviews" />
             </AntTabs>
           </React.Fragment>
         }
         content={
           <div className={classes.content}>
-            {value === 0 && (<Goals />)}
-            {value === 1 && (<Recognition />)}
-            {value === 2 && (<Feedback360 />)}
-            {value === 3 && (<Reviews />)}
+            {value === "/human-resource/performance/goals" && (<Goals />)}
+            {value === "/human-resource/performance/recognitions" && (<Recognition />)}
+            {value === "/human-resource/performance/feedbacks" && (<Feedback360 />)}
+            {value === "/human-resource/performance/reviews" && (<Reviews />)}
           </div>
         }
       />

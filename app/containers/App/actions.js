@@ -22,6 +22,7 @@ export function loginErrorAction(data) {
 }
 
 export function getUserProfileAction(data) {
+  console.log("the user profile action got fired")
   return {
     type: Constants.GET_USER_PROFILE,
     payload: data,

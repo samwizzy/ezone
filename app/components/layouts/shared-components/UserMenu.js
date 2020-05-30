@@ -82,7 +82,7 @@ const UserMenu = props => {
           onClick={userMenuClick}
           endIcon={<KeyboardArrowDownIcon />}
         >
-          {currentUser && currentUser.organisation.logo ? (
+          {(currentUser && currentUser.organisation) ? (
             <Avatar
               className={classes.avatar}
               alt="user photo"

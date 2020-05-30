@@ -93,7 +93,6 @@ export function* createNewEmployee() {
 
 export function* updateUserProfile() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  // const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const updateUserProfileData = yield select(
     Selectors.makeSelectUpdateUserProfileData(),
   );
@@ -115,7 +114,7 @@ export function* updateUserProfile() {
     console.log(response, 'updateUserProfileResponse');
     yield put(Actions.updateUserProfileSuccess(response));
     yield put(Actions.closeEditUserProfileDialog());
-    // yield put(AppActions.getUserProfileAction(response));
+    yield put(AppActions.getUserProfileAction());
 
     // yield put(
     //   AppActions.openSnackBar({

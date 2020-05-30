@@ -3,19 +3,6 @@ import history from '../../utils/history'
 import * as Constants from './constants';
 import moment from 'moment';
 
-const getToken = () => {
-  const expiresIn = localStorage.getItem('expires_in');
-  const accessToken = localStorage.getItem('access_token');
-  if (
-    accessToken(
-      !expiresIn || moment.unix(Number(expiresIn)).diff(moment(), 'minute') > 1,
-    )
-  ) {
-    return accessToken;
-  }
-  return refreshToken();
-}
-
 let userActive;
 if (!JSON.parse(localStorage.getItem('user'))) {
   userActive = false;
@@ -37,8 +24,6 @@ export const initialState = {
   user: userActive,
   loginDetails: {},
   accessToken: userToken,
-  saveToken: false,
-  getSaveToken: {},
   messageDialog: {
     data: { open: false, message: false, status: false },
   },
@@ -50,51 +35,57 @@ const appReducer = (state = initialState, action) =>
     switch (action.type) {
       case Constants.LOGIN: {
         return {
+          ...state,
           loading: true,
           error: false,
           loginDetails: action.payload,
         };
       }
       case Constants.LOGIN_SUCCESS: {
+        localStorage.setItem('access_token', action.payload.access_token);
+        localStorage.setItem('refresh_token', action.payload.refresh_token);
+        localStorage.setItem('expires_in', action.payload.expires_in);
         return {
+          ...state,
           loading: false,
           error: false,
-          // user: action.payload,
+          accessToken: localStorage.getItem('access_token'),
         };
       }
       case Constants.LOGIN_ERROR: {
         return {
+          ...state,
           loading: false,
           error: true,
         };
       }
       case Constants.GET_USER_PROFILE: {
-        localStorage.setItem('access_token', action.payload.access_token);
-        localStorage.setItem('refresh_token', action.payload.refresh_token);
-        localStorage.setItem('expires_in', action.payload.expires_in);
+        console.log("the user profile reducer got fired")
         return {
+          ...state,
           loading: true,
           error: false,
-          accessToken: localStorage.getItem('access_token'),
         };
       }
       case Constants.GET_USER_PROFILE_SUCCESS: {
         localStorage.setItem('user', JSON.stringify(action.payload));
         return {
+          ...state,
           loading: false,
           error: false,
-          user: JSON.parse(localStorage.getItem('user')),
-          accessToken: localStorage.getItem('access_token'),
+          user: action.payload,
         };
       }
       case Constants.GET_USER_PROFILE_ERROR: {
         return {
+          ...state,
           loading: false,
           error: action.payload,
         };
       }
       case Constants.OPEN_SNACKBAR: {
         return {
+          ...state,
           messageDialog: {
             data: action.payload,
           },
@@ -102,6 +93,7 @@ const appReducer = (state = initialState, action) =>
       }
       case Constants.CLOSE_SNACKBAR: {
         return {
+          ...state,
           messageDialog: {
             data: { open: false },
           },

@@ -77,7 +77,7 @@ export function* login() {
 
     console.log(loginResponse, 'loginResponse');
 
-    // yield put(Actions.loginSuccessAction(loginResponse));
+    yield put(AppActions.loginSuccessAction(loginResponse));
     // yield put(Actions.saveToken(loginResponse.access_token));
 
     // if login is success get user profile with access token
@@ -202,13 +202,16 @@ export function* logOut() {
   }
 }
 
-export function* userProfile() {
-  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+export function* userProfile({payload}) {
+  const token = yield select(AppSelectors.makeSelectAccessToken());
+  const accessToken = token ? token : payload.access_token;
 
   const requestURL = `${EndPoints.UserProfileUrl}`;
 
+  console.log(payload, "User saga wahala shit")
+
   try {
-    const userProfileResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -216,11 +219,9 @@ export function* userProfile() {
       }),
     });
 
-    console.log(userProfileResponse, 'loginResponse profile');
+    console.log(response, 'loginResponse profile');
 
-    // yield put(Actions.loginSuccessAction(userProfileResponse));
-
-    yield put(AppActions.getUserProfileSuccessAction(userProfileResponse));
+    yield put(AppActions.getUserProfileSuccessAction(response));
   } catch (err) {
     console.log(err, 'err user profile');
     yield put(AppActions.getUserProfileErrorAction(err));

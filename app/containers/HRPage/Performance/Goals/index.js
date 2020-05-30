@@ -33,6 +33,8 @@ export function GoalsPage(props) {
     getAttendance();  
   }, []);
 
+  console.log(params, "params")
+
   return (
     <React.Fragment>
       <Helmet>
@@ -40,7 +42,7 @@ export function GoalsPage(props) {
         <meta name="description" content="ezone application goals page" />
       </Helmet>
 
-      { params.goalId?
+      { !params.goalId?
         <GoalsDetails /> : <GoalsList />
       }
 

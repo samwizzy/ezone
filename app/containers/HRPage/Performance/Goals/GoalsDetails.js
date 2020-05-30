@@ -2,7 +2,8 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, Avatar, Box, Button, IconButton, List, ListItem, ListItemText, ListItemAvatar, Table, TableRow, TableCell, TableBody, Grid, Paper, Typography, Toolbar, Stepper, Step, StepLabel } from '@material-ui/core';
+import { AppBar, Avatar, Box, Button, IconButton, Checkbox, FormControl, FormControlLabel, List, ListItem, ListItemText, ListItemAvatar, ListItemSecondaryAction, Table, TableRow, TableCell, TableBody, Grid, Paper, TextField, Typography, Toolbar, Stepper, Step, StepLabel } from '@material-ui/core';
+import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -17,6 +18,8 @@ import RefreshSharp from '@material-ui/icons/RefreshSharp';
 import Check from '@material-ui/icons/Check';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import GoalSideGrid from './goal/GoalSideGrid';
+import CustomCheckBox from './goal/CustomCheckBox';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   paper: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(4),
     margin: theme.spacing(1, 0)
   },
   table: {  
@@ -34,6 +37,12 @@ const useStyles = makeStyles(theme => ({
     '& .MuiTableCell-root': {
       border: "0 !important"
     },
+  },
+  content: { margin: theme.spacing(2, 0) },
+  customCheck: {
+    display: 'flex',
+    justifyContent: "space-between",
+    alignItems: 'center',
   },
   toolbar: theme.mixins.toolbar,
   icon: {
@@ -52,31 +61,27 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function getSteps() {
-  return ['Screening', 'Phone Interview', 'Face Interview', 'Make Offer'];
-}
-
-const menus = [
-	{id: 1, title: "Basic Information"},
-	{id: 2, title: "CV"},
-	{id: 3, title: "Interview"},
-	{id: 4, title: "History"},
-]
-
 const GoalsDetails = props => {
   const classes = useStyles();
-	const { loading, openNewGoalsDialog } = props;
-	const [activeStep, setActiveStep] = React.useState(1);
-  const steps = getSteps();
-
+  const { loading, openNewGoalsDialog } = props;
+  const [state, setState] = React.useState({text: true, call: false, email: false})
+  const [comment, setComment] = React.useState({comment: ""})
+	
   React.useEffect(() => {
-  }, [employee]);
+  }, []);
+
+  const handleChange = ({target}) => {
+    setComment({...state, [target.name]: target.value})
+  }
+  const handleCommentChange = ({target}) => {
+    setComment({...comment, [target.name]: target.value})
+  }
 
   return (
     <div className={classes.root}>
       <Grid container>
 				<Grid item xs={12}>
-          <AppBar position="static" color="inherit" elevation={2}>
+          <AppBar position="static" color="inherit" elevation={1}>
             <Toolbar variant="dense">
               <Typography variant="h6" className={classes.title}>
                 Goals Details
@@ -87,68 +92,92 @@ const GoalsDetails = props => {
 				</Grid>
         <Grid item md={12}>
           <Paper square className={classes.paper}>
-            <Grid container alignItems="center">
-              <Grid item xs={6}>
-                <List className={classes.list}>
-                  <ListItem
-                    alignItems="center"
-                  >
-                    <ListItemAvatar>
-                      <Avatar
-                        alt="applicant avi"
-                        src={''}
-                        className={classes.avatar}
-                      />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={
-                        <Typography variant="h6" color="inherit">
-                          Mike Adenuga
-                        </Typography>
-                      }
-                      secondary={
-                        <Typography variant="subtitle1" color="inherit">
-                          IT Project Manager
-                        </Typography>
-                      }
+            <Grid container spacing={2}>
+              <Grid item md={8} xs={12}>
+                <Typography variant="h6" color="primary">Customer follow up session</Typography>
+                <Typography variant="subtitle1">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                </Typography>
+
+                <div className={classes.content}>
+                  <Typography variant="subtitle1"><strong>Key Results</strong></Typography>
+
+                  <div className={classes.customCheck}>
+                    <FormControlLabel
+                      control={<Checkbox checked={state.text} onChange={handleChange} name="text" />}
+                      label="Text"
                     />
-                  </ListItem>
-                </List>
+                    <AvatarGroup max={3}>
+                      <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                      <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
+                      <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+                      <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
+                      <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
+                    </AvatarGroup>
+                  </div>
+                  <div className={classes.customCheck}>
+                    <FormControlLabel
+                      control={<Checkbox checked={state.call} onChange={handleChange} name="call" />}
+                      label="Call"
+                    />
+                    <AvatarGroup max={3}>
+                      <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                      <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
+                      <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+                      <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
+                      <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
+                    </AvatarGroup>
+                  </div>
+                  <div className={classes.customCheck}>
+                    <FormControlLabel
+                      control={<Checkbox checked={state.email} onChange={handleChange} name="email" />}
+                      label="Email"
+                    />
+                    <AvatarGroup max={3}>
+                      <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                      <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
+                      <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+                      <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
+                      <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
+                    </AvatarGroup>
+                  </div>
+                </div>
+                <div className={classes.content}>
+                  <TextField
+                    label="Comment"
+                    name="comment"
+                    value=""
+                    onChange={handleCommentChange}
+                    variant="outlined"
+                    margin="normal"
+                    rows={3}
+                    multiline
+                    fullWidth
+                  />
+                  <Button variant="contained" color="primary">Comment</Button>
+                </div>
+                <div className={classes.content}>
+                  <Typography variant="subtitle1">Activities</Typography>
+                  <List dense={true}>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <IconButton edge="end" aria-label="delete">
+                          <EditOutlined />
+                        </IconButton>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={"Status changed to Inprogress by Essien Joy"}
+                        secondary={"3rd Jul 2019    3:00pm"}
+                      />
+                    </ListItem>
+                  </List>
+                </div>
+
               </Grid>
-              <Grid item xs={6}>
-                <Table className={classes.table}>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="right">
-                        <Typography variant="subtitle1" color="textSecondary">Date applied: 3rd Jul, 2020</Typography>
-                        <Typography variant="subtitle1" color="textSecondary"><CheckCircleIcon className={classNames(classes.icon, {"active": true})} /> Approved</Typography>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell align="right">
-                        <Button className={classes.button} variant="contained" color="primary" disableElevation>Schedule an Interview</Button>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
+              <Grid item md={4} xs={12}>
+                <GoalSideGrid />
               </Grid>
             </Grid>
-          </Paper>
-        </Grid>
-        <Grid item xs={12}>
-          <Paper square className={classes.paper}>
-            <Box mx={5}><Typography variant="subtitle1" color="inherit">Hiring Stage</Typography></Box>
-            <Stepper activeStep={activeStep} alternativeLabel>
-              {steps.map((label) => (
-                <Step key={label}>
-                  <StepLabel>{label}</StepLabel>
-                </Step>
-              ))}
-            </Stepper>
-          </Paper>  
-        </Grid>
-        <Grid item xs={12}>
-          <Paper square className={classes.paper}>
           </Paper>
         </Grid>
       </Grid>
