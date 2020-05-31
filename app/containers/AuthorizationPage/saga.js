@@ -92,7 +92,6 @@ export function* login() {
     //   }),
     // );
   } catch (err) {
-    console.log(err, 'err');
     yield put(AppActions.loginErrorAction(err));
     yield put(
       AppActions.openSnackBar({

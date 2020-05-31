@@ -1,15 +1,17 @@
 import React, { memo } from 'react';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles } from '@material-ui/core/styles';
 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import * as Selectors from '../selectors';
-import * as Actions from '../actions';
+import * as Selectors from '../../../containers/App/selectors';
+import * as Actions from '../../../containers/App/actions';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -25,48 +27,38 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Snackbars = props => {
-  const { messageDialog, openSnackAction, closeSnackAction } = props;
+  const { messageDialog, openSnackBar, closeSnackBar } = props;
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
 
-  const handleClick = () => {
-    setOpen(true);
-  };
+  if(!messageDialog){
+    return ''
+  }
 
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpen(false);
-  };
-
-  // console.log(messageDialog, 'messageDialog 2');
+  console.log(messageDialog, 'messageDialog 2');
   return (
     <div className={classes.root}>
-      {/* <Button variant="outlined" onClick={openSnackAction}>
+      {/* <Button variant="outlined" onClick={openSnackBar} style={{zIndex: 9999}}>
         Open success snackbar
       </Button> */}
-      {messageDialog && (
-        <Snackbar
-          open={messageDialog.open}
-          autoHideDuration={6000}
-          onClose={closeSnackAction}
+
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={messageDialog.open}
+        autoHideDuration={6000}
+        onClose={closeSnackBar}
+      >
+        <Alert
+          onClose={closeSnackBar}
+          severity={messageDialog.status}
         >
-          <Alert
-            onClose={closeSnackAction}
-            severity={messageDialog.status}
-          >
-            {messageDialog.message}
-          </Alert>
-        </Snackbar>
-      )}
+          {messageDialog.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
 
 Snackbars.propTypes = {
-  // getPartyGroup: PropTypes.func,
   messageDialog: PropTypes.object,
 };
 
@@ -76,12 +68,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeSnackAction: () =>
-      dispatch(
-        Actions.closeSnackBar({
-          open: false,
-        }),
-      ),
+    openSnackBar: () => dispatch(Actions.openSnackBar({open: true})),
+    closeSnackBar: () => dispatch(Actions.closeSnackBar()),
   };
 }
 

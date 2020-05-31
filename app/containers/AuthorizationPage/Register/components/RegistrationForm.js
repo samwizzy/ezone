@@ -24,6 +24,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
+import * as AppSelectors from '../../../App/selectors';
 import logo from '../../../../images/logo.svg';
 import banner from '../../../../images/banner.svg';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
@@ -126,7 +127,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const RegistrationForm = props => {
-  const { loading, signupResData, signupAction } = props;
+  const { loading, currentUser, signupResData, signupAction } = props;
   const classes = useStyles();
 
   const [visibility, setVisibility] = React.useState(false);
@@ -163,8 +164,9 @@ const RegistrationForm = props => {
     setVisibility(!visibility);
   };
 
-  if (signupResData.success === true) {
-    return <Redirect to="/login" />;
+  // if (signupResData.success === true) {
+  if (currentUser === true) {
+    return <Redirect to="/home" />;
   }
 
   return (
@@ -321,6 +323,7 @@ RegistrationForm.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   signupResData: Selectors.makeSelectSignupResData(),
+  currentUser: AppSelectors.makeSelectCurrentUser(),
 });
 
 function mapDispatchToProps(dispatch) {

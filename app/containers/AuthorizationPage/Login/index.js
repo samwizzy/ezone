@@ -21,7 +21,7 @@ import LoginForm from './components/LoginForm';
 // import { useAuth } from '../context/AppContext';
 import * as Selectors from '../../App/selectors';
 import * as AppActions from '../../App/actions';
-import Snackbar from '../../App/components/Snackbar';
+import Snackbar from '../../../components/layouts/shared-components/Snackbar';
 
 export function LoginPage(props) {
   useInjectReducer({ key: 'authorizationPage', reducer });

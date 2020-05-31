@@ -25,7 +25,7 @@ export const initialState = {
   loginDetails: {},
   accessToken: userToken,
   messageDialog: {
-    data: { open: false, message: false, status: false },
+    open: false, message: "Hello friend", status: "info"
   },
 };
 
@@ -86,17 +86,13 @@ const appReducer = (state = initialState, action) =>
       case Constants.OPEN_SNACKBAR: {
         return {
           ...state,
-          messageDialog: {
-            data: action.payload,
-          },
+          messageDialog: {...state.messageDialog, ...action.payload },
         };
       }
       case Constants.CLOSE_SNACKBAR: {
         return {
           ...state,
-          messageDialog: {
-            data: { open: false },
-          },
+          messageDialog: { open: false, message: "", status: "info" },
         };
       }
       case Constants.LOG_OUT: {

@@ -7,6 +7,7 @@ import {
 } from '@material-ui/core/styles';
 import Header from '../../Header';
 import Sidebar from '../../Sidebar';
+import Snackbar from '../shared-components/Snackbar';
 import theme from './../themeConfig'
 import Backdrop from  './../../Backdrop/Loadable'
 
@@ -23,6 +24,7 @@ class Layout3 extends React.Component {
     return (
         <React.Fragment>
           <ThemeProvider theme={theme}>
+            <Snackbar />
             <Backdrop />
             <Header />
             <Sidebar
