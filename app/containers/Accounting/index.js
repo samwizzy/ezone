@@ -39,13 +39,12 @@ export function Accounting(props) {
     dispatchGetAccountingSetupAction();
   }, []);
 
-  console.log('accountingSetupData main index.js', accountingSetupData);
-
   // Routing based on api response
   if (loading) {
     return <LoadingIndicator />;
   }
-  else if (accountingSetupData === null) {
+
+  if (accountingSetupData === null) {
     return (
       <ModuleLayout>
         <AccountSetup />

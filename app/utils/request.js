@@ -24,7 +24,9 @@ function checkStatus(response) {
     return response;
   }
   if (response.status === 401) {
-    console.log(response.status, 'response.status');
+    return response;
+  }
+  if (response.status === 400 || response.status === 500) {
     return response;
   }
 

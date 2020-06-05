@@ -162,7 +162,6 @@ ShiftList.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   user: AppSelectors.makeSelectCurrentUser(),
-  attendances: Selectors.makeSelectAttendances(),
   shifts: Selectors.makeSelectShifts(),
 });
 

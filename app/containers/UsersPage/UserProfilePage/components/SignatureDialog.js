@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
 import {
   makeStyles,
   AppBar,
@@ -19,6 +18,7 @@ import {
   DialogActions,
   Button,
   Dialog,
+  Paper,
 } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
@@ -27,19 +27,9 @@ import SignaturePad from './SignaturePad';
 import SignatureUpload from './SignatureUpload';
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    margin: theme.spacing(1.5, 0),
-  },
-  dense: {
-    marginTop: 19,
-  },
-  menu: {
-    width: 200,
-  },
+  root: {
+    flexGrow: 1,
+  }
 }));
 
 function TabPanel(props) {
@@ -80,9 +70,9 @@ const SignatureDialog = props => {
   const {
     loading,
     signatureDialog,
-    closeSignatureDialogAction,
+    closeSignatureDialog,
     closeEditEmployeeDialogAction,
-    dispatchCreateNewEmployeeAction,
+    createNewEmployee,
   } = props;
 
   const classes = useStyles();
@@ -97,7 +87,7 @@ const SignatureDialog = props => {
     <div>
       <Dialog
         {...signatureDialog.props}
-        onClose={closeSignatureDialogAction}
+        onClose={closeSignatureDialog}
         keepMounted
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
@@ -106,43 +96,28 @@ const SignatureDialog = props => {
           {signatureDialog.type === 'new' ? 'New Signature' : 'Edit Signature'}
         </DialogTitle>
 
-        <DialogContent dividers>
+
           {signatureDialog.type === 'new' ? (
             <div>
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                aria-label="simple tabs example"
-              >
-                <Tab label="Draw" {...a11yProps(0)} />
-                <Tab label="Upload" {...a11yProps(1)} />
-              </Tabs>
-              <TabPanel value={value} index={0}>
+              <Paper square>
+                <Tabs
+                  value={value}
+                  onChange={handleChange}
+                  aria-label="simple tabs example"
+                >
+                  <Tab label="Draw" {...a11yProps(0)} />
+                  <Tab label="Upload" {...a11yProps(1)} />
+                </Tabs>
+              </Paper>
+              
+              { value === 0 &&
                 <SignaturePad signatureDialog={signatureDialog} />
-              </TabPanel>
-              <TabPanel value={value} index={1}>
+              }
+              { value === 1 &&
                 <SignatureUpload />
-              </TabPanel>
+              }
             </div>
           ) : null}
-        </DialogContent>
-
-        <DialogActions>
-          {/* {loading ? (
-            <LoadingIndicator />
-          ) : (
-            <Button color="primary" variant="contained">
-              Save
-            </Button>
-          )} */}
-          <Button
-            onClick={() => closeSignatureDialogAction()}
-            color="primary"
-            variant="contained"
-          >
-            Cancel
-          </Button>
-        </DialogActions>
       </Dialog>
     </div>
   );
@@ -151,8 +126,8 @@ const SignatureDialog = props => {
 SignatureDialog.propTypes = {
   loading: PropTypes.bool,
   signatureDialog: PropTypes.object,
-  dispatchCreateNewEmployeeAction: PropTypes.func,
-  closeSignatureDialogAction: PropTypes.func,
+  createNewEmployee: PropTypes.func,
+  closeSignatureDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -162,10 +137,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchCreateNewEmployeeAction: evt =>
-      dispatch(Actions.createNewEmployee(evt)),
-      closeSignatureDialogAction: () =>
-      dispatch(Actions.closeSignatureDialog()),
+    createNewEmployee: evt => dispatch(Actions.createNewEmployee(evt)),
+    closeSignatureDialog: () => dispatch(Actions.closeSignatureDialog()),
     dispatch,
   };
 }

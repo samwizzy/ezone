@@ -137,3 +137,25 @@ export function closeEditGoalsDialog(data) {
     type: Constants.CLOSE_EDIT_GOALS_DIALOG,
   };
 }
+
+export function openNewRecognitionDialog() {
+  return {
+    type: Constants.OPEN_NEW_RECOGNITION_DIALOG,
+  };
+}
+export function closeNewRecognitionDialog() {
+  return {
+    type: Constants.CLOSE_NEW_RECOGNITION_DIALOG,
+  };
+}
+
+export function openEditRecognitionDialog(data) {
+  return {
+    type: Constants.OPEN_EDIT_RECOGNITION_DIALOG,
+  };
+}
+export function closeEditRecognitionDialog(data) {
+  return {
+    type: Constants.CLOSE_EDIT_RECOGNITION_DIALOG,
+  };
+}

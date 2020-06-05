@@ -75,6 +75,12 @@ export function createAttendanceSuccess(data) {
     payload: data
   };
 }
+export function createAttendanceError(data) {
+  return {
+    type: Constants.CREATE_ATTENDANCE_ERROR,
+    payload: data
+  };
+}
 
 export function createShift(data) {
   return {

@@ -24,48 +24,44 @@ const makeSelectAttendance = () =>
     subState => subState.attendance,
   );
 
-  const makeSelectDays = () =>
-    createSelector(
-      selectAttendance,
-      subState => subState.days,
-    );
-  const makeSelectShifts = () =>
-    createSelector(
-      selectAttendance,
-      subState => subState.shifts,
-    );
-    const makeSelectCreateShift = () =>
-    createSelector(
-      selectAttendance,
-      subState => subState.createShift,
-    );
-  const makeSelectCreateShiftSuccess = () =>
-    createSelector(
-      selectAttendance,
-      subState => subState.getCreateShift,
-    );
-
-  const makeSelectAssignShift = () =>
-    createSelector(
-      selectAttendance,
-      subState => subState.assignShift,
-    );
-  const makeSelectAssignShiftSuccess = () =>
-    createSelector(
-      selectAttendance,
-      subState => subState.getAssignShift,
-    );
-  
-  const makeSelectAttendances = () =>
-  createSelector(
-    selectAttendance,
-    subState => subState.attendances,
-  );
 const makeSelectAttendanceDialog = () =>
   createSelector(
     selectAttendance,
     subState => subState.attdDialog,
+  );  
+
+const makeSelectDays = () =>
+  createSelector(
+    selectAttendance,
+    subState => subState.days,
   );
+const makeSelectShifts = () =>
+  createSelector(
+    selectAttendance,
+    subState => subState.shifts,
+  );
+const makeSelectCreateShift = () =>
+  createSelector(
+    selectAttendance,
+    subState => subState.createShift,
+  );
+const makeSelectCreateShiftSuccess = () =>
+  createSelector(
+    selectAttendance,
+    subState => subState.getCreateShift,
+  );
+
+const makeSelectAssignShift = () =>
+  createSelector(
+    selectAttendance,
+    subState => subState.assignShift,
+  );
+const makeSelectAssignShiftSuccess = () =>
+  createSelector(
+    selectAttendance,
+    subState => subState.getAssignShift,
+  );
+
 const makeSelectShiftDialog = () =>
   createSelector(
     selectAttendance,
@@ -77,7 +73,7 @@ const makeSelectEmployeeShiftDialog = () =>
     subState => subState.employeeShiftDialog,
   );
 
-  const makeSelectEmployees = () =>
+const makeSelectEmployees = () =>
   createSelector(
     selectAttendance,
     subState => subState.employees,
@@ -91,7 +87,6 @@ export {
   makeSelectAttendanceDialog,
   makeSelectShiftDialog,
   makeSelectEmployeeShiftDialog,
-  makeSelectAttendances,
   makeSelectDays,
   makeSelectShifts,
   makeSelectCreateShift,

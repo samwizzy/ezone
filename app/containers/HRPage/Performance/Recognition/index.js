@@ -6,6 +6,7 @@
 import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
+import {withRouter} from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -14,7 +15,9 @@ import * as AppSelectors from '../../../App/selectors';
 import * as AppActions from '../../../App/actions';
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
-import LeaveTypeList from './LeaveTypeList'
+import RecognitionList from './RecognitionList'
+import RecognitionDetails from './RecognitionDetails'
+import RecognitionDialog from './components/RecognitionDialog'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,8 +25,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function LeaveTypePage(props) {
-  const { getLeaveType } = props;
+export function RecognitionPage(props) {
+  const { getLeaveType, match } = props;
+  const { params } = match
 
   React.useEffect(() => {
     getLeaveType();  
@@ -32,17 +36,20 @@ export function LeaveTypePage(props) {
   return (
     <React.Fragment>
       <Helmet>
-        <title>Leave Type Page</title>
-        <meta name="description" content="ezone application leave type page" />
+        <title>Recognition Page</title>
+        <meta name="description" content="ezone application recognition page" />
       </Helmet>
 
-      <LeaveTypeList />
+      {params.recognitionId ?
+        <RecognitionDetails /> : <RecognitionList />
+      }
 
+      <RecognitionDialog />
     </React.Fragment>
   );
 }
 
-LeaveTypePage.propTypes = {
+RecognitionPage.propTypes = {
   token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
@@ -62,6 +69,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
-)(LeaveTypePage);
+)(RecognitionPage);

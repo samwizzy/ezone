@@ -18,14 +18,12 @@ if (!localStorage.getItem('access_token')) {
 }
 
 export const initialState = {
-  checkActiveSession: false,
   loading: false,
   error: false,
   user: userActive,
-  loginDetails: {},
   accessToken: userToken,
   messageDialog: {
-    open: false, message: "Hello friend", status: "info"
+    open: false, message: "", status: "info"
   },
 };
 
@@ -37,19 +35,14 @@ const appReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: true,
-          error: false,
-          loginDetails: action.payload,
         };
       }
       case Constants.LOGIN_SUCCESS: {
-        localStorage.setItem('access_token', action.payload.access_token);
-        localStorage.setItem('refresh_token', action.payload.refresh_token);
-        localStorage.setItem('expires_in', action.payload.expires_in);
         return {
           ...state,
           loading: false,
           error: false,
-          accessToken: localStorage.getItem('access_token'),
+          accessToken: action.payload,
         };
       }
       case Constants.LOGIN_ERROR: {
@@ -86,7 +79,7 @@ const appReducer = (state = initialState, action) =>
       case Constants.OPEN_SNACKBAR: {
         return {
           ...state,
-          messageDialog: {...state.messageDialog, ...action.payload },
+          messageDialog: { open: true, ...action.payload },
         };
       }
       case Constants.CLOSE_SNACKBAR: {
@@ -96,15 +89,11 @@ const appReducer = (state = initialState, action) =>
         };
       }
       case Constants.LOG_OUT: {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-        localStorage.removeItem('expires_in');
-
-        // history.push({
-        //   pathname: '/login'
-        // })
-
-        return {};
+        return {
+          ...state,
+          user: false,
+          accessToken: false
+        };
       }
       case Constants.POST_FCM_TOKEN: {
         return {
@@ -138,14 +127,11 @@ const appReducer = (state = initialState, action) =>
         };
       }
       case Constants.REFRESH_TOKEN_SUCCESS: {
-        localStorage.setItem('access_token', action.payload.access_token);
-        localStorage.setItem('refresh_token', action.payload.refresh_token);
-        localStorage.setItem('expires_in', action.payload.expires_in);
         return {
           ...state,
           loading: false,
           error: false,
-          message: action.payload,
+          accessToken: action.payload,
         };
       }
       case Constants.REFRESH_TOKEN_ERROR: {
@@ -153,29 +139,6 @@ const appReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: true,
-          message: action.payload,
-        };
-      }
-      case Constants.CHECK_ACTIVE_SESSION: {
-        return {
-          ...state,
-          loading: true,
-        };
-      }
-      case Constants.CHECK_ACTIVE_SESSION_SUCCESS: {
-        return {
-          ...state,
-          loading: false,
-          error: false,
-          checkActiveSession: action.payload,
-        };
-      }
-      case Constants.CHECK_ACTIVE_SESSION_ERROR: {
-        return {
-          ...state,
-          loading: false,
-          error: true,
-          message: action.payload,
         };
       }
     }

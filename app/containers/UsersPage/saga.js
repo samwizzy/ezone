@@ -12,7 +12,7 @@ export function* getAllEmployees() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
   const requestURL = `${Endpoints.GetAllUsersApi}/${
-    currentUser.organisation.orgId
+    currentUser && currentUser.organisation.orgId
   }`;
 
   try {
@@ -96,9 +96,6 @@ export function* updateUserProfile() {
   const updateUserProfileData = yield select(
     Selectors.makeSelectUpdateUserProfileData(),
   );
-
-  console.log(updateUserProfileData, 'updateUserProfileData');
-  console.log(accessToken, 'accessToken profile');
   const requestURL = `${Endpoints.UpdateUserProfileApi}`;
 
   try {
@@ -111,18 +108,11 @@ export function* updateUserProfile() {
       }),
     });
 
-    console.log(response, 'updateUserProfileResponse');
     yield put(Actions.updateUserProfileSuccess(response));
     yield put(Actions.closeEditUserProfileDialog());
     yield put(AppActions.getUserProfileAction());
 
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: response.message,
-    //     status: 'success',
-    //   }),
-    // );
+    yield put(AppActions.openSnackBar({open: true, message: response.message, status: 'success'}));
     // if (createNewEmployeeResponse.success === true) {
     //   yield put(
     //     AppActions.openSnackBar({

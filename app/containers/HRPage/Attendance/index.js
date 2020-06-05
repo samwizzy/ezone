@@ -33,7 +33,7 @@ export function AttendancePage(props) {
   const { getAttendances, getDays, getShifts, days, getEmployees, } = props;
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
-  console.log(days, "Index attd");
+  
   React.useEffect(() => {
     getAttendances(); 
     getDays(); 

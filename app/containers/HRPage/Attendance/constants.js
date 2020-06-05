@@ -22,6 +22,7 @@ export const GET_ATTENDANCE        = 'boilerplate/HRPage/GET ATTENDANCE';
 export const GET_ATTENDANCE_SUCCESS = 'boilerplate/HRPage/GET ATTENDANCE SUCCESS';
 export const CREATE_ATTENDANCE = 'boilerplate/HRPage/CREATE ATTENDANCE';
 export const CREATE_ATTENDANCE_SUCCESS = 'boilerplate/HRPage/CREATE ATTENDANCE SUCCESS';
+export const CREATE_ATTENDANCE_ERROR = 'boilerplate/HRPage/CREATE ATTENDANCE ERROR';
 
 export const OPEN_NEW_ATTENDANCE_DIALOG   = 'boilerplate/HRPage/OPEN NEW ATTENDANCE DIALOG';
 export const CLOSE_NEW_ATTENDANCE_DIALOG  = 'boilerplate/HRPage/CLOSE NEW ATTENDANCE DIALOG';

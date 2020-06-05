@@ -43,6 +43,11 @@ const makeSelectGoalsDialog = () =>
     selectPerformance,
     subState => subState.goalsDialog,
   );
+const makeSelectRecognitionDialog = () =>
+  createSelector(
+    selectPerformance,
+    subState => subState.recognitionDialog,
+  );
 const makeSelectEmployees = () =>
   createSelector(
     selectPerformance,
@@ -83,4 +88,5 @@ export {
   makeSelectHolidayDialog,
   makeSelectEmployees,
   makeSelectGoalsDialog,
+  makeSelectRecognitionDialog,
 };

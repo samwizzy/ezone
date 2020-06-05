@@ -1,6 +1,7 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
 import qs from 'query-string';
 import request from '../../utils/request';
+import history from '../../utils/history'
 import * as AppConstants from '../App/constants';
 import * as AppActions from '../App/actions';
 import * as AppSelectors from '../App/selectors';
@@ -27,46 +28,25 @@ export function* signup() {
     yield put(Actions.signupSuccessRequest(signupRes));
     if (signupRes.success === true) {
       // yield put(FirebaseServices.createNewAdmin(signupRes));
-      yield put(
-        AppActions.openSnackBar({
-          open: true,
-          message: signupRes.message,
-          status: 'success',
-        }),
-      );
+      yield put(AppActions.openSnackBar({message: signupRes.message, status: 'success'}));
     } else {
-      yield put(
-        AppActions.openSnackBar({
-          open: true,
-          message: signupRes.message,
-          status: 'warning',
-        }),
-      );
+      yield put(AppActions.openSnackBar({message: signupRes.message, status: 'warning'}));
     }
   } catch (err) {
-    console.log(err, 'signupRes error');
     yield put(Actions.signupErrorRequest(err));
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: err.message,
-        status: 'error',
-      }),
-    );
+    yield put(AppActions.openSnackBar({message: err.message, status: 'error'}));
   }
 }
 
-export function* login() {
-  const loginDetails = yield select(AppSelectors.makeSelectLoginDetails());
-
-  const { username, password } = loginDetails;
+export function* login({payload}) {
+  const { username, password } = payload;
   const newData = { username, password, grant_type: 'password' };
   const requestURL = `${EndPoints.LoginUrl}`;
 
   const decode = decodeURIComponent(qs.stringify(newData));
 
   try {
-    const loginResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
       body: decode,
       headers: new Headers({
@@ -75,88 +55,30 @@ export function* login() {
       }),
     });
 
-    console.log(loginResponse, 'loginResponse');
+    localStorage.setItem('access_token', response.access_token);
+    localStorage.setItem('refresh_token', response.refresh_token);
+    localStorage.setItem('expires_in', response.expires_in);
 
-    yield put(AppActions.loginSuccessAction(loginResponse));
-    // yield put(Actions.saveToken(loginResponse.access_token));
+    yield put(AppActions.loginSuccessAction(response.access_token));
 
-    // if login is success get user profile with access token
-    yield put(AppActions.getUserProfileAction(loginResponse));
-    // yield put(
-    //   Actions.openSnackBar({
-    //     open: true,
-    //     message: `Welcome back ${loginResponse.firstName} ${
-    //       loginResponse.lastName
-    //     }`,
-    //     status: 'success',
-    //   }),
-    // );
+    yield put(AppActions.getUserProfileAction(response.access_token));
+  
   } catch (err) {
     yield put(AppActions.loginErrorAction(err));
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: 'Wrong email or password',
-        status: 'error',
-      }),
-    );
-  }
-}
-
-export function* checkActiveSession() {
-  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const userData = yield select(AppSelectors.makeSelectCheckActiveSession());
-
-  console.log(userData, 'makeSelectCheckActiveSession');
-  const requestURL = `${EndPoints.CheckSessionApi}/${userData.uuId}`;
-
-  try {
-    const activeSessionResponse = yield call(request, requestURL, {
-      method: 'GET',
-      headers: new Headers({
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      }),
-    });
-
-    console.log(activeSessionResponse, 'activeSessionResponse');
-
-    // if login is success get user profile with access token
-    yield put(AppActions.checkActiveSessionSuccess(activeSessionResponse));
-    // yield put(
-    //   Actions.openSnackBar({
-    //     open: true,
-    //     message: `Welcome back ${loginResponse.firstName} ${
-    //       loginResponse.lastName
-    //     }`,
-    //     status: 'success',
-    //   }),
-    // );
-  } catch (err) {
-    console.log(err, 'err');
-    yield put(AppActions.checkActiveSessionError(err));
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: 'Error getting token',
-        status: 'error',
-      }),
-    );
+    yield put(AppActions.openSnackBar({ message: 'Wrong email or password', status: 'error' }));
   }
 }
 
 export function* refreshToken() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-
-  console.log('Refresh token called');
-
-  const newData = { refresh_token: accessToken, grant_type: 'password' };
+  const refresh_token = localStorage.getItem('refresh_token');
+  const newData = { refresh_token, grant_type: 'refresh_token' };
   const requestURL = `${EndPoints.LoginUrl}`;
 
   const decode = decodeURIComponent(qs.stringify(newData));
 
   try {
-    const refreshTokenRes = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
       body: decode,
       headers: new Headers({
@@ -165,49 +87,35 @@ export function* refreshToken() {
       }),
     });
 
-    console.log(refreshTokenRes, 'refreshTokenRes');
+    localStorage.setItem('access_token', response.access_token);
+    localStorage.setItem('refresh_token', response.refresh_token);
+    localStorage.setItem('expires_in', response.expires_in);
 
-    // if login is success get user profile with access token
-    yield put(AppActions.refreshTokenSuccess(refreshTokenRes));
-    // yield put(
-    //   Actions.openSnackBar({
-    //     open: true,
-    //     message: `Welcome back ${loginResponse.firstName} ${
-    //       loginResponse.lastName
-    //     }`,
-    //     status: 'success',
-    //   }),
-    // );
+    yield put(AppActions.refreshTokenSuccess(response.access_token));
+    yield put(AppActions.getUserProfileAction(response.access_token));
+    
   } catch (err) {
     console.log(err, 'err');
     yield put(AppActions.refreshTokenError(err));
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: 'Error getting token',
-        status: 'error',
-      }),
-    );
+    yield put(AppActions.openSnackBar({ message: 'Error getting token', status: 'error' }));
   }
 }
 
 export function* logOut() {
   try {
-    // yield put(AppActions.getUserProfileAction(loginResponse));
-    console.log('I am in logout saga...');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('expires_in');
+    history.push('/login')
   } catch (err) {
-    console.log(err, 'err');
-    // yield put(AppActions.loginErrorAction(err));
+    yield put(AppActions.loginErrorAction(err));
   }
 }
 
 export function* userProfile({payload}) {
   const token = yield select(AppSelectors.makeSelectAccessToken());
-  const accessToken = token ? token : payload.access_token;
-
+  const accessToken = token ? token : payload;
   const requestURL = `${EndPoints.UserProfileUrl}`;
-
-  console.log(payload, "User saga wahala shit")
 
   try {
     const response = yield call(request, requestURL, {
@@ -219,10 +127,12 @@ export function* userProfile({payload}) {
     });
 
     console.log(response, 'loginResponse profile');
+    if(response.error){
+      yield put(AppActions.logout())
+    }
 
     yield put(AppActions.getUserProfileSuccessAction(response));
   } catch (err) {
-    console.log(err, 'err user profile');
     yield put(AppActions.getUserProfileErrorAction(err));
   }
 }
@@ -231,11 +141,10 @@ export function* forgotPassword() {
   const forgotPasswordDetails = yield select(
     Selectors.makeSelectForgotPasswordData(),
   );
-
   const requestURL = `${EndPoints.ForgotPasswordApi}`;
 
   try {
-    const forgotPasswordResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
       body: JSON.stringify(forgotPasswordDetails),
       headers: {
@@ -243,44 +152,20 @@ export function* forgotPassword() {
       },
     });
 
-    console.log(forgotPasswordResponse, 'loginResponse');
-
-    // yield put(Actions.loginSuccessAction(loginResponse));
-    // yield put(Actions.saveToken(loginResponse.access_token));
-
-    // if login is success get user profile with access token
-    yield put(Actions.forgotPasswordSuccess(forgotPasswordResponse));
-    // yield put(
-    //   Actions.openSnackBar({
-    //     open: true,
-    //     message: `Welcome back ${loginResponse.firstName} ${
-    //       loginResponse.lastName
-    //     }`,
-    //     status: 'success',
-    //   }),
-    // );
+    yield put(Actions.forgotPasswordSuccess(response));
   } catch (err) {
-    console.log(err, 'err');
     yield put(Actions.forgotPasswordError(err));
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: 'Not Working Yet',
-        status: 'error',
-      }),
-    );
+    yield put(AppActions.openSnackBar({ message: 'Not Working Yet', status: 'error'}));
   }
 }
 
 // Individual exports for testing
 export default function* authorizationPageSaga() {
-  // register actions
   yield takeLatest(Constants.SIGNUP_REQUEST, signup);
-  // login actions
+  
   yield takeLatest(AppConstants.LOGIN, login);
   yield takeLatest(AppConstants.LOG_OUT, logOut);
   yield takeLatest(AppConstants.GET_USER_PROFILE, userProfile);
   yield takeLatest(AppConstants.REFRESH_TOKEN, refreshToken);
   yield takeLatest(Constants.FORGOT_PASSWORD, forgotPassword);
-  yield takeLatest(AppConstants.CHECK_ACTIVE_SESSION, checkActiveSession);
 }

@@ -1,56 +1,92 @@
-import * as React from 'react';
-import {Card, CardContent, CardActions, Paper, Typography} from '@material-ui/core';
-import { ViewState } from '@devexpress/dx-react-scheduler';
+import React from "react"
 import {
-  Scheduler,
-  MonthView,
-  Appointments,
-} from '@devexpress/dx-react-scheduler-material-ui';
+    makeStyles,
+    Box,
+    Button,
+    Card, 
+    CardContent, 
+    CardActions,
+    Divider,
+    List,
+    Paper,
+    Grid,
+    Table,
+    TableHead,
+    TableBody,
+    TableFooter,
+    TableRow,
+    TableCell,
+    Typography
+} from '@material-ui/core';
+import CrmDashImage1 from '../../../../images/crmDash.jpg'
+import CrmDashImage2 from '../../../../images/crmDash2.jpg'
 
-import { appointments } from './demo-data/month-appointments';
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+    },
+    grid: {
+        border: `1px solid ${theme.palette.grey[100]}`,
+        '& .MuiGrid-item': {
+            flex: 1,
+            margin: theme.spacing(5)
+        }
+    },
+    card: {
+        borderRadius: theme.shape.borderRadius * 2,
+        backgroundImage: `url(${CrmDashImage1})`,
+        backgroundRepeat: `no-repeat`,
+        backgroundPosition: `center bottom`,
+        backgroundSize: 'cover',
+        "& .MuiCardActions-root": {
+            justifyContent: "center",
+            backgroundColor: theme.palette.common.white,
+        }
+    },
+    table: {
+        whiteSpace: "nowrap",
+        "& .MuiTableFooter-root": {
+            borderTop: `1px solid ${theme.palette.divider} !important`,
+        },
+        "& .MuiTableCell-root": {
+            borderBottom: "none !important",
+        },
+        '& .MuiTableCell-body': {
+            color: theme.palette.common.white,
+        },
+    }
+}));
 
-class Demo extends React.PureComponent {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      data: appointments,
-      currentDate: '2018-07-17',
-    };
-  }
-
-  render() {
-    const { data, currentDate } = this.state;
+const Widget4 = () => {
+    const classes = useStyles()
 
     return (
-      <Paper>
-        <Scheduler
-          data={data}
-          width="100%"
-        >
-          <ViewState
-            currentDate={currentDate}
-          />
-          <MonthView />
-          <Appointments />
-        </Scheduler>
-      </Paper>
-    );
-  }
+        <div>
+            <Card className={classes.card}>
+                <CardContent>
+                    <Table className={classes.table} size="small">
+                        <TableBody>
+                            <TableRow>
+                                <TableCell component="th">
+                                    <Typography variant="h3">100</Typography>
+                                </TableCell>
+                                <TableCell align="right">
+                                    <Typography variant="subtitle2">Roles</Typography>
+                                </TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>  
+                </CardContent>
+
+                <CardActions>
+                    <Typography>
+                        View All Roles
+                    </Typography>
+                </CardActions>
+            </Card>
+        </div>
+    )
 }
 
-
-export default class Widget4 extends React.Component {
-  render() {
-    return (
-      <Card>
-        <CardContent>
-          <Typography variant="h6" component="" color="textPrimary">
-            My Schedules
-          </Typography>
-          <Demo />
-        </CardContent>
-      </Card>
-    );
-  }
-}
+export default Widget4

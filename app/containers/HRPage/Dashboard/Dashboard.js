@@ -13,7 +13,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { makeStyles, Grid } from '@material-ui/core';
 import * as Selectors from '../selectors';
-import { Widget1, Widget2, Widget3, Widget4, Widget5 } from './widgets'
+import { Widget1, Widget2, Widget3, Widget4, Widget5, Widget6, Widget7, Widget8, Widget9, Widget10 } from './widgets'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -34,24 +34,46 @@ export function DashBoard() {
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Grid container className={classes.grid} spacing={3}>
-                        <Grid item xs={4}>
+                        <Grid item xs={3}>
                             <Widget1 />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={3}>
                             <Widget2 />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={3}>
                             <Widget3 />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Widget4 />
                         </Grid>
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container className={classes.grid} spacing={3}>
-                        <Grid item xs={7}>
-                            <Widget4 />
-                        </Grid>
-                        <Grid item xs={5}>
+                        <Grid item xs={4}>
                             <Widget5 />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Widget6 />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Widget7 />
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                    <Grid container className={classes.grid} spacing={3}>
+                        <Grid item xs={6}>
+                            <Widget8 />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Widget10 />
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                    <Grid container className={classes.grid} spacing={3}>
+                        <Grid item xs={12}>
                         </Grid>
                     </Grid>
                 </Grid>

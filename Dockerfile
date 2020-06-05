@@ -1,21 +1,23 @@
-# FROM containership/alpine-node-yarn
-FROM kewaii/alpine-node-npminstall
-# FROM node:10-alpine
-
-COPY internals/scripts ezone/internals/scripts
-COPY package.json ezone/package.json
-# COPY yarn.lock ezone/yarn.lock
-COPY build ezone/build
-COPY server ezone/server
-
-WORKDIR /home/ezone
-
+# Build Environment
+# FROM node:13.12.0-alpine as build
+FROM node:14-alpine as build
+WORKDIR /app
+ENV PATH /app/node_modules/.bin:$PATH
 ENV NODE_ENV production
 
-RUN npm install --production
-# RUN yarn install --production
+COPY package*.json ./
+COPY internals ./
+COPY yarn.lock ./
 
-EXPOSE 3000
+RUN npm install --silent
+RUN npm install react-scripts@3.4.1 -g --silent
+COPY . .
+CMD [ "npm", "run", "build" ]
 
-ENTRYPOINT ["npm", "run", "start:prod"]
-# ENTRYPOINT ["yarn", "run", "start:prod"]
+# Production Environment
+FROM nginx:stable-alpine
+COPY --from=build /app/build /usr/share/nginx/html
+# new
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

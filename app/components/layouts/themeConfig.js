@@ -15,7 +15,7 @@ const themesConfig = {
       },
       secondary: {
         light: lightBlue[600],
-        main: '#1A88E1',
+        main: '#1702FF',
         dark: lightBlue[700],
         contrastText: '#fff',
       },

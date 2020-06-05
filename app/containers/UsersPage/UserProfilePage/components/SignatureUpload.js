@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { makeStyles, Button, Paper } from '@material-ui/core';
+import { makeStyles, Button, Paper, DialogContent, DialogActions } from '@material-ui/core';
 import { useDropzone } from 'react-dropzone';
 import _ from 'lodash';
 import * as Actions from '../../actions';
@@ -35,14 +35,12 @@ const useStyles = makeStyles(theme => ({
     display: 'block',
     width: 'auto',
     height: '100%',
-  },
-  resetButton: {
-    margin: theme.spacing(2, 1),
-  },
+  }
 }));
 
 const SignatureUpload = props => {
   const classes = useStyles();
+  const { closeSignatureDialog } = props
 
   const [files, setFiles] = useState([]);
   const [form, setForm] = useState({
@@ -102,22 +100,32 @@ const SignatureUpload = props => {
   console.log(form, 'formform');
   return (
     <React.Fragment>
-      <section className="container">
-        <div {...getRootProps({ className: 'dropzone' })}>
-          <input {...getInputProps()} />
-          <p>Drag 'n' drop some file here, or click to select file</p>
-        </div>
-        <aside className={classes.thumbsContainer}>{thumbs}</aside>
-      </section>
+      <DialogContent dividers>
+        <section>
+          <div {...getRootProps({ className: 'dropzone' })}>
+            <input {...getInputProps()} />
+            <p>Drag 'n' drop some file here, or click to select file</p>
+          </div>
+          <aside className={classes.thumbsContainer}>{thumbs}</aside>
+        </section>
+      </DialogContent>
 
-      <Button
-        variant="contained"
-        color="primary"
-        // onClick={() => save()}
-        className={classes.resetButton}
-      >
-        Save
-      </Button>
+      <DialogActions>
+        <Button
+          variant="contained"
+          color="primary"
+          // onClick={() => save()}
+        >
+          Save
+        </Button>
+        <Button
+          onClick={() => closeSignatureDialog()}
+          color="primary"
+          variant="outlined"
+        >
+          Cancel
+        </Button>
+      </DialogActions>
     </React.Fragment>
   );
 };
@@ -132,7 +140,7 @@ const mapStateToProps = createStructuredSelector({});
 function mapDispatchToProps(dispatch) {
   return {
     openNewBranchDialogAction: () => dispatch(Actions.openNewEmployeeDialog()),
-    dispatch,
+    closeSignatureDialog: () => dispatch(Actions.closeSignatureDialog()),
   };
 }
 

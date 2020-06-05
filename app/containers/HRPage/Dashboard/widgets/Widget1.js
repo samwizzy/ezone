@@ -44,15 +44,15 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     table: {
+        whiteSpace: "nowrap",
         "& .MuiTableFooter-root": {
-            borderTop: `1px solid ${theme.palette.grey[400]} !important`,
+            borderTop: `1px solid ${theme.palette.divider} !important`,
         },
         "& .MuiTableCell-root": {
             borderBottom: "none !important",
         },
         '& .MuiTableCell-body': {
             color: theme.palette.common.white,
-            fontSize: theme.typography.fontSize + 1
         },
     }
 }));
@@ -68,30 +68,20 @@ const Widget1 = () => {
                     <Table className={classes.table} size="small">
                         <TableBody>
                             <TableRow>
-                                <TableCell component="th" align="center">
+                                <TableCell component="th">
                                     <Typography variant="h3">100</Typography>
-                                    <Typography variant="h5">Contacts</Typography>
                                 </TableCell>
                                 <TableCell align="right">
-                                    <Table size="small" align="right">
-                                        <TableBody>
-                                            <TableRow><TableCell align="left">20 Contacts</TableCell></TableRow>
-                                            <TableRow><TableCell align="left">21 Leads</TableCell></TableRow>
-                                            <TableRow><TableCell align="left">12 Opportunity</TableCell></TableRow>
-                                            <TableRow><TableCell align="left">20 Subscribers</TableCell></TableRow>
-                                        </TableBody>
-                                    </Table>
+                                    <Typography variant="subtitle2">Employees</Typography>
                                 </TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>  
                 </CardContent>
 
-                <Divider />
-
                 <CardActions>
-                    <Typography variant="h6" component="h1" className={classes.title} color="textPrimary">
-                        View all Contacts
+                    <Typography>
+                        View All Employees
                     </Typography>
                 </CardActions>
             </Card>

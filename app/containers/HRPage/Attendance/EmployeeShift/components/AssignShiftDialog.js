@@ -1,17 +1,15 @@
-import React, {memo} from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles'
-import { createStructuredSelector } from 'reselect';
-import { compose } from 'redux';
-import _ from 'lodash';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { withStyles, AppBar, Box, Button, Checkbox, Dialog, DialogActions, DialogContent, Divider, MenuItem, Popover, Slide, Tabs, Tab, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
-import * as Selectors from '../../selectors';
-import * as Actions from '../../actions';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import { AppBar, Button, Dialog, DialogActions, DialogContent, MenuItem, Slide, Tab, Table, TableBody, TableCell, TableRow, Tabs, TextField, Toolbar, Typography, withStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import { AssignShift } from '../../components/AddButton';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import PropTypes from 'prop-types';
+import React, { memo } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
+import * as Actions from '../../actions';
+import * as Selectors from '../../selectors';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -100,31 +98,13 @@ function a11yProps(index) {
 function AssignShiftDialog(props) {
   const classes = useStyles();
   const { closeNewEmployeeShiftDialog, dialog, employees, assignShift, shifts } = props;
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [value, setValue] = React.useState(0);
   const [form, setForm] = React.useState({
-    userId: '',
+    userId: [],
     shiftId: '',
   });
   console.log(shifts, "shifts in assign")
-  
-  const handleTabChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
 
   React.useEffect(() => {
-    //assignShift();
     /*
     if(dialog.type == 'edit'){
       setForm({...form})
@@ -142,12 +122,16 @@ function AssignShiftDialog(props) {
     setForm({...form, [name]: value});
   }
 
-  const handleSelectChange = (event) => {
-    setForm({...form, [event.target.name]: {id: event.target.value}});
+  const handleSelectChange = name => (event) => {
+    console.log(name, "name")
+    console.log(event, "obj")
+    // setForm({...form, [name]: {id: obj.id}});
   }
   const handleSubmit = () => {
     assignShift(form)
   }
+
+  console.log(form, "form")
 
   return (
     <div>
@@ -184,8 +168,8 @@ function AssignShiftDialog(props) {
                     value={form.shiftId}
                     onChange={handleChange}
                   >
-                    {shifts && shifts.map((shift) => (
-                    <MenuItem key={shifts.id} value={shift.id}>
+                    {shifts && shifts.map((shift, i) => (
+                    <MenuItem key={i} value={shift.id}>
                       {shift.shiftName}
                     </MenuItem>
                     ))}
@@ -194,7 +178,7 @@ function AssignShiftDialog(props) {
               </TableRow>
               <TableRow>
                 <TableCell>
-                <TextField
+                  <TextField
                     id="userId"
                     name="userId"
                     placeholder="Employee"
@@ -207,12 +191,33 @@ function AssignShiftDialog(props) {
                     value={form.userId}
                     onChange={handleChange}
                   >
-                    {employees && employees.map((employee) => (
-                    <MenuItem key={employee.id} value={employee.id}>
+                    {employees && employees.map((employee, i) => (
+                    <MenuItem key={i} value={employee.id}>
                       {employee.firstName} {employee.lastName}
                     </MenuItem>
                     ))}
                   </TextField>
+
+                  <Autocomplete
+                    multiple
+                    id="tags-employees"
+                    size="small"
+                    options={employees}
+                    getOptionLabel={(option) => option.firstName + ' ' + option.lastName}
+                    // defaultValue={[top100Films[13]]}
+                    onChange={handleSelectChange('userId')}
+                    filterSelectedOptions
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="outlined"
+                        label="Employees"
+                        placeholder="Search"
+                        margin="normal"
+                        fullWidth
+                      />
+                    )}
+                  />
                 </TableCell>
               </TableRow>
             </TableBody>

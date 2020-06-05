@@ -58,7 +58,6 @@ export function closeSnackBar() {
 }
 
 export function logout() {
-  console.log("you just fired the logout action...")
   return {
     type: Constants.LOG_OUT,
   };
@@ -86,7 +85,6 @@ export function postFcmTokenError(data) {
 }
 
 export function refreshToken() {
-  console.log('is comming here');
   return {
     type: Constants.REFRESH_TOKEN,
   };
@@ -102,26 +100,6 @@ export function refreshTokenSuccess(data) {
 export function refreshTokenError(data) {
   return {
     type: Constants.REFRESH_TOKEN_ERROR,
-    payload: data,
-  };
-}
-
-export function checkActiveSession() {
-  return {
-    type: Constants.CHECK_ACTIVE_SESSION,
-  };
-}
-
-export function checkActiveSessionSuccess(data) {
-  return {
-    type: Constants.CHECK_ACTIVE_SESSION_SUCCESS,
-    payload: data,
-  };
-}
-
-export function checkActiveSessionError(data) {
-  return {
-    type: Constants.CHECK_ACTIVE_SESSION_ERROR,
     payload: data,
   };
 }

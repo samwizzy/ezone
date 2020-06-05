@@ -20,9 +20,7 @@ import moment from 'moment'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    '& .MuiTextField-root': {
-      // margin: theme.spacing(1, 0)
-    },
+    '& .MuiTextField-root': {},
   },
   table: {
     "& td": {
@@ -35,16 +33,21 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const status = [
+  {id: 1, label: "PRESENT"},
+  {id: 2, label: "ABSENT"},
+]
+
 function AddAttendanceDialog(props) {
   const classes = useStyles();
-  const { closeNewAttendanceDialog, dialog } = props;
+  const { createAttendance, employees, closeNewAttendanceDialog, dialog } = props;
   const [form, setForm] = React.useState({
-    employee: '',
+    userId: '',
     date: new Date,
-    status: '',
+    status: 'PRESENT',
     loginTime: new Date,
-    logoutTime: new Date,
-    comment: '',
+    logOutTime: new Date,
+    // comment: '',
   });
 
   React.useEffect(() => {
@@ -54,8 +57,8 @@ function AddAttendanceDialog(props) {
   }, [dialog])
 
   const canSubmitForm = () => {
-    const {employee, date, status, loginTime, logoutTime, comment } = form
-    return employee.length > 0 && date.length > 0 && status.length > 0
+    const {userId, date, status, loginTime, logOutTime } = form
+    return userId && loginTime && logOutTime && date && status.length > 0
   }
 
   const handleChange = (event) => {
@@ -63,11 +66,22 @@ function AddAttendanceDialog(props) {
     setForm({...form, [name]: value});
   }
 
-  const handleSelectChange = () => {}
+  const handleSelectChange = name => (event, obj) => {
+    setForm({...form, [name]: obj.id});
+  }
 
-  const handleDateChange = () => {}
+  const handleDateChange = name => (date, value) => {
+    setForm({...form, [name]: moment.utc(date).format()});
+  }
+  const handleTimeChange = name => (date, value) => {
+    setForm({...form, [name]: moment(date).format('hh:mm:ss')});
+  }
 
-  const handleSubmit = () => {}
+  const handleSubmit = () => {
+    createAttendance(form)
+  }
+
+  console.log(form, "form")
 
   return (
     <div>
@@ -91,16 +105,18 @@ function AddAttendanceDialog(props) {
           <Table className={classes.table} size="small">
             <TableBody>
               <TableRow>
-                <TableCell>
+                <TableCell colSpan={2}>
                   <Autocomplete
                     id="combo-box-demo"
+                    name="userId"
                     size="small"
-                    options={[]}
-                    getOptionLabel={option => option.label}
-                    onChange={(evt, value) => handleSelectChange(evt, value)}
+                    options={employees? employees : [] }
+                    getOptionLabel={option => option.firstName +' '+ option.lastName}
+                    onChange={handleSelectChange('userId')}
                     renderInput={params => (
                       <TextField
                         {...params}
+                        name="userId"
                         label="Employee"
                         variant="outlined"
                         placeholder="Search"
@@ -121,16 +137,16 @@ function AddAttendanceDialog(props) {
                       label="Date"
                       size="small"
                       format="MM/dd/yyyy"
+                      name="date"
                       value={form.date}
-                      onChange={handleDateChange}
+                      onChange={handleDateChange('date')}
                       KeyboardButtonProps={{
                         'aria-label': 'change date',
                       }}
                     />
                   </MuiPickersUtilsProvider>
                 </TableCell>
-              </TableRow>
-              <TableRow>
+             
                 <TableCell>
                   <TextField
                     id="status"
@@ -145,9 +161,11 @@ function AddAttendanceDialog(props) {
                     value={form.status}
                     onChange={handleChange}
                   >
-                    <MenuItem key={0} value="">
-                        No record
+                    {status.map((option, i) => 
+                    <MenuItem key={i} value={option.label}>
+                      {option.label}
                     </MenuItem>
+                    )}
                   </TextField>
                 </TableCell>
               </TableRow>
@@ -158,10 +176,11 @@ function AddAttendanceDialog(props) {
                       margin="normal"
                       inputVariant="outlined"
                       id="time-picker"
+                      name="loginTime"
                       label="Login Time"
                       size="small"
                       value={form.loginTime}
-                      onChange={handleDateChange}
+                      onChange={handleDateChange('loginTime')}
                       KeyboardButtonProps={{
                         'aria-label': 'change time',
                       }}
@@ -175,10 +194,11 @@ function AddAttendanceDialog(props) {
                       margin="normal"
                       inputVariant="outlined"
                       id="time-picker"
+                      name="logOutTime"
                       label="Logout Time"
                       size="small"
-                      value={form.logoutTime}
-                      onChange={handleDateChange}
+                      value={form.logOutTime}
+                      onChange={handleDateChange('logOutTime')}
                       KeyboardButtonProps={{
                         'aria-label': 'change time',
                       }}
@@ -229,10 +249,12 @@ AddAttendanceDialog.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   dialog: Selectors.makeSelectAttendanceDialog(),
+  employees: Selectors.makeSelectEmployees(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    createAttendance: data => dispatch(Actions.createAttendance(data)),
     closeNewAttendanceDialog: () => dispatch(Actions.closeNewAttendanceDialog()),
     dispatch,
   };

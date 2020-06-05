@@ -75,8 +75,9 @@ const attendanceList = [
 
 const AttendanceList = props => {
   const classes = useStyles();
-  const { loading, openNewAttendanceDialog, getAttendances, attendances, getAttendanceById, attendance } = props;
-  console.log(attendances)
+  const { loading, openNewAttendanceDialog, getAttendances, attendances, getAttendanceById } = props;
+  console.log(attendances, "attendances")
+  
   React.useEffect(() => {
   }, []);
 
@@ -204,7 +205,7 @@ AttendanceList.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   user: AppSelectors.makeSelectCurrentUser(),
-  attendance: Selectors.makeSelectAttendance(),
+  attendances: Selectors.makeSelectAttendance(),
 });
 
 function mapDispatchToProps(dispatch) {

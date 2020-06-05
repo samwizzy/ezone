@@ -52,7 +52,7 @@ const employeeShifts = [
 
 const EmployeeShiftList = props => {
   const classes = useStyles();
-  const { loading, openNewAttendanceDialog, getAttendances, getAttendanceById, attendance, employees, openNewEmployeeShiftDialog } = props;
+  const { loading, employees, openNewEmployeeShiftDialog } = props;
   console.log(employees, "Employees in employeeShift");
   const toTitleCase = str => (str ? str[0].toUpperCase() + str.slice(1) : '');
   React.useEffect(() => {
@@ -172,14 +172,11 @@ EmployeeShiftList.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   user: AppSelectors.makeSelectCurrentUser(),
-  attendances: Selectors.makeSelectAttendances(),
   employees: Selectors.makeSelectEmployees(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAttendances: () => dispatch(Actions.getAttendances()),
-    getAttendanceById: (uuid) => dispatch(Actions.getAttendanceById(uuid)),
     openNewEmployeeShiftDialog: () => dispatch(Actions.openNewEmployeeShiftDialog()),
   };
 }

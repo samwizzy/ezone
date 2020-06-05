@@ -8,7 +8,6 @@ import { BaseUrl } from '../BaseUrl';
 export const RegistrationUrl = `${BaseUrl}/authserv/api/v1/register`;
 export const LoginUrl = `${BaseUrl}/authserv/oauth/token`;
 export const UserProfileUrl = `${BaseUrl}/authserv/api/v1/users/profile`;
-export const CheckSessionApi = `${BaseUrl}/authserv/api/v1/users/get_by_uuid`;
 
 /** *****************************************************************
  * Organization and Company structure endpoint
@@ -133,8 +132,10 @@ export const CreateBranch = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_
 export const CreateAnnouncement = `${BaseUrl}/authserv/api/v1/announcement`;
 
 export const GetAnnouncements = `${BaseUrl}/authserv/api/v1/announcements/for_organinisation`;
-export const GetAttendances = `${BaseUrl}/authserv/api/v1/find_attendance_by_orgid`;
 
+// HR:Attendance API
+export const GetAttendances = `${BaseUrl}/authserv/api/v1/find_attendance_by_orgid`;
+export const CreateAttendanceApi = `${BaseUrl}/authserv/api/v1/add_attendance`;
 export const GetDays = `${BaseUrl}/authserv/api/v1/all_days`
 export const CreateShift = `${BaseUrl}/authserv/api/v1/add_shift`
 export const GetShifts = `${BaseUrl}/authserv/api/v1/find_shift_by_orgid`;

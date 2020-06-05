@@ -47,6 +47,13 @@ export const initialState = {
     },
     data: null,
   },
+  recognitionDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -124,6 +131,18 @@ const performanceReducer = (state = initialState, action) =>
         return {
           ...state,
           goalsDialog: {...state.goalsDialog, props: { open: false }},
+        };
+        break;
+      case Constants.OPEN_NEW_RECOGNITION_DIALOG:
+        return {
+          ...state,
+          recognitionDialog: {...state.recognitionDialog, props: { open: true }},
+        };
+        break;
+      case Constants.CLOSE_NEW_RECOGNITION_DIALOG:
+        return {
+          ...state,
+          recognitionDialog: {...state.recognitionDialog, props: { open: false }},
         };
         break;
     }

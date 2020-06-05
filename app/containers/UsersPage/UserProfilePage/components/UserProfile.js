@@ -9,6 +9,7 @@ import {
   ListItemText,
   ListItemIcon,
   ListItemAvatar,
+  ListItemSecondaryAction,
   Avatar,
   Typography,
   Button,
@@ -24,8 +25,6 @@ import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import * as AppSelectors from '../../../App/selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-import Vector from '../../../../images/Vector.svg';
-import Vector1 from '../../../../images/Vector1.svg';
 import Group266 from '../../../../images/Group266.svg';
 import UserDetail from './UserDetail';
 import NoSignature from './NoSignature';
@@ -65,19 +64,13 @@ function a11yProps(index) {
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    margin: theme.spacing(2),
   },
   list: {
     color: theme.palette.common.white
   },
-  sidebar: {
+  header: {
     padding: theme.spacing(2),
-  },
-  mainTop: {
-    padding: theme.spacing(2),
-    background: '#1A88E1',
-    // backgroundImage:
-    //   'linear-gradient(111.61deg, #1A88E1 38.84%, #3F0A96 101.73%)',
+    backgroundImage: 'linear-gradient(180deg, #1A88E1 30%, rgba(37, 28, 148, 1) 100%)',
     borderRadius: '0px 10px 10px 10px',
     height: 180,
   },
@@ -85,9 +78,6 @@ const useStyles = makeStyles(theme => ({
     width: theme.spacing(12),
     height: theme.spacing(12),
     marginRight: theme.spacing(2),
-  },
-  tab: {
-    marginTop: theme.spacing(5),
   },
 }));
 
@@ -109,34 +99,10 @@ const UserProfile = props => {
   return (
     <div className={classes.root}>
       {currentUser && (
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={3} lg={3}>
-            <Paper className={classes.sidebar}>
-              <List component="nav" aria-label="secondary mailbox folders">
-                <ListItem button>
-                  <ListItemIcon>
-                    <img src={Vector} alt="Vector" />
-                  </ListItemIcon>
-                  <ListItemText primary="My Account" />
-                </ListItem>
-                <ListItem button>
-                  <ListItemIcon>
-                    <img src={Vector1} alt="Vector1" />
-                  </ListItemIcon>
-                  <ListItemText primary="Subscription" />
-                </ListItem>
-                <ListItem button>
-                  <ListItemIcon>
-                    <img src={Vector1} alt="Vector1" />
-                  </ListItemIcon>
-                  <ListItemText primary="Settings" />
-                </ListItem>
-              </List>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={9} lg={9}>
-            <Paper>
-              <Paper className={classes.mainTop}>
+        <Grid container>
+          <Grid item xs={12}>
+            <Paper square elevation={0}>
+              <div className={classes.header}>
                 <List className={classes.list}>
                   <ListItem
                     alignItems="flex-start"
@@ -164,22 +130,24 @@ const UserProfile = props => {
                         </Typography>
                       }
                     />
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      onClick={() =>
-                        openEditUserProfileDialog(currentUser)
-                      }
-                      startIcon={<EditOutlinedIcon />}
-                    >
-                      Edit Profile
-                    </Button>
+                    <ListItemSecondaryAction>
+                      <Button
+                        color="secondary"
+                        variant="contained"
+                        onClick={() =>
+                          openEditUserProfileDialog(currentUser)
+                        }
+                        startIcon={<EditOutlinedIcon />}
+                      >
+                        Edit Profile
+                      </Button>
+                    </ListItemSecondaryAction>
                   </ListItem>
                 </List>
-              </Paper>
+              </div>
 
               <div className={classes.tab}>
-                <AppBar position="static">
+                <Paper square>
                   <Tabs
                     value={value}
                     onChange={handleChange}
@@ -188,7 +156,7 @@ const UserProfile = props => {
                     <Tab label="Basic Info" {...a11yProps(0)} />
                     <Tab label="Signature" {...a11yProps(1)} />
                   </Tabs>
-                </AppBar>
+                </Paper>
                 <TabPanel value={value} index={0}>
                   <UserDetail />
                 </TabPanel>

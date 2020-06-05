@@ -82,23 +82,6 @@ import CrmActivities from '../Crm/Activities/Loadable';
 import Auth from './Auth';
 
 const App = props => {
-  const {
-    currentUser,
-    accessToken,
-    checkActiveSessionAction,
-    checkSession,
-  } = props;
-
-  // useEffect(() => {
-  //   checkActiveSessionAction();
-  // }, []);
-
-  // console.log(checkSession, 'checkSession');
-
-  // if (checkSession) {
-  //   return <Redirect to={{ pathname: '/login' }} />;
-  // }
-
   return (
     <div>
       {/* <AppContext.Provider value={{ authTokens, setAuthTokens: setTokens }}> */}
@@ -313,7 +296,6 @@ const App = props => {
               </Layout3>
               <Route path="" component={NotFoundPage} />
             </Switch>
-            {/* <Snackbar /> */}
             </Auth>
           </div>
         </main>
@@ -322,25 +304,8 @@ const App = props => {
   );
 };
 
-const mapStateToProps = createStructuredSelector({
-  currentUser: Selectors.makeSelectCurrentUser(),
-  accessToken: Selectors.makeSelectAccessToken(),
-  checkSession: Selectors.makeSelectCheckActiveSession(),
-});
-
-function mapDispatchToProps(dispatch) {
-  return {
-    checkActiveSessionAction: () => dispatch(Actions.checkActiveSession()),
-  };
-}
-
-const withConnect = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-);
 
 export default compose(
-  withConnect,
   // withUtilitySaga,
   // withUtilityReducer,
   memo,

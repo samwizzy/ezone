@@ -13,7 +13,10 @@ import * as Constants from './constants';
 // The initial state of the App
 export const initialState = {
   loading: false,
+  error: {},
   attendance: [],
+  shifts: [],
+  employeeShifts: [],
   attdDialog: {
     type: 'new',
     props: {
@@ -35,7 +38,6 @@ export const initialState = {
     },
     data: null,
   },
-  
   announcementViewDialog: {
     type: 'new',
     props: {
@@ -58,7 +60,7 @@ const attdReducer = (state = initialState, action) =>
       case Constants.GET_ATTENDANCES_SUCCESS: {
         return {
           ...state,
-          attendances: action.payload
+          attendance: action.payload
         }
       };
       case Constants.GET_EMPLOYEES: {
@@ -96,6 +98,13 @@ const attdReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: false,
+        };
+      }
+      case Constants.CREATE_ATTENDANCE_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload
         };
       }
 

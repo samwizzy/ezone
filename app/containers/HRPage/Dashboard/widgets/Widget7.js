@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
     card: {
         borderRadius: theme.shape.borderRadius * 2,
         "& .MuiCardHeader-root": {
+            padding: theme.spacing(2),
             "& .MuiTypography-root": {
                 fontSize: theme.typography.subtitle1.fontSize
             }
@@ -75,7 +76,7 @@ const Widget5 = () => {
                         see all
                     </Button>
                     }
-                    title="New Hires"
+                    title="Leave Request for Approval"
                 />
                 <CardContent>
                     <Table className={classes.table}>
@@ -88,6 +89,7 @@ const Widget5 = () => {
                                     </Avatar>
                                 </TableCell>
                                 <TableCell align="left">Christian Okeme</TableCell>
+                                <TableCell align="right">Sick Leave</TableCell>
                             </TableRow>
                             )}
                         </TableBody>

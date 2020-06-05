@@ -3,12 +3,13 @@ import {
     makeStyles,
     Box,
     Button,
-    Card, CardContent, CardActions, CardHeader,
+    Card, 
+    CardContent, 
+    CardActions,
     Divider,
     List,
     Paper,
     Grid,
-    TableContainer,
     Table,
     TableHead,
     TableBody,
@@ -17,6 +18,8 @@ import {
     TableCell,
     Typography
 } from '@material-ui/core';
+import CrmDashImage1 from '../../../../images/crmDash.jpg'
+import CrmDashImage2 from '../../../../images/crmDash2.jpg'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -31,18 +34,25 @@ const useStyles = makeStyles((theme) => ({
     },
     card: {
         borderRadius: theme.shape.borderRadius * 2,
+        backgroundImage: `url(${CrmDashImage1})`,
+        backgroundRepeat: `no-repeat`,
+        backgroundPosition: `center bottom`,
+        backgroundSize: 'cover',
         "& .MuiCardActions-root": {
-            justifyContent: "center"
+            justifyContent: "center",
+            backgroundColor: theme.palette.common.white,
         }
     },
     table: {
-        minHeight: theme.spacing(17),
+        whiteSpace: "nowrap",
+        "& .MuiTableFooter-root": {
+            borderTop: `1px solid ${theme.palette.divider} !important`,
+        },
         "& .MuiTableCell-root": {
-            borderBottom: "none !important"
+            borderBottom: "none !important",
         },
         '& .MuiTableCell-body': {
-            color: theme.palette.text.secondary,
-            fontSize: theme.typography.fontSize + 1
+            color: theme.palette.common.white,
         },
     }
 }));
@@ -54,24 +64,26 @@ const Widget3 = () => {
     return (
         <div>
             <Card className={classes.card}>
+                <CardContent>
+                    <Table className={classes.table} size="small">
+                        <TableBody>
+                            <TableRow>
+                                <TableCell component="th">
+                                    <Typography variant="h3">100</Typography>
+                                </TableCell>
+                                <TableCell align="right">
+                                    <Typography variant="subtitle2">Branches</Typography>
+                                </TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>  
+                </CardContent>
+
                 <CardActions>
-                    <Typography variant="h6" component="h1" className={classes.title} color="textPrimary">
-                        Today's Schedule
+                    <Typography>
+                        View All Branches
                     </Typography>
                 </CardActions>
-                <Divider />
-                <CardContent>
-                <Table className={classes.table} size="small">
-                    <TableBody>
-                        <TableRow>
-                            <TableCell align="center">
-                                <Typography variant="h6">No Schedule Found</Typography>
-                            </TableCell>
-                        </TableRow>
-                    </TableBody>
-                </Table> 
-                </CardContent>
-                
             </Card>
         </div>
     )

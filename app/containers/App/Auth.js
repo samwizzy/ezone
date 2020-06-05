@@ -8,7 +8,7 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import makeSelectAuthorizationPage from './../AuthorizationPage/selectors';
 import saga from './../AuthorizationPage/saga';
-import reducer from './reducer';
+// import reducer from './reducer';
 
 class Auth extends Component {
   constructor(props) {
@@ -40,8 +40,8 @@ class Auth extends Component {
 
 const mapStateToProps = createStructuredSelector({
 	authorizationPage: makeSelectAuthorizationPage(),
-  accessToken: AppSelectors.makeSelectAccessToken(),
-  currentUser: AppSelectors.makeSelectCurrentUser(),
+	accessToken: AppSelectors.makeSelectAccessToken(),
+	currentUser: AppSelectors.makeSelectCurrentUser(),
 });
 
 function mapDispatchToProps(dispatch){
@@ -52,7 +52,7 @@ function mapDispatchToProps(dispatch){
 	dispatch);
 }
 
-const withReducer = injectReducer({ key: 'authorizationPage', reducer });
+// const withReducer = injectReducer({ key: 'authorizationPage', reducer });
 const withSaga = injectSaga({ key: 'authorizationPage', saga });
 
 const withConnect = connect(
@@ -61,7 +61,7 @@ const withConnect = connect(
 );
 
 export default compose(
-	withReducer,
+	// withReducer,
 	withSaga,
 	withConnect,
 )(Auth);

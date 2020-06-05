@@ -4,21 +4,16 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import SignatureCanvas from 'react-signature-canvas';
-import { makeStyles, Button } from '@material-ui/core';
+import { makeStyles, Button, DialogContent, DialogActions } from '@material-ui/core';
 import * as Actions from '../../actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundColor: 'gray',
+    backgroundColor: theme.palette.grey[50],
   },
-  sigContainer: {
-    width: '100%',
-    height: '50%',
-    border: '2px solid gray',
-    backgroundColor: '#fff',
-  },
-  resetButton: {
-    margin: theme.spacing(2, 1),
+  signatureArea: {
+    border: `1px solid ${theme.palette.divider}`,
+    backgroundColor: theme.palette.background.paper,
   },
   sigImage: {
     backgroundSize: '200px 50px',
@@ -26,15 +21,12 @@ const useStyles = makeStyles(theme => ({
     height: '50px',
     backgroundColor: 'white',
   },
-  trimTab: {
-    margin: theme.spacing(1, 1),
-  },
 }));
 
 const SignaturePad = props => {
   const classes = useStyles();
 
-  const { updateUserProfileAction, signatureDialog } = props;
+  const { updateUserProfileAction, signatureDialog, closeSignatureDialog } = props;
   console.log(signatureDialog.data, 'come to pad');
   // console.log(signatureDialog.data.signature, 'come to pad');
   const [save, setSave] = React.useState(false);
@@ -87,48 +79,58 @@ const SignaturePad = props => {
 
   return (
     <React.Fragment>
-      <div className={classes.root}>
-        <div className={classes.sigContainer}>
+      <DialogContent dividers>
+        <div className={classes.signatureArea}>
           <SignatureCanvas
             penColor="black"
-            canvasProps={{ width: 365, height: 200, className: 'sigCanvas' }}
+            canvasProps={{ width: 365, height: 200 }}
             ref={ref => {
               sigPad = ref;
             }}
           />
         </div>
-      </div>
-      {trimmedDataURL ? (
-        <div className={classes.trimTab}>
-          <img className={classes.sigImage} src={trimmedDataURL} alt="" />
-          <br />
-        </div>
-      ) : null}
-      <Button
-        variant="contained"
-        color="primary"
-        disabled={!save}
-        onClick={() => saveAction()}
-        className={classes.resetButton}
-      >
-        Save
-      </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => clear()}
-        className={classes.resetButton}
-      >
-        Clear
-      </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => trim()}
-        className={classes.resetButton}
-      >
-        Trim
-      </Button>
+      
+        {trimmedDataURL ? (
+          <div className={classes.trimTa}>
+            <img className={classes.sigImage} src={trimmedDataURL} alt="" />
+            <br />
+          </div>
+        ) 
+        : null
+        }
+      </DialogContent>
+      
+      <DialogActions>
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={!save}
+          onClick={() => saveAction()}
+        >
+          Save
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => clear()}
+        >
+          Clear
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => trim()}
+        >
+          Trim
+        </Button>
+        <Button
+          onClick={() => closeSignatureDialog()}
+          color="primary"
+          variant="outlined"
+        >
+          Cancel
+        </Button>
+      </DialogActions>
     </React.Fragment>
   );
 };
@@ -143,7 +145,7 @@ const mapStateToProps = createStructuredSelector({});
 function mapDispatchToProps(dispatch) {
   return {
     updateUserProfileAction: evt => dispatch(Actions.updateUserProfile(evt)),
-    dispatch,
+    closeSignatureDialog: () => dispatch(Actions.closeSignatureDialog()),
   };
 }
 

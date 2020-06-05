@@ -11,25 +11,24 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 import * as Endpoints from '../../../components/Endpoints';
 
-
 /**
  * Github repos request/response handler
  */
 export function* getAttendances() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAttendances}`;
+  const requestURL = `${Endpoints.GetAttendances}/${user && user.organisation.orgId}`;
 
   try {
-    const attendancesResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
-    console.log(attendancesResponse, "Attendances response")
-    yield put(Actions.getAttendancesSuccess(attendancesResponse));
+    console.log(response, "Attendances response")
+    yield put(Actions.getAttendancesSuccess(response));
   } catch (err) {
     console.log(err, "attd error")
   }
@@ -58,7 +57,7 @@ export function* getDays() {
 export function* getShifts() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetShifts}?orgId=${user.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetShifts}?orgId=${user && user.organisation.orgId}`;
   
   try {
     const shiftsResponse = yield call(request, requestURL, {
@@ -95,11 +94,39 @@ export function* getEmployees() {
   }
 }
 
+export function* createAttendance({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.CreateAttendanceApi}`;
+  payload.orgId = user && user.organisation.orgId;
+  console.log(payload, "attendance payload")
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+    if(response.status === 500 || response.status === 400 ) throw response;
+
+    console.log(response, 'ATENDANCE RESPONSE');
+   
+    yield put({type: Constants.CLOSE_NEW_ATTENDANCE_DIALOG});
+    yield put({type: Constants.GET_ATTENDANCES});
+  } catch (err) {
+      yield put(AppActions.openSnackBar({message: err.message, status: 'error'}));
+      yield put({type: Constants.CLOSE_NEW_ATTENDANCE_DIALOG});
+      yield put(Actions.createAttendanceError(err));
+  }
+}
+
 export function* createShift({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.CreateShift}`;
-  payload.orgId = user.organisation.orgId;
+  payload.orgId = user && user.organisation.orgId;
   console.log(payload, "shift payload")
   try {
     const response = yield call(request, requestURL, {
@@ -160,6 +187,7 @@ export function* assignShift({ type, payload }) {
  */
 export default function* AttendanceRootSaga() {
   yield takeLatest(Constants.GET_ATTENDANCES, getAttendances);
+  yield takeLatest(Constants.CREATE_ATTENDANCE, createAttendance);
   yield takeLatest(Constants.GET_SHIFTS, getShifts);
   yield takeLatest(Constants.GET_DAYS, getDays);
   yield takeLatest(Constants.CREATE_SHIFT, createShift);
