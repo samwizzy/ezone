@@ -26,25 +26,10 @@ import { ImageUpload } from './ImageUpload';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
-    position: 'relative',
+    position: 'static',
   },
   title: {
-    marginLeft: theme.spacing(2),
-    flex: 1,
-  },
-  container: {
-    // width: 400,
-  },
-  textField: {
-    margin: theme.spacing(1),
-  },
-  divider: {
-    margin: theme.spacing(1),
-    border: '1px solid red',
-  },
-  buttonStyle: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexGrow: 1,
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -78,9 +63,9 @@ const CompaniesDialog = props => {
   const {
     loading,
     companyDialog,
-    createNewCompanyAction,
-    updateCompanyAction,
-    closeNewCompanyDialogAction,
+    createNewCompany,
+    updateCompany,
+    closeNewCompanyDialog,
     closeEditEmployeeDialogAction,
   } = props;
 
@@ -143,7 +128,7 @@ const CompaniesDialog = props => {
     <div>
       <Dialog
         {...companyDialog.props}
-        onClose={closeNewCompanyDialogAction}
+        onClose={closeNewCompanyDialog}
         keepMounted
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
@@ -158,7 +143,7 @@ const CompaniesDialog = props => {
             handleSelectOwnerId={handleSelectOwnerId}
             handleSelectAssociateId={handleSelectAssociateId}
             form={form}
-            closeNewCompanyDialog={closeNewCompanyDialogAction}
+            closeNewCompanyDialog={closeNewCompanyDialog}
             handleNext={handleNext}
           />
         )}
@@ -168,7 +153,7 @@ const CompaniesDialog = props => {
             handleDateChange={handleDateChange}
             handleSelectCountry={handleSelectCountry}
             form={form}
-            closeNewCompanyDialog={closeNewCompanyDialogAction}
+            closeNewCompanyDialog={closeNewCompanyDialog}
             handleNext={handleNext}
             handlePrev={handlePrev}
           />
@@ -176,14 +161,14 @@ const CompaniesDialog = props => {
         {step === 2 && (
           <ImageUpload
             companyDialog={companyDialog}
-            updateCompanyAction={updateCompanyAction}
-            createNewCompanyAction={createNewCompanyAction}
+            updateCompany={updateCompany}
+            createNewCompany={createNewCompany}
             uploadFileAction={uploadFileAction}
             handleChange={handleChange}
             handlePrev={handlePrev}
             form={form}
             setForm={setForm}
-            closeNewCompanyDialog={closeNewCompanyDialogAction}
+            closeNewCompanyDialog={closeNewCompanyDialog}
           />
         )}
       </Dialog>
@@ -196,9 +181,8 @@ CompaniesDialog.propTypes = {
   companyDialog: PropTypes.object,
   getAllWarehouses: PropTypes.array,
   getAllItems: PropTypes.array,
-  dispatchCreateNewInventoryAdjustmentAction: PropTypes.func,
-  closeNewCompanyDialogAction: PropTypes.func,
-  updateCompanyAction: PropTypes.func,
+  closeNewCompanyDialog: PropTypes.func,
+  updateCompany: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -208,10 +192,9 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    createNewCompanyAction: evt => dispatch(Actions.createNewCompany(evt)),
-    updateCompanyAction: evt => dispatch(Actions.updateCompany(evt)),
-    closeNewCompanyDialogAction: () =>
-      dispatch(Actions.closeNewCompanyDialog()),
+    createNewCompany: evt => dispatch(Actions.createNewCompany(evt)),
+    updateCompany: evt => dispatch(Actions.updateCompany(evt)),
+    closeNewCompanyDialog: () => dispatch(Actions.closeNewCompanyDialog()),
   };
 }
 

@@ -1,20 +1,20 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
-import {Button, Card, MobileStepper, Stepper, Step, StepLabel, StepButton, Divider, Slide, Typography, TextField } from '@material-ui/core';
+import { Button, Card, MobileStepper, Stepper, Step, StepLabel, StepButton, Divider, Slide, Typography, TextField } from '@material-ui/core';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
-import {JobDescForm} from './JobDescForm'
-import {JobInfoForm} from './JobInfoForm'
-import {HiringWorkFlowForm} from './HWForm'
-import {BasicInfoForm} from './BasicInfoForm'
+import { JobDescForm } from './JobDescForm'
+import { JobInfoForm } from './JobInfoForm'
+import { HiringWorkFlowForm } from './HWForm'
+import { BasicInfoForm } from './BasicInfoForm'
 import JobOpenings from '../JobOpenings'
 
 const useStyles = makeStyles(theme => ({
@@ -62,10 +62,10 @@ function AddRecruitment(props) {
     branch: '',
     employmentStatus: '',
     */
-    
+
     address: '',
     country: '',
-    enrollmentTypeId:  '',
+    enrollmentTypeId: '',
     locationId: 4,
     departmentId: '',
     jobDescription: "",
@@ -76,58 +76,58 @@ function AddRecruitment(props) {
     hiringSteps: [],
     submissionDeadline: "2020-04-28",
     steps: ""
-    
+
   });
 
   React.useEffect(() => {
   }, [])
 
   const canSubmitForm = () => {
-    const { address, country, departmentId, enrollmentTypeId, jobDescription, jobTitle, noOfVancancies, orgId, submissionDeadline  } = form
+    const { address, country, departmentId, enrollmentTypeId, jobDescription, jobTitle, noOfVancancies, orgId, submissionDeadline } = form
     return address.length > 0 && country.length > 0 && departmenIid && enrollmentTypeId && jobDescription.length > 0 && jobTitle.length > 0 && noOfVancancies
   }
 
   const handleChange = (event) => {
     const { name, value } = event.target
-    setForm({...form, [name]: value});
+    setForm({ ...form, [name]: value });
   }
 
   const handleSelectChange = (event) => {
     const { name, value } = event.target
-    setForm({...form, [name]:  value  });
+    setForm({ ...form, [name]: value });
   };
-  const handleDateChange = (date, formatted, name) => { 
-    setForm(_.set({...form}, name, reformattedDate(date)))
+  const handleDateChange = (date, formatted, name) => {
+    setForm(_.set({ ...form }, name, reformattedDate(date)))
   }
 
   const handleStepChange = (event) => {
     const { name, value } = event.target
     var str_array = value.split(',');
-    for(var i = 0; i < str_array.length; i++) {
+    for (var i = 0; i < str_array.length; i++) {
       var obj = new Object;
       obj.title = str_array[i];
     }
-    setForm({...form, ['hiringSteps']: { id: value } });
+    setForm({ ...form, ['hiringSteps']: { id: value } });
   };
 
 
   const handleSubmit = () => {
-    
-      //console.log(form, "Job submit")
-      createJobOpening(form);
+
+    //console.log(form, "Job submit")
+    createJobOpening(form);
   }
 
   const handleNext = () => {
     console.log(activeStep);
-    if(activeStep > -1 && activeStep < 2){ 
+    if (activeStep > -1 && activeStep < 2) {
       //setStep(activeStep + 1) 
       setActiveStep(prevActiveStep => prevActiveStep + 1);
-    }else{
+    } else {
       console.log(form, "Job submit")
       createJobOpening(form);
-      
+
     }
-    
+
   };
 
   const handleBack = () => {
@@ -142,7 +142,7 @@ function AddRecruitment(props) {
     switch (stepIndex) {
       case 0:
         return (
-          <JobDescForm 
+          <JobDescForm
             handleChange={handleChange}
             form={form}
             handleSubmit={handleSubmit}
@@ -154,7 +154,7 @@ function AddRecruitment(props) {
         );
       case 1:
         return (
-          <HiringWorkFlowForm 
+          <HiringWorkFlowForm
             handleChange={handleChange}
             handleSelectChange={handleSelectChange}
             form={form}
@@ -163,7 +163,7 @@ function AddRecruitment(props) {
         );
       case 2:
         return (
-          <JobInfoForm 
+          <JobInfoForm
             handleChange={handleChange}
             handleSelectChange={handleSelectChange}
             form={form}
@@ -197,10 +197,10 @@ function AddRecruitment(props) {
         ))}
       </Stepper>
       <div>
-        {activeStep === steps.length ? 
+        {activeStep === steps.length ?
           handleSubmit()
-          (
-          <JobOpenings/>)
+            (
+              <JobOpenings />)
           /*
           <div>
             <Typography className={classes.instructions}>All steps completed</Typography>
@@ -208,9 +208,9 @@ function AddRecruitment(props) {
           </div>
           */
           : (
-          <div>
-            <Card className={classes.instructions}>{getStepContent(activeStep)}</Card>
-            {/* <div>
+            <div>
+              <Card className={classes.instructions}>{getStepContent(activeStep)}</Card>
+              {/* <div>
               <Button
                 disabled={activeStep === 0}
                 onClick={handleBack}
@@ -222,26 +222,26 @@ function AddRecruitment(props) {
                 {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
               </Button>
             </div> */}
-            <MobileStepper
-              steps={maxSteps}
-              position="static"
-              variant="text"
-              activeStep={activeStep}
-              nextButton={
-                <Button size="small" onClick={handleNext} >
-                  Next
+              <MobileStepper
+                steps={maxSteps}
+                position="static"
+                variant="text"
+                activeStep={activeStep}
+                nextButton={
+                  <Button size="small" onClick={handleNext} >
+                    Next
                   {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-                </Button>
-              }
-              backButton={
-                <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-                  {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+                  </Button>
+                }
+                backButton={
+                  <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+                    {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
                   Back
                 </Button>
-              }
-            />
-          </div>
-        )}
+                }
+              />
+            </div>
+          )}
       </div>
     </div>
   );
@@ -254,13 +254,12 @@ AddRecruitment.propTypes = {
 const mapStateToProps = createStructuredSelector({
   departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
   enrollmentTypes: Selectors.makeSelectEnrollmentTypes(),
-  jobOpenings : Selectors.makeSelectJobOpenings(),
+  jobOpenings: Selectors.makeSelectJobOpenings(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     createJobOpening: (ev) => dispatch(Actions.createJobOpening(ev)),
-    dispatch,
   };
 }
 

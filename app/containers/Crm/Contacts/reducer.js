@@ -8,6 +8,7 @@ import * as Constants from './constants';
 
 export const initialState = {
   allContacts: [],
+  contactsGroups: [],
   message: false,
   loading: false,
   error: false,
@@ -116,7 +117,6 @@ const crmReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: false,
-          // createNewContact: action.payload,
         };
       }
       case Constants.CREATE_NEW_CONTACT_ERROR: {
@@ -137,7 +137,6 @@ const crmReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: false,
-          // createNewContact: action.payload,
         };
       }
       case Constants.UPDATE_CONTACT_ERROR: {
@@ -165,6 +164,26 @@ const crmReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           message: action.payload,
+        };
+      }
+      case Constants.GET_CONTACTS_GROUPS: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.GET_CONTACTS_GROUPS_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          contactsGroups: action.payload,
+        };
+      }
+      case Constants.GET_CONTACTS_GROUPS_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
         };
       }
     }

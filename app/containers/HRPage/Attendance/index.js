@@ -30,15 +30,18 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function AttendancePage(props) {
-  const { getAttendances, getDays, getShifts, days, getEmployees, } = props;
+  const { getAttendances, getDays, getShifts, days, getEmployees, getRoles, getBranches, getDepartments } = props;
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
-  
+
   React.useEffect(() => {
-    getAttendances(); 
-    getDays(); 
+    getAttendances();
+    getDays();
     getShifts();
     getEmployees();
+    getRoles();
+    getBranches();
+    getDepartments();
   }, []);
 
   return (
@@ -68,6 +71,9 @@ export function mapDispatchToProps(dispatch) {
     getDays: () => dispatch(Actions.getDays()),
     getShifts: () => dispatch(Actions.getShifts()),
     getEmployees: () => dispatch(Actions.getEmployees()),
+    getDepartments: () => dispatch(Actions.getDepartments()),
+    getBranches: () => dispatch(Actions.getBranches()),
+    getRoles: () => dispatch(Actions.getRoles()),
   };
 }
 

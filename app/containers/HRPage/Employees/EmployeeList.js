@@ -4,16 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   Avatar,
-  Button,
-  ButtonGroup,
-  TableContainer,
-  Table,
-  TableRow,
-  TableCell,
-  TableBody,
-  TextField,
   Grid,
-  Paper,
   Typography,
 } from '@material-ui/core';
 import { compose } from 'redux';
@@ -30,7 +21,7 @@ import * as AppSelectors from '../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Person from '@material-ui/icons/Person';
 import { AddEmployee } from '../components/AddButton';
-import AddEmployeeDialog from './components/AddEmployeeDialog';
+// import AddEmployeeDialog from './components/AddEmployeeDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -53,26 +44,11 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
-  table: {
-    border: 0,
-    whiteSpace: 'nowrap',
-    overflowX: 'auto',
-  },
   avatar: {
     width: theme.spacing(3),
     height: theme.spacing(3),
   },
   toolbar: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-  },
-  gridRoot: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    padding: theme.spacing(2, 1),
-    backgroundColor: theme.palette.background.paper,
-  },
   icon: {
     width: 20,
     height: 20,
@@ -83,9 +59,6 @@ const useStyles = makeStyles(theme => ({
   },
   active: {
     color: green[500]
-  },
-  buttonGroup: {
-    marginBottom: theme.spacing(1),
   },
 }));
 
@@ -101,10 +74,7 @@ const EmployeesApp = props => {
     employeeTypes,
     roles,
     employee,
-    //getDepartmentsByOrgIdApi,
   } = props;
-  // React.useEffect(() => {/*getDepartmentsByOrgIdApi()*/}, [employee, employees, departments, employeeTypes, roles]);
-  console.log(employees);
 
   const handleRoute = (id) => {
     getEmployee(id);
@@ -141,9 +111,7 @@ const EmployeesApp = props => {
         sort: true,
         customBodyRender: id => {
           const emp = employees && employees.find(e => e.id == id);
-          return (
-            <Typography>{`${emp.firstName} ${emp.lastName}`}</Typography>
-          )
+          return `${emp.firstName} ${emp.lastName}`;
         },
       },
     },
@@ -178,20 +146,19 @@ const EmployeesApp = props => {
         filter: true,
         sort: true,
         customBodyRender: enabled => (
-          <Typography className={classes.active}>{enabled ? 'Active' : 'Inactive'}</Typography>
+          <span className={classes.active}>{enabled ? 'Active' : 'Inactive'}</span>
         ),
       },
     },
   ];
 
   const options = {
-    filterType: 'dropdown', // checkbox
+    filterType: 'dropdown',
     responsive: 'scrollMaxHeight',
-    selectableRows: 'none', // single, multiple
+    selectableRows: 'none',
     print: false,
     download: true,
     viewColumns: false,
-    // filter: false,
     customToolbar: () => <AddEmployee openDialog={openNewEmployeeDialog} />,
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
@@ -218,7 +185,7 @@ const EmployeesApp = props => {
         </Grid>
       </Grid>
 
-      <AddEmployeeDialog />
+      {/* <AddEmployeeDialog /> */}
     </div>
   );
 };
@@ -244,8 +211,6 @@ function mapDispatchToProps(dispatch) {
     getEmployees: () => dispatch(Actions.getEmployees()),
     getEmployee: uuid => dispatch(Actions.getEmployee(uuid)),
     getPartyTags: () => dispatch(Actions.getPartyTags()),
-    // getDepartmentsByOrgIdApi: () =>
-    //   dispatch(Actions.getDepartmentsByOrgIdApi()),
   };
 }
 

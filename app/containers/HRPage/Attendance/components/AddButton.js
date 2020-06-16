@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Tooltip } from '@material-ui/core';
+import { Button, Tooltip, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Add } from '@material-ui/icons';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import BeenhereOutlinedIcon from '@material-ui/icons/BeenhereOutlined';
 
 const useStyles = makeStyles(theme => ({
   iconButton: {},
   button: { marginLeft: theme.spacing(1) },
+  autoComplete: { marginLeft: theme.spacing(1), width: 250, display: 'inline-flex' },
   icon: {}
 }));
 
@@ -55,8 +57,9 @@ export function AddShift(props) {
     </React.Fragment>
   );
 }
+
 export function AssignShift(props) {
-  const { openDialog } = props;
+  const { openDialog, shifts, selectUsersByShift, shift } = props;
   const classes = useStyles()
 
   return (
@@ -74,6 +77,23 @@ export function AssignShift(props) {
           Assign Shift
         </Button>
       </Tooltip>
+      <Autocomplete
+        id="combo-box-demo"
+        size="small"
+        options={shifts ? shifts : []}
+        getOptionLabel={option => option.shiftName}
+        onChange={selectUsersByShift}
+        className={classes.autoComplete}
+        renderInput={params => (
+          <TextField
+            {...params}
+            label="Shift"
+            variant="outlined"
+            placeholder="Search"
+            value={shift}
+          />
+        )}
+      />
     </React.Fragment>
   );
 }

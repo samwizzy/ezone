@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
@@ -34,8 +34,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const status = [
-  {id: 1, label: "PRESENT"},
-  {id: 2, label: "ABSENT"},
+  { id: 1, label: "PRESENT" },
+  { id: 2, label: "ABSENT" },
 ]
 
 function AddAttendanceDialog(props) {
@@ -43,38 +43,34 @@ function AddAttendanceDialog(props) {
   const { createAttendance, employees, closeNewAttendanceDialog, dialog } = props;
   const [form, setForm] = React.useState({
     userId: '',
-    date: new Date,
+    date: moment.utc(new Date).format(),
     status: 'PRESENT',
-    loginTime: new Date,
-    logOutTime: new Date,
-    // comment: '',
+    loginTime: moment.utc(new Date).format(),
+    logOutTime: moment.utc(new Date).format(),
   });
 
   React.useEffect(() => {
-    if(dialog.type == 'edit'){
-      setForm({...form})
+    if (dialog.type == 'edit') {
+      setForm({ ...form })
     }
   }, [dialog])
 
   const canSubmitForm = () => {
-    const {userId, date, status, loginTime, logOutTime } = form
+    const { userId, date, status, loginTime, logOutTime } = form
     return userId && loginTime && logOutTime && date && status.length > 0
   }
 
   const handleChange = (event) => {
     const { name, value } = event.target
-    setForm({...form, [name]: value});
+    setForm({ ...form, [name]: value });
   }
 
   const handleSelectChange = name => (event, obj) => {
-    setForm({...form, [name]: obj.id});
+    setForm({ ...form, [name]: obj.id });
   }
 
   const handleDateChange = name => (date, value) => {
-    setForm({...form, [name]: moment.utc(date).format()});
-  }
-  const handleTimeChange = name => (date, value) => {
-    setForm({...form, [name]: moment(date).format('hh:mm:ss')});
+    setForm({ ...form, [name]: moment.utc(date).format() });
   }
 
   const handleSubmit = () => {
@@ -110,8 +106,8 @@ function AddAttendanceDialog(props) {
                     id="combo-box-demo"
                     name="userId"
                     size="small"
-                    options={employees? employees : [] }
-                    getOptionLabel={option => option.firstName +' '+ option.lastName}
+                    options={employees ? employees : []}
+                    getOptionLabel={option => option.firstName + ' ' + option.lastName}
                     onChange={handleSelectChange('userId')}
                     renderInput={params => (
                       <TextField
@@ -146,7 +142,7 @@ function AddAttendanceDialog(props) {
                     />
                   </MuiPickersUtilsProvider>
                 </TableCell>
-             
+
                 <TableCell>
                   <TextField
                     id="status"
@@ -161,10 +157,10 @@ function AddAttendanceDialog(props) {
                     value={form.status}
                     onChange={handleChange}
                   >
-                    {status.map((option, i) => 
-                    <MenuItem key={i} value={option.label}>
-                      {option.label}
-                    </MenuItem>
+                    {status.map((option, i) =>
+                      <MenuItem key={i} value={option.label}>
+                        {option.label}
+                      </MenuItem>
                     )}
                   </TextField>
                 </TableCell>
@@ -256,7 +252,6 @@ function mapDispatchToProps(dispatch) {
   return {
     createAttendance: data => dispatch(Actions.createAttendance(data)),
     closeNewAttendanceDialog: () => dispatch(Actions.closeNewAttendanceDialog()),
-    dispatch,
   };
 }
 

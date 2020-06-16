@@ -9,7 +9,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Divider,
   AppBar,
   Toolbar,
   Typography,
@@ -18,12 +17,14 @@ import { Autocomplete } from '@material-ui/lab';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1, 0),
-    },
+    flexGrow: 1
   },
   appBar: {
-    position: 'relative',
+    position: 'static',
+  },
+  dialogPaper: {
+    minHeight: '100%',
+    maxHeight: '100%',
   },
 }));
 
@@ -71,14 +72,15 @@ export const BasicInfo = props => {
         </Toolbar>
       </AppBar>
 
-      <DialogContent dividers style={{border: '1px solid blue'}}>
+      <DialogContent dividers>
         <Grid container spacing={1}>
           <Grid item xs={6}>
             <TextField
               name="firstName"
               label="Firstname"
-              id="outlined-title"
+              id="outlined-firstname"
               fullWidth
+              margin="normal"
               variant="outlined"
               size="small"
               value={form.firstName}
@@ -89,8 +91,9 @@ export const BasicInfo = props => {
             <TextField
               name="lastName"
               label="Lastname"
-              id="outlined-title"
+              id="outlined-lastname"
               fullWidth
+              margin="normal"
               variant="outlined"
               size="small"
               value={form.lastName}
@@ -100,9 +103,10 @@ export const BasicInfo = props => {
           <Grid item xs={6}>
             <TextField
               name="phoneNumber"
-              label="Mobile Number"
-              id="outlined-title"
+              label="Phone Number"
+              id="outlined-phone-number"
               fullWidth
+              margin="normal"
               variant="outlined"
               size="small"
               type="number"
@@ -116,6 +120,7 @@ export const BasicInfo = props => {
               label="Email"
               id="outlined-title"
               fullWidth
+              margin="normal"
               variant="outlined"
               size="small"
               type="email"
@@ -125,7 +130,7 @@ export const BasicInfo = props => {
           </Grid>
           <Grid item xs={6}>
             <Autocomplete
-              id="combo-lifeStage"
+              id="combo-life-stage"
               size="small"
               options={lifeStages}
               getOptionLabel={option => option.name}
@@ -137,6 +142,7 @@ export const BasicInfo = props => {
                   variant="outlined"
                   placeholder="Select Life Stage"
                   fullWidth
+                  margin="normal"
                   name="lifeStage"
                   value={form.lifeStage}
                 />
@@ -145,10 +151,10 @@ export const BasicInfo = props => {
           </Grid>
           <Grid item xs={6}>
             <Autocomplete
-              id="combo-ownerId"
+              id="combo-owner-id"
               size="small"
               options={contactType}
-              getOptionLabel={option => `${option.name} ${option.name}`}
+              getOptionLabel={option => option.name}
               onChange={(evt, value) => handleSelectOwnerId(evt, value)}
               renderInput={params => (
                 <TextField
@@ -157,6 +163,7 @@ export const BasicInfo = props => {
                   variant="outlined"
                   placeholder="Select Contact Owner"
                   fullWidth
+                  margin="normal"
                   name="ownerId"
                   value={form.ownerId}
                 />
@@ -165,10 +172,10 @@ export const BasicInfo = props => {
           </Grid>
           <Grid item xs={12}>
             <Autocomplete
-              id="combo-associationType"
+              id="combo-association-type"
               size="small"
               options={contactType}
-              getOptionLabel={option => `${option.name}`}
+              getOptionLabel={option => option.name}
               onChange={(evt, value) => handleSelectAssociateId(evt, value)}
               renderInput={params => (
                 <TextField
@@ -177,6 +184,7 @@ export const BasicInfo = props => {
                   variant="outlined"
                   placeholder="Select Association Type"
                   fullWidth
+                  margin="normal"
                 />
               )}
             />

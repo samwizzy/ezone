@@ -17,7 +17,7 @@ import * as AppSelectors from '../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
 import Person from '@material-ui/icons/Person';
-import {AddBranch} from '../components/AddButton'
+import { AddBranch } from '../components/AddButton'
 import AddBranchDialog from './components/AddBranchDialog'
 
 const useStyles = makeStyles(theme => ({
@@ -41,8 +41,8 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
-  table: { 
-    border: 0, 
+  table: {
+    border: 0,
     whiteSpace: 'nowrap',
     overflowX: 'auto',
   },
@@ -61,9 +61,9 @@ const useStyles = makeStyles(theme => ({
     width: 14,
     height: 14,
     color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.done': { color: green[500]},
+    '&.approved': { color: theme.palette.primary.main },
+    '&.inProgress': { color: orange[500] },
+    '&.done': { color: green[500] },
   },
   buttonGroup: {
     marginBottom: theme.spacing(1),
@@ -77,9 +77,7 @@ const BranchesApp = props => {
   React.useEffect(() => {
   }, [employee]);
 
-  const toTitleCase = (str) => { 
-    return str? str[0].toUpperCase() + str.slice(1) : ""; 
-  }
+  console.log(branches, "branches")
 
   const columns = [
     {
@@ -94,21 +92,18 @@ const BranchesApp = props => {
       name: 'name',
       label: 'Department Name',
       options: {
-      filter: true,
-      sort: true,
+        filter: true,
+        sort: true,
       },
     },
     {
-      name: 'employeeCount',
+      name: 'employees',
       label: 'Employee count',
-     
       options: {
-      filter: true,
-      sort: true,
-      customBodyRender: id => {
-        return (
-          <span>0</span>
-        )
+        filter: true,
+        sort: true,
+        customBodyRender: employees => {
+          return <span>{employees && employees.length}</span>
         }
       },
     },
@@ -116,8 +111,9 @@ const BranchesApp = props => {
       name: 'dateCreated',
       label: 'Created',
       options: {
-      filter: true,
-      sort: true,
+        filter: true,
+        sort: true,
+        customBodyRender: value => moment(value).format('lll')
       },
     },
   ];
@@ -132,7 +128,7 @@ const BranchesApp = props => {
     filter: false,
     customToolbar: () => <AddBranch openDialog={openNewBranchDialog} />,
     rowsPerPage: 10,
-    rowsPerPageOptions: [10,25,50,100],
+    rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
       console.log(rowData[0], "rowData[0]")
       getEmployee(rowData[0])
@@ -148,13 +144,13 @@ const BranchesApp = props => {
       >
         <Grid item md={12}>
           <div className={classes.content}>
-        
+
             <MUIDataTable
-                className={classes.datatable}
-                title="Branch List"
-                data={branches}
-                columns={columns}
-                options={options}
+              className={classes.datatable}
+              title="Branch List"
+              data={branches}
+              columns={columns}
+              options={options}
             />
 
           </div>
@@ -175,7 +171,7 @@ BranchesApp.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   employees: Selectors.makeSelectEmployees(),
-  employee : Selectors.makeSelectEmployee(),
+  employee: Selectors.makeSelectEmployee(),
   user: AppSelectors.makeSelectCurrentUser(),
   branches: Selectors.makeSelectBranches(),
 });

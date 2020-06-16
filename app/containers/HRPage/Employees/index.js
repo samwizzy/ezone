@@ -6,7 +6,7 @@
 import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { withRouter } from 'react-router-dom'; 
+import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -22,6 +22,7 @@ import saga from './../saga';
 import ModuleLayout from './ModuleLayout'
 import EmployeeList from './EmployeeList';
 import EmployeeDetails from './EmployeeDetails';
+import AddEmployeeDialog from './components/AddEmployeeDialog';
 import WorkExperienceDialog from './components/WorkExperienceDialog';
 import EducationBackgroundDialog from './components/EducationBackgroundDialog';
 
@@ -47,11 +48,12 @@ export function EmployeePage(props) {
       </Helmet>
 
       <ModuleLayout>
-        {params.status?
-        <EmployeeDetails /> : <EmployeeList />
+        {params.status ?
+          <EmployeeDetails /> : <EmployeeList />
         }
       </ModuleLayout>
 
+      <AddEmployeeDialog />
       <WorkExperienceDialog />
       <EducationBackgroundDialog />
     </React.Fragment>

@@ -34,16 +34,9 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
 }));
 
-const menus = [
-	{id: 1, title: "Basic Information"},
-	{id: 2, title: "CV"},
-	{id: 3, title: "Interview"},
-	{id: 4, title: "History"},
-]
-
 const GoalsList = props => {
   const classes = useStyles();
-	const { loading, openNewGoalsDialog } = props;
+  const { loading, openNewGoalsDialog } = props;
 
   React.useEffect(() => {
   }, []);
@@ -51,8 +44,8 @@ const GoalsList = props => {
   return (
     <div className={classes.root}>
       <Grid container>
-				<Grid item xs={12}>
-          <AppBar position="static" color="inherit" elevation={2}>
+        <Grid item xs={12}>
+          <AppBar position="static" color="inherit" elevation={1}>
             <Toolbar variant="dense">
               <Typography variant="h6" className={classes.title}>
                 Goals
@@ -60,15 +53,11 @@ const GoalsList = props => {
               <Button variant="contained" color="primary" onClick={openNewGoalsDialog}>Add Goal</Button>
             </Toolbar>
           </AppBar>
-				</Grid>
+        </Grid>
         <Grid item md={12}>
           <GoalsItem />
           <GoalsItem />
           <GoalsItem />
-        </Grid>
-        <Grid item xs={12}>
-          <Paper square className={classes.paper}>
-          </Paper>
         </Grid>
       </Grid>
     </div>
@@ -96,7 +85,7 @@ const withConnect = connect(
 );
 
 export default compose(
-	withRouter,
-	withConnect,
-	memo,
+  withRouter,
+  withConnect,
+  memo,
 )(GoalsList);

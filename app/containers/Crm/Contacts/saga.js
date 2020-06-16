@@ -10,10 +10,33 @@ import * as Endpoints from '../../../components/Endpoints';
 
 export function* getAllContacts() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetAllContactsApi}/${
-    currentUser.organisation.orgId
-  }`;
+    user && user.organisation.orgId
+    }`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+    if (response.status === 400 || response.status === 500) {
+      throw response
+    }
+
+    yield put(Actions.getAllContactsSuccess(response));
+  } catch (err) {
+    console.log(err, "err contacts")
+    yield put(Actions.getAllContactsError(err));
+  }
+}
+
+export function* getContactsGroups() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const requestURL = `${Endpoints.GetAllContactsGroupApi}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -24,9 +47,9 @@ export function* getAllContacts() {
       }),
     });
 
-    yield put(Actions.getAllContactsSuccess(response));
+    yield put(Actions.getContactsGroupsSuccess(response));
   } catch (err) {
-    yield put(Actions.getAllContactsError(err));
+    yield put(Actions.getAllContactsGroupError(err));
   }
 }
 
@@ -131,4 +154,5 @@ export default function* crmContactsSaga() {
   yield takeLatest(Constants.CREATE_NEW_CONTACT, createNewContact);
   yield takeLatest(Constants.UPDATE_CONTACT, updateContact);
   yield takeLatest(Constants.GET_ALL_CONTACTS, getAllContacts);
+  yield takeLatest(Constants.GET_CONTACTS_GROUPS, getContactsGroups);
 }

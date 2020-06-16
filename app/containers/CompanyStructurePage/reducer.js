@@ -63,9 +63,9 @@ export const initialState = {
     data: null,
   },
   // Organization initial state
-  companyInfo: false,
-  updateCompanyInfoData: false,
-  message: false,
+  companyInfo: null,
+  updateCompanyInfoData: null,
+  message: null,
   colorDialog: {
     type: 'new',
     props: {

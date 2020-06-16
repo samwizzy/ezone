@@ -17,17 +17,11 @@ import * as Selectors from './../selectors';
 import EmployeeShiftList from './EmployeeShiftList'
 import AssignShiftDialog from './components/AssignShiftDialog'
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-}));
-
 export function EmployeeShiftPage(props) {
   const { getAttendances, getEmployees } = props;
 
   React.useEffect(() => {
-    getAttendances();  
+    getAttendances();
     getEmployees();
   }, []);
 
@@ -39,7 +33,7 @@ export function EmployeeShiftPage(props) {
       </Helmet>
 
       <EmployeeShiftList />
-      
+
       <AssignShiftDialog />
 
     </React.Fragment>

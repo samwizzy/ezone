@@ -48,12 +48,12 @@ const useStyles = makeStyles(theme => ({
 
 const ActivitiesList = props => {
   const classes = useStyles();
-  const { loading, GetAllCrmActivities } = props;
+  const { loading, crmActivities } = props;
   const [form, setForm] = React.useState({})
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
-  const handleChange = () => {}
+  const handleChange = () => { }
 
   if (loading) {
     return <LoadingIndicator />;
@@ -136,7 +136,7 @@ const ActivitiesList = props => {
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <VerticalTimeline GetAllCrmActivities={GetAllCrmActivities} />
+          <VerticalTimeline crmActivities={crmActivities} />
         </Grid>
       </Grid>
     </div>
@@ -145,17 +145,17 @@ const ActivitiesList = props => {
 
 ActivitiesList.propTypes = {
   loading: PropTypes.bool,
-  GetAllCrmActivities: PropTypes.array,
+  crmActivities: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  GetAllCrmActivities: Selectors.makeSelectGetAllCrmActivities(),
+  crmActivities: Selectors.makeSelectGetAllCrmActivities(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewContactDialogAction: () => dispatch(Actions.openNewContactDialog()),
+    openNewContactDialog: () => dispatch(Actions.openNewContactDialog()),
   };
 }
 

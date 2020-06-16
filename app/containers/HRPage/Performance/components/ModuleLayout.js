@@ -44,12 +44,12 @@ const AntTab = withStyles(theme => ({
     '&$selected': {
       color: '#1890ff',
       backgroundColor: '#ffffff',
-			fontWeight: theme.typography.fontWeightMedium,
+      fontWeight: theme.typography.fontWeightMedium,
     },
     '&:focus': {
       color: '#40a9ff',
     },
-	},
+  },
   selected: {},
 }))(props => <Tab disableRipple {...props} />);
 
@@ -60,11 +60,12 @@ function a11yProps(index) {
   };
 }
 
-function ModuleLayout({history, location, match}) {
+function ModuleLayout({ history, location, match }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(location.pathname)
 
   console.log(location, "location")
+  console.log(match, "match")
 
   const handleChange = (event, newValue) => {
     setValue(newValue)

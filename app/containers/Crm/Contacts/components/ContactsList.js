@@ -30,6 +30,7 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(2),
   },
   datatable: {
+    whiteSpace: "nowrap",
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
     },
@@ -57,14 +58,14 @@ const ContactsList = props => {
   const {
     loading,
     allContacts,
-    openNewContactDialogAction,
-    openContactDetailsDialogAction,
-    openEditContactDialogAction,
-    getAllContactsAction,
+    openNewContactDialog,
+    openContactDetailsDialog,
+    openEditContactDialog,
+    getAllContacts,
   } = props;
 
   useEffect(() => {
-    getAllContactsAction();
+    getAllContacts();
   }, []);
 
   const columns = [
@@ -98,10 +99,10 @@ const ContactsList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const contac = allContacts.find(contact => value === contact.id);
+          const contact = allContacts.find(contact => value === contact.id);
           return (
             <Typography variant="subtitle2">
-              {`${contac.firstName} ${contac.lastName}`}
+              {contact.firstName + ' ' + contact.lastName}
             </Typography>
           );
         },
@@ -128,24 +129,7 @@ const ContactsList = props => {
       label: 'Status',
       options: {
         filter: true,
-        sort: false,
-        // customBodyRender: value => {
-        //   const Post = getAllPosts.find(post => value === post.id);
-
-        //   if (value === '') {
-        //     return '';
-        //   }
-        //   return (
-        //     <FormControlLabel
-        //       label="Edit"
-        //       control={<Icon>create</Icon>}
-        //       onClick={evt => {
-        //         evt.stopPropagation();
-        //         openEditPostDialog(Post);
-        //       }}
-        //     />
-        //   );
-        // },
+        sort: false
       },
     },
     {
@@ -187,18 +171,28 @@ const ContactsList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const contac = allContacts.find(contact => value === contact.id);
+          const data = allContacts.find(contact => value === contact.id);
           return (
-            <div>
-              <Button variant="outlined" size="small" color="primary" onClick={() => openEditContactDialogAction(contac)}>
-                Edit
-              </Button>
-              <FormControlLabel
-                className={classes.button}
-                control={<Visibility fontSize="small" />}
-                onClick={() => openContactDetailsDialogAction(contac)}
-              />
-            </div>
+            <Button variant="outlined" size="small" color="primary" onClick={() => openEditContactDialog(data)}>
+              Edit
+            </Button>
+          );
+        },
+      },
+    },
+    {
+      name: 'id',
+      label: 'Action',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: value => {
+          const data = allContacts.find(contact => value === contact.id);
+          return (
+            <FormControlLabel
+              control={<Visibility fontSize="small" />}
+              onClick={() => openContactDetailsDialog(data)}
+            />
           );
         },
       },
@@ -216,7 +210,7 @@ const ContactsList = props => {
         size="small"
         className={classes.button}
         startIcon={<Add />}
-        onClick={() => openNewContactDialogAction()}
+        onClick={() => openNewContactDialog()}
       >
         New
       </Button>
@@ -246,10 +240,10 @@ const ContactsList = props => {
 
 ContactsList.propTypes = {
   loading: PropTypes.bool,
-  openNewContactDialogAction: PropTypes.func,
-  openEditContactDialogAction: PropTypes.func,
-  openContactDetailsDialogAction: PropTypes.func,
-  getAllContactsAction: PropTypes.func,
+  openNewContactDialog: PropTypes.func,
+  openEditContactDialog: PropTypes.func,
+  openContactDetailsDialog: PropTypes.func,
+  getAllContacts: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -259,14 +253,10 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewContactDialogAction: () =>
-      dispatch(Actions.openNewContactDialog()),
-    openEditContactDialogAction: evt =>
-      dispatch(Actions.openEditContactDialog(evt)),
-    openContactDetailsDialogAction: evt =>
-      dispatch(Actions.openContactDetailsDialog(evt)),
-    getAllContactsAction: () =>
-      dispatch(Actions.getAllContacts()),
+    openNewContactDialog: () => dispatch(Actions.openNewContactDialog()),
+    openEditContactDialog: evt => dispatch(Actions.openEditContactDialog(evt)),
+    openContactDetailsDialog: evt => dispatch(Actions.openContactDetailsDialog(evt)),
+    getAllContacts: () => dispatch(Actions.getAllContacts()),
   };
 }
 

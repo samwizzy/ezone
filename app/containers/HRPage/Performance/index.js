@@ -30,12 +30,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function PerformancePage(props) {
-  const { getAttendance } = props;
+  const { getGoals } = props;
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
   React.useEffect(() => {
-    getAttendance();  
+    getGoals();
   }, []);
 
   return (
@@ -61,7 +61,7 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
-    getAttendance: () => dispatch(Actions.getLeaveRequest()),
+    getGoals: () => dispatch(Actions.getGoals()),
   };
 }
 

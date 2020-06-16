@@ -18,28 +18,6 @@ export const initialState = {
   feedbacks: [],
   reviews: [],
   employees: [],
-  leaveRequest: [],
-  leaveRequestDialog: {
-    type: 'new',
-    props: {
-      open: false,
-    },
-    data: null,
-  },
-  leaveTypeDialog: {
-    type: 'new',
-    props: {
-      open: false,
-    },
-    data: null,
-  },
-  holidayDialog: {
-    type: 'new',
-    props: {
-      open: false,
-    },
-    data: null,
-  },
   goalsDialog: {
     type: 'new',
     props: {
@@ -54,95 +32,98 @@ export const initialState = {
     },
     data: null,
   },
+  feedbackDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
+  reviewDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
 };
 
 /* eslint-disable default-case, no-param-reassign */
 const performanceReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
-      case Constants.GET_LEAVE_REQUEST:
+      case Constants.GET_GOALS:
         return {
           ...state,
           loading: true
         };
         break;
-      case Constants.GET_LEAVE_REQUEST_SUCCESS:
+      case Constants.GET_GOALS_SUCCESS:
         return {
           ...state,
           loading: false,
-          leaveRequest: action.payload
+          goals: action.payload
         };
         break;
-      case Constants.CREATE_LEAVE_REQUEST: {
+      case Constants.CREATE_GOALS: {
         return {
           ...state,
           loading: true,
         };
       }
-      case Constants.CREATE_LEAVE_REQUEST_SUCCESS: {
+      case Constants.CREATE_GOALS_SUCCESS: {
         return {
           ...state,
           loading: false,
         };
       }
-      case Constants.OPEN_NEW_LEAVE_REQUEST_DIALOG:
+      case Constants.GET_RECOGNITIONS:
         return {
           ...state,
-          leaveRequestDialog: {...state.leaveRequestDialog, props: { open: true }},
+          loading: true
         };
         break;
-      case Constants.CLOSE_NEW_LEAVE_REQUEST_DIALOG:
+      case Constants.GET_RECOGNITIONS_SUCCESS:
         return {
           ...state,
-          leaveRequestDialog: {...state.leaveRequestDialog, props: { open: false }},
+          loading: false,
+          recognitions: action.payload
         };
         break;
-      case Constants.OPEN_NEW_LEAVE_TYPE_DIALOG:
+      case Constants.CREATE_RECOGNITION: {
         return {
           ...state,
-          leaveTypeDialog: {...state.leaveTypeDialog, props: { open: true }},
+          loading: true,
         };
-        break;
-      case Constants.CLOSE_NEW_LEAVE_TYPE_DIALOG:
+      }
+      case Constants.CREATE_RECOGNITION_SUCCESS: {
         return {
           ...state,
-          leaveTypeDialog: {...state.leaveTypeDialog, props: { open: false }},
+          loading: false,
         };
-        break;
-      case Constants.OPEN_NEW_HOLIDAY_DIALOG:
-        return {
-          ...state,
-          holidayDialog: {...state.holidayDialog, props: { open: true }},
-        };
-        break;
-      case Constants.CLOSE_NEW_HOLIDAY_DIALOG:
-        return {
-          ...state,
-          holidayDialog: {...state.holidayDialog, props: { open: false }},
-        };
-        break;
+      }
       case Constants.OPEN_NEW_GOALS_DIALOG:
         return {
           ...state,
-          goalsDialog: {...state.goalsDialog, props: { open: true }},
+          goalsDialog: { ...state.goalsDialog, props: { open: true } },
         };
         break;
       case Constants.CLOSE_NEW_GOALS_DIALOG:
         return {
           ...state,
-          goalsDialog: {...state.goalsDialog, props: { open: false }},
+          goalsDialog: { ...state.goalsDialog, props: { open: false } },
         };
         break;
       case Constants.OPEN_NEW_RECOGNITION_DIALOG:
         return {
           ...state,
-          recognitionDialog: {...state.recognitionDialog, props: { open: true }},
+          recognitionDialog: { ...state.recognitionDialog, props: { open: true } },
         };
         break;
       case Constants.CLOSE_NEW_RECOGNITION_DIALOG:
         return {
           ...state,
-          recognitionDialog: {...state.recognitionDialog, props: { open: false }},
+          recognitionDialog: { ...state.recognitionDialog, props: { open: false } },
         };
         break;
     }

@@ -6,7 +6,7 @@ import {
   Grid,
   Card,
   CardContent,
-  List, 
+  List,
   ListItem,
   ListItemText,
   ListItemAvatar,
@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     '& .MuiGrid-item': {
       flex: 1,
-      margin: theme.spacing(4)
+      margin: theme.spacing(2)
     }
   },
   list: {
@@ -88,7 +88,7 @@ const EmailHome = props => {
                   <ListItemAvatar>
                     <img alt="" src={directory} className={classes.cardIcon} />
                   </ListItemAvatar>
-                  <ListItemText primary={<Typography variant="h6">AD <br/>Configuration</Typography>} secondary="Configure settings" />
+                  <ListItemText primary={<Typography variant="h6">AD <br />Configuration</Typography>} secondary="Configure settings" />
                 </ListItem>
               </List>
             </CardContent>
@@ -105,7 +105,7 @@ const EmailHome = props => {
                   <ListItemAvatar>
                     <img alt="" src={mail} className={classes.cardIcon} />
                   </ListItemAvatar>
-                  <ListItemText primary={<Typography variant="h6">Email <br/>Templates</Typography>} secondary="Configure settings" />
+                  <ListItemText primary={<Typography variant="h6">Email <br />Templates</Typography>} secondary="Configure settings" />
                 </ListItem>
               </List>
             </CardContent>

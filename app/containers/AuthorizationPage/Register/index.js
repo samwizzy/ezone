@@ -17,6 +17,7 @@ import makeSelectRegistrationPage from '../selectors';
 import reducer from '../reducer';
 import saga from '../saga';
 import RegistrationForm from './components/RegistrationForm';
+import Snackbar from '../../../components/layouts/shared-components/Snackbar';
 
 export function RegistrationPage() {
   useInjectReducer({ key: 'authorizationPage', reducer });
@@ -29,6 +30,7 @@ export function RegistrationPage() {
         <meta name="description" content="Description of RegistrationPage" />
       </Helmet>
       <RegistrationForm />
+      <Snackbar />
     </div>
   );
 }

@@ -90,15 +90,15 @@ export const initialState = {
     data: null,
   },
   users: [],
-  user: {},
+  user: null,
   tasks: [],
-  task: {},
+  task: null,
   taskComments: [],
   folders: [],
   nestedFolders: [],
-  folder: {},
+  folder: null,
   files: [],
-  file: {},
+  file: null,
   prevIds: [],
 };
 
@@ -159,7 +159,7 @@ const utilityPageReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: false,
-          error: {...state.error, success: false, message: action.payload},
+          error: { ...state.error, success: false, message: action.payload },
         };
       }
       case Constants.UPDATE_UTILITY_TASK: {
@@ -191,7 +191,7 @@ const utilityPageReducer = (state = initialState, action) =>
       case Constants.GET_UTILITY_TASK_ERROR: {
         return {
           ...state,
-          error: {...state.error, success: false, message: action.payload},
+          error: { ...state.error, success: false, message: action.payload },
           loading: false
         };
       }
@@ -258,7 +258,7 @@ const utilityPageReducer = (state = initialState, action) =>
       case Constants.GET_UTILITY_TASKS_ERROR: {
         return {
           ...state,
-          error: {...state.error, success: false, message: action.payload},
+          error: { ...state.error, success: false, message: action.payload },
           loading: false
         };
       }
@@ -510,13 +510,13 @@ const utilityPageReducer = (state = initialState, action) =>
       case Constants.OPEN_NEW_FOLDER_DIALOG: {
         return {
           ...state,
-          folderDialog: { type: 'new', props: {open: true}, data: action.payload },
+          folderDialog: { type: 'new', props: { open: true }, data: action.payload },
         };
       }
       case Constants.CLOSE_NEW_FOLDER_DIALOG: {
         return {
           ...state,
-          folderDialog: { type: 'new', props: {open: false}, data: action.payload },
+          folderDialog: { type: 'new', props: { open: false }, data: action.payload },
         };
       }
       case Constants.OPEN_NEW_FILE_DIALOG: {

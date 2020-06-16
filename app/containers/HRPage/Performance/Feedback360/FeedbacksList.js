@@ -14,8 +14,7 @@ import MUIDataTable from 'mui-datatables'
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
 import * as AppSelectors from '../../../App/selectors';
-import {AddHoliday} from '../components/AddButton'
-import HolidayDialog from './components/HolidayDialog'
+import { AddFeedback } from '../components/AddButton'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,19 +40,15 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   icon: {
     color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.done': { color: green[500]},
+    '&.approved': { color: theme.palette.primary.main },
+    '&.inProgress': { color: orange[500] },
+    '&.done': { color: green[500] },
   }
 }));
 
-const employeeShifts = [
-  {id: 1, avi: '', employee: 'Samuel', shift: 'Night', duration: '6:00pm - 6:00am'}
-]
-
-const HolidaysList = props => {
+const FeedbacksList = props => {
   const classes = useStyles();
-  const { loading, openNewHolidayDialog, getHolidays, getHolidayById, holidays } = props;
+  const { loading, openNewFeedbackDialog, getFeedbackById, getFeedbacks, feedbacks } = props;
 
   React.useEffect(() => {
   }, []);
@@ -87,8 +82,8 @@ const HolidaysList = props => {
       name: 'duration',
       label: 'Duration',
       options: {
-      filter: true,
-      sort: true,
+        filter: true,
+        sort: true,
       },
     }
   ];
@@ -101,9 +96,9 @@ const HolidaysList = props => {
     download: true,
     viewColumns: false,
     filter: false,
-    customToolbar: () => <AddHoliday openDialog={openNewHolidayDialog} />,
+    customToolbar: () => <AddFeedback openDialog={openNewFeedbackDialog} />,
     rowsPerPage: 10,
-    rowsPerPageOptions: [10,25,50,100],
+    rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
       getHolidayById(rowData[0])
     },
@@ -119,35 +114,33 @@ const HolidaysList = props => {
         <Grid item md={12}>
           <MUIDataTable
             className={classes.datatable}
-            title="Holidays"
-            data={holidays}
+            title="360 Feedbacks"
+            data={feedbacks}
             columns={columns}
             options={options}
           />
         </Grid>
       </Grid>
-
-      <HolidayDialog />
     </div>
   );
 };
 
-HolidaysList.propTypes = {
+FeedbacksList.propTypes = {
   loading: PropTypes.bool,
-  openNewHolidayDialog: PropTypes.func,
+  openNewFeedbackDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   user: AppSelectors.makeSelectCurrentUser(),
-  holidays: Selectors.makeSelectFeedbacks(),
+  feedbacks: Selectors.makeSelectFeedbacks(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getHolidays: () => dispatch(Actions.getLeaveRequest()),
-    getHolidayById: (uuid) => dispatch(Actions.getLeaveRequestById(uuid)),
-    openNewHolidayDialog: () => dispatch(Actions.openNewHolidayDialog()),
+    getFeedbacks: () => dispatch(Actions.getRecognitions()),
+    getFeedbackById: (id) => dispatch(Actions.getRecognitionById(id)),
+    openNewFeedbackDialog: () => dispatch(Actions.openNewRecognitionDialog()),
   };
 }
 
@@ -160,4 +153,4 @@ export default compose(
   withRouter,
   withConnect,
   memo,
-)(HolidaysList);
+)(FeedbacksList);

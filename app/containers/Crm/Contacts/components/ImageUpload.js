@@ -34,8 +34,8 @@ export const ImageUpload = props => {
     closeNewContactDialog,
     handlePrev,
     form,
-    createNewContactAction,
-    updateContactAction,
+    createNewContact,
+    updateContact,
     contactDialog,
   } = props;
   const classes = useStyles();
@@ -72,7 +72,7 @@ export const ImageUpload = props => {
             </Button>
             <Button
               onClick={() => {
-                createNewContactAction(form);
+                createNewContact(form);
                 setForm('');
               }}
               color="primary"
@@ -81,24 +81,24 @@ export const ImageUpload = props => {
             </Button>
           </div>
         ) : (
-          <div>
-            <Button onClick={() => closeNewContactDialog()} color="primary">
-              Cancel
+            <div>
+              <Button onClick={() => closeNewContactDialog()} color="primary">
+                Cancel
             </Button>
-            <Button onClick={handlePrev} color="primary">
-              Prev
+              <Button onClick={handlePrev} color="primary">
+                Prev
             </Button>
-            <Button
-              onClick={() => {
-                updateContactAction(form);
-                setForm('');
-              }}
-              color="primary"
-            >
-              Update
+              <Button
+                onClick={() => {
+                  updateContact(form);
+                  setForm('');
+                }}
+                color="primary"
+              >
+                Update
             </Button>
-          </div>
-        )}
+            </div>
+          )}
       </DialogActions>
     </div>
   );

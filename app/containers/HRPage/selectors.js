@@ -31,7 +31,7 @@ const makeSelectDepartments = () =>
     hrState => hrState.departments,
   );
 
-  const makeSelectDepartmentsByOrgIdApi = () =>
+const makeSelectDepartmentsByOrgIdApi = () =>
   createSelector(
     selectHR,
     hrState => hrState.departments,
@@ -59,7 +59,7 @@ const makeSelectEmployee = () =>
     selectHR,
     hrState => hrState.employee,
   );
-  const makeSelectEmployees = () =>
+const makeSelectEmployees = () =>
   createSelector(
     selectHR,
     hrState => hrState.employees,
@@ -69,33 +69,48 @@ const makeSelectEmployeeTypes = () =>
     selectHR,
     hrState => hrState.employeeTypes,
   );
-  const makeSelectEnrollmentTypes = () =>
+const makeSelectSourcesOfHire = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.sourcesOfHire,
+  );
+const makeSelectPayRates = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.payRates,
+  );
+const makeSelectPayTypes = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.payTypes,
+  );
+const makeSelectEnrollmentTypes = () =>
   createSelector(
     selectHR,
     hrState => hrState.enrollmentTypes,
   );
-  const makeSelectLocations = () =>
+const makeSelectLocations = () =>
   createSelector(
     selectHR,
     hrState => hrState.locations,
   );
-  const makeSelectJobOpenings = () =>
+const makeSelectJobOpenings = () =>
   createSelector(
     selectHR,
     hrState => hrState.jobOpenings,
   );
-  const makeSelectJobOpeningDetails = () =>
+const makeSelectJobOpeningDetails = () =>
   createSelector(
     selectHR,
     hrState => hrState.jobOpeningDetails,
   );
-  const makeSelectAnnouncements = () =>
+const makeSelectAnnouncements = () =>
   createSelector(
     selectHR,
     hrState => hrState.announcements,
   );
 
-  const makeSelectPartyGroups = () =>
+const makeSelectPartyGroups = () =>
   createSelector(
     selectHR,
     hrState => hrState.partyGroups,
@@ -147,6 +162,11 @@ const makeSelectApplicantDialog = () =>
     selectHR,
     hrState => hrState.applicantDialog,
   );
+const makeSelectEmployeeTypeDialog = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.employeeTypeDialog,
+  );
 const makeSelectAnnouncementViewDialog = () =>
   createSelector(
     selectHR,
@@ -164,7 +184,7 @@ const makeSelectCreateEmployeeSuccess = () =>
     hrState => hrState.getCreateEmployee,
   );
 
-  const makeSelectCreateAnnouncement = () =>
+const makeSelectCreateAnnouncement = () =>
   createSelector(
     selectHR,
     hrState => hrState.createAnnouncement,
@@ -185,7 +205,7 @@ const makeSelectCreateBranchSuccess = () =>
     hrState => hrState.getCreateBranch,
   );
 
-  const makeSelectCreateJobOpening = () =>
+const makeSelectCreateJobOpening = () =>
   createSelector(
     selectHR,
     hrState => hrState.createJobOpening,
@@ -195,7 +215,7 @@ const makeSelectCreateJobOpeningSuccess = () =>
     selectHR,
     hrState => hrState.getCreateJobOpening,
   );
-  const makeSelectCreateDepartment = () =>
+const makeSelectCreateDepartment = () =>
   createSelector(
     selectHR,
     hrState => hrState.createDepartment,
@@ -206,10 +226,9 @@ const makeSelectCreateDepartmentSuccess = () =>
     hrState => hrState.getCreateDepartment,
   );
 
-  
 
 export default makeSelectHRPage;
-export { 
+export {
   selectHR,
   makeSelectCreateEmployee,
   makeSelectCreateEmployeeSuccess,
@@ -224,6 +243,9 @@ export {
   makeSelectPartyGroups,
   makeSelectDepartments,
   makeSelectEmployeeTypes,
+  makeSelectSourcesOfHire,
+  makeSelectPayRates,
+  makeSelectPayTypes,
   makeSelectJobOpenings,
   makeSelectEnrollmentTypes,
   makeSelectLocations,
@@ -246,4 +268,5 @@ export {
   makeSelectWorkExperienceDialog,
   makeSelectEducationBackgroundDialog,
   makeSelectApplicantDialog,
+  makeSelectEmployeeTypeDialog,
 };

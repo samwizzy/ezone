@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
@@ -14,14 +14,14 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 import ScheduleIcon from '@material-ui/icons/Schedule'
 import AttachFileIcon from '@material-ui/icons/AttachFile'
-import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, MenuItem, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
+import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, Grid, MenuItem, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    '& .MuiTextField-root': {},
+    flexGrow: 1
   },
   table: {
     "& td": {
@@ -44,35 +44,38 @@ function EducationBackgroundDialog(props) {
   const classes = useStyles();
   const { closeEducationBackgroundDialog, dialog } = props;
   const [form, setForm] = React.useState({
-    employee: '',
-    date: new Date,
-    status: '',
-    loginTime: new Date,
-    logoutTime: new Date,
-    comment: '',
+    dateOfCompletion: moment(new Date).format('YYYY-MM-DD'),
+    degree: "",
+    fieldOfStudy: "",
+    interests: "",
+    note: "",
+    orgId: "",
   });
 
   React.useEffect(() => {
-    if(dialog.type == 'edit'){
-      setForm({...form})
+    if (dialog.type == 'edit') {
+      setForm({ ...form })
     }
   }, [dialog])
 
   const canSubmitForm = () => {
-    const {employee, date, status, loginTime, logoutTime, comment } = form
-    return employee.length > 0 && date.length > 0 && status.length > 0
+    const { dateOfCompletion, degree, fieldOfStudy, interests, note } = form
+    return (
+      dateOfCompletion.length > 0 && degree.length > 0 &&
+      fieldOfStudy.length > 0 && interests.length > 0 && note.length > 0
+    )
   }
 
   const handleChange = (event) => {
     const { name, value } = event.target
-    setForm({...form, [name]: value});
+    setForm({ ...form, [name]: value });
   }
 
-  const handleSelectChange = () => {}
+  const handleSelectChange = () => { }
 
-  const handleDateChange = () => {}
+  const handleDateChange = () => { }
 
-  const handleSubmit = () => {}
+  const handleSubmit = () => { }
 
   return (
     <div>
@@ -93,135 +96,86 @@ function EducationBackgroundDialog(props) {
         </AppBar>
 
         <DialogContent dividers>
-          <Table className={classes.table} size="small">
-            <TableBody>
-              <TableRow>
-                <TableCell colSpan={2}>
-                  <Autocomplete
-                    id="combo-box-demo"
-                    size="small"
-                    options={[]}
-                    getOptionLabel={option => option.label}
-                    onChange={(evt, value) => handleSelectChange(evt, value)}
-                    renderInput={params => (
-                      <TextField
-                        {...params}
-                        label="Institution"
-                        variant="outlined"
-                        placeholder="Search"
-                        margin="normal"
-                        fullWidth
-                      />
-                    )}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  <TextField
-                    id="description"
-                    name="description"
-                    placeholder="Description"
-                    fullWidth
-                    margin="normal"
-                    variant="outlined"
-                    size="small"
-                    label="Degree"
-                    value={form.description}
-                    onChange={handleChange}
-                  />
-                </TableCell>
-                <TableCell>
-                  <TextField
-                    id="description"
-                    name="description"
-                    placeholder="Description"
-                    fullWidth
-                    margin="normal"
-                    variant="outlined"
-                    size="small"
-                    label="Field Of Study"
-                    value={form.description}
-                    onChange={handleChange}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell colSpan={2}>
-                  <TextField
-                    id="description"
-                    name="description"
-                    placeholder="Description"
-                    fullWidth
-                    margin="normal"
-                    variant="outlined"
-                    size="small"
-                    label="Company"
-                    value={form.description}
-                    onChange={handleChange}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                      autoOk
-                      disableToolbar
-                      margin="normal"
-                      format="MM/dd/yyyy"
-                      inputVariant="outlined"
-                      id="time-picker"
-                      label="From"
-                      size="small"
-                      value={form.loginTime}
-                      onChange={handleDateChange}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change time',
-                      }}
-                    />
-                  </MuiPickersUtilsProvider>
-                </TableCell>
-                <TableCell>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                      autoOk
-                      disableToolbar
-                      margin="normal"
-                      format="MM/dd/yyyy"
-                      inputVariant="outlined"
-                      id="time-picker"
-                      label="To"
-                      size="small"
-                      value={form.logoutTime}
-                      onChange={handleDateChange}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change time',
-                      }}
-                    />
-                  </MuiPickersUtilsProvider>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell colSpan={2}>
-                  <TextField
-                    id="description"
-                    name="description"
-                    placeholder="Description"
-                    fullWidth
-                    margin="normal"
-                    variant="outlined"
-                    multiline
-                    rows={4}
-                    size="small"
-                    label="Description"
-                    value={form.description}
-                    onChange={handleChange}
-                  />
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
+          <Grid container spacing={1}>
+            <Grid item xs={6}>
+              <TextField
+                id="degree"
+                name="degree"
+                placeholder="Degree"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                size="small"
+                label="Degree"
+                value={form.degree}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                id="field-of-study"
+                name="fieldOfStudy"
+                placeholder="Field Of Study"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                size="small"
+                label="Field Of Study"
+                value={form.fieldOfStudy}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id="interests"
+                name="interests"
+                placeholder="Interests"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                size="small"
+                label="Interests"
+                value={form.interests}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  autoOk
+                  disableToolbar
+                  margin="normal"
+                  fullWidth
+                  format="MM/dd/yyyy"
+                  inputVariant="outlined"
+                  id="time-date-of-completion"
+                  label="Date Of Completion"
+                  size="small"
+                  value={form.dateOfCompletion}
+                  onChange={handleDateChange}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change time',
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id="note"
+                name="note"
+                placeholder="Note"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                multiline
+                rows={4}
+                size="small"
+                label="Note"
+                value={form.note}
+                onChange={handleChange}
+              />
+            </Grid>
+          </Grid>
         </DialogContent>
 
         <DialogActions>

@@ -101,6 +101,7 @@ export const GetEmployeeByLocationApi = `${BaseUrl}/hrserv/api/v1/employees/by_l
 export const GetEmployeeByRoleApi = `${BaseUrl}/hrserv/api/v1/employees/by_role`;
 
 export const GetEmployeeTypes = `${BaseUrl}/authserv/api/v1/generic_entities/for_organinisation`;
+export const CreateEmployeeType = `${BaseUrl}/authserv/api/v1/generic_entity/add`;
 export const CreateEmployee = `${BaseUrl}/authserv/api/v1/user`;
 export const GetEmployeesByOrgIdApi = `${BaseUrl}/authserv/api/v1/users/get_by_orgid`;
 
@@ -111,6 +112,17 @@ export const GetLocations = `${BaseUrl}/authserv/api/v1/generic_entities/for_org
 export const GetJobOpenings = `${BaseUrl}/authserv/api/v1/job_openings/for_organinisation`;
 export const CreateJobOpening = `${BaseUrl}/authserv/api/v1/job_opening`;
 export const GetJobOpeningDetails = `${BaseUrl}/authserv/api/v1/job_openings/get_by_id`;
+
+// HR:Performance - Goals
+export const GetPerformanceApi = `${BaseUrl}/authserv/api/v1/performance/get_by_orgid`;
+export const CreatePerformanceApi = `${BaseUrl}/authserv/api/v1/job_opening`;
+export const GetPerformanceByIdApi = `${BaseUrl}/authserv/api/v1/performance/get_by_id`;
+export const UpdatePerformance = `${BaseUrl}/authserv/api/v1/performance/update`;
+// HR:Performance - Recognition
+export const GetRecognitionApi = `${BaseUrl}/authserv/api/v1/recognition/get_by_orgid`;
+export const CreateRecognitionApi = `${BaseUrl}/authserv/api/v1/recognition/add`;
+export const GetRecognitionByIdApi = `${BaseUrl}/authserv/api/v1/recognition/get_by_id`;
+export const UpdateRecognition = `${BaseUrl}/authserv/api/v1/recognition/update`;
 
 //Roles
 export const GetRoles = `${BaseUrl}/authserv/api/v1/generic_entities/for_organinisation`;
@@ -140,6 +152,8 @@ export const GetDays = `${BaseUrl}/authserv/api/v1/all_days`
 export const CreateShift = `${BaseUrl}/authserv/api/v1/add_shift`
 export const GetShifts = `${BaseUrl}/authserv/api/v1/find_shift_by_orgid`;
 export const AssignShift = `${BaseUrl}/authserv/api/v1/assign_shift_to_users`
+export const AssignPartyToShift = `${BaseUrl}/authserv/api/v1/assign_shift_to_branch_or_dept`
+export const GetUserByShift = `${BaseUrl}/authserv/api/v1/get_user_by_shift`
 //
 // App Api
 export const GetOrgAppsApi = `${BaseUrl}/utilityserv/api/v1/organisation/orgApps`;

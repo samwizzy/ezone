@@ -27,24 +27,25 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
     },
     grid: {
-        border: `1px solid ${theme.palette.grey[100]}`,
+        border: `1px solid ${theme.palette.divider}`,
         '& .MuiGrid-item': {
             flex: 1,
             margin: theme.spacing(5)
         }
     },
     card: {
-        borderRadius: theme.shape.borderRadius * 2,
+        borderRadius: theme.shape.borderRadius * 4,
         "& .MuiCardHeader-root": {
-            padding: theme.spacing(1),
+            padding: theme.spacing(2),
+            borderBottom: `1px solid ${theme.palette.divider}`,
             "& .MuiTypography-root": {
-                fontSize: theme.typography.h6.fontSize
+                fontSize: theme.typography.subtitle1.fontSize
             }
         }
     },
     table: {
         "& .MuiTableFooter-root": {
-            borderTop: `1px solid ${theme.palette.grey[400]} !important`
+            borderTop: `1px solid ${theme.palette.divider} !important`
         },
         "& .MuiTableCell-root": {
             borderBottom: "none !important"
@@ -52,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
         '& .MuiTableCell-body': {
             border: 0,
             color: theme.palette.text.secondary,
-            fontSize: theme.typography.fontSize + 1
+            // fontSize: theme.typography.subtitle1.fontSize
         },
         '& .MuiTableCell-body:last-child': {
             display: "flex",
@@ -63,10 +64,10 @@ const useStyles = makeStyles((theme) => ({
         width: 14,
         height: 14,
         color: theme.palette.common.black,
-        '&.approved': { color: theme.palette.primary.main},
-        '&.inProgress': { color: orange[500]},
-        '&.expired': { color: red[500]},
-        '&.done': { color: green[500]},
+        '&.approved': { color: theme.palette.primary.main },
+        '&.inProgress': { color: orange[500] },
+        '&.expired': { color: red[500] },
+        '&.done': { color: green[500] },
     }
 }));
 
@@ -77,11 +78,10 @@ const Widget5 = () => {
     return (
         <div>
             <Card className={classes.card}>
+                <CardHeader
+                    title="Tasks"
+                />
                 <CardContent>
-                    <Typography variant="h6" color="textPrimary" gutterBottom>
-                        Tasks
-                    </Typography>
-
                     <Table className={classes.table}>
                         <TableBody>
                             <TableRow>
@@ -93,29 +93,29 @@ const Widget5 = () => {
                                 <TableCell component="th" scope="row">Call Deban Distributor</TableCell>
                                 <TableCell align="right">19/04/2019</TableCell>
                                 <TableCell>
-                                    <LensSharp className={classNames(classes.status, {inProgress: true})} />
-                                    <Typography variant="subtitle1">Ongoing</Typography>
+                                    <LensSharp className={classNames(classes.status, { inProgress: true })} />
+                                    Ongoing
                                 </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Make new order</TableCell>
                                 <TableCell align="right">13/04/2019</TableCell>
                                 <TableCell>
-                                    <LensSharp className={classNames(classes.status, {expired: true})} />
-                                    <Typography variant="subtitle1">Due</Typography>
+                                    <LensSharp className={classNames(classes.status, { expired: true })} />
+                                    Due
                                 </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Evaluate new invoice</TableCell>
                                 <TableCell align="right">21/04/2019</TableCell>
                                 <TableCell>
-                                    <LensSharp className={classNames(classes.status, {done: true})} />
-                                    <Typography variant="subtitle1">Done</Typography>
+                                    <LensSharp className={classNames(classes.status, { done: true })} />
+                                    Done
                                 </TableCell>
                             </TableRow>
                         </TableBody>
-                    </Table> 
-                </CardContent> 
+                    </Table>
+                </CardContent>
             </Card>
         </div>
     )

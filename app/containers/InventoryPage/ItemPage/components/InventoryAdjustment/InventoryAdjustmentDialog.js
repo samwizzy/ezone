@@ -203,8 +203,9 @@ const InventoryAdjustmentDialog = props => {
                     <TableCell>
                       <TextField
                         id="outlined-transfer-order"
+                        size="small"
                         label="Transfer Order"
-                        style={{width: 300}}
+                        style={{ width: 300 }}
                         value={values.transferOrder}
                         onChange={handleChange('transferOrder')}
                         variant="outlined"
@@ -220,8 +221,9 @@ const InventoryAdjustmentDialog = props => {
                           autoOk
                           variant="inline"
                           inputVariant="outlined"
+                          size="small"
                           label="Date"
-                          style={{width: 300}}
+                          style={{ width: 300 }}
                           format="dd/MM/yyyy"
                           value={selectedDate}
                           InputAdornmentProps={{ position: 'end' }}
@@ -236,6 +238,7 @@ const InventoryAdjustmentDialog = props => {
                     <TableCell>
                       <Autocomplete
                         id="combo-Source"
+                        size="small"
                         options={getAllWarehouses}
                         getOptionLabel={option => option.name}
                         onChange={(evt, ve) => handleSourceChange(evt, ve)}
@@ -244,7 +247,7 @@ const InventoryAdjustmentDialog = props => {
                             {...params}
                             label="Source Warehouse"
                             variant="outlined"
-                            style={{width: 300}}
+                            style={{ width: 300 }}
                             placeholder="Source Warehouse"
                             className={classes.textField}
                           />
@@ -257,9 +260,10 @@ const InventoryAdjustmentDialog = props => {
                     <TableCell>
                       <TextField
                         id="outlined-reason"
+                        size="small"
                         label="Reason"
                         value={values.reason}
-                        style={{width: 300}}
+                        style={{ width: 300 }}
                         onChange={handleChange('reason')}
                         variant="outlined"
                         className={classes.textField}
@@ -299,6 +303,7 @@ const InventoryAdjustmentDialog = props => {
                       <TableCell component="th" scope="row">
                         <Autocomplete
                           id="combo-items"
+                          size="small"
                           options={getAllItems}
                           getOptionLabel={option => option.itemName}
                           onChange={(evt, ve) => handleItemChange(evt, ve, id)}
@@ -316,6 +321,7 @@ const InventoryAdjustmentDialog = props => {
                       </TableCell>
                       <TableCell align="center">
                         <TextField
+                          size="small"
                           disabled
                           id={`filled-${id + 1}`}
                           label=""
@@ -326,6 +332,7 @@ const InventoryAdjustmentDialog = props => {
                       </TableCell>
                       <TableCell align="center">
                         <TextField
+                          size="small"
                           id={`filled-${id + 2}`}
                           label=""
                           defaultValue="0.00"
@@ -335,6 +342,7 @@ const InventoryAdjustmentDialog = props => {
                       </TableCell>
                       <TableCell align="center">
                         <TextField
+                          size="small"
                           id={`filled-${id + 3}`}
                           label=""
                           defaultValue="1.00"
@@ -345,6 +353,7 @@ const InventoryAdjustmentDialog = props => {
                       </TableCell>
                       <TableCell align="center">
                         <Button
+                          size="small"
                           variant="outlined"
                           color="secondary"
                           onClick={() => removeRow(id)}
@@ -360,6 +369,7 @@ const InventoryAdjustmentDialog = props => {
                     <TableCell colSpan={5}>
                       <Button
                         variant="contained"
+                        size="small"
                         color="primary"
                         onClick={() => addRow()}
                         startIcon={<AddIcon />}
@@ -378,22 +388,24 @@ const InventoryAdjustmentDialog = props => {
           {loading ? (
             <LoadingIndicator />
           ) : (
-            <Button
-              className={classes.button}
-              onClick={() => {
-                dispatchCreateNewInventoryAdjustmentAction(
-                  Object.assign(values, { items: rows }),
-                );
-              }}
-              color="primary"
-              variant="contained"
+              <Button
+                size="small"
+                className={classes.button}
+                onClick={() => {
+                  dispatchCreateNewInventoryAdjustmentAction(
+                    Object.assign(values, { items: rows }),
+                  );
+                }}
+                color="primary"
+                variant="contained"
               // disabled={!canBeSubmitted()}
-            >
-              Save
-            </Button>
-          )}
+              >
+                Save
+              </Button>
+            )}
           <Button
             className={classes.button}
+            size="small"
             onClick={() => closeNewInventoryAdjustDialogAction()}
             color="primary"
             variant="outlined"

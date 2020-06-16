@@ -25,12 +25,10 @@ import CountriesAndStates from '../../../../utils/countries_states.json';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1, 0),
-    },
+    flexGrow: 1
   },
   appBar: {
-    position: 'relative',
+    position: 'static',
   },
 }));
 
@@ -55,69 +53,66 @@ export const OtherInfo = props => {
     <div>
       <AppBar className={classes.appBar}>
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6">
             Other Information
           </Typography>
         </Toolbar>
       </AppBar>
-      <Divider />
 
-      <DialogContent>
-        <form className={classes.root}>
-          <Grid container spacing={1}>
-            <Grid item xs={6}>
-              <TextField
-                name="mobileNo"
-                label="mobile Number"
-                id="outlined-mobileNo"
-                fullWidth
-                variant="outlined"
-                size="small"
-                type="number"
-                value={form.mobileNo}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                name="fax"
-                label="Fax Number"
-                id="outlined-fax"
-                fullWidth
-                variant="outlined"
-                size="small"
-                value={form.fax}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                name="website"
-                label="Website"
-                id="outlined-website"
-                fullWidth
-                variant="outlined"
-                size="small"
-                value={form.website}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                name="address1"
-                label="Address 1"
-                id="outlined-address1"
-                fullWidth
-                variant="outlined"
-                size="small"
-                multiline
-                row={2}
-                value={form.address1}
-                onChange={handleChange}
-              />
-            </Grid>
+      <DialogContent dividers>
+        <Grid container spacing={1}>
+          <Grid item xs={6}>
+            <TextField
+              name="mobileNo"
+              label="Mobile Number"
+              id="outlined-mobile-no"
+              fullWidth
+              variant="outlined"
+              size="small"
+              type="number"
+              value={form.mobileNo}
+              onChange={handleChange}
+            />
           </Grid>
-        </form>
+          <Grid item xs={6}>
+            <TextField
+              name="fax"
+              label="Fax Number"
+              id="outlined-fax"
+              fullWidth
+              variant="outlined"
+              size="small"
+              value={form.fax}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              name="website"
+              label="Website"
+              id="outlined-website"
+              fullWidth
+              variant="outlined"
+              size="small"
+              value={form.website}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              name="address1"
+              label="Address 1"
+              id="outlined-address1"
+              fullWidth
+              variant="outlined"
+              size="small"
+              multiline
+              row={2}
+              value={form.address1}
+              onChange={handleChange}
+            />
+          </Grid>
+        </Grid>
       </DialogContent>
 
       <DialogActions>

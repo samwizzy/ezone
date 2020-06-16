@@ -1,10 +1,15 @@
-import React from "react"
+import React, { memo } from "react"
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import classNames from 'classnames';
+import { createStructuredSelector } from 'reselect';
+import { withRouter, Link } from "react-router-dom"
 import {
     makeStyles,
     Box,
     Button,
-    Card, 
-    CardContent, 
+    Card,
+    CardContent,
     CardActions,
     Divider,
     List,
@@ -18,8 +23,9 @@ import {
     TableCell,
     Typography
 } from '@material-ui/core';
-import CrmDashImage1 from '../../../../images/crmDash.jpg'
-import CrmDashImage2 from '../../../../images/crmDash2.jpg'
+import hrDash2 from '../../../../images/hrDash2.jpg'
+import * as Selectors from '../../selectors';
+import * as AppSelectors from '../../../App/selectors';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -34,13 +40,16 @@ const useStyles = makeStyles((theme) => ({
     },
     card: {
         borderRadius: theme.shape.borderRadius * 2,
-        backgroundImage: `url(${CrmDashImage1})`,
+        backgroundImage: `url(${hrDash2})`,
         backgroundRepeat: `no-repeat`,
         backgroundPosition: `center bottom`,
         backgroundSize: 'cover',
         "& .MuiCardActions-root": {
             justifyContent: "center",
             backgroundColor: theme.palette.common.white,
+        },
+        "& .MuiCardContent-root": {
+            minHeight: 160
         }
     },
     table: {
@@ -58,8 +67,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Widget3 = () => {
+const Widget3 = (props) => {
     const classes = useStyles()
+    const { branches } = props
+
+    if (!branches) {
+        return ''
+    }
+
+    console.log(branches, "branches")
 
     return (
         <div>
@@ -69,24 +85,55 @@ const Widget3 = () => {
                         <TableBody>
                             <TableRow>
                                 <TableCell component="th">
-                                    <Typography variant="h3">100</Typography>
+                                    <Typography variant="h3">{branches && branches.length}</Typography>
                                 </TableCell>
-                                <TableCell align="right">
-                                    <Typography variant="subtitle2">Branches</Typography>
+                                <TableCell>
+                                    <Table className={classes.childTable} size="small">
+                                        <TableBody>
+                                            {branches.length > 0 && branches.slice(0, 4).map((branch, i) =>
+                                                <TableRow key={i}>
+                                                    <TableCell>{branch.employees.length} {branch.name}</TableCell>
+                                                </TableRow>
+                                            )}
+                                        </TableBody>
+                                    </Table>
                                 </TableCell>
                             </TableRow>
                         </TableBody>
-                    </Table>  
+                    </Table>
                 </CardContent>
 
                 <CardActions>
-                    <Typography>
+                    <Button component={Link} to='/hr/branches'>
                         View All Branches
-                    </Typography>
+                    </Button>
                 </CardActions>
             </Card>
         </div>
     )
 }
 
-export default Widget3
+const mapStateToProps = createStructuredSelector({
+    loading: Selectors.makeSelectLoading(),
+    departments: Selectors.makeSelectDepartments(),
+    employees: Selectors.makeSelectEmployees(),
+    employee: Selectors.makeSelectEmployee(),
+    user: AppSelectors.makeSelectCurrentUser(),
+    departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
+    branches: Selectors.makeSelectBranches(),
+});
+
+function mapDispatchToProps(dispatch) {
+    return {};
+}
+
+const withConnect = connect(
+    mapStateToProps,
+    mapDispatchToProps,
+);
+
+export default compose(
+    withRouter,
+    withConnect,
+    memo,
+)(Widget3);

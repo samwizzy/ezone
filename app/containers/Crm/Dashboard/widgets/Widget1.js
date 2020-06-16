@@ -3,8 +3,8 @@ import {
     makeStyles,
     Box,
     Button,
-    Card, 
-    CardContent, 
+    Card,
+    CardContent,
     CardActions,
     Divider,
     List,
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     card: {
-        borderRadius: theme.shape.borderRadius * 2,
+        borderRadius: theme.shape.borderRadius * 4,
         backgroundImage: `url(${CrmDashImage1})`,
         backgroundRepeat: `no-repeat`,
         backgroundPosition: `center bottom`,
@@ -41,18 +41,19 @@ const useStyles = makeStyles((theme) => ({
         "& .MuiCardActions-root": {
             justifyContent: "center",
             backgroundColor: theme.palette.common.white,
+            fontSize: theme.typography.subtitle1.fontSize
         }
     },
     table: {
         "& .MuiTableFooter-root": {
-            borderTop: `1px solid ${theme.palette.grey[400]} !important`,
+            borderTop: `1px solid ${theme.palette.divider} !important`,
         },
         "& .MuiTableCell-root": {
             borderBottom: "none !important",
         },
         '& .MuiTableCell-body': {
             color: theme.palette.common.white,
-            fontSize: theme.typography.fontSize + 1
+            fontSize: theme.typography.fontSize
         },
     }
 }));
@@ -84,14 +85,14 @@ const Widget1 = () => {
                                 </TableCell>
                             </TableRow>
                         </TableBody>
-                    </Table>  
+                    </Table>
                 </CardContent>
 
                 <Divider />
 
                 <CardActions>
-                    <Typography variant="h6" component="h1" className={classes.title} color="textPrimary">
-                        View all Contacts
+                    <Typography variant="subtitle1">
+                        View All Contacts
                     </Typography>
                 </CardActions>
             </Card>

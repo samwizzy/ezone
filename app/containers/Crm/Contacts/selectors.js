@@ -57,6 +57,12 @@ const makeSelectAllContacts = () =>
     subState => subState.allContacts,
   );
 
+const makeSelectContactsGroups = () =>
+  createSelector(
+    selectCrmDomain,
+    subState => subState.contactsGroups,
+  );
+
 const makeSelectContactDetailsDialog = () =>
   createSelector(
     selectCrmDomain,
@@ -71,6 +77,7 @@ export {
   makeSelectContactDialog,
   makeSelectCreateNewContact,
   makeSelectAllContacts,
+  makeSelectContactsGroups,
   makeSelectUpdateContact,
   makeSelectContactDetailsDialog,
 };

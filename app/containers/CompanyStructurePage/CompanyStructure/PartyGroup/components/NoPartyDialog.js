@@ -2,52 +2,59 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
-  makeStyles,
-  Backdrop,
-  CircularProgress,
-  Card, CardContent, CardActions,
-  List,
-  ListItem,
-  ListItemText,
-  ListSubheader, 
-  Grid,
-  Button,
-  Typography,
-  Box,
-  FormControlLabel,
-  Icon,
-  ListItemSecondaryAction,
-  IconButton,
-  Paper
+	makeStyles,
+	Backdrop,
+	CircularProgress,
+	Card, CardContent, CardActions,
+	List,
+	ListItem,
+	ListItemText,
+	ListSubheader,
+	Grid,
+	Button,
+	Typography,
+	Box,
+	FormControlLabel,
+	Icon,
+	ListItemSecondaryAction,
+	IconButton,
+	Paper
 } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center",
-    minHeight: `calc(100vh - 120px)`,
-  },
-  card: {
-    padding: theme.spacing(5),
-    "& .MuiCardActions-root": {
-      justifyContent: "center"
-    }
-  },
-  button: {
-    borderRadius: theme.shape.borderRadius * 5,
-  },
+	root: {
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
+		textAlign: "center",
+		minHeight: `calc(100vh - 120px)`,
+	},
+	card: {
+		padding: theme.spacing(5),
+		"& .MuiCardActions-root": {
+			justifyContent: "center"
+		}
+	},
+	button: {
+		borderRadius: theme.shape.borderRadius * 5,
+	},
+	backdrop: {
+		zIndex: theme.zIndex.drawer + 1,
+		color: '#fff',
+	},
 }));
 
 const NoPartyGroupDialog = props => {
 	const classes = useStyles();
-	const { dispatchOpenNewPartyGroupAction, loading } = props;
+	const { openNewPartyGroupDialog, loading } = props;
 
 	return (
 		<React.Fragment>
+			<Backdrop className={classes.backdrop} open={loading}>
+				<CircularProgress color="inherit" />
+			</Backdrop>
 			<Grid
 				container
 				justify="center"
@@ -68,7 +75,7 @@ const NoPartyGroupDialog = props => {
 							<Button
 								variant="contained"
 								color="primary"
-								onClick={() => dispatchOpenNewPartyGroupAction()}
+								onClick={() => openNewPartyGroupDialog()}
 								className={classes.button}
 								disableElevation
 								startIcon={<Add />}
@@ -82,9 +89,9 @@ const NoPartyGroupDialog = props => {
 		</React.Fragment>
 	);
 };
-  
+
 NoPartyGroupDialog.propTypes = {
-	dispatchOpenNewPartyGroupAction: PropTypes.func,
+	openNewPartyGroupDialog: PropTypes.func,
 };
 
 export default NoPartyGroupDialog

@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   active: {
-    backgroundColor: theme.palette.common.white,  
+    backgroundColor: theme.palette.common.white,
     color: `${darken(theme.palette.primary.main, 0.1)} !important`,
   },
 }));
@@ -27,22 +27,6 @@ function ModuleLayout(props) {
   return (
     <div className={classes.root}>
       <MenuBar
-        navigations={
-          <React.Fragment>
-            <NavLink exact to="/hr/employees" activeClassName={classes.active}>
-              Employees
-            </NavLink>
-            <NavLink to="/hr/departments" activeClassName={classes.active}>
-              Departments
-            </NavLink>
-            <NavLink to="/hr/branches" activeClassName={classes.active}>
-              Branches
-            </NavLink>
-            <NavLink to="/hr/roles" activeClassName={classes.active}>
-              Roles
-            </NavLink>
-          </React.Fragment>
-        }
         content={
           <div className={classes.content}>
             {props.children}

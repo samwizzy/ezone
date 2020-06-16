@@ -54,16 +54,18 @@ const useStyles = makeStyles(theme => ({
     position: "absolute",
     borderRadius: theme.spacing(20, 0, 0, 20),
     right: 0,
-    bottom: "40%",
+    bottom: "30%",
     display: 'flex',
-    backgroundColor: fade(theme.palette.common.white, 0.5),
+    backgroundColor: "transparent",
+    "& .MuiSvgIcon-root": {
+      color: "#fff"
+    },
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
   },
   content: {
-    // flexGrow: 1,
     width: `calc(100% - ${drawerWidth}px)`,
   },
   logo: {
@@ -112,27 +114,26 @@ function MiniDrawer(props) {
           {open ? (
             <IconButton onClick={handleDrawerClose}>
               {theme.direction === 'rtl' ? (
-                <ChevronRightIcon />
+                <ChevronRightIcon fontSize="small" />
               ) : (
-                <ChevronLeftIcon fontSize="large" />
-              )}
+                  <ChevronLeftIcon fontSize="small" />
+                )}
             </IconButton>
           ) : (
-            <IconButton onClick={handleDrawerOpen}>
-              {theme.direction === 'rtl' ? (
-                <ChevronLeftIcon />
-              ) : (
-                <ChevronRightIcon fontSize="large" />
-              )}
-            </IconButton>
-          )}
+              <IconButton onClick={handleDrawerOpen}>
+                {theme.direction === 'rtl' ? (
+                  <ChevronLeftIcon fontSize="small" />
+                ) : (
+                    <ChevronRightIcon fontSize="small" />
+                  )}
+              </IconButton>
+            )}
         </div>
-        {/* <Divider /> */}
         <AppSidebar />
         <Divider />
       </Drawer>
       <main className={classes.content}>
-        <div style={{minHeight: `calc(100vh - 140px)`}}>
+        <div style={{ minHeight: `calc(100vh - 140px)` }}>
           {props.content}
         </div>
         <Footer />

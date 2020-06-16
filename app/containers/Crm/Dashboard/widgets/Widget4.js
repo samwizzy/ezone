@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Card, CardContent, CardActions, Paper, Typography} from '@material-ui/core';
+import { withStyles, Card, CardContent, CardHeader, CardActions, Paper, Typography } from '@material-ui/core';
 import { ViewState } from '@devexpress/dx-react-scheduler';
 import {
   Scheduler,
@@ -9,13 +9,31 @@ import {
 
 import { appointments } from './demo-data/month-appointments';
 
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: { padding: 0 },
+  card: {
+    borderRadius: theme.shape.borderRadius * 4,
+    "& .MuiCardHeader-root": {
+      padding: theme.spacing(2),
+      fontSize: `${theme.typography.subtitle1.fontSize} !important`,
+      borderBottom: `1px solid ${theme.palette.divider}`,
+      "& .MuiTypography-root": {
+        fontSize: theme.typography.subtitle1.fontSize
+      }
+    }
+  },
+})
+
 class Demo extends React.PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
       data: appointments,
-      currentDate: '2018-07-17',
+      currentDate: '2020-06-25',
     };
   }
 
@@ -23,7 +41,7 @@ class Demo extends React.PureComponent {
     const { data, currentDate } = this.state;
 
     return (
-      <Paper>
+      <Paper elevation={0}>
         <Scheduler
           data={data}
           width="100%"
@@ -39,18 +57,19 @@ class Demo extends React.PureComponent {
   }
 }
 
-
-export default class Widget4 extends React.Component {
+export default withStyles(styles)(class Widget4 extends React.Component {
   render() {
+    const { classes } = this.props
+
     return (
-      <Card>
-        <CardContent>
-          <Typography variant="h6" component="" color="textPrimary">
-            My Schedules
-          </Typography>
+      <Card className={classes.card}>
+        <CardHeader
+          title="My Schedules"
+        />
+        <CardContent classes={{ root: classes.paper }}>
           <Demo />
         </CardContent>
       </Card>
     );
   }
-}
+})

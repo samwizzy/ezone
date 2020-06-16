@@ -101,9 +101,9 @@ const useStyles = makeStyles(theme => ({
     width: 14,
     height: 14,
     color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.done': { color: green[500]},
+    '&.approved': { color: theme.palette.primary.main },
+    '&.inProgress': { color: orange[500] },
+    '&.done': { color: green[500] },
   },
   buttonGroup: {
     marginBottom: theme.spacing(1),
@@ -204,25 +204,25 @@ const TaskList = props => {
   }, []);
 
   React.useEffect(() => {
-    if(task){
-      setComment(_.set({...comment}, 'taskId', task.id))
+    if (task) {
+      setComment(_.set({ ...comment }, 'taskId', task.id))
       getTaskComments(task.id)
     }
   }, [task]);
 
   const handleChange = event => {
-    setComment(_.set({...comment}, event.target.name, event.target.value))
+    setComment(_.set({ ...comment }, event.target.name, event.target.value))
   }
 
   const handleSubmit = event => {
     commentTask(comment)
-    setComment(_.set({...comment, comment: '', commentBy: ''}))
+    setComment(_.set({ ...comment, comment: '', commentBy: '' }))
   }
 
   const handleTaskById = id => {
     setSelectedIndex(id)
     getUtilityTask(id)
-    props.history.push({pathname: '/task-manager/task/' + id})
+    props.history.push({ pathname: '/task-manager/task/' + id })
   }
 
   const drawer = (
@@ -233,9 +233,9 @@ const TaskList = props => {
           <ListSubheader component="div" id="nested-list-subheader">
             <div className={classes.flex}>
               <Typography variant="h6">
-                Tasks 
+                Tasks
               </Typography>
-              <IconButton onClick={openNewTaskDialog}><Add/></IconButton>
+              <IconButton onClick={openNewTaskDialog}><Add /></IconButton>
             </div>
           </ListSubheader>
         }
@@ -262,7 +262,7 @@ const TaskList = props => {
           <nav className={classes.drawer} aria-label="mailbox folders">
             {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
             <Hidden smUp implementation="css">
-              
+
             </Hidden>
             <Hidden xsDown implementation="css">
               <div
@@ -273,7 +273,7 @@ const TaskList = props => {
             </Hidden>
           </nav>
         </Grid>
-        <Grid item md={7}>          
+        <Grid item md={7}>
           <div className={classes.content}>
             <Backdrop className={classes.backdrop} open={loading}>
               <CircularProgress color="inherit" />
@@ -286,66 +286,66 @@ const TaskList = props => {
                 <Button onClick={openAssignToDialog} startIcon={<Assignment className={classes.icon} />}>Assign</Button>
               </ButtonGroup>
               <ButtonGroup size="small" aria-label="small outlined button group">
-                <Button startIcon={<Lens className={classNames(classes.icon, {'approved': true})} />}>To do</Button>
-                <Button startIcon={<Lens className={classNames(classes.icon, {'inProgress': true})} />}>In Progress</Button>
-                <Button startIcon={<Lens className={classNames(classes.icon, {'done': true})} />}>Done</Button>
+                <Button startIcon={<Lens className={classNames(classes.icon, { 'approved': true })} />}>To do</Button>
+                <Button startIcon={<Lens className={classNames(classes.icon, { 'inProgress': true })} />}>In Progress</Button>
+                <Button startIcon={<Lens className={classNames(classes.icon, { 'done': true })} />}>Done</Button>
               </ButtonGroup>
             </div>
-            {task && Object.keys(task).length > 0 ?
-            <TableContainer component={Paper}>
-              <Table className={classes.table} aria-label="custom pagination table">
-                <TableBody>
-                  <TableRow key={task.title}>
-                    <TableCell component="th" scope="row">
-                      Title
+            {task ?
+              <TableContainer component={Paper}>
+                <Table className={classes.table} aria-label="custom pagination table">
+                  <TableBody>
+                    <TableRow key={task.title}>
+                      <TableCell component="th" scope="row">
+                        Title
                     </TableCell>
-                    <TableCell align="left">{task.title}</TableCell>
-                  </TableRow>
-                  <TableRow key={task.description}>
-                    <TableCell component="th" scope="row">
-                      Description
+                      <TableCell align="left">{task.title}</TableCell>
+                    </TableRow>
+                    <TableRow key={task.description}>
+                      <TableCell component="th" scope="row">
+                        Description
                     </TableCell>
-                    <TableCell align="left">{task.description}</TableCell>
-                  </TableRow>
-                  <TableRow key={task.status}>
-                    <TableCell component="th" scope="row">
-                      Status
+                      <TableCell align="left">{task.description}</TableCell>
+                    </TableRow>
+                    <TableRow key={task.status}>
+                      <TableCell component="th" scope="row">
+                        Status
                     </TableCell>
-                    <TableCell align="left">{task.status}</TableCell>
-                  </TableRow>
-                  <TableRow key={task.assignedTo}>
-                    <TableCell component="th" scope="row">
-                      Assigned To
+                      <TableCell align="left">{task.status}</TableCell>
+                    </TableRow>
+                    <TableRow key={task.assignedTo}>
+                      <TableCell component="th" scope="row">
+                        Assigned To
                     </TableCell>
-                    <TableCell align="left">{task.assignedTo}</TableCell>
-                  </TableRow>
-                  <TableRow key={task.createdBy}>
-                    <TableCell component="th" scope="row">
-                      Owner
+                      <TableCell align="left">{task.assignedTo}</TableCell>
+                    </TableRow>
+                    <TableRow key={task.createdBy}>
+                      <TableCell component="th" scope="row">
+                        Owner
                     </TableCell>
-                    <TableCell align="left">{task.createdBy}</TableCell>
-                  </TableRow>
-                  <TableRow key={task.startDate}>
-                    <TableCell component="th" scope="row">
-                      Date Issued
+                      <TableCell align="left">{task.createdBy}</TableCell>
+                    </TableRow>
+                    <TableRow key={task.startDate}>
+                      <TableCell component="th" scope="row">
+                        Date Issued
                     </TableCell>
-                    <TableCell align="left">
-                      {task.startDate? moment(task.startDate).format('lll') : ''}
+                      <TableCell align="left">
+                        {task.startDate ? moment(task.startDate).format('lll') : ''}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow key={task.endDate}>
+                      <TableCell component="th" scope="row">
+                        End Date
                     </TableCell>
-                  </TableRow>
-                  <TableRow key={task.endDate}>
-                    <TableCell component="th" scope="row">
-                      End Date
-                    </TableCell>
-                    <TableCell align="left">
-                      {task.endDate? moment(task.endDate).format('lll') : ''}
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-            :
-            <Skeleton variant="rect" animation="wave" width="100%" height={118} />
+                      <TableCell align="left">
+                        {task.endDate ? moment(task.endDate).format('lll') : ''}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              :
+              <Skeleton variant="rect" animation="wave" width="100%" height={118} />
             }
 
             <div className={classes.demo1}>
@@ -376,17 +376,17 @@ const TaskList = props => {
               {value == 1 && <CommentList />}
               {value == 2 && <CommentList />}
             </div>
-                  
+
           </div>
-          
+
         </Grid>
         <Grid item md={3}>
           <div className={classes.gridRoot}>
             <GridList cellHeight={180} className={classes.gridList}>
               <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-                {task.documents && task.documents.length > 0? 
-                <ListSubheader component="div">Attachment Preview</ListSubheader>:
-                <ListSubheader component="div">There are no Attachment</ListSubheader>
+                {task.documents && task.documents.length > 0 ?
+                  <ListSubheader component="div">Attachment Preview</ListSubheader> :
+                  <ListSubheader component="div">There are no Attachment</ListSubheader>
                 }
               </GridListTile>
               {task.documents && task.documents.map((tile, index) => (
@@ -402,34 +402,34 @@ const TaskList = props => {
           </div>
 
           {task.documents && task.documents.length > 0 &&
-          <div className={classes.stepRoot}>
-            <Paper square elevation={0} className={classes.header}>
-              <Typography>{task.documents[activeStep].docName}</Typography>
-            </Paper>
-            <img
-              className={classes.img}
-              src={task.documents[activeStep].fileUrl}
-              alt={task.documents[activeStep].docName}
-            />
-            <MobileStepper
-              steps={maxSteps}
-              position="static"
-              variant="text"
-              activeStep={activeStep}
-              nextButton={
-                <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
-                  Next
+            <div className={classes.stepRoot}>
+              <Paper square elevation={0} className={classes.header}>
+                <Typography>{task.documents[activeStep].docName}</Typography>
+              </Paper>
+              <img
+                className={classes.img}
+                src={task.documents[activeStep].fileUrl}
+                alt={task.documents[activeStep].docName}
+              />
+              <MobileStepper
+                steps={maxSteps}
+                position="static"
+                variant="text"
+                activeStep={activeStep}
+                nextButton={
+                  <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
+                    Next
                   {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-                </Button>
-              }
-              backButton={
-                <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-                  {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+                  </Button>
+                }
+                backButton={
+                  <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+                    {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
                   Back
                 </Button>
-              }
-            />
-          </div>
+                }
+              />
+            </div>
           }
 
           <div>
@@ -449,8 +449,8 @@ TaskList.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   tasks: Selectors.makeSelectTasks(),
-  task : Selectors.makeSelectTask(),
-  comments : Selectors.makeSelectTaskComments(),
+  task: Selectors.makeSelectTask(),
+  comments: Selectors.makeSelectTaskComments(),
   users: Selectors.makeSelectEmployees(),
   user: Selectors.makeSelectUser(),
   authUser: AppSelectors.makeSelectCurrentUser(),

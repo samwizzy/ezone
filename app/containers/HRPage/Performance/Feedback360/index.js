@@ -14,20 +14,14 @@ import * as AppSelectors from '../../../App/selectors';
 import * as AppActions from '../../../App/actions';
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
-import HolidaysList from './HolidaysList'
-import HolidayDialog from './components/HolidayDialog'
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-}));
+import FeedbacksList from './FeedbacksList'
+import FeedbackDialog from './components/FeedbackDialog'
 
 export function HolidaysPage(props) {
-  const { getAttendance } = props;
+  const { getRecognitions } = props;
 
   React.useEffect(() => {
-    getAttendance();  
+    getRecognitions();
   }, []);
 
   return (
@@ -37,9 +31,9 @@ export function HolidaysPage(props) {
         <meta name="description" content="ezone application employee holidays page" />
       </Helmet>
 
-      <HolidaysList />
-      
-      <HolidayDialog />
+      <FeedbacksList />
+
+      <FeedbackDialog />
 
     </React.Fragment>
   );
@@ -55,7 +49,7 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
-    getAttendance: () => dispatch(Actions.getLeaveRequest()),
+    getRecognitions: () => dispatch(Actions.getRecognitions()),
   };
 }
 

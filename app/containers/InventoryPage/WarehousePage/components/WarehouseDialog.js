@@ -22,19 +22,9 @@ import * as Actions from '../actions';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    margin: theme.spacing(1.5, 0),
-  },
-  dense: {
-    marginTop: 19,
-  },
-  menu: {
-    width: 200,
-  },
+  root: {
+    flexGrow: 1
+  }
 }));
 
 const gender = [
@@ -109,6 +99,11 @@ const WarehouseDialog = props => {
     setValues({ ...values, [name]: event.target.value });
   };
 
+  const handleSubmit = () => {
+    warehouseDialog.type === 'new' ?
+      dispatchCreateNewWarehouseAction(values) : dispatchUpdateWarehouseAction(values)
+  }
+
   const handleEmployeeChange = (evt, value) => {
     setValues({ ...values, headOfWareHouseId: value.id });
   };
@@ -126,276 +121,134 @@ const WarehouseDialog = props => {
           {warehouseDialog.type === 'new' ? 'New Warehouse' : 'Edit Warehouse'}
         </DialogTitle>
 
-        <Divider />
-
-        <DialogContent>
-          {warehouseDialog.type === 'new' ? (
-            <div>
-              <TextField
-                id="standard-Name"
-                label="Warehouse Name"
-                variant="outlined"
-                className={classes.textField}
-                value={values.name || ''}
-                onChange={handleChange('name')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-firstStreet"
-                label="First Street"
-                variant="outlined"
-                className={classes.textField}
-                value={values.firstStreet || ''}
-                onChange={handleChange('firstStreet')}
-                margin="normal"
-                fullWidth
-                rows={2}
-                multiline
-              />
-              <TextField
-                id="standard-secondStreet"
-                label="Second Street"
-                variant="outlined"
-                className={classes.textField}
-                value={values.secondStreet || ''}
-                onChange={handleChange('secondStreet')}
-                margin="normal"
-                fullWidth
-                rows={2}
-                multiline
-              />
-              <TextField
-                id="standard-city"
-                label="City"
-                variant="outlined"
-                className={classes.textField}
-                value={values.city || ''}
-                onChange={handleChange('city')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-state"
-                label="State"
-                variant="outlined"
-                className={classes.textField}
-                margin="normal"
-                value={values.state ? values.state : ''}
-                onChange={handleChange('state')}
-                fullWidth
-              />
-              <TextField
-                id="standard-zipCode"
-                label="zipCode"
-                type="number"
-                variant="outlined"
-                className={classes.textField}
-                value={values.zipCode || ''}
-                onChange={handleChange('zipCode')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-warehousePhoneNumber"
-                label="Warehouse Phone Number"
-                variant="outlined"
-                className={classes.textField}
-                value={values.warehousePhoneNumber || ''}
-                onChange={handleChange('warehousePhoneNumber')}
-                margin="normal"
-                type="number"
-                fullWidth
-              />
-              <TextField
-                id="standard-wareHouseContactEmail"
-                label="WareHouse Contact Email"
-                type="email"
-                variant="outlined"
-                className={classes.textField}
-                value={values.wareHouseContactEmail || ''}
-                onChange={handleChange('wareHouseContactEmail')}
-                margin="normal"
-                fullWidth
-              />
-              <Autocomplete
-                id="combo-headOfWareHouseId"
-                options={getAllEmployees}
-                getOptionLabel={option =>
-                  `${option.firstName} ${option.lastName}`
-                }
-                onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label="Search Head Of WareHouse Email Address"
-                    variant="outlined"
-                    placeholder="Search Head Of WareHouse Email Address"
-                    fullWidth
-                  />
-                )}
-              />
-            </div>
-          ) : (
-            <div>
-              <TextField
-                id="standard-Name"
-                label="Warehouse Name"
-                variant="outlined"
-                className={classes.textField}
-                value={values.name || ''}
-                onChange={handleChange('name')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-firstStreet"
-                label="First Street"
-                variant="outlined"
-                className={classes.textField}
-                value={values.firstStreet || ''}
-                onChange={handleChange('firstStreet')}
-                margin="normal"
-                fullWidth
-                rows={2}
-                multiline
-              />
-              <TextField
-                id="standard-secondStreet"
-                label="Second Street"
-                variant="outlined"
-                className={classes.textField}
-                value={values.secondStreet || ''}
-                onChange={handleChange('secondStreet')}
-                margin="normal"
-                fullWidth
-                rows={2}
-                multiline
-              />
-              <TextField
-                id="standard-city"
-                label="City"
-                variant="outlined"
-                className={classes.textField}
-                value={values.city || ''}
-                onChange={handleChange('city')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-state"
-                label="State"
-                variant="outlined"
-                className={classes.textField}
-                margin="normal"
-                value={values.state ? values.state : ''}
-                onChange={handleChange('state')}
-                fullWidth
-              />
-              <TextField
-                id="standard-zipCode"
-                label="zipCode"
-                type="number"
-                variant="outlined"
-                className={classes.textField}
-                value={values.zipCode || ''}
-                onChange={handleChange('zipCode')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-warehousePhoneNumber"
-                label="Warehouse Phone Number"
-                variant="outlined"
-                className={classes.textField}
-                value={values.warehousePhoneNumber || ''}
-                onChange={handleChange('warehousePhoneNumber')}
-                margin="normal"
-                type="number"
-                fullWidth
-              />
-              <TextField
-                id="standard-wareHouseContactEmail"
-                label="WareHouse Contact Email"
-                type="email"
-                variant="outlined"
-                className={classes.textField}
-                value={values.wareHouseContactEmail || ''}
-                onChange={handleChange('wareHouseContactEmail')}
-                margin="normal"
-                fullWidth
-              />
-              <Autocomplete
-                id="combo-headOfWareHouseId"
-                options={getAllEmployees}
-                getOptionLabel={option => option.firstName}
-                onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label="Search Head Of WareHouse Email Address"
-                    variant="outlined"
-                    placeholder="Search Head Of WareHouse Email Address"
-                    fullWidth
-                  />
-                )}
-              />
-            </div>
-          )}
+        <DialogContent dividers>
+          <div>
+            <TextField
+              id="standard-name"
+              size="small"
+              label="Warehouse Name"
+              variant="outlined"
+              value={values.name || ''}
+              onChange={handleChange('name')}
+              margin="normal"
+              fullWidth
+            />
+            <TextField
+              id="standard-firstStreet"
+              size="small"
+              label="First Street"
+              variant="outlined"
+              value={values.firstStreet || ''}
+              onChange={handleChange('firstStreet')}
+              margin="normal"
+              fullWidth
+              rows={2}
+              multiline
+            />
+            <TextField
+              id="standard-secondStreet"
+              size="small"
+              label="Second Street"
+              variant="outlined"
+              value={values.secondStreet || ''}
+              onChange={handleChange('secondStreet')}
+              margin="normal"
+              fullWidth
+              rows={2}
+              multiline
+            />
+            <TextField
+              id="standard-city"
+              size="small"
+              label="City"
+              variant="outlined"
+              value={values.city || ''}
+              onChange={handleChange('city')}
+              margin="normal"
+              fullWidth
+            />
+            <TextField
+              id="standard-state"
+              size="small"
+              label="State"
+              variant="outlined"
+              margin="normal"
+              value={values.state ? values.state : ''}
+              onChange={handleChange('state')}
+              fullWidth
+            />
+            <TextField
+              id="standard-zipCode"
+              size="small"
+              label="Zip Code"
+              type="number"
+              variant="outlined"
+              value={values.zipCode || ''}
+              onChange={handleChange('zipCode')}
+              margin="normal"
+              fullWidth
+            />
+            <TextField
+              id="standard-warehousePhoneNumber"
+              size="small"
+              label="Warehouse Phone Number"
+              variant="outlined"
+              value={values.warehousePhoneNumber || ''}
+              onChange={handleChange('warehousePhoneNumber')}
+              margin="normal"
+              type="number"
+              fullWidth
+            />
+            <TextField
+              id="standard-wareHouseContactEmail"
+              size="small"
+              label="WareHouse Contact Email"
+              type="email"
+              variant="outlined"
+              value={values.wareHouseContactEmail || ''}
+              onChange={handleChange('wareHouseContactEmail')}
+              margin="normal"
+              fullWidth
+            />
+            <Autocomplete
+              id="combo-headOfWareHouseId"
+              size="small"
+              options={getAllEmployees}
+              getOptionLabel={option =>
+                `${option.firstName} ${option.lastName}`
+              }
+              onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
+              renderInput={params => (
+                <TextField
+                  {...params}
+                  label="Head Of WareHouse"
+                  variant="outlined"
+                  margin="normal"
+                  placeholder="Head Of WareHouse Email Address"
+                  fullWidth
+                />
+              )}
+            />
+          </div>
         </DialogContent>
 
         <DialogActions>
-          {warehouseDialog.type === 'new' ? (
-            <div>
-              {loading ? (
-                <LoadingIndicator />
-              ) : (
-                <Button
-                  onClick={() => {
-                    dispatchCreateNewWarehouseAction(values);
-                  }}
-                  color="primary"
-                  variant="contained"
-                  disabled={!canBeSubmitted()}
-                >
-                  Save
-                </Button>
-              )}
+          <Button
+            onClick={handleSubmit}
+            color="primary"
+            variant="contained"
+            disabled={!canBeSubmitted()}
+          >
+            {warehouseDialog.type === 'new' ? "Save" : "Update"}
+          </Button>
 
-              <Button
-                onClick={() => closeNewWarehouseDialogAction()}
-                color="primary"
-                variant="contained"
-              >
-                Cancel
-              </Button>
-            </div>
-          ) : (
-            <div>
-              {loading ? (
-                <LoadingIndicator />
-              ) : (
-                <Button
-                  onClick={() => {
-                    dispatchUpdateWarehouseAction(values);
-                  }}
-                  color="primary"
-                  variant="contained"
-                  disabled={!canBeSubmitted()}
-                >
-                  Update
-                </Button>
-              )}
-
-              <Button
-                onClick={() => closeEditWarehouseDialogAction()}
-                color="primary"
-                variant="contained"
-              >
-                Cancel
-              </Button>
-            </div>
-          )}
+          <Button
+            onClick={() => closeNewWarehouseDialogAction()}
+            color="primary"
+            variant="outlined"
+          >
+            Cancel
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

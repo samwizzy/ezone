@@ -52,7 +52,9 @@ export function CompanyStructurePage(props) {
         />
       </Helmet>
 
-      <ModuleLayout>{params.partyId ? <Party /> : <PartyGroup />}</ModuleLayout>
+      <ModuleLayout>
+        {params.partyId ? <Party /> : <PartyGroup />}
+      </ModuleLayout>
     </div>
   );
 }

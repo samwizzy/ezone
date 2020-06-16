@@ -53,7 +53,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 50px;
+  padding: 10px 20px;
   border-width: 2px;
   border-radius: 2px;
   border-color: ${props => getColor(props)};
@@ -112,10 +112,10 @@ function PaperDropzone(props) {
   const getBase64 = (file, cb) => {
     let reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = function() {
+    reader.onload = function () {
       return cb(reader.result.split(',')[1]);
     };
-    reader.onerror = function(error) {
+    reader.onerror = function (error) {
       console.log('Error: ', error);
     };
   };

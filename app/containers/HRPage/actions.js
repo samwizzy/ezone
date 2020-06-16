@@ -36,6 +36,94 @@ export function getEmployeeTypesSuccess(data) {
     payload: data
   };
 }
+export function getSourceOfHire() {
+  return {
+    type: Constants.GET_SOURCE_OF_HIRE,
+  };
+}
+
+export function getSourceOfHireSuccess(data) {
+  return {
+    type: Constants.GET_SOURCE_OF_HIRE_SUCCESS,
+    payload: data
+  };
+}
+export function createSourceOfHire(payload) {
+  return {
+    type: Constants.CREATE_SOURCE_OF_HIRE,
+    payload
+  };
+}
+
+export function createSourceOfHireSuccess(data) {
+  return {
+    type: Constants.CREATE_SOURCE_OF_HIRE_SUCCESS,
+    payload: data
+  };
+}
+export function getPayRates() {
+  return {
+    type: Constants.GET_PAY_RATES,
+  };
+}
+
+export function getPayRatesSuccess(data) {
+  return {
+    type: Constants.GET_PAY_RATES_SUCCESS,
+    payload: data
+  };
+}
+export function createPayRate(payload) {
+  return {
+    type: Constants.CREATE_PAY_RATE,
+    payload
+  };
+}
+
+export function createPayRateSuccess(data) {
+  return {
+    type: Constants.CREATE_PAY_RATE_SUCCESS,
+    payload: data
+  };
+}
+export function getPayTypes() {
+  return {
+    type: Constants.GET_PAY_TYPES,
+  };
+}
+
+export function getPayTypesSuccess(data) {
+  return {
+    type: Constants.GET_PAY_TYPES_SUCCESS,
+    payload: data
+  };
+}
+export function createPayType(payload) {
+  return {
+    type: Constants.CREATE_PAY_TYPE,
+    payload
+  };
+}
+
+export function createPayTypeSuccess(data) {
+  return {
+    type: Constants.CREATE_PAY_TYPE_SUCCESS,
+    payload: data
+  };
+}
+export function createEmployeeType(payload) {
+  return {
+    type: Constants.CREATE_EMPLOYEE_TYPE,
+    payload
+  };
+}
+
+export function createEmployeeTypeSuccess(data) {
+  return {
+    type: Constants.CREATE_EMPLOYEE_TYPE_SUCCESS,
+    payload: data
+  };
+}
 
 export function getEnrollmentTypes() {
   return {
@@ -76,7 +164,6 @@ export function getJobOpeningsSuccess(data) {
 }
 
 export function getJobOpeningDetails(id) {
-  console.log(id);
   return {
     type: Constants.GET_JOBOPENINGDETAILS,
     payload: id
@@ -113,6 +200,32 @@ export function getEmployee(uuid) {
 export function getEmployeeSuccess(data) {
   return {
     type: Constants.GET_EMPLOYEE_SUCCESS,
+    payload: data
+  };
+}
+
+export function getWorkExperiences() {
+  return {
+    type: Constants.GET_WORK_EXPERIENCES,
+  };
+}
+
+export function getWorkExperiencesSuccess(data) {
+  return {
+    type: Constants.GET_WORK_EXPERIENCES_SUCCESS,
+    payload: data
+  };
+}
+export function createWorkExperience(payload) {
+  return {
+    type: Constants.CREATE_WORK_EXPERIENCE,
+    payload
+  };
+}
+
+export function createWorkExperienceSuccess(data) {
+  return {
+    type: Constants.CREATE_WORK_EXPERIENCE_SUCCESS,
     payload: data
   };
 }
@@ -300,6 +413,24 @@ export function createEmployeeSuccess(data) {
     payload: data
   };
 }
+export function updateEmployee(data) {
+  return {
+    type: Constants.UPDATE_EMPLOYEE,
+    payload: data
+  };
+}
+export function updateEmployeeSuccess(data) {
+  return {
+    type: Constants.UPDATE_EMPLOYEE_SUCCESS,
+    payload: data
+  };
+}
+export function updateEmployeeError(data) {
+  return {
+    type: Constants.UPDATE_EMPLOYEE_ERROR,
+    payload: data
+  };
+}
 
 export function openNewEmployeeDialog() {
   return {
@@ -315,6 +446,7 @@ export function closeNewEmployeeDialog() {
 export function openEditEmployeeDialog(data) {
   return {
     type: Constants.OPEN_EDIT_EMPLOYEE_DIALOG,
+    payload: data
   };
 }
 export function closeEditEmployeeDialog(data) {
@@ -418,5 +550,16 @@ export function openNewApplicantDialog(data) {
 export function closeNewApplicantDialog() {
   return {
     type: Constants.CLOSE_NEW_APPLICANT_DIALOG,
+  };
+}
+export function openNewEmployeeTypeDialog(data) {
+  return {
+    type: Constants.OPEN_NEW_EMPLOYEE_TYPE_DIALOG,
+    payload: data
+  };
+}
+export function closeNewEmployeeTypeDialog() {
+  return {
+    type: Constants.CLOSE_NEW_EMPLOYEE_TYPE_DIALOG,
   };
 }

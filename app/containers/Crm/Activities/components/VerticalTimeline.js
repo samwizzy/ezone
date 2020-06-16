@@ -24,14 +24,15 @@ const useStyles = makeStyles(theme => ({
 const VerticalTime = props => {
   const classes = useStyles();
 
-  const { GetAllCrmActivities } = props;
+  const { crmActivities } = props;
 
   return (
     <div className={classes.root}>
       <VerticalTimeline layout="1-column">
-        {GetAllCrmActivities &&
-          GetAllCrmActivities.map(activity => (
+        {crmActivities && crmActivities.length > 0 &&
+          crmActivities.map((activity, i) => (
             <VerticalTimelineElement
+              key={i}
               className="vertical-timeline-element--work"
               contentStyle={{
                 background: 'rgb(33, 150, 243)',

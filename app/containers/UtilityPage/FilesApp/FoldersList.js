@@ -13,7 +13,7 @@ import { createStructuredSelector } from 'reselect';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import Description from '@material-ui/icons/Description'
-import {AddFile} from './../components/AddButton';
+import { AddFile } from './../components/AddButton';
 import * as Actions from '../actions';
 import * as Selectors from './../selectors';
 import * as AppSelectors from './../../App/selectors';
@@ -25,13 +25,13 @@ import FilePreviewDialog from './components/FilePreviewDialog'
 import AddSignature from './components/AddSignature'
 import DocWidget from './components/DocWidget'
 import NoFilesList from './components/NoFilesList'
-import moment from 'moment' 
+import moment from 'moment'
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import DeleteRounded from '@material-ui/icons/DeleteRounded';
-import InsertDriveFile from '@material-ui/icons/InsertDriveFile';  
-import FolderOpen from '@material-ui/icons/FolderOpen';  
-import StarBorderOutlined from '@material-ui/icons/StarBorderOutlined';  
+import InsertDriveFile from '@material-ui/icons/InsertDriveFile';
+import FolderOpen from '@material-ui/icons/FolderOpen';
+import StarBorderOutlined from '@material-ui/icons/StarBorderOutlined';
 import StarOutlined from '@material-ui/icons/StarOutlined';
 import FolderSideBar from './FolderSideBar'
 
@@ -70,18 +70,18 @@ const useStyles = makeStyles(theme => ({
     },
   },
   button: {
-    '&.favorite': { color: orange[300]},
-    '&.shared': { color: orange[500]},
+    '&.favorite': { color: orange[300] },
+    '&.shared': { color: orange[500] },
   },
   iconButton: {
-    '&.favorite': { color: orange[300]},
-    '&.shared': { color: orange[500]},
-    '&.delete': { color: theme.status.danger},
+    '&.favorite': { color: orange[300] },
+    '&.shared': { color: orange[500] },
+    '&.delete': { color: theme.status.danger },
   },
   icon: {
-    '&.favorite': { color: orange[300]},
-    '&.shared': { color: orange[500]},
-    '&.delete': { color: theme.status.danger},
+    '&.favorite': { color: orange[300] },
+    '&.shared': { color: orange[500] },
+    '&.delete': { color: theme.status.danger },
   },
   cardRoot: {
     maxWidth: '100%',
@@ -100,14 +100,15 @@ const FilesList = props => {
   const { loading, folders, folder, files, file, user, getAllFoldersAndDocs, getFolderById, getUtilityFile, deleteDocument, favoriteDocument, getFavoriteDocuments, openNewFolderDialog, openFileUploadDialog, openFilePreviewDialog, openShareFileDialog } = props
 
   const [isOpen, setOpen] = React.useState(true);
-  
+
   React.useEffect(() => {
-    getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
+    getAllFoldersAndDocs({ folderId: 0, type: 'ROOT' })
   }, [])
 
   console.log(folders, "folders")
   console.log(folder, "folder")
   console.log(file, "file")
+  console.log(loading, "loading")
 
   const handleCollapseClick = () => {
     setOpen(!isOpen);
@@ -140,9 +141,9 @@ const FilesList = props => {
   const handleDelete = (id) => {
     const selectedDoc = folders && folders.find(folder => folder.id === id)
     const file = []
-    const payload = Object.assign({}, {id, type: selectedDoc.type})
+    const payload = Object.assign({}, { id, type: selectedDoc.type })
     file.push(payload)
-    const model = Object.assign({}, {folderId: 0, data: {parentId: 1, file}})
+    const model = Object.assign({}, { folderId: 0, data: { parentId: 1, file } })
     deleteDocument(model)
   }
 
@@ -152,17 +153,17 @@ const FilesList = props => {
   }
 
   const getAllFolders = () => {
-    getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
+    getAllFoldersAndDocs({ folderId: 0, type: 'ROOT' })
     props.history.push('/file-manager/folders')
   }
 
   const handleRowClick = folderId => {
     const selectedDoc = folders && folders.find(folder => folder.id === folderId)
-    selectedDoc.type == 'File'? getUtilityFile(folderId) : 
-    (
-      getAllFoldersAndDocs({folderId, type: 'FOLDER'}), 
-      props.history.push('/file-manager/folder/' + folderId)
-    )
+    selectedDoc.type == 'File' ? getUtilityFile(folderId) :
+      (
+        getAllFoldersAndDocs({ folderId, type: 'FOLDER' }),
+        props.history.push('/file-manager/folder/' + folderId)
+      )
   }
 
   const columns = [
@@ -181,9 +182,9 @@ const FilesList = props => {
         filter: true,
         sort: true,
         customBodyRender: type => {
-          return  (
+          return (
             <Typography variant="inherit" color="textSecondary">
-              {type == 'File'?<InsertDriveFile />:<FolderOpen />}
+              {type == 'File' ? <InsertDriveFile /> : <FolderOpen />}
             </Typography>
           )
         }
@@ -196,8 +197,8 @@ const FilesList = props => {
         filter: true,
         sort: true,
         customBodyRender: name => {
-          if(!name) return ''
-          return  (
+          if (!name) return ''
+          return (
             <Typography variant="inherit" color="textSecondary">
               {name}
             </Typography>
@@ -240,7 +241,7 @@ const FilesList = props => {
         filter: true,
         sort: true,
         customBodyRender: id => {
-          return  (
+          return (
             <IconButton onClick={(event) => handleShare(event, id)} className={classNames(classes.iconButton)} aria-label="share" color="inherit" size="small">
               <Icon color="primary">share</Icon>
             </IconButton>
@@ -255,7 +256,7 @@ const FilesList = props => {
         filter: true,
         sort: true,
         customBodyRender: id => {
-          return  (
+          return (
             <IconButton onClick={(event) => handleView(event, id)} className={classNames(classes.iconButton)} aria-label="view" color="inherit" size="small">
               <Icon color="primary">visibility</Icon>
             </IconButton>
@@ -270,7 +271,7 @@ const FilesList = props => {
         filter: true,
         sort: true,
         customBodyRender: id => {
-          return  (
+          return (
             <IconButton onClick={(event) => handleDownload(event, id)} className={classNames(classes.iconButton)} aria-label="download" color="inherit" size="small">
               <Icon color="primary">cloud_download</Icon>
             </IconButton>
@@ -302,17 +303,17 @@ const FilesList = props => {
     },
     customToolbar: () => <AddFile openFileDialog={openFileUploadDialog} openFolderDialog={openNewFolderDialog} />,
     rowsPerPage: 10,
-    rowsPerPageOptions: [10,25,50,100],
+    rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => handleRowClick(rowData[0]),
     elevation: 0
   };
 
-  if(folders && folders.length === 0){
+  if (folders && folders.length === 0) {
     // return <NoFilesList /> 
     // return <AddSignature /> 
     // return <DocWidget /> 
   }
-  
+
   return (
     <div className={classes.root}>
       <Grid container justify='space-between'>
@@ -342,95 +343,95 @@ const FilesList = props => {
               <Typography variant="subtitle1" color="textSecondary">Document Details</Typography>
             </Toolbar>
             {file && Object.keys(file).length > 0 &&
-            <div>
-            <Card className={classes.cardRoot} elevation={0}>
-              <CardMedia
-                className={classes.media}
-                image={file.fileUrl}
-                title={file.name}
-              />
-            </Card>
+              <div>
+                <Card className={classes.cardRoot} elevation={0}>
+                  <CardMedia
+                    className={classes.media}
+                    image={file.fileUrl}
+                    title={file.name}
+                  />
+                </Card>
 
-            <TableContainer component="div">
-              <Table className={classes.table} size="small" aria-label="a dense table">
-                <TableBody>
-                  <TableRow key={file.docName}>
-                    <TableCell component="th" scope="row">
-                      Name
+                <TableContainer component="div">
+                  <Table className={classes.table} size="small" aria-label="a dense table">
+                    <TableBody>
+                      <TableRow key={file.docName}>
+                        <TableCell component="th" scope="row">
+                          Name
                     </TableCell>
-                    <TableCell align="right">{file.docName}</TableCell>
-                  </TableRow>
-                  <TableRow key={file.format}>
-                    <TableCell component="th" scope="row">
-                      Format
+                        <TableCell align="right">{file.docName}</TableCell>
+                      </TableRow>
+                      <TableRow key={file.format}>
+                        <TableCell component="th" scope="row">
+                          Format
                     </TableCell>
-                    <TableCell align="right">{file.format}</TableCell>
-                  </TableRow>
-                  <TableRow key={file.size}>
-                    <TableCell component="th" scope="row">
-                      Size
+                        <TableCell align="right">{file.format}</TableCell>
+                      </TableRow>
+                      <TableRow key={file.size}>
+                        <TableCell component="th" scope="row">
+                          Size
                     </TableCell>
-                    <TableCell align="right">{file.size}</TableCell>
-                  </TableRow>
-                  <TableRow key={file.createdBy}>
-                    <TableCell component="th" scope="row">
-                      Owner
+                        <TableCell align="right">{file.size}</TableCell>
+                      </TableRow>
+                      <TableRow key={file.createdBy}>
+                        <TableCell component="th" scope="row">
+                          Owner
                     </TableCell>
-                    <TableCell align="right">{file.createdBy?"":""}</TableCell>
-                  </TableRow>
-                  <TableRow key={file.modifiedBy}>
-                    <TableCell component="th" scope="row">
-                      Modified By
+                        <TableCell align="right">{file.createdBy ? "" : ""}</TableCell>
+                      </TableRow>
+                      <TableRow key={file.modifiedBy}>
+                        <TableCell component="th" scope="row">
+                          Modified By
                     </TableCell>
-                    <TableCell align="right">{file.modifiedBy}</TableCell>
-                  </TableRow>
-                  <TableRow key={file.trash}>
-                    <TableCell component="th" scope="row">
-                      Trashed
+                        <TableCell align="right">{file.modifiedBy}</TableCell>
+                      </TableRow>
+                      <TableRow key={file.trash}>
+                        <TableCell component="th" scope="row">
+                          Trashed
                     </TableCell>
-                    <TableCell align="right">{file.trash? <DeleteRounded className={classes.icon} /> : 'No'}</TableCell>
-                  </TableRow>
-                  <TableRow key={file.dateCreated}>
-                    <TableCell component="th" scope="row">
-                      Date Created
+                        <TableCell align="right">{file.trash ? <DeleteRounded className={classes.icon} /> : 'No'}</TableCell>
+                      </TableRow>
+                      <TableRow key={file.dateCreated}>
+                        <TableCell component="th" scope="row">
+                          Date Created
                     </TableCell>
-                    <TableCell align="right">
+                        <TableCell align="right">
+                          <Typography variant="inherit" color="textSecondary">
+                            {moment(file.dateCreated).format('lll')}
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
+                      <TableRow key="favorite">
+                        <TableCell component="th" scope="row"></TableCell>
+                        <TableCell align="right">
+                          <Button size="small" startIcon={<StarOutlined />} onClick={event => handleFavorite(event, file.id)} className={classNames(classes.button, { 'favorite': false })} color='primary'>Favorite</Button>
+                          <IconButton size="small" onClick={(event) => handleShare(event, file.id)} className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>share</Icon></IconButton>
+                          <IconButton size="small" onClick={(event) => handleDownload(event, file.id)} className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>cloud_download</Icon></IconButton>
+                          <IconButton size="small" onClick={(event) => handleDelete(event, file.id)} className={classNames(classes.iconButton, { 'delete': true }, classes.icon)} color='secondary'><Icon>delete</Icon></IconButton>
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+
+                <List>
+                  <ListItem button onClick={handleCollapseClick}>
+                    <ListItemIcon>
+                      <Description />
+                    </ListItemIcon>
+                    <ListItemText primary="Description" />
+                    {isOpen ? <ExpandLess /> : <ExpandMore />}
+                  </ListItem>
+                  <Collapse in={isOpen} timeout="auto" unmountOnExit>
+                    <Box px={2}>
                       <Typography variant="inherit" color="textSecondary">
-                        {moment(file.dateCreated).format('lll')}
+                        {file.description ? file.description : "This file has no description yet"}
                       </Typography>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow key="favorite">
-                    <TableCell component="th" scope="row"></TableCell>
-                    <TableCell align="right">
-                      <Button size="small" startIcon={<StarOutlined />} onClick={event => handleFavorite(event, file.id)}  className={classNames(classes.button, {'favorite': false})} color='primary'>Favorite</Button>
-                      <IconButton size="small" onClick={(event) => handleShare(event, file.id)} className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>share</Icon></IconButton>
-                      <IconButton size="small" onClick={(event) => handleDownload(event, file.id)} className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>cloud_download</Icon></IconButton>
-                      <IconButton size="small" onClick={(event) => handleDelete(event, file.id)} className={classNames(classes.iconButton, {'delete': true}, classes.icon)} color='secondary'><Icon>delete</Icon></IconButton>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
+                    </Box>
+                  </Collapse>
+                </List>
 
-            <List>
-              <ListItem button onClick={handleCollapseClick}>
-                <ListItemIcon>
-                  <Description />
-                </ListItemIcon>
-                <ListItemText primary="Description" />
-                {isOpen ? <ExpandLess /> : <ExpandMore />}
-              </ListItem>
-              <Collapse in={isOpen} timeout="auto" unmountOnExit>
-                <Box px={2}>
-                <Typography variant="inherit" color="textSecondary">
-                  {file.description? file.description : "This file has no description yet"}
-                </Typography>
-                </Box>
-              </Collapse>
-            </List>
-            
-            </div>
+              </div>
             }
           </Box>
         </Grid>

@@ -44,42 +44,45 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const initialState = {
+  firstName: '',
+  lastName: '',
+  emailAddress: '',
+  phoneNumber: '',
+  mobileNo: '',
+  lifeStage: '',
+  associationType: '',
+  contactGroup: '',
+  contactGroupId: 1,
+  contactSource: '',
+  address1: '',
+  address2: '',
+  country: '',
+  state: '',
+  city: '',
+  fax: '',
+  dob: moment(new Date()).format('YYYY-MM-DD'),
+  image: '',
+  notes: '',
+  ownerId: '',
+  type: 'INDIVIDUAL',
+  website: '',
+}
+
 const ContactDialog = props => {
   const classes = useStyles();
 
   const [step, setStep] = React.useState(0);
-  const [form, setForm] = React.useState({
-    firstName: '',
-    lastName: '',
-    emailAddress: '',
-    phoneNumber: '',
-    mobileNo: '',
-    lifeStage: '',
-    associationType: '',
-    contactGroup: '',
-    contactGroupId: 1,
-    contactSource: '',
-    address1: '',
-    address2: '',
-    country: '',
-    state: '',
-    city: '',
-    fax: '',
-    dob: moment(new Date()).format('YYYY-MM-DD'),
-    image: '',
-    notes: '',
-    ownerId: '',
-    type: 'INDIVIDUAL',
-    website: '',
-  });
+  const [form, setForm] = React.useState({ ...initialState });
 
   const {
     loading,
     contactDialog,
-    createNewContactAction,
-    updateContactAction,
-    closeNewContactDialogAction,
+    createNewContact,
+    updateContact,
+    closeNewContactDialog,
     closeEditEmployeeDialogAction,
+    contactGroups
   } = props;
 
   const handleChange = event => {
@@ -129,24 +132,23 @@ const ContactDialog = props => {
   React.useEffect(() => {
     if (contactDialog.type === 'edit') {
       setForm({ ...contactDialog.data });
+    } else {
+      setForm({ ...initialState })
     }
   }, [contactDialog.data]);
 
   // console.log(contactDialog, 'contactDialog');
-  // console.log(form, 'form');
+  console.log(form, 'form');
 
   return (
     <div>
       <Dialog
         {...contactDialog.props}
-        onClose={closeNewContactDialogAction}
+        onClose={closeNewContactDialog}
         keepMounted
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
       >
-        <Backdrop className={classes.backdrop} open={loading}>
-          <CircularProgress color="inherit" />
-        </Backdrop>
         {step === 0 && (
           <BasicInfo
             handleChange={handleChange}
@@ -154,7 +156,7 @@ const ContactDialog = props => {
             handleSelectOwnerId={handleSelectOwnerId}
             handleSelectAssociateId={handleSelectAssociateId}
             form={form}
-            closeNewContactDialog={closeNewContactDialogAction}
+            closeNewContactDialog={closeNewContactDialog}
             handleNext={handleNext}
           />
         )}
@@ -164,7 +166,7 @@ const ContactDialog = props => {
             handleDateChange={handleDateChange}
             handleSelectCountry={handleSelectCountry}
             form={form}
-            closeNewContactDialog={closeNewContactDialogAction}
+            closeNewContactDialog={closeNewContactDialog}
             handleNext={handleNext}
             handlePrev={handlePrev}
           />
@@ -175,7 +177,8 @@ const ContactDialog = props => {
             handleSelectContactSource={handleSelectContactSource}
             handleChange={handleChange}
             form={form}
-            closeNewContactDialog={closeNewContactDialogAction}
+            contactGroups={contactGroups}
+            closeNewContactDialog={closeNewContactDialog}
             handleNext={handleNext}
             handlePrev={handlePrev}
           />
@@ -183,14 +186,14 @@ const ContactDialog = props => {
         {step === 3 && (
           <ImageUpload
             contactDialog={contactDialog}
-            updateContactAction={updateContactAction}
-            createNewContactAction={createNewContactAction}
+            updateContact={updateContact}
+            createNewContact={createNewContact}
             uploadFileAction={uploadFileAction}
             handleChange={handleChange}
             handlePrev={handlePrev}
             form={form}
             setForm={setForm}
-            closeNewContactDialog={closeNewContactDialogAction}
+            closeNewContactDialog={closeNewContactDialog}
           />
         )}
       </Dialog>
@@ -203,22 +206,21 @@ ContactDialog.propTypes = {
   contactDialog: PropTypes.object,
   getAllWarehouses: PropTypes.array,
   getAllItems: PropTypes.array,
-  dispatchCreateNewInventoryAdjustmentAction: PropTypes.func,
-  closeNewContactDialogAction: PropTypes.func,
-  updateContactAction: PropTypes.func,
+  closeNewContactDialog: PropTypes.func,
+  updateContact: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   contactDialog: Selectors.makeSelectContactDialog(),
+  contactGroups: Selectors.makeSelectContactsGroups()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    createNewContactAction: evt => dispatch(Actions.createNewContact(evt)),
-    updateContactAction: evt => dispatch(Actions.updateContact(evt)),
-    closeNewContactDialogAction: () =>
-      dispatch(Actions.closeNewContactDialog()),
+    createNewContact: evt => dispatch(Actions.createNewContact(evt)),
+    updateContact: evt => dispatch(Actions.updateContact(evt)),
+    closeNewContactDialog: () => dispatch(Actions.closeNewContactDialog()),
   };
 }
 

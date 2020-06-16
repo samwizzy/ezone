@@ -1,45 +1,34 @@
-import React from 'react'
-import classNames from 'classnames'
+import React, { memo } from 'react'
+import { withRouter } from 'react-router-dom'
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import {
     makeStyles,
     Avatar,
-    Box,
     Button,
-    Card, CardContent, CardActions, CardHeader,
-    Divider,
-    Icon,
-    IconButton,
-    List,
+    Card, CardContent, CardHeader,
     Menu,
     MenuItem,
-    Paper,
-    Grid,
     Table,
     TableHead,
     TableBody,
-    TableFooter,
     TableRow,
     TableCell,
-    Typography
 } from '@material-ui/core';
+import * as Selectors from '../../selectors';
 import { green, orange, red } from '@material-ui/core/colors'
 import LensSharp from '@material-ui/icons/LensSharp'
 import AddIcon from '@material-ui/icons/Add'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import months from '../../../../utils/months' 
+import months from '../../../../utils/months'
+import moment from 'moment'
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-    },
-    grid: {
-        border: `1px solid ${theme.palette.grey[100]}`,
-        '& .MuiGrid-item': {
-            flex: 1,
-            margin: theme.spacing(5)
-        }
     },
     card: {
         borderRadius: theme.shape.borderRadius * 2,
@@ -68,19 +57,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Widget5 = () => {
+const Widget5 = ({ employees }) => {
     const classes = useStyles()
 
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [selectedIndex, setSelectedIndex] = React.useState(1);
-    let monthsList = [{label: "Month", value: "Month"}, ...months];
+    const [selectedIndex, setSelectedIndex] = React.useState(moment().format('MMM'));
+    let monthsList = [{ label: "Month", value: "Month" }, ...months];
 
     const handleClickListItem = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
     const handleMenuItemClick = (event, index) => {
-        setSelectedIndex(index);
+        setSelectedIndex(monthsList[index].label);
         setAnchorEl(null);
     };
 
@@ -88,57 +77,86 @@ const Widget5 = () => {
         setAnchorEl(null);
     };
 
+    if (!employees) {
+        return ''
+    }
+
+    console.log(employees, "employees")
+
+    const birthdayEmps = employees && employees.filter(emp => moment(emp.dob).format('MMM') === selectedIndex);
+
     return (
         <div>
             <Card className={classes.card}>
                 <CardHeader
                     action={
-                    <>    
-                        <Button color="primary" aria-label="settings" onClick={handleClickListItem}>
-                            {monthsList[selectedIndex].label} <ExpandMoreIcon />
-                        </Button>
-                        <Menu
-                            id="lock-menu"
-                            anchorEl={anchorEl}
-                            keepMounted
-                            open={Boolean(anchorEl)}
-                            onClose={handleClose}
-                        >
-                            {monthsList.map((option, index) => (
-                            <MenuItem
-                                key={option.label}
-                                disabled={index === 0}
-                                selected={index === selectedIndex}
-                                onClick={(event) => handleMenuItemClick(event, index)}
+                        <>
+                            <Button color="primary" aria-label="settings" onClick={handleClickListItem}>
+                                {selectedIndex} <ExpandMoreIcon />
+                            </Button>
+                            <Menu
+                                id="lock-menu"
+                                anchorEl={anchorEl}
+                                keepMounted
+                                open={Boolean(anchorEl)}
+                                onClose={handleClose}
                             >
-                                {option.label}
-                            </MenuItem>
-                            ))}
-                        </Menu>
-                    </>
+                                {monthsList.map((option, index) => (
+                                    <MenuItem
+                                        key={option.label}
+                                        disabled={index === 0}
+                                        selected={option.label === selectedIndex}
+                                        onClick={(event) => handleMenuItemClick(event, index)}
+                                    >
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </Menu>
+                        </>
                     }
                     title="Uploading Birthdays"
                 />
                 <CardContent>
                     <Table className={classes.table}>
                         <TableBody>
-                            {[0,1].map(hire => 
-                            <TableRow>
-                                <TableCell component="th" scope="row">
-                                    <Avatar aria-label="recipe" className={classes.avatar}>
-                                        R
-                                    </Avatar>
-                                </TableCell>
-                                <TableCell align="left">Christian Okeme</TableCell>
-                                <TableCell align="right">May 17</TableCell>
-                            </TableRow>
+                            {birthdayEmps && birthdayEmps.slice(0, 2).map((emp, i) =>
+                                <TableRow key={i}>
+                                    <TableCell component="th" scope="row">
+                                        <Avatar aria-label="recipe" className={classes.avatar}>
+                                            R
+                                        </Avatar>
+                                    </TableCell>
+                                    <TableCell align="left">{emp.firstName + ' ' + emp.lastName}</TableCell>
+                                    <TableCell align="right">{moment(emp.dob).format('MMM DD')}</TableCell>
+                                </TableRow>
                             )}
                         </TableBody>
-                    </Table> 
-                </CardContent> 
+                    </Table>
+                </CardContent>
             </Card>
         </div>
     )
 }
 
-export default Widget5
+
+const mapStateToProps = createStructuredSelector({
+    loading: Selectors.makeSelectLoading(),
+    departments: Selectors.makeSelectDepartments(),
+    employees: Selectors.makeSelectEmployees(),
+});
+
+function mapDispatchToProps(dispatch) {
+    return {};
+}
+
+const withConnect = connect(
+    mapStateToProps,
+    mapDispatchToProps,
+);
+
+export default compose(
+    withRouter,
+    withConnect,
+    memo,
+)(Widget5);
+// export default Widget5

@@ -198,13 +198,14 @@ const TransferOrderDialog = props => {
             {transferOrderDialog.type === 'new' ? (
               <React.Fragment>
                 <Grid item xs={12}>
-                  <Table size="small" className={classes.formTable} style={{width: 500}}>
+                  <Table size="small" className={classes.formTable} style={{ width: 500 }}>
                     <TableBody>
                       <TableRow>
                         <TableCell>Reference Number</TableCell>
                         <TableCell>
                           <TextField
                             id="outlined-referenceNumber"
+                            size="small"
                             label="Reference Number"
                             value={values.referenceNumber}
                             style={{ width: 300 }}
@@ -219,6 +220,7 @@ const TransferOrderDialog = props => {
                         <TableCell>
                           <TextField
                             id="outlined-transfer-order"
+                            size="small"
                             label="Transfer Order"
                             value={values.transferOrder}
                             style={{ width: 300 }}
@@ -235,6 +237,7 @@ const TransferOrderDialog = props => {
                             <KeyboardDatePicker
                               autoOk
                               variant="inline"
+                              size="small"
                               inputVariant="outlined"
                               style={{ width: 300 }}
                               label="Date"
@@ -252,6 +255,7 @@ const TransferOrderDialog = props => {
                         <TableCell>
                           <Autocomplete
                             id="combo-source"
+                            size="small"
                             options={getAllWarehouses}
                             getOptionLabel={option => option.name}
                             onChange={(evt, ve) => handleSourceChange(evt, ve)}
@@ -273,6 +277,7 @@ const TransferOrderDialog = props => {
                         <TableCell>
                           <Autocomplete
                             id="combo-destination"
+                            size="small"
                             options={getAllWarehouses}
                             getOptionLabel={option => option.name}
                             onChange={(evt, ve) => handleDestinationChange(evt, ve)}
@@ -294,11 +299,12 @@ const TransferOrderDialog = props => {
                         <TableCell>
                           <TextField
                             id="outlined-reason"
+                            size="small"
                             label="Reason"
                             value={values.reason}
                             onChange={handleChange('reason')}
                             variant="outlined"
-                            style={{width: 300}}
+                            style={{ width: 300 }}
                             multiline
                             rows={3}
                           />
@@ -310,10 +316,10 @@ const TransferOrderDialog = props => {
                 <Grid item xs={12}>
                   <Grid container spacing={2}>
                     <Grid item xs={3}>
-                      
+
                     </Grid>
                     <Grid item xs={3}>
-                      
+
                     </Grid>
                   </Grid>
                 </Grid>
@@ -345,6 +351,7 @@ const TransferOrderDialog = props => {
                               <TableCell component="th" scope="row">
                                 <Autocomplete
                                   id="combo-item-details"
+                                  size="small"
                                   options={getAllItemsPerWarehouse}
                                   getOptionLabel={option => option.itemName}
                                   onChange={(evt, ve) =>
@@ -366,6 +373,7 @@ const TransferOrderDialog = props => {
                                 <TextField
                                   disabled
                                   id={`filled-${id + 1}`}
+                                  size="small"
                                   label="Destination Stock"
                                   defaultValue="0.00 Units"
                                   variant="filled"
@@ -377,6 +385,7 @@ const TransferOrderDialog = props => {
                                 <TextField
                                   disabled
                                   id={`filled-${id + 2}`}
+                                  size="small"
                                   label="Source Stock"
                                   defaultValue="0.00 Units"
                                   variant="filled"
@@ -386,6 +395,7 @@ const TransferOrderDialog = props => {
                               <TableCell align="center">
                                 <TextField
                                   id={`filled-${id + 3}`}
+                                  size="small"
                                   label=""
                                   defaultValue="1.00"
                                   variant="outlined"
@@ -396,6 +406,7 @@ const TransferOrderDialog = props => {
                               <TableCell align="center">
                                 <Button
                                   variant="outlined"
+                                  size="small"
                                   color="secondary"
                                   onClick={() => removeRow(id)}
                                 >
@@ -410,6 +421,7 @@ const TransferOrderDialog = props => {
                             <TableCell colSpan={5}>
                               <Button
                                 variant="contained"
+                                size="small"
                                 color="primary"
                                 onClick={() => addRow()}
                                 startIcon={<AddIcon />}
@@ -425,8 +437,8 @@ const TransferOrderDialog = props => {
                 </Grid>
               </React.Fragment>
             ) : (
-              <div />
-            )}
+                <div />
+              )}
           </Grid>
         </CardContent>
 
@@ -434,22 +446,24 @@ const TransferOrderDialog = props => {
           {loading ? (
             <LoadingIndicator />
           ) : (
-            <Button
-              className={classes.button}
-              onClick={() => {
-                dispatchCreateNewTransferOrderAction(
-                  Object.assign(values, { items: rows }),
-                );
-              }}
-              color="primary"
-              variant="contained"
+              <Button
+                className={classes.button}
+                size="small"
+                onClick={() => {
+                  dispatchCreateNewTransferOrderAction(
+                    Object.assign(values, { items: rows }),
+                  );
+                }}
+                color="primary"
+                variant="contained"
               // disabled={!canBeSubmitted()}
-            >
-              Save
-            </Button>
-          )}
+              >
+                Save
+              </Button>
+            )}
           <Button
             className={classes.button}
+            size="small"
             onClick={() => closeNewTransferOrderDialogAction()}
             color="primary"
             variant="outlined"

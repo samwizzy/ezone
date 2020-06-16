@@ -22,18 +22,8 @@ import * as Actions from '../../actions';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    margin: theme.spacing(1.5, 0),
-  },
-  dense: {
-    marginTop: 19,
-  },
-  menu: {
-    width: 200,
+  root: {
+    flexGrow: 1
   },
 }));
 
@@ -62,6 +52,12 @@ const PartyGroupDialog = props => {
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
+  const handleSubmit = () => {
+    {
+      newPartyGroupDialog.type === 'new' ?
+        dispatchCreateNewPartyGroupAction(values) : updatePartyGroupAction(values)
+    }
+  };
 
   const canBeSubmitted = () => {
     const { name, description } = values;
@@ -77,19 +73,17 @@ const PartyGroupDialog = props => {
         keepMounted
         aria-labelledby="form-dialog-title"
       >
-        <AppBar position="relative">
+        <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
               {newPartyGroupDialog.type === 'new'
-              ? 'New Party Group'
-              : 'Edit Party Group'}
+                ? 'New Party Group'
+                : 'Edit Party Group'}
             </Typography>
           </Toolbar>
         </AppBar>
 
-        <Divider />
-
-        <DialogContent>
+        <DialogContent dividers>
           <div>
             <TextField
               id="party-group"
@@ -118,31 +112,15 @@ const PartyGroupDialog = props => {
           </div>
         </DialogContent>
         <DialogActions>
-          {newPartyGroupDialog.type === 'new' ? (
-            <Button
-              onClick={() => {
-                dispatchCreateNewPartyGroupAction(values);
-                setValues('');
-              }}
-              color="primary"
-              variant="contained"
-              disabled={!canBeSubmitted()}
-            >
-              {newPartyGroupDialog.type === 'new' ? 'Save' : 'Update'}
-            </Button>
-          ) : (
-            <Button
-              onClick={() => {
-                updatePartyGroupAction(values);
-                setValues('');
-              }}
-              color="primary"
-              variant="contained"
-              disabled={!canBeSubmitted()}
-            >
-              {newPartyGroupDialog.type === 'new' ? 'Save' : 'Update'}
-            </Button>
-          )}
+          <Button
+            onClick={handleSubmit}
+            color="primary"
+            variant="contained"
+            disabled={!canBeSubmitted()}
+          >
+            {newPartyGroupDialog.type === 'new' ? 'Save' : 'Update'}
+          </Button>
+
           <Button
             onClick={() => dispatchCloseNewPartyPartyDialog()}
             color="primary"

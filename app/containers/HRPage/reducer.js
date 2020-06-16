@@ -13,12 +13,18 @@ import * as Constants from './constants';
 // The initial state of the App
 export const initialState = {
   loading: false,
+  error: null,
   employees: [],
-  employee: {},
+  employee: null,
+  employeeTypes: [],
+  sourcesOfHire: [],
+  payRates: [],
+  payTypes: [],
+  workExperiences: [],
   departments: [],
-  department: {},
+  department: null,
   roles: [],
-  role: {},
+  role: null,
   branches: [],
   branch: {},
   empDialog: {
@@ -91,6 +97,13 @@ export const initialState = {
     },
     data: null,
   },
+  employeeTypeDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -108,39 +121,36 @@ const hrReducer = (state = initialState, action) =>
           ...state,
           departments: action.payload
         };
-      break;
+        break;
       case Constants.GET_BRANCHES_SUCCESS:
         return {
           ...state,
           branches: action.payload
         };
-      break;
+        break;
       case Constants.GET_ANNOUNCEMENTS_SUCCESS:
         return {
           ...state,
           announcements: action.payload
         };
-      break;
+        break;
       case Constants.GET_PARTYGROUPS_SUCCESS:
         return {
           ...state,
           partyGroups: action.payload
         };
-      break;
+        break;
       case Constants.GET_PARTY_TAGS_SUCCESS:
         return {
           ...state,
           party_tags: action.payload
         };
-      break;
-      
+        break;
       case Constants.CREATE_EMPLOYEE: {
-        // console.log(action.payload, 'reducer data');
         return {
           ...state,
           loading: true,
           error: false,
-          createEmployee: action.payload,
         };
       }
       case Constants.CREATE_EMPLOYEE_SUCCESS: {
@@ -148,11 +158,28 @@ const hrReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          getCreateEmployee: action.payload,
+        };
+      }
+      case Constants.UPDATE_EMPLOYEE: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.UPDATE_EMPLOYEE_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+        };
+      }
+      case Constants.UPDATE_EMPLOYEE_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload
         };
       }
       case Constants.CREATE_ANNOUNCEMENT: {
-        // console.log(action.payload, 'reducer data');
         return {
           ...state,
           loading: true,
@@ -169,7 +196,6 @@ const hrReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_BRANCH: {
-        // console.log(action.payload, 'reducer data');
         return {
           ...state,
           loading: true,
@@ -186,7 +212,6 @@ const hrReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_JOBOPENING: {
-        // console.log(action.payload, 'reducer data');
         return {
           ...state,
           loading: true,
@@ -203,7 +228,6 @@ const hrReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_DEPARTMENT: {
-        // console.log(action.payload, 'reducer data');
         return {
           ...state,
           loading: true,
@@ -224,38 +248,74 @@ const hrReducer = (state = initialState, action) =>
           ...state,
           employeeTypes: action.payload
         };
-      break;
+        break;
+      case Constants.GET_SOURCE_OF_HIRE_SUCCESS:
+        return {
+          ...state,
+          sourcesOfHire: action.payload
+        };
+        break;
+      case Constants.GET_PAY_RATES_SUCCESS:
+        return {
+          ...state,
+          payRates: action.payload
+        };
+        break;
+      case Constants.GET_PAY_TYPES_SUCCESS:
+        return {
+          ...state,
+          payTypes: action.payload
+        };
+        break;
+      case Constants.GET_WORK_EXPERIENCES_SUCCESS:
+        return {
+          ...state,
+          workExperiences: action.payload
+        };
+        break;
       case Constants.GET_ENROLLMENTTYPES_SUCCESS:
         return {
           ...state,
           enrollmentTypes: action.payload
         };
-      break;
+        break;
+      case Constants.CREATE_EMPLOYEE_TYPE:
+        return {
+          ...state,
+          loading: true
+        };
+        break;
+      case Constants.CREATE_EMPLOYEE_TYPE_SUCCESS:
+        return {
+          ...state,
+          loading: false
+        };
+        break;
       case Constants.GET_LOCATIONS_SUCCESS:
         return {
           ...state,
           locations: action.payload
         };
-      break;
+        break;
       case Constants.GET_JOBOPENINGS_SUCCESS:
         return {
           ...state,
           jobOpenings: action.payload
         };
-      break;
+        break;
       case Constants.GET_JOBOPENINGDETAILS_SUCCESS:
         return {
           ...state,
           jobOpeningDetails: action.payload
         };
-      break;
+        break;
       case Constants.GET_ROLES_SUCCESS:
         return {
           ...state,
           roles: action.payload
         };
-      break;
-      
+        break;
+
       case Constants.GET_ROLES_SUCCESS:
         return {
           ...state,
@@ -283,121 +343,145 @@ const hrReducer = (state = initialState, action) =>
       case Constants.OPEN_NEW_EMPLOYEE_DIALOG:
         return {
           ...state,
-          empDialog: {...state.empDialog, props: { open: true }},
+          empDialog: { ...state.empDialog, props: { open: true }, type: 'new' },
+        };
+        break;
+      case Constants.OPEN_EDIT_EMPLOYEE_DIALOG:
+        return {
+          ...state,
+          empDialog: { props: { open: true }, type: 'edit', data: action.payload },
+        };
+        break;
+      case Constants.CLOSE_EDIT_EMPLOYEE_DIALOG:
+        return {
+          ...state,
+          empDialog: { ...state.empDialog, props: { open: false }, data: null },
         };
         break;
       case Constants.CLOSE_NEW_EMPLOYEE_DIALOG:
         return {
           ...state,
-          empDialog: {...state.empDialog, props: { open: false }},
+          empDialog: { ...state.empDialog, props: { open: false } },
         };
         break;
       case Constants.OPEN_NEW_DEPARTMENT_DIALOG:
         return {
           ...state,
-          deptDialog: {...state.deptDialog, props: { open: true }},
+          deptDialog: { ...state.deptDialog, props: { open: true } },
         };
         break;
       case Constants.CLOSE_NEW_DEPARTMENT_DIALOG:
         return {
           ...state,
-          deptDialog: {...state.deptDialog, props: { open: false }},
+          deptDialog: { ...state.deptDialog, props: { open: false } },
         };
         break;
       case Constants.OPEN_NEW_BRANCH_DIALOG:
         return {
           ...state,
-          branchDialog: {...state.branchDialog, props: { open: true }},
+          branchDialog: { ...state.branchDialog, props: { open: true } },
         };
         break;
       case Constants.CLOSE_NEW_BRANCH_DIALOG:
         return {
           ...state,
-          branchDialog: {...state.branchDialog, props: { open: false }},
+          branchDialog: { ...state.branchDialog, props: { open: false } },
         };
         break;
       case Constants.OPEN_NEW_ROLE_DIALOG:
         return {
           ...state,
-          roleDialog: {...state.roleDialog, props: { open: true }},
+          roleDialog: { ...state.roleDialog, props: { open: true } },
         };
         break;
       case Constants.CLOSE_NEW_ROLE_DIALOG:
         return {
           ...state,
-          roleDialog: {...state.roleDialog, props: { open: false }},
+          roleDialog: { ...state.roleDialog, props: { open: false } },
         };
         break;
       case Constants.OPEN_NEW_PAYROLL_DIALOG:
         return {
           ...state,
-          payrollDialog: {...state.payrollDialog, props: { open: true }},
+          payrollDialog: { ...state.payrollDialog, props: { open: true } },
         };
         break;
       case Constants.CLOSE_NEW_PAYROLL_DIALOG:
         return {
           ...state,
-          payrollDialog: {...state.payrollDialog, props: { open: false }},
+          payrollDialog: { ...state.payrollDialog, props: { open: false } },
         };
         break;
       case Constants.OPEN_NEW_ANNOUNCEMENT_DIALOG:
         return {
           ...state,
-          announcementDialog: {...state.announcementDialog, props: { open: true }},
+          announcementDialog: { ...state.announcementDialog, props: { open: true } },
         };
         break;
       case Constants.CLOSE_NEW_ANNOUNCEMENT_DIALOG:
         return {
           ...state,
-          announcementDialog: {...state.announcementDialog, props: { open: false }},
+          announcementDialog: { ...state.announcementDialog, props: { open: false } },
         };
         break;
       case Constants.OPEN_ANNOUNCEMENT_VIEW_DIALOG:
         return {
           ...state,
-          announcementViewDialog: {...state.announcementViewDialog, props: { open: true }, data: action.payload },
+          announcementViewDialog: { ...state.announcementViewDialog, props: { open: true }, data: action.payload },
         };
         break;
       case Constants.CLOSE_ANNOUNCEMENT_VIEW_DIALOG:
         return {
           ...state,
-          announcementViewDialog: {...state.announcementViewDialog, props: { open: false }},
+          announcementViewDialog: { ...state.announcementViewDialog, props: { open: false } },
         };
         break;
       case Constants.OPEN_WORK_EXPERIENCE_DIALOG:
         return {
           ...state,
-          workExperienceDialog: {...state.workExperienceDialog, props: { open: true }, data: action.payload },
+          workExperienceDialog: { ...state.workExperienceDialog, props: { open: true }, data: action.payload },
         };
         break;
       case Constants.CLOSE_WORK_EXPERIENCE_DIALOG:
         return {
           ...state,
-          workExperienceDialog: {...state.workExperienceDialog, props: { open: false }},
+          workExperienceDialog: { ...state.workExperienceDialog, props: { open: false } },
         };
         break;
       case Constants.OPEN_EDUCATION_BACKGROUND_DIALOG:
         return {
           ...state,
-          educationBackgroundDialog: {...state.educationBackgroundDialog, props: { open: true }, data: action.payload },
+          educationBackgroundDialog: { ...state.educationBackgroundDialog, props: { open: true }, data: action.payload },
         };
         break;
       case Constants.CLOSE_EDUCATION_BACKGROUND_DIALOG:
         return {
           ...state,
-          educationBackgroundDialog: {...state.educationBackgroundDialog, props: { open: false }},
+          educationBackgroundDialog: { ...state.educationBackgroundDialog, props: { open: false } },
         };
         break;
       case Constants.OPEN_NEW_APPLICANT_DIALOG:
         return {
           ...state,
-          applicantDialog: {...state.applicantDialog, props: { open: true }, data: action.payload },
+          applicantDialog: { ...state.applicantDialog, props: { open: true }, data: action.payload },
         };
         break;
       case Constants.CLOSE_NEW_APPLICANT_DIALOG:
         return {
           ...state,
-          applicantDialog: {...state.applicantDialog, props: { open: false }},
+          applicantDialog: { ...state.applicantDialog, props: { open: false } },
+        };
+        break;
+      case Constants.OPEN_NEW_EMPLOYEE_TYPE_DIALOG:
+        return {
+          ...state,
+          employeeTypeDialog: { ...state.employeeTypeDialog, props: { open: true }, type: action.payload },
+        };
+        break;
+      case Constants.CLOSE_NEW_EMPLOYEE_TYPE_DIALOG:
+        return {
+          ...state,
+          employeeTypeDialog: { ...state.employeeTypeDialog, props: { open: false } },
         };
         break;
     }

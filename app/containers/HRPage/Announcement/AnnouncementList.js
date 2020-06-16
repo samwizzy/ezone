@@ -43,9 +43,9 @@ const useStyles = makeStyles(theme => ({
   },
   icon: {
     color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.done': { color: green[500]},
+    '&.approved': { color: theme.palette.primary.main },
+    '&.inProgress': { color: orange[500] },
+    '&.done': { color: green[500] },
   },
 }));
 
@@ -55,6 +55,12 @@ const Announcement = props => {
 
   React.useEffect(() => {
   }, []);
+
+  console.log(announcements, "announcements")
+
+  if (!announcements) {
+    return ''
+  }
 
   const columns = [
     {
@@ -69,20 +75,10 @@ const Announcement = props => {
       name: 'title',
       label: 'Title',
       options: {
-      filter: true,
-      sort: true,
+        filter: true,
+        sort: true,
       },
     },
-    /*
-    {
-      name: 'sentTo',
-      label: 'Sent to',
-      options: {
-      filter: true,
-      sort: true,
-      },
-    },
-    */
     {
       name: 'announcementType',
       label: 'Message type',
@@ -105,25 +101,28 @@ const Announcement = props => {
       options: {
         filter: true,
         sort: true,
+        customBodyRender: value => {
+          return moment(value).format('lll')
+        }
       },
     },
   ];
 
   const options = {
-      filterType: 'checkbox',
-      responsive: 'scrollMaxHeight',
-      selectableRows: 'none',
-      print: false,
-      download: true,
-      viewColumns: false,
-      filter: false,
-      customToolbar: () => <AddAnnouncement openDialog={openNewAnnouncementDialog} />,
-      rowsPerPage: 10,
-      rowsPerPageOptions: [10,25,50,100],
-      onRowClick: (rowData, rowState) => {
-        openAnnouncementViewDialog(rowData)
-      },
-      elevation: 0
+    filterType: 'checkbox',
+    responsive: 'scrollMaxHeight',
+    selectableRows: 'none',
+    print: false,
+    download: true,
+    viewColumns: false,
+    filter: false,
+    customToolbar: () => <AddAnnouncement openDialog={openNewAnnouncementDialog} />,
+    rowsPerPage: 10,
+    rowsPerPageOptions: [10, 25, 50, 100],
+    onRowClick: (rowData, rowState) => {
+      openAnnouncementViewDialog(rowData)
+    },
+    elevation: 0
   };
 
   return (
@@ -133,11 +132,11 @@ const Announcement = props => {
       >
         <Grid item md={12}>
           <MUIDataTable
-              className={classes.datatable}
-              title="Announcement List"
-              data={announcements}
-              columns={columns}
-              options={options}
+            className={classes.datatable}
+            title="Announcement List"
+            data={announcements.content}
+            columns={columns}
+            options={options}
           />
         </Grid>
       </Grid>
@@ -155,10 +154,10 @@ Announcement.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   employees: Selectors.makeSelectEmployees(),
-  employee : Selectors.makeSelectEmployee(),
-  announcements : Selectors.makeSelectAnnouncements(),
+  employee: Selectors.makeSelectEmployee(),
+  announcements: Selectors.makeSelectAnnouncements(),
   user: AppSelectors.makeSelectCurrentUser(),
-  roles : Selectors.makeSelectRoles(),
+  roles: Selectors.makeSelectRoles(),
 });
 
 function mapDispatchToProps(dispatch) {

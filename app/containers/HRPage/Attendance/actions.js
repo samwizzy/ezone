@@ -36,6 +36,42 @@ export function getEmployeesSuccess(data) {
     payload: data
   };
 }
+export function getDepartments() {
+  return {
+    type: Constants.GET_DEPARTMENTS,
+  };
+}
+
+export function getDepartmentsSuccess(data) {
+  return {
+    type: Constants.GET_DEPARTMENTS_SUCCESS,
+    payload: data
+  };
+}
+export function getBranches() {
+  return {
+    type: Constants.GET_BRANCHES,
+  };
+}
+
+export function getBranchesSuccess(data) {
+  return {
+    type: Constants.GET_BRANCHES_SUCCESS,
+    payload: data
+  };
+}
+export function getRoles() {
+  return {
+    type: Constants.GET_ROLES,
+  };
+}
+
+export function getRolesSuccess(data) {
+  return {
+    type: Constants.GET_ROLES_SUCCESS,
+    payload: data
+  };
+}
 
 export function getDays() {
   return {
@@ -59,6 +95,20 @@ export function getShifts() {
 export function getShiftsSuccess(data) {
   return {
     type: Constants.GET_SHIFTS_SUCCESS,
+    payload: data
+  };
+}
+
+export function getUsersByShift(payload) {
+  return {
+    type: Constants.GET_USERS_BY_SHIFT,
+    payload
+  };
+}
+
+export function getUsersByShiftSuccess(data) {
+  return {
+    type: Constants.GET_USERS_BY_SHIFT_SUCCESS,
     payload: data
   };
 }
@@ -96,7 +146,6 @@ export function createShiftSuccess(data) {
 }
 
 export function assignShift(data) {
-  console.log(data, "action assign shift")
   return {
     type: Constants.ASSIGN_SHIFT,
     payload: data
@@ -105,6 +154,18 @@ export function assignShift(data) {
 export function assignShiftSuccess(data) {
   return {
     type: Constants.ASSIGN_SHIFT_SUCCESS,
+    payload: data
+  };
+}
+export function assignShiftToParty(data) {
+  return {
+    type: Constants.ASSIGN_SHIFT_TO_PARTY,
+    payload: data
+  };
+}
+export function assignShiftToPartySuccess(data) {
+  return {
+    type: Constants.ASSIGN_SHIFT_TO_PARTY_SUCCESS,
     payload: data
   };
 }

@@ -9,7 +9,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Divider,
   AppBar,
   Toolbar,
   Typography,
@@ -18,12 +17,10 @@ import { Autocomplete } from '@material-ui/lab';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1, 0),
-    },
+    flexGrow: 1
   },
   appBar: {
-    position: 'relative',
+    position: 'static',
   },
 }));
 
@@ -36,6 +33,7 @@ export const UtilityInfo = props => {
     handleNext,
     handlePrev,
     form,
+    contactGroups
   } = props;
   const classes = useStyles();
 
@@ -43,6 +41,8 @@ export const UtilityInfo = props => {
     const { notes } = form;
     return notes !== null;
   };
+
+  console.log(contactGroups, "contactGroups")
 
   return (
     <div>
@@ -53,67 +53,66 @@ export const UtilityInfo = props => {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Divider />
 
-      <DialogContent>
-        <form className={classes.root}>
-          <Grid container spacing={1}>
-            <Grid item xs={6}>
-              <Autocomplete
-                id="combo-contactGroup"
-                options={[]}
-                getOptionLabel={option => option.name}
-                onChange={(evt, value) => handleSelectContactGroup(evt, value)}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label="Contact Group"
-                    variant="outlined"
-                    placeholder="Select Contact Group"
-                    fullWidth
-                    name="contactGroup"
-                    size="small"
-                    value={form.contactGroup}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <Autocomplete
-                id="combo-contactSource"
-                options={[]}
-                getOptionLabel={option => option.name}
-                onChange={(evt, value) => handleSelectContactSource(evt, value)}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label="Contact Sources"
-                    variant="outlined"
-                    placeholder="Select Contact Sources"
-                    fullWidth
-                    size="small"
-                    name="contactSources"
-                    value={form.contactSources}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                name="notes"
-                label="Description"
-                id="outlined-description"
-                fullWidth
-                variant="outlined"
-                size="small"
-                multiline
-                row={2}
-                value={form.notes}
-                onChange={handleChange}
-              />
-            </Grid>
+      <DialogContent dividers>
+        <Grid container spacing={1}>
+          <Grid item xs={6}>
+            <Autocomplete
+              id="combo-contact-group"
+              options={contactGroups ? contactGroups : []}
+              getOptionLabel={option => option.groupName}
+              // value={form.contactGroup ? form.contactGroup : ''}
+              onChange={(evt, value) => handleSelectContactGroup(evt, value)}
+              renderInput={params => (
+                <TextField
+                  {...params}
+                  label="Contact Group"
+                  variant="outlined"
+                  placeholder="Select Contact Group"
+                  fullWidth
+                  margin="normal"
+                  size="small"
+                />
+              )}
+            />
           </Grid>
-        </form>
+          <Grid item xs={6}>
+            <Autocomplete
+              id="combo-contactSource"
+              options={[]}
+              getOptionLabel={option => option.name}
+              onChange={(evt, value) => handleSelectContactSource(evt, value)}
+              renderInput={params => (
+                <TextField
+                  {...params}
+                  label="Contact Sources"
+                  variant="outlined"
+                  placeholder="Select Contact Sources"
+                  fullWidth
+                  margin="normal"
+                  size="small"
+                  name="contactSources"
+                  value={form.contactSources}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              name="notes"
+              label="Description"
+              id="outlined-description"
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              size="small"
+              multiline
+              row={2}
+              value={form.notes}
+              onChange={handleChange}
+            />
+          </Grid>
+        </Grid>
       </DialogContent>
 
       <DialogActions>

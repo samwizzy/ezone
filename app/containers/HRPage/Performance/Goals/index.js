@@ -26,11 +26,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function GoalsPage(props) {
-  const { getAttendance, match } = props;
+  const { getGoals, match } = props;
   const { params } = match
 
   React.useEffect(() => {
-    getAttendance();  
+    getGoals();
   }, []);
 
   console.log(params, "params")
@@ -42,7 +42,7 @@ export function GoalsPage(props) {
         <meta name="description" content="ezone application goals page" />
       </Helmet>
 
-      { !params.goalId?
+      {params.goalId ?
         <GoalsDetails /> : <GoalsList />
       }
 
@@ -62,7 +62,7 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
-    getAttendance: () => dispatch(Actions.getLeaveRequest()),
+    getGoals: () => dispatch(Actions.getGoals()),
   };
 }
 

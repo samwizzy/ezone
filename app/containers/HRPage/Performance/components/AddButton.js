@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
   icon: {}
 }));
 
-export function AddLeaveRequest(props) {
+export function AddRecognition(props) {
   const { openDialog } = props;
   const classes = useStyles()
 
@@ -26,13 +26,13 @@ export function AddLeaveRequest(props) {
           startIcon={<Add className={classes.icon} />}
           disableElevation
         >
-          New Leave Request
+          New Recognition
         </Button>
       </Tooltip>
     </React.Fragment>
   );
 }
-export function AddLeaveType(props) {
+export function AddFeedback(props) {
   const { openDialog } = props;
   const classes = useStyles()
 
@@ -48,19 +48,19 @@ export function AddLeaveType(props) {
           startIcon={<Add className={classes.icon} />}
           disableElevation
         >
-          New Leave Type
+          New Feedback
         </Button>
       </Tooltip>
     </React.Fragment>
   );
 }
-export function AddHoliday(props) {
+export function AddReview(props) {
   const { openDialog } = props;
   const classes = useStyles()
 
   return (
     <React.Fragment>
-      <Tooltip title="New Holiday">
+      <Tooltip title="New Review">
         <Button
           size="small"
           color="primary"
@@ -70,14 +70,14 @@ export function AddHoliday(props) {
           startIcon={<Add className={classes.icon} />}
           disableElevation
         >
-          New Holiday
+          New Review
         </Button>
       </Tooltip>
     </React.Fragment>
   );
 }
 
-AddLeaveRequest.prototypes = {
+AddRecognition.prototypes = {
   classes: PropTypes.object.isRequired,
   openDialog: PropTypes.func,
 };

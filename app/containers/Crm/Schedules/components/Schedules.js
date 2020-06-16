@@ -98,7 +98,7 @@ const getBorder = theme => (`1px solid ${
   theme.palette.type === 'light'
     ? lighten(fade(theme.palette.divider, 1), 0.88)
     : darken(fade(theme.palette.divider, 1), 0.68)
-}`);
+  }`);
 
 const DayScaleCell = props => (
   <MonthView.DayScaleCell {...props} style={{ textAlign: 'center', fontWeight: 'bold' }} />
@@ -288,7 +288,7 @@ const FlexibleSpace = withStyles(styles, { name: 'ToolbarRoot' })(({ classes, ..
   <Toolbar.FlexibleSpace {...restProps} className={classes.flexibleSpace}>
     <div className={classes.flexContainer}>
       <ColorLens fontSize="large" htmlColor="#FF7043" />
-      <Typography variant="h5" style={{ marginLeft: '10px' }}>Task Schedules</Typography>
+      <Typography variant="h6" style={{ marginLeft: '10px' }}>Task Schedules</Typography>
     </div>
   </Toolbar.FlexibleSpace>
 ));

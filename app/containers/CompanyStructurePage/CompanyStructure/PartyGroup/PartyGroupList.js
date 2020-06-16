@@ -96,19 +96,19 @@ const ListItemLink = props => <ListItem button component="a" {...props} />;
 const PartyGroupList = props => {
   const classes = useStyles();
   const {
-    openEditPartyGroupAction,
-    DispatchgetSelectedPartyGroupAction,
+    openEditPartyGroupDialog,
+    getSelectedPartyGroupAction,
     partyGroupData,
-    dispatchOpenNewPartyGroupAction,
+    openNewPartyGroupDialog,
     loading,
   } = props;
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   const handleRoute = groupId => {
     const data =
       partyGroupData && partyGroupData.find(group => group.id === groupId);
-    DispatchgetSelectedPartyGroupAction(data);
+    getSelectedPartyGroupAction(data);
     props.history.push(`/organization/company/structure/${groupId}`);
   };
 
@@ -172,7 +172,7 @@ const PartyGroupList = props => {
                 variant="outlined"
                 size="small"
                 color="primary"
-                onClick={() => openEditPartyGroupAction(data)}
+                onClick={() => openEditPartyGroupDialog(data)}
               >
                 Edit
               </Button>
@@ -217,7 +217,7 @@ const PartyGroupList = props => {
         color="primary"
         size="small"
         startIcon={<Add />}
-        onClick={() => dispatchOpenNewPartyGroupAction()}
+        onClick={() => openNewPartyGroupDialog()}
       >
         New Party Group
       </Button>
@@ -229,7 +229,7 @@ const PartyGroupList = props => {
     return (
       <NoPartyDialog
         loading={loading}
-        dispatchOpenNewPartyGroupAction={dispatchOpenNewPartyGroupAction}
+        openNewPartyGroupDialog={openNewPartyGroupDialog}
       />
     );
   }
@@ -253,7 +253,7 @@ const PartyGroupList = props => {
                       variant="contained"
                       color="primary"
                       size="small"
-                      onClick={() => dispatchOpenNewPartyGroupAction()}
+                      onClick={() => openNewPartyGroupDialog()}
                     >
                       <Add />
                     </IconButton>
@@ -264,11 +264,11 @@ const PartyGroupList = props => {
               {partyGroupData.map((data, i) => (
                 <ListItemLink
                   key={i}
-                  onClick={() => DispatchgetSelectedPartyGroupAction(data)}
+                  onClick={() => getSelectedPartyGroupAction(data)}
                 >
                   <ListItemText primary={data.name} />
                   <ListItemSecondaryAction
-                    onClick={() => openEditPartyGroupAction(data)}
+                    onClick={() => openEditPartyGroupDialog(data)}
                   >
                     <IconButton variant="outlined" size="small" color="primary">
                       <Edit />
@@ -294,11 +294,11 @@ const PartyGroupList = props => {
 };
 
 PartyGroupList.propTypes = {
-  openEditPartyGroupAction: PropTypes.func,
+  openEditPartyGroupDialog: PropTypes.func,
   loading: PropTypes.bool,
-  dispatchOpenNewPartyGroupAction: PropTypes.func,
+  openNewPartyGroupDialog: PropTypes.func,
   partyGroupData: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-  DispatchgetSelectedPartyGroupAction: PropTypes.func,
+  getSelectedPartyGroupAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -309,12 +309,9 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchOpenNewPartyGroupAction: () =>
-      dispatch(Actions.openNewPartyGroupDialog()),
-    openEditPartyGroupAction: evt =>
-      dispatch(Actions.openEditPartyGroupDialog(evt)),
-    DispatchgetSelectedPartyGroupAction: evt =>
-      dispatch(Actions.getSelectedPartyGroupAction(evt)),
+    openNewPartyGroupDialog: () => dispatch(Actions.openNewPartyGroupDialog()),
+    openEditPartyGroupDialog: evt => dispatch(Actions.openEditPartyGroupDialog(evt)),
+    getSelectedPartyGroupAction: evt => dispatch(Actions.getSelectedPartyGroupAction(evt)),
   };
 }
 

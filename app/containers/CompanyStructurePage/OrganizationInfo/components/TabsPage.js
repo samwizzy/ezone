@@ -4,18 +4,16 @@ import {
   Typography,
   Box,
   makeStyles,
-  AppBar,
   Tabs,
   Tab,
-  Toolbar,
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../../../App/actions';
 import OrgInfo from './OrgInfo';
-import UserMenu from '../../../../components/layouts/shared-components/UserMenu';
 import MenuBar from '../../../../components/MenuBar'
+import * as Selectors from '../../selectors';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -67,13 +65,15 @@ function a11yProps(index) {
   };
 }
 
-function TabsPage() {
+function TabsPage({ companyInfo }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  console.log(companyInfo, "companyInfo")
 
   return (
     <div className={classes.root}>
@@ -88,7 +88,7 @@ function TabsPage() {
             centered
           >
             <Tab
-              label="FirstMarine Info"
+              label={`${companyInfo ? companyInfo.companyName : ''} Info`}
               {...a11yProps(0)}
             />
           </Tabs>
@@ -110,7 +110,7 @@ TabPanel.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  // loginPage: makeSelectLoginPage(),
+  companyInfo: Selectors.makeSelectCompanyInfo(),
 });
 
 function mapDispatchToProps(dispatch) {

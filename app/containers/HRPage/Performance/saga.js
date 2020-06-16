@@ -15,10 +15,10 @@ import * as Endpoints from '../../../components/Endpoints';
 /**
  * Github repos request/response handler
  */
-export function* getPerformances() {
+export function* getGoals() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEmployeesApi}`;
+  const requestURL = `${Endpoints.GetPerformanceApi}/${user && user.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -29,7 +29,30 @@ export function* getPerformances() {
       }),
     });
 
-    yield put(Actions.getLeaveRequestSuccess(response));
+    console.log(response, "goals response")
+
+    yield put(Actions.getGoalsSuccess(response));
+  } catch (err) {
+  }
+}
+
+export function* getRecognitions() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetRecognitionApi}/${user && user.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "recognitions response")
+
+    yield put(Actions.getRecognitionsSuccess(response));
   } catch (err) {
   }
 }
@@ -38,5 +61,5 @@ export function* getPerformances() {
  * Root saga manages watcher lifecycle
  */
 export default function* PerformanceRootSaga() {
-  yield takeLatest(Constants.GET_LEAVE_REQUEST, getPerformances);
+  yield takeLatest(Constants.GET_GOALS, getGoals);
 }

@@ -9,7 +9,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Divider,
   AppBar,
   Toolbar,
   Typography,
@@ -25,12 +24,10 @@ import CountriesAndStates from '../../../../utils/countries_states.json';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1, 0),
-    },
+    flexGrow: 1
   },
   appBar: {
-    position: 'relative',
+    position: 'static',
   },
 }));
 
@@ -47,27 +44,11 @@ export const AdvanceInfo = props => {
   const classes = useStyles();
 
   const canSubmitForm = () => {
-    const {
-      dob,
-      fax,
-      website,
-      address1,
-      address2,
-      mobileNo,
-      country,
-      state,
-      city,
-    } = form;
+    const { dob, fax, website, address1, address2, mobileNo, country, state, city } = form;
     return (
-      dob !== null &&
-      fax !== null &&
-      website !== null &&
-      address1 !== null &&
-      address2 !== null &&
-      mobileNo !== null &&
-      country !== null &&
-      state !== null &&
-      city !== null
+      dob !== null && fax !== null && website !== null &&
+      address1 !== null && address2 !== null && mobileNo !== null &&
+      country !== null && state !== null && city !== null
     );
   };
 
@@ -80,143 +61,149 @@ export const AdvanceInfo = props => {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Divider />
 
-      <DialogContent>
-        <form className={classes.root}>
-          <Grid container spacing={1}>
-            <Grid item xs={6}>
-              <TextField
-                name="mobileNo"
-                label="mobile Number"
-                id="outlined-mobileNo"
-                fullWidth
-                variant="outlined"
-                size="small"
-                type="number"
-                value={form.mobileNo}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  autoOk
-                  variant="inline"
-                  // inputVariant="outlined"
-                  label="Date"
-                  size="small"
-                  format="dd/MM/yyyy"
-                  value={form.dob ? form.dob : ''}
-                  // InputAdornmentProps={{ position: 'end' }}
-                  onChange={date => handleDateChange(date)}
-                  className={classes.textField}
-                  fullWidth
-                />
-              </MuiPickersUtilsProvider>
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                name="fax"
-                label="Fax Number"
-                id="outlined-fax"
-                fullWidth
-                variant="outlined"
-                size="small"
-                value={form.fax}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                name="website"
-                label="Website"
-                id="outlined-website"
-                fullWidth
-                variant="outlined"
-                size="small"
-                value={form.website}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                name="address1"
-                label="Address 1"
-                id="outlined-address1"
-                fullWidth
-                variant="outlined"
-                size="small"
-                multiline
-                row={2}
-                value={form.address1}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                name="address2"
-                label="Address2"
-                id="outlined-address2"
-                fullWidth
-                variant="outlined"
-                size="small"
-                multiline
-                row={2}
-                value={form.address2}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <Autocomplete
-                id="combo-country"
-                options={CountriesAndStates}
-                getOptionLabel={option => option.name}
-                onChange={(evt, value) => handleSelectCountry(evt, value)}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label="Life Stage"
-                    variant="outlined"
-                    placeholder="Select Country"
-                    fullWidth
-                    name="country"
-                    size="small"
-                    value={form.country}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                name="state"
-                label="State"
-                id="outlined-state"
-                fullWidth
-                variant="outlined"
-                size="small"
-                multiline
-                row={2}
-                value={form.state}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                name="city"
-                label="City"
-                id="outlined-city"
-                fullWidth
-                variant="outlined"
-                size="small"
-                multiline
-                row={2}
-                value={form.city}
-                onChange={handleChange}
-              />
-            </Grid>
+      <DialogContent dividers>
+        <Grid container spacing={1}>
+          <Grid item xs={6}>
+            <TextField
+              name="mobileNo"
+              label="Mobile Number"
+              id="outlined-mobile-no"
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              size="small"
+              type="number"
+              value={form.mobileNo ? form.mobileNo : ""}
+              onChange={handleChange}
+            />
           </Grid>
-        </form>
+          <Grid item xs={6}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                autoOk
+                disableFuture
+                variant="inline"
+                inputVariant="outlined"
+                margin="normal"
+                label="Date of Birth"
+                size="small"
+                format="dd/MM/yyyy"
+                value={form.dob ? form.dob : ''}
+                InputAdornmentProps={{ position: 'end' }}
+                onChange={date => handleDateChange(date)}
+                fullWidth
+              />
+            </MuiPickersUtilsProvider>
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              name="fax"
+              label="Fax Number"
+              id="outlined-fax"
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              size="small"
+              value={form.fax ? form.fax : ""}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              name="website"
+              label="Website"
+              id="outlined-website"
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              size="small"
+              value={form.website ? form.website : ""}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              name="address1"
+              label="Address 1"
+              id="outlined-address1"
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              size="small"
+              multiline
+              row={2}
+              value={form.address1 ? form.address1 : ""}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              name="address2"
+              label="Address2"
+              id="outlined-address2"
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              size="small"
+              multiline
+              row={2}
+              value={form.address2 ? form.address2 : ""}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Autocomplete
+              id="combo-country"
+              options={CountriesAndStates}
+              getOptionLabel={option => option.name}
+              onChange={(evt, value) => handleSelectCountry(evt, value)}
+              renderInput={params => (
+                <TextField
+                  {...params}
+                  label="Country"
+                  variant="outlined"
+                  placeholder="Select Country"
+                  fullWidth
+                  margin="normal"
+                  name="country"
+                  size="small"
+                  value={form.country}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              name="state"
+              label="State"
+              id="outlined-state"
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              size="small"
+              multiline
+              row={2}
+              value={form.state ? form.state : ""}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              name="city"
+              label="City"
+              id="outlined-city"
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              size="small"
+              multiline
+              row={2}
+              value={form.city ? form.city : ""}
+              onChange={handleChange}
+            />
+          </Grid>
+        </Grid>
       </DialogContent>
 
       <DialogActions>

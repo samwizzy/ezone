@@ -57,6 +57,19 @@ export function getAllContactsSuccess(data) {
   };
 }
 
+export function getContactsGroups() {
+  return {
+    type: Constants.GET_CONTACTS_GROUPS,
+  };
+}
+
+export function getContactsGroupsSuccess(data) {
+  return {
+    type: Constants.GET_CONTACTS_GROUPS_SUCCESS,
+    payload: data,
+  };
+}
+
 export function getAllContactsError() {
   return {
     type: Constants.GET_ALL_CONTACTS_ERROR,

@@ -18,7 +18,7 @@ import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
 import AssignmentInd from '@material-ui/icons/AssignmentInd';
 import Person from '@material-ui/icons/Person';
-import {AddRole} from '../components/AddButton'
+import { AddRole } from '../components/AddButton'
 import AddRoleDialog from './components/AddRoleDialog'
 
 const drawerWidth = '100%';
@@ -60,9 +60,9 @@ const useStyles = makeStyles(theme => ({
     width: 14,
     height: 14,
     color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.done': { color: green[500]},
+    '&.approved': { color: theme.palette.primary.main },
+    '&.inProgress': { color: orange[500] },
+    '&.done': { color: green[500] },
   },
   buttonGroup: {
     marginBottom: theme.spacing(1),
@@ -81,27 +81,28 @@ const HumanResource = props => {
 
   const columns = [
     {
-        name: 'id',
-        label: 'Id',
-        options: {
-            display: 'excluded',
-            filter: true,
-        },
+      name: 'id',
+      label: 'Id',
+      options: {
+        display: 'excluded',
+        filter: true,
+      },
     },
     {
       name: 'name',
-      label: 'Department Name',
+      label: 'Role Name',
       options: {
-      filter: true,
-      sort: true,
+        filter: true,
+        sort: true,
       },
     },
     {
       name: 'dateCreated',
       label: 'Created',
       options: {
-      filter: true,
-      sort: true,
+        filter: true,
+        sort: true,
+        customBodyRender: value => moment(value).format('lll')
       },
     },
     /*
@@ -125,20 +126,20 @@ const HumanResource = props => {
   ];
 
   const options = {
-      filterType: 'checkbox',
-      responsive: 'scrollMaxHeight',
-      selectableRows: 'single', // none, multiple
-      print: false,
-      download: true,
-      viewColumns: false,
-      filter: false,
-      customToolbar: () => <AddRole openDialog={openNewRoleDialog} />,
-      rowsPerPage: 10,
-      rowsPerPageOptions: [10,25,50,100],
-      onRowClick: (rowData, rowState) => {
-          getEmployee(rowData[0])
-      },
-      elevation: 0
+    filterType: 'checkbox',
+    responsive: 'scrollMaxHeight',
+    selectableRows: 'single', // none, multiple
+    print: false,
+    download: true,
+    viewColumns: false,
+    filter: false,
+    customToolbar: () => <AddRole openDialog={openNewRoleDialog} />,
+    rowsPerPage: 10,
+    rowsPerPageOptions: [10, 25, 50, 100],
+    onRowClick: (rowData, rowState) => {
+      getEmployee(rowData[0])
+    },
+    elevation: 0
   };
 
   return (
@@ -149,13 +150,13 @@ const HumanResource = props => {
       >
         <Grid item md={12}>
           <div className={classes.content}>
-            
+
             <MUIDataTable
-                className={classes.datatable}
-                title="Roles List"
-                data={roles}
-                columns={columns}
-                options={options}
+              className={classes.datatable}
+              title="Roles List"
+              data={roles}
+              columns={columns}
+              options={options}
             />
 
           </div>
@@ -176,9 +177,9 @@ HumanResource.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   employees: Selectors.makeSelectEmployees(),
-  employee : Selectors.makeSelectEmployee(),
+  employee: Selectors.makeSelectEmployee(),
   user: AppSelectors.makeSelectCurrentUser(),
-  roles : Selectors.makeSelectRoles(),
+  roles: Selectors.makeSelectRoles(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -194,8 +195,8 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(
-  compose(
-    withConnect,
-    memo,
-)(HumanResource));
+export default compose(
+  withRouter,
+  withConnect,
+  memo
+)(HumanResource)

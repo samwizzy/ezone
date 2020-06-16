@@ -99,12 +99,11 @@ const useStyles = makeStyles(theme => ({
   },
   editButton: {
     backgroundColor: theme.palette.common.white,
-    "&: hover": {
+    border: '1px solid transparent',
+    "&:hover": {
       color: theme.palette.common.white,
+      border: `1px solid ${theme.palette.primary.main}`
     }
-  },
-  inline: {
-    color: theme.palette.common.white,
   },
 }));
 
@@ -119,18 +118,20 @@ const OrgInfo = props => {
     history,
   } = props;
 
-  // const store = useSelector(state => state.loading)
-  // console.log(state, "useSelector check")
-
-  const handleImageChange = ({target}) => {
+  const handleImageChange = ({ target }) => {
     const { name, files } = target
     const result = EzoneUtils.toBase64(files[0])
-    result.then(data => updateCompanyInfo({...companyInfo, logo: data}))
+    result.then(data => updateCompanyInfo({ ...companyInfo, logo: data }))
   }
 
   if (loading) {
-    return <LoadingIndicator />;
+    return <LoadingIndicator />
   }
+
+  if (!companyInfo) {
+    return ''
+  }
+
   return (
     <React.Fragment>
       <Paper className={classes.root}>
@@ -142,55 +143,51 @@ const OrgInfo = props => {
                 style={{ display: 'flex', alignItems: 'center' }}
               >
                 <ListItemAvatar>
-                  {companyInfo.logo?
-                  <div className={classes.container}>
-                    <div className={classes.overlay}>
-                      <Button
-                        size="small"
-                        component="label"
-                        className={classes.icon}
-                      >
-                        <PhotoCameraIcon />
-                        <input
-                          name="attachments"
-                          type="file"
-                          style={{ display: "none" }}
-                          onChange={handleImageChange}
-                          multiple
-                        />
-                      </Button>
+                  {companyInfo.logo ?
+                    <div className={classes.container}>
+                      <div className={classes.overlay}>
+                        <Button
+                          size="small"
+                          component="label"
+                          className={classes.icon}
+                        >
+                          <PhotoCameraIcon />
+                          <input
+                            name="attachments"
+                            type="file"
+                            style={{ display: "none" }}
+                            onChange={handleImageChange}
+                            multiple
+                          />
+                        </Button>
+                      </div>
+                      <label htmlFor="contained-button-file">
+                        <IconButton size="small">
+                          <Avatar
+                            alt="Company Logo"
+                            src={`data:image/jpg;base64,${companyInfo.logo}`}
+                            className={classes.avatar}
+                          />
+                        </IconButton>
+                      </label>
                     </div>
-                    <label htmlFor="contained-button-file">
-                      <IconButton size="small">
-                        <Avatar
-                          alt="Company Logo"
-                          src={`data:image/jpg;base64,${companyInfo.logo}`}
-                          className={classes.avatar}
-                        />
-                      </IconButton>
-                    </label>
-                  </div>
                     :
                     <Avatar className={classes.avatar}>D</Avatar>
                   }
                 </ListItemAvatar>
                 <ListItemText
                   primary={
-                    <Typography variant="h6" color="inherit">
+                    <Typography variant="h6">
                       {companyInfo && companyInfo.companyName}
                     </Typography>
                   }
                   secondary={
-                    <React.Fragment>
-                      <Typography
-                        component="span"
-                        variant="body2"
-                        className={classes.inline}
-                        color="textPrimary"
-                      >
-                        {companyInfo && companyInfo.companyName}
-                      </Typography>
-                    </React.Fragment>
+                    <Typography
+                      component="span"
+                      variant="body2"
+                    >
+                      {companyInfo && companyInfo.companyShortName}
+                    </Typography>
                   }
                 />
               </ListItem>
@@ -223,8 +220,7 @@ const OrgInfo = props => {
                 </Button>
 
                 <Button
-                  // variant="contained"
-                  variant="outlined"
+                  // variant="outlined"
                   color="primary"
                   className={classNames(classes.button, classes.editButton)}
                   onClick={() =>
@@ -242,7 +238,7 @@ const OrgInfo = props => {
       <Paper className={classes.paper} variant="outlined">
         <Grid container spacing={2}>
           <Grid item xs={12} md={12} sm={12}>
-            <Typography variant="h6">Company Information...</Typography>
+            <Typography variant="h6">Company Information</Typography>
           </Grid>
           <Grid item xs={12} md={6}>
             <List>

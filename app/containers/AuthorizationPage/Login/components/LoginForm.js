@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
+  CircularProgress,
   IconButton,
   TextField,
   Tooltip,
@@ -19,11 +20,6 @@ import { createStructuredSelector } from 'reselect';
 import classNames from 'classnames';
 import VisibilityOutlined from '@material-ui/icons/VisibilityOutlined';
 import VisibilityOffOutlined from '@material-ui/icons/VisibilityOffOutlined';
-import {
-  darken,
-  fade,
-  lighten,
-} from '@material-ui/core/styles/colorManipulator';
 import * as Selectors from '../../../App/selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import * as Actions from '../../../App/actions';
@@ -170,7 +166,7 @@ const LoginForm = props => {
                   Register
                 </Link>
               </Typography>
-              <form>
+              <div>
                 <TextField
                   variant="outlined"
                   margin="normal"
@@ -211,8 +207,8 @@ const LoginForm = props => {
                           {visibility ? (
                             <VisibilityOutlined />
                           ) : (
-                            <VisibilityOffOutlined />
-                          )}
+                              <VisibilityOffOutlined />
+                            )}
                         </IconButton>
                       </Tooltip>
                     ),
@@ -234,25 +230,24 @@ const LoginForm = props => {
                     </Link>
                   </Grid>
                 </Grid>
-                {!loading ? (
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    className={classes.submit}
-                    disabled={!canBeSubmitted()}
-                    onClick={() => loginAction(values)}
-                  >
-                    Sign In
-                  </Button>
-                ) : (
-                  <LoadingIndicator />
-                )}
+
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  disabled={loading ? loading : !canBeSubmitted()}
+                  onClick={() => loginAction(values)}
+                  endIcon={loading && <CircularProgress size={20} />}
+                >
+                  Sign In
+                </Button>
+
                 <Box mt={5}>
                   <Copyright />
                 </Box>
-              </form>
+              </div>
             </div>
           </Grid>
         </Grid>

@@ -17,7 +17,7 @@ import * as AppSelectors from '../../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
 import Person from '@material-ui/icons/Person';
-import {AddAttendance} from '../components/AddButton'
+import { AddAttendance } from '../components/AddButton'
 import AddAttendanceDialog from './components/AddAttendanceDialog'
 
 const useStyles = makeStyles(theme => ({
@@ -45,39 +45,17 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   icon: {
     color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.done': { color: green[500]},
+    '&.approved': { color: theme.palette.primary.main },
+    '&.inProgress': { color: orange[500] },
+    '&.done': { color: green[500] },
   }
 }));
-
-function YourCustomRowComponent(props) {
-  const { id, createdAt, attended, absent, present } = props;
-
-  return (
-    <div>
-      <h1>
-        {createdAt}
-      </h1>
-      <div>
-        Attended: {attended} <br/>
-        Absent: {absent} <br/>
-        Present: {present}
-      </div>
-    </div>
-  );
-}
-
-const attendanceList = [
-  {id: 1, createdAt: '2010-01-01T05:06:07', attended: '75%', absent: 'No', present: 'Yes'},
-  {id: 2, createdAt: '2020-08-01T08:19:07', attended: '45%', absent: 'Yes', present: 'Yes'},
-]
 
 const AttendanceList = props => {
   const classes = useStyles();
   const { loading, openNewAttendanceDialog, getAttendances, attendances, getAttendanceById } = props;
   console.log(attendances, "attendances")
-  
+
   React.useEffect(() => {
   }, []);
 
@@ -91,7 +69,7 @@ const AttendanceList = props => {
       },
     },
     {
-      name: 'dateCreated',
+      name: 'date',
       label: 'Date',
       options: {
         filter: true,
@@ -117,7 +95,7 @@ const AttendanceList = props => {
       },
     },
     {
-      name: 'shift',
+      name: 'shiftName',
       label: 'Shift',
       options: {
         filter: true,
@@ -128,16 +106,16 @@ const AttendanceList = props => {
       name: 'logInTime',
       label: 'Log in time',
       options: {
-      filter: true,
-      sort: true,
+        filter: true,
+        sort: true,
       },
     },
     {
       name: 'logOutTime',
       label: 'Log out time',
       options: {
-      filter: true,
-      sort: true,
+        filter: true,
+        sort: true,
       },
     }
   ];
@@ -152,13 +130,13 @@ const AttendanceList = props => {
     filter: false,
     customToolbar: () => <AddAttendance openDialog={openNewAttendanceDialog} />,
     rowsPerPage: 10,
-    rowsPerPageOptions: [10,25,50,100],
+    rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
       getAttendanceById(rowData[0])
     },
     // customRowRender: data => {
     //   const [ id, createdAt, attended, absent, present ] = data;
-          
+
     //   return (
     //     <tr key={createdAt.props.children}>
     //       <td colSpan={4} style={{ paddingTop: "10px"}}>
@@ -185,7 +163,7 @@ const AttendanceList = props => {
           <MUIDataTable
             className={classes.datatable}
             title="Attendance List"
-            data={attendanceList}
+            data={attendances}
             columns={columns}
             options={options}
           />

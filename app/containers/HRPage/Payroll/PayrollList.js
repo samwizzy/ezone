@@ -17,7 +17,7 @@ import * as AppSelectors from '../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
 import Person from '@material-ui/icons/Person';
-import {AddPayroll} from '../components/AddButton'
+import { AddPayroll } from '../components/AddButton'
 import AddPayrollDialog from './components/AddPayrollDialog'
 
 const useStyles = makeStyles(theme => ({
@@ -57,9 +57,9 @@ const useStyles = makeStyles(theme => ({
     width: 14,
     height: 14,
     color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.done': { color: green[500]},
+    '&.approved': { color: theme.palette.primary.main },
+    '&.inProgress': { color: orange[500] },
+    '&.done': { color: green[500] },
   },
   buttonGroup: {
     marginBottom: theme.spacing(1),
@@ -87,10 +87,10 @@ const PayrollApp = props => {
     },
     {
       name: 'firstName',
-      label: 'Department Name',
+      label: 'Employee Name',
       options: {
-      filter: true,
-      sort: true,
+        filter: true,
+        sort: true,
       },
     },
     {
@@ -113,7 +113,7 @@ const PayrollApp = props => {
     filter: false,
     customToolbar: () => <AddPayroll openDialog={openNewPayrollDialog} />,
     rowsPerPage: 10,
-    rowsPerPageOptions: [10,25,50,100],
+    rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
       getEmployee(rowData[0])
     },
@@ -128,13 +128,13 @@ const PayrollApp = props => {
       >
         <Grid item md={12}>
           <div className={classes.content}>
-            
+
             <MUIDataTable
-                className={classes.datatable}
-                title="Payroll List"
-                data={employees}
-                columns={columns}
-                options={options}
+              className={classes.datatable}
+              title="Payroll List"
+              data={employees}
+              columns={columns}
+              options={options}
             />
 
           </div>
@@ -155,7 +155,7 @@ PayrollApp.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   employees: Selectors.makeSelectEmployees(),
-  employee : Selectors.makeSelectEmployee(),
+  employee: Selectors.makeSelectEmployee(),
   user: AppSelectors.makeSelectCurrentUser(),
 });
 
@@ -176,4 +176,4 @@ export default withRouter(
   compose(
     withConnect,
     memo,
-)(PayrollApp));
+  )(PayrollApp));

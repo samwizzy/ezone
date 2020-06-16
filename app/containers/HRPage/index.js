@@ -37,6 +37,9 @@ export function HRPage(props) {
     getLocations,
     getJobOpenings,
     getEmployeeTypes,
+    getSourceOfHire,
+    getPayRates,
+    getPayTypes,
     getRoles,
     getBranches,
     getPartyGroups,
@@ -49,6 +52,9 @@ export function HRPage(props) {
     getEmployees();
     getDepartmentsByOrgIdApi();
     getEmployeeTypes();
+    getSourceOfHire();
+    getPayRates();
+    getPayTypes();
     getRoles();
     getBranches();
     getEnrollmentTypes();
@@ -85,6 +91,9 @@ export function mapDispatchToProps(dispatch) {
     getEmployees: () => dispatch(Actions.getEmployees()),
     getDepartmentsByOrgIdApi: () => dispatch(Actions.getDepartmentsByOrgIdApi()),
     getEmployeeTypes: () => dispatch(Actions.getEmployeeTypes()),
+    getSourceOfHire: () => dispatch(Actions.getSourceOfHire()),
+    getPayRates: () => dispatch(Actions.getPayRates()),
+    getPayTypes: () => dispatch(Actions.getPayTypes()),
     getRoles: () => dispatch(Actions.getRoles()),
     getBranches: () => dispatch(Actions.getBranches()),
     getEnrollmentTypes: () => dispatch(Actions.getEnrollmentTypes()),

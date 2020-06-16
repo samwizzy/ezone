@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
@@ -44,35 +44,32 @@ function WorkExperienceDialog(props) {
   const classes = useStyles();
   const { closeWorkExperienceDialog, dialog } = props;
   const [form, setForm] = React.useState({
-    employee: '',
-    date: new Date,
-    status: '',
-    loginTime: new Date,
-    logoutTime: new Date,
-    comment: '',
+    companyName: "",
+    fromDate: moment(new Date).format('YYYY-MM-DD'),
+    toDate: moment(new Date).format('YYYY-MM-DD'),
+    jobTitle: "",
+    orgId: "",
   });
 
   React.useEffect(() => {
-    if(dialog.type == 'edit'){
-      setForm({...form})
+    if (dialog.type == 'edit') {
+      setForm({ ...form })
     }
   }, [dialog])
 
   const canSubmitForm = () => {
-    const {employee, date, status, loginTime, logoutTime, comment } = form
-    return employee.length > 0 && date.length > 0 && status.length > 0
+    const { companyName, fromDate, toDate, jobTitle } = form
+    return companyName.length > 0 && fromDate.length > 0 && toDate.length > 0 && jobTitle.length > 0
   }
 
   const handleChange = (event) => {
     const { name, value } = event.target
-    setForm({...form, [name]: value});
+    setForm({ ...form, [name]: value });
   }
 
-  const handleSelectChange = () => {}
+  const handleDateChange = () => { }
 
-  const handleDateChange = () => {}
-
-  const handleSubmit = () => {}
+  const handleSubmit = () => { }
 
   return (
     <div>
@@ -98,15 +95,15 @@ function WorkExperienceDialog(props) {
               <TableRow>
                 <TableCell colSpan={2}>
                   <TextField
-                    id="description"
-                    name="description"
+                    id="company-name"
+                    name="companyName"
                     placeholder="Description"
                     fullWidth
                     margin="normal"
                     variant="outlined"
                     size="small"
-                    label="Job Role"
-                    value={form.description}
+                    label="Company Name"
+                    value={form.companyName}
                     onChange={handleChange}
                   />
                 </TableCell>
@@ -114,15 +111,15 @@ function WorkExperienceDialog(props) {
               <TableRow>
                 <TableCell colSpan={2}>
                   <TextField
-                    id="description"
-                    name="description"
-                    placeholder="Description"
+                    id="job-title"
+                    name="jobTitle"
+                    placeholder="jobTitle"
                     fullWidth
                     margin="normal"
                     variant="outlined"
                     size="small"
-                    label="Company"
-                    value={form.description}
+                    label="Job Title"
+                    value={form.jobTitle}
                     onChange={handleChange}
                   />
                 </TableCell>
@@ -136,10 +133,10 @@ function WorkExperienceDialog(props) {
                       margin="normal"
                       format="MM/dd/yyyy"
                       inputVariant="outlined"
-                      id="time-picker"
-                      label="From"
+                      id="time-picker-from-date"
+                      label="From Date"
                       size="small"
-                      value={form.loginTime}
+                      value={form.fromDate}
                       onChange={handleDateChange}
                       KeyboardButtonProps={{
                         'aria-label': 'change time',
@@ -155,34 +152,16 @@ function WorkExperienceDialog(props) {
                       margin="normal"
                       format="MM/dd/yyyy"
                       inputVariant="outlined"
-                      id="time-picker"
-                      label="To"
+                      id="time-picker-to-date"
+                      label="To Date"
                       size="small"
-                      value={form.logoutTime}
+                      value={form.toDate}
                       onChange={handleDateChange}
                       KeyboardButtonProps={{
                         'aria-label': 'change time',
                       }}
                     />
                   </MuiPickersUtilsProvider>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell colSpan={2}>
-                  <TextField
-                    id="description"
-                    name="description"
-                    placeholder="Description"
-                    fullWidth
-                    margin="normal"
-                    variant="outlined"
-                    multiline
-                    rows={4}
-                    size="small"
-                    label="Description"
-                    value={form.description}
-                    onChange={handleChange}
-                  />
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -214,7 +193,6 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     closeWorkExperienceDialog: () => dispatch(Actions.closeWorkExperienceDialog()),
-    dispatch,
   };
 }
 

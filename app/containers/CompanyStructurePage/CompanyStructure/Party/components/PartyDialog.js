@@ -23,20 +23,11 @@ import { Autocomplete } from '@material-ui/lab';
 import * as Selectors from '../../../selectors';
 import * as Actions from '../../../actions';
 import LoadingIndicator from '../../../../../components/LoadingIndicator';
+import _ from 'lodash'
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    margin: theme.spacing(1.5, 0),
-  },
-  dense: {
-    marginTop: 19,
-  },
-  menu: {
-    width: 200,
+  root: {
+    flexGrow: 1
   },
   title: {
     flexGrow: 1
@@ -50,6 +41,15 @@ const useStyles = makeStyles(theme => ({
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+
+const initialState = {
+  partyGroupId: '',
+  partyHead: null,
+  assistantPartyHead: null,
+  name: '',
+  description: '',
+  tagId: '',
+}
 
 const PartyDialog = props => {
   const {
@@ -65,44 +65,29 @@ const PartyDialog = props => {
   } = props;
 
   const classes = useStyles();
-  const [values, setValues] = React.useState({
-    partyGroupId: '',
-    partyHead: null,
-    assistantPartyHead: null,
-    name: '',
-    description: '',
-    tagId: '',
-  });
+  const [values, setValues] = React.useState({ ...initialState });
 
   useEffect(() => {
-    setValues({ ...newPartyDialog.data });
+    newPartyDialog.type === 'new' ?
+      setValues({
+        ...initialState,
+        partyGroupId: newPartyDialog.data && newPartyDialog.data.partyGroupId
+      }) :
+      setValues({ ...newPartyDialog.data })
   }, [newPartyDialog.data]);
 
   const handleChange = name => event => {
-    setValues({
-      ...values,
-      [name]: event.target.value,
-    });
+    setValues({ ...values, [name]: event.target.value });
   };
 
   const handleSubmit = values => {
-    newPartyDialog.type === 'new' ? 
-    dispatchCreateNewPartyAction(values) : updatePartyAction(values);
+    newPartyDialog.type === 'new' ?
+      dispatchCreateNewPartyAction(values) : updatePartyAction(values);
     setValues('');
   }
 
-  const handlePartyHeadChange = (event, value) => {
-    setValues({
-      ...values,
-      partyHead: { id: value.id },
-    });
-  };
-
-  const handlePartyAssHeadChange = (event, value) => {
-    setValues({
-      ...values,
-      assistantPartyHead: { id: value.id },
-    });
+  const handleSelectChange = name => (event, value) => {
+    setValues({ ...values, [name]: value });
   };
 
   const handleTagChange = (event, value) => {
@@ -117,9 +102,7 @@ const PartyDialog = props => {
   const canBeSubmitted = () => {
     const { partyHead, assistantPartyHead, name, description } = values;
     return (
-      // partyHead !== '' &&
-      // assistantPartyHead !== '' &&
-      name !== '' && description !== ''
+      partyHead && assistantPartyHead && name.length > 0 && description.length > 0
     );
   };
 
@@ -147,9 +130,10 @@ const PartyDialog = props => {
           <div>
             <TextField
               id="subgroup-name"
+              name="name"
+              size="small"
               label="Name"
-              className={classes.textField}
-              value={values.name ? values.name : ''}
+              value={values.name}
               variant="outlined"
               onChange={handleChange('name')}
               margin="normal"
@@ -157,9 +141,10 @@ const PartyDialog = props => {
             />
             <TextField
               id="description"
+              name="description"
+              size="small"
               label="Description"
-              className={classes.textField}
-              value={values.description ? values.description : ''}
+              value={values.description}
               onChange={handleChange('description')}
               margin="normal"
               variant="outlined"
@@ -170,18 +155,19 @@ const PartyDialog = props => {
 
             <Autocomplete
               id="combo-partyHead"
-              options={AllUserData}
+              size="small"
+              options={AllUserData ? AllUserData : []}
               getOptionLabel={option =>
                 `${option.firstName} ${option.lastName}`
               }
-              onChange={(evt, ve) => handlePartyHeadChange(evt, ve)}
+              value={values.partyHead ? values.partyHead : null}
+              onChange={handleSelectChange('partyHead')}
               renderInput={params => (
                 <TextField
                   {...params}
                   margin="normal"
-                  label="Search Employee"
+                  label="Party Head"
                   variant="outlined"
-                  placeholder="Search Employee"
                   fullWidth
                 />
               )}
@@ -189,18 +175,19 @@ const PartyDialog = props => {
 
             <Autocomplete
               id="combo-ass-partyHead"
+              size="small"
               options={AllUserData}
               getOptionLabel={option =>
                 `${option.firstName} ${option.lastName}`
               }
-              onChange={(evt, ve) => handlePartyAssHeadChange(evt, ve)}
+              onChange={handleSelectChange('assistantPartyHead')}
+              value={values.assistantPartyHead ? values.assistantPartyHead : null}
               renderInput={params => (
                 <TextField
                   {...params}
                   margin="normal"
-                  label="Search Employee"
+                  label="Assistant Party Head"
                   variant="outlined"
-                  placeholder="Search Employee"
                   fullWidth
                 />
               )}
@@ -208,16 +195,17 @@ const PartyDialog = props => {
 
             <Autocomplete
               id="combo-tag"
+              size="small"
               options={allTags}
-              getOptionLabel={option => `${option.name}`}
+              getOptionLabel={option => option.name}
               onChange={(evt, ve) => handleTagChange(evt, ve)}
+              value={values.tagId ? _.find(allTags, { id: values.tagId }) : null}
               renderInput={params => (
                 <TextField
                   {...params}
                   margin="normal"
                   label="Select Tag"
                   variant="outlined"
-                  placeholder="Select Tag"
                   fullWidth
                 />
               )}

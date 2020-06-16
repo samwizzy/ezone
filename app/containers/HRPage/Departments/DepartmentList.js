@@ -17,7 +17,7 @@ import * as AppSelectors from '../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
 import Person from '@material-ui/icons/Person';
-import {AddDepartment} from '../components/AddButton'
+import { AddDepartment } from '../components/AddButton'
 import AddDepartmentDialog from './components/AddDepartmentDialog'
 
 const useStyles = makeStyles(theme => ({
@@ -57,9 +57,9 @@ const useStyles = makeStyles(theme => ({
     width: 14,
     height: 14,
     color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.done': { color: green[500]},
+    '&.approved': { color: theme.palette.primary.main },
+    '&.inProgress': { color: orange[500] },
+    '&.done': { color: green[500] },
   },
   buttonGroup: {
     marginBottom: theme.spacing(1),
@@ -71,10 +71,12 @@ const useStyles = makeStyles(theme => ({
 
 const DepartmentsApp = props => {
   const classes = useStyles();
-  const { loading, openNewDepartmentDialog, getDepartment, getEmployees, employees, employee, getBranches, branches, departments } = props;
+  const { loading, openNewDepartmentDialog, getDepartment, employees, employee, getBranches, branches, departments } = props;
 
   React.useEffect(() => {
   }, [employee, departments, employees]);
+
+  console.log(departments, "departments")
 
   const columns = [
     {
@@ -89,30 +91,26 @@ const DepartmentsApp = props => {
       name: 'name',
       label: 'Department Name',
       options: {
-      filter: true,
-      sort: true,
+        filter: true,
+        sort: true,
       },
     },
     {
       name: 'employeeCount',
       label: 'Employee count',
-     
       options: {
-      filter: true,
-      sort: true,
-      customBodyRender: id => {
-        return (
-          <span>0</span>
-        )
-        }
+        filter: true,
+        sort: true,
+        // customBodyRender: id => ()
       },
     },
     {
       name: 'dateCreated',
       label: 'Created',
       options: {
-      filter: true,
-      sort: true,
+        filter: true,
+        sort: true,
+        customBodyRender: value => moment(value).format('lll')
       },
     },
     /*
@@ -137,7 +135,7 @@ const DepartmentsApp = props => {
     filter: false,
     customToolbar: () => <AddDepartment openDialog={openNewDepartmentDialog} />,
     rowsPerPage: 10,
-    rowsPerPageOptions: [10,25,50,100],
+    rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
       getDepartment(rowData[0])
     },
@@ -167,14 +165,13 @@ const DepartmentsApp = props => {
 
 DepartmentsApp.propTypes = {
   loading: PropTypes.bool,
-  getEmployees: PropTypes.func,
   openNewDepartmentDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   employees: Selectors.makeSelectEmployees(),
-  employee : Selectors.makeSelectEmployee(),
+  employee: Selectors.makeSelectEmployee(),
   user: AppSelectors.makeSelectCurrentUser(),
   departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
   branches: Selectors.makeSelectBranches(),
@@ -182,7 +179,6 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getEmployees: () => dispatch(Actions.getEmployees()),
     openNewDepartmentDialog: () => dispatch(Actions.openNewDepartmentDialog()),
     getBranches: () => dispatch(Actions.getBranches()),
     getDepartment: (id) => dispatch(Actions.getDepartment(id)),

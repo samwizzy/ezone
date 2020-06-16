@@ -35,15 +35,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const menus = [
-	{id: 1, title: "Basic Information"},
-	{id: 2, title: "CV"},
-	{id: 3, title: "Interview"},
-	{id: 4, title: "History"},
+  { id: 1, title: "Basic Information" },
+  { id: 2, title: "CV" },
+  { id: 3, title: "Interview" },
+  { id: 4, title: "History" },
 ]
 
 const RecognitionList = props => {
   const classes = useStyles();
-	const { loading, openNewRecognitionDialog } = props;
+  const { loading, openNewRecognitionDialog, recognitions } = props;
+
+  console.log(recognitions, "recognitions")
 
   React.useEffect(() => {
   }, []);
@@ -51,8 +53,8 @@ const RecognitionList = props => {
   return (
     <div className={classes.root}>
       <Grid container>
-				<Grid item xs={12}>
-          <AppBar position="static" color="inherit" elevation={2}>
+        <Grid item xs={12}>
+          <AppBar position="static" color="inherit" elevation={1}>
             <Toolbar variant="dense">
               <Typography variant="h6" className={classes.title}>
                 Recognition
@@ -60,7 +62,7 @@ const RecognitionList = props => {
               <Button variant="contained" color="primary" onClick={openNewRecognitionDialog}>Add Recognition</Button>
             </Toolbar>
           </AppBar>
-				</Grid>
+        </Grid>
         <Grid item md={12}>
           <RecognitionItem />
           <RecognitionItem />
@@ -77,7 +79,7 @@ RecognitionList.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  goals: Selectors.makeSelectGoals()
+  recognitions: Selectors.makeSelectRecognitions(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -92,7 +94,7 @@ const withConnect = connect(
 );
 
 export default compose(
-	withRouter,
-	withConnect,
-	memo,
+  withRouter,
+  withConnect,
+  memo,
 )(RecognitionList);

@@ -34,8 +34,8 @@ export const ImageUpload = props => {
     handlePrev,
     form,
     setForm,
-    createNewCompanyAction,
-    updateCompanyAction,
+    createNewCompany,
+    updateCompany,
     companyDialog,
   } = props;
   const classes = useStyles();
@@ -72,7 +72,7 @@ export const ImageUpload = props => {
             </Button>
             <Button
               onClick={() => {
-                createNewCompanyAction(form);
+                createNewCompany(form);
                 setForm('');
               }}
               color="primary"
@@ -81,24 +81,24 @@ export const ImageUpload = props => {
             </Button>
           </div>
         ) : (
-          <div>
-            <Button onClick={() => closeNewCompanyDialog()} color="primary">
-              Cancel
+            <div>
+              <Button onClick={() => closeNewCompanyDialog()} color="primary">
+                Cancel
             </Button>
-            <Button onClick={handlePrev} color="primary">
-              Prev
+              <Button onClick={handlePrev} color="primary">
+                Prev
             </Button>
-            <Button
-              onClick={() => {
-                updateCompanyAction(form);
-                setForm('');
-              }}
-              color="primary"
-            >
-              Update
+              <Button
+                onClick={() => {
+                  updateCompany(form);
+                  setForm('');
+                }}
+                color="primary"
+              >
+                Update
             </Button>
-          </div>
-        )}
+            </div>
+          )}
       </DialogActions>
     </div>
   );

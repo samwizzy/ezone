@@ -1,10 +1,15 @@
-import React from "react"
+import React, { memo } from "react"
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import classNames from 'classnames';
+import { createStructuredSelector } from 'reselect';
+import { withRouter, Link } from "react-router-dom"
 import {
     makeStyles,
     Box,
     Button,
-    Card, 
-    CardContent, 
+    Card,
+    CardContent,
     CardActions,
     Divider,
     List,
@@ -18,48 +23,62 @@ import {
     TableCell,
     Typography
 } from '@material-ui/core';
-import CrmDashImage1 from '../../../../images/crmDash.jpg'
 import CrmDashImage2 from '../../../../images/crmDash2.jpg'
+import hrDash3 from '../../../../images/hrDash3.jpg'
+import * as Actions from '../../actions';
+import * as Selectors from '../../selectors';
+import * as AppSelectors from '../../../App/selectors';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
     },
-    grid: {
-        border: `1px solid ${theme.palette.grey[100]}`,
-        '& .MuiGrid-item': {
-            flex: 1,
-            margin: theme.spacing(5)
-        }
-    },
     card: {
+        flexGrow: 1,
         borderRadius: theme.shape.borderRadius * 2,
-        backgroundImage: `url(${CrmDashImage1})`,
+        backgroundImage: `url(${hrDash3})`,
         backgroundRepeat: `no-repeat`,
         backgroundPosition: `center bottom`,
         backgroundSize: 'cover',
         "& .MuiCardActions-root": {
             justifyContent: "center",
             backgroundColor: theme.palette.common.white,
+        },
+        "& .MuiCardContent-root": {
+            minHeight: 160
         }
     },
     table: {
         whiteSpace: "nowrap",
-        "& .MuiTableFooter-root": {
-            borderTop: `1px solid ${theme.palette.divider} !important`,
+        display: "flex",
+        '& tr': {
+            display: "flex",
         },
-        "& .MuiTableCell-root": {
+        "& td, & th": {
             borderBottom: "none !important",
+            color: theme.palette.common.white,
         },
-        '& .MuiTableCell-body': {
+    },
+    childTable: {
+        '& tr': {
+            display: "flex",
+        },
+        '& td, & th': {
             color: theme.palette.common.white,
         },
     }
 }));
 
 
-const Widget2 = () => {
+const Widget2 = (props) => {
     const classes = useStyles()
+    const { departments } = props
+
+    if (!departments) {
+        return ''
+    }
+
+    console.log(departments, "departments")
 
     return (
         <div>
@@ -68,25 +87,56 @@ const Widget2 = () => {
                     <Table className={classes.table} size="small">
                         <TableBody>
                             <TableRow>
-                                <TableCell component="th">
-                                    <Typography variant="h3">100</Typography>
+                                <TableCell>
+                                    <Typography variant="h3">{departments && departments.length}</Typography>
                                 </TableCell>
-                                <TableCell align="right">
-                                    <Typography variant="subtitle2">Departments</Typography>
+                                <TableCell>
+                                    <Table className={classes.childTable} size="small">
+                                        <TableBody>
+                                            {departments.length > 0 && departments.slice(0, 4).map((dept, i) =>
+                                                <TableRow key={i}>
+                                                    <TableCell>{dept.employees.length} {dept.name}</TableCell>
+                                                </TableRow>
+                                            )}
+                                        </TableBody>
+                                    </Table>
                                 </TableCell>
                             </TableRow>
                         </TableBody>
-                    </Table>  
+                    </Table>
                 </CardContent>
 
                 <CardActions>
-                    <Typography>
+                    <Button component={Link} to='/hr/departments'>
                         View All Departments
-                    </Typography>
+                    </Button>
                 </CardActions>
             </Card>
         </div>
     )
 }
 
-export default Widget2
+const mapStateToProps = createStructuredSelector({
+    loading: Selectors.makeSelectLoading(),
+    departments: Selectors.makeSelectDepartments(),
+    employees: Selectors.makeSelectEmployees(),
+    employee: Selectors.makeSelectEmployee(),
+    user: AppSelectors.makeSelectCurrentUser(),
+    departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
+});
+
+function mapDispatchToProps(dispatch) {
+    return {};
+}
+
+const withConnect = connect(
+    mapStateToProps,
+    mapDispatchToProps,
+);
+
+export default compose(
+    withRouter,
+    withConnect,
+    memo,
+)(Widget2);
+// export default Widget2

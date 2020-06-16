@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash'
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, Slide, Typography, TextField } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, Slide, Typography, TextField } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 
@@ -26,21 +26,21 @@ function AddFolderDialog(props) {
   const classes = useStyles();
   const { closeNewFolderDialog, addFolderToFolder, dialog, match } = props;
   const { params } = match
-  const [form, setForm] = React.useState({folderId: 1, folderName: '', description: ''});
+  const [form, setForm] = React.useState({ folderId: 1, folderName: '', description: '' });
 
   React.useEffect(() => {
-    if(params.folderId){ setForm({...form, folderId: params.folderId}) }
+    if (params.folderId) { setForm({ ...form, folderId: params.folderId }) }
   }, [])
 
   const handleChange = event => {
-    setForm(_.set({...form}, event.target.name, event.target.value))
+    setForm(_.set({ ...form }, event.target.name, event.target.value))
   }
   const handleSubmit = () => {
     addFolderToFolder(form)
   }
 
   const canSubmitForm = () => {
-    const {folderName, description } = form
+    const { folderName, description } = form
     return folderName.length > 0 && description.length > 0
   }
 
@@ -119,7 +119,6 @@ function mapDispatchToProps(dispatch) {
     openNewFolderDialog: data => dispatch(Actions.openNewFolderDialog(data)),
     closeNewFolderDialog: () => dispatch(Actions.closeNewFolderDialog()),
     addFolderToFolder: (data) => dispatch(Actions.addFolderToFolder(data)),
-    dispatch,
   };
 }
 

@@ -13,19 +13,18 @@ import {
   TableBody,
   TableCell,
   TableRow,
-  TextField,
-  Button,
-  Grid,
   Dialog,
   DialogContent,
   DialogActions,
   Divider,
+  IconButton,
   Slide,
   AppBar,
   List,
   ListItem,
   ListItemText,
   ListItemAvatar,
+  ListItemSecondaryAction,
   Toolbar,
   Typography,
   FormLabel,
@@ -34,8 +33,11 @@ import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
 import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import MailOutline from '@material-ui/icons/MailOutline';
+import CloseIcon from '@material-ui/icons/Close';
 import Smartphone from '@material-ui/icons/Smartphone';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import ContactsIcon from '@material-ui/icons/Contacts';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import BallotIcon from '@material-ui/icons/Ballot';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { blue } from '@material-ui/core/colors';
 import * as Selectors from '../selectors';
@@ -47,11 +49,19 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
+  table: {
+    "& td": {
+      border: 0
+    }
+  },
   avatar: {
     width: theme.spacing(12),
     height: theme.spacing(12),
     marginRight: theme.spacing(1),
     border: `1px solid ${lighten(theme.palette.primary.main, 0.3)}`,
+  },
+  list: {
+    flexGrow: 1,
   },
   button: {
     backgroundColor: blue[400],
@@ -112,7 +122,7 @@ const ContactDetailsDialog = props => {
   const {
     loading,
     contactDetailsDialog,
-    closeContactDetailsDialogAction,
+    closeContactDetailsDialog,
   } = props;
   const [expanded, setExpanded] = React.useState('panel1');
 
@@ -125,45 +135,48 @@ const ContactDetailsDialog = props => {
     <div>
       <Dialog
         {...contactDetailsDialog.props}
-        onClose={closeContactDetailsDialogAction}
+        onClose={closeContactDetailsDialog}
         keepMounted
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
+        fullWidth
+        maxWidth="md"
       >
         {contactDetailsDialog.data && (
           <AppBar position="relative">
             <Toolbar>
-              <Grid container justify="space-between" alignItems="center">
-                <Grid item>
-                  <List className={classes.list}>
-                    <ListItem
-                      alignItems="flex-start"
-                      style={{ display: 'flex', alignItems: 'center' }}
-                    >
-                      <ListItemAvatar>
-                        <Avatar
-                          alt="Company Logo"
-                          src={contactDetailsDialog.data.imageUrl}
-                          className={classes.avatar}
-                        />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={
-                          <Typography variant="h6" color="inherit">
-                            {contactDetailsDialog.data.firstName}{' '}
-                            {contactDetailsDialog.data.lastName}
-                          </Typography>
-                        }
-                        secondary={
-                          <Typography variant="subtitle1" color="inherit">
-                            {contactDetailsDialog.data.emailAddress}
-                          </Typography>
-                        }
-                      />
-                    </ListItem>
-                  </List>
-                </Grid>
-              </Grid>
+              <List className={classes.list}>
+                <ListItem
+                  alignItems="flex-start"
+                  style={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <ListItemAvatar>
+                    <Avatar
+                      alt="Company Logo"
+                      src={contactDetailsDialog.data.imageUrl}
+                      className={classes.avatar}
+                    />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={
+                      <Typography variant="h6" color="inherit">
+                        {contactDetailsDialog.data.firstName}{' '}
+                        {contactDetailsDialog.data.lastName}
+                      </Typography>
+                    }
+                    secondary={
+                      <Typography variant="subtitle1" color="inherit">
+                        {contactDetailsDialog.data.emailAddress}
+                      </Typography>
+                    }
+                  />
+                  <ListItemSecondaryAction>
+                    <IconButton onClick={closeContactDetailsDialog} edge="end" aria-label="delete">
+                      <CloseIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              </List>
             </Toolbar>
           </AppBar>
         )}
@@ -183,11 +196,11 @@ const ContactDetailsDialog = props => {
                 <Typography>Basic Info #1</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-                <Table className={classes.table}>
+                <Table className={classes.table} size="small">
                   <TableBody>
                     <TableRow>
                       <TableCell>
-                        <MailOutline />
+                        <MailOutline /> Email
                       </TableCell>
                       <TableCell>
                         {contactDetailsDialog.data.emailAddress}
@@ -195,34 +208,27 @@ const ContactDetailsDialog = props => {
                     </TableRow>
                     <TableRow>
                       <TableCell>
-                        <Smartphone />
+                        <Smartphone /> Phone Number
                       </TableCell>
                       <TableCell>
                         {contactDetailsDialog.data.phoneNumber}
                       </TableCell>
-                      <TableCell align="left" colSpan={2} />
                     </TableRow>
                     <TableRow>
-                      <TableCell />
-                      <TableCell>Life Stage</TableCell>
+                      <TableCell><BallotIcon /> Life Stage</TableCell>
                       <TableCell>
                         {contactDetailsDialog.data.lifeStage}
                       </TableCell>
-                      <TableCell colSpan={2} />
                     </TableRow>
                     <TableRow>
-                      <TableCell />
-                      <TableCell>Contact Owner</TableCell>
+                      <TableCell><ContactsIcon /> Contact Owner</TableCell>
                       <TableCell>{contactDetailsDialog.data.ownerId}</TableCell>
-                      <TableCell />
                     </TableRow>
                     <TableRow>
-                      <TableCell />
-                      <TableCell>Vendor</TableCell>
+                      <TableCell><AccountCircleIcon /> Vendor</TableCell>
                       <TableCell>
                         {contactDetailsDialog.data.associationType}
                       </TableCell>
-                      <TableCell />
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -234,47 +240,47 @@ const ContactDetailsDialog = props => {
                 <Typography>Additional Info #2</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-                <Table className={classes.table}>
+                <Table className={classes.table} size="small">
                   <TableBody>
                     <TableRow>
                       <TableCell>DOB</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="left">
                         {contactDetailsDialog.data.dob}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>Fax</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="left">
                         {contactDetailsDialog.data.fax}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>Website</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="left">
                         {contactDetailsDialog.data.website}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>Address</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="left">
                         {contactDetailsDialog.data.address}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>City</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="left">
                         {contactDetailsDialog.data.city}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>State</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="left">
                         {contactDetailsDialog.data.state}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>Country</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="left">
                         {contactDetailsDialog.data.country}
                       </TableCell>
                     </TableRow>
@@ -288,11 +294,11 @@ const ContactDetailsDialog = props => {
                 <Typography>Contact Group #3</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-                <Table className={classes.table}>
+                <Table className={classes.table} size="small">
                   <TableBody>
                     <TableRow>
                       <TableCell>Contact Group</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="left">
                         {contactDetailsDialog.data.contactGroup}
                       </TableCell>
                     </TableRow>
@@ -306,17 +312,17 @@ const ContactDetailsDialog = props => {
                 <Typography>Additional Info #4</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-                <Table className={classes.table}>
+                <Table className={classes.table} size="small">
                   <TableBody>
                     <TableRow>
                       <TableCell>Contact Source</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="left">
                         {contactDetailsDialog.data.contactSource}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>Note</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="left">
                         {contactDetailsDialog.data.note}
                       </TableCell>
                     </TableRow>
@@ -336,7 +342,7 @@ const ContactDetailsDialog = props => {
 ContactDetailsDialog.propTypes = {
   loading: PropTypes.bool,
   contactDetailsDialog: PropTypes.object,
-  closeContactDetailsDialogAction: PropTypes.func,
+  closeContactDetailsDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -346,8 +352,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeContactDetailsDialogAction: () =>
-      dispatch(Actions.closeContactDetailsDialog()),
+    closeContactDetailsDialog: () => dispatch(Actions.closeContactDetailsDialog()),
   };
 }
 

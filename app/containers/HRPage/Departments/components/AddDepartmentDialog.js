@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
@@ -13,9 +13,7 @@ import moment from 'moment'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1, 0)
-    },
+    flexGrow: 1
   },
 }));
 
@@ -25,38 +23,38 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function AddDepartmentDialog(props) {
   const classes = useStyles();
-  const { closeNewDepartmentDialog, createDepartment, partyGroups,  getEmployees, party_tags, PartyTags, employees,  employee, getBranches, branches, departments,  dialog } = props;
+  const { closeNewDepartmentDialog, createDepartment, partyGroups, getEmployees, party_tags, PartyTags, employees, employee, getBranches, branches, departments, dialog } = props;
   const [form, setForm] = React.useState({
     name: '',
     description: '',
-    partyHead: {id: ''},
-    assistantPartyHead: {id: ''},
+    partyHead: { id: '' },
+    assistantPartyHead: { id: '' },
     partyGroupId: '',
     tagId: 5
   });
-  
+
   console.log(dialog, "dialog checking")
-  
+
 
   React.useEffect(() => {
-    if(dialog.type == 'edit'){
-      setForm({...form})
+    if (dialog.type == 'edit') {
+      setForm({ ...form })
     }
   }, [dialog])
 
   const canSubmitForm = () => {
-    const {name, description, partyGroupId, partyHead, assistantPartyHead, tag } = form
+    const { name, description, partyGroupId, partyHead, assistantPartyHead, tag } = form
     return name.length > 0 && partyHead && partyGroupId && assistantPartyHead
   }
-   
+
 
   const handleChange = (event) => {
     const { name, value } = event.target
-    setForm({...form, [name]: value});
+    setForm({ ...form, [name]: value });
   }
 
   const handleSelectChange = (event) => {
-    setForm({...form, [event.target.name]: {id: event.target.value}});
+    setForm({ ...form, [event.target.name]: { id: event.target.value } });
   }
 
   const handleSubmit = event => {
@@ -75,7 +73,7 @@ function AddDepartmentDialog(props) {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <AppBar position="relative">
+        <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
               Add department
@@ -83,130 +81,120 @@ function AddDepartmentDialog(props) {
           </Toolbar>
         </AppBar>
 
-        <Divider />
-
-        <DialogContent>
-          <form className={classes.root}>
-            <Grid container spacing={1}>
-                <Grid item xs={12}>
-                    <TextField
-                    name="name"
-                    label="Department Name"
-                    id="outlined-title"
-                    fullWidth
-                    variant="outlined"
-                    size="small"
-                    value={form.name}
-                    onChange={handleChange}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                <TextField
-                  id="partyGroupId"
-                  name="partyGroupId"
-                  placeholder="Party group"
-                  select
-                  fullWidth
-                  className={classes.textField}
-                  variant="outlined"
-                  size="small"
-                  label="Party group"
-                  value={form.partyGroupId}
-                  onChange={handleChange}
-                >
-                  {partyGroups && partyGroups.map((partyGroup) => (
-                    <MenuItem key={partyGroup.id} value={partyGroup.id}>
-                        {partyGroup.name}
-                    </MenuItem>
-                  ))};
-                </TextField>
-              </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                    name="description"
-                    label="Description"
-                    id="outlined-title"
-                    fullWidth
-                    variant="outlined"
-                    size="small"
-                    value={form.description}
-                    onChange={handleChange}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    id="partyHead"
-                    name="partyHead"
-                    placeholder="Department Lead"
-                    select
-                    fullWidth
-                    className={classes.textField}
-                    variant="outlined"
-                    size="small"
-                    label="Department Lead"
-                    value={form.partyHead.id}
-                    onChange={handleSelectChange}
-                  >
-                    {employees && employees.map((employee) => (
-                    <MenuItem key={employee.id} value={employee.id}>
-                      {employee.firstName} {employee.lastName}
-                    </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    id="assistantPartyHead"
-                    name="assistantPartyHead"
-                    placeholder="Assistant Department Lead"
-                    select
-                    fullWidth
-                    className={classes.textField}
-                    variant="outlined"
-                    size="small"
-                    label="Assistant Department Lead"
-                    value={form.assistantPartyHead.id}
-                    onChange={handleSelectChange}
-                  >
-                    {employees && employees.map((employee) => (
-                    <MenuItem key={employee.id} value={employee.id}>
-                        {employee.firstName} {employee.lastName}
-                    </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-                {/*
-                <Grid item xs={12}>
-                  <TextField
-                    id="partyId"
-                    name="partyId"
-                    placeholder="Branch"
-                    select
-                    fullWidth
-                    className={classes.textField}
-                    variant="outlined"
-                    size="small"
-                    label="Branch"
-                    value={form.partyId}
-                    onChange={handleChange}
-                  >
-                    {branches.map((branch) => (
-                        <MenuItem key={branch.id} value={branch.id}>
-                            {branch.name}
-                        </MenuItem>
-                        ))};
-                  </TextField>
-                </Grid>
-                    */}
+        <DialogContent dividers>
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <TextField
+                name="name"
+                label="Department Name"
+                id="outlined-title"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                size="small"
+                value={form.name}
+                onChange={handleChange}
+              />
             </Grid>
-          </form>
+            <Grid item xs={12}>
+              <TextField
+                id="partyGroupId"
+                name="partyGroupId"
+                placeholder="Party group"
+                select
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                size="small"
+                label="Party group"
+                value={form.partyGroupId}
+                onChange={handleChange}
+              >
+                {partyGroups && partyGroups.length === 0 &&
+                  <MenuItem key="" value="">
+                    No Party Group Record
+                  </MenuItem>
+                }
+                {partyGroups && partyGroups.map((partyGroup) => (
+                  <MenuItem key={partyGroup.id} value={partyGroup.id}>
+                    {partyGroup.name}
+                  </MenuItem>
+                ))};
+            </TextField>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                name="dept-description"
+                label="Description"
+                id="outlined-title"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                size="small"
+                value={form.description}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id="partyHead"
+                name="partyHead"
+                placeholder="Department Lead"
+                select
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                size="small"
+                label="Department Lead"
+                value={form.partyHead.id}
+                onChange={handleSelectChange}
+              >
+                {employees && employees.length === 0 &&
+                  <MenuItem key="" value="">
+                    No Employees Record
+                </MenuItem>
+                }
+                {employees && employees.map((employee) => (
+                  <MenuItem key={employee.id} value={employee.id}>
+                    {employee.firstName} {employee.lastName}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id="assistantPartyHead"
+                name="assistantPartyHead"
+                placeholder="Assistant Department Lead"
+                select
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                size="small"
+                label="Assistant Department Lead"
+                value={form.assistantPartyHead.id}
+                onChange={handleSelectChange}
+              >
+                {employees && employees.length === 0 &&
+                  <MenuItem key="" value="">
+                    No Employees Record
+                </MenuItem>
+                }
+                {employees && employees.map((employee) => (
+                  <MenuItem key={employee.id} value={employee.id}>
+                    {employee.firstName} {employee.lastName}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+          </Grid>
         </DialogContent>
 
         <DialogActions>
           <Button onClick={closeNewDepartmentDialog} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={!canSubmitForm()} color="primary">
+          <Button onClick={handleSubmit} variant="contained" disabled={!canSubmitForm()} color="primary">
             Save
           </Button>
         </DialogActions>
@@ -214,7 +202,6 @@ function AddDepartmentDialog(props) {
     </div>
   );
 }
-
 
 AddDepartmentDialog.propTypes = {
   closeNewDepartmentDialog: PropTypes.func,
@@ -224,7 +211,7 @@ const mapStateToProps = createStructuredSelector({
   dialog: Selectors.makeSelectDeptDialog(),
   loading: Selectors.makeSelectLoading(),
   employees: Selectors.makeSelectEmployees(),
-  employee : Selectors.makeSelectEmployee(),
+  employee: Selectors.makeSelectEmployee(),
   departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
   branches: Selectors.makeSelectBranches(),
   party_tags: Selectors.makeSelectPartyTags(),

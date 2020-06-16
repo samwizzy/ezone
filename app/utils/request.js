@@ -24,13 +24,14 @@ function checkStatus(response) {
     return response;
   }
   if (response.status === 401) {
-    return response;
+    // return response;
   }
   if (response.status === 400 || response.status === 500) {
     return response;
   }
 
   const error = new Error(response.statusText);
+  // const error = new Error(response.error);
   error.response = response;
   throw error;
 }

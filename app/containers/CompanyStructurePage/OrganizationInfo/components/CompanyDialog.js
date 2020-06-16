@@ -89,7 +89,7 @@ const CompanyDialog = props => {
     loading,
     companyDialog,
     closeEditCompanyDialog,
-    dispatchUpdateCompanyInfoAction,
+    updateCompanyInfo,
   } = props;
 
   const classes = useStyles();
@@ -170,179 +170,193 @@ const CompanyDialog = props => {
             {companyDialog.type === 'new' ? (
               <div />
             ) : (
-              <div>
-                <TextField
-                  id="standard-companyName"
-                  variant="outlined"
-                  label="Company Name"
-                  value={values.companyName ? values.companyName : ''}
-                  onChange={handleChange('companyName')}
-                  margin="normal"
-                  fullWidth
-                />
-                <TextField
-                  id="standard-companyShortName"
-                  variant="outlined"
-                  label="Company Short Name"
-                  value={values.companyShortName ? values.companyShortName : ''}
-                  onChange={handleChange('companyShortName')}
-                  margin="normal"
-                  fullWidth
-                />
-                <TextField
-                  id="standard-emailAddress"
-                  variant="outlined"
-                  label="Company Email"
-                  value={values.emailAddress ? values.emailAddress : ''}
-                  type="email"
-                  onChange={handleChange('emailAddress')}
-                  margin="normal"
-                  fullWidth
-                />
-                <TextField
-                  id="standard-phoneNumber"
-                  variant="outlined"
-                  label="Phone Number"
-                  value={values.phoneNumber ? values.phoneNumber : ''}
-                  type="number"
-                  onChange={handleChange('phoneNumber')}
-                  margin="normal"
-                  fullWidth
-                />
-                <Grid container spacing={2}>
-                  <Grid item xs={6}>
-                    <TextField
-                      id="standard-numberOfEmployees"
-                      variant="outlined"
-                      label="Number Of Employees"
-                      value={values.noOfEmployees ? values.noOfEmployees : ''}
-                      type="number"
-                      onChange={handleChange('noOfEmployees')}
-                      margin="normal"
-                      fullWidth
-                    />
+                <div>
+                  <TextField
+                    id="standard-companyName"
+                    name="companyName"
+                    variant="outlined"
+                    label="Company Name"
+                    value={values.companyName ? values.companyName : ''}
+                    onChange={handleChange('companyName')}
+                    margin="normal"
+                    fullWidth
+                  />
+                  <TextField
+                    id="standard-companyShortName"
+                    name="companyShortName"
+                    variant="outlined"
+                    label="Company Short Name"
+                    value={values.companyShortName ? values.companyShortName : ''}
+                    onChange={handleChange('companyShortName')}
+                    margin="normal"
+                    fullWidth
+                  />
+                  <TextField
+                    id="standard-emailAddress"
+                    name="emailAddress"
+                    variant="outlined"
+                    label="Company Email"
+                    value={values.emailAddress ? values.emailAddress : ''}
+                    type="email"
+                    onChange={handleChange('emailAddress')}
+                    margin="normal"
+                    fullWidth
+                  />
+                  <TextField
+                    id="standard-phoneNumber"
+                    name="phoneNumber"
+                    variant="outlined"
+                    label="Phone Number"
+                    value={values.phoneNumber ? values.phoneNumber : ''}
+                    type="number"
+                    onChange={handleChange('phoneNumber')}
+                    margin="normal"
+                    fullWidth
+                  />
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <TextField
+                        id="standard-numberOfEmployees"
+                        name="noOfEmployees"
+                        variant="outlined"
+                        label="Number Of Employees"
+                        value={values.noOfEmployees ? values.noOfEmployees : ''}
+                        type="number"
+                        onChange={handleChange('noOfEmployees')}
+                        margin="normal"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField
+                        id="standard-postalCode"
+                        name="postalCode"
+                        variant="outlined"
+                        label="Postal Code"
+                        value={values.postalCode ? values.postalCode : ''}
+                        onChange={handleChange('postalCode')}
+                        margin="normal"
+                        fullWidth
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      id="standard-postalCode"
-                      variant="outlined"
-                      label="Postal Code"
-                      value={values.postalCode ? values.postalCode : ''}
-                      onChange={handleChange('postalCode')}
-                      margin="normal"
-                      fullWidth
-                    />
+                  <TextField
+                    id="standard-website"
+                    name="website"
+                    variant="outlined"
+                    label="Website"
+                    value={values.website ? values.website : ''}
+                    onChange={handleChange('website')}
+                    margin="normal"
+                    fullWidth
+                  />
+                  <TextField
+                    id="standard-adminName"
+                    name="contactPersonName"
+                    variant="outlined"
+                    label="Contact Person Name"
+                    value={values.contactPersonName ? values.contactPersonName : ''}
+                    onChange={handleChange('contactPersonName')}
+                    margin="normal"
+                    fullWidth
+                  />
+                  <TextField
+                    id="standard-adminEmail"
+                    name="contactPersonEmail"
+                    variant="outlined"
+                    label="Contact Person Email"
+                    value={values.contactPersonEmail ? values.contactPersonEmail : ''}
+                    onChange={handleChange('contactPersonEmail')}
+                    margin="normal"
+                    fullWidth
+                  />
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <TextField
+                        id="standard-contactPersonPhone"
+                        name="contactPersonPhone"
+                        variant="outlined"
+                        label="Contact Person Phone"
+                        value={values.contactPersonPhone ? values.contactPersonPhone : ''}
+                        type="number"
+                        onChange={handleChange('contactPersonPhone')}
+                        margin="normal"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField
+                        id="standard-contactPersonTel"
+                        name="contactPersonTel"
+                        variant="outlined"
+                        label="Contact Person Tel"
+                        value={values.contactPersonTel ? values.contactPersonTel : ''}
+                        onChange={handleChange('contactPersonTel')}
+                        margin="normal"
+                        type="number"
+                        fullWidth
+                      />
+                    </Grid>
                   </Grid>
-                </Grid>
-                <TextField
-                  id="standard-website"
-                  variant="outlined"
-                  label="website"
-                  value={values.website ? values.website : ''}
-                  onChange={handleChange('website')}
-                  margin="normal"
-                  fullWidth
-                />
-                <TextField
-                  id="standard-adminName"
-                  variant="outlined"
-                  label="Contact Person Name"
-                  value={values.contactPersonName ? values.contactPersonName : ''}
-                  onChange={handleChange('contactPersonName')}
-                  margin="normal"
-                  fullWidth
-                />
-                <TextField
-                  id="standard-adminEmail"
-                  variant="outlined"
-                  label="Contact Person Email"
-                  value={values.contactPersonEmail ? values.contactPersonEmail : ''}
-                  onChange={handleChange('contactPersonEmail')}
-                  margin="normal"
-                  fullWidth
-                />
-                <Grid container spacing={2}>
-                  <Grid item xs={6}>
-                    <TextField
-                      id="standard-contactPersonPhone"
-                      variant="outlined"
-                      label="Contact Person Phone"
-                      value={values.contactPersonPhone ? values.contactPersonPhone : ''}
-                      type="number"
-                      onChange={handleChange('contactPersonPhone')}
-                      margin="normal"
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      id="standard-contactPersonTel"
-                      variant="outlined"
-                      label="Contact Person Tel"
-                      value={values.contactPersonTel ? values.contactPersonTel : ''}
-                      onChange={handleChange('contactPersonTel')}
-                      margin="normal"
-                      type="number"
-                      fullWidth
-                    />
-                  </Grid>
-                </Grid>
-                <TextField
-                  id="standard-address"
-                  label="Address"
-                  variant="outlined"
-                  value={values.address ? values.address : ''}
-                  onChange={handleChange('address')}
-                  margin="normal"
-                  fullWidth
-                  multiline
-                  rows="2"
-                />
+                  <TextField
+                    id="standard-address"
+                    name="address"
+                    label="Address"
+                    variant="outlined"
+                    value={values.address ? values.address : ''}
+                    onChange={handleChange('address')}
+                    margin="normal"
+                    fullWidth
+                    multiline
+                    rows="2"
+                  />
 
-                <Grid container spacing={2}>
-                  <Grid item xs={6}>
-                    <TextField
-                      id="standard-select-industry"
-                      select
-                      fullWidth
-                      variant="outlined"
-                      label="Select Industry"
-                      value={values.industry ? values.industry : ''}
-                      onChange={handleSelectChange('industry')}
-                      margin="normal"
-                    >
-                      <InputLabel id="select-industry-label">
-                        Select Industry
-                      </InputLabel>
-                      {industries.map(option => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <TextField
+                        id="standard-select-industry"
+                        name="industry"
+                        select
+                        fullWidth
+                        variant="outlined"
+                        label="Select Industry"
+                        value={values.industry ? values.industry : ''}
+                        onChange={handleSelectChange('industry')}
+                        margin="normal"
+                      >
+                        <MenuItem key="" value="">
+                          Select Industry
                         </MenuItem>
-                      ))}
-                    </TextField>
+                        {industries.map(option => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField
+                        id="standard-select-language"
+                        name="language"
+                        select
+                        fullWidth
+                        variant="outlined"
+                        label="Select Language"
+                        value={values.language ? values.language : ''}
+                        onChange={handleSelectChange('language')}
+                        margin="normal"
+                      >
+                        {countries.map(option => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      id="standard-select-language"
-                      select
-                      fullWidth
-                      variant="outlined"
-                      label="Select Language"
-                      value={values.language ? values.language : ''}
-                      onChange={handleSelectChange('language')}
-                      margin="normal"
-                    >
-                      {countries.map(option => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </Grid>
-                </Grid>
-                <Grid container spacing={2}>
-                  <Grid item xs={6}>
-                    {/* <Autocomplete
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      {/* <Autocomplete
                       id="combo-itemCategory"
                       options={CountriesAndStates}
                       getOptionLabel={option => option.name}
@@ -357,104 +371,86 @@ const CompanyDialog = props => {
                         />
                       )}
                     /> */}
-                    <TextField
-                      id="standard-select-country"
-                      select
-                      fullWidth
-                      label="Select country"
-                      variant="outlined"
-                      value={values.country ? values.country : ''}
-                      onChange={handleSelectChange('country')}
-                      onClick={SelectState(values.country)}
-                      margin="normal"
-                    >
-                      <InputLabel id="select-country-label">
-                        Select Country
-                      </InputLabel>
-                      {CountriesAndStates.map(option => (
-                        <MenuItem key={option.name} value={option.name}>
-                          {option.name}
+                      <TextField
+                        id="standard-select-country"
+                        select
+                        fullWidth
+                        label="Select country"
+                        variant="outlined"
+                        value={values.country ? values.country : ''}
+                        onChange={handleSelectChange('country')}
+                        onClick={SelectState(values.country)}
+                        margin="normal"
+                      >
+                        <MenuItem key="" value="">
+                          Select Country
                         </MenuItem>
-                      ))}
-                    </TextField>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      id="standard-select-state"
-                      select
-                      fullWidth
-                      variant="outlined"
-                      label="Select State"
-                      value={values.state ? values.state : ''}
-                      onChange={handleSelectChange('state')}
-                      margin="normal"
-                    >
-                      <InputLabel id="select-country-label">
-                        Select State
-                      </InputLabel>
-                      {getStates &&
-                        getStates.map(option => (
+                        {CountriesAndStates.map(option => (
+                          <MenuItem key={option.name} value={option.name}>
+                            {option.name}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField
+                        id="standard-select-state"
+                        name="state"
+                        select
+                        fullWidth
+                        variant="outlined"
+                        label="Select State"
+                        value={values.state ? values.state : ''}
+                        onChange={handleSelectChange('state')}
+                        margin="normal"
+                      >
+                        <MenuItem key="" value="">
+                          Select State
+                        </MenuItem>
+                        {getStates && getStates.map(option =>
                           <MenuItem key={option} value={option}>
                             {option}
                           </MenuItem>
-                        ))}
-                    </TextField>
+                        )}
+                      </TextField>
+                    </Grid>
                   </Grid>
-                </Grid>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <TextField
-                      id="standard-select-city"
-                      fullWidth
-                      variant="outlined"
-                      label="Select City"
-                      value={values.city ? values.city : ''}
-                      onChange={handleChange('city')}
-                      margin="normal"
-                    />
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <TextField
+                        id="standard-select-city"
+                        name="city"
+                        fullWidth
+                        variant="outlined"
+                        label="Select City"
+                        value={values.city ? values.city : ''}
+                        onChange={handleChange('city')}
+                        margin="normal"
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid item xs={6}>
-                    {/* <TextField
-                      id="standard-select-timeZone"
-                      select
-                      fullWidth
-                      label="Time Zone"
-                      value={currency}
-                      onChange={handleSelectChange}
-                    >
-                      {currencies.map(option => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField> */}
-                  </Grid>
-                </Grid>
-              </div>
-            )}
+                </div>
+              )}
           </DialogContent>
-          {companyDialog.type === 'new' ? (
-            <div />
-          ) : (
-            <DialogActions>
-              <Button
-                onClick={() => dispatchUpdateCompanyInfoAction(values)}
-                color="primary"
-                variant="contained"
-                disabled={loading && loading}
-                endIcon={loading && <CircularProgress size={20} />}
-              >
-                Save
-              </Button>
-              <Button
-                onClick={() => closeComposeDialog()}
-                color="primary"
-                variant="outlined"
-              >
-                Cancel
-              </Button>
-            </DialogActions>
-          )}
+
+          <DialogActions>
+            <Button
+              onClick={() => updateCompanyInfo(values)}
+              color="primary"
+              variant="contained"
+              disabled={loading && loading}
+              endIcon={loading && <CircularProgress size={20} />}
+            >
+              {companyDialog.type === 'new' ? "Save" : "Save"}
+            </Button>
+            <Button
+              onClick={() => closeComposeDialog()}
+              color="primary"
+              variant="outlined"
+            >
+              Cancel
+            </Button>
+          </DialogActions>
         </Dialog>
       )}
     </div>
@@ -462,11 +458,9 @@ const CompanyDialog = props => {
 };
 
 CompanyDialog.propTypes = {
-  dispatchNewPostAction: PropTypes.func,
-  closeNewPostDialog: PropTypes.func,
   closeEditCompanyDialog: PropTypes.func,
   companyDialog: PropTypes.object,
-  dispatchUpdateCompanyInfoAction: PropTypes.func,
+  updateCompanyInfo: PropTypes.func,
   loading: PropTypes.bool,
 };
 
@@ -477,11 +471,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    // dispatchNewPostAction: evt => dispatch(Actions.saveNewPost(evt)),
     closeEditCompanyDialog: () => dispatch(Actions.closeEditCompanyDialog()),
-    dispatchUpdateCompanyInfoAction: evt =>
-      dispatch(Actions.updateCompanyInfo(evt)),
-    dispatch,
+    updateCompanyInfo: evt => dispatch(Actions.updateCompanyInfo(evt)),
   };
 }
 

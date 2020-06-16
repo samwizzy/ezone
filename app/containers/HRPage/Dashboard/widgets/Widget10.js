@@ -1,5 +1,5 @@
 import React from 'react';
-import {Line} from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import { withStyles, Button, Card, CardHeader, CardContent } from '@material-ui/core';
 
 const styles = theme => ({
@@ -14,72 +14,78 @@ const styles = theme => ({
 });
 
 const initialState = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-  datasets: [
-    {
-      label: 'My First dataset',
-      fill: false,
-      lineTension: 0.1,
-      backgroundColor: 'rgba(75,192,192,0.4)',
-      borderColor: 'rgba(75,192,192,1)',
-      borderCapStyle: 'butt',
-      borderDash: [],
-      borderDashOffset: 0.0,
-      borderJoinStyle: 'miter',
-      pointBorderColor: 'rgba(75,192,192,1)',
-      pointBackgroundColor: '#fff',
-      pointBorderWidth: 1,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-      pointHoverBorderColor: 'rgba(220,220,220,1)',
-      pointHoverBorderWidth: 2,
-      pointRadius: 1,
-      pointHitRadius: 10,
-      data: [65, 59, 80, 81, 56, 55, 40]
-    }
-  ]
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [
+        {
+            label: 'My First dataset',
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: 'rgba(75,192,192,0.4)',
+            borderColor: 'rgba(75,192,192,1)',
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: 'rgba(75,192,192,1)',
+            pointBackgroundColor: '#fff',
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+            pointHoverBorderColor: 'rgba(220,220,220,1)',
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: [65, 59, 80, 81, 56, 55, 40]
+        }
+    ]
 };
 
 
-class Graph extends React.Component{
-	componentWillMount(){
-		this.setState(initialState);
-	}
-	componentDidMount(){
+class Graph extends React.Component {
+    componentWillMount() {
+        this.setState(initialState);
+    }
 
-		var _this = this;
+    componentDidMount() {
 
-		setInterval(function(){
-			var oldDataSet = _this.state.datasets[0];
-			var newData = [];
+        var _this = this;
 
-			for(var x=0; x< _this.state.labels.length; x++){
-				newData.push(Math.floor(Math.random() * 100));
-			}
+        this.interval = setInterval(function () {
+            var oldDataSet = _this.state.datasets[0];
+            var newData = [];
 
-			var newDataSet = {
-				...oldDataSet
-			};
+            for (var x = 0; x < _this.state.labels.length; x++) {
+                newData.push(Math.floor(Math.random() * 100));
+            }
 
-			newDataSet.data = newData;
+            var newDataSet = {
+                ...oldDataSet
+            };
 
-			var newState = {
-				...initialState,
-				datasets: [newDataSet]
-			};
+            newDataSet.data = newData;
 
-			_this.setState(newState);
-		}, 5000);
-	}
-	render() {
-		return (
-			<Line data={this.state} />
-		);
-	}
+            var newState = {
+                ...initialState,
+                datasets: [newDataSet]
+            };
+
+            _this.setState(newState);
+        }, 5000);
+    }
+
+    componentWillUnMount() {
+        clearInterval(this.interval)
+    }
+
+    render() {
+        return (
+            <Line data={this.state} />
+        );
+    }
 }
 
 
-export default withStyles(styles)( class Widget10 extends React.Component{
+export default withStyles(styles)(class Widget10 extends React.Component {
 
     render() {
         const { classes } = this.props
@@ -88,9 +94,9 @@ export default withStyles(styles)( class Widget10 extends React.Component{
             <Card className={classes.root}>
                 <CardHeader
                     action={
-                    <Button color="primary" aria-label="settings">
-                        see all
-                    </Button>
+                        <Button color="primary" aria-label="settings">
+                            see all
+                        </Button>
                     }
                     title="Employee Growth"
                 />

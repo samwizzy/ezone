@@ -11,108 +11,67 @@ import * as Constants from './constants';
  *
  * @return {object} An action object with a type of CHANGE_USERNAME
  */
-export function getLeaveRequest() {
+export function getGoals() {
   return {
-    type: Constants.GET_LEAVE_REQUEST,
+    type: Constants.GET_GOALS,
   };
 }
 
-export function getLeaveRequestSuccess(data) {
+export function getGoalsSuccess(data) {
   return {
-    type: Constants.GET_LEAVE_REQUEST_SUCCESS,
+    type: Constants.GET_GOALS_SUCCESS,
     payload: data
   };
 }
 
-export function getLeaveRequestById() {
+export function getGoalById() {
   return {
-    type: Constants.GET_LEAVE_REQUEST_BY_ID,
+    type: Constants.GET_GOALS_BY_ID,
   };
 }
 
-export function getLeaveRequestByIdSuccess(data) {
+export function getGoalByIdSuccess(data) {
   return {
-    type: Constants.GET_LEAVE_REQUEST_BY_ID_SUCCESS,
+    type: Constants.GET_GOALS_BY_ID_SUCCESS,
+    payload: data
+  };
+}
+export function getRecognitions() {
+  return {
+    type: Constants.GET_RECOGNITIONS,
+  };
+}
+
+export function getRecognitionsSuccess(data) {
+  return {
+    type: Constants.GET_RECOGNITIONS_SUCCESS,
     payload: data
   };
 }
 
-export function createLeaveRequest(data) {
+export function getRecognitionById() {
   return {
-    type: Constants.CREATE_LEAVE_REQUEST,
+    type: Constants.GET_RECOGNITION_BY_ID,
+  };
+}
+
+export function getRecognitionByIdSuccess(data) {
+  return {
+    type: Constants.GET_RECOGNITION_BY_ID_SUCCESS,
     payload: data
   };
 }
-export function createLeaveRequestSuccess(data) {
+
+export function createGoals(data) {
   return {
-    type: Constants.CREATE_LEAVE_REQUEST_SUCCESS,
+    type: Constants.CREATE_GOALS,
     payload: data
   };
 }
-
-export function openNewLeaveRequestDialog() {
+export function createGoalsSuccess(data) {
   return {
-    type: Constants.OPEN_NEW_LEAVE_REQUEST_DIALOG,
-  };
-}
-export function closeNewLeaveRequestDialog() {
-  return {
-    type: Constants.CLOSE_NEW_LEAVE_REQUEST_DIALOG,
-  };
-}
-
-export function openEditLeaveRequestDialog(data) {
-  return {
-    type: Constants.OPEN_EDIT_LEAVE_REQUEST_DIALOG,
-  };
-}
-export function closeEditLeaveRequestDialog(data) {
-  return {
-    type: Constants.CLOSE_EDIT_LEAVE_REQUEST_DIALOG,
-  };
-}
-
-export function openNewLeaveTypeDialog() {
-  return {
-    type: Constants.OPEN_NEW_LEAVE_TYPE_DIALOG,
-  };
-}
-export function closeNewLeaveTypeDialog() {
-  return {
-    type: Constants.CLOSE_NEW_LEAVE_TYPE_DIALOG,
-  };
-}
-
-export function openEditLeaveTypeDialog(data) {
-  return {
-    type: Constants.OPEN_EDIT_LEAVE_TYPE_DIALOG,
-  };
-}
-export function closeEditLeaveTypeDialog(data) {
-  return {
-    type: Constants.CLOSE_EDIT_LEAVE_TYPE_DIALOG,
-  };
-}
-
-export function openNewHolidayDialog() {
-  return {
-    type: Constants.OPEN_NEW_HOLIDAY_DIALOG,
-  };
-}
-export function closeNewHolidayDialog() {
-  return {
-    type: Constants.CLOSE_NEW_HOLIDAY_DIALOG,
-  };
-}
-
-export function openEditHolidayDialog(data) {
-  return {
-    type: Constants.OPEN_EDIT_HOLIDAY_DIALOG,
-  };
-}
-export function closeEditHolidayDialog(data) {
-  return {
-    type: Constants.CLOSE_EDIT_HOLIDAY_DIALOG,
+    type: Constants.CREATE_GOALS_SUCCESS,
+    payload: data
   };
 }
 
@@ -157,5 +116,27 @@ export function openEditRecognitionDialog(data) {
 export function closeEditRecognitionDialog(data) {
   return {
     type: Constants.CLOSE_EDIT_RECOGNITION_DIALOG,
+  };
+}
+
+export function openNewFeedbackDialog() {
+  return {
+    type: Constants.OPEN_NEW_FEEDBACK_DIALOG,
+  };
+}
+export function closeNewFeedbackDialog() {
+  return {
+    type: Constants.CLOSE_NEW_FEEDBACK_DIALOG,
+  };
+}
+
+export function openEditFeedbackDialog(data) {
+  return {
+    type: Constants.OPEN_EDIT_FEEDBACK_DIALOG,
+  };
+}
+export function closeEditFeedbackDialog(data) {
+  return {
+    type: Constants.CLOSE_EDIT_FEEDBACK_DIALOG,
   };
 }

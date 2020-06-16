@@ -13,10 +13,10 @@ export function* getPartyGroupSaga() {
 
   const requestURL = `${Endpoints.GetPartyGroup}?orgId=${
     currentUser.organisation.orgId
-  }`;
+    }`;
 
   try {
-    const userPartyGroupResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -24,7 +24,11 @@ export function* getPartyGroupSaga() {
       }),
     });
 
-    yield put(Actions.getPartyGroupSuccessAction(userPartyGroupResponse));
+    if (response.status === 400 || response.status === 500) {
+      throw response
+    }
+
+    yield put(Actions.getPartyGroupSuccessAction(response));
   } catch (err) {
     yield put(Actions.getPartyGroupErrorAction(err));
   }
@@ -50,7 +54,7 @@ export function* createNewPartyGroupSaga() {
   const requestURL = `${Endpoints.CreateNewPartyGroup}`;
 
   try {
-    const createPartyGroupResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
       body: JSON.stringify(newData),
       headers: new Headers({
@@ -59,27 +63,19 @@ export function* createNewPartyGroupSaga() {
       }),
     });
 
+    if (response.status === 400 || response.status === 500) {
+      throw response
+    }
+
     yield put(
-      Actions.createNewPartyGroupSuccessAction(createPartyGroupResponse),
+      Actions.createNewPartyGroupSuccessAction(response),
     );
     yield put(Actions.getPartyGroupAction());
     yield put(Actions.closeNewPartyGroupDialog());
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: 'Party Group Created Successfully',
-    //     status: 'success',
-    //   }),
-    // );
+    yield put(AppActions.openSnackBar({ message: 'Party Group Created Successfully', status: 'success' }));
   } catch (err) {
     yield put(Actions.createNewPartyError(err));
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: `${err} Failed To Create Party Group`,
-    //     status: 'error',
-    //   }),
-    // );
+    // yield put(AppActions.openSnackBar({message: `${err} Failed To Create Party Group`, status: 'error'}));
   }
 }
 
@@ -94,7 +90,7 @@ export function* updatePartyGroupSaga() {
   const requestURL = `${Endpoints.UpdatePartyGroup}`;
 
   try {
-    const createPartyGroupResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'PUT',
       body: JSON.stringify(updatePartyGroupParams),
       headers: new Headers({
@@ -103,7 +99,11 @@ export function* updatePartyGroupSaga() {
       }),
     });
 
-    yield put(Actions.updatePartyGroupSuccessAction(createPartyGroupResponse));
+    if (response.status === 400 || response.status === 500) {
+      throw response
+    }
+
+    yield put(Actions.updatePartyGroupSuccessAction(response));
     yield put(Actions.getPartyGroupAction());
     yield put(Actions.closeEditPartyGroupDialog());
   } catch (err) {
@@ -118,10 +118,10 @@ export function* getAllUsers() {
 
   const requestURL = `${Endpoints.GetAllUsersApi}/${
     currentUser.organisation.orgId
-  }`;
+    }`;
 
   try {
-    const getAllUsersResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -129,7 +129,11 @@ export function* getAllUsers() {
       }),
     });
 
-    yield put(Actions.getAllUsersSuccess(getAllUsersResponse));
+    if (response.status === 400 || response.status === 500) {
+      throw response.error
+    }
+
+    yield put(Actions.getAllUsersSuccess(response));
   } catch (err) {
     yield put(Actions.getAllUsersError(err));
   }
@@ -141,7 +145,7 @@ export function* getAllTags() {
   const requestURL = `${Endpoints.GetAllTagsApi}`;
 
   try {
-    const getAllTagsResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -149,7 +153,11 @@ export function* getAllTags() {
       }),
     });
 
-    yield put(Actions.getAllTagsSuccess(getAllTagsResponse));
+    if (response.status === 400 || response.status === 500) {
+      throw response.error
+    }
+
+    yield put(Actions.getAllTagsSuccess(response));
   } catch (err) {
     yield put(Actions.getAllTagsError(err));
   }
@@ -164,7 +172,7 @@ export function* createNewParty() {
   const requestURL = `${Endpoints.CreateNewPartyApi}`;
 
   try {
-    const createNewPartyResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
       body: JSON.stringify(createNewPartyData),
       headers: new Headers({
@@ -172,26 +180,17 @@ export function* createNewParty() {
         'Content-Type': 'application/json',
       }),
     });
+    if (response.status === 400 || response.status === 500) {
+      throw response.error
+    }
 
-    yield put(Actions.createNewPartySuccess(createNewPartyResponse));
+    yield put(Actions.createNewPartySuccess(response));
     yield put(Actions.getPartyGroupAction());
     yield put(Actions.closeNewPartyDialog());
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: 'Party Created Successfully',
-    //     status: 'success',
-    //   }),
-    // );
+    yield put(AppActions.openSnackBar({ message: 'Party Created Successfully', status: 'success' }));
   } catch (err) {
     yield put(Actions.createNewPartyError(err));
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: `${err} Party Failed`,
-    //     status: 'error',
-    //   }),
-    // );
+    yield put(AppActions.openSnackBar({ message: `${err} Party Failed`, status: 'error' }));
   }
 }
 
@@ -210,6 +209,10 @@ export function* getPartyById() {
       }),
     });
 
+    if (response.status === 400 || response.status === 500) {
+      throw response.error
+    }
+
     console.log(response, "getPartyByIdResponse")
 
     yield put(Actions.getPartyByIdSuccess(response));
@@ -225,7 +228,7 @@ export function* updatePartySaga() {
   const requestURL = `${Endpoints.UpdatePartyApi}`;
 
   try {
-    const createPartyResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'PUT',
       body: JSON.stringify(updatePartyParams),
       headers: new Headers({
@@ -233,9 +236,13 @@ export function* updatePartySaga() {
         'Content-Type': 'application/Json',
       }),
     });
+    if (response.status === 400 || response.status === 500) {
+      throw response
+    }
 
     yield put(Actions.getPartyGroupAction());
     yield put(Actions.closeEditPartyDialog());
+    yield put(AppActions.openSnackBar({ message: 'Party Updated Successfully', status: 'success' }));
   } catch (err) {
     console.log(err, 'errrrrrrr');
     yield put(Actions.updatePartyError(err));
@@ -251,7 +258,7 @@ export function* createNewParties() {
   const requestURL = `${Endpoints.CreateNewPartiesApi}`;
 
   try {
-    const createNewPartiesResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
       body: JSON.stringify(createNewPartiesData),
       headers: new Headers({
@@ -259,25 +266,16 @@ export function* createNewParties() {
         'Content-Type': 'application/json',
       }),
     });
+    if (response.status === 400 || response.status === 500) {
+      throw response
+    }
 
     yield put(Actions.getPartyById(createNewPartiesData.partyId));
     yield put(Actions.closeNewPartiesDialog());
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: 'Party Created Successfully',
-    //     status: 'success',
-    //   }),
-    // );
+    yield put(AppActions.openSnackBar({ message: 'Party Created Successfully', status: 'success' }));
   } catch (err) {
     yield put(Actions.createNewPartiesError(err));
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: `${err}`,
-    //     status: 'error',
-    //   }),
-    // );
+    // yield put(AppActions.openSnackBar({message: `${err}`, status: 'error'}));
   }
 }
 
@@ -291,7 +289,7 @@ export function* updatePartiesSaga() {
   const requestURL = `${Endpoints.UpdatePartiesApi}`;
 
   try {
-    const createPartyGroupResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'PUT',
       body: JSON.stringify(updatePartiesParams),
       headers: new Headers({
@@ -299,6 +297,10 @@ export function* updatePartiesSaga() {
         'Content-Type': 'application/Json',
       }),
     });
+
+    if (response.status === 400 || response.status === 500) {
+      throw response
+    }
 
     yield put(Actions.getPartyById(updatePartiesParams.partyId));
     yield put(Actions.closeEditPartiesDialog());
@@ -317,7 +319,7 @@ export function* createNewPosition() {
   const requestURL = `${Endpoints.CreateNewPositionApi}`;
 
   try {
-    const createNewPositionResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
       body: JSON.stringify(createNewPositionData),
       headers: new Headers({
@@ -328,26 +330,14 @@ export function* createNewPosition() {
 
     yield put(Actions.getPartyById(createNewPositionData.party_id));
     yield put(Actions.closeNewPositionDialog());
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: 'Position Created Successfully',
-    //     status: 'success',
-    //   }),
-    // );
+    yield put(AppActions.openSnackBar({ message: 'Position Created Successfully', status: 'success' }));
   } catch (err) {
     yield put(Actions.createNewPositionError(err));
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: `${err}`,
-    //     status: 'error',
-    //   }),
-    // );
+    // yield put(AppActions.openSnackBar({message: `${err}`, status: 'error'}));
   }
 }
 
-export function* updatePositionSaga({payload}) {
+export function* updatePositionSaga({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
 
   const updatePositionParams = yield select(
@@ -368,6 +358,9 @@ export function* updatePositionSaga({payload}) {
         'Content-Type': 'application/Json',
       }),
     });
+    if (response.status === 400 || response.status === 500) {
+      throw response
+    }
 
     yield put(Actions.updatePositionSuccess(response));
     yield put(Actions.getPartyGroupAction());
@@ -388,10 +381,10 @@ export function* getAllPosition() {
 
   const requestURL = `${Endpoints.GetAllPositionsApi}/${
     currentUser.organisation.orgId
-  }`;
+    }`;
 
   try {
-    const getPositionsResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -399,23 +392,11 @@ export function* getAllPosition() {
       }),
     });
 
-    yield put(Actions.getAllPositionsSuccess(getPositionsResponse));
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: 'Position Created Successfully',
-    //     status: 'success',
-    //   }),
-    // );
+    yield put(Actions.getAllPositionsSuccess(response));
+    yield put(AppActions.openSnackBar({ message: 'Position Created Successfully', status: 'success' }));
   } catch (err) {
     yield put(Actions.getAllPositionsError(err));
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: `${err}`,
-    //     status: 'error',
-    //   }),
-    // );
+    // yield put(AppActions.openSnackBar({message: `${err}`, status: 'error'}));
   }
 }
 
@@ -428,7 +409,7 @@ export function* AddEmployeeToPosition() {
   const requestURL = `${Endpoints.AddNewEmployeeToPositionApi}`;
 
   try {
-    const AddEmployeeToPositionResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
       body: JSON.stringify(AddEmployeeToPositionData),
       headers: new Headers({
@@ -437,27 +418,13 @@ export function* AddEmployeeToPosition() {
       }),
     });
 
-    yield put(
-      Actions.addEmployeeToPositionSuccess(AddEmployeeToPositionResponse),
-    );
+    yield put(Actions.addEmployeeToPositionSuccess(response));
     yield put(Actions.getPartyGroupAction());
     yield put(Actions.closeAddEmployeeToPositionDialog());
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: 'Employee Add Successfully',
-    //     status: 'success',
-    //   }),
-    // );
+    yield put(AppActions.openSnackBar({ message: 'Employee Add Successfully', status: 'success' }));
   } catch (err) {
     yield put(Actions.addEmployeeToPositionError(err));
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: `${err}`,
-    //     status: 'error',
-    //   }),
-    // );
+    // yield put(AppActions.openSnackBar({ message: `${err}`, status: 'error' }));
   }
 }
 
@@ -474,10 +441,10 @@ export function* companyDetail() {
 
   const requestURL = `${Endpoints.CompanyInfoUrl}/${
     currentUser && currentUser.organisation.orgId
-  }`;
+    }`;
 
   try {
-    const companyDetailResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -485,9 +452,16 @@ export function* companyDetail() {
       }),
     });
 
-    yield put(Actions.getCompanyInfoSuccess(companyDetailResponse));
+    console.log(response, "response getting organization info")
+
+    if (response.status === 400 || response.status === 500) {
+      throw response
+    }
+
+    yield put(Actions.getCompanyInfoSuccess(response));
   } catch (err) {
-    yield put(Actions.getCompanyInfoError(err));
+    yield put(Actions.getCompanyInfoError(err.error));
+    console.log(err.message, "getting comany info")
   }
 }
 
@@ -507,26 +481,17 @@ export function* updateCompanyDetail() {
         'Content-Type': 'application/json',
       }),
     });
+    if (response.status === 400 || response.status === 500) {
+      throw response
+    }
 
     yield put(Actions.getCompanyInfo());
     yield put(Actions.updateCompanyInfoSuccess(response));
     yield put(Actions.closeEditCompanyDialog());
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: 'Company Profile Update Successfully',
-    //     status: 'success',
-    //   }),
-    // );
+    yield put(AppActions.openSnackBar({ message: 'Company Profile Update Successfully', status: 'success' }));
   } catch (err) {
     yield put(Actions.updateCompanyInfoError(err));
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: err.message,
-    //     status: 'error',
-    //   }),
-    // );
+    yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
   }
 }
 

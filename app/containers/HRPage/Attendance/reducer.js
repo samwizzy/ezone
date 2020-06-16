@@ -14,6 +14,10 @@ import * as Constants from './constants';
 export const initialState = {
   loading: false,
   error: {},
+  employees: [],
+  departments: [],
+  branches: [],
+  roles: [],
   attendance: [],
   shifts: [],
   employeeShifts: [],
@@ -43,7 +47,7 @@ export const initialState = {
     props: {
       open: false,
     },
-    data: null, 
+    data: null,
   },
 };
 
@@ -73,6 +77,54 @@ const attdReducer = (state = initialState, action) =>
         return {
           ...state,
           employees: action.payload
+        }
+      };
+      case Constants.GET_USERS_BY_SHIFT: {
+        return {
+          ...state,
+          loading: true
+        }
+      };
+      case Constants.GET_USERS_BY_SHIFT_SUCCESS: {
+        return {
+          ...state,
+          employeeShifts: action.payload
+        }
+      };
+      case Constants.GET_DEPARTMENTS: {
+        return {
+          ...state,
+          loading: true
+        }
+      };
+      case Constants.GET_DEPARTMENTS_SUCCESS: {
+        return {
+          ...state,
+          departments: action.payload
+        }
+      };
+      case Constants.GET_BRANCHES: {
+        return {
+          ...state,
+          loading: true
+        }
+      };
+      case Constants.GET_BRANCHES_SUCCESS: {
+        return {
+          ...state,
+          branches: action.payload
+        }
+      };
+      case Constants.GET_ROLES: {
+        return {
+          ...state,
+          loading: true
+        }
+      };
+      case Constants.GET_ROLES_SUCCESS: {
+        return {
+          ...state,
+          roles: action.payload
         }
       };
       case Constants.GET_ATTENDANCE: {
@@ -147,38 +199,38 @@ const attdReducer = (state = initialState, action) =>
       case Constants.OPEN_NEW_ATTENDANCE_DIALOG: {
         return {
           ...state,
-          attdDialog: {...state.attdDialog, props: { open: true }},
+          attdDialog: { ...state.attdDialog, props: { open: true } },
         }
       };
       case Constants.CLOSE_NEW_ATTENDANCE_DIALOG: {
         return {
           ...state,
-          attdDialog: {...state.attdDialog, props: { open: false }},
+          attdDialog: { ...state.attdDialog, props: { open: false } },
         }
       };
       case Constants.OPEN_NEW_SHIFT_DIALOG: {
         return {
           ...state,
-          shiftDialog: {...state.shiftDialog, props: { open: true }},
+          shiftDialog: { ...state.shiftDialog, props: { open: true } },
         }
       };
       case Constants.CLOSE_NEW_SHIFT_DIALOG: {
         return {
           ...state,
-          shiftDialog: {...state.shiftDialog, props: { open: false }},
+          shiftDialog: { ...state.shiftDialog, props: { open: false } },
         }
       };
       case Constants.OPEN_NEW_EMPLOYEE_SHIFT_DIALOG: {
         console.log("i am open reducer employee shift")
         return {
           ...state,
-          employeeShiftDialog: {...state.employeeShiftDialog, props: { open: true }},
+          employeeShiftDialog: { ...state.employeeShiftDialog, props: { open: true } },
         }
       };
       case Constants.CLOSE_NEW_EMPLOYEE_SHIFT_DIALOG: {
         return {
           ...state,
-          employeeShiftDialog: {...state.employeeShiftDialog, props: { open: false }},
+          employeeShiftDialog: { ...state.employeeShiftDialog, props: { open: false } },
         }
       };
     }

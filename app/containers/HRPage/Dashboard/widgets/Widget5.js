@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
     },
     grid: {
-        border: `1px solid ${theme.palette.grey[100]}`,
+        border: `1px solid ${theme.palette.divider}`,
         '& .MuiGrid-item': {
             flex: 1,
             margin: theme.spacing(5)
@@ -71,28 +71,28 @@ const Widget5 = () => {
             <Card className={classes.card}>
                 <CardHeader
                     action={
-                    <Button color="primary" aria-label="settings">
-                        see all
-                    </Button>
+                        <Button color="primary" aria-label="settings">
+                            see all
+                        </Button>
                     }
                     title="New Hires"
                 />
                 <CardContent>
                     <Table className={classes.table}>
                         <TableBody>
-                            {[0,1].map(hire => 
-                            <TableRow>
-                                <TableCell component="th" scope="row">
-                                    <Avatar aria-label="recipe" className={classes.avatar}>
-                                        R
-                                    </Avatar>
-                                </TableCell>
-                                <TableCell align="left">Christian Okeme</TableCell>
-                            </TableRow>
+                            {[0, 1].map((hire, i) =>
+                                <TableRow key={i}>
+                                    <TableCell component="th" scope="row">
+                                        <Avatar aria-label="recipe" className={classes.avatar}>
+                                            R
+                                        </Avatar>
+                                    </TableCell>
+                                    <TableCell align="left">Christian Okeme</TableCell>
+                                </TableRow>
                             )}
                         </TableBody>
-                    </Table> 
-                </CardContent> 
+                    </Table>
+                </CardContent>
             </Card>
         </div>
     )

@@ -53,7 +53,6 @@ const appReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_USER_PROFILE: {
-        console.log("the user profile reducer got fired")
         return {
           ...state,
           loading: true,
@@ -85,7 +84,7 @@ const appReducer = (state = initialState, action) =>
       case Constants.CLOSE_SNACKBAR: {
         return {
           ...state,
-          messageDialog: { open: false, message: "", status: "info" },
+          messageDialog: { ...state.messageDialog, open: false, message: "" },
         };
       }
       case Constants.LOG_OUT: {

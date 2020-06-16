@@ -12,6 +12,7 @@ import {
   Paper
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import ColorLensIcon from '@material-ui/icons/ColorLens';
 import { blue } from '@material-ui/core/colors';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -31,7 +32,7 @@ const useStyles = makeStyles(theme => ({
   grid: {
     justifyContent: "space-between",
     "& .MuiGrid-container": {
-      backgroundImage: `linear-gradient(to bottom, ${blue[50]}, #fff 80%, ${blue[50]})`,
+      // backgroundImage: `linear-gradient(to bottom, ${blue[50]}, #fff 80%, ${blue[50]})`,
       '& .MuiGrid-item': {
         flex: 1,
       }
@@ -49,7 +50,10 @@ const useStyles = makeStyles(theme => ({
   },
   card: {
     "& .MuiCardHeader-root": {
-      borderBottom: `1px solid ${theme.palette.divider}`
+      borderBottom: `1px solid ${theme.palette.divider}`,
+      "& .MuiTypography-root": {
+        fontSize: theme.typography.h6.fontSize
+      }
     }
   },
   paper: {
@@ -68,7 +72,7 @@ const SchedulesList = props => {
   const classes = useStyles();
   const { loading } = props;
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   if (loading) {
     return <LoadingIndicator />;
@@ -84,12 +88,12 @@ const SchedulesList = props => {
           </Toolbar>
         </Grid>
         <Grid item xs={12}>
-          <Grid container>
+          <Grid container spacing={1}>
             <Grid item xs={8}>
               <Schedules />
             </Grid>
             <Grid item xs={4}>
-              <Card className={classes.card}>
+              <Card className={classes.card} elevation={0}>
                 <CardHeader title="Today's Schedule" subheader="" />
 
                 <CardContent>

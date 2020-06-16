@@ -17,6 +17,7 @@ import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
@@ -28,9 +29,10 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   button: {
-    marginLeft: theme.spacing(2),
+    margin: "auto",
   },
   datatable: {
+    whiteSpace: "nowrap",
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
     },
@@ -133,6 +135,9 @@ const CompaniesList = props => {
       options: {
         filter: true,
         sort: false,
+        customBodyRender: value => {
+          return moment(value).format('lll')
+        }
       }
     },
     {
@@ -142,26 +147,34 @@ const CompaniesList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const contac = getAllCompanies.find(company => value === company.id);
-          if (value === '') {
-            return '';
-          }
+          const data = getAllCompanies.find(company => value === company.id);
+
           return (
-            <div>
-              <Button
-                variant="outlined" size="small" color="primary"
-                onClick={() => openEditCompanyDialogAction(contac)}
-              >
-                Edit
-              </Button>
-              <FormControlLabel
-                className={classes.button}
-                control={<Visibility />}
-                onClick={() => openCompanyDetailsDialogAction(contac)}
-              >
-                Edit
-              </FormControlLabel>
-            </div>
+            <Button
+              variant="outlined" size="small" color="primary"
+              onClick={() => openEditCompanyDialogAction(data)}
+            >
+              Edit
+            </Button>
+          );
+        },
+      },
+    },
+    {
+      name: 'id',
+      label: 'Action',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: value => {
+          const data = getAllCompanies.find(company => value === company.id);
+
+          return (
+            <FormControlLabel
+              className={classes.button}
+              control={<Visibility />}
+              onClick={() => openCompanyDetailsDialogAction(data)}
+            />
           );
         },
       },

@@ -13,7 +13,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { makeStyles, Grid } from '@material-ui/core';
 import * as Selectors from '../selectors';
-import { Widget1, Widget2, Widget3, Widget4, Widget5, Widget6, Widget7, Widget8, Widget9, Widget10 } from './widgets'
+import { Widget1, Widget2, Widget3, Widget4, Widget5, Widget6, Widget7, Widget8, Widget9, Widget10, Widget11, Widget12, Widget13 } from './widgets'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -30,7 +30,7 @@ export function DashBoard() {
                 <title>CRM - Dashboard</title>
                 <meta name="description" content="Description of Crm" />
             </Helmet>
-            
+
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Grid container className={classes.grid} spacing={3}>
@@ -64,6 +64,16 @@ export function DashBoard() {
                 <Grid item xs={12}>
                     <Grid container className={classes.grid} spacing={3}>
                         <Grid item xs={6}>
+                            <Widget11 />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Widget12 />
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                    <Grid container className={classes.grid} spacing={3}>
+                        <Grid item xs={6}>
                             <Widget8 />
                         </Grid>
                         <Grid item xs={6}>
@@ -74,6 +84,7 @@ export function DashBoard() {
                 <Grid item xs={12}>
                     <Grid container className={classes.grid} spacing={3}>
                         <Grid item xs={12}>
+                            <Widget13 />
                         </Grid>
                     </Grid>
                 </Grid>
@@ -83,23 +94,23 @@ export function DashBoard() {
 }
 
 DashBoard.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
+    return {
+        dispatch,
+    };
 }
 
 const withConnect = connect(
-  mapStateToProps,
-  mapDispatchToProps,
+    mapStateToProps,
+    mapDispatchToProps,
 );
 
 export default compose(
-  withConnect,
-  memo,
+    withConnect,
+    memo,
 )(DashBoard);

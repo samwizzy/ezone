@@ -11,9 +11,9 @@ import * as Endpoints from '../../../components/Endpoints';
 export function* getAllCompanies() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllCompaniesApi}/?orgId=${
-    currentUser.organisation.orgId
-  }`;
+  const requestURL = `${Endpoints.GetAllCompaniesApi}/${
+    currentUser && currentUser.organisation.orgId
+    }`;
 
   try {
     const response = yield call(request, requestURL, {

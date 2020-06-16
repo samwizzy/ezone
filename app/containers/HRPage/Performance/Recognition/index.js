@@ -6,7 +6,7 @@
 import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -26,11 +26,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function RecognitionPage(props) {
-  const { getLeaveType, match } = props;
+  const { getRecognitions, match } = props;
   const { params } = match
 
   React.useEffect(() => {
-    getLeaveType();  
+    getRecognitions();
   }, []);
 
   return (
@@ -59,7 +59,7 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
-    getLeaveType: () => dispatch(Actions.getLeaveRequest()),
+    getRecognitions: () => dispatch(Actions.getRecognitions()),
   };
 }
 

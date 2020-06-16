@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import EzoneUtils from '../../../../utils/EzoneUtils'
 import { Avatar, Button, TextField, Grid, Paper, Typography } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -14,7 +15,7 @@ import MUIDataTable from 'mui-datatables'
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
 import * as AppSelectors from '../../../App/selectors';
-import {AssignShift} from '../components/AddButton'
+import { AssignShift } from '../components/AddButton'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -40,23 +41,27 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   icon: {
     color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.done': { color: green[500]},
+    '&.approved': { color: theme.palette.primary.main },
+    '&.inProgress': { color: orange[500] },
+    '&.done': { color: green[500] },
   }
 }));
 
-const employeeShifts = [
-  {id: 1, avi: '', employee: 'Samuel', shift: 'Night', duration: '6:00pm - 6:00am'}
-]
 
 const EmployeeShiftList = props => {
   const classes = useStyles();
-  const { loading, employees, openNewEmployeeShiftDialog } = props;
-  console.log(employees, "Employees in employeeShift");
-  const toTitleCase = str => (str ? str[0].toUpperCase() + str.slice(1) : '');
+  const { loading, employees, shifts, employeeShifts, openNewEmployeeShiftDialog, getUsersByShift } = props;
+  const [shift, setShift] = React.useState('')
+
   React.useEffect(() => {
   }, []);
+
+  const selectUsersByShift = (event, obj) => {
+    setShift(obj.id)
+    getUsersByShift(obj.id)
+  }
+
+  const usersOnShifts = employeeShifts && employeeShifts.length > 0 ? employeeShifts : employees
 
   const columns = [
     {
@@ -67,21 +72,6 @@ const EmployeeShiftList = props => {
         filter: true,
       },
     },
-    /*
-    {
-      name: 'avi',
-      label: ' ',
-      options: {
-        filter: true,
-        sort: true,
-        customBodyRender: avi => {
-          return (
-            <Avatar src='' />
-          )
-        }
-      }
-    },
-    */
     {
       name: 'id',
       label: 'Name',
@@ -91,9 +81,12 @@ const EmployeeShiftList = props => {
         customBodyRender: id => {
           const emp = employees && employees.find(e => e.id == id);
           return (
-            <span>{`${toTitleCase(emp.firstName)} ${toTitleCase(
-              emp.lastName,
-            )}`}</span>
+            <span>
+              {
+                `${EzoneUtils.toTitleCase(emp.firstName)} 
+                ${EzoneUtils.toTitleCase(emp.lastName)}`
+              }
+            </span>
           );
         },
       },
@@ -107,7 +100,7 @@ const EmployeeShiftList = props => {
         customBodyRender: id => {
           const emp = employees && employees.find(e => e.id == id);
           return (
-            emp.workShift && <span>{`${toTitleCase(emp.workShift.shiftName)}`}</span>
+            emp.workShift && <span>{`${EzoneUtils.toTitleCase(emp.workShift.shiftName)}`}</span>
           );
         },
       },
@@ -116,14 +109,14 @@ const EmployeeShiftList = props => {
       name: 'id',
       label: 'End date',
       options: {
-      filter: true,
-      sort: true,
-      customBodyRender: id => {
-        const emp = employees && employees.find(e => e.id == id);
-        return (
-          emp.workShift && <span>{`${toTitleCase(emp.workShift.endDate)}`}</span>
-        );
-      },
+        filter: true,
+        sort: true,
+        customBodyRender: id => {
+          const emp = employees && employees.find(e => e.id == id);
+          return (
+            emp.workShift && <span>{`${EzoneUtils.toTitleCase(emp.workShift.endDate)}`}</span>
+          );
+        },
       },
     }
   ];
@@ -136,11 +129,17 @@ const EmployeeShiftList = props => {
     download: true,
     viewColumns: false,
     filter: false,
-    customToolbar: () => <AssignShift openDialog={openNewEmployeeShiftDialog} />,
+    customToolbar: () =>
+      <AssignShift
+        openDialog={openNewEmployeeShiftDialog}
+        shifts={shifts}
+        shift={shift}
+        selectUsersByShift={selectUsersByShift}
+      />,
     rowsPerPage: 10,
-    rowsPerPageOptions: [10,25,50,100],
+    rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
-     // getAttendanceById(rowData[0])
+      // getAttendanceById(rowData[0])
     },
     elevation: 0
   };
@@ -154,7 +153,7 @@ const EmployeeShiftList = props => {
           <MUIDataTable
             className={classes.datatable}
             title="Employee Shifts"
-            data={employees}
+            data={usersOnShifts}
             columns={columns}
             options={options}
           />
@@ -173,11 +172,14 @@ const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   user: AppSelectors.makeSelectCurrentUser(),
   employees: Selectors.makeSelectEmployees(),
+  employeeShifts: Selectors.makeSelectEmployeeShifts(),
+  shifts: Selectors.makeSelectShifts(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openNewEmployeeShiftDialog: () => dispatch(Actions.openNewEmployeeShiftDialog()),
+    getUsersByShift: (id) => dispatch(Actions.getUsersByShift(id)),
   };
 }
 

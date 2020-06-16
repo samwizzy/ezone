@@ -30,9 +30,10 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   button: {
-    margin: theme.spacing(1),
+    marginLeft: theme.spacing(1)
   },
   datatable: {
+    whiteSpace: "nowrap",
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
     },
@@ -47,9 +48,6 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
-  },
-  marginButton: {
-    margin: theme.spacing(1),
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -70,7 +68,7 @@ const ContactGroupsList = props => {
       name: 'id',
       label: 'S/N',
       options: {
-        // display: "excluded",
+        display: "excluded",
         filter: true,
       },
     },
@@ -89,16 +87,9 @@ const ContactGroupsList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const contactGp = allContactGroups.find(contact => value === contact.id);
+          const contact = allContactGroups.find(contact => value === contact.id);
 
-          if (value === '') {
-            return '';
-          }
-          return (
-            <Typography>
-              {contactGp.contacts.length}
-            </Typography>
-          );
+          return <Typography>{contact.contacts.length}</Typography>
         },
       },
     },
@@ -109,9 +100,7 @@ const ContactGroupsList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => (
-          <Typography>
-            {moment(value).format("MMM Do YYYY")}
-          </Typography>
+          moment(value).format("ll")
         ),
       }
     },
@@ -122,19 +111,29 @@ const ContactGroupsList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const contactGp = allContactGroups.find(contact => value === contact.id);
-          if (value === '') {
-            return '';
-          }
+          const contact = allContactGroups.find(contact => value === contact.id);
+
           return (
-            <div>
-              <Button variant="outlined" size="small" color="primary" className={classes.marginButton} onClick={() => openEditContactGroupsDialog(contactGp)}>
-                Edit
-              </Button>
-              <Button variant="outlined" size="small" color="primary" className={classes.marginButton} onClick={() => props.history.push(`/crm/contact-groups/${contactGp.id}`)}>
-                View
-              </Button>
-            </div>
+            <Button variant="outlined" size="small" color="primary" onClick={() => openEditContactGroupsDialog(contact)}>
+              Edit
+            </Button>
+          );
+        },
+      },
+    },
+    {
+      name: 'id',
+      label: 'Action',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: value => {
+          const contact = allContactGroups.find(contact => value === contact.id);
+
+          return (
+            <Button variant="outlined" size="small" color="primary" onClick={() => props.history.push(`/crm/contact-groups/${contact.id}`)}>
+              View
+            </Button>
           );
         },
       },

@@ -18,10 +18,10 @@ const makeSelectLoading = () =>
     selectPerformance,
     subState => subState.loading,
   );
-const makeSelectPerformance = () =>
+const makeSelectPerformances = () =>
   createSelector(
     selectPerformance,
-    subState => subState.leaveRequest,
+    subState => subState.performances,
   );
 const makeSelectLeaveRequestDialog = () =>
   createSelector(
@@ -75,10 +75,10 @@ const makeSelectReviews = () =>
   );
 
 export default makeSelectPerformancePage;
-export { 
+export {
   selectPerformance,
   makeSelectLoading,
-  makeSelectPerformance,
+  makeSelectPerformances,
   makeSelectGoals,
   makeSelectRecognitions,
   makeSelectFeedbacks,

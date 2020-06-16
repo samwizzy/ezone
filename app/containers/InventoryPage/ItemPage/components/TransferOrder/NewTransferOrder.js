@@ -77,25 +77,28 @@ const NewTransferOrder = props => {
                 labelPlacement="start"
               />
               <TextField
-                id="outlined-Name" 
+                id="outlined-Name"
+                size="small"
                 label="Name"
-                fullWidth 
+                fullWidth
                 // onChange={} 
                 variant="outlined"
                 className={classes.textField}
               />
-              <TextField 
-                id="outlined-SKU" 
+              <TextField
+                id="outlined-SKU"
+                size="small"
                 label="SKU"
-                fullWidth 
+                fullWidth
                 // onChange={} 
                 variant="outlined"
                 className={classes.textField}
               />
-              <TextField 
-                id="outlined-Unit" 
+              <TextField
+                id="outlined-Unit"
+                size="small"
                 label="Unit"
-                fullWidth 
+                fullWidth
                 // onChange={} 
                 variant="outlined"
                 className={classes.textField}
@@ -103,7 +106,7 @@ const NewTransferOrder = props => {
             </div>
           </Grid>
           <Grid item xs={12} md={6} lg={6}>
-          Image Upload
+            Image Upload
           </Grid>
         </Grid>
         <Divider />
@@ -111,33 +114,37 @@ const NewTransferOrder = props => {
           <Grid item xs={12} md={6} lg={6}>
             <div className={classes.container}>
               <TextField
-                id="outlined-Dimensions" 
+                id="outlined-Dimensions"
+                size="small"
                 label="Dimensions (cm)"
-                fullWidth 
+                fullWidth
                 // onChange={} 
                 variant="outlined"
                 className={classes.textField}
               />
               <TextField
-                id="outlined-Manufacturer" 
+                id="outlined-Manufacturer"
+                size="small"
                 label="Manufacturer"
-                fullWidth 
+                fullWidth
                 // onChange={} 
                 variant="outlined"
                 className={classes.textField}
               />
               <TextField
                 id="outlined-UPC"
+                size="small"
                 label="UPC"
-                fullWidth 
+                fullWidth
                 // onChange={} 
                 variant="outlined"
                 className={classes.textField}
               />
               <TextField
                 id="outlined-EAN"
+                size="small"
                 label="EAN"
-                fullWidth 
+                fullWidth
                 // onChange={} 
                 variant="outlined"
                 className={classes.textField}
@@ -147,33 +154,37 @@ const NewTransferOrder = props => {
           <Grid item xs={12} md={6} lg={6}>
             <div className={classes.container}>
               <TextField
-                id="outlined-Weight" 
+                id="outlined-Weight"
+                size="small"
                 label="Weight (kg)"
-                fullWidth 
+                fullWidth
                 // onChange={} 
                 variant="outlined"
                 className={classes.textField}
               />
               <TextField
-                id="outlined-Brand" 
+                id="outlined-Brand"
+                size="small"
                 label="Brand"
-                fullWidth 
+                fullWidth
                 // onChange={} 
                 variant="outlined"
                 className={classes.textField}
               />
               <TextField
                 id="outlined-MPN"
+                size="small"
                 label="MPN"
-                fullWidth 
+                fullWidth
                 // onChange={} 
                 variant="outlined"
                 className={classes.textField}
               />
               <TextField
                 id="outlined-ISBN"
+                size="small"
                 label="ISBN"
-                fullWidth 
+                fullWidth
                 // onChange={} 
                 variant="outlined"
                 className={classes.textField}
@@ -192,35 +203,39 @@ const NewTransferOrder = props => {
                 labelPlacement="start"
               />
               <TextField
-                id="outlined-Selling-Price" 
+                id="outlined-Selling-Price"
+                size="small"
                 label="Selling Price"
-                fullWidth 
+                fullWidth
                 // onChange={} 
                 variant="outlined"
                 className={classes.textField}
               />
-              <TextField 
-                id="outlined-Account2" 
+              <TextField
+                id="outlined-Account2"
+                size="small"
                 label="Account"
-                fullWidth 
+                fullWidth
                 // onChange={} 
                 variant="outlined"
                 className={classes.textField}
               />
-              <TextField 
+              <TextField
                 id="outlined-Description"
+                size="small"
                 label="Description"
-                fullWidth 
+                fullWidth
                 // onChange={} 
                 variant="outlined"
                 multiline
                 rows={3}
                 className={classes.textField}
               />
-              <TextField 
+              <TextField
                 id="outlined-Tax"
+                size="small"
                 label="Tax "
-                fullWidth 
+                fullWidth
                 // onChange={} 
                 variant="outlined"
                 className={classes.textField}
@@ -237,24 +252,27 @@ const NewTransferOrder = props => {
               />
               <TextField
                 id="outlined-Cost-Price"
+                size="small"
                 label="Cost Price"
-                fullWidth 
+                fullWidth
                 // onChange={} 
                 variant="outlined"
                 className={classes.textField}
               />
               <TextField
                 id="outlined-Account1"
+                size="small"
                 label="Account"
-                fullWidth 
+                fullWidth
                 // onChange={} 
                 variant="outlined"
                 className={classes.textField}
               />
               <TextField
                 id="outlined-Description"
+                size="small"
                 label="Description"
-                fullWidth 
+                fullWidth
                 // onChange={} 
                 variant="outlined"
                 multiline
@@ -268,21 +286,21 @@ const NewTransferOrder = props => {
         <div className={classes.buttonStyle}>
           <Button
             onClick={() => {
-            // dispatchCreateNewEmployeeAction(values);
+              // dispatchCreateNewEmployeeAction(values);
             }}
             color="primary"
             variant="contained"
           // disabled={!canBeSubmitted()}
           >
-                Save
+            Save
           </Button>
 
           <Button
-          // onClick={() => closeNewWarehouseDialogAction()}
+            // onClick={() => closeNewWarehouseDialogAction()}
             color="primary"
             variant="contained"
           >
-              Cancel
+            Cancel
           </Button>
         </div>
       </ModuleLayout>

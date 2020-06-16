@@ -1,11 +1,11 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
-import {AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, MenuItem, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar} from '@material-ui/core';
+import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, MenuItem, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
@@ -37,34 +37,36 @@ function AddAnnouncementDialog(props) {
   const [form, setForm] = React.useState({
     title: '',
     message: '',
-    expiryDate: "2020-05-27",
+    expiryDate: "2020-06-27",
     notifyAllLocations: true,
     notifyOthers: "true",
     orgId: "ORG-1582035732806",
-    type: '',
+    announcementType: '',
   });
 
   console.log(dialog, "dialog checking")
 
   React.useEffect(() => {
-    if(dialog.type == 'edit'){
-      setForm({...form})
+    if (dialog.type == 'edit') {
+      setForm({ ...form })
     }
   }, [dialog])
 
   const canSubmitForm = () => {
-    const {title, message, type } = form
-    return title.length > 0 
+    const { title, message, announcementType } = form
+    return title.length > 0 && announcementType.length > 0
   }
 
   const handleChange = (event) => {
     const { name, value } = event.target
-    setForm({...form, [name]: value});
+    setForm({ ...form, [name]: value });
   }
 
   const handleSubmit = () => {
     createAnnouncement(form)
   }
+
+  console.log(form, "form")
 
   return (
     <div className={classes.root}>
@@ -87,36 +89,31 @@ function AddAnnouncementDialog(props) {
         <Divider />
 
         <DialogContent>
-          <Grid container spacing={1}>
-            <Grid item xs={12}>
-              <TextField
-              name="title"
-              label="Title"
-              id="outlined-title"
-              fullWidth
-              margin="normal"
-              variant="outlined"
-              size="small"
-              value={form.title}
-              onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-              name="message"
-              label="Message"
-              id="outlined-title"
-              fullWidth
-              margin="normal"
-              variant="outlined"
-              multiline
-              rows={10}
-              size="small"
-              value={form.message}
-              onChange={handleChange}
-              />
-            </Grid>
-            {/*
+          <TextField
+            name="title"
+            label="Title"
+            id="outlined-title"
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            size="small"
+            value={form.title}
+            onChange={handleChange}
+          />
+          <TextField
+            name="message"
+            label="Message"
+            id="outlined-title"
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            multiline
+            rows={10}
+            size="small"
+            value={form.message}
+            onChange={handleChange}
+          />
+          {/*
             <Grid item xs={12}>
               <Toolbar style={{paddingLeft: 0}}>
                 <Typography variant="h6">Announcement Settings</Typography></Toolbar>
@@ -182,32 +179,30 @@ function AddAnnouncementDialog(props) {
               </Table>
             </Grid>
             */}
-            <Grid item xs={12}>
-              <TextField
-                id="type"
-                name="type"
-                placeholder="Message Type"
-                select
-                margin="normal"
-                variant="outlined"
-                size="small"
-                label="Message Type"
-                helperText="Please select a message type"
-                value={form.type}
-                onChange={handleChange}
-              >
-                <MenuItem key={0} value="SMS">
-                    SMS
-                </MenuItem>
-                <MenuItem key={1} value="Email">
-                    Email
-                </MenuItem>
-                <MenuItem key={2} value="SMS/Email">
-                    SMS/Email
-                </MenuItem>
-              </TextField>
-            </Grid>
-          </Grid>
+          <TextField
+            id="type"
+            name="announcementType"
+            placeholder="Message Type"
+            select
+            margin="normal"
+            variant="outlined"
+            size="small"
+            label="Announcement Type"
+            helperText="Please select a message type"
+            value={form.announcementType}
+            onChange={handleChange}
+            fullWidth
+          >
+            <MenuItem key={0} value="SMS">
+              SMS
+            </MenuItem>
+            <MenuItem key={1} value="Email">
+              Email
+            </MenuItem>
+            <MenuItem key={2} value="SMS/Email">
+              SMS/Email
+            </MenuItem>
+          </TextField>
         </DialogContent>
 
         <DialogActions>

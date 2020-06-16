@@ -30,17 +30,12 @@ const Snackbars = props => {
   const { messageDialog, openSnackBar, closeSnackBar } = props;
   const classes = useStyles();
 
-  if(!messageDialog){
+  if (!messageDialog) {
     return ''
   }
 
-  console.log(messageDialog, 'messageDialog 2');
   return (
     <div className={classes.root}>
-      {/* <Button variant="outlined" onClick={openSnackBar} style={{zIndex: 9999}}>
-        Open success snackbar
-      </Button> */}
-
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={messageDialog.open}
@@ -68,7 +63,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openSnackBar: () => dispatch(Actions.openSnackBar({open: true})),
+    openSnackBar: () => dispatch(Actions.openSnackBar({ open: true })),
     closeSnackBar: () => dispatch(Actions.closeSnackBar()),
   };
 }

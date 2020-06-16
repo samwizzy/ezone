@@ -25,9 +25,10 @@ export function Crm(props) {
   useInjectReducer({ key: 'crmContacts', reducer });
   useInjectSaga({ key: 'crmContacts', saga });
 
-  const { getAllContactsAction } = props;
+  const { getAllContacts, getContactsGroups } = props;
   useEffect(() => {
-    getAllContactsAction();
+    getAllContacts();
+    getContactsGroups();
   }, []);
 
   return (
@@ -45,7 +46,7 @@ export function Crm(props) {
 
 Crm.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  getAllContactsAction: PropTypes.func,
+  getAllContacts: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -54,7 +55,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAllContactsAction: () => dispatch(Actions.getAllContacts()),
+    getAllContacts: () => dispatch(Actions.getAllContacts()),
+    getContactsGroups: () => dispatch(Actions.getContactsGroups()),
     dispatch,
   };
 }

@@ -23,30 +23,32 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
     },
     grid: {
-        border: `1px solid ${theme.palette.grey[100]}`,
+        border: `1px solid ${theme.palette.divider}`,
         '& .MuiGrid-item': {
             flex: 1,
             margin: theme.spacing(5)
         }
     },
     card: {
-        borderRadius: theme.shape.borderRadius * 2,
-        "& .MuiCardActions-root": {
-            justifyContent: "center"
+        borderRadius: theme.shape.borderRadius * 4,
+        "& .MuiCardHeader-root": {
+            textAlign: "center",
+            padding: theme.spacing(1),
+            fontSize: `${theme.typography.subtitle1.fontSize} !important`,
+            borderBottom: `1px solid ${theme.palette.divider}`,
         }
     },
     table: {
-        minHeight: theme.spacing(17),
         "& .MuiTableCell-root": {
             borderBottom: "none !important"
         },
         '& .MuiTableCell-body': {
+            padding: theme.spacing(7, 1),
             color: theme.palette.text.secondary,
-            fontSize: theme.typography.fontSize + 1
+            fontSize: theme.typography.h6.fontSize
         },
     }
 }));
-
 
 const Widget3 = () => {
     const classes = useStyles()
@@ -54,24 +56,21 @@ const Widget3 = () => {
     return (
         <div>
             <Card className={classes.card}>
-                <CardActions>
-                    <Typography variant="h6" component="h1" className={classes.title} color="textPrimary">
-                        Today's Schedule
-                    </Typography>
-                </CardActions>
-                <Divider />
+                <CardHeader
+                    title="Today's Schedule"
+                    disableTypography
+                />
                 <CardContent>
-                <Table className={classes.table} size="small">
-                    <TableBody>
-                        <TableRow>
-                            <TableCell align="center">
-                                <Typography variant="h6">No Schedule Found</Typography>
-                            </TableCell>
-                        </TableRow>
-                    </TableBody>
-                </Table> 
+                    <Table className={classes.table} size="small">
+                        <TableBody>
+                            <TableRow>
+                                <TableCell align="center">
+                                    <Typography>No Schedule Found</Typography>
+                                </TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
                 </CardContent>
-                
             </Card>
         </div>
     )

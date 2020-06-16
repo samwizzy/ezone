@@ -5,6 +5,7 @@ import {
   makeStyles,
   Avatar,
   Button,
+  CircularProgress,
   TextField,
   FormControlLabel,
   Checkbox,
@@ -22,6 +23,7 @@ import VisibilityOffOutlined from '@material-ui/icons/VisibilityOffOutlined';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { red } from '@material-ui/core/colors';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import * as AppSelectors from '../../../App/selectors';
@@ -97,7 +99,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: theme.spacing(5),
     padding: theme.spacing(2),
     margin: theme.spacing(0, 4),
-    border: '1px solid #F1F5F8',
+    border: `1px solid ${theme.palette.divider}`,
     backgroundColor: '#FFFFFF',
   },
   avatar: {
@@ -106,11 +108,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-  },
   input: {
-    height: 40,
     margin: 0,
   },
   submit: {
@@ -122,12 +120,12 @@ const useStyles = makeStyles(theme => ({
     fontSize: 10,
   },
   span: {
-    color: 'red',
+    color: red[500],
   },
 }));
 
 const RegistrationForm = props => {
-  const { loading, currentUser, signupResData, signupAction } = props;
+  const { loading, currentUser, signupAction } = props;
   const classes = useStyles();
 
   const [visibility, setVisibility] = React.useState(false);
@@ -141,8 +139,8 @@ const RegistrationForm = props => {
     password: '',
   });
 
-  const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
+  const handleChange = ({ target }) => {
+    setValues({ ...values, [target.name]: target.value });
   };
 
   const canBeSubmitted = () => {
@@ -164,7 +162,8 @@ const RegistrationForm = props => {
     setVisibility(!visibility);
   };
 
-  // if (signupResData.success === true) {
+  console.log(values, "values")
+
   if (currentUser === true) {
     return <Redirect to="/home" />;
   }
@@ -190,10 +189,11 @@ const RegistrationForm = props => {
                   Sign In
                 </Link>
               </Typography>
-              {/* <form className={classes.form} noValidate> */}
+
               <TextField
                 variant="outlined"
                 margin="normal"
+                size="small"
                 required
                 fullWidth
                 id="companyName"
@@ -205,11 +205,13 @@ const RegistrationForm = props => {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                onChange={handleChange('companyName')}
+                onChange={handleChange}
               />
+
               <TextField
                 variant="outlined"
                 margin="normal"
+                size="small"
                 required
                 fullWidth
                 id="email"
@@ -221,11 +223,12 @@ const RegistrationForm = props => {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                onChange={handleChange('email')}
+                onChange={handleChange}
               />
               <TextField
                 variant="outlined"
                 margin="normal"
+                size="small"
                 required
                 fullWidth
                 name="password"
@@ -240,14 +243,15 @@ const RegistrationForm = props => {
                       arrow
                     >
                       <IconButton
+                        size="small"
                         className={classes.iconButton}
                         onClick={handleVisibility}
                       >
                         {visibility ? (
                           <VisibilityOutlined />
                         ) : (
-                          <VisibilityOffOutlined />
-                        )}
+                            <VisibilityOffOutlined />
+                          )}
                       </IconButton>
                     </Tooltip>
                   ),
@@ -255,14 +259,14 @@ const RegistrationForm = props => {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                onChange={handleChange('password')}
+                onChange={handleChange}
+                helperText="Password must contain at least one upper case, lower case,
+                symbol,number and can not be less than 6 digits"
               />
-              <span className={classes.span}>
-                Password must contain at least one upper case, lower case,
-                symbol,number and can not be less than 6 digits
-              </span>
+
               <Autocomplete
                 id="combo-itemCategory"
+                size="small"
                 options={CountriesAndStates}
                 getOptionLabel={option => option.name}
                 onChange={(evt, ve) => handleSourceChange(evt, ve)}
@@ -287,25 +291,23 @@ const RegistrationForm = props => {
                   </Typography>
                 }
               />
-              {!loading ? (
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                  disabled={!canBeSubmitted()}
-                  onClick={() => signupAction(values)}
-                >
-                  Sign Up
-                </Button>
-              ) : (
-                <LoadingIndicator />
-              )}
+
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                disabled={loading ? loading : !canBeSubmitted()}
+                onClick={() => signupAction(values)}
+                endIcon={loading && <CircularProgress size={20} />}
+              >
+                Sign Up
+              </Button>
+
               <Box mt={2}>
                 <Copyright />
               </Box>
-              {/* </form> */}
             </div>
           </Grid>
         </Grid>
@@ -315,20 +317,18 @@ const RegistrationForm = props => {
 };
 
 RegistrationForm.propTypes = {
-  signupAction: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
   loading: PropTypes.bool,
-  signupResData: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+  signupAction: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  signupResData: Selectors.makeSelectSignupResData(),
   currentUser: AppSelectors.makeSelectCurrentUser(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    signupAction: evt => dispatch(Actions.signupRequest(evt)),
+    signupAction: data => dispatch(Actions.signupRequest(data)),
   };
 }
 
