@@ -1,6 +1,7 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { alphaNumeric } from '../validator';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
@@ -73,7 +74,20 @@ const AddBankAccountDialog = props => {
   }, [bankAccountDialog.data]);
   
   const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
+    const textValue = event.target.value;
+    // Validating Account Code for apha numeric
+    // add case for more validation
+    switch (name) {
+      case 'accountCode':
+        {
+          if (alphaNumeric(textValue)) {
+            setValues({ ...values, [name]: textValue });
+          }
+        }
+        break;
+      default:
+        setValues({ ...values, [name]: textValue });
+    }
   };
 
   console.log('values is: ', values);
