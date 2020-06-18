@@ -34,6 +34,7 @@ import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import {alphaNumeric} from "../validator.js";
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../../App/selectors';
@@ -135,7 +136,20 @@ const AddNewJournal = props => {
   };
 
   const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
+    const textValue = event.target.value;
+    // Validating Account Code for apha numeric
+    // add case for more validation
+    switch (name) {
+      case 'reference':
+        {
+          if(alphaNumeric(textValue)){
+            setValues({ ...values, [name]: textValue });
+          }
+        }
+        break;
+      default:
+        setValues({ ...values, [name]: textValue });
+    }
   };
 
   const handleSelectChange = (name, value) => {
