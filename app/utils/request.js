@@ -5,6 +5,8 @@
  *
  * @return {object}          The parsed JSON from the request
  */
+import history from './history'
+
 function parseJSON(response) {
   if (response.status === 204 || response.status === 205) {
     return null;
@@ -24,14 +26,10 @@ function checkStatus(response) {
     return response;
   }
   if (response.status === 401) {
-    // return response;
-  }
-  if (response.status === 400 || response.status === 500) {
-    return response;
+    history.push('/logout')
   }
 
   const error = new Error(response.statusText);
-  // const error = new Error(response.error);
   error.response = response;
   throw error;
 }

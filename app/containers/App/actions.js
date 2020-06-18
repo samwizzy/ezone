@@ -1,6 +1,7 @@
 import * as Constants from './constants';
 
 export function loginAction(data) {
+  console.log("i am logging out")
   return {
     type: Constants.LOGIN,
     payload: data,

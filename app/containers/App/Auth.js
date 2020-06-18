@@ -29,7 +29,7 @@ class Auth extends Component {
 			console.log(this.props.currentUser, 'currentUser from Auth');
 		} else {
 			console.log(this.props, "i am already here with nothing in current user")
-			history.push('/login')
+			// history.push('/login')
 		}
 
 	};

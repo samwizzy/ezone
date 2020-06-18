@@ -3,25 +3,18 @@ import history from '../../utils/history'
 import * as Constants from './constants';
 import moment from 'moment';
 
-let userActive;
+let currentUser;
 if (!JSON.parse(localStorage.getItem('user'))) {
-  userActive = false;
+  currentUser = null;
 } else {
-  userActive = JSON.parse(localStorage.getItem('user'));
-}
-
-let userToken;
-if (!localStorage.getItem('access_token')) {
-  userToken = false;
-} else {
-  userToken = localStorage.getItem('access_token');
+  currentUser = JSON.parse(localStorage.getItem('user'));
 }
 
 export const initialState = {
   loading: false,
   error: false,
-  user: userActive,
-  accessToken: userToken,
+  user: currentUser,
+  accessToken: localStorage.getItem('access_token'),
   messageDialog: {
     open: false, message: "", status: "info"
   },
@@ -90,6 +83,7 @@ const appReducer = (state = initialState, action) =>
       case Constants.LOG_OUT: {
         return {
           ...state,
+          loading: false,
           user: false,
           accessToken: false
         };

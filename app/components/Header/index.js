@@ -67,7 +67,7 @@ const styles = theme => ({
       },
       "&:hover": {
         color: theme.palette.primary.main,
-        backgroundColor: theme.palette.common.white, 
+        backgroundColor: theme.palette.common.white,
       },
     }
   },
@@ -167,7 +167,6 @@ function Header(props) {
   const { classes, location } = props;
   const pathName = location.pathname.replace(/^\/|\/$/g, '').split('/')[0]
   const title = pathName.replace(/-/g, ' ');
-  console.log(pathName, "pathName from header")
 
   const [state, setState] = React.useState({ open: false });
 
@@ -222,7 +221,7 @@ function Header(props) {
           >
             <Menu />
           </IconButton>
-          
+
           <Grid
             justify="space-between" // Add it here :)
             container

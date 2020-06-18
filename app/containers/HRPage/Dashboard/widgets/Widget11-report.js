@@ -40,16 +40,8 @@ export default withStyles(styles)(class Widget11 extends React.Component {
 
 		return (
 			<Card className={classes.root}>
-				<CardHeader
-					action={
-						<Button color="primary" aria-label="settings">
-							view report
-						</Button>
-					}
-					title="Gender Profile"
-				/>
 				<CardContent>
-					<Pie data={data} />
+					<Pie data={data} height={100} />
 				</CardContent>
 			</Card>
 		);

@@ -171,7 +171,7 @@ function AddAttendanceDialog(props) {
                     <KeyboardTimePicker
                       margin="normal"
                       inputVariant="outlined"
-                      id="time-picker"
+                      id="login-time-picker"
                       name="loginTime"
                       label="Login Time"
                       size="small"
@@ -189,7 +189,7 @@ function AddAttendanceDialog(props) {
                     <KeyboardTimePicker
                       margin="normal"
                       inputVariant="outlined"
-                      id="time-picker"
+                      id="logout-time-picker"
                       name="logOutTime"
                       label="Logout Time"
                       size="small"

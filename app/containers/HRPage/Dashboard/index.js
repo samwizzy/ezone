@@ -16,6 +16,8 @@ import { useInjectReducer } from 'utils/injectReducer';
 import * as Selectors from '../selectors';
 import Dashboard from './Dashboard'
 import ModuleLayout from './components/ModuleLayout'
+import AgeProfileReport from './AgeProfileReport/AgeProfileReport'
+import GenderProfileReport from './GenderProfileReport/GenderProfileReport'
 
 export function DashboardPage() {
 
@@ -28,6 +30,8 @@ export function DashboardPage() {
 
       <ModuleLayout>
         <Dashboard />
+        {/* <AgeProfileReport /> */}
+        {/* <GenderProfileReport /> */}
       </ModuleLayout>
     </div>
   );

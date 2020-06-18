@@ -58,8 +58,11 @@ export function* login({ payload }) {
       }),
     });
 
-    if (response.error === 'invalid_token') {
-      throw response
+    console.log(response, "login response 8")
+
+    if (response.error === "invalid_token") {
+      yield put(AppActions.loginErrorAction(response.error_description));
+      yield put(AppActions.openSnackBar({ message: response.error_description, status: 'error' }));
     }
 
     localStorage.setItem('access_token', response.access_token);
@@ -71,13 +74,9 @@ export function* login({ payload }) {
 
   } catch (err) {
     console.log(err.message, "login error")
-    if (err.error) {
-      yield put(AppActions.loginErrorAction(err.error_description));
-      yield put(AppActions.openSnackBar({ message: err.error_description, status: 'error' }));
-    } else {
-      yield put(AppActions.loginErrorAction(err.message));
-      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
-    }
+
+    yield put(AppActions.loginErrorAction(err.message));
+    yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
   }
 }
 
@@ -137,20 +136,16 @@ export function* userProfile({ payload }) {
       }),
     });
 
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
-
     console.log(response, 'loginResponse profile');
-    if (response.error) {
-      yield put(AppActions.logout())
-    }
 
     yield put(AppActions.getUserProfileSuccessAction(response));
   } catch (err) {
-    console.log(err.message, "err user profile")
-    yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
-    yield put(AppActions.getUserProfileErrorAction(err));
+    console.log(err, "err user profile")
+    if (err.response && err.response.status === 401) { yield put(AppActions.logout()) }
+    else {
+      // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      yield put(AppActions.getUserProfileErrorAction(err));
+    }
   }
 }
 

@@ -191,6 +191,7 @@ export function getRolesSuccess(data) {
 }
 
 export function getEmployee(uuid) {
+  console.log("you just hit the getEmployee action", uuid)
   return {
     type: Constants.GET_EMPLOYEE,
     payload: uuid

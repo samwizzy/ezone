@@ -13,7 +13,7 @@ export function* getAllEmployees() {
 
   const requestURL = `${Endpoints.GetAllUsersApi}/${
     currentUser && currentUser.organisation.orgId
-  }`;
+    }`;
 
   try {
     const getAllEmployeesResponse = yield call(request, requestURL, {
@@ -24,18 +24,17 @@ export function* getAllEmployees() {
       }),
     });
 
-    console.log(getAllEmployeesResponse, 'getAllEmployeesResponse');
+    console.log(getAllEmployeesResponse, 'getAllEmployeesResponses');
 
     yield put(Actions.getAllEmployeesSuccess(getAllEmployeesResponse));
   } catch (err) {
-    yield put(Actions.getAllEmployeesError(err));
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: `${err}`,
-    //     status: 'error',
-    //   }),
-    // );
+    if (err.response.status === 500) {
+      yield put(Actions.getAllEmployeesError('Interval Server Error'));
+      yield put(AppActions.openSnackBar({ message: 'Interval Server Error', status: 'error' }));
+    } else if (err.response.status === 400) {
+      yield put(Actions.getAllEmployeesError('Something went wrong, please try again'));
+      yield put(AppActions.openSnackBar({ message: 'Something went wrong, please try again', status: 'error' }));
+    }
   }
 }
 
@@ -112,7 +111,7 @@ export function* updateUserProfile() {
     yield put(Actions.closeEditUserProfileDialog());
     yield put(AppActions.getUserProfileAction());
 
-    yield put(AppActions.openSnackBar({open: true, message: response.message, status: 'success'}));
+    yield put(AppActions.openSnackBar({ open: true, message: response.message, status: 'success' }));
     // if (createNewEmployeeResponse.success === true) {
     //   yield put(
     //     AppActions.openSnackBar({

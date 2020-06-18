@@ -22,7 +22,7 @@ export const PersonalForm = props => {
 
   const canSubmitForm = () => {
     const { maritalStatus, gender, address } = form
-    return maritalStatus.length > 0 && gender.length > 0 && address.length > 0
+    return maritalStatus && gender.length > 0 && address.length > 0
   }
 
   return (
@@ -48,7 +48,7 @@ export const PersonalForm = props => {
               variant="outlined"
               size="small"
               label="Marital Status"
-              value={form.maritalStatus}
+              value={form.maritalStatus ? form.maritalStatus : ''}
               onChange={handleChange}
             >
               <MenuItem key={0} value="Single">
@@ -108,6 +108,20 @@ export const PersonalForm = props => {
           </Grid>
 
           <Grid item xs={6}>
+            <TextField
+              name="mobileNo"
+              label="Mobile Number"
+              id="outlined-mobile-no"
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              size="small"
+              value={form.mobileNo}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          <Grid item xs={6}>
             <Autocomplete
               id="combo-box-countries"
               size="small"
@@ -159,20 +173,6 @@ export const PersonalForm = props => {
               variant="outlined"
               size="small"
               value={form.city}
-              onChange={handleChange}
-            />
-          </Grid>
-
-          <Grid item xs={6}>
-            <TextField
-              name="mobileNo"
-              label="Mobile Number"
-              id="outlined-mobile-no"
-              fullWidth
-              margin="normal"
-              variant="outlined"
-              size="small"
-              value={form.mobileNo}
               onChange={handleChange}
             />
           </Grid>

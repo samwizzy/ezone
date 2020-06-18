@@ -80,17 +80,12 @@ const EmployeeDetails = props => {
   const classes = useStyles();
   const { loading, match, openEditEmployeeDialog, openWorkExperienceDialog, openEducationBackgroundDialog, getEmployee, employees, employee } = props;
   const { params } = match
+  const emp = employee ? employee : employees && employees.find(emp => emp.uuId === params.status)
 
-  React.useEffect(() => {
-    getEmployee(params.status);
-  }, []);
-
-  console.log(employee, "single employee")
+  console.log(emp, "single employee")
   console.log(match, "match status")
 
-  // getEmployee(params.status);
-
-  if (!employee) {
+  if (!emp) {
     return ''
   }
 
@@ -107,7 +102,7 @@ const EmployeeDetails = props => {
               </Typography>
               <IconButton onClick={() => { }}><RefreshSharp /></IconButton>
               <IconButton onClick={() => { }}><DeleteOutlined /></IconButton>
-              <IconButton onClick={() => openEditEmployeeDialog(employee)}><EditOutlined /></IconButton>
+              <IconButton onClick={() => openEditEmployeeDialog(emp)}><EditOutlined /></IconButton>
             </Toolbar>
           </AppBar>
         </Grid>
@@ -129,7 +124,7 @@ const EmployeeDetails = props => {
                     <ListItemText
                       primary={
                         <Typography variant="h5" component="span" color="inherit" className={classes.titleCase}>
-                          {employee.firstName + ' ' + employee.lastName}
+                          {emp.firstName + ' ' + emp.lastName}
                         </Typography>
                       }
                       secondary={'IT Project Manager' /*'designation'*/}
@@ -151,19 +146,19 @@ const EmployeeDetails = props => {
               <TableBody>
                 <TableRow>
                   <TableCell component="th">Firstname</TableCell>
-                  <TableCell>{employee.firstName}</TableCell>
+                  <TableCell>{emp.firstName}</TableCell>
                   <TableCell component="th">Lastname</TableCell>
-                  <TableCell>{employee.lastName}</TableCell>
+                  <TableCell>{emp.lastName}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Email</TableCell>
-                  <TableCell>{employee.emailAddress}</TableCell>
+                  <TableCell>{emp.emailAddress}</TableCell>
                   <TableCell component="th">Phone Number</TableCell>
-                  <TableCell>{employee.phoneNumber}</TableCell>
+                  <TableCell>{emp.phoneNumber}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Nickname</TableCell>
-                  <TableCell>{employee.nickName && employee.nickName}</TableCell>
+                  <TableCell>{emp.nickName && emp.nickName}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -178,27 +173,27 @@ const EmployeeDetails = props => {
               <TableBody>
                 <TableRow>
                   <TableCell component="th">Employee ID</TableCell>
-                  <TableCell>{employee.employeeId && employee.employeeId}</TableCell>
+                  <TableCell>{emp.employeeId && emp.employeeId}</TableCell>
                   <TableCell component="th">Date Hired</TableCell>
-                  <TableCell>{employee.employmentDate && employee.employmentDate}</TableCell>
+                  <TableCell>{emp.employmentDate && emp.employmentDate}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Branch</TableCell>
-                  <TableCell>{employee.branch && employee.branch.name}</TableCell>
+                  <TableCell>{emp.branch && emp.branch.name}</TableCell>
                   <TableCell component="th">Employment Status</TableCell>
-                  <TableCell>{employee.status && employee.status}</TableCell>
+                  <TableCell>{emp.status && emp.status}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Department</TableCell>
-                  <TableCell>{employee.department && employee.department.name}</TableCell>
+                  <TableCell>{emp.department && emp.department.name}</TableCell>
                   <TableCell component="th">Employment Type</TableCell>
-                  <TableCell>{employee.employeeType && employee.employeeType.name}</TableCell>
+                  <TableCell>{emp.employeeType && emp.employeeType.name}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Reporting To</TableCell>
-                  <TableCell>{employee.reportingTo && employee.reportingTo.name}</TableCell>
+                  <TableCell>{emp.reportingTo && emp.reportingTo.name}</TableCell>
                   <TableCell component="th">Job Role</TableCell>
-                  <TableCell>{employee.role && employee.role.name}</TableCell>
+                  <TableCell>{emp.role && emp.role.name}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Job Level</TableCell>
@@ -206,7 +201,7 @@ const EmployeeDetails = props => {
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Job Description</TableCell>
-                  <TableCell>{employee.jobDesc && employee.jobDesc}</TableCell>
+                  <TableCell>{emp.jobDesc && emp.jobDesc}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -221,37 +216,37 @@ const EmployeeDetails = props => {
               <TableBody>
                 <TableRow>
                   <TableCell component="th">Date of Birth</TableCell>
-                  <TableCell>{employee.dob && employee.dob}</TableCell>
+                  <TableCell>{emp.dob && emp.dob}</TableCell>
                   <TableCell component="th">Marital Status</TableCell>
-                  <TableCell>{employee.maritalStatus && employee.maritalStatus}</TableCell>
+                  <TableCell>{emp.maritalStatus && emp.maritalStatus}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Gender</TableCell>
-                  <TableCell>{employee.gender && employee.gender}</TableCell>
+                  <TableCell>{emp.gender && emp.gender}</TableCell>
                   <TableCell component="th">State of Origin</TableCell>
-                  <TableCell>{employee.state && employee.state}</TableCell>
+                  <TableCell>{emp.state && emp.state}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Website</TableCell>
-                  <TableCell>{employee.website && employee.website}</TableCell>
+                  <TableCell>{emp.website && emp.website}</TableCell>
                   <TableCell component="th">Other Email</TableCell>
-                  <TableCell>{employee.emailAddress && employee.emailAddress}</TableCell>
+                  <TableCell>{emp.emailAddress && emp.emailAddress}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Country</TableCell>
-                  <TableCell>{employee.country && employee.country}</TableCell>
+                  <TableCell>{emp.country && emp.country}</TableCell>
                   <TableCell component="th">City</TableCell>
-                  <TableCell>{employee.city && employee.city}</TableCell>
+                  <TableCell>{emp.city && emp.city}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Postal Code</TableCell>
-                  <TableCell>{employee.organisation && employee.organisation.postalCode}</TableCell>
+                  <TableCell>{emp.organisation && emp.organisation.postalCode}</TableCell>
                   <TableCell component="th">Location 1</TableCell>
-                  <TableCell>{employee.address && employee.address}</TableCell>
+                  <TableCell>{emp.address && emp.address}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Bio</TableCell>
-                  <TableCell>{employee.about && employee.about}</TableCell>
+                  <TableCell>{emp.about && emp.about}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>

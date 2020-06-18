@@ -19,7 +19,8 @@ import * as Endpoints from '../../components/Endpoints';
 export function* getEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}/${user.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}/${user && user.organisation.orgId}`;
+  console.log(accessToken, "accessToken get employees")
 
   try {
     const response = yield call(request, requestURL, {
@@ -30,12 +31,13 @@ export function* getEmployees() {
       }),
     });
     console.log(response, "emplyees response");
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
+
     yield put(Actions.getEmployeesSuccess(response));
   } catch (err) {
-    console.log(err, "emplyees error");
+    console.log(err.response, "emplyees error");
+    if (err.response.status === 500) {
+      yield put(AppActions.openSnackBar({ message: "Interval Server Error", status: 'error' }));
+    }
     // yield put(Actions.getEmployeesError(err));
   }
 }
@@ -43,6 +45,7 @@ export function* getEmployees() {
 export function* getEmployeeByUUID({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.GetUserByUUIDApi}/${payload}`;
+  console.log('getEmployeeByUUID testing');
 
   try {
     const response = yield call(request, requestURL, {
@@ -60,6 +63,7 @@ export function* getEmployeeByUUID({ type, payload }) {
 
     yield put(Actions.getEmployeeSuccess(response));
   } catch (err) {
+    console.log(err, "err ger employee uuid")
     // yield put(Actions.getEmployeeError(err.message));
   }
 }
@@ -129,7 +133,7 @@ export function* createRole({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.CreateRole}`;
-  payload.orgId = user.organisation.orgId;
+  payload.orgId = user && user.organisation.orgId;
   try {
     const response = yield call(request, requestURL, {
       method: 'POST',
@@ -139,9 +143,7 @@ export function* createRole({ type, payload }) {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
+
 
     yield put(AppActions.openSnackBar({ message: "Role created", status: 'success' }));
     yield put({ type: Constants.GET_ROLES });
@@ -164,9 +166,6 @@ export function* getDepartments({ type, payload }) {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     console.log(response, 'DEPARTMENT RESPONSE');
     yield put(Actions.getDepartmentsSuccess(response));
@@ -178,7 +177,7 @@ export function* getDepartments({ type, payload }) {
 export function* getDepartmentsByOrgIdApi() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetDepartmentsByOrgIdApi}?orgId=${user.organisation.id}&tagId=5`;
+  const requestURL = `${Endpoints.GetDepartmentsByOrgIdApi}?orgId=${user && user.organisation.id}&tagId=5`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -188,20 +187,20 @@ export function* getDepartmentsByOrgIdApi() {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     console.log(response, 'DEPARTMENT RESPONSE BY ORGID');
     yield put(Actions.getDepartmentsByOrgIdApiSuccess(response));
   } catch (err) {
-    console.log(err.message, "dept error message")
+    console.log(err.response, "dept error message")
+    if (err.response.status === 400) {
+
+    }
   }
 }
 export function* getPartyGroups() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetPartyGroups}?orgId=${user.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetPartyGroups}?orgId=${user && user.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -211,9 +210,6 @@ export function* getPartyGroups() {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     console.log(response, 'PARTYGROUPS RESPONSE');
     yield put(Actions.getPartyGroupsSuccess(response));
@@ -225,7 +221,7 @@ export function* getPartyGroups() {
 export function* getDepartment() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetDepartment}?orgId=${user.organisation.id}&tagId=5`;
+  const requestURL = `${Endpoints.GetDepartment}?orgId=${user && user.organisation.id}&tagId=5`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -236,9 +232,6 @@ export function* getDepartment() {
       }),
     });
     console.log(response, 'DEPARTMENT RESPONSE BY ID');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getDepartmentsByOrgIdApiSuccess(response));
   } catch (err) {
@@ -249,7 +242,7 @@ export function* getDepartment() {
 export function* getBranches() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetBranches}?orgId=${user.organisation.id}&tagId=1`;
+  const requestURL = `${Endpoints.GetBranches}?orgId=${user && user.organisation.id}&tagId=1`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -261,9 +254,7 @@ export function* getBranches() {
     });
 
     console.log(response, 'Branch RESPONSE');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
+
     yield put(Actions.getBranchesSuccess(response));
   } catch (err) {
     console.log(err.message, "Branch error message")
@@ -285,9 +276,7 @@ export function* getPartyTags() {
     });
 
     console.log(response, 'PartyTags RESPONSE');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
+
     yield put(Actions.getPartyTagsSuccess(response));
   } catch (err) {
     console.log(err.message, "PartyTags error message")
@@ -311,9 +300,6 @@ export function* createEmployeeType({ payload }) {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.createEmployeeTypeSuccess(response));
     yield put(Actions.closeNewEmployeeTypeDialog())
@@ -339,9 +325,6 @@ export function* createSourceOfHire({ payload }) {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.createSourceOfHireSuccess(response));
     yield put(Actions.closeNewEmployeeTypeDialog())
@@ -367,9 +350,6 @@ export function* createPayRate({ payload }) {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.createPayRateSuccess(response));
     yield put(Actions.closeNewEmployeeTypeDialog())
@@ -395,9 +375,6 @@ export function* createPayType({ payload }) {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.createPayTypeSuccess(response));
     yield put(Actions.closeNewEmployeeTypeDialog())
@@ -411,7 +388,7 @@ export function* createPayType({ payload }) {
 export function* getEmployeeTypes() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEmployeeTypes}?orgId=${user.organisation.orgId}&type=EMPLOYEETYPE`;
+  const requestURL = `${Endpoints.GetEmployeeTypes}?orgId=${user && user.organisation.orgId}&type=EMPLOYEETYPE`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -421,9 +398,6 @@ export function* getEmployeeTypes() {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getEmployeeTypesSuccess(response));
   } catch (err) {
@@ -435,7 +409,7 @@ export function* getEmployeeTypes() {
 export function* getSourcesOfHire() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEmployeeTypes}?orgId=${user.organisation.orgId}&type=SOURCEOFHIRE`;
+  const requestURL = `${Endpoints.GetEmployeeTypes}?orgId=${user && user.organisation.orgId}&type=SOURCEOFHIRE`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -445,9 +419,6 @@ export function* getSourcesOfHire() {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getSourceOfHireSuccess(response));
   } catch (err) {
@@ -459,7 +430,7 @@ export function* getSourcesOfHire() {
 export function* getPayRates() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEmployeeTypes}?orgId=${user.organisation.orgId}&type=PAYRATE`;
+  const requestURL = `${Endpoints.GetEmployeeTypes}?orgId=${user && user.organisation.orgId}&type=PAYRATE`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -469,9 +440,6 @@ export function* getPayRates() {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getPayRatesSuccess(response));
   } catch (err) {
@@ -483,7 +451,7 @@ export function* getPayRates() {
 export function* getPayTypes() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEmployeeTypes}?orgId=${user.organisation.orgId}&type=PAYTYPE`;
+  const requestURL = `${Endpoints.GetEmployeeTypes}?orgId=${user && user.organisation.orgId}&type=PAYTYPE`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -493,9 +461,6 @@ export function* getPayTypes() {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getPayTypesSuccess(response));
   } catch (err) {
@@ -507,7 +472,7 @@ export function* getPayTypes() {
 export function* createWorkExperience() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEmployeeTypes}?orgId=${user.organisation.orgId}&type=PAYTYPE`;
+  const requestURL = `${Endpoints.GetEmployeeTypes}?orgId=${user && user.organisation.orgId}&type=PAYTYPE`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -517,9 +482,6 @@ export function* createWorkExperience() {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.createWorkExperienceSuccess(response));
     yield put({ type: Constants.CLOSE_WORK_EXPERIENCE_DIALOG });
@@ -532,7 +494,7 @@ export function* createWorkExperience() {
 export function* getWorkExperiences() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEmployeeTypes}?orgId=${user.organisation.orgId}&type=PAYTYPE`;
+  const requestURL = `${Endpoints.GetEmployeeTypes}?orgId=${user && user.organisation.orgId}&type=PAYTYPE`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -542,9 +504,6 @@ export function* getWorkExperiences() {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getWorkExperiencesSuccess(response));
   } catch (err) {
@@ -556,7 +515,7 @@ export function* getWorkExperiences() {
 export function* getEnrollmentTypes() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEnrollmentTypes}?orgId=${user.organisation.orgId}&type=ENROLLMENTTYPE`;
+  const requestURL = `${Endpoints.GetEnrollmentTypes}?orgId=${user && user.organisation.orgId}&type=ENROLLMENTTYPE`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -566,9 +525,6 @@ export function* getEnrollmentTypes() {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getEnrollmentTypesSuccess(response));
   } catch (err) {
@@ -579,7 +535,7 @@ export function* getEnrollmentTypes() {
 export function* getLocations() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetLocations}?orgId=${user.organisation.orgId}&type=LOCATION`;
+  const requestURL = `${Endpoints.GetLocations}?orgId=${user && user.organisation.orgId}&type=LOCATION`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -589,9 +545,6 @@ export function* getLocations() {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getLocationsSuccess(response));
   } catch (err) {
@@ -603,7 +556,7 @@ export function* getLocations() {
 export function* getJobOpenings() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetJobOpenings}/${user.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetJobOpenings}/${user && user.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -613,9 +566,6 @@ export function* getJobOpenings() {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getJobOpeningsSuccess(response));
   } catch (err) {
@@ -636,9 +586,6 @@ export function* getJobOpeningDetails({ type, payload }) {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getJobOpeningDetailsSuccess(response));
   } catch (err) {
@@ -648,8 +595,7 @@ export function* getJobOpeningDetails({ type, payload }) {
 export function* getRoles() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetRoles}?orgId=${user.organisation.orgId}&type=ROLE`;
-
+  const requestURL = `${Endpoints.GetRoles}?orgId=${user && user.organisation.orgId}&type=ROLE`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -659,9 +605,6 @@ export function* getRoles() {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getRolesSuccess(response));
   } catch (err) {
@@ -682,9 +625,6 @@ export function* getAnnouncements() {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getAnnouncementsSuccess(response));
   } catch (err) {
@@ -705,16 +645,14 @@ export function* createDepartment({ type, payload }) {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
+    console.log(response, "response createDepartment")
 
     yield put(AppActions.openSnackBar({ message: "Department created", status: 'success' }));
     yield put({ type: Constants.CLOSE_NEW_DEPARTMENT_DIALOG });
     yield put({ type: Constants.GET_DEPARTMENTS_BY_ORGID_API });
   } catch (err) {
     // yield put(Actions.getUtilityFilesError(err));
-    console.log(err.message, "err message")
+    console.log(err.message, "err message createDepartment")
   }
 }
 
@@ -722,7 +660,6 @@ export function* createBranch({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.CreateBranch}`;
-
 
   try {
     const response = yield call(request, requestURL, {
@@ -733,9 +670,6 @@ export function* createBranch({ type, payload }) {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(AppActions.openSnackBar({ message: `${response.name} Branch created`, status: 'success' }));
     yield put(Actions.createBranchSuccess(response));
@@ -760,9 +694,6 @@ export function* createAnnouncement({ type, payload }) {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(AppActions.openSnackBar({ message: "Announcement created", status: 'success' }));
     yield put({ type: Constants.CLOSE_NEW_ANNOUNCEMENT_DIALOG });
@@ -777,7 +708,6 @@ export function* createJobOpening({ type, payload }) {
   const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.CreateJobOpening}`;
 
-
   var str_array = payload.steps.split(',');
   var arr = [];
   var obj = new Object;
@@ -789,7 +719,6 @@ export function* createJobOpening({ type, payload }) {
   delete payload.steps;
   payload.hiringSteps = arr;
   console.log(payload, "Entire job payload");
-  //setForm({...form, ['hiringSteps']: obj });
 
   try {
     const response = yield call(request, requestURL, {
@@ -800,14 +729,11 @@ export function* createJobOpening({ type, payload }) {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
+
     yield put(push('/hr/recruitment'));
 
     console.log(response, 'JOB OPENING RESPONSE');
     yield put(AppActions.openSnackBar({ message: "Jpb opening created", status: 'success' }));
-    //yield put({type: Constants.CLOSE_NEW_BRANCH_DIALOG});
     yield put({ type: Constants.GET_JOBOPENINGS });
   } catch (err) {
     // yield put(Actions.getUtilityFilesError(err));

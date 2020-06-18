@@ -23,12 +23,6 @@ import HumanResourcePage from './HumanResourcePage';
 
 const key = 'hrPage';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-}));
-
 export function HRPage(props) {
   const {
     getEmployees,

@@ -26,11 +26,6 @@ export function DashBoard() {
 
     return (
         <div className={classes.root}>
-            <Helmet>
-                <title>CRM - Dashboard</title>
-                <meta name="description" content="Description of Crm" />
-            </Helmet>
-
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Grid container className={classes.grid} spacing={3}>

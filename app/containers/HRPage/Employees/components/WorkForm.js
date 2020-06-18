@@ -26,14 +26,8 @@ export const WorkForm = props => {
     const classes = useStyles()
     const canSubmitForm = () => {
         const { employeeId, department, branch, employeeType, status, payRate, payType } = form
-        return employeeId && department && branch && employeeType
-            && status && payRate && payType
+        return employeeId && department && branch && employeeType && status && payRate && payType
     }
-
-    console.log(employeeTypes, "employeeTypes")
-    console.log(sourcesOfHire, "sourcesOfHire")
-    console.log(payRates, "payRates")
-    console.log(payTypes, "payTypes")
 
     return (
         <React.Fragment>

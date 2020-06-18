@@ -9,7 +9,9 @@ import Widget8 from './Widget8'
 import Widget9 from './Widget9'
 import Widget10 from './Widget10'
 import Widget11 from './Widget11'
+import Widget11_Report from './Widget11-report'
 import Widget12 from './Widget12'
+import Widget12_Report from './Widget12-report'
 import Widget13 from './Widget13'
 
 export {
@@ -24,6 +26,8 @@ export {
   Widget9,
   Widget10,
   Widget11,
+  Widget11_Report,
   Widget12,
+  Widget12_Report,
   Widget13,
 }

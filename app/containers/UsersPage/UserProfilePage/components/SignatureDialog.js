@@ -82,7 +82,6 @@ const SignatureDialog = props => {
     setValue(newValue);
   };
 
-  console.log(signatureDialog, 'come to dialog')
   return (
     <div>
       <Dialog
@@ -97,27 +96,27 @@ const SignatureDialog = props => {
         </DialogTitle>
 
 
-          {signatureDialog.type === 'new' ? (
-            <div>
-              <Paper square>
-                <Tabs
-                  value={value}
-                  onChange={handleChange}
-                  aria-label="simple tabs example"
-                >
-                  <Tab label="Draw" {...a11yProps(0)} />
-                  <Tab label="Upload" {...a11yProps(1)} />
-                </Tabs>
-              </Paper>
-              
-              { value === 0 &&
-                <SignaturePad signatureDialog={signatureDialog} />
-              }
-              { value === 1 &&
-                <SignatureUpload />
-              }
-            </div>
-          ) : null}
+        {signatureDialog.type === 'new' ? (
+          <div>
+            <Paper square>
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                aria-label="simple tabs example"
+              >
+                <Tab label="Draw" {...a11yProps(0)} />
+                <Tab label="Upload" {...a11yProps(1)} />
+              </Tabs>
+            </Paper>
+
+            {value === 0 &&
+              <SignaturePad signatureDialog={signatureDialog} />
+            }
+            {value === 1 &&
+              <SignatureUpload />
+            }
+          </div>
+        ) : null}
       </Dialog>
     </div>
   );

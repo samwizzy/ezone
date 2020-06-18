@@ -45,7 +45,7 @@ export default withStyles(styles)(class Widget8 extends React.Component {
 					action={
 						<Button color="primary" aria-label="settings">
 							see all
-                    </Button>
+						</Button>
 					}
 					title="Attendance"
 				/>

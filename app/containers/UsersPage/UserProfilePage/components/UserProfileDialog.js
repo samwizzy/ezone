@@ -79,14 +79,13 @@ const UserProfileDialog = props => {
   };
 
   const handleSelectChange = name => event => {
-    setValues({...values, [name]: event.target.value});
+    setValues({ ...values, [name]: event.target.value });
   };
 
   const handleChange = name => event => {
-    setValues({...values, [name]: event.target.value});
+    setValues({ ...values, [name]: event.target.value });
   };
 
-  console.log(values, "values form")
 
   return (
     <div>
@@ -173,7 +172,7 @@ const UserProfileDialog = props => {
             onClick={() => updateUserProfile(values)}
             color="primary"
             variant="contained"
-            disabled={loading? loading : !canBeSubmitted()}
+            disabled={loading ? loading : !canBeSubmitted()}
             endIcon={loading && <CircularProgress size={20} />}
           >
             Save

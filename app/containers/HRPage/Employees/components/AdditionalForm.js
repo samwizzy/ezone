@@ -15,7 +15,7 @@ export const AdditionalForm = props => {
 
   const canSubmitForm = () => {
     const { about } = form
-    return about.length > 0
+    return about
   }
 
   return (

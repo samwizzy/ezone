@@ -164,8 +164,8 @@ const UserProfile = props => {
                   {currentUser.signature ? (
                     <Signature currentUser={currentUser} />
                   ) : (
-                    <NoSignature currentUser={currentUser} />
-                  )}
+                      <NoSignature currentUser={currentUser} />
+                    )}
                 </TabPanel>
               </div>
             </Paper>
@@ -178,7 +178,7 @@ const UserProfile = props => {
 
 UserProfile.propTypes = {
   loading: PropTypes.bool,
-  currentUser: PropTypes.object,
+  currentUser: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   openEditUserProfileDialog: PropTypes.func,
 };
 

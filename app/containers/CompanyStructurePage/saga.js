@@ -64,12 +64,10 @@ export function* createNewPartyGroupSaga() {
     });
 
     if (response.status === 400 || response.status === 500) {
-      throw response
+      yield put(AppActions.openSnackBar({ message: 'Party Group Created Successfully', status: 'success' }));
     }
 
-    yield put(
-      Actions.createNewPartyGroupSuccessAction(response),
-    );
+    yield put(Actions.createNewPartyGroupSuccessAction(response));
     yield put(Actions.getPartyGroupAction());
     yield put(Actions.closeNewPartyGroupDialog());
     yield put(AppActions.openSnackBar({ message: 'Party Group Created Successfully', status: 'success' }));
@@ -460,7 +458,8 @@ export function* companyDetail() {
 
     yield put(Actions.getCompanyInfoSuccess(response));
   } catch (err) {
-    yield put(Actions.getCompanyInfoError(err.error));
+    yield put(Actions.getCompanyInfoError(err.message));
+    yield put(AppActions.openSnackBar({ message: err.message, status: 'warning' }));
     console.log(err.message, "getting comany info")
   }
 }

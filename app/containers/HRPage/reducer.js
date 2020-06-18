@@ -322,21 +322,31 @@ const hrReducer = (state = initialState, action) =>
           roles: action.payload
         };
         break;
+      case Constants.GET_EMPLOYEES:
+        return {
+          ...state,
+          loading: true,
+        };
+        break;
       case Constants.GET_EMPLOYEES_SUCCESS:
         return {
           ...state,
+          loading: false,
           employees: action.payload
         };
         break;
-      case Constants.GET_EMPLOYEE_SUCCESS:
+      case Constants.GET_EMPLOYEE:
+        console.log("you just hit the getEmployee reducer")
         return {
           ...state,
-          employee: action.payload
+          loading: true,
         };
         break;
       case Constants.GET_EMPLOYEE_SUCCESS:
+        console.log(action.payload, "you just hit the getEmployee success")
         return {
           ...state,
+          loading: false,
           employee: action.payload
         };
         break;
@@ -355,7 +365,7 @@ const hrReducer = (state = initialState, action) =>
       case Constants.CLOSE_EDIT_EMPLOYEE_DIALOG:
         return {
           ...state,
-          empDialog: { ...state.empDialog, props: { open: false }, data: null },
+          empDialog: { ...state.empDialog, props: { open: false }, type: 'new', data: null },
         };
         break;
       case Constants.CLOSE_NEW_EMPLOYEE_DIALOG:

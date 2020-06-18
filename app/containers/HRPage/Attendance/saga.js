@@ -115,7 +115,7 @@ export function* getDepartments() {
 export function* getBranches() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetBranches}?orgId=${user.organisation.id}&tagId=1`;
+  const requestURL = `${Endpoints.GetBranches}?orgId=${user && user.organisation.id}&tagId=1`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -136,7 +136,7 @@ export function* getRoles() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
 
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetRoles}?orgId=${user.organisation.orgId}&type=ROLE`;
+  const requestURL = `${Endpoints.GetRoles}?orgId=${user && user.organisation.orgId}&type=ROLE`;
 
   try {
     const response = yield call(request, requestURL, {
