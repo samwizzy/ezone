@@ -480,17 +480,19 @@ export function* updateCompanyDetail() {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getCompanyInfo());
     yield put(Actions.updateCompanyInfoSuccess(response));
     yield put(Actions.closeEditCompanyDialog());
     yield put(AppActions.openSnackBar({ message: 'Company Profile Update Successfully', status: 'success' }));
   } catch (err) {
-    yield put(Actions.updateCompanyInfoError(err));
-    yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+    if (err.response.status === 500) {
+      yield put(Actions.updateCompanyInfoError(err));
+      yield put(AppActions.openSnackBar({ message: 'Interval Server Error', status: 'error' }));
+    } else if (err.response.status === 400) {
+      yield put(Actions.updateCompanyInfoError(err));
+      yield put(AppActions.openSnackBar({ message: 'Something Went Wrong', status: 'warning' }));
+    }
   }
 }
 

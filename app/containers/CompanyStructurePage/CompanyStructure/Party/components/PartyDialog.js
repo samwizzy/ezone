@@ -102,7 +102,7 @@ const PartyDialog = props => {
   const canBeSubmitted = () => {
     const { partyHead, assistantPartyHead, name, description } = values;
     return (
-      partyHead && assistantPartyHead && name.length > 0 && description.length > 0
+      name.length > 0 && description.length > 0
     );
   };
 

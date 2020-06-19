@@ -111,10 +111,10 @@ const App = props => {
                     path="/organization"
                     component={organizationPage}
                   />
-                  <PrivateRoute exact path="/users" component={UsersPage} />
+                  {/* <PrivateRoute exact path="/users" component={UsersPage} /> */}
                   <PrivateRoute
                     exact
-                    path="/users/employees"
+                    path="/users"
                     component={Employees}
                   />
                   <PrivateRoute

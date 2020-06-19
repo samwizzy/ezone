@@ -8,6 +8,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
+import { withRouter } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -19,7 +20,9 @@ import ModuleLayout from './components/ModuleLayout'
 import AgeProfileReport from './AgeProfileReport/AgeProfileReport'
 import GenderProfileReport from './GenderProfileReport/GenderProfileReport'
 
-export function DashboardPage() {
+export function DashboardPage({ match }) {
+  const { params } = match
+  console.log(params, "params dashboard")
 
   return (
     <div>
@@ -54,6 +57,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(DashboardPage);

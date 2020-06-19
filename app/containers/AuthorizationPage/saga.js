@@ -60,11 +60,6 @@ export function* login({ payload }) {
 
     console.log(response, "login response 8")
 
-    if (response.error === "invalid_token") {
-      yield put(AppActions.loginErrorAction(response.error_description));
-      yield put(AppActions.openSnackBar({ message: response.error_description, status: 'error' }));
-    }
-
     localStorage.setItem('access_token', response.access_token);
     localStorage.setItem('refresh_token', response.refresh_token);
     localStorage.setItem('expires_in', response.expires_in);
@@ -73,10 +68,14 @@ export function* login({ payload }) {
     yield put(AppActions.getUserProfileAction(response.access_token));
 
   } catch (err) {
-    console.log(err.message, "login error")
-
-    yield put(AppActions.loginErrorAction(err.message));
-    yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+    console.log(err.response, "login error")
+    if (err.response.status === 401 || err.response.status === 400) {
+      yield put(AppActions.loginErrorAction('Username or password is invalid'));
+      yield put(AppActions.openSnackBar({ message: 'Username or password is invalid', status: 'error' }));
+    } else if (err.response.status === 500) {
+      yield put(AppActions.loginErrorAction('Interval Server Error'));
+      yield put(AppActions.openSnackBar({ message: 'Interval Server Error', status: 'error' }));
+    }
   }
 }
 

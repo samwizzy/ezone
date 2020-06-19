@@ -36,16 +36,16 @@ const ColorDialog = props => {
   const { colorDialog, closeEditColorDialog, updateCompanyInfoAction } = props;
   const classes = useStyles();
 
-  const [values, setValues] = useState({...colorDialog.data});
+  const [values, setValues] = useState({ ...colorDialog.data });
 
   const handleChange = name => color => {
     console.log(color, "event fr color")
-    setValues({ ...values, [name]: color });
+    setValues({ ...colorDialog.data, [name]: color });
   };
 
   const uploadFileAction = file => {
     setValues({
-      ...values,
+      ...colorDialog.data,
       logo: file,
     });
   };
@@ -54,6 +54,8 @@ const ColorDialog = props => {
     // eslint-disable-next-line no-unused-expressions
     colorDialog.type === 'new' ? '' : closeEditColorDialog();
   };
+
+  console.log(values, "update values")
 
   return (
     <div>
@@ -77,45 +79,45 @@ const ColorDialog = props => {
             {colorDialog.type === 'new' ? (
               <div />
             ) : (
-              <React.Fragment>
-                <ColorPicker
-                  name="color"
-                  defaultValue="#000000"
-                  value={values.color || ''}
-                  variant="outlined"
-                  onChange={handleChange('color')}
-                  label="Choose Company Color"
-                  margin="normal"
-                  fullWidth
-                  helperText={`Color selected: ${values.color}`}
-                />
-                <PaperDropzone uploadFileAction={uploadFileAction} />
-              </React.Fragment>
-            )}
+                <React.Fragment>
+                  <ColorPicker
+                    name="color"
+                    defaultValue="#000000"
+                    value={values.color || ''}
+                    variant="outlined"
+                    onChange={handleChange('color')}
+                    label="Choose Company Color"
+                    margin="normal"
+                    fullWidth
+                    helperText={`Color selected: ${values.color}`}
+                  />
+                  <PaperDropzone uploadFileAction={uploadFileAction} />
+                </React.Fragment>
+              )}
           </DialogContent>
           {colorDialog.type === 'new' ? (
             <div />
           ) : (
-            <DialogActions>
-              <Button
-                onClick={() => {
-                  updateCompanyInfoAction(values);
-                  closeComposeDialog();
-                }}
-                color="primary"
-                variant="contained"
-              >
-                Upload
+              <DialogActions>
+                <Button
+                  onClick={() => {
+                    updateCompanyInfoAction(values);
+                    closeComposeDialog();
+                  }}
+                  color="primary"
+                  variant="contained"
+                >
+                  Upload
               </Button>
-              <Button
-                onClick={() => closeComposeDialog()}
-                color="primary"
-                variant="outlined"
-              >
-                Cancel
+                <Button
+                  onClick={() => closeComposeDialog()}
+                  color="primary"
+                  variant="outlined"
+                >
+                  Cancel
               </Button>
-            </DialogActions>
-          )}
+              </DialogActions>
+            )}
         </Dialog>
       )}
     </div>

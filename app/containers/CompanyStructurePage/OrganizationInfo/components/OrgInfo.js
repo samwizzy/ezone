@@ -132,6 +132,8 @@ const OrgInfo = props => {
     return ''
   }
 
+  console.log(companyInfo, "update companyInfo")
+
   return (
     <React.Fragment>
       <Paper className={classes.root}>

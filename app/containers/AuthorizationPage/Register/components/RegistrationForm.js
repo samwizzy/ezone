@@ -225,6 +225,7 @@ const RegistrationForm = props => {
                 }}
                 onChange={handleChange}
               />
+
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -277,7 +278,7 @@ const RegistrationForm = props => {
                     variant="outlined"
                     placeholder="Select Country"
                     fullWidth
-                    className={classes.textField}
+                    margin="normal"
                   />
                 )}
               />
