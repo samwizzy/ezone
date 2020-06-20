@@ -32,6 +32,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const initialState = {
+  name: '',
+  description: '',
+}
+
 const PartyGroupDialog = props => {
   const {
     dispatchCreateNewPartyGroupAction,
@@ -41,25 +46,25 @@ const PartyGroupDialog = props => {
     updatePartyGroupAction,
   } = props;
 
-  useEffect(() => {
-    setValues({ ...newPartyGroupDialog.data });
-  }, [newPartyGroupDialog.data]);
   const classes = useStyles();
-  const [values, setValues] = React.useState({
-    name: '',
-    description: '',
-  });
+  const [values, setValues] = React.useState({ ...initialState });
+
+  useEffect(() => {
+    newPartyGroupDialog.type === 'new' ?
+      setValues({ ...initialState }) :
+      setValues({ ...newPartyGroupDialog.data })
+  }, [newPartyGroupDialog.data]);
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
 
   const handleSubmit = () => {
-    {
-      newPartyGroupDialog.type === 'new' ?
-        dispatchCreateNewPartyGroupAction(values) : updatePartyGroupAction(values)
-    }
+    newPartyGroupDialog.type === 'new' ?
+      dispatchCreateNewPartyGroupAction(values) : updatePartyGroupAction(values)
   };
+
+  console.log(newPartyGroupDialog, "newPartyGroupDialog")
 
   const canBeSubmitted = () => {
     const { name, description } = values;

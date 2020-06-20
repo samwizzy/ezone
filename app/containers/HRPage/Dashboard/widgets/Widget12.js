@@ -1,5 +1,6 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
+import { Link } from 'react-router-dom'
 import { withStyles, Card, CardContent, CardHeader, Button } from '@material-ui/core'
 
 const styles = theme => ({
@@ -36,7 +37,7 @@ export default withStyles(styles)(class Widget12 extends React.Component {
 			<Card className={classes.root}>
 				<CardHeader
 					action={
-						<Button color="primary" aria-label="settings">
+						<Button color="primary" aria-label="settings" component={Link} to="/hr/dashboard/age-report">
 							view report
 						</Button>
 					}

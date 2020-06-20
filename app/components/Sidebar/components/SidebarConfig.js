@@ -19,7 +19,7 @@ const SidebarConfig = [
       { id: 1, name: 'Dashboard', url: '/dashboard', icon: 'dashboard' },
       { id: 2, name: 'Organization', url: '/organization', icon: 'business_center' },
       { id: 3, name: 'Applications', url: '/home', icon: 'apps' },
-      { id: 4, name: 'Employees', url: '/users/employees', icon: 'group' },
+      { id: 4, name: 'Employees', url: '/users', icon: 'group' },
       { id: 5, name: 'User Profile', url: '/user-profile', icon: 'person' },
       { id: 6, name: 'Work Order', url: '/work-order', icon: 'list_alt' },
       { id: 7, name: 'Security', url: '/security', icon: 'security' },

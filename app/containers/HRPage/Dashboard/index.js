@@ -32,9 +32,12 @@ export function DashboardPage({ match }) {
       </Helmet>
 
       <ModuleLayout>
-        <Dashboard />
-        {/* <AgeProfileReport /> */}
-        {/* <GenderProfileReport /> */}
+        {params.status === 'age-report' ?
+          <AgeProfileReport /> :
+          params.status === 'gender-report' ?
+            <GenderProfileReport /> :
+            <Dashboard />
+        }
       </ModuleLayout>
     </div>
   );

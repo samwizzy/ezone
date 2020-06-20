@@ -2,7 +2,8 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, Avatar, Breadcrumbs, Box, Button, Divider, IconButton, Link, List, ListItem, ListItemText, ListItemAvatar, MenuItem, Table, TableRow, TableCell, TableBody, TextField, Grid, Paper, Typography, Toolbar } from '@material-ui/core';
+import { AppBar, Avatar, Breadcrumbs, Box, Button, Divider, IconButton, Link, List, ListItem, ListItemText, ListItemAvatar, MenuItem, Tooltip, Table, TableRow, TableCell, TableBody, TextField, Grid, Paper, Typography, Toolbar } from '@material-ui/core';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import MUIDataTable from 'mui-datatables'
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -45,7 +46,7 @@ const groups = ['Department', 'Branch', 'Roles', 'Location'];
 
 const AgeProfileReport = props => {
 	const classes = useStyles();
-	const { loading } = props;
+	const { loading, history } = props;
 	const [group, setGroup] = React.useState('')
 
 	React.useEffect(() => {
@@ -129,6 +130,13 @@ const AgeProfileReport = props => {
 				<Grid item xs={12}>
 					<AppBar position="static" color="inherit" elevation={1}>
 						<Toolbar variant="dense">
+							<Tooltip title="Back to Dashboard">
+								<IconButton
+									onClick={() => history.push('/hr/dashboard')}
+								>
+									<ArrowBackIcon className={classes.icon} />
+								</IconButton>
+							</Tooltip>
 							<Typography variant="h6" className={classes.title}>
 								Age Profile Report
               </Typography>
