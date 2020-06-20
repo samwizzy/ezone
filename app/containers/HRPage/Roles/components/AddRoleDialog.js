@@ -20,20 +20,22 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const initialState = {
+  name: '',
+  type: 'ROLE'
+}
+
 function AddRoleDialog(props) {
   const classes = useStyles();
   const { closeNewRoleDialog, dialog, createRole } = props;
-  const [form, setForm] = React.useState({
-    name: '',
-    type: 'ROLE'
-  });
+  const [form, setForm] = React.useState({ ...initialState });
 
   console.log(dialog, "dialog checking")
 
   React.useEffect(() => {
-    if (dialog.type == 'edit') {
-      setForm({ ...form })
-    }
+    dialog.type == 'edit' ?
+      setForm({ ...form }) :
+      setForm({ ...initialState })
   }, [dialog])
 
   const canSubmitForm = () => {
@@ -46,8 +48,11 @@ function AddRoleDialog(props) {
     setForm({ ...form, [name]: value });
   }
 
+  const handleReset = () => setForm({ ...initialState })
+
   const handleSubmit = () => {
     createRole(form)
+    handleReset()
   }
 
   console.log(form, 'checking form role...')

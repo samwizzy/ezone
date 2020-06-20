@@ -111,7 +111,7 @@ function AddBranchDialog(props) {
               <TextField
                 name="name"
                 label="Branch Name"
-                id="outlined-title"
+                id="branch-name"
                 fullWidth
                 margin="normal"
                 variant="outlined"
@@ -122,9 +122,9 @@ function AddBranchDialog(props) {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                name="branch-description"
+                name="description"
                 label="Description"
-                id="outlined-title"
+                id="branch-description"
                 fullWidth
                 margin="normal"
                 variant="outlined"
@@ -187,18 +187,6 @@ function AddBranchDialog(props) {
             </Grid>
           </Grid>
           {/*
-            <Grid item xs={12}>
-              <TextField
-              name="description"
-              label="Description"
-              id="outlined-title"
-              fullWidth
-              variant="outlined"
-              size="small"
-              value={form.description}
-              onChange={handleChange}
-              />
-            </Grid>
             <Grid item xs={12}>
               <TextField
                 id="partyHead"

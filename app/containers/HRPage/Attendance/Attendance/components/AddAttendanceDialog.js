@@ -78,6 +78,7 @@ function AddAttendanceDialog(props) {
   }
 
   console.log(form, "form")
+  console.log(employees, "employees")
 
   return (
     <div>

@@ -95,7 +95,7 @@ const Widget2 = (props) => {
 										<TableBody>
 											{departments.length > 0 && departments.slice(0, 4).map((dept, i) =>
 												<TableRow key={i}>
-													<TableCell>{dept.employees.length} {dept.name}</TableCell>
+													<TableCell>{/*dept.employees.length*/} {dept.name}</TableCell>
 												</TableRow>
 											)}
 										</TableBody>

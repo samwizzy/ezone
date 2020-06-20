@@ -11,6 +11,9 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 import * as Endpoints from '../../../components/Endpoints';
 
+function errorHandler(promise) {
+  return promise
+}
 /**
  * Github repos request/response handler
  */
@@ -80,15 +83,19 @@ export function* getEmployees() {
   const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}/${user && user.organisation.orgId}`;
 
   try {
-    const employeesResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
-    yield put(Actions.getEmployeesSuccess(employeesResponse));
+    console.log(response, "get employee response")
+    yield put(Actions.getEmployeesSuccess(response));
   } catch (err) {
+    if (err.response.status === 500) {
+      yield put(AppActions.openSnackBar({ message: "Interval Server Error", status: 'error' }));
+    }
     // yield put(Actions.getEmployeesError(err));
   }
 }
@@ -168,7 +175,6 @@ export function* createAttendance({ type, payload }) {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 500 || response.status === 400) throw response;
 
     console.log(response, 'ATENDANCE RESPONSE');
 
@@ -176,9 +182,12 @@ export function* createAttendance({ type, payload }) {
     yield put({ type: Constants.CLOSE_NEW_ATTENDANCE_DIALOG });
     yield put({ type: Constants.GET_ATTENDANCES });
   } catch (err) {
-    yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
-    yield put({ type: Constants.CLOSE_NEW_ATTENDANCE_DIALOG });
-    yield put(Actions.createAttendanceError(err));
+    const error = yield call(errorHandler, err.response.json())
+    if (error.status === 500 || error.status === 400) {
+      yield put(AppActions.openSnackBar({ message: error.message, status: 'error' }));
+      yield put({ type: Constants.CLOSE_NEW_ATTENDANCE_DIALOG });
+      yield put(Actions.createAttendanceError(error.message));
+    }
   }
 }
 
@@ -199,10 +208,11 @@ export function* createShift({ type, payload }) {
     });
 
     console.log(response, 'SHIFT RESPONSE');
-    alert("SHIFT created");
+    yield put(AppActions.openSnackBar({ message: "Shift created successfully", status: 'success' }));
     yield put({ type: Constants.CLOSE_NEW_SHIFT_DIALOG });
     yield put({ type: Constants.GET_SHIFTS });
   } catch (err) {
+    yield put(AppActions.openSnackBar({ message: 'Internal Server Error', status: 'error' }));
     // yield put(Actions.getUtilityFilesError(err));
     console.log(err.message, "shift err message")
   }
@@ -230,7 +240,7 @@ export function* assignShift({ payload }) {
     yield put({ type: Constants.CLOSE_NEW_EMPLOYEE_SHIFT_DIALOG });
     yield put({ type: Constants.GET_EMPLOYEES });
   } catch (err) {
-    // yield put(AppActions.openSnackBar({message: signupRes.message, status: 'error'}));
+    yield put(AppActions.openSnackBar({ message: 'Internal Server Error', status: 'error' }));
     console.log(err.message, "assign shift err message")
   }
 }

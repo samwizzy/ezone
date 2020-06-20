@@ -21,7 +21,6 @@ import * as AppSelectors from '../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Person from '@material-ui/icons/Person';
 import { AddEmployee } from '../components/AddButton';
-// import AddEmployeeDialog from './components/AddEmployeeDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -184,8 +183,6 @@ const EmployeesApp = props => {
           />
         </Grid>
       </Grid>
-
-      {/* <AddEmployeeDialog /> */}
     </div>
   );
 };

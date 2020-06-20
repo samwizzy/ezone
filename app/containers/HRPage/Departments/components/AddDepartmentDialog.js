@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
-import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, MenuItem, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
+import { AppBar, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, MenuItem, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 
 import * as Actions from '../../actions';
@@ -21,24 +21,28 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const initialState = {
+  name: '',
+  description: '',
+  partyHead: { id: '' },
+  assistantPartyHead: { id: '' },
+  partyGroupId: '',
+  tagId: 5
+}
+
 function AddDepartmentDialog(props) {
   const classes = useStyles();
-  const { closeNewDepartmentDialog, createDepartment, partyGroups, getEmployees, party_tags, PartyTags, employees, employee, getBranches, branches, departments, dialog } = props;
-  const [form, setForm] = React.useState({
-    name: '',
-    description: '',
-    partyHead: { id: '' },
-    assistantPartyHead: { id: '' },
-    partyGroupId: '',
-    tagId: 5
-  });
+  const { loading, closeNewDepartmentDialog, createDepartment, partyGroups, getEmployees, party_tags, PartyTags, employees, employee, getBranches, branches, departments, dialog } = props;
+  const [form, setForm] = React.useState({ ...initialState });
 
   console.log(dialog, "dialog checking")
 
 
   React.useEffect(() => {
-    if (dialog.type == 'edit') {
+    if (dialog.type === 'edit') {
       setForm({ ...form })
+    } else {
+      setForm({ ...initialState })
     }
   }, [dialog])
 
@@ -87,7 +91,7 @@ function AddDepartmentDialog(props) {
               <TextField
                 name="name"
                 label="Department Name"
-                id="outlined-title"
+                id="department-name"
                 fullWidth
                 margin="normal"
                 variant="outlined"
@@ -124,9 +128,9 @@ function AddDepartmentDialog(props) {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                name="dept-description"
+                name="description"
                 label="Description"
-                id="outlined-title"
+                id="department-description"
                 fullWidth
                 margin="normal"
                 variant="outlined"
@@ -137,7 +141,7 @@ function AddDepartmentDialog(props) {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                id="partyHead"
+                id="department-partyhead"
                 name="partyHead"
                 placeholder="Department Lead"
                 select
@@ -163,7 +167,7 @@ function AddDepartmentDialog(props) {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                id="assistantPartyHead"
+                id="department-assistant-partyhead"
                 name="assistantPartyHead"
                 placeholder="Assistant Department Lead"
                 select
@@ -194,7 +198,7 @@ function AddDepartmentDialog(props) {
           <Button onClick={closeNewDepartmentDialog} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} variant="contained" disabled={!canSubmitForm()} color="primary">
+          <Button onClick={handleSubmit} variant="contained" disabled={loading ? loading : !canSubmitForm()} color="primary" endIcon={loading && <CircularProgress size={20} />}>
             Save
           </Button>
         </DialogActions>
@@ -208,8 +212,8 @@ AddDepartmentDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  dialog: Selectors.makeSelectDeptDialog(),
   loading: Selectors.makeSelectLoading(),
+  dialog: Selectors.makeSelectDeptDialog(),
   employees: Selectors.makeSelectEmployees(),
   employee: Selectors.makeSelectEmployee(),
   departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
@@ -222,7 +226,6 @@ function mapDispatchToProps(dispatch) {
   return {
     closeNewDepartmentDialog: () => dispatch(Actions.closeNewDepartmentDialog()),
     createDepartment: (data) => dispatch(Actions.createDepartment(data)),
-    dispatch,
   };
 }
 

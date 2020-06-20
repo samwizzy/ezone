@@ -28,12 +28,6 @@ import EducationBackgroundDialog from './components/EducationBackgroundDialog';
 
 const key = 'hrPage';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-}));
-
 export function EmployeePage(props) {
   const { getEmployees, match } = props;
   const { params } = match

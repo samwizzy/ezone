@@ -92,7 +92,7 @@ const Widget3 = (props) => {
 										<TableBody>
 											{branches.length > 0 && branches.slice(0, 4).map((branch, i) =>
 												<TableRow key={i}>
-													<TableCell>{branch.employees.length} {branch.name}</TableCell>
+													<TableCell>{/*branch.employees.length*/} {branch.name}</TableCell>
 												</TableRow>
 											)}
 										</TableBody>

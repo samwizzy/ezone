@@ -11,6 +11,19 @@ import * as Constants from './constants';
  *
  * @return {object} An action object with a type of CHANGE_USERNAME
  */
+export function getEmployees() {
+  return {
+    type: Constants.GET_EMPLOYEES,
+  };
+}
+
+export function getEmployeesSuccess(data) {
+  return {
+    type: Constants.GET_EMPLOYEES_SUCCESS,
+    payload: data
+  };
+}
+
 export function getLeaveRequest() {
   return {
     type: Constants.GET_LEAVE_REQUEST,

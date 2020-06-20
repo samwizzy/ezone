@@ -39,10 +39,10 @@ const initialState = {
 
 const PartyGroupDialog = props => {
   const {
-    dispatchCreateNewPartyGroupAction,
+    createNewPartyGroupAction,
     loading,
     newPartyGroupDialog,
-    dispatchCloseNewPartyPartyDialog,
+    closeNewPartyGroupDialog,
     updatePartyGroupAction,
   } = props;
 
@@ -50,21 +50,26 @@ const PartyGroupDialog = props => {
   const [values, setValues] = React.useState({ ...initialState });
 
   useEffect(() => {
+    console.log("i am triggered in componentdidmount")
     newPartyGroupDialog.type === 'new' ?
       setValues({ ...initialState }) :
       setValues({ ...newPartyGroupDialog.data })
-  }, [newPartyGroupDialog.data]);
+  }, [newPartyGroupDialog.type]);
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
 
+  const handleReset = () => setValues({ ...initialState })
+
   const handleSubmit = () => {
-    newPartyGroupDialog.type === 'new' ?
-      dispatchCreateNewPartyGroupAction(values) : updatePartyGroupAction(values)
+    // newPartyGroupDialog.type === 'new' ?
+    //   createNewPartyGroupAction(values) : updatePartyGroupAction(values)
+    handleReset()
   };
 
   console.log(newPartyGroupDialog, "newPartyGroupDialog")
+  console.log(values, "values")
 
   const canBeSubmitted = () => {
     const { name, description } = values;
@@ -76,7 +81,7 @@ const PartyGroupDialog = props => {
       <Dialog
         {...newPartyGroupDialog.props}
         TransitionComponent={Transition}
-        onClose={dispatchCloseNewPartyPartyDialog}
+        onClose={closeNewPartyGroupDialog}
         keepMounted
         aria-labelledby="form-dialog-title"
       >
@@ -129,7 +134,7 @@ const PartyGroupDialog = props => {
           </Button>
 
           <Button
-            onClick={() => dispatchCloseNewPartyPartyDialog()}
+            onClick={() => { closeNewPartyGroupDialog(); handleReset(); }}
             color="primary"
             variant="outlined"
           >
@@ -143,10 +148,10 @@ const PartyGroupDialog = props => {
 
 PartyGroupDialog.propTypes = {
   updatePartyGroupAction: PropTypes.func,
-  dispatchCloseNewPartyPartyDialog: PropTypes.func,
+  closeNewPartyGroupDialog: PropTypes.func,
   newPartyGroupDialog: PropTypes.object,
   loading: PropTypes.bool,
-  dispatchCreateNewPartyGroupAction: PropTypes.func,
+  createNewPartyGroupAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -156,13 +161,9 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchCloseNewPartyPartyDialog: () =>
-      dispatch(Actions.closeNewPartyGroupDialog()),
-    dispatchCreateNewPartyGroupAction: evt =>
-      dispatch(Actions.createNewPartyGroupAction(evt)),
-    updatePartyGroupAction: evt =>
-      dispatch(Actions.updatePartyGroupAction(evt)),
-    dispatch,
+    closeNewPartyGroupDialog: () => dispatch(Actions.closeNewPartyGroupDialog()),
+    createNewPartyGroupAction: evt => dispatch(Actions.createNewPartyGroupAction(evt)),
+    updatePartyGroupAction: evt => dispatch(Actions.updatePartyGroupAction(evt)),
   };
 }
 

@@ -98,7 +98,7 @@ function LeaveRequestDialog(props) {
               <TableRow>
                 <TableCell colSpan={2}>
                   <Autocomplete
-                    id="combo-box-demo"
+                    id="leave-employee"
                     size="small"
                     options={[]}
                     getOptionLabel={option => option.label}
@@ -155,7 +155,7 @@ function LeaveRequestDialog(props) {
               <TableRow>
                 <TableCell colSpan={2}>
                   <Autocomplete
-                    id="combo-box-demo"
+                    id="leave-type"
                     size="small"
                     options={[]}
                     getOptionLabel={option => option.label}

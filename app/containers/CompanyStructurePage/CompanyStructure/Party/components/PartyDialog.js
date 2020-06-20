@@ -83,7 +83,7 @@ const PartyDialog = props => {
   const handleSubmit = values => {
     newPartyDialog.type === 'new' ?
       dispatchCreateNewPartyAction(values) : updatePartyAction(values);
-    setValues('');
+    setValues({ ...initialState });
   }
 
   const handleSelectChange = name => (event, value) => {

@@ -163,8 +163,7 @@ const PartyGroupList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const data =
-            partyGroupData && partyGroupData.find(group => group.id === value);
+          const data = partyGroupData && partyGroupData.find(group => group.id === value);
 
           return (
             <div>
@@ -224,6 +223,10 @@ const PartyGroupList = props => {
     ),
     elevation: 0,
   };
+
+  if (loading) {
+    return <LoadingIndicator />
+  }
 
   if (!partyGroupData.length) {
     return (

@@ -22,7 +22,7 @@ export function PartyGroupApp(props) {
   const { match } = props;
   const { params } = match;
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   return (
     <div>
