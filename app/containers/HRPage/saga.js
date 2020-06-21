@@ -12,7 +12,9 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 import * as Endpoints from '../../components/Endpoints';
 
-
+function errorHandler(promise) {
+  return promise
+}
 /**
  * Github repos request/response handler
  */
@@ -85,16 +87,16 @@ export function* createEmployee({ type, payload }) {
     });
 
     console.log(response, "response create employee")
-    if (response.status === 400 || response.status === 500) {
-      throw response.error
-    }
 
     yield put(AppActions.openSnackBar({ message: "Employee created", status: 'success' }));
     yield put({ type: Constants.GET_EMPLOYEES });
     yield put({ type: Constants.CLOSE_NEW_EMPLOYEE_DIALOG });
   } catch (err) {
-    // yield put(AppActions.openSnackBar({ message: err, status: 'error' }));
-    console.log(err, "err message")
+    const error = yield call(errorHandler, err.response.json())
+    console.log(error, "create employees error")
+    if (error.status === 400 || error.status === 500) {
+      yield put(AppActions.openSnackBar({ message: error.message, status: 'error' }));
+    }
   }
 }
 
@@ -193,7 +195,7 @@ export function* getDepartmentsByOrgIdApi() {
   } catch (err) {
     console.log(err.response, "dept error message")
     if (err.response.status === 400) {
-
+      yield put(AppActions.openSnackBar({ message: "Something Went Wrong", status: 'warning' }));
     }
   }
 }
