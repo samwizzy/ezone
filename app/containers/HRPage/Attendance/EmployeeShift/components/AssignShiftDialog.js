@@ -6,7 +6,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { withStyles, AppBar, Avatar, Box, Button, Chip, Checkbox, Dialog, DialogActions, DialogContent, Divider, MenuItem, Popover, Slide, Tabs, Tab, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
+import { withStyles, AppBar, Avatar, Box, Button, CircularProgress, Chip, Checkbox, Dialog, DialogActions, DialogContent, Divider, MenuItem, Popover, Slide, Tabs, Tab, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
@@ -98,7 +98,7 @@ function a11yProps(index) {
 
 function AssignShiftDialog(props) {
   const classes = useStyles();
-  const { closeNewEmployeeShiftDialog, assignShift, assignShiftToParty, shifts, employees, departments, branches, roles, dialog } = props;
+  const { loading, closeNewEmployeeShiftDialog, assignShift, assignShiftToParty, shifts, employees, departments, branches, roles, dialog } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [value, setValue] = React.useState(0);
   const [form, setForm] = React.useState({
@@ -378,7 +378,7 @@ function AssignShiftDialog(props) {
           <Button onClick={closeNewEmployeeShiftDialog} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={!canSubmitForm()} color="primary">
+          <Button onClick={handleSubmit} disabled={loading ? loading : !canSubmitForm()} color="primary" endIcon={loading && <CircularProgress size={20} />}>
             Save
           </Button>
         </DialogActions>
@@ -393,6 +393,7 @@ AssignShiftDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  loading: Selectors.makeSelectLoading(),
   dialog: Selectors.makeSelectEmployeeShiftDialog(),
   employees: Selectors.makeSelectEmployees(),
   departments: Selectors.makeSelectDepartments(),

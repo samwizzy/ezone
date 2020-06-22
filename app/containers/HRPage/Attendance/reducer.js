@@ -64,6 +64,7 @@ const attdReducer = (state = initialState, action) =>
       case Constants.GET_ATTENDANCES_SUCCESS: {
         return {
           ...state,
+          loading: false,
           attendance: action.payload
         }
       };
@@ -76,6 +77,7 @@ const attdReducer = (state = initialState, action) =>
       case Constants.GET_EMPLOYEES_SUCCESS: {
         return {
           ...state,
+          loading: false,
           employees: action.payload
         }
       };
@@ -88,6 +90,7 @@ const attdReducer = (state = initialState, action) =>
       case Constants.GET_USERS_BY_SHIFT_SUCCESS: {
         return {
           ...state,
+          loading: false,
           employeeShifts: action.payload
         }
       };
@@ -100,6 +103,7 @@ const attdReducer = (state = initialState, action) =>
       case Constants.GET_DEPARTMENTS_SUCCESS: {
         return {
           ...state,
+          loading: false,
           departments: action.payload
         }
       };
@@ -112,6 +116,7 @@ const attdReducer = (state = initialState, action) =>
       case Constants.GET_BRANCHES_SUCCESS: {
         return {
           ...state,
+          loading: false,
           branches: action.payload
         }
       };
@@ -124,6 +129,7 @@ const attdReducer = (state = initialState, action) =>
       case Constants.GET_ROLES_SUCCESS: {
         return {
           ...state,
+          loading: false,
           roles: action.payload
         }
       };
@@ -165,7 +171,6 @@ const attdReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          assignShift: action.payload,
         };
       }
       case Constants.ASSIGN_SHIFT_SUCCESS: {
@@ -173,7 +178,6 @@ const attdReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          getAssignShift: action.payload,
         };
       }
       case Constants.GET_DAYS_SUCCESS: {
@@ -188,12 +192,17 @@ const attdReducer = (state = initialState, action) =>
           shifts: action.payload
         }
       };
+      case Constants.CREATE_SHIFT: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
       case Constants.CREATE_SHIFT_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-          getCreateShift: action.payload,
         };
       }
       case Constants.OPEN_NEW_ATTENDANCE_DIALOG: {
@@ -221,7 +230,6 @@ const attdReducer = (state = initialState, action) =>
         }
       };
       case Constants.OPEN_NEW_EMPLOYEE_SHIFT_DIALOG: {
-        console.log("i am open reducer employee shift")
         return {
           ...state,
           employeeShiftDialog: { ...state.employeeShiftDialog, props: { open: true } },

@@ -45,27 +45,6 @@ const makeSelectEmployeeShifts = () =>
     selectAttendance,
     subState => subState.employeeShifts,
   );
-const makeSelectCreateShift = () =>
-  createSelector(
-    selectAttendance,
-    subState => subState.createShift,
-  );
-const makeSelectCreateShiftSuccess = () =>
-  createSelector(
-    selectAttendance,
-    subState => subState.getCreateShift,
-  );
-
-const makeSelectAssignShift = () =>
-  createSelector(
-    selectAttendance,
-    subState => subState.assignShift,
-  );
-const makeSelectAssignShiftSuccess = () =>
-  createSelector(
-    selectAttendance,
-    subState => subState.getAssignShift,
-  );
 
 const makeSelectShiftDialog = () =>
   createSelector(
@@ -114,8 +93,4 @@ export {
   makeSelectDays,
   makeSelectShifts,
   makeSelectEmployeeShifts,
-  makeSelectCreateShift,
-  makeSelectCreateShiftSuccess,
-  makeSelectAssignShift,
-  makeSelectAssignShiftSuccess,
 };

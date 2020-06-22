@@ -17,7 +17,7 @@ import * as AppSelectors from '../../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
 import Person from '@material-ui/icons/Person';
-import {AddShift} from '../components/AddButton'
+import { AddShift } from '../components/AddButton'
 import AddShiftDialog from './components/AddShiftDialog'
 
 const useStyles = makeStyles(theme => ({
@@ -44,14 +44,14 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   icon: {
     color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.done': { color: green[500]},
+    '&.approved': { color: theme.palette.primary.main },
+    '&.inProgress': { color: orange[500] },
+    '&.done': { color: green[500] },
   }
 }));
 
 const shifts = [
-  {id: 1, name: 'General', startTime: '2010-01-01T05:06:07', endTime: '2010-01-01T05:06:07', endDate: '2010-01-01T05:06:07'}
+  { id: 1, name: 'General', startTime: '2010-01-01T05:06:07', endTime: '2010-01-01T05:06:07', endDate: '2010-01-01T05:06:07' }
 ]
 
 const ShiftList = props => {
@@ -84,7 +84,7 @@ const ShiftList = props => {
       options: {
         filter: true,
         sort: true,
-        
+
       }
     },
     {
@@ -93,12 +93,12 @@ const ShiftList = props => {
       options: {
         filter: true,
         sort: true,
-        
+
       }
     },
     {
       name: 'startDate',
-      label: 'Start name',
+      label: 'Start date',
       options: {
         filter: true,
         sort: true,
@@ -106,11 +106,11 @@ const ShiftList = props => {
     },
     {
       name: 'endDate',
-      label: 'End Date',
+      label: 'End date',
       options: {
         filter: true,
         sort: true,
-        
+
       }
     }
   ];
@@ -125,7 +125,7 @@ const ShiftList = props => {
     filter: false,
     customToolbar: () => <AddShift openDialog={openNewShiftDialog} />,
     rowsPerPage: 10,
-    rowsPerPageOptions: [10,25,50,100],
+    rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
       getAttendanceById(rowData[0])
     },

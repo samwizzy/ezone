@@ -7,7 +7,7 @@ import { compose } from 'redux';
 import _ from 'lodash';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import ScheduleIcon from '@material-ui/icons/Schedule';
-import { AppBar, Button, Checkbox, Grid, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormLabel, FormControlLabel, MenuItem, Radio, RadioGroup, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
+import { AppBar, Button, CircularProgress, Checkbox, Grid, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormLabel, FormControlLabel, MenuItem, Radio, RadioGroup, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
@@ -52,7 +52,7 @@ const DaysOfTheWeek = [
 
 function AddShiftDialog(props) {
   const classes = useStyles();
-  const { closeNewShiftDialog, dialog, days, createShift } = props;
+  const { loading, closeNewShiftDialog, dialog, days, createShift } = props;
   const [state, setState] = React.useState({ isOffDays: '', isShiftDays: false });
   const [form, setForm] = React.useState({
     resumptionTime: moment(new Date).format('YYYY-MM-DD hh:mm:ss'),
@@ -268,7 +268,7 @@ function AddShiftDialog(props) {
           <Button onClick={closeNewShiftDialog} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={!canSubmitForm()} color="primary">
+          <Button onClick={handleSubmit} disabled={loading ? loading : !canSubmitForm()} color="primary" endIcon={loading && <CircularProgress size={20} />}>
             Save
           </Button>
         </DialogActions>
@@ -283,6 +283,7 @@ AddShiftDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  loading: Selectors.makeSelectLoading(),
   dialog: Selectors.makeSelectShiftDialog(),
   days: Selectors.makeSelectDays(),
 });

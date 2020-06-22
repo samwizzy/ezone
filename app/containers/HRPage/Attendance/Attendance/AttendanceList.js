@@ -74,11 +74,7 @@ const AttendanceList = props => {
       options: {
         filter: true,
         sort: true,
-        customBodyRender: createdAt => {
-          return (
-            <Typography color='textSecondary'>{moment(createdAt).format('ll')}</Typography>
-          )
-        }
+        customBodyRender: createdAt => createdAt ? moment(createdAt).format('ll') : ''
       }
     },
     {

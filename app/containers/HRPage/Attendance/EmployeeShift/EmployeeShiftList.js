@@ -61,6 +61,8 @@ const EmployeeShiftList = props => {
     getUsersByShift(obj.id)
   }
 
+  console.log(employeeShifts, "employeeShifts")
+
   const usersOnShifts = employeeShifts && employeeShifts.length > 0 ? employeeShifts : employees
 
   const columns = [

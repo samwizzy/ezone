@@ -13,7 +13,7 @@ import {
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import ScheduleIcon from '@material-ui/icons/Schedule'
-import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, MenuItem, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
+import { AppBar, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, MenuItem, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
@@ -40,7 +40,7 @@ const status = [
 
 function AddAttendanceDialog(props) {
   const classes = useStyles();
-  const { createAttendance, employees, closeNewAttendanceDialog, dialog } = props;
+  const { loading, createAttendance, employees, closeNewAttendanceDialog, dialog } = props;
   const [form, setForm] = React.useState({
     userId: '',
     date: moment.utc(new Date).format(),
@@ -230,7 +230,7 @@ function AddAttendanceDialog(props) {
           <Button onClick={closeNewAttendanceDialog} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={!canSubmitForm()} color="primary">
+          <Button onClick={handleSubmit} disabled={loading ? loading : !canSubmitForm()} color="primary" endIcon={loading && <CircularProgress size={20} />}>
             Mark
           </Button>
         </DialogActions>
@@ -245,6 +245,7 @@ AddAttendanceDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  loading: Selectors.makeSelectLoading(),
   dialog: Selectors.makeSelectAttendanceDialog(),
   employees: Selectors.makeSelectEmployees(),
 });
