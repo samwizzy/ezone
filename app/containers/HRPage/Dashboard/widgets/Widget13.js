@@ -39,13 +39,13 @@ export default withStyles(styles)(class Widget13 extends React.Component {
 					subheader={
 						<>
 							<Link href="#">App Launching Event</Link> —
-							<span> 3rd March, 2020 </span>
+							<span> 22<sup>nd</sup> June, 2020 </span>
 						</>
 					}
 				/>
 				<CardContent>
 					<Typography variant="body1">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+						Due to the recent outbreak of the coronavirus that has shakened & ravaged the global economy, the company thought it wise & appropriate to announce that the entire staffs should be allowed to adopt a remote working systems to ameliorate the risk of contracting the virus as it possess a huge threat to our lives and that of our families, we trust that you'd do your best to stay safe. The company believes this will not affect our success but rather harness us to do more. Thanks.
 					</Typography>
 				</CardContent>
 			</Card>

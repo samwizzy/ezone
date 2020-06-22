@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { memo } from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { withRouter, Link } from "react-router-dom"
 import { Pie } from 'react-chartjs-2';
-import { Link } from 'react-router-dom'
 import { withStyles, Card, CardContent, CardHeader, Button } from '@material-ui/core'
+import * as Selectors from '../../selectors';
+import * as AppSelectors from '../../../App/selectors';
 
 const styles = theme => ({
 	root: {
@@ -14,30 +19,34 @@ const styles = theme => ({
 	},
 })
 
-const data = {
-	labels: [
-		'Red',
-		'Blue',
-		'Yellow'
-	],
-	datasets: [{
-		data: [300, 50, 100],
-		backgroundColor: [
-			'#FF6384',
-			'#36A2EB',
-			'#FFCE56'
-		],
-		hoverBackgroundColor: [
-			'#FF6384',
-			'#36A2EB',
-			'#FFCE56'
-		]
-	}]
-};
-
-export default withStyles(styles)(class Widget11 extends React.Component {
+class Widget11 extends React.Component {
 	render() {
-		const { classes } = this.props
+		const { classes, employees } = this.props
+
+		const male = employees && employees.filter(emp => emp.gender === 'Male').length
+		const female = employees && employees.filter(emp => emp.gender === 'Female').length
+		const notSpecified = employees && employees.filter(emp => (emp.gender !== 'Male' && emp.gender !== 'Female')).length
+
+		const data = {
+			labels: [
+				'Male',
+				'Female',
+				'Not Specified'
+			],
+			datasets: [{
+				data: [male, female, notSpecified],
+				backgroundColor: [
+					'#FF6384',
+					'#36A2EB',
+					'#FFCE56'
+				],
+				hoverBackgroundColor: [
+					'#FF6384',
+					'#36A2EB',
+					'#FFCE56'
+				]
+			}]
+		};
 
 		return (
 			<Card className={classes.root}>
@@ -55,4 +64,21 @@ export default withStyles(styles)(class Widget11 extends React.Component {
 			</Card>
 		);
 	}
-})
+}
+
+const mapStateToProps = createStructuredSelector({
+	employees: Selectors.makeSelectEmployees(),
+	user: AppSelectors.makeSelectCurrentUser(),
+});
+
+const withConnect = connect(
+	mapStateToProps,
+	null,
+);
+
+export default compose(
+	withStyles(styles),
+	withRouter,
+	withConnect,
+	memo,
+)(Widget11);

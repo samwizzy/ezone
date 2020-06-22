@@ -15,23 +15,29 @@ const styles = theme => ({
 })
 
 const data = {
-	labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+	labels: ['18 - 25 yrs', '26 - 35 yrs', '36 - 45 yrs', '46 - 55 yrs', '56 - 65 yrs'],
 	datasets: [
 		{
-			label: 'My First dataset',
+			label: 'Age Profile dataset',
 			backgroundColor: 'rgba(255,99,132,0.2)',
 			borderColor: 'rgba(255,99,132,1)',
 			borderWidth: 1,
 			hoverBackgroundColor: 'rgba(255,99,132,0.4)',
 			hoverBorderColor: 'rgba(255,99,132,1)',
-			data: [65, 59, 80, 81, 56, 55, 40]
+			data: [65, 59, 80, 81, 56]
 		}
 	]
 };
 
 export default withStyles(styles)(class Widget12 extends React.Component {
 	render() {
-		const { classes } = this.props
+		const { classes, employees } = this.props
+
+		const age18_25 = employees && employees.filter(emp => emp.age >= 18 && emp.age <= 25).length
+		const age26_35 = employees && employees.filter(emp => emp.age >= 26 && emp.age <= 35).length
+		const age36_45 = employees && employees.filter(emp => emp.age >= 36 && emp.age <= 45).length
+		const age46_55 = employees && employees.filter(emp => emp.age >= 46 && emp.age <= 55).length
+		const age56_65 = employees && employees.filter(emp => emp.age >= 56 && emp.age <= 65).length
 
 		return (
 			<Card className={classes.root}>

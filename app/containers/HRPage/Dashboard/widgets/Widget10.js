@@ -17,7 +17,7 @@ const initialState = {
 	labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
 	datasets: [
 		{
-			label: 'My First dataset',
+			label: 'Employee Growth dataset',
 			fill: false,
 			lineTension: 0.1,
 			backgroundColor: 'rgba(75,192,192,0.4)',

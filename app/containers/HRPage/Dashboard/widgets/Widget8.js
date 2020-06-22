@@ -15,21 +15,21 @@ const styles = theme => ({
 
 const data = {
 	labels: [
-		'Red',
-		'Green',
-		'Yellow'
+		'In Time',
+		'Absent',
+		'Late'
 	],
 	datasets: [{
 		data: [300, 50, 100],
 		backgroundColor: [
-			'#FF6384',
-			'#36A2EB',
-			'#FFCE56'
+			'#10C117',
+			'#EB4D65',
+			'#FCD81C'
 		],
 		hoverBackgroundColor: [
-			'#FF6384',
-			'#36A2EB',
-			'#FFCE56'
+			'#10C117',
+			'#EB4D65',
+			'#FCD81C'
 		]
 	}]
 };

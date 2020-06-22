@@ -13,6 +13,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { makeStyles, Grid } from '@material-ui/core';
 import * as Selectors from '../selectors';
+import * as AppSelectors from '../../App/selectors';
 import { Widget1, Widget2, Widget3, Widget4, Widget5, Widget6, Widget7, Widget8, Widget9, Widget10, Widget11, Widget12, Widget13 } from './widgets'
 
 const useStyles = makeStyles(theme => ({
@@ -21,8 +22,9 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export function DashBoard() {
+export function DashBoard(props) {
     const classes = useStyles()
+    const { employees } = props
 
     return (
         <div className={classes.root}>
@@ -62,7 +64,7 @@ export function DashBoard() {
                             <Widget11 />
                         </Grid>
                         <Grid item xs={6}>
-                            <Widget12 />
+                            <Widget12 employees={employees} />
                         </Grid>
                     </Grid>
                 </Grid>
@@ -92,7 +94,11 @@ DashBoard.propTypes = {
     dispatch: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({});
+const mapStateToProps = createStructuredSelector({
+    employees: Selectors.makeSelectEmployees(),
+    user: AppSelectors.makeSelectCurrentUser(),
+    departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
+});
 
 function mapDispatchToProps(dispatch) {
     return {
