@@ -44,6 +44,56 @@ export function* getEmployees() {
   }
 }
 
+export function* getBranchEmployees(id) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetBranchEmployeesApi}/${id}/${user && user.organisation.id}`;
+  console.log(accessToken, "accessToken get employees")
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+    console.log(response, "emplyees response");
+
+    yield put(Actions.getEmployeesSuccess(response));
+  } catch (err) {
+    console.log(err.response, "emplyees error");
+    if (err.response.status === 500) {
+      yield put(AppActions.openSnackBar({ message: "Interval Server Error", status: 'error' }));
+    }
+  }
+}
+
+export function* getDeptEmployees(id) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetDeptEmployeesApi}/${id}/${user && user.organisation.id}`;
+  console.log(accessToken, "accessToken get dept employees")
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+    console.log(response, "get dept employees response");
+
+    yield put(Actions.getEmployeesSuccess(response));
+  } catch (err) {
+    console.log(err.response, "emplyees error");
+    if (err.response.status === 500) {
+      yield put(AppActions.openSnackBar({ message: "Interval Server Error", status: 'error' }));
+    }
+  }
+}
+
 export function* getEmployeeByUUID({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.GetUserByUUIDApi}/${payload}`;
@@ -96,6 +146,7 @@ export function* createEmployee({ type, payload }) {
     console.log(error, "create employees error")
     if (error.status === 400 || error.status === 500) {
       yield put(AppActions.openSnackBar({ message: error.message, status: 'error' }));
+      yield put(Actions.createEmployeeError(error.message));
     }
   }
 }
@@ -306,6 +357,60 @@ export function* createEmployeeType({ payload }) {
     yield put(Actions.createEmployeeTypeSuccess(response));
     yield put(Actions.closeNewEmployeeTypeDialog())
     yield put({ type: Constants.GET_EMPLOYEETYPES })
+  } catch (err) {
+    // yield put(Actions.createEmployeeTypeError(err));
+    console.log(err, "err message")
+  }
+}
+
+export function* createEnrollmentType({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.CreateEmployeeType}`;
+
+  console.log(payload, "payload for creating employee types")
+  payload.orgId = user && user.organisation.orgId;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.createEnrollmentTypeSuccess(response));
+    yield put(Actions.closeNewEmployeeTypeDialog())
+    yield put({ type: Constants.GET_ENROLLMENTTYPES })
+  } catch (err) {
+    // yield put(Actions.createEmployeeTypeError(err));
+    console.log(err, "err message")
+  }
+}
+
+export function* createLocation({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.CreateEmployeeType}`;
+
+  console.log(payload, "payload for creating employee types")
+  payload.orgId = user && user.organisation.orgId;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.createLocationSuccess(response));
+    yield put(Actions.closeNewEmployeeTypeDialog())
+    yield put({ type: Constants.GET_LOCATIONS })
   } catch (err) {
     // yield put(Actions.createEmployeeTypeError(err));
     console.log(err, "err message")
@@ -634,6 +739,26 @@ export function* getAnnouncements() {
   }
 }
 
+export function* getAttendances() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAttendances}/${user && user.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+    console.log(response, "Attendances response")
+    yield put(Actions.getAttendancesSuccess(response));
+  } catch (err) {
+    console.log(err, "attd error")
+  }
+}
+
 export function* createDepartment({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
@@ -686,6 +811,9 @@ export function* createAnnouncement({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.CreateAnnouncement}`;
+  payload.orgId = user && user.organisation.orgId
+
+  console.log(payload, "create announcement")
 
   try {
     const response = yield call(request, requestURL, {
@@ -696,6 +824,8 @@ export function* createAnnouncement({ type, payload }) {
         'Content-Type': 'application/json',
       }),
     });
+
+    console.log(response, "Announcement creation response")
 
     yield put(AppActions.openSnackBar({ message: "Announcement created", status: 'success' }));
     yield put({ type: Constants.CLOSE_NEW_ANNOUNCEMENT_DIALOG });
@@ -710,17 +840,7 @@ export function* createJobOpening({ type, payload }) {
   const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.CreateJobOpening}`;
 
-  var str_array = payload.steps.split(',');
-  var arr = [];
-  var obj = new Object;
-  for (var i = 0; i < str_array.length; i++) {
-    console.log(i, "i");
-    obj['title'] = str_array[i];
-    arr.push(obj);
-  }
-  delete payload.steps;
-  payload.hiringSteps = arr;
-  console.log(payload, "Entire job payload");
+  payload.orgId = user && user.organisation.orgId
 
   try {
     const response = yield call(request, requestURL, {
@@ -732,12 +852,13 @@ export function* createJobOpening({ type, payload }) {
       }),
     });
 
+    console.log(response, 'JOB OPENING RESPONSE');
     yield put(push('/hr/recruitment'));
 
-    console.log(response, 'JOB OPENING RESPONSE');
-    yield put(AppActions.openSnackBar({ message: "Jpb opening created", status: 'success' }));
+    yield put(AppActions.openSnackBar({ message: "Job opening created", status: 'success' }));
     yield put({ type: Constants.GET_JOBOPENINGS });
   } catch (err) {
+    console.log(err.response.json(), "create job opening error")
     // yield put(Actions.getUtilityFilesError(err));
     console.log(err.message, "err message")
   }
@@ -759,14 +880,17 @@ export default function* HRRootSaga() {
   yield takeLatest(Constants.GET_PAY_TYPES, getPayTypes);
   yield takeLatest(Constants.GET_WORK_EXPERIENCES, getWorkExperiences);
   yield takeLatest(Constants.CREATE_EMPLOYEE_TYPE, createEmployeeType);
+  yield takeLatest(Constants.CREATE_ENROLLMENT_TYPE, createEnrollmentType);
   yield takeLatest(Constants.CREATE_SOURCE_OF_HIRE, createSourceOfHire);
   yield takeLatest(Constants.CREATE_PAY_RATE, createPayRate);
   yield takeLatest(Constants.CREATE_PAY_TYPE, createPayType);
   yield takeLatest(Constants.CREATE_WORK_EXPERIENCE, createWorkExperience);
   yield takeLatest(Constants.GET_ENROLLMENTTYPES, getEnrollmentTypes);
   yield takeLatest(Constants.GET_LOCATIONS, getLocations);
+  yield takeLatest(Constants.CREATE_LOCATION, createLocation);
   yield takeLatest(Constants.GET_JOBOPENINGS, getJobOpenings);
   yield takeLatest(Constants.GET_JOBOPENINGDETAILS, getJobOpeningDetails);
+  yield takeLatest(Constants.GET_ATTENDANCES, getAttendances);
   yield takeLatest(Constants.GET_ROLES, getRoles);
   yield takeLatest(Constants.GET_ANNOUNCEMENTS, getAnnouncements);
   yield takeLatest(Constants.CREATE_EMPLOYEE, createEmployee);

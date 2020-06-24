@@ -13,8 +13,13 @@ export const GET_EMPLOYEES = 'boilerplate/HRPage/GET EMPLOYEES';
 export const GET_EMPLOYEES_SUCCESS = 'boilerplate/HRPage/GET EMPLOYEES SUCCESS';
 export const GET_EMPLOYEE = 'boilerplate/HRPage/GET EMPLOYEE';
 export const GET_EMPLOYEE_SUCCESS = 'boilerplate/HRPage/GET EMPLOYEE SUCCESS';
+export const GET_BRANCH_EMPLOYEES = 'boilerplate/HRPage/GET BRANCH EMPLOYEES';
+export const GET_BRANCH_EMPLOYEES_SUCCESS = 'boilerplate/HRPage/GET BRANCH EMPLOYEES SUCCESS';
+export const GET_DEPT_EMPLOYEES = 'boilerplate/HRPage/GET DEPT EMPLOYEES';
+export const GET_DEPT_EMPLOYEES_SUCCESS = 'boilerplate/HRPage/GET DEPT EMPLOYEES SUCCESS';
 export const CREATE_EMPLOYEE = 'boilerplate/HRPage/CREATE EMPLOYEE';
 export const CREATE_EMPLOYEE_SUCCESS = 'boilerplate/HRPage/CREATE EMPLOYEE SUCCESS';
+export const CREATE_EMPLOYEE_ERROR = 'boilerplate/HRPage/CREATE EMPLOYEE ERROR';
 export const UPDATE_EMPLOYEE = 'boilerplate/HRPage/UPDATE EMPLOYEE';
 export const UPDATE_EMPLOYEE_SUCCESS = 'boilerplate/HRPage/UPDATE EMPLOYEE SUCCESS';
 export const UPDATE_EMPLOYEE_ERROR = 'boilerplate/HRPage/UPDATE EMPLOYEE ERROR';
@@ -28,6 +33,7 @@ export const GET_EMPLOYEETYPES = 'boilerplate/HRPage/GET EMPLOYEETYPES';
 export const GET_EMPLOYEETYPES_SUCCESS = 'boilerplate/HRPage/GET EMPLOYEETYPES SUCCESS';
 export const CREATE_EMPLOYEE_TYPE = 'boilerplate/HRPage/CREATE EMPLOYEE TYPE';
 export const CREATE_EMPLOYEE_TYPE_SUCCESS = 'boilerplate/HRPage/CREATE EMPLOYEE TYPE SUCCESS';
+export const CREATE_EMPLOYEE_TYPE_ERROR = 'boilerplate/HRPage/CREATE EMPLOYEE TYPE ERROR';
 
 export const GET_PAY_RATES = 'boilerplate/HRPage/GET PAY RATES';
 export const GET_PAY_RATES_SUCCESS = 'boilerplate/HRPage/GET PAY RATES SUCCESS';
@@ -41,15 +47,22 @@ export const CREATE_PAY_TYPE_SUCCESS = 'boilerplate/HRPage/CREATE PAY TYPE SUCCE
 
 export const GET_ENROLLMENTTYPES = 'boilerplate/HRPage/GET ENROLLMENTTYPES';
 export const GET_ENROLLMENTTYPES_SUCCESS = 'boilerplate/HRPage/GET ENROLLMENTTYPES SUCCESS';
+export const CREATE_ENROLLMENT_TYPE = 'boilerplate/HRPage/CREATE ENROLLMENT TYPE';
+export const CREATE_ENROLLMENT_TYPE_SUCCESS = 'boilerplate/HRPage/CREATE ENROLLMENT TYPE SUCCESS';
 
 export const GET_LOCATIONS = 'boilerplate/HRPage/GET LOCATIONS';
 export const GET_LOCATIONS_SUCCESS = 'boilerplate/HRPage/GET LOCATIONS SUCCESS';
+export const CREATE_LOCATION = 'boilerplate/HRPage/CREATE LOCATION';
+export const CREATE_LOCATION_SUCCESS = 'boilerplate/HRPage/CREATE LOCATION SUCCESS';
 
 export const GET_JOBOPENINGS = 'boilerplate/HRPage/GET JOBOPENINGS';
 export const GET_JOBOPENINGS_SUCCESS = 'boilerplate/HRPage/GET JOBOPENINGS SUCCESS';
 
 export const GET_JOBOPENINGDETAILS = 'boilerplate/HRPage/GET JOBOPENINGDETAILS';
 export const GET_JOBOPENINGDETAILS_SUCCESS = 'boilerplate/HRPage/GET JOBOPENINGDETAILS SUCCESS';
+
+export const GET_ATTENDANCES = 'boilerplate/HRPage/GET ATTENDANCES';
+export const GET_ATTENDANCES_SUCCESS = 'boilerplate/HRPage/GET ATTENDANCES SUCCESS';
 
 export const OPEN_NEW_EMPLOYEE_DIALOG = 'boilerplate/HRPage/OPEN NEW EMPLOYEE DIALOG';
 export const CLOSE_NEW_EMPLOYEE_DIALOG = 'boilerplate/HRPage/CLOSE NEW EMPLOYEE DIALOG';

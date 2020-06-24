@@ -37,6 +37,8 @@ export const GetAllTagsApi = `${BaseUrl}/authserv/api/v1/party_tags`;
 export const CreateNewEmployeeApi = `${BaseUrl}/authserv/api/v1/user`;
 export const GetAllUsersApi = `${BaseUrl}/authserv/api/v1/users/get_by_orgid`;
 export const GetEmployeesApi = `${BaseUrl}/authserv/api/v1/users`;
+export const GetBranchEmployeesApi = `${BaseUrl}/authserv/api/v1/users/get_branch_employees`;
+export const GetDeptEmployeesApi = `${BaseUrl}/authserv/api/v1/users/get_department_employees`;
 export const GetUserByUUIDApi = `${BaseUrl}/authserv/api/v1/users/get_by_uuid`;
 export const UpdateUserProfileApi = `${BaseUrl}/authserv/api/v1/user/update_profile`;
 
@@ -143,7 +145,7 @@ export const CreateBranch = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_
 
 export const CreateAnnouncement = `${BaseUrl}/authserv/api/v1/announcement`;
 
-export const GetAnnouncements = `${BaseUrl}/authserv/api/v1/announcements/for_organinisation`;
+export const GetAnnouncements = `${BaseUrl}/authserv/api/v1/announcements/for_organization`;
 
 // HR:Attendance API
 export const GetAttendances = `${BaseUrl}/authserv/api/v1/find_attendance_by_orgid`;

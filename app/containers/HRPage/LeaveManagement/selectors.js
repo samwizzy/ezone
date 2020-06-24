@@ -45,7 +45,7 @@ const makeSelectEmployees = () =>
   );
 
 export default makeSelectLeaveMgtPage;
-export { 
+export {
   selectLeaveMgt,
   makeSelectLoading,
   makeSelectLeaveRequest,

@@ -150,8 +150,13 @@ export const WorkForm = props => {
                                 </Link>
                             }
                         >
+                            {employeeTypes &&
+                                <MenuItem key="" value="" disabled>
+                                    Select Employee Type
+                                </MenuItem>
+                            }
                             {employeeTypes && employeeTypes.length === 0 &&
-                                <MenuItem key="" value={null}>
+                                <MenuItem key="0" value={null}>
                                     No Record
                                 </MenuItem>
                             }
@@ -183,8 +188,13 @@ export const WorkForm = props => {
                                 </Link>
                             }
                         >
+                            {sourcesOfHire &&
+                                <MenuItem key="" value="" disabled>
+                                    Select Sources Of Hire
+                                </MenuItem>
+                            }
                             {sourcesOfHire && sourcesOfHire.length === 0 &&
-                                <MenuItem key="" value={null}>
+                                <MenuItem key="0" value={null}>
                                     No Record
                                 </MenuItem>
                             }
@@ -217,14 +227,14 @@ export const WorkForm = props => {
                                 </Link>
                             }
                         >
-                            {payRates && payRates.length === 0 &&
-                                <MenuItem key="" value={null}>
-                                    No record
-                                </MenuItem>
-                            }
                             {payRates &&
                                 <MenuItem key="" value="" disabled>
                                     Select Pay Rate
+                                </MenuItem>
+                            }
+                            {payRates && payRates.length === 0 &&
+                                <MenuItem key="0" value={null}>
+                                    No record
                                 </MenuItem>
                             }
                             {payRates && payRates.map((payType, i) =>
@@ -255,14 +265,14 @@ export const WorkForm = props => {
                                 </Link>
                             }
                         >
+                            {payTypes &&
+                                <MenuItem key="0" value="" disabled>
+                                    Select Pay Type
+                                </MenuItem>
+                            }
                             {payTypes && payTypes.length === 0 &&
                                 <MenuItem key="" value={null}>
                                     No record
-                                </MenuItem>
-                            }
-                            {payTypes &&
-                                <MenuItem key="" value="" disabled>
-                                    Select Pay Type
                                 </MenuItem>
                             }
                             {payTypes && payTypes.map((payType, i) =>
@@ -344,14 +354,15 @@ export const WorkForm = props => {
                             value={form.reportingTo ? form.reportingTo.id : ''}
                             onChange={handleItemChange}
                         >
-                            {employees && employees.length === 0 &&
-                                <MenuItem key="" value={null}>
-                                    No record
-                                </MenuItem>
-                            }
                             <MenuItem key="" value="" disabled>
                                 Select Employee to report to
                             </MenuItem>
+
+                            {employees && employees.length === 0 &&
+                                <MenuItem key="0" value={null}>
+                                    No record
+                                </MenuItem>
+                            }
                             {employees && employees.map((employee) => (
                                 <MenuItem key={employee.id} value={employee.id}>
                                     {employee.firstName} {employee.lastName}

@@ -12,6 +12,10 @@ import * as Selectors from './selectors';
 import * as EndPoints from '../../components/Endpoints';
 // import * as FirebaseServices from '../../services/firebaseService';
 
+function errorHandler(promise) {
+  return promise
+}
+
 export function* signup({ payload }) {
   console.log(payload, "reg payload")
 
@@ -68,13 +72,18 @@ export function* login({ payload }) {
     yield put(AppActions.getUserProfileAction(response.access_token));
 
   } catch (err) {
-    console.log(err.response, "login error")
-    if (err.response.status === 401 || err.response.status === 400) {
-      yield put(AppActions.loginErrorAction('Username or password is invalid'));
-      yield put(AppActions.openSnackBar({ message: 'Username or password is invalid', status: 'error' }));
-    } else if (err.response.status === 500) {
-      yield put(AppActions.loginErrorAction('Interval Server Error'));
-      yield put(AppActions.openSnackBar({ message: 'Interval Server Error', status: 'error' }));
+    if (err.message) {
+      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      yield put(AppActions.loginErrorAction(err.message));
+    } else {
+      const error = yield call(errorHandler, err.response.json())
+      if (err.response.status === 401 || err.response.status === 400) {
+        yield put(AppActions.loginErrorAction(error.error_description));
+        yield put(AppActions.openSnackBar({ message: error.error_description, status: 'error' }));
+      } else {
+        yield put(AppActions.loginErrorAction('Internal Server Error'));
+        yield put(AppActions.openSnackBar({ message: 'Internal Server Error', status: 'error' }));
+      }
     }
   }
 }
@@ -140,10 +149,16 @@ export function* userProfile({ payload }) {
     yield put(AppActions.getUserProfileSuccessAction(response));
   } catch (err) {
     console.log(err, "err user profile")
-    if (err.response && err.response.status === 401) { yield put(AppActions.logout()) }
-    else {
-      // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
-      yield put(AppActions.getUserProfileErrorAction(err));
+    if (err.message) {
+      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+    } else {
+      const error = yield call(errorHandler, err.response.json())
+      console.log(error, "user profile error")
+      if (err.response && err.response.status === 401) { yield put(AppActions.logout()) }
+      else {
+        yield put(AppActions.openSnackBar({ message: error.message, status: 'error' }));
+        yield put(AppActions.getUserProfileErrorAction(error));
+      }
     }
   }
 }
@@ -173,7 +188,6 @@ export function* forgotPassword() {
 // Individual exports for testing
 export default function* authorizationPageSaga() {
   yield takeLatest(Constants.SIGNUP_REQUEST, signup);
-
   yield takeLatest(AppConstants.LOGIN, login);
   yield takeLatest(AppConstants.LOG_OUT, logOut);
   yield takeLatest(AppConstants.GET_USER_PROFILE, userProfile);

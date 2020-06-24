@@ -36,6 +36,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const status = [
   { id: 1, label: "PRESENT" },
   { id: 2, label: "ABSENT" },
+  { id: 3, label: "LATE" },
 ]
 
 function AddAttendanceDialog(props) {

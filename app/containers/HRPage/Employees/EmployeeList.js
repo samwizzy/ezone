@@ -90,15 +90,13 @@ const EmployeesApp = props => {
       },
     },
     {
-      name: 'id',
+      name: 'organisation.logo',
       label: ' ',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: id => (
-          <Avatar aria-label="avatar" className={classes.avatar}>
-            A
-          </Avatar>
+        customBodyRender: logo => (
+          <Avatar aria-label="avatar" src={`data:image/jpg;base64,${logo}`} className={classes.avatar} />
         ),
       },
     },

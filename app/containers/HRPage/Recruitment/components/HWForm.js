@@ -2,12 +2,12 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx';
 import _ from 'lodash';
-import {AppBar, Box, Button, Card, Container, Divider, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, Checkbox, MenuItem, TextField, Toolbar, Typography, CardActions, Paper } from '@material-ui/core';
+import { AppBar, Box, Button, Card, Container, Divider, FormGroup, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, Checkbox, MenuItem, TextField, Toolbar, Typography, CardActions, Paper } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     root: {
         '& .MuiTextField-root': {
-          margin: theme.spacing(1, 0)
+            margin: theme.spacing(1, 0)
         },
     },
     radio: {
@@ -50,12 +50,12 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function handleCheck(e,x) {
+function handleCheck(e, x) {
     this.setState(state => ({
-    checkedValues: state.checkedValues.includes(x)
-        ? state.checkedValues.filter(c => c !== x)
-        : [...state.checkedValues, x]
-    }), ()=>{
+        checkedValues: state.checkedValues.includes(x)
+            ? state.checkedValues.filter(c => c !== x)
+            : [...state.checkedValues, x]
+    }), () => {
         console.log(this.state.checkedValues);
     });
 }
@@ -63,99 +63,78 @@ function handleCheck(e,x) {
 // Inspired by blueprintjs
 function StyledRadio(props) {
     const classes = useStyles();
-  
+
     return (
-      <Radio
-        className={classes.radio}
-        disableRipple
-        color="default"
-        checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
-        icon={<span className={classes.icon} />}
-        {...props}
-      />
+        <Checkbox
+            className={classes.radio}
+            disableRipple
+            color="default"
+            checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
+            icon={<span className={classes.icon} />}
+            {...props}
+        />
     );
-  }
+}
 
 export const HiringWorkFlowForm = props => {
-    const {handleChange, handleDateChange, handleStepChange, form } = props
+    const { handleChange, handleStepChange, form } = props
     const classes = useStyles()
+    const [open, setOpen] = React.useState(false)
+    const [steps, setSteps] = React.useState('')
 
     const canSubmitForm = () => {
-        const {hiringSteps } = form
-        return hiringSteps.length > 0 
+        const { hiringSteps } = form
+        return hiringSteps.length > 0
     }
+
+    const addNewForm = () => setOpen(!open)
 
     return (
         <Card>
-        <AppBar position='relative'>
-          <Toolbar>
-            <Typography variant="h6">Hiring Steps</Typography>
-          </Toolbar>
-        </AppBar>
+            <AppBar position='relative'>
+                <Toolbar>
+                    <Typography variant="h6">Hiring Steps</Typography>
+                </Toolbar>
+            </AppBar>
 
-        <Container>
-        <Box p={3} className={classes.root}>
-            <Grid container spacing={1}>
-                <Grid item xs={12} style={{display: 'flex', justifyContent: 'flex-end'}}>
-                    <Button onClick={()=>{}} color="secondary">
-                        Add
-                    </Button>
-                </Grid>
-                <Grid item xs={12}>
-                    
-                        <FormLabel component="legend">Hiring Steps(Comma separated)</FormLabel>
-                        <TextField
-                            name="steps"
-                            label="eg. Screening, Face to face, Offer"
-                            id="outlined-name"
-                            fullWidth
-                            variant="outlined"
-                            size="small"
-                            value={form.steps}
-                            onChange={handleChange}
-                        />
-                        {/*
-                        <RadioGroup defaultValue="screening" aria-label="hiringSteps" name="hiringSteps[]">
-                            <FormControlLabel value="screening" control={<StyledRadio />} label="Screening" />
-                            <FormControlLabel value="faceTime" control={<StyledRadio />} label="Face-to-Face Interview" />
-                            <FormControlLabel value="phone" control={<StyledRadio />} label="Phone Interview" />
-                            <FormControlLabel value="offer" control={<StyledRadio />} label="Make an Offer" />
-                        </RadioGroup>
-                        */}
-                        {/*
-                        <Checkbox
-                            value="Screening"
-                            name="hiringSteps[]"
-                            class="stepsCheckbox"
-                            label="Screening"
-                            inputProps={{ 'aria-label': 'Screening', 'title': 'Screening' }}
-                            onChange={e => this.handleCheck(e,"Screening")}
-                            checked={this.state.checkedValues.includes("Screening")}
-                            />
-                        <Checkbox
-                            value="Face to face"
-                            name="hiringSteps[]"
-                            class="stepsCheckbox"
-                            label="Face to face"
-                            inputProps={{ 'aria-label': 'Face to face', 'title': 'Face to face' }}
-                            onChange={e => this.handleCheck(e,"Face to face")}
-                            checked={this.state.checkedValues.includes("Face to face")}
-                            />
-                        <Checkbox
-                            value="Offer"
-                            name="hiringSteps[]"
-                            class="stepsCheckbox"
-                            label="Offer"
-                            inputProps={{ 'aria-label': 'Offer', 'title': 'Offer' }}
-                            onChange={e => this.handleCheck(e,"Offer")}
-                            checked={this.state.checkedValues.includes("Offer")}
-                            />
-                        */}
+            <Container>
+                <Box p={3} className={classes.root}>
+                    <Grid container spacing={1}>
+                        <Grid item xs={12} style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                            <Button onClick={addNewForm}>
+                                Add
+                            </Button>
+                        </Grid>
+                        <Grid item xs={12}>
 
-                </Grid>
-            </Grid>
-        </Box>
-        </Container>
+                            {open &&
+                                <React.Fragment>
+                                    <FormLabel component="legend">Add a new hiring step</FormLabel>
+                                    <TextField
+                                        name="steps"
+                                        label="Hiring step"
+                                        id="outlined-name"
+                                        fullWidth
+                                        margin="normal"
+                                        variant="outlined"
+                                        size="small"
+                                        value={steps}
+                                        onChange={handleChange}
+                                    />
+                                </React.Fragment>
+                            }
+
+                            <FormLabel component="legend">Hiring Steps(In the order you want them applied)</FormLabel>
+                            <FormGroup defaultValue="screening" aria-label="hiringSteps" onClick={handleStepChange}>
+                                <FormControlLabel name="hiringSteps" value="screening" control={<StyledRadio />} label="Screening" />
+                                <FormControlLabel name="hiringSteps" value="faceTime" control={<StyledRadio />} label="Face-to-Face Interview" />
+                                <FormControlLabel name="hiringSteps" value="phone" control={<StyledRadio />} label="Phone Interview" />
+                                <FormControlLabel name="hiringSteps" value="offer" control={<StyledRadio />} label="Make an Offer" />
+                            </FormGroup>
+                        </Grid>
+                    </Grid>
+                </Box>
+            </Container>
         </Card>
     )
 }

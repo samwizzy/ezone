@@ -134,7 +134,7 @@ const Announcement = props => {
           <MUIDataTable
             className={classes.datatable}
             title="Announcement List"
-            data={announcements.content}
+            data={announcements}
             columns={columns}
             options={options}
           />

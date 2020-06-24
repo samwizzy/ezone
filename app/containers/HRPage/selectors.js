@@ -25,6 +25,12 @@ const JobOpeningployees = () =>
     hrState => hrState.employees,
   );
 
+const makeSelectAttendances = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.attendances,
+  );
+
 const makeSelectDepartments = () =>
   createSelector(
     selectHR,
@@ -63,6 +69,16 @@ const makeSelectEmployees = () =>
   createSelector(
     selectHR,
     hrState => hrState.employees,
+  );
+const makeSelectBranchEmployees = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.branchEmployees,
+  );
+const makeSelectDeptEmployees = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.deptEmployees,
   );
 const makeSelectEmployeeTypes = () =>
   createSelector(
@@ -240,6 +256,8 @@ export {
   makeSelectCreateJobOpeningSuccess,
   makeSelectLoading,
   makeSelectEmployees,
+  makeSelectBranchEmployees,
+  makeSelectDeptEmployees,
   makeSelectPartyGroups,
   makeSelectDepartments,
   makeSelectEmployeeTypes,
@@ -247,6 +265,7 @@ export {
   makeSelectPayRates,
   makeSelectPayTypes,
   makeSelectJobOpenings,
+  makeSelectAttendances,
   makeSelectEnrollmentTypes,
   makeSelectLocations,
   makeSelectDepartmentsByOrgIdApi,

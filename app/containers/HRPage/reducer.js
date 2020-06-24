@@ -15,18 +15,23 @@ export const initialState = {
   loading: false,
   error: null,
   employees: [],
+  branchEmployees: [],
+  deptEmployees: [],
   employee: null,
   employeeTypes: [],
   sourcesOfHire: [],
   payRates: [],
   payTypes: [],
   workExperiences: [],
+  enrollmentTypes: [],
+  locations: [],
   departments: [],
   department: null,
   roles: [],
   role: null,
   branches: [],
   branch: {},
+  attendances: [],
   empDialog: {
     type: 'new',
     props: {
@@ -160,6 +165,13 @@ const hrReducer = (state = initialState, action) =>
           error: false,
         };
       }
+      case Constants.CREATE_EMPLOYEE_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
       case Constants.UPDATE_EMPLOYEE: {
         return {
           ...state,
@@ -227,6 +239,19 @@ const hrReducer = (state = initialState, action) =>
           getCreateJobOpening: action.payload,
         };
       }
+      case Constants.GET_ATTENDANCES: {
+        return {
+          ...state,
+          loading: true
+        }
+      };
+      case Constants.GET_ATTENDANCES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          attendances: action.payload
+        }
+      };
       case Constants.CREATE_DEPARTMENT: {
         return {
           ...state,
@@ -279,6 +304,7 @@ const hrReducer = (state = initialState, action) =>
           enrollmentTypes: action.payload
         };
         break;
+
       case Constants.CREATE_EMPLOYEE_TYPE:
         return {
           ...state,
@@ -286,6 +312,30 @@ const hrReducer = (state = initialState, action) =>
         };
         break;
       case Constants.CREATE_EMPLOYEE_TYPE_SUCCESS:
+        return {
+          ...state,
+          loading: false
+        };
+        break;
+      case Constants.CREATE_ENROLLMENT_TYPE:
+        return {
+          ...state,
+          loading: true
+        };
+        break;
+      case Constants.CREATE_ENROLLMENT_TYPE_SUCCESS:
+        return {
+          ...state,
+          loading: false
+        };
+        break;
+      case Constants.CREATE_LOCATION:
+        return {
+          ...state,
+          loading: true
+        };
+        break;
+      case Constants.CREATE_LOCATION_SUCCESS:
         return {
           ...state,
           loading: false
@@ -333,6 +383,32 @@ const hrReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           employees: action.payload
+        };
+        break;
+      case Constants.GET_BRANCH_EMPLOYEES:
+        return {
+          ...state,
+          loading: true,
+        };
+        break;
+      case Constants.GET_BRANCH_EMPLOYEES_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          branchEmployees: action.payload
+        };
+        break;
+      case Constants.GET_DEPT_EMPLOYEES:
+        return {
+          ...state,
+          loading: true,
+        };
+        break;
+      case Constants.GET_DEPT_EMPLOYEES_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          deptEmployees: action.payload
         };
         break;
       case Constants.GET_EMPLOYEE:

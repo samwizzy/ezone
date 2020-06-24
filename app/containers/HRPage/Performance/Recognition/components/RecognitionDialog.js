@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
@@ -34,16 +34,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const values = [
-  {label: 'Creativity', icon: ''},
-  {label: 'Leadership', icon: ''},
-  {label: 'Team Player', icon: ''},
-  {label: 'Excellence', icon: ''},
-  {label: 'Initiative', icon: ''},
-  {label: 'Integrity', icon: ''},
-  {label: 'Customer Focus', icon: ''},
-  {label: 'Growth', icon: ''},
-  {label: 'Passion', icon: ''},
-  {label: 'Visionary', icon: ''},
+  { label: 'Creativity', icon: '' },
+  { label: 'Leadership', icon: '' },
+  { label: 'Team Player', icon: '' },
+  { label: 'Excellence', icon: '' },
+  { label: 'Initiative', icon: '' },
+  { label: 'Integrity', icon: '' },
+  { label: 'Customer Focus', icon: '' },
+  { label: 'Growth', icon: '' },
+  { label: 'Passion', icon: '' },
+  { label: 'Visionary', icon: '' },
 ];
 
 function RecognitionDialog(props) {
@@ -57,24 +57,24 @@ function RecognitionDialog(props) {
   });
 
   React.useEffect(() => {
-    if(dialog.type == 'edit'){
-      setForm({...form})
+    if (dialog.type == 'edit') {
+      setForm({ ...form })
     }
   }, [dialog])
 
   const canSubmitForm = () => {
-    const {name, type, validity, from, to, description } = form
+    const { name, type, validity, from, to, description } = form
     return name.length > 0 && type.length > 0 && validity.length > 0
   }
 
   const handleChange = (event) => {
     const { name, value } = event.target
-    setForm({...form, [name]: value});
+    setForm({ ...form, [name]: value });
   }
 
-  const handleSelectChange = () => {}
+  const handleSelectChange = () => { }
 
-  const handleSubmit = () => {}
+  const handleSubmit = () => { }
 
   return (
     <div>
@@ -124,7 +124,7 @@ function RecognitionDialog(props) {
           />
 
           <Autocomplete
-            id="combo-box-demo"
+            id="select-employee-to-recognize"
             size="small"
             options={[]}
             getOptionLabel={option => option.label}
@@ -142,7 +142,7 @@ function RecognitionDialog(props) {
           />
 
           <Autocomplete
-            id="combo-box-demo"
+            id="select-core-values"
             size="small"
             options={values}
             getOptionLabel={option => option.label}

@@ -16,10 +16,31 @@ export function getEmployees() {
     type: Constants.GET_EMPLOYEES,
   };
 }
-
 export function getEmployeesSuccess(data) {
   return {
     type: Constants.GET_EMPLOYEES_SUCCESS,
+    payload: data
+  };
+}
+export function getBranchEmployees() {
+  return {
+    type: Constants.GET_BRANCH_EMPLOYEES,
+  };
+}
+export function getBranchEmployeesSuccess(data) {
+  return {
+    type: Constants.GET_BRANCH_EMPLOYEES_SUCCESS,
+    payload: data
+  };
+}
+export function getDeptEmployees() {
+  return {
+    type: Constants.GET_DEPT_EMPLOYEES,
+  };
+}
+export function getDeptEmployeesSuccess(data) {
+  return {
+    type: Constants.GET_DEPT_EMPLOYEES_SUCCESS,
     payload: data
   };
 }
@@ -124,6 +145,19 @@ export function createEmployeeTypeSuccess(data) {
     payload: data
   };
 }
+export function createEnrollmentType(payload) {
+  return {
+    type: Constants.CREATE_ENROLLMENT_TYPE,
+    payload
+  };
+}
+
+export function createEnrollmentTypeSuccess(data) {
+  return {
+    type: Constants.CREATE_ENROLLMENT_TYPE_SUCCESS,
+    payload: data
+  };
+}
 
 export function getEnrollmentTypes() {
   return {
@@ -146,6 +180,18 @@ export function getLocations() {
 export function getLocationsSuccess(data) {
   return {
     type: Constants.GET_LOCATIONS_SUCCESS,
+    payload: data
+  };
+}
+export function createLocation(payload) {
+  return {
+    type: Constants.CREATE_LOCATION,
+    payload
+  };
+}
+export function createLocationSuccess(data) {
+  return {
+    type: Constants.CREATE_LOCATION_SUCCESS,
     payload: data
   };
 }
@@ -352,6 +398,20 @@ export function createJobOpeningSuccess(data) {
     payload: data
   };
 }
+
+export function getAttendances() {
+  return {
+    type: Constants.GET_ATTENDANCES,
+  };
+}
+
+export function getAttendancesSuccess(data) {
+  return {
+    type: Constants.GET_ATTENDANCES_SUCCESS,
+    payload: data
+  };
+}
+
 export function createApplicant(data) {
   return {
     type: Constants.CREATE_APPLICANT,
@@ -411,6 +471,12 @@ export function createEmployee(data) {
 export function createEmployeeSuccess(data) {
   return {
     type: Constants.CREATE_EMPLOYEE_SUCCESS,
+    payload: data
+  };
+}
+export function createEmployeeError(data) {
+  return {
+    type: Constants.CREATE_EMPLOYEE_ERROR,
     payload: data
   };
 }

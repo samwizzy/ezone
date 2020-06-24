@@ -47,7 +47,7 @@ const initialState = {
 
 function EmployeeTypeDialog(props) {
   const classes = useStyles();
-  const { closeNewEmployeeTypeDialog, createEmployeeType, createSourceOfHire, createPayRate, createPayType, dialog } = props;
+  const { closeNewEmployeeTypeDialog, createEmployeeType, createSourceOfHire, createPayRate, createPayType, createEnrollmentType, createLocation, dialog } = props;
   const [form, setForm] = React.useState({ ...initialState });
 
   React.useEffect(() => {
@@ -77,6 +77,10 @@ function EmployeeTypeDialog(props) {
         createPayRate(form); break;
       case 'PAYTYPE':
         createPayType(form); break;
+      case 'ENROLLMENTTYPE':
+        createEnrollmentType(form); break;
+      case 'LOCATION':
+        createLocation(form); break;
     }
   }
 
@@ -100,6 +104,8 @@ function EmployeeTypeDialog(props) {
               {dialog.type === 'SOURCEOFHIRE' && 'Add Source of Hire'}
               {dialog.type === 'PAYRATE' && 'Add Pay Rate'}
               {dialog.type === 'PAYTYPE' && 'Add Pay Type'}
+              {dialog.type === 'ENROLLMENTTYPE' && 'Add Enrollment Type'}
+              {dialog.type === 'LOCATION' && 'Add Location'}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -148,7 +154,8 @@ function mapDispatchToProps(dispatch) {
     createSourceOfHire: (data) => dispatch(Actions.createSourceOfHire(data)),
     createPayRate: (data) => dispatch(Actions.createPayRate(data)),
     createPayType: (data) => dispatch(Actions.createPayType(data)),
-    dispatch,
+    createEnrollmentType: (data) => dispatch(Actions.createEnrollmentType(data)),
+    createLocation: (data) => dispatch(Actions.createLocation(data)),
   };
 }
 
