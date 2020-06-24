@@ -42,6 +42,19 @@ export const initialState = {
 const leaveMgtReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
+      case Constants.GET_EMPLOYEES:
+        return {
+          ...state,
+          loading: true
+        };
+        break;
+      case Constants.GET_EMPLOYEES_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          employees: action.payload
+        };
+        break;
       case Constants.GET_LEAVE_REQUEST:
         return {
           ...state,
@@ -70,37 +83,37 @@ const leaveMgtReducer = (state = initialState, action) =>
       case Constants.OPEN_NEW_LEAVE_REQUEST_DIALOG:
         return {
           ...state,
-          leaveRequestDialog: {...state.leaveRequestDialog, props: { open: true }},
+          leaveRequestDialog: { ...state.leaveRequestDialog, props: { open: true } },
         };
         break;
       case Constants.CLOSE_NEW_LEAVE_REQUEST_DIALOG:
         return {
           ...state,
-          leaveRequestDialog: {...state.leaveRequestDialog, props: { open: false }},
+          leaveRequestDialog: { ...state.leaveRequestDialog, props: { open: false } },
         };
         break;
       case Constants.OPEN_NEW_LEAVE_TYPE_DIALOG:
         return {
           ...state,
-          leaveTypeDialog: {...state.leaveTypeDialog, props: { open: true }},
+          leaveTypeDialog: { ...state.leaveTypeDialog, props: { open: true } },
         };
         break;
       case Constants.CLOSE_NEW_LEAVE_TYPE_DIALOG:
         return {
           ...state,
-          leaveTypeDialog: {...state.leaveTypeDialog, props: { open: false }},
+          leaveTypeDialog: { ...state.leaveTypeDialog, props: { open: false } },
         };
         break;
       case Constants.OPEN_NEW_HOLIDAY_DIALOG:
         return {
           ...state,
-          holidayDialog: {...state.holidayDialog, props: { open: true }},
+          holidayDialog: { ...state.holidayDialog, props: { open: true } },
         };
         break;
       case Constants.CLOSE_NEW_HOLIDAY_DIALOG:
         return {
           ...state,
-          holidayDialog: {...state.holidayDialog, props: { open: false }},
+          holidayDialog: { ...state.holidayDialog, props: { open: false } },
         };
         break;
     }

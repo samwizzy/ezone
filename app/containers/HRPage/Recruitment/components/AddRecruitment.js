@@ -45,7 +45,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function AddRecruitment(props) {
   const classes = useStyles();
-  const { departments, enrollmentTypes, dialog, jobOpenings, createJobOpening } = props;
+  const { departments, enrollmentTypes, locations, dialog, jobOpenings, createJobOpening, openNewEmployeeTypeDialog } = props;
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
@@ -66,17 +66,14 @@ function AddRecruitment(props) {
     address: '',
     country: '',
     enrollmentTypeId: '',
-    locationId: 4,
+    locationId: '',
     departmentId: '',
-    jobDescription: "",
-    jobTitle: "",
+    jobDescription: '',
+    jobTitle: '',
     noOfVancancies: '1',
-    orgId: "ORG-1582035732806",
     //state: "Lagos",
     hiringSteps: [],
-    submissionDeadline: "2020-04-28",
-    steps: ""
-
+    submissionDeadline: moment().format('YYYY-MM-DD'),
   });
 
   React.useEffect(() => {
@@ -84,7 +81,7 @@ function AddRecruitment(props) {
 
   const canSubmitForm = () => {
     const { address, country, departmentId, enrollmentTypeId, jobDescription, jobTitle, noOfVancancies, orgId, submissionDeadline } = form
-    return address.length > 0 && country.length > 0 && departmenIid && enrollmentTypeId && jobDescription.length > 0 && jobTitle.length > 0 && noOfVancancies
+    return address.length > 0 && country.length > 0 && departmentId && enrollmentTypeId && jobDescription.length > 0 && jobTitle.length > 0 && noOfVancancies
   }
 
   const handleChange = (event) => {
@@ -100,34 +97,33 @@ function AddRecruitment(props) {
     setForm(_.set({ ...form }, name, reformattedDate(date)))
   }
 
+  const handleCountryChange = name => (event, obj) => {
+    setForm(_.set({ ...form }, name, obj.label))
+  }
+
   const handleStepChange = (event) => {
     const { name, value } = event.target
-    var str_array = value.split(',');
-    for (var i = 0; i < str_array.length; i++) {
-      var obj = new Object;
-      obj.title = str_array[i];
-    }
-    setForm({ ...form, ['hiringSteps']: { id: value } });
-  };
-
+    console.log(name, "name")
+    console.log(value, "value")
+    form.hiringSteps.some(data => data.title === value) ?
+      setForm({ ...form, [name]: form.hiringSteps.filter(step => step.title !== value) }) :
+      setForm({
+        ...form,
+        [name]: [
+          ...form.hiringSteps,
+          Object.assign({}, { title: value })
+        ]
+      })
+  }
 
   const handleSubmit = () => {
-
-    //console.log(form, "Job submit")
     createJobOpening(form);
   }
 
   const handleNext = () => {
-    console.log(activeStep);
     if (activeStep > -1 && activeStep < 2) {
-      //setStep(activeStep + 1) 
       setActiveStep(prevActiveStep => prevActiveStep + 1);
-    } else {
-      console.log(form, "Job submit")
-      createJobOpening(form);
-
     }
-
   };
 
   const handleBack = () => {
@@ -137,6 +133,8 @@ function AddRecruitment(props) {
   const handleReset = () => {
     setActiveStep(0);
   };
+
+  console.log(form, "Job submit")
 
   function getStepContent(stepIndex) {
     switch (stepIndex) {
@@ -157,6 +155,7 @@ function AddRecruitment(props) {
           <HiringWorkFlowForm
             handleChange={handleChange}
             handleSelectChange={handleSelectChange}
+            handleStepChange={handleStepChange}
             form={form}
             handleSubmit={handleSubmit}
           />
@@ -165,10 +164,13 @@ function AddRecruitment(props) {
         return (
           <JobInfoForm
             handleChange={handleChange}
+            handleCountryChange={handleCountryChange}
             handleSelectChange={handleSelectChange}
+            openNewEmployeeTypeDialog={openNewEmployeeTypeDialog}
             form={form}
             departments={departments}
             enrollmentTypes={enrollmentTypes}
+            locations={locations}
             handleSubmit={handleSubmit}
           />
         );
@@ -211,27 +213,33 @@ function AddRecruitment(props) {
             <div>
               <Card className={classes.instructions}>{getStepContent(activeStep)}</Card>
               {/* <div>
-              <Button
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                className={classes.backButton}
-              >
-                Back
-              </Button>
-              <Button variant="contained" color="primary" onClick={handleNext}>
-                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-              </Button>
-            </div> */}
+                <Button
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  className={classes.backButton}
+                >
+                  Back
+                </Button>
+                <Button variant="contained" color="primary" onClick={handleNext}>
+                  {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                </Button>
+              </div> */}
               <MobileStepper
                 steps={maxSteps}
                 position="static"
                 variant="text"
                 activeStep={activeStep}
                 nextButton={
-                  <Button size="small" onClick={handleNext} >
-                    Next
-                  {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-                  </Button>
+                  activeStep === steps.length - 1 ?
+                    <Button size="small" onClick={handleSubmit} >
+                      Finish
+                      {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+                    </Button>
+                    :
+                    <Button size="small" onClick={handleNext} >
+                      Next
+                      {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+                    </Button>
                 }
                 backButton={
                   <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
@@ -254,12 +262,14 @@ AddRecruitment.propTypes = {
 const mapStateToProps = createStructuredSelector({
   departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
   enrollmentTypes: Selectors.makeSelectEnrollmentTypes(),
+  locations: Selectors.makeSelectLocations(),
   jobOpenings: Selectors.makeSelectJobOpenings(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     createJobOpening: (ev) => dispatch(Actions.createJobOpening(ev)),
+    openNewEmployeeTypeDialog: (data) => dispatch(Actions.openNewEmployeeTypeDialog(data)),
   };
 }
 

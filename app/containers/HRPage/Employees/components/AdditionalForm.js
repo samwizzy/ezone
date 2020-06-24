@@ -32,7 +32,7 @@ export const AdditionalForm = props => {
         <Grid container spacing={1}>
           <Grid item xs={12}>
             <TextField
-              id="outlined-multiline-bio-desc"
+              id="outlined-multiline-about"
               name="about"
               label="Bio"
               multiline
@@ -44,6 +44,7 @@ export const AdditionalForm = props => {
               variant="outlined"
             />
           </Grid>
+          <Grid item xs={12}></Grid>
         </Grid>
       </DialogContent>
 

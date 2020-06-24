@@ -30,12 +30,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function LeaveManagementPage(props) {
-  const { getAttendance } = props;
+  const { getAttendance, getEmployees } = props;
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
   React.useEffect(() => {
-    getAttendance();  
+    getAttendance();
+    getEmployees();
   }, []);
 
   return (
@@ -62,6 +63,7 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
   return {
     getAttendance: () => dispatch(Actions.getLeaveRequest()),
+    getEmployees: () => dispatch(Actions.getEmployees()),
   };
 }
 

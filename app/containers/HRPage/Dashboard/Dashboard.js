@@ -24,7 +24,9 @@ const useStyles = makeStyles(theme => ({
 
 export function DashBoard(props) {
     const classes = useStyles()
-    const { employees } = props
+    const { employees, attendances } = props
+
+    console.log(attendances, "attendances")
 
     return (
         <div className={classes.root}>
@@ -71,7 +73,7 @@ export function DashBoard(props) {
                 <Grid item xs={12}>
                     <Grid container className={classes.grid} spacing={3}>
                         <Grid item xs={6}>
-                            <Widget8 />
+                            <Widget8 attendances={attendances} />
                         </Grid>
                         <Grid item xs={6}>
                             <Widget10 />
@@ -98,6 +100,7 @@ const mapStateToProps = createStructuredSelector({
     employees: Selectors.makeSelectEmployees(),
     user: AppSelectors.makeSelectCurrentUser(),
     departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
+    attendances: Selectors.makeSelectAttendances(),
 });
 
 function mapDispatchToProps(dispatch) {

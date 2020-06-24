@@ -37,7 +37,32 @@ const data = {
 export default withStyles(styles)(class Widget8 extends React.Component {
 
 	render() {
-		const { classes } = this.props
+		const { classes, attendances } = this.props
+
+		const inTime = attendances && attendances.filter(attd => attd.status === 'PRESENT').length
+		const absent = attendances && attendances.filter(attd => attd.gender === 'ABSENT').length
+		const late = attendances && attendances.filter(attd => attd.gender === 'LATE').length
+
+		const data = {
+			labels: [
+				'In Time',
+				'Absent',
+				'Late'
+			],
+			datasets: [{
+				data: [inTime, absent, late],
+				backgroundColor: [
+					'#10C117',
+					'#EB4D65',
+					'#FCD81C'
+				],
+				hoverBackgroundColor: [
+					'#10C117',
+					'#EB4D65',
+					'#FCD81C'
+				]
+			}]
+		};
 
 		return (
 			<Card className={classes.root}>

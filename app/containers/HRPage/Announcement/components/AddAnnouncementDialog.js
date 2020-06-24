@@ -40,7 +40,6 @@ function AddAnnouncementDialog(props) {
     expiryDate: "2020-06-27",
     notifyAllLocations: true,
     notifyOthers: "true",
-    orgId: "ORG-1582035732806",
     announcementType: '',
   });
 

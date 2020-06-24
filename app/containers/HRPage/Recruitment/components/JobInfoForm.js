@@ -6,15 +6,14 @@ import {
     MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 import _ from 'lodash';
-import { AppBar, Box, Button, Container, Divider, Grid, MenuItem, TextField, Toolbar, Typography, CardContent, CardActions, Paper } from '@material-ui/core';
+import { AppBar, Box, Button, Container, Divider, Grid, Link, MenuItem, TextField, Toolbar, Typography, CardContent, CardActions, Paper } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import countries from '../../../../utils/countries'
+import EmployeeTypeDialog from './../../Employees/components/EmployeeTypeDialog'
 
 const useStyles = makeStyles(theme => ({
     root: {
-        '& .MuiTextField-root': {
-            margin: theme.spacing(1, 0)
-        },
+        flexGrow: 1
     },
     option: {
         fontSize: 15,
@@ -32,7 +31,7 @@ function countryToFlag(isoCode) {
 }
 
 export const JobInfoForm = props => {
-    const { handleChange, handleDateChange, handleSelectChange, departments, enrollmentTypes, form } = props
+    const { handleChange, handleDateChange, openNewEmployeeTypeDialog, handleCountryChange, handleSelectChange, departments, enrollmentTypes, locations, form } = props
     const classes = useStyles()
     const canSubmitForm = () => {
         const { departmentId, enrollmentTypeId, submissionDeadline, noOfVancancies, address, country } = form
@@ -40,7 +39,7 @@ export const JobInfoForm = props => {
     }
     return (
         <Paper>
-            <AppBar position='relative'>
+            <AppBar position='static'>
                 <Toolbar>
                     <Typography variant="h6" gutterBottom>More information</Typography>
                 </Toolbar>
@@ -57,8 +56,8 @@ export const JobInfoForm = props => {
                                     placeholder="Select department"
                                     select
                                     fullWidth
-                                    className={classes.textField}
                                     variant="outlined"
+                                    margin="normal"
                                     size="small"
                                     label="Department"
                                     value={form.departmentId}
@@ -68,8 +67,8 @@ export const JobInfoForm = props => {
                                         <MenuItem key={dept.id} value={dept.id}>
                                             {dept.name}
                                         </MenuItem>
-                                    ))};
-                    </TextField>
+                                    ))}
+                                </TextField>
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
@@ -78,13 +77,30 @@ export const JobInfoForm = props => {
                                     placeholder="Select enrolment type"
                                     select
                                     fullWidth
-                                    className={classes.textField}
+                                    margin="normal"
                                     variant="outlined"
                                     size="small"
                                     label="Enrollment Type"
                                     value={form.enrollmentTypeId}
                                     onChange={handleSelectChange}
+                                    helperText={
+                                        <Link href='#' onClick={event => (
+                                            event.preventDefault(), openNewEmployeeTypeDialog("ENROLLMENTTYPE")
+                                        )}>
+                                            Add Enrollment Type
+                                        </Link>
+                                    }
                                 >
+                                    {enrollmentTypes &&
+                                        <MenuItem key="" value="" disabled>
+                                            Select Enrollment Type
+                                        </MenuItem>
+                                    }
+                                    {enrollmentTypes && enrollmentTypes.length === 0 &&
+                                        <MenuItem key="0" value={null}>
+                                            No Record
+                                        </MenuItem>
+                                    }
                                     {enrollmentTypes && enrollmentTypes.map((enrollmentType) => (
                                         <MenuItem key={enrollmentType.id} value={enrollmentType.id}>
                                             {enrollmentType.name}
@@ -93,32 +109,34 @@ export const JobInfoForm = props => {
                                 </TextField>
                             </Grid>
                             {/*
-                <Grid item xs={6}>
-                    <TextField
-                    id="experience"
-                    name="experience"
-                    placeholder="Select experience"
-                    select
-                    fullWidth
-                    className={classes.textField}
-                    variant="outlined"
-                    size="small"
-                    label="Experience"
-                    value={form.experience}
-                    onChange={handleChange}
-                    >
-                    <MenuItem key={0} value="1">
-                        No record
-                    </MenuItem>
-                    </TextField>
-                </Grid>
-                */}
+                            <Grid item xs={6}>
+                                <TextField
+                                id="experience"
+                                name="experience"
+                                placeholder="Select experience"
+                                select
+                                fullWidth
+                                className={classes.textField}
+                                variant="outlined"
+                                size="small"
+                                label="Experience"
+                                value={form.experience}
+                                onChange={handleChange}
+                                >
+                                <MenuItem key={0} value="1">
+                                    No record
+                                </MenuItem>
+                                </TextField>
+                            </Grid>
+                            */}
                             <Grid item xs={6}>
                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                     <KeyboardDatePicker
+                                        autoOk
                                         disableToolbar
+                                        disablePast
                                         inputVariant="outlined"
-                                        format="MM/dd/yyyy"
+                                        format="dd/MM/yyyy"
                                         margin="normal"
                                         fullWidth
                                         size="small"
@@ -133,47 +151,65 @@ export const JobInfoForm = props => {
                                     />
                                 </MuiPickersUtilsProvider>
                             </Grid>
-                            {/*
-                <Grid item xs={6}>
-                    <TextField
-                    id="location"
-                    name="location"
-                    placeholder="Select location"
-                    select
-                    fullWidth
-                    className={classes.textField}
-                    variant="outlined"
-                    size="small"
-                    label="Location"
-                    value={form.location}
-                    onChange={handleChange}
-                    >
-                    <MenuItem key={0} value="1">
-                        No record
-                    </MenuItem>
-                    </TextField>
-                </Grid>
-                */}
+
+                            <Grid item xs={6}>
+                                <TextField
+                                    id="location"
+                                    name="locationId"
+                                    placeholder="Select location"
+                                    select
+                                    fullWidth
+                                    margin="normal"
+                                    variant="outlined"
+                                    size="small"
+                                    label="Location"
+                                    value={form.locationId}
+                                    onChange={handleSelectChange}
+                                    helperText={
+                                        <Link href='#' onClick={event => (
+                                            event.preventDefault(), openNewEmployeeTypeDialog("LOCATION")
+                                        )}>
+                                            Add Location
+                                        </Link>
+                                    }
+                                >
+                                    {locations &&
+                                        <MenuItem key="" value="" disabled>
+                                            Select Location
+                                        </MenuItem>
+                                    }
+                                    {locations && locations.length === 0 &&
+                                        <MenuItem key="0" value={null}>
+                                            No Record
+                                        </MenuItem>
+                                    }
+                                    {locations && locations.map((location) => (
+                                        <MenuItem key={location.id} value={location.id}>
+                                            {location.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+
                             <Grid item xs={6}>
                                 <TextField
                                     id="no-of-vacation"
                                     name="noOfVancancies"
                                     placeholder="Select number of vacancy"
+                                    select
                                     fullWidth
-                                    className={classes.textField}
+                                    margin="normal"
                                     variant="outlined"
                                     size="small"
                                     label="Number of vacancy"
                                     value={form.noOfVancancies}
                                     onChange={handleChange}
                                 >
-                                    {/*
-                    {[...Array(20).keys()].map(i => 
-                    <MenuItem key={i} value={i}>
-                        {i}
-                    </MenuItem>
-                    )}
-                    */}
+                                    {_.range(1, 11).map(i =>
+                                        <MenuItem key={i} value={i}>
+                                            {i}
+                                        </MenuItem>
+                                    )}
                                 </TextField>
                             </Grid>
                             <Grid item xs={6}>
@@ -182,6 +218,7 @@ export const JobInfoForm = props => {
                                     label="Address"
                                     id="outlined-title"
                                     fullWidth
+                                    margin="normal"
                                     variant="outlined"
                                     size="small"
                                     value={form.address}
@@ -191,11 +228,13 @@ export const JobInfoForm = props => {
                             <Grid item xs={6}>
                                 <Autocomplete
                                     id="country-select-demo"
-                                    style={{ width: '100%' }}
+                                    size="small"
                                     options={countries}
                                     classes={{
                                         option: classes.option,
                                     }}
+                                    value={form.country ? countries.find(country => country.label === form.country) : null}
+                                    onChange={handleCountryChange('country')}
                                     autoHighlight
                                     getOptionLabel={option => option.label}
                                     renderOption={option => (
@@ -209,14 +248,8 @@ export const JobInfoForm = props => {
                                             {...params}
                                             label="Choose a country"
                                             variant="outlined"
-                                            size="small"
-                                            name="country"
-                                            value={form.country}
-                                            onChange={handleChange}
-                                            inputProps={{
-                                                ...params.inputProps,
-                                                autoComplete: 'new-password', // disable autocomplete and autofill
-                                            }}
+                                            margin="normal"
+                                            fullWidth
                                         />
                                     )}
                                 />
@@ -351,8 +384,8 @@ export const JobInfoForm = props => {
                 </Grid>
             </Grid>
             </Box>
-        </Container>
-                */}
+        </Container> */}
+            <EmployeeTypeDialog />
         </Paper>
     )
 }

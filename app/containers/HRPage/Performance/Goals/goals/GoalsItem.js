@@ -111,7 +111,7 @@ const GoalsItem = props => {
 								</>
 							}
 							secondary={
-								<div className={classes.flex}>
+								<div className={classes.flex} component='legend'>
 									<Breadcrumbs aria-label="breadcrumb" separator="">
 										<Link color="inherit" href="/" onClick={handleClick} className={classes.link}>
 											Priority : &nbsp;

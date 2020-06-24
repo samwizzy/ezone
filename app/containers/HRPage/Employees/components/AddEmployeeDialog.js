@@ -90,9 +90,9 @@ function AddEmployeeDialog(props) {
     const { name, value } = target
     switch (name) {
       case 'department':
-        setForm({ ...form, [name]: _.find(departments, { id: value }) }); break;
+        setForm({ ...form, [name]: { id: value } }); break;
       case 'branch':
-        setForm({ ...form, [name]: _.find(branches, { id: value }) }); break;
+        setForm({ ...form, [name]: { id: value } }); break;
       case 'employeeType':
         setForm({ ...form, [name]: _.find(employeeTypes, { id: value }) }); break;
       case 'sourceOfHire':

@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
@@ -43,37 +43,47 @@ const durations = ['Days', 'Weeks', 'Months', 'Years'];
 function AddShiftDialog(props) {
   const classes = useStyles();
   const { closeNewShiftDialog, dialog, employees } = props;
-  const [option, setOption] = React.useState({shiftDays: false})
+  const [option, setOption] = React.useState({ shiftDays: false })
   const [form, setForm] = React.useState({
     name: '',
-    type: '',
-    validity: false,
-    from: new Date,
-    to: new Date,
+    type: 'PAID',
     description: '',
+    eligibleEmployees: [
+      { id: 0 }
+    ],
+    gender: "MALE",
+    leaveAllowancePercent: 0,
+    numberOfDaysFromHire: 0,
+    orgId: "",
+    validFrom: moment().format('YYYY-MM-DD'),
+    validTill: moment().format('YYYY-MM-DD')
   });
 
   React.useEffect(() => {
-    if(dialog.type == 'edit'){
-      setForm({...form})
+    if (dialog.type == 'edit') {
+      setForm({ ...form })
     }
   }, [dialog])
 
   const canSubmitForm = () => {
-    const {name, type, validity, from, to, description } = form
+    const { name, type, validity, from, to, description } = form
     return name.length > 0 && type.length > 0 && validity.length > 0
   }
 
   const handleChange = (event) => {
     const { name, value } = event.target
-    setForm({...form, [name]: value});
+    setForm({ ...form, [name]: value });
   }
 
-  const handleSelectChange = () => {}
+  const handleSelectChange = name => (event, obj) => {
+    setForm({ ...form, [name]: obj })
+  }
 
-  const handleDateChange = () => {}
+  const handleDateChange = (name, date) => {
+    setForm({ ...form, [name]: moment(date).format('YYYY-MM-DD') })
+  }
 
-  const handleSubmit = () => {}
+  const handleSubmit = () => { }
 
   return (
     <div>
@@ -98,16 +108,32 @@ function AddShiftDialog(props) {
             <TableBody>
               <TableRow>
                 <TableCell colSpan={2}>
-                  <Autocomplete
-                    id="combo-box-demo"
+                  <TextField
+                    id="name"
+                    name="name"
+                    placeholder="Name"
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
                     size="small"
-                    options={[]}
-                    getOptionLabel={option => option.label}
-                    onChange={(evt, value) => handleSelectChange(evt, value)}
+                    label="Name"
+                    value={form.name}
+                    onChange={handleChange}
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell colSpan={2}>
+                  <Autocomplete
+                    id="combo-box-name"
+                    size="small"
+                    options={employees ? employees : []}
+                    getOptionLabel={option => option.firstName + ' ' + option.lastName}
+                    onChange={handleSelectChange('eligibleEmployees')}
                     renderInput={params => (
                       <TextField
                         {...params}
-                        label="Name"
+                        label="Employee"
                         variant="outlined"
                         placeholder="Search"
                         margin="normal"
@@ -132,19 +158,35 @@ function AddShiftDialog(props) {
                     value={form.type}
                     onChange={handleChange}
                   >
-                    <MenuItem key={0} value="">
-                      No record
+                    <MenuItem key="" value="" disabled>
+                      Select type
                     </MenuItem>
+                    {['PAID', 'UNPAID'].map((type, i) =>
+                      <MenuItem key={i} value={type}>
+                        {type}
+                      </MenuItem>
+                    )}
                   </TextField>
                 </TableCell>
               </TableRow>
-              <TableRow>
+              {/* <TableRow>
                 <TableCell colSpan={2}>
                   <FormControl component="fieldset">
                     <FormLabel component="legend">Validity</FormLabel>
                     <RadioGroup row aria-label="position" name="position" value={form.validity}>
                       <FormControlLabel value="validity" control={<Radio color="primary" />} label="Validity Date" />
                       <FormControlLabel value="off-days" control={<Radio color="primary" />} label="Shift off days" />
+                    </RadioGroup>
+                  </FormControl>
+                </TableCell>
+              </TableRow> */}
+              <TableRow>
+                <TableCell colSpan={2}>
+                  <FormControl component="fieldset">
+                    <FormLabel component="legend">Gender</FormLabel>
+                    <RadioGroup row aria-label="gender" name="gender" value={form.gender} row>
+                      <FormControlLabel value="Male" control={<Radio color="primary" />} label="Male" />
+                      <FormControlLabel value="Female" control={<Radio color="primary" />} label="Female" />
                     </RadioGroup>
                   </FormControl>
                 </TableCell>
@@ -155,10 +197,10 @@ function AddShiftDialog(props) {
                     <KeyboardTimePicker
                       margin="normal"
                       inputVariant="outlined"
-                      id="time-picker"
-                      label="From"
+                      id="valid-from"
+                      label="Valid From"
                       size="small"
-                      value={form.from}
+                      value={form.validFrom}
                       onChange={handleDateChange}
                       KeyboardButtonProps={{
                         'aria-label': 'change time',
@@ -172,10 +214,10 @@ function AddShiftDialog(props) {
                     <KeyboardTimePicker
                       margin="normal"
                       inputVariant="outlined"
-                      id="time-picker"
-                      label="To"
+                      id="valid-till"
+                      label="Valid Till"
                       size="small"
-                      value={form.to}
+                      value={form.validTill}
                       onChange={handleDateChange}
                       KeyboardButtonProps={{
                         'aria-label': 'change time',
@@ -203,7 +245,7 @@ function AddShiftDialog(props) {
                   />
                 </TableCell>
               </TableRow>
-              <TableRow>
+              {/* <TableRow>
                 <TableCell>
                   <FormControlLabel
                     control={
@@ -238,7 +280,7 @@ function AddShiftDialog(props) {
                   <FormLabel component="legend">From</FormLabel>
                   <TextField
                     id="days"
-                    name="dayss"
+                    name="days"
                     placeholder="0"
                     margin="dense"
                     variant="outlined"
@@ -254,16 +296,16 @@ function AddShiftDialog(props) {
                     select
                     variant="outlined"
                     margin="dense"
-                    style={{width: 180}}
+                    style={{ width: 180 }}
                     size="small"
                     label="Days"
-                    value={form.type}
+                    value={form.duration}
                     onChange={handleChange}
                   >
                     {durations.map((duration, i) =>
-                    <MenuItem key={i} value={duration}>
-                      {duration}
-                    </MenuItem>
+                      <MenuItem key={i} value={duration}>
+                        {duration}
+                      </MenuItem>
                     )}
                   </TextField>
                   <FormControl component="legend">
@@ -292,9 +334,9 @@ function AddShiftDialog(props) {
                     onChange={handleChange}
                   >
                     {durations.map((duration, i) =>
-                    <MenuItem key={i} value={duration}>
-                      {duration}
-                    </MenuItem>
+                      <MenuItem key={i} value={duration}>
+                        {duration}
+                      </MenuItem>
                     )}
                   </TextField>
                 </TableCell>
@@ -313,13 +355,13 @@ function AddShiftDialog(props) {
                     onChange={handleChange}
                   >
                     {durations.map((duration, i) =>
-                    <MenuItem key={i} value={duration}>
-                      {duration}
-                    </MenuItem>
+                      <MenuItem key={i} value={duration}>
+                        {duration}
+                      </MenuItem>
                     )}
                   </TextField>
                 </TableCell>
-              </TableRow>
+              </TableRow> 
               <TableRow>
                 <TableCell colSpan={2}>
                   <TextField
@@ -336,13 +378,13 @@ function AddShiftDialog(props) {
                     onChange={handleChange}
                   >
                     {employees && employees.map((employee) => (
-                    <MenuItem key={employee.id} value={employee.id}>
-                      {employee.firstName} {employee.lastName}
-                    </MenuItem>
+                      <MenuItem key={employee.id} value={employee.id}>
+                        {employee.firstName} {employee.lastName}
+                      </MenuItem>
                     ))}
                   </TextField>
                 </TableCell>
-              </TableRow>
+              </TableRow>*/}
             </TableBody>
           </Table>
         </DialogContent>

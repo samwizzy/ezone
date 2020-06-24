@@ -44,13 +44,15 @@ export function Accounting(props) {
     return <LoadingIndicator />;
   }
 
+  console.log(accountingSetupData, "accountingSetupData")
+
   if (accountingSetupData === null) {
     return (
       <ModuleLayout>
         <AccountSetup />
       </ModuleLayout>
-    ) 
-  } 
+    )
+  }
   else {
     return <Dashboard />
   }
