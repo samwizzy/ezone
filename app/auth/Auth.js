@@ -60,7 +60,7 @@ class Auth extends Component {
          * Retrieve user data from Firebase
          */
         firebaseService.getUserData(authUser.uid).then(user => {
-          console.log(user, 'user');
+          console.log(user, 'user loard');
           //   this.props.setUserDataFirebase(user, authUser);
 
           //   this.props.showMessage({ message: 'Logged in with Firebase' });
