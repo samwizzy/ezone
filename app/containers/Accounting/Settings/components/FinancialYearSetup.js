@@ -147,7 +147,6 @@ const FinancialYearSetup = props => {
   ];
 
   function leapYear(year) {
-    console.log(`Leap Year ${year}`);
     return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
   }
 
@@ -215,6 +214,54 @@ const FinancialYearSetup = props => {
     }
   }
 
+  function labelOnly(code){
+   switch(code){
+    case 'NGN':
+      return 'Nigeria Naira';
+    case 'USD':
+      return 'US Dollar';
+    case 'EUR':
+      return 'Spain';
+    case 'CAD':
+      return 'Canadian Dollar';
+    case 'GBP':
+      return 'Pound Sterling';
+  }
+  }
+
+  function monthOnly(month){
+    switch(month){
+      
+        case 1 :
+        return 'January'
+        case 2 :
+          return 'Febuary'
+        case 3 :
+         return 'March'  
+         case 4 :
+          return 'April'
+        case 5 :
+          return 'May'
+        case 6 :
+          return 'June'  
+        case 7 :
+          return 'July'
+        case 8 :
+          return 'August' 
+        case 9 :
+          return 'September' 
+        case 10 :
+          return 'October'   
+        case 11 :
+            return 'November'
+         default :
+         return 'December'  
+    }
+    
+  }
+   
+  
+
   const [values, setValues] = React.useState({
     accountMethod: 'Accural',
     companyStartDate: '',
@@ -229,10 +276,10 @@ const FinancialYearSetup = props => {
 
   const canSubmitValues = () => {
     const ready =
-      values.accountMethod.length > 0 &&
-      values.startDay > 0 &&
-      values.currency.length > 0 &&
-      values.startMonth > 0;
+    accContext.accState.accountMethod.length > 0 &&
+    accContext.accState.startDay > 0 &&
+    accContext.accState.currency.length > 0 &&
+    accContext.accState.startMonth > 0;
     return ready;
   };
 
@@ -245,11 +292,6 @@ const FinancialYearSetup = props => {
 
   function onNextPage(e){
     e.preventDefault();
-    setValues({
-      ...values,
-      companyStartDate:formatDate(values.companyStartDate),
-    });
-    accContext.accDispatch({type:'PAYLOAD',payload:values})
     accContext.accDispatch({type:'NAVIGATION',page:'chatofAcc'})
     //createAccountingSetupAction(values)
   }
@@ -317,21 +359,13 @@ const FinancialYearSetup = props => {
                     getOptionLabel={option => option.label}
                     onChange={(event, value) => {
                       setMonthForCalender(event, value);
-                      const year = new Date().getFullYear();
-                      const cSDate = `${year}-${value.value}-${
-                        values.startDay
-                      }`;
-                      setValues({
-                        ...values,
-                        startMonth: value.value,
-                        companyStartDate: cSDate,
-                      });
+                      accContext.accDispatch({type:'PAYLOAD',payload:{label:'startMonth',value:value.value}})
                     }}
                     style={{ width: 200 }}
                     renderInput={params => (
                       <TextField
                         {...params}
-                        label="Select Month"
+                        label={accContext.accState.startMonth === 0 ? 'Select Month' : `Month ${monthOnly(accContext.accState.startMonth)}`}
                         variant="outlined"
                         inputProps={{
                           ...params.inputProps,
@@ -346,28 +380,16 @@ const FinancialYearSetup = props => {
                     id="days"
                     options={getDaysOfTheMonth(dmonth)}
                     getOptionLabel={option => option.label}
-                    onChange={(event, value) => {
-                      if (values.startMonth > 0) {
-                        const year = new Date().getFullYear();
-                        const cSDate = `${year}-${values.startMonth}-${
-                          value.value
-                        }`;
-                        setValues({
-                          ...values,
-                          startDay: value.value,
-                          companyStartDate: cSDate,
-                        });
-                      } else {
-                        setValues({ ...values, startDay: value.value });
-                      }
-
+                    onChange={(event, value) => { 
+                    accContext.accDispatch({type:'PAYLOAD',payload:{label:'startDay',value:value.value}})
                       // setFinancialYearDate();
                     }}
+
                     style={{ width: 200 }}
                     renderInput={params => (
                       <TextField
                         {...params}
-                        label="Select Day"
+                        label={accContext.accState.startDay === 0 ? 'Select Day' : `Day ${accContext.accState.startDay}`}
                         variant="outlined"
                         inputProps={{
                           ...params.inputProps,
@@ -399,14 +421,11 @@ const FinancialYearSetup = props => {
                     <FormControl component="fieldset">
                       <FormGroup aria-label="position" row>
                         <FormControlLabel
-                          value="Accural"
+                          value="ACCURAL"
                           onChange={e => {
-                            setValues({
-                              ...values,
-                              accountMethod: e.target.value,
-                            });
+                            accContext.accDispatch({type:'PAYLOAD',payload:{label:'accountMethod',value:e.target.value}}) 
                           }}
-                          checked={values.accountMethod === 'Accural'}
+                          checked={accContext.accState.accountMethod === 'ACCURAL'}
                           control={<Radio color="primary" />}
                           label="Accural"
                           labelPlacement="end"
@@ -427,14 +446,11 @@ const FinancialYearSetup = props => {
                     <FormControl component="fieldset">
                       <FormGroup aria-label="position" row>
                         <FormControlLabel
-                          value="Cash basis"
+                          value="CASH BASIS"
                           onChange={e => {
-                            setValues({
-                              ...values,
-                              accountMethod: e.target.value,
-                            });
+                            accContext.accDispatch({type:'PAYLOAD',payload:{label:'accountMethod',value:e.target.value}})  
                           }}
-                          checked={values.accountMethod === 'Cash basis'}
+                          checked={accContext.accState.accountMethod === 'CASH BASIS'}
                           control={<Radio color="primary" />}
                           label="Cash"
                           labelPlacement="end"
@@ -471,8 +487,9 @@ const FinancialYearSetup = props => {
                   classes={{
                     option: classes.option,
                   }}
-                  onChange={(event, value) =>
-                    setValues({ ...values, currency: value.code })
+                  onChange={(event, value) =>{
+                    accContext.accDispatch({type:'PAYLOAD',payload:{label:'currency',value:value.code}}) 
+                }
                   }
                   autoHighlight
                   getOptionLabel={option => `${option.code} - ${option.label}`}
@@ -485,7 +502,7 @@ const FinancialYearSetup = props => {
                   renderInput={params => (
                     <TextField
                       {...params}
-                      label="Choose a currency"
+                      label={accContext.accState.currency.length < 2 ? 'Choose a currency' : `Currency ${accContext.accState.currency} - ${labelOnly(accContext.accState.currency)}`}
                       variant="outlined"
                     />
                   )}
@@ -499,6 +516,8 @@ const FinancialYearSetup = props => {
                   <FormGroup aria-label="position" row>
                     <FormControlLabel
                       value="end"
+                      checked={accContext.accState.multiCurrency === true}
+                      onChange ={()=>accContext.accDispatch({type:'PAYLOAD',payload:{label:'multiCurrency',value:!accContext.accState.multiCurrency}}) }
                       control={<Checkbox color="primary" />}
                       label="Enable Multicurrency"
                       labelPlacement="end"

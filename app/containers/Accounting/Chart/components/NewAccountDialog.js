@@ -317,7 +317,7 @@ const NewAccountDialog = props => {
                     onChange={handleChange('description')}
                     margin="normal"
                     InputProps={{
-                      readOnly: true,
+                      readOnly: false,
                     }}
                     fullWidth
                     rows={3}

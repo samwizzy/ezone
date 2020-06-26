@@ -102,11 +102,11 @@ const SetChartOfAccount = () => {
                     <FormControl component="fieldset">
                       <FormGroup aria-label="position" row>
                         <FormControlLabel
-                          value="CREATE"
+                          value={accContext.accState.accountChart}
                           onChange={e => {
-                            setAccountChart(e.target.value);
+                            accContext.accDispatch({type:'PAYLOAD',payload:{label:'accountChart',value:'CREATE'}}) 
                           }}
-                          checked={accountChart === 'CREATE'}
+                          checked={accContext.accState.accountChart === 'CREATE'}
                           control={<Radio color="primary" />}
                           label="Create your Chart of Accounts"
                           labelPlacement="end"
@@ -121,11 +121,11 @@ const SetChartOfAccount = () => {
                     <FormControl component="fieldset">
                       <FormGroup aria-label="position" row>
                         <FormControlLabel
-                          value="IMPORT"
+                          value={accContext.accState.accountChart}
                           onChange={e => {
-                            setAccountChart(e.target.value);
+                            accContext.accDispatch({type:'PAYLOAD',payload:{label:'accountChart',value:'IMPORTED'}}) 
                           }}
-                          checked={accountChart === 'IMPORT'}
+                          checked={accContext.accState.accountChart === 'IMPORTED'}
                           control={<Radio color="primary" />}
                           label="Import Existing Chart of Accounts"
                           labelPlacement="end"
@@ -140,11 +140,11 @@ const SetChartOfAccount = () => {
                     <FormControl component="fieldset">
                       <FormGroup aria-label="position" row>
                         <FormControlLabel
-                          value="SYSTEM"
+                          value={accContext.accState.accountChart}
                           onChange={e => {
-                            setAccountChart(e.target.value);
+                            accContext.accDispatch({type:'PAYLOAD',payload:{label:'accountChart',value:'GENERATED'}}) 
                           }}
-                          checked={accountChart === 'SYSTEM'}
+                          checked={accContext.accState.accountChart === 'GENERATED'}
                           control={<Radio color="primary" />}
                           label="Use system generated Chart of Accounts (non accountants)"
                           labelPlacement="end"
@@ -156,31 +156,37 @@ const SetChartOfAccount = () => {
                   <Grid item xs={8}>
                   
                   <div className={classes.content_margin_button} align="right">
-                   <Grid container>  
+
+                   <Grid container> 
                   <Grid item xs={6}>
                    <div>
                    <Button
                   variant="contained"
-                  onClick={e=>{accContext.accDispatch({type:'NAVIGATION',page:'financialYear'})}}
+                  onClick={e=>{
+                  accContext.accDispatch({type:'NAVIGATION',page:'financialYear'})}}
                   startIcon={<BackIcon />}
                 >
                   Back
                 </Button>
                    </div>
                   </Grid>
+
+
                   <Grid item xs={6}>
                    <div>
                    <Button
                   variant="contained"
-                  disabled
-                  onClick={e=>{accContext.accDispatch({type:'NAVIGATION',page:'busService'})}}
                   color="primary"
+                  onClick={e=>{
+                  accContext.accDispatch({type:'NAVIGATION',page:'busService'})}}
                   endIcon={<NextIcon />}
                 >
                   Next
                 </Button>
                    </div>
                   </Grid>
+
+                
                   </Grid> 
                   </div>
                       

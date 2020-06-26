@@ -38,6 +38,8 @@ export function* createAccountSetupSaga() {
 }
 
 
+
+
 // Get accounting setup data
 export function* getAccountingSetupSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
