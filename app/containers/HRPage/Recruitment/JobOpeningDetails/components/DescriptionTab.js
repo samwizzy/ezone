@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
-  table: { 
+  table: {
     "& .MuiTableCell-root": {
       border: "none !important"
     },
@@ -44,6 +44,7 @@ const useStyles = makeStyles(theme => ({
       color: green[500]
     }
   },
+  link: { textTransform: 'capitalize' },
   dateline: {
     display: 'flex',
     justifyContent: 'flex-end',
@@ -62,114 +63,111 @@ const useStyles = makeStyles(theme => ({
 
 const DescriptionTab = props => {
   const classes = useStyles();
-	const { loading, openNewEmployeeDialog, getEmployee, employees, employee, getJobOpenings, jobOpenings, jobOpeningDetails } = props;
+  const { loading, jobOpeningDetails } = props;
   console.log(jobOpeningDetails, "job details inside desc tab");
-  React.useEffect(() => {
-  }, [employee]);
 
-  const handleRoute = () => {}
+  const handleRoute = () => { }
 
   return (
     <div className={classes.root}>
       {jobOpeningDetails &&
-      <Grid
-        container
-        justify='space-between'
-      >
-        <Grid item xs={12}>
-          <div className={classes.tableRoot}>
-            <Table className={classes.table} aria-label="a dense table">
-              <TableBody>
-                <TableRow>
-                  <TableCell align="right">
-                    <div className={classes.dateline}>
-                      <Typography variant="subtitle1"><TodayIcon/> Published {jobOpeningDetails.dateCreated}</Typography>
-                      {/* <Typography variant="subtitle1"><TodayIcon/> Expires {jobOpeningDetails.department.name}</Typography> */}
-                    </div>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th" scope="row" colSpan={3}>Job Title</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell colSpan={2}><Box p={1} className={classes.box}>{jobOpeningDetails.jobTitle}</Box></TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th" scope="row" colSpan={3}>Job Description</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell colSpan={2}>
-                    <Box p={1} className={classes.box}>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrudLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrudLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis 
-                    </Box>
-                  </TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </div>
-        </Grid>
-        <Grid item xs={12}>
-          <div className={classes.tableRoot}>
-            <Typography variant="subtitle1">Hiring Workflow</Typography>
-            <div className={classes.breadcrumbs}>
-              <Breadcrumbs separator={<ArrowRightAltIcon fontSize="small" />} aria-label="breadcrumb">
-              {jobOpeningDetails.hiringSteps.map((jod, index) => (
-                <Link color="inherit" key={index} onClick={handleRoute}>
-                  {jod.title}
-                </Link>
-              ))}
-                
-                <Typography color="textPrimary">Make an offer</Typography>
-              </Breadcrumbs>
+        <Grid
+          container
+          justify='space-between'
+        >
+          <Grid item xs={12}>
+            <div className={classes.tableRoot}>
+              <Table className={classes.table} aria-label="a dense table">
+                <TableBody>
+                  <TableRow>
+                    <TableCell align="right">
+                      <div className={classes.dateline}>
+                        <Typography variant="subtitle1"><TodayIcon /> Published {moment(jobOpeningDetails.dateCreated).format('lll')}</Typography>
+                        {/* <Typography variant="subtitle1"><TodayIcon/> Expires {jobOpeningDetails.department.name}</Typography> */}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell component="th" scope="row" colSpan={3}>Job Title</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={2}><Box p={1} className={classes.box}>{jobOpeningDetails.jobTitle}</Box></TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell component="th" scope="row" colSpan={3}>Job Description</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={2}>
+                      <Box p={1} className={classes.box}>
+                        {jobOpeningDetails.jobDescription}
+                      </Box>
+                    </TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
             </div>
+          </Grid>
+          <Grid item xs={12}>
+            <div className={classes.tableRoot}>
+              <Typography variant="subtitle1">Hiring Workflow</Typography>
+              <div className={classes.breadcrumbs}>
+                <Breadcrumbs separator={<ArrowRightAltIcon fontSize="small" />} aria-label="breadcrumb">
+                  {jobOpeningDetails.hiringSteps.map((job, index) => (
+                    <Link color="inherit" key={index} onClick={handleRoute} className={classes.link}>
+                      {job.title}
+                    </Link>
+                  ))}
+                  <Typography color="textPrimary">Make an offer</Typography>
+                </Breadcrumbs>
+              </div>
 
-            <Table className={classes.table} aria-label="a dense table">
-              <TableBody>
-                <TableRow>
-                  <TableCell colSpan={3} align="right">
-                    <Typography variant="subtitle1">Status: <CheckCircleIcon className={classNames(classes.icon, {"active": true})} /> Active</Typography>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th" scope="row">
-                    <Typography variant="subtitle1">Department</Typography>
-                    <Box p={1} className={classes.box}>{jobOpeningDetails.department.name}</Box>
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    <Typography variant="subtitle1">Enrolment Type</Typography>
-                    <Box p={1} className={classes.box}>{jobOpeningDetails.enrollmentType.name}</Box>
-                  </TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th" scope="row">
-                    <Typography variant="subtitle1">No of vacancy</Typography>
-                    <Box p={1} className={classes.box}>{jobOpeningDetails.noOfVacancy}</Box>
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    <Typography variant="subtitle1">Submission Deadline</Typography>
-                    <Box p={1} className={classes.box}>{jobOpeningDetails.submissionDeadline}</Box>
-                  </TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th" scope="row">
-                    <Typography variant="subtitle1">Location</Typography>
-                    <Box p={1} className={classes.box}>{jobOpeningDetails.location.name}</Box>
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    <Typography variant="subtitle1">Created</Typography>
-                    <Box p={1} className={classes.box}>{jobOpeningDetails.dateCreated}</Box>
-                  </TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </div>
+              <Table className={classes.table} aria-label="a dense table">
+                <TableBody>
+                  <TableRow>
+                    <TableCell colSpan={3} align="right">
+                      <Typography variant="subtitle1">Status: <CheckCircleIcon className={classNames(classes.icon, { "active": true })} /> Active</Typography>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell component="th" scope="row">
+                      <Typography variant="subtitle1">Department</Typography>
+                      <Box p={1} className={classes.box}>{jobOpeningDetails.department.name}</Box>
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      <Typography variant="subtitle1">Enrolment Type</Typography>
+                      <Box p={1} className={classes.box}>{jobOpeningDetails.enrollmentType.name}</Box>
+                    </TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell component="th" scope="row">
+                      <Typography variant="subtitle1">No of vacancy</Typography>
+                      <Box p={1} className={classes.box}>{jobOpeningDetails.noOfVancancies}</Box>
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      <Typography variant="subtitle1">Submission Deadline</Typography>
+                      <Box p={1} className={classes.box}>{moment(jobOpeningDetails.submissionDeadline).format('ll')}</Box>
+                    </TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell component="th" scope="row">
+                      <Typography variant="subtitle1">Location</Typography>
+                      <Box p={1} className={classes.box}>{jobOpeningDetails.location.name}</Box>
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      <Typography variant="subtitle1">Created</Typography>
+                      <Box p={1} className={classes.box}>{moment(jobOpeningDetails.dateCreated).format('ll')}</Box>
+                    </TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </div>
+          </Grid>
         </Grid>
-      </Grid>
       }
     </div>
   );
@@ -183,10 +181,10 @@ DescriptionTab.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   employees: Selectors.makeSelectEmployees(),
-  employee : Selectors.makeSelectEmployee(),
+  employee: Selectors.makeSelectEmployee(),
   user: AppSelectors.makeSelectCurrentUser(),
-  jobOpenings : Selectors.makeSelectJobOpenings(),
-  jobOpeningDetails : Selectors.makeSelectJobOpeningDetails(),
+  jobOpenings: Selectors.makeSelectJobOpenings(),
+  jobOpeningDetails: Selectors.makeSelectJobOpeningDetails(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -204,7 +202,7 @@ const withConnect = connect(
 );
 
 export default compose(
-	withRouter,
-	withConnect,
-	memo,
+  withRouter,
+  withConnect,
+  memo,
 )(DescriptionTab);

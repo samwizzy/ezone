@@ -20,20 +20,19 @@ const useStyles = makeStyles(theme => ({
 
 const JobOpeningDetailsApp = props => {
   const classes = useStyles();
-  const { loading, match, getJobOpenings, jobOpenings, getJobOpeningDetails, /* jobOpeningDetails */ } = props;
+  const { loading, match, getJobOpenings, jobOpenings, getJobOpeningDetails } = props;
   const { params } = match
-  console.log(params);
-  getJobOpeningDetails(params.status);
-  //console.log(jobOpeningDetails, "job details inside job openingdetails index");
+
   React.useEffect(() => {
+    getJobOpeningDetails(params.status);
   }, []);
 
   return (
     <div className={classes.root}>
-			{
-				params.applicantId?
-				<ApplicantDetails /> : <JobOpeningDetails />
-			}
+      {
+        params.applicantId ?
+          <ApplicantDetails /> : <JobOpeningDetails />
+      }
 
       <ApplicantDialog />
     </div>
@@ -47,13 +46,13 @@ JobOpeningDetailsApp.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  jobOpenings : Selectors.makeSelectJobOpenings(),
+  jobOpenings: Selectors.makeSelectJobOpenings(),
   //jobOpeningDetails : Selectors.makeSelectJobOpeningDetails(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getJobOpeningDetails : (id) => dispatch(Actions.getJobOpeningDetails(id)),
+    getJobOpeningDetails: (id) => dispatch(Actions.getJobOpeningDetails(id)),
   };
 }
 

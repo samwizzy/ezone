@@ -46,10 +46,10 @@ const AnnouncementPage = props => {
       <ModuleLayout>
         <AnnouncementList />
       </ModuleLayout>
-      
+
       <AnnouncementViewDialog />
       <AddAnnouncementDialog />
-     
+
     </React.Fragment>
   );
 }
@@ -64,8 +64,6 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
-    getEmployees: () => dispatch(Actions.getEmployees()),
-    getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
     openNewAnnouncementDialog: () => dispatch(Actions.openNewAnnouncementDialog()),
     openAnnouncementViewDialog: (data) => dispatch(Actions.openAnnouncementViewDialog(data)),
   };

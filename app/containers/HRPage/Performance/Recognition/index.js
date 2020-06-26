@@ -40,7 +40,7 @@ export function RecognitionPage(props) {
         <meta name="description" content="ezone application recognition page" />
       </Helmet>
 
-      {params.recognitionId ?
+      {params.pageId ?
         <RecognitionDetails /> : <RecognitionList />
       }
 

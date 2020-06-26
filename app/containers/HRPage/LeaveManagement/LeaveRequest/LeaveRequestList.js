@@ -17,7 +17,7 @@ import * as AppSelectors from '../../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
 import Person from '@material-ui/icons/Person';
-import {AddLeaveRequest} from '../components/AddButton'
+import { AddLeaveRequest } from '../components/AddButton'
 import LeaveRequestDialog from './components/LeaveRequestDialog'
 
 const useStyles = makeStyles(theme => ({
@@ -45,9 +45,9 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   icon: {
     color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.done': { color: green[500]},
+    '&.approved': { color: theme.palette.primary.main },
+    '&.inProgress': { color: orange[500] },
+    '&.done': { color: green[500] },
   }
 }));
 
@@ -141,7 +141,7 @@ const LeaveRequestList = props => {
     filter: false,
     customToolbar: () => <AddLeaveRequest openDialog={openNewLeaveRequestDialog} />,
     rowsPerPage: 10,
-    rowsPerPageOptions: [10,25,50,100],
+    rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
       getLeaveRequestById(rowData[0])
     },
@@ -178,7 +178,7 @@ LeaveRequestList.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   user: AppSelectors.makeSelectCurrentUser(),
-  leaveRequests: Selectors.makeSelectLeaveRequest(),
+  leaveRequests: Selectors.makeSelectLeaveRequests(),
 });
 
 function mapDispatchToProps(dispatch) {

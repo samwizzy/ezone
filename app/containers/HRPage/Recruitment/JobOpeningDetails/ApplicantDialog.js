@@ -1,11 +1,18 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
+import EzoneUtils from '../../../../utils/EzoneUtils'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
-import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, MenuItem, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
+import { AppBar, Button, Dialog, DialogActions, DialogContent, FormControl, Grid, MenuItem, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete'
 import * as Selectors from '../../selectors';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 
@@ -14,15 +21,8 @@ import moment from 'moment'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1, 0)
-    },
+    flexGrow: 1
   },
-  table: {
-    "& td": {
-      border: 0 
-    }
-  }
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -31,44 +31,60 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function ApplicantDialog(props) {
   const classes = useStyles();
-  const { closeNewApplicantDialog, createApplicant, dialog } = props;
+  const { closeNewApplicantDialog, createApplicant, jobOpenings, dialog } = props;
   const [form, setForm] = React.useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phoneNumber: '',
-    gender: ''
+    dob: moment('1980-01-01').format('YYYY-MM-DDTHH:mm:ss.SSS'),
+    firstName: "",
+    gender: "",
+    lastName: "",
+    mobileNumber: "",
+    personalEmail: "",
+    presentAddress: "",
+    resume: "",
+    status: "REJECT",
+    workExperience: "FRESHER",
+    workflow: [],
+    applyingFor: null
   });
-  
+
   console.log(dialog, "dialog checking")
-  
+
 
   React.useEffect(() => {
-    if(dialog.type == 'edit'){
-      setForm({...form})
+    if (dialog.type == 'edit') {
+      setForm({ ...form })
     }
   }, [dialog])
 
   const canSubmitForm = () => {
-    const {firstName, lastName, phoneNumber, email, gender } = form
-    return firstName.length > 0 && lastName.length > 0 && email.length > 0 && gender
+    const { applyingFor, firstName, lastName, mobileNumber, personalEmail, gender, resume } = form
+    return firstName.length > 0 && lastName.length > 0 && personalEmail.length > 0 &&
+      mobileNumber.length > 0 && applyingFor && gender.length > 0
   }
-   
 
   const handleChange = (event) => {
     const { name, value } = event.target
-    setForm({...form, [name]: value});
+    setForm({ ...form, [name]: value });
   }
 
-  const handleSelectChange = (event) => {
-    setForm({...form, [event.target.name]: {id: event.target.value}});
+  const handleSelectChange = name => (event, obj) => {
+    setForm({ ...form, [name]: obj });
+  }
+
+  const handleDateChange = name => date => {
+    setForm({ ...form, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss.SSS') });
   }
 
   const handleImageChange = (event) => {
-    setForm({...form, [event.target.name]: {id: event.target.value}});
+    const { name, files } = event.target
+    const result = EzoneUtils.toBase64(files[0]);
+    // result.then(file =>
+    //   setForm({ ...form, [name]: file })
+    // )
   }
 
   const handleSubmit = event => {
+    console.log("handle submit")
     createApplicant(form)
   }
 
@@ -93,126 +109,209 @@ function ApplicantDialog(props) {
         </AppBar>
 
         <DialogContent dividers>
-          <Table className={classes.table}>
-            <TableRow>
-              <TableCell>
-                <TextField
-                  name="name"
-                  label="First Name"
-                  id="outlined-title"
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <Autocomplete
+                id="select-applying-for"
+                size="small"
+                options={jobOpenings}
+                classes={{
+                  option: classes.option,
+                }}
+                value={form.applyingFor ? form.applyingFor : null}
+                onChange={handleSelectChange('applyingFor')}
+                autoHighlight
+                getOptionLabel={option => option.jobTitle}
+                renderOption={option => (
+                  <React.Fragment>
+                    {option.jobTitle}
+                  </React.Fragment>
+                )}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Choose position applying for"
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                name="firstName"
+                label="First Name"
+                id="first-name"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                size="small"
+                value={form.firstName}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                name="lastName"
+                label="Last Name"
+                id="last-name"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                size="small"
+                value={form.lastName}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                name="mobileNumber"
+                label="Mobile Number"
+                id="mobile-number"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                size="small"
+                value={form.mobileNumber}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                id="gender"
+                name="gender"
+                placeholder="Gender"
+                select
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                size="small"
+                label="Gender"
+                value={form.gender}
+                onChange={handleChange}
+              >
+                {['Male', 'Female'].map((item, i) =>
+                  <MenuItem key={i} value={item}>
+                    {item}
+                  </MenuItem>
+                )}
+              </TextField>
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                name="personalEmail"
+                label="Personal Email"
+                id="outlined-title"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                size="small"
+                value={form.personalEmail}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  autoOk
+                  disableFuture
+                  inputVariant="outlined"
+                  format="dd/MM/yyyy"
+                  margin="normal"
                   fullWidth
-                  variant="outlined"
                   size="small"
-                  value={form.firstName}
-                  onChange={handleChange}
+                  name="dob"
+                  id="date-of-birth"
+                  label="Date Of Birth"
+                  value={form.dob}
+                  onChange={handleDateChange('dob')}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
                 />
-              </TableCell>
-              <TableCell>
-                <TextField
-                  name="name"
-                  label="Phone Number"
-                  id="outlined-title"
-                  fullWidth
+              </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                id="work-experience"
+                name="workExperience"
+                placeholder="Select work experience"
+                select
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                size="small"
+                label="Work Experience"
+                value={form.workExperience}
+                onChange={handleChange}
+              >
+                {['FRESHER', 'EXPERIENCED'].map((experience, i) =>
+                  <MenuItem key={i} value={experience}>
+                    {experience}
+                  </MenuItem>
+                )}
+              </TextField>
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                name="presentAddress"
+                label="Personal Address"
+                id="personal-address"
+                fullWidth
+                margin="normal"
+                multiline
+                rows={2}
+                variant="outlined"
+                size="small"
+                value={form.presentAddress}
+                onChange={handleChange}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Typography>Attach Resume/Cv</Typography>
+
+              <FormControl variant="outlined" margin="dense">
+                <Button
                   variant="outlined"
-                  size="small"
-                  value={form.phoneNumber}
-                  onChange={handleChange}
-                />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>
-                <TextField
-                  name="name"
-                  label="Last Name"
-                  id="outlined-title"
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                  value={form.lastName}
-                  onChange={handleChange}
-                />
-              </TableCell>
-              <TableCell>
-                <TextField
-                  name="name"
-                  label="Email"
-                  id="outlined-title"
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                  value={form.email}
-                  onChange={handleChange}
-                />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>
-                <TextField
-                  id="gender"
-                  name="gender"
-                  placeholder="Gender"
-                  select
-                  fullWidth
-                  className={classes.textField}
-                  variant="outlined"
-                  size="small"
-                  label="Gender"
-                  value={form.gender}
-                  onChange={handleChange}
+                  component="label"
+                  startIcon={<AttachFileIcon />}
                 >
-                  {['male', 'female'].map((item, i) => 
-                    <MenuItem key={i} value={item}>
-                      {item}
-                    </MenuItem>
-                  )}
-                </TextField>
-              </TableCell>
-              <TableCell></TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Attach Resume/Cv</TableCell>
-              <TableCell>
-                <FormControl variant="outlined" margin="dense">
-                  <Button
-                    variant="outlined"
-                    component="label"
-                    startIcon={<AttachFileIcon />}
-                  >
-                    Upload File
+                  Upload File
                     <input
-                      name="attachments"
-                      type="file"
-                      style={{ display: "none" }}
-                      onChange={handleImageChange}
-                      multiple
-                    />
-                  </Button>
-                </FormControl>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Attach Cover Letter</TableCell>
-              <TableCell>
-                <FormControl variant="outlined" margin="dense">
-                  <Button
-                    variant="outlined"
-                    component="label"
-                    startIcon={<AttachFileIcon />}
-                  >
-                    Upload File
+                    name="resume"
+                    type="file"
+                    style={{ display: "none" }}
+                    onChange={handleImageChange}
+                    multiple
+                  />
+                </Button>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography>Attach Cover Letter</Typography>
+
+              <FormControl variant="outlined" margin="dense">
+                <Button
+                  variant="outlined"
+                  component="label"
+                  startIcon={<AttachFileIcon />}
+                >
+                  Upload File
                     <input
-                      name="attachments"
-                      type="file"
-                      style={{ display: "none" }}
-                      onChange={handleImageChange}
-                      multiple
-                    />
-                  </Button>
-                </FormControl>
-              </TableCell>
-            </TableRow>
-          </Table>
+                    name="attachments"
+                    type="file"
+                    style={{ display: "none" }}
+                    onChange={handleImageChange}
+                    multiple
+                  />
+                </Button>
+              </FormControl>
+            </Grid>
+          </Grid>
         </DialogContent>
 
         <DialogActions>
@@ -224,7 +323,7 @@ function ApplicantDialog(props) {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </div >
   );
 }
 
@@ -236,13 +335,13 @@ ApplicantDialog.propTypes = {
 const mapStateToProps = createStructuredSelector({
   dialog: Selectors.makeSelectApplicantDialog(),
   loading: Selectors.makeSelectLoading(),
+  jobOpenings: Selectors.makeSelectJobOpenings(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     closeNewApplicantDialog: () => dispatch(Actions.closeNewApplicantDialog()),
     createApplicant: (data) => dispatch(Actions.createApplicant(data)),
-    dispatch,
   };
 }
 

@@ -186,10 +186,7 @@ const App = props => {
                   <PrivateRoute exact path="/work-order" component={WorkOrderPage} />
 
                   <PrivateRoute exact path="/human-resource/leave-management" component={LeaveManagementPage} />
-                  <PrivateRoute exact path="/human-resource/performance/goals/:goalId?" component={PerformancePage} />
-                  <PrivateRoute exact path="/human-resource/performance/recognitions/:recognitionId?" component={PerformancePage} />
-                  <PrivateRoute exact path="/human-resource/performance/feedbacks/:feedbackId?" component={PerformancePage} />
-                  <PrivateRoute exact path="/human-resource/performance/reviews/:reviewId?" component={PerformancePage} />
+                  <PrivateRoute exact path="/human-resource/performance/:page/:pageId?" component={PerformancePage} />
 
                   <PrivateRoute exact path="/human-resource/attendance" component={AttendancePage} />
                   {/*<PrivateRoute exact path="/hr/attendance" component={AttendancePage} />*/}

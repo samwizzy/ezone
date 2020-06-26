@@ -660,6 +660,67 @@ export function* getLocations() {
   }
 }
 
+export function* getJobApplications({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetJobApplications}/${user && user.organisation.orgId}`;
+
+  console.log(payload, "payload create application")
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "get create application")
+
+    yield put(Actions.getApplicantsSuccess(response));
+  } catch (err) {
+    if (err.message) {
+      console.log(err.message, "err message")
+    } else {
+      const error = yield call(errorHandler, err.response.json())
+      console.log(error, "create job application error")
+    }
+  }
+}
+
+export function* createJobApplication({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.CreateJobApplication}`;
+  payload.orgId = user && user.organisation.orgId
+
+  console.log(payload, "payload create application")
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "response create application")
+
+    yield put(Actions.createApplicantSuccess(response));
+  } catch (err) {
+    const error = yield call(errorHandler, err.response.json())
+    console.log(err.message, "err message")
+    if (err.message) {
+
+    } else {
+      console.log(error, "create job application error")
+    }
+  }
+}
+
 export function* getJobOpenings() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
@@ -888,7 +949,9 @@ export default function* HRRootSaga() {
   yield takeLatest(Constants.GET_ENROLLMENTTYPES, getEnrollmentTypes);
   yield takeLatest(Constants.GET_LOCATIONS, getLocations);
   yield takeLatest(Constants.CREATE_LOCATION, createLocation);
+  yield takeLatest(Constants.CREATE_APPLICANT, createJobApplication);
   yield takeLatest(Constants.GET_JOBOPENINGS, getJobOpenings);
+  yield takeLatest(Constants.GET_APPLICANTS, getJobApplications);
   yield takeLatest(Constants.GET_JOBOPENINGDETAILS, getJobOpeningDetails);
   yield takeLatest(Constants.GET_ATTENDANCES, getAttendances);
   yield takeLatest(Constants.GET_ROLES, getRoles);

@@ -14,7 +14,7 @@ import MUIDataTable from 'mui-datatables'
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
 import * as AppSelectors from '../../../App/selectors';
-import {AddHoliday} from '../components/AddButton'
+import { AddHoliday } from '../components/AddButton'
 import HolidayDialog from './components/HolidayDialog'
 
 const useStyles = makeStyles(theme => ({
@@ -41,14 +41,14 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   icon: {
     color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.done': { color: green[500]},
+    '&.approved': { color: theme.palette.primary.main },
+    '&.inProgress': { color: orange[500] },
+    '&.done': { color: green[500] },
   }
 }));
 
 const employeeShifts = [
-  {id: 1, avi: '', employee: 'Samuel', shift: 'Night', duration: '6:00pm - 6:00am'}
+  { id: 1, avi: '', employee: 'Samuel', shift: 'Night', duration: '6:00pm - 6:00am' }
 ]
 
 const HolidaysList = props => {
@@ -87,8 +87,8 @@ const HolidaysList = props => {
       name: 'duration',
       label: 'Duration',
       options: {
-      filter: true,
-      sort: true,
+        filter: true,
+        sort: true,
       },
     }
   ];
@@ -103,7 +103,7 @@ const HolidaysList = props => {
     filter: false,
     customToolbar: () => <AddHoliday openDialog={openNewHolidayDialog} />,
     rowsPerPage: 10,
-    rowsPerPageOptions: [10,25,50,100],
+    rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
       getHolidayById(rowData[0])
     },
@@ -140,7 +140,7 @@ HolidaysList.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   user: AppSelectors.makeSelectCurrentUser(),
-  holidays: Selectors.makeSelectLeaveRequest(),
+  holidays: Selectors.makeSelectLeaveRequests(),
 });
 
 function mapDispatchToProps(dispatch) {

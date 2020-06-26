@@ -32,6 +32,10 @@ export const initialState = {
   branches: [],
   branch: {},
   attendances: [],
+  announcements: [],
+  applicants: [],
+  jobOpenings: [],
+  jobOpeningDetails: null,
   empDialog: {
     type: 'new',
     props: {
@@ -133,9 +137,16 @@ const hrReducer = (state = initialState, action) =>
           branches: action.payload
         };
         break;
+      case Constants.GET_ANNOUNCEMENTS:
+        return {
+          ...state,
+          loading: true
+        };
+        break;
       case Constants.GET_ANNOUNCEMENTS_SUCCESS:
         return {
           ...state,
+          loading: false,
           announcements: action.payload
         };
         break;
@@ -250,6 +261,19 @@ const hrReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           attendances: action.payload
+        }
+      };
+      case Constants.GET_APPLICANTS: {
+        return {
+          ...state,
+          loading: true
+        }
+      };
+      case Constants.GET_APPLICANTS_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          applicants: action.payload
         }
       };
       case Constants.CREATE_DEPARTMENT: {

@@ -38,8 +38,8 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
-  table: { 
-    border: 0, 
+  table: {
+    border: 0,
     whiteSpace: 'nowrap',
     overflowX: 'auto',
   },
@@ -58,9 +58,9 @@ const useStyles = makeStyles(theme => ({
     width: 14,
     height: 14,
     color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.done': { color: green[500]},
+    '&.approved': { color: theme.palette.primary.main },
+    '&.inProgress': { color: orange[500] },
+    '&.done': { color: green[500] },
   },
   buttonGroup: {
     marginBottom: theme.spacing(1),
@@ -76,8 +76,8 @@ const JobOpening = props => {
 
   console.log(employee, "employee")
 
-  const toTitleCase = (str) => { 
-    return str? str[0].toUpperCase() + str.slice(1) : ""; 
+  const toTitleCase = (str) => {
+    return str ? str[0].toUpperCase() + str.slice(1) : "";
   }
 
   const columns = [
@@ -93,27 +93,27 @@ const JobOpening = props => {
       name: 'jobTitle',
       label: 'Job Title',
       options: {
-      filter: true,
-      sort: true,
+        filter: true,
+        sort: true,
       },
     },
     {
       name: 'department.name',
       label: 'Department',
       options: {
-      filter: true,
-      sort: true,
+        filter: true,
+        sort: true,
       },
     },
     {
       name: 'enrollmentType.name',
       label: 'Enrollment type',
       options: {
-      filter: true,
-      sort: true,
+        filter: true,
+        sort: true,
       },
     },
-    
+
 
     /*
     {
@@ -138,7 +138,7 @@ const JobOpening = props => {
         customBodyRender: day => {
           return (
             <Typography variant="inherit" color="textSecondary">
-                {moment(day).format('lll')}
+              {moment(day).format('lll')}
             </Typography>
           )
         }
@@ -153,7 +153,7 @@ const JobOpening = props => {
         customBodyRender: day => {
           return (
             <Typography variant="inherit" color="textSecondary">
-                {moment(day).format('lll')}
+              {moment(day).format('lll')}
             </Typography>
           )
         }
@@ -181,7 +181,7 @@ const JobOpening = props => {
   const options = {
     filterType: 'checkbox',
     responsive: 'scrollMaxHeight',
-    selectableRows: 'none', // single, multiple
+    selectableRows: 'none',
     print: false,
     download: true,
     viewColumns: false,
@@ -190,10 +190,8 @@ const JobOpening = props => {
       <Button component={Link} to="/hr/recruitment/new" variant="contained" color="primary" startIcon={<Icon>add</Icon>}>New</Button>
     ),
     rowsPerPage: 10,
-    rowsPerPageOptions: [10,25,50,100],
+    rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
-      //console.log(rowData[0], "rowData[0]")
-      //getEmployee(rowData[0])
       history.push(`/hr/recruitment/${rowData[0]}`);
     },
     elevation: 0
@@ -227,9 +225,9 @@ JobOpening.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   employees: Selectors.makeSelectEmployees(),
-  employee : Selectors.makeSelectEmployee(),
+  employee: Selectors.makeSelectEmployee(),
   user: AppSelectors.makeSelectCurrentUser(),
-  jobOpenings : Selectors.makeSelectJobOpenings(),
+  jobOpenings: Selectors.makeSelectJobOpenings(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -250,4 +248,4 @@ export default withRouter(
   compose(
     withConnect,
     memo,
-)(JobOpening));
+  )(JobOpening));

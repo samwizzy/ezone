@@ -115,6 +115,13 @@ export const GetJobOpenings = `${BaseUrl}/authserv/api/v1/job_openings/for_organ
 export const CreateJobOpening = `${BaseUrl}/authserv/api/v1/job_opening`;
 export const GetJobOpeningDetails = `${BaseUrl}/authserv/api/v1/job_openings/get_by_id`;
 
+//Job applications
+export const GetJobApplications = `${BaseUrl}/authserv/api/v1/job_applications/for_organinisation`;
+export const GetJobApplicationsByWE = `${BaseUrl}/authserv/api/v1/job_applications/by_work_experience`;
+export const GetJobApplicationsByStatus = `${BaseUrl}/authserv/api/v1/job_applications/by_status`;
+export const GetJobApplicationsByJobOpening = `${BaseUrl}/authserv/api/v1/job_applications/for_job_opening/{jobOpeningId}`;
+export const CreateJobApplication = `${BaseUrl}/authserv/api/v1/job_application`;
+
 // HR:Performance - Goals
 export const GetPerformanceApi = `${BaseUrl}/authserv/api/v1/performance/get_by_orgid`;
 export const CreatePerformanceApi = `${BaseUrl}/authserv/api/v1/job_opening`;
@@ -125,6 +132,20 @@ export const GetRecognitionApi = `${BaseUrl}/authserv/api/v1/recognition/get_by_
 export const CreateRecognitionApi = `${BaseUrl}/authserv/api/v1/recognition/add`;
 export const GetRecognitionByIdApi = `${BaseUrl}/authserv/api/v1/recognition/get_by_id`;
 export const UpdateRecognition = `${BaseUrl}/authserv/api/v1/recognition/update`;
+
+// HR:Leave-Management - Leave Request
+export const GetLeaveRequestsApi = `${BaseUrl}/authserv/api/v1/all_leave_requests_by_orgid`;
+export const CreateLeaveRequestApi = `${BaseUrl}/authserv/api/v1/add_leave_request`;
+export const GetLeaveRequestByIdApi = `${BaseUrl}/authserv/api/v1/leave_requests_by_id/{id}`;
+export const ApproveLeaveRequestApi = `${BaseUrl}/authserv/api/v1/approve_leave_request/{leaveRequestId}`;
+export const RejectLeaveRequestApi = `${BaseUrl}/authserv/api/v1/reject_leave_request/{leaveRequestId}`;
+export const UpdateLeaveRequestApi = `${BaseUrl}/authserv/api/v1/update_leave_request/{leaveRequestId}`;
+
+// HR:Leave-Management - Leave Type
+export const GetLeaveTypesApi = `${BaseUrl}/authserv/api/v1/all_leave_types_by_orgid`;
+export const CreateLeaveTypeApi = `${BaseUrl}/authserv/api/v1/add_leave_type`;
+export const DeleteEmployeeByLeaveTypeApi = `${BaseUrl}/authserv/api/v1/remove_employee_from_leave_type/{leaveTypeId}`;
+export const UpdateLeaveTypeApi = `${BaseUrl}/authserv/api/api/v1/update_leave_type/{id}`;
 
 //Roles
 export const GetRoles = `${BaseUrl}/authserv/api/v1/generic_entities/for_organinisation`;

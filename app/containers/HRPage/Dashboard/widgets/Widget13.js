@@ -1,6 +1,7 @@
 import React from 'react';
-import { withStyles, Card, CardContent, CardHeader, Icon, Link, Typography } from '@material-ui/core'
+import { withStyles, Card, CardContent, CardHeader, Icon, Link, List, ListItem, ListItemText, ListItemSecondaryAction, Typography } from '@material-ui/core'
 import LensIcon from '@material-ui/icons/Lens'
+import moment from 'moment'
 
 const styles = theme => ({
 	root: {
@@ -24,29 +25,42 @@ const styles = theme => ({
 
 export default withStyles(styles)(class Widget13 extends React.Component {
 	render() {
-		const { classes } = this.props
+		const { classes, announcements } = this.props
+
+		console.log(announcements, "announcements widget 13")
+
+		if (!announcements) {
+			return ''
+		}
 
 		return (
 			<Card className={classes.root}>
-				<CardHeader
-					action={
-						<div className={classes.status}>
-							<span>Priority:</span> &nbsp;
-							<LensIcon className={classes.icon} fontSize="small" /> Low
-						</div>
-					}
-					title="Latest Announcements"
-					subheader={
-						<>
-							<Link href="#">App Launching Event</Link> —
-							<span> 22<sup>nd</sup> June, 2020 </span>
-						</>
-					}
-				/>
 				<CardContent>
-					<Typography variant="body1">
-						Due to the recent outbreak of the coronavirus that has shakened & ravaged the global economy, the company thought it wise & appropriate to announce that the entire staffs should be allowed to adopt a remote working systems to ameliorate the risk of contracting the virus as it possess a huge threat to our lives and that of our families, we trust that you'd do your best to stay safe. The company believes this will not affect our success but rather harness us to do more. Thanks.
-					</Typography>
+					{announcements && announcements.splice(0, 1).map((announcement, i) => (
+						<React.Fragment key={i}>
+							<List dense>
+								<ListItem disableGutters>
+									<ListItemText
+										primary={announcement.title}
+										secondary={
+											<React.Fragment>
+												<Link href="#">App Launching Event</Link> —
+												<span> {moment(announcement.dateCreated).format('Do MMMM, YYYY')} </span>
+											</React.Fragment>
+										}
+									/>
+									<ListItemSecondaryAction>
+										<span>Priority:</span> &nbsp;
+									<LensIcon className={classes.icon} fontSize="small" /> Low
+								</ListItemSecondaryAction>
+								</ListItem>
+							</List>
+							<Typography variant="body1">
+								{announcement.message}
+							</Typography>
+						</React.Fragment>
+					))}
+
 				</CardContent>
 			</Card>
 		);

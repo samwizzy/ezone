@@ -62,8 +62,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Widget5 = () => {
+const Widget5 = ({ jobOpenings }) => {
 	const classes = useStyles()
+
+	console.log(jobOpenings, "jobOpenings wodget 5")
 
 	return (
 		<div>

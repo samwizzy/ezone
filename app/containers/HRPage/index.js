@@ -29,7 +29,9 @@ export function HRPage(props) {
     getDepartmentsByOrgIdApi,
     getEnrollmentTypes,
     getLocations,
+    getAnnouncements,
     getJobOpenings,
+    getApplicants,
     getAttendances,
     getEmployeeTypes,
     getSourceOfHire,
@@ -38,7 +40,6 @@ export function HRPage(props) {
     getRoles,
     getBranches,
     getPartyGroups,
-    getAnnouncements,
   } = props;
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
@@ -54,10 +55,11 @@ export function HRPage(props) {
     getBranches();
     getEnrollmentTypes();
     getLocations();
+    getAnnouncements();
     getJobOpenings();
+    getApplicants();
     getAttendances();
     getPartyGroups();
-    getAnnouncements();
   }, []);
 
   return (
@@ -95,6 +97,7 @@ export function mapDispatchToProps(dispatch) {
     getEnrollmentTypes: () => dispatch(Actions.getEnrollmentTypes()),
     getLocations: () => dispatch(Actions.getLocations()),
     getJobOpenings: () => dispatch(Actions.getJobOpenings()),
+    getApplicants: () => dispatch(Actions.getApplicants()),
     getAttendances: () => dispatch(Actions.getAttendances()),
     getPartyGroups: () => dispatch(Actions.getPartyGroups()),
     getAnnouncements: () => dispatch(Actions.getAnnouncements()),

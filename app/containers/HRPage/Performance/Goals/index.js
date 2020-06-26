@@ -42,7 +42,7 @@ export function GoalsPage(props) {
         <meta name="description" content="ezone application goals page" />
       </Helmet>
 
-      {params.goalId ?
+      {params.pageId ?
         <GoalsDetails /> : <GoalsList />
       }
 
