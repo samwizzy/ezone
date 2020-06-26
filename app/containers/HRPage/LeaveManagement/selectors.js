@@ -18,10 +18,15 @@ const makeSelectLoading = () =>
     selectLeaveMgt,
     subState => subState.loading,
   );
-const makeSelectLeaveRequest = () =>
+const makeSelectLeaveRequests = () =>
   createSelector(
     selectLeaveMgt,
-    subState => subState.leaveRequest,
+    subState => subState.leaveRequests,
+  );
+const makeSelectLeaveTypes = () =>
+  createSelector(
+    selectLeaveMgt,
+    subState => subState.leaveTypes,
   );
 const makeSelectLeaveRequestDialog = () =>
   createSelector(
@@ -48,7 +53,8 @@ export default makeSelectLeaveMgtPage;
 export {
   selectLeaveMgt,
   makeSelectLoading,
-  makeSelectLeaveRequest,
+  makeSelectLeaveRequests,
+  makeSelectLeaveTypes,
   makeSelectLeaveRequestDialog,
   makeSelectLeaveTypeDialog,
   makeSelectHolidayDialog,

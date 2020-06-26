@@ -115,6 +115,11 @@ const makeSelectJobOpenings = () =>
     selectHR,
     hrState => hrState.jobOpenings,
   );
+const makeSelectApplicants = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.applicants,
+  );
 const makeSelectJobOpeningDetails = () =>
   createSelector(
     selectHR,
@@ -131,7 +136,6 @@ const makeSelectPartyGroups = () =>
     selectHR,
     hrState => hrState.partyGroups,
   );
-
 
 const makeSelectEmpDialog = () =>
   createSelector(
@@ -265,6 +269,7 @@ export {
   makeSelectPayRates,
   makeSelectPayTypes,
   makeSelectJobOpenings,
+  makeSelectApplicants,
   makeSelectAttendances,
   makeSelectEnrollmentTypes,
   makeSelectLocations,

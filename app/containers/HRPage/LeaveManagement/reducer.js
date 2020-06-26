@@ -14,7 +14,8 @@ import * as Constants from './constants';
 export const initialState = {
   loading: false,
   employees: [],
-  leaveRequest: [],
+  leaveRequests: [],
+  leaveTypes: [],
   leaveRequestDialog: {
     type: 'new',
     props: {
@@ -65,7 +66,7 @@ const leaveMgtReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: false,
-          leaveRequest: action.payload
+          leaveRequests: action.payload
         };
         break;
       case Constants.CREATE_LEAVE_REQUEST: {
@@ -75,6 +76,31 @@ const leaveMgtReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_LEAVE_REQUEST_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+        };
+      }
+      case Constants.GET_LEAVE_TYPES:
+        return {
+          ...state,
+          loading: true
+        };
+        break;
+      case Constants.GET_LEAVE_TYPES_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          leaveTypes: action.payload
+        };
+        break;
+      case Constants.CREATE_LEAVE_TYPE: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.CREATE_LEAVE_TYPE_SUCCESS: {
         return {
           ...state,
           loading: false,

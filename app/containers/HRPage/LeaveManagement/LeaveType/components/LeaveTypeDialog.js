@@ -13,7 +13,7 @@ import {
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import ScheduleIcon from '@material-ui/icons/Schedule';
-import { AppBar, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormLabel, FormControlLabel, MenuItem, Radio, RadioGroup, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
+import { AppBar, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormLabel, FormControlLabel, Grid, MenuItem, Radio, RadioGroup, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
@@ -42,21 +42,19 @@ const durations = ['Days', 'Weeks', 'Months', 'Years'];
 
 function AddShiftDialog(props) {
   const classes = useStyles();
-  const { closeNewShiftDialog, dialog, employees } = props;
+  const { closeNewShiftDialog, dialog, employees, createLeaveType } = props;
   const [option, setOption] = React.useState({ shiftDays: false })
   const [form, setForm] = React.useState({
     name: '',
     type: 'PAID',
     description: '',
-    eligibleEmployees: [
-      { id: 0 }
-    ],
-    gender: "MALE",
+    eligibleEmployees: [],
     leaveAllowancePercent: 0,
     numberOfDaysFromHire: 0,
-    orgId: "",
-    validFrom: moment().format('YYYY-MM-DD'),
-    validTill: moment().format('YYYY-MM-DD')
+    gender: 'MALE',
+    numberOfDaysFromHire: 0,
+    validFrom: moment().format('YYYY-MM-DDTHH:mm:ss.SSS'),
+    validTill: moment().format('YYYY-MM-DDTHH:mm:ss.SSS')
   });
 
   React.useEffect(() => {
@@ -66,8 +64,8 @@ function AddShiftDialog(props) {
   }, [dialog])
 
   const canSubmitForm = () => {
-    const { name, type, validity, from, to, description } = form
-    return name.length > 0 && type.length > 0 && validity.length > 0
+    const { name, type, validFrom, validTill, description } = form
+    return name.length > 0 && type.length > 0 && validFrom && validTill
   }
 
   const handleChange = (event) => {
@@ -75,15 +73,21 @@ function AddShiftDialog(props) {
     setForm({ ...form, [name]: value });
   }
 
-  const handleSelectChange = name => (event, obj) => {
-    setForm({ ...form, [name]: obj })
+  const handleSelectChange = name => (event, array) => {
+    setForm({ ...form, [name]: array })
   }
 
-  const handleDateChange = (name, date) => {
-    setForm({ ...form, [name]: moment(date).format('YYYY-MM-DD') })
+  const handleDateChange = name => date => {
+    console.log(name, "name")
+    console.log(date, "date")
+    setForm({ ...form, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss.SSS') })
   }
 
-  const handleSubmit = () => { }
+  const handleSubmit = () => {
+    createLeaveType(form)
+  }
+
+  console.log(form, "leave type form")
 
   return (
     <div>
@@ -104,72 +108,87 @@ function AddShiftDialog(props) {
         </AppBar>
 
         <DialogContent dividers>
-          <Table className={classes.table} size="small">
-            <TableBody>
-              <TableRow>
-                <TableCell colSpan={2}>
-                  <TextField
-                    id="name"
-                    name="name"
-                    placeholder="Name"
-                    fullWidth
-                    margin="normal"
-                    variant="outlined"
-                    size="small"
-                    label="Name"
-                    value={form.name}
-                    onChange={handleChange}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell colSpan={2}>
-                  <Autocomplete
-                    id="combo-box-name"
-                    size="small"
-                    options={employees ? employees : []}
-                    getOptionLabel={option => option.firstName + ' ' + option.lastName}
-                    onChange={handleSelectChange('eligibleEmployees')}
-                    renderInput={params => (
-                      <TextField
-                        {...params}
-                        label="Employee"
-                        variant="outlined"
-                        placeholder="Search"
-                        margin="normal"
-                        fullWidth
-                      />
-                    )}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell colSpan={2}>
-                  <TextField
-                    id="type"
-                    name="type"
-                    placeholder="Type"
-                    select
-                    fullWidth
-                    variant="outlined"
-                    margin="normal"
-                    size="small"
-                    label="Type"
-                    value={form.type}
-                    onChange={handleChange}
-                  >
-                    <MenuItem key="" value="" disabled>
-                      Select type
-                    </MenuItem>
-                    {['PAID', 'UNPAID'].map((type, i) =>
-                      <MenuItem key={i} value={type}>
-                        {type}
-                      </MenuItem>
-                    )}
-                  </TextField>
-                </TableCell>
-              </TableRow>
-              {/* <TableRow>
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <TextField
+                id="name"
+                name="name"
+                placeholder="Name"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                size="small"
+                label="Name"
+                value={form.name}
+                onChange={handleChange}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Autocomplete
+                multiple
+                size="small"
+                id="checkboxes-employees-tags"
+                options={employees ? employees : []}
+                disableCloseOnSelect
+                getOptionLabel={(option) => option.firstName + ' ' + option.lastName}
+                onChange={handleSelectChange('eligibleEmployees')}
+                value={form.eligibleEmployees}
+                renderOption={(option, { selected }) => (
+                  <React.Fragment>
+                    <Checkbox
+                      icon={icon}
+                      checkedIcon={checkedIcon}
+                      style={{ marginRight: 8 }}
+                      checked={selected}
+                    />
+                    {option.firstName + ' ' + option.lastName}
+                  </React.Fragment>
+                )}
+                renderInput={(params) => (
+                  <TextField {...params} variant="outlined" label="Select Employee" placeholder="Employees" margin="normal" fullWidth />
+                )}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                id="leave-allowance-percent"
+                name="leaveAllowancePercent"
+                placeholder="Leave Allowance Percent"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                size="small"
+                label="Leave Allowance Percent"
+                value={form.leaveAllowancePercent}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                id="type"
+                name="type"
+                placeholder="Type"
+                select
+                fullWidth
+                variant="outlined"
+                margin="normal"
+                size="small"
+                label="Type"
+                value={form.type}
+                onChange={handleChange}
+              >
+                <MenuItem key="" value="" disabled>
+                  Select type
+                </MenuItem>
+                {['PAID', 'UNPAID'].map((type, i) =>
+                  <MenuItem key={i} value={type}>
+                    {type}
+                  </MenuItem>
+                )}
+              </TextField>
+            </Grid>
+            {/* <TableRow>
                 <TableCell colSpan={2}>
                   <FormControl component="fieldset">
                     <FormLabel component="legend">Validity</FormLabel>
@@ -180,72 +199,68 @@ function AddShiftDialog(props) {
                   </FormControl>
                 </TableCell>
               </TableRow> */}
-              <TableRow>
-                <TableCell colSpan={2}>
-                  <FormControl component="fieldset">
-                    <FormLabel component="legend">Gender</FormLabel>
-                    <RadioGroup row aria-label="gender" name="gender" value={form.gender} row>
-                      <FormControlLabel value="Male" control={<Radio color="primary" />} label="Male" />
-                      <FormControlLabel value="Female" control={<Radio color="primary" />} label="Female" />
-                    </RadioGroup>
-                  </FormControl>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardTimePicker
-                      margin="normal"
-                      inputVariant="outlined"
-                      id="valid-from"
-                      label="Valid From"
-                      size="small"
-                      value={form.validFrom}
-                      onChange={handleDateChange}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change time',
-                      }}
-                      keyboardIcon={<ScheduleIcon />}
-                    />
-                  </MuiPickersUtilsProvider>
-                </TableCell>
-                <TableCell>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardTimePicker
-                      margin="normal"
-                      inputVariant="outlined"
-                      id="valid-till"
-                      label="Valid Till"
-                      size="small"
-                      value={form.validTill}
-                      onChange={handleDateChange}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change time',
-                      }}
-                      keyboardIcon={<ScheduleIcon />}
-                    />
-                  </MuiPickersUtilsProvider>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell colSpan={2}>
-                  <TextField
-                    id="description"
-                    name="description"
-                    placeholder="Description"
-                    fullWidth
-                    margin="normal"
-                    variant="outlined"
-                    multiline
-                    rows={4}
-                    size="small"
-                    label="Description"
-                    value={form.description}
-                    onChange={handleChange}
-                  />
-                </TableCell>
-              </TableRow>
-              {/* <TableRow>
+            <Grid item xs={12}>
+              <FormControl component="fieldset" margin="normal">
+                <FormLabel component="legend">Gender</FormLabel>
+                <RadioGroup row aria-label="gender" name="gender" value={form.gender} onChange={handleChange} row>
+                  <FormControlLabel value="MALE" control={<Radio color="primary" />} label="Male" />
+                  <FormControlLabel value="FEMALE" control={<Radio color="primary" />} label="Female" />
+                </RadioGroup>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardTimePicker
+                  margin="normal"
+                  inputVariant="outlined"
+                  id="valid-from"
+                  label="Valid From"
+                  fullWidth
+                  size="small"
+                  value={form.validFrom}
+                  onChange={handleDateChange('validFrom')}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change time',
+                  }}
+                  keyboardIcon={<ScheduleIcon />}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item xs={6}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardTimePicker
+                  margin="normal"
+                  inputVariant="outlined"
+                  id="valid-till"
+                  label="Valid Till"
+                  fullWidth
+                  size="small"
+                  value={form.validTill}
+                  onChange={handleDateChange('validTill')}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change time',
+                  }}
+                  keyboardIcon={<ScheduleIcon />}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id="description"
+                name="description"
+                placeholder="Description"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                multiline
+                rows={4}
+                size="small"
+                label="Description"
+                value={form.description}
+                onChange={handleChange}
+              />
+            </Grid>
+            {/* <TableRow>
                 <TableCell>
                   <FormControlLabel
                     control={
@@ -385,8 +400,7 @@ function AddShiftDialog(props) {
                   </TextField>
                 </TableCell>
               </TableRow>*/}
-            </TableBody>
-          </Table>
+          </Grid>
         </DialogContent>
 
         <DialogActions>
@@ -415,7 +429,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     closeNewShiftDialog: () => dispatch(Actions.closeNewLeaveTypeDialog()),
-    dispatch,
+    createLeaveType: (data) => dispatch(Actions.createLeaveType(data)),
   };
 }
 

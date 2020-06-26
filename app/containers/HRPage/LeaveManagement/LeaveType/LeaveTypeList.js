@@ -14,7 +14,7 @@ import MUIDataTable from 'mui-datatables'
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
 import * as AppSelectors from '../../../App/selectors';
-import {AddLeaveType} from '../components/AddButton'
+import { AddLeaveType } from '../components/AddButton'
 import LeaveTypeDialog from './components/LeaveTypeDialog'
 
 const useStyles = makeStyles(theme => ({
@@ -41,19 +41,21 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   icon: {
     color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.done': { color: green[500]},
+    '&.approved': { color: theme.palette.primary.main },
+    '&.inProgress': { color: orange[500] },
+    '&.done': { color: green[500] },
   }
 }));
 
 const shifts = [
-  {id: 1, name: 'General', startTime: '2010-01-01T05:06:07', endTime: '2010-01-01T05:06:07', endDate: '2010-01-01T05:06:07'}
+  { id: 1, name: 'General', startTime: '2010-01-01T05:06:07', endTime: '2010-01-01T05:06:07', endDate: '2010-01-01T05:06:07' }
 ]
 
 const LeaveTypeList = props => {
   const classes = useStyles();
   const { loading, openNewLeaveTypeDialog, getLeaveType, getLeaveTypeById, leaveTypes } = props;
+
+  console.log(leaveTypes, "leaveTypes")
 
   React.useEffect(() => {
   }, []);
@@ -80,24 +82,42 @@ const LeaveTypeList = props => {
       options: {
         filter: true,
         sort: true,
-        customBodyRender: createdAt => {
-          return (
-            <Typography color='textSecondary'>{moment(createdAt).format('ll')}</Typography>
-          )
-        }
+        customBodyRender: date => date ? moment(date).format('ll') : ''
       }
     },
     {
-      name: 'days',
-      label: 'Days',
+      name: 'numberOfDaysFromHire',
+      label: 'No. of Days From Hire',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: value => {
-          return (
-            <Typography color='textSecondary'>{`${value} days`}</Typography>
-          )
-        }
+        customBodyRender: value => `${value} days`
+      }
+    },
+    {
+      name: 'leaveAllowancePercent',
+      label: 'Leave Allowance(%)',
+      options: {
+        filter: true,
+        sort: true,
+      }
+    },
+    {
+      name: 'validFrom',
+      label: 'Valid From',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: date => date ? moment(date).format('ll') : ''
+      }
+    },
+    {
+      name: 'validTill',
+      label: 'Valid Till',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: date => date ? moment(date).format('ll') : ''
       }
     },
     {
@@ -106,11 +126,7 @@ const LeaveTypeList = props => {
       options: {
         filter: true,
         sort: true,
-        customBodyRender: createdAt => {
-          return (
-            <Typography color='textSecondary'>{moment(createdAt).format('ll')}</Typography>
-          )
-        }
+        customBodyRender: date => date ? moment(date).format('ll') : ''
       }
     },
     {
@@ -122,11 +138,12 @@ const LeaveTypeList = props => {
       },
     },
     {
-      name: 'status',
+      name: 'eligibleEmployees',
       label: 'Status',
       options: {
         filter: true,
         sort: true,
+        customBodyRender: employees => employees ? employees.length : 0
       },
     },
   ];
@@ -141,7 +158,7 @@ const LeaveTypeList = props => {
     filter: false,
     customToolbar: () => <AddLeaveType openDialog={openNewLeaveTypeDialog} />,
     rowsPerPage: 10,
-    rowsPerPageOptions: [10,25,50,100],
+    rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
       getLeaveTypeById(rowData[0])
     },
@@ -158,7 +175,7 @@ const LeaveTypeList = props => {
           <MUIDataTable
             className={classes.datatable}
             title="Leave Types"
-            data={shifts}
+            data={leaveTypes}
             columns={columns}
             options={options}
           />
@@ -178,13 +195,12 @@ LeaveTypeList.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   user: AppSelectors.makeSelectCurrentUser(),
-  leaveTypes: Selectors.makeSelectLeaveRequest(),
+  leaveTypes: Selectors.makeSelectLeaveTypes(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getLeaveType: () => dispatch(Actions.getLeaveRequest()),
-    getLeaveTypeById: (uuid) => dispatch(Actions.getLeaveRequestById(uuid)),
+    getLeaveTypeById: (id) => dispatch(Actions.getLeaveTypeById(id)),
     openNewLeaveTypeDialog: () => dispatch(Actions.openNewLeaveTypeDialog()),
   };
 }

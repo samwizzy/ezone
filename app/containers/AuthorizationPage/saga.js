@@ -152,13 +152,15 @@ export function* userProfile({ payload }) {
     if (err.message) {
       yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
     } else {
-      const error = yield call(errorHandler, err.response.json())
-      console.log(error, "user profile error")
-      if (err.response && err.response.status === 401) { yield put(AppActions.logout()) }
-      else {
+      if (err.message) {
+        yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      } else {
+        const error = yield call(errorHandler, err.response.json())
+        console.log(error, "user profile error")
         yield put(AppActions.openSnackBar({ message: error.message, status: 'error' }));
         yield put(AppActions.getUserProfileErrorAction(error));
       }
+      if (err.response && err.response.status === 401) { yield put(AppActions.logout()) }
     }
   }
 }

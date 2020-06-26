@@ -53,9 +53,6 @@ const Announcement = props => {
   const classes = useStyles();
   const { loading, openNewAnnouncementDialog, openAnnouncementViewDialog, getEmployees, announcements, getEmployee, employees, employee } = props;
 
-  React.useEffect(() => {
-  }, []);
-
   console.log(announcements, "announcements")
 
   if (!announcements) {

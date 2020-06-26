@@ -412,6 +412,19 @@ export function getAttendancesSuccess(data) {
   };
 }
 
+export function getApplicants() {
+  return {
+    type: Constants.GET_APPLICANTS,
+  };
+}
+
+export function getApplicantsSuccess(data) {
+  return {
+    type: Constants.GET_APPLICANTS_SUCCESS,
+    payload: data
+  };
+}
+
 export function createApplicant(data) {
   return {
     type: Constants.CREATE_APPLICANT,

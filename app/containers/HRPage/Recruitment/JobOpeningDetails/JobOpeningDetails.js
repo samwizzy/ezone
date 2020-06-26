@@ -14,7 +14,7 @@ import * as Selectors from '../../selectors';
 import * as AppSelectors from '../../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
-import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
+import KeyboardReturnIcon from '@material-ui/icons/KeyboardReturn';
 import DescriptionTab from './components/DescriptionTab';
 import ApplicantTab from './components/ApplicantTab';
 
@@ -22,15 +22,15 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
-  table: { 
-    border: 0, 
+  table: {
+    border: 0,
     whiteSpace: 'nowrap',
     overflowX: 'auto',
   },
   toolbar: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-		backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.paper,
   },
   gridRoot: {
     display: 'flex',
@@ -41,14 +41,14 @@ const useStyles = makeStyles(theme => ({
     width: 20,
     height: 20,
     color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.done': { color: green[500]},
+    '&.approved': { color: theme.palette.primary.main },
+    '&.inProgress': { color: orange[500] },
+    '&.done': { color: green[500] },
   },
   buttonGroup: {
-		display: "flex",
-		justifyContent: "space-between",
-		backgroundColor: theme.palette.background.paper,
+    display: "flex",
+    justifyContent: "space-between",
+    backgroundColor: theme.palette.background.paper,
     margin: theme.spacing(1, 0),
     padding: theme.spacing(1),
   }
@@ -86,11 +86,9 @@ const AntTab = withStyles(theme => ({
 
 const JobOpeningDetails = props => {
   const classes = useStyles();
-	const { loading, openNewEmployeeDialog, getEmployee, employees, employee, getJobOpenings, jobOpenings, /* jobOpeningDetails */ } = props;
-	const [value, setValue] = React.useState(0);
-  //console.log(jobOpeningDetails, "job details inside job openingdetails");
-  React.useEffect(() => {
-  }, [employee]);
+  const { loading, history, jobOpeningDetails } = props;
+  const [value, setValue] = React.useState(0);
+  console.log(jobOpeningDetails, "job details inside job openingdetails");
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
@@ -102,31 +100,31 @@ const JobOpeningDetails = props => {
         container
         justify='space-between'
       >
-				<Grid item xs={12}>
-					<div className={classes.buttonGroup}>
+        <Grid item xs={12}>
+          <div className={classes.buttonGroup}>
             <Typography variant="h6">
-              <IconButton onClick={()=>{}}><ArrowRightAltIcon className={classes.icon} /></IconButton> Job Details
+              <IconButton onClick={() => history.push('/hr/recruitment')}><KeyboardReturnIcon className={classes.icon} /></IconButton> Job Details
             </Typography>
-            
-						<div size="small" aria-label="small outlined button group">
-							<IconButton onClick={()=>{}}><EditSharp className={classes.icon} /></IconButton>
-							<IconButton onClick={()=>{}}><Assignment className={classes.icon} /></IconButton>
-						</div>
-					</div>
-				</Grid>
+
+            <div size="small" aria-label="small outlined button group">
+              <IconButton onClick={() => { }}><EditSharp className={classes.icon} /></IconButton>
+              <IconButton onClick={() => { }}><Assignment className={classes.icon} /></IconButton>
+            </div>
+          </div>
+        </Grid>
         <Grid item md={12}>
           <div className={classes.content}>
-						<AntTabs
-							value={value}
-							onChange={handleTabChange}
-							aria-label="ant example"
-						>
-							<AntTab label="Description" />
-							<AntTab label="Applicants" />
-						</AntTabs>
-						<Typography className={classes.padding} />
-						{value == 0 && <DescriptionTab />}
-						{value == 1 && <ApplicantTab />}
+            <AntTabs
+              value={value}
+              onChange={handleTabChange}
+              aria-label="ant example"
+            >
+              <AntTab label="Description" />
+              <AntTab label="Applicants" />
+            </AntTabs>
+            <Typography className={classes.padding} />
+            {value == 0 && <DescriptionTab jobOpeningDetails={jobOpeningDetails} />}
+            {value == 1 && <ApplicantTab />}
           </div>
         </Grid>
       </Grid>
@@ -142,10 +140,10 @@ JobOpeningDetails.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   employees: Selectors.makeSelectEmployees(),
-  employee : Selectors.makeSelectEmployee(),
+  employee: Selectors.makeSelectEmployee(),
   user: AppSelectors.makeSelectCurrentUser(),
-  jobOpenings : Selectors.makeSelectJobOpenings(),
-  jobOpeningDetails : Selectors.makeSelectJobOpeningDetails(),
+  jobOpenings: Selectors.makeSelectJobOpenings(),
+  jobOpeningDetails: Selectors.makeSelectJobOpeningDetails(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -163,7 +161,7 @@ const withConnect = connect(
 );
 
 export default compose(
-	withRouter,
-	withConnect,
-	memo,
+  withRouter,
+  withConnect,
+  memo,
 )(JobOpeningDetails);

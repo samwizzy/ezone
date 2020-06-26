@@ -1,10 +1,11 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, makeStyles, Tabs, Tab } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import { compose } from 'redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { darken } from '@material-ui/core/styles/colorManipulator';
 import MenuBar from '../../../../components/MenuBar'
 import Goals from './../Goals';
 import Recognition from './../Recognition';
@@ -17,86 +18,45 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(2),
-  }
+  },
+  active: {
+    backgroundColor: theme.palette.common.white,
+    color: `${darken(theme.palette.primary.main, 0.1)} !important`,
+  },
 }));
 
-const AntTabs = withStyles({
-  indicator: {
-    backgroundColor: '#ffffff',
-  },
-})(Tabs);
-
-const AntTab = withStyles(theme => ({
-  root: {
-    borderRadius: "20px 20px 0px 0px",
-    minWidth: 92,
-    fontWeight: theme.typography.fontWeightRegular,
-    fontSize: theme.typography.subtitle1.fontSize,
-    padding: theme.spacing(1, 3),
-    marginRight: theme.spacing(1),
-    color: '#ffffff',
-    '&:hover': {
-      color: theme.palette.primary.main,
-      backgroundColor: '#ffffff',
-      opacity: 1,
-    },
-    '&$selected': {
-      color: '#1890ff',
-      backgroundColor: '#ffffff',
-      fontWeight: theme.typography.fontWeightMedium,
-    },
-    '&:focus': {
-      color: '#40a9ff',
-    },
-  },
-  selected: {},
-}))(props => <Tab disableRipple {...props} />);
-
-function a11yProps(index) {
-  return {
-    id: `full-width-tab-${index}`,
-    'aria-controls': `full-width-tabpanel-${index}`,
-  };
-}
-
-function ModuleLayout({ history, location, match }) {
+function ModuleLayout(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(location.pathname)
+  const { match } = props
+  const { params } = match
 
-  console.log(location, "location")
-  console.log(match, "match")
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue)
-    history.push(newValue)
-  }
+  console.log(match, "match performance")
 
   return (
     <div className={classes.root}>
       <MenuBar
         navigations={
           <React.Fragment>
-            <AntTabs
-              value={value}
-              onChange={handleChange}
-              indicatorColor="primary"
-              textColor="primary"
-              centered
-            >
-              <AntTab label="Goals" {...a11yProps(0)} value="/human-resource/performance/goals" />
-              <AntTab label="Recognition" {...a11yProps(1)} value="/human-resource/performance/recognitions" />
-              <AntTab label="360 Feedback" {...a11yProps(2)} value="/human-resource/performance/feedbacks" />
-              <AntTab label="Reviews" {...a11yProps(3)} value="/human-resource/performance/reviews" />
-            </AntTabs>
+            <NavLink exact to="/human-resource/performance/goals" activeClassName={classes.active}>
+              Goals
+            </NavLink>
+            <NavLink to="/human-resource/performance/recognitions" activeClassName={classes.active}>
+              Recognitions
+            </NavLink>
+            <NavLink to="/human-resource/performance/feedbacks" activeClassName={classes.active}>
+              Feedback360
+            </NavLink>
+            <NavLink to="/human-resource/performance/reviews" activeClassName={classes.active}>
+              Reviews
+            </NavLink>
           </React.Fragment>
         }
         content={
           <div className={classes.content}>
-            {value === "/human-resource/performance/goals" && (<Goals />)}
-            {value === "/human-resource/performance/recognitions" && (<Recognition />)}
-            {value === "/human-resource/performance/feedbacks" && (<Feedback360 />)}
-            {value === "/human-resource/performance/reviews" && (<Reviews />)}
+            {params.page === "goals" && <Goals />}
+            {params.page === "recognitions" && <Recognition />}
+            {params.page === "feedbacks" && <Feedback360 />}
+            {params.page === "reviews" && <Reviews />}
           </div>
         }
       />

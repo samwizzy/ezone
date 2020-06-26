@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Grid, List, ListItem, ListItemText, ListItemIcon, IconButton, Paper, Typography } from '@material-ui/core';
+import { Button, Grid, Icon, List, ListItem, ListItemText, ListItemIcon, IconButton, Paper, Typography } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables'
 import { green } from '@material-ui/core/colors';
 import MailIcon from '@material-ui/icons/Mail';
@@ -48,28 +48,27 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const menus = [
-	{id: 1, title: "All"},
-	{id: 2, title: "Hired"},
-	{id: 3, title: "In-review"},
-	{id: 4, title: "Rejected"},
-	{id: 5, title: "Withdrawn"}
+  { id: 1, title: "All" },
+  { id: 2, title: "Hired" },
+  { id: 3, title: "In-review" },
+  { id: 4, title: "Rejected" },
+  { id: 5, title: "Withdrawn" }
 ]
 
 const ApplicantTab = props => {
   const classes = useStyles();
-	const { loading, match, openNewEmployeeDialog, getEmployee, employees, employee, getJobOpenings, jobOpenings } = props;
-	const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const { loading, match, getJobOpenings, jobOpenings, applicants, openNewApplicantDialog } = props;
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
 
-  React.useEffect(() => {
-	}, [employee]);
+  console.log(applicants, "applicants")
 
   const handleListRoute = (event, index) => {
     setSelectedIndex(index);
   }
 
-	const handleRoute = () => {}
-	
-	const columns = [
+  const handleRoute = () => { }
+
+  const columns = [
     {
       name: 'id',
       label: 'ID',
@@ -79,42 +78,52 @@ const ApplicantTab = props => {
       },
     },
     {
-      name: 'name',
+      name: 'firstName',
       label: 'Applicant',
       options: {
-      filter: true,
-      sort: true,
+        filter: true,
+        sort: true,
       },
     },
     {
-      name: 'date',
+      name: 'lastName',
+      label: 'Applicant',
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: 'mobileNumber',
+      label: 'Mobile',
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: 'dateCreated',
       label: 'Date Applied',
       options: {
-      filter: true,
-			sort: true,
-			customBodyRender: date => {
-				return (
-					<Typography variant="inherit" color="textSecondary">
-							{/*moment(day).format('lll')*/}
-					</Typography>
-				)
-			}
+        filter: true,
+        sort: true,
+        customBodyRender: date => date ? moment(date).format('lll') : ''
       },
     },
     {
-      name: 'stage',
-      label: 'Stage',
+      name: 'applyingFor.jobTitle',
+      label: 'Applied For',
       options: {
-      filter: true,
-      sort: true,
+        filter: true,
+        sort: true,
       },
     },
     {
-      name: 'source',
-      label: 'Source',
+      name: 'applyingFor.submissionDeadline',
+      label: 'Deadline',
       options: {
-      filter: true,
-      sort: true,
+        filter: true,
+        sort: true,
       },
     },
     {
@@ -126,9 +135,9 @@ const ApplicantTab = props => {
         customBodyRender: id => {
           return (
             <div>
-							<IconButton><VisibilityIcon /></IconButton>
-							<IconButton><MailIcon /></IconButton>
-						</div>
+              <IconButton><VisibilityIcon /></IconButton>
+              <IconButton><MailIcon /></IconButton>
+            </div>
           )
         }
       },
@@ -143,9 +152,14 @@ const ApplicantTab = props => {
     download: true,
     viewColumns: false,
     filter: false,
+    customToolbar: () => (
+      <Button variant="contained" onClick={openNewApplicantDialog} color="primary" startIcon={<Icon>add</Icon>}>
+        New Applicant
+      </Button>
+    ),
     rowsPerPage: 10,
-		rowsPerPageOptions: [10,25,50,100],
-		onRowClick: (rowData) => history.push(`${match.url}/applicant/${rowData[0]}`),
+    rowsPerPageOptions: [10, 25, 50, 100],
+    onRowClick: (rowData) => history.push(`${match.url}/applicant/${rowData[0]}`),
     elevation: 0
   };
 
@@ -155,25 +169,25 @@ const ApplicantTab = props => {
         container
         justify='space-between'
       >
-				<Grid item xs={2}>
-					<Paper square elevation={0}>
-						<List
-							className={classes.list}
-						>
-							{menus && menus.map(menu => (
-							<ListItem button selected={selectedIndex === menu.id} key={menu.id} onClick={event => handleListRoute(event, menu.id)}>
-								<ListItemText primary={menu.title} />
-							</ListItem>
-							))}
-						</List>
-					</Paper>
-				</Grid>
+        <Grid item xs={2}>
+          <Paper square elevation={0}>
+            <List
+              className={classes.list}
+            >
+              {menus && menus.map(menu => (
+                <ListItem button selected={selectedIndex === menu.id} key={menu.id} onClick={event => handleListRoute(event, menu.id)}>
+                  <ListItemText primary={menu.title} />
+                </ListItem>
+              ))}
+            </List>
+          </Paper>
+        </Grid>
         <Grid item xs={10}>
           <div className={classes.tableRoot}>
-						<MUIDataTable
+            <MUIDataTable
               className={classes.datatable}
               title="Applicants"
-              data={jobOpenings}
+              data={applicants}
               columns={columns}
               options={options}
             />
@@ -192,14 +206,15 @@ ApplicantTab.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   employees: Selectors.makeSelectEmployees(),
-  employee : Selectors.makeSelectEmployee(),
+  employee: Selectors.makeSelectEmployee(),
   user: AppSelectors.makeSelectCurrentUser(),
-  jobOpenings : Selectors.makeSelectJobOpenings(),
+  jobOpenings: Selectors.makeSelectJobOpenings(),
+  applicants: Selectors.makeSelectApplicants(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewEmployeeDialog: () => dispatch(Actions.openNewEmployeeDialog()),
+    openNewApplicantDialog: () => dispatch(Actions.openNewApplicantDialog()),
     openEditEmployeeDialog: () => dispatch(Actions.openEditEmployeeDialog()),
     getEmployees: () => dispatch(Actions.getEmployees()),
     getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
@@ -212,7 +227,7 @@ const withConnect = connect(
 );
 
 export default compose(
-	withRouter,
-	withConnect,
-	memo,
+  withRouter,
+  withConnect,
+  memo,
 )(ApplicantTab);

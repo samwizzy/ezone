@@ -62,6 +62,44 @@ export function createLeaveRequestSuccess(data) {
     payload: data
   };
 }
+export function getLeaveTypes() {
+  return {
+    type: Constants.GET_LEAVE_TYPES,
+  };
+}
+
+export function getLeaveTypesSuccess(data) {
+  return {
+    type: Constants.GET_LEAVE_TYPES_SUCCESS,
+    payload: data
+  };
+}
+
+export function getLeaveTypeById() {
+  return {
+    type: Constants.GET_LEAVE_TYPE_BY_ID,
+  };
+}
+
+export function getLeaveTypeByIdSuccess(data) {
+  return {
+    type: Constants.GET_LEAVE_TYPE_BY_ID_SUCCESS,
+    payload: data
+  };
+}
+
+export function createLeaveType(data) {
+  return {
+    type: Constants.CREATE_LEAVE_TYPE,
+    payload: data
+  };
+}
+export function createLeaveTypeSuccess(data) {
+  return {
+    type: Constants.CREATE_LEAVE_TYPE_SUCCESS,
+    payload: data
+  };
+}
 
 export function openNewLeaveRequestDialog() {
   return {

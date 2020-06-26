@@ -60,27 +60,27 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   icon: {
     color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.done': { color: green[500]},
+    '&.approved': { color: theme.palette.primary.main },
+    '&.inProgress': { color: orange[500] },
+    '&.done': { color: green[500] },
   }
 }));
 
 const attendanceList = [
-  {id: 1, createdAt: '2010-01-01T05:06:07', attended: '75%', absent: 'No', present: 'Yes'},
-  {id: 2, createdAt: '2020-08-01T08:19:07', attended: '45%', absent: 'Yes', present: 'Yes'},
+  { id: 1, createdAt: '2010-01-01T05:06:07', attended: '75%', absent: 'No', present: 'Yes' },
+  { id: 2, createdAt: '2020-08-01T08:19:07', attended: '45%', absent: 'Yes', present: 'Yes' },
 ]
 
 const LeaveRequestDetails = props => {
   const classes = useStyles();
   const { loading, openNewAttendanceDialog, getAttendance, getAttendanceById, attendance } = props;
-  const [option, setOption] = React.useState({group: '', year: new Date, month: new Date})
+  const [option, setOption] = React.useState({ group: '', year: new Date, month: new Date })
 
   React.useEffect(() => {
   }, []);
 
-  const handleSelectChange = () => {}
-  const handleDateChange = () => {}
+  const handleSelectChange = () => { }
+  const handleDateChange = () => { }
 
   const columns = [
     {
@@ -124,8 +124,8 @@ const LeaveRequestDetails = props => {
       name: 'present',
       label: 'Present',
       options: {
-      filter: true,
-      sort: true,
+        filter: true,
+        sort: true,
       },
     }
   ];
@@ -139,7 +139,7 @@ const LeaveRequestDetails = props => {
     viewColumns: false,
     filter: false,
     rowsPerPage: 10,
-    rowsPerPageOptions: [10,25,50,100],
+    rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
       getAttendanceById(rowData[0])
     },
@@ -236,7 +236,7 @@ LeaveRequestDetails.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   user: AppSelectors.makeSelectCurrentUser(),
-  attendance: Selectors.makeSelectLeaveRequest(),
+  attendance: Selectors.makeSelectLeaveRequests(),
 });
 
 function mapDispatchToProps(dispatch) {

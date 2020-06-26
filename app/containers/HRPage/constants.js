@@ -128,6 +128,8 @@ export const DELETE_RECRUITMENT = 'boilerplate/HRPage/DELETE RECRUITMENT';
 
 export const CREATE_APPLICANT = 'boilerplate/HRPage/CREATE APPLICANT';
 export const CREATE_APPLICANT_SUCCESS = 'boilerplate/HRPage/CREATE APPLICANT SUCCESS';
+export const GET_APPLICANTS = 'boilerplate/HRPage/GET APPLICANTS';
+export const GET_APPLICANTS_SUCCESS = 'boilerplate/HRPage/GET APPLICANTS SUCCESS';
 export const EDIT_APPLICANT = 'boilerplate/HRPage/EDIT APPLICANT';
 export const EDIT_APPLICANT_SUCCESS = 'boilerplate/HRPage/EDIT APPLICANT SUCCESS';
 export const DELETE_APPLICANT = 'boilerplate/HRPage/DELETE APPLICANT';

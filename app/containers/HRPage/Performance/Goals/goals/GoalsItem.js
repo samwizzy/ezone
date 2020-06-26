@@ -100,18 +100,19 @@ const GoalsItem = props => {
 				<List dense={true}>
 					<ListItem>
 						<ListItemText
+							disableTypography
 							primary={
-								<>
+								<React.Fragment>
 									<Typography variant="h6">
 										<NavLink to={`${match.url}/1`}>Customer follow up session</NavLink>
 									</Typography>
 									<Typography variant="subtitle2" color="textPrimary">
 										Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 									</Typography>
-								</>
+								</React.Fragment>
 							}
 							secondary={
-								<div className={classes.flex} component='legend'>
+								<div className={classes.flex}>
 									<Breadcrumbs aria-label="breadcrumb" separator="">
 										<Link color="inherit" href="/" onClick={handleClick} className={classes.link}>
 											Priority : &nbsp;
