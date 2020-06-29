@@ -5,6 +5,7 @@ import SetChartOfAccount from "../../Settings/components/SetChartOfAccount";
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import * as Endpoints from '../../../../components/Endpoints';
+import * as Enums from '../enums';
 import axios from "axios";
 import 'date-fns';
 export const AccSetupContext = React.createContext();
@@ -18,6 +19,7 @@ const AccountSetup = props => {
 
 
   useEffect(() => {
+    
     async function getChatfromServer() {
       // You can await here
       //const response 
@@ -50,8 +52,8 @@ const AccountSetup = props => {
 
 
 const initialState ={
-    accountChart: "GENERATED",
-    accountMethod: "ACCURAL",
+    accountChart: Enums.AccountChart.DEFAULT,
+    accountMethod: Enums.AccountMethod.ACCURAL,
     currency: "",
     dateCreated: "",
     dateUpdated: "",
@@ -126,46 +128,6 @@ const handleClose = (event, reason) => {
   dispatch({type:'MSG',msg:{open:false,message:'',severity:'success'}});
 };
 
-async function createAccountSetup() {
-  const headers = {
-    headers: { 
-    Authorization: `Bearer ${accessToken}`,
-    'Content-Type': 'application/json', 
-  }
-};
-
-let accountSetup ={
-accountChart: "GENERATED",
-accountMethod: state.accountMethod,
-currency: state.currency,
-dateCreated: (new Date).toISOString(),
-dateUpdated: "",
-id: state.id,
-multiCurrency: state.multiCurrency,
-orgId: state.orgId,
-startDay: state.startDay,
-startMonth: state.startMonth,
-taxDay: 0,
-taxMonth: 0,
-taxType: "",
-}
-
-await axios
-axios.post(Endpoints.CreateAccountingSetupApi,accountSetup, {
-  headers: headers
-}) .then((res) => {
-      let chatData = res.data;
-      dispatch({type:'MSG',msg:{open:true,message:'Account open successfully',severity:'success'}})
-      console.log(`from Business response ${chatData}`)
-    })
-
-    .catch((err) => {
-      dispatch({type:'MSG',msg:{open:true,message:'Something went wrong',severity:'error'}});
-      console.log(`error ocurr ${err}`);
-    });
-}
-
-
 
   console.log(`values  got it  -> `, state);
 
@@ -187,7 +149,7 @@ axios.post(Endpoints.CreateAccountingSetupApi,accountSetup, {
     
        <div>
        {state.financialYear?
-       <FinancialYearSetup credentials={credentials}/>
+       <FinancialYearSetup/>
        :<div/>
        }
        </div>

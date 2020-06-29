@@ -20,6 +20,7 @@ import { Autocomplete } from '@material-ui/lab';
 import SendIcon from '@material-ui/icons/ArrowForward';
 import Radio from '@material-ui/core/Radio';
 import Logo from '../images/Logo.svg';
+import * as Enums from '../enums';
 import accSettingDemo2 from '../images/accSettingDemo2.svg';
 import NigeriaFlag from '../images/flag/nigeria.png';
 import UsaFlag from '../images/flag/usa.png';
@@ -92,7 +93,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const FinancialYearSetup = props => {
+const FinancialYearSetup = () => {
   const classes = useStyles();
   const accContext = useContext(AccSetupContext);
   const months = [
@@ -257,23 +258,8 @@ const FinancialYearSetup = props => {
          default :
          return 'December'  
     }
-    
   }
    
-  
-
-  const [values, setValues] = React.useState({
-    accountMethod: 'Accural',
-    companyStartDate: '',
-    currency: '',
-    orgId: props.credentials.organisation && props.credentials.organisation.orgId,
-    startDay: 0,
-    startMonth: 0,
-    taxDay: '',
-    taxMonth: '',
-    taxType: '',
-  });
-
   const canSubmitValues = () => {
     const ready =
     accContext.accState.accountMethod.length > 0 &&
@@ -296,8 +282,6 @@ const FinancialYearSetup = props => {
     //createAccountingSetupAction(values)
   }
 
-
-  console.log('values -> ', values);
 
   return (
     <div className={classes.root}>
@@ -421,11 +405,11 @@ const FinancialYearSetup = props => {
                     <FormControl component="fieldset">
                       <FormGroup aria-label="position" row>
                         <FormControlLabel
-                          value="ACCURAL"
+                          value={Enums.AccountMethod.ACCURAL}
                           onChange={e => {
                             accContext.accDispatch({type:'PAYLOAD',payload:{label:'accountMethod',value:e.target.value}}) 
                           }}
-                          checked={accContext.accState.accountMethod === 'ACCURAL'}
+                          checked={accContext.accState.accountMethod === Enums.AccountMethod.ACCURAL}
                           control={<Radio color="primary" />}
                           label="Accural"
                           labelPlacement="end"
@@ -446,11 +430,11 @@ const FinancialYearSetup = props => {
                     <FormControl component="fieldset">
                       <FormGroup aria-label="position" row>
                         <FormControlLabel
-                          value="CASH BASIS"
+                          value={Enums.AccountMethod.CASH}
                           onChange={e => {
                             accContext.accDispatch({type:'PAYLOAD',payload:{label:'accountMethod',value:e.target.value}})  
                           }}
-                          checked={accContext.accState.accountMethod === 'CASH BASIS'}
+                          checked={accContext.accState.accountMethod === Enums.AccountMethod.CASH}
                           control={<Radio color="primary" />}
                           label="Cash"
                           labelPlacement="end"

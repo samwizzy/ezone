@@ -1,6 +1,7 @@
 import React,{useState, useContext, useEffect} from 'react';
 import axios from "axios";
 import {createAccountSetupSagaII} from '../saga';
+import { withRouter } from "react-router-dom";
 import {
     makeStyles,
     Box,
@@ -21,8 +22,10 @@ import AddIcon from '@material-ui/icons/Add';
 import MUIDataTable from 'mui-datatables';
 import NextIcon from '@material-ui/icons/ArrowForward';
 import BackIcon from '@material-ui/icons/ArrowBack';
+
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { createStructuredSelector } from 'reselect';
+import * as Enums from '../enums';
 import * as Endpoints from '../../../../components/Endpoints';
 import { AccSetupContext } from './AccountSetup';
 
@@ -101,31 +104,31 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const BussinessActivity = props => {
+  axios.defaults.headers.common = {
+    'Authorization': 'Bearer ' + `${props.accessToken}`
+   };
+    
     const classes = useStyles();
     const accContext = useContext(AccSetupContext)
     const [service,setService] = useState(OnlyBussinessLabel(accContext.accState.businessActivity))
     const [chartOfAccountData,setChartOfAccountData] = useState([])
     const [isEmpty,setIsEmpty] = useState(true);
+    
 
 
     async function createAccountSetup() {
-
-      let headers = { 
-        'Authorization': `Bearer ${props.accessToken}`,
-        'Content-Type': 'application/json', 
-      }
    
 
     let accountSetup =
     {
     accountChart: `${accContext.accState.accountChart}`,
     accountMethod: `${accContext.accState.accountMethod}`,
-    currency: `$accContext.accState.currency}`,
-    dateCreated: (new Date).toString(),
+    currency: accContext.accState.currency,
+    dateCreated: `${(new Date).toISOString()}`,
     dateUpdated: "",
     id: `${accContext.accState.id}`,
     multiCurrency: Boolean(accContext.accState.multiCurrency),
-    orgId: `$accContext.accState.orgId}`,
+    orgId: `${accContext.accState.orgId}`,
     startDay: Number(accContext.accState.startDay),
     startMonth: Number(accContext.accState.startMonth),
     taxDay: 0,
@@ -146,12 +149,15 @@ const BussinessActivity = props => {
     const content = await rawResponse.json();
     console.log(content);*/
    
-    await axios.post(' https://dev.ezoneapps.com/gateway/accountingserv/api/v1/account/add_account_settings',accountSetup, {
-      "headers": headers
-    }) .then((res) => {
-          let chatData = res.data;
+    await axios.post(`${Endpoints.CreateAccountingSetupApi}`,accountSetup)
+     .then((res) => {
+          let chatResponse = res.data;
           accContext.accDispatch({type:'MSG',msg:{open:true,message:'Account open successfully',severity:'success'}})
-          console.log(`from Business response ${chatData}`)
+          console.log(`from Business response ${chatResponse}`);
+          if(chatResponse.success){
+            accContext.accDispatch({type:'NAVIGATION',page:'financialYear'})
+          }
+         
         })
   
         .catch((err) => {
@@ -166,6 +172,7 @@ const BussinessActivity = props => {
         // You can await here
         //const response 
         //select uri
+       
         const config = {
           headers: { 
           Authorization: `Bearer ${props.accessToken}`,
@@ -245,8 +252,7 @@ const BussinessActivity = props => {
        
       ];
 
-
-
+      
 
 
     return ( 
@@ -342,10 +348,11 @@ const BussinessActivity = props => {
 
 
         <Grid item xs={12}>
-              <div className="content_margin_button">
+              <div>
+                <div style={{float:'right',paddingRight:'10px',paddingTop:'3em',paddingBottom:'2em'}}>
                    <Grid  container spacing={2}>  
                   <Grid item >
-                   <div >
+                   <div>
                    <Button
                   variant="contained"
                   startIcon={<BackIcon />}
@@ -357,7 +364,7 @@ const BussinessActivity = props => {
                   </Grid>
 
                   <Grid item>
-                   <div >
+                   <div>
                   <Button
                   variant="contained"
                   color="primary"
@@ -376,6 +383,7 @@ const BussinessActivity = props => {
                    </div>
                   </Grid>
                   </Grid> 
+                  </div>
                   </div>
                       
                   </Grid>

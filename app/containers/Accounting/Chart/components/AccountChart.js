@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect,useState,useRef } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import {
@@ -10,6 +10,7 @@ import {
   Tooltip
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import ImportIcon from '@material-ui/icons/GetApp';
 
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
@@ -19,6 +20,8 @@ import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import NewAccountDialog from './NewAccountDialog';
+import * as Endpoints from '../../../../components/Endpoints';
+import axios from "axios";
 import ConfirmDeleteAccountDialog from './ConfirmDeleteAccountDialog';
 // import LoadingIndicator from '../../../../components/LoadingIndicator';
 
@@ -70,8 +73,57 @@ const useStyles = makeStyles(theme => ({
 
 const AccountChart = props => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [account, setAccount] = React.useState('');
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [account, setAccount] = useState('');
+  const [allCoa,setAllCoa] = useState([])
+  const [credentials] = useState(JSON.parse(localStorage.getItem('user')))
+  const [accessToken] = useState(localStorage.getItem('access_token'))
+
+
+
+  //Load AccTypes
+  useEffect(() => {
+    async function getAllAccountChartFSev() {
+      console.log(`org ${credentials.organisation.orgId}`)
+      const config = {
+        headers: { Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json', }
+    };
+
+    await axios
+    .get(`${Endpoints.GetAllChartOfAccountApi}/${credentials.organisation.orgId}`,
+    config)
+    .then((res) => {
+      let coaData = res.data;
+      let data = []
+      for(let i=0;i<coaData.length;i++){
+        if(i === 0){
+         data = [{accountCode:coaData[i].accountCode,accountName:coaData[i].accountName,accountType:coaData[i].accountType.accountType,amount:coaData[i].openingBalance,description:coaData[i].description,id:coaData[i].id}]
+        }
+        else
+        data = [...data,{accountCode:coaData[i].accountCode,accountName:coaData[i].accountName,accountType:coaData[i].accountType.accountType,amount:coaData[i].openingBalance,description:coaData[i].description,id:coaData[i].id}]
+      }
+      setAllCoa(data)
+      //setIsEmpty(chatData.length > 0 ?false :true);
+      //setchartOfAccountData(chatData)
+      console.log(`All AccountChart ${JSON.stringify(data)}`)
+    })
+
+    .catch((err) => {
+      console.log(`error ocurr at ChartofAccount ${err}`);
+    });
+    
+
+
+    }
+
+    getAllAccountChartFSev() ;
+
+    return () => {
+      getAllAccountChartFSev()
+    };
+
+  },[]);
 
   const {
     loading,
@@ -85,13 +137,24 @@ const AccountChart = props => {
   const handleClick = (event, id) => {
     console.log("id value --> ", id);
     setAnchorEl(event.currentTarget);
-    const selectedAccount = chartOfAccountData && chartOfAccountData.find(acc => id === acc.id);
+    const selectedAccount = chartOfAccountData && 
+    chartOfAccountData.find(acc => id === acc.id);
     setAccount(selectedAccount);
   };
+
+  function importCsvFile(e){
+    let selecetdFile = e.target.files[0];
+    let x = selecetdFile.type + "";
+    let fileType = x.substr(x.indexOf("/") + 1) + "";
+    let isfile = new RegExp("csv").test(fileType);
+    console.log(`format ${isfile} ${fileType} file ${x}`)
+  }
 
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const fileInput = useRef();
 
   const columns = [
     {
@@ -145,7 +208,7 @@ const AccountChart = props => {
             return '';
           }
           return (
-            <div>
+            <div style={{margin:'5px'}}>
               <Button
                 aria-controls="simple-menu"
                 aria-haspopup="true"
@@ -191,7 +254,33 @@ const AccountChart = props => {
     responsive: 'scrollMaxHeight',
     selectableRows: 'none',
     customToolbar: () => (
-      <Tooltip title="Create New Chart">
+      <Tooltip title="Import and Create">
+        <div style={{margin:'5px'}}>
+          <div style={{float:'right'}}>
+          <Grid container spacing={2}>
+            <Grid item >
+          <div style={{marginBottom:'3px'}}>
+          <input
+            style={{ display: "none" }}
+              type="file"
+              accept=".csv"
+                onChange={importCsvFile}
+                ref={fileInput}
+                  />
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          className={classes.button}
+          startIcon={<ImportIcon />}
+          onClick={() => fileInput.current.click()}
+        >
+          Import
+        </Button>
+        </div>
+        </Grid>
+        <Grid item >
+        <div style={{marginBottom:'3px'}}>
         <Button
           variant="contained"
           color="primary"
@@ -200,8 +289,14 @@ const AccountChart = props => {
           startIcon={<AddIcon />}
           onClick={() => openNewAccountDialogAction()}
         >
-          New Account
+          New COA
         </Button>
+        </div>
+        </Grid>
+        </Grid>
+        </div>
+        </div>
+       
       </Tooltip>
     ),
     elevation: 0
@@ -217,7 +312,7 @@ const AccountChart = props => {
             <MUIDataTable
               className={classes.datatable}
               title="Account Charts"
-              data={chartOfAccountData}
+              data={allCoa}
               columns={columns}
               options={options}
             />

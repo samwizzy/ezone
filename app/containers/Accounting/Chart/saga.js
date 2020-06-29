@@ -53,7 +53,7 @@ export function* getAllAccountTypeSaga() {
 
 export function* getParentAccountTypeSaga({ type, payload} ) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${Endpoints.GetParentAccountTypeApi}/${payload.accountType}`;
+  const requestURL = `${Endpoints.GetAllAccountTypeApi}`;
 
   try {
     const parentAccountTypeResponse = yield call(request, requestURL, {

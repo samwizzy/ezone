@@ -2,6 +2,7 @@ import React,{useState,useContext} from 'react';
 import NextIcon from '@material-ui/icons/ArrowForward';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import Radio from '@material-ui/core/Radio';
+import * as Enums from '../enums';
 import {
     makeStyles,
     Box,
@@ -104,7 +105,7 @@ const SetChartOfAccount = () => {
                         <FormControlLabel
                           value={accContext.accState.accountChart}
                           onChange={e => {
-                            accContext.accDispatch({type:'PAYLOAD',payload:{label:'accountChart',value:'CREATE'}}) 
+                            accContext.accDispatch({type:'PAYLOAD',payload:{label:'accountChart',value:Enums.AccountChart.CREATE}}) 
                           }}
                           checked={accContext.accState.accountChart === 'CREATE'}
                           control={<Radio color="primary" />}
@@ -123,9 +124,9 @@ const SetChartOfAccount = () => {
                         <FormControlLabel
                           value={accContext.accState.accountChart}
                           onChange={e => {
-                            accContext.accDispatch({type:'PAYLOAD',payload:{label:'accountChart',value:'IMPORTED'}}) 
+                            accContext.accDispatch({type:'PAYLOAD',payload:{label:'accountChart',value:Enums.AccountChart.IMPORT}}) 
                           }}
-                          checked={accContext.accState.accountChart === 'IMPORTED'}
+                          checked={accContext.accState.accountChart === 'IMPORT'}
                           control={<Radio color="primary" />}
                           label="Import Existing Chart of Accounts"
                           labelPlacement="end"
@@ -142,9 +143,9 @@ const SetChartOfAccount = () => {
                         <FormControlLabel
                           value={accContext.accState.accountChart}
                           onChange={e => {
-                            accContext.accDispatch({type:'PAYLOAD',payload:{label:'accountChart',value:'GENERATED'}}) 
+                            accContext.accDispatch({type:'PAYLOAD',payload:{label:'accountChart',value:Enums.AccountChart.IMPORT}}) 
                           }}
-                          checked={accContext.accState.accountChart === 'GENERATED'}
+                          checked={accContext.accState.accountChart === 'DEFAULT'}
                           control={<Radio color="primary" />}
                           label="Use system generated Chart of Accounts (non accountants)"
                           labelPlacement="end"
