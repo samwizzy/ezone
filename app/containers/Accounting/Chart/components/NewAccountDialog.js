@@ -199,8 +199,8 @@ const NewAccountDialog = props => {
 
   useEffect(() => {
     if (accountDialog.type == 'edit') {
-      const { id, orgId, accountName, accountCode, openingBalance, accountType, bankBalance, description } = accountDialog.data
-      setValues({ ...values, id, orgId, accountName, accountCode, openingBalance, accountType, bankBalance, description });
+      const {accountCode,accountName,accountNumber, accountTypeId,bankBalance,bankName,description,id,openingBalance,orgId,parentId,rate,status} = accountDialog.data
+      setValues({ ...values, accountCode,accountName,accountNumber, accountTypeId,bankBalance,bankName,description,id,openingBalance,orgId,parentId,rate,status });
     }
   }, [accountDialog.data])
 
