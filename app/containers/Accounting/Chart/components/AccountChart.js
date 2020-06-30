@@ -1,6 +1,8 @@
-import React, { memo, useEffect,useState,useRef } from 'react';
+import React, { memo, useEffect,useState,useRef,useContext } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { CSVReader } from 'react-papaparse';
+//import Fs from 'fs';
 import {
   makeStyles,
   Button,
@@ -22,8 +24,13 @@ import * as Selectors from '../selectors';
 import NewAccountDialog from './NewAccountDialog';
 import * as Endpoints from '../../../../components/Endpoints';
 import axios from "axios";
+import * as saga from '../saga'; 
 import ConfirmDeleteAccountDialog from './ConfirmDeleteAccountDialog';
+import { ChartContext } from '..';
+import swal from 'sweetalert';
 // import LoadingIndicator from '../../../../components/LoadingIndicator';
+
+const buttonRef = React.createRef()
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -73,22 +80,27 @@ const useStyles = makeStyles(theme => ({
 
 const AccountChart = props => {
   const classes = useStyles();
+  const chartContext = useContext(ChartContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [account, setAccount] = useState('');
   const [allCoa,setAllCoa] = useState([])
   const [credentials] = useState(JSON.parse(localStorage.getItem('user')))
   const [accessToken] = useState(localStorage.getItem('access_token'))
+  const[refresh,setRefresh] = useState(true);
+  const [accountType,setAccountType] = useState([])
 
 
 
   //Load AccTypes
   useEffect(() => {
     async function getAllAccountChartFSev() {
-      console.log(`org ${credentials.organisation.orgId}`)
+    
       const config = {
         headers: { Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json', }
     };
+
+
 
     await axios
     .get(`${Endpoints.GetAllChartOfAccountApi}/${credentials.organisation.orgId}`,
@@ -96,17 +108,32 @@ const AccountChart = props => {
     .then((res) => {
       let coaData = res.data;
       let data = []
+
       for(let i=0;i<coaData.length;i++){
         if(i === 0){
-         data = [{accountCode:coaData[i].accountCode,accountName:coaData[i].accountName,accountType:coaData[i].accountType.accountType,amount:coaData[i].openingBalance,description:coaData[i].description,id:coaData[i].id}]
+         data = [{accountCode:coaData[i].accountCode,
+          accountName:coaData[i].accountName,accountNumber:coaData[i].accountNumber,
+          accountType:coaData[i].accountType.accountType,
+          accountTypeId:coaData[i].accountType.id,bankBalance:coaData[i].bankBalance,
+          openingBalance:coaData[i].openingBalance,
+          bankName:coaData[i].bankName,
+          description:coaData[i].description,id:coaData[i].id}]
         }
-        else
-        data = [...data,{accountCode:coaData[i].accountCode,accountName:coaData[i].accountName,accountType:coaData[i].accountType.accountType,amount:coaData[i].openingBalance,description:coaData[i].description,id:coaData[i].id}]
+        else{
+        data = [...data,{accountCode:coaData[i].accountCode,
+          accountName:coaData[i].accountName,accountNumber:coaData[i].accountNumber,
+          accountType:coaData[i].accountType.accountType,
+          accountTypeId:coaData[i].accountType.id,bankBalance:coaData[i].bankBalance,
+          openingBalance:coaData[i].openingBalance,
+          bankName:coaData[i].bankName,
+          description:coaData[i].description,id:coaData[i].id}]
+        }
       }
       setAllCoa(data)
+      chartContext.chartDispatch({type:'PAYLOAD',payload:data});
       //setIsEmpty(chatData.length > 0 ?false :true);
       //setchartOfAccountData(chatData)
-      console.log(`All AccountChart ${JSON.stringify(data)}`)
+      chartContext.chartDispatch({type:'REFRESH',refresh:false})
     })
 
     .catch((err) => {
@@ -116,14 +143,92 @@ const AccountChart = props => {
 
 
     }
-
-    getAllAccountChartFSev() ;
+    getAllAccountTypeFSev();
+    getAllAccountChartFSev();
 
     return () => {
+      getAllAccountTypeFSev()
       getAllAccountChartFSev()
     };
 
-  },[]);
+  },[chartContext.chartState.refresh]);
+
+
+  async function getAllAccountTypeFSev() {
+      
+    const config = {
+      headers: { Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json', }
+  };
+
+  await axios
+  .get(`${Endpoints.GetAllAccountTypeApi}`,
+  config)
+  .then((res) => {
+    let accType = res.data;
+    //setIsEmpty(chatData.length > 0 ?false :true);
+    //setchartOfAccountData(chatData)
+    setAccountType(accType);
+    setAccountParentType(accType);
+  })
+
+  .catch((err) => {
+    console.log(`error ocurr at NewAccountDialog ${err}`);
+  });
+
+}
+   
+  function onlyNumber(value){
+   let result =0;
+   console.log(`value called ${value} accountType ${JSON.stringify(accountType)}`)
+   for(let i=0;i<accountType.length;i++){
+     if(accountType[i].accountType === value){
+       result = accountType[i].id
+     }
+   }
+   return result;
+  }
+
+  //Create New Account
+
+  async function createChartOfAccountHandler(value) {
+    let postData = {
+      accountCode: value.accountCode,
+      accountName: value.accountName,
+      accountNumber: "",
+      accountTypeId: onlyNumber(value.accountType),
+      bankBalance: 0,
+      bankName: "",
+      description: value.accountDescription,
+      id:credentials.id,
+      openingBalance: Number(value.amount),
+      orgId:credentials.organisation && credentials.organisation.orgId,
+      parentId: null,
+      rate: 0,
+      status: true,
+    }
+      const config = {
+        headers: { Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json', }
+    }
+  
+       console.log(`post data befo4 ${postData}`)
+     
+      await axios.post(`${Endpoints.CreateChartOfAccountApi}`,postData,config)
+       .then((res) => {
+            let chatOfAccResponse = res.data;
+            chartContext.chartDispatch({type:'REFRESH',refresh:true})
+          swal("Success","Chart of Account created successfully","success");
+          })
+    
+          .catch((err) => {
+            console.log(`error ocurr in Chart of Account ${err}`);
+          swal("Error","Something went wrong. Please try again","error");
+            
+          });
+  
+      }
+
 
   const {
     loading,
@@ -136,18 +241,45 @@ const AccountChart = props => {
 
   const handleClick = (event, id) => {
     console.log("id value --> ", id);
+    localStorage.setItem("ezone-editable", `${id}`);
     setAnchorEl(event.currentTarget);
-    const selectedAccount = chartOfAccountData && 
-    chartOfAccountData.find(acc => id === acc.id);
+    const selectedAccount = allCoa && 
+    allCoa.find(acc => id === acc.id);
     setAccount(selectedAccount);
   };
 
-  function importCsvFile(e){
-    let selecetdFile = e.target.files[0];
-    let x = selecetdFile.type + "";
-    let fileType = x.substr(x.indexOf("/") + 1) + "";
-    let isfile = new RegExp("csv").test(fileType);
-    console.log(`format ${isfile} ${fileType} file ${x}`)
+
+  function handleOpenDialog(e){
+    // Note that the ref is set async, so it might be null at some point 
+    if (buttonRef.current) {
+      buttonRef.current.open(e)
+    }
+  }
+  
+  function handleOnFileLoad(data){
+    console.log('---------------------------')
+    for(let i=0;i<data.length;i++){
+      createChartOfAccountHandler(data[i].data)
+      console.log(`handled ${JSON.stringify(data[i].data)}`)
+    }
+    console.log('---------------------------')
+  }
+
+  function handleOnError(err, file, inputElem, reason){
+    console.log(`File upload error${err}`)
+  }
+
+  function handleOnRemoveFile(data){
+    console.log('---------------------------')
+    console.log(data)
+    console.log('---------------------------')
+  }
+
+  function handleRemoveFile(e){
+    // Note that the ref is set async, so it might be null at some point
+    if (buttonRef.current) {
+      buttonRef.current.removeFile(e)
+    }
   }
 
   const handleClose = () => {
@@ -182,7 +314,7 @@ const AccountChart = props => {
       },
     },
     {
-      name: 'amount',
+      name: 'openingBalance',
       label: 'Amount',
       options: {
         filter: true,
@@ -223,8 +355,10 @@ const AccountChart = props => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={() => {
+                <MenuItem onClick={(e) => {
                   editOpenAccountDialogAction(account);
+                  console.log(`on Edit account ${JSON.stringify(account)}`)
+                  localStorage.setItem("ezone-editable", '392');
                 }}>
                   Edit
                 </MenuItem>
@@ -233,6 +367,7 @@ const AccountChart = props => {
                     pathname: '/account/chart/details',
                     chartDetailsData: account,
                   });
+                  chartContext.chartDispatch({type:'VIEW_ID',id:account.id})
                 }}>
                   View Details
                 </MenuItem>
@@ -260,23 +395,43 @@ const AccountChart = props => {
           <Grid container spacing={2}>
             <Grid item >
           <div style={{marginBottom:'3px'}}>
-          <input
-            style={{ display: "none" }}
-              type="file"
-              accept=".csv"
-                onChange={importCsvFile}
-                ref={fileInput}
-                  />
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          className={classes.button}
-          startIcon={<ImportIcon />}
-          onClick={() => fileInput.current.click()}
-        >
-          Import
-        </Button>
+
+          <CSVReader
+        ref={buttonRef}
+        onFileLoad={handleOnFileLoad}
+        onError={handleOnError}
+        noClick
+        noDrag
+        config ={{
+          header: true,
+          skipEmptyLines: true
+        }
+        }
+        onRemoveFile={handleOnRemoveFile}
+      >
+        {({ file }) => (
+          <aside
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              marginBottom: 10
+            }}
+          >
+            <Button
+              type='button'
+              variant="contained"
+              color="primary"
+              size="small"
+              onClick={handleOpenDialog}
+              className={classes.button}
+             startIcon={<ImportIcon />}
+            >
+              Import
+            </Button>
+          
+          </aside>
+        )}
+      </CSVReader>
         </div>
         </Grid>
         <Grid item >
@@ -289,7 +444,7 @@ const AccountChart = props => {
           startIcon={<AddIcon />}
           onClick={() => openNewAccountDialogAction()}
         >
-          New COA
+          New Account
         </Button>
         </div>
         </Grid>

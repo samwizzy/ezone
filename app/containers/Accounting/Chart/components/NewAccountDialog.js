@@ -1,9 +1,10 @@
-import React, { memo,useEffect,useState } from 'react';
+import React, { memo,useEffect,useState,useContext } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
+import swal from 'sweetalert';
 
 import {
   withStyles,
@@ -27,6 +28,7 @@ import axios from "axios";
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
+import { ChartContext } from '..';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -81,8 +83,10 @@ const NewAccountDialog = props => {
 
   const [credentials] = useState(JSON.parse(localStorage.getItem('user')))
   const [accessToken] = useState(localStorage.getItem('access_token'))
+  const chartContext = useContext(ChartContext)
   const [accountType,setAccountType] = useState([]);
   const [accountParentType,setAccountParentType] = useState([]);
+  const [coaPayload] = useState(JSON.parse(localStorage.getItem('ezone-coa-payload')))
 
 
   const [values, setValues] = useState({
@@ -94,9 +98,9 @@ const NewAccountDialog = props => {
     bankName: "",
     description: "",
     id:credentials.id,
-    openingBalance: 0,
+    openingBalance: '',
     orgId:credentials.organisation && credentials.organisation.orgId,
-    parentId: 0,
+    parentId: null,
     rate: 0,
     status: true,
   });
@@ -104,7 +108,7 @@ const NewAccountDialog = props => {
   //Load AccTypes
   useEffect(() => {
     async function getAllAccountTypeFSev() {
-      
+      console.log(`context from new ${chartContext.chartState.viewId}`)
       const config = {
         headers: { Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json', }
@@ -139,6 +143,18 @@ const NewAccountDialog = props => {
   },[]);
 
 
+  function onlyAccountLabel(code){
+    let result = '';
+    for(let i=0;i<accountType.length;i++){
+       if(accountType[i].id === code){
+         result = accountType[i].accountType
+         break;
+       }
+    }
+    return result;
+  }
+
+
   //Create New Account 
 
   async function createChartOfAccountHandler() {
@@ -148,13 +164,17 @@ const NewAccountDialog = props => {
       'Content-Type': 'application/json', }
   };
 
-    console.log(`before you post ${JSON.stringify(values)} token ${accessToken}`)
-   
-    await axios.post(`${Endpoints.CreateChartOfAccountApi}`,values,config)
+    let postValue= values;
+    postValue = {...postValue,openingBalance:Number(values.openingBalance)}
+
+    console.log(`before you post ${JSON.stringify(postValue)} token ${accessToken}`)
+
+    await axios.post(`${Endpoints.CreateChartOfAccountApi}`,postValue,config)
      .then((res) => {
           let chatOfAccResponse = res.data;
-          console.log(`from Business response ${chatOfAccResponse}`);
-         
+          chartContext.chartDispatch({type:'REFRESH',refresh:true})
+          swal("Success","Chart of Account created successfully","success");
+          closeNewAccountDialogAction()
         })
   
         .catch((err) => {
@@ -163,6 +183,30 @@ const NewAccountDialog = props => {
 
     }
 
+
+    async function updateChartOfAccount() {
+      const config = {
+        headers: { Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json', }
+    };
+    let postValue= values;
+    postValue = {...postValue,openingBalance:Number(values.openingBalance)}
+      await axios.put(`${Endpoints.UpdateChartOfAccountApi}`,postValue,config)
+       .then((res) => {
+            let chatOfAccResponse = res.data;
+            chartContext.chartDispatch({type:'REFRESH',refresh:true})
+            swal("Success","Chart of Account Updated successfully","success");
+            closeNewAccountDialogAction()
+            console.log(`from Business response ${chatOfAccResponse}`);
+           
+          })
+    
+          .catch((err) => {
+            swal("Error","Something went wrong","error");
+            console.log(`error ocurr in Chart of Account ${err}`);
+          });
+  
+    }
   //Create New Account
   
 
@@ -197,11 +241,20 @@ const NewAccountDialog = props => {
     }
   };
 
+
   useEffect(() => {
+    function doUpdate(){
     if (accountDialog.type == 'edit') {
-      const {accountCode,accountName,accountNumber, accountTypeId,bankBalance,bankName,description,id,openingBalance,orgId,parentId,rate,status} = accountDialog.data
-      setValues({ ...values, accountCode,accountName,accountNumber, accountTypeId,bankBalance,bankName,description,id,openingBalance,orgId,parentId,rate,status });
+      const {accountCode,accountName,accountNumber, accountTypeId,bankBalance,bankName,description,openingBalance,id} = accountDialog.data
+       setValues({ ...values, accountCode,accountName,accountNumber,accountTypeId,bankBalance,bankName,description,openingBalance,id});
     }
+  }
+  doUpdate();
+
+  return () => {
+    doUpdate();
+  };
+
   }, [accountDialog.data])
 
   console.log(`values  got it b4 post  -> `, values);
@@ -255,7 +308,7 @@ const NewAccountDialog = props => {
                 <Grid item xs={6}>
                   <TextField
                     id="standard-openingBalance"
-                    label="Opening Balance"
+                    label={values.openingBalance === 0 ? 'Opening Balance' :`Balance ${values.openingBalance}`}
                     type="number"
                     variant="outlined"
                     size="small"
@@ -273,18 +326,14 @@ const NewAccountDialog = props => {
                     options={accountType}
                     getOptionLabel={option => option.accountType}
                     onChange={(evt, value) =>{ 
-                      handleSelectChange('accountTypeId', value)
-                      if(value.accountType ==='Bank'){
-                        setCheckBox({ ...checkBox, isBank: true, canHaveParent: value.subAccount });
-                      }
-                      else
-                      setCheckBox({ ...checkBox,isBank: false, canHaveParent: value.subAccount });
+                      setCheckBox({ ...checkBox, isBank:value.accountType === "Bank"?true:false, canHaveParent: value.subAccount });
+                      setValues({...values,accountTypeId:value.id,parentId:null})
                     }
                   }
                     renderInput={params => (
                       <TextField
                         {...params}
-                        label="Select Account Type"
+                        label={values.accountTypeId === 0 ?"Select Account Type":onlyAccountLabel(values.accountTypeId)}
                         className={classes.textField}
                         variant="outlined"
                         placeholder="Search"
@@ -358,7 +407,9 @@ const NewAccountDialog = props => {
                         size="small"
                         options={accountParentType}
                         getOptionLabel={option => option.accountType}
-                        onChange={(evt, value) => handleSelectChange('parentId', value)}
+                        onChange={(evt, value) => {
+                          setValues({...values,parentId:value.id})}
+                        }
                         renderInput={params => (
                           <TextField
                             {...params}
@@ -398,7 +449,7 @@ const NewAccountDialog = props => {
             <LoadingIndicator />
           ) : (
             <Button
-              onClick={() => { accountDialog.type === 'new' ? createChartOfAccountHandler() : updateChartOfAccountAction(values) }}
+              onClick={() => { accountDialog.type === 'new' ? createChartOfAccountHandler() : updateChartOfAccount() }}
               color="primary"
               // disabled={ accountDialog.type === "new" ? !canSubmitValues() : "" }
             >

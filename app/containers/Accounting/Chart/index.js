@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect,useContext,useReducer } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -13,6 +13,7 @@ import * as Selectors from './selectors';
 import LoadingIndicator from './../../../components/LoadingIndicator';
 import ModuleLayout from '../components/ModuleLayout';
 import AccountChart from '../Chart/components/AccountChart';
+export const ChartContext = React.createContext();
 
 
 const Chart = props => {
@@ -31,7 +32,46 @@ const Chart = props => {
   useEffect(() => {
     dispatchGetAllChartOfAccountTypeAction();
     dispatchGetAllAccountTypeAction();
+    return () => {
+      dispatchGetAllChartOfAccountTypeAction();
+      dispatchGetAllAccountTypeAction();
+    }
   }, []);
+
+
+  const initialState ={
+   payload: [],
+   viewId:'',
+   refresh:true,
+  }
+
+  const payloadReducers = (state, action) => {
+   switch(action.type){
+     case 'PAYLOAD':
+       state ={
+         ...state,
+         payload:action.payload
+       }
+       return state;
+     case 'VIEW_ID':
+       state ={
+         ...state,
+         viewId:action.id
+       } 
+       return state
+       case 'REFRESH':
+       state ={
+         ...state,
+         refresh:action.refresh
+       } 
+       return state
+       default:
+         return state;
+   }
+
+  }
+
+  const [state, dispatch] = useReducer(payloadReducers, initialState);
 
 
   if (loading) {
@@ -40,7 +80,11 @@ const Chart = props => {
 
   return (
       <ModuleLayout>
-        <AccountChart />
+        <ChartContext.Provider
+    value={{chartState: state, chartDispatch: dispatch }}>
+       <AccountChart />
+    </ChartContext.Provider>
+        
       </ModuleLayout>
   );
 };

@@ -5,6 +5,7 @@ import * as Selectors from './selectors';
 import request from '../../../utils/request';
 import * as Endpoints from '../../../components/Endpoints';
 import * as Actions from './actions';
+import axios from "axios";
 import * as Constants from './constants';
 
 
@@ -194,6 +195,46 @@ export function* updateChartOfAccountSaga() {
     yield put(Actions.updateChartOfAccountErrorAction(err));
   }
 }
+
+
+ export async function createChartOfAccountHandler(value) {
+  let credentials = JSON.parse(localStorage.getItem('user'))
+   let accessToken = localStorage.getItem('access_token')
+  let postData = {
+    accountCode: value.accountCode,
+    accountName: value.accountName,
+    accountNumber: "",
+    accountTypeId: value.accountTypeId,
+    bankBalance: 0,
+    bankName: "",
+    description: value.accountDescription,
+    id:credentials.id,
+    openingBalance: Number(value.amount),
+    orgId:credentials.organisation && credentials.organisation.orgId,
+    parentId: null,
+    rate: 0,
+    status: true,
+  }
+    const config = {
+      headers: { Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json', }
+  }
+
+     console.log(`post data ${postData}`)
+   
+    await axios.post(`${Endpoints.CreateChartOfAccountApi}`,postData,config)
+     .then((res) => {
+          let chatOfAccResponse = res.data;
+          return chatOfAccResponse;
+        })
+  
+        .catch((err) => {
+          console.log(`error ocurr in Chart of Account ${err}`);
+          return null;
+        });
+
+    }
+
 
 
 // Individual exports for testing

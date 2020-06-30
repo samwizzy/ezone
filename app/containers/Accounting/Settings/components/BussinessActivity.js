@@ -1,7 +1,8 @@
 import React,{useState, useContext, useEffect} from 'react';
 import axios from "axios";
 import {createAccountSetupSagaII} from '../saga';
-import { withRouter } from "react-router-dom";
+import { withRouter ,Link} from "react-router-dom";
+import swal from 'sweetalert';
 import {
     makeStyles,
     Box,
@@ -152,10 +153,9 @@ const BussinessActivity = props => {
     await axios.post(`${Endpoints.CreateAccountingSetupApi}`,accountSetup)
      .then((res) => {
           let chatResponse = res.data;
-          accContext.accDispatch({type:'MSG',msg:{open:true,message:'Account open successfully',severity:'success'}})
-          console.log(`from Business response ${chatResponse}`);
           if(chatResponse.success){
-            accContext.accDispatch({type:'NAVIGATION',page:'financialYear'})
+            swal("Success","Account opened successfully","success");
+  
           }
          
         })
@@ -184,10 +184,17 @@ const BussinessActivity = props => {
         .get(`${Endpoints.GetAllChartOfAccountApi}/${props.credentials.organisation.orgId}`,
         config)
         .then((res) => {
-          let chatData = res.data;
-          setIsEmpty(chatData.length > 0 ?false :true);
-          setChartOfAccountData(chatData)
-          console.log(`from Business Active ${chatData}`)
+          let chartData = res.data;
+          setIsEmpty(chartData.length > 0 ?false :true);
+          let data = []
+          for(let i=0;i<chatData.length;i++){
+            if(i === 0){
+             data = [{accountCode:chartData[i].accountCode,accountName:chartData[i].accountName,accountType:chartData[i].accountType.accountType}]
+            }
+            else
+            data = [...data,{accountCode:chartData[i].accountCode,accountName:chartData[i].accountName,accountType:chartData[i].accountType.accountType}]
+          }
+          setChartOfAccountData(data)
         })
   
         .catch((err) => {
@@ -365,21 +372,19 @@ const BussinessActivity = props => {
 
                   <Grid item>
                    <div>
+                  <Link style={{textDecoration:'none'}} to={'/account/chart'}>
                   <Button
                   variant="contained"
                   color="primary"
+                  disabled={service === undefined||service === null||service === ''}
                   endIcon={<NextIcon />}
-                  onClick={e=>{
-                    if(service === undefined||service === null||service === ''){
-                      accContext.accDispatch({type:'MSG',msg:{open:true,message:'Select a Business Activity',severity:'error'}}) 
-                    }
-                    else
+                  onClick={e=>
                     createAccountSetup() 
-                  }
                 }
                 >
                   Finish
                 </Button>
+                </Link>
                    </div>
                   </Grid>
                   </Grid> 
