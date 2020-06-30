@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { alphaNumeric } from '../validator';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import {
@@ -43,6 +44,18 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const TransactionTransferDialog = props => {
   const classes = useStyles();
+
+  const [isAphaNumeric,setIsAphaNumeric] = useState(true)
+
+  const checkAlphaNumeric = event =>{
+    let value= event.target.value;
+    let txt = alphaNumeric(value)
+    if(txt){
+      setIsAphaNumeric(true)
+    }
+    else
+    setIsAphaNumeric(false)
+  }
 
   const { 
     loading,
@@ -178,10 +191,12 @@ const TransactionTransferDialog = props => {
                 />
               </Grid>
               <Grid item xs={6}>
+               {isAphaNumeric?
                 <TextField
                   id="standard-referenceNumber"
                   label="Reference Number"
                   type="name"
+                  onBlur ={checkAlphaNumeric}
                   variant="outlined"
                   size="small"
                   value={values.referenceNumber}
@@ -189,6 +204,22 @@ const TransactionTransferDialog = props => {
                   margin="normal"
                   fullWidth
                 />
+                :
+                <TextField
+                  id="standard-referenceNumber"
+                  label="Reference Number"
+                  type="name"
+                  onBlur ={checkAlphaNumeric}
+                  error
+                  helperText="value must be alpha numeric"
+                  variant="outlined"
+                  size="small"
+                  value={values.referenceNumber}
+                  onChange={handleChange('referenceNumber')}
+                  margin="normal"
+                  fullWidth
+                />
+                }
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -212,6 +243,7 @@ const TransactionTransferDialog = props => {
             <LoadingIndicator />
           ) : (
             <Button
+             disabled={!isAphaNumeric}
               onClick={() => {
                 values.amount = Number(values.amount)
                 values.currentBankId = transactionTransferDialog.data.id

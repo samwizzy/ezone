@@ -3,6 +3,7 @@ import * as AppSelectors from '../../App/selectors';
 import * as AppActions from '../../App/actions';
 import * as Selectors from './selectors';
 import request from '../../../utils/request';
+import swal from 'sweetalert';
 import * as Endpoints from '../../../components/Endpoints';
 import * as Actions from './actions';
 import * as Constants from './constants';
@@ -47,10 +48,11 @@ export function* createNewBankAccountSaga() {
     });
 
     yield put(Actions.createNewBankSuccessAction(newBankResponse));
-    alert('Account Created Successfully.');
+    swal("Success","Account Created Successfully","success");
     yield put(Actions.getAllBankAccountAction());
     yield put(Actions.closeNewBankAccountDialog());
   } catch (err) {
+    swal("Error","Something went wrong","error");
     yield put(Actions.createNewBankErrorAction(err));
   }
 }
@@ -73,11 +75,11 @@ export function* updateBankAccountSaga() {
     });
 
     yield put(Actions.updateBankAccountSuccessAction(bankAccountUpdateResponse));
-    alert("Account Updated Successfully.");
+    swal("Success","Account Updated Successfully","success");
     yield put(Actions.getAllBankAccountAction());
     yield put(Actions.closeNewBankAccountDialog());
   } catch (err) {
-    alert("Something went wrong");
+    swal("Error","Something went wrong","error");
     yield put(Actions.updateBankAccountErrorAction(err));
   }
 }
@@ -146,11 +148,12 @@ export function* createBankTransferSaga() {
     });
 
     console.log('bankTransferResponse -> ', bankTransferResponse);
-    alert("Transaction successful");
+    swal("Success","Transaction Successful","success");
     yield put(Actions.createBankTransferSuccessAction(bankTransferResponse));
     yield put(Actions.getAllTransferByOrgIdAction());
     yield put(Actions.closeAccountTransferDialog());
   } catch (err) {
+    swal("Error","Something went wrong","error");
     yield put(Actions.createBankTransferErrorAction(err));
   }
 }
@@ -198,12 +201,12 @@ export function* deleteBankAccountSaga({ payload }) {
 
     console.log('deleteAccountResponse -> ', deleteAccountResponse);
     yield put(Actions.getAllBankAccountAction());
-    alert(`Account deleted successfully!`);
+    swal("Success","Account deleted Successfully","success");
     yield put(Actions.deleteBankAccountSuccessAction(deleteAccountResponse));
     yield put(Actions.closeDeleteBankAccountDialog());
   } catch (err) {
     console.log('deleteBankAccountErrorAction -> ', err);
-    alert(`Something went wrong.`);
+    swal("Error","Something went wrong","error");
     yield put(Actions.deleteBankAccountErrorAction(err));
   }
 }
@@ -226,12 +229,12 @@ export function* setActiveStatusOfBankAccountSaga({ payload }) {
 
     console.log('isBankAccountActiveResponse -> ', isBankAccountActiveResponse);
     yield put(Actions.getAllBankAccountAction());
-    alert(`Account status set successfully!`);
+    swal("Success","Account status set Successfully","success");
     yield put(Actions.activateBankAccountSuccessAction(isBankAccountActiveResponse));
     yield put(Actions.closeActivateBankAccountDialog());
   } catch (err) {
     console.log('activateBankAccountErrorAction -> ', err);
-    alert(`Something went wrong.`);
+    swal("Error","Something went wrong","error");
     yield put(Actions.activateBankAccountErrorAction(err));
   }
 }

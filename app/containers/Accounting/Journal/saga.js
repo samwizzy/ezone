@@ -3,6 +3,7 @@ import * as AppSelectors from '../../App/selectors';
 import * as AppActions from '../../App/actions';
 import * as Selectors from './selectors';
 import request from '../../../utils/request';
+import swal from 'sweetalert';
 import * as Endpoints from '../../../components/Endpoints';
 import * as Actions from './actions';
 import * as Constants from './constants';
@@ -74,10 +75,10 @@ export function* createAccountJournalSaga() {
     });
 
     console.log('accountJournalResponse -> ', accountJournalResponse);
-    alert(`Account journal posted successful!`);
+    swal("Success","Account journal posted successfully","success");
     yield put(Actions.createNewAccountJournalSuccessAction(accountJournalResponse));
   } catch (err) {
-    alert(`Something went wrong.`);
+    swal("Error","Something went wrong","error");
     yield put(Actions.createNewAccountJournalErrorAction(err));
   }
 }

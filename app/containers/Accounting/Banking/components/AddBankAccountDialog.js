@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect,useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { alphaNumeric } from '../validator';
@@ -63,7 +63,7 @@ const AddBankAccountDialog = props => {
 
   const canSubmitValues = () => {
     const { accountCode, accountName, accountNumber, bankBalance, bankName, description } = values;
-    return accountCode.length > 0 && accountName.length > 0 && accountNumber.length > 0 && bankBalance.length > 0 && bankName.length > 0 && description.length > 0;
+    return accountCode.length > 0 && accountName.length > 0 && accountNumber.length > 0 && isAphaNumeric && bankBalance.length > 0 && bankName.length > 0 && description.length > 0;
   }
  //
   React.useEffect(() => {
@@ -72,14 +72,28 @@ const AddBankAccountDialog = props => {
       setValues({ ...values, accountCode, accountName, accountNumber, bankBalance, bankName, description });
     }
   }, [bankAccountDialog.data]);
+
+  const [isAphaNumeric,setIsAphaNumeric] = useState(true)
+
+  const checkAlphaNumeric = event =>{
+    let value= event.target.value;
+    let txt = alphaNumeric(value)
+    if(txt){
+      setIsAphaNumeric(true)
+    }
+    else
+    setIsAphaNumeric(false)
+  }
   
   const handleChange = name => event => {
     const textValue = event.target.value;
+    setValues({ ...values, [name]: textValue });
     // Validating Account Code for apha numeric
     // add case for more validation
-    switch (name) {
+    /*switch (name) {
       case 'accountCode':
         {
+          console.log(`apha numeric ${alphaNumeric(textValue)}`)
           if (alphaNumeric(textValue)) {
             setValues({ ...values, [name]: textValue });
           }
@@ -87,7 +101,7 @@ const AddBankAccountDialog = props => {
         break;
       default:
         setValues({ ...values, [name]: textValue });
-    }
+    }*/
   };
 
   console.log('values is: ', values);
@@ -126,10 +140,28 @@ const AddBankAccountDialog = props => {
                   />
                 </Grid>
                 <Grid item xs={6}>
+                  {isAphaNumeric ?
+                  <TextField
+                  id="standard-accountCode"
+                  label="Account Code"
+                  type="name"
+                  onBlur={checkAlphaNumeric}
+                  variant="outlined"
+                  size="small"
+                  className={classes.textField}
+                  value={values.accountCode}
+                  onChange={handleChange('accountCode')}
+                  margin="normal"
+                  fullWidth
+                />
+                  :
                   <TextField
                     id="standard-accountCode"
                     label="Account Code"
                     type="name"
+                    onBlur={checkAlphaNumeric}
+                    error
+                    helperText="value must be alpha numeric"
                     variant="outlined"
                     size="small"
                     className={classes.textField}
@@ -138,6 +170,7 @@ const AddBankAccountDialog = props => {
                     margin="normal"
                     fullWidth
                   />
+                }
                 </Grid>
                 <Grid item xs={6}>
                   <TextField

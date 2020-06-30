@@ -1,9 +1,11 @@
-import React, { memo } from 'react';
+import React, { memo,useEffect,useState,useContext } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
+import { alphaNumeric } from '../validator';
+import swal from 'sweetalert';
 
 import {
   withStyles,
@@ -22,10 +24,12 @@ import {
   Checkbox,
 } from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
-
+import * as Endpoints from '../../../../components/Endpoints';
+import axios from "axios";
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
+import { ChartContext } from '..';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -71,25 +75,141 @@ const NewAccountDialog = props => {
     updateChartOfAccountAction
   } = props;
 
-  console.log('accountTypeData from chart module: ', accountTypeData);
-  console.log('parentAccountTypeData -> : ', parentAccountTypeData);
 
-  const [checkBox, setCheckBox] = React.useState({
+  const [checkBox, setCheckBox] = useState({
     checkedG: false,
+    isBank:false,
+    canHaveParent:false
   });
 
-  const [values, setValues] = React.useState({
+  const [credentials] = useState(JSON.parse(localStorage.getItem('user')))
+  const [accessToken] = useState(localStorage.getItem('access_token'))
+  const chartContext = useContext(ChartContext)
+  const [accountType,setAccountType] = useState([]);
+  const [accountParentType,setAccountParentType] = useState([]);
+  const [coaPayload] = useState(JSON.parse(localStorage.getItem('ezone-coa-payload')))
+
+
+  const [values, setValues] = useState({
     accountCode: "",
     accountName: "",
     accountNumber: "",
-    accountType: "",
-    bankBalance: "",
+    accountTypeId: 0,
+    bankBalance: 0,
     bankName: "",
     description: "",
-    openingBalance: "",
-    orgId: "",
-    subAccount: false // This prop will be removed before payload is sent
+    id:credentials.id,
+    openingBalance: '',
+    orgId:credentials.organisation && credentials.organisation.orgId,
+    parentId: null,
+    rate: 0,
+    status: true,
   });
+
+  //Load AccTypes
+  useEffect(() => {
+    async function getAllAccountTypeFSev() {
+      console.log(`context from new ${chartContext.chartState.viewId}`)
+      const config = {
+        headers: { Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json', }
+    };
+
+    await axios
+    .get(`${Endpoints.GetAllAccountTypeApi}`,
+    config)
+    .then((res) => {
+      let accType = res.data;
+      //setIsEmpty(chatData.length > 0 ?false :true);
+      //setchartOfAccountData(chatData)
+      setAccountType(accType);
+      setAccountParentType(accType);
+      console.log(`All AccoutType ${JSON.stringify(accType)}`)
+    })
+
+    .catch((err) => {
+      console.log(`error ocurr at NewAccountDialog ${err}`);
+    });
+    
+
+
+    }
+
+    getAllAccountTypeFSev() ;
+
+    return () => {
+      getAllAccountTypeFSev()
+    };
+
+  },[]);
+
+
+  function onlyAccountLabel(code){
+    let result = '';
+    for(let i=0;i<accountType.length;i++){
+       if(accountType[i].id === code){
+         result = accountType[i].accountType
+         break;
+       }
+    }
+    return result;
+  }
+
+
+  //Create New Account 
+
+  async function createChartOfAccountHandler() {
+
+    const config = {
+      headers: { Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json', }
+  };
+
+    let postValue= values;
+    postValue = {...postValue,openingBalance:Number(values.openingBalance)}
+
+    console.log(`before you post ${JSON.stringify(postValue)} token ${accessToken}`)
+
+    await axios.post(`${Endpoints.CreateChartOfAccountApi}`,postValue,config)
+     .then((res) => {
+          let chatOfAccResponse = res.data;
+          chartContext.chartDispatch({type:'REFRESH',refresh:true})
+          swal("Success","Chart of Account created successfully","success");
+          closeNewAccountDialogAction()
+        })
+  
+        .catch((err) => {
+          console.log(`error ocurr in Chart of Account ${err}`);
+        });
+
+    }
+
+
+    async function updateChartOfAccount() {
+      const config = {
+        headers: { Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json', }
+    };
+    let postValue= values;
+    postValue = {...postValue,openingBalance:Number(values.openingBalance)}
+      await axios.put(`${Endpoints.UpdateChartOfAccountApi}`,postValue,config)
+       .then((res) => {
+            let chatOfAccResponse = res.data;
+            chartContext.chartDispatch({type:'REFRESH',refresh:true})
+            swal("Success","Chart of Account Updated successfully","success");
+            closeNewAccountDialogAction()
+            console.log(`from Business response ${chatOfAccResponse}`);
+           
+          })
+    
+          .catch((err) => {
+            swal("Error","Something went wrong","error");
+            console.log(`error ocurr in Chart of Account ${err}`);
+          });
+  
+    }
+  //Create New Account
+  
 
   // const canSubmitValues = () => {
   //   const { accountCode, accountName, accountType, openingBalance } = values;
@@ -100,24 +220,15 @@ const NewAccountDialog = props => {
     setValues({ ...values, [name]: event.target.value });
   };
 
+
   const handleSelectChange = (name, value) => {
-    console.log('selected value -> ', value)
     setValues({ 
       ...values, 
-      accountType: value.accountType,
-      subAccount: value.subAccount, 
-      description: value.description,
-      parentAccountId: ""
+      [name] :value.id
     });
   };
 
-  const handleSelectParentAccountType = (name, value) => {
-    console.log('ParentAcc type -> ', value)
-    setValues({ 
-      ...values, 
-      parentAccountId: value.id
-    });
-  };
+
   
 
   const handleCheckBoxChange = (event) => {
@@ -125,26 +236,40 @@ const NewAccountDialog = props => {
 
     // Call parent type api if checked
     if (!checkBox.checkedG) {
-      dispatchGetParentAccountTypeAction(values);
+      //dispatchGetParentAccountTypeAction(values);
     } else {
       console.log("unchecked");
-      setValues({ 
-        ...values, 
-        parentAccountId: ""
-      });
     }
   };
 
-  React.useEffect(() => {
-    if (accountDialog.type == 'edit') {
-      const { id, orgId, accountName, accountCode, openingBalance, accountType, bankBalance, description } = accountDialog.data
-      setValues({ ...values, id, orgId, accountName, accountCode, openingBalance, accountType, bankBalance, description });
+  const [isAphaNumeric,setIsAphaNumeric] = useState(true)
+
+  const checkAlphaNumeric = event =>{
+    let value= event.target.value;
+    let txt = alphaNumeric(value)
+    if(txt){
+      setIsAphaNumeric(true)
     }
-  }, [accountDialog.data]);
+    else
+    setIsAphaNumeric(false)
+  }
 
-  console.log('values : ', values);
-  console.log('checkBox: ', checkBox);
+  useEffect(() => {
+    function doUpdate(){
+    if (accountDialog.type == 'edit') {
+      const {accountCode,accountName,accountNumber, accountTypeId,bankBalance,bankName,description,openingBalance,id} = accountDialog.data
+       setValues({ ...values, accountCode,accountName,accountNumber,accountTypeId,bankBalance,bankName,description,openingBalance,id});
+    }
+  }
+  doUpdate();
 
+  return () => {
+    doUpdate();
+  };
+
+  }, [accountDialog.data])
+
+  console.log(`values  got it b4 post  -> `, values);
 
   return (
     <div>
@@ -179,11 +304,13 @@ const NewAccountDialog = props => {
                   />
                 </Grid>
                 <Grid item xs={6}>
+                  {isAphaNumeric ?
                   <TextField
                     id="standard-accountCode"
                     label="Account Code"
-                    type="name"
+                    type="number"
                     variant="outlined"
+                    onBlur={checkAlphaNumeric}
                     size="small"
                     className={classes.textField}
                     value={values.accountCode}
@@ -191,11 +318,28 @@ const NewAccountDialog = props => {
                     margin="normal"
                     fullWidth
                   />
+                  :
+                  <TextField
+                    id="standard-accountCode"
+                    label="Account Code"
+                    type="number"
+                    variant="outlined"
+                    onBlur={checkAlphaNumeric}
+                    error
+                    helperText="value must be alpha numeric"
+                    size="small"
+                    className={classes.textField}
+                    value={values.accountCode}
+                    onChange={handleChange('accountCode')}
+                    margin="normal"
+                    fullWidth
+                  />
+                  }
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
                     id="standard-openingBalance"
-                    label="Opening Balance"
+                    label={values.openingBalance === 0 ? 'Opening Balance' :`Balance ${values.openingBalance}`}
                     type="number"
                     variant="outlined"
                     size="small"
@@ -210,13 +354,17 @@ const NewAccountDialog = props => {
                   <Autocomplete
                     id="combo-box-demo"
                     size="small"
-                    options={accountTypeData}
+                    options={accountType}
                     getOptionLabel={option => option.accountType}
-                    onChange={(evt, value) => handleSelectChange(evt, value)}
+                    onChange={(evt, value) =>{ 
+                      setCheckBox({ ...checkBox, isBank:value.accountType === "Bank"?true:false, canHaveParent: value.subAccount});
+                      setValues({...values,accountTypeId:value.id,parentId:null})
+                    }
+                  }
                     renderInput={params => (
                       <TextField
                         {...params}
-                        label="Select Account Type"
+                        label={values.accountTypeId === 0 ?"Select Account Type":onlyAccountLabel(values.accountTypeId)}
                         className={classes.textField}
                         variant="outlined"
                         placeholder="Search"
@@ -225,7 +373,7 @@ const NewAccountDialog = props => {
                     )}
                   />
                 </Grid>
-                {values.accountType == "Bank" ? (
+                {checkBox.isBank ? (
                   <Grid container spacing={1}>
                     <Grid item xs={6}>
                       <TextField
@@ -270,9 +418,9 @@ const NewAccountDialog = props => {
                       />
                     </Grid>
                   </Grid>
-                ): values.subAccount ? (
+                ): checkBox.canHaveParent ? (
                   <Grid container spacing={1}>
-                    <Grid item xs={6}>
+                    {/*<Grid item xs={6}>
                       <FormGroup row>
                         <FormControlLabel
                           control={<GreenCheckbox 
@@ -283,14 +431,17 @@ const NewAccountDialog = props => {
                           label="Make parent account."
                         />
                       </FormGroup>
-                    </Grid>
+                    </Grid>*/}
+                    {
                     <Grid item xs={6}>
                       <Autocomplete
                         id="combo-box-demo"
                         size="small"
-                        options={parentAccountTypeData}
-                        getOptionLabel={option => option.name}
-                        onChange={(evt, value) => handleSelectParentAccountType(evt, value)}
+                        options={accountParentType}
+                        getOptionLabel={option => option.accountType}
+                        onChange={(evt, value) => {
+                          setValues({...values,parentId:value.id})}
+                        }
                         renderInput={params => (
                           <TextField
                             {...params}
@@ -303,6 +454,7 @@ const NewAccountDialog = props => {
                         )}
                       />
                     </Grid>
+                   }
                   </Grid>
                 ): null}
 
@@ -316,9 +468,6 @@ const NewAccountDialog = props => {
                     value={values.description}
                     onChange={handleChange('description')}
                     margin="normal"
-                    InputProps={{
-                      readOnly: true,
-                    }}
                     fullWidth
                     rows={3}
                     multiline
@@ -333,7 +482,8 @@ const NewAccountDialog = props => {
             <LoadingIndicator />
           ) : (
             <Button
-              onClick={() => { accountDialog.type === 'new' ? createChartOfAccountAction(values) : updateChartOfAccountAction(values) }}
+            disabled={isAphaNumeric}
+              onClick={() => { accountDialog.type === 'new' ? createChartOfAccountHandler() : updateChartOfAccount() }}
               color="primary"
               // disabled={ accountDialog.type === "new" ? !canSubmitValues() : "" }
             >
@@ -361,16 +511,12 @@ NewAccountDialog.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   accountDialog: Selectors.makeSelectNewAccountDialog(),
-  accountTypeData: Selectors.makeSelectAccountTypeData(),
-  parentAccountTypeData: Selectors.makeSelectParentAccountTypeData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openNewAccountDialogAction: () => dispatch(Actions.openNewAccountDialog()),
     closeNewAccountDialogAction: () => dispatch(Actions.closeNewAccountDialog()),
-    dispatchGetParentAccountTypeAction: evt => dispatch(Actions.getParentAccountTypeAction(evt)),
-    createChartOfAccountAction: evt => dispatch(Actions.createNewChartOfAccountAction(evt)),
     updateChartOfAccountAction: evt => dispatch(Actions.updateChartOfAccountAction(evt)),
     dispatch,
   };
