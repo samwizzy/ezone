@@ -84,14 +84,18 @@ const useStyles = makeStyles(theme => ({
 
 const GoalsItem = props => {
 	const classes = useStyles();
-	const { loading, match, goals } = props;
+	const { loading, match, goal } = props;
 
 	React.useEffect(() => {
 	}, []);
 
-	console.log(goals, "goals")
+	console.log(goal, "goals item")
 
 	const handleClick = () => { }
+
+	if (!goal) {
+		return ''
+	}
 
 	return (
 		<div className={classes.root}>
@@ -106,10 +110,10 @@ const GoalsItem = props => {
 							primary={
 								<React.Fragment>
 									<Typography variant="h6">
-										<NavLink to={`${match.url}/1`}>Customer follow up session</NavLink>
+										<NavLink to={`${match.url}/1`}>{goal.title}</NavLink>
 									</Typography>
 									<Typography variant="subtitle2" color="textPrimary">
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+										{goal.description}
 									</Typography>
 								</React.Fragment>
 							}

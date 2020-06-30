@@ -11,7 +11,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
-import { green, orange } from '@material-ui/core/colors'
+import { green, red, orange } from '@material-ui/core/colors'
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import moment from 'moment'
 import MUIDataTable from 'mui-datatables'
@@ -19,6 +19,8 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import Person from '@material-ui/icons/Person';
 import { AddEmployee } from '../components/AddButton';
 
@@ -44,8 +46,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   avatar: {
-    width: theme.spacing(3),
-    height: theme.spacing(3),
+    width: 14,
+    height: 14,
   },
   toolbar: theme.mixins.toolbar,
   icon: {
@@ -56,8 +58,9 @@ const useStyles = makeStyles(theme => ({
     '&.inProgress': { color: orange[500] },
     '&.done': { color: green[500] },
   },
-  active: {
-    color: green[500]
+  status: {
+    color: red[500],
+    '&.active': { color: green[500] },
   },
 }));
 
@@ -138,12 +141,12 @@ const EmployeesApp = props => {
     },
     {
       name: 'enabled',
-      label: 'Status',
+      label: 'Active',
       options: {
         filter: true,
         sort: true,
         customBodyRender: enabled => (
-          <span className={classes.active}>{enabled ? 'Active' : 'Inactive'}</span>
+          <span className={classNames(classes.status, { 'active': enabled })}>{enabled ? <CheckCircleOutlineIcon /> : <RadioButtonUncheckedIcon />}</span>
         ),
       },
     },

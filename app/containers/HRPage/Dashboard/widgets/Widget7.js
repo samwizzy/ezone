@@ -67,6 +67,8 @@ const useStyles = makeStyles((theme) => ({
 const Widget7 = () => {
 	const classes = useStyles()
 
+	const leaveRequests = [];
+
 	return (
 		<div>
 			<Card className={classes.card}>
@@ -74,26 +76,30 @@ const Widget7 = () => {
 					action={
 						<Button color="primary" aria-label="settings">
 							see all
-                    </Button>
+						</Button>
 					}
 					title="Leave Request for Approval"
 				/>
 				<CardContent>
-					<Table className={classes.table}>
-						<TableBody>
-							{[0, 1].map((hire, i) =>
-								<TableRow key={i}>
-									<TableCell component="th" scope="row">
-										<Avatar aria-label="recipe" className={classes.avatar}>
-											R
-                                    </Avatar>
-									</TableCell>
-									<TableCell align="left">Christian Okeme</TableCell>
-									<TableCell align="right">Sick Leave</TableCell>
-								</TableRow>
-							)}
-						</TableBody>
-					</Table>
+					{leaveRequests.length > 0 ?
+						<Table className={classes.table}>
+							<TableBody>
+								{[0, 1].map((hire, i) =>
+									<TableRow key={i}>
+										<TableCell component="th" scope="row">
+											<Avatar aria-label="recipe" className={classes.avatar}>
+												R
+											</Avatar>
+										</TableCell>
+										<TableCell align="left">Christian Okeme</TableCell>
+										<TableCell align="right">Sick Leave</TableCell>
+									</TableRow>
+								)}
+							</TableBody>
+						</Table>
+						:
+						<Typography align="center" color="textSecondary">No Leave has been requested</Typography>
+					}
 				</CardContent>
 			</Card>
 		</div>

@@ -837,6 +837,7 @@ export function* createDepartment({ type, payload }) {
     });
     console.log(response, "response createDepartment")
 
+    yield put(Actions.createDepartmentSuccess(response))
     yield put(AppActions.openSnackBar({ message: "Department created", status: 'success' }));
     yield put({ type: Constants.CLOSE_NEW_DEPARTMENT_DIALOG });
     yield put({ type: Constants.GET_DEPARTMENTS_BY_ORGID_API });

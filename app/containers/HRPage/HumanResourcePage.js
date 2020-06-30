@@ -19,46 +19,40 @@ import RecruitmentApp from './Recruitment'
 import PayrollApp from './Payroll'
 import AnnouncementApp from './Announcement'
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1
-  },
-}));
-
 const HumanResourcePage = props => {
-    const { match } = props
-    const { params } = match
+  const { match } = props
+  const { params } = match
 
-    console.log(params, "params tired")
+  console.log(params, "params tired")
 
-    switch(params.section){
-        case 'dashboard':
-            return <DashboardApp />
-            break;
-        case 'employees':
-            return <EmployeesApp />
-            break;
-        case 'departments':
-            return <DepartmentsApp />
-            break;
-        case 'roles':
-            return <RolesApp /> 
-            break;
-        case 'branches':
-            return <BranchesApp /> 
-            break;
-        case 'recruitment':
-            return <RecruitmentApp /> 
-            break;
-        case 'payroll':
-            return <PayrollApp /> 
-            break;
-        case 'announcement':
-            return <AnnouncementApp /> 
-            break;
-        default:
-            return <DashboardApp />
-    }
+  switch (params.section) {
+    case 'dashboard':
+      return <DashboardApp />
+      break;
+    case 'employees':
+      return <EmployeesApp />
+      break;
+    case 'departments':
+      return <DepartmentsApp />
+      break;
+    case 'roles':
+      return <RolesApp />
+      break;
+    case 'branches':
+      return <BranchesApp />
+      break;
+    case 'recruitment':
+      return <RecruitmentApp />
+      break;
+    case 'payroll':
+      return <PayrollApp />
+      break;
+    case 'announcement':
+      return <AnnouncementApp />
+      break;
+    default:
+      return <DashboardApp />
+  }
 }
 
 HumanResourcePage.propTypes = {};
@@ -74,8 +68,8 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(
-compose(
+export default compose(
+  withRouter,
   withConnect,
   memo,
-)(HumanResourcePage));
+)(HumanResourcePage);

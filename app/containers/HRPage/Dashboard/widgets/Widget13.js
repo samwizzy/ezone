@@ -49,7 +49,7 @@ export default withStyles(styles)(class Widget13 extends React.Component {
 											</React.Fragment>
 										}
 										secondary={
-											<Typography variant="body1">
+											<Typography variant="body2" component="span">
 												{announcement.message}
 											</Typography>
 										}

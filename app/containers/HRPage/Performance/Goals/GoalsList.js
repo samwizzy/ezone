@@ -50,9 +50,9 @@ const GoalsList = props => {
           </AppBar>
         </Grid>
         <Grid item md={12}>
-          <GoalsItem />
-          <GoalsItem />
-          <GoalsItem />
+          {goals && goals.map((goal, i) =>
+            <GoalsItem goal={goal} />
+          )}
         </Grid>
       </Grid>
     </div>

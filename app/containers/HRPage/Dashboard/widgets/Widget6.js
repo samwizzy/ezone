@@ -18,12 +18,9 @@ import {
 	Typography
 } from '@material-ui/core';
 import * as Selectors from '../../selectors';
-import { green, orange, red } from '@material-ui/core/colors'
-import LensSharp from '@material-ui/icons/LensSharp'
-import AddIcon from '@material-ui/icons/Add'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import PersonIcon from '@material-ui/icons/Person';
 import months from '../../../../utils/months'
 import moment from 'moment'
 
@@ -125,7 +122,7 @@ const Widget6 = ({ employees }) => {
 									<TableRow key={i}>
 										<TableCell component="th" scope="row">
 											<Avatar aria-label="recipe" className={classes.avatar}>
-												R
+												{emp.lastName ? emp.lastName[0].toUpperCase() : <PersonIcon />}
 											</Avatar>
 										</TableCell>
 										<TableCell align="left">{emp.firstName + ' ' + emp.lastName}</TableCell>
@@ -135,7 +132,7 @@ const Widget6 = ({ employees }) => {
 							</TableBody>
 						</Table>
 						:
-						<Typography align="center">No recent birthdays yet</Typography>
+						<Typography align="center" color="textSecondary">No upcoming birthdays</Typography>
 					}
 				</CardContent>
 			</Card>

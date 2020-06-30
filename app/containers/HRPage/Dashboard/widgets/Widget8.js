@@ -57,7 +57,7 @@ export default withStyles(styles)(class Widget8 extends React.Component {
 				<CardContent>
 					{(inTime || absent || late) ?
 						<Doughnut data={data} /> :
-						<Typography align="center">No attendance has taken yet</Typography>
+						<Typography align="center" color="textSecondary">No attendance has been taken</Typography>
 					}
 				</CardContent>
 			</Card>

@@ -26,14 +26,9 @@ import AnnouncementViewDialog from './components/AnnouncementViewDialog';
 
 const key = 'hrPage';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-}));
-
-const AnnouncementPage = props => {
-  const classes = useStyles();
+export const AnnouncementPage = props => {
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
   const { loading } = props;
 
   return (

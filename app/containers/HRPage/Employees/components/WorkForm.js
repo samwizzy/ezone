@@ -322,7 +322,6 @@ export const WorkForm = props => {
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <KeyboardDatePicker
                                 autoOk
-                                disableToolbar
                                 variant="inline"
                                 format="dd/MM/yyyy"
                                 margin="normal"

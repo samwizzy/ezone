@@ -27,7 +27,7 @@ export function DashBoard(props) {
     const { employees, attendances, announcements, jobOpenings } = props
 
     console.log(attendances, "attendances")
-    console.log(announcements, "announcements")
+    console.log(announcements, "announcements fro dashboard")
 
     return (
         <div className={classes.root}>

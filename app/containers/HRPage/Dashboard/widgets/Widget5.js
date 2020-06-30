@@ -24,6 +24,7 @@ import { green, orange, red } from '@material-ui/core/colors'
 import LensSharp from '@material-ui/icons/LensSharp'
 import AddIcon from '@material-ui/icons/Add'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
+import PersonIcon from '@material-ui/icons/Person';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -68,6 +69,7 @@ const Widget5 = ({ employees }) => {
 
 	console.log(employees, "employees widget 5")
 	const newHires = employees.filter(emp => moment().isSame(emp.dateCreated, 'month'))
+	const sortedHires = _.orderBy(newHires, ['dateCreated'], ['desc']);
 	console.log(newHires, "new hires")
 
 	return (
@@ -85,11 +87,11 @@ const Widget5 = ({ employees }) => {
 					{newHires.length > 0 ?
 						<Table className={classes.table}>
 							<TableBody>
-								{newHires.map((hire, i) =>
+								{sortedHires.slice(0, 2).map((hire, i) =>
 									<TableRow key={i}>
 										<TableCell component="th" scope="row">
 											<Avatar aria-label="recipe" className={classes.avatar}>
-												R
+												{hire.lastName ? hire.lastName[0].toUpperCase() : <PersonIcon />}
 											</Avatar>
 										</TableCell>
 										<TableCell align="left">{hire.firstName + ' ' + hire.lastName}</TableCell>
@@ -97,7 +99,7 @@ const Widget5 = ({ employees }) => {
 								)}
 							</TableBody>
 						</Table> :
-						<Typography align="center">There are no new hires</Typography>
+						<Typography align="center" color="textSecondary">There are no new hires</Typography>
 					}
 				</CardContent>
 			</Card>
