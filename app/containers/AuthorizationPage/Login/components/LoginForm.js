@@ -16,6 +16,7 @@ import {
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { Link as RouteLink } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import classNames from 'classnames';
 import VisibilityOutlined from '@material-ui/icons/VisibilityOutlined';
@@ -162,9 +163,9 @@ const LoginForm = props => {
               </Typography>
               <Typography variant="body2">
                 <span>New User?</span>&nbsp;
-                <Link href="/register" variant="body2">
+                <RouteLink to="/register" variant="body2">
                   Register
-                </Link>
+                </RouteLink>
               </Typography>
               <div>
                 <TextField
@@ -225,9 +226,9 @@ const LoginForm = props => {
                 /> */}
                 <Grid container>
                   <Grid item xs>
-                    <Link href="/forgot-password" variant="body2">
+                    <RouteLink to="/forgot-password" variant="body2">
                       Forgot password?
-                    </Link>
+                    </RouteLink>
                   </Grid>
                 </Grid>
 

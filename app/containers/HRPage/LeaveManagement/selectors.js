@@ -48,6 +48,21 @@ const makeSelectEmployees = () =>
     selectLeaveMgt,
     subState => subState.employees,
   );
+const makeSelectDepartments = () =>
+  createSelector(
+    selectLeaveMgt,
+    subState => subState.departments,
+  );
+const makeSelectBranches = () =>
+  createSelector(
+    selectLeaveMgt,
+    subState => subState.branches,
+  );
+const makeSelectRoles = () =>
+  createSelector(
+    selectLeaveMgt,
+    subState => subState.roles,
+  );
 
 export default makeSelectLeaveMgtPage;
 export {
@@ -59,4 +74,7 @@ export {
   makeSelectLeaveTypeDialog,
   makeSelectHolidayDialog,
   makeSelectEmployees,
+  makeSelectDepartments,
+  makeSelectBranches,
+  makeSelectRoles,
 };

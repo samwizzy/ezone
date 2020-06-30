@@ -30,13 +30,23 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function LeaveManagementPage(props) {
-  const { getAttendance, getEmployees, getLeaveTypes } = props;
+  const {
+    getAttendance,
+    getEmployees,
+    getDepartments,
+    getBranches,
+    getRoles,
+    getLeaveTypes,
+  } = props;
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
   React.useEffect(() => {
     getAttendance();
     getEmployees();
+    getDepartments();
+    getBranches();
+    getRoles();
     getLeaveTypes();
   }, []);
 
@@ -66,6 +76,9 @@ export function mapDispatchToProps(dispatch) {
     getAttendance: () => dispatch(Actions.getLeaveRequest()),
     getLeaveTypes: () => dispatch(Actions.getLeaveTypes()),
     getEmployees: () => dispatch(Actions.getEmployees()),
+    getDepartments: () => dispatch(Actions.getDepartments()),
+    getBranches: () => dispatch(Actions.getBranches()),
+    getRoles: () => dispatch(Actions.getRoles()),
   };
 }
 

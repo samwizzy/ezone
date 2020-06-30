@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
@@ -13,7 +13,7 @@ import {
   DateTimePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Slide, Typography, TextField } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Slide, Typography, TextField } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 
@@ -31,20 +31,20 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function AddFileDialog(props) {
   const classes = useStyles();
-  const { closeNewTaskDialog, data } = props;
-  const [form, setForm] = React.useState({task: '', description: '', startTime: new Date(), endTime: new Date(), emails: []});
+  const { closeNewTaskDialog, dialog } = props;
+  const [form, setForm] = React.useState({ task: '', description: '', startTime: new Date(), endTime: new Date(), emails: [] });
 
-  const handleChange = () => {}
+  const handleChange = () => { }
   const handleDateChange = date => {
-    setForm({form: {...form, startTime: date}})
+    setForm({ form: { ...form, startTime: date } })
   }
 
-  console.log(data, 'checking task...')
+  console.log(dialog, 'checking file dialog...')
 
   return (
     <div>
       <Dialog
-        {...data.props}
+        {...dialog.props}
         TransitionComponent={Transition}
         keepMounted
         onClose={closeNewTaskDialog}
@@ -52,15 +52,13 @@ function AddFileDialog(props) {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle id="alert-dialog-slide-title">Add File</DialogTitle>
-        <Divider />
-        <DialogContent>
-          {/* <DialogContentText id="alert-dialog-slide-description"></DialogContentText> */}
-          <form className={classes.root}>
-          <Grid container>
+
+        <DialogContent dividers>
+          <Grid container spacing={1}>
             <Grid item xs={12}>
               <TextField
                 label="Task name"
-                id="outlined-size-small"
+                id="task-name-small"
                 fullWidth
                 defaultValue="Small"
                 variant="outlined"
@@ -70,7 +68,7 @@ function AddFileDialog(props) {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                id="outlined-multiline-static"
+                id="task-description-static"
                 label="Description"
                 multiline
                 fullWidth
@@ -92,7 +90,7 @@ function AddFileDialog(props) {
                       variant="inline"
                       format="MM/dd/yyyy"
                       margin="normal"
-                      id="date-picker-inline"
+                      id="date-start-time"
                       label="Start time"
                       value={form.startTime}
                       onChange={handleDateChange}
@@ -109,7 +107,7 @@ function AddFileDialog(props) {
                       variant="inline"
                       format="MM/dd/yyyy"
                       margin="normal"
-                      id="date-picker-inline"
+                      id="date-end-time"
                       label="End time"
                       value={form.endTime}
                       onChange={handleDateChange}
@@ -126,7 +124,7 @@ function AddFileDialog(props) {
               <TextField
                 label="Assign task"
                 placeholder="Enter email address or usernames"
-                id="outlined-size-small"
+                id="email-address-username"
                 fullWidth
                 defaultValue="Small"
                 variant="outlined"
@@ -135,7 +133,6 @@ function AddFileDialog(props) {
               />
             </Grid>
           </Grid>
-          </form>
         </DialogContent>
         <DialogActions>
           <Button onClick={closeNewTaskDialog} color="primary">
@@ -157,14 +154,13 @@ AddFileDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  data: Selectors.makeSelectNewFileDialog()
+  dialog: Selectors.makeSelectNewFileDialog()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openNewTaskDialog: ev => dispatch(Actions.openNewTaskDialog(ev)),
     closeNewTaskDialog: () => dispatch(Actions.closeNewTaskDialog()),
-    dispatch,
   };
 }
 

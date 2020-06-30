@@ -36,31 +36,34 @@ export default withStyles(styles)(class Widget13 extends React.Component {
 		return (
 			<Card className={classes.root}>
 				<CardContent>
-					{announcements && announcements.splice(0, 1).map((announcement, i) => (
-						<React.Fragment key={i}>
-							<List dense>
-								<ListItem disableGutters>
+					{announcements.length > 0 ?
+						<List dense>
+							{announcements && announcements.splice(0, 1).map((announcement, i) => (
+								<ListItem disableGutters key={i}>
 									<ListItemText
-										primary={announcement.title}
-										secondary={
+										disableTypography
+										primary={
 											<React.Fragment>
-												<Link href="#">App Launching Event</Link> —
+												<Link href="#">{announcement.title}</Link> —
 												<span> {moment(announcement.dateCreated).format('Do MMMM, YYYY')} </span>
 											</React.Fragment>
+										}
+										secondary={
+											<Typography variant="body1">
+												{announcement.message}
+											</Typography>
 										}
 									/>
 									<ListItemSecondaryAction>
 										<span>Priority:</span> &nbsp;
-									<LensIcon className={classes.icon} fontSize="small" /> Low
-								</ListItemSecondaryAction>
+										<LensIcon className={classes.icon} fontSize="small" /> Low
+									</ListItemSecondaryAction>
 								</ListItem>
-							</List>
-							<Typography variant="body1">
-								{announcement.message}
-							</Typography>
-						</React.Fragment>
-					))}
-
+							))}
+						</List>
+						:
+						<Typography align="center">No announcement has been made yet</Typography>
+					}
 				</CardContent>
 			</Card>
 		);

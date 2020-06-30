@@ -13,7 +13,7 @@ import {
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import ScheduleIcon from '@material-ui/icons/Schedule';
-import { AppBar, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormLabel, FormControlLabel, Grid, MenuItem, Radio, RadioGroup, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
+import { withStyles, AppBar, Avatar, Box, Button, Checkbox, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormGroup, FormControl, FormLabel, FormControlLabel, Grid, MenuItem, Radio, RadioGroup, Popover, Slide, Tabs, Tab, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
@@ -25,32 +25,96 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const useStyles = makeStyles(theme => ({
   root: {
-    '& .MuiTextField-root': {},
+    flexGrow: 1
   },
-  table: {
-    "& td": {
-      border: "0 !important"
-    }
-  }
+  chipsRoot: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    flexWrap: 'wrap',
+    '& > *': {
+      margin: theme.spacing(0.5),
+    },
+  },
+  tabsRoot: {
+    minWidth: 500,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  tabs: {
+    borderLeft: `1px solid ${theme.palette.divider}`,
+    borderRight: `1px solid ${theme.palette.divider}`,
+  },
+  toolbar: {
+    flexGrow: 1,
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    ...theme.mixins.toolbar
+  },
 }));
+
+const AntTabs = withStyles({
+  flexContainer: {
+    flexDirection: 'column',
+  },
+  indicator: {
+    backgroundColor: '#1890ff',
+    left: 0,
+    top: 0,
+  },
+})(Tabs);
+
+const AntTab = withStyles(theme => ({
+  root: {
+    backgroundColor: 'rgba(26, 136, 225, 0.1)',
+    borderRadius: '0px 30px 30px 0px',
+    textTransform: 'none',
+    minWidth: 92,
+    fontWeight: theme.typography.fontWeightRegular,
+    padding: theme.spacing(2, 4),
+    marginRight: theme.spacing(1),
+    '&:hover': {
+      color: '#40a9ff',
+      opacity: 1,
+    },
+    '&$selected': {
+      color: '#1890ff',
+      fontWeight: theme.typography.fontWeightMedium,
+    },
+    '&:focus': {
+      color: '#40a9ff',
+    },
+  },
+  wrapper: {
+    alignItems: 'flex-start',
+  },
+  selected: {},
+}))(props => <Tab disableRipple {...props} />);
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+function a11yProps(index) {
+  return {
+    id: `vertical-tab-${index}`,
+    'aria-controls': `vertical-tabpanel-${index}`,
+  };
+}
+
 const durations = ['Days', 'Weeks', 'Months', 'Years'];
 
 function AddShiftDialog(props) {
   const classes = useStyles();
-  const { closeNewShiftDialog, dialog, employees, createLeaveType } = props;
-  const [option, setOption] = React.useState({ shiftDays: false })
+  const { closeNewShiftDialog, dialog, employees, departments, branches, roles, createLeaveType } = props;
+  const [option, setOption] = React.useState({ policy: false, validity: false })
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [value, setValue] = React.useState(0);
   const [form, setForm] = React.useState({
     name: '',
     type: 'PAID',
     description: '',
     eligibleEmployees: [],
     leaveAllowancePercent: 0,
-    numberOfDaysFromHire: 0,
     gender: 'MALE',
     numberOfDaysFromHire: 0,
     validFrom: moment().format('YYYY-MM-DDTHH:mm:ss.SSS'),
@@ -63,9 +127,24 @@ function AddShiftDialog(props) {
     }
   }, [dialog])
 
+  const handleTabChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
   const canSubmitForm = () => {
     const { name, type, validFrom, validTill, description } = form
-    return name.length > 0 && type.length > 0 && validFrom && validTill
+    return name.length > 0 && type && validFrom && validTill
   }
 
   const handleChange = (event) => {
@@ -77,17 +156,36 @@ function AddShiftDialog(props) {
     setForm({ ...form, [name]: array })
   }
 
+  const handleOptions = ({ target }) => {
+    setOption({ ...option, [target.name]: target.checked })
+  }
+
   const handleDateChange = name => date => {
-    console.log(name, "name")
-    console.log(date, "date")
     setForm({ ...form, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss.SSS') })
+  }
+
+  const handlePartyChange = name => (event, obj) => {
+    console.log(name, "name")
+    console.log(obj, "obj")
+    // setForm({ ...form, [name]: obj.id })
+  }
+
+  const handleChipDelete = id => {
+    setForm(form => ({ ...form, usersId: form.usersId.filter(user => user.id !== id) }))
   }
 
   const handleSubmit = () => {
     createLeaveType(form)
   }
 
+  const selected = employees && _.filter(employees, (employee) => {
+    return _.some(form.eligibleEmployees, { 'id': employee.id });
+  })
+  const selectedDept = departments && _.find(departments, { 'id': form.partyId })
+
   console.log(form, "leave type form")
+  console.log(option, "leave type option")
+  console.log(departments, "leave type departments")
 
   return (
     <div>
@@ -121,33 +219,6 @@ function AddShiftDialog(props) {
                 label="Name"
                 value={form.name}
                 onChange={handleChange}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Autocomplete
-                multiple
-                size="small"
-                id="checkboxes-employees-tags"
-                options={employees ? employees : []}
-                disableCloseOnSelect
-                getOptionLabel={(option) => option.firstName + ' ' + option.lastName}
-                onChange={handleSelectChange('eligibleEmployees')}
-                value={form.eligibleEmployees}
-                renderOption={(option, { selected }) => (
-                  <React.Fragment>
-                    <Checkbox
-                      icon={icon}
-                      checkedIcon={checkedIcon}
-                      style={{ marginRight: 8 }}
-                      checked={selected}
-                    />
-                    {option.firstName + ' ' + option.lastName}
-                  </React.Fragment>
-                )}
-                renderInput={(params) => (
-                  <TextField {...params} variant="outlined" label="Select Employee" placeholder="Employees" margin="normal" fullWidth />
-                )}
               />
             </Grid>
             <Grid item xs={6}>
@@ -188,62 +259,68 @@ function AddShiftDialog(props) {
                 )}
               </TextField>
             </Grid>
-            {/* <TableRow>
-                <TableCell colSpan={2}>
-                  <FormControl component="fieldset">
-                    <FormLabel component="legend">Validity</FormLabel>
-                    <RadioGroup row aria-label="position" name="position" value={form.validity}>
-                      <FormControlLabel value="validity" control={<Radio color="primary" />} label="Validity Date" />
-                      <FormControlLabel value="off-days" control={<Radio color="primary" />} label="Shift off days" />
-                    </RadioGroup>
-                  </FormControl>
-                </TableCell>
-              </TableRow> */}
             <Grid item xs={12}>
-              <FormControl component="fieldset" margin="normal">
-                <FormLabel component="legend">Gender</FormLabel>
-                <RadioGroup row aria-label="gender" name="gender" value={form.gender} onChange={handleChange} row>
-                  <FormControlLabel value="MALE" control={<Radio color="primary" />} label="Male" />
-                  <FormControlLabel value="FEMALE" control={<Radio color="primary" />} label="Female" />
-                </RadioGroup>
+              <FormControl component="fieldset">
+                <FormLabel component="legend">Validity</FormLabel>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={option.validity}
+                      onChange={handleOptions}
+                      color="primary"
+                      name="validity"
+                    />
+                  }
+                  label="Validity Date"
+                />
               </FormControl>
             </Grid>
-            <Grid item xs={6}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardTimePicker
-                  margin="normal"
-                  inputVariant="outlined"
-                  id="valid-from"
-                  label="Valid From"
-                  fullWidth
-                  size="small"
-                  value={form.validFrom}
-                  onChange={handleDateChange('validFrom')}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change time',
-                  }}
-                  keyboardIcon={<ScheduleIcon />}
-                />
-              </MuiPickersUtilsProvider>
-            </Grid>
-            <Grid item xs={6}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardTimePicker
-                  margin="normal"
-                  inputVariant="outlined"
-                  id="valid-till"
-                  label="Valid Till"
-                  fullWidth
-                  size="small"
-                  value={form.validTill}
-                  onChange={handleDateChange('validTill')}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change time',
-                  }}
-                  keyboardIcon={<ScheduleIcon />}
-                />
-              </MuiPickersUtilsProvider>
-            </Grid>
+            {option.validity &&
+              <React.Fragment>
+                <Grid item xs={6}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      autoOk
+                      disableFuture
+                      inputVariant="outlined"
+                      format="dd/MM/yyyy"
+                      margin="normal"
+                      fullWidth
+                      size="small"
+                      name="validFrom"
+                      id="valid-from"
+                      label="Valid From"
+                      value={form.validFrom}
+                      onChange={handleDateChange('validFrom')}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
+                </Grid>
+                <Grid item xs={6}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      autoOk
+                      disableFuture
+                      inputVariant="outlined"
+                      format="dd/MM/yyyy"
+                      margin="normal"
+                      fullWidth
+                      size="small"
+                      name="validTill"
+                      id="valid-till"
+                      label="Valid Till"
+                      value={form.validTill}
+                      onChange={handleDateChange('validTill')}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
+                </Grid>
+              </React.Fragment>
+            }
             <Grid item xs={12}>
               <TextField
                 id="description"
@@ -260,62 +337,47 @@ function AddShiftDialog(props) {
                 onChange={handleChange}
               />
             </Grid>
-            {/* <TableRow>
-                <TableCell>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={form.policy}
-                        onChange={handleChange}
-                        name="policy"
-                        color="primary"
-                      />
-                    }
-                    label="Policy"
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={option.policy}
+                    onChange={handleOptions}
+                    name="policy"
+                    color="primary"
                   />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  <Typography variant="h6">Entitlement</Typography>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell colSpan={2}>
-                  <FormControl component="fieldset">
-                    <FormLabel component="legend">Activate</FormLabel>
-                    <RadioGroup row aria-label="position" name="position" value={form.validity}>
-                      <FormControlLabel value="validity" control={<Radio color="primary" />} label="Based on date after hiring" />
-                    </RadioGroup>
-                  </FormControl>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell colSpan={2}>
-                  <FormLabel component="legend">From</FormLabel>
+                }
+                label="Policy"
+              />
+              <Typography variant="subtitle1">Entitlement</Typography>
+            </Grid>
+
+            {option.policy &&
+              <React.Fragment>
+                <Grid item xs={12}>
+                  <FormLabel component="legend">Based on Date After Hiring</FormLabel>
                   <TextField
-                    id="days"
-                    name="days"
+                    id="numberOfDaysFromHire"
+                    name="numberOfDaysFromHire"
                     placeholder="0"
                     margin="dense"
                     variant="outlined"
                     size="small"
-                    label="Day"
-                    value={form.description}
+                    label="From"
+                    value={form.numberOfDaysFromHire}
                     onChange={handleChange}
                   />
                   <TextField
-                    id="type"
-                    name="type"
-                    placeholder="Type"
+                    id="duration"
+                    name="duration"
+                    placeholder="Duration"
                     select
                     variant="outlined"
                     margin="dense"
-                    style={{ width: 180 }}
                     size="small"
                     label="Days"
-                    value={form.duration}
-                    onChange={handleChange}
+                  // value={form.duration}
+                  // onChange={handleChange}
                   >
                     {durations.map((duration, i) =>
                       <MenuItem key={i} value={duration}>
@@ -323,83 +385,225 @@ function AddShiftDialog(props) {
                       </MenuItem>
                     )}
                   </TextField>
-                  <FormControl component="legend">
-                    <FormControlLabel value="validity" control={<Radio color="primary" />} label="Manually" />
-                  </FormControl>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
+                </Grid>
+                <Grid item xs={12}>
                   <FormLabel component="legend">Applicable To</FormLabel>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
+                </Grid>
+
+                <Grid item xs={6}>
                   <TextField
-                    id="type"
-                    name="type"
-                    placeholder="Type"
+                    id="gender"
+                    name="gender"
+                    placeholder="Gender"
                     select
                     variant="outlined"
                     margin="dense"
                     fullWidth
                     size="small"
                     label="Gender"
-                    value={form.type}
+                    value={form.gender}
                     onChange={handleChange}
                   >
-                    {durations.map((duration, i) =>
-                      <MenuItem key={i} value={duration}>
-                        {duration}
+                    {['MALE', 'FFEMALE', 'BOTH'].map((gender, i) =>
+                      <MenuItem key={i} value={gender}>
+                        {gender}
                       </MenuItem>
                     )}
                   </TextField>
-                </TableCell>
-                <TableCell>
+                </Grid>
+                <Grid item xs={6}>
                   <TextField
-                    id="type"
-                    name="type"
-                    placeholder="Type"
+                    id="marital-status"
+                    name="maritalStatus"
+                    placeholder="Marital Status"
                     select
                     variant="outlined"
                     margin="dense"
                     fullWidth
                     size="small"
                     label="Marital Status"
-                    value={form.type}
+                    // value={form.maritalStatus}
                     onChange={handleChange}
                   >
-                    {durations.map((duration, i) =>
-                      <MenuItem key={i} value={duration}>
-                        {duration}
+                    {['Single', 'Married', 'Divorced'].map((status, i) =>
+                      <MenuItem key={i} value={status}>
+                        {status}
                       </MenuItem>
                     )}
                   </TextField>
-                </TableCell>
-              </TableRow> 
-              <TableRow>
-                <TableCell colSpan={2}>
+                </Grid>
+                <Grid item xs={12}>
                   <TextField
-                    id="userId"
-                    name="userId"
+                    id="employee-select"
+                    name="usersId"
                     placeholder="Employee"
-                    select
                     fullWidth
                     variant="outlined"
                     margin="normal"
                     size="small"
                     label="Employee"
-                    value={form.userId}
-                    onChange={handleChange}
+                    value={form.employee}
+                    onClick={handleClick}
+                  />
+                  <Popover
+                    id={id}
+                    open={open}
+                    anchorEl={anchorEl}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'center',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'center',
+                    }}
                   >
-                    {employees && employees.map((employee) => (
-                      <MenuItem key={employee.id} value={employee.id}>
-                        {employee.firstName} {employee.lastName}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </TableCell>
-              </TableRow>*/}
+                    <div className={classes.tabsRoot}>
+                      <AntTabs
+                        orientation="vertical"
+                        variant="scrollable"
+                        value={value}
+                        onChange={handleTabChange}
+                        aria-label="ant example"
+                        className={classes.tabs}
+                      >
+                        <AntTab label="Employees" {...a11yProps(0)} />
+                        <AntTab label="Department" {...a11yProps(1)} />
+                        <AntTab label="Branch" {...a11yProps(2)} />
+                        <AntTab label="Roles" {...a11yProps(3)} />
+                      </AntTabs>
+                      {value === 0 &&
+                        <Box px={2} className={classes.toolbar}>
+                          <Autocomplete
+                            multiple
+                            id="employee"
+                            size="small"
+                            options={employees}
+                            disableCloseOnSelect
+                            getOptionLabel={(option) => option.firstName + ' ' + option.lastName}
+                            onChange={handleSelectChange('eligibleEmployees')}
+                            value={form.eligibleEmployees}
+                            renderOption={(option, { selected }) => (
+                              <React.Fragment>
+                                <Checkbox
+                                  icon={icon}
+                                  checkedIcon={checkedIcon}
+                                  style={{ marginRight: 8 }}
+                                  checked={selected}
+                                />
+                                {option.firstName + ' ' + option.lastName}
+                              </React.Fragment>
+                            )}
+                            renderInput={(params) => (
+                              <TextField {...params} variant="outlined" label="Employees" placeholder="Employees" margin="normal" />
+                            )}
+                          />
+                        </Box>
+                      }
+                      {value === 1 &&
+                        <Box px={2} className={classes.toolbar}>
+                          <Autocomplete
+                            id="checkboxes-tags-demo"
+                            size="small"
+                            options={departments}
+                            disableCloseOnSelect
+                            getOptionLabel={(option) => option.name}
+                            onChange={handlePartyChange('partyId')}
+                            renderOption={(option, { selected }) => (
+                              <React.Fragment>
+                                <Checkbox
+                                  icon={icon}
+                                  checkedIcon={checkedIcon}
+                                  style={{ marginRight: 8 }}
+                                  checked={selected}
+                                />
+                                {option.name}
+                              </React.Fragment>
+                            )}
+                            renderInput={(params) => (
+                              <TextField {...params} variant="outlined" label="Department" placeholder="Department" margin="normal" />
+                            )}
+                          />
+                        </Box>
+                      }
+                      {value === 2 &&
+                        <Box px={2} className={classes.toolbar}>
+                          <Autocomplete
+                            id="checkboxes-tags-demo"
+                            size="small"
+                            options={branches}
+                            disableCloseOnSelect
+                            getOptionLabel={(option) => option.name}
+                            onChange={handlePartyChange('partyId')}
+                            renderOption={(option, { selected }) => (
+                              <React.Fragment>
+                                <Checkbox
+                                  icon={icon}
+                                  checkedIcon={checkedIcon}
+                                  style={{ marginRight: 8 }}
+                                  checked={selected}
+                                />
+                                {option.name}
+                              </React.Fragment>
+                            )}
+                            renderInput={(params) => (
+                              <TextField {...params} variant="outlined" label="Branch" placeholder="Branch" margin="normal" />
+                            )}
+                          />
+                        </Box>
+                      }
+                      {value === 3 &&
+                        <Box px={2} className={classes.toolbar}>
+                          <Autocomplete
+                            id="checkboxes-tags-demo"
+                            size="small"
+                            options={roles}
+                            disableCloseOnSelect
+                            getOptionLabel={(option) => option.name}
+                            onChange={handlePartyChange('partyId')}
+                            renderOption={(option, { selected }) => (
+                              <React.Fragment>
+                                <Checkbox
+                                  icon={icon}
+                                  checkedIcon={checkedIcon}
+                                  style={{ marginRight: 8 }}
+                                  checked={selected}
+                                />
+                                {option.name}
+                              </React.Fragment>
+                            )}
+                            renderInput={(params) => (
+                              <TextField {...params} variant="outlined" label="Roles" placeholder="Roles" margin="normal" />
+                            )}
+                          />
+                        </Box>
+                      }
+                    </div>
+                  </Popover>
+                  <div className={classes.chipsRoot}>
+                    {selected && selected.map((user, i) =>
+                      <Chip
+                        key={i}
+                        avatar={<Avatar>{user.firstName && user.firstName[0].toUpperCase()}</Avatar>}
+                        label={user.firstName + ' ' + user.lastName}
+                        variant="outlined"
+                        onDelete={() => handleChipDelete(user.id)}
+                      />
+                    )}
+                    {selectedDept &&
+                      <Chip
+                        key={selectedDept.id}
+                        avatar={<Avatar>{selectedDept.name[0].toUpperCase()}</Avatar>}
+                        label={selectedDept.name}
+                        variant="outlined"
+                        onDelete={() => handleChipDelete(selectedDept.id)}
+                      />
+                    }
+                  </div>
+                </Grid>
+              </React.Fragment>
+            }
           </Grid>
         </DialogContent>
 
@@ -424,6 +628,9 @@ AddShiftDialog.propTypes = {
 const mapStateToProps = createStructuredSelector({
   dialog: Selectors.makeSelectLeaveTypeDialog(),
   employees: Selectors.makeSelectEmployees(),
+  departments: Selectors.makeSelectDepartments(),
+  branches: Selectors.makeSelectBranches(),
+  roles: Selectors.makeSelectRoles(),
 });
 
 function mapDispatchToProps(dispatch) {

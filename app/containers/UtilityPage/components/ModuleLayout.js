@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import {makeStyles} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import { compose } from 'redux';
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -17,8 +17,8 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     padding: theme.spacing(2),
   },
-  active: { 
-    backgroundColor: theme.palette.common.white,  
+  active: {
+    backgroundColor: theme.palette.common.white,
     color: `${darken(theme.palette.primary.main, 0.1)} !important`,
   },
 }));
@@ -53,8 +53,7 @@ function ModuleLayout(props) {
   );
 }
 
-const mapStateToProps = createStructuredSelector({
-});
+const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
   return {};

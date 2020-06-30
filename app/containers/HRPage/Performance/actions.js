@@ -11,6 +11,54 @@ import * as Constants from './constants';
  *
  * @return {object} An action object with a type of CHANGE_USERNAME
  */
+export function getEmployees() {
+  return {
+    type: Constants.GET_EMPLOYEES,
+  };
+}
+export function getEmployeesSuccess(data) {
+  return {
+    type: Constants.GET_EMPLOYEES_SUCCESS,
+    payload: data
+  };
+}
+
+export function getDepartments() {
+  return {
+    type: Constants.GET_DEPARTMENTS,
+  };
+}
+export function getDepartmentsSuccess(data) {
+  return {
+    type: Constants.GET_DEPARTMENTS_SUCCESS,
+    payload: data
+  };
+}
+
+export function getBranches() {
+  return {
+    type: Constants.GET_BRANCHES,
+  };
+}
+export function getBranchesSuccess(data) {
+  return {
+    type: Constants.GET_BRANCHES_SUCCESS,
+    payload: data
+  };
+}
+
+export function getRoles() {
+  return {
+    type: Constants.GET_ROLES,
+  };
+}
+export function getRolesSuccess(data) {
+  return {
+    type: Constants.GET_ROLES_SUCCESS,
+    payload: data
+  };
+}
+
 export function getGoals() {
   return {
     type: Constants.GET_GOALS,
@@ -36,6 +84,19 @@ export function getGoalByIdSuccess(data) {
     payload: data
   };
 }
+export function createGoals(data) {
+  return {
+    type: Constants.CREATE_GOALS,
+    payload: data
+  };
+}
+export function createGoalsSuccess(data) {
+  return {
+    type: Constants.CREATE_GOALS_SUCCESS,
+    payload: data
+  };
+}
+
 export function getRecognitions() {
   return {
     type: Constants.GET_RECOGNITIONS,
@@ -61,16 +122,16 @@ export function getRecognitionByIdSuccess(data) {
     payload: data
   };
 }
-
-export function createGoals(data) {
+export function createRecognition(payload) {
   return {
-    type: Constants.CREATE_GOALS,
-    payload: data
+    type: Constants.CREATE_RECOGNITION,
+    payload
   };
 }
-export function createGoalsSuccess(data) {
+
+export function createRecognitionSuccess(data) {
   return {
-    type: Constants.CREATE_GOALS_SUCCESS,
+    type: Constants.CREATE_RECOGNITION_SUCCESS,
     payload: data
   };
 }

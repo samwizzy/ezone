@@ -5,6 +5,12 @@ import { makeStyles } from '@material-ui/core/styles'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, MenuItem, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
@@ -37,9 +43,9 @@ function AddAnnouncementDialog(props) {
   const [form, setForm] = React.useState({
     title: '',
     message: '',
-    expiryDate: "2020-06-27",
+    expiryDate: moment().format("YYYY-MM-DDTHH:mm:ss.SSS"),
     notifyAllLocations: true,
-    notifyOthers: "true",
+    notifyOthers: 'true',
     announcementType: '',
   });
 
@@ -53,12 +59,16 @@ function AddAnnouncementDialog(props) {
 
   const canSubmitForm = () => {
     const { title, message, announcementType } = form
-    return title.length > 0 && announcementType.length > 0
+    return title.length > 0 && message.length > 0 && announcementType.length > 0
   }
 
   const handleChange = (event) => {
     const { name, value } = event.target
     setForm({ ...form, [name]: value });
+  }
+
+  const handleDateChange = name => date => {
+    setForm({ ...form, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss.SSS') })
   }
 
   const handleSubmit = () => {
@@ -77,7 +87,7 @@ function AddAnnouncementDialog(props) {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <AppBar position="relative">
+        <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
               Add announcement
@@ -85,9 +95,7 @@ function AddAnnouncementDialog(props) {
           </Toolbar>
         </AppBar>
 
-        <Divider />
-
-        <DialogContent>
+        <DialogContent dividers>
           <TextField
             name="title"
             label="Title"
@@ -187,21 +195,36 @@ function AddAnnouncementDialog(props) {
             variant="outlined"
             size="small"
             label="Announcement Type"
-            helperText="Please select a message type"
+            helperText={!form.announcementType && "Please select a message type"}
             value={form.announcementType}
             onChange={handleChange}
             fullWidth
           >
-            <MenuItem key={0} value="SMS">
-              SMS
-            </MenuItem>
-            <MenuItem key={1} value="Email">
-              Email
-            </MenuItem>
-            <MenuItem key={2} value="SMS/Email">
-              SMS/Email
-            </MenuItem>
+            {['SMS', 'Email', 'SMS/Email'].map((type, i) =>
+              <MenuItem key={i} value={type}>
+                {type}
+              </MenuItem>
+            )}
           </TextField>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              autoOk
+              disablePast
+              inputVariant="outlined"
+              format="dd/MM/yyyy"
+              margin="normal"
+              fullWidth
+              size="small"
+              name="expiryDate"
+              id="expiry-date"
+              label="Expiry Date"
+              value={form.expiryDate}
+              onChange={handleDateChange('expiryDate')}
+              KeyboardButtonProps={{
+                'aria-label': 'change date',
+              }}
+            />
+          </MuiPickersUtilsProvider>
         </DialogContent>
 
         <DialogActions>

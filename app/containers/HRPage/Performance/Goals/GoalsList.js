@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, Avatar, Breadcrumbs, Box, Button, Divider, IconButton, Link, List, ListItem, ListItemText, ListItemAvatar, Table, TableRow, TableCell, TableBody, Grid, Paper, Typography, Toolbar, Stepper, Step, StepLabel } from '@material-ui/core';
+import { AppBar, Avatar, Box, Button, Grid, Paper, Typography, Toolbar } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -11,13 +11,6 @@ import classNames from 'classnames'
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../../App/selectors';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import DeleteOutlined from '@material-ui/icons/DeleteOutlined';
-import LensIcon from '@material-ui/icons/Lens';
-import Check from '@material-ui/icons/Check';
-import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
-import TodayIcon from '@material-ui/icons/Today';
 import GoalsItem from './goals/GoalsItem'
 
 const useStyles = makeStyles(theme => ({
@@ -36,10 +29,12 @@ const useStyles = makeStyles(theme => ({
 
 const GoalsList = props => {
   const classes = useStyles();
-  const { loading, openNewGoalsDialog } = props;
+  const { loading, goals, openNewGoalsDialog } = props;
 
   React.useEffect(() => {
   }, []);
+
+  console.log(goals, "goals")
 
   return (
     <div className={classes.root}>

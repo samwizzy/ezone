@@ -23,6 +23,42 @@ export function getEmployeesSuccess(data) {
     payload: data
   };
 }
+export function getDepartments() {
+  return {
+    type: Constants.GET_DEPARTMENTS,
+  };
+}
+
+export function getDepartmentsSuccess(data) {
+  return {
+    type: Constants.GET_DEPARTMENTS_SUCCESS,
+    payload: data
+  };
+}
+export function getBranches() {
+  return {
+    type: Constants.GET_BRANCHES,
+  };
+}
+
+export function getBranchesSuccess(data) {
+  return {
+    type: Constants.GET_BRANCHES_SUCCESS,
+    payload: data
+  };
+}
+export function getRoles() {
+  return {
+    type: Constants.GET_ROLES,
+  };
+}
+
+export function getRolesSuccess(data) {
+  return {
+    type: Constants.GET_ROLES_SUCCESS,
+    payload: data
+  };
+}
 
 export function getLeaveRequest() {
   return {

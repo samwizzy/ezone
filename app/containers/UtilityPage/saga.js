@@ -8,6 +8,10 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 import * as Endpoints from '../../components/Endpoints';
 
+function errorHandler(promise) {
+  return promise
+}
+
 export function* addUtilityFile({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
@@ -25,9 +29,6 @@ export function* addUtilityFile({ type, payload }) {
     });
 
     console.log(response, 'createdFileResponse');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getAllFoldersAndDocs({ folderId: 0, type: 'ROOT' }));
   } catch (err) {
@@ -40,7 +41,7 @@ export function* addDocToFolder({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.AddDocToFolderApi}`;
-  payload.orgId = user.organisation.orgId;
+  payload.orgId = user && user.organisation.orgId;
 
   try {
     const response = yield call(request, requestURL, {
@@ -53,10 +54,6 @@ export function* addDocToFolder({ type, payload }) {
     });
 
     console.log(response, 'createdFileResponse');
-
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     payload.folderId === 1
       ? yield put(
@@ -72,7 +69,10 @@ export function* addDocToFolder({ type, payload }) {
         }),
       );
   } catch (err) {
+    const error = yield call(errorHandler, err.response.json())
     yield put(Actions.getUtilityFilesError(err));
+    console.log(error, "error error")
+    console.log(err, "error err")
   }
 }
 
@@ -93,10 +93,6 @@ export function* getAllFoldersAndDoc({ type, payload }) {
         'Content-Type': 'application/x-www-form-urlencoded',
       }),
     });
-
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getAllFoldersAndDocsSuccess(response));
   } catch (err) {
@@ -122,10 +118,6 @@ export function* getNestedFoldersAndDoc({ type, payload }) {
       }),
     });
 
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
-
     yield put(Actions.getNestedFoldersAndDocsSuccess(response));
   } catch (err) {
     yield put(Actions.getUtilityFilesError(err));
@@ -147,10 +139,6 @@ export function* addFolderToFolder({ type, payload }) {
     });
 
     console.log(response, 'folder response');
-
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     payload.folderId === 1
       ? yield put(Actions.getAllFoldersAndDocs({ folderId: 0, type: 'ROOT' }))
@@ -181,15 +169,13 @@ export function* addUtilityTasks({ type, payload }) {
       }),
     });
 
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
-
     yield put({ type: Constants.GET_UTILITY_TASKS });
     yield put(Actions.createUtilityTaskSuccess());
     yield put(Actions.closeNewTaskDialog());
     yield put(AppActions.openSnackBar({ message: `${response.title} has been created successfully`, status: 'success' }));
   } catch (err) {
+    const error = yield call(errorHandler, err.response.json())
+    console.log(error, "error handled create tasks")
     yield put(Actions.getUtilityTasksError(err.message));
   }
 }
@@ -208,10 +194,6 @@ export function* getUtilityTasks() {
         'Content-Type': 'application/json',
       }),
     });
-
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getUtilityTasksSuccess(response));
   } catch (err) {
@@ -235,10 +217,6 @@ export function* getUtilityTasksByStatus({ type, payload }) {
       }),
     });
 
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
-
     yield put(Actions.getUtilityTasksByStatusSuccess(response));
   } catch (err) {
     // yield put(Actions.getUtilityTasksError(err.message));
@@ -258,10 +236,6 @@ export function* getUtilityTask({ type, payload }) {
       }),
     });
 
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
-
     yield put(Actions.getUtilityTaskSuccess(response));
   } catch (err) {
     yield put(Actions.getUtilityTaskError(err.message));
@@ -280,9 +254,7 @@ export function* getCommentsByTaskId({ type, payload }) {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
+
     yield put(Actions.getTaskCommentsSuccess(response));
   } catch (err) {
     yield put(Actions.commentTaskError(err.message));
@@ -304,9 +276,6 @@ export function* commentUtilityTask({ type, payload }) {
     });
 
     console.log(response, 'comment response');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(AppActions.openSnackBar({ message: `Comment Posted`, status: 'success' }));
     yield put(Actions.getTaskComments(response.task.id));
@@ -331,9 +300,6 @@ export function* updateUtilityTask({ type, payload }) {
     });
 
     console.log(response, 'utilityTaskResponse');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getUtilityTasks());
     yield put(Actions.getUtilityTask(payload.id));
@@ -357,9 +323,6 @@ export function* deleteUtilityTask({ type, payload }) {
     });
 
     console.log(response, 'delete task response');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getUtilityTasks());
     // yield put(Actions.deleteTaskSuccess(response));
@@ -383,9 +346,6 @@ export function* addAttachmentToTask({ type, payload }) {
     });
 
     console.log(response, 'utilityTaskResponse');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.updateUtilityTaskSuccess(response));
   } catch (err) {
@@ -408,9 +368,6 @@ export function* removeTaskAttachment({ type, payload }) {
     });
 
     console.log(response, 'utilityTaskResponse');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.updateUtilityTaskSuccess(response));
   } catch (err) {
@@ -432,9 +389,6 @@ export function* getUserByUUID({ type, payload }) {
     });
 
     console.log(response, 'userResponse');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getUserByUUIDSuccess(response));
   } catch (err) {
@@ -457,9 +411,6 @@ export function* getUtilityFiles() {
         'Content-Type': 'application/x-www-form-urlencoded',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getUtilityFilesSuccess(response));
   } catch (err) {
@@ -484,9 +435,7 @@ export function* deleteUtilityFile({ type, payload }) {
     });
 
     console.log(response, 'deleteFileResponse');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
+
     payload.parentId === 1
       ? yield put(
         Actions.getAllFoldersAndDocs({
@@ -523,9 +472,7 @@ export function* restoreDocument({ type, payload }) {
     });
 
     console.log(response, 'restore response');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
+
     payload.id === 1
       ? yield put(
         Actions.getAllFoldersAndDocs({
@@ -558,9 +505,6 @@ export function* getUtilityFile({ type, payload }) {
     });
 
     console.log(response, 'utilityFileResponse');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getUtilityFileSuccess(response));
   } catch (err) {
@@ -584,9 +528,7 @@ export function* shareUtilityFiles({ type, payload }) {
       }),
     });
     console.log(response, 'response');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
+
     yield put(Actions.closeShareFileDialog());
     yield put(AppActions.openSnackBar({ message: `${response.document.docName} has been shared successfully`, status: 'success' }));
     // yield put(Actions.shareDocumentSuccess(response));
@@ -611,9 +553,6 @@ export function* getFavoriteUtilityFiles({ type, payload }) {
     });
 
     console.log(response, 'get favDocResponse');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getFavoriteDocumentsSuccess(response));
   } catch (err) {
@@ -638,9 +577,6 @@ export function* favoriteUtilityFile({ type, payload }) {
     });
 
     console.log(response, 'favDocResponse');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.favoriteDocumentSuccess(response));
   } catch (err) {
@@ -663,9 +599,6 @@ export function* unfavoriteUtilityFile({ type, payload }) {
     });
 
     console.log(response, 'favDocResponse');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.favoriteDocumentSuccess(response));
   } catch (err) {
@@ -692,9 +625,6 @@ export function* getAllUsers() {
     });
 
     console.log(getAllUsersResponse, 'getAllUsersResponse');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getAllUsersSuccess(getAllUsersResponse));
   } catch (err) {
@@ -723,9 +653,6 @@ export function* getUserChat() {
     });
 
     // console.log(response, 'getUserChatResponse');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getAllUsersChatSuccess(response));
   } catch (err) {
@@ -735,7 +662,8 @@ export function* getUserChat() {
 
 export function* getEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${Endpoints.GetEmployeesApi}`;
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}/${user && user.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -745,10 +673,6 @@ export function* getEmployees() {
         'Content-Type': 'application/json',
       }),
     });
-
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getEmployeesSuccess(response));
   } catch (err) {
@@ -775,9 +699,6 @@ export function* getUserChatData() {
     });
 
     // console.log(response, 'userChatDataResponse');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getUserChatDataSuccess(response));
   } catch (err) {
@@ -817,9 +738,6 @@ export function* postMsg() {
     });
 
     console.log(response, 'postMsgResponse');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     // yield put(Actions.getUserChatData(userChatDetails));
     yield put(Actions.postMsgSuccess(response));
@@ -852,9 +770,6 @@ export function* postFcmToken() {
     });
 
     // console.log(response, 'postMsgResponse');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     // yield put(Actions.getUserChatData(userChatDetails));
     yield put(Actions.postFcmTokenSuccess(response));

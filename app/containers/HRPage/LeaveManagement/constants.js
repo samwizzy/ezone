@@ -10,6 +10,12 @@
  */
 export const GET_EMPLOYEES = 'boilerplate/HRPage/GET EMPLOYEES';
 export const GET_EMPLOYEES_SUCCESS = 'boilerplate/HRPage/GET EMPLOYEES SUCCESS';
+export const GET_DEPARTMENTS = 'boilerplate/HRPage/GET DEPARTMENTS';
+export const GET_DEPARTMENTS_SUCCESS = 'boilerplate/HRPage/GET DEPARTMENTS SUCCESS';
+export const GET_BRANCHES = 'boilerplate/HRPage/GET BRANCHES';
+export const GET_BRANCHES_SUCCESS = 'boilerplate/HRPage/GET BRANCHES SUCCESS';
+export const GET_ROLES = 'boilerplate/HRPage/GET ROLES';
+export const GET_ROLES_SUCCESS = 'boilerplate/HRPage/GET ROLES SUCCESS';
 
 export const GET_LEAVE_REQUEST = 'boilerplate/HRPage/GET LEAVE_REQUEST';
 export const GET_LEAVE_REQUEST_SUCCESS = 'boilerplate/HRPage/GET LEAVE_REQUEST SUCCESS';

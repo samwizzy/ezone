@@ -23,18 +23,13 @@ import ModuleLayout from './components/ModuleLayout';
 
 const key = 'performance';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-}));
-
 export function PerformancePage(props) {
-  const { getGoals } = props;
+  const { getEmployees, getGoals } = props;
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
   React.useEffect(() => {
+    getEmployees();
     getGoals();
   }, []);
 
@@ -62,6 +57,7 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
   return {
     getGoals: () => dispatch(Actions.getGoals()),
+    getEmployees: () => dispatch(Actions.getEmployees()),
   };
 }
 

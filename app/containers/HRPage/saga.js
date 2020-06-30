@@ -794,6 +794,8 @@ export function* getAnnouncements() {
       }),
     });
 
+    console.log(response, "get announcements response")
+
     yield put(Actions.getAnnouncementsSuccess(response));
   } catch (err) {
     console.log(err.message, "Announcements err message")
@@ -892,7 +894,9 @@ export function* createAnnouncement({ type, payload }) {
     yield put({ type: Constants.CLOSE_NEW_ANNOUNCEMENT_DIALOG });
     yield put({ type: Constants.GET_ANNOUNCEMENTS });
   } catch (err) {
+    const error = yield call(errorHandler, err.response.json())
     console.log(err.message, "err message")
+    console.log(error, "error create announcement")
   }
 }
 

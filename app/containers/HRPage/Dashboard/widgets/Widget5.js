@@ -19,6 +19,7 @@ import {
 	TableCell,
 	Typography
 } from '@material-ui/core';
+import moment from 'moment'
 import { green, orange, red } from '@material-ui/core/colors'
 import LensSharp from '@material-ui/icons/LensSharp'
 import AddIcon from '@material-ui/icons/Add'
@@ -62,10 +63,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Widget5 = ({ jobOpenings }) => {
+const Widget5 = ({ employees }) => {
 	const classes = useStyles()
 
-	console.log(jobOpenings, "jobOpenings wodget 5")
+	console.log(employees, "employees widget 5")
+	const newHires = employees.filter(emp => moment().isSame(emp.dateCreated, 'month'))
+	console.log(newHires, "new hires")
 
 	return (
 		<div>
@@ -79,20 +82,23 @@ const Widget5 = ({ jobOpenings }) => {
 					title="New Hires"
 				/>
 				<CardContent>
-					<Table className={classes.table}>
-						<TableBody>
-							{[0, 1].map((hire, i) =>
-								<TableRow key={i}>
-									<TableCell component="th" scope="row">
-										<Avatar aria-label="recipe" className={classes.avatar}>
-											R
-										</Avatar>
-									</TableCell>
-									<TableCell align="left">Christian Okeme</TableCell>
-								</TableRow>
-							)}
-						</TableBody>
-					</Table>
+					{newHires.length > 0 ?
+						<Table className={classes.table}>
+							<TableBody>
+								{newHires.map((hire, i) =>
+									<TableRow key={i}>
+										<TableCell component="th" scope="row">
+											<Avatar aria-label="recipe" className={classes.avatar}>
+												R
+											</Avatar>
+										</TableCell>
+										<TableCell align="left">{hire.firstName + ' ' + hire.lastName}</TableCell>
+									</TableRow>
+								)}
+							</TableBody>
+						</Table> :
+						<Typography align="center">There are no new hires</Typography>
+					}
 				</CardContent>
 			</Card>
 		</div>

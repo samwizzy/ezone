@@ -18,6 +18,7 @@ import saga from './saga';
 import makeSelectUtilityPage from './selectors';
 import * as Actions from './actions';
 import UtilityApp from './UtilityApp'
+import ModuleLayout from './components/ModuleLayout'
 
 export function UtilityPage(props) {
   useInjectReducer({ key: 'utilityPage', reducer });
@@ -37,7 +38,7 @@ export function UtilityPage(props) {
         <meta name="description" content="Utility Page" />
       </Helmet>
 
-      <UtilityApp />
+      {/* <ModuleLayout /> */}
     </div>
   );
 }

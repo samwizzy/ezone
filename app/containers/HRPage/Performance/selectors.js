@@ -48,11 +48,6 @@ const makeSelectRecognitionDialog = () =>
     selectPerformance,
     subState => subState.recognitionDialog,
   );
-const makeSelectEmployees = () =>
-  createSelector(
-    selectPerformance,
-    subState => subState.employees,
-  );
 const makeSelectGoals = () =>
   createSelector(
     selectPerformance,
@@ -73,12 +68,35 @@ const makeSelectReviews = () =>
     selectPerformance,
     subState => subState.reviews,
   );
+const makeSelectEmployees = () =>
+  createSelector(
+    selectPerformance,
+    subState => subState.employees,
+  );
+const makeSelectDepartments = () =>
+  createSelector(
+    selectPerformance,
+    subState => subState.departments,
+  );
+const makeSelectBranches = () =>
+  createSelector(
+    selectPerformance,
+    subState => subState.branches,
+  );
+const makeSelectRoles = () =>
+  createSelector(
+    selectPerformance,
+    subState => subState.roles,
+  );
 
 export default makeSelectPerformancePage;
 export {
   selectPerformance,
   makeSelectLoading,
-  makeSelectPerformances,
+  makeSelectEmployees,
+  makeSelectDepartments,
+  makeSelectBranches,
+  makeSelectRoles,
   makeSelectGoals,
   makeSelectRecognitions,
   makeSelectFeedbacks,
@@ -86,7 +104,6 @@ export {
   makeSelectLeaveRequestDialog,
   makeSelectLeaveTypeDialog,
   makeSelectHolidayDialog,
-  makeSelectEmployees,
   makeSelectGoalsDialog,
   makeSelectRecognitionDialog,
 };

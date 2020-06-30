@@ -165,11 +165,86 @@ export function* getEmployees() {
   }
 }
 
+export function* getDepartments() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetDepartmentsByOrgIdApi}?orgId=${user && user.organisation.id}&tagId=5`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'DEPARTMENT RESPONSE BY ORGID');
+    yield put(Actions.getDepartmentsSuccess(response));
+  } catch (err) {
+    console.log(err.response, "dept error message")
+    if (err.response.status === 400) {
+      yield put(AppActions.openSnackBar({ message: "Something Went Wrong", status: 'warning' }));
+    }
+  }
+}
+
+export function* getBranches() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetBranches}?orgId=${user && user.organisation.id}&tagId=1`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'BRANCHES RESPONSE BY ORGID');
+    yield put(Actions.getBranchesSuccess(response));
+  } catch (err) {
+    console.log(err.response, "dept error message")
+    if (err.response.status === 400) {
+      yield put(AppActions.openSnackBar({ message: "Something Went Wrong", status: 'warning' }));
+    }
+  }
+}
+
+export function* getRoles() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetRoles}?orgId=${user && user.organisation.orgId}&type=ROLE`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'ROLES RESPONSE BY ORGID');
+    yield put(Actions.getRolesSuccess(response));
+  } catch (err) {
+    console.log(err.response, "dept error message")
+    if (err.response.status === 400) {
+      yield put(AppActions.openSnackBar({ message: "Something Went Wrong", status: 'warning' }));
+    }
+  }
+}
+
 /**
  * Root saga manages watcher lifecycle
  */
 export default function* LeaveMgtRootSaga() {
   yield takeLatest(Constants.GET_EMPLOYEES, getEmployees);
+  yield takeLatest(Constants.GET_DEPARTMENTS, getDepartments);
+  yield takeLatest(Constants.GET_BRANCHES, getBranches);
+  yield takeLatest(Constants.GET_ROLES, getRoles);
   yield takeLatest(Constants.GET_LEAVE_REQUEST, getLeaveRequest);
   yield takeLatest(Constants.CREATE_LEAVE_REQUEST, createLeaveRequest);
   yield takeLatest(Constants.GET_LEAVE_TYPES, getLeaveTypes);
