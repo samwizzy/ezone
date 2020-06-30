@@ -259,8 +259,22 @@ const AccountChart = props => {
   function handleOnFileLoad(data){
     console.log('---------------------------')
     for(let i=0;i<data.length;i++){
-      createChartOfAccountHandler(data[i].data)
-      console.log(`handled ${JSON.stringify(data[i].data)}`)
+      try{
+       if(data[i].data.accountCode.length > 1 &&
+        data[i].data.accountName.length > 1 &&
+        data[i].data.accountType.length > 1 &&
+        data[i].data.accountDescription.length > 1 &&
+        data[i].data.amount > 1){
+          createChartOfAccountHandler(data[i].data)
+        }
+        else{
+          swal("Error","File table does not match format","error");
+          break;
+        }
+      }
+      catch(error){
+        swal("Error","File table does not match format","error");
+      }
     }
     console.log('---------------------------')
   }

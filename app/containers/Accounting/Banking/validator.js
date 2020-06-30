@@ -1,3 +1,4 @@
 export function alphaNumeric(value) {
-  return !!value.match('^[a-zA-Z0-9]+$');
+  console.log(` from validation ${(value.match('^[a-zA-Z0-9]+$')+'') === value} value ${value}`)
+  return (value.match('^[a-zA-Z0-9]+$')+'') === value;
 }
