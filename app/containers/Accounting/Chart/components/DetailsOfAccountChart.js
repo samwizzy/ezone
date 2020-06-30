@@ -1,4 +1,4 @@
-import React, { memo,useContext,useState,useEffect } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -26,7 +26,6 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import moment from 'moment';
-import { ChartContext } from '..';
 
 
 const useStyles = makeStyles(theme => ({
@@ -112,8 +111,6 @@ const useStyles = makeStyles(theme => ({
 
 const DetailsOfAccountChart = props => {
   const classes = useStyles();
-  const chartContext = useContext(ChartContext);
-  const [account,setAccount] = useState({})
 
   const {history} = props;
 
@@ -121,25 +118,7 @@ const DetailsOfAccountChart = props => {
     history.goBack();
   }
 
-  useEffect(() => {
- console.log(`Details page ${chartContext.chartState.payload}`)
-    async function populateView(){
-      for(let i=0;i<chartContext.chartState.payload.length;i++){
-          if(chartContext.chartState.payload[i].id === chartContext.chartState.viewId){
-            setAccount(chartContext.chartState.payload[i]);
-            break;
-          }
-      }
-    }
-   
-    populateView()
-
-    return () => {
-      populateView()
-    };
-
-  },[])
-
+  console.log("Selected journal data ", props.location.chartDetailsData);
 
   return (
     <div className={classes.root}>
@@ -170,34 +149,34 @@ const DetailsOfAccountChart = props => {
                   <TableRow>
                     <TableCell component="th">Account Name</TableCell>
                     <TableCell align="left">
-                      {account.accountName}
+                      {props.location.chartDetailsData.accountName}
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell component="th">Account Code</TableCell>
                     <TableCell align="left">
-                      { account.accountCode }
+                      { props.location.chartDetailsData.accountCode }
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell component="th">Account Type</TableCell>
                     <TableCell align="left">
-                      { account.accountType }
+                      { props.location.chartDetailsData.accountType }
                     </TableCell>
                   </TableRow>
 
-                  { account.accountType === "Bank" ? (
+                  { props.location.chartDetailsData.accountType === "Bank" ? (
                     <>
                       <TableRow>
                         <TableCell component="th">Account Number</TableCell>
                         <TableCell align="left">
-                          { account.accountNumber }
+                          { props.location.chartDetailsData.accountNumber }
                         </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell component="th">Bank Balance</TableCell>
                         <TableCell align="left">
-                          {account.bankBalance }
+                          { props.location.chartDetailsData.bankBalance }
                         </TableCell>
                       </TableRow>
                     </>
@@ -206,19 +185,19 @@ const DetailsOfAccountChart = props => {
                   <TableRow>
                     <TableCell component="th">Description</TableCell>
                     <TableCell align="left">
-                      { account.description }
+                      { props.location.chartDetailsData.description }
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell component="th">Date Created</TableCell>
                     <TableCell align="left">
-                      {/* moment(props.location.chartDetailsData.dateCreated).format('LLL') */}
+                      { moment(props.location.chartDetailsData.dateCreated).format('LLL') }
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell component="th">Closing Balance</TableCell>
                     <TableCell align="left">
-                      { /*props.location.chartDetailsData.openingBalance */}
+                      { props.location.chartDetailsData.openingBalance }
                     </TableCell>
                   </TableRow>
                 </TableBody>
