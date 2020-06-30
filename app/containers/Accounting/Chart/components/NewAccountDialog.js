@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
+import { alphaNumeric } from '../validator';
 import swal from 'sweetalert';
 
 import {
@@ -241,6 +242,17 @@ const NewAccountDialog = props => {
     }
   };
 
+  const [isAphaNumeric,setIsAphaNumeric] = useState(true)
+
+  const checkAlphaNumeric = event =>{
+    let value= event.target.value;
+    let txt = alphaNumeric(value)
+    if(txt){
+      setIsAphaNumeric(true)
+    }
+    else
+    setIsAphaNumeric(false)
+  }
 
   useEffect(() => {
     function doUpdate(){
@@ -292,11 +304,13 @@ const NewAccountDialog = props => {
                   />
                 </Grid>
                 <Grid item xs={6}>
+                  {isAphaNumeric ?
                   <TextField
                     id="standard-accountCode"
                     label="Account Code"
                     type="number"
                     variant="outlined"
+                    onBlur={checkAlphaNumeric}
                     size="small"
                     className={classes.textField}
                     value={values.accountCode}
@@ -304,6 +318,23 @@ const NewAccountDialog = props => {
                     margin="normal"
                     fullWidth
                   />
+                  :
+                  <TextField
+                    id="standard-accountCode"
+                    label="Account Code"
+                    type="number"
+                    variant="outlined"
+                    onBlur={checkAlphaNumeric}
+                    error
+                    helperText="value must be alpha numeric"
+                    size="small"
+                    className={classes.textField}
+                    value={values.accountCode}
+                    onChange={handleChange('accountCode')}
+                    margin="normal"
+                    fullWidth
+                  />
+                  }
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
@@ -326,7 +357,7 @@ const NewAccountDialog = props => {
                     options={accountType}
                     getOptionLabel={option => option.accountType}
                     onChange={(evt, value) =>{ 
-                      setCheckBox({ ...checkBox, isBank:value.accountType === "Bank"?true:false, canHaveParent: value.subAccount });
+                      setCheckBox({ ...checkBox, isBank:value.accountType === "Bank"?true:false, canHaveParent: value.subAccount});
                       setValues({...values,accountTypeId:value.id,parentId:null})
                     }
                   }
@@ -389,7 +420,7 @@ const NewAccountDialog = props => {
                   </Grid>
                 ): checkBox.canHaveParent ? (
                   <Grid container spacing={1}>
-                    <Grid item xs={6}>
+                    {/*<Grid item xs={6}>
                       <FormGroup row>
                         <FormControlLabel
                           control={<GreenCheckbox 
@@ -400,7 +431,8 @@ const NewAccountDialog = props => {
                           label="Make parent account."
                         />
                       </FormGroup>
-                    </Grid>
+                    </Grid>*/}
+                    {
                     <Grid item xs={6}>
                       <Autocomplete
                         id="combo-box-demo"
@@ -422,6 +454,7 @@ const NewAccountDialog = props => {
                         )}
                       />
                     </Grid>
+                   }
                   </Grid>
                 ): null}
 
@@ -449,6 +482,7 @@ const NewAccountDialog = props => {
             <LoadingIndicator />
           ) : (
             <Button
+            disabled={isAphaNumeric}
               onClick={() => { accountDialog.type === 'new' ? createChartOfAccountHandler() : updateChartOfAccount() }}
               color="primary"
               // disabled={ accountDialog.type === "new" ? !canSubmitValues() : "" }

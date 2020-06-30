@@ -107,14 +107,15 @@ const AccountChart = props => {
     config)
     .then((res) => {
       let coaData = res.data;
+      console.log(`All chart of account for org ${JSON.stringify(coaData)}`)
       let data = []
 
       for(let i=0;i<coaData.length;i++){
         if(i === 0){
          data = [{accountCode:coaData[i].accountCode,
           accountName:coaData[i].accountName,accountNumber:coaData[i].accountNumber,
-          accountType:coaData[i].accountType.accountType,
-          accountTypeId:coaData[i].accountType.id,bankBalance:coaData[i].bankBalance,
+          accountType:(coaData[i].accountType === null ? 'Bank':coaData[i].accountType.accountType),
+          accountTypeId:coaData[i].accountType === null? 14:coaData[i].accountType.id,bankBalance:coaData[i].bankBalance,
           openingBalance:coaData[i].openingBalance,
           bankName:coaData[i].bankName,
           description:coaData[i].description,id:coaData[i].id}]
@@ -122,8 +123,8 @@ const AccountChart = props => {
         else{
         data = [...data,{accountCode:coaData[i].accountCode,
           accountName:coaData[i].accountName,accountNumber:coaData[i].accountNumber,
-          accountType:coaData[i].accountType.accountType,
-          accountTypeId:coaData[i].accountType.id,bankBalance:coaData[i].bankBalance,
+          accountType:(coaData[i].accountType === null ? 'Bank':coaData[i].accountType.accountType),
+          accountTypeId:coaData[i].accountType === null? 14:coaData[i].accountType.id,bankBalance:coaData[i].bankBalance,
           openingBalance:coaData[i].openingBalance,
           bankName:coaData[i].bankName,
           description:coaData[i].description,id:coaData[i].id}]

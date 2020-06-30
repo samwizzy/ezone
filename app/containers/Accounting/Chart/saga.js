@@ -6,6 +6,7 @@ import request from '../../../utils/request';
 import * as Endpoints from '../../../components/Endpoints';
 import * as Actions from './actions';
 import axios from "axios";
+import swal from 'sweetalert';
 import * as Constants from './constants';
 
 
@@ -156,12 +157,12 @@ export function* deleteChartOfAccountSaga() {
     });
 
     console.log('deleteChartOfAccountResponse -> ', deleteChartOfAccountResponse);
-    alert(`Account deleted successfully!`);
+    swal("Success","Account deleted successfully","success");
     yield put(Actions.deleteChartOfAccountSuccessAction(deleteChartOfAccountResponse));
     yield put(Actions.getAllChartOfAccountTypeAction());
     yield put(Actions.closeDeleteAccountDialog());
   } catch (err) {
-    alert(`Something went wrong.`);
+    swal("Error","Something went wrong","error");
     yield put(Actions.deleteChartOfAccountErrorAction(err));
   }
 }
