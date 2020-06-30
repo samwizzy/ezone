@@ -15,7 +15,7 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 import ScheduleIcon from '@material-ui/icons/Schedule'
 import AttachFileIcon from '@material-ui/icons/AttachFile'
-import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, MenuItem, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
+import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, FormLabel, MenuItem, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
@@ -36,9 +36,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const model = {
+  noOfDay: '',
+  from: moment().format('YYYY-MM-DDTHH:mm:ss.SSS'),
+  till: moment().format('YYYY-MM-DDTHH:mm:ss.SSS')
+}
+
 function LeaveRequestDialog(props) {
   const classes = useStyles();
   const { closeNewLeaveRequestDialog, dialog, leaveTypes, employees, createLeaveRequest } = props;
+  const [rows, setRows] = React.useState([{ ...model }])
   const [form, setForm] = React.useState({
     leaveTypeId: '',
     base64doc: '',
@@ -56,6 +63,14 @@ function LeaveRequestDialog(props) {
       setForm({ ...form })
     }
   }, [dialog])
+
+  const addRow = () => {
+    setRows([...rows, model])
+  }
+  const removeRow = index => {
+    rows.splice(index, 1)
+    setRows(rows)
+  }
 
   console.log(employees, "employees leave request")
 
@@ -155,83 +170,73 @@ function LeaveRequestDialog(props) {
                 )}
               />
             </Grid>
-            <Grid item xs={6}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  autoOk
-                  disableFuture
-                  inputVariant="outlined"
-                  format="dd/MM/yyyy"
-                  margin="normal"
-                  fullWidth
-                  size="small"
-                  name="from"
-                  id="date-from"
-                  label="Date From"
-                  value={form.from}
-                  onChange={handleDateChange('from')}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
-                />
-              </MuiPickersUtilsProvider>
+            <Grid item xs={12}>
+              <FormLabel color="primary">Schedule List</FormLabel>
             </Grid>
-            <Grid item xs={6}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  autoOk
-                  disableFuture
-                  inputVariant="outlined"
-                  format="dd/MM/yyyy"
-                  margin="normal"
-                  fullWidth
-                  size="small"
-                  name="till"
-                  id="date-till"
-                  label="Date Till"
-                  value={form.till}
-                  onChange={handleDateChange('till')}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
-                />
-              </MuiPickersUtilsProvider>
+
+            {rows.map(row => (
+              <React.Fragment>
+                <Grid item xs={12}>
+                  <TextField
+                    id="number-of-days"
+                    name="Number of days"
+                    placeholder="Number of Days"
+                    margin="normal"
+                    variant="outlined"
+                    size="small"
+                    label="Days"
+                    value={form.leaveAllowance}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      autoOk
+                      disableFuture
+                      inputVariant="outlined"
+                      format="dd/MM/yyyy"
+                      margin="normal"
+                      fullWidth
+                      size="small"
+                      name="from"
+                      id="date-from"
+                      label="Date From"
+                      value={form.from}
+                      onChange={handleDateChange('from')}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
+                </Grid>
+                <Grid item xs={6}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      autoOk
+                      disableFuture
+                      inputVariant="outlined"
+                      format="dd/MM/yyyy"
+                      margin="normal"
+                      fullWidth
+                      size="small"
+                      name="till"
+                      id="date-till"
+                      label="Date Till"
+                      value={form.till}
+                      onChange={handleDateChange('till')}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
+                </Grid>
+              </React.Fragment>
+            ))}
+            <Grid item xs={12}>
+              <Button color='inherit' size="small" onClick={addRow}>Add Another</Button>
             </Grid>
-            <Grid item xs={6}>
-              <TextField
-                id="status"
-                name="status"
-                placeholder="Status"
-                select
-                fullWidth
-                margin="normal"
-                variant="outlined"
-                size="small"
-                label="Status"
-                value={form.status}
-                onChange={handleChange}
-              >
-                {['APPROVED', 'DECLINED'].map((item, i) =>
-                  <MenuItem key={i} value={item}>
-                    {item}
-                  </MenuItem>
-                )}
-              </TextField>
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                id="leave-allowance"
-                name="leaveAllowance"
-                placeholder="Leave Allowance"
-                fullWidth
-                margin="normal"
-                variant="outlined"
-                size="small"
-                label="Leave Allowance"
-                value={form.leaveAllowance}
-                onChange={handleChange}
-              />
-            </Grid>
+
             <Grid item xs={12}>
               <TextField
                 id="description"
@@ -243,7 +248,7 @@ function LeaveRequestDialog(props) {
                 multiline
                 rows={4}
                 size="small"
-                label="Description"
+                label="Reason"
                 value={form.description}
                 onChange={handleChange}
               />

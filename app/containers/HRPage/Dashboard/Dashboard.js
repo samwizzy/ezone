@@ -51,7 +51,7 @@ export function DashBoard(props) {
                 <Grid item xs={12}>
                     <Grid container className={classes.grid} spacing={3}>
                         <Grid item xs={4}>
-                            <Widget5 jobOpenings={jobOpenings} />
+                            <Widget5 employees={employees} />
                         </Grid>
                         <Grid item xs={4}>
                             <Widget6 />

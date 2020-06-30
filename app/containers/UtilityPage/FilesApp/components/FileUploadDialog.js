@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
@@ -21,15 +21,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function FileUploadDialog(props) {
-  const { match, closeFileUploadDialog, addDocToFolder, data } = props
+  const { match, closeFileUploadDialog, addDocToFolder, dialog } = props
   const { params } = match
 
-  console.log(data, 'checking...')
+  console.log(dialog, 'checking file upload dialog...')
 
   return (
     <div>
       <Dialog
-        {...data.props}
+        {...dialog.props}
         TransitionComponent={Transition}
         keepMounted
         onClose={closeFileUploadDialog}
@@ -57,7 +57,7 @@ FileUploadDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  data: Selectors.makeSelectFileUploadDialog(),
+  dialog: Selectors.makeSelectFileUploadDialog(),
 });
 
 function mapDispatchToProps(dispatch) {

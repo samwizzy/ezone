@@ -26,11 +26,6 @@ const RecruitmentApp = props => {
   const { params } = match
   console.log(jobOpenings, "Job openings")
 
-  console.log(params, "param recruitment")
-
-  React.useEffect(() => {
-  }, []);
-
   return (
     <React.Fragment>
       <Helmet>
@@ -39,14 +34,11 @@ const RecruitmentApp = props => {
       </Helmet>
 
       <ModuleLayout>
-      {
-        params.status === 'new'?
-        <AddRecruitment /> :
-        params.status? <JobOpeningDetails /> : <JobOpenings/>
-        /*
-        <AddRecruitment /> : <RecruitmentList />
-        */
-      }
+        {
+          params.status === 'new' ?
+            <AddRecruitment /> :
+            params.status ? <JobOpeningDetails /> : <JobOpenings />
+        }
       </ModuleLayout>
     </React.Fragment>
   );
@@ -54,17 +46,15 @@ const RecruitmentApp = props => {
 
 RecruitmentApp.propTypes = {
   loading: PropTypes.bool,
-  getEmployees: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  jobOpenings : Selectors.makeSelectJobOpenings(),
+  jobOpenings: Selectors.makeSelectJobOpenings(),
 });
 
 function mapDispatchToProps(dispatch) {
-  return {
-  };
+  return {};
 }
 
 const withConnect = connect(

@@ -14,6 +14,9 @@ import * as Constants from './constants';
 export const initialState = {
   loading: false,
   employees: [],
+  departments: [],
+  branches: [],
+  roles: [],
   leaveRequests: [],
   leaveTypes: [],
   leaveRequestDialog: {
@@ -54,6 +57,45 @@ const leaveMgtReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           employees: action.payload
+        };
+        break;
+      case Constants.GET_DEPARTMENTS:
+        return {
+          ...state,
+          loading: true
+        };
+        break;
+      case Constants.GET_DEPARTMENTS_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          departments: action.payload
+        };
+        break;
+      case Constants.GET_BRANCHES:
+        return {
+          ...state,
+          loading: true
+        };
+        break;
+      case Constants.GET_BRANCHES_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          branches: action.payload
+        };
+        break;
+      case Constants.GET_ROLES:
+        return {
+          ...state,
+          loading: true
+        };
+        break;
+      case Constants.GET_ROLES_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          roles: action.payload
         };
         break;
       case Constants.GET_LEAVE_REQUEST:

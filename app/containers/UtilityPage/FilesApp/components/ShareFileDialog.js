@@ -1,10 +1,10 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, MenuItem, Slide, Typography, TextField } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, MenuItem, Slide, Typography, TextField } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 
@@ -26,7 +26,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function SharedFileDialog(props) {
   const classes = useStyles()
-  const { closeShareFileDialog, shareDocument, data, users, files } = props
+  const { closeShareFileDialog, shareDocument, dialog, users, files } = props
   const [form, setForm] = React.useState({
     docId: "",
     name: "",
@@ -35,27 +35,27 @@ function SharedFileDialog(props) {
   })
 
   React.useEffect(() => {
-    if(data.data != null){
-      setForm(_.set(form, "docId", data.data.id))
-      setForm(_.set(form, "name", data.data.docName))
+    if (dialog.data != null) {
+      setForm(_.set(form, "docId", dialog.data.id))
+      setForm(_.set(form, "name", dialog.data.docName))
     }
-  }, [data])
+  }, [dialog])
 
   const handleChange = (event) => {
-    setForm(_.set({...form}, event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value));
+    setForm(_.set({ ...form }, event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value));
   }
 
   const handleSubmit = () => {
     shareDocument(form)
   }
 
-  console.log(data, 'checking shared...')
+  console.log(dialog, 'checking shared file dialog...')
   console.log(form, 'checking form...')
 
   return (
     <div>
       <Dialog
-        {...data.props}
+        {...dialog.props}
         TransitionComponent={Transition}
         keepMounted
         onClose={closeShareFileDialog}
@@ -107,7 +107,7 @@ SharedFileDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  data: Selectors.makeSelectShareFileDialog(),
+  dialog: Selectors.makeSelectShareFileDialog(),
   users: Selectors.makeSelectEmployees(),
   files: Selectors.makeSelectFiles(),
 });
@@ -117,7 +117,6 @@ function mapDispatchToProps(dispatch) {
     openShareFileDialog: ev => dispatch(Actions.openShareFileDialog(ev)),
     closeShareFileDialog: () => dispatch(Actions.closeShareFileDialog()),
     shareDocument: data => dispatch(Actions.shareDocument(data)),
-    dispatch,
   };
 }
 

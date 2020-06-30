@@ -16,11 +16,6 @@ import { AddFile } from './../components/AddButton';
 import * as Actions from '../actions';
 import * as Selectors from './../selectors';
 import * as AppSelectors from './../../App/selectors';
-import FileUploadDialog from './components/FileUploadDialog'
-import ShareFileDialog from './components/ShareFileDialog'
-import AddFileDialog from './components/AddFileDialog'
-import AddFolderDialog from './components/AddFolderDialog'
-import FilePreviewDialog from './components/FilePreviewDialog'
 import NoFilesList from './components/NoFilesList'
 import moment from 'moment'
 import ExpandLess from '@material-ui/icons/ExpandLess';
@@ -398,43 +393,43 @@ const FilesList = props => {
                       <TableRow key={file.docName}>
                         <TableCell component="th" scope="row">
                           Document Name
-                  </TableCell>
+                        </TableCell>
                         <TableCell align="right">{file.docName}</TableCell>
                       </TableRow>
                       <TableRow key={file.format}>
                         <TableCell component="th" scope="row">
                           Format
-                  </TableCell>
+                        </TableCell>
                         <TableCell align="right">{file.format}</TableCell>
                       </TableRow>
                       <TableRow key={file.size}>
                         <TableCell component="th" scope="row">
                           Size
-                  </TableCell>
+                        </TableCell>
                         <TableCell align="right">{file.size}</TableCell>
                       </TableRow>
                       <TableRow key={file.createdBy}>
                         <TableCell component="th" scope="row">
                           Owner
-                  </TableCell>
+                        </TableCell>
                         <TableCell align="right">{file.createdBy}</TableCell>
                       </TableRow>
                       <TableRow key={file.modifiedBy}>
                         <TableCell component="th" scope="row">
                           Modified By
-                  </TableCell>
+                        </TableCell>
                         <TableCell align="right">{file.modifiedBy}</TableCell>
                       </TableRow>
                       <TableRow key={file.trash}>
                         <TableCell component="th" scope="row">
                           Trashed
-                  </TableCell>
+                        </TableCell>
                         <TableCell align="right">{file.trash ? <DeleteRounded className={classes.icon} /> : 'No'}</TableCell>
                       </TableRow>
                       <TableRow key={file.dateCreated}>
                         <TableCell component="th" scope="row">
                           Date Created
-                  </TableCell>
+                        </TableCell>
                         <TableCell align="right">
                           <Typography variant="inherit" color="textSecondary">
                             {moment(file.dateCreated).format('lll')}
@@ -475,12 +470,6 @@ const FilesList = props => {
           </Box>
         </Grid>
       </Grid>
-
-      <FileUploadDialog />
-      <ShareFileDialog />
-      <AddFileDialog />
-      <AddFolderDialog />
-      <FilePreviewDialog />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link as RouteLink } from 'react-router-dom';
 import {
   makeStyles,
   Avatar,
@@ -185,9 +185,9 @@ const RegistrationForm = props => {
               </Typography>
               <Typography variant="body2">
                 <span>Existing User?</span>&nbsp;
-                <Link href="/login" variant="body2">
+                <RouteLink to="/login" variant="body2">
                   Sign In
-                </Link>
+                </RouteLink>
               </Typography>
 
               <TextField

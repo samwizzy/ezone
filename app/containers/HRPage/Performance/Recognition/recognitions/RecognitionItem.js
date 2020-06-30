@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Breadcrumbs, Box, Button, Card, CardHeader, CardContent, CardActions, Divider, IconButton, Paper, Typography } from '@material-ui/core';
 import AvatarGroup from '@material-ui/lab/AvatarGroup'
@@ -15,7 +15,7 @@ import * as Selectors from '../../selectors';
 import * as AppSelectors from '../../../../App/selectors';
 import FavoriteBorderOutlinedIcon from '@material-ui/icons/FavoriteBorderOutlined';
 import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
-import AwardIcon from '../../../../../images/awardIcon.svg';
+import RecognitionIcon from '../../../../../images/recognitionIcon.svg';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
 
 const RecognitionItem = props => {
 	const classes = useStyles();
-	const { loading, recognitions } = props;
+	const { loading, match, recognitions } = props;
 
 	React.useEffect(() => {
 	}, []);
@@ -48,7 +48,7 @@ const RecognitionItem = props => {
 		<Card className={classes.root} square classes={{ root: classes.card }}>
 			<CardHeader
 				avatar={
-					<>
+					<React.Fragment>
 						<AvatarGroup max={3}>
 							<Avatar alt="Remy Sharp" className={classes.avatar} src="/static/images/avatar/1.jpg" />
 							<Avatar alt="Travis Howard" className={classes.avatar} src="/static/images/avatar/2.jpg" />
@@ -58,18 +58,18 @@ const RecognitionItem = props => {
 						</AvatarGroup>
 						<Typography variant="body2" color="textSecondary">
 							Mike Eze, Mike Eze, Mike Eze & Mike Eze <small>were Recognized for</small> Creativity
-					</Typography>
-					</>
+						</Typography>
+					</React.Fragment>
 				}
 				action={
 					<React.Fragment>
-						<img src={AwardIcon} /> &nbsp;
-					<Typography display="inline"> Creativity </Typography>
+						<img src={RecognitionIcon} /> &nbsp;
+						<Typography display="inline"> Creativity </Typography>
 					</React.Fragment>
 				}
 			/>
 			<CardContent>
-				<Typography variant="subtitle1">Great Job on the new Sales</Typography>
+				<Typography variant="subtitle1"><Link to={`${match.url}/1`}>Great Job on the new Sales</Link></Typography>
 				<Typography variant="body2" color="textSecondary" component="p">
 					This impressive paella is a perfect party dish and a fun meal to cook together with your
 					guests. Add 1 cup of frozen peas along with the mussels, if you like.

@@ -124,7 +124,7 @@ export const CreateJobApplication = `${BaseUrl}/authserv/api/v1/job_application`
 
 // HR:Performance - Goals
 export const GetPerformanceApi = `${BaseUrl}/authserv/api/v1/performance/get_by_orgid`;
-export const CreatePerformanceApi = `${BaseUrl}/authserv/api/v1/job_opening`;
+export const CreatePerformanceApi = `${BaseUrl}/authserv/api/v1/performance/add`;
 export const GetPerformanceByIdApi = `${BaseUrl}/authserv/api/v1/performance/get_by_id`;
 export const UpdatePerformance = `${BaseUrl}/authserv/api/v1/performance/update`;
 // HR:Performance - Recognition

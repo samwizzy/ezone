@@ -15,10 +15,10 @@ import * as Selectors from '../../selectors';
 import * as AppSelectors from '../../../../App/selectors';
 import FavoriteBorderOutlinedIcon from '@material-ui/icons/FavoriteBorderOutlined';
 import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
-import AwardIcon from '../../../../../images/awardIcon.svg';
+import RecognitionIcon from '../../../../../images/recognitionIcon.svg';
 
 const useStyles = makeStyles(theme => ({
-  root: {
+	root: {
 		flexGrow: 1,
 		"& .MuiCardActions-root": {
 			justifyContent: "space-between"
@@ -37,37 +37,37 @@ const useStyles = makeStyles(theme => ({
 
 
 const RecognitionItem = props => {
-  const classes = useStyles();
+	const classes = useStyles();
 	const { loading } = props;
-	const [comment, setComment] = React.useState({comment: ""})
+	const [comment, setComment] = React.useState({ comment: "" })
 
-  React.useEffect(() => {
-  }, []);
+	React.useEffect(() => {
+	}, []);
 
-  const handleChange = ({target}) => {
-    setComment({...state, [target.name]: target.value})
-  }
+	const handleChange = ({ target }) => {
+		setComment({ ...state, [target.name]: target.value })
+	}
 
-  return (
-		<Card className={classes.root} square classes={{root: classes.card}}>
+	return (
+		<Card className={classes.root} square classes={{ root: classes.card }}>
 			<CardHeader
 				avatar={
 					<>
-					<AvatarGroup max={3}>
-						<Avatar alt="Remy Sharp" className={classes.avatar} src="/static/images/avatar/1.jpg" />
-						<Avatar alt="Travis Howard" className={classes.avatar} src="/static/images/avatar/2.jpg" />
-						<Avatar alt="Cindy Baker" className={classes.avatar} src="/static/images/avatar/3.jpg" />
-						<Avatar alt="Agnes Walker" className={classes.avatar} src="/static/images/avatar/4.jpg" />
-						<Avatar alt="Trevor Henderson" className={classes.avatar} src="/static/images/avatar/5.jpg" />
-					</AvatarGroup>
-					<Typography variant="body2" color="textSecondary">
-						Mike Eze, Mike Eze, Mike Eze & Mike Eze <small>were Recognized for</small> Creativity
+						<AvatarGroup max={3}>
+							<Avatar alt="Remy Sharp" className={classes.avatar} src="/static/images/avatar/1.jpg" />
+							<Avatar alt="Travis Howard" className={classes.avatar} src="/static/images/avatar/2.jpg" />
+							<Avatar alt="Cindy Baker" className={classes.avatar} src="/static/images/avatar/3.jpg" />
+							<Avatar alt="Agnes Walker" className={classes.avatar} src="/static/images/avatar/4.jpg" />
+							<Avatar alt="Trevor Henderson" className={classes.avatar} src="/static/images/avatar/5.jpg" />
+						</AvatarGroup>
+						<Typography variant="body2" color="textSecondary">
+							Mike Eze, Mike Eze, Mike Eze & Mike Eze <small>were Recognized for</small> Creativity
 					</Typography>
 					</>
 				}
 				action={
 					<React.Fragment>
-						<img src={AwardIcon} /> &nbsp;
+						<img src={RecognitionIcon} /> &nbsp;
 						<Typography display="inline"> Creativity </Typography>
 					</React.Fragment>
 				}
@@ -83,7 +83,7 @@ const RecognitionItem = props => {
 				<Typography variant="caption" aria-label="add to favorites">
 					<FavoriteBorderOutlinedIcon /> 13 <span className={classes.text}>likes</span>
 				</Typography>
-				
+
 				<Typography variant="caption" aria-label="share">
 					3 days ago <em>by</em> <span className={classes.text}>Chike Obi</span>
 				</Typography>
@@ -124,25 +124,25 @@ const RecognitionItem = props => {
 				</div>
 			</CardContent>
 		</Card>
-  );
+	);
 };
 
 RecognitionItem.propTypes = {
-  loading: PropTypes.bool,
+	loading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(),
-  goals: Selectors.makeSelectGoals()
+	loading: Selectors.makeSelectLoading(),
+	goals: Selectors.makeSelectGoals()
 });
 
 function mapDispatchToProps(dispatch) {
-  return {};
+	return {};
 }
 
 const withConnect = connect(
-  mapStateToProps,
-  mapDispatchToProps,
+	mapStateToProps,
+	mapDispatchToProps,
 );
 
 export default compose(

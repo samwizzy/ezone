@@ -63,8 +63,8 @@ const PartyGroupDialog = props => {
   const handleReset = () => setValues({ ...initialState })
 
   const handleSubmit = () => {
-    // newPartyGroupDialog.type === 'new' ?
-    //   createNewPartyGroupAction(values) : updatePartyGroupAction(values)
+    newPartyGroupDialog.type === 'new' ?
+      createNewPartyGroupAction(values) : updatePartyGroupAction(values)
     handleReset()
   };
 

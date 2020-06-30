@@ -1,6 +1,6 @@
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
-import { withStyles, Button, Card, CardHeader, CardContent } from '@material-ui/core';
+import { withStyles, Button, Card, CardHeader, CardContent, Typography } from '@material-ui/core';
 
 const styles = theme => ({
 	root: {
@@ -13,26 +13,6 @@ const styles = theme => ({
 	},
 });
 
-const data = {
-	labels: [
-		'In Time',
-		'Absent',
-		'Late'
-	],
-	datasets: [{
-		data: [300, 50, 100],
-		backgroundColor: [
-			'#10C117',
-			'#EB4D65',
-			'#FCD81C'
-		],
-		hoverBackgroundColor: [
-			'#10C117',
-			'#EB4D65',
-			'#FCD81C'
-		]
-	}]
-};
 
 export default withStyles(styles)(class Widget8 extends React.Component {
 
@@ -75,7 +55,10 @@ export default withStyles(styles)(class Widget8 extends React.Component {
 					title="Attendance"
 				/>
 				<CardContent>
-					<Doughnut data={data} />
+					{(inTime || absent || late) ?
+						<Doughnut data={data} /> :
+						<Typography align="center">No attendance has taken yet</Typography>
+					}
 				</CardContent>
 			</Card>
 		);

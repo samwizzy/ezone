@@ -14,15 +14,19 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import * as Selectors from '../selectors';
+import makeSelectHRPage from './../selectors';
+import reducer from './../reducer';
+import saga from './../saga';
 import Dashboard from './Dashboard'
 import ModuleLayout from './components/ModuleLayout'
 import AgeProfileReport from './AgeProfileReport/AgeProfileReport'
 import GenderProfileReport from './GenderProfileReport/GenderProfileReport'
 
+const key = 'hrPage';
 export function DashboardPage({ match }) {
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
   const { params } = match
-  console.log(params, "params dashboard")
 
   return (
     <div>
@@ -46,6 +50,7 @@ export function DashboardPage({ match }) {
 DashboardPage.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
+  hrPage: makeSelectHRPage(),
 });
 
 function mapDispatchToProps(dispatch) {

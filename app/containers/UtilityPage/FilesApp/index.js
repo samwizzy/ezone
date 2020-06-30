@@ -15,24 +15,26 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import FilesList from './FoldersList'
 import FileList from './FolderList'
-import ModuleLayout from '../components/ModuleLayout' 
+import ModuleLayout from '../components/ModuleLayout'
+import FileUploadDialog from './components/FileUploadDialog'
+import ShareFileDialog from './components/ShareFileDialog'
+import AddFileDialog from './components/AddFileDialog'
+import AddFolderDialog from './components/AddFolderDialog'
+import FilePreviewDialog from './components/FilePreviewDialog'
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  }
-}));
+const key = "utilityPage"
 
-const FilesApp = props => {
-  useInjectReducer({ key: 'utilityPage', reducer });
-  useInjectSaga({ key: 'utilityPage', saga });
+export function FilesApp(props) {
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
 
-  const classes = useStyles();
   const { loading, getAllFoldersAndDocs, getEmployees, match } = props;
   const { params } = match
 
+  console.log(params, "params")
+
   React.useEffect(() => {
-    getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
+    getAllFoldersAndDocs({ folderId: 0, type: 'ROOT' })
     getEmployees()
   }, []);
 
@@ -44,10 +46,16 @@ const FilesApp = props => {
       </Helmet>
 
       <ModuleLayout>
-        { params.folderId? 
+        {params.folderId ?
           <FileList /> : <FilesList />
         }
       </ModuleLayout>
+
+      <FileUploadDialog />
+      <ShareFileDialog />
+      <AddFileDialog />
+      <AddFolderDialog />
+      <FilePreviewDialog />
     </div>
   );
 };

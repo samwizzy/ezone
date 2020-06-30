@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
@@ -46,22 +46,22 @@ const initialState = {
   assignedToEmail: "",
   supervisedBy: "",
   attachments: []
-} 
+}
 
 function AddTaskDialog(props) {
   const classes = useStyles();
   const { loading, closeNewTaskDialog, createUtilityTask, updateUtilityTask, dialog, users, task } = props;
-  const [form, setForm] = React.useState({...initialState});
+  const [form, setForm] = React.useState({ ...initialState });
 
   React.useEffect(() => {
-    if(task && dialog.type === 'edit'){
+    if (task && dialog.type === 'edit') {
       const { id, title, description, status, startDate, endDate, assignedTo, assignedToName, assignedToEmail, supervisedBy } = task
-      setForm({...form, id, title, description, status, startDate: moment(startDate).format('YYYY-MM-DD'), endDate: moment(endDate).format('YYYY-MM-DD'), assignedTo, assignedToName, assignedToEmail, supervisedBy })
+      setForm({ ...form, id, title, description, status, startDate: moment(startDate).format('YYYY-MM-DD'), endDate: moment(endDate).format('YYYY-MM-DD'), assignedTo, assignedToName, assignedToEmail, supervisedBy })
     }
   }, []);
 
   React.useEffect(() => {
-    if(!loading){
+    if (!loading) {
       setForm(initialState)
     }
   }, [loading])
@@ -75,36 +75,40 @@ function AddTaskDialog(props) {
 
   const handleChange = (event) => {
     const { name, value } = event.target
-    setForm({...form, [name]: value});
+    setForm({ ...form, [name]: value });
   }
 
   const canSubmitForm = () => {
-    const {title, description, startDate, endDate } = form
+    const { title, description, startDate, endDate } = form
     return title.length > 0 && description.length > 0
   }
 
-  const handleDateChange = (date, name) => { 
-    setForm(_.set({...form}, name, moment(date).format('YYYY-MM-DD')))
+  const handleDateChange = (date, name) => {
+    setForm(_.set({ ...form }, name, moment(date).format('YYYY-MM-DD')))
   }
 
-  const handleImageChange = (ev) => { 
+  const handleImageChange = (ev) => {
     let fileNode = []
     Object.keys(ev.target.files).map(index => {
       const { name, size, type } = ev.target.files[index]
       const result = toBase64(ev.target.files[index]);
       result.then(rs => {
-        const file = Object.assign({}, { fileName: name, size, format: type, file: rs })
+        const fileName = name.substr(0, 5).concat(moment().format('YYYY-MM-DDTHH:mm:ss.SSS'))
+        const file = Object.assign({}, { fileName, size, format: type, file: rs })
         fileNode.push(file)
-      })   
+      })
     })
-    setForm(_.set({...form}, event.target.name, fileNode))
+    setForm(_.set({ ...form }, event.target.name, fileNode))
   }
 
   const handleSubmit = () => {
-    dialog.type === 'new'?
-    createUtilityTask(form) :
-    updateUtilityTask(form)
+    dialog.type === 'new' ?
+      createUtilityTask(form) :
+      updateUtilityTask(form)
   }
+
+  console.log(dialog, "dialog AddTaskDialog")
+  console.log(form, "form AddTaskDialog")
 
   return (
     <div>
@@ -119,11 +123,11 @@ function AddTaskDialog(props) {
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
-              {dialog.type === 'new'? "Add Task" : "Edit Task"}
+              {dialog.type === 'new' ? "Add Task" : "Edit Task"}
             </Typography>
           </Toolbar>
         </AppBar>
-        
+
         <DialogContent dividers>
           <Grid container>
             <Grid item xs={12}>
@@ -163,7 +167,7 @@ function AddTaskDialog(props) {
                       autoOk
                       disableToolbar
                       disablePast
-                      format="MM/dd/yyyy"
+                      format="dd/MM/yyyy"
                       margin="normal"
                       inputVariant="outlined"
                       size="small"
@@ -185,7 +189,7 @@ function AddTaskDialog(props) {
                       autoOk
                       disableToolbar
                       disablePast
-                      format="MM/dd/yyyy"
+                      format="dd/MM/yyyy"
                       inputVariant="outlined"
                       size="small"
                       margin="normal"
@@ -212,11 +216,10 @@ function AddTaskDialog(props) {
                 select
                 fullWidth
                 margin="normal"
-                className={classes.textField}
                 variant="outlined"
                 size="small"
                 label="Assigned To"
-                value={form.assignedTo?form.assignedTo:''}
+                value={form.assignedTo ? form.assignedTo : ''}
                 onChange={handleChange}
               >
                 {users && users.map(user => (
@@ -228,7 +231,7 @@ function AddTaskDialog(props) {
             </Grid>
 
             <Grid item xs={12}>
-              {/* <FormControl variant="outlined" className={classes.formControl} margin="normal">
+              <FormControl variant="outlined" className={classes.formControl} margin="normal">
                 <TextField
                   id="outlined-attachments"
                   name="attachments"
@@ -242,8 +245,8 @@ function AddTaskDialog(props) {
                   variant="outlined"
                   multiple
                 />
-              </FormControl> */}
-              <FormControl variant="outlined" className={classes.formControl} margin="normal">
+              </FormControl>
+              {/* <FormControl variant="outlined" className={classes.formControl} margin="normal">
                 <Button
                   variant="outlined"
                   component="label"
@@ -258,7 +261,7 @@ function AddTaskDialog(props) {
                     multiple
                   />
                 </Button>
-              </FormControl>
+              </FormControl> */}
             </Grid>
           </Grid>
         </DialogContent>
@@ -266,7 +269,7 @@ function AddTaskDialog(props) {
           <Button onClick={closeNewTaskDialog} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={loading? loading : !canSubmitForm()} color="primary" endIcon={loading && <CircularProgress size={20} />}>
+          <Button onClick={handleSubmit} disabled={loading ? loading : !canSubmitForm()} color="primary" endIcon={loading && <CircularProgress size={20} />}>
             Save
           </Button>
         </DialogActions>
@@ -293,7 +296,6 @@ function mapDispatchToProps(dispatch) {
     createUtilityTask: ev => dispatch(Actions.createUtilityTask(ev)),
     updateUtilityTask: (data) => dispatch(Actions.updateUtilityTask(data)),
     closeNewTaskDialog: () => dispatch(Actions.closeNewTaskDialog()),
-    dispatch,
   };
 }
 

@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, makeStyles, Tabs, Tab } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import { compose } from 'redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { darken } from '@material-ui/core/styles/colorManipulator';
@@ -17,80 +17,41 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(2),
-  }
-}));
-
-const AntTabs = withStyles({
-  indicator: {
-    backgroundColor: '#ffffff',
   },
-})(Tabs);
-
-const AntTab = withStyles(theme => ({
-  root: {
-    borderRadius: "20px 20px 0px 0px",
-    minWidth: 92,
-    fontWeight: theme.typography.fontWeightRegular,
-    fontSize: theme.typography.subtitle1.fontSize,
-    padding: theme.spacing(1, 3),
-    marginRight: theme.spacing(1),
-    color: '#ffffff',
-    '&:hover': {
-      color: theme.palette.primary.main,
-      backgroundColor: '#ffffff',
-      opacity: 1,
-    },
-    '&$selected': {
-      color: '#1890ff',
-      backgroundColor: '#ffffff',
-			fontWeight: theme.typography.fontWeightMedium,
-    },
-    '&:focus': {
-      color: '#40a9ff',
-    },
-	},
-  selected: {},
-}))(props => <Tab disableRipple {...props} />);
-
-function a11yProps(index) {
-  return {
-    id: `full-width-tab-${index}`,
-    'aria-controls': `full-width-tabpanel-${index}`,
-  };
-}
+  active: {
+    backgroundColor: theme.palette.common.white,
+    color: `${darken(theme.palette.primary.main, 0.1)} !important`,
+  },
+}));
 
 function ModuleLayout(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0)
+  const { match } = props
+  const { params } = match
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue)
-  }
+  console.log(match, "match leave management")
 
   return (
     <div className={classes.root}>
       <MenuBar
         navigations={
           <React.Fragment>
-            <AntTabs
-              value={value}
-              onChange={handleChange}
-              indicatorColor="primary"
-              textColor="primary"
-              centered
-            >
-              <AntTab label="Leave Requests" {...a11yProps(0)}  />
-              <AntTab label="Leave Type" {...a11yProps(1)} />
-              <AntTab label="Holidays" {...a11yProps(2)} />
-            </AntTabs>
+            <NavLink exact to="/human-resource/leave-management/leave-request" activeClassName={classes.active}>
+              Leave Requests
+            </NavLink>
+            <NavLink to="/human-resource/leave-management/leave-type" activeClassName={classes.active}>
+              Leave Types
+            </NavLink>
+            <NavLink to="/human-resource/leave-management/holidays" activeClassName={classes.active}>
+              Holidays
+            </NavLink>
           </React.Fragment>
         }
         content={
           <div className={classes.content}>
-            {value === 0 && (<LeaveRequest />)}
-            {value === 1 && (<LeaveType />)}
-            {value === 2 && (<Holidays />)}
+            {params.page === "leave-request" && <LeaveRequest />}
+            {params.page === "leave-type" && <LeaveType />}
+            {params.page === "holidays" && <Holidays />}
           </div>
         }
       />

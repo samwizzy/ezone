@@ -84,10 +84,12 @@ const useStyles = makeStyles(theme => ({
 
 const GoalsItem = props => {
 	const classes = useStyles();
-	const { loading, match } = props;
+	const { loading, match, goals } = props;
 
 	React.useEffect(() => {
 	}, []);
+
+	console.log(goals, "goals")
 
 	const handleClick = () => { }
 

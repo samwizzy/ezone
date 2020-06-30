@@ -5,7 +5,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { makeStyles } from '@material-ui/core/styles';
-import {AppBar, Dialog, DialogContent, IconButton, Toolbar, Typography, Slide} from '@material-ui/core';
+import { AppBar, Dialog, DialogContent, IconButton, Toolbar, Typography, Slide } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import * as Actions from '../../actions'
 import * as Selectors from '../../selectors';
@@ -44,11 +44,11 @@ function FilePreviewDialog(props) {
             }
           </Toolbar>
         </AppBar>
-        
+
         <DialogContent>
-        {dialog.data.fileUrl &&
-          <img src={dialog.data.fileUrl} alt={dialog.data.docName} />
-        }
+          {dialog.data.fileUrl &&
+            <img src={dialog.data.fileUrl} alt={dialog.data.docName} />
+          }
         </DialogContent>
       </Dialog>
     </div>

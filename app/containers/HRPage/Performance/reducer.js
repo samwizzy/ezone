@@ -18,6 +18,9 @@ export const initialState = {
   feedbacks: [],
   reviews: [],
   employees: [],
+  departments: [],
+  branches: [],
+  roles: [],
   goalsDialog: {
     type: 'new',
     props: {
@@ -52,80 +55,138 @@ export const initialState = {
 const performanceReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
-      case Constants.GET_GOALS:
+      case Constants.GET_EMPLOYEES: {
         return {
           ...state,
           loading: true
-        };
-        break;
-      case Constants.GET_GOALS_SUCCESS:
+        }
+      }
+      case Constants.GET_EMPLOYEES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          employees: action.payload
+        }
+      }
+      case Constants.GET_DEPARTMENTS: {
+        return {
+          ...state,
+          loading: true
+        }
+      }
+      case Constants.GET_DEPARTMENTS_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          departments: action.payload
+        }
+      }
+      case Constants.GET_BRANCHES: {
+        return {
+          ...state,
+          loading: true
+        }
+      }
+      case Constants.GET_BRANCHES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          branches: action.payload
+        }
+      }
+      case Constants.GET_ROLES: {
+        return {
+          ...state,
+          loading: true
+        }
+      }
+      case Constants.GET_ROLES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          roles: action.payload
+        }
+      };
+      case Constants.GET_LEAVE_REQUEST: {
+        return {
+          ...state,
+          loading: true
+        }
+      }
+      case Constants.GET_GOALS: {
+        return {
+          ...state,
+          loading: true
+        }
+      }
+      case Constants.GET_GOALS_SUCCESS: {
         return {
           ...state,
           loading: false,
           goals: action.payload
-        };
-        break;
+        }
+      }
       case Constants.CREATE_GOALS: {
         return {
           ...state,
           loading: true,
-        };
+        }
       }
       case Constants.CREATE_GOALS_SUCCESS: {
         return {
           ...state,
           loading: false,
-        };
+        }
       }
-      case Constants.GET_RECOGNITIONS:
+      case Constants.GET_RECOGNITIONS: {
         return {
           ...state,
           loading: true
-        };
-        break;
-      case Constants.GET_RECOGNITIONS_SUCCESS:
+        }
+      }
+      case Constants.GET_RECOGNITIONS_SUCCESS: {
         return {
           ...state,
           loading: false,
           recognitions: action.payload
-        };
-        break;
+        }
+      }
       case Constants.CREATE_RECOGNITION: {
         return {
           ...state,
           loading: true,
-        };
+        }
       }
       case Constants.CREATE_RECOGNITION_SUCCESS: {
         return {
           ...state,
           loading: false,
-        };
+        }
       }
-      case Constants.OPEN_NEW_GOALS_DIALOG:
+      case Constants.OPEN_NEW_GOALS_DIALOG: {
         return {
           ...state,
           goalsDialog: { ...state.goalsDialog, props: { open: true } },
-        };
-        break;
-      case Constants.CLOSE_NEW_GOALS_DIALOG:
+        }
+      }
+      case Constants.CLOSE_NEW_GOALS_DIALOG: {
         return {
           ...state,
           goalsDialog: { ...state.goalsDialog, props: { open: false } },
-        };
-        break;
-      case Constants.OPEN_NEW_RECOGNITION_DIALOG:
+        }
+      }
+      case Constants.OPEN_NEW_RECOGNITION_DIALOG: {
         return {
           ...state,
           recognitionDialog: { ...state.recognitionDialog, props: { open: true } },
-        };
-        break;
-      case Constants.CLOSE_NEW_RECOGNITION_DIALOG:
+        }
+      }
+      case Constants.CLOSE_NEW_RECOGNITION_DIALOG: {
         return {
           ...state,
           recognitionDialog: { ...state.recognitionDialog, props: { open: false } },
-        };
-        break;
+        }
+      }
     }
   });
 

@@ -44,13 +44,13 @@ function AddFolderDialog(props) {
     return folderName.length > 0 && description.length > 0
   }
 
-  console.log(dialog, 'checking dialog...')
+  console.log(dialog, 'checking folder dialog...')
   console.log(form, 'checking form...')
 
   return (
     <div>
       <Dialog
-        {...dialog.props}
+        // {...dialog.props}
         TransitionComponent={Transition}
         keepMounted
         onClose={closeNewFolderDialog}
@@ -58,38 +58,36 @@ function AddFolderDialog(props) {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle id="alert-dialog-slide-title">Add Folder</DialogTitle>
-        <Divider />
-        <DialogContent>
-          <form className={classes.root}>
-            <Grid container>
-              <Grid item xs={12}>
-                <TextField
-                  name="folderName"
-                  label="Folder name"
-                  id="outlined-size-small"
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                  value={form.folderName}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  id="outlined-description"
-                  name="description"
-                  label="Description"
-                  multiline
-                  fullWidth
-                  rows="4"
-                  rowsMax="4"
-                  value={form.description}
-                  onChange={handleChange}
-                  variant="outlined"
-                />
-              </Grid>
+
+        <DialogContent dividers>
+          <Grid container>
+            <Grid item xs={12}>
+              <TextField
+                name="folderName"
+                label="Folder name"
+                id="folder-name"
+                fullWidth
+                variant="outlined"
+                size="small"
+                value={form.folderName}
+                onChange={handleChange}
+              />
             </Grid>
-          </form>
+            <Grid item xs={12}>
+              <TextField
+                id="folder-description"
+                name="description"
+                label="Description"
+                multiline
+                fullWidth
+                rows="4"
+                rowsMax="4"
+                value={form.description}
+                onChange={handleChange}
+                variant="outlined"
+              />
+            </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button onClick={closeNewFolderDialog} color="primary">

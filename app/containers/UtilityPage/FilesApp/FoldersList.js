@@ -17,11 +17,6 @@ import { AddFile } from './../components/AddButton';
 import * as Actions from '../actions';
 import * as Selectors from './../selectors';
 import * as AppSelectors from './../../App/selectors';
-import FileUploadDialog from './components/FileUploadDialog'
-import ShareFileDialog from './components/ShareFileDialog'
-import AddFileDialog from './components/AddFileDialog'
-import AddFolderDialog from './components/AddFolderDialog'
-import FilePreviewDialog from './components/FilePreviewDialog'
 import AddSignature from './components/AddSignature'
 import DocWidget from './components/DocWidget'
 import NoFilesList from './components/NoFilesList'
@@ -342,7 +337,7 @@ const FilesList = props => {
             <Toolbar>
               <Typography variant="subtitle1" color="textSecondary">Document Details</Typography>
             </Toolbar>
-            {file && Object.keys(file).length > 0 &&
+            {file &&
               <div>
                 <Card className={classes.cardRoot} elevation={0}>
                   <CardMedia
@@ -437,11 +432,6 @@ const FilesList = props => {
         </Grid>
       </Grid>
 
-      <FileUploadDialog />
-      <ShareFileDialog />
-      <AddFileDialog />
-      <AddFolderDialog />
-      <FilePreviewDialog />
     </div>
   );
 };

@@ -15,6 +15,7 @@ import {
 	TableBody,
 	TableRow,
 	TableCell,
+	Typography
 } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import { green, orange, red } from '@material-ui/core/colors'
@@ -90,7 +91,7 @@ const Widget6 = ({ employees }) => {
 			<Card className={classes.card}>
 				<CardHeader
 					action={
-						<>
+						<React.Fragment>
 							<Button color="primary" aria-label="settings" onClick={handleClickListItem}>
 								{selectedIndex} <ExpandMoreIcon />
 							</Button>
@@ -112,26 +113,30 @@ const Widget6 = ({ employees }) => {
 									</MenuItem>
 								))}
 							</Menu>
-						</>
+						</React.Fragment>
 					}
 					title="Uploading Birthdays"
 				/>
 				<CardContent>
-					<Table className={classes.table}>
-						<TableBody>
-							{birthdayEmps.length > 0 && birthdayEmps.slice(0, 2).map((emp, i) =>
-								<TableRow key={i}>
-									<TableCell component="th" scope="row">
-										<Avatar aria-label="recipe" className={classes.avatar}>
-											R
-										</Avatar>
-									</TableCell>
-									<TableCell align="left">{emp.firstName + ' ' + emp.lastName}</TableCell>
-									<TableCell align="right">{moment(emp.dob).format('MMM DD')}</TableCell>
-								</TableRow>
-							)}
-						</TableBody>
-					</Table>
+					{birthdayEmps.length > 0 ?
+						<Table className={classes.table}>
+							<TableBody>
+								{birthdayEmps.slice(0, 2).map((emp, i) =>
+									<TableRow key={i}>
+										<TableCell component="th" scope="row">
+											<Avatar aria-label="recipe" className={classes.avatar}>
+												R
+											</Avatar>
+										</TableCell>
+										<TableCell align="left">{emp.firstName + ' ' + emp.lastName}</TableCell>
+										<TableCell align="right">{moment(emp.dob).format('MMM DD')}</TableCell>
+									</TableRow>
+								)}
+							</TableBody>
+						</Table>
+						:
+						<Typography align="center">No recent birthdays yet</Typography>
+					}
 				</CardContent>
 			</Card>
 		</div>

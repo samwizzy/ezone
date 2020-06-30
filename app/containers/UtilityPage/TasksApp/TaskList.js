@@ -295,37 +295,37 @@ const TaskList = props => {
               <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="custom pagination table">
                   <TableBody>
-                    <TableRow key={task.title}>
+                    <TableRow>
                       <TableCell component="th" scope="row">
                         Title
                     </TableCell>
                       <TableCell align="left">{task.title}</TableCell>
                     </TableRow>
-                    <TableRow key={task.description}>
+                    <TableRow>
                       <TableCell component="th" scope="row">
                         Description
                     </TableCell>
                       <TableCell align="left">{task.description}</TableCell>
                     </TableRow>
-                    <TableRow key={task.status}>
+                    <TableRow>
                       <TableCell component="th" scope="row">
                         Status
                     </TableCell>
                       <TableCell align="left">{task.status}</TableCell>
                     </TableRow>
-                    <TableRow key={task.assignedTo}>
+                    <TableRow>
                       <TableCell component="th" scope="row">
                         Assigned To
                     </TableCell>
                       <TableCell align="left">{task.assignedTo}</TableCell>
                     </TableRow>
-                    <TableRow key={task.createdBy}>
+                    <TableRow>
                       <TableCell component="th" scope="row">
                         Owner
                     </TableCell>
                       <TableCell align="left">{task.createdBy}</TableCell>
                     </TableRow>
-                    <TableRow key={task.startDate}>
+                    <TableRow>
                       <TableCell component="th" scope="row">
                         Date Issued
                     </TableCell>
@@ -333,7 +333,7 @@ const TaskList = props => {
                         {task.startDate ? moment(task.startDate).format('lll') : ''}
                       </TableCell>
                     </TableRow>
-                    <TableRow key={task.endDate}>
+                    <TableRow>
                       <TableCell component="th" scope="row">
                         End Date
                     </TableCell>
