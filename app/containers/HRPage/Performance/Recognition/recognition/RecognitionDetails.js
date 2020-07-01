@@ -8,10 +8,10 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors'
 import classNames from 'classnames'
-import * as Actions from '../actions';
-import * as Selectors from '../selectors';
-import * as AppSelectors from '../../../App/selectors';
-import RecognitionItem from './recognition/RecognitionItem'
+import * as Actions from '../../actions';
+import * as Selectors from '../../selectors';
+import * as AppSelectors from '../../../../App/selectors';
+import RecognitionItem from './RecognitionItem'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,15 +29,18 @@ const useStyles = makeStyles(theme => ({
 
 const RecognitionDetails = props => {
   const classes = useStyles();
-	const { loading, openNewRecognitionDialog } = props;
+  const { loading, openNewRecognitionDialog, recognition } = props;
 
-  React.useEffect(() => {
-  }, []);
+  if (!recognition) {
+    return ''
+  }
+
+  console.log(recognition, "recognition details")
 
   return (
     <div className={classes.root}>
       <Grid container>
-				<Grid item xs={12}>
+        <Grid item xs={12}>
           <AppBar position="static" color="inherit" elevation={2}>
             <Toolbar variant="dense">
               <Typography variant="h6" className={classes.title}>
@@ -46,9 +49,9 @@ const RecognitionDetails = props => {
               <Button variant="contained" color="primary" onClick={openNewRecognitionDialog}>Add Recognition</Button>
             </Toolbar>
           </AppBar>
-				</Grid>
+        </Grid>
         <Grid item md={12}>
-          <RecognitionItem />
+          <RecognitionItem recognition={recognition} />
         </Grid>
       </Grid>
     </div>
@@ -61,7 +64,7 @@ RecognitionDetails.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  goals: Selectors.makeSelectGoals()
+  recognition: Selectors.makeSelectRecognition()
 });
 
 function mapDispatchToProps(dispatch) {
@@ -76,7 +79,7 @@ const withConnect = connect(
 );
 
 export default compose(
-	withRouter,
-	withConnect,
-	memo,
+  withRouter,
+  withConnect,
+  memo,
 )(RecognitionDetails);

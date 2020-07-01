@@ -38,6 +38,28 @@ export function* getGoals() {
   }
 }
 
+export function* getGoalsById({ payload }) {
+  console.log(payload, "getting goal payload")
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetPerformanceByIdApi}/${payload}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "goal by id response")
+
+    yield put(Actions.getGoalsByIdSuccess(response));
+  } catch (err) {
+  }
+}
+
 export function* createGoals({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
@@ -64,6 +86,32 @@ export function* createGoals({ payload }) {
   }
 }
 
+export function* commentGoals({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.PerformanceCommentApi}`;
+  payload.orgId = user && user.organisation.orgId
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "comment goals response")
+    yield put(AppActions.openSnackBar({ message: 'Goal commented successfully', status: 'success' }));
+
+    yield put(Actions.createGoalsSuccess(response));
+  } catch (err) {
+    const error = yield call(errorHandler, err.response.json());
+    console.log(error, "goal comment error")
+  }
+}
+
 export function* getRecognitions() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
@@ -81,6 +129,27 @@ export function* getRecognitions() {
     console.log(response, "recognitions response")
 
     yield put(Actions.getRecognitionsSuccess(response));
+  } catch (err) {
+  }
+}
+
+export function* getRecognitionById({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetRecognitionByIdApi}/${payload}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "recognition response")
+
+    yield put(Actions.getRecognitionByIdSuccess(response));
   } catch (err) {
   }
 }
@@ -108,7 +177,34 @@ export function* createRecognition({ payload }) {
     yield put(Actions.createRecognitionSuccess(response));
   } catch (err) {
     const error = yield call(errorHandler, err.response.json());
-    console.log(error, "goal create error")
+    console.log(error, "recognition create error")
+  }
+}
+
+export function* commentRecognition({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.RecognitionCommentApi}`;
+  payload.orgId = user && user.organisation.orgId
+
+  console.log(payload, "comment recognition")
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "comment recognition response")
+
+    yield put(Actions.createRecognitionSuccess(response));
+  } catch (err) {
+    const error = yield call(errorHandler, err.response.json());
+    console.log(error, "comment recognition error")
   }
 }
 
@@ -219,6 +315,11 @@ export default function* PerformanceRootSaga() {
   yield takeLatest(Constants.GET_BRANCHES, getBranches);
   yield takeLatest(Constants.GET_ROLES, getRoles);
   yield takeLatest(Constants.GET_GOALS, getGoals);
+  yield takeLatest(Constants.GET_GOALS_BY_ID, getGoalsById);
+  yield takeLatest(Constants.GET_RECOGNITIONS, getRecognitions);
+  yield takeLatest(Constants.GET_RECOGNITION_BY_ID, getRecognitionById);
   yield takeLatest(Constants.CREATE_GOALS, createGoals);
   yield takeLatest(Constants.CREATE_RECOGNITION, createRecognition);
+  yield takeLatest(Constants.COMMENT_GOALS, commentGoals);
+  yield takeLatest(Constants.COMMENT_RECOGNITION, commentRecognition);
 }

@@ -127,11 +127,13 @@ export const GetPerformanceApi = `${BaseUrl}/authserv/api/v1/performance/get_by_
 export const CreatePerformanceApi = `${BaseUrl}/authserv/api/v1/performance/add`;
 export const GetPerformanceByIdApi = `${BaseUrl}/authserv/api/v1/performance/get_by_id`;
 export const UpdatePerformance = `${BaseUrl}/authserv/api/v1/performance/update`;
+export const PerformanceCommentApi = `${BaseUrl}/authserv/api/v1/performance/comment`;
 // HR:Performance - Recognition
 export const GetRecognitionApi = `${BaseUrl}/authserv/api/v1/recognition/get_by_orgid`;
 export const CreateRecognitionApi = `${BaseUrl}/authserv/api/v1/recognition/add`;
 export const GetRecognitionByIdApi = `${BaseUrl}/authserv/api/v1/recognition/get_by_id`;
 export const UpdateRecognition = `${BaseUrl}/authserv/api/v1/recognition/update`;
+export const RecognitionCommentApi = `${BaseUrl}/authserv/api/v1/recognition/comment`;
 
 // HR:Leave-Management - Leave Request
 export const GetLeaveRequestsApi = `${BaseUrl}/authserv/api/v1/all_leave_requests_by_orgid`;
@@ -167,6 +169,7 @@ export const CreateBranch = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_
 export const CreateAnnouncement = `${BaseUrl}/authserv/api/v1/announcement`;
 
 export const GetAnnouncements = `${BaseUrl}/authserv/api/v1/announcements/for_organization`;
+export const AnnouncementComment = `${BaseUrl}/authserv/api/v1/announcement/comment`;
 
 // HR:Attendance API
 export const GetAttendances = `${BaseUrl}/authserv/api/v1/find_attendance_by_orgid`;

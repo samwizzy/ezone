@@ -386,6 +386,18 @@ export function createAnnouncementSuccess(data) {
     payload: data
   };
 }
+export function commentAnnouncement(data) {
+  return {
+    type: Constants.COMMENT_ANNOUNCEMENT,
+    payload: data
+  };
+}
+export function commentAnnouncementSuccess(data) {
+  return {
+    type: Constants.COMMENT_ANNOUNCEMENT_SUCCESS,
+    payload: data
+  };
+}
 export function createJobOpening(data) {
   return {
     type: Constants.CREATE_JOBOPENING,

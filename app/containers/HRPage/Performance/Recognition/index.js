@@ -16,7 +16,7 @@ import * as AppActions from '../../../App/actions';
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
 import RecognitionList from './RecognitionList'
-import RecognitionDetails from './RecognitionDetails'
+import RecognitionDetails from './Recognition'
 import RecognitionDialog from './components/RecognitionDialog'
 
 const useStyles = makeStyles(theme => ({

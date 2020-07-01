@@ -36,9 +36,13 @@ export function* getEmployees() {
 
     yield put(Actions.getEmployeesSuccess(response));
   } catch (err) {
-    console.log(err.response, "emplyees error");
-    if (err.response.status === 500) {
-      yield put(AppActions.openSnackBar({ message: "Interval Server Error", status: 'error' }));
+    if (err.message) {
+      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+    } else {
+      const error = yield call(errorHandler, err.response.json())
+      if (error.status === 500 || error.status === 400) {
+        yield put(AppActions.openSnackBar({ message: error.message, status: 'error' }));
+      }
     }
     // yield put(Actions.getEmployeesError(err));
   }
@@ -62,9 +66,13 @@ export function* getBranchEmployees(id) {
 
     yield put(Actions.getEmployeesSuccess(response));
   } catch (err) {
-    console.log(err.response, "emplyees error");
-    if (err.response.status === 500) {
-      yield put(AppActions.openSnackBar({ message: "Interval Server Error", status: 'error' }));
+    if (err.message) {
+      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+    } else {
+      const error = yield call(errorHandler, err.response.json())
+      if (error.status === 500 || error.status === 400) {
+        yield put(AppActions.openSnackBar({ message: error.message, status: 'error' }));
+      }
     }
   }
 }
@@ -87,9 +95,13 @@ export function* getDeptEmployees(id) {
 
     yield put(Actions.getEmployeesSuccess(response));
   } catch (err) {
-    console.log(err.response, "emplyees error");
-    if (err.response.status === 500) {
-      yield put(AppActions.openSnackBar({ message: "Interval Server Error", status: 'error' }));
+    if (err.message) {
+      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+    } else {
+      const error = yield call(errorHandler, err.response.json())
+      if (error.status === 500 || error.status === 400) {
+        yield put(AppActions.openSnackBar({ message: error.message, status: 'error' }));
+      }
     }
   }
 }
@@ -109,9 +121,6 @@ export function* getEmployeeByUUID({ type, payload }) {
     });
 
     console.log(response, 'userResponse');
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getEmployeeSuccess(response));
   } catch (err) {
@@ -176,9 +185,15 @@ export function* updateEmployee({ payload }) {
       yield put(AppActions.openSnackBar({ message: response.message, status: 'warning' }));
     }
   } catch (err) {
-    console.log(err, 'errr');
-    yield put(Actions.updateEmployeeError(err));
-    yield put(AppActions.openSnackBar({ message: err, status: 'error' }));
+    if (err.message) {
+      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+    } else {
+      const error = yield call(errorHandler, err.response.json())
+      if (error.status === 500 || error.status === 400) {
+        yield put(AppActions.openSnackBar({ message: error.message, status: 'error' }));
+        yield put(Actions.updateEmployeeError(error.message));
+      }
+    }
   }
 }
 
@@ -244,9 +259,13 @@ export function* getDepartmentsByOrgIdApi() {
     console.log(response, 'DEPARTMENT RESPONSE BY ORGID');
     yield put(Actions.getDepartmentsByOrgIdApiSuccess(response));
   } catch (err) {
-    console.log(err.response, "dept error message")
-    if (err.response.status === 400) {
-      yield put(AppActions.openSnackBar({ message: "Something Went Wrong", status: 'warning' }));
+    if (err.message) {
+      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+    } else {
+      const error = yield call(errorHandler, err.response.json())
+      if (error.status === 500 || error.status === 400) {
+        yield put(AppActions.openSnackBar({ message: error.message, status: 'error' }));
+      }
     }
   }
 }
@@ -898,6 +917,36 @@ export function* createAnnouncement({ type, payload }) {
     const error = yield call(errorHandler, err.response.json())
     console.log(err.message, "err message")
     console.log(error, "error create announcement")
+  }
+}
+
+export function* commentAnnouncement({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.AnnouncementComment}`;
+  payload.orgId = user && user.organisation.orgId
+
+  console.log(payload, "comment announcement")
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "Announcement commented response")
+
+    yield put(AppActions.openSnackBar({ message: "Announcement commented successfully", status: 'success' }));
+    yield put({ type: Constants.CLOSE_NEW_ANNOUNCEMENT_DIALOG });
+    yield put({ type: Constants.GET_ANNOUNCEMENTS });
+  } catch (err) {
+    const error = yield call(errorHandler, err.response.json())
+    console.log(err.message, "err message")
+    console.log(error, "error comment announcement")
   }
 }
 

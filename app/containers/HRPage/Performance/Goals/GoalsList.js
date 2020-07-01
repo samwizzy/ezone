@@ -51,7 +51,7 @@ const GoalsList = props => {
         </Grid>
         <Grid item md={12}>
           {goals && goals.map((goal, i) =>
-            <GoalsItem goal={goal} />
+            <GoalsItem key={i} goal={goal} />
           )}
         </Grid>
       </Grid>

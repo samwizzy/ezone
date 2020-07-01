@@ -8,8 +8,8 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import clsx from 'clsx';
+import moment from 'moment';
 import classNames from 'classnames'
-import { green, orange } from '@material-ui/core/colors'
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import * as AppSelectors from '../../../../App/selectors';
@@ -39,10 +39,14 @@ const useStyles = makeStyles(theme => ({
 
 const RecognitionItem = props => {
 	const classes = useStyles();
-	const { loading, match, recognitions } = props;
+	const { loading, match, recognition } = props;
 
 	React.useEffect(() => {
 	}, []);
+
+	if (!recognition) {
+		return ''
+	}
 
 	return (
 		<Card className={classes.root} square classes={{ root: classes.card }}>
@@ -50,29 +54,33 @@ const RecognitionItem = props => {
 				avatar={
 					<React.Fragment>
 						<AvatarGroup max={3}>
-							<Avatar alt="Remy Sharp" className={classes.avatar} src="/static/images/avatar/1.jpg" />
-							<Avatar alt="Travis Howard" className={classes.avatar} src="/static/images/avatar/2.jpg" />
-							<Avatar alt="Cindy Baker" className={classes.avatar} src="/static/images/avatar/3.jpg" />
-							<Avatar alt="Agnes Walker" className={classes.avatar} src="/static/images/avatar/4.jpg" />
-							<Avatar alt="Trevor Henderson" className={classes.avatar} src="/static/images/avatar/5.jpg" />
+							{recognition.employees && recognition.employees.map(emp =>
+								<Avatar alt={emp.firstName + ' ' + emp.lastName} className={classes.avatar} src={`data:image/jpg;base64,${emp.organisation.logo}`} />
+							)}
 						</AvatarGroup>
 						<Typography variant="body2" color="textSecondary">
-							Mike Eze, Mike Eze, Mike Eze & Mike Eze <small>were Recognized for</small> Creativity
+							{recognition.employees ?
+								<React.Fragment>
+									{_.map(recognition.employees, 'firstName').join(', ')}
+									<small> {recognition.employees.length > 1 ? 'were' : 'was'} Recognized for</small> Creativity
+								</React.Fragment>
+								:
+								'No recognitions recorded'
+							}
 						</Typography>
 					</React.Fragment>
 				}
 				action={
 					<React.Fragment>
 						<img src={RecognitionIcon} /> &nbsp;
-						<Typography display="inline"> Creativity </Typography>
+						<Typography display="inline"> Creativity</Typography>
 					</React.Fragment>
 				}
 			/>
 			<CardContent>
-				<Typography variant="subtitle1"><Link to={`${match.url}/1`}>Great Job on the new Sales</Link></Typography>
+				<Typography variant="subtitle1"><Link to={`${match.url}/${recognition.id}`}>{recognition.title}</Link></Typography>
 				<Typography variant="body2" color="textSecondary" component="p">
-					This impressive paella is a perfect party dish and a fun meal to cook together with your
-					guests. Add 1 cup of frozen peas along with the mussels, if you like.
+					{recognition.description}
 				</Typography>
 			</CardContent>
 			<CardActions disableSpacing>
@@ -85,9 +93,8 @@ const RecognitionItem = props => {
 					</Typography>
 				</div>
 
-
 				<Typography variant="caption" aria-label="share">
-					3 days ago <em>by</em> <span className={classes.text}>Chike Obi</span>
+					{moment(recognition.dateCreated).fromNow()} <em>by</em> <span className={classes.text}>Chike Obi</span>
 				</Typography>
 			</CardActions>
 		</Card>

@@ -8,6 +8,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import clsx from 'clsx';
+import moment from 'moment';
 import classNames from 'classnames'
 import { green, orange } from '@material-ui/core/colors'
 import * as Actions from '../../actions';
@@ -38,32 +39,41 @@ const useStyles = makeStyles(theme => ({
 
 const RecognitionItem = props => {
 	const classes = useStyles();
-	const { loading } = props;
-	const [comment, setComment] = React.useState({ comment: "" })
+	const { loading, recognition } = props;
+	const [form, setForm] = React.useState({ comment: "", recognitionId: recognition.id })
 
 	React.useEffect(() => {
 	}, []);
 
 	const handleChange = ({ target }) => {
-		setComment({ ...state, [target.name]: target.value })
+		setForm({ ...form, [target.name]: target.value })
+	}
+
+	const handleSubmit = () => {
+
 	}
 
 	return (
 		<Card className={classes.root} square classes={{ root: classes.card }}>
 			<CardHeader
 				avatar={
-					<>
+					<React.Fragment>
 						<AvatarGroup max={3}>
-							<Avatar alt="Remy Sharp" className={classes.avatar} src="/static/images/avatar/1.jpg" />
-							<Avatar alt="Travis Howard" className={classes.avatar} src="/static/images/avatar/2.jpg" />
-							<Avatar alt="Cindy Baker" className={classes.avatar} src="/static/images/avatar/3.jpg" />
-							<Avatar alt="Agnes Walker" className={classes.avatar} src="/static/images/avatar/4.jpg" />
-							<Avatar alt="Trevor Henderson" className={classes.avatar} src="/static/images/avatar/5.jpg" />
+							{recognition.employees && recognition.employees.map(emp =>
+								<Avatar alt={emp.firstName + ' ' + emp.lastName} className={classes.avatar} src={`data:image/jpg;base64,${emp.organisation.logo}`} />
+							)}
 						</AvatarGroup>
 						<Typography variant="body2" color="textSecondary">
-							Mike Eze, Mike Eze, Mike Eze & Mike Eze <small>were Recognized for</small> Creativity
-					</Typography>
-					</>
+							{recognition.employees ?
+								<React.Fragment>
+									{_.map(recognition.employees, 'firstName').join(', ')}
+									<small> {recognition.employees.length > 1 ? 'were' : 'was'} Recognized for</small> Creativity
+								</React.Fragment>
+								:
+								'No recognitions recorded'
+							}
+						</Typography>
+					</React.Fragment>
 				}
 				action={
 					<React.Fragment>
@@ -73,10 +83,9 @@ const RecognitionItem = props => {
 				}
 			/>
 			<CardContent>
-				<Typography variant="subtitle1">Great Job on the new Sales</Typography>
+				<Typography variant="subtitle1">{recognition.title}</Typography>
 				<Typography variant="body2" color="textSecondary" component="p">
-					This impressive paella is a perfect party dish and a fun meal to cook together with your
-					guests. Add 1 cup of frozen peas along with the mussels, if you like.
+					{recognition.description}
 				</Typography>
 			</CardContent>
 			<CardActions disableSpacing>
@@ -85,7 +94,7 @@ const RecognitionItem = props => {
 				</Typography>
 
 				<Typography variant="caption" aria-label="share">
-					3 days ago <em>by</em> <span className={classes.text}>Chike Obi</span>
+					{moment(recognition.dateCreated).fromNow()} <em>by</em> <span className={classes.text}>Chike Obi</span>
 				</Typography>
 			</CardActions>
 
@@ -98,7 +107,7 @@ const RecognitionItem = props => {
 					<TextField
 						label="Comment"
 						name="comment"
-						value=""
+						value={form.comment}
 						onChange={handleChange}
 						variant="outlined"
 						margin="normal"
@@ -106,7 +115,7 @@ const RecognitionItem = props => {
 						multiline
 						fullWidth
 					/>
-					<Button variant="contained" color="primary">Comment</Button>
+					<Button variant="contained" color="primary" onClick={handleSubmit}>Comment</Button>
 				</div>
 
 				<div className={classes.content}>

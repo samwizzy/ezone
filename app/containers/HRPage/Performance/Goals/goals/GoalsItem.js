@@ -7,7 +7,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import clsx from 'clsx';
-import classNames from 'classnames'
+import moment from 'moment';
 import { green, orange } from '@material-ui/core/colors'
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
@@ -110,7 +110,7 @@ const GoalsItem = props => {
 							primary={
 								<React.Fragment>
 									<Typography variant="h6">
-										<NavLink to={`${match.url}/1`}>{goal.title}</NavLink>
+										<NavLink to={`${match.url}/${goal.id}`}>{goal.title}</NavLink>
 									</Typography>
 									<Typography variant="subtitle2" color="textPrimary">
 										{goal.description}
@@ -120,20 +120,15 @@ const GoalsItem = props => {
 							secondary={
 								<div className={classes.flex}>
 									<Breadcrumbs aria-label="breadcrumb" separator="">
-										<Link color="inherit" href="/" onClick={handleClick} className={classes.link}>
+										<Typography color="textPrimary" className={classes.link}>
 											Priority : &nbsp;
 											<LensIcon className={clsx(classes.icon, { "active": true })} />
-											Low
-										</Link>
-										<Link
-											color="inherit"
-											href="/getting-started/installation/"
-											onClick={handleClick}
-											className={classes.link}
-										>
+											{goal.priorityLevel}
+										</Typography>
+										<Typography color="textPrimary" className={classes.link}>
 											<TodayIcon className={classes.icon} />
-											Due Date : 2020/06/23
-										</Link>
+											Due Date : {goal.dueDate ? moment(goal.dueDate).format('YYYY/MM/DD') : 'NIL'}
+										</Typography>
 										<Typography color="textPrimary" className={classes.link}>
 											Key Result : &nbsp;
 											<CheckCircleOutlineIcon className={classes.icon} />
@@ -142,11 +137,11 @@ const GoalsItem = props => {
 									</Breadcrumbs>
 									<Breadcrumbs aria-label="breadcrumb" separator="">
 										<Typography color="textPrimary" className={classes.link}>
-											Sent To:
+											Sent to: &nbsp;
+											<Link color="textSecondary" href="/" onClick={handleClick} className={classes.link}>
+												View employees
+											</Link>
 										</Typography>
-										<Link color="inherit" href="/" onClick={handleClick} className={classes.link}>
-											View Employees
-										</Link>
 									</Breadcrumbs>
 								</div>
 							}

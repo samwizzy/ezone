@@ -44,7 +44,7 @@ function EducationBackgroundDialog(props) {
   const classes = useStyles();
   const { closeEducationBackgroundDialog, dialog } = props;
   const [form, setForm] = React.useState({
-    dateOfCompletion: moment(new Date).format('YYYY-MM-DD'),
+    dateOfCompletion: moment().format('YYYY-MM-DD'),
     degree: "",
     fieldOfStudy: "",
     interests: "",

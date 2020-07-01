@@ -16,7 +16,7 @@ import * as AppActions from '../../../App/actions';
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
 import GoalsList from './GoalsList'
-import GoalsDetails from './GoalsDetails'
+import GoalsDetails from './goal'
 import GoalsDialog from './components/GoalsDialog'
 
 const useStyles = makeStyles(theme => ({

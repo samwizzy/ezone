@@ -21,7 +21,7 @@ import reducer from './../reducer';
 import saga from './../saga';
 import ModuleLayout from './ModuleLayout'
 import EmployeeList from './EmployeeList';
-import EmployeeDetails from './EmployeeDetails';
+import EmployeeDetails from './employee';
 import AddEmployeeDialog from './components/AddEmployeeDialog';
 import WorkExperienceDialog from './components/WorkExperienceDialog';
 import EducationBackgroundDialog from './components/EducationBackgroundDialog';

@@ -11,13 +11,6 @@ import classNames from 'classnames'
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../../App/selectors';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import DeleteOutlined from '@material-ui/icons/DeleteOutlined';
-import LensIcon from '@material-ui/icons/Lens';
-import Check from '@material-ui/icons/Check';
-import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
-import TodayIcon from '@material-ui/icons/Today';
 import RecognitionItem from './recognitions/RecognitionItem'
 
 const useStyles = makeStyles(theme => ({
@@ -50,6 +43,10 @@ const RecognitionList = props => {
   React.useEffect(() => {
   }, []);
 
+  if (!recognitions) {
+    return ''
+  }
+
   return (
     <div className={classes.root}>
       <Grid container>
@@ -64,9 +61,9 @@ const RecognitionList = props => {
           </AppBar>
         </Grid>
         <Grid item md={12}>
-          <RecognitionItem />
-          <RecognitionItem />
-          <RecognitionItem />
+          {recognitions && recognitions.map((recognition, i) =>
+            <RecognitionItem key={i} recognition={recognition} />
+          )}
         </Grid>
       </Grid>
     </div>

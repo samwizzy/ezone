@@ -1,8 +1,9 @@
 import React from 'react';
-import {makeStyles, Button, IconButton, Menu, MenuItem, Table, TableBody, TableRow, TableCell} from '@material-ui/core';
+import { makeStyles, Button, IconButton, Menu, MenuItem, Table, TableBody, TableRow, TableCell } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import LensIcon from '@material-ui/icons/Lens';
+import moment from 'moment'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -16,23 +17,23 @@ const useStyles = makeStyles(theme => ({
 	}
 }))
 
-export default function GoalSideGrid() {
+export default function GoalSideGrid({ goal }) {
 	const classes = useStyles()
-  const [anchorEl, setAnchorEl] = React.useState(null);
+	const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+	const handleClick = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
 
-  return (
-    <div>
-      <div>  
+	return (
+		<div>
+			<div>
 				<IconButton>
-					<EditOutlinedIcon />  
+					<EditOutlinedIcon />
 				</IconButton>
 				<Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
 					Open Menu <ExpandMoreIcon />
@@ -54,11 +55,11 @@ export default function GoalSideGrid() {
 				<TableBody>
 					<TableRow>
 						<TableCell>Priority:</TableCell>
-						<TableCell><LensIcon fontSize="small" /> Low</TableCell>
+						<TableCell><LensIcon fontSize="small" /> {goal.priorityLevel}</TableCell>
 					</TableRow>
 					<TableRow>
 						<TableCell>Due Date:</TableCell>
-						<TableCell>3rd Jul, 2020</TableCell>
+						<TableCell>{moment(goal.dueDate).format('ll')}</TableCell>
 					</TableRow>
 					<TableRow>
 						<TableCell>Category:</TableCell>
@@ -66,6 +67,6 @@ export default function GoalSideGrid() {
 					</TableRow>
 				</TableBody>
 			</Table>
-    </div>
-  );
+		</div>
+	);
 }

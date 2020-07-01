@@ -24,13 +24,14 @@ import ModuleLayout from './components/ModuleLayout';
 const key = 'performance';
 
 export function PerformancePage(props) {
-  const { getEmployees, getGoals } = props;
+  const { getEmployees, getGoals, getRecognitions } = props;
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
   React.useEffect(() => {
     getEmployees();
     getGoals();
+    getRecognitions();
   }, []);
 
   return (
@@ -57,6 +58,7 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
   return {
     getGoals: () => dispatch(Actions.getGoals()),
+    getRecognitions: () => dispatch(Actions.getRecognitions()),
     getEmployees: () => dispatch(Actions.getEmployees()),
   };
 }

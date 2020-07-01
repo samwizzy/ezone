@@ -14,7 +14,9 @@ import * as Constants from './constants';
 export const initialState = {
   loading: false,
   goals: [],
+  goal: null,
   recognitions: [],
+  recognition: null,
   feedbacks: [],
   reviews: [],
   employees: [],
@@ -126,6 +128,19 @@ const performanceReducer = (state = initialState, action) =>
           goals: action.payload
         }
       }
+      case Constants.GET_GOALS_BY_ID: {
+        return {
+          ...state,
+          loading: true
+        }
+      }
+      case Constants.GET_GOALS_BY_ID_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          goal: action.payload
+        }
+      }
       case Constants.CREATE_GOALS: {
         return {
           ...state,
@@ -149,6 +164,19 @@ const performanceReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           recognitions: action.payload
+        }
+      }
+      case Constants.GET_RECOGNITION_BY_ID: {
+        return {
+          ...state,
+          loading: true
+        }
+      }
+      case Constants.GET_RECOGNITION_BY_ID_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          recognition: action.payload
         }
       }
       case Constants.CREATE_RECOGNITION: {

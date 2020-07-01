@@ -53,10 +53,20 @@ const makeSelectGoals = () =>
     selectPerformance,
     subState => subState.goals,
   );
+const makeSelectGoal = () =>
+  createSelector(
+    selectPerformance,
+    subState => subState.goal,
+  );
 const makeSelectRecognitions = () =>
   createSelector(
     selectPerformance,
     subState => subState.recognitions,
+  );
+const makeSelectRecognition = () =>
+  createSelector(
+    selectPerformance,
+    subState => subState.recognition,
   );
 const makeSelectFeedbacks = () =>
   createSelector(
@@ -98,7 +108,9 @@ export {
   makeSelectBranches,
   makeSelectRoles,
   makeSelectGoals,
+  makeSelectGoal,
   makeSelectRecognitions,
+  makeSelectRecognition,
   makeSelectFeedbacks,
   makeSelectReviews,
   makeSelectLeaveRequestDialog,

@@ -72,13 +72,14 @@ export function getGoalsSuccess(data) {
   };
 }
 
-export function getGoalById() {
+export function getGoalsById(payload) {
   return {
     type: Constants.GET_GOALS_BY_ID,
+    payload
   };
 }
 
-export function getGoalByIdSuccess(data) {
+export function getGoalsByIdSuccess(data) {
   return {
     type: Constants.GET_GOALS_BY_ID_SUCCESS,
     payload: data
@@ -96,6 +97,18 @@ export function createGoalsSuccess(data) {
     payload: data
   };
 }
+export function commentGoals(data) {
+  return {
+    type: Constants.COMMENT_GOALS,
+    payload: data
+  };
+}
+export function commentGoalsSuccess(data) {
+  return {
+    type: Constants.COMMENT_GOALS_SUCCESS,
+    payload: data
+  };
+}
 
 export function getRecognitions() {
   return {
@@ -110,9 +123,10 @@ export function getRecognitionsSuccess(data) {
   };
 }
 
-export function getRecognitionById() {
+export function getRecognitionById(payload) {
   return {
     type: Constants.GET_RECOGNITION_BY_ID,
+    payload
   };
 }
 
@@ -122,6 +136,7 @@ export function getRecognitionByIdSuccess(data) {
     payload: data
   };
 }
+
 export function createRecognition(payload) {
   return {
     type: Constants.CREATE_RECOGNITION,
@@ -132,6 +147,19 @@ export function createRecognition(payload) {
 export function createRecognitionSuccess(data) {
   return {
     type: Constants.CREATE_RECOGNITION_SUCCESS,
+    payload: data
+  };
+}
+export function commentRecognition(payload) {
+  return {
+    type: Constants.COMMENT_RECOGNITION,
+    payload
+  };
+}
+
+export function commentRecognitionSuccess(data) {
+  return {
+    type: Constants.COMMENT_RECOGNITION_SUCCESS,
     payload: data
   };
 }

@@ -8,9 +8,9 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors'
 import classNames from 'classnames'
-import * as Actions from '../actions';
-import * as Selectors from '../selectors';
-import * as AppSelectors from '../../App/selectors';
+import * as Actions from '../../actions';
+import * as Selectors from '../../selectors';
+import * as AppSelectors from '../../../App/selectors';
 import EditOutlined from '@material-ui/icons/EditOutlined';
 import DeleteOutlined from '@material-ui/icons/DeleteOutlined';
 import RefreshSharp from '@material-ui/icons/RefreshSharp';
@@ -82,8 +82,7 @@ const EmployeeDetails = props => {
   const { params } = match
   const emp = employee ? employee : employees && employees.find(emp => emp.uuId === params.status)
 
-  console.log(emp, "single employee")
-  console.log(match, "match status")
+  console.log(employee, "get details gotten employee")
 
   if (!emp) {
     return ''
@@ -256,7 +255,7 @@ const EmployeeDetails = props => {
           <Paper square className={classes.paper}>
             <Toolbar className={classes.toolbar} variant="dense">
               <Typography variant="subtitle1" component="span" color="inherit" className={classes.title}>Work Experience</Typography>
-              <Button color="primary" startIcon={<AddIcon />} onClick={openWorkExperienceDialog}>Add</Button>
+              <Button color="primary" startIcon={<AddIcon />} onClick={() => openWorkExperienceDialog(emp)}>Add</Button>
             </Toolbar>
             <List dense={false}>
               {[0, 1].map((work, i) =>
@@ -360,8 +359,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openWorkExperienceDialog: () => dispatch(Actions.openWorkExperienceDialog()),
-    openEducationBackgroundDialog: () => dispatch(Actions.openEducationBackgroundDialog()),
+    openWorkExperienceDialog: (data) => dispatch(Actions.openWorkExperienceDialog(data)),
+    openEducationBackgroundDialog: (data) => dispatch(Actions.openEducationBackgroundDialog(data)),
     openNewEmployeeDialog: () => dispatch(Actions.openNewEmployeeDialog()),
     openEditEmployeeDialog: (data) => dispatch(Actions.openEditEmployeeDialog(data)),
     getEmployees: () => dispatch(Actions.getEmployees()),

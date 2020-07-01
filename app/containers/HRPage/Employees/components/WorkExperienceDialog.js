@@ -42,24 +42,24 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function WorkExperienceDialog(props) {
   const classes = useStyles();
-  const { closeWorkExperienceDialog, dialog } = props;
+  const { closeWorkExperienceDialog, dialog, updateEmployee } = props;
   const [form, setForm] = React.useState({
     companyName: "",
-    fromDate: moment(new Date).format('YYYY-MM-DD'),
-    toDate: moment(new Date).format('YYYY-MM-DD'),
+    fromDate: moment().format('YYYY-MM-DD'),
+    toDate: moment().format('YYYY-MM-DD'),
     jobTitle: "",
     orgId: "",
   });
 
   React.useEffect(() => {
-    if (dialog.type == 'edit') {
-      setForm({ ...form })
-    }
+    dialog.data && setForm({ ...dialog.data })
+
   }, [dialog])
 
   const canSubmitForm = () => {
     const { companyName, fromDate, toDate, jobTitle } = form
-    return companyName.length > 0 && fromDate.length > 0 && toDate.length > 0 && jobTitle.length > 0
+    // return companyName.length > 0 && fromDate.length > 0 && toDate.length > 0 && jobTitle.length > 0
+    return true
   }
 
   const handleChange = (event) => {
@@ -67,9 +67,16 @@ function WorkExperienceDialog(props) {
     setForm({ ...form, [name]: value });
   }
 
-  const handleDateChange = () => { }
+  const handleDateChange = name => date => {
+    setForm({ ...form, [name]: moment(date).format('YYYY-MM-DD') })
+  }
 
-  const handleSubmit = () => { }
+  const handleSubmit = () => {
+    updateEmployee(form)
+  }
+
+  console.log(form, "form for work experience")
+  console.log(dialog, "dialog for work experience")
 
   return (
     <div>
@@ -193,6 +200,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     closeWorkExperienceDialog: () => dispatch(Actions.closeWorkExperienceDialog()),
+    updateEmployee: () => dispatch(Actions.updateEmployee()),
   };
 }
 
