@@ -305,9 +305,16 @@ const utilityPageReducer = (state = initialState, action) =>
           loading: false
         };
       }
+      case Constants.GET_SHARED_DOCS_BY_UUID: {
+        return {
+          ...state,
+          loading: true
+        };
+      }
       case Constants.GET_SHARED_DOCS_BY_UUID_SUCCESS: {
         return {
           ...state,
+          loading: false,
           folders: action.payload,
         };
       }

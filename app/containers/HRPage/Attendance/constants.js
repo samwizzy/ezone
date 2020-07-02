@@ -9,9 +9,6 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
-export const GET_ATTENDANCES = 'boilerplate/HRPage/GET ATTENDANCES';
-export const GET_ATTENDANCES_SUCCESS = 'boilerplate/HRPage/GET ATTENDANCES SUCCESS';
-
 export const GET_EMPLOYEES = 'boilerplate/HRPage/GET EMPLOYEES';
 export const GET_EMPLOYEES_SUCCESS = 'boilerplate/HRPage/GET EMPLOYEES SUCCESS';
 export const GET_DEPARTMENTS = 'boilerplate/HRPage/GET DEPARTMENTS';
@@ -24,8 +21,10 @@ export const GET_ROLES_SUCCESS = 'boilerplate/HRPage/GET ROLES SUCCESS';
 export const GET_DAYS = 'boilerplate/HRPage/GET DAYS';
 export const GET_DAYS_SUCCESS = 'boilerplate/HRPage/GET DAYS SUCCESS';
 
-export const GET_ATTENDANCE = 'boilerplate/HRPage/GET ATTENDANCE';
-export const GET_ATTENDANCE_SUCCESS = 'boilerplate/HRPage/GET ATTENDANCE SUCCESS';
+export const GET_ATTENDANCES = 'boilerplate/HRPage/GET ATTENDANCES';
+export const GET_ATTENDANCES_SUCCESS = 'boilerplate/HRPage/GET ATTENDANCES SUCCESS';
+export const GET_ATTENDANCE_BY_ID = 'boilerplate/HRPage/GET ATTENDANCE BY ID';
+export const GET_ATTENDANCE_BY_ID_SUCCESS = 'boilerplate/HRPage/GET ATTENDANCE BY ID SUCCESS';
 export const CREATE_ATTENDANCE = 'boilerplate/HRPage/CREATE ATTENDANCE';
 export const CREATE_ATTENDANCE_SUCCESS = 'boilerplate/HRPage/CREATE ATTENDANCE SUCCESS';
 export const CREATE_ATTENDANCE_ERROR = 'boilerplate/HRPage/CREATE ATTENDANCE ERROR';
@@ -40,6 +39,8 @@ export const CLOSE_NEW_SHIFT_DIALOG = 'boilerplate/HRPage/CLOSE NEW SHIFT DIALOG
 
 export const OPEN_NEW_EMPLOYEE_SHIFT_DIALOG = 'boilerplate/HRPage/OPEN NEW EMPLOYEE SHIFT DIALOG';
 export const CLOSE_NEW_EMPLOYEE_SHIFT_DIALOG = 'boilerplate/HRPage/CLOSE NEW EMPLOYEE SHIFT DIALOG';
+export const OPEN_EDIT_EMPLOYEE_SHIFT_DIALOG = 'boilerplate/HRPage/OPEN EDIT EMPLOYEE SHIFT DIALOG';
+export const CLOSE_EDIT_EMPLOYEE_SHIFT_DIALOG = 'boilerplate/HRPage/CLOSE EDIT EMPLOYEE SHIFT DIALOG';
 
 export const OPEN_EDIT_SHIFT_DIALOG = 'boilerplate/HRPage/OPEN EDIT SHIFT DIALOG';
 export const CLOSE_EDIT_SHIFT_DIALOG = 'boilerplate/HRPage/CLOSE EDIT SHIFT DIALOG';

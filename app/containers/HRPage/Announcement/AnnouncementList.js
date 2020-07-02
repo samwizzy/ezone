@@ -5,6 +5,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { AppBar, Button, Grid, MenuItem, Paper, TextField, Toolbar, Typography } from '@material-ui/core';
 import {
   MuiPickersUtilsProvider,
+  DatePicker,
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
@@ -27,7 +28,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     backgroundColor: theme.palette.common.white
   },
-  toolbar: theme.mixins.toolbar,
+  toolbar: {
+    justifyContent: "space-between",
+    ...theme.mixins.toolbar
+  },
   title: {
     flexGrow: 1
   }
@@ -57,7 +61,7 @@ const Announcement = props => {
   }
 
   const handleDateChange = name => date => {
-    setState({ ...state, [name]: moment(date).format('YYYY') })
+    setState({ ...state, [name]: name === 'year' ? moment(date).format('YYYY') : moment(date).format('MM') })
   }
 
   console.log(announcements, "announcements")
@@ -81,53 +85,77 @@ const Announcement = props => {
               <Button variant="contained" color="primary" onClick={openNewAnnouncementDialog}>Add Announcement</Button>
             </Toolbar>
           </AppBar>
-          <Toolbar variant="dense">
+          <Toolbar variant="dense" className={classes.toolbar}>
             <TextField
               id="search"
               name="search"
               label="Search announcement"
               value={state.search}
+              style={{ minWidth: 200 }}
+              onChange={handleChange}
               size="small"
               variant="outlined"
               margin="normal"
             />
-            <TextField
-              id="type"
-              name="severity"
-              placeholder="Severity"
-              select
-              margin="normal"
-              variant="outlined"
-              size="small"
-              label="Severity"
-              style={{ minWidth: 200 }}
-              value={state.severity}
-              onChange={handleChange}
-            >
-              {severity.map((severe, i) =>
-                <MenuItem key={i} value={severe.value}>
-                  {severe.label}
-                </MenuItem>
-              )}
-            </TextField>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                autoOk
-                inputVariant="outlined"
-                format="dd/MM/yyyy"
+            <div>
+              <TextField
+                id="type"
+                name="severity"
+                placeholder="Severity"
+                select
                 margin="normal"
-                fullWidth
+                variant="outlined"
                 size="small"
-                name="year"
-                id="year"
-                label="Year"
-                value={state.year}
-                onChange={handleDateChange('year')}
-                KeyboardButtonProps={{
-                  'aria-label': 'change date',
-                }}
-              />
-            </MuiPickersUtilsProvider>
+                label="Severity"
+                style={{ minWidth: 200, marginRight: 2 }}
+                value={state.severity}
+                onChange={handleChange}
+              >
+                {severity.map((severe, i) =>
+                  <MenuItem key={i} value={severe.value}>
+                    {severe.label}
+                  </MenuItem>
+                )}
+              </TextField>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  autoOk
+                  views={["month"]}
+                  inputVariant="outlined"
+                  format="MM"
+                  margin="normal"
+                  style={{ marginRight: 2 }}
+                  size="small"
+                  name="month"
+                  id="month"
+                  label="Month"
+                  value={state.month}
+                  onChange={handleDateChange('month')}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  autoOk
+                  disableFuture
+                  views={["year"]}
+                  inputVariant="outlined"
+                  format="yyyy"
+                  margin="normal"
+                  size="small"
+                  name="year"
+                  id="year"
+                  label="Year"
+                  value={state.year}
+                  onChange={handleDateChange('year')}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </div>
           </Toolbar>
         </Grid>
         <Grid item xs={12}>

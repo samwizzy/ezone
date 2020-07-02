@@ -73,7 +73,7 @@ const attendanceList = [
 
 const LeaveRequestDetails = props => {
   const classes = useStyles();
-  const { loading, openNewAttendanceDialog, getAttendance, getAttendanceById, attendance } = props;
+  const { loading, openNewLeaveRequestDialog, leaveRequest } = props;
   const [option, setOption] = React.useState({ group: '', year: new Date, month: new Date })
 
   React.useEffect(() => {
@@ -141,7 +141,7 @@ const LeaveRequestDetails = props => {
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
-      getAttendanceById(rowData[0])
+      getLeaveRequestById(rowData[0])
     },
     elevation: 0
   };
@@ -218,7 +218,7 @@ const LeaveRequestDetails = props => {
           <MUIDataTable
             className={classes.datatable}
             title="Leave Request Details"
-            data={attendanceList}
+            data={[]}
             columns={columns}
             options={options}
           />
@@ -230,20 +230,18 @@ const LeaveRequestDetails = props => {
 
 LeaveRequestDetails.propTypes = {
   loading: PropTypes.bool,
-  openNewAttendanceDialog: PropTypes.func,
+  openNewLeaveRequestDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   user: AppSelectors.makeSelectCurrentUser(),
-  attendance: Selectors.makeSelectLeaveRequests(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAttendance: () => dispatch(Actions.getAttendance()),
-    getAttendanceById: (uuid) => dispatch(Actions.getAttendanceById(uuid)),
-    openNewAttendanceDialog: () => dispatch(Actions.openNewAttendanceDialog()),
+    getLeaveRequestById: (id) => dispatch(Actions.getLeaveRequestById(id)),
+    openNewLeaveRequestDialog: () => dispatch(Actions.openNewLeaveRequestDialog()),
   };
 }
 

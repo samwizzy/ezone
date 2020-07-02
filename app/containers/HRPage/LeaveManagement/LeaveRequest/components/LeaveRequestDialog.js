@@ -15,7 +15,7 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 import ScheduleIcon from '@material-ui/icons/Schedule'
 import AttachFileIcon from '@material-ui/icons/AttachFile'
-import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, FormLabel, MenuItem, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
+import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, FormLabel, MenuItem, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
@@ -37,9 +37,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const model = {
-  noOfDay: '',
-  from: moment().format('YYYY-MM-DDTHH:mm:ss.SSS'),
-  till: moment().format('YYYY-MM-DDTHH:mm:ss.SSS')
+  fromDate: moment().format('YYYY-MM-DDTHH:mm:ss.SSS'),
+  tillDate: moment().format('YYYY-MM-DDTHH:mm:ss.SSS'),
+  status: "TAKEN",
 }
 
 function LeaveRequestDialog(props) {
@@ -54,22 +54,29 @@ function LeaveRequestDialog(props) {
     employeeId: 0,
     from: moment().format('YYYY-MM-DDTHH:mm:ss.SSS'),
     leaveAllowance: 0,
+    leaveSchedules: [
+      {
+        fromDate: moment().format('YYYY-MM-DDTHH:mm:ss.SSS'),
+        status: "TAKEN",
+        tillDate: moment().format('YYYY-MM-DDTHH:mm:ss.SSS')
+      }
+    ],
     status: 'APPROVED',
     till: moment().format('YYYY-MM-DDTHH:mm:ss.SSS')
   });
 
   React.useEffect(() => {
     if (dialog.type == 'edit') {
-      setForm({ ...form })
+      setForm({ ...dialog.data })
     }
   }, [dialog])
 
   const addRow = () => {
-    setRows([...rows, model])
+    setForm({ ...form, leaveSchedules: [...form.leaveSchedules, model] })
   }
   const removeRow = index => {
-    rows.splice(index, 1)
-    setRows(rows)
+    form.leaveSchedules.splice(index, 1)
+    setForm(form)
   }
 
   console.log(employees, "employees leave request")
@@ -171,24 +178,69 @@ function LeaveRequestDialog(props) {
               />
             </Grid>
             <Grid item xs={12}>
-              <FormLabel color="primary">Schedule List</FormLabel>
+              <TextField
+                id="leave-allowance"
+                name="leaveAllowance"
+                placeholder="Leave Allowance"
+                margin="normal"
+                variant="outlined"
+                size="small"
+                label="Leave Allowance"
+                value={form.leaveAllowance}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  autoOk
+                  disableFuture
+                  inputVariant="outlined"
+                  format="dd/MM/yyyy"
+                  margin="normal"
+                  fullWidth
+                  size="small"
+                  name="from"
+                  id="from-date"
+                  label="From"
+                  value={form.from}
+                  onChange={handleDateChange('from')}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item xs={6}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  autoOk
+                  disableFuture
+                  inputVariant="outlined"
+                  format="dd/MM/yyyy"
+                  margin="normal"
+                  fullWidth
+                  size="small"
+                  name="till"
+                  id="till-date"
+                  label="Till"
+                  value={form.till}
+                  onChange={handleDateChange('till')}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography color="textPrimary" variant="subtitle1">Schedule List</Typography>
             </Grid>
 
-            {rows.map(row => (
-              <React.Fragment>
-                <Grid item xs={12}>
-                  <TextField
-                    id="number-of-days"
-                    name="Number of days"
-                    placeholder="Number of Days"
-                    margin="normal"
-                    variant="outlined"
-                    size="small"
-                    label="Days"
-                    value={form.leaveAllowance}
-                    onChange={handleChange}
-                  />
-                </Grid>
+            {form.leaveSchedules.map((row, i) => (
+              <React.Fragment key={i}>
                 <Grid item xs={6}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
@@ -199,11 +251,11 @@ function LeaveRequestDialog(props) {
                       margin="normal"
                       fullWidth
                       size="small"
-                      name="from"
+                      name="fromDate"
                       id="date-from"
                       label="Date From"
-                      value={form.from}
-                      onChange={handleDateChange('from')}
+                      value={row.fromDate}
+                      onChange={handleDateChange('fromDate', i)}
                       KeyboardButtonProps={{
                         'aria-label': 'change date',
                       }}
@@ -220,17 +272,18 @@ function LeaveRequestDialog(props) {
                       margin="normal"
                       fullWidth
                       size="small"
-                      name="till"
+                      name="tillDate"
                       id="date-till"
                       label="Date Till"
-                      value={form.till}
-                      onChange={handleDateChange('till')}
+                      value={row.tillDate}
+                      onChange={handleDateChange('tillDate', i)}
                       KeyboardButtonProps={{
                         'aria-label': 'change date',
                       }}
                     />
                   </MuiPickersUtilsProvider>
                 </Grid>
+                <Grid xs={12}><Divider /></Grid>
               </React.Fragment>
             ))}
             <Grid item xs={12}>

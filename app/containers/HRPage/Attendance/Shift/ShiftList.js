@@ -56,7 +56,7 @@ const shifts = [
 
 const ShiftList = props => {
   const classes = useStyles();
-  const { loading, openNewAttendanceDialog, getAttendances, getShifts, shifts, getAttendanceById, attendance, openNewShiftDialog } = props;
+  const { loading, getShifts, shifts, openNewShiftDialog } = props;
   console.log(shifts, "shifts in list");
   React.useEffect(() => {
   }, []);
@@ -126,9 +126,6 @@ const ShiftList = props => {
     customToolbar: () => <AddShift openDialog={openNewShiftDialog} />,
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
-    onRowClick: (rowData, rowState) => {
-      getAttendanceById(rowData[0])
-    },
     elevation: 0
   };
 
@@ -169,7 +166,6 @@ function mapDispatchToProps(dispatch) {
   return {
     getAttendances: () => dispatch(Actions.getAttendances()),
     getShifts: () => dispatch(Actions.getShifts()),
-    getAttendanceById: (uuid) => dispatch(Actions.getAttendanceById(uuid)),
     openNewShiftDialog: () => dispatch(Actions.openNewShiftDialog()),
   };
 }

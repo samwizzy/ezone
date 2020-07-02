@@ -67,7 +67,7 @@ export function* updateContactGroup() {
   console.log(updateContactGroupData, 'updateContactGroupData');
   const requestURL = `${Endpoints.UpdateContactGroupApi}/${
     updateContactGroupData.id
-  }`;
+    }`;
 
   try {
     const newContactResponse = yield call(request, requestURL, {
@@ -83,7 +83,7 @@ export function* updateContactGroup() {
 
     yield put(Actions.updateContactGroupSuccess(newContactResponse));
     yield put(Actions.getAllContactsGroup());
-    yield put(Actions.closeEditContactDialog());
+    yield put(Actions.closeEditContactGroupsDialog());
   } catch (err) {
     yield put(Actions.createNewContactGroupError(err));
   }
@@ -99,7 +99,7 @@ export function* getContactGroup() {
 
   const requestURL = `${
     Endpoints.GetContactGroupByIdApi
-  }/${getContactGroupById}`;
+    }/${getContactGroupById}`;
 
   try {
     const getContactGroupByIdResponse = yield call(request, requestURL, {
@@ -122,7 +122,7 @@ export function* getContacts() {
 
   const requestURL = `${Endpoints.GetAllContactsApi}/?orgId=${
     currentUser.organisation.orgId
-  }`;
+    }`;
 
   try {
     const getContactsResponse = yield call(request, requestURL, {

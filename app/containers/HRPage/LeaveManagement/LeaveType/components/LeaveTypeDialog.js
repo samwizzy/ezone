@@ -281,7 +281,6 @@ function AddShiftDialog(props) {
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
                       autoOk
-                      disableFuture
                       inputVariant="outlined"
                       format="dd/MM/yyyy"
                       margin="normal"
@@ -302,7 +301,7 @@ function AddShiftDialog(props) {
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
                       autoOk
-                      disableFuture
+                      disablePast
                       inputVariant="outlined"
                       format="dd/MM/yyyy"
                       margin="normal"
@@ -349,12 +348,12 @@ function AddShiftDialog(props) {
                 }
                 label="Policy"
               />
-              <Typography variant="subtitle1">Entitlement</Typography>
             </Grid>
 
             {option.policy &&
               <React.Fragment>
                 <Grid item xs={12}>
+                  <Typography variant="subtitle1">Entitlement</Typography>
                   <FormLabel component="legend">Based on Date After Hiring</FormLabel>
                   <TextField
                     id="numberOfDaysFromHire"
@@ -372,6 +371,7 @@ function AddShiftDialog(props) {
                     name="duration"
                     placeholder="Duration"
                     select
+                    style={{ minWidth: 100 }}
                     variant="outlined"
                     margin="dense"
                     size="small"

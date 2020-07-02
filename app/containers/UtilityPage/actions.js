@@ -219,6 +219,20 @@ export function shareDocumentSuccess(data) {
   };
 }
 
+export function getSharedDocuments(data) {
+  return {
+    type: Constants.GET_SHARED_DOCS_BY_UUID,
+    payload: data
+  };
+}
+
+export function getSharedDocumentsSuccess(data) {
+  return {
+    type: Constants.GET_SHARED_DOCS_BY_UUID_SUCCESS,
+    payload: data,
+  };
+}
+
 export function getUserByUUID(uuid) {
   return {
     type: Constants.GET_USER_BY_UUID,
