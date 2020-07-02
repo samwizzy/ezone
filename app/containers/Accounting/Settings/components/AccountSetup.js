@@ -59,7 +59,7 @@ const initialState ={
     dateUpdated: "",
     id: credentials.id,
     multiCurrency: false,
-    orgId: credentials.organisation && credentials.organisation.orgId,
+    orgId:credentials.organisation.orgId,
     startDay: 0,
     startMonth: 0,
     taxDay: 0,
