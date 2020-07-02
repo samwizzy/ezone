@@ -54,6 +54,7 @@ const appReducer = (state = initialState, action) =>
       }
       case Constants.GET_USER_PROFILE_SUCCESS: {
         localStorage.setItem('user', JSON.stringify(action.payload));
+        console.log(`user of app ${JSON.stringify(action.payload)}`)
         return {
           ...state,
           loading: false,
@@ -62,6 +63,7 @@ const appReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_USER_PROFILE_ERROR: {
+        console.log(`user profile error of app ${JSON.stringify(action.payload)}`)
         return {
           ...state,
           loading: false,

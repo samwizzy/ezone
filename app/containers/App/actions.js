@@ -9,6 +9,7 @@ export function loginAction(data) {
 }
 
 export function loginSuccessAction(data) {
+  console.log(`Success log onome ${JSON.stringify(data)}`)
   return {
     type: Constants.LOGIN_SUCCESS,
     payload: data,
@@ -23,7 +24,7 @@ export function loginErrorAction(data) {
 }
 
 export function getUserProfileAction(data) {
-  console.log("the user profile action got fired")
+  console.log("the user profile action got fired onome ojumah"+ JSON.stringify(data))
   return {
     type: Constants.GET_USER_PROFILE,
     payload: data,
@@ -31,7 +32,7 @@ export function getUserProfileAction(data) {
 }
 
 export function getUserProfileSuccessAction(data) {
-  console.log(data, 'user profile data');
+  console.log(data, 'user profile data onome');
   return {
     type: Constants.GET_USER_PROFILE_SUCCESS,
     payload: data,

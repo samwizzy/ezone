@@ -40,14 +40,17 @@ const SidebarConfig = [
     ],
   },
   {
-    module: ['account', 'budgeting'],
+    module: ['account', 'budgeting','reports','payroll','fixedassets'],
     menus: [
       { id: 1, name: 'Dashboard', url: '/account', icon: 'dashboard' },
       { id: 2, name: 'Chart of Account', url: '/account/chart', icon: 'account_tree' },
       { id: 3, name: 'Journal', url: '/account/journal', icon: 'menu_book' },
-      { id: 4, name: 'Banking', url: '/account/banking', icon: 'group' },
+      { id: 4, name: 'Fixed Assets', url: '/account/fixedassets', icon: 'label' },
+      { id: 5, name: 'Banking', url: '/account/banking', icon: 'group' },
+      { id: 6, name: 'Payroll', url: '/account/payroll', icon: 'label' },
+      { id: 7, name: 'Reports', url: '/account/reports', icon: 'label' },
       // { id: 4, name: 'Budgeting', url: '/account/budgeting', icon: 'account_balance_wallet' },
-      { id: 5, name: 'Settings', url: '/account/settings', icon: 'settings' },
+      { id: 8, name: 'Settings', url: '/account/settings', icon: 'settings' },
     ],
   },
   {
