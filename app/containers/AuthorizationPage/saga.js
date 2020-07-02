@@ -9,6 +9,7 @@ import * as AppSelectors from '../App/selectors';
 import * as Constants from './constants';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
+import axios from "axios";
 import * as EndPoints from '../../components/Endpoints';
 // import * as FirebaseServices from '../../services/firebaseService';
 
@@ -134,6 +135,36 @@ export function* userProfile({ payload }) {
   const token = yield select(AppSelectors.makeSelectAccessToken());
   const accessToken = token ? token : payload;
   const requestURL = `${EndPoints.UserProfileUrl}`;
+  console.log(`Debugging userProfile ....... ${payload} ${EndPoints.UserProfileUrl}`)
+
+
+ /* async function getChatfromServer() {
+    // You can await here
+    //const response 
+    //select uri
+    const config = {
+      headers: { Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/x-www-form-urlencoded', }
+  };
+  
+    await axios
+    .get(requestURL,
+    config)
+    .then((res) => {
+      let userData = res.data;
+      // (AppActions.getUserProfileSuccessAction(res));
+      //let x = JSON.parse(JSON.stringify(userData))
+      console.log(`User profile data ${userData.id} `)
+    })
+
+    .catch((err) => {
+      console.log(`error ocurr User profile ${err}`);
+    });
+   
+    // ...
+  }
+
+  getChatfromServer()*/
 
   try {
     const response = yield call(request, requestURL, {
@@ -144,10 +175,11 @@ export function* userProfile({ payload }) {
       }),
     });
 
-    console.log(response, 'loginResponse profile');
+    console.log(response, 'loginResponse profile now bro');
 
-    yield put(AppActions.getUserProfileSuccessAction(response));
+   yield put(AppActions.getUserProfileSuccessAction(response));
   } catch (err) {
+    console.log(`error from user profile bro ${err} or ${JSON.stringify(err)}`)
     if (err.message) {
       yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
     } else {

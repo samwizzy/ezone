@@ -14,6 +14,9 @@ export function* login() {
   const newData = { username, password, grant_type: 'password' };
   const requestURL = `${BaseUrl}${Endpoints.LoginUrl}`;
 
+  //export const LoginUrl = `${BaseUrl}/authserv/oauth/token`;
+//export const UserProfileUrl = `${BaseUrl}/authserv/api/v1/users/profile`;
+
   try {
     const loginResponse = yield call(request, requestURL, {
       method: 'POST',
@@ -24,7 +27,7 @@ export function* login() {
       }),
     });
 
-    console.log(loginResponse, 'loginResponse');
+    console.log(loginResponse, 'loginResponse of User');
 
     yield put(Actions.loginSuccessAction(loginResponse));
   } catch (err) {
