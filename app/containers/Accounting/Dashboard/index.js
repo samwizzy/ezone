@@ -65,7 +65,7 @@ const AccountDashBoard = props => {
     const {} = props;
 
     return (
-        <ModuleLayout>
+      
             <div className={classes.root}>
                 <Grid container>
                     <Grid item xs={12}>
@@ -90,7 +90,7 @@ const AccountDashBoard = props => {
                     </Grid>
                 </Grid>
             </div>
-        </ModuleLayout>
+      
     );
 };
 

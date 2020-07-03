@@ -1,0 +1,50 @@
+
+.list_board{
+    width:5px;
+    height:20px;
+    position: relative;
+    top:16px;
+    left: 2em;
+}
+.list_content{
+    margin-left:30px;
+    margin-top:5px;
+}
+.lift{
+    margin-bottom: 20px;
+}
+.push_title{
+    position: relative;
+    left:-0.3em;
+    top:.9em
+}
+.color_blue_bar{
+background-color: blue;
+}
+
+a{
+    color:grey;
+    transition: all 0.5s;
+}
+
+a:hover{
+    color:black;
+    font-weight: 600;
+}
+
+.color_green_bar{
+    background-color: green;
+    }
+
+.color_yellow_bar{
+ background-color: yellowgreen;
+ } 
+ .color_purple_bar{
+  background-color:purple;
+} 
+.color_pink_bar{
+    background-color:pink;
+  }
+  .color_orchild_bar{
+    background-color:orchid;
+  } 

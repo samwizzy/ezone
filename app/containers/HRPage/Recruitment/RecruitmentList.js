@@ -16,7 +16,7 @@ import * as Selectors from '../selectors';
 import * as AppSelectors from '../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
-import {AddEmployee} from '../components/AddButton'
+import {AddEmployee} from '../../Accounting/components/AddButton'
 
 const useStyles = makeStyles(theme => ({
   root: {

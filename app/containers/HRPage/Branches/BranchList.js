@@ -17,7 +17,7 @@ import * as AppSelectors from '../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
 import Person from '@material-ui/icons/Person';
-import { AddBranch } from '../components/AddButton'
+import { AddBranch } from '../../Accounting/components/AddButton'
 import AddBranchDialog from './components/AddBranchDialog'
 
 const useStyles = makeStyles(theme => ({

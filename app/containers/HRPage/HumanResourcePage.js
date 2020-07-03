@@ -16,7 +16,6 @@ import RolesApp from './Roles'
 import DepartmentsApp from './Departments'
 import BranchesApp from './Branches'
 import RecruitmentApp from './Recruitment'
-import PayrollApp from './Payroll'
 import AnnouncementApp from './Announcement'
 
 const HumanResourcePage = props => {
@@ -43,9 +42,6 @@ const HumanResourcePage = props => {
       break;
     case 'recruitment':
       return <RecruitmentApp />
-      break;
-    case 'payroll':
-      return <PayrollApp />
       break;
     case 'announcement':
       return <AnnouncementApp />

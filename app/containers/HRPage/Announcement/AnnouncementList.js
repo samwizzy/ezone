@@ -20,7 +20,7 @@ import moment from 'moment'
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../App/selectors';
-import { AddAnnouncement } from '../components/AddButton'
+import { AddAnnouncement } from '../../Accounting/components/AddButton'
 import AnnouncementItem from './announcements/AnnouncementItem'
 
 const useStyles = makeStyles(theme => ({
