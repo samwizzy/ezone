@@ -23,7 +23,7 @@ const ListBoard = (props) => {
     }
 
 const listcontents = props.contents.map((content) =>
-  <Typography key={content} variant="h6" gutterBottom>
+  <Typography key={content} variant="subtitle1" color="textSecondary">
   {content}
  </Typography>
 );
@@ -34,9 +34,9 @@ const listcontents = props.contents.map((content) =>
              <Grid item xs={2}>
              <div className={`list_board ${selectColorBar(props.bar)}`}/> 
              </Grid>
-             <Grid item xs={10} className="lift">
+             <Grid item xs={10}>
               <div className="push_title">
-              <Typography variant="h5" gutterBottom>
+              <Typography  variant="h6" color="textSecondary">
               {props.title}
               </Typography>
               </div>   

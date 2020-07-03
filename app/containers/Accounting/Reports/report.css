@@ -1,7 +1,7 @@
 
 .list_board{
     width:5px;
-    height:30px;
+    height:20px;
     position: relative;
     top:16px;
     left: 2em;
@@ -16,7 +16,7 @@
 .push_title{
     position: relative;
     left:-0.3em;
-    top:1.2em
+    top:.9em
 }
 .color_blue_bar{
 background-color: blue;

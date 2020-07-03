@@ -21,7 +21,7 @@ import saga from './../saga';
 import ModuleLayout from './ModuleLayout';
 import PayrollList from './PayrollList';
 
-const key = 'accountingPage';
+const key = 'hrPage';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -57,7 +57,7 @@ PayrollPage.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  hrPage: makeSelectHRPage(),
+  //hrPage: makeSelectHRPage(),
   token: AppSelectors.makeSelectAccessToken(),
 });
 

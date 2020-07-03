@@ -15,7 +15,7 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-// import HomePage from '../HomePage/Loadable';
+//import HomePage from '../HomePage/Loadable';
 import Home from '../Home/Loadable';
 import Dashboard from '../Dashboard/Loadable';
 import NotFoundPage from '../NotFoundPage/Loadable';
@@ -210,7 +210,7 @@ const App = props => {
                   {/*<PrivateRoute exact path="/account/settings/setup" component={AccountSetup} />*/}
                   <PrivateRoute exact path="/account/banking/details" component={AccountDetails} />
                   <PrivateRoute exact path="/account/journal" component={JournalPage} />
-                  {/*<PrivateRoute exact path="/account/payroll" component={PayrollPage} />*/}
+                  <PrivateRoute exact path="/account/payroll" component={PayrollPage} />
                   <PrivateRoute exact path="/account/fixedassets" component={FixedAssetsPage} />
                   <PrivateRoute exact path="/account/journal/add" component={AddNewJournal} />
                   <PrivateRoute exact path="/account/journal/details" component={JournalDetails} />
