@@ -155,7 +155,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewContactDialog: () => dispatch(Actions.openNewContactDialog()),
+    openNewActivitiesDialog: () => dispatch(Actions.openNewActivitiesDialog()),
   };
 }
 

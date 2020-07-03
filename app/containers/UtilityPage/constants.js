@@ -91,14 +91,22 @@ export const GET_NESTED_FOLDERS_AND_DOC_SUCCESS = 'app/UtilityPage/GET UTILITY N
 
 export const DELETE_DOCUMENT = 'app/UtilityPage/DELETE DOCUMENT SUCCESS';
 export const DELETE_DOCUMENT_SUCCESS = 'app/UtilityPage/DELETE DOCUMENT SUCCESS';
+
+export const GET_TRASHED_DOCS_BY_UUID = 'app/UtilityPage/GET TRASHED DOCS BY UUID';
+export const GET_TRASHED_DOCS_BY_UUID_SUCCESS = 'app/UtilityPage/GET TRASHED DOCS BY UUID SUCCESS';
+
 export const SHARE_DOCUMENT = 'app/UtilityPage/SHARE DOCUMENT';
 export const SHARE_DOCUMENT_SUCCESS = 'app/UtilityPage/SHARE DOCUMENT SUCCESS';
+export const GET_SHARED_DOCS_BY_UUID = 'app/UtilityPage/GET SHARED DOCS BY UUID';
+export const GET_SHARED_DOCS_BY_UUID_SUCCESS = 'app/UtilityPage/GET SHARED DOCS BY UUID SUCCESS';
+
 export const GET_FAVORITE_DOCS_BY_UUID = 'app/UtilityPage/GET FAVORITE DOCS BY UUID';
 export const GET_FAVORITE_DOCS_BY_UUID_SUCCESS = 'app/UtilityPage/GET FAVORITE DOCS BY UUID SUCCESS';
 export const FAVORITE_FILE_BY_DOC_ID = 'app/UtilityPage/FAVORITE FILE BY DOC ID';
 export const FAVORITE_FILE_BY_DOC_ID_SUCCESS = 'app/UtilityPage/FAVORITE FILE BY DOC ID SUCCESS';
 export const UNFAVORITE_FILE_BY_DOC_ID = 'app/UtilityPage/UNFAVORITE FILE BY DOC ID';
 export const UNFAVORITE_FILE_BY_DOC_ID_SUCCESS = 'app/UtilityPage/UNFAVORITE FILE BY DOC ID SUCCESS';
+
 export const CREATE_UTILITY_FILES = 'app/UtilityPage/CREATE UTILITY FILES';
 export const CREATE_UTILITY_FILES_SUCCESS = 'app/UtilityPage/CREATE UTILITY FILES SUCCESS';
 export const GET_UTILITY_FILES_ERROR = 'app/UtilityPage/GET UTILITY FILES ERROR';
@@ -107,10 +115,8 @@ export const GET_EMPLOYEES = 'app/UtilityPage/GET EMPLOYEES';
 export const GET_EMPLOYEES_SUCCESS = 'app/UtilityPage/GET EMPLOYEES SUCCESS';
 
 export const GET_UTILITY_CHATS = 'app/UtilityPage/GET UTILITY CHATS ';
-export const CREATE_UTILITY_CHATS_SUCCESS =
-  'app/UtilityPage/CREATE UTILITY CHATS SUCCESS';
-export const GET_UTILITY_CHATS_ERROR =
-  'app/UtilityPage/GET UTILITY CHATS ERROR';
+export const CREATE_UTILITY_CHATS_SUCCESS = 'app/UtilityPage/CREATE UTILITY CHATS SUCCESS';
+export const GET_UTILITY_CHATS_ERROR = 'app/UtilityPage/GET UTILITY CHATS ERROR';
 
 // get all employee
 export const GET_ALL_USERS = 'app/UtilityPage/GET_ALL_USERS';
@@ -118,20 +124,15 @@ export const GET_ALL_USERS_SUCCESS = 'app/UtilityPage/GET_ALL_USERS_SUCCESS';
 export const GET_ALL_USERS_ERROR = 'app/UtilityPage/GET_ALL_USERS_ERROR';
 
 export const GET_USER_BY_UUID = 'app/UtilityPage/GET USER BY UUID';
-export const GET_USER_BY_UUID_SUCCESS =
-  'app/UtilityPage/GET USER BY UUID SUCCESS';
+export const GET_USER_BY_UUID_SUCCESS = 'app/UtilityPage/GET USER BY UUID SUCCESS';
 
 export const GET_ALL_USERS_CHAT = 'app/UtilityPage/GET_ALL_USERS_CHAT';
-export const GET_ALL_USERS_CHAT_SUCCESS =
-  'app/UtilityPage/GET_ALL_USERS_CHAT_SUCCESS';
-export const GET_ALL_USERS_CHAT_ERROR =
-  'app/UtilityPage/GET_ALL_USERS_CHAT_ERROR';
+export const GET_ALL_USERS_CHAT_SUCCESS = 'app/UtilityPage/GET_ALL_USERS_CHAT_SUCCESS';
+export const GET_ALL_USERS_CHAT_ERROR = 'app/UtilityPage/GET_ALL_USERS_CHAT_ERROR';
 
 export const GET_USER_CHAT_DATA = 'app/UtilityPage/GET_USER_CHAT_DATA';
-export const GET_USER_CHAT_DATA_SUCCESS =
-  'app/UtilityPage/GET_USER_CHAT_DATA_SUCCESS';
-export const GET_USER_CHAT_DATA_ERROR =
-  'app/UtilityPage/GET_USER_CHAT_DATA_ERROR';
+export const GET_USER_CHAT_DATA_SUCCESS = 'app/UtilityPage/GET_USER_CHAT_DATA_SUCCESS';
+export const GET_USER_CHAT_DATA_ERROR = 'app/UtilityPage/GET_USER_CHAT_DATA_ERROR';
 
 export const POST_MSG = 'app/UtilityPage/POST_MSG';
 export const POST_MSG_SUCCESS = 'app/UtilityPage/POST_MSG_SUCCESS';

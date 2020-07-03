@@ -23,7 +23,7 @@ import {
   DialogTitle,
   Divider,
   Slide,
-  Grid 
+  Grid
 } from '@material-ui/core';
 
 import * as Selectors from '../selectors';
@@ -58,14 +58,14 @@ const TestConnectionDialog = props => {
   const {
     loading,
     testConnectionDialog,
-    openAddItemDialogAction,
-    closeAddItemDialogAction,
+    openTestConnectionDialog,
+    closeTestConnectionDialog,
     saveAddItemContentsAction
   } = props;
 
 
   const classes = useStyles();
-  
+
   const [values, setValues] = React.useState({
     date: "",
     name: "",
@@ -83,7 +83,7 @@ const TestConnectionDialog = props => {
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
   const handleDateChange = date => {
-    setValues({ ...values, date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`});
+    setValues({ ...values, date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` });
   };
 
 
@@ -91,7 +91,7 @@ const TestConnectionDialog = props => {
     <div>
       <Dialog
         {...testConnectionDialog.props}
-        onClose={closeAddItemDialogAction}
+        onClose={closeTestConnectionDialog}
         keepMounted
         TransitionComponent={Transition}
         maxWidth={"xs"}
@@ -161,7 +161,7 @@ const TestConnectionDialog = props => {
                 type="number"
                 variant="outlined"
                 className={classes.textField}
-                value={values.totalAmount }
+                value={values.totalAmount}
                 onChange={handleChange('totalAmount ')}
                 margin="normal"
                 fullWidth
@@ -179,24 +179,24 @@ const TestConnectionDialog = props => {
                 multiline
               />
             </div>
-          ) : null }
+          ) : null}
         </DialogContent>
 
         <DialogActions>
           {loading ? (
             <LoadingIndicator />
           ) : (
-            <Button
-              onClick={() => { saveAddItemContentsAction(values), closeAddItemDialogAction(), setValues('') }}
-              color="primary"
-              variant="contained"
+              <Button
+                onClick={() => { saveAddItemContentsAction(values), closeTestConnectionDialog(), setValues('') }}
+                color="primary"
+                variant="contained"
               // disabled={!canBeSubmitted()}
-            >
-              Save Item
-            </Button>
-          )}
+              >
+                Save Item
+              </Button>
+            )}
           <Button
-            onClick={() => { closeAddItemDialogAction(), setValues('') }}
+            onClick={() => { closeTestConnectionDialog(), setValues('') }}
             color="primary"
             variant="contained"
           >
@@ -209,20 +209,20 @@ const TestConnectionDialog = props => {
 };
 
 TestConnectionDialog.propTypes = {
-//   loading: PropTypes.bool,
-//   AddItemDialog: PropTypes.object,
+  //   loading: PropTypes.bool,
+  //   AddItemDialog: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: Selectors.makeSelectLoading(), 
+  loading: Selectors.makeSelectLoading(),
   testConnectionDialog: Selectors.makeSelectTestConnectionDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeAddItemDialogAction: () => dispatch(Actions.closeAddItemDialog()),
-    openAddItemDialogAction: () => dispatch(Actions.openAddItemDialog()),
-    saveAddItemContentsAction: evt => dispatch(Actions.saveAddItemContents(evt)),
+    closeTestConnectionDialog: () => dispatch(Actions.closeTestConnectionDialog()),
+    openTestConnectionDialog: () => dispatch(Actions.openTestConnectionDialog()),
+    saveAddItemContentsAction: evt => dispatch(Actions.createSmsConfigAction(evt)),
     dispatch,
   };
 }

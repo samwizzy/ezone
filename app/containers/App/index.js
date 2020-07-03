@@ -76,6 +76,7 @@ import JournalDetails from '../Accounting/Journal/components/JournalDetails';
 import CrmDashboard from '../Crm/Dashboard/Loadable';
 import CrmContacts from '../Crm/Contacts/Loadable';
 import CrmCompanies from '../Crm/Companies/Loadable';
+import CrmCampaigns from '../Crm/Campaigns/Loadable';
 import CrmContactGroups from '../Crm/ContactGroups/Loadable';
 import CrmSchedules from '../Crm/Schedules/Loadable';
 import CrmActivities from '../Crm/Activities/Loadable';
@@ -279,6 +280,11 @@ const App = props => {
                     exact
                     path="/crm/companies"
                     component={CrmCompanies}
+                  />
+                  <PrivateRoute
+                    exact
+                    path="/crm/campaigns"
+                    component={CrmCampaigns}
                   />
                   <PrivateRoute
                     exact

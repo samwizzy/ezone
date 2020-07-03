@@ -20,3 +20,10 @@ export function getEmailTemplatesSuccess(data) {
     payload: data,
   };
 }
+
+export function getEmailTemplatesError(data) {
+  return {
+    type: Constants.GET_EMAIL_TEMPLATES_ERR,
+    payload: data,
+  };
+}

@@ -21,10 +21,10 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     display: 'flex',
   },
-	tabs: {
-		borderLeft: `1px solid ${theme.palette.divider}`,
-		borderRight: `1px solid ${theme.palette.divider}`,
-	}
+  tabs: {
+    borderLeft: `1px solid ${theme.palette.divider}`,
+    borderRight: `1px solid ${theme.palette.divider}`,
+  }
 }));
 
 function TabPanel(props) {
@@ -32,7 +32,7 @@ function TabPanel(props) {
 
   return (
     <div
-      style={{flexGrow: 1}}
+      style={{ flexGrow: 1 }}
       role="tabpanel"
       hidden={value !== index}
       id={`vertical-tabpanel-${index}`}
@@ -62,7 +62,7 @@ function a11yProps(index) {
 }
 
 const AntTabs = withStyles({
-	flexContainer: {
+  flexContainer: {
     flexDirection: 'column',
   },
   indicator: {
@@ -74,8 +74,8 @@ const AntTabs = withStyles({
 
 const AntTab = withStyles(theme => ({
   root: {
-		backgroundColor: 'rgba(26, 136, 225, 0.1)',
-		borderRadius: '0px 30px 30px 0px',
+    backgroundColor: 'rgba(26, 136, 225, 0.1)',
+    borderRadius: '0px 30px 30px 0px',
     textTransform: 'none',
     minWidth: 92,
     fontWeight: theme.typography.fontWeightRegular,
@@ -87,13 +87,13 @@ const AntTab = withStyles(theme => ({
     },
     '&$selected': {
       color: '#1890ff',
-			fontWeight: theme.typography.fontWeightMedium,
+      fontWeight: theme.typography.fontWeightMedium,
     },
     '&:focus': {
       color: '#40a9ff',
     },
-	},
-	wrapper: {
+  },
+  wrapper: {
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: 'center',
@@ -110,8 +110,8 @@ const AntTab = withStyles(theme => ({
 
 const ProfilePage = props => {
   const classes = useStyles();
-	const { loading } = props;
-	const [value, setValue] = React.useState(0);
+  const { loading } = props;
+  const [value, setValue] = React.useState(0);
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
@@ -119,26 +119,26 @@ const ProfilePage = props => {
 
   return (
     <div className={classes.root}>
-			<AntTabs
-				orientation="vertical"
-				variant="scrollable"
-				value={value}
-				onChange={handleTabChange}
-				aria-label="ant example"
-				className={classes.tabs}
-			>
-				<AntTab label="My Account" icon={<img alt="" src={Vector} />} {...a11yProps(0)} />
-				<AntTab label="Subscription" icon={<img alt="" src={Vector1} />} {...a11yProps(1)} />
-				<AntTab label="Settings" icon={<img alt="" src={Vector1} />} {...a11yProps(2)} />
-			</AntTabs>
-			<TabPanel value={value} index={0}>
+      <AntTabs
+        orientation="vertical"
+        variant="scrollable"
+        value={value}
+        onChange={handleTabChange}
+        aria-label="ant example"
+        className={classes.tabs}
+      >
+        <AntTab label="My Account" icon={<img alt="" src={Vector} />} {...a11yProps(0)} />
+        <AntTab label="Subscription" icon={<img alt="" src={Vector1} />} {...a11yProps(1)} />
+        <AntTab label="Settings" icon={<img alt="" src={Vector1} />} {...a11yProps(2)} />
+      </AntTabs>
+      <TabPanel value={value} index={0}>
         <UserProfile />
       </TabPanel>
-			<TabPanel value={value} index={1}>
+      <TabPanel value={value} index={1}>
         <SubscriptionList />
         {/* <SubscriptionDetails /> */}
       </TabPanel>
-			<TabPanel value={value} index={2}>
+      <TabPanel value={value} index={2}>
         Settings
       </TabPanel>
     </div>
@@ -147,7 +147,7 @@ const ProfilePage = props => {
 
 ProfilePage.propTypes = {
   loading: PropTypes.bool,
-  getEmployees: PropTypes.func,
+  getAllEmployees: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -157,7 +157,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getEmployees: () => dispatch(Actions.getEmployees()),
+    getAllEmployees: () => dispatch(Actions.getAllEmployees()),
   };
 }
 
@@ -167,7 +167,7 @@ const withConnect = connect(
 );
 
 export default compose(
-	withRouter,
-	withConnect,
-	memo,
+  withRouter,
+  withConnect,
+  memo,
 )(ProfilePage);

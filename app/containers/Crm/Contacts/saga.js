@@ -49,7 +49,7 @@ export function* getContactsGroups() {
 
     yield put(Actions.getContactsGroupsSuccess(response));
   } catch (err) {
-    yield put(Actions.getAllContactsGroupError(err));
+    yield put(Actions.getContactsGroupsError(err));
   }
 }
 

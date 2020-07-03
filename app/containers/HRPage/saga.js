@@ -290,27 +290,6 @@ export function* getPartyGroups() {
   }
 }
 
-export function* getDepartment() {
-  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetDepartment}?orgId=${user && user.organisation.id}&tagId=5`;
-
-  try {
-    const response = yield call(request, requestURL, {
-      method: 'GET',
-      headers: new Headers({
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      }),
-    });
-    console.log(response, 'DEPARTMENT RESPONSE BY ID');
-
-    yield put(Actions.getDepartmentsByOrgIdApiSuccess(response));
-  } catch (err) {
-    console.log(err.message, "dept error message")
-  }
-}
-
 export function* getBranches() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());

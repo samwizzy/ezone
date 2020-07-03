@@ -62,7 +62,7 @@ const SidebarConfig = [
       { id: 5, name: 'Schedules', url: '/crm/schedules', icon: 'payment' },
       { id: 6, name: 'Contact Groups', url: '/crm/contact-groups', icon: 'announcement' },
       { id: 7, name: 'Reports', url: '/crm/reports', icon: 'local_activity' },
-      { id: 8, name: 'Campaign', url: '/crm/campaign', icon: 'local_activity' },
+      { id: 8, name: 'Campaigns', url: '/crm/campaigns', icon: 'local_activity' },
       { id: 9, name: 'Social Media', url: '/crm/social-media', icon: 'local_activity' },
     ],
   },

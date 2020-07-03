@@ -8,6 +8,7 @@ import { BaseUrl } from '../BaseUrl';
 export const RegistrationUrl = `${BaseUrl}/authserv/api/v1/register`;
 export const LoginUrl = `${BaseUrl}/authserv/oauth/token`;
 export const UserProfileUrl = `${BaseUrl}/authserv/api/v1/users/profile`;
+export const ForgotPasswordApi = `${BaseUrl}/authserv/api/v1/user/password/forgot`;
 
 /** *****************************************************************
  * Organization and Company structure endpoint
@@ -23,6 +24,7 @@ export const CreateNewPartyApi = `${BaseUrl}/authserv/api/v1/party/create_and_ad
 export const UpdatePartyApi = `${BaseUrl}/authserv/api/v1/party`;
 export const CreateNewPartiesApi = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_party`;
 export const GetPartyByIdApi = `${BaseUrl}/authserv/api/v1/party/get_by_id`;
+export const GetPartyTags = `${BaseUrl}/authserv/api/v1/party_tags`;
 export const UpdatePartiesApi = `${BaseUrl}/authserv/api/v1/party`;
 export const CreateNewPositionApi = `${BaseUrl}/authserv/api/v1/position`;
 export const UpdatePositionApi = `${BaseUrl}/authserv/api/v1/position/update_position`;
@@ -273,6 +275,12 @@ export const CreateNewContactGroupApi = `${BaseUrl}/crmserv/api/v1/add_contact_g
 export const UpdateContactGroupApi = `${BaseUrl}/crmserv/api/v1/update_contact_group`;
 export const GetContactGroupByIdApi = `${BaseUrl}/crmserv/api/v1/get_contact_group_by_id`;
 export const GetAllContactsGroupApi = `${BaseUrl}/crmserv/api/v1/get_all_contact_groups`;
+
+// Campaigns Group Apis
+export const CreateCampaignApi = `${BaseUrl}/crmserv//api/v1/add_campaign`;
+export const UpdateCampaignApi = `${BaseUrl}/crmserv/api/v1/update_campaign/{userId}/{id}`;
+export const GetCampaignByIdApi = `${BaseUrl}/crmserv/api/v1/get_campaign_by_id/{id}`;
+export const GetCampaignsApi = `${BaseUrl}/crmserv/api/v1/get_campaigns_by_orgid/{orgId}`;
 
 // Crm Activities Apis
 export const GetCrmActivitiesApi = `${BaseUrl}/utilityserv/api/v1/find_by_orgid_and_module`;

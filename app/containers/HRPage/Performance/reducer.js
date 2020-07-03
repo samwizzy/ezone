@@ -109,12 +109,6 @@ const performanceReducer = (state = initialState, action) =>
           roles: action.payload
         }
       };
-      case Constants.GET_LEAVE_REQUEST: {
-        return {
-          ...state,
-          loading: true
-        }
-      }
       case Constants.GET_GOALS: {
         return {
           ...state,
