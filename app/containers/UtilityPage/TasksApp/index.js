@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import * as Actions from '../actions';
-import makeSelectUtilityPage from './../selectors';
+import makeSelectUtilityPage, * as Selectors from './../selectors';
 import saga from './../saga';
 import reducer from './../reducer';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -63,10 +63,10 @@ TasksApp.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   utilityPage: makeSelectUtilityPage(),
-  // loading: Selectors.makeSelectLoading(),
+  loading: Selectors.makeSelectLoading(),
 });
 
-export function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     getUtilityTasks: () => dispatch(Actions.getUtilityTasks()),
     getEmployees: () => dispatch(Actions.getEmployees()),

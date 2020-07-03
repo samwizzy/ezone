@@ -70,7 +70,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewRecognitionDialog: () => dispatch(Actions.openNewRecognitionDialog())
-  };
+  }
 }
 
 const withConnect = connect(

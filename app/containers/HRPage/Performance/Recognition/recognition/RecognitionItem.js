@@ -40,9 +40,10 @@ const useStyles = makeStyles(theme => ({
 const RecognitionItem = props => {
 	const classes = useStyles();
 	const { loading, recognition } = props;
-	const [form, setForm] = React.useState({ comment: "", recognitionId: recognition.id })
+	const [form, setForm] = React.useState({ comment: "", recognitionId: "" })
 
 	React.useEffect(() => {
+		setForm({ ...form, recognitionId: recognition.id })
 	}, []);
 
 	const handleChange = ({ target }) => {
@@ -50,8 +51,10 @@ const RecognitionItem = props => {
 	}
 
 	const handleSubmit = () => {
-
+		commentRecognition(form)
 	}
+
+	console.log(form, "recognition form")
 
 	return (
 		<Card className={classes.root} square classes={{ root: classes.card }}>
@@ -146,7 +149,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 function mapDispatchToProps(dispatch) {
-	return {};
+	return {
+		commentRecognition: (data) => dispatch(Actions.commentRecognition(data)),
+	};
 }
 
 const withConnect = connect(
