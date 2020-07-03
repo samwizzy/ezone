@@ -37,9 +37,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const RecognitionItem = props => {
+const RecognitionDetail = props => {
 	const classes = useStyles();
-	const { loading, recognition } = props;
+	const { loading, recognition, commentRecognition } = props;
 	const [form, setForm] = React.useState({ comment: "", recognitionId: "" })
 
 	React.useEffect(() => {
@@ -62,8 +62,8 @@ const RecognitionItem = props => {
 				avatar={
 					<React.Fragment>
 						<AvatarGroup max={3}>
-							{recognition.employees && recognition.employees.map(emp =>
-								<Avatar alt={emp.firstName + ' ' + emp.lastName} className={classes.avatar} src={`data:image/jpg;base64,${emp.organisation.logo}`} />
+							{recognition.employees && recognition.employees.map((emp, i) =>
+								<Avatar key={i} alt={emp.firstName + ' ' + emp.lastName} className={classes.avatar} src={`data:image/jpg;base64,${emp.organisation.logo}`} />
 							)}
 						</AvatarGroup>
 						<Typography variant="body2" color="textSecondary">
@@ -139,7 +139,7 @@ const RecognitionItem = props => {
 	);
 };
 
-RecognitionItem.propTypes = {
+RecognitionDetail.propTypes = {
 	loading: PropTypes.bool,
 };
 
@@ -163,4 +163,4 @@ export default compose(
 	withRouter,
 	withConnect,
 	memo,
-)(RecognitionItem);
+)(RecognitionDetail);

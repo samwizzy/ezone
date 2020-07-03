@@ -11,7 +11,7 @@ import classNames from 'classnames'
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import * as AppSelectors from '../../../../App/selectors';
-import RecognitionItem from './RecognitionItem'
+import RecognitionDetail from './RecognitionDetail'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,7 +51,7 @@ const RecognitionDetails = props => {
           </AppBar>
         </Grid>
         <Grid item md={12}>
-          <RecognitionItem recognition={recognition} />
+          <RecognitionDetail recognition={recognition} />
         </Grid>
       </Grid>
     </div>

@@ -25,6 +25,7 @@ export const CREATE_GOALS = 'boilerplate/HRPage/CREATE GOALS';
 export const CREATE_GOALS_SUCCESS = 'boilerplate/HRPage/CREATE GOALS SUCCESS';
 export const COMMENT_GOALS = 'boilerplate/HRPage/COMMENT GOALS';
 export const COMMENT_GOALS_SUCCESS = 'boilerplate/HRPage/COMMENT GOALS SUCCESS';
+export const COMMENT_GOALS_ERROR = 'boilerplate/HRPage/COMMENT GOALS ERROR';
 
 export const GET_RECOGNITIONS = 'boilerplate/HRPage/GET RECOGNITIONS';
 export const GET_RECOGNITIONS_SUCCESS = 'boilerplate/HRPage/GET RECOGNITIONS SUCCESS';
@@ -34,6 +35,7 @@ export const CREATE_RECOGNITION = 'boilerplate/HRPage/CREATE RECOGNITION';
 export const CREATE_RECOGNITION_SUCCESS = 'boilerplate/HRPage/CREATE RECOGNITION SUCCESS';
 export const COMMENT_RECOGNITION = 'boilerplate/HRPage/COMMENT RECOGNITION';
 export const COMMENT_RECOGNITION_SUCCESS = 'boilerplate/HRPage/COMMENT RECOGNITION SUCCESS';
+export const COMMENT_RECOGNITION_ERROR = 'boilerplate/HRPage/COMMENT RECOGNITION ERROR';
 
 export const OPEN_NEW_GOALS_DIALOG = 'boilerplate/HRPage/OPEN NEW GOALS DIALOG';
 export const CLOSE_NEW_GOALS_DIALOG = 'boilerplate/HRPage/CLOSE NEW GOALS DIALOG';

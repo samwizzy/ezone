@@ -65,10 +65,10 @@ const GoalsDetails = props => {
   const classes = useStyles();
   const { loading, openNewGoalsDialog, goal, commentGoals } = props;
   const [state, setState] = React.useState({ text: true, call: false, email: false })
-  const [form, setForm] = React.useState({ comment: "", performanceId: goal && goal.id })
+  const [form, setForm] = React.useState({ comment: "", performanceId: "" })
 
   React.useEffect(() => {
-    setForm({ ...form, performanceId: goal.id })
+    setForm({ ...form, performanceId: goal && goal.id })
   }, []);
 
   console.log(goal, 'goal details')

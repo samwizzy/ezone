@@ -11,7 +11,7 @@ import * as Endpoints from '../../../components/Endpoints';
 export function* getEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}/${user && user.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}?orgId=${user && user.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -40,7 +40,7 @@ export function* getEmployees() {
 export function* getCampaigns() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllCompaniesApi}/${currentUser && currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetCampaignsApi}/${currentUser && currentUser.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -60,8 +60,8 @@ export function* getCampaigns() {
 export function* createCampaign({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.CreateNewContactApi}`;
-  payload.orgId = currentUser.organisation.orgId;
+  const requestURL = `${Endpoints.CreateCampaignApi}/${currentUser && currentUser.id}`;
+  payload.orgId = currentUser && currentUser.organisation.orgId;
 
   try {
     const response = yield call(request, requestURL, {
@@ -73,17 +73,18 @@ export function* createCampaign({ payload }) {
       }),
     });
 
-    yield put(Actions.createNewCompanySuccess(response));
-    yield put(Actions.getAllCompanies());
-    yield put(Actions.closeNewCompanyDialog());
+    yield put(Actions.createCampaignSuccess(response));
+    yield put(Actions.getCampaigns());
+    yield put(Actions.closeNewCampaignDialog());
   } catch (err) {
-    yield put(Actions.createNewCompanyError(err));
+    yield put(Actions.createCampaignError(err));
   }
 }
 
 export function* updateCampaign({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${Endpoints.UpdateContactApi}/${payload.id}`;
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.UpdateCampaignApi}/${currentUser && currentUser.id}/${payload.id}`;
 
   try {
     const response = yield call(request, requestURL, {

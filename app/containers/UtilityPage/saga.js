@@ -663,7 +663,7 @@ export function* getUserChat() {
 export function* getEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}/${user && user.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}?orgId=${user && user.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {

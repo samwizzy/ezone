@@ -90,7 +90,6 @@ export function* commentGoals({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.PerformanceCommentApi}`;
-  payload.orgId = user && user.organisation.orgId
 
   console.log(payload, "goal comment payload")
 
@@ -108,6 +107,7 @@ export function* commentGoals({ payload }) {
     yield put(AppActions.openSnackBar({ message: 'Goal commented successfully', status: 'success' }));
 
     yield put(Actions.createGoalsSuccess(response));
+    yield put(Actions.getGoals());
   } catch (err) {
     const error = yield call(errorHandler, err.response.json());
     console.log(error, "goal comment error")
@@ -187,7 +187,6 @@ export function* commentRecognition({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.RecognitionCommentApi}`;
-  payload.orgId = user && user.organisation.orgId
 
   console.log(payload, "comment recognition")
 
@@ -204,8 +203,10 @@ export function* commentRecognition({ payload }) {
     console.log(response, "comment recognition response")
 
     yield put(Actions.createRecognitionSuccess(response));
+    yield put(Actions.getRecognitions());
   } catch (err) {
     const error = yield call(errorHandler, err.response.json());
+    yield put(Actions.commentRecognitionError(response));
     console.log(error, "comment recognition error")
   }
 }
@@ -213,7 +214,7 @@ export function* commentRecognition({ payload }) {
 export function* getEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}/${user && user.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}?orgId=${user && user.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {

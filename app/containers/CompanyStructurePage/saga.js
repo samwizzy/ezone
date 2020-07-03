@@ -114,9 +114,7 @@ export function* getAllUsers() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
-  const requestURL = `${Endpoints.GetAllUsersApi}/${
-    currentUser.organisation.orgId
-    }`;
+  const requestURL = `${Endpoints.GetAllUsersApi}?orgId=${currentUser.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {

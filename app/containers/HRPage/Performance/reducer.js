@@ -147,6 +147,24 @@ const performanceReducer = (state = initialState, action) =>
           loading: false,
         }
       }
+      case Constants.COMMENT_GOALS: {
+        return {
+          ...state,
+          loading: true,
+        }
+      }
+      case Constants.COMMENT_GOALS_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+        }
+      }
+      case Constants.COMMENT_GOALS_ERROR: {
+        return {
+          ...state,
+          loading: false,
+        }
+      }
       case Constants.GET_RECOGNITIONS: {
         return {
           ...state,
@@ -180,6 +198,24 @@ const performanceReducer = (state = initialState, action) =>
         }
       }
       case Constants.CREATE_RECOGNITION_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+        }
+      }
+      case Constants.COMMENT_RECOGNITION: {
+        return {
+          ...state,
+          loading: true,
+        }
+      }
+      case Constants.COMMENT_RECOGNITION_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+        }
+      }
+      case Constants.COMMENT_RECOGNITION_ERROR: {
         return {
           ...state,
           loading: false,

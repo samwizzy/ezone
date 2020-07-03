@@ -109,6 +109,12 @@ export function commentGoalsSuccess(data) {
     payload: data
   };
 }
+export function commentGoalsError(data) {
+  return {
+    type: Constants.COMMENT_GOALS_ERROR,
+    payload: data
+  };
+}
 
 export function getRecognitions() {
   return {
@@ -160,6 +166,13 @@ export function commentRecognition(payload) {
 export function commentRecognitionSuccess(data) {
   return {
     type: Constants.COMMENT_RECOGNITION_SUCCESS,
+    payload: data
+  };
+}
+
+export function commentRecognitionError(data) {
+  return {
+    type: Constants.COMMENT_RECOGNITION_ERROR,
     payload: data
   };
 }

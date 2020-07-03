@@ -80,7 +80,7 @@ export function* getShifts() {
 export function* getEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}/${user && user.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}/${user && user.organisation.orgId}?start=0&limit=10`;
 
   try {
     const response = yield call(request, requestURL, {

@@ -21,7 +21,7 @@ function errorHandler(promise) {
 export function* getEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}/${user && user.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}?orgId=${user && user.organisation.orgId}`; // ?start=0&limit=10
   console.log(accessToken, "accessToken get employees")
 
   try {
@@ -151,11 +151,16 @@ export function* createEmployee({ type, payload }) {
     yield put({ type: Constants.GET_EMPLOYEES });
     yield put({ type: Constants.CLOSE_NEW_EMPLOYEE_DIALOG });
   } catch (err) {
-    const error = yield call(errorHandler, err.response.json())
-    console.log(error, "create employees error")
-    if (error.status === 400 || error.status === 500) {
-      yield put(AppActions.openSnackBar({ message: error.message, status: 'error' }));
-      yield put(Actions.createEmployeeError(error.message));
+    if (err.message) {
+      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      yield put(Actions.createEmployeeError(err.message));
+    } else {
+      const error = yield call(errorHandler, err.response.json())
+      console.log(error, "create employees error")
+      if (error.status === 400 || error.status === 500) {
+        yield put(AppActions.openSnackBar({ message: error.message, status: 'warning' }));
+        yield put(Actions.createEmployeeError(error.message));
+      }
     }
   }
 }
@@ -905,7 +910,6 @@ export function* commentAnnouncement({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.AnnouncementComment}`;
-  payload.orgId = user && user.organisation.orgId
 
   console.log(payload, "comment announcement")
 
