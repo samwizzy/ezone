@@ -138,33 +138,33 @@ export function* userProfile({ payload }) {
   console.log(`Debugging userProfile ....... ${payload} ${EndPoints.UserProfileUrl}`)
 
 
- /* async function getChatfromServer() {
-    // You can await here
-    //const response 
-    //select uri
-    const config = {
-      headers: { Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/x-www-form-urlencoded', }
-  };
-  
-    await axios
-    .get(requestURL,
-    config)
-    .then((res) => {
-      let userData = res.data;
-      // (AppActions.getUserProfileSuccessAction(res));
-      //let x = JSON.parse(JSON.stringify(userData))
-      console.log(`User profile data ${userData.id} `)
-    })
-
-    .catch((err) => {
-      console.log(`error ocurr User profile ${err}`);
-    });
+  /* async function getChatfromServer() {
+     // You can await here
+     //const response 
+     //select uri
+     const config = {
+       headers: { Authorization: `Bearer ${accessToken}`,
+       'Content-Type': 'application/x-www-form-urlencoded', }
+   };
    
-    // ...
-  }
-
-  getChatfromServer()*/
+     await axios
+     .get(requestURL,
+     config)
+     .then((res) => {
+       let userData = res.data;
+       // (AppActions.getUserProfileSuccessAction(res));
+       //let x = JSON.parse(JSON.stringify(userData))
+       console.log(`User profile data ${userData.id} `)
+     })
+ 
+     .catch((err) => {
+       console.log(`error ocurr User profile ${err}`);
+     });
+    
+     // ...
+   }
+ 
+   getChatfromServer()*/
 
   try {
     const response = yield call(request, requestURL, {
@@ -175,11 +175,10 @@ export function* userProfile({ payload }) {
       }),
     });
 
-    console.log(response, 'loginResponse profile now bro');
+    console.log(response, 'login response');
 
-   yield put(AppActions.getUserProfileSuccessAction(response));
+    yield put(AppActions.getUserProfileSuccessAction(response));
   } catch (err) {
-    console.log(`error from user profile bro ${err} or ${JSON.stringify(err)}`)
     if (err.message) {
       yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
     } else {

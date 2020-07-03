@@ -65,9 +65,10 @@ const GoalsDetails = props => {
   const classes = useStyles();
   const { loading, openNewGoalsDialog, goal, commentGoals } = props;
   const [state, setState] = React.useState({ text: true, call: false, email: false })
-  const [form, setForm] = React.useState({ comment: "", performanceId: "" })
+  const [form, setForm] = React.useState({ comment: "", performanceId: goal && goal.id })
 
   React.useEffect(() => {
+    setForm({ ...form, performanceId: goal.id })
   }, []);
 
   console.log(goal, 'goal details')
@@ -86,6 +87,8 @@ const GoalsDetails = props => {
   if (!goal) {
     return ''
   }
+
+  console.log(form, "form goal")
 
   return (
     <div className={classes.root}>
@@ -207,7 +210,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewGoalsDialog: () => dispatch(Actions.openNewGoalsDialog()),
-    commentGoals: () => dispatch(Actions.commentGoals())
+    commentGoals: (data) => dispatch(Actions.commentGoals(data))
   };
 }
 

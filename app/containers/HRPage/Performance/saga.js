@@ -92,6 +92,8 @@ export function* commentGoals({ payload }) {
   const requestURL = `${Endpoints.PerformanceCommentApi}`;
   payload.orgId = user && user.organisation.orgId
 
+  console.log(payload, "goal comment payload")
+
   try {
     const response = yield call(request, requestURL, {
       method: 'POST',
@@ -251,7 +253,8 @@ export function* getDepartments() {
     console.log(response, 'DEPARTMENT RESPONSE BY ORGID');
     yield put(Actions.getDepartmentsSuccess(response));
   } catch (err) {
-    console.log(err.response, "dept error message")
+    const error = yield call(errorHandler, err.response.json())
+    console.log(error, "depts error message")
     if (err.response.status === 400) {
       yield put(AppActions.openSnackBar({ message: "Something Went Wrong", status: 'warning' }));
     }
@@ -275,7 +278,8 @@ export function* getBranches() {
     console.log(response, 'BRANCHES RESPONSE BY ORGID');
     yield put(Actions.getBranchesSuccess(response));
   } catch (err) {
-    console.log(err.response, "dept error message")
+    const error = yield call(errorHandler, err.response.json())
+    console.log(error, "branches error message")
     if (err.response.status === 400) {
       yield put(AppActions.openSnackBar({ message: "Something Went Wrong", status: 'warning' }));
     }
@@ -299,7 +303,7 @@ export function* getRoles() {
     console.log(response, 'ROLES RESPONSE BY ORGID');
     yield put(Actions.getRolesSuccess(response));
   } catch (err) {
-    console.log(err.response, "dept error message")
+    console.log(err.response, "roles error message")
     if (err.response.status === 400) {
       yield put(AppActions.openSnackBar({ message: "Something Went Wrong", status: 'warning' }));
     }

@@ -796,7 +796,9 @@ export function* getAnnouncements() {
 
     yield put(Actions.getAnnouncementsSuccess(response));
   } catch (err) {
+    const error = yield call(errorHandler, err.response.json())
     console.log(err.message, "Announcements err message")
+    console.log(error, "Announcements error message")
   }
 }
 
