@@ -15,11 +15,15 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import reducer from './reducer';
 import saga from './saga';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import * as Actions from './actions';
 import makeSelectAccounting, * as Selectors from './selectors';
 import AccountSetup from './Settings/components/AccountSetup';
 import Dashboard from './Dashboard';
-import LoadingIndicator from './../../components/LoadingIndicator';
+import Reports from './Reports/index';
+import Home from './home';
+import CircularProgress from '@material-ui/core/CircularProgress';
+//import LoadingIndicator from './../../components/LoadingIndicator';
 import ModuleLayout from './components/ModuleLayout';
 
 export function Accounting(props) {
@@ -29,24 +33,18 @@ export function Accounting(props) {
   console.log('Accounting index.js loaded');
 
   const {
-    loading,
-    accountingSetupData,
-    dispatchGetAccountingSetupAction,
+    loading
   } = props;
 
   // Similar to componentDidMount and componentDidUpdate:
-  useEffect(() => {
-    dispatchGetAccountingSetupAction();
-  }, []);
 
   // Routing based on api response
   if (loading) {
-    return <LoadingIndicator />;
+    return <div style={{textAlign:'center'}}><CircularProgress disableShrink /></div>;
   }
 
-  console.log(accountingSetupData, "accountingSetupData")
 
-  if (accountingSetupData === null) {
+ /* if (accountingSetupData === null) {
     return (
       <ModuleLayout>
         <AccountSetup />
@@ -54,29 +52,52 @@ export function Accounting(props) {
     )
   }
   else {
-    return <Dashboard />
-  }
+    //return <Dashboard />
+    <Reports/>
+  }*/
+
+  return(
+    <div>
+       <Switch>
+         <Route exact path="/account" component={Home} />
+        </Switch>
+    {/*<Switch>
+      {accountingSetupData === null ?
+    (<Route exact path="/account">
+       <ModuleLayout>
+        <AccountSetup />
+      </ModuleLayout>
+    </Route>):
+    (
+    <Route exact path="/account" >
+      <ModuleLayout>
+        <Reports/>
+      </ModuleLayout>
+    </Route>
+   )
+      }
+      (
+    <Route exact path="/account/reports" component={Reports}>
+    <ModuleLayout>
+        <Reports/>
+      </ModuleLayout>
+    </Route>
+    )
+      </Switch>*/}
+    </div>
+  )
+
 }
 
 Accounting.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  accounting: makeSelectAccounting(),
-  loading: Selectors.makeSelectLoading(),
-  accountingSetupData: Selectors.makeSelectGetAccountingSetupData(),
+  loading: Selectors.makeSelectLoading()
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatchGetAccountingSetupAction: () => dispatch(Actions.getAccountingSetupAction()),
-    dispatch,
-  };
-}
-
 const withConnect = connect(
-  mapStateToProps,
-  mapDispatchToProps,
+  mapStateToProps
 );
 
 export default compose(

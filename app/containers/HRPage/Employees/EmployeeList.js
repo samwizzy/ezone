@@ -22,7 +22,7 @@ import EditSharp from '@material-ui/icons/EditSharp';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import Person from '@material-ui/icons/Person';
-import { AddEmployee } from '../components/AddButton';
+import { AddEmployee } from '../../Accounting/components/AddButton';
 
 const useStyles = makeStyles(theme => ({
   root: {

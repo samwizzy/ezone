@@ -18,7 +18,7 @@ import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
 import AssignmentInd from '@material-ui/icons/AssignmentInd';
 import Person from '@material-ui/icons/Person';
-import { AddRole } from '../components/AddButton'
+import { AddRole } from '../../Accounting/components/AddButton'
 import AddRoleDialog from './components/AddRoleDialog'
 
 const drawerWidth = '100%';

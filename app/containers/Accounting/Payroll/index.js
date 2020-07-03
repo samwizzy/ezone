@@ -21,7 +21,7 @@ import saga from './../saga';
 import ModuleLayout from './ModuleLayout';
 import PayrollList from './PayrollList';
 
-const key = 'hrPage';
+const key = 'accountingPage';
 
 const useStyles = makeStyles(theme => ({
   root: {

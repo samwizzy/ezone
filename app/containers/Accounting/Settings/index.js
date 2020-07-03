@@ -53,11 +53,11 @@ export function Settings(props) {
         <title>Settings</title>
         <meta name="description" content="Description of Settings." />
       </Helmet>
-      <ModuleLayout>
+     
         <SettingsLayout>
           <AccountingPeriod />
         </SettingsLayout>
-      </ModuleLayout>
+      
     </div>
   );
 }

@@ -17,7 +17,7 @@ import * as AppSelectors from '../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
 import Person from '@material-ui/icons/Person';
-import { AddDepartment } from '../components/AddButton'
+import { AddDepartment } from '../../Accounting/components/AddButton'
 import AddDepartmentDialog from './components/AddDepartmentDialog'
 
 const useStyles = makeStyles(theme => ({

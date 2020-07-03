@@ -17,8 +17,8 @@ import * as AppSelectors from '../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
 import Person from '@material-ui/icons/Person';
-import { AddPayroll } from '../components/AddButton'
-import AddPayrollDialog from './components/AddPayrollDialog'
+import { AddPayroll } from '../components/AddButton';
+import AddPayrollDialog from './components/AddPayrollDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
