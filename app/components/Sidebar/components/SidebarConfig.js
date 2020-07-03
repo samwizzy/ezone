@@ -39,10 +39,10 @@ const SidebarConfig = [
     ],
   },
   {
-    module: ['account', 'budgeting','reports','payroll','fixedassets'],
+    module: ['account', 'budgeting','reports','payroll','fixedassets','charts'],
     menus: [
       { id: 1, name: 'Dashboard', url: '/account', icon: 'dashboard' },
-      { id: 2, name: 'Chart of Account', url: '/account/chart', icon: 'account_tree' },
+      { id: 2, name: 'Chart of Account', url: '/account/charts', icon: 'account_tree' },
       { id: 3, name: 'Journal', url: '/account/journal', icon: 'menu_book' },
       { id: 4, name: 'Fixed Assets', url: '/account/fixedassets', icon: 'label' },
       { id: 5, name: 'Banking', url: '/account/banking', icon: 'group' },

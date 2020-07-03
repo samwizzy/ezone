@@ -1,7 +1,31 @@
 import React from "react";
 import Typography from '@material-ui/core/Typography';
 import "../Reports/report.css";
+import { makeStyles } from '@material-ui/core/styles';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+  } from "react-router-dom";
 import { Grid } from '@material-ui/core';
+
+const useStyles = makeStyles(theme => ({
+    root: {
+      flexGrow: 1,
+      backgroundColor: theme.palette.background.paper,
+      padding: theme.spacing(3),
+    },
+    paper: {
+      padding: theme.spacing(1, 2),
+      backgroundColor: theme.palette.grey[100],
+    },
+    box: {
+          backgroundColor: theme.palette.grey[200]
+      },
+  }));
+  
+
 const ListBoard = (props) => {
 
     function selectColorBar(value){
@@ -24,7 +48,7 @@ const ListBoard = (props) => {
 
 const listcontents = props.contents.map((content) =>
   <Typography key={content} variant="subtitle1" color="textSecondary">
-  {content}
+  <Link style={{textDecoration:'none'}} to="/">{content}</Link>
  </Typography>
 );
 

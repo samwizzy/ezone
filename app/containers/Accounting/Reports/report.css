@@ -22,6 +22,16 @@
 background-color: blue;
 }
 
+a{
+    color:grey;
+    transition: all 0.5s;
+}
+
+a:hover{
+    color:black;
+    font-weight: 600;
+}
+
 .color_green_bar{
     background-color: green;
     }
