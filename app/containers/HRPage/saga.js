@@ -579,22 +579,52 @@ export function* getPayTypes() {
   }
 }
 
-export function* createWorkExperience() {
+export function* createWorkExperience({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEmployeeTypes}?orgId=${user && user.organisation.orgId}&type=PAYTYPE`;
+  const requestURL = `${Endpoints.CreateWorkExperienceApi}`;
 
   try {
     const response = yield call(request, requestURL, {
-      method: 'GET',
+      method: 'POST',
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
+    console.log(response, "create work experience")
     yield put(Actions.createWorkExperienceSuccess(response));
+    yield put(Actions.getEmployees());
+    yield put(Actions.getEmployee(user.uuId));
     yield put({ type: Constants.CLOSE_WORK_EXPERIENCE_DIALOG });
+  } catch (err) {
+    // yield put(Actions.getPayTypesError(err));
+    console.log(err.message, "err message")
+  }
+}
+
+export function* createEducationBackground({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.CreateEducationApi}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "create education background")
+    yield put(Actions.createEducationBackgroundSuccess(response));
+    yield put(Actions.getEmployees());
+    yield put(Actions.getEmployee(user.uuId));
+    yield put({ type: Constants.CLOSE_EDUCATION_BACKGROUND_DIALOG });
   } catch (err) {
     // yield put(Actions.getPayTypesError(err));
     console.log(err.message, "err message")
@@ -985,6 +1015,7 @@ export default function* HRRootSaga() {
   yield takeLatest(Constants.CREATE_PAY_RATE, createPayRate);
   yield takeLatest(Constants.CREATE_PAY_TYPE, createPayType);
   yield takeLatest(Constants.CREATE_WORK_EXPERIENCE, createWorkExperience);
+  yield takeLatest(Constants.CREATE_EDUCATION_BACKGROUND, createEducationBackground);
   yield takeLatest(Constants.GET_ENROLLMENTTYPES, getEnrollmentTypes);
   yield takeLatest(Constants.GET_LOCATIONS, getLocations);
   yield takeLatest(Constants.CREATE_LOCATION, createLocation);

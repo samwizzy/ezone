@@ -38,7 +38,6 @@ function getSteps() {
   return ['Job Description', 'Hiring Workflow', 'Job Information', /*'Basic Information'*/];
 }
 
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -76,9 +75,6 @@ function AddRecruitment(props) {
     submissionDeadline: moment().format('YYYY-MM-DD'),
   });
 
-  React.useEffect(() => {
-  }, [])
-
   const canSubmitForm = () => {
     const { address, country, departmentId, enrollmentTypeId, jobDescription, jobTitle, noOfVancancies, orgId, submissionDeadline } = form
     return address.length > 0 && country.length > 0 && departmentId && enrollmentTypeId && jobDescription.length > 0 && jobTitle.length > 0 && noOfVancancies
@@ -93,8 +89,9 @@ function AddRecruitment(props) {
     const { name, value } = event.target
     setForm({ ...form, [name]: value });
   };
-  const handleDateChange = (date, formatted, name) => {
-    setForm(_.set({ ...form }, name, reformattedDate(date)))
+
+  const handleDateChange = name => date => {
+    setForm(_.set({ ...form }, name, moment(date).format('YYYY-MM-DD')))
   }
 
   const handleCountryChange = name => (event, obj) => {
@@ -164,6 +161,7 @@ function AddRecruitment(props) {
         return (
           <JobInfoForm
             handleChange={handleChange}
+            handleDateChange={handleDateChange}
             handleCountryChange={handleCountryChange}
             handleSelectChange={handleSelectChange}
             openNewEmployeeTypeDialog={openNewEmployeeTypeDialog}

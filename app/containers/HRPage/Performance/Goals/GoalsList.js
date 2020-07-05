@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Avatar, Box, Button, Grid, Paper, Typography, Toolbar } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import _ from 'lodash'
 import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors'
 import classNames from 'classnames'
@@ -31,9 +32,7 @@ const GoalsList = props => {
   const classes = useStyles();
   const { loading, goals, openNewGoalsDialog } = props;
 
-  React.useEffect(() => {
-  }, []);
-
+  const orderedGoals = _.orderBy(goals, ['dateCreated'], ['desc'])
   console.log(goals, "goals")
 
   return (
@@ -50,7 +49,7 @@ const GoalsList = props => {
           </AppBar>
         </Grid>
         <Grid item md={12}>
-          {goals && goals.map((goal, i) =>
+          {orderedGoals && orderedGoals.map((goal, i) =>
             <GoalsItem key={i} goal={goal} />
           )}
         </Grid>

@@ -103,27 +103,31 @@ function a11yProps(index) {
 
 const durations = ['Days', 'Weeks', 'Months', 'Years'];
 
+const model = {
+  name: '',
+  type: 'PAID',
+  description: '',
+  eligibleEmployees: [],
+  leaveAllowancePercent: 0,
+  gender: 'MALE',
+  numberOfDaysFromHire: 0,
+  validFrom: moment().format('YYYY-MM-DDTHH:mm:ss.SSS'),
+  validTill: moment().format('YYYY-MM-DDTHH:mm:ss.SSS')
+}
+
 function AddShiftDialog(props) {
   const classes = useStyles();
   const { closeNewShiftDialog, dialog, employees, departments, branches, roles, createLeaveType } = props;
   const [option, setOption] = React.useState({ policy: false, validity: false })
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
   const [value, setValue] = React.useState(0);
-  const [form, setForm] = React.useState({
-    name: '',
-    type: 'PAID',
-    description: '',
-    eligibleEmployees: [],
-    leaveAllowancePercent: 0,
-    gender: 'MALE',
-    numberOfDaysFromHire: 0,
-    validFrom: moment().format('YYYY-MM-DDTHH:mm:ss.SSS'),
-    validTill: moment().format('YYYY-MM-DDTHH:mm:ss.SSS')
-  });
+  const [form, setForm] = React.useState({ ...model });
 
   React.useEffect(() => {
-    if (dialog.type == 'edit') {
-      setForm({ ...form })
+    if (dialog.type === 'edit') {
+      setForm({ ...dialog.data })
     }
   }, [dialog])
 
@@ -138,9 +142,6 @@ function AddShiftDialog(props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
 
   const canSubmitForm = () => {
     const { name, type, validFrom, validTill, description } = form
@@ -176,6 +177,7 @@ function AddShiftDialog(props) {
 
   const handleSubmit = () => {
     createLeaveType(form)
+    setForm({ ...model })
   }
 
   const selected = employees && _.filter(employees, (employee) => {
@@ -404,7 +406,7 @@ function AddShiftDialog(props) {
                     value={form.gender}
                     onChange={handleChange}
                   >
-                    {['MALE', 'FFEMALE', 'BOTH'].map((gender, i) =>
+                    {['MALE', 'FEMALE', 'BOTH'].map((gender, i) =>
                       <MenuItem key={i} value={gender}>
                         {gender}
                       </MenuItem>
@@ -608,7 +610,7 @@ function AddShiftDialog(props) {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={closeNewShiftDialog} color="primary">
+          <Button onClick={() => (closeNewShiftDialog, setForm({ ...model }))} color="primary">
             Cancel
           </Button>
           <Button onClick={handleSubmit} disabled={!canSubmitForm()} color="primary">

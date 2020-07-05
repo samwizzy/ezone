@@ -77,12 +77,15 @@ const LeaveTypeList = props => {
       },
     },
     {
-      name: 'duration',
+      name: 'id',
       label: 'Duration',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: date => date ? moment(date).format('ll') : ''
+        customBodyRender: id => {
+          const selected = leaveTypes && leaveTypes.find(type => type.id === id)
+          return moment(selected.validTill).diff(selected.validFrom, 'days', true)
+        }
       }
     },
     {
@@ -121,7 +124,7 @@ const LeaveTypeList = props => {
       }
     },
     {
-      name: 'createdAt',
+      name: 'dateAdded',
       label: 'Date Applied',
       options: {
         filter: true,
@@ -139,7 +142,7 @@ const LeaveTypeList = props => {
     },
     {
       name: 'eligibleEmployees',
-      label: 'Status',
+      label: 'Eligility Count',
       options: {
         filter: true,
         sort: true,

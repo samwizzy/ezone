@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors'
 import classNames from 'classnames'
+import moment from 'moment'
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import * as AppSelectors from '../../../App/selectors';
@@ -257,83 +258,90 @@ const EmployeeDetails = props => {
               <Typography variant="subtitle1" component="span" color="inherit" className={classes.title}>Work Experience</Typography>
               <Button color="primary" startIcon={<AddIcon />} onClick={() => openWorkExperienceDialog(emp)}>Add</Button>
             </Toolbar>
-            <List dense={false}>
-              {[0, 1].map((work, i) =>
-                <ListItem key={i}>
-                  <ListItemText
-                    primary={
-                      <Typography variant="h6" component="legend">UI/UX Designer</Typography>
-                    }
-                    secondary={
-                      <React.Fragment>
-                        <Typography
-                          variant="subtitle1"
-                          component="legend"
-                          className={classes.inline}
-                          color="textPrimary"
-                        >
-                          Octiver Limited
-                        </Typography>
-                        <Typography
-                          variant="caption"
-                          color="textSecondary"
-                          component="legend"
-                        >
-                          <em>Nov 2017 - Nov 2020</em>
-                        </Typography>
-                        <Typography component="span">— Wish I could come, but I'm out of town this…</Typography>
-                      </React.Fragment>
-                    }
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete">
-                      <EditOutlined />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              )}
-            </List>
+            {emp.workExperience.length > 0 ?
+              <List dense={false}>
+                {emp.workExperience.map((work, i) =>
+                  <ListItem key={i}>
+                    <ListItemText
+                      primary={
+                        <Typography variant="h6" component="legend">{work.jobTitle}</Typography>
+                      }
+                      secondary={
+                        <React.Fragment>
+                          <Typography
+                            variant="subtitle1"
+                            component="legend"
+                            className={classes.inline}
+                            color="textPrimary"
+                          >
+                            {work.companyName}
+                          </Typography>
+                          <Typography
+                            variant="caption"
+                            color="textSecondary"
+                            component="legend"
+                          >
+                            <em>{`${moment(work.fromDate).format('MMM YYYY')} - ${moment(work.toDate).format('MMM YYYY')}`}</em>
+                          </Typography>
+                          <Typography component="span">— Wish I could come, but I'm out of town this…</Typography>
+                        </React.Fragment>
+                      }
+                    />
+                    <ListItemSecondaryAction>
+                      <IconButton edge="end" aria-label="delete">
+                        <EditOutlined />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                )}
+              </List> :
+              <Typography variant="subtitle2" color="textSecondary" align="center">You do not have any work experience yet</Typography>
+            }
           </Paper>
         </Grid>
         <Grid item xs={12}>
           <Paper square className={classes.paper}>
             <Toolbar className={classes.toolbar} variant="dense">
               <Typography variant="subtitle1" color="inherit" className={classes.title}>Educational Background</Typography>
-              <Button color="primary" startIcon={<AddIcon />} onClick={openEducationBackgroundDialog}>Add</Button>
+              <Button color="primary" startIcon={<AddIcon />} onClick={() => openEducationBackgroundDialog(emp)}>Add</Button>
             </Toolbar>
-            <List dense={false}>
-              {[0, 1].map((work, i) =>
-                <ListItem key={i}>
-                  <ListItemText
-                    primary={<Typography variant="h6" component="span">University Of Lagos</Typography>}
-                    secondary={
-                      <React.Fragment>
-                        <Typography
-                          variant="subtitle1"
-                          className={classes.inline}
-                          color="textPrimary"
-                          component="legend"
-                        >
-                          BSC — Computer Science
-                        </Typography>
-                        <Typography
-                          variant="caption"
-                          color="textSecondary"
-                          component="legend"
-                        >
-                          <em>Nov 2017 - Nov 2020</em>
-                        </Typography>
-                      </React.Fragment>
-                    }
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete">
-                      <EditOutlined />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              )}
-            </List>
+            {emp.education.length > 0 ?
+              <List dense={false}>
+                {emp.education.map((edu, i) =>
+                  <ListItem key={i}>
+                    <ListItemText
+                      primary={<Typography variant="h6" component="span">University Of Lagos</Typography>}
+                      secondary={
+                        <React.Fragment>
+                          <Typography
+                            variant="subtitle1"
+                            className={classes.inline}
+                            color="textPrimary"
+                            component="legend"
+                          >
+                            {`${edu.degree} — ${edu.fieldOfStudy}`}
+                          </Typography>
+                          <Typography
+                            variant="caption"
+                            color="textSecondary"
+                            component="legend"
+                          >
+                            <em>{`Nov 2017 - ${moment(edu.dateOfCompletion).format('MMM YYYY')}`}</em>
+                          </Typography>
+                          <Typography component="span">— {edu.note}…</Typography>
+                        </React.Fragment>
+                      }
+                    />
+                    <ListItemSecondaryAction>
+                      <IconButton edge="end" aria-label="delete">
+                        <EditOutlined />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                )}
+              </List> :
+              <Typography variant="subtitle2" color="textSecondary" align="center">You do not have any educational background yet</Typography>
+            }
           </Paper>
         </Grid>
         <Grid item xs={12}>

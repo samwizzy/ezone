@@ -45,7 +45,7 @@ const model = {
 function LeaveRequestDialog(props) {
   const classes = useStyles();
   const { closeNewLeaveRequestDialog, dialog, leaveTypes, employees, createLeaveRequest } = props;
-  const [rows, setRows] = React.useState([{ ...model }])
+  const [leaveType, setLeaveType] = React.useState({})
   const [form, setForm] = React.useState({
     leaveTypeId: '',
     base64doc: '',
@@ -94,12 +94,20 @@ function LeaveRequestDialog(props) {
   const handleSelectChange = name => (event, obj) => {
     name === 'employeeId' &&
       setForm({ ...form, [name]: obj.id });
-    name === 'leaveTypeId' &&
-      setForm({ ...form, [name]: obj.id });
+    name === 'leaveTypeId' && (
+      setForm({ ...form, [name]: obj.id }),
+      setLeaveType(obj)
+    )
   }
 
   const handleDateChange = name => date => {
     setForm({ ...form, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss.SSS') })
+  }
+
+  const handleScheduleDateChange = (name, i) => date => {
+    const { leaveSchedules } = form
+    leaveSchedules[i][name] = moment(date).format('YYYY-MM-DDTHH:mm:ss.SSS')
+    setForm({ ...form, leaveSchedules })
   }
 
   const handleImageChange = (event) => {
@@ -116,6 +124,7 @@ function LeaveRequestDialog(props) {
 
   console.log(form, "form check")
   console.log(leaveTypes, "leaveTypes check")
+  console.log(leaveType, "leaveType single")
 
   return (
     <div>
@@ -153,6 +162,10 @@ function LeaveRequestDialog(props) {
                     placeholder="Search"
                     margin="normal"
                     fullWidth
+                    helperText={
+                      form.leaveTypeId ? 'You have selected a ' + moment(leaveType.validTill).
+                        diff(leaveType.validFrom, 'days', true) + ' days leave type' : ''
+                    }
                   />
                 )}
               />
@@ -194,7 +207,6 @@ function LeaveRequestDialog(props) {
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
                   autoOk
-                  disableFuture
                   inputVariant="outlined"
                   format="dd/MM/yyyy"
                   margin="normal"
@@ -215,7 +227,6 @@ function LeaveRequestDialog(props) {
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
                   autoOk
-                  disableFuture
                   inputVariant="outlined"
                   format="dd/MM/yyyy"
                   margin="normal"
@@ -229,6 +240,11 @@ function LeaveRequestDialog(props) {
                   KeyboardButtonProps={{
                     'aria-label': 'change date',
                   }}
+                  helperText={
+                    form.leaveTypeId ? 'You have ' + _.round(moment(leaveType.validTill).
+                      diff(leaveType.validFrom, 'days', true) - moment(form.till).
+                        diff(form.from, 'days', true)) + ' days left' : ''
+                  }
                 />
               </MuiPickersUtilsProvider>
             </Grid>
@@ -236,7 +252,9 @@ function LeaveRequestDialog(props) {
               <Divider />
             </Grid>
             <Grid item xs={12}>
-              <Typography color="textPrimary" variant="subtitle1">Schedule List</Typography>
+              <Typography color="textPrimary" variant="subtitle1">
+                Schedule List (You have {_.round(moment(form.till).diff(form.from, 'days', true))} days)
+              </Typography>
             </Grid>
 
             {form.leaveSchedules.map((row, i) => (
@@ -245,7 +263,6 @@ function LeaveRequestDialog(props) {
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
                       autoOk
-                      disableFuture
                       inputVariant="outlined"
                       format="dd/MM/yyyy"
                       margin="normal"
@@ -255,7 +272,7 @@ function LeaveRequestDialog(props) {
                       id="date-from"
                       label="Date From"
                       value={row.fromDate}
-                      onChange={handleDateChange('fromDate', i)}
+                      onChange={handleScheduleDateChange('fromDate', i)}
                       KeyboardButtonProps={{
                         'aria-label': 'change date',
                       }}
@@ -266,7 +283,6 @@ function LeaveRequestDialog(props) {
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
                       autoOk
-                      disableFuture
                       inputVariant="outlined"
                       format="dd/MM/yyyy"
                       margin="normal"
@@ -276,14 +292,14 @@ function LeaveRequestDialog(props) {
                       id="date-till"
                       label="Date Till"
                       value={row.tillDate}
-                      onChange={handleDateChange('tillDate', i)}
+                      onChange={handleScheduleDateChange('tillDate', i)}
                       KeyboardButtonProps={{
                         'aria-label': 'change date',
                       }}
                     />
                   </MuiPickersUtilsProvider>
                 </Grid>
-                <Grid xs={12}><Divider /></Grid>
+                <Grid item xs={12}><Divider /></Grid>
               </React.Fragment>
             ))}
             <Grid item xs={12}>

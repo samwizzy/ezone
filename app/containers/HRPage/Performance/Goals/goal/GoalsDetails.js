@@ -68,7 +68,7 @@ const GoalsDetails = props => {
   const [form, setForm] = React.useState({ comment: "", performanceId: "" })
 
   React.useEffect(() => {
-    setForm({ ...form, performanceId: goal && goal.id })
+    setForm({ ...form, performanceId: goal.id })
   }, []);
 
   console.log(goal, 'goal details')

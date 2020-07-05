@@ -80,6 +80,8 @@ export function* createGoals({ payload }) {
     yield put(AppActions.openSnackBar({ message: 'Performance Goal created successfully', status: 'success' }));
 
     yield put(Actions.createGoalsSuccess(response));
+    yield put(Actions.closeNewGoalsDialog());
+    yield put(Actions.getGoals());
   } catch (err) {
     const error = yield call(errorHandler, err.response.json());
     console.log(error, "goal create error")
@@ -177,6 +179,8 @@ export function* createRecognition({ payload }) {
     console.log(response, "create recognition response")
 
     yield put(Actions.createRecognitionSuccess(response));
+    yield put(Actions.closeNewRecognitionDialog());
+    yield put(Actions.getRecognitions());
   } catch (err) {
     const error = yield call(errorHandler, err.response.json());
     console.log(error, "recognition create error")

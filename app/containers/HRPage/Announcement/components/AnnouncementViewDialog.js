@@ -46,7 +46,7 @@ function AnnouncementViewDialog(props) {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle disableTypography>
-          <Typography variant="subtitle2">
+          <Typography variant="h6">
             {dialog.data.title}
           </Typography>
           <IconButton aria-label="close" className={classes.closeButton} onClick={closeAnnouncementViewDialog}><CloseIcon /></IconButton>
@@ -55,7 +55,7 @@ function AnnouncementViewDialog(props) {
         <DialogContent dividers>
           <Grid container>
             <Grid item xs={12}>
-              <DialogContentText>
+              <DialogContentText disableTypography>
                 <Typography variant="subtitle1">
                   {dialog.data.message}
                 </Typography>

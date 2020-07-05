@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors'
 import classNames from 'classnames'
+import _ from 'lodash'
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../../App/selectors';
@@ -40,8 +41,7 @@ const RecognitionList = props => {
 
   console.log(recognitions, "recognitions")
 
-  React.useEffect(() => {
-  }, []);
+  const orderedRecognitions = _.orderBy(recognitions, ['dateCreated'], ['desc'])
 
   if (!recognitions) {
     return ''
@@ -61,7 +61,7 @@ const RecognitionList = props => {
           </AppBar>
         </Grid>
         <Grid item md={12}>
-          {recognitions && recognitions.map((recognition, i) =>
+          {orderedRecognitions && orderedRecognitions.map((recognition, i) =>
             <RecognitionItem key={i} recognition={recognition} />
           )}
         </Grid>

@@ -14,65 +14,77 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 import ScheduleIcon from '@material-ui/icons/Schedule'
 import AttachFileIcon from '@material-ui/icons/AttachFile'
-import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, MenuItem, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
+import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, MenuItem, Slide, Grid, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    '& .MuiTextField-root': {},
-  },
-  table: {
-    "& td": {
-      border: "0 !important"
-    }
+    flexGrow: 1
   },
   button: {
     margin: theme.spacing(1, 0),
-  },
-  input: {
-    display: 'none',
-  },
+  }
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const model = {
+  companyName: "",
+  fromDate: moment().format('YYYY-MM-DD'),
+  jobTitle: "",
+  toDate: moment().format('YYYY-MM-DD')
+}
+
 function WorkExperienceDialog(props) {
   const classes = useStyles();
-  const { closeWorkExperienceDialog, dialog, updateEmployee } = props;
+  const { closeWorkExperienceDialog, dialog, createWorkExperience } = props;
   const [form, setForm] = React.useState({
-    companyName: "",
-    fromDate: moment().format('YYYY-MM-DD'),
-    toDate: moment().format('YYYY-MM-DD'),
-    jobTitle: "",
-    orgId: "",
+    employeeId: 0,
+    work: [
+      { ...model }
+    ]
   });
 
+
   React.useEffect(() => {
-    dialog.data && setForm({ ...dialog.data })
+    dialog.data && setForm({ ...form, employeeId: dialog.data.id })
 
   }, [dialog])
 
   const canSubmitForm = () => {
-    const { companyName, fromDate, toDate, jobTitle } = form
-    // return companyName.length > 0 && fromDate.length > 0 && toDate.length > 0 && jobTitle.length > 0
-    return true
+    const { work, employeeId } = form
+    return work.length > 0 && employeeId
   }
 
-  const handleChange = (event) => {
+  const handleChange = (event, i) => {
     const { name, value } = event.target
-    setForm({ ...form, [name]: value });
+    const { work } = form
+    work[i][name] = value
+    setForm({ ...form, work });
   }
 
-  const handleDateChange = name => date => {
-    setForm({ ...form, [name]: moment(date).format('YYYY-MM-DD') })
+  const handleDateChange = (name, i) => date => {
+    const { work } = form
+    work[i][name] = moment(date).format('YYYY-MM-DD')
+    setForm({ ...form, work })
+  }
+
+  const addRow = () => {
+    setForm({ ...form, work: [...form.work, model] })
+  }
+
+  const removeRow = index => {
+    const { work } = form
+    work.splice(index, 1)
+    setForm({ ...form, work })
   }
 
   const handleSubmit = () => {
-    updateEmployee(form)
+    createWorkExperience(form)
   }
 
   console.log(form, "form for work experience")
@@ -97,82 +109,84 @@ function WorkExperienceDialog(props) {
         </AppBar>
 
         <DialogContent dividers>
-          <Table className={classes.table} size="small">
-            <TableBody>
-              <TableRow>
-                <TableCell colSpan={2}>
+          <Grid container spacing={1}>
+            {form.work.map((work, i) => (
+              <React.Fragment key={i}>
+                <Grid item xs={12}>
                   <TextField
                     id="company-name"
                     name="companyName"
-                    placeholder="Description"
+                    placeholder="Comapny Name"
                     fullWidth
                     margin="normal"
                     variant="outlined"
                     size="small"
                     label="Company Name"
-                    value={form.companyName}
-                    onChange={handleChange}
+                    value={work.companyName}
+                    onChange={(e) => handleChange(e, i)}
                   />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell colSpan={2}>
+                </Grid>
+                <Grid item xs={12}>
                   <TextField
                     id="job-title"
                     name="jobTitle"
-                    placeholder="jobTitle"
+                    placeholder="Job Title"
                     fullWidth
                     margin="normal"
                     variant="outlined"
                     size="small"
                     label="Job Title"
-                    value={form.jobTitle}
-                    onChange={handleChange}
+                    value={work.jobTitle}
+                    onChange={(e) => handleChange(e, i)}
                   />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
+                </Grid>
+                <Grid item xs={6}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
                       autoOk
-                      disableToolbar
                       margin="normal"
-                      format="MM/dd/yyyy"
+                      format="dd/MM/yyyy"
                       inputVariant="outlined"
                       id="time-picker-from-date"
                       label="From Date"
                       size="small"
-                      value={form.fromDate}
-                      onChange={handleDateChange}
+                      fullWidth
+                      value={work.fromDate}
+                      onChange={handleDateChange('fromDate', i)}
                       KeyboardButtonProps={{
                         'aria-label': 'change time',
                       }}
                     />
                   </MuiPickersUtilsProvider>
-                </TableCell>
-                <TableCell>
+                </Grid>
+                <Grid item xs={6}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
                       autoOk
-                      disableToolbar
                       margin="normal"
-                      format="MM/dd/yyyy"
+                      format="dd/MM/yyyy"
                       inputVariant="outlined"
                       id="time-picker-to-date"
                       label="To Date"
                       size="small"
-                      value={form.toDate}
-                      onChange={handleDateChange}
+                      fullWidth
+                      value={work.toDate}
+                      onChange={handleDateChange('toDate', i)}
                       KeyboardButtonProps={{
                         'aria-label': 'change time',
                       }}
                     />
                   </MuiPickersUtilsProvider>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button size="small" color="primary" onClick={() => removeRow(i)}>remove</Button>
+                </Grid>
+              </React.Fragment>
+            ))}
+            <Grid item xs={12}>
+              <Button size="small" color="primary" onClick={addRow}>Add another</Button>
+            </Grid>
+          </Grid>
         </DialogContent>
 
         <DialogActions>
@@ -200,7 +214,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     closeWorkExperienceDialog: () => dispatch(Actions.closeWorkExperienceDialog()),
-    updateEmployee: () => dispatch(Actions.updateEmployee()),
+    createWorkExperience: (data) => dispatch(Actions.createWorkExperience(data)),
   };
 }
 

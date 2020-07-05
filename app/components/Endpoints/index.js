@@ -109,6 +109,9 @@ export const CreateEmployeeType = `${BaseUrl}/authserv/api/v1/generic_entity/add
 export const CreateEmployee = `${BaseUrl}/authserv/api/v1/user`;
 export const GetEmployeesByOrgIdApi = `${BaseUrl}/authserv/api/v1/users/get_by_orgid`;
 
+export const CreateWorkExperienceApi = `${BaseUrl}/authserv/api/v1/workexperience/add`;
+export const CreateEducationApi = `${BaseUrl}/authserv/api/v1/education/add`;
+
 export const GetEnrollmentTypes = `${BaseUrl}/authserv/api/v1/generic_entities/for_organinisation`;
 export const GetLocations = `${BaseUrl}/authserv/api/v1/generic_entities/for_organinisation`;
 

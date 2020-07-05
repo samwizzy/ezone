@@ -144,7 +144,7 @@ export const JobInfoForm = props => {
                                         id="date-picker-startDate"
                                         label="Submission Deadline"
                                         value={form.submissionDeadline}
-                                        onChange={(date, formatted) => handleDateChange(date, formatted, 'submissionDeadline')}
+                                        onChange={handleDateChange('submissionDeadline')}
                                         KeyboardButtonProps={{
                                             'aria-label': 'change date',
                                         }}
@@ -213,19 +213,6 @@ export const JobInfoForm = props => {
                                 </TextField>
                             </Grid>
                             <Grid item xs={6}>
-                                <TextField
-                                    name="address"
-                                    label="Address"
-                                    id="outlined-title"
-                                    fullWidth
-                                    margin="normal"
-                                    variant="outlined"
-                                    size="small"
-                                    value={form.address}
-                                    onChange={handleChange}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
                                 <Autocomplete
                                     id="country-select-demo"
                                     size="small"
@@ -252,6 +239,19 @@ export const JobInfoForm = props => {
                                             fullWidth
                                         />
                                     )}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    name="address"
+                                    label="Address"
+                                    id="outlined-title"
+                                    fullWidth
+                                    margin="normal"
+                                    variant="outlined"
+                                    size="small"
+                                    value={form.address}
+                                    onChange={handleChange}
                                 />
                             </Grid>
                         </Grid>

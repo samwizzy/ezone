@@ -14,7 +14,7 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 import ScheduleIcon from '@material-ui/icons/Schedule'
 import AttachFileIcon from '@material-ui/icons/AttachFile'
-import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, Grid, MenuItem, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
+import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, Grid, MenuItem, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
@@ -22,11 +22,6 @@ import moment from 'moment'
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
-  },
-  table: {
-    "& td": {
-      border: "0 !important"
-    }
   },
   button: {
     margin: theme.spacing(1, 0),
@@ -40,42 +35,68 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const model = {
+  dateOfCompletion: moment().format('YYYY-MM-DD'),
+  degree: "",
+  fieldOfStudy: "",
+  interests: "",
+  note: "",
+}
+
 function EducationBackgroundDialog(props) {
   const classes = useStyles();
-  const { closeEducationBackgroundDialog, dialog } = props;
+  const { closeEducationBackgroundDialog, dialog, createEducationBackground } = props;
   const [form, setForm] = React.useState({
-    dateOfCompletion: moment().format('YYYY-MM-DD'),
-    degree: "",
-    fieldOfStudy: "",
-    interests: "",
-    note: "",
-    orgId: "",
+    education: [
+      { ...model }
+    ],
+    employeeId: 0
   });
 
   React.useEffect(() => {
-    if (dialog.type == 'edit') {
-      setForm({ ...form })
-    }
+    dialog.data &&
+      setForm({ ...form, employeeId: dialog.data.id })
+
   }, [dialog])
 
   const canSubmitForm = () => {
-    const { dateOfCompletion, degree, fieldOfStudy, interests, note } = form
+    const { education, employeeId } = form
     return (
-      dateOfCompletion.length > 0 && degree.length > 0 &&
-      fieldOfStudy.length > 0 && interests.length > 0 && note.length > 0
+      education.length > 0 && employeeId
     )
   }
 
-  const handleChange = (event) => {
+  const handleChange = (event, i) => {
     const { name, value } = event.target
-    setForm({ ...form, [name]: value });
+    const { education } = form
+    education[i][name] = value
+    setForm({ ...form, education });
   }
 
-  const handleSelectChange = () => { }
+  const handleDateChange = (name, i) => date => {
+    const { education } = form
+    education[i][name] = moment(date).format('YYYY-MM-DD')
+    setForm({ ...form, education })
+  }
 
-  const handleDateChange = () => { }
+  const addRow = () => {
+    setForm({ ...form, education: [...form.education, model] })
+  }
 
-  const handleSubmit = () => { }
+  const removeRow = index => {
+    const { education } = form
+    education.splice(index, 1)
+    console.log(form, "remove this index")
+
+    setForm({ ...form, education })
+  }
+
+  const handleSubmit = () => {
+    createEducationBackground(form)
+  }
+
+  console.log(dialog, "dialog education background")
+  console.log(form, "form education background")
 
   return (
     <div>
@@ -97,83 +118,92 @@ function EducationBackgroundDialog(props) {
 
         <DialogContent dividers>
           <Grid container spacing={1}>
-            <Grid item xs={6}>
-              <TextField
-                id="degree"
-                name="degree"
-                placeholder="Degree"
-                fullWidth
-                margin="normal"
-                variant="outlined"
-                size="small"
-                label="Degree"
-                value={form.degree}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                id="field-of-study"
-                name="fieldOfStudy"
-                placeholder="Field Of Study"
-                fullWidth
-                margin="normal"
-                variant="outlined"
-                size="small"
-                label="Field Of Study"
-                value={form.fieldOfStudy}
-                onChange={handleChange}
-              />
-            </Grid>
+            {form.education.map((education, i) =>
+              <React.Fragment key={i}>
+                <Grid item xs={6}>
+                  <TextField
+                    id="degree"
+                    name="degree"
+                    placeholder="Degree"
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                    size="small"
+                    label="Degree"
+                    value={education.degree}
+                    onChange={(e) => handleChange(e, i)}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    id="field-of-study"
+                    name="fieldOfStudy"
+                    placeholder="Field Of Study"
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                    size="small"
+                    label="Field Of Study"
+                    value={education.fieldOfStudy}
+                    onChange={(e) => handleChange(e, i)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    id="interests"
+                    name="interests"
+                    placeholder="Interests"
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                    size="small"
+                    label="Interests"
+                    value={education.interests}
+                    onChange={(e) => handleChange(e, i)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      autoOk
+                      margin="normal"
+                      fullWidth
+                      format="MM/dd/yyyy"
+                      inputVariant="outlined"
+                      id="time-date-of-completion"
+                      label="Date Of Completion"
+                      size="small"
+                      value={education.dateOfCompletion}
+                      onChange={handleDateChange('dateOfCompletion', i)}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change time',
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    id="note"
+                    name="note"
+                    placeholder="Note"
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                    multiline
+                    rows={4}
+                    size="small"
+                    label="Note"
+                    value={education.note}
+                    onChange={(e) => handleChange(e, i)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Button size="small" color="primary" onClick={() => removeRow(i)}>remove</Button>
+                </Grid>
+              </React.Fragment>
+            )}
             <Grid item xs={12}>
-              <TextField
-                id="interests"
-                name="interests"
-                placeholder="Interests"
-                fullWidth
-                margin="normal"
-                variant="outlined"
-                size="small"
-                label="Interests"
-                value={form.interests}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  autoOk
-                  disableToolbar
-                  margin="normal"
-                  fullWidth
-                  format="MM/dd/yyyy"
-                  inputVariant="outlined"
-                  id="time-date-of-completion"
-                  label="Date Of Completion"
-                  size="small"
-                  value={form.dateOfCompletion}
-                  onChange={handleDateChange}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change time',
-                  }}
-                />
-              </MuiPickersUtilsProvider>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="note"
-                name="note"
-                placeholder="Note"
-                fullWidth
-                margin="normal"
-                variant="outlined"
-                multiline
-                rows={4}
-                size="small"
-                label="Note"
-                value={form.note}
-                onChange={handleChange}
-              />
+              <Button size="small" color="primary" onClick={addRow}>Add another</Button>
             </Grid>
           </Grid>
         </DialogContent>
@@ -203,7 +233,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     closeEducationBackgroundDialog: () => dispatch(Actions.closeEducationBackgroundDialog()),
-    dispatch,
+    createEducationBackground: (data) => dispatch(Actions.createEducationBackground(data)),
   };
 }
 

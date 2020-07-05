@@ -559,6 +559,7 @@ const hrReducer = (state = initialState, action) =>
         };
         break;
       case Constants.OPEN_EDUCATION_BACKGROUND_DIALOG:
+        console.log(action.payload, "background action.payload")
         return {
           ...state,
           educationBackgroundDialog: { ...state.educationBackgroundDialog, props: { open: true }, data: action.payload },

@@ -54,8 +54,8 @@ const RecognitionItem = props => {
 				avatar={
 					<React.Fragment>
 						<AvatarGroup max={3}>
-							{recognition.employees && recognition.employees.map(emp =>
-								<Avatar alt={emp.firstName + ' ' + emp.lastName} className={classes.avatar} src={`data:image/jpg;base64,${emp.organisation.logo}`} />
+							{recognition.employees && recognition.employees.map((emp, i) =>
+								<Avatar key={i} alt={emp.firstName + ' ' + emp.lastName} className={classes.avatar} src={`data:image/jpg;base64,${emp.organisation.logo}`} />
 							)}
 						</AvatarGroup>
 						<Typography variant="body2" color="textSecondary">

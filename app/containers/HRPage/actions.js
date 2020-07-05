@@ -277,6 +277,20 @@ export function createWorkExperienceSuccess(data) {
   };
 }
 
+export function createEducationBackground(payload) {
+  return {
+    type: Constants.CREATE_EDUCATION_BACKGROUND,
+    payload
+  };
+}
+
+export function createEducationBackgroundSuccess(data) {
+  return {
+    type: Constants.CREATE_EDUCATION_BACKGROUND_SUCCESS,
+    payload: data
+  };
+}
+
 export function getPartyGroups() {
   return {
     type: Constants.GET_PARTYGROUPS,
