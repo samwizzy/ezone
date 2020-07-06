@@ -168,7 +168,7 @@ const BudgetingList = props => {
                 </MenuItem>
                 <MenuItem onClick={() => {
                   history.push({
-                    pathname: '/account/budgeting/new',
+                    pathname: '/account/budgeting/add',
                     accountDetailsData: account,
                   });
                 }}>
@@ -194,7 +194,7 @@ const BudgetingList = props => {
           size="small"
           className={classes.button}
           startIcon={<AddIcon />}
-          onClick={() => history.push('/account/budgeting/new')}
+          onClick={() => history.push('/account/budgeting/add')}
         >
           New Budget
         </Button>

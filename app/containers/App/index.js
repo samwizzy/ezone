@@ -201,6 +201,7 @@ const App = props => {
 
                   <PrivateRoute exact path="/account" component={AccountPage} />
                   <PrivateRoute exact path="/account/:id" component={AccountPage} />
+                  <PrivateRoute exact path="/account/:id/:name" component={AccountPage} />
                   {/*<PrivateRoute exact path="/account/reports" component={ReportsPage} />*/}
 
                   {/*<PrivateRoute exact path="/account/chart" component={ChartPage} />*/}
@@ -217,7 +218,7 @@ const App = props => {
                   <PrivateRoute exact path="/account/journal/details" component={JournalDetails} />*/}
                  
 
-                  <PrivateRoute exact path="/inventory" />
+                  {/*<PrivateRoute exact path="/inventory" />*/}
 
                   <PrivateRoute
                     exact
@@ -227,7 +228,13 @@ const App = props => {
 
                   <PrivateRoute
                     exact
-                    path="/inventory/sales"
+                    path="/sales"
+                    component={SalesPage}
+                  />
+
+               <PrivateRoute
+                    exact
+                    path="/sales/:id"
                     component={SalesPage}
                   />
 

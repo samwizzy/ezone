@@ -379,7 +379,7 @@ const AccountChart = props => {
                 </MenuItem>
                 <MenuItem onClick={() => {
                   history.push({
-                    pathname: '/account/chart/details',
+                    pathname: '/account/charts/details',
                     chartDetailsData: account,
                   });
                   chartContext.chartDispatch({type:'VIEW_ID',id:account.id})

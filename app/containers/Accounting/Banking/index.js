@@ -11,7 +11,12 @@ import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
+import {
+  BrowserRouter as Route,
+  Switch,
+  useParams,
+  useRouteMatch,
+} from "react-router-dom";
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectBanking from './selectors';
@@ -25,10 +30,11 @@ import LoadingIndicator from './../../../components/LoadingIndicator';
 import BankList from './components/BankList';
 
 export function Banking(props) {
+  const {id} = useRouteMatch();
   useInjectReducer({ key: 'banking', reducer });
   useInjectSaga({ key: 'banking', saga });
 
-  console.log('Banking index.js loaded');
+  console.log(`Banking index.js loaded ${id}`);
 
   const {
     loading,

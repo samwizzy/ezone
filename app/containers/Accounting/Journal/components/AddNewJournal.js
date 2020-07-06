@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect,useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -136,20 +136,8 @@ const AddNewJournal = props => {
   };
 
   const handleChange = name => event => {
-    const textValue = event.target.value;
-    // Validating Account Code for apha numeric
-    // add case for more validation
-    switch (name) {
-      case 'reference':
-        {
-          if(alphaNumeric(textValue)){
-            setValues({ ...values, [name]: textValue });
-          }
-        }
-        break;
-      default:
+    const textValue = event.target.value; 
         setValues({ ...values, [name]: textValue });
-    }
   };
 
   const handleSelectChange = (name, value) => {
@@ -179,7 +167,8 @@ const AddNewJournal = props => {
   });
 
   const isDisabled = () => {
-    return values.entries.reduce((a, b) => a + Number(b.credit), 0) != values.entries.reduce((a, b) => a + Number(b.debit), 0) || (values.entries.reduce((a, b) => a + Number(b.credit), 0) + values.entries.reduce((a, b) => a + Number(b.debit), 0)) === 0;
+    return  !isAphaNumeric 
+    //return (values.entries.reduce((a, b) => a + Number(b.credit), 0) != values.entries.reduce((a, b) => a + Number(b.debit), 0) || (values.entries.reduce((a, b) => a + Number(b.credit), 0) + values.entries.reduce((a, b) => a + Number(b.debit), 0)) === 0) && isAphaNumeric;
   }
 
   const handleImageChange = (ev) => { 
@@ -193,6 +182,18 @@ const AddNewJournal = props => {
       })   
     })
     setValues(_.set({ ...values }, event.target.name, fileNode))
+  }
+
+  const [isAphaNumeric,setIsAphaNumeric] = useState(true)
+
+  const checkAlphaNumeric = event =>{
+    let value= event.target.value;
+    let txt = alphaNumeric(value)
+    if(txt){
+      setIsAphaNumeric(true)
+    }
+    else
+    setIsAphaNumeric(false)
   }
 
   console.log('values -> ', values);
@@ -224,7 +225,7 @@ const AddNewJournal = props => {
                   </MenuItem>
                 ))}
               </TextField> */}
-              <Autocomplete
+              {/*<Autocomplete
                 id="combo-box-demo"
                 options={filteredAccountPeriodData}
                 style={{width: 300}}
@@ -239,7 +240,7 @@ const AddNewJournal = props => {
                     margin="normal"
                   />
                 )}
-              />
+              />*/}
             </div>
             <Grid container className={classes.grid}>
               <Grid item xs={5}>
@@ -263,17 +264,39 @@ const AddNewJournal = props => {
                 </MuiPickersUtilsProvider>
               </Grid>
               <Grid item xs={5}>
-                <TextField
-                  id="standard-note"
+               
+
+                {isAphaNumeric ?
+                  <TextField
+                  id="standard-accountCode"
                   label="Reference Number"
-                  size="small"
+                  type="name"
+                  onBlur={checkAlphaNumeric}
                   variant="outlined"
+                  size="small"
                   className={classes.textField}
                   value={values.reference}
                   onChange={handleChange('reference')}
                   margin="normal"
                   fullWidth
                 />
+                  :
+                  <TextField
+                    id="standard-accountCode"
+                    label="Reference Number"
+                    type="name"
+                    onBlur={checkAlphaNumeric}
+                    error
+                    helperText="value must be alpha numeric"
+                    variant="outlined"
+                    size="small"
+                    className={classes.textField}
+                    value={values.reference}
+                    onChange={handleChange('reference')}
+                    margin="normal"
+                    fullWidth
+                  />
+                }
               </Grid>
             </Grid>
             <Grid item xs={12}>

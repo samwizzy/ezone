@@ -24,6 +24,7 @@ export function loginErrorAction(data) {
 }
 
 export function getUserProfileAction(data) {
+  console.log("the user profile action got fired onome ojumah"+ JSON.stringify(data))
   return {
     type: Constants.GET_USER_PROFILE,
     payload: data,
@@ -31,6 +32,7 @@ export function getUserProfileAction(data) {
 }
 
 export function getUserProfileSuccessAction(data) {
+  console.log(data, 'user profile data onome');
   return {
     type: Constants.GET_USER_PROFILE_SUCCESS,
     payload: data,
