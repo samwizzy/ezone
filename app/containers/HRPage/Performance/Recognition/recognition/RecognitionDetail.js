@@ -43,8 +43,9 @@ const RecognitionDetail = props => {
 	const [form, setForm] = React.useState({ comment: "", recognitionId: "" })
 
 	React.useEffect(() => {
-		setForm({ ...form, recognitionId: recognition.id })
-	}, []);
+		recognition &&
+			setForm({ ...form, recognitionId: recognition.id })
+	}, [recognition]);
 
 	const handleChange = ({ target }) => {
 		setForm({ ...form, [target.name]: target.value })
@@ -122,17 +123,22 @@ const RecognitionDetail = props => {
 				</div>
 
 				<div className={classes.content}>
-					<List dense={true}>
-						<ListItem>
-							<ListItemAvatar>
-								<Avatar edge="end" aria-label="user-avi" />
-							</ListItemAvatar>
-							<ListItemText
-								primary={"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, "}
-								secondary={"3rd Jul 2019    3:00pm"}
-							/>
-						</ListItem>
-					</List>
+					{recognition.comments.length > 0 ?
+						<List dense={true}>
+							{recognition.comments && recognition.comments.map(comment =>
+								<ListItem>
+									<ListItemAvatar>
+										<Avatar edge="end" aria-label="user-avi" />
+									</ListItemAvatar>
+									<ListItemText
+										primary={`${comment.comment} by ${comment.employeeName}`}
+										secondary={moment(comment.dateCreated).format('lll')}
+									/>
+								</ListItem>
+							)}
+						</List> :
+						<Typography variant="subtitle1" color="textSecondary">You are no comments</Typography>
+					}
 				</div>
 			</CardContent>
 		</Card>

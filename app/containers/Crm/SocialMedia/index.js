@@ -14,56 +14,56 @@ import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectCrmCampaigns from './selectors';
+import makeSelectCrmSocialMedia from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import * as Actions from './actions';
-import CampaignList from './components/CampaignList';
+import SocialMediaList from './SocialMediaList';
+import SocialMediaTabs from './SocialMediaTabs';
 import ModuleLayout from '../components/ModuleLayout';
-import CampaignDialog from './components/CampaignDialog';
-import CampaignDetailsDialog from './components/CampaignDetailsDialog';
+import SocialMediaDialog from './components/SocialMediaDialog';
 
-const key = 'crmCampaigns'
+const key = 'crmSocialMedia'
 
-export function Campaigns(props) {
+export function SocialMedia(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
-  const { getCampaigns, getEmployees } = props;
+  const { getSocialMedias, getEmployees } = props;
 
   useEffect(() => {
-    getCampaigns();
+    getSocialMedias();
     getEmployees();
   }, []);
 
   return (
     <div>
       <Helmet>
-        <title>Campaign</title>
+        <title>Social Media</title>
         <meta name="description" content="Description of Campaign" />
       </Helmet>
 
       <ModuleLayout>
-        <CampaignList />
+        {/* <SocialMediaList /> */}
+        <SocialMediaTabs />
       </ModuleLayout>
 
-      <CampaignDialog />
-      <CampaignDetailsDialog />
+      <SocialMediaDialog />
     </div>
   );
 }
 
-Campaigns.propTypes = {
-  getCampaigns: PropTypes.func,
+SocialMedia.propTypes = {
+  getSocialMedias: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  crmCampaigns: makeSelectCrmCampaigns(),
+  crmSocialMedia: makeSelectCrmSocialMedia(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getCampaigns: () => dispatch(Actions.getCampaigns()),
+    getSocialMedias: () => dispatch(Actions.getSocialMedias()),
     getEmployees: () => dispatch(Actions.getEmployees()),
   };
 }
@@ -76,4 +76,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(Campaigns);
+)(SocialMedia);

@@ -108,7 +108,8 @@ export function* commentGoals({ payload }) {
     console.log(response, "comment goals response")
     yield put(AppActions.openSnackBar({ message: 'Goal commented successfully', status: 'success' }));
 
-    yield put(Actions.createGoalsSuccess(response));
+    yield put(Actions.commentGoalsSuccess(response));
+    yield put(Actions.getGoalsById(payload.performanceId));
     yield put(Actions.getGoals());
   } catch (err) {
     const error = yield call(errorHandler, err.response.json());
@@ -207,6 +208,7 @@ export function* commentRecognition({ payload }) {
     console.log(response, "comment recognition response")
 
     yield put(Actions.createRecognitionSuccess(response));
+    yield put(Actions.getRecognitionById(payload.recognitionId));
     yield put(Actions.getRecognitions());
   } catch (err) {
     const error = yield call(errorHandler, err.response.json());

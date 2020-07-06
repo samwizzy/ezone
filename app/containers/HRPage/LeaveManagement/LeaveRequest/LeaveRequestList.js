@@ -55,8 +55,7 @@ const LeaveRequestList = props => {
   const classes = useStyles();
   const { loading, openNewLeaveRequestDialog, getLeaveRequest, getLeaveRequestById, leaveRequests } = props;
 
-  React.useEffect(() => {
-  }, []);
+  console.log(leaveRequests, "leaveRequests")
 
   const columns = [
     {
@@ -68,54 +67,30 @@ const LeaveRequestList = props => {
       },
     },
     {
-      name: 'employee',
+      name: 'employeeName',
       label: 'Employee',
       options: {
         filter: true,
       },
     },
     {
-      name: 'duration',
-      label: 'Duration',
-      options: {
-        filter: true,
-        sort: true,
-        customBodyRender: createdAt => {
-          return (
-            <Typography color='textSecondary'>{moment(createdAt).format('ll')}</Typography>
-          )
-        }
-      }
-    },
-    {
-      name: 'days',
-      label: 'Days',
-      options: {
-        filter: true,
-        sort: true,
-        customBodyRender: value => {
-          return (
-            <Typography color='textSecondary'>{`${value} days`}</Typography>
-          )
-        }
-      }
-    },
-    {
-      name: 'createdAt',
-      label: 'Date Applied',
-      options: {
-        filter: true,
-        sort: true,
-        customBodyRender: createdAt => {
-          return (
-            <Typography color='textSecondary'>{moment(createdAt).format('ll')}</Typography>
-          )
-        }
-      }
-    },
-    {
-      name: 'type',
+      name: 'leaveTypeName',
       label: 'Leave Type',
+      options: {
+        filter: true,
+      },
+    },
+    {
+      name: 'noOfDays',
+      label: 'No. of Days',
+      options: {
+        filter: true,
+        sort: true
+      }
+    },
+    {
+      name: 'leaveAllowance',
+      label: 'Leave Allowance',
       options: {
         filter: true,
         sort: true,
@@ -127,7 +102,24 @@ const LeaveRequestList = props => {
       options: {
         filter: true,
         sort: true,
-      },
+      }
+    },
+    {
+      name: 'addedBy',
+      label: 'Added By',
+      options: {
+        filter: true,
+        sort: true,
+      }
+    },
+    {
+      name: 'dateAdded',
+      label: 'Date Applied',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: createdAt => createdAt ? moment(createdAt).format('ll') : ''
+      }
     },
   ];
 

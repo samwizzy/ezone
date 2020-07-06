@@ -61,6 +61,7 @@ function LeaveRequestDialog(props) {
         tillDate: moment().format('YYYY-MM-DDTHH:mm:ss.SSS')
       }
     ],
+    noOfDays: 0,
     status: 'APPROVED',
     till: moment().format('YYYY-MM-DDTHH:mm:ss.SSS')
   });
@@ -114,7 +115,7 @@ function LeaveRequestDialog(props) {
     const { name, files } = event.target
     const result = EzoneUtils.toBase64(files[0]);
     result.then(file =>
-      setForm({ ...form, [name]: file, documentName: files[0].name })
+      setForm({ ...form, [name]: file, documentName: files[0].name.substr(0, 5).concat(moment().format('YYYY-MM-DDTHH:mm:ss')) })
     )
   }
 
@@ -200,6 +201,19 @@ function LeaveRequestDialog(props) {
                 size="small"
                 label="Leave Allowance"
                 value={form.leaveAllowance}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id="no-of-days"
+                name="noOfDays"
+                placeholder="Number of Days"
+                margin="normal"
+                variant="outlined"
+                size="small"
+                label="Number of Days"
+                value={form.noOfDays}
                 onChange={handleChange}
               />
             </Grid>

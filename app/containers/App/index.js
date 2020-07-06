@@ -80,6 +80,22 @@ import CrmCampaigns from '../Crm/Campaigns/Loadable';
 import CrmContactGroups from '../Crm/ContactGroups/Loadable';
 import CrmSchedules from '../Crm/Schedules/Loadable';
 import CrmActivities from '../Crm/Activities/Loadable';
+import CrmReports from '../Crm/Reports/Loadable';
+import CrmSocialMedia from '../Crm/SocialMedia/Loadable';
+
+import LMSDashboardModule from '../LMS/Dashboard/Loadable';
+import LMSAccountSettingsModule from '../LMS/AccountSettings/Loadable';
+import LMSIntegrationModule from '../LMS/Integration/Loadable';
+import LMSManageCoursesModule from '../LMS/ManageCourses/Loadable';
+import LMSMessagesModule from '../LMS/Messages/Loadable';
+import LMSQuizzesModule from '../LMS/Quizzes/Loadable';
+import LMSVirtualClassroomsModule from '../LMS/VirtualClassrooms/Loadable';
+import LMSUsersModule from '../LMS/Users/Loadable';
+import LMSFileLibraryModule from '../LMS/FileLibrary/Loadable';
+import LMSAttendanceModule from '../LMS/Attendance/Loadable';
+import LMSContactsModule from '../LMS/Contacts/Loadable';
+import LMSActivitiesModule from '../LMS/Activities/Loadable';
+import LMSSchedulesModule from '../LMS/Schedules/Loadable';
 
 // import { messaging } from '../../utils/firebase-notification';
 
@@ -188,6 +204,17 @@ const App = props => {
                     path="/settings/email/password/template"
                     component={EmailPasswordTemplate}
                   />
+                  <PrivateRoute exact path="/lms/dashboard" component={LMSDashboardModule} />
+                  <PrivateRoute exact path="/lms/account-settings" component={LMSAccountSettingsModule} />
+                  <PrivateRoute exact path="/lms/integration" component={LMSIntegrationModule} />
+                  <PrivateRoute exact path="/lms/messages" component={LMSMessagesModule} />
+                  <PrivateRoute exact path="/lms/file-library" component={LMSFileLibraryModule} />
+                  <PrivateRoute exact path="/lms/users" component={LMSUsersModule} />
+                  <PrivateRoute exact path="/lms/manage-courses" component={LMSManageCoursesModule} />
+                  <PrivateRoute exact path="/lms/virtual-classrooms" component={LMSVirtualClassroomsModule} />
+                  <PrivateRoute exact path="/lms/quizzes" component={LMSQuizzesModule} />
+                  <PrivateRoute exact path="/lms/attendance" component={LMSAttendanceModule} />
+
                   <PrivateRoute exact path="/work-order" component={WorkOrderPage} />
 
                   <PrivateRoute exact path="/human-resource/leave-management/:page?/:pageId?" component={LeaveManagementPage} />
@@ -215,7 +242,7 @@ const App = props => {
                   <PrivateRoute exact path="/account/fixedassets" component={FixedAssetsPage} />
                   <PrivateRoute exact path="/account/journal/add" component={AddNewJournal} />
                   <PrivateRoute exact path="/account/journal/details" component={JournalDetails} />*/}
-                 
+
 
                   <PrivateRoute exact path="/inventory" />
 
@@ -301,6 +328,16 @@ const App = props => {
                     exact
                     path="/crm/activities"
                     component={CrmActivities}
+                  />
+                  <PrivateRoute
+                    exact
+                    path="/crm/reports"
+                    component={CrmReports}
+                  />
+                  <PrivateRoute
+                    exact
+                    path="/crm/social-media"
+                    component={CrmSocialMedia}
                   />
                 </Layout3>
                 <Route path="" component={NotFoundPage} />
