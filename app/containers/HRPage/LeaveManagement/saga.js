@@ -43,17 +43,17 @@ export function* getLeaveRequest() {
 }
 
 export function* createLeaveRequest({ payload }) {
-  const { leaveTypeId, ...rest } = payload
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.CreateLeaveRequestApi}/${leaveTypeId}`;
+  const requestURL = `${Endpoints.CreateLeaveRequestApi}`;
+  payload.orgId = user && user.organisation.orgId
 
-  console.log(rest, "rest from payload create request")
+  console.log(payload, "rest from payload create request")
 
   try {
     const response = yield call(request, requestURL, {
       method: 'POST',
-      body: JSON.stringify(rest),
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
@@ -61,7 +61,12 @@ export function* createLeaveRequest({ payload }) {
     });
 
     console.log(response, "create leave request response")
-    yield put(AppActions.openSnackBar({ message: "Leave request created successfully", status: 'success' }));
+    if (response.success === false) {
+      yield put(AppActions.openSnackBar({ message: response.message, status: 'warning' }));
+      return false
+    } else {
+      yield put(AppActions.openSnackBar({ message: "Leave request created successfully", status: 'success' }));
+    }
 
     yield put(Actions.createLeaveRequestSuccess(response));
     yield put(Actions.getLeaveRequest());

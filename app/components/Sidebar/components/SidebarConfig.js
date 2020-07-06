@@ -39,7 +39,7 @@ const SidebarConfig = [
     ],
   },
   {
-    module: ['account', 'budgeting','reports','payroll','fixedassets','charts'],
+    module: ['account', 'budgeting', 'reports', 'payroll', 'fixedassets', 'charts'],
     menus: [
       { id: 1, name: 'Dashboard', url: '/account', icon: 'dashboard' },
       { id: 2, name: 'Chart of Account', url: '/account/charts', icon: 'account_tree' },
@@ -64,6 +64,21 @@ const SidebarConfig = [
       { id: 7, name: 'Reports', url: '/crm/reports', icon: 'local_activity' },
       { id: 8, name: 'Campaigns', url: '/crm/campaigns', icon: 'local_activity' },
       { id: 9, name: 'Social Media', url: '/crm/social-media', icon: 'local_activity' },
+    ],
+  },
+  {
+    module: ['lms'],
+    menus: [
+      { id: 1, name: 'Dashboard', url: '/lms/dashboard', icon: 'dashboard' },
+      { id: 2, name: 'Account & Settings', url: '/lms/account-settings', icon: 'settings' },
+      { id: 3, name: 'Integration', url: '/lms/integration', icon: 'business_center' },
+      { id: 4, name: 'Messages', url: '/lms/messages', icon: 'find_in_page' },
+      { id: 5, name: 'File Library', url: '/lms/file-library', icon: 'library_books' },
+      { id: 6, name: 'Users', url: '/lms/users', icon: 'person' },
+      { id: 7, name: 'Manage Courses', url: '/lms/manage-courses', icon: 'library_books' },
+      { id: 8, name: 'Virtual Classrooms', url: '/lms/virtual-classrooms', icon: 'person' },
+      { id: 9, name: 'Quizzes', url: '/lms/quizzes', icon: 'person' },
+      { id: 10, name: 'Attendance', url: '/lms/attendance', icon: 'person' },
     ],
   },
   {

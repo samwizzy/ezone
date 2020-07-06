@@ -21,6 +21,8 @@ import moment from 'moment';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
+import CompaniesDialog from './CompaniesDialog';
+import CompanyDetailsDialog from './CompanyDetailsDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -52,20 +54,20 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CampaignList = props => {
+const CompaniesList = props => {
   const classes = useStyles();
 
   const {
     loading,
-    getCampaigns,
-    campaigns,
-    openNewCampaignDialog,
-    openEditCampaignDialog,
-    openCampaignDetailsDialog,
+    getAllCompaniesAction,
+    getAllCompanies,
+    openNewCompanyDialogAction,
+    openEditCompanyDialogAction,
+    openCompanyDetailsDialogAction,
   } = props;
 
   useEffect(() => {
-    getCampaigns();
+    getAllCompaniesAction();
   }, []);
 
   const columns = [
@@ -75,6 +77,9 @@ const CampaignList = props => {
       options: {
         filter: true,
         customBodyRender: (value, tableMeta) => {
+          if (value === '') {
+            return '';
+          }
           return (
             <FormControlLabel
               label={tableMeta.rowIndex + 1}
@@ -85,47 +90,39 @@ const CampaignList = props => {
       },
     },
     {
-      name: 'name',
-      label: 'Name',
+      name: 'firstName',
+      label: 'Company Name',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'type',
-      label: 'Type',
+      name: 'phoneNumber',
+      label: 'Phone Number',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'status',
-      label: 'Status',
+      name: 'emailAddress',
+      label: 'Email',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'startDate',
-      label: 'Start Date',
+      name: 'lifeStage',
+      label: 'Life Stage',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'endDate',
-      label: 'End Date',
-      options: {
-        filter: true,
-        sort: false,
-      }
-    },
-    {
-      name: 'owner',
+      name: 'ownerName',
       label: 'Owner',
       options: {
         filter: true,
@@ -145,17 +142,17 @@ const CampaignList = props => {
     },
     {
       name: 'id',
-      label: '',
+      label: 'Action',
       options: {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const data = campaigns.find(campaign => value === campaign.id);
+          const data = getAllCompanies.find(company => value === company.id);
 
           return (
             <Button
               variant="outlined" size="small" color="primary"
-              onClick={() => openEditCampaignDialog(data)}
+              onClick={() => openEditCompanyDialogAction(data)}
             >
               Edit
             </Button>
@@ -170,13 +167,13 @@ const CampaignList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const data = campaigns.find(campaign => value === campaign.id);
+          const data = getAllCompanies.find(company => value === company.id);
 
           return (
             <FormControlLabel
               className={classes.button}
               control={<Visibility />}
-              onClick={() => openCampaignDetailsDialog(data)}
+              onClick={() => openCompanyDetailsDialogAction(data)}
             />
           );
         },
@@ -187,7 +184,7 @@ const CampaignList = props => {
   const options = {
     filterType: 'checkbox',
     responsive: 'scrollMaxHeight',
-    selectableRows: 'single',
+    selectableRows: 'none',
     customToolbar: () => (
       <Button
         variant="contained"
@@ -195,13 +192,17 @@ const CampaignList = props => {
         size="small"
         className={classes.button}
         startIcon={<Add />}
-        onClick={() => openNewCampaignDialog()}
+        onClick={() => openNewCompanyDialogAction()}
       >
         New
       </Button>
     ),
     elevation: 0
   };
+
+  // if (loading) {
+  //   return <LoadingIndicator />;
+  // }
 
   return (
     <React.Fragment>
@@ -210,35 +211,41 @@ const CampaignList = props => {
       </Backdrop>
       <MUIDataTable
         className={classes.datatable}
-        title="All Campaigns"
-        data={campaigns}
+        title="All Companies"
+        data={[]}
         columns={columns}
         options={options}
       />
+      <CompaniesDialog />
+      <CompanyDetailsDialog />
     </React.Fragment>
   );
 };
 
-CampaignList.propTypes = {
+CompaniesList.propTypes = {
   loading: PropTypes.bool,
-  getCampaigns: PropTypes.func,
-  openNewCampaignDialog: PropTypes.func,
-  openEditCampaignDialog: PropTypes.func,
-  openCampaignDetailsDialog: PropTypes.func,
-  campaigns: PropTypes.array,
+  getAllCompaniesAction: PropTypes.func,
+  openNewCompanyDialogAction: PropTypes.func,
+  openEditCompanyDialogAction: PropTypes.func,
+  openCompanyDetailsDialogAction: PropTypes.func,
+  getAllCompanies: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  campaigns: Selectors.makeSelectCampaigns(),
+  getAllCompanies: Selectors.makeSelectGetAllCompanies(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewCampaignDialog: () => dispatch(Actions.openNewCampaignDialog()),
-    openEditCampaignDialog: evt => dispatch(Actions.openEditCampaignDialog(evt)),
-    openCampaignDetailsDialog: evt => dispatch(Actions.openCampaignDetailsDialog(evt)),
-    getCampaigns: () => dispatch(Actions.getCampaigns()),
+    openNewCompanyDialogAction: () =>
+      dispatch(Actions.openNewCompanyDialog()),
+    openEditCompanyDialogAction: evt =>
+      dispatch(Actions.openEditCompanyDialog(evt)),
+    openCompanyDetailsDialogAction: evt =>
+      dispatch(Actions.openCompanyDetailsDialog(evt)),
+    getAllCompaniesAction: () =>
+      dispatch(Actions.getAllCompanies()),
   };
 }
 
@@ -250,4 +257,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(CampaignList);
+)(CompaniesList);

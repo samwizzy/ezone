@@ -6,6 +6,7 @@ import { AppBar, Avatar, Box, Button, IconButton, Checkbox, FormControl, FormCon
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import moment from 'moment'
 import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors'
 import classNames from 'classnames'
@@ -68,8 +69,9 @@ const GoalsDetails = props => {
   const [form, setForm] = React.useState({ comment: "", performanceId: "" })
 
   React.useEffect(() => {
-    setForm({ ...form, performanceId: goal.id })
-  }, []);
+    goal &&
+      setForm({ ...form, performanceId: goal.id })
+  }, [goal]);
 
   console.log(goal, 'goal details')
 
@@ -171,19 +173,26 @@ const GoalsDetails = props => {
                 </div>
                 <div className={classes.content}>
                   <Typography variant="subtitle1">Activities</Typography>
-                  <List dense={true}>
-                    <ListItem>
-                      <ListItemAvatar>
-                        <IconButton edge="end" aria-label="delete">
-                          <EditOutlined />
-                        </IconButton>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={"Status changed to Inprogress by Essien Joy"}
-                        secondary={"3rd Jul 2019    3:00pm"}
-                      />
-                    </ListItem>
-                  </List>
+                  {goal.comments.length > 0 ?
+                    <List dense={true}>
+                      {goal.comments && goal.comments.map(comment =>
+                        <ListItem>
+                          <ListItemAvatar>
+                            <IconButton edge="end" aria-label="delete">
+                              <EditOutlined />
+                            </IconButton>
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary={`${comment.comment} by ${comment.employeeName}`}
+                            secondary={moment(comment.dateCreated).format('lll')}
+                          />
+                        </ListItem>
+                      )}
+                    </List> :
+                    <Typography variant="subtitle1" color="textSecondary" align="center">
+                      You have no comments
+                  </Typography>
+                  }
                 </div>
 
               </Grid>
