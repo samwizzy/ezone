@@ -73,7 +73,7 @@ const AddBankAccountDialog = props => {
     }
   }, [bankAccountDialog.data]);
 
-  const [isAphaNumeric,setIsAphaNumeric] = useState(true)
+  const [isAphaNumeric,setIsAphaNumeric] = useState(false)
 
   const checkAlphaNumeric = event =>{
     let value= event.target.value;

@@ -65,6 +65,7 @@ import BankingPage from '../Accounting/Banking/Loadable';
 import BudgetPage from '../Accounting/Budget/Loadable';
 import SettingsPage from '../Accounting/Settings/Loadable';*/
 import SalesPage from '../SalesPage';
+import PurchasePage from '../PurchasePage';
 //import AccountSetup from '../Accounting/Settings/components/AccountSetup';
 /*import PayrollPage from '../Accounting/Payroll/Loadable';
 import FixedAssetsPage from '../Accounting/FixedAssets';
@@ -236,6 +237,12 @@ const App = props => {
                     exact
                     path="/sales/:id"
                     component={SalesPage}
+                  />
+
+                   <PrivateRoute
+                    exact
+                    path="/purchase/:id"
+                    component={PurchasePage}
                   />
 
                   <PrivateRoute

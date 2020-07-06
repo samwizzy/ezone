@@ -184,7 +184,7 @@ const AddNewJournal = props => {
     setValues(_.set({ ...values }, event.target.name, fileNode))
   }
 
-  const [isAphaNumeric,setIsAphaNumeric] = useState(true)
+  const [isAphaNumeric,setIsAphaNumeric] = useState(false)
 
   const checkAlphaNumeric = event =>{
     let value= event.target.value;
@@ -484,7 +484,7 @@ const AddNewJournal = props => {
                       onClick={() => {
                         createNewAccountJournalAction(values);
                       }}
-                      disabled={isDisabled()}
+                      disabled={!isDisabled()}
                     >
                       Save and Submit
                     </Button>

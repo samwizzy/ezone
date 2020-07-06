@@ -242,11 +242,12 @@ const NewAccountDialog = props => {
     }
   };
 
-  const [isAphaNumeric,setIsAphaNumeric] = useState(true)
+  const [isAphaNumeric,setIsAphaNumeric] = useState(false)
 
   const checkAlphaNumeric = event =>{
     let value= event.target.value;
     let txt = alphaNumeric(value)
+    console.log(`alphanumeric ${txt}`)
     if(txt){
       setIsAphaNumeric(true)
     }
@@ -308,7 +309,6 @@ const NewAccountDialog = props => {
                   <TextField
                     id="standard-accountCode"
                     label="Account Code"
-                    type="number"
                     variant="outlined"
                     onBlur={checkAlphaNumeric}
                     size="small"
@@ -322,7 +322,6 @@ const NewAccountDialog = props => {
                   <TextField
                     id="standard-accountCode"
                     label="Account Code"
-                    type="number"
                     variant="outlined"
                     onBlur={checkAlphaNumeric}
                     error
@@ -482,7 +481,7 @@ const NewAccountDialog = props => {
             <LoadingIndicator />
           ) : (
             <Button
-            disabled={isAphaNumeric}
+            disabled={!isAphaNumeric}
               onClick={() => { accountDialog.type === 'new' ? createChartOfAccountHandler() : updateChartOfAccount() }}
               color="primary"
               // disabled={ accountDialog.type === "new" ? !canSubmitValues() : "" }
