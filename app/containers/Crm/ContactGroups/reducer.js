@@ -11,11 +11,9 @@ export const initialState = {
   contactDetails: [],
   loading: false,
   error: false,
-  getContactGroupById: {},
+  getContactGroupById: null,
   getContactGroup: false,
   allContactsGroup: [],
-  createNewContactGroup: {},
-  updateContactGroup: {},
   contactGroupsDialog: {
     type: 'new',
     props: {
@@ -113,14 +111,12 @@ const crmContactGroupsReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: true,
-          createNewContactGroup: action.payload,
         };
       }
       case Constants.CREATE_NEW_CONTACT_GROUP_SUCCESS: {
         return {
           ...state,
           loading: false,
-          // createNewContact: action.payload,
         };
       }
       case Constants.CREATE_NEW_CONTACT_GROUP_ERROR: {
@@ -134,7 +130,6 @@ const crmContactGroupsReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: true,
-          updateContactGroup: action.payload,
         };
       }
       case Constants.UPDATE_CONTACT_GROUP_SUCCESS: {

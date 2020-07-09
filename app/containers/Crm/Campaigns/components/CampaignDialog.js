@@ -21,7 +21,6 @@ import DateFnsUtils from '@date-io/date-fns';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
 import { CampaignInfo } from './CampaignInfo';
-import { DescriptionInfo } from './DescriptionInfo';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -44,7 +43,6 @@ const initialState = {
   annualCost: 0,
   budgetCost: 0,
   campaignName: "",
-  campaignOwnerName: "",
   deleteStatus: true,
   description: "",
   endDate: moment().format('YYYY-MM-DDTHH:mm:ss.SSS'),
@@ -93,13 +91,13 @@ const CampaignDialog = props => {
   };
 
   const handleNext = () => {
-    if (step > -1 && step <= 2) {
+    if (step > -1 && step <= 1) {
       setStep(step + 1);
     }
   };
 
   const handlePrev = () => {
-    if (step => 1 && step <= 2) {
+    if (step => 1 && step <= 1) {
       setStep(step - 1);
     }
   };
@@ -132,17 +130,7 @@ const CampaignDialog = props => {
             form={form}
             closeNewCampaignDialog={closeNewCampaignDialog}
             handleNext={handleNext}
-          />
-        )}
-        {step === 1 && (
-          <DescriptionInfo
-            handleChange={handleChange}
-            handleDateChange={handleDateChange}
             handleSubmit={handleSubmit}
-            form={form}
-            closeNewCampaignDialog={closeNewCampaignDialog}
-            handleNext={handleNext}
-            handlePrev={handlePrev}
           />
         )}
       </Dialog>

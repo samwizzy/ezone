@@ -6,6 +6,26 @@
 
 import * as Constants from './constants';
 
+export function getEmployees() {
+  return {
+    type: Constants.GET_EMPLOYEES,
+  }
+}
+
+export function getEmployeesSuccess(data) {
+  return {
+    type: Constants.GET_EMPLOYEES_SUCCESS,
+    payload: data,
+  }
+}
+
+export function getEmployeesError(data) {
+  return {
+    type: Constants.GET_EMPLOYEES_ERROR,
+    payload: data,
+  }
+}
+
 export function openNewCompanyDialog() {
   return {
     type: Constants.OPEN_NEW_COMPANY_DIALOG,

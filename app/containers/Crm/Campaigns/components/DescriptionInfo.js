@@ -23,6 +23,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const DescriptionInfo = props => {
+  const classes = useStyles();
+
   const {
     handleChange,
     closeNewCampaignDialog,
@@ -31,7 +33,6 @@ export const DescriptionInfo = props => {
     handleSubmit,
     form,
   } = props;
-  const classes = useStyles();
 
   const canSubmitForm = () => {
     const { fax, website, address1, mobileNo } = form;
@@ -49,8 +50,8 @@ export const DescriptionInfo = props => {
       </AppBar>
 
       <DialogContent dividers>
-        <Grid container spacing={1}>
-          <Grid item xs={6}>
+        <Grid container>
+          <Grid item xs={12}>
             <TextField
               name="description"
               label="Description"
@@ -59,7 +60,8 @@ export const DescriptionInfo = props => {
               variant="outlined"
               size="small"
               multiline
-              row={2}
+              rows={2}
+              rowsMax={4}
               value={form.description}
               onChange={handleChange}
             />

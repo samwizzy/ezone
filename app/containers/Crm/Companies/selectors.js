@@ -15,7 +15,7 @@ const selectCompaniesDomain = state => state.crmCompanies || initialState;
  * Default selector used by Companies
  */
 
-const makeSelectCompanies = () =>
+const makeSelectCrmCompanies = () =>
   createSelector(
     selectCompaniesDomain,
     substate => substate,
@@ -45,32 +45,26 @@ const makeSelectCompanyDetailsDialog = () =>
     subState => subState.companyDetailsDialog,
   );
 
-const makeSelectCreateNewCompany = () =>
-  createSelector(
-    selectCompaniesDomain,
-    subState => subState.newCompanyDetails,
-  );
-
-const makeSelectUpdateCompany = () =>
-  createSelector(
-    selectCompaniesDomain,
-    subState => subState.updateCompanyDetails,
-  );
-
 const makeSelectGetAllCompanies = () =>
   createSelector(
     selectCompaniesDomain,
     subState => subState.getAllCompanies,
   );
 
-export default makeSelectCompanies;
+const makeSelectEmployees = () =>
+  createSelector(
+    selectCompaniesDomain,
+    subState => subState.employees,
+  );
+
+
+export default makeSelectCrmCompanies;
 export {
   selectCompaniesDomain,
   makeSelectLoading,
   makeSelectError,
+  makeSelectEmployees,
   makeSelectCompanyDialog,
-  makeSelectCreateNewCompany,
-  makeSelectUpdateCompany,
   makeSelectGetAllCompanies,
   makeSelectCompanyDetailsDialog,
 };

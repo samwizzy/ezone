@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -16,13 +16,23 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectCrm from './selectors';
 import reducer from './reducer';
+import * as Actions from './actions';
 import saga from './saga';
 import SchedulesList from './components/SchedulesList';
 import ModuleLayout from './../components/ModuleLayout';
 
-export function Schedules() {
-  useInjectReducer({ key: 'crmSchedules', reducer });
-  useInjectSaga({ key: 'crmSchedules', saga });
+const key = 'crmSchedules';
+export function Schedules(props) {
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
+
+  const { getEmployees, getContacts, getSchedules } = props
+
+  useEffect(() => {
+    getEmployees();
+    getContacts();
+    getSchedules();
+  }, [])
 
   return (
     <div>
@@ -30,7 +40,7 @@ export function Schedules() {
         <title>Crm - Schedules</title>
         <meta name="description" content="Description of Crm Schedules" />
       </Helmet>
-      
+
       <ModuleLayout>
         <SchedulesList />
       </ModuleLayout>
@@ -39,7 +49,7 @@ export function Schedules() {
 }
 
 Schedules.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  employees: PropTypes.array
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -48,7 +58,9 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    getEmployees: () => dispatch(Actions.getEmployees()),
+    getContacts: () => dispatch(Actions.getContacts()),
+    getSchedules: () => dispatch(Actions.getSchedules()),
   };
 }
 

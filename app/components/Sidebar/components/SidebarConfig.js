@@ -64,6 +64,14 @@ const SidebarConfig = [
       { id: 7, name: 'Reports', url: '/crm/reports', icon: 'local_activity' },
       { id: 8, name: 'Campaigns', url: '/crm/campaigns', icon: 'local_activity' },
       { id: 9, name: 'Social Media', url: '/crm/social-media', icon: 'local_activity' },
+      {
+        id: 10, name: 'Leads', url: '#', icon: 'local_activity', submenus: [
+          { id: 1, name: 'Leads', url: '/crm/leads', icon: 'local_activity' },
+          { id: 1, name: 'Lead Sources', url: '/crm/leads/sources', icon: 'local_activity' },
+          { id: 2, name: 'Lead Tags', url: '/crm/leads/tags', icon: 'local_activity' },
+          { id: 3, name: 'Lead Stages', url: '/crm/leads/stages', icon: 'local_activity' },
+        ]
+      },
     ],
   },
   {

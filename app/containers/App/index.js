@@ -83,6 +83,8 @@ import CrmActivities from '../Crm/Activities/Loadable';
 import CrmReports from '../Crm/Reports/Loadable';
 import CrmSocialMedia from '../Crm/SocialMedia/Loadable';
 
+import CrmLeads from '../Crm/Leads/Loadable';
+
 import LMSDashboardModule from '../LMS/Dashboard/Loadable';
 import LMSAccountSettingsModule from '../LMS/AccountSettings/Loadable';
 import LMSIntegrationModule from '../LMS/Integration/Loadable';
@@ -338,6 +340,10 @@ const App = props => {
                     exact
                     path="/crm/social-media"
                     component={CrmSocialMedia}
+                  />
+                  <PrivateRoute
+                    path="/crm/leads"
+                    component={CrmLeads}
                   />
                 </Layout3>
                 <Route path="" component={NotFoundPage} />

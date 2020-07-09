@@ -8,6 +8,10 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 import * as Endpoints from '../../../components/Endpoints';
 
+function errorHandler(promise) {
+  return promise
+}
+
 export function* getAllCrmActivities() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());

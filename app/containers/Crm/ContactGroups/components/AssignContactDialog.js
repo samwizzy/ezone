@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
+import _ from 'lodash';
 import {
   Backdrop,
   CircularProgress,
@@ -84,8 +85,8 @@ const AssignContactDialog = props => {
     id: '',
   });
 
-  const handleSelectChange = (evt, value) => {
-    setForm({ ...form, contactIds: value, id: params.contactId });
+  const handleSelectChange = name => (e, val) => {
+    setForm({ ...form, [name]: val.map(a => a.id), id: params.contactId });
   };
 
   const canSubmitForm = () => {
@@ -105,7 +106,7 @@ const AssignContactDialog = props => {
         <Backdrop className={classes.backdrop} open={loading}>
           <CircularProgress color="inherit" />
         </Backdrop>
-        <AppBar position="relative">
+        <AppBar position="static">
           <Toolbar>
             <Typography variant="h6">Assign a Contact</Typography>
           </Toolbar>
@@ -113,47 +114,47 @@ const AssignContactDialog = props => {
         <Divider />
 
         <DialogContent style={{ minWidth: 600 }}>
-          <form className={classes.root}>
-            <Table className={classes.table}>
-              <TableBody>
-                <TableRow>
-                  <TableCell component="th">
-                    <FormLabel component="legend">Contact / Company</FormLabel>
-                  </TableCell>
-                  <TableCell>
-                    <Autocomplete
-                      multiple
-                      id="checkboxes-tags-demo"
-                      options={getAllContacts}
-                      disableCloseOnSelect
-                      getOptionLabel={option =>
-                        `${option.firstName} ${option.lastName}`
-                      }
-                      onChange={(evt, value) => handleSelectChange(evt, value)}
-                      renderOption={(option, { selected }) => (
-                        <React.Fragment>
-                          <Checkbox
-                            icon={icon}
-                            checkedIcon={checkedIcon}
-                            style={{ marginRight: 8 }}
-                            checked={selected}
-                          />
-                          {option.firstName} {option.lastName}
-                        </React.Fragment>
-                      )}
-                      style={{ width: '100%' }}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          variant="outlined"
-                          label="Companies"
-                          placeholder="Favorites"
+          <Table className={classes.table}>
+            <TableBody>
+              <TableRow>
+                <TableCell component="th">
+                  <FormLabel component="legend">Contact / Company</FormLabel>
+                </TableCell>
+                <TableCell>
+                  <Autocomplete
+                    multiple
+                    id="checkboxes-contact-company"
+                    options={getAllContacts}
+                    disableCloseOnSelect
+                    getOptionLabel={option => `${option.firstName} ${option.lastName}`}
+                    onChange={handleSelectChange('contactIds')}
+                    value={form.contactIds ? _.filter(getAllContacts, function (o) {
+                      return _.includes(form.contactIds, o.id)
+                    }) : null}
+                    renderOption={(option, { selected }) => (
+                      <React.Fragment>
+                        <Checkbox
+                          icon={icon}
+                          checkedIcon={checkedIcon}
+                          style={{ marginRight: 8 }}
+                          checked={selected}
                         />
-                      )}
-                    />
-                  </TableCell>
-                </TableRow>
-                {/* <TableRow>
+                        {option.firstName} {option.lastName}
+                      </React.Fragment>
+                    )}
+                    style={{ width: '100%' }}
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        variant="outlined"
+                        label="Companies"
+                        placeholder="Contact or Company"
+                      />
+                    )}
+                  />
+                </TableCell>
+              </TableRow>
+              {/* <TableRow>
                   <TableCell component="th">
                     <FormLabel component="legend">Assign Group</FormLabel>
                   </TableCell>
@@ -207,9 +208,8 @@ const AssignContactDialog = props => {
                     </FormControl>
                   </TableCell>
                 </TableRow> */}
-              </TableBody>
-            </Table>
-          </form>
+            </TableBody>
+          </Table>
         </DialogContent>
 
         <DialogActions>

@@ -9,9 +9,8 @@ import * as Constants from './constants';
 export const initialState = {
   loading: false,
   error: false,
+  employees: [],
   getAllCompanies: [],
-  newCompanyDetails: {},
-  updateCompanyDetails: {},
   companyDialog: {
     type: 'new',
     props: {
@@ -25,6 +24,26 @@ export const initialState = {
 const crmCompaniesReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
+      case Constants.GET_EMPLOYEES: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.GET_EMPLOYEES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          employees: action.payload,
+        };
+      }
+      case Constants.GET_EMPLOYEES_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+        };
+      }
       case Constants.OPEN_NEW_COMPANY_DIALOG: {
         return {
           ...state,
@@ -108,7 +127,6 @@ const crmCompaniesReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: true,
-          newCompanyDetails: action.payload,
         };
       }
       case Constants.CREATE_NEW_COMPANY_SUCCESS: {
@@ -130,7 +148,6 @@ const crmCompaniesReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: true,
-          updateCompanyDetails: action.payload,
         };
       }
       case Constants.UPDATE_COMPANY_SUCCESS: {

@@ -14,21 +14,23 @@ import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectCompanies from './selectors';
+import makeSelectCrmCompanies from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import * as Actions from './actions';
 import CompaniesList from './components/CompaniesList';
 import ModuleLayout from '../components/ModuleLayout';
 
+const key = 'crmCompanies'
 export function Companies(props) {
-  useInjectReducer({ key: 'crmCompanies', reducer });
-  useInjectSaga({ key: 'crmCompanies', saga });
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
 
-  const { getAllCompaniesAction } = props;
+  const { getAllCompanies, getEmployees } = props;
 
   useEffect(() => {
-    getAllCompaniesAction();
+    getAllCompanies();
+    getEmployees();
   }, []);
 
   return (
@@ -37,7 +39,7 @@ export function Companies(props) {
         <title>Companies</title>
         <meta name="description" content="Description of Companies" />
       </Helmet>
-      
+
       <ModuleLayout>
         <CompaniesList />
       </ModuleLayout>
@@ -46,18 +48,17 @@ export function Companies(props) {
 }
 
 Companies.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  getAllCompaniesAction: PropTypes.func,
+  getAllCompanies: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  companies: makeSelectCompanies(),
+  crmCompanies: makeSelectCrmCompanies(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAllCompaniesAction: () => dispatch(Actions.getAllCompanies()),
-    dispatch,
+    getAllCompanies: () => dispatch(Actions.getAllCompanies()),
+    getEmployees: () => dispatch(Actions.getEmployees()),
   };
 }
 

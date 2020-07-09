@@ -68,6 +68,8 @@ const CampaignList = props => {
     getCampaigns();
   }, []);
 
+  console.log(campaigns, "campaigns")
+
   const columns = [
     {
       name: 'Id',
@@ -85,16 +87,8 @@ const CampaignList = props => {
       },
     },
     {
-      name: 'name',
+      name: 'campaignName',
       label: 'Name',
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: 'type',
-      label: 'Type',
       options: {
         filter: true,
         sort: false,
@@ -114,7 +108,8 @@ const CampaignList = props => {
       options: {
         filter: true,
         sort: false,
-      },
+        customBodyRender: value => value ? moment(value).format('lll') : ''
+      }
     },
     {
       name: 'endDate',
@@ -122,65 +117,16 @@ const CampaignList = props => {
       options: {
         filter: true,
         sort: false,
+        customBodyRender: value => value ? moment(value).format('lll') : ''
       }
     },
     {
-      name: 'owner',
+      name: 'campaignOwnerName',
       label: 'Owner',
       options: {
         filter: true,
         sort: false,
       }
-    },
-    {
-      name: 'dateCreated',
-      label: 'Created At',
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: value => {
-          return moment(value).format('lll')
-        }
-      }
-    },
-    {
-      name: 'id',
-      label: '',
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: value => {
-          const data = campaigns.find(campaign => value === campaign.id);
-
-          return (
-            <Button
-              variant="outlined" size="small" color="primary"
-              onClick={() => openEditCampaignDialog(data)}
-            >
-              Edit
-            </Button>
-          );
-        },
-      },
-    },
-    {
-      name: 'id',
-      label: 'Action',
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: value => {
-          const data = campaigns.find(campaign => value === campaign.id);
-
-          return (
-            <FormControlLabel
-              className={classes.button}
-              control={<Visibility />}
-              onClick={() => openCampaignDetailsDialog(data)}
-            />
-          );
-        },
-      },
     },
   ];
 

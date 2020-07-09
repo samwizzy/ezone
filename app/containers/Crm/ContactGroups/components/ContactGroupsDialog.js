@@ -50,27 +50,30 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const initialState = {
+  groupName: '',
+  groupDescription: '',
+  contactIds: [],
+}
+
 const ContactGroupsDialog = props => {
   const classes = useStyles();
   const {
     updateContactGroupAction,
     loading,
-    contactGroupsDialog,
+    dialog,
     closeNewContactGroupsDialog,
     createNewContactGroupAction,
   } = props;
 
-  const [form, setForm] = React.useState({
-    groupName: '',
-    groupDescription: '',
-    contactIds: [],
-  });
+  const [form, setForm] = React.useState({ ...initialState });
 
   useEffect(() => {
-    if (contactGroupsDialog.type === 'edit') {
-      setForm({ ...contactGroupsDialog.data });
+    if (dialog.type === 'edit' && dialog.data) {
+      const { contacts, ...rest } = dialog.data
+      setForm({ ...rest, contactIds: contacts });
     }
-  }, [contactGroupsDialog.data]);
+  }, [dialog.data]);
 
   const canSubmitForm = () => {
     const { groupName, groupDescription } = form;
@@ -82,10 +85,16 @@ const ContactGroupsDialog = props => {
     setForm({ ...form, [name]: value });
   };
 
+  const handleSubmit = () => {
+    dialog.type === 'new' ?
+      createNewContactGroupAction(form) : updateContactGroupAction(form);
+    setForm({ ...initialState });
+  }
+
   return (
     <div>
       <Dialog
-        {...contactGroupsDialog.props}
+        {...dialog.props}
         onClose={closeNewContactGroupsDialog}
         keepMounted
         TransitionComponent={Transition}
@@ -94,120 +103,68 @@ const ContactGroupsDialog = props => {
         <Backdrop className={classes.backdrop} open={loading}>
           <CircularProgress color="inherit" />
         </Backdrop>
-        <AppBar position="relative">
+        <AppBar position="static">
           <Toolbar>
             <Typography variant="h6">
-              {contactGroupsDialog.type === 'new'
+              {dialog.type === 'new'
                 ? 'Add Contact Groups'
                 : 'Edit Contact Groups'}
             </Typography>
           </Toolbar>
         </AppBar>
-        <Divider />
 
-        <DialogContent>
-          <form className={classes.root}>
-            <Table className={classes.table}>
-              <TableBody>
-                <TableRow>
-                  <TableCell>
-                    <FormLabel component="legend">Name</FormLabel>
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      name="groupName"
-                      label="Name"
-                      id="outlined-groupName"
-                      fullWidth
-                      variant="outlined"
-                      size="small"
-                      value={form.groupName ? form.groupName : ''}
-                      onChange={handleChange}
-                    />
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <FormLabel component="legend">Description</FormLabel>
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      name="groupDescription"
-                      label="Description"
-                      id="outlined-Description"
-                      fullWidth
-                      variant="outlined"
-                      size="small"
-                      value={form.groupDescription ? form.groupDescription : ''}
-                      onChange={handleChange}
-                    />
-                  </TableCell>
-                </TableRow>
-                {/* <TableRow>
-                  <TableCell>
-                    <FormLabel component="legend">Private</FormLabel>
-                  </TableCell>
-                  <TableCell>
-                    <FormControl component="fieldset">
-                      <RadioGroup
-                        aria-label="gender"
-                        name="private"
-                        value={form.private}
-                        onChange={handleChange}
-                      >
-                        <FormControlLabel
-                          value="yes"
-                          control={<Radio />}
-                          label="Yes"
-                        />
-                        <FormControlLabel
-                          value="no"
-                          control={<Radio />}
-                          label="No"
-                        />
-                      </RadioGroup>
-                    </FormControl>
-                  </TableCell>
-                </TableRow> */}
-              </TableBody>
-            </Table>
-          </form>
+        <DialogContent dividers>
+          <Table className={classes.table}>
+            <TableBody>
+              <TableRow>
+                <TableCell>
+                  <FormLabel component="legend">Name</FormLabel>
+                </TableCell>
+                <TableCell>
+                  <TextField
+                    name="groupName"
+                    label="Name"
+                    id="outlined-groupName"
+                    fullWidth
+                    variant="outlined"
+                    size="small"
+                    value={form.groupName ? form.groupName : ''}
+                    onChange={handleChange}
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                  <FormLabel component="legend">Description</FormLabel>
+                </TableCell>
+                <TableCell>
+                  <TextField
+                    name="groupDescription"
+                    label="Description"
+                    id="outlined-Description"
+                    fullWidth
+                    variant="outlined"
+                    size="small"
+                    value={form.groupDescription ? form.groupDescription : ''}
+                    onChange={handleChange}
+                  />
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
         </DialogContent>
 
         <DialogActions>
-          {contactGroupsDialog.type === 'new' ? (
-            <div>
-              <Button onClick={closeNewContactGroupsDialog} color="primary">
-                Cancel
-              </Button>
-              <Button
-                onClick={() => {
-                  createNewContactGroupAction(form);
-                  setForm('');
-                }}
-                disabled={!canSubmitForm()}
-                color="primary"
-              >
-                Save
-              </Button>
-            </div>
-          ) : (
-            <div>
-              <Button onClick={closeNewContactGroupsDialog} color="primary">
-                Cancel
-              </Button>
-              <Button
-                onClick={() => {
-                  updateContactGroupAction(form);
-                  setForm('');
-                }}
-                disabled={!canSubmitForm()}
-                color="primary"
-              >
-                Update
-              </Button>
-            </div>
-          )}
+          <Button onClick={closeNewContactGroupsDialog} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSubmit}
+            disabled={!canSubmitForm()}
+            color="primary"
+          >
+            {dialog.type === 'new' ? 'Save' : 'Update'}
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
@@ -216,7 +173,7 @@ const ContactGroupsDialog = props => {
 
 ContactGroupsDialog.propTypes = {
   loading: PropTypes.bool,
-  contactGroupsDialog: PropTypes.object,
+  dialog: PropTypes.object,
   closeNewContactGroupsDialog: PropTypes.func,
   createNewContactGroupAction: PropTypes.func,
   updateContactGroupAction: PropTypes.func,
@@ -224,15 +181,13 @@ ContactGroupsDialog.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  contactGroupsDialog: Selectors.makeSelectContactGroupsDialog(),
+  dialog: Selectors.makeSelectContactGroupsDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeNewContactGroupsDialog: () =>
-      dispatch(Actions.closeNewContactGroupsDialog()),
-    createNewContactGroupAction: evt =>
-      dispatch(Actions.createNewContactGroup(evt)),
+    closeNewContactGroupsDialog: () => dispatch(Actions.closeNewContactGroupsDialog()),
+    createNewContactGroupAction: evt => dispatch(Actions.createNewContactGroup(evt)),
     updateContactGroupAction: evt => dispatch(Actions.updateContactGroup(evt)),
   };
 }

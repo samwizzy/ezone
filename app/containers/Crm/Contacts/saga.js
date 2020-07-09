@@ -8,6 +8,41 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 import * as Endpoints from '../../../components/Endpoints';
 
+function errorHandler(promise) {
+  return promise
+}
+
+export function* getEmployees() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}?orgId=${user && user.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "get employees response")
+
+    yield put(Actions.getEmployeesSuccess(response));
+  } catch (err) {
+    if (err.message) {
+      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      yield put(Actions.getEmployeesError(err.message));
+    } else {
+      const error = yield call(errorHandler, err.response.json())
+      if (error.status === 500 || error.status === 400) {
+        yield put(AppActions.openSnackBar({ message: error.message, status: 'error' }));
+        yield put(Actions.getEmployeesError(error.message));
+      }
+    }
+  }
+}
+
 export function* getAllContacts() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
@@ -53,104 +88,67 @@ export function* getContactsGroups() {
   }
 }
 
-export function* createNewContact() {
+export function* createNewContact({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-
-  const newContact = yield select(Selectors.makeSelectCreateNewContact());
-  newContact.orgId = currentUser.organisation.orgId;
-
-  // console.log(newContact, 'newContact');
-
-  const {
-    orgId,
-    firstName,
-    lastName,
-    dob,
-    website,
-    contactGroupId,
-    emailAddress,
-    phoneNumber,
-    ownerId,
-    lifeStage,
-    type,
-    notes,
-    fax,
-    associationType,
-    image,
-  } = newContact;
-  const newData = {
-    orgId,
-    firstName,
-    lastName,
-    dob,
-    website,
-    contactGroupId,
-    emailAddress,
-    phoneNumber,
-    ownerId,
-    lifeStage,
-    type,
-    notes,
-    fax,
-    associationType,
-    image,
-  };
-
-  console.log(newData, 'newData');
   const requestURL = `${Endpoints.CreateNewContactApi}`;
+  payload.orgId = currentUser.organisation.orgId;
 
   try {
-    const newContactResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
-      body: JSON.stringify(newData),
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
-    console.log(newContactResponse, 'newContactResponse');
+    console.log(response, 'create contact response');
 
-    yield put(Actions.createNewContactSuccess(newContactResponse));
+    yield put(Actions.createNewContactSuccess(response));
     yield put(Actions.getAllContacts());
     yield put(Actions.closeNewContactDialog());
   } catch (err) {
+    const error = yield call(errorHandler, err.response.json())
+    console.log(error, "creating contact error")
     yield put(Actions.createNewContactError(err));
   }
 }
 
-export function* updateContact() {
+export function* updateContact({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  // const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.UpdateContactApi}/${payload.id}`;
+  console.log(payload, 'payload contact update');
+  const { imageName, imageUrl, ...rest } = payload
 
-  const updateContactData = yield select(Selectors.makeSelectUpdateContact());
-
-  console.log(updateContactData, 'updateContactData');
-  const requestURL = `${Endpoints.UpdateContactApi}/${updateContactData.id}`;
+  console.log(rest, "rest payload")
 
   try {
-    const newContactResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'PUT',
-      body: JSON.stringify(updateContactData),
+      body: JSON.stringify(rest),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
-    console.log(newContactResponse, 'newContactResponse');
+    console.log(response, 'response updated contact');
 
-    yield put(Actions.updateContactSuccess(newContactResponse));
+    yield put(Actions.updateContactSuccess(response));
     yield put(Actions.getAllContacts());
     yield put(Actions.closeEditContactDialog());
   } catch (err) {
-    yield put(Actions.createNewContactError(err));
+    const error = yield call(errorHandler, err.response.json())
+    console.log(error, "updating contact error")
+    yield put(Actions.updateContactError(err));
   }
 }
 
 // Individual exports for testing
 export default function* crmContactsSaga() {
+  yield takeLatest(Constants.GET_EMPLOYEES, getEmployees);
   yield takeLatest(Constants.CREATE_NEW_CONTACT, createNewContact);
   yield takeLatest(Constants.UPDATE_CONTACT, updateContact);
   yield takeLatest(Constants.GET_ALL_CONTACTS, getAllContacts);

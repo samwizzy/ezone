@@ -18,27 +18,35 @@ import PaperDropzone from '../../components/PaperDropzone';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1, 0),
-    },
+    flexGrow: 1
   },
   appBar: {
-    position: 'relative',
+    position: 'static',
   },
 }));
 
+const thumbInner = {
+  display: 'flex',
+  minWidth: 0,
+  overflow: 'hidden',
+};
+
+const img = {
+  display: 'block',
+  width: 'auto',
+  height: '100%',
+};
+
 export const ImageUpload = props => {
+  const classes = useStyles();
   const {
     uploadFileAction,
     closeNewCompanyDialog,
     handlePrev,
+    handleSubmit,
     form,
-    setForm,
-    createNewCompany,
-    updateCompany,
-    companyDialog,
+    dialog,
   } = props;
-  const classes = useStyles();
 
   return (
     <div>
@@ -49,56 +57,32 @@ export const ImageUpload = props => {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Divider />
 
-      <DialogContent>
-        <form className={classes.root}>
-          <Grid container spacing={1}>
-            <Grid item xs={12}>
-              <PaperDropzone uploadFileAction={uploadFileAction} />
-            </Grid>
+      <DialogContent dividers>
+        <Grid container spacing={1}>
+          <Grid item xs={12}>
+            <PaperDropzone uploadFileAction={uploadFileAction} />
+
+            <div style={thumbInner}>
+              <img src={form.imageUrl} alt={form.imageName} style={img} />
+            </div>
           </Grid>
-        </form>
+        </Grid>
       </DialogContent>
 
       <DialogActions>
-        {companyDialog.type === 'new' ? (
-          <div>
-            <Button onClick={() => closeNewCompanyDialog()} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handlePrev} color="primary">
-              Prev
-            </Button>
-            <Button
-              onClick={() => {
-                createNewCompany(form);
-                setForm('');
-              }}
-              color="primary"
-            >
-              Save
-            </Button>
-          </div>
-        ) : (
-            <div>
-              <Button onClick={() => closeNewCompanyDialog()} color="primary">
-                Cancel
-            </Button>
-              <Button onClick={handlePrev} color="primary">
-                Prev
-            </Button>
-              <Button
-                onClick={() => {
-                  updateCompany(form);
-                  setForm('');
-                }}
-                color="primary"
-              >
-                Update
-            </Button>
-            </div>
-          )}
+        <Button onClick={() => closeNewCompanyDialog()} color="primary">
+          Cancel
+        </Button>
+        <Button onClick={handlePrev} color="primary">
+          Prev
+        </Button>
+        <Button
+          onClick={handleSubmit}
+          color="primary"
+        >
+          {dialog.type === 'new' ? 'Save' : 'Update'}
+        </Button>
       </DialogActions>
     </div>
   );
