@@ -215,7 +215,7 @@ const AddNewJournal = props => {
                 variant="outlined"
                 size="small"
                 label="Financial Year"
-                // value={values.periodId}
+                value={values.periodId}
                 onChange={handleSelectChange}
               >  {accountPeriodData && accountPeriodData.map((period, i) => (
                   <MenuItem key={i} value={period.id}>
