@@ -206,7 +206,7 @@ const AddNewJournal = props => {
           <Grid item xs={12} className={classNames(classes.gridMargin)}>
             <div className={classes.flex}>
               <Typography variant="h5">New Posting</Typography>
-              {/* <TextField
+              <TextField
                 id="financial-year"
                 name="periodId"
                 placeholder="Select your financial year"
@@ -217,14 +217,12 @@ const AddNewJournal = props => {
                 label="Financial Year"
                 // value={values.periodId}
                 onChange={handleSelectChange}
-              > */}
-                {/* FY: {moment(currentAccountPeriod.startDate).format('dddd do-MMM-YYYY')} - {moment(currentAccountPeriod.endDate).format('dddd do-MMM-YYYY')} */}
-                {/* {accountPeriodData && accountPeriodData.map((period, i) => (
+              >  {accountPeriodData && accountPeriodData.map((period, i) => (
                   <MenuItem key={i} value={period.id}>
                     {moment(period.startDate).format('dddd do-MMM-YYYY')} - {moment(period.endDate).format('dddd do-MMM-YYYY')}
                   </MenuItem>
                 ))}
-              </TextField> */}
+              </TextField>
               {/*<Autocomplete
                 id="combo-box-demo"
                 options={filteredAccountPeriodData}
