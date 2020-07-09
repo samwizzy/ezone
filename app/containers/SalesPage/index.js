@@ -1,40 +1,66 @@
-import React from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import LoadingIndicator from './../../components/LoadingIndicator';
-import NewSaleOrder from './components/newsalesorder';
-import NewShipment from './components/newshipment';
-import SalesOrder from './components/salesorder';
-import SalesOrderInvoice from './components/salesorderinvoice';
-import Shipping from './components/shippment';
-import { BrowserRouter as Router, Switch,useParams, Route } from "react-router-dom";
+/**
+ *
+ * InventoryPage
+ *
+ */
+
+import React, { memo } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Helmet } from 'react-helmet';
+import { FormattedMessage } from 'react-intl';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
+
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
+import makeSelectInventoryPage from './selectors';
+import reducer from './reducer';
+import saga from './saga';
 import ModuleLayout from './components/ModuleLayout';
-const Sales = () => {
-  const {id} = useParams();
-    return ( 
+import WarehousePage from './WarehousePage/index';
+import ItemPage from './ItemPage/index';
+import Dashboard from './Dashboard'
+
+export function InventoryPage() {
+  useInjectReducer({ key: 'inventoryPage', reducer });
+  useInjectSaga({ key: 'inventoryPage', saga });
+
+  return (
     <div>
-     <ModuleLayout>
-     <Switch>
-         {id === undefined?
-         <Route exact path="/sales" component={NewSaleOrder} />
-         :
-         (
-          <Route exact path={`/sales/${id}`} component={
-            id === 'newsalesorder'?NewSaleOrder:(
-              id==='newshippment'?NewShipment:(id=== 'salesorder'?SalesOrder:(
-                id==='salesorderinvoice'?SalesOrderInvoice:(
-                  Shipping
-                    )
-                  )
-                )
-              )
-              
-          } />
-         )
-         }
-        </Switch>
-    </ModuleLayout>
+      <ModuleLayout>
+        <Helmet>
+          <title>SalesPage</title>
+          <meta name="description" content="Description of SalesPage" />
+        </Helmet>
+        <Dashboard />
+        {/* <WarehousePage />
+        <ItemPage /> */}
+      </ModuleLayout>
     </div>
-     );
+  );
 }
- 
-export default Sales;
+
+InventoryPage.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = createStructuredSelector({
+  inventoryPage: makeSelectInventoryPage(),
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+  };
+}
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+export default compose(
+  withConnect,
+  memo,
+)(InventoryPage);

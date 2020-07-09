@@ -15,6 +15,7 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import reducer from './reducer';
 import saga from './saga';
+import * as crud from './crud';
 import { BrowserRouter as Router, Switch,useParams, Route,useRouteMatch } from "react-router-dom";
 import * as Actions from './actions';
 import makeSelectAccounting, * as Selectors from './selectors';
@@ -28,6 +29,7 @@ import Journal from './Journal';
 import AddNewJournal from './Journal/components/AddNewJournal';
 import JournalDetails from './Journal/components/JournalDetails';
 import PayrollPage from './Payroll';
+import axios from "axios";
 import Budget from './Budget';
 import BudgetingDetails from './Budget/components/BudgetingDetails';
 import NewBudgeting from './Budget/components/NewBudgeting';
@@ -47,6 +49,14 @@ export function Accounting(props) {
     loading
   } = props;
 
+  useEffect(() => {
+let c = crud.setUptins
+ c().then(data=>{
+   console.log(`What a data ${JSON.stringify(data)}`)
+ }).catch((err)=>{
+   console.log(`Error from setUptins ${err}`)
+ })
+  },[]);
   // Similar to componentDidMount and componentDidUpdate:
 
   // Routing based on api response
