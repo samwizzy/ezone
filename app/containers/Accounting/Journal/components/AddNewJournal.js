@@ -110,7 +110,7 @@ const AddNewJournal = props => {
   const currentAccountPeriod = accountPeriodData.find((item) => item.status && item.activeYear);
     // Filter all periods with status -> true
     const filteredAccountPeriodData = accountPeriodData.filter((item) => item.status);
-
+    console.log('accountPeriodData is -> ', JSON.stringify(accountPeriodData));
   const [values, setValues] = React.useState({
     entries: [],
     note: "",
@@ -197,7 +197,7 @@ const AddNewJournal = props => {
   }
 
   console.log('values -> ', values);
-  console.log('currentAccountPeriod -> ', currentAccountPeriod);
+  console.log('currentAccountPeriod is -> ', currentAccountPeriod);
 
   return (
     <ModuleLayout>
@@ -206,7 +206,7 @@ const AddNewJournal = props => {
           <Grid item xs={12} className={classNames(classes.gridMargin)}>
             <div className={classes.flex}>
               <Typography variant="h5">New Posting</Typography>
-              <TextField
+           {/* <TextField
                 id="financial-year"
                 name="periodId"
                 placeholder="Select your financial year"
@@ -222,8 +222,8 @@ const AddNewJournal = props => {
                     {moment(period.startDate).format('dddd do-MMM-YYYY')} - {moment(period.endDate).format('dddd do-MMM-YYYY')}
                   </MenuItem>
                 ))}
-              </TextField>
-              {/*<Autocomplete
+              </TextField>*/}
+              <Autocomplete
                 id="combo-box-demo"
                 options={filteredAccountPeriodData}
                 style={{width: 300}}
@@ -238,7 +238,7 @@ const AddNewJournal = props => {
                     margin="normal"
                   />
                 )}
-              />*/}
+              />
             </div>
             <Grid container className={classes.grid}>
               <Grid item xs={5}>
