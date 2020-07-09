@@ -167,7 +167,7 @@ const AddNewJournal = props => {
   });
 
   const isDisabled = () => {
-    return  !isAphaNumeric 
+    return  isAphaNumeric 
     //return (values.entries.reduce((a, b) => a + Number(b.credit), 0) != values.entries.reduce((a, b) => a + Number(b.debit), 0) || (values.entries.reduce((a, b) => a + Number(b.credit), 0) + values.entries.reduce((a, b) => a + Number(b.debit), 0)) === 0) && isAphaNumeric;
   }
 
@@ -184,7 +184,7 @@ const AddNewJournal = props => {
     setValues(_.set({ ...values }, event.target.name, fileNode))
   }
 
-  const [isAphaNumeric,setIsAphaNumeric] = useState(false)
+  const [isAphaNumeric,setIsAphaNumeric] = useState(true)
 
   const checkAlphaNumeric = event =>{
     let value= event.target.value;
@@ -336,7 +336,7 @@ const AddNewJournal = props => {
                     <Autocomplete
                       id={id}
                       options={chartOfAccountData}
-                      getOptionLabel={option => option.accountCode}
+                      getOptionLabel={option => `${option.accountCode} ${option.accountName}`}
                       onChange={(evt, value) => handleSelectChangeRows(evt, value, id)}
                       renderInput={params => (
                         <TextField

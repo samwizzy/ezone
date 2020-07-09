@@ -50,12 +50,16 @@ export function Accounting(props) {
   } = props;
 
   useEffect(() => {
-let c = crud.setUptins
- c().then(data=>{
-   console.log(`What a data ${JSON.stringify(data)}`)
- }).catch((err)=>{
-   console.log(`Error from setUptins ${err}`)
- })
+    async function dataCall(){
+       await crud.setUptins().then(data=>{
+        console.log(`What a data ${JSON.stringify(data.data)}`)
+      }).catch((err)=>{
+        console.log(`Error from setUptins ${err}`)
+      })
+    }
+
+    dataCall();
+
   },[]);
   // Similar to componentDidMount and componentDidUpdate:
 

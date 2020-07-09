@@ -242,7 +242,7 @@ const NewAccountDialog = props => {
     }
   };
 
-  const [isAphaNumeric,setIsAphaNumeric] = useState(false)
+  const [isAphaNumeric,setIsAphaNumeric] = useState(true)
 
   const checkAlphaNumeric = event =>{
     let value= event.target.value;
