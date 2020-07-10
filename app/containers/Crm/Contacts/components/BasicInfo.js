@@ -31,12 +31,12 @@ const useStyles = makeStyles(theme => ({
 export const BasicInfo = props => {
   const {
     handleChange,
-    handleSelectLifeStage,
-    handleSelectOwnerId,
-    handleSelectAssociateId,
+    handleSelectNameChange,
+    handleSelectChange,
     closeNewContactDialog,
     handleNext,
     form,
+    employees,
   } = props;
   const classes = useStyles();
 
@@ -134,7 +134,8 @@ export const BasicInfo = props => {
               size="small"
               options={lifeStages}
               getOptionLabel={option => option.name}
-              onChange={(evt, value) => handleSelectLifeStage(evt, value)}
+              onChange={handleSelectNameChange('lifeStage')}
+              value={form.lifeStage ? _.find(lifeStages, { name: form.lifeStage }) : null}
               renderInput={params => (
                 <TextField
                   {...params}
@@ -143,8 +144,6 @@ export const BasicInfo = props => {
                   placeholder="Select Life Stage"
                   fullWidth
                   margin="normal"
-                  name="lifeStage"
-                  value={form.lifeStage}
                 />
               )}
             />
@@ -153,9 +152,10 @@ export const BasicInfo = props => {
             <Autocomplete
               id="combo-owner-id"
               size="small"
-              options={contactType}
-              getOptionLabel={option => option.name}
-              onChange={(evt, value) => handleSelectOwnerId(evt, value)}
+              options={employees ? employees : []}
+              getOptionLabel={option => option.firstName + ' ' + option.lastName}
+              onChange={handleSelectChange('ownerId')}
+              value={form.ownerId ? _.find(employees, { id: form.ownerId }) : null}
               renderInput={params => (
                 <TextField
                   {...params}
@@ -164,8 +164,6 @@ export const BasicInfo = props => {
                   placeholder="Select Contact Owner"
                   fullWidth
                   margin="normal"
-                  name="ownerId"
-                  value={form.ownerId}
                 />
               )}
             />
@@ -176,7 +174,8 @@ export const BasicInfo = props => {
               size="small"
               options={contactType}
               getOptionLabel={option => option.name}
-              onChange={(evt, value) => handleSelectAssociateId(evt, value)}
+              onChange={handleSelectNameChange('associationType')}
+              value={form.associationType ? _.find(contactType, { name: form.associationType }) : null}
               renderInput={params => (
                 <TextField
                   {...params}

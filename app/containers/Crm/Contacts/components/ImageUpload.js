@@ -23,22 +23,33 @@ const useStyles = makeStyles(theme => ({
     },
   },
   appBar: {
-    position: 'relative',
+    position: 'static',
   },
 }));
 
+const thumbInner = {
+  display: 'flex',
+  minWidth: 0,
+  overflow: 'hidden',
+};
+
+const img = {
+  display: 'block',
+  width: 'auto',
+  height: '100%',
+};
+
 export const ImageUpload = props => {
+  const classes = useStyles();
+
   const {
-    setForm,
     uploadFileAction,
     closeNewContactDialog,
     handlePrev,
-    form,
-    createNewContact,
-    updateContact,
-    contactDialog,
+    handleSubmit,
+    dialog,
+    form
   } = props;
-  const classes = useStyles();
 
   return (
     <div>
@@ -49,56 +60,32 @@ export const ImageUpload = props => {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Divider />
 
-      <DialogContent>
-        <form className={classes.root}>
-          <Grid container spacing={1}>
-            <Grid item xs={12}>
-              <PaperDropzone uploadFileAction={uploadFileAction} />
-            </Grid>
+      <DialogContent dividers>
+        <Grid container spacing={1}>
+          <Grid item xs={12}>
+            <PaperDropzone uploadFileAction={uploadFileAction} />
+
+            <div style={thumbInner}>
+              <img src={form.imageUrl} alt={form.imageName} style={img} />
+            </div>
           </Grid>
-        </form>
+        </Grid>
       </DialogContent>
 
       <DialogActions>
-        {contactDialog.type === 'new' ? (
-          <div>
-            <Button onClick={() => closeNewContactDialog()} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handlePrev} color="primary">
-              Prev
-            </Button>
-            <Button
-              onClick={() => {
-                createNewContact(form);
-                setForm('');
-              }}
-              color="primary"
-            >
-              Save
-            </Button>
-          </div>
-        ) : (
-            <div>
-              <Button onClick={() => closeNewContactDialog()} color="primary">
-                Cancel
-            </Button>
-              <Button onClick={handlePrev} color="primary">
-                Prev
-            </Button>
-              <Button
-                onClick={() => {
-                  updateContact(form);
-                  setForm('');
-                }}
-                color="primary"
-              >
-                Update
-            </Button>
-            </div>
-          )}
+        <Button onClick={() => closeNewContactDialog()} color="primary">
+          Cancel
+        </Button>
+        <Button onClick={handlePrev} color="primary">
+          Prev
+        </Button>
+        <Button
+          onClick={handleSubmit}
+          color="primary"
+        >
+          {dialog.type === 'new' ? 'Save' : 'Update'}
+        </Button>
       </DialogActions>
     </div>
   );

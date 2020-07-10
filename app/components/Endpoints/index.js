@@ -277,10 +277,22 @@ export const GetContactGroupByIdApi = `${BaseUrl}/crmserv/api/v1/get_contact_gro
 export const GetAllContactsGroupApi = `${BaseUrl}/crmserv/api/v1/get_all_contact_groups`;
 
 // Campaigns Group Apis
-export const CreateCampaignApi = `${BaseUrl}/crmserv//api/v1/add_campaign`;
+export const CreateCampaignApi = `${BaseUrl}/crmserv/api/v1/add_campaign`;
 export const UpdateCampaignApi = `${BaseUrl}/crmserv/api/v1/update_campaign/{userId}/{id}`;
 export const GetCampaignByIdApi = `${BaseUrl}/crmserv/api/v1/get_campaign_by_id/{id}`;
-export const GetCampaignsApi = `${BaseUrl}/crmserv/api/v1/get_campaigns_by_orgid/{orgId}`;
+export const GetCampaignsApi = `${BaseUrl}/crmserv/api/v1/get_campaigns_by_orgid`;
+
+// Schedules Group Apis
+export const GetSchedulesApi = `${BaseUrl}/crmserv/api/v1/get_all_schedules`;
+export const CreateScheduleApi = `${BaseUrl}/crmserv/api/v1/add_schedule`;
+export const UpdateScheduleApi = `${BaseUrl}/crmserv/api/v1/update_schedule/{id}`;
+export const DeleteScheduleByIdApi = `${BaseUrl}/crmserv/api/v1/delete_schedule_by_id/{id}`;
+export const DeleteAllSchedulesApi = `${BaseUrl}/crmserv/api/v1/delete_all_schedules`;
+export const RemoveUserFromScheduleApi = `${BaseUrl}/crmserv/api/remove_user_from_schedule/{id}`;
+export const RemoveContactFromScheduleApi = `${BaseUrl}/crmserv/api/remove_contact_from_schedule/{id}`;
+export const GetScheduleByIdApi = `${BaseUrl}/crmserv/api/v1/get_schedule_by_id/{id}`;
+export const GetAllScheduleByStartDateApi = `${BaseUrl}/crmserv/api/v1/get_all_schedules_by_start_date`;
+export const GetAllScheduleForTodayApi = `${BaseUrl}/crmserv/api/v1/get_all_schedules_for_today`;
 
 // Crm Activities Apis
 export const GetCrmActivitiesApi = `${BaseUrl}/utilityserv/api/v1/find_by_orgid_and_module`;

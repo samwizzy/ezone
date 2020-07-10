@@ -29,6 +29,7 @@ import {
   Typography,
   FormLabel,
 } from '@material-ui/core';
+import moment from 'moment'
 import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
 import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -143,7 +144,7 @@ const ContactDetailsDialog = props => {
         maxWidth="md"
       >
         {contactDetailsDialog.data && (
-          <AppBar position="relative">
+          <AppBar position="static">
             <Toolbar>
               <List className={classes.list}>
                 <ListItem
@@ -180,9 +181,8 @@ const ContactDetailsDialog = props => {
             </Toolbar>
           </AppBar>
         )}
-        <Divider />
 
-        <DialogContent>
+        <DialogContent dividers>
           {contactDetailsDialog.data && (
             <ExpansionPanel
               square
@@ -191,7 +191,7 @@ const ContactDetailsDialog = props => {
             >
               <ExpansionPanelSummary
                 aria-controls="panel1d-content"
-                id="panel1d-header"
+                id="panel-1-header"
               >
                 <Typography>Basic Info #1</Typography>
               </ExpansionPanelSummary>
@@ -235,7 +235,7 @@ const ContactDetailsDialog = props => {
               </ExpansionPanelDetails>
               <ExpansionPanelSummary
                 aria-controls="panel1d-content"
-                id="panel1d-header"
+                id="panel-2-header"
               >
                 <Typography>Additional Info #2</Typography>
               </ExpansionPanelSummary>
@@ -243,9 +243,9 @@ const ContactDetailsDialog = props => {
                 <Table className={classes.table} size="small">
                   <TableBody>
                     <TableRow>
-                      <TableCell>DOB</TableCell>
+                      <TableCell>Date of Birth</TableCell>
                       <TableCell align="left">
-                        {contactDetailsDialog.data.dob}
+                        {moment(contactDetailsDialog.data.dob).format('ll')}
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -289,7 +289,7 @@ const ContactDetailsDialog = props => {
               </ExpansionPanelDetails>
               <ExpansionPanelSummary
                 aria-controls="panel1d-content"
-                id="panel1d-header"
+                id="panel-3-header"
               >
                 <Typography>Contact Group #3</Typography>
               </ExpansionPanelSummary>
@@ -307,7 +307,7 @@ const ContactDetailsDialog = props => {
               </ExpansionPanelDetails>
               <ExpansionPanelSummary
                 aria-controls="panel1d-content"
-                id="panel1d-header"
+                id="panel-4-header"
               >
                 <Typography>Additional Info #4</Typography>
               </ExpansionPanelSummary>
@@ -321,9 +321,9 @@ const ContactDetailsDialog = props => {
                       </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell>Note</TableCell>
-                      <TableCell align="left">
-                        {contactDetailsDialog.data.note}
+                      <TableCell>
+                        <Typography variant="subtitle1">Notes</Typography>
+                        <Typography variant="body2">{contactDetailsDialog.data.notes}</Typography>
                       </TableCell>
                     </TableRow>
                   </TableBody>

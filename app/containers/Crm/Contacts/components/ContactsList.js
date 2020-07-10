@@ -68,6 +68,8 @@ const ContactsList = props => {
     getAllContacts();
   }, []);
 
+  console.log(allContacts, "allContacts")
+
   const columns = [
     {
       name: 'id',

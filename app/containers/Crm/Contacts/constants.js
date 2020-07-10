@@ -3,6 +3,9 @@
  * Crm constants
  *
  */
+export const GET_EMPLOYEES = 'app/Crm/GET_EMPLOYEES';
+export const GET_EMPLOYEES_SUCCESS = 'app/Crm/GET_EMPLOYEES_SUCCESS';
+export const GET_EMPLOYEES_ERROR = 'app/Crm/GET_EMPLOYEES_ERROR';
 
 export const OPEN_NEW_CONTACT_DIALOG = 'app/Crm/OPEN_NEW_CONTACT_DIALOG';
 export const CLOSE_NEW_CONTACT_DIALOG = 'app/Crm/CLOSE_NEW_CONTACT_DIALOG';

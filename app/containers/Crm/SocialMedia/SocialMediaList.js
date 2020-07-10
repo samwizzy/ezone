@@ -17,6 +17,7 @@ import { Add, Visibility } from '@material-ui/icons';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import clsx from 'clsx'
 import moment from 'moment';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from './actions';
@@ -24,8 +25,12 @@ import * as Selectors from './selectors';
 import FacebookIcon from '@material-ui/icons/Facebook'
 import TwitterIcon from '@material-ui/icons/Twitter'
 import InstagramIcon from '@material-ui/icons/Instagram'
-import FacebookImage from '../../../images/facebook.jpg'
 import Rectangle from '../../../images/Rectangle.jpg'
+import InstaIcon from '../../../images/InstaIcon.svg'
+import InstaSmall from '../../../images/InstaSmall.svg'
+import FacebookSmall from '../../../images/FacebookSmall.svg'
+import FBSmall from '../../../images/facebook.svg'
+import TwitterSmall from '../../../images/TwitterSmall.svg'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,24 +55,25 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     whiteSpace: "nowrap",
-    padding: theme.spacing(2, 2, 2, 10),
+    padding: theme.spacing(2, 2, 2, 12),
     margin: theme.spacing(2),
     borderRadius: theme.spacing(1),
     position: 'relative',
     overflow: 'hidden',
     "& div": {
+      borderRight: `1px solid ${theme.palette.divider}`,
       margin: 0,
       position: 'absolute',
       top: 0,
       left: 0,
       bottom: 0,
-      width: 50,
-      backgroundColor: '#3A559F',
-      flex: '2 1 auto',
+      width: 70,
+      flex: '1 1',
       textAlign: "center",
-      "& .MuiSvgIcon-root": {
+      "& .MuiSvgIcon-root, & img": {
         position: 'relative',
         top: '50%',
+        left: 0,
         '-ms-transform': 'translateY(-50%)',
         transform: 'translateY(-50%)',
       }
@@ -75,6 +81,15 @@ const useStyles = makeStyles(theme => ({
   },
   icon: {
     position: 'absolute',
+  },
+  facebook: {
+    backgroundColor: '#3A559F',
+  },
+  twitter: {
+    backgroundColor: '#50ABF1',
+  },
+  instagram: {
+    backgroundColor: theme.palette.background.paper,
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -100,21 +115,21 @@ const SocialMediaList = props => {
 
       <div className={classes.paperGrid}>
         <Paper className={classes.paper} onClick={() => { }}>
-          <div className={classes.icon}><FacebookIcon fontSize="large" /></div>
+          <div className={clsx(classes.icon, classes.facebook)}><img src={FBSmall} alt="Facebook" width="40px" /></div>
 
           <Typography variant="subtitle1">First Marine</Typography>
           <Typography variant="body2">Facebook</Typography>
         </Paper>
 
         <Paper className={classes.paper}>
-          <div className={classes.icon}><InstagramIcon fontSize="large" /></div>
+          <div className={clsx(classes.icon, classes.instagram)}><img src={InstaSmall} alt="Instagram" width="40px" /></div>
 
           <Typography variant="subtitle1">First Marine</Typography>
           <Typography variant="body2">Instagram</Typography>
         </Paper>
 
         <Paper className={classes.paper}>
-          <div className={classes.icon}><TwitterIcon fontSize="large" /></div>
+          <div className={clsx(classes.icon, classes.twitter)}><img src={TwitterSmall} alt="Twitter" width="40px" /></div>
 
           <Typography variant="subtitle1">First Marine</Typography>
           <Typography variant="body2">Twitter</Typography>

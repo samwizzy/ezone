@@ -25,10 +25,11 @@ export function Crm(props) {
   useInjectReducer({ key: 'crmContacts', reducer });
   useInjectSaga({ key: 'crmContacts', saga });
 
-  const { getAllContacts, getContactsGroups } = props;
+  const { getAllContacts, getContactsGroups, getEmployees } = props;
   useEffect(() => {
     getAllContacts();
     getContactsGroups();
+    getEmployees();
   }, []);
 
   return (
@@ -45,7 +46,6 @@ export function Crm(props) {
 }
 
 Crm.propTypes = {
-  dispatch: PropTypes.func.isRequired,
   getAllContacts: PropTypes.func,
 };
 
@@ -57,7 +57,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getAllContacts: () => dispatch(Actions.getAllContacts()),
     getContactsGroups: () => dispatch(Actions.getContactsGroups()),
-    dispatch,
+    getEmployees: () => dispatch(Actions.getEmployees()),
   };
 }
 

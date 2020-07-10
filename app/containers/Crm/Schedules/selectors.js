@@ -33,6 +33,24 @@ const makeSelectError = () =>
     subState => subState.error,
   );
 
+const makeSelectEmployees = () =>
+  createSelector(
+    selectCrmDomain,
+    subState => subState.employees,
+  );
+
+const makeSelectContacts = () =>
+  createSelector(
+    selectCrmDomain,
+    subState => subState.contacts,
+  );
+
+const makeSelectSchedules = () =>
+  createSelector(
+    selectCrmDomain,
+    subState => subState.schedules,
+  );
+
 const makeSelectScheduleDialog = () =>
   createSelector(
     selectCrmDomain,
@@ -50,6 +68,9 @@ export {
   selectCrmDomain,
   makeSelectLoading,
   makeSelectError,
+  makeSelectEmployees,
+  makeSelectContacts,
+  makeSelectSchedules,
   makeSelectScheduleDialog,
   makeSelectParticipantDialog,
 };

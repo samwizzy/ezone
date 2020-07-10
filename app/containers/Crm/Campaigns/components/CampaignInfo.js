@@ -39,6 +39,7 @@ export const CampaignInfo = props => {
     handleSelectChange,
     closeNewCampaignDialog,
     handleNext,
+    handleSubmit,
     form,
   } = props;
   const classes = useStyles();
@@ -71,38 +72,6 @@ export const CampaignInfo = props => {
 
       <DialogContent dividers>
         <Grid container spacing={1}>
-          <Grid item xs={6}>
-            <Autocomplete
-              id="campaign-owner"
-              size="small"
-              options={employees ? employees : []}
-              getOptionLabel={option => option.firstName + ' ' + option.lastName}
-              onChange={handleSelectChange('campaignOwnerName')}
-              renderInput={params => (
-                <TextField
-                  {...params}
-                  label="Campaign Owner"
-                  variant="outlined"
-                  placeholder="Select Campaign Owner"
-                  fullWidth
-                  margin="normal"
-                />
-              )}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              name="Type"
-              label="Type"
-              id="type"
-              fullWidth
-              margin="normal"
-              variant="outlined"
-              size="small"
-              value={form.type}
-              onChange={handleChange}
-            />
-          </Grid>
           <Grid item xs={6}>
             <TextField
               name="campaignName"
@@ -242,6 +211,22 @@ export const CampaignInfo = props => {
               />
             </MuiPickersUtilsProvider>
           </Grid>
+          <Grid item xs={12}>
+            <TextField
+              name="description"
+              label="Description"
+              id="outlined-description"
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              size="small"
+              multiline
+              rows={2}
+              rowsMax={4}
+              value={form.description}
+              onChange={handleChange}
+            />
+          </Grid>
         </Grid>
       </DialogContent>
 
@@ -250,11 +235,11 @@ export const CampaignInfo = props => {
           Cancel
         </Button>
         <Button
-          onClick={handleNext}
+          onClick={handleSubmit}
           disabled={!canSubmitForm()}
           color="primary"
         >
-          Next
+          Save
         </Button>
       </DialogActions>
     </div>

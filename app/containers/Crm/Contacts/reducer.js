@@ -8,12 +8,11 @@ import * as Constants from './constants';
 
 export const initialState = {
   allContacts: [],
+  employees: [],
   contactsGroups: [],
   message: false,
   loading: false,
   error: false,
-  createNewContact: {},
-  updateContact: {},
   contactDialog: {
     type: 'new',
     props: {
@@ -34,6 +33,26 @@ export const initialState = {
 const crmReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
+      case Constants.GET_EMPLOYEES: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.GET_EMPLOYEES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          employees: action.payload,
+        };
+      }
+      case Constants.GET_EMPLOYEES_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+        };
+      }
       case Constants.OPEN_NEW_CONTACT_DIALOG: {
         return {
           ...state,
@@ -74,7 +93,7 @@ const crmReducer = (state = initialState, action) =>
         return {
           ...state,
           contactDialog: {
-            type: 'edit',
+            type: 'new',
             props: {
               open: false,
             },
@@ -110,7 +129,6 @@ const crmReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: true,
-          createNewContact: action.payload,
         };
       }
       case Constants.CREATE_NEW_CONTACT_SUCCESS: {
@@ -130,7 +148,6 @@ const crmReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: true,
-          updateContact: action.payload,
         };
       }
       case Constants.UPDATE_CONTACT_SUCCESS: {

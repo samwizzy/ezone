@@ -45,18 +45,6 @@ const makeSelectAssignContactDialog = () =>
     subState => subState.assignContactDialog,
   );
 
-const makeSelectCreateNewContactGroup = () =>
-  createSelector(
-    selectCrmDomain,
-    subState => subState.createNewContactGroup,
-  );
-
-const makeSelectUpdateContactGroup = () =>
-  createSelector(
-    selectCrmDomain,
-    subState => subState.updateContactGroup,
-  );
-
 const makeSelectAllContactsGroup = () =>
   createSelector(
     selectCrmDomain,
@@ -94,8 +82,6 @@ export {
   makeSelectError,
   makeSelectContactGroupsDialog,
   makeSelectAssignContactDialog,
-  makeSelectCreateNewContactGroup,
-  makeSelectUpdateContactGroup,
   makeSelectAllContactsGroup,
   makeSelectContactGroupById,
   makeSelectContactGroup,

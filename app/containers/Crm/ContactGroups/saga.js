@@ -8,6 +8,10 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 import * as Endpoints from '../../../components/Endpoints';
 
+function errorHandler(promise) {
+  return promise
+}
+
 export function* getAllContactsGroup() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.GetAllContactsGroupApi}`;
@@ -27,61 +31,50 @@ export function* getAllContactsGroup() {
   }
 }
 
-export function* createNewContactGroup() {
+export function* createNewContactGroup({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-
-  const newContactGroup = yield select(
-    Selectors.makeSelectCreateNewContactGroup(),
-  );
-  newContactGroup.orgId = currentUser.organisation.orgId;
-
   const requestURL = `${Endpoints.CreateNewContactGroupApi}`;
+  payload.orgId = currentUser && currentUser.organisation.orgId;
 
   try {
-    const newContactGroupResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
-      body: JSON.stringify(newContactGroup),
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
-    yield put(Actions.createNewContactGroupSuccess(newContactGroupResponse));
+    yield put(Actions.createNewContactGroupSuccess(response));
     yield put(Actions.getAllContactsGroup());
     yield put(Actions.closeNewContactGroupsDialog());
   } catch (err) {
+    const error = yield call(errorHandler, err.response.json())
+    console.log(error, "creating contact error")
     yield put(Actions.createNewContactGroupError(err));
   }
 }
 
-export function* updateContactGroup() {
+export function* updateContactGroup({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  // const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-
-  const updateContactGroupData = yield select(
-    Selectors.makeSelectUpdateContactGroup(),
-  );
-
-  console.log(updateContactGroupData, 'updateContactGroupData');
-  const requestURL = `${Endpoints.UpdateContactGroupApi}/${
-    updateContactGroupData.id
-    }`;
+  const requestURL = `${Endpoints.UpdateContactGroupApi}/${payload.id}`;
+  console.log(payload, 'payload update');
 
   try {
-    const newContactResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'PUT',
-      body: JSON.stringify(updateContactGroupData),
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
-    console.log(newContactResponse, 'newContactResponse');
+    console.log(response, 'response update contact group');
 
-    yield put(Actions.updateContactGroupSuccess(newContactResponse));
+    yield put(Actions.updateContactGroupSuccess(response));
     yield put(Actions.getAllContactsGroup());
     yield put(Actions.closeEditContactGroupsDialog());
   } catch (err) {

@@ -44,8 +44,8 @@ export function SocialMedia(props) {
       </Helmet>
 
       <ModuleLayout>
-        {/* <SocialMediaList /> */}
-        <SocialMediaTabs />
+        <SocialMediaList />
+        {/* <SocialMediaTabs /> */}
       </ModuleLayout>
 
       <SocialMediaDialog />

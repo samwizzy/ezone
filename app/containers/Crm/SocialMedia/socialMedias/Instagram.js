@@ -21,7 +21,7 @@ import * as Selectors from './../selectors';
 import FacebookIcon from '@material-ui/icons/Facebook'
 import TwitterIcon from '@material-ui/icons/Twitter'
 import InstagramIcon from '@material-ui/icons/Instagram'
-import FbIcon from '../../../../images/FbIcon.svg'
+import InstaIcon from '../../../../images/InstaIcon.svg'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -62,7 +62,7 @@ function Instagram(props) {
 		<div className={classes.root}>
 			<Grid container className={classes.grid}>
 				<Grid item xs={6}>
-					<img alt="Instagram" src={FbIcon} />
+					<img alt="Instagram" src={InstaIcon} />
 					<Typography variant="subtitle1" align="center">
 						Connect your social media handle to get impression on posts
 					</Typography>

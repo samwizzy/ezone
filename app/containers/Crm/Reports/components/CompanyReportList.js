@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CampaignList = props => {
+const CompanyReportList = props => {
   const classes = useStyles();
 
   const {
@@ -86,7 +86,7 @@ const CampaignList = props => {
     },
     {
       name: 'source',
-      label: 'Contact Source',
+      label: 'Source',
       options: {
         filter: true,
         sort: false,
@@ -141,7 +141,7 @@ const CampaignList = props => {
   );
 };
 
-CampaignList.propTypes = {
+CompanyReportList.propTypes = {
   loading: PropTypes.bool,
   getCampaigns: PropTypes.func,
   openNewCampaignDialog: PropTypes.func,
@@ -172,4 +172,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(CampaignList);
+)(CompanyReportList);

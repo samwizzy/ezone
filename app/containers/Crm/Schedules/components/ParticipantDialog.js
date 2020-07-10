@@ -107,125 +107,127 @@ const ParticipantDialog = props => {
         TransitionComponent={Transition}
         aria-labelledby="form-dialog-title"
       >
-        <AppBar position="relative">
+        <AppBar position="static">
           <Toolbar>
             <Typography variant="h6">
               Add New Participant
             </Typography>
           </Toolbar>
         </AppBar>
-        <Divider />
 
-        <DialogContent>
-          <form className={classes.root}>
-            <Grid container spacing={1}>
-              <Grid item xs={6}>
-                <TextField
-                  name="firstName"
-                  label="Firstname"
-                  id="outlined-title"
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                  value={form.firstName}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  name="lastName"
-                  label="Lastname"
-                  id="outlined-title"
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                  value={form.lastName}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  name="phoneNumber"
-                  label="Mobile Number"
-                  id="outlined-title"
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                  value={form.phoneNumber}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  name="emailAddress"
-                  label="Email"
-                  id="outlined-title"
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                  value={form.emailAddress}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  id="lifeStage"
-                  name="lifeStage"
-                  placeholder="Select life Stage"
-                  select
-                  fullWidth
-                  className={classes.textField}
-                  variant="outlined"
-                  size="small"
-                  label="life Stage"
-                  value={form.lifeStage}
-                  onChange={handleChange}
-                >
-                  <MenuItem key={0} value="3">
-                    No record
-                  </MenuItem>
-                </TextField>
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  id="lifeStage"
-                  name="lifeStage"
-                  placeholder="Select life Stage"
-                  select
-                  fullWidth
-                  className={classes.textField}
-                  variant="outlined"
-                  size="small"
-                  label="life Stage"
-                  value={form.lifeStage}
-                  onChange={handleChange}
-                >
-                  <MenuItem key={0} value="3">
-                    No record
-                  </MenuItem>
-                </TextField>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  id="lifeStage"
-                  name="lifeStage"
-                  placeholder="Select life Stage"
-                  select
-                  fullWidth
-                  className={classes.textField}
-                  variant="outlined"
-                  size="small"
-                  label="life Stage"
-                  value={form.lifeStage}
-                  onChange={handleChange}
-                >
-                  <MenuItem key={0} value="3">
-                    No record
-                  </MenuItem>
-                </TextField>
-              </Grid>
+        <DialogContent dividers>
+          <Grid container spacing={1}>
+            <Grid item xs={6}>
+              <TextField
+                name="firstName"
+                label="Firstname"
+                id="outlined-firstname"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                size="small"
+                value={form.firstName}
+                onChange={handleChange}
+              />
             </Grid>
-          </form>
+            <Grid item xs={6}>
+              <TextField
+                name="lastName"
+                label="Lastname"
+                id="outlined-lastname"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                size="small"
+                value={form.lastName}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                name="phoneNumber"
+                label="Mobile Number"
+                id="outlined-mobile-number"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                size="small"
+                value={form.phoneNumber}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                name="emailAddress"
+                label="Email"
+                id="outlined-email-address"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                size="small"
+                value={form.emailAddress}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                id="lifeStage"
+                name="lifeStage"
+                placeholder="Select life Stage"
+                select
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                size="small"
+                label="life Stage"
+                value={form.lifeStage}
+                onChange={handleChange}
+              >
+                <MenuItem key={0} value="3">
+                  No record
+                  </MenuItem>
+              </TextField>
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                id="lifeStage"
+                name="lifeStage"
+                placeholder="Select life Stage"
+                select
+                fullWidth
+                margin="normal"
+                className={classes.textField}
+                variant="outlined"
+                size="small"
+                label="life Stage"
+                value={form.lifeStage}
+                onChange={handleChange}
+              >
+                <MenuItem key={0} value="3">
+                  No record
+                  </MenuItem>
+              </TextField>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id="lifeStage"
+                name="lifeStage"
+                placeholder="Select life Stage"
+                select
+                fullWidth
+                className={classes.textField}
+                variant="outlined"
+                size="small"
+                label="life Stage"
+                value={form.lifeStage}
+                onChange={handleChange}
+              >
+                <MenuItem key={0} value="3">
+                  No record
+                  </MenuItem>
+              </TextField>
+            </Grid>
+          </Grid>
         </DialogContent>
 
         <DialogActions>

@@ -18,14 +18,14 @@ import makeSelectCrmCampaigns from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import * as Actions from './actions';
-import CampaignList from './components/CampaignList';
+import ContactReportList from './components/ContactReportList';
 import ModuleLayout from '../components/ModuleLayout';
-import CampaignDialog from './components/CampaignDialog';
-import CampaignDetailsDialog from './components/CampaignDetailsDialog';
+import ContactReportDetailsDialog from './components/ContactReportDetailsDialog';
+import ReportsList from './ReportsList';
 
 const key = 'crmCampaigns'
 
-export function Campaigns(props) {
+export function ContactReport(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
@@ -44,16 +44,15 @@ export function Campaigns(props) {
       </Helmet>
 
       <ModuleLayout>
-        <CampaignList />
+        <ReportsList />
       </ModuleLayout>
 
-      <CampaignDialog />
-      <CampaignDetailsDialog />
+      <ContactReportDetailsDialog />
     </div>
   );
 }
 
-Campaigns.propTypes = {
+ContactReport.propTypes = {
   getCampaigns: PropTypes.func,
 };
 
@@ -76,4 +75,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(Campaigns);
+)(ContactReport);

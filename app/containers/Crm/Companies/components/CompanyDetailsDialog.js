@@ -15,6 +15,7 @@ import {
   TableRow,
   TextField,
   Button,
+  IconButton,
   Grid,
   Dialog,
   DialogContent,
@@ -35,7 +36,7 @@ import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import MailOutline from '@material-ui/icons/MailOutline';
 import Smartphone from '@material-ui/icons/Smartphone';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import CloseIcon from '@material-ui/icons/Close';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { blue } from '@material-ui/core/colors';
 import * as Selectors from '../selectors';
@@ -111,8 +112,8 @@ const CompanyDetailsDialog = props => {
   const classes = useStyles();
   const {
     loading,
-    companyDetailsDialog,
-    closeCompanyDetailsDialogAction,
+    dialog,
+    closeCompanyDetailsDialog,
   } = props;
   const [expanded, setExpanded] = React.useState('panel1');
 
@@ -122,16 +123,18 @@ const CompanyDetailsDialog = props => {
 
   return (
     <div>
-      {companyDetailsDialog && (
+      {dialog && (
         <Dialog
-          {...companyDetailsDialog.props}
-          onClose={closeCompanyDetailsDialogAction}
+          {...dialog.props}
+          onClose={closeCompanyDetailsDialog}
           keepMounted
           TransitionComponent={Transition}
           aria-labelledby="form-dialog-title"
+          fullWidth={true}
+          maxWidth={'md'}
         >
-          {companyDetailsDialog.data && (
-            <AppBar position="relative">
+          {dialog.data && (
+            <AppBar position="static">
               <Toolbar>
                 <Grid container justify="space-between" alignItems="center">
                   <Grid item>
@@ -143,19 +146,19 @@ const CompanyDetailsDialog = props => {
                         <ListItemAvatar>
                           <Avatar
                             alt="Company Logo"
-                            src={companyDetailsDialog.data.imageUrl}
+                            src={dialog.data.imageUrl}
                             className={classes.avatar}
                           />
                         </ListItemAvatar>
                         <ListItemText
                           primary={
                             <Typography variant="h6" color="inherit">
-                              {companyDetailsDialog.data.firstName}
+                              {dialog.data.firstName}
                             </Typography>
                           }
                           secondary={
                             <Typography variant="subtitle1" color="inherit">
-                              {companyDetailsDialog.data.emailAddress}
+                              {dialog.data.emailAddress}
                             </Typography>
                           }
                         />
@@ -163,13 +166,14 @@ const CompanyDetailsDialog = props => {
                     </List>
                   </Grid>
                 </Grid>
+                <IconButton onClick={closeCompanyDetailsDialog}><CloseIcon /></IconButton>
               </Toolbar>
             </AppBar>
           )}
           <Divider />
 
           <DialogContent>
-            {companyDetailsDialog.data && (
+            {dialog.data && (
               <ExpansionPanel
                 square
                 expanded={expanded === 'panel1'}
@@ -189,15 +193,16 @@ const CompanyDetailsDialog = props => {
                           <MailOutline />
                         </TableCell>
                         <TableCell>
-                          {companyDetailsDialog.data.emailAddress}
+                          {dialog.data.emailAddress}
                         </TableCell>
+                        <TableCell align="left" colSpan={2} />
                       </TableRow>
                       <TableRow>
                         <TableCell>
                           <Smartphone />
                         </TableCell>
                         <TableCell>
-                          {companyDetailsDialog.data.phoneNumber}
+                          {dialog.data.phoneNumber}
                         </TableCell>
                         <TableCell align="left" colSpan={2} />
                       </TableRow>
@@ -205,7 +210,7 @@ const CompanyDetailsDialog = props => {
                         <TableCell />
                         <TableCell>Life Stage</TableCell>
                         <TableCell>
-                          {companyDetailsDialog.data.lifeStage}
+                          {dialog.data.lifeStage}
                         </TableCell>
                         <TableCell colSpan={2} />
                       </TableRow>
@@ -213,7 +218,7 @@ const CompanyDetailsDialog = props => {
                         <TableCell />
                         <TableCell>Contact Owner</TableCell>
                         <TableCell>
-                          {companyDetailsDialog.data.ownerId}
+                          {dialog.data.ownerId}
                         </TableCell>
                         <TableCell />
                       </TableRow>
@@ -221,7 +226,7 @@ const CompanyDetailsDialog = props => {
                         <TableCell />
                         <TableCell>Vendor</TableCell>
                         <TableCell>
-                          {companyDetailsDialog.data.associationType}
+                          {dialog.data.associationType}
                         </TableCell>
                         <TableCell />
                       </TableRow>
@@ -240,19 +245,19 @@ const CompanyDetailsDialog = props => {
                       <TableRow>
                         <TableCell>Fax</TableCell>
                         <TableCell align="right">
-                          {companyDetailsDialog.data.fax}
+                          {dialog.data.fax}
                         </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>Website</TableCell>
                         <TableCell align="right">
-                          {companyDetailsDialog.data.website}
+                          {dialog.data.website}
                         </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>Address</TableCell>
                         <TableCell align="right">
-                          {companyDetailsDialog.data.address}
+                          {dialog.data.address}
                         </TableCell>
                       </TableRow>
                     </TableBody>
@@ -271,19 +276,18 @@ const CompanyDetailsDialog = props => {
 
 CompanyDetailsDialog.propTypes = {
   loading: PropTypes.bool,
-  companyDetailsDialog: PropTypes.object,
-  closeCompanyDetailsDialogAction: PropTypes.func,
+  dialog: PropTypes.object,
+  closeCompanyDetailsDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  companyDetailsDialog: Selectors.makeSelectCompanyDetailsDialog(),
+  dialog: Selectors.makeSelectCompanyDetailsDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeCompanyDetailsDialogAction: () =>
-      dispatch(Actions.closeCompanyDetailsDialog()),
+    closeCompanyDetailsDialog: () => dispatch(Actions.closeCompanyDetailsDialog()),
   };
 }
 
