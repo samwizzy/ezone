@@ -103,11 +103,11 @@ const SidebarConfig = [
       { id: 5, name: 'Transfer Orders', url: '/sales/transfer/orders', icon: 'transfer_within_a_station' },
       { id: 6, name: 'Investment Adjustment', url: '/sales/adjustments', icon: 'equalizer' },
       { id: 7, name: 'Reports', url: '/sales/reports', icon: 'assessment' },
-      { id: 8, name: 'New Sales Order', url: '/sales/newsalesorder', icon: 'label' },
+      /*{ id: 8, name: 'New Sales Order', url: '/sales/newsalesorder', icon: 'label' },
       { id: 9, name: 'New Shippment', url: '/sales/newshippment', icon: 'label' },
       { id: 10, name: 'Sales Orders', url: '/sales/salesorder', icon: 'label' },
       { id: 11, name: 'Sales Order Invoice', url: '/sales/salesorderinvoice', icon: 'label' },
-      { id: 12, name: 'Shippment', url: '/sales/shippment', icon: 'label' },
+      { id: 12, name: 'Shippment', url: '/sales/shippment', icon: 'label' },*/
     ],
   },
   {
@@ -120,10 +120,10 @@ const SidebarConfig = [
       { id: 5, name: 'Transfer Orders', url: '/purchase/transfer/orders', icon: 'transfer_within_a_station' },
       { id: 6, name: 'Investment Adjustment', url: '/purchase/adjustments', icon: 'equalizer' },
       { id: 7, name: 'Reports', url: '/purchase/reports', icon: 'assessment' },
-      { id: 8, name: 'New Purchase Order', url: '/purchase/newpurchaseorder', icon: 'label' },
+     /* { id: 8, name: 'New Purchase Order', url: '/purchase/newpurchaseorder', icon: 'label' },
       { id: 9, name: 'New Shippment', url: '/purchase/newshippment', icon: 'label' },
       { id: 10, name: 'Purchase Orders', url: '/purchase/purchaseorder', icon: 'label' },
-      { id: 11, name: 'Purchase Order Invoice', url: '/purchase/purchaseorderinvoice', icon: 'label' }
+      { id: 11, name: 'Purchase Order Invoice', url: '/purchase/purchaseorderinvoice', icon: 'label' }*/
     ],
   },
 ];

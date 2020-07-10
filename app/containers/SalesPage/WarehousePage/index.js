@@ -34,14 +34,14 @@ export function WarehousePage(props) {
 
   return (
     <div>
-      <ModuleLayout>
+     
         <Helmet>
           <title>WarehousePage</title>
           <meta name="description" content="Description of WarehousePage" />
         </Helmet>
         <WarehouseList />
         <WarehouseDialog />
-      </ModuleLayout>
+      
     </div>
   );
 }

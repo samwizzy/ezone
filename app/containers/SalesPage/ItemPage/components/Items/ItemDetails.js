@@ -267,7 +267,7 @@ const ItemDetails = props => {
     setSelectedIndex(id);
     getItemByIdAction(id);
     getStockLocationsAction(sku);
-    props.history.push({ pathname: `/inventory/item/${id}/${sku}` });
+    props.history.push({ pathname: `/sales/item/${id}/${sku}` });
   };
 
   const drawer = (
@@ -328,7 +328,7 @@ const ItemDetails = props => {
                 color="primary"
                 startIcon={<Add />}
                 onClick={() =>
-                  props.history.push({ pathname: '/inventory/item/new' })
+                  props.history.push({ pathname: '/sales/item/new' })
                 }
                 disableElevation
               >
@@ -381,7 +381,7 @@ const ItemDetails = props => {
                     onClick={() =>
                       props.history.push(
                         // i convert the sku to id for me to be able to access the edit page
-                        `/inventory/item/edit/${getItemById.id}`,
+                        `/sales/item/edit/${getItemById.id}`,
                       )
                     }
                     startIcon={<EditOutlinedIcon className={classes.icon} />}

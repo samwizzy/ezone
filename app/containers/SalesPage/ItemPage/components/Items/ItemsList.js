@@ -160,14 +160,14 @@ const ItemsList = props => {
         size="small"
         className={classes.button}
         startIcon={<AddIcon />}
-        onClick={() => history.push('/inventory/items/new')}
+        onClick={() => history.push('/sales/items/new')}
       >
         New
       </Button>
     ),
     onRowClick: (rowData, rowState) => {
       getItemByIdAction(rowData[0]);
-      props.history.push('/inventory/item/' + rowData[0] + '/' + rowData[3])
+      props.history.push('/sales/item/' + rowData[0] + '/' + rowData[3])
     },
     elevation: 0
   };

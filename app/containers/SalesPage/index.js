@@ -17,12 +17,14 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectInventoryPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
+import { BrowserRouter as Router, Switch,useParams, Route,useRouteMatch } from "react-router-dom";
 import ModuleLayout from './components/ModuleLayout';
 import WarehousePage from './WarehousePage/index';
 import ItemPage from './ItemPage/index';
 import Dashboard from './Dashboard'
 
 export function InventoryPage() {
+  const {id,name} = useParams();
   useInjectReducer({ key: 'inventoryPage', reducer });
   useInjectSaga({ key: 'inventoryPage', saga });
 
@@ -33,7 +35,13 @@ export function InventoryPage() {
           <title>SalesPage</title>
           <meta name="description" content="Description of SalesPage" />
         </Helmet>
-        <Dashboard />
+        <Switch>
+        {id === undefined?
+         <Route exact path="/sales" component={Dashboard } />
+         :
+         (<Route exact path={`/sales/${id}`} component={id==='items'?ItemPage:(id === 'warehouses'?WarehousePage:Dashboard)}/>)
+        }
+        </Switch>
         {/* <WarehousePage />
         <ItemPage /> */}
       </ModuleLayout>

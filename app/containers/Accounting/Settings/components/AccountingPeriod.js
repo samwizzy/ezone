@@ -102,7 +102,8 @@ const AccountingPeriod = props => {
 
   const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
-    const selectedAccountPeriod = allAccountingPeriodData && allAccountingPeriodData.find(acc => id === acc.id);
+    const selectedAccountPeriod = allAccountingPeriodData 
+    && allAccountingPeriodData.find(acc => id === acc.id);
     setAccountToUpdate({ 
       ...accountToUpdate, 
       id: selectedAccountPeriod.id,  
@@ -111,7 +112,7 @@ const AccountingPeriod = props => {
     });
   };
 
-  console.log('allAccountingPeriodData period file -> ', allAccountingPeriodData);
+  console.log('allAccountingPeriodData period file -> ', JSON.stringify(allAccountingPeriodData));
   console.log('accountToUpdate state -> ', accountToUpdate);
 
 
@@ -142,7 +143,7 @@ const AccountingPeriod = props => {
                   <TableCell>Accounting Method</TableCell>
                   <TableCell>
                     <Box className={classes.box} p={2}>
-                      { accountingSetupData.accountMethod }
+                      {accountingSetupData.accountMethod}
                     </Box>
                   </TableCell>
                 </TableRow>
@@ -216,12 +217,12 @@ const AccountingPeriod = props => {
                         format="MM/dd/yyyy"
                         margin="normal"
                         inputVariant="outlined"
-                        name="startDate"
+                        name="endDate"
                         size="small"
                         id="date-picker-startDate"
-                        label="Start Date"
-                        value={values.startDate}
-                        onChange={(date, formatted) => handleDateChange(date, formatted, 'startDate')}
+                        label="End Date"
+                        value={values.endDate}
+                        onChange={(date, formatted) => handleDateChange(date, formatted, 'endDate')}
                         KeyboardButtonProps={{
                           'aria-label': 'change date',
                         }}

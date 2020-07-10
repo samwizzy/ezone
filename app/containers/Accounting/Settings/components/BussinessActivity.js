@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from "axios";
 import { createAccountSetupSagaII } from '../saga';
-import { withRouter, Link } from "react-router-dom";
+import { withRouter, Link ,useHistory} from "react-router-dom";
 import swal from 'sweetalert';
 import {
   makeStyles,
@@ -20,6 +20,7 @@ import Logo from '../images/Logo.svg';
 import { Autocomplete } from '@material-ui/lab';
 import PropTypes from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
+import * as crud from '../crud';
 import MUIDataTable from 'mui-datatables';
 import NextIcon from '@material-ui/icons/ArrowForward';
 import BackIcon from '@material-ui/icons/ArrowBack';
@@ -105,9 +106,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const BussinessActivity = props => {
-  axios.defaults.headers.common = {
+  const history = useHistory();
+  console.log(`history to b pushed ${JSON.stringify(history)}`)
+  /*axios.defaults.headers.common = {
     'Authorization': 'Bearer ' + `${props.accessToken}`
-  };
+  };*/
 
   const classes = useStyles();
   const accContext = useContext(AccSetupContext)
@@ -120,7 +123,7 @@ const BussinessActivity = props => {
   async function createAccountSetup() {
 
 
-    let accountSetup =
+    /*let accountSetup =
     {
       accountChart: `${accContext.accState.accountChart}`,
       accountMethod: `${accContext.accState.accountMethod}`,
@@ -135,9 +138,18 @@ const BussinessActivity = props => {
       taxDay: 0,
       taxMonth: 0,
       taxType: "",
-    }
+    }*/
 
-    console.log(`before you post ${JSON.stringify(accountSetup)} token ${props.accessToken}`)
+    await crud.createAccountSetup(accContext.accState).then(data=>{
+      console.log(`What a data createAccountSetup ${JSON.stringify(data.data)}`)
+      history.push('/settings');
+      accContext.accDispatch({type:'MSG',msg:{open:true,message:'Account opened successfully',severity:'success'}});
+    }).catch((err)=>{
+      accContext.accDispatch({type:'MSG',msg:{open:false,message:'Something went wrong',severity:'error'}});
+      console.log(`Error from setUptins ${err}`)
+    })
+
+    //console.log(`before you post ${JSON.stringify(accountSetup)} token ${props.accessToken}`)
     /*const rawResponse = await fetch('https://dev.ezoneapps.com/gateway/accountingserv/api/v1/account/add_account_settings', {
       method: 'POST',
       headers: new Headers({
@@ -150,7 +162,7 @@ const BussinessActivity = props => {
     const content = await rawResponse.json();
     console.log(content);*/
 
-    await axios.post(`${Endpoints.CreateAccountingSetupApi}`, accountSetup)
+   /* await axios.post(`${Endpoints.CreateAccountingSetupApi}`, accountSetup)
       .then((res) => {
         let chatResponse = res.data;
         if (chatResponse.success) {
@@ -163,7 +175,7 @@ const BussinessActivity = props => {
       .catch((err) => {
         accContext.accDispatch({ type: 'MSG', msg: { open: true, message: 'Something went wrong. Please try again later', severity: 'error' } })
         console.log(`error ocurr ${err}`);
-      });
+      });*/
 
   }
 
@@ -173,14 +185,31 @@ const BussinessActivity = props => {
       //const response 
       //select uri
 
-      const config = {
+      /*const config = {
         headers: {
           Authorization: `Bearer ${props.accessToken}`,
           'Content-Type': 'application/json',
         }
-      };
+      };*/
 
-      await axios
+      await crud.getChatfromServer().then(data=>{
+        console.log(`What a data getChatfromServer ${JSON.stringify(data.data)}`)
+        let chartData = data.data;
+        setIsEmpty(chartData.length > 0 ? false : true);
+        let dataArray = []
+        for (let i = 0; i < chatData.length; i++) {
+          if (i === 0) {
+            dataArray = [{ accountCode: chartData[i].accountCode, accountName: chartData[i].accountName, accountType: chartData[i].accountType.accountType }]
+          }
+          else
+            dataArray = [...data, { accountCode: chartData[i].accountCode, accountName: chartData[i].accountName, accountType: chartData[i].accountType.accountType }]
+        }
+        setChartOfAccountData(dataArray)
+      }).catch((err)=>{
+        console.log(`Error from setUptins ${err}`)
+      })
+
+     /* await axios
         .get(`${Endpoints.GetAllChartOfAccountApi}/${props.credentials.organisation.orgId}`,
           config)
         .then((res) => {
@@ -199,11 +228,15 @@ const BussinessActivity = props => {
 
         .catch((err) => {
           console.log(`error ocurr ${err}`);
-        });
+        });*/
 
       // ...
     }
     getChatfromServer();
+
+    return() =>{
+      getChatfromServer();
+    }
   }, []
   )
 

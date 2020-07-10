@@ -40,7 +40,7 @@ export function ItemPage(props) {
 
   return (
     <div>
-      <ModuleLayout>
+      
         <Helmet>
           <title>ItemPage</title>
           <meta name="description" content="Description of ItemPage" />
@@ -54,7 +54,7 @@ export function ItemPage(props) {
         ) : (
           <ItemsList />
         )}
-      </ModuleLayout>
+     
     </div>
   );
 }
