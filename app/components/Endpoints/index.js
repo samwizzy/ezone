@@ -210,7 +210,7 @@ export const DeleteWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/delete_workorde
 export const GetListOfWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/find_all_workorders`;
 
 
-// Account Api 
+// Account Api
 export const GetAllAccountTypeApi = `${BaseUrl}/accountingserv/api/v1/account/get_all_account_types`;
 export const GetDetailTypeApi = `${BaseUrl}/accountingserv/api/v1/account/get_detail_types`;
 export const CreateChartOfAccountApi = `${BaseUrl}/accountingserv/api/v1/account/add_chart_of_account`;
@@ -237,8 +237,8 @@ export const UpdateBankAccountApi = `${BaseUrl}/accountingserv/api/v1/bank/updat
 export const SetActiveStatusForBankAccountApi = `${BaseUrl}/accountingserv/api/v1/bank/acivate_or_deactivate_bank`;
 
 
-/** ***************************************************************** 
- * Inventory endpoint  
+/** *****************************************************************
+ * Inventory endpoint
  ******************************************************************* */
 
 // Warehouse Apis
@@ -263,7 +263,7 @@ export const CreateNewInventoryAdjustApi = `${BaseUrl}/inventoryserv/api/v1/do_m
 export const GetAllInventoryAdjustsApi = `${BaseUrl}/inventoryserv/api/v1/get_all_adjustments`;
 export const GetAdjustmentByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_adjustment_by_id`;
 
-/** ***************************************************************** 
+/** *****************************************************************
  * CRM endpoint
  ******************************************************************* */
 
@@ -299,3 +299,4 @@ export const GetAllScheduleForTodayApi = `${BaseUrl}/crmserv/api/v1/get_all_sche
 
 // Crm Activities Apis
 export const GetCrmActivitiesApi = `${BaseUrl}/utilityserv/api/v1/find_by_orgid_and_module`;
+export const CreateCrmActivityApi = `${BaseUrl}/utilityserv/api/v1/add_log`;

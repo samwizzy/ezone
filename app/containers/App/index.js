@@ -338,7 +338,7 @@ const App = props => {
                   />
                   <PrivateRoute
                     exact
-                    path="/crm/social-media"
+                    path="/crm/social-media/:socialId?"
                     component={CrmSocialMedia}
                   />
                   <PrivateRoute

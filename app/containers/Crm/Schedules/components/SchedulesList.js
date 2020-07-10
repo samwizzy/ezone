@@ -82,7 +82,7 @@ const useStyles = makeStyles(theme => ({
 
 const SchedulesList = props => {
   const classes = useStyles();
-  const { loading, openNewScheduleDialog, schedules } = props;
+  const { loading, openNewScheduleDialog, schedules, employees } = props;
 
   console.log(schedules, "schedules list")
 
@@ -115,7 +115,7 @@ const SchedulesList = props => {
         <Grid item xs={12}>
           <Grid container spacing={1}>
             <Grid item xs={8}>
-              <Schedules schedules={schedules} />
+              <Schedules schedules={schedules} employees={employees} />
             </Grid>
             <Grid item xs={4}>
               <Card className={classes.card} elevation={0}>
@@ -157,6 +157,7 @@ SchedulesList.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   schedules: Selectors.makeSelectSchedules(),
+  employees: Selectors.makeSelectEmployees(),
 });
 
 function mapDispatchToProps(dispatch) {

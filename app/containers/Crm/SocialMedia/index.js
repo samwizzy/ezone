@@ -8,6 +8,7 @@ import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
+import { withRouter } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -29,7 +30,8 @@ export function SocialMedia(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
-  const { getSocialMedias, getEmployees } = props;
+  const { getSocialMedias, getEmployees, match } = props;
+  const { params } = match
 
   useEffect(() => {
     getSocialMedias();
@@ -44,8 +46,10 @@ export function SocialMedia(props) {
       </Helmet>
 
       <ModuleLayout>
-        <SocialMediaList />
-        {/* <SocialMediaTabs /> */}
+        {params.socialId
+          ? <SocialMediaTabs />
+          : <SocialMediaList />
+        }
       </ModuleLayout>
 
       <SocialMediaDialog />
@@ -74,6 +78,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(SocialMedia);

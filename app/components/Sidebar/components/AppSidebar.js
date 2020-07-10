@@ -55,9 +55,6 @@ function AppSidebar(props) {
     setOpen({ [index]: !open[index] });
   }
 
-
-  console.log(open, "checking open state")
-
   return (
     <AppContext.Consumer>
       {value => {

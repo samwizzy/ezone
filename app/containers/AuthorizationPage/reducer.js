@@ -8,8 +8,6 @@ import * as Constants from './constants';
 
 export const initialState = {
   message: '',
-  forgotPassword: {},
-  signupReqData: '',
   loading: false,
   error: false,
 };
@@ -44,7 +42,6 @@ const authorizationPageReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          forgotPassword: action.payload,
         };
       }
       case Constants.FORGOT_PASSWORD_SUCCESS: {

@@ -22,29 +22,10 @@ const makeSelectAuthorizationPage = () =>
     substate => substate,
   );
 
-// register selectors
 const makeSelectLoading = () =>
   createSelector(
     selectAuthorizationPageDomain,
     substate => substate.loading,
-  );
-
-const makeSelectSignupReqData = () =>
-  createSelector(
-    selectAuthorizationPageDomain,
-    substate => substate.signupReqData,
-  );
-
-const makeSelectSignupResData = () =>
-  createSelector(
-    selectAuthorizationPageDomain,
-    substate => substate.signupResData,
-  );
-
-const makeSelectForgotPasswordData = () =>
-  createSelector(
-    selectAuthorizationPageDomain,
-    substate => substate.forgotPassword,
   );
 
 const makeSelectMessage = () =>
@@ -56,10 +37,6 @@ const makeSelectMessage = () =>
 export default makeSelectAuthorizationPage;
 export {
   selectAuthorizationPageDomain,
-  // register selectors
   makeSelectLoading,
-  makeSelectSignupReqData,
-  makeSelectSignupResData,
-  makeSelectForgotPasswordData,
   makeSelectMessage,
 };

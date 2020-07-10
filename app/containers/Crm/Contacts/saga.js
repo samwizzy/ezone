@@ -106,6 +106,7 @@ export function* createNewContact({ payload }) {
 
     console.log(response, 'create contact response');
 
+    yield put(AppActions.openSnackBar({ message: "Contact created successfully", status: 'success' }));
     yield put(Actions.createNewContactSuccess(response));
     yield put(Actions.getAllContacts());
     yield put(Actions.closeNewContactDialog());
@@ -136,6 +137,7 @@ export function* updateContact({ payload }) {
 
     console.log(response, 'response updated contact');
 
+    yield put(AppActions.openSnackBar({ message: "Contact updated successfully", status: 'success' }));
     yield put(Actions.updateContactSuccess(response));
     yield put(Actions.getAllContacts());
     yield put(Actions.closeEditContactDialog());

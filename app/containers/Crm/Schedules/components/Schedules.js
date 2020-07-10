@@ -23,6 +23,9 @@ import Opacity from '@material-ui/icons/Opacity';
 import ColorLens from '@material-ui/icons/ColorLens';
 import { withStyles } from '@material-ui/core/styles';
 import { owners } from './demo-data/tasks';
+import moment from 'moment';
+
+console.log(moment(new Date(2018, 5, 28, 9, 30)).format('YYYY-MM-DD'), "moment confirm")
 
 const appointments = [
   {
@@ -34,7 +37,7 @@ const appointments = [
   }, {
     id: 1,
     title: 'Monthly Planning',
-    startDate: new Date(2018, 5, 28, 9, 30),
+    startDate: '2018-06-28', //moment(new Date(2018, 5, 28, 9, 30)).format('YYYY-MM-DD'),
     endDate: new Date(2018, 5, 28, 11, 30),
     ownerId: 1,
   }, {
@@ -87,12 +90,6 @@ const appointments = [
     ownerId: 3,
   },
 ];
-
-const resources = [{
-  fieldName: 'ownerId',
-  title: 'Owners',
-  instances: owners,
-}];
 
 const getBorder = theme => (`1px solid ${
   theme.palette.type === 'light'
@@ -298,9 +295,16 @@ export default class Demo extends React.PureComponent {
   constructor(props) {
     super(props);
 
+    const options = this.props.schedules.map(function (row) {
+      console.log(moment(row.startDate).format('YYYY-MM-DD'), "startDate check")
+      return { title: row.scheduleType, startDate: moment(row.startDate).format('YYYY-MM-DD'), endDate: moment(row.endDate).format('YYYY-MM-DD') }
+    })
+
     this.state = {
-      data: appointments,
+      data: options // appointments,
     };
+
+    console.log(options, "options")
 
     this.commitChanges = this.commitChanges.bind(this);
   }
@@ -326,6 +330,13 @@ export default class Demo extends React.PureComponent {
 
   render() {
     const { data } = this.state;
+    const { employees } = this.props;
+
+    const resources = [{
+      fieldName: 'ownerId',
+      title: 'Owners',
+      instances: employees,
+    }];
 
     return (
       <Paper>
@@ -336,7 +347,7 @@ export default class Demo extends React.PureComponent {
             onCommitChanges={this.commitChanges}
           />
           <ViewState
-            defaultCurrentDate="2018-07-17"
+            defaultCurrentDate={moment().format('YYYY-MM-DD')}
           />
 
           <MonthView

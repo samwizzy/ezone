@@ -19,7 +19,8 @@ import reducer from './reducer';
 import saga from './saga';
 import * as Actions from './actions';
 import messages from '../messages';
-import ActivitiesList from './components/ActivitiesList';
+import ActivitiesList from './ActivitiesList';
+import AddActivityDialog from './components/AddActivityDialog'
 import ModuleLayout from '../components/ModuleLayout';
 
 export function Activities(props) {
@@ -42,6 +43,8 @@ export function Activities(props) {
       <ModuleLayout>
         <ActivitiesList />
       </ModuleLayout>
+
+      <AddActivityDialog />
     </div>
   );
 }
