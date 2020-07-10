@@ -142,7 +142,7 @@ const BussinessActivity = props => {
 
     await crud.createAccountSetup(accContext.accState).then(data=>{
       console.log(`What a data createAccountSetup ${JSON.stringify(data.data)}`)
-      history.push('/settings');
+      history.push('/dashboard');
       accContext.accDispatch({type:'MSG',msg:{open:true,message:'Account opened successfully',severity:'success'}});
     }).catch((err)=>{
       accContext.accDispatch({type:'MSG',msg:{open:false,message:'Something went wrong',severity:'error'}});
