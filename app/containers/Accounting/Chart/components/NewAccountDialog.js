@@ -27,9 +27,7 @@ import { green } from '@material-ui/core/colors';
 import * as Endpoints from '../../../../components/Endpoints';
 import axios from "axios";
 import * as Selectors from '../selectors';
-import * as Actions from '../actions';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
-import { ChartContext } from '..';
+
 
 const useStyles = makeStyles(theme => ({
   container: {
