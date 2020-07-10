@@ -27,9 +27,7 @@ import { green } from '@material-ui/core/colors';
 import * as Endpoints from '../../../../components/Endpoints';
 import axios from "axios";
 import * as Selectors from '../selectors';
-import * as Actions from '../actions';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
-import { ChartContext } from '..';
+
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -109,7 +107,7 @@ const NewAccountDialog = props => {
   //Load AccTypes
   useEffect(() => {
     async function getAllAccountTypeFSev() {
-      console.log(`context from new ${chartContext.chartState.viewId}`)
+    /*  console.log(`context from new ${chartContext.chartState.viewId}`)
       const config = {
         headers: { Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json', }
@@ -129,8 +127,16 @@ const NewAccountDialog = props => {
 
     .catch((err) => {
       console.log(`error ocurr at NewAccountDialog ${err}`);
-    });
+    })*/;
     
+    await crud.getAllAccountTypeFSever().then(data=>{
+      console.log(`What a data getAllAccountTypeFSever ${JSON.stringify(data.data)}`)
+      let chatOfAccResponse = data.data;
+      setAccountType(chatOfAccResponse);
+      setAccountParentType(chatOfAccResponse );    
+    }).catch((err)=>{
+      console.log(`Error from setUptins ${err}`)
+    })
 
 
     }
@@ -159,8 +165,19 @@ const NewAccountDialog = props => {
   //Create New Account 
 
   async function createChartOfAccountHandler() {
+    await crud.createChartOfAccountHandler(values).then(data=>{
+      console.log(`What a data createChartOfAccountHandler ${JSON.stringify(data.data)}`)
+      //let chatOfAccResponse = data.data;
+          chartContext.chartDispatch({type:'REFRESH',refresh:true})
+          swal("Success","Chart of Account created successfully","success");
+          closeNewAccountDialogAction()
+     
+    }).catch((err)=>{
+      swal("Error","Something went wrong","error");
+      console.log(`Error from setUptins ${err}`)
+    })
 
-    const config = {
+    /*const config = {
       headers: { Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json', }
   };
@@ -180,13 +197,13 @@ const NewAccountDialog = props => {
   
         .catch((err) => {
           console.log(`error ocurr in Chart of Account ${err}`);
-        });
+        });*/
 
     }
 
 
     async function updateChartOfAccount() {
-      const config = {
+    /*  const config = {
         headers: { Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json', }
     };
@@ -205,7 +222,20 @@ const NewAccountDialog = props => {
           .catch((err) => {
             swal("Error","Something went wrong","error");
             console.log(`error ocurr in Chart of Account ${err}`);
-          });
+          });*/
+
+
+          await crud.updateChartOfAccount(values).then(data=>{
+            console.log(`What a data updateChartOfAccount ${JSON.stringify(data.data)}`)
+            //let chatOfAccResponse = data.data;
+                chartContext.chartDispatch({type:'REFRESH',refresh:true})
+                swal("Success","Chart of Account Updated successfully","success");
+                closeNewAccountDialogAction()
+           
+          }).catch((err)=>{
+            swal("Error","Something went wrong","error");
+            console.log(`Error from setUptins ${err}`)
+          })
   
     }
   //Create New Account
@@ -247,6 +277,7 @@ const NewAccountDialog = props => {
   const checkAlphaNumeric = event =>{
     let value= event.target.value;
     let txt = alphaNumeric(value)
+    console.log(`alphanumeric ${txt}`)
     if(txt){
       setIsAphaNumeric(true)
     }
@@ -308,7 +339,6 @@ const NewAccountDialog = props => {
                   <TextField
                     id="standard-accountCode"
                     label="Account Code"
-                    type="number"
                     variant="outlined"
                     onBlur={checkAlphaNumeric}
                     size="small"
@@ -322,7 +352,6 @@ const NewAccountDialog = props => {
                   <TextField
                     id="standard-accountCode"
                     label="Account Code"
-                    type="number"
                     variant="outlined"
                     onBlur={checkAlphaNumeric}
                     error
@@ -482,7 +511,7 @@ const NewAccountDialog = props => {
             <LoadingIndicator />
           ) : (
             <Button
-            disabled={isAphaNumeric}
+            disabled={!isAphaNumeric}
               onClick={() => { accountDialog.type === 'new' ? createChartOfAccountHandler() : updateChartOfAccount() }}
               color="primary"
               // disabled={ accountDialog.type === "new" ? !canSubmitValues() : "" }

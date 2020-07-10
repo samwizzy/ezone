@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect,useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -110,7 +110,7 @@ const AddNewJournal = props => {
   const currentAccountPeriod = accountPeriodData.find((item) => item.status && item.activeYear);
     // Filter all periods with status -> true
     const filteredAccountPeriodData = accountPeriodData.filter((item) => item.status);
-
+    console.log('accountPeriodData is -> ', JSON.stringify(accountPeriodData));
   const [values, setValues] = React.useState({
     entries: [],
     note: "",
@@ -136,20 +136,8 @@ const AddNewJournal = props => {
   };
 
   const handleChange = name => event => {
-    const textValue = event.target.value;
-    // Validating Account Code for apha numeric
-    // add case for more validation
-    switch (name) {
-      case 'reference':
-        {
-          if(alphaNumeric(textValue)){
-            setValues({ ...values, [name]: textValue });
-          }
-        }
-        break;
-      default:
+    const textValue = event.target.value; 
         setValues({ ...values, [name]: textValue });
-    }
   };
 
   const handleSelectChange = (name, value) => {
@@ -179,7 +167,8 @@ const AddNewJournal = props => {
   });
 
   const isDisabled = () => {
-    return values.entries.reduce((a, b) => a + Number(b.credit), 0) != values.entries.reduce((a, b) => a + Number(b.debit), 0) || (values.entries.reduce((a, b) => a + Number(b.credit), 0) + values.entries.reduce((a, b) => a + Number(b.debit), 0)) === 0;
+    return  isAphaNumeric 
+    //return (values.entries.reduce((a, b) => a + Number(b.credit), 0) != values.entries.reduce((a, b) => a + Number(b.debit), 0) || (values.entries.reduce((a, b) => a + Number(b.credit), 0) + values.entries.reduce((a, b) => a + Number(b.debit), 0)) === 0) && isAphaNumeric;
   }
 
   const handleImageChange = (ev) => { 
@@ -195,8 +184,20 @@ const AddNewJournal = props => {
     setValues(_.set({ ...values }, event.target.name, fileNode))
   }
 
+  const [isAphaNumeric,setIsAphaNumeric] = useState(true)
+
+  const checkAlphaNumeric = event =>{
+    let value= event.target.value;
+    let txt = alphaNumeric(value)
+    if(txt){
+      setIsAphaNumeric(true)
+    }
+    else
+    setIsAphaNumeric(false)
+  }
+
   console.log('values -> ', values);
-  console.log('currentAccountPeriod -> ', currentAccountPeriod);
+  console.log('currentAccountPeriod is -> ', currentAccountPeriod);
 
   return (
     <ModuleLayout>
@@ -205,7 +206,7 @@ const AddNewJournal = props => {
           <Grid item xs={12} className={classNames(classes.gridMargin)}>
             <div className={classes.flex}>
               <Typography variant="h5">New Posting</Typography>
-              {/* <TextField
+           {/* <TextField
                 id="financial-year"
                 name="periodId"
                 placeholder="Select your financial year"
@@ -214,16 +215,14 @@ const AddNewJournal = props => {
                 variant="outlined"
                 size="small"
                 label="Financial Year"
-                // value={values.periodId}
+                value={values.periodId}
                 onChange={handleSelectChange}
-              > */}
-                {/* FY: {moment(currentAccountPeriod.startDate).format('dddd do-MMM-YYYY')} - {moment(currentAccountPeriod.endDate).format('dddd do-MMM-YYYY')} */}
-                {/* {accountPeriodData && accountPeriodData.map((period, i) => (
+              >  {accountPeriodData && accountPeriodData.map((period, i) => (
                   <MenuItem key={i} value={period.id}>
                     {moment(period.startDate).format('dddd do-MMM-YYYY')} - {moment(period.endDate).format('dddd do-MMM-YYYY')}
                   </MenuItem>
                 ))}
-              </TextField> */}
+              </TextField>*/}
               <Autocomplete
                 id="combo-box-demo"
                 options={filteredAccountPeriodData}
@@ -263,17 +262,39 @@ const AddNewJournal = props => {
                 </MuiPickersUtilsProvider>
               </Grid>
               <Grid item xs={5}>
-                <TextField
-                  id="standard-note"
+               
+
+                {isAphaNumeric ?
+                  <TextField
+                  id="standard-accountCode"
                   label="Reference Number"
-                  size="small"
+                  type="name"
+                  onBlur={checkAlphaNumeric}
                   variant="outlined"
+                  size="small"
                   className={classes.textField}
                   value={values.reference}
                   onChange={handleChange('reference')}
                   margin="normal"
                   fullWidth
                 />
+                  :
+                  <TextField
+                    id="standard-accountCode"
+                    label="Reference Number"
+                    type="name"
+                    onBlur={checkAlphaNumeric}
+                    error
+                    helperText="value must be alpha numeric"
+                    variant="outlined"
+                    size="small"
+                    className={classes.textField}
+                    value={values.reference}
+                    onChange={handleChange('reference')}
+                    margin="normal"
+                    fullWidth
+                  />
+                }
               </Grid>
             </Grid>
             <Grid item xs={12}>
@@ -313,7 +334,7 @@ const AddNewJournal = props => {
                     <Autocomplete
                       id={id}
                       options={chartOfAccountData}
-                      getOptionLabel={option => option.accountCode}
+                      getOptionLabel={option => `${option.accountCode} ${option.accountName}`}
                       onChange={(evt, value) => handleSelectChangeRows(evt, value, id)}
                       renderInput={params => (
                         <TextField
@@ -461,7 +482,7 @@ const AddNewJournal = props => {
                       onClick={() => {
                         createNewAccountJournalAction(values);
                       }}
-                      disabled={isDisabled()}
+                      disabled={!isDisabled()}
                     >
                       Save and Submit
                     </Button>

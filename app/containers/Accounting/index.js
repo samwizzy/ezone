@@ -15,11 +15,10 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import reducer from './reducer';
 import saga from './saga';
-import { BrowserRouter as Router, Switch,useParams, Route } from "react-router-dom";
+import * as crud from './crud';
+import { BrowserRouter as Router, Switch,useParams, Route,useRouteMatch } from "react-router-dom";
 import * as Actions from './actions';
 import makeSelectAccounting, * as Selectors from './selectors';
-import AccountSetup from './Settings/components/AccountSetup';
-import Dashboard from './Dashboard';
 import Charts from './Chart/Loadable';
 import Reports from './Reports/index';
 import Home from './home';
@@ -27,21 +26,41 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import LoadingIndicator from './../../components/LoadingIndicator';
 import ModuleLayout from './components/ModuleLayout';
 import Journal from './Journal';
+import AddNewJournal from './Journal/components/AddNewJournal';
+import JournalDetails from './Journal/components/JournalDetails';
 import PayrollPage from './Payroll';
+import axios from "axios";
 import Budget from './Budget';
+import BudgetingDetails from './Budget/components/BudgetingDetails';
+import NewBudgeting from './Budget/components/NewBudgeting';
 import Banking from './Banking';
+import AccountDetails from './Banking/components/AccountDetails';
+import DetailsOfAccountChat from './Chart/components/DetailsOfAccountChart';
 import FixedAssets from './FixedAssets';
 
 export function Accounting(props) {
-  const {id} = useParams();
+  const {id,name} = useParams();
+  const param = useParams();
   useInjectReducer({ key: 'accounting', reducer });
   useInjectSaga({ key: 'accounting', saga });
-  console.log(`Accounting index.js loaded ${id}`);
+  console.log(`Accounting index.js loaded ${id} ${name} ${JSON.stringify(param)}`);
 
   const {
     loading
   } = props;
 
+  useEffect(() => {
+    async function dataCall(){
+       await crud.setUptins().then(data=>{
+        console.log(`What a data ${JSON.stringify(data.data)}`)
+      }).catch((err)=>{
+        console.log(`Error from setUptins ${err}`)
+      })
+    }
+
+    dataCall();
+
+  },[]);
   // Similar to componentDidMount and componentDidUpdate:
 
   // Routing based on api response
@@ -56,7 +75,8 @@ export function Accounting(props) {
          <Route exact path="/account" component={Home} />
          :
          (
-          <Route exact path={`/account/${id}`} component={
+           name === undefined?
+          (<Route exact path={`/account/${id}`} component={
             id === 'reports'?Reports:(
               id==='charts'?Charts:(id=== 'journal'?Journal:(
                 id==='fixedassets'?FixedAssets:(
@@ -70,7 +90,17 @@ export function Accounting(props) {
                 )
               ))
               )
-          } />
+          } />)
+          :
+          (
+            <Route exact path={`/account/${id}/${name}`} component={
+             (name=== 'add')? (id === 'journal'?
+             AddNewJournal:NewBudgeting):(id=== 'journal'?
+             JournalDetails:(id === 'charts'?DetailsOfAccountChat:(id === 'banking'?AccountDetails:BudgetingDetails)))
+            } />
+          )
+           
+        
          )
          }
         </Switch>

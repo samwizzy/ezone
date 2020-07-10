@@ -143,7 +143,7 @@ const SetChartOfAccount = () => {
                         <FormControlLabel
                           value={accContext.accState.accountChart}
                           onChange={e => {
-                            accContext.accDispatch({type:'PAYLOAD',payload:{label:'accountChart',value:Enums.AccountChart.IMPORT}}) 
+                            accContext.accDispatch({type:'PAYLOAD',payload:{label:'accountChart',value:Enums.AccountChart.DEFAULT}}) 
                           }}
                           checked={accContext.accState.accountChart === 'DEFAULT'}
                           control={<Radio color="primary" />}

@@ -23,7 +23,7 @@ class Auth extends Component {
   }
 
   StompConnect = () => {
-    console.log('request come here');
+    console.log('request come here come'); 
     const socket = new SockJS(
       'https://dev.ezoneapps.com/gateway/utilityserv/messages',
     );

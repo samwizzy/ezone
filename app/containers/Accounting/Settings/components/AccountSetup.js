@@ -18,7 +18,7 @@ const AccountSetup = props => {
   const [accessToken] = useState(localStorage.getItem('access_token'))
 
 
-  useEffect(() => {
+  /*useEffect(() => {
     
     async function getChatfromServer() {
       // You can await here
@@ -47,7 +47,7 @@ const AccountSetup = props => {
     }
     getChatfromServer();
   },[]
-  )
+  )*/
 
 
 

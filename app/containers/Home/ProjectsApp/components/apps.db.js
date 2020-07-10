@@ -25,6 +25,7 @@ import CRMIcon from '../../../../images/crmIcon.svg';
 import FileIcon from '../../../../images/FileIcon.svg';
 import BudgetingIcon from '../../../../images/BudgetingIcon.svg';
 import TaskIcon from '../../../../images/TaskIcon.svg';
+import LmsIcon from '../../../../images/lms.svg';
 import ProjectsIcon from '../../../../images/ProjectsIcon.svg';
 import ChatIcon from '../../../../images/chatIcon.svg';
 import ChatIcon2 from '../../../../images/chatIcon2.svg';
