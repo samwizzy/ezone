@@ -81,8 +81,7 @@ export function Accounting(props) {
               id==='charts'?Charts:(id=== 'journal'?Journal:(
                 id==='fixedassets'?FixedAssets:(
                   id==='banking'?Banking:(
-                    id==='payroll'?PayrollPage:(
-                      id==='budgeting'?Budget:(
+                    id==='payroll'?PayrollPage:((
                         id==='settings'?Home:Home
                       )
                     )

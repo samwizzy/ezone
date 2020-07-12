@@ -48,8 +48,8 @@ const SidebarConfig = [
       { id: 5, name: 'Banking', url: '/account/banking', icon: 'group' },
       { id: 6, name: 'Payroll', url: '/account/payroll', icon: 'payment' },
       { id: 7, name: 'Reports', url: '/account/reports', icon: 'label' },
-      { id: 8, name: 'Budgeting', url: '/account/budgeting', icon: 'account_balance_wallet' },
-      { id: 9, name: 'Settings', url: '/account/settings', icon: 'settings' },
+     // { id: 8, name: 'Budgeting', url: '/account/budgeting', icon: 'account_balance_wallet' },
+      { id: 8, name: 'Settings', url: '/account/settings', icon: 'settings' },
     ],
   },
   {
@@ -92,48 +92,36 @@ const SidebarConfig = [
   {
     module: ['inventory'],
     menus: [
+      {
+        id: 1, name: 'Inventory', url: '/inventory/dashboard', icon: 'label', submenus: [
       { id: 1, name: 'Dashboard', url: '/inventory/dashboard', icon: 'dashboard' },
       { id: 2, name: 'Warehouses', url: '/inventory/warehouses', icon: 'storage' },
       { id: 3, name: 'Items', url: '/inventory/items', icon: 'label' },
       { id: 4, name: 'Items Groups', url: '/inventory/items-groups', icon: 'group_work' },
       { id: 5, name: 'Transfer Orders', url: '/inventory/transfer/orders', icon: 'transfer_within_a_station' },
       { id: 6, name: 'Investment Adjustment', url: '/inventory/adjustments', icon: 'equalizer' },
-      { id: 7, name: 'Reports', url: '/inventory/reports', icon: 'assessment' },
+      { id: 7, name: 'Reports', url: '/inventory/reports', icon: 'assessment' }
+          
+        ]
+      },
+      
+      {
+        id: 2, name: 'Sales', url: '/inventory/sales', icon: 'label', submenus: [
+      { id: 1, name: 'Sales Order', url: 'inventory/sales/salesorder', icon: 'label' },
+      { id: 2, name: 'Invoice', url: '/inventory/sales/invoices', icon: 'label' },
+      { id: 3, name: 'Receipts', url: 'inventory/sales/receipts', icon: 'label' },
+        ]
+      },
+      {
+      id: 3, name: 'Purchase', url: '/inventory/purchase', icon: 'label', submenus: [
+        { id: 1, name: 'Purchase Order', url: 'inventory/purchase/purchaseorder', icon: 'label' },
+        { id: 2, name: 'Bills', url: '/inventory/purchase/bills', icon: 'label' },
+        { id: 3, name: 'Purchase made', url: 'inventory/purchase/purchasemade', icon: 'label' }
+          ]
+        },
+
     ],
-  },
-  {
-    module: ['sales'],
-    menus: [
-      { id: 1, name: 'Dashboard', url: '/sales/dashboard', icon: 'dashboard' },
-      { id: 2, name: 'Warehouses', url: '/sales/warehouses', icon: 'storage' },
-      { id: 3, name: 'Items', url: '/sales/items', icon: 'label' },
-      { id: 4, name: 'Items Groups', url: '/sales/items-groups', icon: 'group_work' },
-      { id: 5, name: 'Transfer Orders', url: '/sales/transfer/orders', icon: 'transfer_within_a_station' },
-      { id: 6, name: 'Investment Adjustment', url: '/sales/adjustments', icon: 'equalizer' },
-      { id: 7, name: 'Reports', url: '/sales/reports', icon: 'assessment' },
-      /*{ id: 8, name: 'New Sales Order', url: '/sales/newsalesorder', icon: 'label' },
-      { id: 9, name: 'New Shippment', url: '/sales/newshippment', icon: 'label' },
-      { id: 10, name: 'Sales Orders', url: '/sales/salesorder', icon: 'label' },
-      { id: 11, name: 'Sales Order Invoice', url: '/sales/salesorderinvoice', icon: 'label' },
-      { id: 12, name: 'Shippment', url: '/sales/shippment', icon: 'label' },*/
-    ],
-  },
-  {
-    module: ['purchase'],
-    menus: [
-      { id: 1, name: 'Dashboard', url: '/purchase/dashboard', icon: 'dashboard' },
-      { id: 2, name: 'Warehouses', url: '/purchase/warehouses', icon: 'storage' },
-      { id: 3, name: 'Items', url: '/purchase/items', icon: 'label' },
-      { id: 4, name: 'Items Groups', url: '/purchase/items-groups', icon: 'group_work' },
-      { id: 5, name: 'Transfer Orders', url: '/purchase/transfer/orders', icon: 'transfer_within_a_station' },
-      { id: 6, name: 'Investment Adjustment', url: '/purchase/adjustments', icon: 'equalizer' },
-      { id: 7, name: 'Reports', url: '/purchase/reports', icon: 'assessment' },
-     /* { id: 8, name: 'New Purchase Order', url: '/purchase/newpurchaseorder', icon: 'label' },
-      { id: 9, name: 'New Shippment', url: '/purchase/newshippment', icon: 'label' },
-      { id: 10, name: 'Purchase Orders', url: '/purchase/purchaseorder', icon: 'label' },
-      { id: 11, name: 'Purchase Order Invoice', url: '/purchase/purchaseorderinvoice', icon: 'label' }*/
-    ],
-  },
+  }
 ];
 
 export default SidebarConfig;

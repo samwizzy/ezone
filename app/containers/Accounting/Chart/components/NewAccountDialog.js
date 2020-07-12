@@ -1,6 +1,7 @@
 import React, { memo,useEffect,useState,useContext } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import * as Actions from '../actions';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
@@ -24,9 +25,10 @@ import {
   Checkbox,
 } from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
-import * as Endpoints from '../../../../components/Endpoints';
 import axios from "axios";
+import * as crud from '../crud';
 import * as Selectors from '../selectors';
+import { ChartContext } from '..';
 
 
 const useStyles = makeStyles(theme => ({
