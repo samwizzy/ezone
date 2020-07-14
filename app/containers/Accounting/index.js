@@ -80,9 +80,10 @@ exact path={`/account/${id}`} component={
                 id === 'reports'?Reports:(
                   id==='charts'?Charts:(id=== 'journal'?Journal:(
                     id==='fixedassets'?FixedAssets:(
-                      id==='banking'?Banking:((
-                          id==='settings'?Home:(id === 'fixedassets'?FixedAssets:Home)
+                      id==='banking'?Banking:((id==='budgeting'?Budget:
+                          (id==='settings'?Home:(id === 'fixedassets'?FixedAssets:Home)
                         )
+                      )
                       )
                     )
                   ))
@@ -93,8 +94,8 @@ exact path={`/account/${id}`} component={
             
                 
                 <Route exact path={`/account/${id}/${name}`} component={
-                 name === 'add'?AddNewJournal: (id === 'journal'?JournalDetails:
-                 (id === 'charts'?DetailsOfAccountChat:AccountDetails))
+                 name === 'add'?(id==='budgeting'?NewBudgeting:AddNewJournal): (id === 'journal'?JournalDetails:
+                 (id === 'charts'?DetailsOfAccountChat:(id ==='budgeting'?BudgetingDetails:AccountDetails)))
                 }/>
                 
                

@@ -30,6 +30,7 @@ export async function createChartOfAccountHandler(values) {
     else{
       postValue = {
         accountCode: values.accountCode,
+        accountName: values.accountName,
         accountTypeId: values.accountTypeId,
         description: values.description,
         openingBalance: Number(values.openingBalance),
@@ -43,6 +44,7 @@ export async function createChartOfAccountHandler(values) {
   else{
     postValue = {
       accountCode: values.accountCode,
+      accountName: values.accountName,
       accountTypeId: values.accountTypeId,
       description: values.description,
       openingBalance: Number(values.openingBalance),
