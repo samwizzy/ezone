@@ -42,6 +42,7 @@ export function Accounting(props) {
   const param = useParams();
   useInjectReducer({ key: 'accounting', reducer });
   useInjectSaga({ key: 'accounting', saga });
+
   console.log(
     `Accounting index.js loaded ${id} ${name}  ${JSON.stringify(param)}`,
   );
@@ -75,7 +76,7 @@ export function Accounting(props) {
           (
             name === undefined?
               (<Route
-exact path={`/account/${id}`} component={
+               exact path={`/account/${id}`} component={
                 id === 'reports'?Reports:(
                   id==='charts'?Charts:(id=== 'journal'?Journal:(
                     id==='fixedassets'?FixedAssets:(

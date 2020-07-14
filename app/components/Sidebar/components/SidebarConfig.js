@@ -222,7 +222,7 @@ const SidebarConfig = [
     ],
   },
   {
-    module: ['inventory'],
+    module: ['inventory','sales','purchase'],
     menus: [
       {
         id: 1,
@@ -243,19 +243,19 @@ const SidebarConfig = [
       {
         id: 2,
         name: 'Sales',
-        url: '/inventory/sales',
+        url: '/sales',
         icon: 'label',
         submenus: [
-          { id: 1, name: 'Sales Order', url: 'inventory/sales/salesorder', icon: 'label' },
-          { id: 2, name: 'Invoice', url: '/inventory/sales/invoices', icon: 'label' },
-          { id: 3, name: 'Receipts', url: 'inventory/sales/receipts', icon: 'label' },
+          { id: 1, name: 'Sales Order', url: '/sales/salesorder', icon: 'label' },
+          { id: 2, name: 'Invoice', url: '/sales/invoices', icon: 'label' },
+          { id: 3, name: 'Receipts', url: '/sales/receipts', icon: 'label' },
         ],
       },
       {
-        id: 3, name: 'Purchase', url: '/inventory/purchase', icon: 'label', submenus: [
-          { id: 1, name: 'Purchase Order', url: 'inventory/purchase/purchaseorder', icon: 'label' },
-          { id: 2, name: 'Bills', url: '/inventory/purchase/bills', icon: 'label' },
-          { id: 3, name: 'Purchase made', url: 'inventory/purchase/purchasemade', icon: 'label' }
+        id: 3, name: 'Purchase', url: '/purchase', icon: 'label', submenus: [
+          { id: 1, name: 'Purchase Order', url: '/purchase/purchaseorder', icon: 'label' },
+          { id: 2, name: 'Bills', url: '/purchase/bills', icon: 'label' },
+          { id: 3, name: 'Purchase made', url: '/purchase/purchasemade', icon: 'label' }
         ]
       },
       
