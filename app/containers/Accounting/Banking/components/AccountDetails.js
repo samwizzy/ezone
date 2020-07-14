@@ -116,7 +116,7 @@ const AccountDetails = props => {
   }
 
   console.log('accountDetailsData -> ', props.location.accountDetailsData);
-  console.log('props.location.accountDetailsData.accountNumber -> ', props.location.accountDetailsData.accountNumber);
+  //console.log('props.location.accountDetailsData.accountNumber -> ', props.location.accountDetailsData.accountNumber);
   
 
   return (

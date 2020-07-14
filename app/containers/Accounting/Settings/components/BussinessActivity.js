@@ -142,7 +142,7 @@ const BussinessActivity = props => {
 
     await crud.createAccountSetup(accContext.accState).then(data=>{
       console.log(`What a data createAccountSetup ${JSON.stringify(data.data)}`)
-      history.push('/dashboard');
+      //history.push('/dashboard');
       accContext.accDispatch({type:'MSG',msg:{open:true,message:'Account opened successfully',severity:'success'}});
     }).catch((err)=>{
       accContext.accDispatch({type:'MSG',msg:{open:false,message:'Something went wrong',severity:'error'}});
@@ -252,7 +252,6 @@ const BussinessActivity = props => {
   ]
 
   function OnlyBussinessLabel(value) {
-    console.log(`Value of service ${value}`)
     switch (value) {
       case 'SERVICE_COMPANY':
         return 'Service Company'
@@ -405,7 +404,7 @@ const BussinessActivity = props => {
 
                 <Grid item>
                   <div>
-                    <Link style={{ textDecoration: 'none' }} to={'/account/chart'}>
+                    <Link style={{ textDecoration: 'none' }} to={'/account/charts'}>
                       <Button
                         variant="contained"
                         color="primary"
@@ -416,8 +415,9 @@ const BussinessActivity = props => {
                         }
                       >
                         Finish
-                </Button>
+                    </Button>
                     </Link>
+
                   </div>
                 </Grid>
               </Grid>

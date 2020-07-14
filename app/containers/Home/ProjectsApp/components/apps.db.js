@@ -43,6 +43,7 @@ const apps = [
   { id: 10, name: 'Task management', url: '/task-manager/tasks', icon: TaskIcon, img: 'list_alt' },
   { id: 11, name: 'Work Order', url: '/work-order', icon: ProjectsIcon, img: 'ballot' },
   { id: 12, name: 'LMS', url: '/lms/dashboard', icon: ProjectsIcon, img: 'library_books' },
+  { id: 13, name: 'Payroll', url: '/payroll', icon: ProjectsIcon, img: 'money' },
 ];
 
 export default apps;

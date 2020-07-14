@@ -1,5 +1,6 @@
 import React from 'react';
 import ModuleLayout from './ModuleLayout'; 
+
 const PayrollPage = () => {
   return ( 
     <div>
