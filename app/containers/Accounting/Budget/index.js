@@ -22,7 +22,8 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import ModuleLayout from '../components/ModuleLayout';
-import LoadingIndicator from './../../../components/LoadingIndicator';
+// LoadingIndicator from './../../../components/LoadingIndicator';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import BudgetingList from './components/BudgetingList';
 import BudgetingDetails from './components/BudgetingDetails';
 import NewBudgeting from './components/NewBudgeting';
@@ -46,9 +47,9 @@ export function Budgeting(props) {
   }, []);
 
 
-  // if (loading) {
-  //   return <LoadingIndicator />;
-  // }
+  /*if (loading) {
+    return <div style={{textAlign:'center'}}><div style={{margin:'2px auto'}}><CircularProgress /></div></div>;
+  }*/
 
   return (
     <div>

@@ -64,9 +64,8 @@ export function Accounting(props) {
 
   // Routing based on api response
   if (loading) {
-    return <LoadingIndicator />;
+    return <div style={{textAlign:'center'}}><div style={{margin:'2px auto'}}><CircularProgress /></div></div>;
   }
-
   return (
     <div>
       <Switch>
