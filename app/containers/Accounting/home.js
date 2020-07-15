@@ -13,7 +13,7 @@ import Settings from './Settings/index';
 import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import  ModuleLayout from './components/ModuleLayout';
-//import LoadingIndicator from '../../components/LoadingIndicator';
+import LoadingIndicator from '../../components/LoadingIndicator';
 
 
 

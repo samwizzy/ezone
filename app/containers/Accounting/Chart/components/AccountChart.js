@@ -28,7 +28,7 @@ import * as saga from '../saga';
 import ConfirmDeleteAccountDialog from './ConfirmDeleteAccountDialog';
 import { ChartContext } from '..';
 import swal from 'sweetalert';
- import LoadingIndicator from '../../../../components/LoadingIndicator';
+import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const buttonRef = React.createRef()
 

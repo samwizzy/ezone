@@ -24,6 +24,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import LoadingIndicator from '../../../../components/LoadingIndicator';
 import { createStructuredSelector } from 'reselect';
 import moment from 'moment';
 

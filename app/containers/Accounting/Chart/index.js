@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
-//import LoadingIndicator from './../../../components/LoadingIndicator';
+import LoadingIndicator from './../../../components/LoadingIndicator';
 import ModuleLayout from '../components/ModuleLayout';
 import AccountChart from '../Chart/components/AccountChart';
 import CircularProgress from '@material-ui/core/CircularProgress';

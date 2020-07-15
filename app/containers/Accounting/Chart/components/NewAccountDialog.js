@@ -6,6 +6,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
 import { alphaNumeric } from '../validator';
+import LoadingIndicator from '../../../../components/LoadingIndicator';
 import swal from 'sweetalert';
 
 import {

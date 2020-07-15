@@ -23,7 +23,6 @@ import Charts from './Chart/Loadable';
 import Reports from './Reports/index';
 import Home from './home';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import LoadingIndicator from "../../components/LoadingIndicator";
 import ModuleLayout from './components/ModuleLayout';
 import Journal from './Journal';
 import AddNewJournal from './Journal/components/AddNewJournal';
@@ -34,6 +33,7 @@ import BudgetingDetails from './Budget/components/BudgetingDetails';
 import NewBudgeting from './Budget/components/NewBudgeting';
 import Banking from './Banking';
 import AccountDetails from './Banking/components/AccountDetails';
+import LoadingIndicator from '../../components/LoadingIndicator';
 import DetailsOfAccountChat from './Chart/components/DetailsOfAccountChart';
 import FixedAssets from './FixedAssets/index';
 
