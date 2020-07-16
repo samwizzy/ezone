@@ -394,9 +394,16 @@ const SalesOrderInvoice = () => {
                    </Grid>
 
                    <Grid item xs={12}>
-                       <Grid container spacing={0}>
+                   <Grid container spacing={0}>
                          <Grid item xs={2}>
                            <img src={logo}/>
+                         </Grid>
+                         <Grid item xs={3}>
+                           <div style={{marginLeft:'-7.5em',marginTop:'10px'}}>
+                           <Typography variant="h6" component="h1">
+                             First Marine
+                           </Typography>
+                           </div>
                          </Grid>
                        </Grid>
                    </Grid>

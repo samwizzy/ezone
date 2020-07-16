@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -19,6 +19,7 @@ import { Grid,
     Button,
     TextField,InputLabel,MenuItem,Select,FormControl } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
+import { PurchaseContext } from '.';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -103,6 +104,7 @@ const useStyles = makeStyles((theme) => ({
 const NewShipment = () => {
     const classes = useStyles();
     const [age, setAge] = React.useState('');
+    const purchaseContext = useContext(PurchaseContext)
 
     const handleChange = (event) => {
       setAge(event.target.value);
@@ -211,6 +213,7 @@ const NewShipment = () => {
                             <div>
                             <Button
                            size={'small'}
+                           onClick={()=>{purchaseContext.purchaseDispatch({type:'NAVIGATION',page:'newpurchase'})}}
                           variant="contained">
                           Cancel
                            </Button>  
@@ -220,6 +223,7 @@ const NewShipment = () => {
                             <div>
                             <Button
                            size={'small'}
+                           onClick={()=>{purchaseContext.purchaseDispatch({type:'NAVIGATION',page:'purchaseorderinvoice'})}}
                            color="primary"
                           variant="contained">
                           Transfer

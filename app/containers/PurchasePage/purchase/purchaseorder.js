@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useContext} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -10,6 +10,7 @@ import { Grid,
     Button,
     TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
+import { PurchaseContext } from '.';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -69,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
 
 const PurchaseOrder = () => {
     const classes = useStyles();
+    const purchaseContext = useContext(PurchaseContext)
     const [salesorders] = useState([]);
     const sales = [
         {
@@ -186,8 +188,9 @@ const PurchaseOrder = () => {
                                       <Button
                                       size={'small'}
                                       variant="contained"
+                                      onClick={()=>{purchaseContext.purchaseDispatch({type:'NAVIGATION',page:'newpurchase'})}}
                                        color="primary">
-                                        New Sales order
+                                        New Purchase order
                                             </Button>
                                       </div>
                                   </Grid>
