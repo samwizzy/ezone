@@ -244,6 +244,8 @@ const NewInvoice = () => {
                 </MuiPickersUtilsProvider>
                       </Grid>
 
+                      
+
                       <Grid item xs={6}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
@@ -263,6 +265,37 @@ const NewInvoice = () => {
                     }}
                   />
                 </MuiPickersUtilsProvider>
+                      </Grid>
+
+                      <Grid item xs={6}>
+                      <TextField style={{ width: '100%' }} id="so"
+                       size={'small'} placeholder="Enter number" label="SO/PO number" variant="outlined" />
+                      </Grid>
+
+                      <Grid item xs={6}>
+                      <Autocomplete
+                        required
+                    id="salesperson"
+                    options={customer}
+                    size={'small'}
+                    getOptionLabel={option => option.label}
+                    onChange={(event, value) => { 
+                    //accContext.accDispatch({type:'PAYLOAD',payload:{label:'startDay',value:value.value}})
+                      // setFinancialYearDate();
+                    }}
+                    style={{ width: '100%' }}
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        label={'Sales Person'}
+                        variant="outlined"
+                        inputProps={{
+                          ...params.inputProps,
+                          autoComplete: 'new-password', // disable autocomplete and autofill
+                        }}
+                      />
+                    )}
+                  /> 
                       </Grid>
 
                       <Grid item xs={6}>
@@ -479,7 +512,7 @@ const NewInvoice = () => {
                            <div className={classes.controlButton}>
                                 <Button
                                 size={'small'}
-                                onClick={()=>{invoiceContext.invoiceDispatch({type:'NAVIGATION',page:'invoice'})}}
+                                onClick={()=>{invoicesContext.invoiceDispatch({type:'NAVIGATION',page:'invoice'})}}
                                 variant="contained">
                                  Cancel
                                 </Button>
@@ -500,7 +533,7 @@ const NewInvoice = () => {
                                 <Button
                                 size={'small'}
                                 color="primary"
-                                onClick={()=>{invoiceContext.invoiceDispatch({type:'NAVIGATION',page:'invoicereciept'})}}
+                                onClick={()=>{invoicesContext.invoiceDispatch({type:'NAVIGATION',page:'invoicereciept'})}}
                                 variant="contained">
                                  Save and Sumbit
                                 </Button>
