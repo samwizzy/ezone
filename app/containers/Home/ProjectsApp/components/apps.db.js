@@ -25,6 +25,7 @@ import CRMIcon from '../../../../images/crmIcon.svg';
 import FileIcon from '../../../../images/FileIcon.svg';
 import BudgetingIcon from '../../../../images/BudgetingIcon.svg';
 import TaskIcon from '../../../../images/TaskIcon.svg';
+import InventoryIcon from '../../../../images/taskIcon.svg';
 import LmsIcon from '../../../../images/lms.svg';
 import ProjectsIcon from '../../../../images/ProjectsIcon.svg';
 import ChatIcon from '../../../../images/chatIcon.svg';
@@ -44,6 +45,7 @@ const apps = [
   { id: 11, name: 'Work Order', url: '/work-order', icon: ProjectsIcon, img: 'ballot' },
   { id: 12, name: 'LMS', url: '/lms/dashboard', icon: ProjectsIcon, img: 'library_books' },
   { id: 13, name: 'Payroll', url: '/payroll', icon: ProjectsIcon, img: 'money' },
+  { id: 14, name: 'Inventory', url: '/inventory/dashboard', icon: InventoryIcon, img: 'list_alt'},
 ];
 
 export default apps;

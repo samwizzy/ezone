@@ -271,6 +271,12 @@ const App = props => {
                     component={SalesPage}
                   />
 
+                <PrivateRoute
+                    exact
+                    path="/purchase"
+                    component={PurchasePage}
+                  />
+
                    <PrivateRoute
                     exact
                     path="/purchase/:id"
