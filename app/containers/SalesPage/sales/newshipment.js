@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -19,6 +19,7 @@ import { Grid,
     Button,
     TextField,InputLabel,MenuItem,Select,FormControl } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
+import { SalesContext } from '.';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -102,6 +103,7 @@ const useStyles = makeStyles((theme) => ({
 
 const NewShipment = () => {
     const classes = useStyles();
+    const salesContext = useContext(SalesContext);
     const [age, setAge] = React.useState('');
 
     const handleChange = (event) => {
@@ -211,6 +213,7 @@ const NewShipment = () => {
                             <div>
                             <Button
                            size={'small'}
+                           onClick={()=>{salesContext.salesDispatch({type:'NAVIGATION',page:'shippment'})}}
                           variant="contained">
                           Cancel
                            </Button>  
@@ -221,6 +224,7 @@ const NewShipment = () => {
                             <Button
                            size={'small'}
                            color="primary"
+                           onClick={()=>{salesContext.salesDispatch({type:'NAVIGATION',page:'salesorderinvoice'})}}
                           variant="contained">
                           Transfer
                            </Button>  

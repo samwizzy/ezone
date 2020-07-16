@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -19,7 +19,10 @@ import {
 import { Grid,
     Button,
     TextField } from '@material-ui/core';
+    import SendIcon from '@material-ui/icons/ArrowForward';
+  import BackIcon from '@material-ui/icons/ArrowBack';
 import { Autocomplete } from '@material-ui/lab';
+import { SalesContext } from '.';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -95,6 +98,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Shippment = () => {
     const classes = useStyles();
+    const salesContext = useContext(SalesContext);
     const[salesorders,setSaleorders] = useState([])
 
     const columns = [
@@ -512,6 +516,37 @@ const Shippment = () => {
               </Grid>
               </div>
             </Grid>
+
+            <Grid item xs={12}>
+               
+               <div style={{float:"right",padding:'10px'}}>
+                <div>
+                <Grid container spacing={1}>
+                  <Grid item>
+                  <Button
+                variant="contained"
+                onClick={()=>{salesContext.salesDispatch({type:'NAVIGATION',page:'newsales'})}}
+                startIcon={<BackIcon />}
+              >
+                Back
+              </Button>
+                </Grid>
+                  <Grid item>
+                  <Button
+                variant="contained"
+                color="primary"
+                onClick={()=>{salesContext.salesDispatch({type:'NAVIGATION',page:'newshipment'})}}
+                endIcon={<SendIcon />}
+              >
+                Next
+              </Button>
+                  </Grid>
+                  
+                  </Grid>
+                
+               </div>
+                 </div>
+              </Grid>
            
         </Grid>
         </Paper>

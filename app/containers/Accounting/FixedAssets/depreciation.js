@@ -456,7 +456,7 @@ const DepreciationSetup = () => {
                 )
               }
 
-<Grid item xs={12}>
+          <Grid item xs={12}>
                
                <div style={{float:"right",padding:'10px'}}>
                 <div>

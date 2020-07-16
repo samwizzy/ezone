@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useContext} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -14,10 +14,12 @@ import MsgIcon from '@material-ui/icons/EmailOutlined';
 import DropIcon from '@material-ui/icons/ArrowDropDown';
 import AttachIcon from '@material-ui/icons/AttachFile';
 import CheckIcon from '@material-ui/icons/CheckCircleOutline';
+import logo from '../octivier-logo.svg';
 import { Grid,
     Button,
     TextField,MenuItem,Select ,Menu,IconButton,Divider} from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
+import { SalesContext } from '.';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -125,6 +127,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SalesOrderInvoice = () => {
     const classes = useStyles();
+    const salesContext = useContext(SalesContext);
     const [paction, setPaction] = React.useState('CONFIRMED');
     const [activity, setActivity] = React.useState('Activity (Comment and History)');
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -391,11 +394,11 @@ const SalesOrderInvoice = () => {
                    </Grid>
 
                    <Grid item xs={12}>
-                     <div>
-                     <Typography variant="h6" component="h1">
-                      Logo Here
-                      </Typography>
-                     </div>
+                       <Grid container spacing={0}>
+                         <Grid item xs={2}>
+                           <img src={logo}/>
+                         </Grid>
+                       </Grid>
                    </Grid>
 
                    <Grid item xs={12}>
