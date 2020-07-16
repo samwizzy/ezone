@@ -85,7 +85,6 @@ const NewAccountDialog = props => {
   const [accessToken] = useState(localStorage.getItem('access_token'));
   const chartContext = useContext(ChartContext);
   const [accountType, setAccountType] = useState([]);
-  const [accountParentType, setAccountParentType] = useState([]);
   const [coaPayload] = useState(
     JSON.parse(localStorage.getItem('ezone-coa-payload')),
   );
@@ -133,15 +132,7 @@ const NewAccountDialog = props => {
         .then(data => {
         console.log(`What a data getAllAccountTypeFSever ${JSON.stringify(data.data)}`)
           let chatOfAccResponse = data.data;
-          setAccountType(chatOfAccResponse);
-          let parentAcc = [];
-          for(let i =0;i<chatOfAccResponse.length;i++){
-            console.log(`can be parent ${chatOfAccResponse[i].subAccount}`)
-            if(chatOfAccResponse[i].subAccount){
-              parentAcc =[...parentAcc,chatOfAccResponse[i]];
-            }
-          }
-        setAccountParentType(parentAcc);    
+          setAccountType(chatOfAccResponse);    
       }).catch((err)=>{
         console.log(`Error from setUptins ${err}`)
       })
@@ -150,9 +141,11 @@ const NewAccountDialog = props => {
     }
 
     getAllAccountTypeFromSev();
+    makeParent();
 
     return () => {
       getAllAccountTypeFromSev();
+      makeParent();
     };
   }, []);
 
@@ -165,6 +158,25 @@ const NewAccountDialog = props => {
       }
     }
     return result;
+  }
+
+  const [parent,setParent] =useState([]);
+
+  //Get Chart of Account
+  async function makeParent(){
+    console.log(`make parent called 1`)
+    await crud
+    .getChatfromServer()
+    .then(data=>{
+      console.log(`make parent called ${JSON.stringify(data.data)} length ${data.data.length}`)
+      for(let i =0;i<data.data.length;i++){
+        setParent([...parent,{id:data.data.id,accountName:data.data.accountName}])
+        console.log(`make parent is calling ${i}`)
+      }
+    })
+    .catch(error=>{
+      console.log(`Error from make parent ${err}`);
+    })
   }
 
   //Create New Account
@@ -269,6 +281,7 @@ const NewAccountDialog = props => {
 
     // Call parent type api if checked
     if (!checkBox.checkedG) {
+      
       // dispatchGetParentAccountTypeAction(values);
     } else {
       console.log('unchecked');
@@ -301,6 +314,7 @@ const NewAccountDialog = props => {
 
   }, [accountDialog.data]);
 
+  console.log(`make parent  -> `, parent);
   console.log(`values  got it b4 post  -> `, values);
 
   return (
@@ -468,25 +482,26 @@ const NewAccountDialog = props => {
                   </Grid>
                 ) : checkBox.canHaveParent ? (
                   <Grid container spacing={1}>
-                    {/* <Grid item xs={6}>
+                    <Grid item xs={6}>
                       <FormGroup row>
                         <FormControlLabel
                           control={<GreenCheckbox 
                             checked={checkBox.checkedG} 
-                            onChange={handleCheckBoxChange} 
+                            onChange={handleCheckBoxChange
+                            } 
                             name="checkedG" 
                           />}
                           label="Make parent account."
                         />
                       </FormGroup>
-                    </Grid> */}
+                    </Grid>
                     {
                       <Grid item xs={6}>
                         <Autocomplete
                           id="combo-box-demo"
                           size="small"
-                          options={accountParentType}
-                          getOptionLabel={option => option.accountType}
+                          options={parent}
+                          getOptionLabel={option => option.accountName}
                           onChange={(evt, value) => {
                             setValues({...values,parentId:value.id})}
                           }
