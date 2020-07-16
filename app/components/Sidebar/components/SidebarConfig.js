@@ -233,10 +233,10 @@ const SidebarConfig = [
           { id: 1, name: 'Dashboard', url: '/inventory/dashboard', icon: 'dashboard' },
           { id: 2, name: 'Warehouses', url: '/inventory/warehouses', icon: 'storage' },
           { id: 3, name: 'Items', url: '/inventory/items', icon: 'label' },
-          { id: 4, name: 'Items Groups', url: '/inventory/items-groups', icon: 'group_work' },
+          //{ id: 4, name: 'Items Groups', url: '/inventory/items-groups', icon: 'group_work' },
           { id: 5, name: 'Transfer Orders', url: '/inventory/transfer/orders', icon: 'transfer_within_a_station' },
           { id: 6, name: 'Investment Adjustment', url: '/inventory/adjustments', icon: 'equalizer' },
-          { id: 7, name: 'Reports', url: '/inventory/reports', icon: 'assessment' }
+         // { id: 7, name: 'Reports', url: '/inventory/reports', icon: 'assessment' }
         ],
       },
 
@@ -248,14 +248,14 @@ const SidebarConfig = [
         submenus: [
           { id: 1, name: 'Sales Order', url: '/sales/salesorder', icon: 'label' },
           { id: 2, name: 'Invoice', url: '/sales/invoices', icon: 'label' },
-          { id: 3, name: 'Receipts', url: '/sales/receipts', icon: 'label' },
+        //  { id: 3, name: 'Receipts', url: '/sales/receipts', icon: 'label' },
         ],
       },
       {
         id: 3, name: 'Purchase', url: '/purchase', icon: 'label', submenus: [
           { id: 1, name: 'Purchase Order', url: '/purchase/purchaseorder', icon: 'label' },
-          { id: 2, name: 'Bills', url: '/purchase/bills', icon: 'label' },
-          { id: 3, name: 'Purchase made', url: '/purchase/purchasemade', icon: 'label' }
+         // { id: 2, name: 'Bills', url: '/purchase/bills', icon: 'label' },
+         // { id: 3, name: 'Purchase made', url: '/purchase/purchasemade', icon: 'label' }
         ]
       },
       

@@ -16,7 +16,7 @@ const Sales = () => {
      <ModuleLayout>
      <Switch>
          {id === undefined?
-         <Route exact path="/sales" component={NewSaleOrder} />
+         <Route exact path="/sales" component={SalesOrder} />
          :
          (
           <Route exact path={`/sales/${id}`} component={
