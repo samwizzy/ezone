@@ -21,7 +21,7 @@ import * as Selectors from './../selectors';
 import FacebookIcon from '@material-ui/icons/Facebook'
 import TwitterIcon from '@material-ui/icons/Twitter'
 import InstagramIcon from '@material-ui/icons/Instagram'
-import TwIcon from '../../../../images/TwIcon.svg'
+import TwIcon from '../../../../images/TwiIcon.svg'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(4),
     },
     "& img": {
-      marginBottom: theme.spacing(4)
+      marginBottom: theme.spacing(2)
     }
   },
   toolbar: {

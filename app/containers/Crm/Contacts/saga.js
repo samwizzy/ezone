@@ -58,9 +58,6 @@ export function* getAllContacts() {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getAllContactsSuccess(response));
   } catch (err) {

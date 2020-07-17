@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -14,22 +14,32 @@ import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectCrm from '../selectors';
-import reducer from '../reducer';
-import saga from '../saga';
-import messages from '../messages';
+import makeSelectCrmDashboard from './selectors';
+import * as Actions from './actions';
+import reducer from './reducer';
+import saga from './saga';
 import Dashboard from './Dashboard'
 import ModuleLayout from './../components/ModuleLayout'
 
-export function CrmDashboard() {
-  useInjectReducer({ key: 'crm', reducer });
-  useInjectSaga({ key: 'crm', saga });
+const key = "crmDashboard"
+export function CrmDashboard(props) {
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
+
+  const { getContacts, getCompanies, getSchedules, getTasks } = props
+
+  useEffect(() => {
+    getContacts();
+    getCompanies();
+    getSchedules();
+    getTasks();
+  }, [])
 
   return (
     <div>
       <Helmet>
         <title>Crm - Dashboard</title>
-        <meta name="description" content="Description of Crm" />
+        <meta name="description" content="Description of Crm Dashboard" />
       </Helmet>
 
       <ModuleLayout>
@@ -42,12 +52,15 @@ export function CrmDashboard() {
 CrmDashboard.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
-  crm: makeSelectCrm(),
+  crmDashboard: makeSelectCrmDashboard(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    getContacts: () => dispatch(Actions.getContacts()),
+    getCompanies: () => dispatch(Actions.getCompanies()),
+    getSchedules: () => dispatch(Actions.getSchedules()),
+    getTasks: () => dispatch(Actions.getTasks()),
   };
 }
 

@@ -116,7 +116,7 @@ const SidebarConfig = [
       },
       { id: 5, name: 'Banking', url: '/account/banking', icon: 'group' },
       { id: 6, name: 'Reports', url: '/account/reports', icon: 'label' },
-       { id: 7, name: 'Budgeting', url: '/account/budgeting', icon: 'account_balance_wallet' },
+      { id: 7, name: 'Budgeting', url: '/account/budgeting', icon: 'account_balance_wallet' },
       { id: 8, name: 'Settings', url: '/account/settings', icon: 'settings' },
     ],
   },
@@ -140,44 +140,20 @@ const SidebarConfig = [
         icon: 'announcement',
       },
       { id: 7, name: 'Reports', url: '/crm/reports', icon: 'local_activity' },
+      { id: 8, name: 'Campaigns', url: '/crm/campaigns', icon: 'local_activity' },
       {
-        id: 8,
-        name: 'Campaigns',
-        url: '/crm/campaigns',
-        icon: 'local_activity',
+        id: 9, name: 'Social Media', url: '#', icon: 'local_activity', submenus: [
+          { id: 1, name: 'Social Media', url: '/crm/social-media', icon: '' },
+          { id: 1, name: 'Set Up', url: '/crm/social-media/setup', icon: '' },
+        ]
       },
       {
-        id: 9,
-        name: 'Social Media',
-        url: '/crm/social-media',
-        icon: 'local_activity',
-      },
-      {
-        id: 10,
-        name: 'Leads',
-        url: '#',
-        icon: 'local_activity',
-        submenus: [
-          { id: 1, name: 'Leads', url: '/crm/leads', icon: 'local_activity' },
-          {
-            id: 1,
-            name: 'Lead Sources',
-            url: '/crm/leads/sources',
-            icon: 'local_activity',
-          },
-          {
-            id: 2,
-            name: 'Lead Tags',
-            url: '/crm/leads/tags',
-            icon: 'local_activity',
-          },
-          {
-            id: 3,
-            name: 'Lead Stages',
-            url: '/crm/leads/stages',
-            icon: 'local_activity',
-          },
-        ],
+        id: 10, name: 'Leads', url: '#', icon: 'local_activity', submenus: [
+          { id: 1, name: 'Leads', url: '/crm/leads', icon: '' },
+          { id: 2, name: 'Lead Sources', url: '/crm/leads/sources', icon: '' },
+          { id: 3, name: 'Lead Tags', url: '/crm/leads/tags', icon: '' },
+          { id: 4, name: 'Lead Stages', url: '/crm/leads/stages', icon: '' },
+        ]
       },
     ],
   },
@@ -222,7 +198,7 @@ const SidebarConfig = [
     ],
   },
   {
-    module: ['inventory','sales','purchase'],
+    module: ['inventory', 'sales', 'purchase'],
     menus: [
       {
         id: 1,
@@ -236,7 +212,7 @@ const SidebarConfig = [
           //{ id: 4, name: 'Items Groups', url: '/inventory/items-groups', icon: 'group_work' },
           { id: 5, name: 'Transfer Orders', url: '/inventory/transfer/orders', icon: 'transfer_within_a_station' },
           { id: 6, name: 'Investment Adjustment', url: '/inventory/adjustments', icon: 'equalizer' },
-         // { id: 7, name: 'Reports', url: '/inventory/reports', icon: 'assessment' }
+          // { id: 7, name: 'Reports', url: '/inventory/reports', icon: 'assessment' }
         ],
       },
 
@@ -248,17 +224,17 @@ const SidebarConfig = [
         submenus: [
           { id: 1, name: 'Sales Order', url: '/sales/salesorder', icon: 'label' },
           { id: 2, name: 'Invoice', url: '/sales/invoices', icon: 'label' },
-        //  { id: 3, name: 'Receipts', url: '/sales/receipts', icon: 'label' },
+          //  { id: 3, name: 'Receipts', url: '/sales/receipts', icon: 'label' },
         ],
       },
       {
         id: 3, name: 'Purchase', url: '/purchase', icon: 'label', submenus: [
           { id: 1, name: 'Purchase Order', url: '/purchase/purchaseorder', icon: 'label' },
-         // { id: 2, name: 'Bills', url: '/purchase/bills', icon: 'label' },
-         // { id: 3, name: 'Purchase made', url: '/purchase/purchasemade', icon: 'label' }
+          // { id: 2, name: 'Bills', url: '/purchase/bills', icon: 'label' },
+          // { id: 3, name: 'Purchase made', url: '/purchase/purchasemade', icon: 'label' }
         ]
       },
-      
+
     ],
   },
 ];

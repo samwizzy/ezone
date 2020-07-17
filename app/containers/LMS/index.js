@@ -19,22 +19,23 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 
-export function Crm() {
-  useInjectReducer({ key: 'crm', reducer });
-  useInjectSaga({ key: 'crm', saga });
+const key = "lms"
+export function LMSApp() {
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
 
   return (
     <div>
       <Helmet>
-        <title>Crm</title>
-        <meta name="description" content="Description of Crm" />
+        <title>LMS</title>
+        <meta name="description" content="Description of LMS" />
       </Helmet>
       <FormattedMessage {...messages.header} />
     </div>
   );
 }
 
-Crm.propTypes = {
+LMSApp.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
@@ -56,4 +57,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(Crm);
+)(LMSApp);

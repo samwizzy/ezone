@@ -87,6 +87,27 @@ export function createScheduleError(payload) {
   }
 }
 
+export function updateSchedule(payload) {
+  return {
+    type: Constants.UPDATE_SCHEDULE,
+    payload
+  }
+}
+
+export function updateScheduleSuccess(payload) {
+  return {
+    type: Constants.UPDATE_SCHEDULE_SUCCESS,
+    payload
+  }
+}
+
+export function updateScheduleError(payload) {
+  return {
+    type: Constants.UPDATE_SCHEDULE_ERROR,
+    payload
+  }
+}
+
 export function openNewScheduleDialog() {
   return {
     type: Constants.OPEN_NEW_SCHEDULE_DIALOG,
@@ -96,6 +117,18 @@ export function openNewScheduleDialog() {
 export function closeNewScheduleDialog() {
   return {
     type: Constants.CLOSE_NEW_SCHEDULE_DIALOG,
+  }
+}
+
+export function openEditScheduleDialog() {
+  return {
+    type: Constants.OPEN_EDIT_SCHEDULE_DIALOG,
+  }
+}
+
+export function closeEditScheduleDialog() {
+  return {
+    type: Constants.CLOSE_EDIT_SCHEDULE_DIALOG,
   }
 }
 

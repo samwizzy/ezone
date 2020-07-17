@@ -10,7 +10,7 @@ export const initialState = {
   loading: false,
   error: false,
   employees: [],
-  socialMedias: [],
+  facebook: [],
   socialMediaDialog: {
     type: 'new',
     props: {
@@ -79,48 +79,6 @@ const crmSocialMediaReducer = (state = initialState, action) =>
           },
         };
       }
-      case Constants.CREATE_SOCIAL_MEDIA: {
-        return {
-          ...state,
-          loading: true,
-        };
-      }
-      case Constants.CREATE_SOCIAL_MEDIA_SUCCESS: {
-        return {
-          ...state,
-          loading: false,
-          error: false,
-        };
-      }
-      case Constants.CREATE_SOCIAL_MEDIA_ERROR: {
-        return {
-          ...state,
-          loading: false,
-          error: true,
-          messages: action.payload,
-        };
-      }
-      case Constants.UPDATE_SOCIAL_MEDIA: {
-        return {
-          ...state,
-          loading: true,
-        };
-      }
-      case Constants.UPDATE_SOCIAL_MEDIA_SUCCESS: {
-        return {
-          ...state,
-          loading: false,
-          error: false,
-        };
-      }
-      case Constants.UPDATE_SOCIAL_MEDIA_ERROR: {
-        return {
-          ...state,
-          loading: false,
-          error: true,
-          messages: action.payload,
-        };
-      }
       case Constants.GET_EMPLOYEES: {
         return {
           ...state,
@@ -142,20 +100,62 @@ const crmSocialMediaReducer = (state = initialState, action) =>
           messages: action.payload,
         };
       }
-      case Constants.GET_SOCIAL_MEDIAS: {
+      case Constants.GET_FACEBOOK_ACCESS_TOKEN: {
         return {
           ...state,
           loading: true,
         };
       }
-      case Constants.GET_SOCIAL_MEDIAS_SUCCESS: {
+      case Constants.GET_FACEBOOK_ACCESS_TOKEN_SUCCESS: {
         return {
           ...state,
           loading: false,
-          socialMedias: action.payload,
+          facebook: action.payload,
         };
       }
-      case Constants.GET_SOCIAL_MEDIAS_ERROR: {
+      case Constants.GET_FACEBOOK_ACCESS_TOKEN_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          messages: action.payload,
+        };
+      }
+      case Constants.GENERATE_FACEBOOK_AUTHORISE_URL: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.GENERATE_FACEBOOK_AUTHORISE_URL_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          facebook: action.payload,
+        };
+      }
+      case Constants.GENERATE_FACEBOOK_AUTHORISE_URL_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          messages: action.payload,
+        };
+      }
+      case Constants.GET_USER_DATA: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.GET_USER_DATA_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          facebook: action.payload,
+        };
+      }
+      case Constants.GET_USER_DATA_ERROR: {
         return {
           ...state,
           loading: false,

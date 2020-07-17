@@ -41,10 +41,10 @@ export function* getEmployees() {
   }
 }
 
-export function* getSocialMedias() {
+export function* getFacebookAccessToken() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetSocialMediasApi}/${currentUser && currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetFacebookTokenApi}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -55,63 +55,57 @@ export function* getSocialMedias() {
       }),
     });
 
-    yield put(Actions.getSocialMediasSuccess(response));
+    yield put(Actions.getFacebookAccessTokenSuccess(response));
   } catch (err) {
-    yield put(Actions.getSocialMediasError(err));
+    yield put(Actions.getFacebookAccessTokenError(err));
   }
 }
 
-export function* createSocialMedia({ payload }) {
+export function* generateFacebookAuthoriseUrl() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.CreateSocialMediaApi}/${currentUser && currentUser.id}`;
-  payload.orgId = currentUser && currentUser.organisation.orgId;
+  const requestURL = `${Endpoints.GenerateFacebookAuthoriseUrlApi}`;
 
   try {
     const response = yield call(request, requestURL, {
-      method: 'POST',
-      body: JSON.stringify(payload),
+      method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
-    yield put(Actions.createSocialMediaSuccess(response));
-    yield put(Actions.getSocialMedias());
-    yield put(Actions.closeNewSocialMediaDialog());
+    yield put(Actions.generateFacebookTokenUrlSuccess(response));
   } catch (err) {
-    yield put(Actions.createSocialMediaError(err));
+    yield put(Actions.generateFacebookTokenUrlError(err));
   }
 }
 
-export function* updateSocialMedia({ payload }) {
+export function* getUserData() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.UpdateSocialMediaApi}/${currentUser && currentUser.id}/${payload.id}`;
+  const requestURL = `${Endpoints.GetUserDataApi}`;
 
   try {
     const response = yield call(request, requestURL, {
-      method: 'PUT',
-      body: JSON.stringify(payload),
+      method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
-    yield put(Actions.updateSocialMediaSuccess(response));
-    yield put(Actions.getSocialMedias());
-    yield put(Actions.closeNewSocialMediaDialog());
+    yield put(Actions.getUserDataSuccess(response));
   } catch (err) {
-    yield put(Actions.updateSocialMediaError(err));
+    yield put(Actions.getUserDataError(err));
   }
 }
+
 
 // Individual exports for testing
 export default function* crmSocialMediaSaga() {
-  yield takeLatest(Constants.UPDATE_SOCIAL_MEDIA, updateSocialMedia);
-  yield takeLatest(Constants.CREATE_SOCIAL_MEDIA, createSocialMedia);
-  yield takeLatest(Constants.GET_SOCIAL_MEDIAS, getSocialMedias);
+  yield takeLatest(Constants.GET_FACEBOOK_ACCESS_TOKEN, getFacebookAccessToken);
+  yield takeLatest(Constants.GENERATE_FACEBOOK_AUTHORISE_URL, generateFacebookAuthoriseUrl);
+  yield takeLatest(Constants.GET_USER_DATA, getUserData);
   yield takeLatest(Constants.GET_EMPLOYEES, getEmployees);
 }

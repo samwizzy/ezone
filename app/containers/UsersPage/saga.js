@@ -11,9 +11,7 @@ export function* getAllEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
-  const requestURL = `${Endpoints.GetAllUsersApi}/${
-    currentUser && currentUser.organisation.orgId
-    }`;
+  const requestURL = `${Endpoints.GetAllUsersApi}?orgId=${currentUser && currentUser.organisation.orgId}`;
 
   try {
     const getAllEmployeesResponse = yield call(request, requestURL, {
@@ -90,11 +88,14 @@ export function* createNewEmployee() {
   }
 }
 
-export function* updateUserProfile() {
+export function* updateUserProfile({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const updateUserProfileData = yield select(
     Selectors.makeSelectUpdateUserProfileData(),
   );
+
+  console.log(payload, "payload")
+  console.log(updateUserProfileData, "updateUserProfileData")
   const requestURL = `${Endpoints.UpdateUserProfileApi}`;
 
   try {

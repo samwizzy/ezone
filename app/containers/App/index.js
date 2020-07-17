@@ -101,6 +101,8 @@ import LMSContactsModule from '../LMS/Contacts/Loadable';
 import LMSActivitiesModule from '../LMS/Activities/Loadable';
 import LMSSchedulesModule from '../LMS/Schedules/Loadable';
 
+import ProjectManagementModule from '../ProjectManagement/Loadable';
+
 // import { messaging } from '../../utils/firebase-notification';
 
 import Auth from './Auth';
@@ -208,6 +210,9 @@ const App = props => {
                     path="/settings/email/password/template"
                     component={EmailPasswordTemplate}
                   />
+
+                  <PrivateRoute path="/project-manager" component={ProjectManagementModule} />
+
                   <PrivateRoute exact path="/lms/dashboard" component={LMSDashboardModule} />
                   <PrivateRoute exact path="/lms/account-settings" component={LMSAccountSettingsModule} />
                   <PrivateRoute exact path="/lms/integration" component={LMSIntegrationModule} />
@@ -233,7 +238,7 @@ const App = props => {
                   <PrivateRoute exact path="/account" component={AccountPage} />
                   <PrivateRoute exact path="/account/:id" component={AccountPage} />
                   <PrivateRoute exact path="/account/:id/:name" component={AccountPage} />
-    
+
                   <PrivateRoute exact path="/payroll" component={Payroll} />
                   {/*<PrivateRoute exact path="/account/reports" component={ReportsPage} />*/}
 
@@ -265,19 +270,19 @@ const App = props => {
                     component={SalesPage}
                   />
 
-               <PrivateRoute
+                  <PrivateRoute
                     exact
                     path="/sales/:id"
                     component={SalesPage}
                   />
 
-                <PrivateRoute
+                  <PrivateRoute
                     exact
                     path="/purchase"
                     component={PurchasePage}
                   />
 
-                   <PrivateRoute
+                  <PrivateRoute
                     exact
                     path="/purchase/:id"
                     component={PurchasePage}
@@ -359,11 +364,7 @@ const App = props => {
                     path="/crm/reports"
                     component={CrmReports}
                   />
-                  <PrivateRoute
-                    exact
-                    path="/crm/social-media/:socialId?"
-                    component={CrmSocialMedia}
-                  />
+                  <PrivateRoute path="/crm/social-media" component={CrmSocialMedia} />
                   <PrivateRoute
                     path="/crm/leads"
                     component={CrmLeads}

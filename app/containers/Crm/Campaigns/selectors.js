@@ -51,6 +51,12 @@ const makeSelectCampaigns = () =>
     subState => subState.campaigns,
   );
 
+const makeSelectCampaignById = () =>
+  createSelector(
+    selectCampaignsDomain,
+    subState => subState.campaign,
+  );
+
 const makeSelectEmployees = () =>
   createSelector(
     selectCampaignsDomain,
@@ -63,6 +69,7 @@ export {
   makeSelectLoading,
   makeSelectEmployees,
   makeSelectCampaigns,
+  makeSelectCampaignById,
   makeSelectCampaignDialog,
   makeSelectCampaignDetailsDialog,
   makeSelectError,

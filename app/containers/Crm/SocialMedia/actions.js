@@ -44,48 +44,6 @@ export function closeSocialMediaDetailsDialog() {
   };
 }
 
-export function createSocialMedia(data) {
-  return {
-    type: Constants.CREATE_SOCIAL_MEDIA,
-    payload: data,
-  };
-}
-
-export function createSocialMediaSuccess(data) {
-  return {
-    type: Constants.CREATE_SOCIAL_MEDIA_SUCCESS,
-    payload: data,
-  };
-}
-
-export function createSocialMediaError(data) {
-  return {
-    type: Constants.CREATE_SOCIAL_MEDIA_ERROR,
-    payload: data,
-  };
-}
-
-export function updateSocialMedia(data) {
-  return {
-    type: Constants.UPDATE_SOCIAL_MEDIA,
-    payload: data,
-  };
-}
-
-export function updateSocialMediaSuccess(data) {
-  return {
-    type: Constants.UPDATE_SOCIAL_MEDIA_SUCCESS,
-    payload: data,
-  };
-}
-
-export function updateSocialMediaError(data) {
-  return {
-    type: Constants.UPDATE_SOCIAL_MEDIA_ERROR,
-    payload: data,
-  };
-}
-
 export function getEmployees() {
   return {
     type: Constants.GET_EMPLOYEES,
@@ -106,22 +64,62 @@ export function getEmployeesError(data) {
   };
 }
 
-export function getSocialMedias() {
+export function getFacebookAccessToken() {
   return {
-    type: Constants.GET_SOCIAL_MEDIAS,
+    type: Constants.GET_FACEBOOK_ACCESS_TOKEN,
   };
 }
 
-export function getSocialMediasSuccess(data) {
+export function getFacebookAccessTokenSuccess(data) {
   return {
-    type: Constants.GET_SOCIAL_MEDIAS_SUCCESS,
+    type: Constants.GET_FACEBOOK_ACCESS_TOKEN_SUCCESS,
     payload: data,
   };
 }
 
-export function getSocialMediasError(data) {
+export function getFacebookAccessTokenError(data) {
   return {
-    type: Constants.GET_SOCIAL_MEDIAS_ERROR,
+    type: Constants.GET_FACEBOOK_ACCESS_TOKEN_ERROR,
+    payload: data,
+  };
+}
+
+export function generateFacebookTokenUrl() {
+  return {
+    type: Constants.GENERATE_FACEBOOK_AUTHORISE_URL,
+  };
+}
+
+export function generateFacebookTokenUrlSuccess(data) {
+  return {
+    type: Constants.GENERATE_FACEBOOK_AUTHORISE_URL_SUCCESS,
+    payload: data,
+  };
+}
+
+export function generateFacebookTokenUrlError(data) {
+  return {
+    type: Constants.GENERATE_FACEBOOK_AUTHORISE_URL_ERROR,
+    payload: data,
+  };
+}
+
+export function getUserData() {
+  return {
+    type: Constants.GET_USER_DATA,
+  };
+}
+
+export function getUserDataSuccess(data) {
+  return {
+    type: Constants.GET_USER_DATA_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getUserDataError(data) {
+  return {
+    type: Constants.GET_USER_DATA_ERROR,
     payload: data,
   };
 }

@@ -125,3 +125,24 @@ export function getCampaignsError(data) {
     payload: data,
   };
 }
+
+export function getCampaignById(payload) {
+  return {
+    type: Constants.GET_CAMPAIGN_BY_ID,
+    payload
+  };
+}
+
+export function getCampaignByIdSuccess(data) {
+  return {
+    type: Constants.GET_CAMPAIGN_BY_ID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getCampaignByIdError(data) {
+  return {
+    type: Constants.GET_CAMPAIGN_BY_ID_ERROR,
+    payload: data,
+  };
+}

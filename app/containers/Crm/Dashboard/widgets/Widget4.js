@@ -33,7 +33,7 @@ class Demo extends React.PureComponent {
 
     this.state = {
       data: appointments,
-      currentDate: '2020-06-25',
+      currentDate: '2020-07-09',
     };
   }
 
