@@ -91,6 +91,7 @@ const AddNewJournal = props => {
   const classes = useStyles();
   let credentials = JSON.parse(localStorage.getItem('user'))
   let company = (`${(credentials.organisation.companyName)}`);
+  const [referenceNo,setReferenceNo] = useState(`${company.substr(0,2)}${(new Date).getTime()}`)
   
 
   const {
@@ -301,8 +302,11 @@ const AddNewJournal = props => {
                   variant="outlined"
                   size="small"
                   className={classes.textField}
-                  value={values.reference}
-                  onChange={handleChange('reference')}
+                  value={referenceNo}
+                  onChange={e=>{
+                    handleChange('reference')
+                    setReferenceNo(e.target.value)}
+                  }
                   margin="normal"
                   fullWidth
                 />
