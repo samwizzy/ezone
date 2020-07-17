@@ -14,14 +14,13 @@ export async function createChartOfAccountHandler(values) {
   
   let postValue;
   if(values.parentId === null){
-    if(values.id === 14){
-      console.log(`here 14`);
+    if(values.accountTypeId === 14){
       postValue = {
         accountCode: values.accountCode,
         accountName: values.accountName,
         accountNumber: values.accountNumber,
         accountTypeId: values.accountTypeId,
-        bankBalance: values.bankBalance,
+        bankBalance: Number(values.bankBalance),
         bankName: values.bankName,
         description: values.description,
         openingBalance: Number(values.openingBalance),
