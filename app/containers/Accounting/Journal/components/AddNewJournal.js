@@ -89,6 +89,9 @@ const useStyles = makeStyles(theme => ({
 
 const AddNewJournal = props => {
   const classes = useStyles();
+  let credentials = JSON.parse(localStorage.getItem('user'))
+  let company = (`${(credentials.organisation.companyName)}`);
+  
 
   const {
     history,

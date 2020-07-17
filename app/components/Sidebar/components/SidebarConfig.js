@@ -287,7 +287,7 @@ const SidebarConfig = [
         submenus: [
           { id: 1, name: 'Sales Order', url: '/sales/salesorder', icon: 'label' },
           { id: 2, name: 'Invoice', url: '/sales/invoices', icon: 'label' },
-          //  { id: 3, name: 'Receipts', url: '/sales/receipts', icon: 'label' },
+          //{ id: 3, name: 'Receipts', url: '/sales/receipts', icon: 'label' },
         ],
       },
       {

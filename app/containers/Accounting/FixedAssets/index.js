@@ -16,6 +16,7 @@ import DepreciationArea from './depreciationarea';
 import AccessClasses from './assetsclasses';
 import DepreciationSetup from './depreciation';
 import NewAsset from './newassets';
+import Assets from './fixed';
 export const FixedAssetContext = React.createContext();
 
 const useStyles = makeStyles(theme => ({
@@ -39,14 +40,11 @@ const useStyles = makeStyles(theme => ({
 
 const FixedAssets = () => {
     const {path} = useRouteMatch();
-    console.log(` path from Fixed Access ${JSON.stringify(path)}`)
 
     const initialState ={
-      page:'newasset',
-      newasset:true,
-      depreciation:false,
-      depreciationarea:false,
-      assetclasses:false
+      page:'fixed',
+      fixed:true,
+      newasset:false 
     }
 
     const reducer = (state, action) => {
@@ -71,6 +69,9 @@ const FixedAssets = () => {
     value={{ fixedState: state, fixedDispatch: dispatch }}>
       <div>
         <ModuleLayout>
+          <div>
+            {state.fixed?<Assets/>:<div/>}
+          </div>
           <div>
           {state.newasset?<NewAsset/>:<div/>}
           </div>
