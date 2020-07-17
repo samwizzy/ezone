@@ -289,19 +289,7 @@ const AccessClass = () => {
               </Paper>
               </Grid>
 
-              <Grid item xs={12}>
-                 <div style={{float:"right",padding:'10px'}}>
-                <div>
-                <Button
-                variant="contained"
-                onClick={()=>{fixedContext.fixedDispatch({type:'NAVIGATION',page:'depreciationarea'})}}
-                startIcon={<SendIcon />}
-              >
-                Back
-              </Button>
-                     </div>
-                 </div>
-              </Grid>
+             
         </Grid>
         </div>
             

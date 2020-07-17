@@ -1,4 +1,4 @@
-import React, {memo} from 'react'
+import React, {memo,useReducer} from 'react'
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -10,6 +10,10 @@ import {
 } from '@material-ui/core';
 import SettingsSideBar from './SettingsSideBar';
 import AccountingPeriod from './AccountingPeriod';
+import DepreciationSetup from '../../FixedAssets/depreciation';
+import DepreciationArea from '../../FixedAssets/depreciationarea';
+import AccessClass from '../../FixedAssets/assetsclasses';
+export const SettingContext = React.createContext();
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -21,18 +25,75 @@ const SettingsLayout = props => {
 	const classes = useStyles()
 	const {} = props 
 
+	const initialState ={
+		page:'setting',
+		setting:true,
+		depreciation:false,
+		deprecitionarea:false,
+		assetclasses:false
+	  }
+  
+	  const reducer = (state, action) => {
+	   switch(action.type){
+		 case 'NAVIGATION':
+		  state = {
+			...state,
+			page:action.page,
+			[state.page] :false,
+			[action.page]:true,
+		  };
+		  return state;
+		  default :
+		  return state;
+	   }
+	  }
+
+	  const [state, dispatch] = useReducer(reducer, initialState);
+	
+
 	return (
+		<SettingContext.Provider
+    value={{ settingState: state, settingDispatch: dispatch }}>
 		<div className={classes.root}>
 			<Grid container>
 				<Grid item xs={2}>
-					<SettingsSideBar />
+					<SettingsSideBar/>
 				</Grid>
 				<Grid item xs={10}>
-					{/* <AccountingPeriod /> */}
-					{props.children}
+					<div>
+					{state.setting?
+					<AccountingPeriod/>
+					:
+					<div/>
+					}
+					</div>
+					<div>
+						{state.deprecition?
+						<DepreciationSetup/>
+						:
+						<div/>
+						}
+					</div>
+					<div>
+						{state.deprecitionarea?
+						<DepreciationArea/>
+						:
+						<div/>
+						}
+					</div>
+					<div>
+						{state.assetclasses?
+						<AccessClass/>
+						:
+						<div/>
+						}
+					</div>
+					
+					
 				</Grid>
 			</Grid>
 		</div>
+		</SettingContext.Provider>
 	)
 }
 

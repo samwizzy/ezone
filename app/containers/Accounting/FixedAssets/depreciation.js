@@ -456,36 +456,6 @@ const DepreciationSetup = () => {
                 )
               }
 
-          <Grid item xs={12}>
-               
-               <div style={{float:"right",padding:'10px'}}>
-                <div>
-                <Grid container spacing={1}>
-                  <Grid item>
-                  <Button
-                variant="contained"
-                onClick={()=>{fixedContext.fixedDispatch({type:'NAVIGATION',page:'newasset'})}}
-                startIcon={<BackIcon />}
-              >
-                Back
-              </Button>
-                </Grid>
-                  <Grid item>
-                  <Button
-                variant="contained"
-                color="primary"
-                onClick={()=>{fixedContext.fixedDispatch({type:'NAVIGATION',page:'depreciationarea'})}}
-                endIcon={<SendIcon />}
-              >
-                Next
-              </Button>
-                  </Grid>
-                  
-                  </Grid>
-                
-               </div>
-                 </div>
-              </Grid>
 
             </Grid>
         </div>
