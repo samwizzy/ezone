@@ -27,8 +27,9 @@ import axios from "axios";
 import * as saga from '../saga'; 
 import ConfirmDeleteAccountDialog from './ConfirmDeleteAccountDialog';
 import { ChartContext } from '..';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import swal from 'sweetalert';
-// import LoadingIndicator from '../../../../components/LoadingIndicator';
+import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const buttonRef = React.createRef()
 
@@ -130,7 +131,7 @@ const AccountChart = props => {
           description:coaData[i].description,id:coaData[i].id}]
         }
       }
-      setAllCoa(data)
+      setAllCoa(data.reverse())
       chartContext.chartDispatch({type:'PAYLOAD',payload:data});
       //setIsEmpty(chatData.length > 0 ?false :true);
       //setchartOfAccountData(chatData)
@@ -473,23 +474,36 @@ const AccountChart = props => {
   };
 
   return (
-    <React.Fragment>
-      <NewAccountDialog />
-      <ConfirmDeleteAccountDialog />
-      <div className={classes.root}>
-        <Grid container>
-          <Grid item xs={12}>
-            <MUIDataTable
-              className={classes.datatable}
-              title="Account Charts"
-              data={allCoa}
-              columns={columns}
-              options={options}
-            />
-          </Grid>
-        </Grid>
-      </div>
-    </React.Fragment>
+    <div>
+      {
+        allCoa.length < 1 ?
+        (
+          <div style={{textAlign:'center'}}><div style={{margin:'2px auto'}}><CircularProgress /></div></div>
+        )
+        :
+        (
+          <React.Fragment>
+          <NewAccountDialog />
+          <ConfirmDeleteAccountDialog />
+          <div className={classes.root}>
+            <Grid container>
+              <Grid item xs={12}>
+                <MUIDataTable
+                  className={classes.datatable}
+                  title="Account Charts"
+                  data={allCoa}
+                  columns={columns}
+                  options={options}
+                />
+              </Grid>
+            </Grid>
+          </div>
+        </React.Fragment>
+        )
+      }
+
+    </div>
+   
   );
 };
 

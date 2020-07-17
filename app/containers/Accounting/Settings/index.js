@@ -19,7 +19,8 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import ModuleLayout from '../components/ModuleLayout';
-import LoadingIndicator from './../../../components/LoadingIndicator';
+//import LoadingIndicator from './../../../components/LoadingIndicator';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import SettingsLayout from './components/SettingsLayout';
 import AccountingPeriod from './components/AccountingPeriod';
 
@@ -44,7 +45,7 @@ export function Settings(props) {
 
 
   if (loading) {
-    return <LoadingIndicator />;
+    return <div style={{textAlign:'center'}}><div style={{margin:'2px auto'}}><CircularProgress /></div></div>;
   }
 
   return (

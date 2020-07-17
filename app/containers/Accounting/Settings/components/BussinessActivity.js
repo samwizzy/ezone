@@ -118,7 +118,11 @@ const BussinessActivity = props => {
   const [chartOfAccountData, setChartOfAccountData] = useState([])
   const [isEmpty, setIsEmpty] = useState(true);
 
-
+  function onNextPage(e){
+    e.preventDefault();
+    createAccountSetup()
+    //createAccountingSetupAction(values)
+  }
 
   async function createAccountSetup() {
 
@@ -142,8 +146,11 @@ const BussinessActivity = props => {
 
     await crud.createAccountSetup(accContext.accState).then(data=>{
       console.log(`What a data createAccountSetup ${JSON.stringify(data.data)}`)
-      history.push('/dashboard');
+      history.push('/account/charts');
+      //swal("Success", "Account opened successfully", "success");
       accContext.accDispatch({type:'MSG',msg:{open:true,message:'Account opened successfully',severity:'success'}});
+      window.location.reload(false);
+      //accContext.accDispatch({type:'NAVIGATION',page:'chatofAcc'})
     }).catch((err)=>{
       accContext.accDispatch({type:'MSG',msg:{open:false,message:'Something went wrong',severity:'error'}});
       console.log(`Error from setUptins ${err}`)
@@ -252,7 +259,6 @@ const BussinessActivity = props => {
   ]
 
   function OnlyBussinessLabel(value) {
-    console.log(`Value of service ${value}`)
     switch (value) {
       case 'SERVICE_COMPANY':
         return 'Service Company'
@@ -405,19 +411,22 @@ const BussinessActivity = props => {
 
                 <Grid item>
                   <div>
-                    <Link style={{ textDecoration: 'none' }} to={'/account/chart'}>
+                    
                       <Button
                         variant="contained"
                         color="primary"
+                        type="button"
                         disabled={service === undefined || service === null || service === ''}
                         endIcon={<NextIcon />}
-                        onClick={e =>
+                        onClick={(e) =>{
+                          e.preventDefault();
                           createAccountSetup()
-                        }
+                        }}
                       >
                         Finish
-                </Button>
-                    </Link>
+                    </Button>
+                    
+
                   </div>
                 </Grid>
               </Grid>

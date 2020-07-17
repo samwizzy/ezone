@@ -1,74 +1,33 @@
-/**
- *
- * InventoryPage
- *
- */
-
-import React, { memo } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
-import { createStructuredSelector } from 'reselect';
-import { compose } from 'redux';
-
-import { useInjectSaga } from 'utils/injectSaga';
-import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectInventoryPage from './selectors';
-import reducer from './reducer';
-import saga from './saga';
-import { BrowserRouter as Router, Switch,useParams, Route,useRouteMatch } from "react-router-dom";
+import React from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import LoadingIndicator from './../../components/LoadingIndicator';
+import Saless from './sales';
+import { BrowserRouter as Router, Switch,useParams, Route } from "react-router-dom";
+import Invoices from './invoices/index.js';
 import ModuleLayout from './components/ModuleLayout';
-import WarehousePage from './WarehousePage/index';
-import ItemPage from './ItemPage/index';
-import Dashboard from './Dashboard'
 
-export function InventoryPage() {
-  const {id,name} = useParams();
-  useInjectReducer({ key: 'inventoryPage', reducer });
-  useInjectSaga({ key: 'inventoryPage', saga });
-
-  return (
+const Sales = () => {
+  const {id} = useParams();
+    return ( 
     <div>
-      <ModuleLayout>
-        <Helmet>
-          <title>SalesPage</title>
-          <meta name="description" content="Description of SalesPage" />
-        </Helmet>
-        <Switch>
-        {id === undefined?
-         <Route exact path="/sales" component={Dashboard } />
+     <ModuleLayout>
+     <Switch>
+         {id === undefined?
+         <Route exact path="/sales" component={Saless} />
          :
-         (<Route exact path={`/sales/${id}`} component={id==='items'?ItemPage:(id === 'warehouses'?WarehousePage:Dashboard)}/>)
-        }
+         (
+          <Route exact path={`/sales/${id}`} component={
+            id === 'invoices'?Invoices:(
+              Invoices
+              )
+              
+          } />
+         )
+         }
         </Switch>
-        {/* <WarehousePage />
-        <ItemPage /> */}
-      </ModuleLayout>
+    </ModuleLayout>
     </div>
-  );
+     );
 }
-
-InventoryPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = createStructuredSelector({
-  inventoryPage: makeSelectInventoryPage(),
-});
-
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
-}
-
-const withConnect = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-);
-
-export default compose(
-  withConnect,
-  memo,
-)(InventoryPage);
+ 
+export default Sales;
