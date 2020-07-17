@@ -107,7 +107,10 @@ const AddNewJournal = props => {
   }, []);
 
   // Select current financial year
+  
   const currentAccountPeriod = accountPeriodData.find((item) => item.status && item.activeYear);
+  let xuv = 0;
+  xuv = accountPeriodData.length;
     // Filter all periods with status -> true
     const filteredAccountPeriodData = accountPeriodData.filter((item) => item.status);
     console.log('accountPeriodData is -> ', JSON.stringify(accountPeriodData));
@@ -166,8 +169,30 @@ const AddNewJournal = props => {
     reader.onerror = error => reject(error);
   });
 
+  function checkDebitandCredit(){
+    if(values.entries.length > 1){
+     let debit = 0;
+     let credit = 0;
+     for(let i=0;i<values.entries.length;i++){
+       debit = values.entries[i].debit + debit;
+       credit =values.entries[i].credit + credit;
+     }
+     console.log(`credit ${Number(credit)} Debit ${Number(debit)}`)
+     if(Number(debit) === Number(credit)){
+       if(xuv < 2){
+        setValues({ ...values, periodId: currentAccountPeriod.id, transactionDate: currentAccountPeriod.startDate });
+       }
+       return true;
+     }
+     return false;
+    }
+    else
+    return false;
+  }
+
   const isDisabled = () => {
-    return  isAphaNumeric 
+    
+    return  isAphaNumeric && checkDebitandCredit()
     //return (values.entries.reduce((a, b) => a + Number(b.credit), 0) != values.entries.reduce((a, b) => a + Number(b.debit), 0) || (values.entries.reduce((a, b) => a + Number(b.credit), 0) + values.entries.reduce((a, b) => a + Number(b.debit), 0)) === 0) && isAphaNumeric;
   }
 
@@ -184,6 +209,7 @@ const AddNewJournal = props => {
     setValues(_.set({ ...values }, event.target.name, fileNode))
   }
 
+
   const [isAphaNumeric,setIsAphaNumeric] = useState(true)
 
   const checkAlphaNumeric = event =>{
@@ -198,6 +224,7 @@ const AddNewJournal = props => {
 
   console.log('values -> ', values);
   console.log('currentAccountPeriod is -> ', currentAccountPeriod);
+  console.log('chartOfAccountData is -> ', JSON.stringify(chartOfAccountData));
 
   return (
     <ModuleLayout>
@@ -206,23 +233,13 @@ const AddNewJournal = props => {
           <Grid item xs={12} className={classNames(classes.gridMargin)}>
             <div className={classes.flex}>
               <Typography variant="h5">New Posting</Typography>
-           {/* <TextField
-                id="financial-year"
-                name="periodId"
-                placeholder="Select your financial year"
-                select
-                style={{width: 300}}
-                variant="outlined"
-                size="small"
-                label="Financial Year"
-                value={values.periodId}
-                onChange={handleSelectChange}
-              >  {accountPeriodData && accountPeriodData.map((period, i) => (
-                  <MenuItem key={i} value={period.id}>
-                    {moment(period.startDate).format('dddd do-MMM-YYYY')} - {moment(period.endDate).format('dddd do-MMM-YYYY')}
-                  </MenuItem>
-                ))}
-              </TextField>*/}
+         
+              {currentAccountPeriod === undefined ?
+              (<div/>)
+              :
+              (
+              xuv === 0 ?
+              
               <Autocomplete
                 id="combo-box-demo"
                 options={filteredAccountPeriodData}
@@ -239,6 +256,14 @@ const AddNewJournal = props => {
                   />
                 )}
               />
+              
+              :
+              
+              <Typography variant="h6" component="h6">{`${moment(currentAccountPeriod.startDate).format('dddd do-MMM-YYYY')} - ${moment(currentAccountPeriod.endDate).format('dddd do-MMM-YYYY')}`}</Typography>
+              
+              )
+              }
+            
             </div>
             <Grid container className={classes.grid}>
               <Grid item xs={5}>

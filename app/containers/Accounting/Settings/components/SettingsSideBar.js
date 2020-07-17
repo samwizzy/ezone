@@ -10,7 +10,10 @@ import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet'
 import * as Actions from '../actions';
 import * as Selectors from './../selectors';
 import * as AppSelectors from './../../../App/selectors'; 
+import Collapse from '@material-ui/core/Collapse';
 import EventIcon from '@material-ui/icons/Event'; 
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 
 const useStyles = makeStyles(theme => ({
@@ -34,10 +37,18 @@ const useStyles = makeStyles(theme => ({
       },
     }
   },
+  nested: {
+    paddingLeft: theme.spacing(4),
+  },
 }));
 
 const SettingsSideBar = props => {
   const classes = useStyles();
+  const [open, setOpen] = React.useState(true);
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
   
   return (
     <div className={classes.root}>
@@ -56,6 +67,25 @@ const SettingsSideBar = props => {
           </ListItemIcon>
           <ListItemText primary="Accounting Period" />
         </ListItem>
+        <ListItem button onClick={handleClick}>
+        <ListItemIcon>
+        <EventIcon />
+        </ListItemIcon>
+        <ListItemText primary="Fixed Asset Setup" />
+      </ListItem>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <ListItem button className={classes.nested}>
+            <ListItemText primary="Deprecition Type" />
+          </ListItem>
+          <ListItem button className={classes.nested}>
+            <ListItemText primary="Deprecition Area" />
+          </ListItem>
+          <ListItem button className={classes.nested}>
+            <ListItemText primary="Asset Class" />
+          </ListItem>
+        </List>
+      </Collapse>
         {/* <ListItem button onClick={() => {}}>
           <ListItemIcon>
             <AccountBalanceWalletIcon />

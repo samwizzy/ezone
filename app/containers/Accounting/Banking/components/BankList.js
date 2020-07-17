@@ -23,7 +23,8 @@ import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import AddBankAccountDialog from './AddBankAccountDialog';
-// import LoadingIndicator from '../../../../components/LoadingIndicator';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -241,6 +242,8 @@ const BankList = props => {
   };
 
   return (
+    
+    (
     <React.Fragment>
       <AddBankAccountDialog />
       <div className={classes.root}>
@@ -257,6 +260,7 @@ const BankList = props => {
         </Grid>
       </div>
     </React.Fragment>
+  )
   );
 };
 
