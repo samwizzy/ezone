@@ -12,64 +12,74 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { makeStyles, Grid } from '@material-ui/core';
-import * as Selectors from '../selectors';
+import * as Selectors from './selectors';
 import { Widget1, Widget2, Widget3, Widget4, Widget5 } from './widgets'
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        flexGrow: 1
-    }
+  root: {
+    flexGrow: 1
+  }
 }))
 
-export function DashBoard() {
-    const classes = useStyles()
+export function DashBoard({ contacts, companies, schedules, tasks }) {
+  const classes = useStyles()
 
-    return (
-        <div className={classes.root}>
-            <Helmet>
-                <title>CRM - Dashboard</title>
-                <meta name="description" content="Description of Crm" />
-            </Helmet>
-            
-            <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    <Grid container className={classes.grid} spacing={3}>
-                        <Grid item xs={4}>
-                            <Widget1 />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Widget2 />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Widget3 />
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                    <Grid container className={classes.grid} spacing={3}>
-                        <Grid item xs={7}>
-                            <Widget4 />
-                        </Grid>
-                        <Grid item xs={5}>
-                            <Widget5 />
-                        </Grid>
-                    </Grid>
-                </Grid>
+  console.log(contacts, "contacts")
+  console.log(companies, "companies")
+  console.log(tasks, "tasks")
+
+  return (
+    <div className={classes.root}>
+      <Helmet>
+        <title>CRM - Dashboard</title>
+        <meta name="description" content="Description of Crm" />
+      </Helmet>
+
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Grid container className={classes.grid} spacing={3}>
+            <Grid item xs={4}>
+              <Widget1 contacts={contacts} />
             </Grid>
-        </div>
-    );
+            <Grid item xs={4}>
+              <Widget2 companies={companies} />
+            </Grid>
+            <Grid item xs={4}>
+              <Widget3 schedules={schedules} />
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container className={classes.grid} spacing={3}>
+            <Grid item xs={7}>
+              <Widget4 />
+            </Grid>
+            <Grid item xs={5}>
+              <Widget5 tasks={tasks} />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </div>
+  );
 }
 
 DashBoard.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  contacts: PropTypes.array,
+  companies: PropTypes.array,
+  schedules: PropTypes.array,
+  tasks: PropTypes.array,
 };
 
-const mapStateToProps = createStructuredSelector({});
+const mapStateToProps = createStructuredSelector({
+  contacts: Selectors.makeSelectContacts(),
+  companies: Selectors.makeSelectCompanies(),
+  schedules: Selectors.makeSelectSchedules(),
+  tasks: Selectors.makeSelectTasks(),
+});
 
 function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
+  return {};
 }
 
 const withConnect = connect(

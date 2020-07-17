@@ -278,7 +278,7 @@ export const GetAllContactsGroupApi = `${BaseUrl}/crmserv/api/v1/get_all_contact
 
 // Campaigns Group Apis
 export const CreateCampaignApi = `${BaseUrl}/crmserv/api/v1/add_campaign`;
-export const UpdateCampaignApi = `${BaseUrl}/crmserv/api/v1/update_campaign/{userId}/{id}`;
+export const UpdateCampaignApi = `${BaseUrl}/crmserv/api/v1/update_campaign`;
 export const GetCampaignByIdApi = `${BaseUrl}/crmserv/api/v1/get_campaign_by_id/{id}`;
 export const GetCampaignsApi = `${BaseUrl}/crmserv/api/v1/get_campaigns_by_orgid`;
 
@@ -297,3 +297,8 @@ export const GetAllScheduleForTodayApi = `${BaseUrl}/crmserv/api/v1/get_all_sche
 // Crm Activities Apis
 export const GetCrmActivitiesApi = `${BaseUrl}/utilityserv/api/v1/find_by_orgid_and_module`;
 export const CreateCrmActivityApi = `${BaseUrl}/utilityserv/api/v1/add_log`;
+
+// Crm Social Media Apis
+export const GetFacebookTokenApi = `${BaseUrl}/crmserv/api/v1/facebook`;
+export const GenerateFacebookAuthoriseUrlApi = `${BaseUrl}/crmserv/api/v1/generateFacebookAuthoriseUrl`;
+export const GetUserDataApi = `${BaseUrl}/crmserv/api/v1/get_user_data`;

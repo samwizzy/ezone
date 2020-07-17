@@ -23,6 +23,18 @@ export function getAttendancesSuccess(data) {
     payload: data
   };
 }
+export function getAttendanceById() {
+  return {
+    type: Constants.GET_ATTENDANCE_,
+  };
+}
+
+export function getAttendanceByIdSuccess(data) {
+  return {
+    type: Constants.GET_ATTENDANCES_SUCCESS,
+    payload: data
+  };
+}
 
 export function getEmployees() {
   return {

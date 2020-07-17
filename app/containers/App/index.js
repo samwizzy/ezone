@@ -100,6 +100,8 @@ import LMSContactsModule from '../LMS/Contacts/Loadable';
 import LMSActivitiesModule from '../LMS/Activities/Loadable';
 import LMSSchedulesModule from '../LMS/Schedules/Loadable';
 
+import ProjectManagementModule from '../ProjectManagement/Loadable';
+
 // import { messaging } from '../../utils/firebase-notification';
 
 import Auth from './Auth';
@@ -207,6 +209,9 @@ const App = props => {
                     path="/settings/email/password/template"
                     component={EmailPasswordTemplate}
                   />
+
+                  <PrivateRoute path="/project-manager" component={ProjectManagementModule} />
+
                   <PrivateRoute exact path="/lms/dashboard" component={LMSDashboardModule} />
                   <PrivateRoute exact path="/lms/account-settings" component={LMSAccountSettingsModule} />
                   <PrivateRoute exact path="/lms/integration" component={LMSIntegrationModule} />
@@ -262,13 +267,13 @@ const App = props => {
                     component={SalesPage}
                   />
 
-               <PrivateRoute
+                  <PrivateRoute
                     exact
                     path="/sales/:id"
                     component={SalesPage}
                   />
 
-                   <PrivateRoute
+                  <PrivateRoute
                     exact
                     path="/purchase/:id"
                     component={PurchasePage}
@@ -350,11 +355,7 @@ const App = props => {
                     path="/crm/reports"
                     component={CrmReports}
                   />
-                  <PrivateRoute
-                    exact
-                    path="/crm/social-media/:socialId?"
-                    component={CrmSocialMedia}
-                  />
+                  <PrivateRoute path="/crm/social-media" component={CrmSocialMedia} />
                   <PrivateRoute
                     path="/crm/leads"
                     component={CrmLeads}

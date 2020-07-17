@@ -185,7 +185,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getAttendances: () => dispatch(Actions.getAttendances()),
-    getAttendanceById: (uuid) => dispatch(Actions.getAttendanceById(uuid)),
+    getAttendanceById: (id) => dispatch(Actions.getAttendanceById(id)),
     openNewAttendanceDialog: () => dispatch(Actions.openNewAttendanceDialog()),
   };
 }

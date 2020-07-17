@@ -61,6 +61,26 @@ export function* getCampaigns() {
   }
 }
 
+export function* getCampaignById({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetCampaignByIdApi}/${payload}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getCampaignByIdSuccess(response));
+  } catch (err) {
+    yield put(Actions.getCampaignByIdError(err));
+  }
+}
+
 export function* createCampaign({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());

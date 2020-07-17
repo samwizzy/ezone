@@ -111,7 +111,7 @@ function Instagram(props) {
             />
           </div>
           <div className={classes.flex}>
-            <Button marg size="medium" variant="contained" fullWidth color="primary" disableElevation>
+            <Button size="medium" variant="contained" fullWidth color="primary" disableElevation>
               Login
 						</Button>
           </div>

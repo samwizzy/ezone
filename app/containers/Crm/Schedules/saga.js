@@ -112,10 +112,10 @@ export function* createSchedule({ payload }) {
 
 export function* updateSchedule({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${Endpoints.UpdateContactGroupApi}/${updateContactGroupData.id}`;
+  const requestURL = `${Endpoints.UpdateScheduleApi}/${payload.id}`;
 
   try {
-    const newContactResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'PUT',
       body: JSON.stringify(payload),
       headers: new Headers({
@@ -124,14 +124,14 @@ export function* updateSchedule({ payload }) {
       }),
     });
 
-    console.log(newContactResponse, 'newContactResponse');
+    console.log(response, 'response update schedule');
 
     yield put(AppActions.openSnackBar({ message: 'Schedule updated successfully', status: 'error' }));
-    yield put(Actions.updateContactGroupSuccess(newContactResponse));
-    yield put(Actions.getAllContactsGroup());
-    yield put(Actions.closeEditContactGroupsDialog());
+    yield put(Actions.updateScheduleSuccess(response));
+    yield put(Actions.getSchedules());
+    yield put(Actions.closeEditScheduleDialog())
   } catch (err) {
-    yield put(Actions.createNewContactGroupError(err));
+    yield put(Actions.updateScheduleError(err));
   }
 }
 
@@ -141,4 +141,5 @@ export default function* crmScheduleSaga() {
   yield takeLatest(Constants.GET_CONTACTS, getContacts);
   yield takeLatest(Constants.GET_SCHEDULES, getSchedules);
   yield takeLatest(Constants.CREATE_SCHEDULE, createSchedule);
+  yield takeLatest(Constants.UPDATE_SCHEDULE, updateSchedule);
 }

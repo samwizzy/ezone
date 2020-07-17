@@ -63,13 +63,18 @@ const SidebarConfig = [
       { id: 6, name: 'Contact Groups', url: '/crm/contact-groups', icon: 'announcement' },
       { id: 7, name: 'Reports', url: '/crm/reports', icon: 'local_activity' },
       { id: 8, name: 'Campaigns', url: '/crm/campaigns', icon: 'local_activity' },
-      { id: 9, name: 'Social Media', url: '/crm/social-media', icon: 'local_activity' },
+      {
+        id: 9, name: 'Social Media', url: '#', icon: 'local_activity', submenus: [
+          { id: 1, name: 'Social Media', url: '/crm/social-media', icon: '' },
+          { id: 1, name: 'Set Up', url: '/crm/social-media/setup', icon: '' },
+        ]
+      },
       {
         id: 10, name: 'Leads', url: '#', icon: 'local_activity', submenus: [
-          { id: 1, name: 'Leads', url: '/crm/leads', icon: 'local_activity' },
-          { id: 1, name: 'Lead Sources', url: '/crm/leads/sources', icon: 'local_activity' },
-          { id: 2, name: 'Lead Tags', url: '/crm/leads/tags', icon: 'local_activity' },
-          { id: 3, name: 'Lead Stages', url: '/crm/leads/stages', icon: 'local_activity' },
+          { id: 1, name: 'Leads', url: '/crm/leads', icon: '' },
+          { id: 2, name: 'Lead Sources', url: '/crm/leads/sources', icon: '' },
+          { id: 3, name: 'Lead Tags', url: '/crm/leads/tags', icon: '' },
+          { id: 4, name: 'Lead Stages', url: '/crm/leads/stages', icon: '' },
         ]
       },
     ],
@@ -102,6 +107,29 @@ const SidebarConfig = [
     ],
   },
   {
+    module: ['project-manager'],
+    menus: [
+      { id: 1, name: 'Dashboard', url: '/project-manager/dashboard', icon: 'dashboard' },
+      {
+        id: 2, name: 'Work Order', url: '#', icon: 'label', submenus: [
+          { id: 1, name: 'Dashboard', url: '/project-manager/dashboard', icon: '' },
+          { id: 2, name: 'Sources', url: '/project-manager/sources', icon: '' },
+          { id: 3, name: 'Tags', url: '/project-manager/tags', icon: '' },
+          { id: 4, name: 'Stages', url: '/project-manager/stages', icon: '' },
+        ]
+      },
+      {
+        id: 4, name: 'Jobs', url: '#', icon: 'group_work', submenus: [
+          { id: 1, name: 'Dashboard', url: '/project-manager/dashboard', icon: '' },
+          { id: 2, name: 'Jobs list', url: '/project-manager/jobs', icon: '' },
+          { id: 3, name: 'Add Job', url: '/project-manager/jobs/new', icon: '' },
+          { id: 4, name: 'Add Bank', url: '/project-manager/stages', icon: '' },
+        ]
+      },
+      { id: 7, name: 'Reports', url: '/project-manager/reports', icon: 'assessment' },
+    ],
+  },
+  {
     module: ['sales'],
     menus: [
       { id: 1, name: 'Dashboard', url: '/sales/dashboard', icon: 'dashboard' },
@@ -128,10 +156,10 @@ const SidebarConfig = [
       { id: 5, name: 'Transfer Orders', url: '/purchase/transfer/orders', icon: 'transfer_within_a_station' },
       { id: 6, name: 'Investment Adjustment', url: '/purchase/adjustments', icon: 'equalizer' },
       { id: 7, name: 'Reports', url: '/purchase/reports', icon: 'assessment' },
-     /* { id: 8, name: 'New Purchase Order', url: '/purchase/newpurchaseorder', icon: 'label' },
-      { id: 9, name: 'New Shippment', url: '/purchase/newshippment', icon: 'label' },
-      { id: 10, name: 'Purchase Orders', url: '/purchase/purchaseorder', icon: 'label' },
-      { id: 11, name: 'Purchase Order Invoice', url: '/purchase/purchaseorderinvoice', icon: 'label' }*/
+      /* { id: 8, name: 'New Purchase Order', url: '/purchase/newpurchaseorder', icon: 'label' },
+       { id: 9, name: 'New Shippment', url: '/purchase/newshippment', icon: 'label' },
+       { id: 10, name: 'Purchase Orders', url: '/purchase/purchaseorder', icon: 'label' },
+       { id: 11, name: 'Purchase Order Invoice', url: '/purchase/purchaseorderinvoice', icon: 'label' }*/
     ],
   },
 ];

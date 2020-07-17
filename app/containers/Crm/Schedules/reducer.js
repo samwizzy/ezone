@@ -83,6 +83,18 @@ const crmScheduleReducer = (state = initialState, action) =>
           loading: false,
         };
       }
+      case Constants.UPDATE_SCHEDULE: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.UPDATE_SCHEDULE_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+        };
+      }
       case Constants.OPEN_NEW_SCHEDULE_DIALOG: {
         return {
           ...state,
