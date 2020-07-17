@@ -9,10 +9,13 @@ export async function createChartOfAccountHandler(values) {
     headers: { Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json', }
   };
+
+  console.log(`from crud ${JSON.stringify(values)}`)
   
   let postValue;
   if(values.parentId === null){
     if(values.id === 14){
+      console.log(`here 14`);
       postValue = {
         accountCode: values.accountCode,
         accountName: values.accountName,
@@ -54,8 +57,6 @@ export async function createChartOfAccountHandler(values) {
       status: true
     }
 }
-
-  console.log(`let set content ${JSON.stringify(postValue)}`)
 
   return await axios.post(requestURL,postValue,config)
     .then(result => { console.log(result); return result; })

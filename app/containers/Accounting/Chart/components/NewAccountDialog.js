@@ -30,6 +30,7 @@ import axios from 'axios';
 import * as crud from '../crud';
 import * as Selectors from '../selectors';
 import { ChartContext } from '..';
+import zIndex from '@material-ui/core/styles/zIndex';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -141,11 +142,11 @@ const NewAccountDialog = props => {
     }
 
     getAllAccountTypeFromSev();
-    makeParent();
+    //makeParent();
 
     return () => {
       getAllAccountTypeFromSev();
-      makeParent();
+      //makeParent();
     };
   }, []);
 
@@ -164,15 +165,14 @@ const NewAccountDialog = props => {
 
   //Get Chart of Account
   async function makeParent(){
-    console.log(`make parent called 1`)
     await crud
     .getChatfromServer()
     .then(data=>{
-      console.log(`make parent called ${JSON.stringify(data.data)} length ${data.data.length}`)
+      let x = [];
       for(let i =0;i<data.data.length;i++){
-        setParent([...parent,{id:data.data.id,accountName:data.data.accountName}])
-        console.log(`make parent is calling ${i}`)
+        x = [...x,{id:data.data[i].id,accountName:data.data[i].accountName}]
       }
+      setParent(x);
     })
     .catch(error=>{
       console.log(`Error from make parent ${err}`);
@@ -185,11 +185,7 @@ const NewAccountDialog = props => {
     await crud
       .createChartOfAccountHandler(values)
       .then(data => {
-        console.log(
-          `What a data createChartOfAccountHandler ${JSON.stringify(
-            data.data,
-          )}`,
-        );
+        
         // let chatOfAccResponse = data.data;
       chartContext.chartDispatch({type:'REFRESH',refresh:true})
       swal("Success","Chart of Account created successfully","success");
@@ -278,7 +274,7 @@ const NewAccountDialog = props => {
 
   const handleCheckBoxChange = event => {
     setCheckBox({ ...checkBox, [event.target.name]: event.target.checked });
-
+    makeParent();
     // Call parent type api if checked
     if (!checkBox.checkedG) {
       
@@ -314,7 +310,6 @@ const NewAccountDialog = props => {
 
   }, [accountDialog.data]);
 
-  console.log(`make parent  -> `, parent);
   console.log(`values  got it b4 post  -> `, values);
 
   return (
