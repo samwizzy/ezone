@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { memo, useEffect } from 'react';
+import React, { Fragment, memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -122,21 +122,29 @@ const SchedulesList = props => {
                 <CardHeader title="Today's Schedule" subheader="" />
 
                 <CardContent>
-                  {todaySchedules && todaySchedules.map((schedule, i) =>
-                    <Paper key={i} className={classes.paper}>
-                      <Table className={classes.table}>
-                        <TableBody>
-                          <TableRow>
-                            <TableCell component="th">{schedule.scheduleType}</TableCell>
-                            <TableCell component="th">{moment(moment(schedule.startDate).format('YYY-MM-DD') + ' ' + schedule.startTime).format('HH:mm')}</TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell colSpan={2}>{schedule.description}</TableCell>
-                          </TableRow>
-                        </TableBody>
-                      </Table>
+                  {todaySchedules && todaySchedules.length > 0 ?
+                    <Fragment>
+                      {todaySchedules && todaySchedules.map((schedule, i) =>
+                        <Paper key={i} className={classes.paper}>
+                          <Table className={classes.table}>
+                            <TableBody>
+                              <TableRow>
+                                <TableCell component="th">{schedule.scheduleType}</TableCell>
+                                <TableCell component="th">{moment(moment(schedule.startDate).format('YYY-MM-DD') + ' ' + schedule.startTime).format('HH:mm')}</TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell colSpan={2}>{schedule.description}</TableCell>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
+                        </Paper>
+                      )}
+                    </Fragment>
+                    :
+                    <Paper className={classes.paper}>
+                      <Typography variant="subtitle2" color="textSecondary">There are no schedules today</Typography>
                     </Paper>
-                  )}
+                  }
                 </CardContent>
               </Card>
             </Grid>

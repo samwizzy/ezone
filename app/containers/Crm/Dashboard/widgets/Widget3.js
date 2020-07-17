@@ -69,7 +69,7 @@ const Widget3 = ({ schedules }) => {
             <TableBody>
               {schedules && schedules.length > 0 ?
                 <React.Fragment>
-                  {schedules.map((schedule, i) =>
+                  {schedules.slice(0, 4).map((schedule, i) =>
                     <TableRow key={i}>
                       <TableCell component="th">
                         <Typography>{schedule.scheduleType}</Typography>

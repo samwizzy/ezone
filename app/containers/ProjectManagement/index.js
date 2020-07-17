@@ -21,6 +21,7 @@ import saga from './saga';
 import messages from './messages';
 import Dashboard from './Dashboard'
 import Jobs from './Jobs'
+import WorkOrder from './WorkOrder'
 
 const key = "projectMgt"
 export function ProjectMgtApp({ match }) {
@@ -40,6 +41,7 @@ export function ProjectMgtApp({ match }) {
         <Route exact path={path} component={Dashboard} />
         <Route exact path={`${path}/dashboard`} component={Dashboard} />
         <Route path={`${path}/jobs`} component={Jobs} />
+        <Route path={`${path}/work-orders`} component={WorkOrder} />
       </Fragment>
     </div>
   );
