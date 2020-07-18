@@ -505,7 +505,7 @@ const AddNewJournal = props => {
                       {values.attachments === undefined ?
                       <div/>
                       :
-                      <img src={`data:image/png;base64,${values.attachments[0].file}`} />
+                      <img style={{width:'200px';height:'160px'}} src={`data:image/png;base64,${values.attachments[0].file}`} />
                       }
                     </div>
                   </TableCell>
