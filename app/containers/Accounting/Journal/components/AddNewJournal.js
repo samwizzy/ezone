@@ -117,13 +117,14 @@ const AddNewJournal = props => {
   xuv = accountPeriodData.length;
     // Filter all periods with status -> true
     const filteredAccountPeriodData = accountPeriodData.filter((item) => item.status);
-    console.log('accountPeriodData is -> ', JSON.stringify(accountPeriodData));
+    //console.log('accountPeriodData is -> ', JSON.stringify(accountPeriodData));
+
   const [values, setValues] = React.useState({
     entries: [],
     note: "",
     orgId: currentUser.organisation.orgId,
     periodId: "",
-    transactionDate: "",
+    transactionDate:"",
     reference: ""
   });
 
@@ -178,14 +179,14 @@ const AddNewJournal = props => {
      let debit = 0;
      let credit = 0;
      for(let i=0;i<values.entries.length;i++){
-       debit = values.entries[i].debit + debit;
-       credit =values.entries[i].credit + credit;
+       debit = Number(values.entries[i].debit) +Number(debit);
+       credit = Number(values.entries[i].credit) + Number(credit);
      }
      console.log(`credit ${Number(credit)} Debit ${Number(debit)}`)
      if(Number(debit) === Number(credit)){
-       if(xuv < 2){
+       /*if(xuv < 2){
         setValues({ ...values, periodId: currentAccountPeriod.id, transactionDate: currentAccountPeriod.startDate });
-       }
+       }*/
        return true;
      }
      return false;
@@ -226,9 +227,19 @@ const AddNewJournal = props => {
     setIsAphaNumeric(false)
   }
 
+  function submitValue(){
+    let date = (new Date).toISOString();
+    let k = date.lastIndexOf(".");
+    date =`${date.substr(0,k+1)}000+0000`;
+    setValues({ ...values, periodId: currentAccountPeriod.id, transactionDate:date });
+    createNewAccountJournalAction(values);
+      history.push({
+      pathname: '/account/journal'})
+  }
+
   console.log('values -> ', values);
-  console.log('currentAccountPeriod is -> ', currentAccountPeriod);
-  console.log('chartOfAccountData is -> ', JSON.stringify(chartOfAccountData));
+  //console.log('currentAccountPeriod is -> ', currentAccountPeriod);
+  //console.log('chartOfAccountData is -> ', JSON.stringify(chartOfAccountData));
 
   return (
     <ModuleLayout>
@@ -364,7 +375,7 @@ const AddNewJournal = props => {
                 <TableRow key={id}>
                   <TableCell align="center">
                     <Autocomplete
-                      id={id}
+                      id={`${id}`}
                       options={chartOfAccountData}
                       getOptionLabel={option => `${option.accountCode} ${option.accountName}`}
                       onChange={(evt, value) => handleSelectChangeRows(evt, value, id)}
@@ -489,6 +500,15 @@ const AddNewJournal = props => {
                       />
                     </Button>
                   </TableCell>
+                  <TableCell>
+                    <div>
+                      {values.attachments === undefined ?
+                      <div/>
+                      :
+                      <img src={`data:image/png;base64,${values.attachments[0].file}`} />
+                      }
+                    </div>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell colSpan={5} align="right">
@@ -511,10 +531,11 @@ const AddNewJournal = props => {
                       variant="contained"
                       color="primary"
                       className={classes.button}
-                      onClick={() => {
-                        createNewAccountJournalAction(values);
-                      }}
                       disabled={!isDisabled()}
+                      onClick={() => {
+                        submitValue()
+                      }}
+                      
                     >
                       Save and Submit
                     </Button>
