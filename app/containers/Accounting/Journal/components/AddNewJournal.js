@@ -502,10 +502,10 @@ const AddNewJournal = props => {
                   </TableCell>
                   <TableCell>
                     <div>
-                      {values.attachments === undefined ?
+                      {values.attachments[0].file === undefined ?
                       <div/>
                       :
-                      <img style={{width:'200px';height:'160px'}} src={`data:image/png;base64,${values.attachments[0].file}`} />
+                      <img style={{width:'200px',height:'160px'}} src={`data:image/png;base64,${values.attachments[0].file}`} />
                       }
                     </div>
                   </TableCell>
