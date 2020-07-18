@@ -91,6 +91,7 @@ const AddNewJournal = props => {
   const classes = useStyles();
   let credentials = JSON.parse(localStorage.getItem('user'))
   let company = (`${(credentials.organisation.companyName)}`);
+  const [display,setDisplay] = useState(null);
   const [referenceNo,setReferenceNo] = useState(`${company.substr(0,2)}${(new Date).getTime()}`)
   
 
@@ -209,6 +210,11 @@ const AddNewJournal = props => {
       result.then(rs => {
         const file = Object.assign({}, { fileName: name, file: rs })
         fileNode.push(file)
+        let k = (`${name}`).lastIndexOf(".");
+        let extension = (`${name}`).substr(k+1);
+        console.log(`file type ${extension}`)
+        setDisplay(rs)
+        
       })   
     })
     setValues(_.set({ ...values }, event.target.name, fileNode))
@@ -500,12 +506,19 @@ const AddNewJournal = props => {
                       />
                     </Button>
                   </TableCell>
-                  <TableCell>
+                  
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={12}>
                     <div>
-                      {values.attachments === undefined ?
+                      {display === null ?
                       <div/>
                       :
-                      <img style={{width:'200px';height:'160px'}} src={`data:image/png;base64,${values.attachments[0].file}`} />
+                      <div className="embed-responsive embed-responsive-16by9">
+                      <iframe className="embed-responsive-item" 
+                       src={`data:image/png;base64,${display}`} 
+                      allowFullScreen></iframe>
+                      </div>
                       }
                     </div>
                   </TableCell>
