@@ -36,6 +36,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {alphaNumeric} from "../validator.js";
 import * as Actions from '../actions';
+import FileContainer from '../filecontainer';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../../App/selectors';
 // import LoadingIndicator from '../../../../components/LoadingIndicator';
@@ -212,8 +213,7 @@ const AddNewJournal = props => {
         fileNode.push(file)
         let k = (`${name}`).lastIndexOf(".");
         let extension = (`${name}`).substr(k+1);
-        console.log(`file type ${extension}`)
-        setDisplay(rs)
+        setDisplay({name:name,icon:extension})
         
       })   
     })
@@ -514,11 +514,10 @@ const AddNewJournal = props => {
                       {display === null ?
                       <div/>
                       :
-                      <div className="embed-responsive embed-responsive-16by9">
-                      <iframe className="embed-responsive-item" 
-                       src={`data:image/png;base64,${display}`} 
-                      allowFullScreen></iframe>
+                      <div>
+                        <FileContainer name={display.name} icon={display.icon} />
                       </div>
+                      
                       }
                     </div>
                   </TableCell>
