@@ -292,17 +292,17 @@ const FinancialYearSetup = () => {
   function OnlyBussinessLabel(value) {
     switch (value) {
       case 'DEFAULT':
-        return 'DEFAULT'
+        return 'Default'
       case 'CONSTRUCTION':
-      return 'CONSTRUCTION'
+      return 'Construction'
       case 'MANUFACTURING':
-      return 'MANUFACTURING'
+      return 'Manufacturing'
       case 'PROFESSIONAL_SERVICE/SOLE_PROPRIETOR':
-        return 'PROFESSIONAL_SERVICE/SOLE_PROPRIETOR'
+        return 'Professional Service/Sole Proprietor'
       case 'SERVICING':
-        return 'SERVICING';
+        return 'Servicing';
       case 'TRADING':
-       return 'TRADING'     
+       return 'Trading'     
     }
   }
 
