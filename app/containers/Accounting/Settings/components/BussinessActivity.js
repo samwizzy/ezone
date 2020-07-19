@@ -115,7 +115,9 @@ const BussinessActivity = props => {
   const classes = useStyles();
   const accContext = useContext(AccSetupContext)
   const [service, setService] = useState(OnlyBussinessLabel(accContext.accState.businessActivity))
-  const [chartOfAccountData, setChartOfAccountData] = useState([])
+  const [chartOfAccountData, setChartOfAccountData] = useState([
+    {accountCode:'1000',accountName:'Pretty Cash',accountType:'Cash & Cash Equivalent',balance:'$',financialposition:'Financial Position',debitcredit:'DR',class:'Assets'}
+  ])
   const [isEmpty, setIsEmpty] = useState(true);
 
   function onNextPage(e){
@@ -211,7 +213,7 @@ const BussinessActivity = props => {
           else
             dataArray = [...data, { accountCode: chartData[i].accountCode, accountName: chartData[i].accountName, accountType: chartData[i].accountType.accountType }]
         }
-        setChartOfAccountData(dataArray)
+        //setChartOfAccountData(dataArray)
       }).catch((err)=>{
         console.log(`Error from setUptins ${err}`)
       })
@@ -247,23 +249,20 @@ const BussinessActivity = props => {
   }, []
   )
 
-  const businessService = [
-    {
-      value: 'SERVICE_COMPANY',
-      label: 'Service Company',
-    },
-    {
-      value: 'MARKETING_COMPANY',
-      label: 'Marketing Company',
-    }
-  ]
-
   function OnlyBussinessLabel(value) {
     switch (value) {
-      case 'SERVICE_COMPANY':
-        return 'Service Company'
-      case 'MARKETING_COMPANY':
-        return 'Marketing Company'
+      case 'DEFAULT':
+        return 'DEFAULT'
+      case 'CONSTRUCTION':
+      return 'CONSTRUCTION'
+      case 'MANUFACTURING':
+      return 'CONSTRUCTION'
+      case 'PROFESSIONAL_SERVICE/SOLE_PROPRIETOR':
+        return 'PROFESSIONAL_SERVICE/SOLE_PROPRIETOR'
+      case 'SERVICING':
+        return 'SERVICING';
+      case 'TRADING':
+       return 'TRADING'     
     }
   }
 
@@ -294,7 +293,32 @@ const BussinessActivity = props => {
         filter: true,
         sort: false,
       },
+    },
+    {
+      name: 'balance',
+      label: 'Balance',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: 'financialposition',
+      label: 'Financial Position',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: 'debitcredit',
+      label: 'Debit/Credit',
+      options: {
+        filter: true,
+        sort: false,
+      },
     }
+    
 
   ];
 
@@ -372,7 +396,6 @@ const BussinessActivity = props => {
                         variant="contained"
                         color="primary"
                         type="button"
-                        disabled={service === undefined || service === null || service === ''}
                         endIcon={<NextIcon />}
                         onClick={(e) =>{
                           e.preventDefault();

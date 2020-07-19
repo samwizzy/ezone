@@ -85,6 +85,7 @@ const AccountChart = props => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [account, setAccount] = useState('');
   const [allCoa,setAllCoa] = useState([])
+  const [loadingChart,setLoadingChart] = useState(true);
   const [credentials] = useState(JSON.parse(localStorage.getItem('user')))
   const [accessToken] = useState(localStorage.getItem('access_token'))
   const[refresh,setRefresh] = useState(true);
@@ -136,10 +137,12 @@ const AccountChart = props => {
       //setIsEmpty(chatData.length > 0 ?false :true);
       //setchartOfAccountData(chatData)
       chartContext.chartDispatch({type:'REFRESH',refresh:false})
+      setLoadingChart(false);
     })
 
     .catch((err) => {
       console.log(`error ocurr at ChartofAccount ${err}`);
+      setLoadingChart(false);
     });
     
 
@@ -500,7 +503,7 @@ const AccountChart = props => {
   return (
     <div>
       {
-        allCoa.length < 1 ?
+        loadingChart ?
         (
           <div style={{textAlign:'center'}}><div style={{margin:'2px auto'}}><CircularProgress /></div></div>
         )

@@ -260,24 +260,49 @@ const FinancialYearSetup = () => {
          return 'December'  
     }
   }
-
+ 
   const businessService = [
     {
-      value: 'SERVICE_COMPANY',
-      label: 'Service Company',
+      value: 'DEFAULT',
+      label: 'DEFAULT',
     },
     {
-      value: 'MARKETING_COMPANY',
-      label: 'Marketing Company',
+      value: 'CONSTRUCTION',
+      label: 'CONSTRUCTION',
+    },
+    {
+      value: 'MANUFACTURING',
+      label: 'MANUFACTURING',
+    },
+    {
+      value: 'PROFESSIONAL_SERVICE/SOLE_PROPRIETOR',
+      label: 'PROFESSIONAL SERVICE/SOLE PROPRIETOR',
+    },
+    {
+      value: 'SERVICING',
+      label: 'SERVICING',
+    },
+    {
+      value: 'TRADING',
+      label: 'TRADING',
     }
   ]
 
+
   function OnlyBussinessLabel(value) {
     switch (value) {
-      case 'SERVICE_COMPANY':
-        return 'Service Company'
-      case 'MARKETING_COMPANY':
-        return 'Marketing Company'
+      case 'DEFAULT':
+        return 'DEFAULT'
+      case 'CONSTRUCTION':
+      return 'CONSTRUCTION'
+      case 'MANUFACTURING':
+      return 'CONSTRUCTION'
+      case 'PROFESSIONAL_SERVICE/SOLE_PROPRIETOR':
+        return 'PROFESSIONAL_SERVICE/SOLE_PROPRIETOR'
+      case 'SERVICING':
+        return 'SERVICING';
+      case 'TRADING':
+       return 'TRADING'     
     }
   }
 
@@ -311,6 +336,8 @@ const FinancialYearSetup = () => {
     }
 
   ];
+
+  
    
   const canSubmitValues = () => {
     const ready =
