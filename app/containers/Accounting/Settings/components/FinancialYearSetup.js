@@ -296,7 +296,7 @@ const FinancialYearSetup = () => {
       case 'CONSTRUCTION':
       return 'CONSTRUCTION'
       case 'MANUFACTURING':
-      return 'CONSTRUCTION'
+      return 'MANUFACTURING'
       case 'PROFESSIONAL_SERVICE/SOLE_PROPRIETOR':
         return 'PROFESSIONAL_SERVICE/SOLE_PROPRIETOR'
       case 'SERVICING':
