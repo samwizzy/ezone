@@ -394,7 +394,7 @@ const AddNewJournal = props => {
                   <TableCell align="center">
                     <Autocomplete
                       id={`${id}`}
-                      options={chartOfAccountData}
+                      options={filtered(chartOfAccountData)}
                       getOptionLabel={option => `${option.accountCode} ${option.accountName}`}
                       onChange={(evt, value) => handleSelectChangeRows(evt, value, id)}
                       renderInput={params => (
