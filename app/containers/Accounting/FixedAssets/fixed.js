@@ -71,7 +71,15 @@ const useStyles = makeStyles((theme) => ({
 const Assets = () => {
     const fixedContext = useContext(FixedAssetContext)
     const classes = useStyles();
-    const [salesorders] = useState([]);
+    const [assetData] = useState([
+      {item:'Building',itemid:'Olaimeji Wale',itemclass:'Stock Item',unitprice:'3rd Jul,2019',unitcost:'3rd Jul,2019',stockonhand:'1000'},
+      {item:'Building',itemid:'John Wick',itemclass:'Stock Item',unitprice:'3rd Jul,2019',unitcost:'3rd Jul,2019',stockonhand:'1000'},
+      {item:'Building',itemid:'Mary Paul',itemclass:'Mary Paul',unitprice:'7th May,2020',unitcost:'7th May,2020',stockonhand:'30'},
+      {item:'Building',itemid:'John Wick',itemclass:'John Wick',unitprice:'3rd Jul,2019',unitcost:'3rd Jul,2019',stockonhand:'1000'},
+      {item:'Building',itemid:'Mary Paul',itemclass:'Service',unitprice:'7th May,2020',unitcost:'7th May,2020',stockonhand:'10'},
+
+      
+    ]);
     const sales = [
         {
           value: 1,
@@ -85,46 +93,62 @@ const Assets = () => {
 
       const columns = [
         {
-          name: 'invoiceNumber',
-          label: 'Invoice number',
+          name: 'item',
+          label: 'Item',
           options: {
             filter: true,
             sort: false,
           },
         },
         {
-          name: 'customer',
-          label: 'Customer',
+          name: 'itemid',
+          label: 'Item Id',
           options: {
             filter: true,
             sort: false,
           },
         },
         {
-          name: 'date',
-          label: 'Date',
+          name: 'itemclass',
+          label: 'Item Class',
           options: {
             filter: true,
             sort: false,
           },
         },
-        {
+        /*{
            name: 'balance',
             label: 'Balance',
             options: {
               filter: true,
               sort: false,
             },
-        },
+        },*/
 
         {
-            name: 'status',
-             label: 'Status',
+            name: 'unitprice',
+             label: 'Unit price',
              options: {
                filter: true,
                sort: false,
              },
-         }
+         },
+         {
+          name: 'unitcost',
+           label: 'Unit Cost',
+           options: {
+             filter: true,
+             sort: false,
+           },
+       },
+       {
+        name: 'stockonhand',
+         label: 'Stock on Hand',
+         options: {
+           filter: true,
+           sort: false,
+         },
+     }
     
       ];
 
@@ -139,7 +163,7 @@ const Assets = () => {
                            <Grid item xs={12}>
                              <div>
                              <Typography gutterBottom variant="h5" component="h1">
-                              Assets
+                              Asset Master Data
                              </Typography>
                              </div>
                            </Grid>
@@ -154,11 +178,12 @@ const Assets = () => {
                     //accContext.accDispatch({type:'PAYLOAD',payload:{label:'startDay',value:value.value}})
                       // setFinancialYearDate();
                     }}
-                    style={{ width: 200 }}
+                    style={{ width: 200}}
                     renderInput={params => (
                       <TextField
                         {...params}
                         label={''}
+                        style={{borderRadius:'100px' }}
                         variant="outlined"
                         inputProps={{
                           ...params.inputProps,
@@ -234,7 +259,7 @@ const Assets = () => {
                       <Grid item xs={12}>
                         <MUIDataTable
                           className={classes.datatable}
-                          data={salesorders}
+                          data={assetData}
                           columns={columns}
                         />
                       </Grid>

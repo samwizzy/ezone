@@ -36,6 +36,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {alphaNumeric} from "../validator.js";
 import * as Actions from '../actions';
+import FileContainer from '../filecontainer';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../../App/selectors';
 // import LoadingIndicator from '../../../../components/LoadingIndicator';
@@ -91,6 +92,7 @@ const AddNewJournal = props => {
   const classes = useStyles();
   let credentials = JSON.parse(localStorage.getItem('user'))
   let company = (`${(credentials.organisation.companyName)}`);
+  const [display,setDisplay] = useState(null);
   const [referenceNo,setReferenceNo] = useState(`${company.substr(0,2)}${(new Date).getTime()}`)
   
 
@@ -195,6 +197,17 @@ const AddNewJournal = props => {
     return false;
   }
 
+  function filtered(value){
+  let result = [];
+  for(let i=0;i<value.length;i++){
+    console.log(`filtered ${value[i].status}`)
+    if(value[i].status){
+      result = [...result,value[i]];
+    }
+  }
+  return result;
+  }
+
   const isDisabled = () => {
     
     return  isAphaNumeric && checkDebitandCredit()
@@ -209,6 +222,10 @@ const AddNewJournal = props => {
       result.then(rs => {
         const file = Object.assign({}, { fileName: name, file: rs })
         fileNode.push(file)
+        let k = (`${name}`).lastIndexOf(".");
+        let extension = (`${name}`).substr(k+1);
+        setDisplay({name:name,icon:extension})
+        
       })   
     })
     setValues(_.set({ ...values }, event.target.name, fileNode))
@@ -239,7 +256,7 @@ const AddNewJournal = props => {
 
   console.log('values -> ', values);
   //console.log('currentAccountPeriod is -> ', currentAccountPeriod);
-  //console.log('chartOfAccountData is -> ', JSON.stringify(chartOfAccountData));
+  console.log('chartOfAccountData from Journal is -> ',chartOfAccountData[0]);
 
   return (
     <ModuleLayout>
@@ -500,12 +517,18 @@ const AddNewJournal = props => {
                       />
                     </Button>
                   </TableCell>
-                  <TableCell>
+                  
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={12}>
                     <div>
-                      {values.attachments[0].file === undefined ?
+                      {display === null ?
                       <div/>
                       :
-                      <img style={{width:'200px',height:'160px'}} src={`data:image/png;base64,${values.attachments[0].file}`} />
+                      <div>
+                        <FileContainer name={display.name} icon={display.icon} />
+                      </div>
+                      
                       }
                     </div>
                   </TableCell>
