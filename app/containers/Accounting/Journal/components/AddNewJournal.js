@@ -198,6 +198,7 @@ const AddNewJournal = props => {
   }
 
   function filtered(value){
+    console.log(JSON.stringify(value[0]))
   let result = [];
   for(let i=0;i<value.length;i++){
     console.log(`filtered ${value[i].status}`)
