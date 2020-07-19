@@ -338,13 +338,37 @@ const AccountChart = props => {
       },
     },
     {
+      name: '',
+      label: 'Financial Position',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: '',
+      label: 'Debit/Credit',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: '',
+      label: 'Status',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    /*{
       name: 'description',
       label: 'Account Description',
       options: {
         filter: true,
         sort: false,
       },
-    },
+    },*/
     {
       name: 'id',
       label: ' ',

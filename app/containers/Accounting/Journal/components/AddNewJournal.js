@@ -197,6 +197,17 @@ const AddNewJournal = props => {
     return false;
   }
 
+  function filtered(value){
+  let result = [];
+  for(let i=0;i<value.length;i++){
+    console.log(`filtered ${value[i].status}`)
+    if(value[i].status){
+      result = [...result,value[i]];
+    }
+  }
+  return result;
+  }
+
   const isDisabled = () => {
     
     return  isAphaNumeric && checkDebitandCredit()
@@ -245,7 +256,7 @@ const AddNewJournal = props => {
 
   console.log('values -> ', values);
   //console.log('currentAccountPeriod is -> ', currentAccountPeriod);
-  //console.log('chartOfAccountData is -> ', JSON.stringify(chartOfAccountData));
+  console.log('chartOfAccountData from Journal is -> ',chartOfAccountData[0]);
 
   return (
     <ModuleLayout>
@@ -382,7 +393,7 @@ const AddNewJournal = props => {
                   <TableCell align="center">
                     <Autocomplete
                       id={`${id}`}
-                      options={chartOfAccountData}
+                      options={filtered(chartOfAccountData)}
                       getOptionLabel={option => `${option.accountCode} ${option.accountName}`}
                       onChange={(evt, value) => handleSelectChangeRows(evt, value, id)}
                       renderInput={params => (

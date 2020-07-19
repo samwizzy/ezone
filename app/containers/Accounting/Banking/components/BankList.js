@@ -241,6 +241,8 @@ const BankList = props => {
     elevation: 0
   };
 
+  console.log('account data -> ', bankAccountData);
+
   return (
     
     (
