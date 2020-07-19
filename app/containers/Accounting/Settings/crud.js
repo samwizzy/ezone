@@ -32,10 +32,10 @@ export async function setUptins() {
 
       }
 
-      export async function getDefaultChatfromServer(){
+      export async function getAccountingPeriods(){
         let credentials = JSON.parse(localStorage.getItem('user'))
         let accessToken = localStorage.getItem('access_token')
-        const requestURL = `${Endpoints.GetAllChartOfAccountApi}/${credentials.organisation.orgId}`;
+        const requestURL = `${Endpoints.GetAccountPeriodApi}/${credentials.organisation.orgId}`;
          const config = {
            headers: { Authorization: `Bearer ${accessToken}`,
            'Content-Type': 'application/json', }

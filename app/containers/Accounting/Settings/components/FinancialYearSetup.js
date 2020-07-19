@@ -264,27 +264,27 @@ const FinancialYearSetup = () => {
   const businessService = [
     {
       value: 'DEFAULT',
-      label: 'DEFAULT',
+      label: 'Default',
     },
     {
       value: 'CONSTRUCTION',
-      label: 'CONSTRUCTION',
+      label: 'Construction',
     },
     {
       value: 'MANUFACTURING',
-      label: 'MANUFACTURING',
+      label: 'Manufacturing',
     },
     {
       value: 'PROFESSIONAL_SERVICE/SOLE_PROPRIETOR',
-      label: 'PROFESSIONAL SERVICE/SOLE PROPRIETOR',
+      label: 'Professional Service/Sole Proprietor',
     },
     {
       value: 'SERVICING',
-      label: 'SERVICING',
+      label: 'Servicing',
     },
     {
       value: 'TRADING',
-      label: 'TRADING',
+      label: 'Trading',
     }
   ]
 

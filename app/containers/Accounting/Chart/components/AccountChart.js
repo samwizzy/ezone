@@ -127,7 +127,7 @@ const AccountChart = props => {
           accountName:coaData[i].accountName,accountNumber:coaData[i].accountNumber,
           accountType:(coaData[i].accountType === null ? 'Bank':coaData[i].accountType.accountType),
           accountTypeId:coaData[i].accountType === null? 14:coaData[i].accountType.id,bankBalance:coaData[i].bankBalance,
-          openingBalance:coaData[i].openingBalance,
+          openingBalance:coaData[i].accountType === null?coaData[i].bankBalance: coaData[i].openingBalance,
           bankName:coaData[i].bankName,
           description:coaData[i].description,id:coaData[i].id}]
         }

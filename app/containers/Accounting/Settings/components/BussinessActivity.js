@@ -107,20 +107,15 @@ const useStyles = makeStyles(theme => ({
 
 const BussinessActivity = props => {
   const history = useHistory();
-  console.log(`history to b pushed ${JSON.stringify(history)}`)
-  /*axios.defaults.headers.common = {
-    'Authorization': 'Bearer ' + `${props.accessToken}`
-  };*/
-
   const classes = useStyles();
   const accContext = useContext(AccSetupContext)
   const [service, setService] = useState(OnlyBussinessLabel(accContext.accState.businessActivity))
   const [chartOfAccountData, setChartOfAccountData] = useState([
-    {accountCode:'10000',accountName:'Pretty Cash',accountType:'Cash & Cash Equivalent',balance:'$',financialposition:'Financial Position',debitcredit:'DR',class:'Assets'},
-    {accountCode:'10100',accountName:'Cash on Hand',accountType:'Cash & Cash Equivalent',balance:'$',financialposition:'Financial Position',debitcredit:'DR',class:'Assets'},
-    {accountCode:'10200',accountName:'Bank Account - Payroll',accountType:'Cash & Cash Equivalent',balance:'$',financialposition:'Financial Position',debitcredit:'DR',class:'Assets'},
-    {accountCode:'10300',accountName:'Savings Account',accountType:'Cash & Cash Equivalent',balance:'$',financialposition:'Financial Position',debitcredit:'DR',class:'Assets'},
-    {accountCode:'10400',accountName:'Special Account',accountType:'Cash & Cash Equivalent',balance:'$',financialposition:'Financial Position',debitcredit:'DR',class:'Assets'}
+    {accountCode:'10000',accountName:'Pretty Cash',accountType:'Cash & Cash Equivalent',balance:5000,financialposition:'Financial Position',debitcredit:'DR',class:'Assets'},
+    {accountCode:'10100',accountName:'Cash on Hand',accountType:'Cash & Cash Equivalent',balance:6000,financialposition:'Financial Position',debitcredit:'DR',class:'Assets'},
+    {accountCode:'10200',accountName:'Bank Account - Payroll',accountType:'Cash & Cash Equivalent',balance:8000,financialposition:'Financial Position',debitcredit:'DR',class:'Assets'},
+    {accountCode:'10300',accountName:'Savings Account',accountType:'Cash & Cash Equivalent',balance:12500,financialposition:'Financial Position',debitcredit:'DR',class:'Assets'},
+    {accountCode:'10400',accountName:'Special Account',accountType:'Cash & Cash Equivalent',balance:46000,financialposition:'Financial Position',debitcredit:'DR',class:'Assets'}
   ])
   const [isEmpty, setIsEmpty] = useState(true);
 
@@ -131,142 +126,33 @@ const BussinessActivity = props => {
   }
 
   async function createAccountSetup() {
-
-
-    /*let accountSetup =
-    {
-      accountChart: `${accContext.accState.accountChart}`,
-      accountMethod: `${accContext.accState.accountMethod}`,
-      currency: accContext.accState.currency,
-      dateCreated: `${(new Date).toISOString()}`,
-      dateUpdated: "",
-      id: `${accContext.accState.id}`,
-      multiCurrency: Boolean(accContext.accState.multiCurrency),
-      orgId: `${accContext.accState.orgId}`,
-      startDay: Number(accContext.accState.startDay),
-      startMonth: Number(accContext.accState.startMonth),
-      taxDay: 0,
-      taxMonth: 0,
-      taxType: "",
-    }*/
-
     await crud.createAccountSetup(accContext.accState).then(data=>{
-      console.log(`What a data createAccountSetup ${JSON.stringify(data.data)}`)
       history.push('/account/charts');
-      //swal("Success", "Account opened successfully", "success");
-      accContext.accDispatch({type:'MSG',msg:{open:true,message:'Account opened successfully',severity:'success'}});
+      swal("Success", "Account opened successfully", "success");
+      //.accDispatch({type:'MSG',msg:{open:true,message:'Account opened successfully',severity:'success'}});
       window.location.reload(false);
       //accContext.accDispatch({type:'NAVIGATION',page:'chatofAcc'})
     }).catch((err)=>{
-      accContext.accDispatch({type:'MSG',msg:{open:false,message:'Something went wrong',severity:'error'}});
+      swal("Failed", "Something went wrong", "error");
+      //accContext.accDispatch({type:'MSG',msg:{open:false,message:'Something went wrong',severity:'error'}});
       console.log(`Error from setUptins ${err}`)
     })
-
-    //console.log(`before you post ${JSON.stringify(accountSetup)} token ${props.accessToken}`)
-    /*const rawResponse = await fetch('https://dev.ezoneapps.com/gateway/accountingserv/api/v1/account/add_account_settings', {
-      method: 'POST',
-      headers: new Headers({
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${props.accessToken}`,
-        'Content-Type': 'application/json'
-      }),
-      body: JSON.stringify(accountSetup)
-    });
-    const content = await rawResponse.json();
-    console.log(content);*/
-
-   /* await axios.post(`${Endpoints.CreateAccountingSetupApi}`, accountSetup)
-      .then((res) => {
-        let chatResponse = res.data;
-        if (chatResponse.success) {
-          swal("Success", "Account opened successfully", "success");
-
-        }
-
-      })
-
-      .catch((err) => {
-        accContext.accDispatch({ type: 'MSG', msg: { open: true, message: 'Something went wrong. Please try again later', severity: 'error' } })
-        console.log(`error ocurr ${err}`);
-      });*/
-
   }
-
-  useEffect(() => {
-    async function getChatfromServer() {
-      // You can await here
-      //const response 
-      //select uri
-
-      /*const config = {
-        headers: {
-          Authorization: `Bearer ${props.accessToken}`,
-          'Content-Type': 'application/json',
-        }
-      };*/
-
-      await crud.getChatfromServer().then(data=>{
-        console.log(`What a data getChatfromServer ${JSON.stringify(data.data)}`)
-        let chartData = data.data;
-        setIsEmpty(chartData.length > 0 ? false : true);
-        let dataArray = []
-        for (let i = 0; i < chatData.length; i++) {
-          if (i === 0) {
-            dataArray = [{ accountCode: chartData[i].accountCode, accountName: chartData[i].accountName, accountType: chartData[i].accountType.accountType }]
-          }
-          else
-            dataArray = [...data, { accountCode: chartData[i].accountCode, accountName: chartData[i].accountName, accountType: chartData[i].accountType.accountType }]
-        }
-        //setChartOfAccountData(dataArray)
-      }).catch((err)=>{
-        console.log(`Error from setUptins ${err}`)
-      })
-
-     /* await axios
-        .get(`${Endpoints.GetAllChartOfAccountApi}/${props.credentials.organisation.orgId}`,
-          config)
-        .then((res) => {
-          let chartData = res.data;
-          setIsEmpty(chartData.length > 0 ? false : true);
-          let data = []
-          for (let i = 0; i < chatData.length; i++) {
-            if (i === 0) {
-              data = [{ accountCode: chartData[i].accountCode, accountName: chartData[i].accountName, accountType: chartData[i].accountType.accountType }]
-            }
-            else
-              data = [...data, { accountCode: chartData[i].accountCode, accountName: chartData[i].accountName, accountType: chartData[i].accountType.accountType }]
-          }
-          setChartOfAccountData(data)
-        })
-
-        .catch((err) => {
-          console.log(`error ocurr ${err}`);
-        });*/
-
-      // ...
-    }
-    getChatfromServer();
-
-    return() =>{
-      getChatfromServer();
-    }
-  }, []
-  )
 
   function OnlyBussinessLabel(value) {
     switch (value) {
       case 'DEFAULT':
-        return 'DEFAULT'
+        return 'Default'
       case 'CONSTRUCTION':
-      return 'CONSTRUCTION'
+      return 'Construction'
       case 'MANUFACTURING':
-      return 'CONSTRUCTION'
+      return 'Manufacturing'
       case 'PROFESSIONAL_SERVICE/SOLE_PROPRIETOR':
-        return 'PROFESSIONAL_SERVICE/SOLE_PROPRIETOR'
+        return 'Professional Service/Sole proprietor'
       case 'SERVICING':
-        return 'SERVICING';
+        return 'Servicing';
       case 'TRADING':
-       return 'TRADING'     
+       return 'Trading'     
     }
   }
 
@@ -319,6 +205,14 @@ const BussinessActivity = props => {
       label: 'Debit/Credit',
       options: {
         filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: '',
+      label: 'Status',
+      options: {
+        filter: false,
         sort: false,
       },
     }

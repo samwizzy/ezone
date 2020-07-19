@@ -196,51 +196,9 @@ const NewAccountDialog = props => {
         console.log(`Error from setUptins ${err}`);
       });
 
-    /* const config = {
-      headers: { Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json', }
-  };
-
-    let postValue= values;
-    postValue = {...postValue,openingBalance:Number(values.openingBalance)}
-
-    console.log(`before you post ${JSON.stringify(postValue)} token ${accessToken}`)
-
-    await axios.post(`${Endpoints.CreateChartOfAccountApi}`,postValue,config)
-     .then((res) => {
-          let chatOfAccResponse = res.data;
-          chartContext.chartDispatch({type:'REFRESH',refresh:true})
-          swal("Success","Chart of Account created successfully","success");
-          closeNewAccountDialogAction()
-        })
-  
-        .catch((err) => {
-          console.log(`error ocurr in Chart of Account ${err}`);
-        }); */
   }
 
   async function updateChartOfAccount() {
-    /*  const config = {
-        headers: { Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json', }
-    };
-    let postValue= values;
-    postValue = {...postValue,openingBalance:Number(values.openingBalance)}
-      await axios.put(`${Endpoints.UpdateChartOfAccountApi}`,postValue,config)
-       .then((res) => {
-            let chatOfAccResponse = res.data;
-            chartContext.chartDispatch({type:'REFRESH',refresh:true})
-            swal("Success","Chart of Account Updated successfully","success");
-            closeNewAccountDialogAction()
-            console.log(`from Business response ${chatOfAccResponse}`);
-           
-          })
-    
-          .catch((err) => {
-            swal("Error","Something went wrong","error");
-            console.log(`error ocurr in Chart of Account ${err}`);
-          }); */
-
     await crud
       .updateChartOfAccount(values)
       .then(data => {
@@ -376,6 +334,9 @@ const NewAccountDialog = props => {
                   }
                 </Grid>
                 <Grid item xs={6}>
+                  {checkBox.isBank ?
+                  <div/>
+                  :
                   <TextField
                     id="standard-openingBalance"
                     label={
@@ -392,6 +353,7 @@ const NewAccountDialog = props => {
                     margin="normal"
                     fullWidth
                   />
+                  }
                 </Grid>
                 <Grid item xs={6}>
                   <Autocomplete

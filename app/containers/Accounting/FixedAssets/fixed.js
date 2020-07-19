@@ -163,7 +163,7 @@ const Assets = () => {
                            <Grid item xs={12}>
                              <div>
                              <Typography gutterBottom variant="h5" component="h1">
-                              Asset Master Data
+                              Fixed Assets
                              </Typography>
                              </div>
                            </Grid>

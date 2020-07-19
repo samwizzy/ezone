@@ -292,7 +292,7 @@ const AddNewJournal = props => {
               
               :
               
-              <Typography variant="h6" component="h6">{`${moment(currentAccountPeriod.startDate).format('dddd do-MMM-YYYY')} - ${moment(currentAccountPeriod.endDate).format('dddd do-MMM-YYYY')}`}</Typography>
+              <Typography variant="subtitle1" color="textSecondary">{`${moment(currentAccountPeriod.startDate).format('dddd do-MMM-YYYY')} - ${moment(currentAccountPeriod.endDate).format('dddd do-MMM-YYYY')}`}</Typography>
               
               )
               }

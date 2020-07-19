@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo,useState,useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { 
   makeStyles, 
@@ -33,6 +33,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
+import * as crud from '../crud';
 import DialogOfAccountPeriod from './DialogOfAccountPeriod';
 import moment from 'moment';
 // import ModuleLayout from '../../components/ModuleLayout';
@@ -89,16 +90,34 @@ const AccountingPeriod = props => {
     setAnchorEl(null);
   };
 
-  const [values, setValues] = React.useState({
+  const [currentAccountPeriod,setCurrentAccountPeriod] = useState({});
+  const [accountingPeriods,setAccountingPeriods] = useState([]);
+
+  const [values, setValues] = useState({
     orgId: "",
     year: ""
   });
 
-  const [accountToUpdate, setAccountToUpdate] = React.useState({
+  const [accountToUpdate, setAccountToUpdate] = useState({
     id: "",
     orgId: "",
     year: ""
   });
+
+  useEffect(() => {
+    getAccountingPeriod() ; 
+  },[])
+
+
+  async function getAccountingPeriod() {
+    await crud.getAccountingPeriods().then(data=>{
+      setCurrentAccountPeriod(data.data[0])
+      setAccountingPeriods(data.data);
+    }).catch((err)=>{
+     
+      console.log(`Error from setUptins ${err}`)
+    })
+  }
 
   const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
@@ -112,8 +131,8 @@ const AccountingPeriod = props => {
     });
   };
 
-  console.log('allAccountingPeriodData period file -> ', JSON.stringify(allAccountingPeriodData));
-  console.log('accountToUpdate state -> ', accountToUpdate);
+  console.log('current period file -> ', JSON.stringify(accountingPeriods));
+  //console.log('accountToUpdate state -> ',  JSON.stringify(accountingSetupData));
 
 
   return (
@@ -135,7 +154,7 @@ const AccountingPeriod = props => {
                   <TableCell>Financial Year Start</TableCell>
                   <TableCell>
                     <Box className={classes.box} p={2}>
-                      {moment(accountingSetupData.companyStartDate).format('Do, MMM')}
+                      {moment(currentAccountPeriod.startDate).format('Do, MMM')}
                     </Box>
                   </TableCell>
                 </TableRow>
@@ -147,14 +166,15 @@ const AccountingPeriod = props => {
                     </Box>
                   </TableCell>
                 </TableRow>
-                {/* <TableRow>
+                <TableRow>
                   <TableCell>Tax year starts</TableCell>
                   <TableCell>
                     <Box className={classes.box} p={2}>
-                      { accountingSetupData.taxDay }, { accountingSetupData.taxMonth }
+                      {/*{ accountingSetupData.taxDay }, { accountingSetupData.taxMonth }*/}
+                      {moment(currentAccountPeriod.startDate).format('Do, MMM')}
                     </Box>
                   </TableCell>
-                </TableRow> */}
+                </TableRow> 
                 <TableRow>
                   <TableCell>Tax Type</TableCell>
                   <TableCell>
@@ -175,7 +195,55 @@ const AccountingPeriod = props => {
             <Toolbar>
               <Typography variant="h6">Accounting Years</Typography>
             </Toolbar>
-            <Table size="small" className={classes.table}>
+             <div>
+               <div style={{textAlign:'center',paddingLeft:'5em',paddingRight:'5em'}}>
+               <Grid container spacing={2}>
+                 <Grid item xs={12}>
+                 <Typography variant="h6" component="h6">Current Accounting Year</Typography>
+                 </Grid>
+                 <Grid item xs={12}>
+                  <div style={{backgroundColor:'#bbb',padding:'6px'}}>
+                    <Grid container spacing={4}>
+                      <Grid item xs={6}>
+               <Typography variant="subtitle1" >Start Date : {moment(currentAccountPeriod.startDate).format('YYYY-MM-DD')}</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+               <Typography variant="subtitle1">End Date : {moment(currentAccountPeriod.endDate).format('YYYY-MM-DD')}</Typography>
+                      </Grid>
+                    </Grid>
+                  </div>
+                 </Grid>
+               </Grid>
+               </div>
+             </div>
+
+             <div>
+               <div style={{textAlign:'center'}}>
+               <Grid container spacing={3}>
+                 {accountingPeriods.map((item) =>
+                   <Grid key={item.id.toString()} item xs={12}>
+                     <Grid container spacing={3}>
+                     <Grid item xs={4}>
+                      <Typography variant="subtitle1" >Start Date : {moment(item.startDate).format('YYYY-MM-DD')}</Typography>
+                      </Grid>
+                      <Grid item xs={4}>
+                       <Typography variant="subtitle1" >End Date : {moment(item.endDate).format('YYYY-MM-DD')}</Typography>
+                      </Grid>
+                      <Grid item xs={4}>
+                        {item.status ?
+                       <Typography variant="subtitle1" color="textSecondary" component="subtitle1">Open</Typography>
+                       :
+                       <Typography variant="subtitle1" style={{color:'red'}}>Close</Typography>
+                        }
+                       </Grid>
+                     </Grid>
+                   </Grid>
+                 )}
+               </Grid>
+               </div>
+             </div>
+
+            {/*<Table size="small" className={classes.table}>
               <TableBody>
                 {allAccountingPeriodData && allAccountingPeriodData.map(item => (
                 <TableRow>
@@ -304,7 +372,8 @@ const AccountingPeriod = props => {
                   </TableCell>
                 </TableRow>
               </TableFooter>
-            </Table>
+                  </Table>*/}
+
           </Paper>
         </Grid>
       </Grid>

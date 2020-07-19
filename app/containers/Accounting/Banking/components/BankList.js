@@ -140,14 +140,6 @@ const BankList = props => {
 			},
     },
     {
-      name: 'amount',
-      label: 'Amount',
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
       name: 'status',
       label: 'Status',
       options: {

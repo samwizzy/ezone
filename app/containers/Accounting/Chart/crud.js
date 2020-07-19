@@ -23,7 +23,7 @@ export async function createChartOfAccountHandler(values) {
         bankBalance: Number(values.bankBalance),
         bankName: values.bankName,
         description: values.description,
-        openingBalance: Number(values.openingBalance),
+        //openingBalance: Number(values.openingBalance),
         orgId: values.orgId,
         rate: 0,
         status: true

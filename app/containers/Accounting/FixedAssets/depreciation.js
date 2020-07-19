@@ -346,18 +346,18 @@ const DepreciationSetup = () => {
                   </Grid>
                   
                  <Grid item xs={4}>
-                 <Typography variant="h6" color="textSecondary" component="h5">
+                 <Typography variant="subtitle1" color="textSecondary">
                      Base
                      </Typography>
                  </Grid>
                  <Grid item xs={4}>
-                 <Typography variant="h6" color="textSecondary" component="h5">
+                 <Typography variant="subtitle1" color="textSecondary" >
                      Number of years
                      </Typography>
                  </Grid>
 
                  <Grid item xs={4}>
-                 <Typography variant="h6" color="textSecondary" component="h5">
+                 <Typography variant="subtitle1" color="textSecondary">
                      Annual percentage
                      </Typography>
                  </Grid>
