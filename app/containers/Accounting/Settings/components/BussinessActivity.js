@@ -324,52 +324,9 @@ const BussinessActivity = props => {
         </Grid>
 
         <Grid item xs={12}>
-          <Paper square elevation={0} className={classes.paper}>
-            <Grid item xs={12}>
-
-              <Box p={1} className={classes.boxed}>
-                <Typography
-                  variant="h6"
-                  className={classes.smallHeaderWithLift}
-                  color="textPrimary"
-                >
-                  Bussiness Activity
-                </Typography>
-              </Box>
-
-              <div className={classes.lightLift}>
-                <Autocomplete
-                  id="bussinessService"
-                  options={businessService}
-                  getOptionLabel={option => option.label}
-                  onChange={(event, value) => {
-                    accContext.accDispatch({ type: 'PAYLOAD', payload: { label: 'businessActivity', value: value.value } })
-                    setService(OnlyBussinessLabel(value.value))
-                  }
-                  }
-                  style={{ width: 300 }}
-                  renderInput={params => (
-                    <TextField
-                      {...params}
-                      label={accContext.accState.businessActivity === '' ? 'Select Business Service' : `${service}`}
-                      variant="outlined"
-                      inputProps={{
-                        ...params.inputProps,
-                        autoComplete: 'new-password', // disable autocomplete and autofill
-                      }}
-                    />
-                  )}
-                />
-              </div>
-
-            </Grid>
-          </Paper>
-        </Grid>
-
-        <Grid item xs={12}>
 
           <div className={classes.content_margin_table} align="right">
-            {!isEmpty ?
+            
               <div>
                 <React.Fragment>
                   <div className={classes.root}>
@@ -384,10 +341,9 @@ const BussinessActivity = props => {
                     </Grid>
                   </div>
                 </React.Fragment>
-                <div><h5>Note : You can edit account after setup</h5></div>
+                <div><div style={{float:'left',margin:'10px'}}><Typography variant="h6" component="h6" color="textSecondary">Note : You can edit account after setup</Typography></div></div>
               </div>
-              : <div />
-            }
+              
           </div>
 
         </Grid>

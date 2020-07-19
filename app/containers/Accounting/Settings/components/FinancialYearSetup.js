@@ -1,4 +1,4 @@
-import React ,{useContext}from 'react';
+import React ,{useContext,useState}from 'react';
 import {
   makeStyles,
   Box,
@@ -96,6 +96,7 @@ const useStyles = makeStyles(theme => ({
 const FinancialYearSetup = () => {
   const classes = useStyles();
   const accContext = useContext(AccSetupContext);
+  const [service, setService] = useState(OnlyBussinessLabel(accContext.accState.businessActivity))
   const months = [
     {
       value: 1,
@@ -259,6 +260,57 @@ const FinancialYearSetup = () => {
          return 'December'  
     }
   }
+
+  const businessService = [
+    {
+      value: 'SERVICE_COMPANY',
+      label: 'Service Company',
+    },
+    {
+      value: 'MARKETING_COMPANY',
+      label: 'Marketing Company',
+    }
+  ]
+
+  function OnlyBussinessLabel(value) {
+    switch (value) {
+      case 'SERVICE_COMPANY':
+        return 'Service Company'
+      case 'MARKETING_COMPANY':
+        return 'Marketing Company'
+    }
+  }
+
+
+
+
+  const columns = [
+    {
+      name: 'accountCode',
+      label: 'Account Code',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: 'accountName',
+      label: 'Account Name',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: 'accountType',
+      label: 'Account Type',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    }
+
+  ];
    
   const canSubmitValues = () => {
     const ready =
@@ -452,6 +504,45 @@ const FinancialYearSetup = () => {
                   </Grid>
                 </Grid>
               </Grid>
+            </Grid>
+
+            <Grid item xs={12}>
+
+              <Box p={1} className={classes.boxed}>
+                <Typography
+                  variant="h6"
+                  className={classes.smallHeaderWithLift}
+                  color="textPrimary"
+                >
+                  Bussiness Activity
+                </Typography>
+              </Box>
+
+              <div className={classes.lightLift}>
+                <Autocomplete
+                  id="bussinessService"
+                  options={businessService}
+                  getOptionLabel={option => option.label}
+                  onChange={(event, value) => {
+                    accContext.accDispatch({ type: 'PAYLOAD', payload: { label: 'businessActivity', value: value.value } })
+                    setService(OnlyBussinessLabel(value.value))
+                  }
+                  }
+                  style={{ width: 300 }}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label={accContext.accState.businessActivity === '' ? 'Select Business Service' : `${service}`}
+                      variant="outlined"
+                      inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password', // disable autocomplete and autofill
+                      }}
+                    />
+                  )}
+                />
+              </div>
+
             </Grid>
 
             <Grid item xs={12}>
