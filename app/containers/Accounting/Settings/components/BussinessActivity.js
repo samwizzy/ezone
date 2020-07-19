@@ -116,7 +116,11 @@ const BussinessActivity = props => {
   const accContext = useContext(AccSetupContext)
   const [service, setService] = useState(OnlyBussinessLabel(accContext.accState.businessActivity))
   const [chartOfAccountData, setChartOfAccountData] = useState([
-    {accountCode:'1000',accountName:'Pretty Cash',accountType:'Cash & Cash Equivalent',balance:'$',financialposition:'Financial Position',debitcredit:'DR',class:'Assets'}
+    {accountCode:'10000',accountName:'Pretty Cash',accountType:'Cash & Cash Equivalent',balance:'$',financialposition:'Financial Position',debitcredit:'DR',class:'Assets'},
+    {accountCode:'10100',accountName:'Cash on Hand',accountType:'Cash & Cash Equivalent',balance:'$',financialposition:'Financial Position',debitcredit:'DR',class:'Assets'},
+    {accountCode:'10200',accountName:'Bank Account - Payroll',accountType:'Cash & Cash Equivalent',balance:'$',financialposition:'Financial Position',debitcredit:'DR',class:'Assets'},
+    {accountCode:'10300',accountName:'Savings Account',accountType:'Cash & Cash Equivalent',balance:'$',financialposition:'Financial Position',debitcredit:'DR',class:'Assets'},
+    {accountCode:'10400',accountName:'Special Account',accountType:'Cash & Cash Equivalent',balance:'$',financialposition:'Financial Position',debitcredit:'DR',class:'Assets'}
   ])
   const [isEmpty, setIsEmpty] = useState(true);
 
