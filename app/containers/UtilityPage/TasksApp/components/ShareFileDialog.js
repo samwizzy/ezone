@@ -1,12 +1,12 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Slide, Typography, TextField } from '@material-ui/core';
-import * as Selectors from '../../selectors';
-import * as Actions from '../../actions';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Slide, Typography, TextField } from '@material-ui/core';
+import * as Selectors from '../selectors';
+import * as Actions from '../actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,17 +24,19 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function SharedFileDialog(props) {
   const classes = useStyles()
-  const { closeSharedFileDialog, data } = props
-  const [form, setForm] = React.useState({email: '', comment: ''})
+  const { closeSharedFileDialog, dialog } = props
+  const [form, setForm] = React.useState({ email: '', comment: '' })
 
-  const handleChange = () => {}
+  const handleChange = event => {
+    setForm({ ...form, [event.target.name]: event.target.value })
+  }
 
-  console.log(data, 'checking shared...')
+  console.log(dialog, 'checking shared...')
 
   return (
     <div>
       <Dialog
-        {...data.props}
+        {...dialog.props}
         TransitionComponent={Transition}
         keepMounted
         onClose={closeSharedFileDialog}
@@ -42,33 +44,32 @@ function SharedFileDialog(props) {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle id="alert-dialog-slide-title">Share File</DialogTitle>
-        <Divider />
-        <DialogContent>
-          {/* <DialogContentText id="alert-dialog-slide-description"></DialogContentText> */}
-          <form className={classes.root}>
+
+        <DialogContent dividers>
+          <div className={classes.root}>
             <TextField
-              label="Enter email address or usernames"
-              id="outlined-size-small"
+              label="Enter email address or username"
+              id="username-or-email"
               fullWidth
-              defaultValue="Small"
               variant="outlined"
+              margin="normal"
               size="small"
               value={form.email}
             />
 
             <TextField
-              id="outlined-multiline-static"
+              id="outlined-comment"
               label="Add comment"
               multiline
               fullWidth
-              rows="4"
+              rows="3"
               rowsMax="4"
               value={form.comment}
               onChange={handleChange}
-              defaultValue="Default Value"
               variant="outlined"
+              margin="normal"
             />
-          </form>
+          </div>
         </DialogContent>
         <DialogActions>
           <Button variant="outlined" onClick={closeSharedFileDialog} color="primary">
@@ -83,14 +84,13 @@ function SharedFileDialog(props) {
   );
 }
 
-
 SharedFileDialog.propTypes = {
   openSharedFileDialog: PropTypes.func,
   closeSharedFileDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  data: Selectors.makeSelectSharedFileDialog()
+  dialog: Selectors.makeSelectSharedFileDialog()
 });
 
 function mapDispatchToProps(dispatch) {

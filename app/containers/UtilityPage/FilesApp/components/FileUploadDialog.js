@@ -13,8 +13,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import DropZone from './DropZone';
 import ReactDropZone from './ReactDropZone';
-import * as Selectors from '../../selectors';
-import * as Actions from '../../actions';
+import * as Selectors from '../selectors';
+import * as Actions from '../actions';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -65,7 +65,6 @@ function mapDispatchToProps(dispatch) {
     openFileUploadDialog: ev => dispatch(Actions.openFileUploadDialog(ev)),
     closeFileUploadDialog: () => dispatch(Actions.closeFileUploadDialog()),
     addDocToFolder: (ev) => dispatch(Actions.addDocToFolder(ev)),
-    dispatch,
   };
 }
 

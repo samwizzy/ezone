@@ -18,6 +18,9 @@ export const initialState = {
   messageDialog: {
     open: false, message: "", status: "info"
   },
+  reminderDialog: {
+    type: 'new', props: { open: false }, data: { title: 'I am here', message: 'Come in please' }
+  },
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -133,6 +136,30 @@ const appReducer = (state = initialState, action) =>
           loading: false,
           error: true,
         };
+      }
+      case Constants.OPEN_SCHEDULE_REMINDER_DIALOG: {
+        return {
+          ...state,
+          reminderDialog: {
+            type: 'new',
+            props: {
+              open: true,
+            },
+            data: null,
+          }
+        };
+      }
+      case Constants.CLOSE_SCHEDULE_REMINDER_DIALOG: {
+        return {
+          ...state,
+          reminderDialog: {
+            type: 'new',
+            props: {
+              open: false,
+            },
+            data: null,
+          }
+        }
       }
     }
   });

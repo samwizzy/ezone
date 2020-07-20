@@ -15,7 +15,7 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import reducer from './reducer';
 import saga from './saga';
-import makeSelectUtilityPage from './selectors';
+import makeSelectUtilityPage, * as Selectors from './selectors';
 import * as Actions from './actions';
 import UtilityApp from './UtilityApp'
 import ModuleLayout from './components/ModuleLayout'
@@ -24,7 +24,9 @@ export function UtilityPage(props) {
   useInjectReducer({ key: 'utilityPage', reducer });
   useInjectSaga({ key: 'utilityPage', saga });
 
-  const { dispatchGetUserChats, dispatchGetAllEmployees } = props;
+  const { dispatchGetUserChats, dispatchGetAllEmployees, dialog } = props;
+
+  console.log(dialog, "dialog from utility root")
 
   React.useEffect(() => {
     dispatchGetAllEmployees();
@@ -51,6 +53,8 @@ UtilityPage.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   utilityPage: makeSelectUtilityPage(),
+  dialog: Selectors.makeSelectNewTaskDialog(),
+  dialog2: Selectors.makeSelectNewFolderDialog(),
 });
 
 function mapDispatchToProps(dispatch) {

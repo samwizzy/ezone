@@ -13,7 +13,7 @@ import {
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import * as Actions from '../../actions';
+import * as Actions from './../actions';
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -29,18 +29,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UserChat = props => {
-  const { dispatchGetUserChatData, allUsersChat, newChat } = props;
   const classes = useStyles();
+  const { getUserChatData, allUsersChat, newChat } = props;
 
   return (
     <List className={classes.list}>
       {newChat && (
-        // newChat.map(User => (
         <ListItem
           alignItems="flex-start"
           component={Paper}
           key={newChat.id}
-          onClick={() => dispatchGetUserChatData(newChat)}
+          onClick={() => getUserChatData(newChat)}
         >
           <ListItemAvatar>
             <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
@@ -61,16 +60,14 @@ const UserChat = props => {
             }
           />
         </ListItem>
-      )
-      // ))
-      }
+      )}
       {allUsersChat &&
         allUsersChat.map(user => (
           <ListItem
             alignItems="flex-start"
             component={Paper}
             key={user.id}
-            onClick={() => dispatchGetUserChatData(user)}
+            onClick={() => getUserChatData(user)}
           >
             <ListItemAvatar>
               <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
@@ -97,15 +94,15 @@ const UserChat = props => {
 };
 
 UserChat.propTypes = {
-  dispatchGetUserChatData: PropTypes.func,
+  getUserChatData: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchGetUserChatData: evt => dispatch(Actions.getUserChatData(evt)),
-  };
+    getUserChatData: data => dispatch(Actions.getUserChatData(data)),
+  }
 }
 
 const withConnect = connect(

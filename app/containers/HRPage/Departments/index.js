@@ -15,7 +15,7 @@ import { useInjectSaga } from 'utils/injectSaga';
 import * as AppSelectors from '../../App/selectors';
 import * as AppActions from '../../App/actions';
 import * as Actions from './../actions';
-import makeSelectHRPage from './../selectors';
+import makeSelectHRPage, * as Selectors from './../selectors';
 import reducer from './../reducer';
 import saga from './../saga';
 import ModuleLayout from './ModuleLayout'
@@ -30,9 +30,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function DepartmentPage(props) {
-  const { getEmployees } = props;
+  const { getEmployees, dialog } = props;
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
+
+  console.log(dialog, "dialog department index")
 
   React.useEffect(() => {
     getEmployees();
@@ -59,6 +61,7 @@ DepartmentPage.propTypes = {
 const mapStateToProps = createStructuredSelector({
   hrPage: makeSelectHRPage(),
   token: AppSelectors.makeSelectAccessToken(),
+  dialog: Selectors.makeSelectDeptDialog(),
 });
 
 export function mapDispatchToProps(dispatch) {

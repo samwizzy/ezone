@@ -20,15 +20,17 @@ import reducer from './reducer';
 import saga from './saga';
 import Dashboard from './Dashboard'
 import ModuleLayout from './../components/ModuleLayout'
+import ScheduleReminderDialog from './components/ScheduleReminderDialog'
 
 const key = "crmDashboard"
 export function CrmDashboard(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
-  const { getContacts, getCompanies, getSchedules, getTasks } = props
+  const { getEmployees, getContacts, getCompanies, getSchedules, getTasks } = props
 
   useEffect(() => {
+    getEmployees();
     getContacts();
     getCompanies();
     getSchedules();
@@ -45,6 +47,8 @@ export function CrmDashboard(props) {
       <ModuleLayout>
         <Dashboard />
       </ModuleLayout>
+
+      <ScheduleReminderDialog />
     </div>
   );
 }
@@ -57,6 +61,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    getEmployees: () => dispatch(Actions.getEmployees()),
     getContacts: () => dispatch(Actions.getContacts()),
     getCompanies: () => dispatch(Actions.getCompanies()),
     getSchedules: () => dispatch(Actions.getSchedules()),

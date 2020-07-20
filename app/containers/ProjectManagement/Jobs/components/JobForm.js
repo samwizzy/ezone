@@ -203,7 +203,7 @@ const JobForm = props => {
                     margin="normal"
                     fullWidth
                     inputVariant="outlined"
-                    id="date-picker-dialog"
+                    id="estimated-date"
                     label="Estimated date"
                     size="small"
                     format="dd/MM/yyyy"
@@ -240,7 +240,7 @@ const JobForm = props => {
                     margin="normal"
                     fullWidth
                     inputVariant="outlined"
-                    id="date-picker-dialog"
+                    id="end-date"
                     label="End Date"
                     size="small"
                     format="dd/MM/yyyy"

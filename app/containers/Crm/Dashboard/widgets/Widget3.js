@@ -51,11 +51,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Widget3 = ({ schedules }) => {
+const Widget3 = ({ user, schedules }) => {
   const classes = useStyles()
 
   console.log(schedules, "schedules")
+  console.log(user, "currentuser")
   const todaySchedules = schedules && schedules.filter(schedule => moment().diff(schedule.startDate, 'days') === 0)
+  const userSchedules = todaySchedules && todaySchedules.filter(schedule => schedule.hostId === user.id)
 
   return (
     <div>
@@ -67,9 +69,9 @@ const Widget3 = ({ schedules }) => {
         <CardContent>
           <Table className={classes.table} size="small">
             <TableBody>
-              {schedules && schedules.length > 0 ?
+              {userSchedules && userSchedules.length > 0 ?
                 <React.Fragment>
-                  {schedules.slice(0, 4).map((schedule, i) =>
+                  {userSchedules.slice(0, 4).map((schedule, i) =>
                     <TableRow key={i}>
                       <TableCell component="th">
                         <Typography>{schedule.scheduleType}</Typography>

@@ -10,14 +10,14 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
-import LoadingIndicator from '../../../components/LoadingIndicator';
+import LoadingIndicator from '../../../../components/LoadingIndicator';
 import moment from 'moment'
 import Lens from '@material-ui/icons/Lens'
 import DeleteOutline from '@material-ui/icons/DeleteOutline'
-import {AddTask} from '../components/AddButton';
-import * as Actions from '../actions';
-import * as Selectors from '../selectors';
-import NoTasksList from './components/NoTasksList'
+import { AddTask } from '../components/AddButton';
+import * as Actions from './../actions';
+import * as Selectors from './../selectors';
+import NoTasksList from './../components/NoTasksList'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -62,18 +62,30 @@ const useStyles = makeStyles(theme => ({
     width: 14,
     height: 14,
     color: theme.palette.common.black,
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.expired': { color: red[500]},
-    '&.done': { color: green[500]},
+    '&.approved': { color: theme.palette.primary.main },
+    '&.inProgress': { color: orange[500] },
+    '&.expired': { color: red[500] },
+    '&.done': { color: green[500] },
   }
 }));
 
 const TasksList = props => {
   const classes = useStyles();
-  const { loading, getUtilityTasks, getUtilityTasksByStatus, openNewTaskDialog, openConfirmTaskDeleteDialog, deleteTask, tasks, users } = props;
+  const {
+    loading,
+    dialog,
+    getUtilityTasks,
+    getUtilityTasksByStatus,
+    openNewTaskDialog,
+    openConfirmTaskDeleteDialog,
+    deleteTask,
+    tasks,
+    users,
+  } = props;
 
-console.log(tasks, "tasks")
+  console.log(tasks, "tasks")
+  console.log(dialog, "dialog from tasks list")
+  console.log(loading, "loading from tasks list")
 
   const columns = [
     {
@@ -118,7 +130,7 @@ console.log(tasks, "tasks")
         customBodyRender: day => {
           return (
             <Typography variant="inherit" color="textSecondary">
-                {moment(day).format('lll')}
+              {moment(day).format('lll')}
             </Typography>
           )
         }
@@ -133,7 +145,7 @@ console.log(tasks, "tasks")
         customBodyRender: day => {
           return (
             <Typography variant="inherit" color="textSecondary">
-                {moment(day).format('lll')}
+              {moment(day).format('lll')}
             </Typography>
           )
         }
@@ -158,7 +170,7 @@ console.log(tasks, "tasks")
         customBodyRender: date => {
           return (
             <Typography variant="inherit" color="textSecondary">
-                {moment(date).format('lll')}
+              {moment(date).format('lll')}
             </Typography>
           )
         }
@@ -173,7 +185,7 @@ console.log(tasks, "tasks")
         customBodyRender: status => {
           return (
             <Typography variant="inherit" color="textSecondary">
-              <Lens className={classNames(classes.status, {'approved': true})} /> {status}
+              <Lens className={classNames(classes.status, { 'approved': true })} /> {status}
             </Typography>
           )
         }
@@ -188,7 +200,7 @@ console.log(tasks, "tasks")
         customBodyRender: id => {
           const selectedTask = tasks && tasks.find(task => task.id === id)
           return (
-            <IconButton onClick={event => (event.stopPropagation(), openConfirmTaskDeleteDialog(selectedTask))} className={classNames(classes.iconButton, {'delete': true})}>
+            <IconButton onClick={event => (event.stopPropagation(), openConfirmTaskDeleteDialog(selectedTask))} className={classNames(classes.iconButton, { 'delete': true })}>
               <DeleteOutline />
             </IconButton>
           )
@@ -206,7 +218,7 @@ console.log(tasks, "tasks")
     selectableRows: 'none',
     customToolbar: () => <AddTask openNewTaskDialog={openNewTaskDialog} />,
     rowsPerPage: 25,
-    rowsPerPageOptions: [25,50,100],
+    rowsPerPageOptions: [25, 50, 100],
     onRowClick: (rowData, rowState) => {
       props.history.push('/task-manager/task/' + rowData[0])
     },
@@ -220,7 +232,7 @@ console.log(tasks, "tasks")
     elevation: 0
   };
 
-  if(tasks && tasks.length === 0){
+  if (tasks && tasks.length === 0) {
     return <NoTasksList />
   }
 
@@ -228,9 +240,9 @@ console.log(tasks, "tasks")
     <div className={classes.root}>
       <Grid container justify='space-between'>
         <Grid item xs={12} md={2}>
-          <List 
+          <List
             className={classes.list}
-            component="nav" 
+            component="nav"
             aria-label="secondary mailbox folders"
             subheader={
               <ListSubheader component="div" id="nested-list-subheader">
@@ -243,41 +255,41 @@ console.log(tasks, "tasks")
               <ListItemText primary="All" />
             </ListItem>
             <ListItem button onClick={() => getUtilityTasksByStatus('PENDING')}>
-              <ListItemIcon><Lens className={classNames(classes.status, {'approved': true})} /></ListItemIcon>
+              <ListItemIcon><Lens className={classNames(classes.status, { 'approved': true })} /></ListItemIcon>
               <ListItemText primary="Pending" />
             </ListItem>
             <ListItem button onClick={() => getUtilityTasksByStatus('INPROGRESS')}>
-              <ListItemIcon><Lens className={classNames(classes.status, {'inProgress': true})} /></ListItemIcon>
+              <ListItemIcon><Lens className={classNames(classes.status, { 'inProgress': true })} /></ListItemIcon>
               <ListItemText primary="In-Progress" />
             </ListItem>
             <ListItem button onClick={() => getUtilityTasksByStatus('EXPIRED')}>
-              <ListItemIcon><Lens className={classNames(classes.status, {'expired': true})} /></ListItemIcon>
+              <ListItemIcon><Lens className={classNames(classes.status, { 'expired': true })} /></ListItemIcon>
               <ListItemText primary="Due" />
             </ListItem>
             <ListItem button onClick={() => getUtilityTasksByStatus('COMPLETED')}>
-              <ListItemIcon><Lens className={classNames(classes.status, {'done': true})} /></ListItemIcon>
+              <ListItemIcon><Lens className={classNames(classes.status, { 'done': true })} /></ListItemIcon>
               <ListItemText primary="Completed" />
             </ListItem>
           </List>
         </Grid>
         <Grid item xs={12} md={10}>
-          {loading?
+          {loading ?
             <List component={LoadingIndicator} />
-          :
-          (
-            <div>
-              {/* <Box mb={2} align="right">
+            :
+            (
+              <div>
+                {/* <Box mb={2} align="right">
                 <AddTask openNewTaskDialog={openNewTaskDialog} />
               </Box> */}
-              <MUIDataTable
-                title="Task List"
-                data={tasks}
-                columns={columns}
-                options={options}
-                className={classes.datatable}
-              />
-            </div>
-          )}
+                <MUIDataTable
+                  title="Task List"
+                  data={tasks}
+                  columns={columns}
+                  options={options}
+                  className={classes.datatable}
+                />
+              </div>
+            )}
         </Grid>
       </Grid>
     </div>
@@ -293,6 +305,7 @@ const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   tasks: Selectors.makeSelectTasks(),
   users: Selectors.makeSelectEmployees(),
+  dialog: Selectors.makeSelectNewTaskDialog(),
 });
 
 function mapDispatchToProps(dispatch) {

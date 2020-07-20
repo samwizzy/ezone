@@ -1,12 +1,12 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Slide, Typography, TextField } from '@material-ui/core';
-import * as Selectors from '../../selectors';
-import * as Actions from '../../actions';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Slide, Typography, TextField } from '@material-ui/core';
+import * as Selectors from '../selectors';
+import * as Actions from '../actions';
 import QuestionMark from '../../../../images/questionMarkIcon.svg'
 
 const useStyles = makeStyles(theme => ({
@@ -14,8 +14,8 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center'
   },
   icon: {
-    width: '70px', 
-    height: '70px', 
+    width: '70px',
+    height: '70px',
   }
 }));
 
@@ -37,10 +37,10 @@ function ConfirmTaskDeleteDialog(props) {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle style={{textAlign: 'center'}}>
+        <DialogTitle style={{ textAlign: 'center' }}>
           <img src={QuestionMark} className={classes.icon} />
         </DialogTitle>
-       
+
         <DialogContent>
           <DialogContentText variant="h6" gutterBottom={false}>
             Delete "<code>{dialog.data && dialog.data.title}</code>" task?

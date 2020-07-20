@@ -14,8 +14,8 @@ import LoadingIndicator from '../../../components/LoadingIndicator';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import Description from '@material-ui/icons/Description'
 import { AddFile } from './../components/AddButton';
-import * as Actions from '../actions';
-import * as Selectors from './../selectors';
+import * as Actions from './actions';
+import * as Selectors from '././selectors';
 import * as AppSelectors from './../../App/selectors';
 import AddSignature from './components/AddSignature'
 import DocWidget from './components/DocWidget'
@@ -304,9 +304,9 @@ const FilesList = props => {
   };
 
   if (folders && folders.length === 0) {
-    // return <NoFilesList /> 
-    // return <AddSignature /> 
-    // return <DocWidget /> 
+    // return <NoFilesList />
+    // return <AddSignature />
+    // return <DocWidget />
   }
 
   return (

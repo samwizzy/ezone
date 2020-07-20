@@ -7,11 +7,11 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import Description from '@material-ui/icons/Description'
-import * as Actions from '../actions';
-import * as Selectors from './../selectors';
-import * as AppSelectors from './../../App/selectors'; 
-import Delete from '@material-ui/icons/Delete';  
-import Share from '@material-ui/icons/Share';  
+import * as Actions from './actions';
+import * as Selectors from './selectors';
+import * as AppSelectors from './../../App/selectors';
+import Delete from '@material-ui/icons/Delete';
+import Share from '@material-ui/icons/Share';
 import StarOutlined from '@material-ui/icons/StarOutlined';
 
 const useStyles = makeStyles(theme => ({
@@ -48,13 +48,13 @@ const FolderSideBar = props => {
 
   const getAllFolders = () => {
     props.history.push('/file-manager/folders')
-    getAllFoldersAndDocs({folderId: 0, type: 'ROOT'})
+    getAllFoldersAndDocs({ folderId: 0, type: 'ROOT' })
   }
-  
+
   return (
     <div className={classes.root}>
-      <List 
-        component="nav" 
+      <List
+        component="nav"
         aria-label="secondary mailbox folders"
         subheader={
           <ListSubheader component="div" id="nested-list-subheader">
@@ -74,13 +74,13 @@ const FolderSideBar = props => {
           </ListItemIcon>
           <ListItemText primary="Favorite" />
         </ListItem>
-        <ListItem button onClick={() => getAllFoldersAndDocs({folderId: 3, type: 'SHARED'})}>
+        <ListItem button onClick={() => getAllFoldersAndDocs({ folderId: 3, type: 'SHARED' })}>
           <ListItemIcon>
             <Share />
           </ListItemIcon>
           <ListItemText primary="Shared" />
         </ListItem>
-        <ListItem button onClick={() => getAllFoldersAndDocs({folderId: 2, type: 'TRASHED'})}>
+        <ListItem button onClick={() => getAllFoldersAndDocs({ folderId: 2, type: 'TRASHED' })}>
           <ListItemIcon>
             <Delete />
           </ListItemIcon>

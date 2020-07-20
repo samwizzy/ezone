@@ -16,6 +16,7 @@ import {
 import moment from 'moment'
 import AddIcon from '@material-ui/icons/Add';
 import ColorLensIcon from '@material-ui/icons/ColorLens';
+import InfoIcon from '@material-ui/icons/Info';
 import { blue } from '@material-ui/core/colors';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -142,7 +143,10 @@ const SchedulesList = props => {
                     </Fragment>
                     :
                     <Paper className={classes.paper}>
-                      <Typography variant="subtitle2" color="textSecondary">There are no schedules today</Typography>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        <InfoIcon />&nbsp;
+                        There are no schedules today
+                      </Typography>
                     </Paper>
                   }
                 </CardContent>

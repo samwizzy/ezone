@@ -33,6 +33,12 @@ const makeSelectError = () =>
     subState => subState.error,
   );
 
+const makeSelectEmployees = () =>
+  createSelector(
+    selectCrmDashboardDomain,
+    subState => subState.employees,
+  );
+
 const makeSelectContacts = () =>
   createSelector(
     selectCrmDashboardDomain,
@@ -57,13 +63,21 @@ const makeSelectTasks = () =>
     subState => subState.tasks,
   );
 
+const makeSelectReminderDialog = () =>
+  createSelector(
+    selectCrmDashboardDomain,
+    subState => subState.reminderDialog,
+  );
+
 export default makeSelectCrmDashboard;
 export {
   selectCrmDashboardDomain,
   makeSelectLoading,
   makeSelectError,
+  makeSelectEmployees,
   makeSelectContacts,
   makeSelectCompanies,
   makeSelectSchedules,
   makeSelectTasks,
+  makeSelectReminderDialog,
 };

@@ -1,34 +1,37 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { withRouter } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles'
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import LoadingIndicator from '../../../components/LoadingIndicator';
-import * as Actions from '../actions';
-import makeSelectUtilityPage, * as Selectors from './../selectors';
-import saga from './../saga';
-import reducer from './../reducer';
+import * as Actions from './actions';
+import makeSelectUtilityPage, * as Selectors from './selectors';
+import saga from './saga';
+import reducer from './reducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import TasksList from './TasksList'
-import TaskList from './TaskList'
+import TasksList from './tasks'
+import TaskList from './task'
+// import TasksList from './TasksList'
+// import TaskList from './TaskList'
 import ModuleLayout from '../components/ModuleLayout'
 import AddTaskDialog from './components/AddTaskDialog'
-// import ConfirmTaskDeleteDialog from './components/ConfirmTaskDeleteDialog'
-// import TaskPreviewDialog from './components/TaskPreviewDialog'
-// import AssignToDialog from './components/AssignToDialog'
+import ConfirmTaskDeleteDialog from './components/ConfirmTaskDeleteDialog'
+import TaskPreviewDialog from './components/TaskPreviewDialog'
+import AssignToDialog from './components/AssignToDialog'
 
-const key = "utilityPage"
-
+const key = "utilityTask"
 export function TasksApp(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
-  const { loading, getUtilityTasks, getEmployees, match } = props;
-  const { params } = match
+  const { getUtilityTasks, getEmployees, match } = props;
+  const { params, path, url } = match
+
+  console.log(path, "path task")
+  console.log(url, "url task")
 
   React.useEffect(() => {
     getUtilityTasks()
@@ -38,20 +41,22 @@ export function TasksApp(props) {
   return (
     <div>
       <Helmet>
-        <title>Tasks - Index</title>
+        <title>Tasks - Home</title>
         <meta name="description" content="Description of Tasks" />
       </Helmet>
 
       <ModuleLayout>
-        {params.id ?
+        <Route exact path={path} component={TasksList} />
+        <Route path={`${path}/:id`} component={TaskList} />
+        {/* {params.id ?
           <TaskList /> : <TasksList />
-        }
+        } */}
       </ModuleLayout>
 
       <AddTaskDialog />
-      {/* <ConfirmTaskDeleteDialog />
+      <ConfirmTaskDeleteDialog />
       <TaskPreviewDialog />
-      <AssignToDialog /> */}
+      <AssignToDialog />
     </div>
   );
 };
@@ -62,14 +67,15 @@ TasksApp.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  utilityPage: makeSelectUtilityPage(),
+  utilityTask: makeSelectUtilityPage(),
   loading: Selectors.makeSelectLoading(),
 });
 
-function mapDispatchToProps(dispatch) {
+export function mapDispatchToProps(dispatch) {
   return {
     getUtilityTasks: () => dispatch(Actions.getUtilityTasks()),
     getEmployees: () => dispatch(Actions.getEmployees()),
+    dispatch
   };
 }
 

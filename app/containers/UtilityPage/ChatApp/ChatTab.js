@@ -23,8 +23,8 @@ import { useInfiniteScroll } from 'react-infinite-scroll-hook';
 import { createStructuredSelector } from 'reselect';
 import classNames from 'classnames';
 import Add from '@material-ui/icons/Add';
-import * as Actions from '../actions';
-import * as Selectors from '../selectors';
+import * as Actions from './actions';
+import * as Selectors from './selectors';
 import * as AppSelectors from '../../App/selectors';
 import UserChat from './components/UserChat';
 import NoAvailableChats from './components/NoAvailableChats';
@@ -154,51 +154,28 @@ const ref = React.createRef();
 
 const ChatTab = props => {
   const {
-    resetPostMsgAction,
+    resetPostMsg,
     newMsgRes,
     accessToken,
-    allEmployees,
+    employees,
     allUsersChat,
     currentUser,
     getAllUserChatData,
     userChatData,
-    dispatchGetAllEmployees,
-    dispatchGetUserChats,
-    dispatchGetUserChatData,
+    getEmployees,
+    getAllUsersChat,
+    getUserChatData,
   } = props;
 
-  console.log(allEmployees, 'allEmployees');
+  console.log(employees, 'all employees');
   useEffect(() => {
-    dispatchGetAllEmployees();
-    dispatchGetUserChats();
+    // getEmployees();
+    // getAllUsersChat();
     handleScrollToBottom();
-
-    const socket = new SockJS(
-      'https://dev.ezoneapps.com/gateway/utilityserv/messages',
-    );
-    const header = {
-      'X-Authorization': `Bearer ${accessToken}`,
-      login: 'admin',
-      passcode: 'admin',
-    };
-    const stompClient = Stomp.over(socket);
-    stompClient.connect(
-      header,
-      frame => {
-        stompClient.subscribe(`/queue/${currentUser.uuId}`, tick => {
-          const newMsg = JSON.parse(tick.body);
-          console.log(newMsg, 'newMsg');
-          setChatLog(prevChatLog => [...prevChatLog, newMsg]);
-        });
-      },
-      error => {
-        console.log(error);
-      },
-    );
   }, []);
 
   if (newMsgRes) {
-    // dispatchGetUserChatData(newMsgRes);
+    // getUserChatData(newMsgRes);
     getAllUserChatData.messages.push(newMsgRes);
     // getAllUserChatData.messages[getAllUserChatData.messages.length] = newMsgRes;
   }
@@ -221,12 +198,38 @@ const ChatTab = props => {
     ref.current.scrollTop = ref.current.scrollHeight;
   };
 
-  const isFirstMessageOfGroup = (item, i) =>
-    i === 0 || (chatLog[i - 1] && chatLog[i - 1].senderId !== item.senderId);
+  const socketConnect = () => {
+    const socket = new SockJS(
+      'https://dev.ezoneapps.com/gateway/utilityserv/messages',
+    );
+    const header = {
+      'X-Authorization': `Bearer ${accessToken}`,
+      login: 'admin',
+      passcode: 'admin',
+    };
+    const stompClient = Stomp.over(socket);
+    stompClient.connect(
+      header,
+      frame => {
+        stompClient.subscribe(`/queue/${currentUser.uuId}`, tick => {
+          const newMsg = JSON.parse(tick.body);
+          console.log(newMsg, 'newMsg');
+          setChatLog(prevChatLog => [...prevChatLog, newMsg]);
+        });
+      },
+      error => {
+        console.log(error);
+      },
+    );
+  }
 
-  const isLastMessageOfGroup = (item, i) =>
-    i === chatLog.length - 1 ||
-    (chatLog[i + 1] && chatLog[i + 1].senderId !== item.senderId);
+  const isFirstMessageOfGroup = (item, i) => {
+    return i === 0 || (chatLog[i - 1] && chatLog[i - 1].senderId !== item.senderId);
+  }
+
+  const isLastMessageOfGroup = (item, i) => {
+    return i === chatLog.length - 1 || (chatLog[i + 1] && chatLog[i + 1].senderId !== item.senderId);
+  }
 
   const handleEmployeeChange = (event, vl) => {
     const initNewChat = {
@@ -255,135 +258,133 @@ const ChatTab = props => {
 
   return (
     <React.Fragment>
-      <ModuleLayout>
-        <div>
-          {!status === false ? (
-            // <NoAvailableChats />
-            <div />
-          ) : (
-              <Grid
-                container
-                justify="space-between"
-              >
-                <Grid item xs={12} md={4}>
-                  <Paper square>
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: '3px 7px',
-                      }}
-                    >
-                      <Autocomplete
-                        id="combo-box-demo"
-                        size="small"
-                        options={allEmployees}
-                        getOptionLabel={option =>
-                          `${option.firstName} ${option.lastName}`
-                        }
-                        style={{ width: '100%' }}
-                        onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            label="Search contacts"
-                            variant="outlined"
-                            placeholder="Search Contacts"
-                            fullWidth
-                          />
-                        )}
-                      />
-                      <IconButton>
-                        <Add />
-                      </IconButton>
-                    </div>
-
-                    <Tabs
-                      variant="fullWidth"
-                      value={value}
-                      indicatorColor="primary"
-                      textColor="primary"
-                      onChange={handleChange}
-                      aria-label="disabled tabs example"
-                      className={classes.tabs}
-                    >
-                      <Tab label="Active" {...a11yProps(1)} />
-                      <Tab label="Group" {...a11yProps(1)} />
-                      <Tab label="Archive" {...a11yProps(1)} />
-                    </Tabs>
-                  </Paper>
-                  <TabPanel value={value} index={0}>
-                    <UserChat
-                      allUsersChat={allUserReversedData}
-                      newChat={newChat}
+      <div>
+        {!status === false ? (
+          <NoAvailableChats />
+        ) : (
+            <Grid
+              container
+              justify="space-between"
+            >
+              <Grid item xs={12} md={4}>
+                <Paper square>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '3px 7px',
+                    }}
+                  >
+                    <Autocomplete
+                      id="combo-box-demo"
+                      size="small"
+                      options={employees}
+                      getOptionLabel={option =>
+                        `${option.firstName} ${option.lastName}`
+                      }
+                      style={{ width: '100%' }}
+                      onChange={(evt, ve) => handleEmployeeChange(evt, ve)}
+                      renderInput={params => (
+                        <TextField
+                          {...params}
+                          label="Search contacts"
+                          variant="outlined"
+                          placeholder="Search Contacts"
+                          fullWidth
+                        />
+                      )}
                     />
-                  </TabPanel>
-                  <TabPanel value={value} index={1}>
-                    <UserChat />
-                  </TabPanel>
-                  <TabPanel value={value} index={2}>
-                    <UserChat />
-                  </TabPanel>
-                </Grid>
-                <Grid item xs={12} md={8} component={Paper}>
-                  {/* {getAllUserChatData &&
+                    <IconButton>
+                      <Add />
+                    </IconButton>
+                  </div>
+
+                  <Tabs
+                    variant="fullWidth"
+                    value={value}
+                    indicatorColor="primary"
+                    textColor="primary"
+                    onChange={handleChange}
+                    aria-label="disabled tabs example"
+                    className={classes.tabs}
+                  >
+                    <Tab label="Active" {...a11yProps(1)} />
+                    <Tab label="Group" {...a11yProps(1)} />
+                    <Tab label="Archive" {...a11yProps(1)} />
+                  </Tabs>
+                </Paper>
+                <TabPanel value={value} index={0}>
+                  <UserChat
+                    allUsersChat={allUserReversedData}
+                    newChat={newChat}
+                  />
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                  <UserChat />
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                  <UserChat />
+                </TabPanel>
+              </Grid>
+              <Grid item xs={12} md={8} component={Paper}>
+                {/* {getAllUserChatData &&
                 getAllUserChatData.messages.length > 0 ? ( */}
-                  <Grid container justify="center">
-                    <Grid item xs={12}>
-                      <ChatHeader userChatData={userChatData} />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <div className={classes.msgBody} ref={ref}>
-                        {chatLog &&
-                          _.orderBy(chatLog, ['dateCreated'], ['asc']).map(
-                            (chat, i) => (
-                              <div
-                                key={chat.dateCreated.toString() + 10}
-                                className={classNames(
-                                  classes.messageRow,
-                                  { me: currentUser.uuId === chat.senderId },
-                                  { contact: currentUser.uuId !== chat.senderId },
-                                  {
-                                    'first-of-group': isFirstMessageOfGroup(
-                                      chat,
-                                      i,
-                                    ),
-                                  },
-                                  {
-                                    'last-of-group': isLastMessageOfGroup(
-                                      chat,
-                                      i,
-                                    ),
-                                  },
-                                )}
-                              >
-                                <Paper className={classes.chatPane} key={chat.id}>
-                                  <Typography
-                                    variant="subtitle1"
-                                    key={chat.toString()}
-                                  >
-                                    {chat.chatMessage}
-                                  </Typography>
-                                  <Typography
-                                    variant="caption"
-                                    style={{
-                                      position: 'absolute',
-                                      right: 12,
-                                      bottom: 0,
-                                    }}
-                                  >
-                                    {moment(chat.dateCreated).format('LT')}
-                                  </Typography>
-                                </Paper>
-                              </div>
-                            ),
-                          )}
-                      </div>
-                      <ChatFooter />
-                    </Grid>
+                <Grid container justify="center">
+                  <Grid item xs={12}>
+                    <ChatHeader userChatData={userChatData} />
                   </Grid>
-                  {/* ) : (
+                  <Grid item xs={12}>
+                    <div className={classes.msgBody} ref={ref}>
+                      {chatLog &&
+                        _.orderBy(chatLog, ['dateCreated'], ['asc']).map(
+                          (chat, i) => (
+                            <div
+                              key={chat.dateCreated.toString() + 10}
+                              className={classNames(
+                                classes.messageRow,
+                                { me: currentUser.uuId === chat.senderId },
+                                { contact: currentUser.uuId !== chat.senderId },
+                                {
+                                  'first-of-group': isFirstMessageOfGroup(
+                                    chat,
+                                    i,
+                                  ),
+                                },
+                                {
+                                  'last-of-group': isLastMessageOfGroup(
+                                    chat,
+                                    i,
+                                  ),
+                                },
+                              )}
+                            >
+                              <Paper className={classes.chatPane} key={chat.id}>
+                                <Typography
+                                  variant="subtitle1"
+                                  key={chat.toString()}
+                                >
+                                  {chat.chatMessage}
+                                </Typography>
+                                <Typography
+                                  variant="caption"
+                                  style={{
+                                    position: 'absolute',
+                                    right: 12,
+                                    bottom: 0,
+                                  }}
+                                >
+                                  {moment(chat.dateCreated).format('LT')}
+                                </Typography>
+                              </Paper>
+                            </div>
+                          ),
+                        )}
+                    </div>
+                    <ChatFooter />
+                  </Grid>
+                </Grid>
+                {/* ) : (
                     <Grid container justify="center">
                       <Grid item xs={12}>
                         <div className={classes.msgBody}>
@@ -396,21 +397,20 @@ const ChatTab = props => {
                       </Grid>
                     </Grid>
                   )} */}
-                </Grid>
               </Grid>
-            )}
-        </div>
-      </ModuleLayout>
+            </Grid>
+          )}
+      </div>
     </React.Fragment>
   );
 };
 
 ChatTab.propTypes = {
-  resetPostMsgAction: PropTypes.func,
+  resetPostMsg: PropTypes.func,
   newMsgRes: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
-  dispatchGetAllEmployees: PropTypes.func,
-  dispatchGetUserChats: PropTypes.func,
-  allEmployees: PropTypes.array,
+  getEmployees: PropTypes.func,
+  getAllUsersChat: PropTypes.func,
+  employees: PropTypes.array,
   allUsersChat: PropTypes.array,
   currentUser: PropTypes.object,
   getAllUserChatData: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
@@ -421,7 +421,7 @@ const mapStateToProps = createStructuredSelector({
   newMsgRes: Selectors.makeSelectGetPostMsg(),
   userChatData: Selectors.makeSelectGetUserChatData(),
   getAllUserChatData: Selectors.makeSelectGetAllUserChatData(),
-  allEmployees: Selectors.makeSelectAllEmployees(),
+  employees: Selectors.makeSelectEmployees(),
   allUsersChat: Selectors.makeSelectAllUsersChat(),
   currentUser: AppSelectors.makeSelectCurrentUser(),
   accessToken: AppSelectors.makeSelectAccessToken(),
@@ -429,10 +429,10 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchGetAllEmployees: () => dispatch(Actions.getAllUsers()),
-    dispatchGetUserChats: () => dispatch(Actions.getAllUsersChat()),
-    dispatchGetUserChatData: evt => dispatch(Actions.getUserChatData(evt)),
-    resetPostMsgAction: () => dispatch(Actions.resetPostMsg()),
+    getEmployees: () => dispatch(Actions.getEmployees()),
+    getAllUsersChat: () => dispatch(Actions.getAllUsersChat()),
+    getUserChatData: evt => dispatch(Actions.getUserChatData(evt)),
+    resetPostMsg: () => dispatch(Actions.resetPostMsg()),
     dispatch,
   };
 }

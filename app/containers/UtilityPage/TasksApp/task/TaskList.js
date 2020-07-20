@@ -13,16 +13,16 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { green, orange } from '@material-ui/core/colors'
 import moment from 'moment'
 import _ from 'lodash'
-import * as Actions from '../actions';
-import * as AppSelectors from '../../App/selectors';
-import * as Selectors from '../selectors';
+import * as AppSelectors from '../../../App/selectors';
+import * as Actions from './../actions';
+import * as Selectors from './../selectors';
 import AssignmentTurnedIn from '@material-ui/icons/AssignmentTurnedIn';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
 import Add from '@material-ui/icons/Add';
 import Lens from '@material-ui/icons/Lens';
-import ReactDropZone from './components/ReactDropZone'
-import CommentList from './components/CommentList'
+import ReactDropZone from './../components/ReactDropZone'
+import CommentList from './../components/CommentList'
 
 const drawerWidth = '100%';
 
@@ -173,14 +173,31 @@ const TaskList = props => {
   const [comment, setComment] = React.useState({
     comment: "",
     commentBy: authUser && authUser.uuId,
-    taskId: task.id
+    taskId: ''
   });
   const [value, setValue] = React.useState(0);
+
+  if (!task) {
+    return ''
+  }
+
+  React.useEffect(() => {
+    getUtilityTask(match.params.id)
+    setSelectedIndex(match.params.id)
+  }, []);
+
+  React.useEffect(() => {
+    if (task) {
+      setComment(_.set({ ...comment }, 'taskId', task.id))
+      getTaskComments(task.id)
+    }
+  }, [task]);
+
   const filteredTasks = _.orderBy(tasks, ['dateCreated'], ['desc']);
 
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
-  const maxSteps = task.documents && task.documents.length;
+  const maxSteps = task && task.documents && task.documents.length;
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -197,18 +214,6 @@ const TaskList = props => {
   console.log(comment, "comment from comment")
   console.log(task, "task from tasklist single")
   console.log(comments, "comments from comments comments")
-
-  React.useEffect(() => {
-    getUtilityTask(match.params.id)
-    setSelectedIndex(match.params.id)
-  }, []);
-
-  React.useEffect(() => {
-    if (task) {
-      setComment(_.set({ ...comment }, 'taskId', task.id))
-      getTaskComments(task.id)
-    }
-  }, [task]);
 
   const handleChange = event => {
     setComment(_.set({ ...comment }, event.target.name, event.target.value))

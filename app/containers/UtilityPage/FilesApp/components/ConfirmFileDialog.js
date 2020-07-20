@@ -1,12 +1,12 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Slide, Typography, TextField } from '@material-ui/core';
-import * as Selectors from '../../selectors';
-import * as Actions from '../../actions';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Slide, Typography, TextField } from '@material-ui/core';
+import * as Selectors from '../selectors';
+import * as Actions from '../actions';
 import QuestionMark from '../../../../images/questionMarkIcon.svg'
 
 const useStyles = makeStyles(theme => ({
@@ -16,8 +16,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   icon: {
-    width: '70px', 
-    height: '70px', 
+    width: '70px',
+    height: '70px',
   }
 }));
 
@@ -30,9 +30,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function SharedFileDialog(props) {
   const classes = useStyles()
   const { closeSharedFileDialog, data } = props
-  const [form, setForm] = React.useState({email: '', comment: ''})
+  const [form, setForm] = React.useState({ email: '', comment: '' })
 
-  const handleChange = () => {}
+  const handleChange = () => { }
 
   console.log(data, 'checking shared...')
 
@@ -52,7 +52,7 @@ function SharedFileDialog(props) {
           <DialogContentText id="alert-dialog-slide-description">
             Are you sure you want to move "Document Name" to Trash?
           </DialogContentText>
-          
+
         </DialogContent>
         <DialogActions>
           <Button variant="outlined" onClick={closeSharedFileDialog} color="primary">
