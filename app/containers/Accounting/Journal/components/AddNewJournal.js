@@ -36,6 +36,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {alphaNumeric} from "../validator.js";
 import * as Actions from '../actions';
+import FileContainer from '../filecontainer';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../../App/selectors';
 // import LoadingIndicator from '../../../../components/LoadingIndicator';
@@ -89,6 +90,11 @@ const useStyles = makeStyles(theme => ({
 
 const AddNewJournal = props => {
   const classes = useStyles();
+  let credentials = JSON.parse(localStorage.getItem('user'))
+  let company = (`${(credentials.organisation.companyName)}`);
+  const [display,setDisplay] = useState(null);
+  const [referenceNo,setReferenceNo] = useState(`${company.substr(0,2)}${(new Date).getTime()}`)
+  
 
   const {
     history,
@@ -113,13 +119,14 @@ const AddNewJournal = props => {
   xuv = accountPeriodData.length;
     // Filter all periods with status -> true
     const filteredAccountPeriodData = accountPeriodData.filter((item) => item.status);
-    console.log('accountPeriodData is -> ', JSON.stringify(accountPeriodData));
+    //console.log('accountPeriodData is -> ', JSON.stringify(accountPeriodData));
+
   const [values, setValues] = React.useState({
     entries: [],
     note: "",
     orgId: currentUser.organisation.orgId,
     periodId: "",
-    transactionDate: "",
+    transactionDate:"",
     reference: ""
   });
 
@@ -174,20 +181,32 @@ const AddNewJournal = props => {
      let debit = 0;
      let credit = 0;
      for(let i=0;i<values.entries.length;i++){
-       debit = values.entries[i].debit + debit;
-       credit =values.entries[i].credit + credit;
+       debit = Number(values.entries[i].debit) +Number(debit);
+       credit = Number(values.entries[i].credit) + Number(credit);
      }
      console.log(`credit ${Number(credit)} Debit ${Number(debit)}`)
      if(Number(debit) === Number(credit)){
-       if(xuv < 2){
+       /*if(xuv < 2){
         setValues({ ...values, periodId: currentAccountPeriod.id, transactionDate: currentAccountPeriod.startDate });
-       }
+       }*/
        return true;
      }
      return false;
     }
     else
     return false;
+  }
+
+  function filtered(value){
+    console.log(JSON.stringify(value[0]))
+  let result = [];
+  for(let i=0;i<value.length;i++){
+    console.log(`filtered ${value[i].status}`)
+    if(value[i].status){
+      result = [...result,value[i]];
+    }
+  }
+  return result;
   }
 
   const isDisabled = () => {
@@ -204,6 +223,10 @@ const AddNewJournal = props => {
       result.then(rs => {
         const file = Object.assign({}, { fileName: name, file: rs })
         fileNode.push(file)
+        let k = (`${name}`).lastIndexOf(".");
+        let extension = (`${name}`).substr(k+1);
+        setDisplay({name:name,icon:extension})
+        
       })   
     })
     setValues(_.set({ ...values }, event.target.name, fileNode))
@@ -222,9 +245,19 @@ const AddNewJournal = props => {
     setIsAphaNumeric(false)
   }
 
+  function submitValue(){
+    let date = (new Date).toISOString();
+    let k = date.lastIndexOf(".");
+    date =`${date.substr(0,k+1)}000+0000`;
+    setValues({ ...values, periodId: currentAccountPeriod.id, transactionDate:date });
+    createNewAccountJournalAction(values);
+      history.push({
+      pathname: '/account/journal'})
+  }
+
   console.log('values -> ', values);
-  console.log('currentAccountPeriod is -> ', currentAccountPeriod);
-  console.log('chartOfAccountData is -> ', JSON.stringify(chartOfAccountData));
+  //console.log('currentAccountPeriod is -> ', currentAccountPeriod);
+  console.log('chartOfAccountData from Journal is -> ',chartOfAccountData[0]);
 
   return (
     <ModuleLayout>
@@ -259,7 +292,7 @@ const AddNewJournal = props => {
               
               :
               
-              <Typography variant="h6" component="h6">{`${moment(currentAccountPeriod.startDate).format('dddd do-MMM-YYYY')} - ${moment(currentAccountPeriod.endDate).format('dddd do-MMM-YYYY')}`}</Typography>
+              <Typography variant="subtitle1" color="textSecondary">{`${moment(currentAccountPeriod.startDate).format('dddd do-MMM-YYYY')} - ${moment(currentAccountPeriod.endDate).format('dddd do-MMM-YYYY')}`}</Typography>
               
               )
               }
@@ -298,8 +331,11 @@ const AddNewJournal = props => {
                   variant="outlined"
                   size="small"
                   className={classes.textField}
-                  value={values.reference}
-                  onChange={handleChange('reference')}
+                  value={referenceNo}
+                  onChange={e=>{
+                    handleChange('reference')
+                    setReferenceNo(e.target.value)}
+                  }
                   margin="normal"
                   fullWidth
                 />
@@ -357,8 +393,8 @@ const AddNewJournal = props => {
                 <TableRow key={id}>
                   <TableCell align="center">
                     <Autocomplete
-                      id={id}
-                      options={chartOfAccountData}
+                      id={`${id}`}
+                      options={filtered(chartOfAccountData)}
                       getOptionLabel={option => `${option.accountCode} ${option.accountName}`}
                       onChange={(evt, value) => handleSelectChangeRows(evt, value, id)}
                       renderInput={params => (
@@ -482,6 +518,21 @@ const AddNewJournal = props => {
                       />
                     </Button>
                   </TableCell>
+                  
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={12}>
+                    <div>
+                      {display === null ?
+                      <div/>
+                      :
+                      <div>
+                        <FileContainer name={display.name} icon={display.icon} />
+                      </div>
+                      
+                      }
+                    </div>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell colSpan={5} align="right">
@@ -504,10 +555,11 @@ const AddNewJournal = props => {
                       variant="contained"
                       color="primary"
                       className={classes.button}
-                      onClick={() => {
-                        createNewAccountJournalAction(values);
-                      }}
                       disabled={!isDisabled()}
+                      onClick={() => {
+                        submitValue()
+                      }}
+                      
                     >
                       Save and Submit
                     </Button>

@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo,useContext} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles'
 import { withRouter } from 'react-router-dom'
@@ -15,6 +15,7 @@ import EventIcon from '@material-ui/icons/Event';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import AssessmentIcon from '@material-ui/icons/Assessment';
+import { SettingContext } from './SettingsLayout';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -44,10 +45,15 @@ const useStyles = makeStyles(theme => ({
 
 const SettingsSideBar = props => {
   const classes = useStyles();
+  const settingContext = useContext(SettingContext)
   const [open, setOpen] = React.useState(true);
 
   const handleClick = () => {
     setOpen(!open);
+  };
+
+  const handleClickPage = (value) => {
+    settingContext.settingDispatch({type:'NAVIGATION',page:value});
   };
   
   return (
@@ -61,7 +67,7 @@ const SettingsSideBar = props => {
           </ListSubheader>
         }
       >
-        <ListItem button onClick={() => {}}>
+        <ListItem button onClick={() => {handleClickPage('setting')}}>
           <ListItemIcon>
             <EventIcon />
           </ListItemIcon>
@@ -75,13 +81,13 @@ const SettingsSideBar = props => {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem button className={classes.nested}>
+          <ListItem button className={classes.nested} onClick={()=>handleClickPage('deprecition')}>
             <ListItemText primary="Deprecition Type" />
           </ListItem>
-          <ListItem button className={classes.nested}>
+          <ListItem button className={classes.nested} onClick={()=>handleClickPage('deprecitionarea')}>
             <ListItemText primary="Deprecition Area" />
           </ListItem>
-          <ListItem button className={classes.nested}>
+          <ListItem button className={classes.nested} onClick={()=>handleClickPage('assetclasses')}>
             <ListItemText primary="Asset Class" />
           </ListItem>
         </List>

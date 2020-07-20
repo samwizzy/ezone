@@ -85,6 +85,7 @@ const AccountChart = props => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [account, setAccount] = useState('');
   const [allCoa,setAllCoa] = useState([])
+  const [loadingChart,setLoadingChart] = useState(true);
   const [credentials] = useState(JSON.parse(localStorage.getItem('user')))
   const [accessToken] = useState(localStorage.getItem('access_token'))
   const[refresh,setRefresh] = useState(true);
@@ -126,7 +127,7 @@ const AccountChart = props => {
           accountName:coaData[i].accountName,accountNumber:coaData[i].accountNumber,
           accountType:(coaData[i].accountType === null ? 'Bank':coaData[i].accountType.accountType),
           accountTypeId:coaData[i].accountType === null? 14:coaData[i].accountType.id,bankBalance:coaData[i].bankBalance,
-          openingBalance:coaData[i].openingBalance,
+          openingBalance:coaData[i].accountType === null?coaData[i].bankBalance: coaData[i].openingBalance,
           bankName:coaData[i].bankName,
           description:coaData[i].description,id:coaData[i].id}]
         }
@@ -136,10 +137,12 @@ const AccountChart = props => {
       //setIsEmpty(chatData.length > 0 ?false :true);
       //setchartOfAccountData(chatData)
       chartContext.chartDispatch({type:'REFRESH',refresh:false})
+      setLoadingChart(false);
     })
 
     .catch((err) => {
       console.log(`error ocurr at ChartofAccount ${err}`);
+      setLoadingChart(false);
     });
     
 
@@ -338,13 +341,37 @@ const AccountChart = props => {
       },
     },
     {
+      name: '',
+      label: 'Financial Position',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: '',
+      label: 'Debit/Credit',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: '',
+      label: 'Status',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    /*{
       name: 'description',
       label: 'Account Description',
       options: {
         filter: true,
         sort: false,
       },
-    },
+    },*/
     {
       name: 'id',
       label: ' ',
@@ -476,7 +503,7 @@ const AccountChart = props => {
   return (
     <div>
       {
-        allCoa.length < 1 ?
+        loadingChart ?
         (
           <div style={{textAlign:'center'}}><div style={{margin:'2px auto'}}><CircularProgress /></div></div>
         )

@@ -40,6 +40,9 @@ import {
     lift:{
     marginTop:'-1.1em'
     },
+    liftSmall:{
+      marginTop:'1.1em'
+      },
     bColored:{
         width:'300px',
         height:'240px',
@@ -115,7 +118,7 @@ const AccessClass = () => {
                       </Grid>
 
                       <Grid item xs={6}>
-                      <div>
+                      <div className={classes.liftSmall}>
                           <Autocomplete
                               id="assettype"
                              options={assetType}
@@ -139,30 +142,30 @@ const AccessClass = () => {
               <Grid container spacing={3}>
                   <Grid item xs={12}>
                       <div className={classes.title}>
-                      <Typography variant="h5" color="textSecondary" component="h6">
+                      <Typography variant="subtitle1" color="textSecondary">
                        Depreciation areas
                      </Typography>
                       </div>
                   </Grid>
                   
                  <Grid item xs={3}>
-                 <Typography variant="h6" color="textSecondary" component="h5">
+                 <Typography variant="subtitle1" color="textSecondary">
                      Base
                      </Typography>
                  </Grid>
                  <Grid item xs={3}>
-                 <Typography variant="h6" color="textSecondary" component="h5">
+                 <Typography variant="subtitle1" color="textSecondary">
                      Account Determination
                      </Typography>
                  </Grid>
                  <Grid item xs={3}>
-                 <Typography variant="h6" color="textSecondary" component="h5">
+                 <Typography variant="subtitle1" color="textSecondary">
                      Depreciation Type
                      </Typography>
                  </Grid>
 
                  <Grid item xs={3}>
-                 <Typography variant="h6" color="textSecondary" component="h5">
+                 <Typography variant="subtitle1" color="textSecondary">
                      Life span (months)
                      </Typography>
                  </Grid>
@@ -289,19 +292,7 @@ const AccessClass = () => {
               </Paper>
               </Grid>
 
-              <Grid item xs={12}>
-                 <div style={{float:"right",padding:'10px'}}>
-                <div>
-                <Button
-                variant="contained"
-                onClick={()=>{fixedContext.fixedDispatch({type:'NAVIGATION',page:'depreciationarea'})}}
-                startIcon={<SendIcon />}
-              >
-                Back
-              </Button>
-                     </div>
-                 </div>
-              </Grid>
+             
         </Grid>
         </div>
             

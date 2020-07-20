@@ -14,7 +14,7 @@ import {
     Grid
   } from '@material-ui/core';
   import Autocomplete from '@material-ui/lab/Autocomplete';
-  import SendIcon from '@material-ui/icons/ArrowForward';
+  import SendIcon from '@material-ui/icons/ArrowBack';
   import BackIcon from '@material-ui/icons/ArrowBack';
   import { BrowserRouter as Router, Switch,useParams, Route,useRouteMatch } from "react-router-dom";
   import { FixedAssetContext } from './index';
@@ -346,18 +346,18 @@ const DepreciationSetup = () => {
                   </Grid>
                   
                  <Grid item xs={4}>
-                 <Typography variant="h6" color="textSecondary" component="h5">
+                 <Typography variant="subtitle1" color="textSecondary">
                      Base
                      </Typography>
                  </Grid>
                  <Grid item xs={4}>
-                 <Typography variant="h6" color="textSecondary" component="h5">
+                 <Typography variant="subtitle1" color="textSecondary" >
                      Number of years
                      </Typography>
                  </Grid>
 
                  <Grid item xs={4}>
-                 <Typography variant="h6" color="textSecondary" component="h5">
+                 <Typography variant="subtitle1" color="textSecondary">
                      Annual percentage
                      </Typography>
                  </Grid>
@@ -456,36 +456,6 @@ const DepreciationSetup = () => {
                 )
               }
 
-          <Grid item xs={12}>
-               
-               <div style={{float:"right",padding:'10px'}}>
-                <div>
-                <Grid container spacing={1}>
-                  <Grid item>
-                  <Button
-                variant="contained"
-                onClick={()=>{fixedContext.fixedDispatch({type:'NAVIGATION',page:'newasset'})}}
-                startIcon={<BackIcon />}
-              >
-                Back
-              </Button>
-                </Grid>
-                  <Grid item>
-                  <Button
-                variant="contained"
-                color="primary"
-                onClick={()=>{fixedContext.fixedDispatch({type:'NAVIGATION',page:'depreciationarea'})}}
-                endIcon={<SendIcon />}
-              >
-                Next
-              </Button>
-                  </Grid>
-                  
-                  </Grid>
-                
-               </div>
-                 </div>
-              </Grid>
 
             </Grid>
         </div>

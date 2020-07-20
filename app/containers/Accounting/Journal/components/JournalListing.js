@@ -82,6 +82,7 @@ const JournalListing = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [account, setAccount] = React.useState('');
+  
 
   const {
     history,
@@ -89,6 +90,8 @@ const JournalListing = props => {
   } = props;
 
   console.log('journalListData -> ', journalListData);
+
+  const jornallist = [];
 
 
   const handleClick = (event, id) => {
@@ -104,7 +107,7 @@ const JournalListing = props => {
 
   const columns = [
     {
-      name: 'transactionDate',
+      name: 'dateCreated',
       label: 'Date',
       options: {
         filter: true,
@@ -214,7 +217,7 @@ const JournalListing = props => {
             <MUIDataTable
               className={classes.datatable}
               title="Journal"
-              data={journalListData}
+              data={journalListData.reverse()}
               columns={columns}
               options={options}
             />

@@ -14,7 +14,7 @@ import {
     Grid
   } from '@material-ui/core';
   import Autocomplete from '@material-ui/lab/Autocomplete';
-  import SendIcon from '@material-ui/icons/ArrowForward';
+  import BackIcon from '@material-ui/icons/ArrowBack';
   import UploadIcon from '@material-ui/icons/AddAPhotoOutlined';
   import { BrowserRouter as Router, Switch,useParams, Route,useRouteMatch } from "react-router-dom";
   import { FixedAssetContext } from './index';
@@ -187,7 +187,7 @@ const NewAsset = () => {
                                     <Grid item xs={12}>
                                     <TextField className={classes.inputBox}
                                     id="itemType"
-                                    label="Item Type"
+                                    label="Asset Type"
                                     required
                                     variant="filled"
                                   margin="normal"
@@ -433,11 +433,10 @@ const NewAsset = () => {
                      <div>
                      <Button
                 variant="contained"
-                color="primary"
-                onClick={()=>{fixedContext.fixedDispatch({type:'NAVIGATION',page:'depreciation'})}}
-                endIcon={<SendIcon />}
+                onClick={()=>{fixedContext.fixedDispatch({type:'NAVIGATION',page:'fixed'})}}
+                startIcon={<BackIcon />}
               >
-                Next
+                Back
               </Button>
                      </div>
                  </div>

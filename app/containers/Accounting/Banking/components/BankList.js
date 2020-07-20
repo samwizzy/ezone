@@ -140,14 +140,6 @@ const BankList = props => {
 			},
     },
     {
-      name: 'amount',
-      label: 'Amount',
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
       name: 'status',
       label: 'Status',
       options: {
@@ -240,6 +232,8 @@ const BankList = props => {
     ),
     elevation: 0
   };
+
+  console.log('account data -> ', bankAccountData);
 
   return (
     
