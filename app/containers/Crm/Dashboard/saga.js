@@ -101,6 +101,7 @@ export function* getTasks() {
   }
 }
 
+
 // Individual exports for testing
 export default function* crmSaga() {
   yield takeLatest(Constants.GET_CONTACTS, getContacts);

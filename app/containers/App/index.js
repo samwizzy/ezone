@@ -176,8 +176,7 @@ const App = props => {
                     component={TasksPage}
                   />
                   <PrivateRoute
-                    exact
-                    path="/task-manager/task/:id"
+                    path="/task-manager/task"
                     component={TasksPage}
                   />
                   <PrivateRoute
@@ -186,8 +185,7 @@ const App = props => {
                     component={FilesApp}
                   />
                   <PrivateRoute
-                    exact
-                    path="/file-manager/folder/:folderId"
+                    path="/file-manager/folder"
                     component={FilesApp}
                   />
                   <PrivateRoute exact path="/chats" component={ChatApp} />

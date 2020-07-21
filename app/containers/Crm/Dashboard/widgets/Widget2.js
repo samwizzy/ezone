@@ -1,4 +1,5 @@
 import React from "react"
+import { Link } from 'react-router-dom'
 import {
   makeStyles,
   Box,
@@ -100,9 +101,9 @@ const Widget2 = ({ companies }) => {
         <Divider />
 
         <CardActions>
-          <Typography>
-            View All Contacts
-                    </Typography>
+          <Button component={Link} to='/crm/companies'>
+            View All Companies
+					</Button>
         </CardActions>
       </Card>
     </div>

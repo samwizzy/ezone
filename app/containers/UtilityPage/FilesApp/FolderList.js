@@ -13,8 +13,8 @@ import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import Description from '@material-ui/icons/Description'
 import { AddFile } from './../components/AddButton';
-import * as Actions from '../actions';
-import * as Selectors from './../selectors';
+import * as Actions from './actions';
+import * as Selectors from './selectors';
 import * as AppSelectors from './../../App/selectors';
 import NoFilesList from './components/NoFilesList'
 import moment from 'moment'

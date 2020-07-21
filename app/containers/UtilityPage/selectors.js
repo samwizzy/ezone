@@ -1,19 +1,11 @@
-import { createSelector } from 'reselect';
-import { initialState } from './reducer';
-
 /**
  * Direct selector to the utility state domain
  */
 
+import { createSelector } from 'reselect';
+import { initialState } from './reducer';
+
 const selectUtilityPageDomain = state => state.utilityPage || initialState;
-
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by UtilityPage
- */
 
 const makeSelectUtilityPage = () =>
   createSelector(
@@ -55,7 +47,7 @@ const makeSelectNestedFolders = () =>
   createSelector(
     selectUtilityPageDomain,
     subState => subState.nestedFolders,
-  );  
+  );
 
 const makeSelectFolder = () =>
   createSelector(

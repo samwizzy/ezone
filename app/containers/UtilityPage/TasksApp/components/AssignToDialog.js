@@ -1,12 +1,12 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, MenuItem, Slide, Typography, TextField } from '@material-ui/core';
-import * as Selectors from '../../selectors';
-import * as Actions from '../../actions';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, MenuItem, Slide, Typography, TextField } from '@material-ui/core';
+import * as Selectors from '../selectors';
+import * as Actions from '../actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,7 +24,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function AssignToDialog(props) {
   const classes = useStyles()
-  const { closeAssignToDialog, shareDocument, dialog, users, files } = props
+  const { closeAssignToDialog, shareDocument, dialog, users } = props
   const [form, setForm] = React.useState({
     docId: "",
     name: "",
@@ -32,14 +32,14 @@ function AssignToDialog(props) {
   })
 
   React.useEffect(() => {
-    if(dialog.data != null){
+    if (dialog.data != null) {
       setForm(_.set(form, "docId", dialog.data.id))
       setForm(_.set(form, "name", dialog.data.docName))
     }
   }, [dialog])
 
   const handleChange = (event) => {
-    setForm(_.set({...form}, event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value));
+    setForm(_.set({ ...form }, event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value));
   }
 
   const handleSubmit = () => {
@@ -57,7 +57,7 @@ function AssignToDialog(props) {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle id="alert-dialog-slide-title">Assign Task</DialogTitle>
-        
+
         <DialogContent>
           <TextField
             id="select-head"
@@ -101,7 +101,6 @@ AssignToDialog.propTypes = {
 const mapStateToProps = createStructuredSelector({
   dialog: Selectors.makeSelectAssignTaskDialog(),
   users: Selectors.makeSelectEmployees(),
-  files: Selectors.makeSelectFiles(),
 });
 
 function mapDispatchToProps(dispatch) {

@@ -9,16 +9,61 @@ import * as Constants from './constants';
 export const initialState = {
   loading: false,
   error: false,
+  employees: [],
   contacts: [],
   companies: [],
   schedules: [],
   tasks: [],
+  reminderDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
 };
 
 /* eslint-disable default-case, no-param-reassign */
 const crmReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
+      case Constants.GET_EMPLOYEES: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.GET_EMPLOYEES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          employees: action.payload
+        };
+      }
+      case Constants.OPEN_SCHEDULE_REMINDER_DIALOG: {
+        return {
+          ...state,
+          reminderDialog: {
+            type: 'new',
+            props: {
+              open: true,
+            },
+            data: null,
+          }
+        };
+      }
+      case Constants.CLOSE_SCHEDULE_REMINDER_DIALOG: {
+        return {
+          ...state,
+          reminderDialog: {
+            type: 'new',
+            props: {
+              open: false,
+            },
+            data: null,
+          }
+        }
+      }
       case Constants.GET_CONTACTS: {
         return {
           ...state,

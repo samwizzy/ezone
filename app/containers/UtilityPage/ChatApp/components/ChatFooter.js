@@ -16,7 +16,7 @@ import { createStructuredSelector } from 'reselect';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import SettingsVoice from '@material-ui/icons/SettingsVoice';
 import AttachFile from '@material-ui/icons/AttachFile';
-import * as Actions from '../../actions';
+import * as Actions from './../actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -77,7 +77,7 @@ const ChatFooter = props => {
     <div className={classes.root}>
       <form
         onSubmit={onMessageSubmit}
-        // className="absolute bottom-0 right-0 left-0 py-16 px-8"
+      // className="absolute bottom-0 right-0 left-0 py-16 px-8"
       >
         <AppBar className={classes.appBar} position="absolute" color="inherit" elevation={0}>
           <Toolbar className={classes.toolbar}>
@@ -144,7 +144,7 @@ const ChatFooter = props => {
               aria-haspopup="true"
               color="inherit"
               type="submit"
-              // onClick={() => dispatchPostMessage(values)}
+            // onClick={() => dispatchPostMessage(values)}
             >
               <Icon color="action">send</Icon>
             </IconButton>

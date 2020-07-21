@@ -6,6 +6,26 @@
 
 import * as Constants from './constants';
 
+export function getEmployees() {
+  return {
+    type: Constants.GET_EMPLOYEES,
+  }
+}
+
+export function getEmployeesSuccess(payload) {
+  return {
+    type: Constants.GET_EMPLOYEES_SUCCESS,
+    payload
+  }
+}
+
+export function getEmployeesError(payload) {
+  return {
+    type: Constants.GET_EMPLOYEES_ERROR,
+    payload
+  }
+}
+
 export function getContacts() {
   return {
     type: Constants.GET_CONTACTS,
@@ -84,14 +104,14 @@ export function getTasksError(payload) {
   }
 }
 
-export function openNewContactDialog() {
+export function openNewScheduleReminderDialog() {
   return {
-    type: Constants.OPEN_NEW_CONTACT_DIALOG,
+    type: Constants.OPEN_SCHEDULE_REMINDER_DIALOG,
   };
 }
 
-export function closeNewContactDialog() {
+export function closeNewScheduleReminderDialog() {
   return {
-    type: Constants.CLOSE_NEW_CONTACT_DIALOG,
+    type: Constants.CLOSE_SCHEDULE_REMINDER_DIALOG,
   };
 }

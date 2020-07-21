@@ -1,12 +1,12 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import {Avatar, Button, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, List, ListItem, ListItemText, ListItemAvatar, Slide, Typography, Table, TableBody, TableRow, TableCell } from '@material-ui/core';
-import * as Selectors from '../../selectors';
-import * as Actions from '../../actions';
+import { Avatar, Button, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, List, ListItem, ListItemText, ListItemAvatar, Slide, Typography, Table, TableBody, TableRow, TableCell } from '@material-ui/core';
+import * as Selectors from '../selectors';
+import * as Actions from '../actions';
 import FolderIcon from '@material-ui/icons/Folder';
 import { blue, deepPurple } from '@material-ui/core/colors';
 
@@ -61,7 +61,7 @@ function TaskPreviewDialog(props) {
         <Divider />
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud            
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
           </DialogContentText>
           <DialogContentText id="alert-dialog-slide-description">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
@@ -70,7 +70,7 @@ function TaskPreviewDialog(props) {
           <Grid container>
             <Grid item xs={12}><Typography variant='h6'>Assigned To:</Typography></Grid>
             <Grid item xs={12}>
-              <List dense={true} style={{display: 'flex'}}>
+              <List dense={true} style={{ display: 'flex' }}>
                 <ListItem>
                   <ListItemAvatar>
                     <Avatar className={classes.blue}>
