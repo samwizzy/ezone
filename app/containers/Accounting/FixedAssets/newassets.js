@@ -168,7 +168,7 @@ const NewAsset = () => {
                             </Grid>
 
                             <Grid item xs={6}>
-                                <Grid container spacing={3}>
+                                <Grid container style={{marginTop:'2px'}} spacing={8}>
                                 <Grid item xs={12}>
                                     <TextField className={classes.inputBox}
                                     id="assetname"

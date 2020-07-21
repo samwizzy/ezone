@@ -91,7 +91,7 @@ const useStyles = makeStyles(theme => ({
       whiteSpace: "nowrap",
       '& .MuiTableFooter-root': {},
       '& th.MuiTableCell-root': {
-              borderBottom: 'none !important',
+      borderBottom: 'none !important',
       },
       '& .MuiTableCell-root': {
         borderBottom: 'none !important'
