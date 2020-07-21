@@ -268,8 +268,9 @@ const AccountChart = props => {
        if(data[i].data.accountCode.length > 1 &&
         data[i].data.accountName.length > 1 &&
         data[i].data.accountType.length > 1 &&
-        data[i].data.accountDescription.length > 1 &&
-        data[i].data.amount > 1){
+        data[i].data.financialStatement.length > 1) 
+        //data[i].data.amount > 1){
+          {
           createChartOfAccountHandler(data[i].data)
         }
         else{
@@ -341,7 +342,7 @@ const AccountChart = props => {
       },
     },
     {
-      name: '',
+      name: 'financialpostion',
       label: 'Financial Position',
       options: {
         filter: true,
@@ -349,7 +350,7 @@ const AccountChart = props => {
       },
     },
     {
-      name: '',
+      name: 'debitcredit',
       label: 'Debit/Credit',
       options: {
         filter: true,
