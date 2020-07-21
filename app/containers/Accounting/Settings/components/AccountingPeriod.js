@@ -59,7 +59,10 @@ const useStyles = makeStyles(theme => ({
   },
   box: {
 		backgroundColor: theme.palette.grey[200]
-	},
+  },
+  curve:{
+    borderRadius:'15px'
+  },
 	table: {
     display: "flex",
     flexDirection: "column",
@@ -201,17 +204,30 @@ const AccountingPeriod = props => {
                  <Grid item xs={12}>
                  <Typography variant="h6" component="h6">Current Accounting Year</Typography>
                  </Grid>
-                 <Grid item xs={12}>
+                 <Grid item xs={8}>
                   <div style={{backgroundColor:'#bbb',padding:'6px'}}>
                     <Grid container spacing={4}>
                       <Grid item xs={6}>
-               <Typography variant="subtitle1" >Start Date : {moment(currentAccountPeriod.startDate).format('YYYY-MM-DD')}</Typography>
+                     <Typography variant="subtitle1" >Start Date : {moment(currentAccountPeriod.startDate).format('YYYY-MM-DD')}</Typography>
                       </Grid>
                       <Grid item xs={6}>
-               <Typography variant="subtitle1">End Date : {moment(currentAccountPeriod.endDate).format('YYYY-MM-DD')}</Typography>
+                      <Typography variant="subtitle1">End Date : {moment(currentAccountPeriod.endDate).format('YYYY-MM-DD')}</Typography>
                       </Grid>
                     </Grid>
                   </div>
+                 </Grid>
+                 <Grid item xs={4}>
+                 <Button className={classes.curve}
+                      variant="contained"
+                      color="primary"
+                      type="button"
+                      onClick={(e) =>{
+                        e.preventDefault();
+                        
+                      }}
+                    >
+                      Add Period
+                  </Button>
                  </Grid>
                </Grid>
                </div>
