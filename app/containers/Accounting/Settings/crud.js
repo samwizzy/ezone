@@ -1,6 +1,21 @@
 import * as Endpoints from '../../../components/Endpoints';
 import axios from "axios";
 
+
+export async function creatAccountingPeriod(value){
+   let credentials = JSON.parse(localStorage.getItem('user'))
+   let accessToken = localStorage.getItem('access_token')
+   const requestURL = `${Endpoints.CreateAccountPeriodApi}`;
+    const config = {
+      headers: { Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json', }
+  }
+  let payload = {...value,orgId:credentials.organisation.orgId}
+  return await axios.post(requestURL,payload,config)
+  .then(result => { console.log(result); return result; })
+  .catch(error => { console.error(error); return Promise.reject(error); });
+}
+
 export async function setUptins() {
     let credentials = JSON.parse(localStorage.getItem('user'))
      let accessToken = localStorage.getItem('access_token')
@@ -79,20 +94,5 @@ export async function setUptins() {
         return await axios.post(requestURL,accountSetup,config)
        .then(result => { console.log(result); return result; })
        .catch(error => { console.error(error); return Promise.reject(error); });
-    
-        /*await axios.post(`${Endpoints.CreateAccountingSetupApi}`, accountSetup)
-          .then((res) => {
-            let chatResponse = res.data;
-            if (chatResponse.success) {
-              swal("Success", "Account opened successfully", "success");
-    
-            }
-    
-          })
-    
-          .catch((err) => {
-            accContext.accDispatch({ type: 'MSG', msg: { open: true, message: 'Something went wrong. Please try again later', severity: 'error' } })
-            console.log(`error ocurr ${err}`);
-          });*/
     
       }
