@@ -301,17 +301,18 @@ const AccountingPeriod = props => {
 
   function addPeriod(){
     let payload ={
-    activeYear: true,
+    activeYear: false,
     startDate: `${formatDate()}`,
     status: true,
     year: `${lastYear+1}`
     }
     crud.creatAccountingPeriod(payload).then((data)=>{
+      handleClickClose();  
     swal("Success", "Accounting Period added successfully", "success");
     }).catch((error)=>{
       swal("Error", "Something went wrong. Please check your network", "error");
     })
-    handleClickClose();
+    
   }
 
   console.log('current period file -> ', JSON.stringify(accountingPeriods));
@@ -396,10 +397,10 @@ const AccountingPeriod = props => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClickClose} color="textSecondary">
+          <Button variant="contained" onClick={handleClickClose} color="textSecondary">
             Cancel
           </Button>
-          <Button onClick={()=>addPeriod()} color="primary">
+          <Button variant="contained" onClick={()=>addPeriod()} color="primary">
             Create
           </Button>
         </DialogActions>

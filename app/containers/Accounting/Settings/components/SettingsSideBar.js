@@ -91,13 +91,13 @@ const SettingsSideBar = props => {
           <ListItem button className={classes.nested} onClick={()=>handleClickPage('deprecitionarea')}>
             <ListItemText primary="Deprecition Area" />
           </ListItem>
-          <ListItem button className={classes.nested} onClick={()=>handleClickPage('assetclasses')}>
-            <ListItemText primary="Asset Class" />
+          <ListItem button className={classes.nested} onClick={()=>handleClickPage('assettype')}>
+            <ListItemText primary="Asset Type" />
           </ListItem>
         </List>
       </Collapse>
       <ListItem button>
-        <ListItemText primary="Currencies" />
+        <ListItemText primary="Currencies" onClick={()=>handleClickPage('currencies')}/>
       </ListItem>
       <ListItem button onClick={()=>setTax(!tax)}>
         <ListItemText primary="Taxes" />

@@ -13,6 +13,11 @@ import AccountingPeriod from './AccountingPeriod';
 import DepreciationSetup from '../../FixedAssets/depreciation';
 import DepreciationArea from '../../FixedAssets/depreciationarea';
 import AccessClass from '../../FixedAssets/assetsclasses';
+import Currencies from './currencies';
+import TaxRate from './taxrate';
+import TaxType from './taxtype';
+import AssetType from './assettype';
+import NewAssetType from './newassettype';
 export const SettingContext = React.createContext();
 
 const useStyles = makeStyles(theme => ({
@@ -30,7 +35,11 @@ const SettingsLayout = props => {
 		setting:true,
 		depreciation:false,
 		deprecitionarea:false,
-		assetclasses:false
+		assettype:false,
+		newassettype:false,
+		currencies:false,
+		taxrate:false,
+		taxtype:false
 	  }
   
 	  const reducer = (state, action) => {
@@ -82,8 +91,37 @@ const SettingsLayout = props => {
 						}
 					</div>
 					<div>
-						{state.assetclasses?
-						<AccessClass/>
+						{state.currencies?
+						<Currencies/>
+						:
+						<div/>
+						}
+					</div>
+					<div>
+						{state.taxrate?
+						<TaxRate/>
+						:
+						<div/>
+						}
+					</div>
+					<div>
+						{state.taxtype?
+						<TaxType/>
+						:
+						<div/>
+						}
+					</div>
+					<div>
+						{state.assettype?
+						<AssetType/>
+						:
+						<div/>
+						}
+					</div>
+
+					<div>
+						{state.newassettype?
+						<NewAssetType/>
 						:
 						<div/>
 						}
