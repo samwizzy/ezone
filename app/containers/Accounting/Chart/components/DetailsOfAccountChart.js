@@ -233,7 +233,10 @@ const DetailsOfAccountChart = props => {
                   </Typography>
                   </Grid>
                   <Grid item xs={8}>
+                  <Typography variant="caption" display="block" gutterBottom>
                   { moment(props.location.chartDetailsData.dateCreated).format('LLL') }
+                  </Typography>
+                 
                   </Grid>
                 </Grid>
               </Grid>
@@ -263,7 +266,7 @@ const DetailsOfAccountChart = props => {
            <Grid container spacing={3}>
              <Grid item xs={12}>
                <div style={{textAlign:'center'}}>
-               <Typography variant="body2" gutterBottom>
+               <Typography variant="body1" gutterBottom>
                 Transactions
                 </Typography>
                </div>
@@ -363,17 +366,17 @@ const DetailsOfAccountChart = props => {
 
                 </Typography>
                 </Grid>
-                <Grid item>
+                <Grid item xs={2}>
                 <Typography variant="caption" display="block" gutterBottom>
                   
                   </Typography>
                 </Grid>
-                <Grid item>
+                <Grid item xs={2}>
                 <Typography variant="caption" display="block" gutterBottom>
                    
                   </Typography>
                 </Grid>
-                <Grid item>
+                <Grid item >
                 <Typography variant="caption" display="block" gutterBottom>
                    
                   </Typography>

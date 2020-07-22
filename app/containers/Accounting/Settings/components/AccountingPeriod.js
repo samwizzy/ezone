@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     padding: theme.spacing(1, 2),
-    backgroundColor: theme.palette.grey[100],
+    backgroundColor: theme.palette.grey[300],
   },
   grid: {
     justifyContent: "space-between",
@@ -72,12 +72,11 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: theme.palette.grey[200]
   },
   curve:{
-    borderRadius:'15px'
+    borderRadius:'8px'
   },
   lightLift: {
     marginBottom: '20px',
   },
-  paper:{padding:'5px'},
 	table: {
     display: "flex",
     flexDirection: "column",
@@ -436,23 +435,7 @@ const AccountingPeriod = props => {
                     </Box>
                   </TableCell>
                 </TableRow>
-                <TableRow>
-                  <TableCell>Tax year starts</TableCell>
-                  <TableCell>
-                    <Box className={classes.box} p={2}>
-                      {/*{ accountingSetupData.taxDay }, { accountingSetupData.taxMonth }*/}
-                      {moment(currentAccountPeriod.startDate).format('Do, MMM')}
-                    </Box>
-                  </TableCell>
-                </TableRow> 
-                <TableRow>
-                  <TableCell>Tax Type</TableCell>
-                  <TableCell>
-                    <Box className={classes.box} p={2}>
-                      { accountingSetupData.taxType }
-                    </Box>
-                  </TableCell>
-                </TableRow>
+               
               </TableBody>
             </Table>
           </Paper>
@@ -469,10 +452,11 @@ const AccountingPeriod = props => {
                <div style={{textAlign:'center',paddingLeft:'5em',paddingRight:'5em'}}>
                <Grid container spacing={2}>
                  <Grid item xs={12}>
-                 <Typography variant="h6" component="h6">Current Accounting Year</Typography>
+                 <Typography variant="body1">Current Accounting Year</Typography>
                  </Grid>
                  <Grid item xs={8}>
-                  <div style={{backgroundColor:'#bbb',padding:'6px'}}>
+                  <div style={{padding:'2px'}}>
+                    <Paper elevation={2} className={classes.paper}>
                     <Grid container spacing={4}>
                       <Grid item xs={6}>
                      <Typography variant="subtitle1" >Start Date : {moment(currentAccountPeriod.startDate).format('YYYY-MM-DD')}</Typography>
@@ -481,6 +465,7 @@ const AccountingPeriod = props => {
                       <Typography variant="subtitle1">End Date : {moment(currentAccountPeriod.endDate).format('YYYY-MM-DD')}</Typography>
                       </Grid>
                     </Grid>
+                    </Paper>
                   </div>
                  </Grid>
                  <Grid item xs={4}>

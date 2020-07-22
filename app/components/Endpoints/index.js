@@ -232,7 +232,14 @@ export const SetAccountPeriodAsActiveApi = `${BaseUrl}/accountingserv/api/v1/acc
 export const DeleteBankAccountApi = `${BaseUrl}/accountingserv/api/v1/bank/delete_bank`;
 export const UpdateBankAccountApi = `${BaseUrl}/accountingserv/api/v1/bank/update_bank`;
 export const SetActiveStatusForBankAccountApi = `${BaseUrl}/accountingserv/api/v1/bank/acivate_or_deactivate_bank`;
-
+export const AddDeprecitionAreaApi = `${BaseUrl}/accountingserv/api/v1/area/add`;
+export const GetDeprecitionAreaByIdApi = `${BaseUrl}/accountingserv/api/v1/area/get_depreciation_area_by_id`;
+export const GetDeprecitionAreaByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/area/get_depreciation_area_by_orgid`;
+export const UpdateDeprecitionAreaApi = `${BaseUrl}/accountingserv/api/v1/area/update`;
+export const AddDeprecitionTypeApi = `${BaseUrl}/accountingserv/api/v1/type/add`;
+export const GetDeprecitionTypeByIdApi = `${BaseUrl}/accountingserv/api/v1/type/get_depreciation_type_by_id`;
+export const GetDeprecitionTypeByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/type/get_depreciation_type_by_orgid`;
+export const UpdateDeprecitionTypeApi = `${BaseUrl}/accountingserv/api/v1/type/update`;
 
 /** *****************************************************************
  * Inventory endpoint

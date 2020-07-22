@@ -424,6 +424,16 @@ const NewAsset = () => {
                                  </Grid>
                              </Grid>
                          </Grid>
+
+                         <Grid item xs={6}>
+                         <TextField className={classes.inputBox}
+                                 id="aquidate"
+                                 size={'small'}
+                                 variant="outlined"
+                                 label="Aquisition Date"
+                                    margin="normal"
+                                 />   
+                         </Grid>
                          
                     </Grid>  
                   </Paper>  

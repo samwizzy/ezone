@@ -18,6 +18,7 @@ import TaxRate from './taxrate';
 import TaxType from './taxtype';
 import AssetType from './assettype';
 import NewAssetType from './newassettype';
+import DepreciationAreas from './depreciationAreas';
 export const SettingContext = React.createContext();
 
 const useStyles = makeStyles(theme => ({
@@ -34,7 +35,9 @@ const SettingsLayout = props => {
 		page:'setting',
 		setting:true,
 		depreciation:false,
+		newdeprecition:false,
 		deprecitionarea:false,
+		newdeprecitionarea:false,
 		assettype:false,
 		newassettype:false,
 		currencies:false,
@@ -83,6 +86,13 @@ const SettingsLayout = props => {
 						<div/>
 						}
 					</div>
+					{/*<div>
+						{state.deprecitionarea?
+						<DepreciationAreas/>
+						:
+						<div/>
+						}
+					</div>*/}
 					<div>
 						{state.deprecitionarea?
 						<DepreciationArea/>

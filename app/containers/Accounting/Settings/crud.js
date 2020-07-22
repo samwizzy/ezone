@@ -62,6 +62,54 @@ export async function setUptins() {
 
       }
 
+      export async function getDeprecitionArea(){
+        let credentials = JSON.parse(localStorage.getItem('user'))
+        let accessToken = localStorage.getItem('access_token')
+        const requestURL = `${Endpoints.GetDeprecitionAreaByOrgIdApi}?orgId=${credentials.organisation.orgId}`;
+         const config = {
+           headers: { Authorization: `Bearer ${accessToken}`,
+           'Content-Type': 'application/json', }
+       }
+
+       return await axios.get(requestURL,config)
+      .then(result => { console.log(result); return result; })
+      .catch(error => { console.error(error); return Promise.reject(error); });
+
+      }
+
+
+      export async function addDeprecitionArea(value){
+        let credentials = JSON.parse(localStorage.getItem('user'))
+        let accessToken = localStorage.getItem('access_token')
+        const requestURL = `${Endpoints.AddDeprecitionAreaApi}`;
+         const config = {
+           headers: { Authorization: `Bearer ${accessToken}`,
+           'Content-Type': 'application/json', }
+       }
+       let payload ={...value,orgId:credentials.organisation.orgId}
+
+       return await axios.post(requestURL,payload,config)
+       .then(result => { console.log(result); return result; })
+       .catch(error => { console.error(error); return Promise.reject(error); });
+
+      }
+
+      export async function saveDeprecitionType(value){
+        let credentials = JSON.parse(localStorage.getItem('user'))
+        let accessToken = localStorage.getItem('access_token')
+        const requestURL = `${Endpoints.AddDeprecitionTypeApi}`;
+         const config = {
+           headers: { Authorization: `Bearer ${accessToken}`,
+           'Content-Type': 'application/json', }
+       }
+       let payload ={...value,depreciatedValue:Number(value.depreciatedValue),percentageValue:Number(value.percentageValue),orgId:credentials.organisation.orgId}
+
+       return await axios.post(requestURL,payload,config)
+       .then(result => { console.log(result); return result; })
+       .catch(error => { console.error(error); return Promise.reject(error); });
+
+      }
+
 
       export async function createAccountSetup(values) {
       
