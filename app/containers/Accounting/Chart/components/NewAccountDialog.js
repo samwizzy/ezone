@@ -502,6 +502,7 @@ const NewAccountDialog = props => {
             <LoadingIndicator />
           ) : (
             <Button
+            variant="contained"
               disabled={!isAphaNumeric}
               onClick={() => {
                 accountDialog.type === 'new'
@@ -514,7 +515,7 @@ const NewAccountDialog = props => {
               {accountDialog.type === 'new' ? 'Save Account' : 'Update Account'}
             </Button>
           )}
-          <Button onClick={closeNewAccountDialogAction} color="inherit">
+          <Button variant="contained" onClick={closeNewAccountDialogAction} color="inherit">
             Cancel
           </Button>
         </DialogActions>

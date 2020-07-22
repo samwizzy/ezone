@@ -15,6 +15,7 @@ import {
   TableRow,
   Typography,
   Toolbar,
+  Divider,
 } from '@material-ui/core';
 import classNames from 'classnames';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -78,6 +79,12 @@ const useStyles = makeStyles(theme => ({
       margin: theme.spacing(2, 0),
     }
   },
+  padme:{
+  padding:'15px'
+  },
+  closingBalance:{
+  padding:'25px'
+  },
   gridMargin: { marginBottom: theme.spacing(2) },
   label: { marginLeft: theme.spacing(1) },
   table: {
@@ -123,6 +130,279 @@ const DetailsOfAccountChart = props => {
 
   return (
     <div className={classes.root}>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Paper className={classes.padme} elevation={3}>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <Grid container spacing={3}>
+                  <Grid item xs={4}>
+                  <Typography variant="body1" gutterBottom>
+                   Account Name
+                  </Typography>
+                  </Grid>
+                  <Grid item xs={4}>
+                  <Typography variant="body1" gutterBottom>
+                  {props.location.chartDetailsData.accountName}
+                  </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container spacing={3}>
+                  <Grid item xs={4}>
+                  <Typography variant="body1" gutterBottom>
+                   Account Code
+                  </Typography>
+                  </Grid>
+                  <Grid item xs={4}>
+                  <Typography variant="body1" gutterBottom>
+                  {props.location.chartDetailsData.accountCode}
+                  </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container spacing={3}>
+                  <Grid item xs={4}>
+                  <Typography variant="body2" gutterBottom>
+                   Account Type
+                  </Typography>
+                  </Grid>
+                  <Grid item xs={4}>
+                  <Typography variant="body2" gutterBottom>
+                  {props.location.chartDetailsData.accountType}
+                  </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+              { props.location.chartDetailsData.accountType === "Bank" ? (
+               <Grid item xs={12}> 
+               <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <Grid container spacing={3}>
+                  <Grid item xs={4}>
+                  <Typography variant="body2" gutterBottom>
+                   Bank Name
+                  </Typography>
+                  </Grid>
+                  <Grid item xs={4}>
+                  <Typography variant="body2" gutterBottom>
+                  {props.location.chartDetailsData.bankName}
+                  </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12}>
+              <Grid container spacing={3}>
+                <Grid item xs={4}>
+                <Typography variant="body2" gutterBottom>
+                 Account Number
+                </Typography>
+                </Grid>
+                <Grid item xs={4}>
+                <Typography variant="body2" gutterBottom>
+                {props.location.chartDetailsData.accountNumber}
+                </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+            </Grid>
+            </Grid>
+              ):null}
+
+              <Grid item xs={12}>
+                <Grid container spacing={3}>
+                  <Grid item xs={4}>
+                  <Typography color="textSecondary" variant="caption" display="block" gutterBottom>
+                   Description
+                  </Typography>
+                  </Grid>
+                  <Grid item xs={8}>
+                  <Typography color="textSecondary" variant="caption" display="block" gutterBottom>
+                  {props.location.chartDetailsData.description}
+                  </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container spacing={3}>
+                  <Grid item xs={4}>
+                  <Typography variant="caption" display="block" gutterBottom>
+                   Transaction Period
+                  </Typography>
+                  </Grid>
+                  <Grid item xs={8}>
+                  { moment(props.location.chartDetailsData.dateCreated).format('LLL') }
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Paper>
+        </Grid>
+        <Grid item xs={12}>
+          <Paper elevation={3} className={classes.closingBalance}>
+          <Grid container spacing={3}>
+                  <Grid item xs={4}>
+                  <Typography variant="h6" display="block" gutterBottom>
+                   Closing Balance
+                  </Typography>
+                  </Grid>
+                  <Grid item xs={8}>
+                  <Typography variant="h5" display="block" gutterBottom>
+                  {props.location.chartDetailsData.accountType === "Bank"?
+                  props.location.chartDetailsData.bankBalance:
+                   props.location.chartDetailsData.openingBalance}
+                  </Typography>
+                  </Grid>
+                </Grid>
+          </Paper>
+        </Grid>
+        <Grid item xs={12}>
+          <div className={classes.transactions}>
+           <Grid container spacing={3}>
+             <Grid item xs={12}>
+               <div style={{textAlign:'center'}}>
+               <Typography variant="body2" gutterBottom>
+                Transactions
+                </Typography>
+               </div>
+             </Grid>
+             <Grid item xs={12}>
+               <div>
+               <Paper elevation={2} className={classes.paper}>
+               <Grid container spacing={3}>
+                <Grid item>
+                <Typography variant="caption" display="block" gutterBottom>
+                   Trs Date
+                  </Typography>
+                </Grid>
+                <Grid item>
+                <Typography variant="caption" display="block" gutterBottom>
+                   Created at
+                  </Typography>
+                </Grid>
+                <Grid item>
+                <Typography variant="caption" display="block" gutterBottom>
+                   Ref no
+                  </Typography>
+                </Grid>
+                <Grid item>
+                <Typography variant="caption" display="block" gutterBottom>
+                   Debit
+                  </Typography>
+                </Grid>
+                <Grid item>
+                <Typography variant="caption" display="block" gutterBottom>
+                   Credit
+                  </Typography>
+                </Grid>
+                <Grid item>
+                <Typography variant="caption" display="block" gutterBottom>
+                   Balance
+                  </Typography>
+                </Grid>
+                <Grid item>
+                <Typography variant="caption" display="block" gutterBottom>
+                  
+                  </Typography>
+                </Grid>
+               </Grid>
+               </Paper>
+               </div>
+
+               <div>
+                 <Paper elevation={1}>
+                 <Grid container spacing={3}>
+                <Grid item>
+                <Typography variant="caption" display="block" gutterBottom>
+                { moment(props.location.chartDetailsData.dateCreated).format('LLL') }
+                  </Typography>
+                </Grid>
+                <Grid item>
+                <Typography variant="caption" display="block" gutterBottom>
+                  
+                  </Typography>
+                </Grid>
+                <Grid item>
+                <Typography variant="caption" display="block" gutterBottom>
+                   09089
+                  </Typography>
+                </Grid>
+                <Grid item>
+                <Typography variant="caption" display="block" gutterBottom>
+                   $2000
+                  </Typography>
+                </Grid>
+                <Grid item>
+                <Typography variant="caption" display="block" gutterBottom>
+                   $1200
+                  </Typography>
+                </Grid>
+                <Grid item>
+                <Typography variant="caption" display="block" gutterBottom>
+                   $10000
+                  </Typography>
+                </Grid>
+                <Grid item>
+                <Typography variant="caption" display="block" gutterBottom>
+                  
+                  </Typography>
+                </Grid>
+               </Grid>
+                 </Paper>
+               </div>
+               <div>
+                 <Divider />
+               </div>
+               <div>
+                 <Paper elevation={1}>
+                 <Grid container spacing={3}>
+                <Grid item>
+                <Typography variant="caption" display="block" gutterBottom>
+
+                </Typography>
+                </Grid>
+                <Grid item>
+                <Typography variant="caption" display="block" gutterBottom>
+                  
+                  </Typography>
+                </Grid>
+                <Grid item>
+                <Typography variant="caption" display="block" gutterBottom>
+                   
+                  </Typography>
+                </Grid>
+                <Grid item>
+                <Typography variant="caption" display="block" gutterBottom>
+                   
+                  </Typography>
+                </Grid>
+                <Grid item>
+                <Typography variant="caption" display="block" gutterBottom>
+                  $30000
+                  </Typography>
+                </Grid>
+                <Grid item>
+                <Typography variant="caption" display="block" gutterBottom>
+                   $200000
+                  </Typography>
+                </Grid>
+                <Grid item>
+                <Typography variant="caption" display="block" gutterBottom>
+                  Total
+                  </Typography>
+                </Grid>
+               </Grid>
+                 </Paper>
+               </div>
+               
+             </Grid>
+           </Grid>
+          </div>
+        </Grid>
+      </Grid>
+
       <Grid container>
         <Grid item xs={12} className={classNames(classes.gridMargin)}>
           <Toolbar className={classes.iconPaper} variant="dense">

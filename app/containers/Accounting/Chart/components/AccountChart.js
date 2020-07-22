@@ -342,8 +342,8 @@ const AccountChart = props => {
       },
     },
     {
-      name: 'financialpostion',
-      label: 'Financial Position',
+      name: 'financialstatement',
+      label: 'Financial Statement',
       options: {
         filter: true,
         sort: false,
@@ -400,8 +400,7 @@ const AccountChart = props => {
                 onClose={handleClose}
               >
                 <MenuItem onClick={(e) => {
-                  editOpenAccountDialogAction(account);
-                  console.log(`on Edit account ${JSON.stringify(account)}`)
+                  editOpenAccountDialogAction(account);            
                   localStorage.setItem("ezone-editable", '392');
                 }}>
                   Edit
@@ -414,6 +413,9 @@ const AccountChart = props => {
                   chartContext.chartDispatch({type:'VIEW_ID',id:account.id})
                 }}>
                   View Details
+                </MenuItem>
+                <MenuItem>
+                  Mark as Active
                 </MenuItem>
                 <MenuItem onClick={() => {
                   openDeleteAccountDialogAction(account);
