@@ -74,7 +74,7 @@ const SettingsSideBar = props => {
           </ListSubheader>
         }
       >
-        <ListItem button onClick={() => {handleClickPage('setting')}}>
+        <ListItem selected={settingContext.settingState.setting} button onClick={() => {handleClickPage('setting')}}>
          {/*<ListItemIcon>
             <EventIcon />
          </ListItemIcon>*/}
@@ -85,18 +85,18 @@ const SettingsSideBar = props => {
       </ListItem>
       <Collapse in={open} timeout="auto">
         <List component="div" disablePadding>
-          <ListItem button className={classes.nested} onClick={()=>handleClickPage('deprecition')}>
+          <ListItem selected={settingContext.settingState.deprecition}  button className={classes.nested} onClick={()=>handleClickPage('deprecition')}>
             <ListItemText primary="Deprecition Type" />
           </ListItem>
-          <ListItem button className={classes.nested} onClick={()=>handleClickPage('deprecitionarea')}>
+          <ListItem button  selected={settingContext.settingState.deprecitionarea} className={classes.nested} onClick={()=>handleClickPage('deprecitionarea')}>
             <ListItemText primary="Deprecition Area" />
           </ListItem>
-          <ListItem button className={classes.nested} onClick={()=>handleClickPage('assettype')}>
+          <ListItem button selected={settingContext.settingState.assettype} className={classes.nested} onClick={()=>handleClickPage('assettype')}>
             <ListItemText primary="Asset Type" />
           </ListItem>
         </List>
       </Collapse>
-      <ListItem button>
+      <ListItem button selected={settingContext.settingState.currencies}>
         <ListItemText primary="Currencies" onClick={()=>handleClickPage('currencies')}/>
       </ListItem>
       <ListItem button onClick={()=>setTax(!tax)}>
@@ -104,10 +104,10 @@ const SettingsSideBar = props => {
       </ListItem>
       <Collapse in={tax} timeout="auto">
         <List component="div" disablePadding>
-          <ListItem button className={classes.nested} onClick={()=>handleClickPage('taxrate')}>
+          <ListItem button selected={settingContext.settingState.taxrate} className={classes.nested} onClick={()=>handleClickPage('taxrate')}>
             <ListItemText primary="Tax rate" />
           </ListItem>
-          <ListItem button className={classes.nested} onClick={()=>handleClickPage('taxtype')}>
+          <ListItem button className={classes.nested} selected={settingContext.settingState.taxtype} onClick={()=>handleClickPage('taxtype')}>
             <ListItemText primary="Tax type" />
           </ListItem>
         </List>

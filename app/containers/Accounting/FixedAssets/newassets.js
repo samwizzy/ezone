@@ -168,7 +168,7 @@ const NewAsset = () => {
                             </Grid>
 
                             <Grid item xs={6}>
-                                <Grid container style={{marginTop:'2px'}} spacing={8}>
+                                <Grid container style={{marginTop:'2px'}} spacing={7}>
                                 <Grid item xs={12}>
                                     <TextField className={classes.inputBox}
                                     id="assetname"
@@ -277,30 +277,39 @@ const NewAsset = () => {
                          </Grid>
 
                          <Grid item xs={6}>
-                             <Grid container spacing={1}>
+                             <Grid container spacing={1} style={{marginTop:'-2em'}}>
                                  <Grid item xs={12}>
                                  <Typography variant="subtext1" color="textSecondary">
                                    Dimension (Length x Width)
                                    </Typography>
                                  </Grid>
-                                 <Grid item xs={6}>
-                                 <TextField className={classes.inputBox}
+                                 <Grid item xs={12}>
+                                   <div style={{marginTop:'-2.5em'}}>
+                                     <Grid container spacing={3}>
+                                     <Grid item xs={6}>
+                                 <TextField
                                  id="manufacturer"
                                  placeholder={'Select'}
                                  variant="outlined"
                                  size={'small'}
+                                 fullWidth
                                     margin="normal"
                                  /> 
                                  </Grid>
                                  <Grid item xs={6}>
-                                 <TextField className={classes.inputBox}
+                                 <TextField
                                  id="manufacturer"
                                  placeholder={'Select'}
                                  size={'small'}
+                                 fullWidth
                                  variant="outlined"
                                     margin="normal"
                                  /> 
                                  </Grid>
+                                     </Grid>
+                                   </div>
+                                 </Grid>
+                                 
                              </Grid>
                          </Grid>
 
@@ -353,13 +362,17 @@ const NewAsset = () => {
                          </Grid>
 
                          <Grid item xs={6}>
-                         <TextField className={classes.inputBox}
+                           <div style={{marginTop:'-1.2em'}}>
+                           <TextField
                                  id="location"
                                  variant="outlined"
                                  size={'small'}
+                                 fullWidth
                                  label="Location"
                                     margin="normal"
-                                 />   
+                                 /> 
+                           </div>
+                          
                          </Grid>
 
                  </Grid>
@@ -426,13 +439,16 @@ const NewAsset = () => {
                          </Grid>
 
                          <Grid item xs={6}>
-                         <TextField className={classes.inputBox}
+                           <div style={{marginTop:'-5.6em'}}>
+                         <TextField
                                  id="aquidate"
                                  size={'small'}
                                  variant="outlined"
                                  label="Aquisition Date"
                                     margin="normal"
-                                 />   
+                                    fullWidth
+                                 />  
+                                 </div> 
                          </Grid>
                          
                     </Grid>  
