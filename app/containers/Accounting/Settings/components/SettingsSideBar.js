@@ -91,7 +91,7 @@ const SettingsSideBar = props => {
           <ListItem button  selected={settingContext.settingState.deprecitionarea} className={classes.nested} onClick={()=>handleClickPage('deprecitionarea')}>
             <ListItemText primary="Deprecition Area" />
           </ListItem>
-          <ListItem button selected={settingContext.settingState.assettype} className={classes.nested} onClick={()=>handleClickPage('assettype')}>
+          <ListItem button selected={settingContext.settingState.assettype ||settingContext.settingState.newassettype } className={classes.nested} onClick={()=>handleClickPage('assettype')}>
             <ListItemText primary="Asset Type" />
           </ListItem>
         </List>
