@@ -85,7 +85,7 @@ function AppSidebar(props) {
                           <ListItemText primary={menu.name} />
                           {open[menu.name] ? <ExpandLess /> : <ExpandMore />}
                         </ListItem>
-                        <Collapse in={open[menu.name]} timeout="auto" unmountOnExit>
+                        <Collapse in={open[menu.name]} timeout="auto">
                           <List component="div" disablePadding>
                             {menu.submenus.map((sub, i) =>
                               <ListItem

@@ -1,17 +1,41 @@
-import React,{useState,useContext} from 'react';
+import React,{useState,useContext,useEffect,useRef} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import MUIDataTable from 'mui-datatables';
+import Dialog from '@material-ui/core/Dialog';
+import {
+  DatePicker,
+  TimePicker,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+  DateTimePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
+import moment from 'moment';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import ImportIcon from '@material-ui/icons/GetApp';
 import SendIcon from '@material-ui/icons/ArrowForward';
+import * as crud from './crud';
+import DateFnsUtils from '@date-io/date-fns';
+import * as Enum from './enums';
 import ExportIcon from '@material-ui/icons/Publish';
 import { Grid,
     Button,
-    TextField } from '@material-ui/core';
+    TextField, Menu,
+    MenuItem } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { FixedAssetContext } from '.';
+
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 
 const useStyles = makeStyles((theme) => ({
@@ -68,18 +92,68 @@ const useStyles = makeStyles((theme) => ({
         margin:'3px'
     }
   }));
+
 const Assets = () => {
     const fixedContext = useContext(FixedAssetContext)
     const classes = useStyles();
+    const [open,setOpen] = useState(false)
+    const [anchorEl, setAnchorEl] = useState(null);
     const [assetData] = useState([
-      {assetname:'Air conditioner',assetid:'000910',acquitioncost:'N20000.00',location:'Ikeja',quantity:10,status:'Good'},
-      {assetname:'Typewriter',assetid:'7890PO',acquitioncost:'N20000.00',location:'Ikeja',quantity:1,status:'Disposed'},
-      {assetname:'',assetid:'Mary Paul',acquitioncost:'N20000.00',location:'Ikeja',quantity:5,status:'Lost'},
-      {assetname:'Truck',assetid:'89408LK',acquitioncost:'N20000.00',location:'Ikeja',quantity:200,status:'Bad'},
-      {assetname:'Dilling machine',assetid:'12345LP',acquitioncost:'N20000.00',location:'Ikeja',quantity:3,status:'In maintenance'},
-
-      
+      {assetname:'Air conditioner',assetid:'000910',acquitioncost:'N20000.00',location:'Ikeja',quantity:10,status:'Good',id:0},
+      {assetname:'Typewriter',assetid:'7890PO',acquitioncost:'N20000.00',location:'Ikeja',quantity:1,status:'Disposed',id:1},
+      {assetname:'',assetid:'Mary Paul',acquitioncost:'N20000.00',location:'Ikeja',quantity:5,status:'Lost',id:2},
+      {assetname:'Truck',assetid:'89408LK',acquitioncost:'N20000.00',location:'Ikeja',quantity:200,status:'Bad',id:3},
+      {assetname:'Dilling machine',assetid:'12345LP',acquitioncost:'N20000.00',location:'Ikeja',quantity:3,status:'In maintenance',id:4} 
     ]);
+
+    const [disposalValues,setDisposalValues] = useState({
+      amount:'',
+      date:(new Date('2020-08-18T21:11:54')).toISOString(),
+      reason:''
+    })
+
+    const handleDateChange = (date) => {
+      setValues({ ...disposalvalues, date: (new Date(date)).toISOString() });
+    };
+
+    const handleChange = name => event => {
+      setValues({ ...disposalValues, [name]: event.target.value });
+    };
+  
+
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+
+    const [displayId,setDisplayId] = useState();
+
+    const handleClick = (event, id) => {
+      setAnchorEl(event.currentTarget);
+      setDisplayId(id)
+    };
+
+    const handleClickClose = () => {
+      setOpen(false);
+    };
+
+
+    useEffect(() => {
+      getAsset()
+      return () =>{
+        getAsset()
+      }
+      },[])
+  
+      async function getAsset(){
+         await crud.getAsset()
+         .then((data)=>{
+          console.log(`Asset ${JSON.stringify(data.data)}`)
+         })
+         .catch((error)=>{
+         console.log(`Error from Asset ${error}`)
+         })
+      }
+
     const sales = [
         {
           value: 1,
@@ -140,12 +214,149 @@ const Assets = () => {
              filter: true,
              sort: false,
            },
-       }
+       },
+       {
+        name: 'id',
+        label: ' ',
+        options: {
+          filter: true,
+          sort: false,
+          customBodyRender: value => {
+            if (value === '') {
+              return '';
+            }
+            return (
+              <div style={{margin:'5px'}}>
+                <Button
+                  aria-controls="simple-menu"
+                  aria-haspopup="true"
+                  onClick={event => handleClick(event, value)}
+                >
+                  Options
+                </Button>
+                <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
+                  <MenuItem onClick={(e) => {
+                   // editOpenAccountDialogAction(account);   
+                  }}>
+                    Edit
+                  </MenuItem>
+                  <MenuItem onClick={() => {
+                    fixedContext.fixedDispatch({type:'SET_ID',page:'details',id:displayId})
+                   /* history.push({
+                      pathname: '/account/charts/details',
+                      chartDetailsData: account,
+                    });*/
+                    //chartContext.chartDispatch({type:'VIEW_ID',id:account.id})
+                  }}>
+                    View Details
+                  </MenuItem>
+                  <MenuItem onClick={() => {
+                   setOpen(true)
+                  }}>
+                    Disposal
+                  </MenuItem>
+                  <MenuItem onClick={() => {
+                    //openDeleteAccountDialogAction(account);
+                  }}>
+                    Delete 
+                  </MenuItem>
+                </Menu>
+              </div>
+            );
+          },
+        },
+      },
     
       ];
 
     return ( 
         <div className={classes.base}>
+          
+          <div>
+      <Dialog
+        open={open}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleClickClose}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">{"Disposal"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+
+            <div>
+              <Paper elevation={1} className={classes.paperBase}>
+                <Grid container spacing={4}>
+                  <Grid item xs={12}>
+                  <TextField
+                    id="amount"
+                    label="Disposal Amount"
+                         value={disposalValues.amount}
+                          variant="outlined"
+                          onChange ={handleChange('reason')}
+                          margin="normal"
+                          fullWidth
+                         />
+                  </Grid>
+                <Grid item xs={12}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <KeyboardDatePicker
+                        autoOk
+                        format="MM/dd/yyyy"
+                        margin="normal"
+                        inputVariant="outlined"
+                        name="disposalDate"
+                        size="small"
+                        id="date-picker-startDate"
+                        label="Disposal Date"
+                        value={disposalValues.date}
+                        onChange={handleDateChange}
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                        }}
+                      />
+                    </MuiPickersUtilsProvider>
+               </Grid>
+               <Grid item xs={12}>
+                  <TextField
+                    id="reason"
+                    label="Reason for Disposal"
+                    onChange ={handleChange('reason')}
+                    value={disposalValues.reason}
+                    variant="outlined"
+                    multiline
+                    rows={5}
+                    margin="normal"
+                    fullWidth
+                         />
+                  </Grid>
+                </Grid>
+              </Paper>
+            </div>
+           
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={handleClickClose} color="textSecondary">
+            Cancel
+          </Button>
+          <Button variant="contained" 
+          //onClick={()=>addPeriod() } 
+          color="primary">
+            Dispose
+          </Button>
+        </DialogActions>
+      </Dialog>
+      </div>
+
+
             <Grid container spacing={2} >
              
              <Grid item xs={12}>

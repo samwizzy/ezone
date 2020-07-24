@@ -240,6 +240,10 @@ export const AddDeprecitionTypeApi = `${BaseUrl}/accountingserv/api/v1/type/add`
 export const GetDeprecitionTypeByIdApi = `${BaseUrl}/accountingserv/api/v1/type/get_depreciation_type_by_id`;
 export const GetDeprecitionTypeByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/type/get_depreciation_type_by_orgid`;
 export const UpdateDeprecitionTypeApi = `${BaseUrl}/accountingserv/api/v1/type/update`;
+export const AddAssetApi = `${BaseUrl}/accountingserv/api/v1/asset/add`;
+export const GetAssetByIdApi = `${BaseUrl}/accountingserv/api/v1/asset/get_asset_by_id`;
+export const GetAssetByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/asset/get_assets_by_orgid`;
+//export const UpdateAssetApi = `${BaseUrl}/accountingserv/api/v1/asset/add`;
 
 /** *****************************************************************
  * Inventory endpoint

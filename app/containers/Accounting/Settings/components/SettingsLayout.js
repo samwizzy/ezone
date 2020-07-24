@@ -1,4 +1,4 @@
-import React, {memo,useReducer} from 'react'
+import React, {memo,useReducer,useEffect} from 'react'
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -60,18 +60,63 @@ const SettingsLayout = props => {
 	   }
 	  }
 
+
+
 	  const [state, dispatch] = useReducer(reducer, initialState);
 	
+	  useEffect(() => {
+	   getLocation()
+	   return ()=>{
+		   getLocation()
+	   }
+	  },[])
+
+	  function getLocation(){
+		  let nav = `${props.path}`
+		  console.log(`Path path from layout ${nav}`)
+		  let k = nav.lastIndexOf('/');
+		  let newPath = nav.substr(k+1);
+		  console.log(`new Path ${newPath}`)
+		  switch(props.path){
+          case '/account/settings':
+		  case '/account/settings/period':
+		  dispatch({type:'NAVIGATION',page:'setting'})	  
+		  break;
+		  case'/account/settings/fixedasset':
+		  case '/account/settings/deprecitiontype':
+		 dispatch({type:'NAVIGATION',page:'depreciation'})	  
+			break; 
+		 case '/account/settings/deprecitionarea':
+			dispatch({type:'NAVIGATION',page:'deprecitionarea'})
+			break;
+	    case '/account/settings/assettype':
+			dispatch({type:'NAVIGATION',page:'assettype'})
+			break;	
+			case '/account/settings/currencies':
+			dispatch({type:'NAVIGATION',page:'currencies'})
+			break;
+			case '/account/settings/taxes':
+		    case '/account/settings/taxrate':
+				dispatch({type:'NAVIGATION',page:'taxrate'})
+				break;
+		  case '/account/settings/taxtype':
+			dispatch({type:'NAVIGATION',page:'taxtype'})
+			break; 	
+		default:
+			dispatch({type:'NAVIGATION',page:'setting'})					 	  	  	  
+		  }
+				  
+	  }
 
 	return (
 		<SettingContext.Provider
     value={{ settingState: state, settingDispatch: dispatch }}>
 		<div className={classes.root}>
 			<Grid container>
-				<Grid item xs={2}>
+				{/*<Grid item xs={2}>
 					<SettingsSideBar/>
-				</Grid>
-				<Grid item xs={10}>
+				</Grid>*/}
+				<Grid item xs={12}>
 					<div>
 					{state.setting?
 					<AccountingPeriod/>

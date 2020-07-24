@@ -17,6 +17,7 @@ import AccessClasses from './assetsclasses';
 import DepreciationSetup from './depreciation';
 import NewAsset from './newassets';
 import Assets from './fixed';
+import FixedDetails from './fixedAssetDetails';
 export const FixedAssetContext = React.createContext();
 
 const useStyles = makeStyles(theme => ({
@@ -44,7 +45,9 @@ const FixedAssets = () => {
     const initialState ={
       page:'fixed',
       fixed:true,
-      newasset:false 
+      newasset:false,
+      details:false,
+      display:0 
     }
 
     const reducer = (state, action) => {
@@ -52,6 +55,15 @@ const FixedAssets = () => {
        case 'NAVIGATION':
         state = {
           ...state,
+          page:action.page,
+          [state.page] :false,
+          [action.page]:true,
+        };
+        return state;
+        case 'SET_ID':
+        state = {
+          ...state,
+          display:action.id,
           page:action.page,
           [state.page] :false,
           [action.page]:true,
@@ -76,7 +88,7 @@ const FixedAssets = () => {
           {state.newasset?<NewAsset/>:<div/>}
           </div>
           <div>
-          {state.depreciation?<DepreciationSetup/>:<div/>}
+          {state.details?<FixedDetails/>:<div/>}
           </div>
           <div>
           {state.depreciationarea?<DepreciationArea/>:<div/>}
