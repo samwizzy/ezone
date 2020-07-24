@@ -41,6 +41,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {alphaNumeric} from "../validator.js";
 import * as Actions from '../actions';
+import * as crud from '../../Journal/crud';
 import FileContainer from '../filecontainer';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../../App/selectors';
@@ -100,6 +101,9 @@ const useStyles = makeStyles(theme => ({
 const AddNewJournal = props => {
   const classes = useStyles();
   const [display,setDisplay] = useState(null);
+  const [cPeriodAccount,setCPeriodAccount] = useState({});
+  const[xuv,setXuv] = useState(0)
+  const [cTotalPeriodAccount,setCTotalPeriodAccount] = useState([])
 
   function generateCode(){
     let credentials = JSON.parse(localStorage.getItem('user'))
@@ -143,8 +147,8 @@ const AddNewJournal = props => {
   // Select current financial year
   
   const currentAccountPeriod = accountPeriodData.find((item) => item.status && item.activeYear);
-  let xuv = 0;
-  xuv = accountPeriodData.length;
+
+
     // Filter all periods with status -> true
     const filteredAccountPeriodData = accountPeriodData.filter((item) => item.status);
     //console.log('accountPeriodData is -> ', JSON.stringify(accountPeriodData));
@@ -259,6 +263,37 @@ const AddNewJournal = props => {
   }
 
 
+  useEffect(() => {
+    getPeriod()
+    return () =>{
+      getPeriod()
+    }
+    },[])
+
+    async function getPeriod(){
+      let total = [];
+      let count = 0;
+       await crud.getAccountingPeriods()
+       .then((data)=>{
+         for(let i=0;i<data.data.length;i++){
+          if(data.data[i].activeYear && data.data[i].status){
+            setCPeriodAccount(data.data[i])
+          }
+          if(data.data[i].status){
+            count +=1;
+            total.push(data.data[i])
+          }
+         }
+         setCTotalPeriodAccount(total)
+         setXuv(count)
+        //console.log(`New Account periods ${JSON.stringify(data.data)}`)
+       })
+       .catch((error)=>{
+       console.log(`Error from Accounting Periods ${error}`)
+       })
+    }
+
+
   const [isAphaNumeric,setIsAphaNumeric] = useState(true)
 
   const checkAlphaNumeric = event =>{
@@ -308,9 +343,11 @@ const AddNewJournal = props => {
     }
   }
 
-  console.log('values -> ', values);
+
+
+  //console.log('values -> ', values);
   //console.log('currentAccountPeriod is -> ', currentAccountPeriod);
-  console.log('chartOfAccountData from Journal is -> ',chartOfAccountData[0]);
+ // console.log('chartOfAccountData from Journal is -> ',chartOfAccountData[0]);
 
   return (
     <ModuleLayout>
@@ -320,15 +357,15 @@ const AddNewJournal = props => {
             <div className={classes.flex}>
               <Typography variant="h5">New Journal</Typography>
          
-              {currentAccountPeriod === undefined ?
+              {cPeriodAccount === undefined ?
               (<div/>)
               :
               (
-              xuv === 0 ?
+              xuv > 0 ?
               
               <Autocomplete
                 id="combo-box-demo"
-                options={filteredAccountPeriodData}
+                options={cTotalPeriodAccount}
                 style={{width: 300}}
                 getOptionLabel={option => `${moment(option.startDate).format('dddd do-MMM-YYYY')} - ${moment(option.endDate).format('dddd do-MMM-YYYY')}`}
                 onChange={(evt, value) => handleSelectChange(evt, value)}
@@ -345,7 +382,7 @@ const AddNewJournal = props => {
               
               :
               
-              <Typography variant="subtitle1" color="textSecondary">{`${moment(currentAccountPeriod.startDate).format('dddd do-MMM-YYYY')} - ${moment(currentAccountPeriod.endDate).format('dddd do-MMM-YYYY')}`}</Typography>
+              <Typography variant="subtitle1" color="textSecondary">{`${moment(cPeriodAccount.startDate).format('dddd do-MMM-YYYY')} - ${moment(cPeriodAccount.endDate).format('dddd do-MMM-YYYY')}`}</Typography>
               
               )
               }

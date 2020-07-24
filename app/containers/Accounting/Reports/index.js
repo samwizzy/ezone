@@ -41,7 +41,7 @@ const Reports = () => {
     'Cash Journal report','Purchase order register',
     'Bill reports', 'Payments reports','Quotation reports','Purchase journal','vendor master life','Purchase order report']
     const ledger =['Cash account register','Charts of Accounts','General Journal','General ledger','Trial Balance']
-    const financialStatement =['Current Assets','Non current assests'
+    const financialStatement =['income Statement','Statement of financial position'
     ,'Equity','Non current liabilities','Current Liabilities']
     const payroll =['Payroll Journals','Payroll Check Register',
     'Payroll Tax report','Tax liability Report','Employee Earnings Report']

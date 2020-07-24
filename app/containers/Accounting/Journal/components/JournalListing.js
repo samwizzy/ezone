@@ -89,7 +89,7 @@ const JournalListing = props => {
     journalListData,
   } = props;
 
-  console.log('journalListData -> ', journalListData);
+ // console.log('journalListData -> ', journalListData);
 
   const jornallist = [];
 
