@@ -121,12 +121,17 @@ const AccountingPeriod = props => {
     setAnchorEl(null);
   };
 
+  const handleDateChange = (date) => {
+    setValues({ ...values,startDate:(new Date(date)).toISOString(), year:(new Date(date)).getFullYear()})
+  };
+
   const [currentAccountPeriod,setCurrentAccountPeriod] = useState({});
   const [accountingPeriods,setAccountingPeriods] = useState([]);
 
   const [values, setValues] = useState({
     orgId: "",
-    year: ""
+    startDate:(new Date('2019-01-18T21:11:54')).toISOString(),
+    year: lastYear
   });
 
   const [accountToUpdate, setAccountToUpdate] = useState({
@@ -144,13 +149,14 @@ const AccountingPeriod = props => {
     let currentY = `${new Date().getUTCFullYear()}`
     await crud.getAccountingPeriods().then(data=>{
       for(let i=0;i<data.data.length;i++){
-        if(currentY === data.data[i].year){
+        if(data.data[i].activeYear){
         setCurrentAccountPeriod(data.data[0])
+        setLastYear ((Number(data.data[i].year)));
         break;
         }
       }
       setAccountingPeriods(data.data);
-      setLastYear (Number(data.data[((data.data).length) -1].year));
+      
     }).catch((err)=>{
      
       console.log(`Error from setUptins ${err}`)
@@ -304,9 +310,9 @@ const AccountingPeriod = props => {
   function addPeriod(){
     let payload ={
     activeYear: false,
-    startDate: `${formatDate()}`,
+    startDate:values.startDate,
     status: true,
-    year: `${lastYear+1}`
+    year: `${values.year}`
     }
     crud.creatAccountingPeriod(payload).then((data)=>{
       handleClickClose();  
@@ -315,6 +321,11 @@ const AccountingPeriod = props => {
       swal("Error", "Something went wrong. Please check your network", "error");
     })
     
+  }
+
+  function isReady(){
+    let currentY = new Date().getUTCFullYear()
+    return currentY > values.year
   }
 
   console.log('current period file -> ', JSON.stringify(accountingPeriods));
@@ -339,7 +350,26 @@ const AccountingPeriod = props => {
             <div>
               <Paper elevation={1} className={classes.paperBase}>
                 <Grid container spacing={3}>
-                <Grid item xs={12}>
+                  <Grid item xs={12}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <KeyboardDatePicker
+                        autoOk
+                        format="MM/dd/yyyy"
+                        margin="normal"
+                        inputVariant="outlined"
+                        name="previous"
+                        size="small"
+                        id="date-picker-startDate"
+                        label="Finacial Year"
+                        value={values.startDate}
+                        onChange={handleDateChange}
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                        }}
+                      />
+                    </MuiPickersUtilsProvider>
+                  </Grid>
+               {/*<Grid item xs={12}>
               <Box p={1} className={classes.boxed}>
                 <div className={classes.lightLift}>
                   <Autocomplete
@@ -391,7 +421,7 @@ const AccountingPeriod = props => {
                   />
                 </div>
               </Box>
-            </Grid>
+            </Grid>*/}
                 </Grid>
               </Paper>
             </div>
@@ -402,7 +432,7 @@ const AccountingPeriod = props => {
           <Button variant="contained" onClick={handleClickClose} color="textSecondary">
             Cancel
           </Button>
-          <Button variant="contained" onClick={()=>addPeriod()} color="primary">
+          <Button disabled={!isReady()} variant="contained" onClick={()=>addPeriod()} color="primary">
             Create
           </Button>
         </DialogActions>

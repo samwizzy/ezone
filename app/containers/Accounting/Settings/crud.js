@@ -11,6 +11,8 @@ export async function creatAccountingPeriod(value){
       'Content-Type': 'application/json', }
   }
   let payload = {...value,orgId:credentials.organisation.orgId}
+
+  console.log(`payload b4 ${JSON.stringify(payload)}`)
   return await axios.post(requestURL,payload,config)
   .then(result => { console.log(result); return result; })
   .catch(error => { console.error(error); return Promise.reject(error); });
