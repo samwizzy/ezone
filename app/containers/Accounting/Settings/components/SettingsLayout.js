@@ -6,7 +6,9 @@ import { compose } from 'redux'
 import { createStructuredSelector } from 'reselect';
 import { 
   makeStyles, 
-  Grid, 
+  Grid,
+  Paper,
+  Typography  
 } from '@material-ui/core';
 import SettingsSideBar from './SettingsSideBar';
 import AccountingPeriod from './AccountingPeriod';
@@ -24,6 +26,9 @@ export const SettingContext = React.createContext();
 const useStyles = makeStyles(theme => ({
 	root: {
 		flexGrow: 1
+	},
+	pap:{
+		padding:'8px'
 	}
 }))
 
@@ -69,7 +74,7 @@ const SettingsLayout = props => {
 	   return ()=>{
 		   getLocation()
 	   }
-	  },[])
+	  },[props.path])
 
 	  function getLocation(){
 		  let nav = `${props.path}`
@@ -77,29 +82,29 @@ const SettingsLayout = props => {
 		  let k = nav.lastIndexOf('/');
 		  let newPath = nav.substr(k+1);
 		  console.log(`new Path ${newPath}`)
-		  switch(props.path){
-          case '/account/settings':
-		  case '/account/settings/period':
+		  switch(newPath){
+          case 'settings':
+		  case 'period':
 		  dispatch({type:'NAVIGATION',page:'setting'})	  
 		  break;
-		  case'/account/settings/fixedasset':
-		  case '/account/settings/deprecitiontype':
+		  case'fixedasset':
+		  case 'deprecitiontype':
 		 dispatch({type:'NAVIGATION',page:'depreciation'})	  
 			break; 
-		 case '/account/settings/deprecitionarea':
+		 case 'deprecitionarea':
 			dispatch({type:'NAVIGATION',page:'deprecitionarea'})
 			break;
-	    case '/account/settings/assettype':
+	    case 'assettype':
 			dispatch({type:'NAVIGATION',page:'assettype'})
 			break;	
-			case '/account/settings/currencies':
+			case 'currencies':
 			dispatch({type:'NAVIGATION',page:'currencies'})
 			break;
-			case '/account/settings/taxes':
-		    case '/account/settings/taxrate':
+			case 'taxes':
+		    case 'taxrate':
 				dispatch({type:'NAVIGATION',page:'taxrate'})
 				break;
-		  case '/account/settings/taxtype':
+		  case 'taxtype':
 			dispatch({type:'NAVIGATION',page:'taxtype'})
 			break; 	
 		default:
@@ -112,10 +117,17 @@ const SettingsLayout = props => {
 		<SettingContext.Provider
     value={{ settingState: state, settingDispatch: dispatch }}>
 		<div className={classes.root}>
-			<Grid container>
+			<Grid container spacing={3}>
 				{/*<Grid item xs={2}>
 					<SettingsSideBar/>
 				</Grid>*/}
+				 <Grid item xs={12}>
+                <Paper className={classes.pap} elevation={3} >
+                <Typography gutterBottom variant="h6" component="h1">
+                 Settings
+                </Typography>
+            </Paper>
+                </Grid>
 				<Grid item xs={12}>
 					<div>
 					{state.setting?
@@ -125,7 +137,7 @@ const SettingsLayout = props => {
 					}
 					</div>
 					<div>
-						{state.deprecition?
+						{state.depreciation?
 						<DepreciationSetup/>
 						:
 						<div/>

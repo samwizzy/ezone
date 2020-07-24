@@ -9,6 +9,7 @@ import SendIcon from '@material-ui/icons/ArrowForward';
 import * as crud from './crud';
 import * as Enum from './enums';
 import ExportIcon from '@material-ui/icons/Publish';
+import { Euro, AttachMoney, Delete,ArrowBack } from '@material-ui/icons';
 import { Grid,
     Button,
     TextField } from '@material-ui/core';
@@ -143,7 +144,7 @@ const FixedDetails = () => {
                        <Grid container spacing={3}>
                            <Grid item xs={5}>
                                <div>
-                                   <img src={`data:image/png;base64,${pics[0].file}`} style={{width:'100%',maxHeight:'320px'}} />
+                                   <img src={`data:image/png;base64,${pics[0].file}`} style={{width:'100%',height:'300px'}} />
                                </div>
                            </Grid>
                            <Grid item xs={7}>
@@ -186,7 +187,7 @@ const FixedDetails = () => {
                              </div> 
                             </Grid>
                             <Grid item xs={8}>
-                              <div style={{position:'relative',left:'-10em'}}>
+                              <div style={{position:'relative',left:'-8em'}}>
                               <Typography gutterBottom variant="body1">
                               {contentDis.description}
                              </Typography>
@@ -286,6 +287,20 @@ const FixedDetails = () => {
                    </Paper>
                   
                </Grid>
+
+               <Grid item xs={12}>
+                 <div style={{float:"right",padding:'10px'}}>
+                     <div>
+                     <Button
+                variant="contained"
+                onClick={()=>{fixedContext.fixedDispatch({type:'NAVIGATION',page:'fixed'})}}
+                startIcon={<ArrowBack />}
+              >
+                Back
+              </Button>
+                     </div>
+                 </div>
+              </Grid>
 
             </Grid>
 

@@ -120,7 +120,7 @@ const SidebarConfig = [
       { id: 6, name: 'Reports', url: '/account/reports', icon: 'local_library' },
       { id: 7, name: 'Budgeting', url: '/account/budgeting', icon: 'account_balance_wallet' },
       {
-        id: 8, name: 'Settings', url: '/account/settings', icon: 'settings', submenus: [
+        id: 8, name: 'Settings', url: '#', icon: 'settings', submenus: [
           { id: 1, name: 'Account Period', url: '/account/settings/period', icon: '' },
           { id: 2, name: 'Deprecition Type', url: '/account/settings/deprecitiontype', icon: '' },
           { id: 3, name: 'Deprecition Area', url: '/account/settings/deprecitionarea', icon: '' },
