@@ -74,10 +74,10 @@ const Widget3 = ({ user, schedules }) => {
                   {userSchedules.slice(0, 4).map((schedule, i) =>
                     <TableRow key={i}>
                       <TableCell component="th">
-                        <Typography>{schedule.scheduleType}</Typography>
+                        <Typography>{schedule.title}</Typography>
                       </TableCell>
                       <TableCell align="center">
-                        <Typography>{moment(moment(schedule.startDate).format('YYY-MM-DD') + ' ' + schedule.startTime).format('HH:mm')}</Typography>
+                        <Typography>{moment(schedule.startDate).format('HH:mm')}</Typography>
                       </TableCell>
                     </TableRow>
                   )}

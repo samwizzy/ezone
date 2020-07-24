@@ -136,6 +136,11 @@ export const CreateRecognitionApi = `${BaseUrl}/authserv/api/v1/recognition/add`
 export const GetRecognitionByIdApi = `${BaseUrl}/authserv/api/v1/recognition/get_by_id`;
 export const UpdateRecognition = `${BaseUrl}/authserv/api/v1/recognition/update`;
 export const RecognitionCommentApi = `${BaseUrl}/authserv/api/v1/recognition/comment`;
+// HR:Performance - Reviews
+export const GetReviewsApi = `${BaseUrl}/authserv/api/v1/review/get_by_orgid`;
+export const CreateReviewApi = `${BaseUrl}/authserv/api/v1/review`;
+export const GetReviewByIdApi = `${BaseUrl}/authserv/api/v1/review/{id}`;
+export const UpdateReview = `${BaseUrl}/authserv/api/v1/review/update`;
 
 // HR:Leave-Management - Leave Request
 export const GetLeaveRequestsApi = `${BaseUrl}/authserv/api/v1/all_leave_requests_by_orgid`;

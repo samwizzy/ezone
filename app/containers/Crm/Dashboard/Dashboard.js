@@ -19,15 +19,24 @@ import { Widget1, Widget2, Widget3, Widget4, Widget4_1, Widget5 } from './widget
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
-  }
+  },
+  grid: {
+    justifyContent: "space-between",
+    "& .MuiGrid-container": {
+      // backgroundImage: `linear-gradient(to bottom, ${blue[50]}, #fff 80%, ${blue[50]})`,
+      '& .MuiGrid-item': {
+        flex: 1,
+      }
+    }
+  },
 }))
 
 export function DashBoard({ currentUser, employees, contacts, companies, schedules, tasks }) {
   const classes = useStyles()
 
-  console.log(contacts, "contacts")
-  console.log(companies, "companies")
-  console.log(tasks, "tasks")
+  // console.log(contacts, "contacts")
+  // console.log(companies, "companies")
+  // console.log(tasks, "tasks")
 
   return (
     <div className={classes.root}>

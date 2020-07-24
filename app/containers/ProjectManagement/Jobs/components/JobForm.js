@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { memo, useEffect } from 'react';
+import React, { Fragment, memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -11,8 +11,10 @@ import {
   AppBar,
   Toolbar,
   Button,
+  Checkbox,
   IconButton,
   Grid,
+  FormControlLabel,
   MenuItem,
   Typography,
   Backdrop,
@@ -66,8 +68,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const phaseInitialState = {
+  phase: '',
+  unit: '',
+  description: '',
+  expense: '',
+  revenue: ''
+}
+
 const JobForm = props => {
   const classes = useStyles();
+
+  const [options, setOptions] = React.useState({ phases: false });
 
   const [form, setForm] = React.useState({
     jobName: '',
@@ -77,6 +89,9 @@ const JobForm = props => {
     estimatedDate: moment().format('YYYY-MM-DD'),
     startDate: moment().format('YYYY-MM-DD'),
     endDate: moment().format('YYYY-MM-DD'),
+    phases: [{ ...phaseInitialState }],
+    phase: '',
+    unit: '',
     expense: '',
     revenue: '',
     jobLocation: '',
@@ -96,8 +111,22 @@ const JobForm = props => {
     setForm({ ...form, image: file });
   };
 
+  const addMore = event => {
+    setForm({ ...form, phases: [...form.phases, phaseInitialState] });
+  };
+
   const handleChange = event => {
     setForm({ ...form, [event.target.name]: event.target.value });
+  };
+
+  const handleRowChange = index => event => {
+    const { phases } = form
+    phases[index][event.target.name] = event.target.value
+    setForm({ ...form, phases });
+  };
+
+  const handleOptionsChange = event => {
+    setOptions({ ...options, [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value });
   };
 
   const handleSelectChange = name => (event, obj) => {
@@ -113,6 +142,7 @@ const JobForm = props => {
   }
 
   console.log(form, 'form');
+  console.log(options, 'options');
   console.log(employees, 'employees');
 
   return (
@@ -265,31 +295,109 @@ const JobForm = props => {
           <Paper className={classes.paper}>
             <div>
               <div className={classes.flex}>
-                <TextField
-                  className={classes.mr_4}
-                  name="expense"
-                  label="Expense"
-                  id="outlined-expense"
-                  fullWidth
-                  margin="normal"
-                  variant="outlined"
-                  size="small"
-                  value={form.expense}
-                  onChange={handleChange}
-                />
-                <TextField
-                  className={classes.ml_4}
-                  name="revenue"
-                  label="Revenue"
-                  id="outlined-revenue"
-                  fullWidth
-                  margin="normal"
-                  variant="outlined"
-                  size="small"
-                  value={form.revenue}
-                  onChange={handleChange}
+                <FormControlLabel
+                  control={<Checkbox checked={options.phases} onChange={handleOptionsChange} name="phases" />}
+                  label="Phases"
                 />
               </div>
+              {options.phases ?
+                <Fragment>
+                  {form.phases && form.phases.map((phase, i) =>
+                    <div key={i} className={classes.flex}>
+                      <TextField
+                        className={classes.mr_4}
+                        name="phase"
+                        label="Phase"
+                        id={`outlined-phase-${i}`}
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        size="small"
+                        value={phase.phase}
+                        onChange={handleRowChange(i)}
+                      />
+                      <TextField
+                        className={classes.mr_4}
+                        name="description"
+                        label="Description"
+                        id={`outlined-phase-description-${i}`}
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        size="small"
+                        value={phase.description}
+                        onChange={handleRowChange(i)}
+                      />
+                      <TextField
+                        className={classes.mr_4}
+                        name="unit"
+                        label="Unit"
+                        id={`outlined-phase-unit-${i}`}
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        size="small"
+                        value={phase.unit}
+                        onChange={handleRowChange(i)}
+                      />
+                      <TextField
+                        className={classes.mr_4}
+                        name="expense"
+                        label="Expense"
+                        id={`outlined-phase-expense-${i}`}
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        size="small"
+                        value={phase.expense}
+                        onChange={handleRowChange(i)}
+                      />
+                      <TextField
+                        className={classes.ml_4}
+                        name="revenue"
+                        label="Revenue"
+                        id={`outlined-phase-revenue-${i}`}
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        size="small"
+                        value={phase.revenue}
+                        onChange={handleRowChange(i)}
+                      />
+                    </div>
+                  )}
+                  <div className={classes.flex}>
+                    <Button size="small" color="primary" onClick={addMore}>Add more</Button>
+                  </div>
+                </Fragment>
+                :
+                <div className={classes.flex}>
+                  <TextField
+                    className={classes.mr_4}
+                    name="expense"
+                    label="Expense"
+                    id="outlined-expense"
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                    size="small"
+                    value={form.expense}
+                    onChange={handleChange}
+                  />
+                  <TextField
+                    className={classes.ml_4}
+                    name="revenue"
+                    label="Revenue"
+                    id="outlined-revenue"
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                    size="small"
+                    value={form.revenue}
+                    onChange={handleChange}
+                  />
+                </div>
+              }
             </div>
           </Paper>
         </Grid>

@@ -18,53 +18,53 @@ import * as Selectors from './../../selectors';
 import RecognitionDetails from './RecognitionDetails'
 
 const useStyles = makeStyles(theme => ({
-	root: {
-		flexGrow: 1,
-	},
+  root: {
+    flexGrow: 1,
+  },
 }));
 
 export function RecognitionDetailsApp(props) {
-	const { getRecognitionById, match } = props;
-	const { params } = match
+  const { getRecognitionById, match } = props;
+  const { params } = match
 
-	React.useEffect(() => {
-		getRecognitionById(params.pageId)
-	}, []);
+  React.useEffect(() => {
+    getRecognitionById(params.id)
+  }, []);
 
-	return (
-		<React.Fragment>
-			<Helmet>
-				<title>Recognition Details Page</title>
-				<meta name="description" content="ezone application recognition details page" />
-			</Helmet>
+  return (
+    <React.Fragment>
+      <Helmet>
+        <title>Recognition Details Page</title>
+        <meta name="description" content="ezone application recognition details page" />
+      </Helmet>
 
-			<RecognitionDetails />
+      <RecognitionDetails />
 
-		</React.Fragment>
-	);
+    </React.Fragment>
+  );
 }
 
 RecognitionDetailsApp.propTypes = {
-	token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 const mapStateToProps = createStructuredSelector({
-	token: AppSelectors.makeSelectAccessToken(),
+  token: AppSelectors.makeSelectAccessToken(),
 });
 
 export function mapDispatchToProps(dispatch) {
-	return {
-		getRecognitionById: (id) => dispatch(Actions.getRecognitionById(id)),
-	};
+  return {
+    getRecognitionById: (id) => dispatch(Actions.getRecognitionById(id)),
+  };
 }
 
 const withConnect = connect(
-	mapStateToProps,
-	mapDispatchToProps,
+  mapStateToProps,
+  mapDispatchToProps,
 );
 
 export default compose(
-	withRouter,
-	withConnect,
-	memo,
+  withRouter,
+  withConnect,
+  memo,
 )(RecognitionDetailsApp);

@@ -6,13 +6,6 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
-import ScheduleIcon from '@material-ui/icons/Schedule';
 import { withStyles, AppBar, Avatar, Box, Button, Checkbox, Chip, Dialog, DialogActions, DialogContent, Grid, MenuItem, Slide, Popover, Tabs, Tab, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';

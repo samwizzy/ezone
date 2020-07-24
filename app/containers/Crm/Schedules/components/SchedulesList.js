@@ -87,11 +87,8 @@ const SchedulesList = props => {
 
   console.log(schedules, "schedules list")
 
-  if (loading) {
-    return <LoadingIndicator />;
-  }
-
-  const todaySchedules = schedules && schedules.filter(schedule => moment().diff(schedule.startDate, 'days') === 0)
+  const orderedSchedules = schedules && _.orderBy(schedules, ['dateCreated'], ['desc'])
+  const todaySchedules = orderedSchedules && orderedSchedules.filter(schedule => moment().diff(schedule.startDate, 'days') === 0)
 
   return (
     <div className={classes.root}>
@@ -130,8 +127,8 @@ const SchedulesList = props => {
                           <Table className={classes.table}>
                             <TableBody>
                               <TableRow>
-                                <TableCell component="th">{schedule.scheduleType}</TableCell>
-                                <TableCell component="th">{moment(moment(schedule.startDate).format('YYY-MM-DD') + ' ' + schedule.startTime).format('HH:mm')}</TableCell>
+                                <TableCell component="th">{schedule.title}</TableCell>
+                                <TableCell component="th">{moment(schedule.startDate).format('HH:mm')}</TableCell>
                               </TableRow>
                               <TableRow>
                                 <TableCell colSpan={2}>{schedule.description}</TableCell>

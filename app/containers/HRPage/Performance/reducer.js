@@ -245,6 +245,18 @@ const performanceReducer = (state = initialState, action) =>
           recognitionDialog: { ...state.recognitionDialog, props: { open: false } },
         }
       }
+      case Constants.OPEN_NEW_FEEDBACK_DIALOG: {
+        return {
+          ...state,
+          feedbackDialog: { ...state.feedbackDialog, props: { open: true }, type: 'new' },
+        }
+      }
+      case Constants.CLOSE_NEW_FEEDBACK_DIALOG: {
+        return {
+          ...state,
+          feedbackDialog: { ...state.feedbackDialog, props: { open: false }, type: 'edit' },
+        }
+      }
     }
   });
 

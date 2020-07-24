@@ -37,6 +37,16 @@ export const COMMENT_RECOGNITION = 'boilerplate/HRPage/COMMENT RECOGNITION';
 export const COMMENT_RECOGNITION_SUCCESS = 'boilerplate/HRPage/COMMENT RECOGNITION SUCCESS';
 export const COMMENT_RECOGNITION_ERROR = 'boilerplate/HRPage/COMMENT RECOGNITION ERROR';
 
+export const GET_REVIEWS = 'boilerplate/HRPage/GET REVIEWS';
+export const GET_REVIEWS_SUCCESS = 'boilerplate/HRPage/GET REVIEWS SUCCESS';
+export const GET_REVIEWS_ERROR = 'boilerplate/HRPage/GET REVIEWS ERROR';
+export const GET_REVIEW_BY_ID = 'boilerplate/HRPage/GET REVIEW BY ID';
+export const GET_REVIEW_BY_ID_SUCCESS = 'boilerplate/HRPage/GET REVIEWS BY ID SUCCESS';
+export const GET_REVIEW_BY_ID_ERROR = 'boilerplate/HRPage/GET REVIEWS BY ID ERROR';
+export const CREATE_REVIEW = 'boilerplate/HRPage/CREATE REVIEW';
+export const CREATE_REVIEW_SUCCESS = 'boilerplate/HRPage/CREATE REVIEW SUCCESS';
+export const CREATE_REVIEW_ERROR = 'boilerplate/HRPage/CREATE REVIEW ERROR';
+
 export const OPEN_NEW_GOALS_DIALOG = 'boilerplate/HRPage/OPEN NEW GOALS DIALOG';
 export const CLOSE_NEW_GOALS_DIALOG = 'boilerplate/HRPage/CLOSE NEW GOALS DIALOG';
 export const OPEN_EDIT_GOALS_DIALOG = 'boilerplate/HRPage/OPEN EDIT GOALS DIALOG';

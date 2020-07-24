@@ -37,7 +37,7 @@ export function* getEmployees() {
     yield put(Actions.getEmployeesSuccess(response));
   } catch (err) {
     if (err.message) {
-      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
     } else {
       const error = yield call(errorHandler, err.response.json())
       if (error.status === 500 || error.status === 400) {
@@ -67,7 +67,7 @@ export function* getBranchEmployees(id) {
     yield put(Actions.getEmployeesSuccess(response));
   } catch (err) {
     if (err.message) {
-      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
     } else {
       const error = yield call(errorHandler, err.response.json())
       if (error.status === 500 || error.status === 400) {
@@ -96,7 +96,7 @@ export function* getDeptEmployees(id) {
     yield put(Actions.getEmployeesSuccess(response));
   } catch (err) {
     if (err.message) {
-      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
     } else {
       const error = yield call(errorHandler, err.response.json())
       if (error.status === 500 || error.status === 400) {
@@ -152,7 +152,7 @@ export function* createEmployee({ type, payload }) {
     yield put({ type: Constants.CLOSE_NEW_EMPLOYEE_DIALOG });
   } catch (err) {
     if (err.message) {
-      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
       yield put(Actions.createEmployeeError(err.message));
     } else {
       const error = yield call(errorHandler, err.response.json())
@@ -191,7 +191,7 @@ export function* updateEmployee({ payload }) {
     }
   } catch (err) {
     if (err.message) {
-      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
     } else {
       const error = yield call(errorHandler, err.response.json())
       if (error.status === 500 || error.status === 400) {
@@ -265,7 +265,7 @@ export function* getDepartmentsByOrgIdApi() {
     yield put(Actions.getDepartmentsByOrgIdApiSuccess(response));
   } catch (err) {
     if (err.message) {
-      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
     } else {
       const error = yield call(errorHandler, err.response.json())
       if (error.status === 500 || error.status === 400) {

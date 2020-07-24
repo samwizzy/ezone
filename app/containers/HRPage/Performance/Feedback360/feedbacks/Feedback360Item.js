@@ -2,8 +2,8 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { Avatar, Breadcrumbs, Box, Button, Card, CardHeader, CardContent, CardActions, Divider, IconButton, Paper, Typography } from '@material-ui/core';
-import AvatarGroup from '@material-ui/lab/AvatarGroup'
+import { Button, Card, CardHeader, CardContent, CardActions, Divider, IconButton, Paper, Typography } from '@material-ui/core';
+import { lighten } from '@material-ui/core/styles/colorManipulator'
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -21,12 +21,16 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     marginBottom: theme.spacing(1),
+    "& .MuiCardHeader-root": {
+      backgroundColor: lighten(theme.palette.divider, 0.8)
+    },
     "& .MuiCardActions-root": {
       justifyContent: "space-between",
+      flexDirection: 'column',
       "& span:not(:last-child)": {
         marginRight: theme.spacing(2)
       }
-    }
+    },
   },
   card: {
     padding: theme.spacing(2)
@@ -37,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const RecognitionItem = props => {
+const Feedback360Item = props => {
   const classes = useStyles();
   const { loading, match, recognition } = props;
 
@@ -51,34 +55,13 @@ const RecognitionItem = props => {
   return (
     <Card className={classes.root} square classes={{ root: classes.card }}>
       <CardHeader
-        avatar={
-          <React.Fragment>
-            <AvatarGroup max={3}>
-              {recognition.employees && recognition.employees.map((emp, i) =>
-                <Avatar key={i} alt={emp.firstName + ' ' + emp.lastName} className={classes.avatar} src={`data:image/jpg;base64,${emp.organisation.logo}`} />
-              )}
-            </AvatarGroup>
-            <Typography variant="body2" color="textSecondary">
-              {recognition.employees ?
-                <React.Fragment>
-                  {_.map(recognition.employees, 'firstName').join(', ')}
-                  <small> {recognition.employees.length > 1 ? 'were' : 'was'} Recognized for</small> Creativity
-								</React.Fragment>
-                :
-                'No recognitions recorded'
-              }
-            </Typography>
-          </React.Fragment>
-        }
-        action={
-          <React.Fragment>
-            <img src={RecognitionIcon} /> &nbsp;
-						<Typography display="inline"> Creativity</Typography>
-          </React.Fragment>
+        title={
+          <Typography variant="subtitle1" color="textSecondary">
+            <Link to={`/human-resource/performance/feedback/${recognition.id}`}>{recognition.title}</Link>
+          </Typography>
         }
       />
       <CardContent>
-        <Typography variant="subtitle1"><Link to={`/human-resource/performance/recognition/${recognition.id}`}>{recognition.title}</Link></Typography>
         <Typography variant="body2" color="textSecondary" component="p">
           {recognition.description}
         </Typography>
@@ -86,22 +69,26 @@ const RecognitionItem = props => {
       <CardActions disableSpacing>
         <div>
           <Typography variant="caption" aria-label="add to favorites">
-            <FavoriteBorderOutlinedIcon /> 13 <span className={classes.text}>likes</span>
+            Reviewees: <span className={classes.text}>Mark Jones</span>
           </Typography>
           <Typography variant="caption" aria-label="share">
-            <CommentOutlinedIcon /> 14 <span className={classes.text}>comments</span>
+            Reviewers: <span className={classes.text}>Mark Jones, Mary Jane</span>
           </Typography>
         </div>
-
-        <Typography variant="caption" aria-label="share">
-          {moment(recognition.dateCreated).fromNow()} <em>by</em> <span className={classes.text}>Chike Obi</span>
-        </Typography>
+        <div>
+          <Typography variant="caption" aria-label="add to favorites">
+            <span className={classes.text}>10 / 15 Replies</span>
+          </Typography>
+          <Typography variant="caption" aria-label="share">
+            Request deadline : {moment(recognition.dateCreated).format('ll')}
+          </Typography>
+        </div>
       </CardActions>
     </Card>
   );
 };
 
-RecognitionItem.propTypes = {
+Feedback360Item.propTypes = {
   loading: PropTypes.bool,
 };
 
@@ -123,4 +110,4 @@ export default compose(
   withRouter,
   withConnect,
   memo,
-)(RecognitionItem);
+)(Feedback360Item);

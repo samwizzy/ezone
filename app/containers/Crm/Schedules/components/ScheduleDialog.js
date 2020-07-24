@@ -6,6 +6,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
 import {
+  CircularProgress,
   Checkbox,
   CardContent,
   Table,
@@ -36,6 +37,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker,
+  KeyboardDateTimePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import * as Selectors from '../selectors';
@@ -82,17 +84,17 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const ScheduleDialog = props => {
   const classes = useStyles();
   const { loading, scheduleDialog, closeNewScheduleDialog, employees, contacts, createSchedule } = props;
-  const [options, setOptions] = React.useState({ repeatReminderUnit: 'MINUTES' })
+  const [options, setOptions] = React.useState({ repeatReminderUnit: 'MINUTES', all: false })
   const [form, setForm] = React.useState({
-    scheduleType: "Meeting With Shareholders",
-    location: "Banana Island Lagos",
+    title: "",
+    location: "",
     startDate: moment().format('YYYY-MM-DD'),
     endDate: moment().format('YYYY-MM-DD'),
-    startTime: "15:30:14",
-    endTime: "18:30:14",
+    startTime: moment().format('HH:mm:ss'),
+    endTime: moment().format('HH:mm:ss'),
     hostId: 1,
     repeatReminder: "15",
-    description: "this is a meeting to discuss all the foreseeable achievements of this business",
+    description: "",
     userParticipants: [],
     contactParticipants: []
   });
@@ -117,7 +119,7 @@ const ScheduleDialog = props => {
   }
 
   const handleDateChange = name => date => {
-    setForm({ ...form, [name]: moment(date).format('YYYY-MM-DD') })
+    setForm({ ...form, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss') })
   }
 
   const handleTimeChange = (event) => {
@@ -132,7 +134,24 @@ const ScheduleDialog = props => {
   }
 
   const canSubmitForm = () => {
-    return true
+    const {
+      title,
+      location,
+      description,
+      startDate,
+      startTime,
+      endDate,
+      endTime,
+      hostId,
+      userParticipants,
+      contactParticipants,
+    } = form
+    return (
+      title.length > 0 && location.length > 0 && description.length > 0 &&
+      startDate.length > 0 && startTime.length > 0 && endDate.length > 0 &&
+      endTime.length > 0 && hostId &&
+      userParticipants.length > 0 && contactParticipants.length > 0
+    )
   }
 
   console.log(form, "form schedules")
@@ -159,17 +178,17 @@ const ScheduleDialog = props => {
           <Table className={classes.table}>
             <TableBody>
               <TableRow>
-                <TableCell>Schedule type</TableCell>
+                <TableCell>Schedule title</TableCell>
                 <TableCell>
                   <TextField
-                    name="scheduleType"
-                    label="Schedule type"
-                    id="outlined-schedule-type"
+                    name="title"
+                    label="Schedule title"
+                    id="outlined-schedule-title"
                     fullWidth
                     variant="outlined"
                     margin="normal"
                     size="small"
-                    value={form.scheduleType}
+                    value={form.title}
                     onChange={handleChange}
                   />
                 </TableCell>
@@ -202,14 +221,14 @@ const ScheduleDialog = props => {
                 <TableCell align="right">From</TableCell>
                 <TableCell>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
+                    <KeyboardDateTimePicker
                       autoOk
                       margin="normal"
                       inputVariant="outlined"
                       id="start-date"
                       label="Start Date"
                       size="small"
-                      format="dd/MM/yyyy"
+                      format="dd/MM/yyyy hh:mm:ss"
                       value={form.startDate}
                       onChange={handleDateChange('startDate')}
                       KeyboardButtonProps={{
@@ -226,6 +245,9 @@ const ScheduleDialog = props => {
                       label="Start Time"
                       type="time"
                       className={classes.textField}
+                      size="small"
+                      variant="outlined"
+                      margin="normal"
                       value={form.startTime}
                       onChange={handleTimeChange}
                       InputLabelProps={{
@@ -239,7 +261,7 @@ const ScheduleDialog = props => {
                 </TableCell>
                 <TableCell>
                   <FormControlLabel
-                    control={<Checkbox checked={form.all} onChange={handleChange} name="all" />}
+                    control={<Checkbox checked={options.all} onChange={handleOptionsChange} name="all" />}
                     label="All days"
                   />
                 </TableCell>
@@ -248,14 +270,14 @@ const ScheduleDialog = props => {
                 <TableCell align="right">To</TableCell>
                 <TableCell>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
+                    <KeyboardDateTimePicker
                       autoOk
                       margin="normal"
                       inputVariant="outlined"
                       id="end-date-picker"
                       label="End Date"
                       size="small"
-                      format="dd/MM/yyyy"
+                      format="dd/MM/yyyy hh:mm:ss"
                       value={form.endDate}
                       onChange={handleDateChange('endDate')}
                       KeyboardButtonProps={{
@@ -272,13 +294,16 @@ const ScheduleDialog = props => {
                       label="End Time"
                       type="time"
                       className={classes.textField}
+                      size="small"
+                      variant="outlined"
+                      margin="normal"
                       value={form.endTime}
                       onChange={handleTimeChange}
                       InputLabelProps={{
                         shrink: true,
                       }}
                       inputProps={{
-                        step: 300, // 5 min
+                        step: 300,
                       }}
                     />
                   </div>
@@ -449,8 +474,9 @@ const ScheduleDialog = props => {
           </Button>
           <Button
             onClick={handleSubmit}
-            disabled={!canSubmitForm()}
             color="primary"
+            disabled={loading ? loading : !canSubmitForm()}
+            endIcon={loading && <CircularProgress size={20} />}
           >
             Save
           </Button>

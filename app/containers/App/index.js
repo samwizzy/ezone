@@ -87,6 +87,8 @@ import CrmSocialMedia from '../Crm/SocialMedia/Loadable';
 
 import CrmLeads from '../Crm/Leads/Loadable';
 
+import CalendarPage from '../CalendarPage/Loadable';
+
 import LMSDashboardModule from '../LMS/Dashboard/Loadable';
 import LMSAccountSettingsModule from '../LMS/AccountSettings/Loadable';
 import LMSIntegrationModule from '../LMS/Integration/Loadable';
@@ -133,6 +135,7 @@ const App = props => {
                 <Layout3>
                   <PrivateRoute exact path="/home" component={Home} />
                   <PrivateRoute exact path="/dashboard" component={Dashboard} />
+                  <PrivateRoute exact path="/calendar" component={CalendarPage} />
                   <PrivateRoute
                     exact
                     path="/organization"
@@ -225,7 +228,8 @@ const App = props => {
                   <PrivateRoute exact path="/work-order" component={WorkOrderPage} />
 
                   <PrivateRoute exact path="/human-resource/leave-management/:page?/:pageId?" component={LeaveManagementPage} />
-                  <PrivateRoute exact path="/human-resource/performance/:page/:pageId?" component={PerformancePage} />
+                  {/* <PrivateRoute exact path="/human-resource/performance/:page/:pageId?" component={PerformancePage} /> */}
+                  <PrivateRoute path="/human-resource/performance" component={PerformancePage} />
 
                   <PrivateRoute exact path="/human-resource/attendance" component={AttendancePage} />
                   {/*<PrivateRoute exact path="/hr/attendance" component={AttendancePage} />*/}

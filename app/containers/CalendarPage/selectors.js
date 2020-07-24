@@ -1,16 +1,33 @@
 /**
- * Homepage selectors
+ * Calendar selectors
  */
 
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
-const selectHome = state => state.home || initialState;
+const selectCalendar = state => state.calendar || initialState;
+
+const makeSelectCalendar = () =>
+  createSelector(
+    selectCalendar,
+    calendarState => calendarState,
+  );
+
+const makeSelectLoading = () =>
+  createSelector(
+    selectCalendar,
+    calendarState => calendarState.loading,
+  );
 
 const makeSelectUsername = () =>
   createSelector(
-    selectHome,
-    homeState => homeState.username,
+    selectCalendar,
+    calendarState => calendarState.username,
   );
 
-export { selectHome, makeSelectUsername };
+export default makeSelectCalendar
+export {
+  makeSelectLoading,
+  selectCalendar,
+  makeSelectUsername
+};
