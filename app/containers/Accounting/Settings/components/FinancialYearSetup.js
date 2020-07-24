@@ -184,7 +184,7 @@ const FinancialYearSetup = () => {
     }
   }
 
-  const [dmonth, setDmonth] = React.useState(1);
+  const [dmonth, setDmonth] = useState(1);
 
   function setMonthForCalender(event, value) {
     setDmonth(value.value);
@@ -352,7 +352,6 @@ const FinancialYearSetup = () => {
     let date = (new Date()).toISOString()
     let k = date.indexOf('T');
     return `${value}T${date.substring(k+1)}`;
-
   }
 
   function onNextPage(e){

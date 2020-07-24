@@ -34,14 +34,15 @@ const useStyles = makeStyles((theme) => ({
 const Reports = () => {
     const classes = useStyles();
     const recievables = ['Customer Ledgers','Aged Receivables'
-    ,'Aged Payables','Cash Receipt Jornals','Invoice Register',
-    'Sales Order Details','Sales taxes','Taxes/Exempt Sales']
+    ,'Customer master file','Cash Receipt Jornals','Invoice Register',
+    'Sales Order Details','Sales Journal','Sales taxes','Taxes/Exempt Sales','Quote register']
+    const fixedAsset =['Fixed Asset Register','Fixed Asset Schedule']
     const payables =['Vendor Ledgers','Aged Payables',
     'Cash Journal report','Purchase order register',
-    'Bill reports', 'Payments reports','Quotation reports','Taxes/Exempt Sales']
-    const ledger =['Cash account register','Charts of Accounts','General ledger','Trial Balance']
+    'Bill reports', 'Payments reports','Quotation reports','Purchase journal','vendor master life','Purchase order report']
+    const ledger =['Cash account register','Charts of Accounts','General Journal','General ledger','Trial Balance']
     const financialStatement =['Current Assets','Non current assests'
-    ,'Equity','Non current liabilities']
+    ,'Equity','Non current liabilities','Current Liabilities']
     const payroll =['Payroll Journals','Payroll Check Register',
     'Payroll Tax report','Tax liability Report','Employee Earnings Report']
     return ( 
@@ -72,7 +73,7 @@ const Reports = () => {
                           <Grid item xs={12}>
                           <Paper elevation={3} >
                           <Paper elevation={1}>
-                           <ListBoard bar={'blue'} title={'Recievables'} contents={recievables}/>
+                           <ListBoard bar={'orchild'} title={'Fixed Asset'} contents={fixedAsset}/>
                           </Paper>
                         </Paper>
                           </Grid>

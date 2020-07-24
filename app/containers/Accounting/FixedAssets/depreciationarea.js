@@ -17,8 +17,10 @@ import {
 import AccessClasses from './assetsclasses';
 import SendIcon from '@material-ui/icons/ArrowForward';
 import BackIcon from '@material-ui/icons/ArrowBack';
+import * as crud from '../Settings/crud';
+import swal from 'sweetalert';
 import { BrowserRouter as Router, Switch,useParams, Route,useRouteMatch } from "react-router-dom";
-import { FixedAssetContext } from './index';
+import { SettingContext } from '../Settings/components/SettingsLayout';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -49,7 +51,33 @@ const useStyles = makeStyles(theme => ({
 const DepreciationArea = () => {
     const [mainDepreciation,setMainDepreciation] = useState(false);
     const classes = useStyles();
-    const fixedContext = useContext(FixedAssetContext);
+    const settingContext = useContext(SettingContext);
+
+    const [values,setValues] = useState({
+      code:'',
+      description:'',
+      type:''
+    })
+
+
+     function addNewDeprecitionArea(){
+     crud.addDeprecitionArea(values)
+     .then((data)=>{
+      swal("Success","Depreciation Area added successfully","success");
+      //settingContext.settingDispatch({type:'NAVIGATION',page:'deprecitionarea'})
+     })
+     .catch((error)=>{
+      swal("Error","Something went wrong. Please check your connection","error");
+     })
+    }
+
+    const handleChange = name => event => {
+      setValues({ ...values, [name]: event.target.value });
+    };
+
+    function isReady(){
+      return values.code.length > 1 && values.description.length > 1 && values.type.length > 1
+    }
 
 
     return ( 
@@ -73,6 +101,8 @@ const DepreciationArea = () => {
                              <TextField className={classes.inputBox}
                                     id="code"
                                     label="Code"
+                                    onChange ={handleChange('code')}
+                                    size={'small'}
                                     variant="outlined"
                                   margin="normal"
                                    />
@@ -81,6 +111,8 @@ const DepreciationArea = () => {
                              <TextField className={classes.inputBox}
                                     id="description"
                                     label="Description"
+                                    onChange ={handleChange('description')}
+                                    size={'small'}
                                     variant="outlined"
                                   margin="normal"
                                    />
@@ -94,6 +126,8 @@ const DepreciationArea = () => {
                                     id="type"
                                     label="Type"
                                     variant="filled"
+                                    onChange ={handleChange('type')}
+                                    size={'small'}
                                     placeholder="Posting GL"
                                   margin="normal"
                                    />
@@ -120,6 +154,22 @@ const DepreciationArea = () => {
                     
                 </Paper>  
                 </Grid>
+
+                <Grid item xs={12}>
+                 <div style={{float:"right",padding:'10px'}}>
+                     <div>
+                     <Button
+                variant="contained"
+                color="primary"
+                disabled={!isReady()}
+                onClick={()=>{
+                  addNewDeprecitionArea()}}
+              >
+                Add
+              </Button>
+                     </div>
+                 </div>
+              </Grid>
 
                 </Grid>
         </div>

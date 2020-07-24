@@ -268,8 +268,9 @@ const AccountChart = props => {
        if(data[i].data.accountCode.length > 1 &&
         data[i].data.accountName.length > 1 &&
         data[i].data.accountType.length > 1 &&
-        data[i].data.accountDescription.length > 1 &&
-        data[i].data.amount > 1){
+        data[i].data.financialStatement.length > 1) 
+        //data[i].data.amount > 1){
+          {
           createChartOfAccountHandler(data[i].data)
         }
         else{
@@ -341,15 +342,15 @@ const AccountChart = props => {
       },
     },
     {
-      name: '',
-      label: 'Financial Position',
+      name: 'financialstatement',
+      label: 'Financial Statement',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: '',
+      name: 'debitcredit',
       label: 'Debit/Credit',
       options: {
         filter: true,
@@ -399,8 +400,7 @@ const AccountChart = props => {
                 onClose={handleClose}
               >
                 <MenuItem onClick={(e) => {
-                  editOpenAccountDialogAction(account);
-                  console.log(`on Edit account ${JSON.stringify(account)}`)
+                  editOpenAccountDialogAction(account);            
                   localStorage.setItem("ezone-editable", '392');
                 }}>
                   Edit
@@ -413,6 +413,9 @@ const AccountChart = props => {
                   chartContext.chartDispatch({type:'VIEW_ID',id:account.id})
                 }}>
                   View Details
+                </MenuItem>
+                <MenuItem>
+                  Mark as Active
                 </MenuItem>
                 <MenuItem onClick={() => {
                   openDeleteAccountDialogAction(account);

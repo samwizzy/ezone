@@ -21,7 +21,7 @@ import {
 
   const useStyles = makeStyles(theme => ({
     root: {
-      padding:'10px'
+      padding:'15px'
     },
     label: { marginLeft: theme.spacing(1) },
     title: {padding:'7px' },
@@ -57,16 +57,35 @@ const NewAsset = () => {
     const classes = useStyles();
     const fixedContext = useContext(FixedAssetContext);
 
-    const assetClass =[
+    const assetType =[
         {
-            value: 'General',
-            label: 'General',
-          },
-          {
-            value: 'Main',
-            label: 'Main',
+            value: 'PLANTANDMACHINERY',
+            label: 'Plant and Machinery',
           }
     ]
+
+    const status =[
+      {
+          value: 'GOOD',
+          label: 'Good',
+        },
+        {
+          value: 'BAD',
+          label: 'Bad',
+        },
+        {
+          value: 'INMAINTAINANCE',
+          label: 'In Maintainance',
+        },
+        {
+          value: 'LOST',
+          label: 'lost',
+        },
+        {
+          value: 'DISPOSED',
+          label: 'Disposed',
+        },
+  ]
 
     const mesurement =[
         {
@@ -149,12 +168,13 @@ const NewAsset = () => {
                             </Grid>
 
                             <Grid item xs={6}>
-                                <Grid container spacing={3}>
+                                <Grid container style={{marginTop:'2px'}} spacing={7}>
                                 <Grid item xs={12}>
                                     <TextField className={classes.inputBox}
                                     id="assetname"
                                     label="Asset Name"
                                     required
+                                    size={'small'}
                                     variant="outlined"
                                   margin="normal"
                                    />
@@ -162,42 +182,37 @@ const NewAsset = () => {
                                    <Grid item xs={12}>
                                     <TextField className={classes.inputBox}
                                     id="assetId"
-                                    label="Asset Id"
+                                    label="Asset ID"
                                     required
+                                    size={'small'}
                                     variant="outlined"
                                   margin="normal"
                                    />
                                    </Grid>
                                    <Grid item xs={12}>
                                     <Autocomplete
-                          id="assetclass"
-                          options={assetClass}
-                          getOptionLabel={option => option.name}
+                                    id="assetype"
+                                    options={assetType}
+                                    getOptionLabel={option => option.label}
                           
-                          renderInput={params => (
-                            <TextField
-                              {...params}
-                              label="Asset Class"
-                              variant="outlined"
-                              fullWidth
-                            />
-                          )}
-                        />
+                                     renderInput={params => (
+                                   <TextField
+                                   {...params}
+                                   label="Asset Type"
+                                   size={'small'}
+                                   variant="outlined"
+                                    fullWidth
+                                    />
+                                   )}
+                                  />
                                     </Grid>
-                                    <Grid item xs={12}>
-                                    <TextField className={classes.inputBox}
-                                    id="itemType"
-                                    label="Asset Type"
-                                    required
-                                    variant="filled"
-                                  margin="normal"
-                                   />
-                                   </Grid>
+                                  
                                    <Grid item xs={12}>
                                     <TextField className={classes.inputBox}
                                     id="assetnum"
                                     label="Asset Number"
                                     required
+                                    size={'small'}
                                     variant="outlined"
                                   margin="normal"
                                    />
@@ -220,6 +235,7 @@ const NewAsset = () => {
                         label="Manufacturer"
                         required
                           variant="outlined"
+                          size={'small'}
                           margin="normal"
                           />
                      </Grid>
@@ -227,13 +243,14 @@ const NewAsset = () => {
                      <Grid item xs={6}>
                            <Autocomplete className={classes.lift}
                           id="barcode"
-                          options={assetClass}
+                          options={mesurement}
                           getOptionLabel={option => option.name}
                           
                           renderInput={params => (
                             <TextField
                               {...params}
                               label="Barcode"
+                              size={'small'}
                               variant="outlined"
                               fullWidth
                             />
@@ -252,6 +269,7 @@ const NewAsset = () => {
                               {...params}
                               label="Mesurement"
                               variant="outlined"
+                              size={'small'}
                               fullWidth
                             />
                           )}
@@ -259,28 +277,39 @@ const NewAsset = () => {
                          </Grid>
 
                          <Grid item xs={6}>
-                             <Grid container spacing={1}>
+                             <Grid container spacing={1} style={{marginTop:'-2em'}}>
                                  <Grid item xs={12}>
-                                 <Typography variant="h6" color="textSecondary" component="h6">
+                                 <Typography variant="subtext1" color="textSecondary">
                                    Dimension (Length x Width)
                                    </Typography>
                                  </Grid>
-                                 <Grid item xs={6}>
-                                 <TextField className={classes.inputBox}
+                                 <Grid item xs={12}>
+                                   <div style={{marginTop:'-2.5em'}}>
+                                     <Grid container spacing={3}>
+                                     <Grid item xs={6}>
+                                 <TextField
                                  id="manufacturer"
                                  placeholder={'Select'}
                                  variant="outlined"
+                                 size={'small'}
+                                 fullWidth
                                     margin="normal"
                                  /> 
                                  </Grid>
                                  <Grid item xs={6}>
-                                 <TextField className={classes.inputBox}
+                                 <TextField
                                  id="manufacturer"
                                  placeholder={'Select'}
+                                 size={'small'}
+                                 fullWidth
                                  variant="outlined"
                                     margin="normal"
                                  /> 
                                  </Grid>
+                                     </Grid>
+                                   </div>
+                                 </Grid>
+                                 
                              </Grid>
                          </Grid>
 
@@ -294,6 +323,7 @@ const NewAsset = () => {
                             <TextField
                               {...params}
                               label="Width"
+                              size={'small'}
                               variant="outlined"
                               fullWidth
                             />
@@ -307,27 +337,42 @@ const NewAsset = () => {
                                  id="quantity"
                                  variant="outlined"
                                  label="Quantity"
+                                 size={'small'}
                                     margin="normal"
                                  /> 
                                  </div>  
                          </Grid>
 
                          <Grid item xs={6}>
-                         <TextField className={classes.inputBox}
-                                 id="condition"
-                                 variant="outlined"
-                                 label="Condition"
-                                    margin="normal"
-                                 />   
+                         <Autocomplete
+                           id="status"
+                              options={status}
+                          getOptionLabel={option => option.label}
+                          
+                          renderInput={params => (
+                            <TextField
+                            {...params}
+                             label="Status"
+                             size={'small'}
+                              variant="outlined"
+                               fullWidth
+                                    />
+                                   )}
+                                  />  
                          </Grid>
 
                          <Grid item xs={6}>
-                         <TextField className={classes.inputBox}
+                           <div style={{marginTop:'-1.2em'}}>
+                           <TextField
                                  id="location"
                                  variant="outlined"
+                                 size={'small'}
+                                 fullWidth
                                  label="Location"
                                     margin="normal"
-                                 />   
+                                 /> 
+                           </div>
+                          
                          </Grid>
 
                  </Grid>
@@ -337,84 +382,53 @@ const NewAsset = () => {
                 <Grid item xs={12}>
                   <Paper elevation={3} className={classes.root}>
                     <Grid container spacing={3}>
-                    <Grid item xs={6}>
-                     <Typography variant="h6" color="textSecondary" component="h6">
-                      Disposal
-                       </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                     <Typography variant="h6" color="textSecondary" component="h6">
-                      Purchase
-                       </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                         <Autocomplete
-                          id="disposal"
-                          options={mesurement}
-                          getOptionLabel={option => option.name}
-                          
-                          renderInput={params => (
-                            <TextField
-                              {...params}
-                              label="Disposal Account"
-                              variant="outlined"
-                              fullWidth
-                            />
-                          )}
-                        />
-                         </Grid>
-                         <Grid item xs={6}>
-                         <Autocomplete
-                          id="ada"
-                          options={mesurement}
-                          getOptionLabel={option => option.name}
-                          
-                          renderInput={params => (
-                            <TextField
-                              {...params}
-                              label="Accumulated depreciation Account"
-                              variant="outlined"
-                              fullWidth
-                            />
-                          )}
-                        />
-                         </Grid>
-
+                   
                          <Grid item xs={6}>
                          <TextField className={classes.inputBox}
                                  id="aquivalue"
+                                 size={'small'}
                                  variant="outlined"
-                                 label="Aquisition value"
+                                 label="Aquisition value (Cost of Asset)"
                                     margin="normal"
                                  />   
                          </Grid>
 
                          <Grid item xs={6}>
-                         <TextField className={classes.inputBox}
-                                 id="adv"
-                                 variant="outlined"
-                                 label="Accumulated depreciated value"
-                                    margin="normal"
-                                 />   
-                         </Grid>
-
-                         <Grid item xs={12}>
                          <Grid container spacing={3}>
                                  <Grid item xs={12}>
-                                 <Typography variant="h6" color="textSecondary" component="h6">
+                                 <Typography variant="subtext1" color="textSecondary">
                                    Tax liable
                                    </Typography>
                                  </Grid>
-                                 <Grid item xs={6}>
-                                 <Autocomplete
+                                 <Grid item xs={12}>
+                                 <Autocomplete style={{marginTop:'-1.8em'}}
                           id="taxacc"
                           options={mesurement}
                           getOptionLabel={option => option.name}
                           
                           renderInput={params => (
-                            <TextField
+                            <TextField 
                               {...params}
                               label="Tax Account"
+                              size={'small'}
+                              variant="outlined"
+                              fullWidth
+                            />
+                          )}
+                        />
+                                 </Grid>
+                                
+                                 <Grid item xs={12}>
+                          <Autocomplete className={classes.inputBox}
+                          id="taxamount"
+                          options={mesurement}
+                          getOptionLabel={option => option.name}
+                          
+                          renderInput={params => (
+                            <TextField 
+                              {...params}
+                              size={'small'}
+                              label="Tax Amount"
                               variant="outlined"
                               fullWidth
                             />
@@ -422,6 +436,19 @@ const NewAsset = () => {
                         />
                                  </Grid>
                              </Grid>
+                         </Grid>
+
+                         <Grid item xs={6}>
+                           <div style={{marginTop:'-5.6em'}}>
+                         <TextField
+                                 id="aquidate"
+                                 size={'small'}
+                                 variant="outlined"
+                                 label="Aquisition Date"
+                                    margin="normal"
+                                    fullWidth
+                                 />  
+                                 </div> 
                          </Grid>
                          
                     </Grid>  

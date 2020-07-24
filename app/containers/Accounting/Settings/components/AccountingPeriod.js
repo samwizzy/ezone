@@ -18,6 +18,14 @@ import {
   Typography,
   Tooltip
 } from '@material-ui/core';
+import swal from 'sweetalert';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
+import { Autocomplete } from '@material-ui/lab';
 import { Add, Check, Delete } from '@material-ui/icons';
 import DateFnsUtils from '@date-io/date-fns'; // choose your lib
 import {
@@ -39,6 +47,9 @@ import moment from 'moment';
 // import ModuleLayout from '../../components/ModuleLayout';
 import months from './../../../../utils/months';
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -48,7 +59,7 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     padding: theme.spacing(1, 2),
-    backgroundColor: theme.palette.grey[100],
+    backgroundColor: theme.palette.grey[300],
   },
   grid: {
     justifyContent: "space-between",
@@ -59,7 +70,13 @@ const useStyles = makeStyles(theme => ({
   },
   box: {
 		backgroundColor: theme.palette.grey[200]
-	},
+  },
+  curve:{
+    borderRadius:'8px'
+  },
+  lightLift: {
+    marginBottom: '20px',
+  },
 	table: {
     display: "flex",
     flexDirection: "column",
@@ -76,7 +93,18 @@ const useStyles = makeStyles(theme => ({
 
 const AccountingPeriod = props => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [lastYear,setLastYear] = useState()
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    
+  };
+
+  const handleClickClose = () => {
+    setOpen(false);
+  };
   
   const {
     accountingSetupData,
@@ -110,9 +138,16 @@ const AccountingPeriod = props => {
 
 
   async function getAccountingPeriod() {
+    let currentY = `${new Date().getUTCFullYear()}`
     await crud.getAccountingPeriods().then(data=>{
-      setCurrentAccountPeriod(data.data[0])
+      for(let i=0;i<data.data.length;i++){
+        if(currentY === data.data[i].year){
+        setCurrentAccountPeriod(data.data[0])
+        break;
+        }
+      }
       setAccountingPeriods(data.data);
+      setLastYear (Number(data.data[((data.data).length) -1].year));
     }).catch((err)=>{
      
       console.log(`Error from setUptins ${err}`)
@@ -131,11 +166,245 @@ const AccountingPeriod = props => {
     });
   };
 
+  const [calenderDay, setCalenderDay] = useState(0);
+  const [calenderMonth,setCalenderMonth] = useState(0);
+
+  const months = [
+    {
+      value: 1,
+      label: 'January',
+    },
+    {
+      value: 2,
+      label: 'Febuary',
+    },
+    {
+      value: 3,
+      label: 'March',
+    },
+    {
+      value: 4,
+      label: 'April',
+    },
+    {
+      value: 5,
+      label: 'May',
+    },
+    {
+      value: 6,
+      label: 'June',
+    },
+    {
+      value: 7,
+      label: 'July',
+    },
+    {
+      value: 8,
+      label: 'August',
+    },
+    {
+      value: 9,
+      label: 'September',
+    },
+    {
+      value: 10,
+      label: 'October',
+    },
+    {
+      value: 11,
+      label: 'November',
+    },
+    {
+      value: 12,
+      label: 'December',
+    },
+  ];
+
+  function leapYear(year) {
+    return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
+  }
+
+  function calculateDaysOfMonth(length) {
+    let days = [{ label: '1', value: 1 }];
+    for (let i = 2; i <= length; i++) {
+      days = [...days, { label: `${i}`, value:i }];
+    }
+    return days;
+  }
+
+  function getDaysOfTheMonth(value) {
+    switch (value) {
+      case 1:
+      case 3:
+      case 5:
+      case 7:
+      case 8:
+      case 10:
+      case 12:
+        return calculateDaysOfMonth(31);
+      case '2': {
+        if (leapYear(new Date().getFullYear())) {
+          return calculateDaysOfMonth(29);
+        }
+        return calculateDaysOfMonth(28);
+      }
+      case 4:
+      case 6:
+      case 9:
+      case 11:
+        return calculateDaysOfMonth(30);
+    }
+  }
+
+  const [dmonth, setDmonth] = useState(1);
+
+  function setMonthForCalender(event, value) {
+    setDmonth(value.value);
+  }
+
+  function monthOnly(month){
+    switch(month){
+      
+        case 1 :
+        return 'January'
+        case 2 :
+          return 'Febuary'
+        case 3 :
+         return 'March'  
+         case 4 :
+          return 'April'
+        case 5 :
+          return 'May'
+        case 6 :
+          return 'June'  
+        case 7 :
+          return 'July'
+        case 8 :
+          return 'August' 
+        case 9 :
+          return 'September' 
+        case 10 :
+          return 'October'   
+        case 11 :
+            return 'November'
+         default :
+         return 'December'  
+    }
+  }
+
+  function formatDate(){
+    console.log(` full date ${(lastYear)} ${calenderDay} ${calenderMonth}`)
+   let date = (new Date((lastYear + 1),(calenderDay),(calenderMonth -1))).toISOString();
+   return date;
+  }
+
+  function addPeriod(){
+    let payload ={
+    activeYear: false,
+    startDate: `${formatDate()}`,
+    status: true,
+    year: `${lastYear+1}`
+    }
+    crud.creatAccountingPeriod(payload).then((data)=>{
+      handleClickClose();  
+    swal("Success", "Accounting Period added successfully", "success");
+    }).catch((error)=>{
+      swal("Error", "Something went wrong. Please check your network", "error");
+    })
+    
+  }
+
   console.log('current period file -> ', JSON.stringify(accountingPeriods));
   //console.log('accountToUpdate state -> ',  JSON.stringify(accountingSetupData));
 
 
   return (
+    <div>
+      <div>
+      <Dialog
+        open={open}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleClickClose}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">{"Start Date"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+
+            <div>
+              <Paper elevation={1} className={classes.paper}>
+                <Grid container spacing={3}>
+                <Grid item xs={12}>
+              <Box p={1} className={classes.boxed}>
+                <div className={classes.lightLift}>
+                  <Autocomplete
+                    id="months"
+                    options={months}
+                    getOptionLabel={option => option.label}
+                    onChange={(event, value) => {
+                      setMonthForCalender(event, value);
+                      setCalenderMonth(value.value);
+                     
+                    }}
+                    style={{ width: 200 }}
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        size={'small'}
+                        label={calenderMonth === 0 ? 'Select Month' : `Month ${monthOnly(calenderMonth)}`}
+                        variant="outlined"
+                        inputProps={{
+                          ...params.inputProps,
+                          autoComplete: 'new-password', // disable autocomplete and autofill
+                        }}
+                      />
+                    )}
+                  />
+                </div>
+                <div className={classes.lightLift}>
+                  <Autocomplete
+                    id="days"
+                    options={getDaysOfTheMonth(dmonth)}
+                    getOptionLabel={option => option.label}
+                    onChange={(event, value) => { 
+                      setCalenderDay(value.value)
+                    }}
+
+                    style={{ width: 200 }}
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        size={'small'}
+                        label={calenderDay === 0 ? 'Select Day' : `Day ${calenderDay}`}
+                        variant="outlined"
+                        inputProps={{
+                          ...params.inputProps,
+                          autoComplete: 'new-password', // disable autocomplete and autofill
+                        }}
+                      />
+                    )}
+                  />
+                </div>
+              </Box>
+            </Grid>
+                </Grid>
+              </Paper>
+            </div>
+           
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={handleClickClose} color="textSecondary">
+            Cancel
+          </Button>
+          <Button variant="contained" onClick={()=>addPeriod()} color="primary">
+            Create
+          </Button>
+        </DialogActions>
+      </Dialog>
+      </div>
     <React.Fragment>
       <DialogOfAccountPeriod />
       <div className={classes.root}>
@@ -166,23 +435,7 @@ const AccountingPeriod = props => {
                     </Box>
                   </TableCell>
                 </TableRow>
-                <TableRow>
-                  <TableCell>Tax year starts</TableCell>
-                  <TableCell>
-                    <Box className={classes.box} p={2}>
-                      {/*{ accountingSetupData.taxDay }, { accountingSetupData.taxMonth }*/}
-                      {moment(currentAccountPeriod.startDate).format('Do, MMM')}
-                    </Box>
-                  </TableCell>
-                </TableRow> 
-                <TableRow>
-                  <TableCell>Tax Type</TableCell>
-                  <TableCell>
-                    <Box className={classes.box} p={2}>
-                      { accountingSetupData.taxType }
-                    </Box>
-                  </TableCell>
-                </TableRow>
+               
               </TableBody>
             </Table>
           </Paper>
@@ -199,19 +452,35 @@ const AccountingPeriod = props => {
                <div style={{textAlign:'center',paddingLeft:'5em',paddingRight:'5em'}}>
                <Grid container spacing={2}>
                  <Grid item xs={12}>
-                 <Typography variant="h6" component="h6">Current Accounting Year</Typography>
+                 <Typography variant="body1">Current Accounting Year</Typography>
                  </Grid>
-                 <Grid item xs={12}>
-                  <div style={{backgroundColor:'#bbb',padding:'6px'}}>
+                 <Grid item xs={8}>
+                  <div style={{padding:'2px'}}>
+                    <Paper elevation={2} className={classes.paper}>
                     <Grid container spacing={4}>
                       <Grid item xs={6}>
-               <Typography variant="subtitle1" >Start Date : {moment(currentAccountPeriod.startDate).format('YYYY-MM-DD')}</Typography>
+                     <Typography variant="subtitle1" >Start Date : {moment(currentAccountPeriod.startDate).format('YYYY-MM-DD')}</Typography>
                       </Grid>
                       <Grid item xs={6}>
-               <Typography variant="subtitle1">End Date : {moment(currentAccountPeriod.endDate).format('YYYY-MM-DD')}</Typography>
+                      <Typography variant="subtitle1">End Date : {moment(currentAccountPeriod.endDate).format('YYYY-MM-DD')}</Typography>
                       </Grid>
                     </Grid>
+                    </Paper>
                   </div>
+                 </Grid>
+                 <Grid item xs={4}>
+                 <Button className={classes.curve}
+                      variant="contained"
+                      color="primary"
+                      type="button"
+                      onClick={(e) =>{
+                        e.preventDefault();
+                        setOpen(true);
+                        
+                      }}
+                    >
+                      Add Period
+                  </Button>
                  </Grid>
                </Grid>
                </div>
@@ -379,6 +648,7 @@ const AccountingPeriod = props => {
       </Grid>
     </div>
   </React.Fragment>
+  </div>
   );
 };
 

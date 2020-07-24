@@ -13,17 +13,22 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  Checkbox,
   TableHead,
   TableRow,
   TextField,
   Typography,
   TableFooter,
+  FormGroup,
+  FormControlLabel,
+  FormControl,
 } from '@material-ui/core';
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import { positions } from '@material-ui/system';
 import DateFnsUtils from '@date-io/date-fns';
 import classNames from 'classnames';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -58,6 +63,9 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  textField:{
+    width:'100%'
+  },
   grid: {
     justifyContent: "space-between",
     '& .MuiGrid-item': {
@@ -65,6 +73,7 @@ const useStyles = makeStyles(theme => ({
       margin: theme.spacing(2, 0),
     }
   },
+  
   gridMargin: { marginBottom: theme.spacing(2) },
   label: { marginLeft: theme.spacing(1) },
   table: {
@@ -90,10 +99,29 @@ const useStyles = makeStyles(theme => ({
 
 const AddNewJournal = props => {
   const classes = useStyles();
-  let credentials = JSON.parse(localStorage.getItem('user'))
-  let company = (`${(credentials.organisation.companyName)}`);
   const [display,setDisplay] = useState(null);
-  const [referenceNo,setReferenceNo] = useState(`${company.substr(0,2)}${(new Date).getTime()}`)
+
+  function generateCode(){
+    let credentials = JSON.parse(localStorage.getItem('user'))
+    let company = (`${(credentials.organisation.companyName)}`); 
+    let timestamp = (`${(new Date).getTime()}`).substr(0,4);
+    return `${company.substr(0,3)}${timestamp}`;
+  }
+
+  const [referenceNo] = useState(generateCode())
+  const [taxApplicable,setTaxApplicable] = useState(false);
+  const [tax,seTax] = useState([
+   {
+     value:20,
+     label:'Dollar tax 20%'
+   }, 
+   {
+    value:7,
+    label:'Vat 7%'
+  }, 
+  ])
+  
+
   
 
   const {
@@ -255,6 +283,33 @@ const AddNewJournal = props => {
       pathname: '/account/journal'})
   }
 
+  const currencies = [
+    {
+      value: 'DOLLAR',
+      label: 'Dollar',
+    },
+    {
+      value: 'EURO',
+      label: 'Euro',
+    },
+    {
+      value: 'NAIRA',
+      label: 'Naira',
+    }
+  ]
+
+
+  function OnlyCurrencyLabel(value) {
+    switch (value) {
+      case 'DOLLAR':
+        return 'Dollar'
+      case 'EURO':
+      return 'Euro'
+      case 'NAIRA':
+      return 'Naira'    
+    }
+  }
+
   console.log('values -> ', values);
   //console.log('currentAccountPeriod is -> ', currentAccountPeriod);
   console.log('chartOfAccountData from Journal is -> ',chartOfAccountData[0]);
@@ -262,10 +317,10 @@ const AddNewJournal = props => {
   return (
     <ModuleLayout>
       <div className={classes.root}>
-        <Grid container>
+        <Grid container spacing={2}>
           <Grid item xs={12} className={classNames(classes.gridMargin)}>
             <div className={classes.flex}>
-              <Typography variant="h5">New Posting</Typography>
+              <Typography variant="h5">New Journal</Typography>
          
               {currentAccountPeriod === undefined ?
               (<div/>)
@@ -298,8 +353,9 @@ const AddNewJournal = props => {
               }
             
             </div>
-            <Grid container className={classes.grid}>
-              <Grid item xs={5}>
+            </Grid>
+
+            <Grid item xs={5}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
                     autoOk
@@ -319,9 +375,11 @@ const AddNewJournal = props => {
                   />
                 </MuiPickersUtilsProvider>
               </Grid>
-              <Grid item xs={5}>
-               
 
+
+              <Grid item xs={5}>
+                <div>
+                  <div style={{position:'relative',left:'40%'}}>
                 {isAphaNumeric ?
                   <TextField
                   id="standard-accountCode"
@@ -356,8 +414,103 @@ const AddNewJournal = props => {
                     fullWidth
                   />
                 }
+                </div>
+                </div>
               </Grid>
+
+              <Grid item xs={5}>
+            <Autocomplete
+                id="currency"
+                options={currencies}
+                getOptionLabel={option => option.label}
+                //onChange={(evt, value) => handleSelectChange(evt, value)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Currency"
+                    size="small"
+                    variant="outlined"
+                    placeholder="Currency"
+                    margin="normal"
+                    fullWidth
+                  />
+                )}
+              />
             </Grid>
+
+
+            <Grid item xs={5}>
+            <div>
+              <div style={{position:'relative',left:'40%'}}>
+              <Grid container spacing={3} style={{position:'relative',top:'-5px'}}>
+                <Grid item xs={12}>
+                  <div>
+                  <Typography variant="subtitle1" color="textSecondary">Exchange rate</Typography>
+                  </div>
+                </Grid>
+
+              <Grid item xs={12}>
+              <div className="input-group mb-3" style={{position:'relative',top:'-2em'}}>
+           <div className="input-group-prepend">
+          <span className="input-group-text" id="basic-addon1">1 Dollar =</span>
+          </div>
+        <input type="number" className="form-control" 
+          aria-describedby="basic-addon1"/>
+          <div className="input-group-prepend">
+          <span className="input-group-text" id="basic-addon1">NGN</span>
+          </div>
+        </div>
+              </Grid>
+           
+        </Grid>
+        </div>
+        </div>
+            </Grid>
+
+            <Grid item xs={12}>
+              <div>
+                <FormControl component="fieldset">
+                  <FormGroup aria-label="position" row>
+                    <FormControlLabel
+                      value="end"
+                      checked={taxApplicable === true}
+                      onChange ={()=>setTaxApplicable(!taxApplicable) }
+                      control={<Checkbox color="primary" />}
+                      label="Tax applicable"
+                      labelPlacement="end"
+                    />
+                  </FormGroup>
+                </FormControl>
+              </div>
+            </Grid>
+
+            
+            <Grid item xs={5}>
+             <div>
+               {taxApplicable ?
+             <Autocomplete
+                id="tax"
+                options={tax}
+                getOptionLabel={option => option.label}
+                //onChange={(evt, value) => handleSelectChange(evt, value)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    variant="outlined"
+                    label="Applicable rates"
+                    size="small"
+                    placeholder="tax applicable"
+                    margin="normal"
+                  />
+                )}
+              />
+              :
+              <div/>
+              }
+             </div>
+            </Grid>
+           
+        
             <Grid item xs={12}>
               <TextField
                 id="standard-note"
@@ -373,7 +526,9 @@ const AddNewJournal = props => {
                 multiline
               />
             </Grid>
-          </Grid>
+
+            
+          
         </Grid>
 
         <Grid container>
@@ -487,6 +642,18 @@ const AddNewJournal = props => {
                   </TableCell>
                   <TableCell />
                 </TableRow>
+                <TableRow>
+                <TableCell colSpan={2} align="right">
+                    <Typography variant="h6">Tax rate</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Paper elevation={0} square className={classes.paper}>
+                      <Typography variant="h6">
+                        0
+                      </Typography>
+                    </Paper>
+                  </TableCell>
+                </TableRow>
               </TableFooter>
             </Table>
             <Table className={classes.table}>
@@ -544,13 +711,13 @@ const AddNewJournal = props => {
                     >
                       Cancel
                     </Button>
-                    {/* <Button
+                    <Button
                       variant="contained"
                       color="primary"
                       className={classes.button}
                     >
                       Save Draft
-                    </Button> */}
+                    </Button>
                     <Button
                       variant="contained"
                       color="primary"

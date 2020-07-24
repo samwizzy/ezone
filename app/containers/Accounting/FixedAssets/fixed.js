@@ -72,11 +72,11 @@ const Assets = () => {
     const fixedContext = useContext(FixedAssetContext)
     const classes = useStyles();
     const [assetData] = useState([
-      {item:'Building',itemid:'Olaimeji Wale',itemclass:'Stock Item',unitprice:'3rd Jul,2019',unitcost:'3rd Jul,2019',stockonhand:'1000'},
-      {item:'Building',itemid:'John Wick',itemclass:'Stock Item',unitprice:'3rd Jul,2019',unitcost:'3rd Jul,2019',stockonhand:'1000'},
-      {item:'Building',itemid:'Mary Paul',itemclass:'Mary Paul',unitprice:'7th May,2020',unitcost:'7th May,2020',stockonhand:'30'},
-      {item:'Building',itemid:'John Wick',itemclass:'John Wick',unitprice:'3rd Jul,2019',unitcost:'3rd Jul,2019',stockonhand:'1000'},
-      {item:'Building',itemid:'Mary Paul',itemclass:'Service',unitprice:'7th May,2020',unitcost:'7th May,2020',stockonhand:'10'},
+      {assetname:'Air conditioner',assetid:'000910',acquitioncost:'N20000.00',location:'Ikeja',quantity:10,status:'Good'},
+      {assetname:'Typewriter',assetid:'7890PO',acquitioncost:'N20000.00',location:'Ikeja',quantity:1,status:'Disposed'},
+      {assetname:'',assetid:'Mary Paul',acquitioncost:'N20000.00',location:'Ikeja',quantity:5,status:'Lost'},
+      {assetname:'Truck',assetid:'89408LK',acquitioncost:'N20000.00',location:'Ikeja',quantity:200,status:'Bad'},
+      {assetname:'Dilling machine',assetid:'12345LP',acquitioncost:'N20000.00',location:'Ikeja',quantity:3,status:'In maintenance'},
 
       
     ]);
@@ -93,62 +93,54 @@ const Assets = () => {
 
       const columns = [
         {
-          name: 'item',
-          label: 'Item',
+          name: 'assetname',
+          label: 'Asset name',
           options: {
             filter: true,
             sort: false,
           },
         },
         {
-          name: 'itemid',
-          label: 'Item Id',
+          name: 'assetid',
+          label: 'Asset Id',
           options: {
             filter: true,
             sort: false,
           },
         },
         {
-          name: 'itemclass',
-          label: 'Item Class',
+          name: 'acquitioncost',
+          label: 'Acquition cost',
           options: {
             filter: true,
             sort: false,
           },
         },
-        /*{
-           name: 'balance',
-            label: 'Balance',
+        {
+           name: 'location',
+            label: 'Location',
             options: {
               filter: true,
               sort: false,
             },
-        },*/
+        },
 
         {
-            name: 'unitprice',
-             label: 'Unit price',
+            name: 'quantity',
+             label: 'Quantity',
              options: {
                filter: true,
                sort: false,
              },
          },
          {
-          name: 'unitcost',
-           label: 'Unit Cost',
+          name: 'status',
+           label: 'Status',
            options: {
              filter: true,
              sort: false,
            },
-       },
-       {
-        name: 'stockonhand',
-         label: 'Stock on Hand',
-         options: {
-           filter: true,
-           sort: false,
-         },
-     }
+       }
     
       ];
 
@@ -163,7 +155,7 @@ const Assets = () => {
                            <Grid item xs={12}>
                              <div>
                              <Typography gutterBottom variant="h5" component="h1">
-                              Fixed Assets
+                              Assets Master Data
                              </Typography>
                              </div>
                            </Grid>
