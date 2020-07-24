@@ -44,7 +44,7 @@ const SidebarConfig = [
       { id: 3, name: 'Applications', url: '/home', icon: 'apps' },
       { id: 4, name: 'Employees', url: '/users', icon: 'group' },
       { id: 5, name: 'User Profile', url: '/user-profile', icon: 'person' },
-      { id: 6, name: 'Work Order', url: '/work-order', icon: 'list_alt' },
+      // { id: 6, name: 'Work Order', url: '/work-order', icon: 'list_alt' },
       { id: 7, name: 'Security', url: '/security', icon: 'security' },
       { id: 8, name: 'Settings', url: '/settings/email', icon: 'settings' },
     ],
@@ -243,8 +243,7 @@ const SidebarConfig = [
         id: 2, name: 'Work Order', url: '#', icon: 'label', submenus: [
           { id: 1, name: 'Dashboard', url: '/project-manager/dashboard', icon: '' },
           { id: 2, name: 'Work Orders', url: '/project-manager/work-orders', icon: '' },
-          { id: 3, name: 'Tags', url: '/project-manager/work-orders', icon: '' },
-          { id: 4, name: 'Stages', url: '/project-manager/work-orders', icon: '' },
+          { id: 3, name: 'Vendors', url: '/project-manager/work-orders', icon: '' },
         ]
       },
       {
@@ -252,7 +251,6 @@ const SidebarConfig = [
           { id: 1, name: 'Dashboard', url: '/project-manager/dashboard', icon: '' },
           { id: 2, name: 'Jobs list', url: '/project-manager/jobs', icon: '' },
           { id: 3, name: 'Add Job', url: '/project-manager/jobs/new', icon: '' },
-          { id: 4, name: 'Add Banking Job', url: '/project-manager/jobs/new', icon: '' },
         ]
       },
       { id: 7, name: 'Reports', url: '/project-manager/reports', icon: 'assessment' },

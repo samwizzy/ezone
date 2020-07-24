@@ -234,7 +234,7 @@ export function* getEmployees() {
     yield put(Actions.getEmployeesSuccess(response));
   } catch (err) {
     if (err.message) {
-      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
     } else {
       const error = yield call(errorHandler, err.response.json())
       yield put(AppActions.openSnackBar({ message: error.message, status: 'error' }));

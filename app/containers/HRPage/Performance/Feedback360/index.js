@@ -1,11 +1,10 @@
 /*
- * HRPage
- *
- * This is the first thing users see of our App, at the '/' route
+ * HRPage Feedback
  */
 import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
+import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -14,32 +13,33 @@ import * as AppSelectors from '../../../App/selectors';
 import * as AppActions from '../../../App/actions';
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
-import FeedbacksList from './FeedbacksList'
-import FeedbackDialog from './components/FeedbackDialog'
+import Feedback360List from './Feedback360List'
+import Feedback360Details from './feedback'
+import Feedback360Dialog from './components/Feedback360Dialog'
 
-export function HolidaysPage(props) {
-  const { getRecognitions } = props;
+export function Feedback360Page(props) {
+  const { getRecognitions, match } = props;
+  const { params } = match
 
-  React.useEffect(() => {
+  useEffect(() => {
     getRecognitions();
   }, []);
 
   return (
     <React.Fragment>
       <Helmet>
-        <title>Holidays Page</title>
-        <meta name="description" content="ezone application employee holidays page" />
+        <title>Feedback360 Page</title>
+        <meta name="description" content="ezone application employee feedback360 page" />
       </Helmet>
 
-      <FeedbacksList />
+      <Feedback360List />
 
-      <FeedbackDialog />
-
+      <Feedback360Dialog />
     </React.Fragment>
   );
 }
 
-HolidaysPage.propTypes = {
+Feedback360Page.propTypes = {
   token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
@@ -50,7 +50,7 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
   return {
     getRecognitions: () => dispatch(Actions.getRecognitions()),
-  };
+  }
 }
 
 const withConnect = connect(
@@ -59,6 +59,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
-)(HolidaysPage);
+)(Feedback360Page);

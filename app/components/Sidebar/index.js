@@ -66,7 +66,8 @@ const useStyles = makeStyles(theme => ({
     ...theme.mixins.toolbar,
   },
   content: {
-    width: `calc(100% - ${drawerWidth}px)`,
+    // width: `calc(100% - ${drawerWidth}px)`,
+    width: `100%`,
   },
   logo: {
     color: '#1F70C1',

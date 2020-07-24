@@ -83,6 +83,11 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
+  list: {
+    '& .MuiListItemIcon-root': {
+      minWidth: '30px !important',
+    },
+  },
   gridRoot: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -168,7 +173,20 @@ const AntTab = withStyles((theme) => ({
 
 const TaskList = props => {
   const classes = useStyles();
-  const { loading, openNewTaskDialog, openEditTaskDialog, openAssignToDialog, getUtilityTask, getTaskComments, commentTask, authUser, tasks, task, comments, users, user, match, container } = props;
+  const {
+    loading,
+    openNewTaskDialog,
+    openEditTaskDialog,
+    openAssignToDialog,
+    getTaskComments,
+    commentTask,
+    authUser,
+    tasks,
+    task,
+    comments,
+    match,
+  } = props;
+
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [comment, setComment] = React.useState({
     comment: "",
@@ -182,14 +200,10 @@ const TaskList = props => {
   }
 
   React.useEffect(() => {
-    getUtilityTask(match.params.id)
     setSelectedIndex(match.params.id)
-  }, []);
-
-  React.useEffect(() => {
     if (task) {
       setComment(_.set({ ...comment }, 'taskId', task.id))
-      getTaskComments(task.id)
+      // getTaskComments(task.id)
     }
   }, [task]);
 
@@ -221,18 +235,18 @@ const TaskList = props => {
 
   const handleSubmit = event => {
     commentTask(comment)
-    setComment(_.set({ ...comment, comment: '', commentBy: '' }))
+    setComment(_.set({ ...comment, comment: '' }))
   }
 
   const handleTaskById = id => {
     setSelectedIndex(id)
-    getUtilityTask(id)
     props.history.push({ pathname: '/task-manager/task/' + id })
   }
 
   const drawer = (
     <div>
       <List
+        className={classes.list}
         component="nav"
         subheader={
           <ListSubheader component="div" id="nested-list-subheader">
@@ -322,13 +336,13 @@ const TaskList = props => {
                       <TableCell component="th" scope="row">
                         Assigned To
                     </TableCell>
-                      <TableCell align="left">{task.assignedTo}</TableCell>
+                      <TableCell align="left">{task.assignedToName}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">
                         Owner
                     </TableCell>
-                      <TableCell align="left">{task.createdBy}</TableCell>
+                      <TableCell align="left">{task.createdByName}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">
@@ -456,8 +470,6 @@ const mapStateToProps = createStructuredSelector({
   tasks: Selectors.makeSelectTasks(),
   task: Selectors.makeSelectTask(),
   comments: Selectors.makeSelectTaskComments(),
-  users: Selectors.makeSelectEmployees(),
-  user: Selectors.makeSelectUser(),
   authUser: AppSelectors.makeSelectCurrentUser(),
 });
 
@@ -468,10 +480,7 @@ function mapDispatchToProps(dispatch) {
     openAssignToDialog: () => dispatch(Actions.openAssignToDialog()),
     addTaskAttachment: (data) => dispatch(Actions.addTaskAttachment(data)),
     commentTask: (data) => dispatch(Actions.commentTask(data)),
-    getUtilityTask: (id) => dispatch(Actions.getUtilityTask(id)),
     getTaskComments: (id) => dispatch(Actions.getTaskComments(id)),
-    getUserByUUID: (id) => dispatch(Actions.getUserByUUID(id)),
-    getEmployees: () => dispatch(Actions.getEmployees()),
   };
 }
 

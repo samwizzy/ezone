@@ -19,12 +19,6 @@ import GoalsList from './GoalsList'
 import GoalsDetails from './goal'
 import GoalsDialog from './components/GoalsDialog'
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-}));
-
 export function GoalsPage(props) {
   const { getGoals, match } = props;
   const { params } = match
@@ -42,9 +36,7 @@ export function GoalsPage(props) {
         <meta name="description" content="ezone application goals page" />
       </Helmet>
 
-      {params.pageId ?
-        <GoalsDetails /> : <GoalsList />
-      }
+      <GoalsList />
 
       <GoalsDialog />
 

@@ -104,9 +104,13 @@ export function* createSchedule({ payload }) {
     yield put(Actions.getSchedules());
     yield put(Actions.closeNewScheduleDialog());
   } catch (err) {
-    const error = yield call(errorHandler, err.response.json())
-    console.log(error, "creating contact error")
-    yield put(Actions.createScheduleError(err));
+    if (err.message) {
+      yield put(AppActions.openSnackBar({ message: err.message, status: 'warning' }));
+    } else {
+      const error = yield call(errorHandler, err.response.json())
+      console.log(error, "creating contact error")
+      yield put(Actions.createScheduleError(error));
+    }
   }
 }
 

@@ -41,7 +41,7 @@ export function* signup({ payload }) {
     }
   } catch (err) {
     yield put(Actions.signupErrorRequest(err));
-    yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+    // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
   }
 }
 
@@ -73,7 +73,7 @@ export function* login({ payload }) {
 
   } catch (err) {
     if (err.message) {
-      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
       yield put(AppActions.loginErrorAction(err.message));
     } else {
       const error = yield call(errorHandler, err.response.json())
@@ -179,7 +179,7 @@ export function* userProfile({ payload }) {
     yield put(AppActions.getUserProfileSuccessAction(response));
   } catch (err) {
     if (err.message) {
-      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      yield put(AppActions.openSnackBar({ message: 'Session timeout', status: 'warning' }));
     } else {
       const error = yield call(errorHandler, err.response.json())
       console.log(error, "user profile error")

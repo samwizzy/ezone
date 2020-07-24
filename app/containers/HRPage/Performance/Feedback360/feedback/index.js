@@ -11,39 +11,36 @@ import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import * as AppSelectors from '../../../App/selectors';
-import * as AppActions from '../../../App/actions';
-import * as Actions from './../actions';
-import * as Selectors from './../selectors';
-import RecognitionList from './RecognitionList'
-import RecognitionDetails from './Recognition'
-import RecognitionDialog from './components/RecognitionDialog'
+import * as AppSelectors from '../../../../App/selectors';
+import * as AppActions from '../../../../App/actions';
+import * as Actions from './../../actions';
+import * as Selectors from './../../selectors';
+import Feedback360Details from './Feedback360Details'
 
-export function RecognitionPage(props) {
-  const { getRecognitions, match } = props;
+export function Feedback360DetailsApp(props) {
+  const { getRecognitionById, match } = props;
   const { params } = match
 
   React.useEffect(() => {
-    getRecognitions();
+    getRecognitionById(params.id)
   }, []);
 
   return (
     <React.Fragment>
       <Helmet>
-        <title>Recognition Page</title>
-        <meta name="description" content="ezone application recognition page" />
+        <title>Feedback360 Details Page</title>
+        <meta name="description" content="ezone application feedback360 details page" />
       </Helmet>
 
-      <RecognitionList />
+      <Feedback360Details />
 
-      <RecognitionDialog />
     </React.Fragment>
   );
 }
 
-RecognitionPage.propTypes = {
+Feedback360DetailsApp.propTypes = {
   token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-};
+}
 
 const mapStateToProps = createStructuredSelector({
   token: AppSelectors.makeSelectAccessToken(),
@@ -51,8 +48,8 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
-    getRecognitions: () => dispatch(Actions.getRecognitions()),
-  };
+    getRecognitionById: (id) => dispatch(Actions.getRecognitionById(id)),
+  }
 }
 
 const withConnect = connect(
@@ -64,4 +61,4 @@ export default compose(
   withRouter,
   withConnect,
   memo,
-)(RecognitionPage);
+)(Feedback360DetailsApp);

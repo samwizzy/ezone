@@ -14,8 +14,6 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import TasksList from './tasks'
 import TaskList from './task'
-// import TasksList from './TasksList'
-// import TaskList from './TaskList'
 import ModuleLayout from '../components/ModuleLayout'
 import AddTaskDialog from './components/AddTaskDialog'
 import ConfirmTaskDeleteDialog from './components/ConfirmTaskDeleteDialog'
@@ -29,9 +27,6 @@ export function TasksApp(props) {
 
   const { getUtilityTasks, getEmployees, match } = props;
   const { params, path, url } = match
-
-  console.log(path, "path task")
-  console.log(url, "url task")
 
   React.useEffect(() => {
     getUtilityTasks()
@@ -48,9 +43,6 @@ export function TasksApp(props) {
       <ModuleLayout>
         <Route exact path={path} component={TasksList} />
         <Route path={`${path}/:id`} component={TaskList} />
-        {/* {params.id ?
-          <TaskList /> : <TasksList />
-        } */}
       </ModuleLayout>
 
       <AddTaskDialog />
