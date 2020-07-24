@@ -77,6 +77,9 @@ const useStyles = makeStyles(theme => ({
   lightLift: {
     marginBottom: '20px',
   },
+  paperBase:{
+    padding: theme.spacing(1, 2),
+  },
 	table: {
     display: "flex",
     flexDirection: "column",
@@ -334,7 +337,7 @@ const AccountingPeriod = props => {
           <DialogContentText id="alert-dialog-slide-description">
 
             <div>
-              <Paper elevation={1} className={classes.paper}>
+              <Paper elevation={1} className={classes.paperBase}>
                 <Grid container spacing={3}>
                 <Grid item xs={12}>
               <Box p={1} className={classes.boxed}>
