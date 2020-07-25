@@ -147,7 +147,7 @@ const Assets = () => {
       async function getAsset(){
          await crud.getAsset()
          .then((data)=>{
-          console.log(`Asset ${JSON.stringify(data.data)}`)
+          //console.log(`Asset ${JSON.stringify(data.data)}`)
          })
          .catch((error)=>{
          console.log(`Error from Asset ${error}`)

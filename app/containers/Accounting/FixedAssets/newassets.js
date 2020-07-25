@@ -114,6 +114,9 @@ const NewAsset = () => {
      assetType: '',
      barcode: '',
      condition: '',
+     depreciationAccountId:'',
+     depreciationType:{},
+     depreciationValue:0,
     description: '',
     //disposalAccountId: 0,
     image: {
@@ -148,14 +151,38 @@ const NewAsset = () => {
     },[])
 
     function getRequiredParameter(){
-     //Get DepreciationType
+     let location = []
      crud.getDeprecitionType()
      .then((data)=>{
-       
+       console.log(`Confirming it ${JSON.stringify(data.data)}`)
+       for(let i=0;i<data.data.length;i++){
+         if(data.data[i].calculationBase != null){
+           setValues({...values,depreciationAccountId:data.data[i].id,
+            depreciationValue:data.data[i].depreciationValue,depreciationType:data.data[i]})
+          break;
+         }
+         
+       }
      })
      .catch((error)=>{
-
+      console.log(`Error occured for depreciation ${error}`)
      })
+     //Get Location
+     crud.getOrganisationParties()
+     .then((data)=>{
+       
+       for(let k =0;k<data.data.length;k++){
+         if(data.data[k].parties!=undefined||data.data[k].parties != null){
+             for(let j=0;j<data.data[k].parties.length;j++){
+              location.push({value:data.data[k].parties[j].name,label:(`${(data.data[k].parties[j].name)}`).toUpperCase()})
+             }
+         }
+       }
+     })
+     .catch((error)=>{
+      console.log(`Error occured for location ${error}`)
+     })
+     setLocation(location);
     }
 
     const status =Enum.AssetStatus
@@ -522,15 +549,23 @@ const NewAsset = () => {
 
                          <Grid item xs={6}>
                            <div style={{marginTop:'-1.2em'}}>
-                           <TextField
-                                 id="location"
-                                 variant="outlined"
-                                 size={'small'}
-                                 onChange ={handleChange('location')}
-                                 fullWidth
-                                 label="Location"
-                                    margin="normal"
-                                 /> 
+                           <Autocomplete className={classes.lift}
+                          id="location"
+                          options={location}
+                          getOptionLabel={option => option.label}
+                          onChange={(event, value) => {
+                            setValues({...values,location:value.value})
+                           }}
+                          renderInput={params => (
+                            <TextField
+                              {...params}
+                              label="Location"
+                              size={'small'}
+                              variant="outlined"
+                              fullWidth
+                            />
+                          )}
+                        />
                            </div>
                           
                          </Grid>
