@@ -146,6 +146,21 @@ export async function setUptins() {
 
       }
 
+      export async function getDeprecitionType(){
+        let credentials = JSON.parse(localStorage.getItem('user'))
+        let accessToken = localStorage.getItem('access_token')
+        const requestURL = `${Endpoints.GetDeprecitionTypeByOrgIdApi}?orgId=${credentials.organisation.orgId}`;
+         const config = {
+           headers: { Authorization: `Bearer ${accessToken}`,
+           'Content-Type': 'application/json', }
+       }
+
+       return await axios.get(requestURL,config)
+      .then(result => { console.log(result); return result; })
+      .catch(error => { console.error(error); return Promise.reject(error); });
+
+      }
+
 
       export async function createAccountSetup(values) {
       

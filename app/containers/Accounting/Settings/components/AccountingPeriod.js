@@ -46,6 +46,7 @@ import DialogOfAccountPeriod from './DialogOfAccountPeriod';
 import moment from 'moment';
 // import ModuleLayout from '../../components/ModuleLayout';
 import months from './../../../../utils/months';
+import { getAccountingPeriods } from '../../FixedAssets/crud';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -141,7 +142,10 @@ const AccountingPeriod = props => {
   });
 
   useEffect(() => {
-    getAccountingPeriod() ; 
+    getAccountingPeriod();
+    return ()=>{
+      getAccountingPeriod()
+    } 
   },[])
 
 

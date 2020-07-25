@@ -66,6 +66,8 @@ const NewAsset = () => {
     const fileInput = useRef();
     const [imageView,setImageView] = useState('');
     const [isFilled,setIsFilled] = useState(false)
+    const [depreciationType,setDepreciationType] = useState()
+    const [location,setLocation] = useState();
 
     const assetType =[
         {
@@ -84,8 +86,7 @@ const NewAsset = () => {
         const result = toBase64(file)
         result.then(rs => {
          let fileNode = {file: rs,fileName: file.name} 
-        // setValues({...values,image:fileNode})
-         setValues(_.set({ ...values }, image, fileNode))
+        setValues({...values,image:fileNode})
          setImageView(rs);
          setIsFilled(true);
          //console.log(`File Name ${file.name}`)
@@ -136,6 +137,25 @@ const NewAsset = () => {
       && values.image.fileName.length >= 1 && values.description.length >= 1
       && values.condition.length>=1 && values.barcode.length>=1 && values.assetId.length>=1
       && values.assetName.length >= 1 && values.assetType.length >= 1 && values.aquisitionValue.length >= 1
+    }
+
+    //Get needed parameters
+    useEffect(() => {
+      getRequiredParameter();
+      return ()=>{
+        getRequiredParameter()
+      } 
+    },[])
+
+    function getRequiredParameter(){
+     //Get DepreciationType
+     crud.getDeprecitionType()
+     .then((data)=>{
+       
+     })
+     .catch((error)=>{
+
+     })
     }
 
     const status =Enum.AssetStatus
