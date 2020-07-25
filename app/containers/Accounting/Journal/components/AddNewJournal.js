@@ -14,6 +14,7 @@ import {
   TableCell,
   TableContainer,
   Checkbox,
+  Box,
   TableHead,
   TableRow,
   TextField,
@@ -34,6 +35,13 @@ import classNames from 'classnames';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import AddIcon from '@material-ui/icons/Add';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
+import { Euro, AttachMoney, Delete, AddBox } from '@material-ui/icons';
 import { Autocomplete } from '@material-ui/lab';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
@@ -49,6 +57,10 @@ import * as AppSelectors from '../../../App/selectors';
 import ModuleLayout from '../../components/ModuleLayout';
 import moment from 'moment';
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -58,6 +70,9 @@ const useStyles = makeStyles(theme => ({
   paper: {
     padding: theme.spacing(1, 2),
     backgroundColor: theme.palette.grey[100],
+  },
+  paperBase:{
+    padding: theme.spacing(1, 2),
   },
   flex: {
     display: "flex",
@@ -73,6 +88,12 @@ const useStyles = makeStyles(theme => ({
       flex: 1,
       margin: theme.spacing(2, 0),
     }
+  },
+  lightLift: {
+    marginBottom: '20px',
+  },
+  softLift:{
+   padding:'10px'
   },
   
   gridMargin: { marginBottom: theme.spacing(2) },
@@ -104,6 +125,55 @@ const AddNewJournal = props => {
   const [cPeriodAccount,setCPeriodAccount] = useState({});
   const[xuv,setXuv] = useState(0)
   const [cTotalPeriodAccount,setCTotalPeriodAccount] = useState([])
+  const [openCurrency,setOpenCurrency] = useState(false);
+  const [openRate,setOpenRate] = useState(false);
+
+  const [open, setOpen] = useState(false);
+    const handleClickClose = () => {
+        setOpen(false);
+      };
+      const handleOPenDialog = (name) => {
+        if(name==='currency'){
+        setOpenCurrency(true)
+        setOpenRate(false)
+        setOpen(true)
+        }
+        else{
+          setOpenCurrency(false)
+          setOpenRate(true)
+          setOpen(true)
+        }
+      };
+    const currenciesDetails =[
+        {
+            code:'USD',
+            name:'Dollar',
+            symbol:<AttachMoney />
+        },
+        {
+            code:'EUR',
+            name:'Euro',
+            symbol:<Euro />
+        }
+    ]
+
+    const currenciesDetailsRate =[
+      {
+          rate:'20%',
+          name:'Dollar',
+          taxType:'VAT'
+      },
+      {
+          rate:'30%',
+          name:'Euro',
+          taxType:'VAT'
+      },
+      {
+          rate:'10%',
+          name:'Pounds Sterling',
+          taxType:'VAT'
+      }
+  ]
 
   function generateCode(){
     let credentials = JSON.parse(localStorage.getItem('user'))
@@ -319,7 +389,7 @@ const AddNewJournal = props => {
   const currencies = [
     {
       value: 'DOLLAR',
-      label: 'Dollar',
+      label: 'Dollar($)',
     },
     {
       value: 'EURO',
@@ -335,7 +405,7 @@ const AddNewJournal = props => {
   function OnlyCurrencyLabel(value) {
     switch (value) {
       case 'DOLLAR':
-        return 'Dollar'
+        return 'Dollar($)'
       case 'EURO':
       return 'Euro'
       case 'NAIRA':
@@ -352,6 +422,212 @@ const AddNewJournal = props => {
   return (
     <ModuleLayout>
       <div className={classes.root}>
+
+      <div>
+      <Dialog
+        open={open}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleClickClose}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">{openCurrency?'New Currency':'New Tax rate'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+
+            <div>
+              {openCurrency ?
+              <Paper elevation={1} className={classes.paperBase}>
+                <Grid container spacing={3}>
+                <Grid item xs={12}>
+              <Box p={1} className={classes.boxed}>
+                <div className={classes.lightLift}>
+                  <Autocomplete
+                    id="code"
+                    options={currenciesDetails}
+                    getOptionLabel={option => option.code}
+                    onChange={(event, value) => {
+                      //setMonthForCalender(event, value);
+                      //(value.value);
+                     
+                    }}
+                    style={{ width: 300 }}
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        size={'small'}
+                        //label={calenderMonth === 0 ? 'Select Month' : `Month ${monthOnly(calenderMonth)}`}
+                        label="Code"
+                        variant="outlined"
+                        inputProps={{
+                          ...params.inputProps,
+                          autoComplete: 'new-password', // disable autocomplete and autofill
+                        }}
+                      />
+                    )}
+                  />
+                </div>
+                <div className={classes.lightLift}>
+                  <Autocomplete
+                    id="cname"
+                    options={currenciesDetails}
+                    getOptionLabel={option => option.name}
+                    onChange={(event, value) => { 
+                     // setCalenderDay(value.value)
+                    }}
+
+                    style={{ width: 300 }}
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        size={'small'}
+                        //label={calenderDay === 0 ? 'Select Day' : `Day ${calenderDay}`}
+                        label="Currency Name"
+                        variant="outlined"
+                        inputProps={{
+                          ...params.inputProps,
+                          autoComplete: 'new-password', // disable autocomplete and autofill
+                        }}
+                      />
+                    )}
+                  />
+                </div>
+                <div className={classes.lightLift}>
+                  <Autocomplete
+                    id="symbol"
+                    options={currenciesDetails}
+                    getOptionLabel={option => option.name}
+                    onChange={(event, value) => { 
+                     // setCalenderDay(value.value)
+                    }}
+
+                    style={{ width:'100%'}}
+                    renderOption={option => (
+                        <React.Fragment>
+                          <span>{option.symbol}</span>
+                        </React.Fragment>
+                      )}
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        size={'small'}
+                        //label={calenderDay === 0 ? 'Select Day' : `Day ${calenderDay}`}
+                        label="Currency Symbol"
+                        variant="outlined"
+                        inputProps={{
+                          ...params.inputProps,
+                          autoComplete: 'new-password', // disable autocomplete and autofill
+                        }}
+                      />
+                    )}
+                  />
+                </div>
+              </Box>
+            </Grid>
+                </Grid>
+              </Paper>
+              :
+              <Paper elevation={1} className={classes.paperBase}>
+              <Grid container spacing={3}>
+              <Grid item xs={12}>
+            <Box p={1} className={classes.boxed}>
+              <div className={classes.lightLift}>
+                <Autocomplete
+                  id="taxtype"
+                  options={currenciesDetailsRate}
+                  getOptionLabel={option => option.taxType}
+                  onChange={(event, value) => {
+                    //setMonthForCalender(event, value);
+                    //(value.value);
+                   
+                  }}
+                  style={{ width: 300 }}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      size={'small'}
+                      //label={calenderMonth === 0 ? 'Select Month' : `Month ${monthOnly(calenderMonth)}`}
+                      label="Tax Type"
+                      variant="outlined"
+                      inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password', // disable autocomplete and autofill
+                      }}
+                    />
+                  )}
+                />
+              </div>
+              <div className={classes.lightLift}>
+                <Autocomplete
+                  id="cname"
+                  options={currenciesDetailsRate}
+                  getOptionLabel={option => option.name}
+                  onChange={(event, value) => { 
+                   // setCalenderDay(value.value)
+                  }}
+
+                  style={{ width: '100%' }}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      size={'small'}
+                      //label={calenderDay === 0 ? 'Select Day' : `Day ${calenderDay}`}
+                      label="Tax Name"
+                      variant="outlined"
+                      inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password', // disable autocomplete and autofill
+                      }}
+                    />
+                  )}
+                />
+              </div>
+              <div className={classes.lightLift}>
+                <Autocomplete
+                  id="symbol"
+                  options={currenciesDetailsRate}
+                  getOptionLabel={option => option.rate}
+                  onChange={(event, value) => { 
+                   // setCalenderDay(value.value)
+                  }}
+
+                  style={{ width:'100%'}}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      size={'small'}
+                      //label={calenderDay === 0 ? 'Select Day' : `Day ${calenderDay}`}
+                      label="Tax rate"
+                      variant="outlined"
+                      inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password', // disable autocomplete and autofill
+                      }}
+                    />
+                  )}
+                />
+              </div>
+            </Box>
+          </Grid>
+              </Grid>
+            </Paper>
+            }
+            </div>
+           
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={handleClickClose} color="textSecondary">
+            Cancel
+          </Button>
+          <Button variant="contained" color="primary">
+            {openCurrency ? 'Add New':'Add'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      </div>
+
         <Grid container spacing={2}>
           <Grid item xs={12} className={classNames(classes.gridMargin)}>
             <div className={classes.flex}>
@@ -454,7 +730,9 @@ const AddNewJournal = props => {
               </Grid>
 
               <Grid item xs={5}>
-            <Autocomplete
+                <Grid container spacing={2}>
+                  <Grid item xs={10}>
+                  <Autocomplete
                 id="currency"
                 options={currencies}
                 getOptionLabel={option => option.label}
@@ -471,6 +749,14 @@ const AddNewJournal = props => {
                   />
                 )}
               />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <div style={{position:'relative',top:'1.1em'}}>
+                      <AddBox onClick={()=>handleOPenDialog('currency')} style={{color:'#008ad3',fontSize:35,cursor:'pointer'}}/>
+                    </div>
+                  </Grid>
+                </Grid>
+           
             </Grid>
 
 
@@ -487,7 +773,7 @@ const AddNewJournal = props => {
               <Grid item xs={12}>
               <div className="input-group mb-3" style={{position:'relative',top:'-2em'}}>
            <div className="input-group-prepend">
-          <span className="input-group-text" id="basic-addon1">1 Dollar =</span>
+          <span className="input-group-text" id="basic-addon1">1 Dollar(USD) =</span>
           </div>
         <input type="number" className="form-control" 
           aria-describedby="basic-addon1"/>
@@ -523,7 +809,10 @@ const AddNewJournal = props => {
             <Grid item xs={5}>
              <div>
                {taxApplicable ?
-             <Autocomplete
+               <div>
+                 <Grid container spacing={2}>
+                   <Grid item xs={10}>
+                   <Autocomplete
                 id="tax"
                 options={tax}
                 getOptionLabel={option => option.label}
@@ -539,6 +828,14 @@ const AddNewJournal = props => {
                   />
                 )}
               />
+                   </Grid>
+                   <Grid item xs={2}>
+                    <div style={{position:'relative',top:'1.1em'}}>
+                      <AddBox onClick={()=>handleOPenDialog('rate')} style={{color:'#008ad3',fontSize:35,cursor:'pointer'}}/>
+                    </div>
+                   </Grid>
+                 </Grid>
+              </div>
               :
               <div/>
               }
@@ -547,6 +844,7 @@ const AddNewJournal = props => {
            
         
             <Grid item xs={12}>
+              <div style={{margin:'10px'}}>
               <TextField
                 id="standard-note"
                 label="Notes"
@@ -557,9 +855,11 @@ const AddNewJournal = props => {
                 onChange={handleChange('note')}
                 margin="normal"
                 fullWidth
-                rows={4}
+                rows={5}
                 multiline
               />
+              </div>
+              
             </Grid>
 
             

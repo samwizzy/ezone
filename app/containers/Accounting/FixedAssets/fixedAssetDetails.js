@@ -128,9 +128,12 @@ const FixedDetails = () => {
                       </Grid>
                       <Grid item xs={3}>
                           <div>
-                          <Typography gutterBottom variant="body1">
-                        Status: {contentDis.status}
+                            <div style={{float:'right',padding:'5px'}}>
+                            <Typography gutterBottom variant="body1">
+                         Status: {contentDis.status}
                         </Typography>
+                            </div>
+                          
                           </div>
                        
                       </Grid>
@@ -148,32 +151,32 @@ const FixedDetails = () => {
                                </div>
                            </Grid>
                            <Grid item xs={7}>
-                               <Grid container spacing={3}>
+                               <Grid container spacing={7}>
                                    <Grid item xs={12}>
                                    <div>
                                <Typography gutterBottom variant="body1">
-                               Asset Name : {contentDis.assetname}
+                               <span>Asset Name</span><span style={{marginLeft:'1em'}}>:</span><span style={{marginLeft:'1em'}}>{contentDis.assetname}</span>
                               </Typography>
                               </div>
                                    </Grid>
                                    <Grid item xs={12}>
                                    <div>
                               <Typography gutterBottom variant="body1">
-                              Asset Id : {contentDis.assetid}
+                              <span>Asset Id</span><span style={{marginLeft:'1em'}}>:</span><span style={{marginLeft:'1em'}}>{contentDis.assetid}</span>
                              </Typography>
                              </div>
                                    </Grid>
                                    <Grid item xs={12}>
                                    <div>
                               <Typography gutterBottom variant="body1">
-                              Asset Class : {contentDis.assetclass}
+                              <span>Asset Class</span><span style={{marginLeft:'1em'}}>:</span><span style={{marginLeft:'1em'}}>{contentDis.assetclass}</span>
                              </Typography>
                              </div>
                                    </Grid>
                                    <Grid item xs={12}>
                                    <div>
                               <Typography gutterBottom variant="body1">
-                              Asset Type : {contentDis.assettype}
+                              <span>Asset Type</span><span style={{marginLeft:'1em'}}>:</span><span style={{marginLeft:'1em'}}>{contentDis.assettype}</span>
                              </Typography>
                              </div>
                              </Grid>  
@@ -187,7 +190,7 @@ const FixedDetails = () => {
                              </div> 
                             </Grid>
                             <Grid item xs={8}>
-                              <div style={{position:'relative',left:'-8em'}}>
+                              <div style={{position:'relative',left:'-8.5em'}}>
                               <Typography gutterBottom variant="body1">
                               {contentDis.description}
                              </Typography>
@@ -204,34 +207,34 @@ const FixedDetails = () => {
 
                <Grid item xs={12}>
                    <Paper elevation={3} style={{paddingTop:'15px',paddingLeft:'25px'}}>
-                   <Grid container spacing={3}>
+                   <Grid container spacing={7}>
                       <Grid item xs={4}>
                           <Grid container spacing={2}>
                      <Grid item xs={12}>
                     <div>
                     <Typography gutterBottom variant="body1">
-                     Manufacturer : {contentDis.manufacturer}
+                     <span>Manufacturer</span><span style={{marginLeft:'1em'}}>:</span><span style={{marginLeft:'1em'}}>{contentDis.manufacturer}</span>
                      </Typography>
                       </div>
                     </Grid>
                     <Grid item xs={12}>
                     <div>
                     <Typography gutterBottom variant="body1">
-                     Measurement : {contentDis.mesurement}
+                     <span>Measurement</span><span style={{marginLeft:'1em'}}>:</span><span style={{marginLeft:'1em'}}>{contentDis.measurement}</span>
                      </Typography>
                       </div>
                     </Grid>
                     <Grid item xs={6}>
                     <div>
                     <Typography gutterBottom variant="body1">
-                     Weight : {contentDis.weight}
+                     <span>Weight</span><span style={{marginLeft:'1em'}}>:</span><span style={{marginLeft:'1em'}}>{contentDis.weight}</span>
                      </Typography>
                       </div>
                     </Grid>
                     <Grid item xs={12}>
                     <div>
                     <Typography gutterBottom variant="body1">
-                     Acquistion value : {contentDis.acquitioncost}
+                     <span>Acquistion value</span><span style={{marginLeft:'1em'}}>:</span><span style={{marginLeft:'1em'}}>{contentDis.acquitioncost}</span>
                      </Typography>
                       </div>
                     </Grid>
@@ -244,7 +247,7 @@ const FixedDetails = () => {
                         <Grid item xs={6}>
                     <div>
                     <Typography gutterBottom variant="body1">
-                     Barcode : {contentDis.barcode}
+                     <span>Barcode</span><span style={{marginLeft:'1em'}}>:</span><span style={{marginLeft:'1em'}}>{contentDis.barcode}</span>
                      </Typography>
                       </div>
                     </Grid>
@@ -252,7 +255,7 @@ const FixedDetails = () => {
                     <Grid item xs={12}>
                     <div>
                     <Typography gutterBottom variant="body1">
-                     Dimension : {contentDis.dimension}
+                     <span>Dimension</span><span style={{marginLeft:'1em'}}>:</span><span style={{marginLeft:'1em'}}>{contentDis.dimension}</span>
                      </Typography>
                       </div>
                     </Grid>
@@ -260,21 +263,21 @@ const FixedDetails = () => {
                     <Grid item xs={12}>
                     <div>
                     <Typography gutterBottom variant="body1">
-                     Quantity : {contentDis.quantity}
+                     <span>Quantity</span><span style={{marginLeft:'1em'}}>:</span><span style={{marginLeft:'1em'}}>{contentDis.quantity}</span>
                      </Typography>
                       </div>
                     </Grid>
                     <Grid item xs={12}>
                     <div>
                     <Typography gutterBottom variant="body1">
-                     Condition : {contentDis.status}
+                      <span>Condition</span><span style={{marginLeft:'1em'}}>:</span><span style={{marginLeft:'1em'}}>{contentDis.status}</span>
                      </Typography>
                       </div>
                     </Grid>
                     <Grid item xs={12}>
                     <div>
                     <Typography gutterBottom variant="body1">
-                     Location : {contentDis.location}
+                     <span>Location</span><span style={{marginLeft:'1em'}}>:</span><span style={{marginLeft:'1em'}}>{contentDis.location}</span>
                      </Typography>
                       </div>
                     </Grid>

@@ -126,6 +126,22 @@ const JournalListing = props => {
       },
     },
     {
+      name: '',
+      label: 'Amount',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+			name: 'entryByName',
+			label: 'Created by',
+			options: {
+				filter: true,
+				sort: false,
+			},
+		},
+    {
       name: 'status',
       label: 'Status',
       options: {
@@ -133,14 +149,6 @@ const JournalListing = props => {
         sort: false,
       },
     },
-    {
-			name: 'note',
-			label: 'Note',
-			options: {
-				filter: true,
-				sort: false,
-			},
-		},
     {
       name: 'id',
       label: ' ',
@@ -202,7 +210,7 @@ const JournalListing = props => {
           startIcon={<AddIcon />}
           onClick={() => history.push('/account/journal/add')}
         >
-          New Posting
+          New Entry
         </Button>
       </Tooltip>
     ),
