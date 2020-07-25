@@ -1,4 +1,5 @@
 import React from "react"
+import { Link } from 'react-router-dom'
 import {
   makeStyles,
   Box,
@@ -23,21 +24,19 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
-  grid: {
-    border: `1px solid ${theme.palette.divider}`,
-    '& .MuiGrid-item': {
-      flex: 1,
-      margin: theme.spacing(5)
-    }
-  },
   card: {
-    minheight: 208,
     borderRadius: theme.shape.borderRadius * 4,
     "& .MuiCardHeader-root": {
       textAlign: "center",
-      padding: theme.spacing(1),
-      fontSize: `${theme.typography.subtitle1.fontSize} !important`,
       borderBottom: `1px solid ${theme.palette.divider}`,
+    },
+    "& .MuiCardActions-root": {
+      justifyContent: "center",
+      backgroundColor: theme.palette.common.white,
+      fontSize: theme.typography.subtitle1.fontSize
+    },
+    "& .MuiCardContent-root": {
+      minHeight: `calc(180px - 53.09px)`,
     }
   },
   table: {
@@ -92,6 +91,14 @@ const Widget3 = ({ user, schedules }) => {
             </TableBody>
           </Table>
         </CardContent>
+
+        <Divider />
+
+        <CardActions>
+          <Button component={Link} to='/crm/schedules/list'>
+            View All Schedules
+					</Button>
+        </CardActions>
       </Card>
     </div>
   )

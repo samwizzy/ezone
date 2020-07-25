@@ -6,14 +6,19 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { withStyles, AppBar, Avatar, Box, Button, Checkbox, Divider, Dialog, DialogActions, DialogContent, Grid, MenuItem, Slide, Popover, Typography, TextField, Toolbar } from '@material-ui/core';
+import { withStyles, AppBar, Avatar, Box, Button, Icon, IconButton, Checkbox, Divider, Dialog, DialogActions, DialogContent, Grid, MenuItem, Slide, Slider, Popover, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../../selectors';
 import * as Actions from '../../../actions';
+import AddIcon from '@material-ui/icons/Add';
 import moment from 'moment'
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
+  },
+  flex: {
+    display: 'flex',
+    alignItems: 'center',
   },
   dialog: {
     width: 400
@@ -28,11 +33,22 @@ const Ruler = withStyles(theme => ({
 
 const questionTypes = [
   { label: 'Text', value: 'TEXT' },
-  { label: 'Multiple choice', value: 'MUTIPLE CHOICE' },
+  { label: 'Multiple choice', value: 'MUTIPLE_CHOICE' },
   { label: 'Scale', value: 'SCALE' },
   { label: 'Rating', value: 'RATING' },
-  { label: 'Selection boxes', value: 'SELECTION BOXES' },
+  { label: 'Selection boxes', value: 'SELECTION_BOXES' },
 ]
+
+const optionTypes = ['MUTIPLE_CHOICE', 'SELECTION_BOXES']
+
+const marks = [
+  { value: 0, label: 'Poor' },
+  { value: 100, label: 'Excellent' },
+];
+
+function valuetext(value) {
+  return `${value}%`;
+}
 
 function Form2(props) {
   const classes = useStyles();
@@ -41,9 +57,13 @@ function Form2(props) {
     dialog,
     form,
     addMore,
+    removeQuestion,
+    addMoreOption,
+    removeOption,
     handleNext,
     handleChange,
     handleQuestionChange,
+    handleOptionChange,
   } = props;
 
   const canSubmitForm = () => {
@@ -66,29 +86,35 @@ function Form2(props) {
           {form.questions && form.questions.map((question, i) =>
             <Fragment key={i}>
               <Grid item xs={12}>
-                <TextField
-                  id="question-type"
-                  name="questionType"
-                  placeholder="Select Question type"
-                  select
-                  margin="normal"
-                  variant="outlined"
-                  fullWidth
-                  size="small"
-                  label="Question type"
-                  value={question.questionType}
-                  onChange={handleQuestionChange(i)}
-                >
-                  {questionTypes.map((type, i) =>
-                    <MenuItem key={i} value={type.value}>
-                      {type.label}
-                    </MenuItem>
-                  )}
-                </TextField>
+                <Typography variant="subtitle1">
+                  Question {i + 1}
+                </Typography>
+                <div className={classes.flex}>
+                  <TextField
+                    id={`question-type-${i}`}
+                    name="questionType"
+                    placeholder="Select Question type"
+                    select
+                    margin="dense"
+                    variant="outlined"
+                    fullWidth
+                    size="small"
+                    label="Question type"
+                    value={question.questionType}
+                    onChange={handleQuestionChange(i)}
+                  >
+                    {questionTypes.map((type, i) =>
+                      <MenuItem key={i} value={type.value}>
+                        {type.label}
+                      </MenuItem>
+                    )}
+                  </TextField>
+                  {i !== 0 && <IconButton onClick={removeQuestion(i)}><Icon>close</Icon></IconButton>}
+                </div>
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  id="questionaire"
+                  id={`questionaire-${i}`}
                   name="question"
                   placeholder="Questionaire"
                   fullWidth
@@ -103,6 +129,39 @@ function Form2(props) {
                   onChange={handleQuestionChange(i)}
                 />
               </Grid>
+              {optionTypes.includes(question.questionType) &&
+                <Grid item xs={12}>
+                  {question.options.map((option, x) =>
+                    <div key={x} className={classes.flex}>
+                      <TextField
+                        id={`option-${x}`}
+                        name="option"
+                        placeholder="Option"
+                        variant="outlined"
+                        size="small"
+                        label={`Option ${x + 1}`}
+                        value={option.option}
+                        onChange={handleOptionChange(i, x)}
+                      />
+                      <IconButton onClick={() => { }}><Icon>edit</Icon></IconButton>
+                      <IconButton onClick={removeOption(i, x)}><Icon>close</Icon></IconButton>
+                    </div>
+                  )}
+                  <Button color="primary" size="small" onClick={addMoreOption(i)} startIcon={<AddIcon />}>
+                    Add more option
+                  </Button>
+                </Grid>
+              }
+              {question.questionType === 'scale' &&
+                <Slider
+                  defaultValue={80}
+                  getAriaValueText={valuetext}
+                  aria-labelledby="discrete-slider-always"
+                  step={10}
+                  marks={marks}
+                  valueLabelDisplay="on"
+                />
+              }
               <Grid item xs={12}><Ruler /></Grid>
             </Fragment>
           )}

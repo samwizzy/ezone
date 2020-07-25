@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import Drawer from '@material-ui/core/Drawer';
 import Link from '@material-ui/core/Link';
 import Divider from '@material-ui/core/Divider';
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
+import { fade, darken, lighten } from '@material-ui/core/styles/colorManipulator';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -22,6 +22,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
   },
   drawer: {
+    overflowY: 'visible',
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
@@ -36,7 +37,7 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    overflowX: 'hidden',
+    overflowX: 'visible',
   },
   drawerClose: {
     transition: theme.transitions.create('width', {
@@ -50,15 +51,19 @@ const useStyles = makeStyles(theme => ({
     },
   },
   toolbar: {
-    zIndex: 9999,
+    zIndex: theme.zIndex.drawer + 1,
     position: "absolute",
-    borderRadius: theme.spacing(20, 0, 0, 20),
-    right: 0,
-    bottom: "30%",
+    boxShadow: theme.shadows[1],
+    borderRadius: theme.spacing(0, 20, 20, 0),
+    "&.full": {
+      // right: `-${theme.spacing(5) + 3}px`,
+      right: `-43.26px`,
+    },
+    bottom: "10%",
     display: 'flex',
-    backgroundColor: "transparent",
+    backgroundColor: fade('#fff', 0.5),
     "& .MuiSvgIcon-root": {
-      color: "#fff"
+      color: theme.palette.primary.main
     },
     alignItems: 'center',
     justifyContent: 'flex-end',
@@ -66,8 +71,10 @@ const useStyles = makeStyles(theme => ({
     ...theme.mixins.toolbar,
   },
   content: {
-    // width: `calc(100% - ${drawerWidth}px)`,
-    width: `100%`,
+    width: `calc(100% - ${drawerWidth}px)`,
+    "&.full": {
+      width: `calc(100% - ${theme.spacing(7) + 1}px)`,
+    }
   },
   logo: {
     color: '#1F70C1',
@@ -108,24 +115,24 @@ function MiniDrawer(props) {
         }}
       >
 
-        <div className={classes.toolbar}>
+        <div className={clsx(classes.toolbar, { 'full': open })}>
           {/* <Link href="#">
             <img src={Logo} className={classes.logo} alt="" />
           </Link> */}
           {open ? (
-            <IconButton onClick={handleDrawerClose}>
+            <IconButton size="small" onClick={handleDrawerClose}>
               {theme.direction === 'rtl' ? (
-                <ChevronRightIcon fontSize="small" />
+                <ChevronRightIcon />
               ) : (
-                  <ChevronLeftIcon fontSize="small" />
+                  <ChevronLeftIcon />
                 )}
             </IconButton>
           ) : (
-              <IconButton onClick={handleDrawerOpen}>
+              <IconButton size="small" onClick={handleDrawerOpen}>
                 {theme.direction === 'rtl' ? (
-                  <ChevronLeftIcon fontSize="small" />
+                  <ChevronLeftIcon />
                 ) : (
-                    <ChevronRightIcon fontSize="small" />
+                    <ChevronRightIcon />
                   )}
               </IconButton>
             )}
@@ -133,7 +140,7 @@ function MiniDrawer(props) {
         <AppSidebar />
         <Divider />
       </Drawer>
-      <main className={classes.content}>
+      <main className={clsx(classes.content, { 'full': !open })}>
         <div style={{ minHeight: `calc(100vh - 140px)` }}>
           {props.content}
         </div>

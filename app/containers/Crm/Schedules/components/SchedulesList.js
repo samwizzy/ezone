@@ -153,7 +153,7 @@ const SchedulesList = props => {
         </Grid>
       </Grid>
 
-      <ScheduleDialog />
+      {/* <ScheduleDialog /> */}
       <ParticipantDialog />
     </div>
   );

@@ -29,7 +29,7 @@ export function* getEmployees() {
     yield put(Actions.getEmployeesSuccess(response));
   } catch (err) {
     if (err.message) {
-      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
     } else {
       const error = yield call(errorHandler, err.response.json())
       yield put(AppActions.openSnackBar({ message: error.message, status: 'error' }));
@@ -105,7 +105,7 @@ export function* createSchedule({ payload }) {
     yield put(Actions.closeNewScheduleDialog());
   } catch (err) {
     if (err.message) {
-      yield put(AppActions.openSnackBar({ message: err.message, status: 'warning' }));
+      // yield put(AppActions.openSnackBar({ message: err.message, status: 'warning' }));
     } else {
       const error = yield call(errorHandler, err.response.json())
       console.log(error, "creating contact error")

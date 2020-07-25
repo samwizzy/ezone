@@ -19,6 +19,13 @@ export const initialState = {
     },
     data: null,
   },
+  scheduleDetailsDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
   participantDialog: {
     type: 'new',
     props: {
@@ -45,6 +52,12 @@ const crmScheduleReducer = (state = initialState, action) =>
           employees: action.payload
         };
       }
+      case Constants.GET_EMPLOYEES_ERROR: {
+        return {
+          ...state,
+          loading: false,
+        };
+      }
       case Constants.GET_CONTACTS: {
         return {
           ...state,
@@ -58,6 +71,12 @@ const crmScheduleReducer = (state = initialState, action) =>
           contacts: action.payload
         };
       }
+      case Constants.GET_CONTACTS_ERROR: {
+        return {
+          ...state,
+          loading: false,
+        };
+      }
       case Constants.GET_SCHEDULES: {
         return {
           ...state,
@@ -69,6 +88,12 @@ const crmScheduleReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           schedules: action.payload
+        };
+      }
+      case Constants.GET_SCHEDULES_ERROR: {
+        return {
+          ...state,
+          loading: false,
         };
       }
       case Constants.CREATE_SCHEDULE: {
@@ -111,6 +136,54 @@ const crmScheduleReducer = (state = initialState, action) =>
         return {
           ...state,
           scheduleDialog: {
+            type: 'new',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.OPEN_EDIT_SCHEDULE_DIALOG: {
+        return {
+          ...state,
+          scheduleDialog: {
+            type: 'edit',
+            props: {
+              open: true,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.CLOSE_EDIT_SCHEDULE_DIALOG: {
+        return {
+          ...state,
+          scheduleDialog: {
+            type: 'edit',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.OPEN_SCHEDULE_DETAILS_DIALOG: {
+        return {
+          ...state,
+          scheduleDetailsDialog: {
+            type: 'new',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_SCHEDULE_DETAILS_DIALOG: {
+        return {
+          ...state,
+          scheduleDetailsDialog: {
             type: 'new',
             props: {
               open: false,

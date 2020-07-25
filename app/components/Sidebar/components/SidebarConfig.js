@@ -116,7 +116,7 @@ const SidebarConfig = [
       },
       { id: 5, name: 'Banking', url: '/account/banking', icon: 'group' },
       { id: 6, name: 'Reports', url: '/account/reports', icon: 'local_library' },
-     // { id: 7, name: 'Budgeting', url: '/account/budgeting', icon: 'account_balance_wallet' },
+      // { id: 7, name: 'Budgeting', url: '/account/budgeting', icon: 'account_balance_wallet' },
       { id: 8, name: 'Settings', url: '/account/settings', icon: 'settings' },
     ],
   },
@@ -227,7 +227,7 @@ const SidebarConfig = [
           { id: 3, name: 'Add Job', url: '/project-manager/jobs/new', icon: '' },
         ]
       },
-      { id: 7, name: 'Reports', url: '/project-manager/reports', icon: 'assessment' },
+      { id: 5, name: 'Reports', url: '/project-manager/reports', icon: 'assessment' },
     ],
   },
   {
@@ -262,11 +262,7 @@ const SidebarConfig = [
        { id: 10, name: 'Purchase Orders', url: '/purchase/purchaseorder', icon: 'label' },
        { id: 11, name: 'Purchase Order Invoice', url: '/purchase/purchaseorderinvoice', icon: 'label' }*/
       {
-        id: 1,
-        name: 'Inventory',
-        url: '/inventory/dashboard',
-        icon: 'label',
-        submenus: [
+        id: 8, name: 'Inventory', url: '/inventory/dashboard', icon: 'label', submenus: [
           { id: 1, name: 'Dashboard', url: '/inventory/dashboard', icon: 'dashboard' },
           { id: 2, name: 'Warehouses', url: '/inventory/warehouses', icon: 'storage' },
           { id: 3, name: 'Items', url: '/inventory/items', icon: 'label' },
@@ -276,26 +272,20 @@ const SidebarConfig = [
           { id: 7, name: 'Reports', url: '/inventory/reports', icon: 'assessment' }
         ],
       },
-
       {
-        id: 2,
-        name: 'Sales',
-        url: '/sales',
-        icon: 'label',
-        submenus: [
+        id: 9, name: 'Sales', url: '/sales', icon: 'label', submenus: [
           { id: 1, name: 'Sales Order', url: '/sales/salesorder', icon: 'label' },
           { id: 2, name: 'Invoice', url: '/sales/invoices', icon: 'label' },
           //{ id: 3, name: 'Receipts', url: '/sales/receipts', icon: 'label' },
         ],
       },
       {
-        id: 3, name: 'Purchase', url: '/purchase', icon: 'label', submenus: [
+        id: 10, name: 'Purchase', url: '/purchase', icon: 'label', submenus: [
           { id: 1, name: 'Purchase Order', url: '/purchase/purchaseorder', icon: 'label' },
           // { id: 2, name: 'Bills', url: '/purchase/bills', icon: 'label' },
           // { id: 3, name: 'Purchase made', url: '/purchase/purchasemade', icon: 'label' }
         ]
       },
-
     ],
   },
 ];

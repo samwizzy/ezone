@@ -8,6 +8,7 @@ import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
+import { Route, withRouter } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -19,14 +20,18 @@ import reducer from './reducer';
 import * as Actions from './actions';
 import saga from './saga';
 import SchedulesList from './components/SchedulesList';
+import SchedulesLists from './SchedulesList';
 import ModuleLayout from './../components/ModuleLayout';
+import ScheduleDetailsDialog from './components/ScheduleDetailsDialog';
+import ScheduleDialog from './components/ScheduleDialog';
 
 const key = 'crmSchedules';
 export function Schedules(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
-  const { getEmployees, getContacts, getSchedules } = props
+  const { match, getEmployees, getContacts, getSchedules } = props
+  const { path, url } = match
 
   useEffect(() => {
     getEmployees();
@@ -42,8 +47,12 @@ export function Schedules(props) {
       </Helmet>
 
       <ModuleLayout>
-        <SchedulesList />
+        <Route exact path={path} component={SchedulesList} />
+        <Route path={`${path}/list`} component={SchedulesLists} />
       </ModuleLayout>
+
+      <ScheduleDialog />
+      <ScheduleDetailsDialog />
     </div>
   );
 }
@@ -70,6 +79,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(Schedules);

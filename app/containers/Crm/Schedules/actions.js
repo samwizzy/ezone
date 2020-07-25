@@ -132,6 +132,19 @@ export function closeEditScheduleDialog() {
   }
 }
 
+export function openScheduleDetailsDialog(payload) {
+  return {
+    type: Constants.OPEN_SCHEDULE_DETAILS_DIALOG,
+    payload
+  }
+}
+
+export function closeScheduleDetailsDialog() {
+  return {
+    type: Constants.CLOSE_SCHEDULE_DETAILS_DIALOG,
+  }
+}
+
 export function openNewParticipantDialog() {
   return {
     type: Constants.OPEN_NEW_PARTICIPANT_DIALOG,
