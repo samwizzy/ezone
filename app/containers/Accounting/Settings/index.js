@@ -11,6 +11,12 @@ import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import {
+  BrowserRouter as Route,
+  Switch,
+  useParams,
+  useRouteMatch,
+} from "react-router-dom";
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -43,6 +49,8 @@ export function Settings(props) {
     dispatchGetAllAccountingPeriodAction();
   }, []);
 
+  console.log(`Path from Settings -> `, props.path);
+
 
   if (loading) {
     return <div style={{textAlign:'center'}}><div style={{margin:'2px auto'}}><CircularProgress /></div></div>;
@@ -55,9 +63,9 @@ export function Settings(props) {
         <meta name="description" content="Description of Settings." />
       </Helmet>
      
-        <SettingsLayout>
-          <AccountingPeriod />
-        </SettingsLayout>
+        <SettingsLayout path={props.path}/>
+         {/* <AccountingPeriod />
+        </SettingsLayout>*/}
       
     </div>
   );

@@ -83,7 +83,7 @@ const DepreciationSetup = () => {
       calculationBase: 'MONTHLY',
       code: '',
       depreciatedValue: '',
-     // depreciationRate: 0,
+      depreciationRate: '',
       description: '',
       method: 'STRAIGHT_LINE',
       percentageValue: '',
@@ -105,35 +105,12 @@ const DepreciationSetup = () => {
       }
 
       }
-    
-    const base = [
-      {
-        value: 'AquisitionValue',
-        label: 'Aquisition Value',
-      }
-    ]
 
     const calculationBase = Enum.DepreciationCalculationBase
 
-    const calculationMethod = [
-      {
-        value: 'ATU',
-        label: 'Aquisition / Total useful',
-      },
-      {
-        value: 'POA',
-        label: 'Percentage of Aquisition value',
-      },
-      {
-        value: 'NBV',
-        label: 'Netbook value / Remaining life',
-      }
-      
-    ]
-
     function isReady(){
-      return values.code.length > 1 
-      && values.depreciatedValue.length > 1
+      return values.code.length >= 1 
+      && values.depreciatedValue.length >= 1
        && values.description.length > 1
        && values.percentageValue.length > 1
     }
@@ -152,7 +129,7 @@ const DepreciationSetup = () => {
     function saveDeprecitionType(){
       crud.saveDeprecitionType(values)
      .then((data)=>{
-      swal("Success","Depreciation Type create successfully","success");
+      swal("Success","Depreciation Type created successfully","success");
      })
      .catch((error)=>{
       swal("Error","Something went wrong. Please check your connection","error");
@@ -180,13 +157,14 @@ const DepreciationSetup = () => {
                   <Grid item xs={6}>
                     <Grid container spacing={3}>
                       <Grid item xs={12}>
-                      <TextField className={classes.inputBox}
+                      <TextField 
                         id="code"
                          label="Code"
                          onChange ={handleChange('code')}
                          size={'small'}
                           variant="outlined"
                            margin="normal"
+                           fullWidth
                           />
                       </Grid>
                       <Grid item xs={12}>

@@ -96,8 +96,10 @@ const SidebarConfig = [
       'account',
       'budgeting',
       'reports',
+      'banking',
       'fixedassets',
       'charts',
+      'settings'
     ],
     menus: [
       { id: 1, name: 'Dashboard', url: '/account', icon: 'dashboard' },
@@ -114,10 +116,34 @@ const SidebarConfig = [
         url: '/account/fixedassets',
         icon: 'note',
       },
-      { id: 5, name: 'Banking', url: '/account/banking', icon: 'group' },
+      { id: 5, name: 'Banking', url: '/account/banking', icon: 'account_balance' },
       { id: 6, name: 'Reports', url: '/account/reports', icon: 'local_library' },
-      // { id: 7, name: 'Budgeting', url: '/account/budgeting', icon: 'account_balance_wallet' },
-      { id: 8, name: 'Settings', url: '/account/settings', icon: 'settings' },
+      { id: 7, name: 'Budgeting', url: '/account/budgeting', icon: 'account_balance_wallet' },
+      {
+        id: 8, name: 'Settings', url: '#', icon: 'settings', submenus: [
+          { id: 1, name: 'Account Period', url: '/account/settings/period', icon: '' },
+          { id: 2, name: 'Deprecition Type', url: '/account/settings/deprecitiontype', icon: '' },
+          { id: 3, name: 'Deprecition Area', url: '/account/settings/deprecitionarea', icon: '' },
+          { id: 4, name: 'Asset Type', url: '/account/settings/assettype', icon: '' },
+          { id: 5, name: 'Tax Rate', url: '/account/settings/taxrate', icon: '' },
+          { id: 6, name: 'Tax Type', url: '/account/settings/taxtype', icon: '' },
+          /* {
+             id: 2, name: 'Fixed Asset Setup', url: '/account/settings/fixedasset', icon: '', submenus: [
+               { id: 1, name: 'Deprecition Type', url: '/account/settings/deprecitiontype', icon: '' },
+               { id: 2, name: 'Deprecition Area', url: '/account/settings/deprecitionarea', icon: '' },
+               { id: 3, name: 'Asset Type', url: '/account/settings/assettype', icon: '' },
+             ]
+           },*/
+          { id: 7, name: 'Currencies', url: '/account/settings/currencies', icon: '' },
+          /* {
+             id: 4, name: 'Taxes', url: '/account/settings/taxes', icon: '', submenus: [
+               { id: 1, name: 'Tax Rate', url: '/account/settings/taxrate', icon: '' },
+               { id: 2, name: 'Tax Type', url: '/account/settings/taxtype', icon: '' },
+             ]
+           },*/
+
+        ]
+      },
     ],
   },
   {

@@ -95,7 +95,7 @@ export function Accounting(props) {
                 
                 <Route exact path={`/account/${id}/${name}`} component={
                  name === 'add'?(id==='budgeting'?NewBudgeting:AddNewJournal): (id === 'journal'?JournalDetails:
-                 (id === 'charts'?DetailsOfAccountChat:(id ==='budgeting'?BudgetingDetails:AccountDetails)))
+                 (id === 'charts'?DetailsOfAccountChat:(id ==='budgeting'?BudgetingDetails:(id === 'settings'?Home:AccountDetails))))
                 }/>
                 
                

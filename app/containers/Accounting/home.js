@@ -79,7 +79,7 @@ const Home = () => {
               </div>
                )
               :
-                (accoutSetup === null?<AccountSetup/>:((`${path}`).indexOf('settings')>0 ?<Settings/>:<Dashboard/>))
+                (accoutSetup === null?<AccountSetup/>:((`${path}`).indexOf('settings')>0 ?<Settings path={path}/>:<Dashboard/>))
                }
             </Route>
            

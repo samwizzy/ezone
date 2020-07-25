@@ -11,8 +11,6 @@ export async function creatAccountingPeriod(value){
       'Content-Type': 'application/json', }
   }
   let payload = {...value,orgId:credentials.organisation.orgId}
-
-  console.log(`payload b4 ${JSON.stringify(payload)}`)
   return await axios.post(requestURL,payload,config)
   .then(result => { console.log(result); return result; })
   .catch(error => { console.error(error); return Promise.reject(error); });
@@ -79,6 +77,21 @@ export async function setUptins() {
 
       }
 
+      export async function getAsset(){
+        let credentials = JSON.parse(localStorage.getItem('user'))
+        let accessToken = localStorage.getItem('access_token')
+        const requestURL = `${Endpoints.GetAssetByOrgIdApi}?orgId=${credentials.organisation.orgId}`;
+         const config = {
+           headers: { Authorization: `Bearer ${accessToken}`,
+           'Content-Type': 'application/json', }
+       }
+
+       return await axios.get(requestURL,config)
+      .then(result => { console.log(result); return result; })
+      .catch(error => { console.error(error); return Promise.reject(error); });
+
+      }
+
 
       export async function addDeprecitionArea(value){
         let credentials = JSON.parse(localStorage.getItem('user'))
@@ -89,6 +102,27 @@ export async function setUptins() {
            'Content-Type': 'application/json', }
        }
        let payload ={...value,orgId:credentials.organisation.orgId}
+
+       return await axios.post(requestURL,payload,config)
+       .then(result => { console.log(result); return result; })
+       .catch(error => { console.error(error); return Promise.reject(error); });
+
+      }
+
+      export async function createNewAsset(value){
+        let credentials = JSON.parse(localStorage.getItem('user'))
+        let accessToken = localStorage.getItem('access_token')
+        const requestURL = `${Endpoints.AddAssetApi}`;
+         const config = {
+           headers: { Authorization: `Bearer ${accessToken}`,
+           'Content-Type': 'application/json', }
+       }
+       let payload ={...value,orgId:credentials.organisation.orgId,
+        aquisitionValue:Number(value.aquisitionValue),length:Number(value.length),
+        quantity:Number(value.quantity),weigth:Number(value.weigth),width:Number(value.width)
+        }
+
+        console.log(`Payload after completion ${JSON.stringify(payload)}`)
 
        return await axios.post(requestURL,payload,config)
        .then(result => { console.log(result); return result; })
@@ -109,6 +143,36 @@ export async function setUptins() {
        return await axios.post(requestURL,payload,config)
        .then(result => { console.log(result); return result; })
        .catch(error => { console.error(error); return Promise.reject(error); });
+
+      }
+
+      export async function getDeprecitionType(){
+        let credentials = JSON.parse(localStorage.getItem('user'))
+        let accessToken = localStorage.getItem('access_token')
+        const requestURL = `${Endpoints.GetDeprecitionTypeByOrgIdApi}?orgId=${credentials.organisation.orgId}`;
+         const config = {
+           headers: { Authorization: `Bearer ${accessToken}`,
+           'Content-Type': 'application/json', }
+       }
+
+       return await axios.get(requestURL,config)
+      .then(result => { console.log(result); return result; })
+      .catch(error => { console.error(error); return Promise.reject(error); });
+
+      }
+
+      export async function getOrganisationParties(){
+        let credentials = JSON.parse(localStorage.getItem('user'))
+        let accessToken = localStorage.getItem('access_token')
+        const requestURL = `${Endpoints.GetPartyGroup}?orgId=${credentials.organisation.orgId}`;
+         const config = {
+           headers: { Authorization: `Bearer ${accessToken}`,
+           'Content-Type': 'application/json', }
+       }
+
+       return await axios.get(requestURL,config)
+      .then(result => { console.log(result); return result; })
+      .catch(error => { console.error(error); return Promise.reject(error); });
 
       }
 
