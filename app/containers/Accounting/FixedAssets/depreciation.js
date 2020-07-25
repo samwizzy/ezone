@@ -83,7 +83,7 @@ const DepreciationSetup = () => {
       calculationBase: 'MONTHLY',
       code: '',
       depreciatedValue: '',
-     // depreciationRate: 0,
+      depreciationRate: '',
       description: '',
       method: 'STRAIGHT_LINE',
       percentageValue: '',
@@ -105,31 +105,8 @@ const DepreciationSetup = () => {
       }
 
       }
-    
-    const base = [
-      {
-        value: 'AquisitionValue',
-        label: 'Aquisition Value',
-      }
-    ]
 
     const calculationBase = Enum.DepreciationCalculationBase
-
-    const calculationMethod = [
-      {
-        value: 'ATU',
-        label: 'Aquisition / Total useful',
-      },
-      {
-        value: 'POA',
-        label: 'Percentage of Aquisition value',
-      },
-      {
-        value: 'NBV',
-        label: 'Netbook value / Remaining life',
-      }
-      
-    ]
 
     function isReady(){
       return values.code.length >= 1 
