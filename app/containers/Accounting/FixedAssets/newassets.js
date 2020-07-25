@@ -157,6 +157,7 @@ const NewAsset = () => {
        console.log(`Confirming it ${JSON.stringify(data.data)}`)
        for(let i=0;i<data.data.length;i++){
          if(data.data[i].calculationBase != null){
+           console.log(`for depreciation ${JSON.stringify(data.data[i])}`)
            setValues({...values,depreciationAccountId:data.data[i].id,
             depreciationValue:data.data[i].depreciatedValue,depreciationType:data.data[i]})
           break;
@@ -579,6 +580,7 @@ const NewAsset = () => {
                     <Grid container spacing={3}>
                    
                          <Grid item xs={6}>
+                           <div style={{position:'relative',top:'.65em'}}>
                          <TextField
                                  id="aquivalue"
                                  type="number"
@@ -588,19 +590,22 @@ const NewAsset = () => {
                                  label="Aquisition value (Cost of Asset)"
                                     margin="normal"
                                     fullWidth
-                                 />   
+                                 /> 
+                                 </div>  
                          </Grid>
 
                          <Grid item xs={6}>
                          <Grid container spacing={3}>
                                  <Grid item xs={12}>
-                                 <Typography variant="subtext1" color="textSecondary">
+                                   <div style={{position:'relative',top:'-1em'}}>
+                                 <Typography variant="h6" color="textSecondary">
                                    Tax liable
                                    </Typography>
+                                   </div>
                                  </Grid>
 
                                  <Grid item xs={12}>
-                                <TextField style={{marginTop:'-1.8em'}}
+                                <TextField style={{marginTop:'-2em'}}
                                  id="taxacc"
                                  size={'small'}
                                  variant="outlined"
@@ -665,7 +670,7 @@ const NewAsset = () => {
                          </Grid>
 
                          <Grid item xs={6}>
-                           <div style={{marginTop:'-5.6em'}}>
+                           <div style={{position:'relative',top:'-6.1em'}}>
                          <TextField
                                  id="aquidate"
                                  size={'small'}

@@ -45,6 +45,9 @@ import {
         fontWeight:600,
         color:'black'
     },
+    loading:{
+     fontSize:'10px'
+    },
     curve:{
         borderRadius:'6px'
     },
@@ -117,17 +120,21 @@ const DepreciationSetup = () => {
               ...values,
               calculationBase:data.data[0].calculationBase,
               code: data.data[0].code,
+              dateCreated:data.data[0].dateCreated,
+              dateUpdated:data.data[0].dateUpdated,
              depreciatedValue: data.data[0].depreciatedValue,
-            //depreciationRate:0,
+            depreciationRate:data.data[0].depreciationRate,
             description: data.data[0].description,
+            id:data.data[0].id,
            method: data.data[0].method,
+           orgId: data.data[0].orgId,
           percentageValue: data.data[0].percentageValue,
           validFrom: data.data[0].validFrom,
           validTo: data.data[0].validTo
             })
             setIsCreated(true)
           }
-         console.log(`DepreciationType...... ${JSON.stringify(data.data)}`)
+         //.log(`DepreciationType...... ${JSON.stringify(data.data)}`)
         })
         .catch((error)=>{
 
@@ -152,10 +159,12 @@ const DepreciationSetup = () => {
     const calculationBase = Enum.DepreciationCalculationBase
 
     function isReady(){
+     let percent = Number(values.percentageValue)
+     let deprecition = Number(values.depreciatedValue)
       return values.code.length >= 1 
-      && values.depreciatedValue.length >= 1
+      && deprecition > 0
        && values.description.length > 1
-       && values.percentageValue.length > 1
+       && (100 > percent && percent > 0)
     }
 
     function calculationConverter(value){
@@ -180,19 +189,29 @@ const DepreciationSetup = () => {
    }
 
     function methodConverter(value){
+      //console.log(`Who goes here ${value}`)
+      let result = '';
       switch(value){
+      case 'STRAIGHT_LINE':
+      result = 'Straight Line'
+      break;
       case 'UNIT_OF_PRODUCTION':
-        return 'Unit of Production'
+        result = 'Unit of Production'
+        break;
       case 'SUM_OF_THE_YEAR_DIGIT':
-       return 'Sum of the year Digit'
+       result = 'Sum of the year Digit'
+       break;
        case 'DOUBLE_DECLINING':
-       return 'Double Declining'
+       result = 'Double Declining'
+       break;
        case 'REDUCING_BALANCE':
-      return 'Reducing Balance'
-      default:
-        return 'Straight Line'  
-
+      result = 'Reducing Balance'
+      break;
+     default :
+     result = 'Straight Line'
       }
+      //console.log(`swictcing result ${result}`)
+      return result;
     }
 
 
@@ -274,8 +293,8 @@ const DepreciationSetup = () => {
                       <Grid item xs={12}>
                       <div className={classes.lift}>
                           <Autocomplete className={classes.inputBox}
-                              defaultValue={{ value:values.method, label:methodConverter(values.method)}}
                               id="methodType"
+                              inputValue ={methodConverter(values.method)}
                               onChange={(event, value) => {
                                setValues({...values,method:value.value})
                               }}
@@ -294,7 +313,7 @@ const DepreciationSetup = () => {
                       <div className={classes.lift}>
                           <Autocomplete className={classes.inputBox}
                               id="calculationBase"
-                              defaultValue={{ value:values.calculationBase, label:calculationBaseConverter(values.calculationBase)}}
+                              inputValue ={calculationBaseConverter(values.calculationBase)}
                              options={calculationBase}
                              getOptionLabel={(option) => option.label}
                              onChange={(event, value) => {
@@ -635,7 +654,7 @@ const DepreciationSetup = () => {
                    Update
                </Button>
                :
-               <CircularProgress />
+               <CircularProgress size={30}/>
                   )
                   :
                   (!loadin ?
@@ -652,7 +671,7 @@ const DepreciationSetup = () => {
                       Save
                   </Button>
                   :
-                  <CircularProgress />
+                  <CircularProgress size={30}/>
                   )
                   
                     }

@@ -109,14 +109,15 @@ const DepreciationArea = () => {
         .then((data)=>{
           if(data.data.length > 0){
             setValues({...values,code:data.data[0].code,
-              description:data.data[o].description,
-              type:data.data[0].type
+              description:data.data[0].description,
+              type:data.data[0].type,id:data.data[0].id
             })
+            setIsCreated(true);
           }
-          setIsCreated(true);
+          console.log(`Depre ${JSON.stringify(data.data)}`)
         })
         .catch((error)=>{
-
+          console.log(`Error in DepreciationArea ${error}`)
         })
       }
 
@@ -220,7 +221,7 @@ const DepreciationArea = () => {
                         Update
                       </Button>
                       :
-                      <CircularProgress />
+                      <CircularProgress size={30}/>
                       )
 
                      :
@@ -236,7 +237,7 @@ const DepreciationArea = () => {
                 Add
               </Button>
               :
-              <CircularProgress />
+              <CircularProgress size={30}/>
                      )
                }
                      </div>
