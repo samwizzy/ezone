@@ -158,7 +158,7 @@ const NewAsset = () => {
        for(let i=0;i<data.data.length;i++){
          if(data.data[i].calculationBase != null){
            setValues({...values,depreciationAccountId:data.data[i].id,
-            depreciationValue:data.data[i].depreciationValue,depreciationType:data.data[i]})
+            depreciationValue:data.data[i].depreciatedValue,depreciationType:data.data[i]})
           break;
          }
          
