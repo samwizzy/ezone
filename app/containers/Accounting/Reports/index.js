@@ -42,9 +42,10 @@ const Reports = () => {
     'Bill reports', 'Payments reports','Quotation reports','Purchase journal','vendor master life','Purchase order report']
     const ledger =['Cash account register','Charts of Accounts','General Journal','General ledger','Trial Balance']
     const financialStatement =['income Statement','Statement of financial position'
-    ,'Equity','Non current liabilities','Current Liabilities']
+    ,'Cashflow']
+    const inventory =['Cost of goods sold','Inventory status report','Inv.valuation report','Item list','Physical Inventory list']
     const payroll =['Payroll Journals','Payroll Check Register',
-    'Payroll Tax report','Tax liability Report','Employee Earnings Report']
+    'Payroll Tax report','Tax liability Report','Employee Earnings Report','Employee Compensation Report','Employee List']
     return ( 
       <ModuleLayout>
         <div className={classes.base}>
@@ -124,7 +125,15 @@ const Reports = () => {
                           <Grid item xs={12}>
                           <Paper elevation={3} >
                           <Paper elevation={1}>
-                           <ListBoard bar={'purple'} title={'Budget'} contents={['Budget Vs Actuals']}/>
+                           <ListBoard bar={'purple'} title={'Budget'} contents={['Budget report','Budget Vs Actuals']}/>
+                          </Paper>
+                        </Paper>
+                          </Grid>
+
+                          <Grid item xs={12}>
+                          <Paper elevation={3} >
+                          <Paper elevation={1}>
+                           <ListBoard bar={'green'} title={'Inventory'} contents={inventory}/>
                           </Paper>
                         </Paper>
                           </Grid>

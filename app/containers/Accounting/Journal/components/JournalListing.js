@@ -89,7 +89,7 @@ const JournalListing = props => {
     journalListData,
   } = props;
 
- // console.log('journalListData -> ', journalListData);
+  console.log('journalListData -> ', journalListData);
 
   const jornallist = [];
 
@@ -126,6 +126,23 @@ const JournalListing = props => {
       },
     },
     {
+      name: 'amount',
+      label: 'Amount',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+   
+    {
+			name: 'entryByName',
+			label: 'Created by',
+			options: {
+				filter: true,
+				sort: false,
+			},
+    },
+    {
       name: 'status',
       label: 'Status',
       options: {
@@ -133,14 +150,6 @@ const JournalListing = props => {
         sort: false,
       },
     },
-    {
-			name: 'note',
-			label: 'Note',
-			options: {
-				filter: true,
-				sort: false,
-			},
-		},
     {
       name: 'id',
       label: ' ',
