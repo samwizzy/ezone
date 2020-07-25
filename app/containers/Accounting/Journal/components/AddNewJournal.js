@@ -14,6 +14,7 @@ import {
   TableCell,
   TableContainer,
   Checkbox,
+  Box,
   TableHead,
   TableRow,
   TextField,
@@ -33,15 +34,15 @@ import DateFnsUtils from '@date-io/date-fns';
 import classNames from 'classnames';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
-import AddBox from '@material-ui/icons/AddBox';
 import AddIcon from '@material-ui/icons/Add';
-import { Autocomplete } from '@material-ui/lab';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+import { Euro, AttachMoney, Delete, AddBox } from '@material-ui/icons';
+import { Autocomplete } from '@material-ui/lab';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -70,6 +71,9 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(1, 2),
     backgroundColor: theme.palette.grey[100],
   },
+  paperBase:{
+    padding: theme.spacing(1, 2),
+  },
   flex: {
     display: "flex",
     justifyContent: "space-between",
@@ -85,9 +89,11 @@ const useStyles = makeStyles(theme => ({
       margin: theme.spacing(2, 0),
     }
   },
-
-  addButton:{
-    backgroundColor: theme.palette.primary.main,
+  lightLift: {
+    marginBottom: '20px',
+  },
+  softLift:{
+   padding:'10px'
   },
   
   gridMargin: { marginBottom: theme.spacing(2) },
@@ -119,6 +125,55 @@ const AddNewJournal = props => {
   const [cPeriodAccount,setCPeriodAccount] = useState({});
   const[xuv,setXuv] = useState(0)
   const [cTotalPeriodAccount,setCTotalPeriodAccount] = useState([])
+  const [openCurrency,setOpenCurrency] = useState(false);
+  const [openRate,setOpenRate] = useState(false);
+
+  const [open, setOpen] = useState(false);
+    const handleClickClose = () => {
+        setOpen(false);
+      };
+      const handleOPenDialog = (name) => {
+        if(name==='currency'){
+        setOpenCurrency(true)
+        setOpenRate(false)
+        setOpen(true)
+        }
+        else{
+          setOpenCurrency(false)
+          setOpenRate(true)
+          setOpen(true)
+        }
+      };
+    const currenciesDetails =[
+        {
+            code:'USD',
+            name:'Dollar',
+            symbol:<AttachMoney />
+        },
+        {
+            code:'EUR',
+            name:'Euro',
+            symbol:<Euro />
+        }
+    ]
+
+    const currenciesDetailsRate =[
+      {
+          rate:'20%',
+          name:'Dollar',
+          taxType:'VAT'
+      },
+      {
+          rate:'30%',
+          name:'Euro',
+          taxType:'VAT'
+      },
+      {
+          rate:'10%',
+          name:'Pounds Sterling',
+          taxType:'VAT'
+      }
+  ]
 
   function generateCode(){
     let credentials = JSON.parse(localStorage.getItem('user'))
@@ -358,23 +413,6 @@ const AddNewJournal = props => {
     }
   }
 
-  const [open, setOpen] = useState(false);
-  const handleClickClose = () => {
-      setOpen(false);
-    };
-  const currenciesDetails =[
-      {
-          code:'USD',
-          name:'Dollar',
-          symbol:<AttachMoney />
-      },
-      {
-          code:'EUR',
-          name:'Euro',
-          symbol:<Euro />
-      }
-  ]
-
 
 
   //console.log('values -> ', values);
@@ -384,7 +422,8 @@ const AddNewJournal = props => {
   return (
     <ModuleLayout>
       <div className={classes.root}>
-        <div>
+
+      <div>
       <Dialog
         open={open}
         TransitionComponent={Transition}
@@ -393,12 +432,13 @@ const AddNewJournal = props => {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle id="alert-dialog-slide-title">{"New Currency"}</DialogTitle>
+        <DialogTitle id="alert-dialog-slide-title">{openCurrency?'New Currency':'New Tax rate'}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
 
             <div>
-              <Paper elevation={1} className={classes.paper}>
+              {openCurrency ?
+              <Paper elevation={1} className={classes.paperBase}>
                 <Grid container spacing={3}>
                 <Grid item xs={12}>
               <Box p={1} className={classes.boxed}>
@@ -487,6 +527,92 @@ const AddNewJournal = props => {
             </Grid>
                 </Grid>
               </Paper>
+              :
+              <Paper elevation={1} className={classes.paperBase}>
+              <Grid container spacing={3}>
+              <Grid item xs={12}>
+            <Box p={1} className={classes.boxed}>
+              <div className={classes.lightLift}>
+                <Autocomplete
+                  id="taxtype"
+                  options={currenciesDetailsRate}
+                  getOptionLabel={option => option.taxType}
+                  onChange={(event, value) => {
+                    //setMonthForCalender(event, value);
+                    //(value.value);
+                   
+                  }}
+                  style={{ width: 300 }}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      size={'small'}
+                      //label={calenderMonth === 0 ? 'Select Month' : `Month ${monthOnly(calenderMonth)}`}
+                      label="Tax Type"
+                      variant="outlined"
+                      inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password', // disable autocomplete and autofill
+                      }}
+                    />
+                  )}
+                />
+              </div>
+              <div className={classes.lightLift}>
+                <Autocomplete
+                  id="cname"
+                  options={currenciesDetailsRate}
+                  getOptionLabel={option => option.name}
+                  onChange={(event, value) => { 
+                   // setCalenderDay(value.value)
+                  }}
+
+                  style={{ width: '100%' }}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      size={'small'}
+                      //label={calenderDay === 0 ? 'Select Day' : `Day ${calenderDay}`}
+                      label="Tax Name"
+                      variant="outlined"
+                      inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password', // disable autocomplete and autofill
+                      }}
+                    />
+                  )}
+                />
+              </div>
+              <div className={classes.lightLift}>
+                <Autocomplete
+                  id="symbol"
+                  options={currenciesDetailsRate}
+                  getOptionLabel={option => option.rate}
+                  onChange={(event, value) => { 
+                   // setCalenderDay(value.value)
+                  }}
+
+                  style={{ width:'100%'}}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      size={'small'}
+                      //label={calenderDay === 0 ? 'Select Day' : `Day ${calenderDay}`}
+                      label="Tax rate"
+                      variant="outlined"
+                      inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password', // disable autocomplete and autofill
+                      }}
+                    />
+                  )}
+                />
+              </div>
+            </Box>
+          </Grid>
+              </Grid>
+            </Paper>
+            }
             </div>
            
           </DialogContentText>
@@ -496,7 +622,7 @@ const AddNewJournal = props => {
             Cancel
           </Button>
           <Button variant="contained" color="primary">
-            Add New
+            {openCurrency ? 'Add New':'Add'}
           </Button>
         </DialogActions>
       </Dialog>
@@ -606,7 +732,7 @@ const AddNewJournal = props => {
               <Grid item xs={5}>
                 <Grid container spacing={2}>
                   <Grid item xs={10}>
-            <Autocomplete
+                  <Autocomplete
                 id="currency"
                 options={currencies}
                 getOptionLabel={option => option.label}
@@ -623,14 +749,14 @@ const AddNewJournal = props => {
                   />
                 )}
               />
-              </Grid>
-              <Grid item xs={2}>
-                <div style={{position:'relative',top:'1.1em'}}>
-                <AddBox onClick={()=> setOpen(true)} style={{fontSize:35,color:'#008ad3',cursor:'pointer'}} />
-                </div>
-               
-              </Grid>
-              </Grid>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <div style={{position:'relative',top:'1.1em'}}>
+                      <AddBox onClick={()=>handleOPenDialog('currency')} style={{color:'#008ad3',fontSize:35,cursor:'pointer'}}/>
+                    </div>
+                  </Grid>
+                </Grid>
+           
             </Grid>
 
 
@@ -683,7 +809,10 @@ const AddNewJournal = props => {
             <Grid item xs={5}>
              <div>
                {taxApplicable ?
-             <Autocomplete
+               <div>
+                 <Grid container spacing={2}>
+                   <Grid item xs={10}>
+                   <Autocomplete
                 id="tax"
                 options={tax}
                 getOptionLabel={option => option.label}
@@ -699,6 +828,14 @@ const AddNewJournal = props => {
                   />
                 )}
               />
+                   </Grid>
+                   <Grid item xs={2}>
+                    <div style={{position:'relative',top:'1.1em'}}>
+                      <AddBox onClick={()=>handleOPenDialog('rate')} style={{color:'#008ad3',fontSize:35,cursor:'pointer'}}/>
+                    </div>
+                   </Grid>
+                 </Grid>
+              </div>
               :
               <div/>
               }
@@ -722,6 +859,7 @@ const AddNewJournal = props => {
                 multiline
               />
               </div>
+              
             </Grid>
 
             

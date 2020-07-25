@@ -126,7 +126,11 @@ const JournalListing = props => {
       },
     },
     {
+<<<<<<< HEAD
       name: 'amount',
+=======
+      name: '',
+>>>>>>> 77d1a370b44cab4a1751812d29f7fca6cb41d033
       label: 'Amount',
       options: {
         filter: true,
@@ -141,6 +145,14 @@ const JournalListing = props => {
 				filter: true,
 				sort: false,
 			},
+    },
+    {
+      name: 'status',
+      label: 'Status',
+      options: {
+        filter: true,
+        sort: false,
+      },
     },
     {
       name: 'status',
@@ -211,7 +223,7 @@ const JournalListing = props => {
           startIcon={<AddIcon />}
           onClick={() => history.push('/account/journal/add')}
         >
-          New Posting
+          New Entry
         </Button>
       </Tooltip>
     ),
