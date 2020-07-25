@@ -126,11 +126,7 @@ const JournalListing = props => {
       },
     },
     {
-<<<<<<< HEAD
-      name: 'amount',
-=======
       name: '',
->>>>>>> 77d1a370b44cab4a1751812d29f7fca6cb41d033
       label: 'Amount',
       options: {
         filter: true,

@@ -84,10 +84,11 @@ const NewAsset = () => {
         const result = toBase64(file)
         result.then(rs => {
          let fileNode = {file: rs,fileName: file.name} 
-         setValues({...values,image:fileNode})
+        // setValues({...values,image:fileNode})
+         setValues(_.set({ ...values }, image, fileNode))
          setImageView(rs);
          setIsFilled(true);
-         console.log(`File Name ${file.name}`)
+         //console.log(`File Name ${file.name}`)
         
       })
       })

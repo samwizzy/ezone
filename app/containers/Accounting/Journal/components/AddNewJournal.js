@@ -286,7 +286,7 @@ const AddNewJournal = props => {
        debit = Number(values.entries[i].debit) +Number(debit);
        credit = Number(values.entries[i].credit) + Number(credit);
      }
-     console.log(`credit ${Number(credit)} Debit ${Number(debit)}`)
+    // console.log(`credit ${Number(credit)} Debit ${Number(debit)}`)
      if(Number(debit) === Number(credit)){
        /*if(xuv < 2){
         setValues({ ...values, periodId: currentAccountPeriod.id, transactionDate: currentAccountPeriod.startDate });
