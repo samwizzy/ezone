@@ -26,13 +26,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
-  grid: {
-    border: `1px solid ${theme.palette.grey[100]}`,
-    '& .MuiGrid-item': {
-      flex: 1,
-      margin: theme.spacing(5)
-    }
-  },
   card: {
     borderRadius: theme.shape.borderRadius * 4,
     backgroundImage: `url(${CrmDashImage1})`,
@@ -43,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: "center",
       backgroundColor: theme.palette.common.white,
       fontSize: theme.typography.subtitle1.fontSize
+    },
+    "& .MuiCardContent-root": {
+      minHeight: 180,
     }
   },
   table: {

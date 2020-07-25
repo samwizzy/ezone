@@ -30,7 +30,7 @@ export function Schedules() {
         <title>Crm - Schedules</title>
         <meta name="description" content="Description of Crm Schedules" />
       </Helmet>
-      
+
       <ModuleLayout>
         <SchedulesList />
       </ModuleLayout>

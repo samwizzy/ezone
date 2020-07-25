@@ -14,6 +14,7 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import Form1 from './dialogs/Form1'
 import Form2 from './dialogs/Form2'
+import Form3 from './dialogs/Form3'
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -31,6 +32,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const questionsInitialState = {
   question: '',
   questionType: 'TEXT',
+  options: [{ option: '' }]
 }
 
 function Feedback360Dialog(props) {
@@ -44,8 +46,12 @@ function Feedback360Dialog(props) {
     description: '',
     reviwees: [],
     questions: [{ ...questionsInitialState }],
-    visibility: [],
-    employees: []
+    visibility: [
+      { reviewee: false },
+      { hideIdentity: false },
+      { hideReplies: false },
+    ],
+    reviewers: []
   });
 
   React.useEffect(() => {
@@ -69,6 +75,16 @@ function Feedback360Dialog(props) {
     setForm({ ...form, questions })
   }
 
+  const handleOptionChange = (i, x) => event => {
+    const { questions } = form
+    questions[i].options[x][event.target.name] = event.target.value
+    setForm({ ...form, questions })
+  }
+
+  const handleDateChange = name => date => {
+    setForm({ ...form, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss.SSS') })
+  }
+
   const handleSubmit = () => {
     createRecognition(form)
   }
@@ -87,6 +103,21 @@ function Feedback360Dialog(props) {
 
   const addMore = event => {
     setForm({ ...form, questions: [...form.questions, questionsInitialState] });
+  };
+  const removeQuestion = i => event => {
+    setForm({ ...form, questions: form.questions.filter((q, index) => i !== index) });
+  };
+
+  const addMoreOption = i => event => {
+    const { questions } = form
+    questions[i].options = [...questions[i].options, { option: '' }]
+    setForm({ ...form, questions });
+  };
+
+  const removeOption = (i, x) => event => {
+    const { questions } = form
+    questions[i].options = questions[i].options.filter((o, index) => index !== x)
+    setForm({ ...form, questions });
   };
 
   console.log(form, "recognition form")
@@ -116,7 +147,21 @@ function Feedback360Dialog(props) {
             handleNext={handleNext}
             handleChange={handleChange}
             handleQuestionChange={handleQuestionChange}
+            handleOptionChange={handleOptionChange}
             addMore={addMore}
+            removeQuestion={removeQuestion}
+            addMoreOption={addMoreOption}
+            removeOption={removeOption}
+          />
+        )}
+        {step === 2 && (
+          <Form3
+            form={form}
+            handleNext={handleNext}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+            handleDateChange={handleDateChange}
+            handleSelectChange={handleSelectChange}
           />
         )}
       </Dialog>

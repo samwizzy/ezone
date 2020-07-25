@@ -283,7 +283,6 @@ export default class Demo extends React.PureComponent {
           />
           <ViewState
             defaultCurrentDate={currentDate}
-            currentDate={currentDate}
           />
 
           <WeekView

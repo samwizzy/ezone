@@ -57,6 +57,12 @@ const makeSelectScheduleDialog = () =>
     subState => subState.scheduleDialog,
   );
 
+const makeSelectScheduleDetailsDialog = () =>
+  createSelector(
+    selectCrmDomain,
+    subState => subState.scheduleDetailsDialog,
+  );
+
 const makeSelectParticipantDialog = () =>
   createSelector(
     selectCrmDomain,
@@ -72,5 +78,6 @@ export {
   makeSelectContacts,
   makeSelectSchedules,
   makeSelectScheduleDialog,
+  makeSelectScheduleDetailsDialog,
   makeSelectParticipantDialog,
 };

@@ -1,35 +1,33 @@
 /* eslint-disable prettier/prettier */
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import {
+  makeStyles,
   Backdrop,
   CircularProgress,
-  makeStyles,
-  List,
   FormControlLabel,
   Icon,
   Button,
-  Menu,
-  MenuItem,
+  Typography,
 } from '@material-ui/core';
 import { Add, Visibility } from '@material-ui/icons';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import MUIDataTable from 'mui-datatables';
+import moment from 'moment';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import { createStructuredSelector } from 'reselect';
-import * as Actions from '../actions';
-import * as Selectors from '../selectors';
-import CompaniesDialog from './CompaniesDialog';
-import CompanyDetailsDialog from './CompanyDetailsDialog';
+import * as Actions from './actions';
+import * as Selectors from './selectors';
+import LoadingIndicator from '../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
   },
   button: {
-    margin: "auto",
+    marginLeft: theme.spacing(2),
   },
   datatable: {
     whiteSpace: "nowrap",
@@ -51,35 +49,46 @@ const useStyles = makeStyles(theme => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
-  },
+  }
 }));
 
-const CompaniesList = props => {
+const SchedulesList = props => {
   const classes = useStyles();
 
   const {
     loading,
-    getAllCompaniesAction,
-    getAllCompanies,
-    openNewCompanyDialogAction,
-    openEditCompanyDialogAction,
-    openCompanyDetailsDialogAction,
+    schedules,
+    openNewScheduleDialog,
+    openEditScheduleDialog,
+    openScheduleDetailsDialog
   } = props;
 
-  useEffect(() => {
-    getAllCompaniesAction();
-  }, []);
+  if (!schedules) {
+    return ''
+  }
+
+  const handleScheduleEdit = data => event => {
+    event.stopPropagation()
+    openEditScheduleDialog(data)
+  }
+
+  console.log(schedules, "schedules list list")
 
   const columns = [
+    {
+      name: 'id',
+      label: ' ',
+      options: {
+        display: 'excluded',
+        filter: true,
+      },
+    },
     {
       name: 'Id',
       label: 'S/N',
       options: {
         filter: true,
         customBodyRender: (value, tableMeta) => {
-          if (value === '') {
-            return '';
-          }
           return (
             <FormControlLabel
               label={tableMeta.rowIndex + 1}
@@ -90,54 +99,88 @@ const CompaniesList = props => {
       },
     },
     {
-      name: 'firstName',
-      label: 'Company Name',
+      name: 'title',
+      label: 'Title',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'phoneNumber',
-      label: 'Phone Number',
+      name: 'createdBy',
+      label: 'Created By',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'emailAddress',
-      label: 'Email',
+      name: 'host',
+      label: 'Host',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'lifeStage',
-      label: 'Life Stage',
+      name: 'location',
+      label: 'Location',
       options: {
         filter: true,
-        sort: false,
+        sort: false
       },
     },
     {
-      name: 'ownerName',
-      label: 'Owner',
+      name: 'repeatReminder',
+      label: 'Reminder(min.)',
       options: {
         filter: true,
         sort: false,
+      }
+    },
+    {
+      name: 'userParticipants',
+      label: 'Participants (Users)',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: users => users.length,
+      }
+    },
+    {
+      name: 'contactParticipants',
+      label: 'Participants (Contacts)',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: contacts => contacts.length,
+      }
+    },
+    {
+      name: 'startDate',
+      label: 'Start Date',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: date => date ? moment(date).format('llll') : '',
+      }
+    },
+    {
+      name: 'endDate',
+      label: 'End Date',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: date => date ? moment(date).format('llll') : '',
       }
     },
     {
       name: 'dateCreated',
-      label: 'Created At',
+      label: 'Date Created',
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => {
-          return moment(value).format('lll')
-        }
+        customBodyRender: date => date ? moment(date).format('ll') : '',
       }
     },
     {
@@ -147,34 +190,14 @@ const CompaniesList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const data = getAllCompanies.find(company => value === company.id);
-
+          const data = schedules && schedules.find(schedule => value === schedule.id);
           return (
             <Button
-              variant="outlined" size="small" color="primary"
-              onClick={() => openEditCompanyDialogAction(data)}
+              color="primary"
+              onClick={handleScheduleEdit(data)}
             >
-              Edit
+              edit
             </Button>
-          );
-        },
-      },
-    },
-    {
-      name: 'id',
-      label: 'Action',
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: value => {
-          const data = getAllCompanies.find(company => value === company.id);
-
-          return (
-            <FormControlLabel
-              className={classes.button}
-              control={<Visibility />}
-              onClick={() => openCompanyDetailsDialogAction(data)}
-            />
           );
         },
       },
@@ -192,60 +215,49 @@ const CompaniesList = props => {
         size="small"
         className={classes.button}
         startIcon={<Add />}
-        onClick={() => openNewCompanyDialogAction()}
+        onClick={() => openNewScheduleDialog()}
       >
         New
       </Button>
     ),
+    onRowClick: (rowData, rowState) => {
+      const data = schedules && schedules.find(schedule => schedule.id === rowData[0])
+      openScheduleDetailsDialog(data)
+    },
     elevation: 0
   };
-
-  // if (loading) {
-  //   return <LoadingIndicator />;
-  // }
 
   return (
     <React.Fragment>
       <Backdrop className={classes.backdrop} open={loading}>
         <CircularProgress color="inherit" />
       </Backdrop>
+
       <MUIDataTable
         className={classes.datatable}
-        title="Messages"
-        data={[]}
+        title="Schedules List"
+        data={schedules}
         columns={columns}
         options={options}
       />
-      <CompaniesDialog />
-      <CompanyDetailsDialog />
     </React.Fragment>
   );
 };
 
-CompaniesList.propTypes = {
+SchedulesList.propTypes = {
   loading: PropTypes.bool,
-  getAllCompaniesAction: PropTypes.func,
-  openNewCompanyDialogAction: PropTypes.func,
-  openEditCompanyDialogAction: PropTypes.func,
-  openCompanyDetailsDialogAction: PropTypes.func,
-  getAllCompanies: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  getAllCompanies: Selectors.makeSelectGetAllCompanies(),
+  schedules: Selectors.makeSelectSchedules(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewCompanyDialogAction: () =>
-      dispatch(Actions.openNewCompanyDialog()),
-    openEditCompanyDialogAction: evt =>
-      dispatch(Actions.openEditCompanyDialog(evt)),
-    openCompanyDetailsDialogAction: evt =>
-      dispatch(Actions.openCompanyDetailsDialog(evt)),
-    getAllCompaniesAction: () =>
-      dispatch(Actions.getAllCompanies()),
+    openNewScheduleDialog: () => dispatch(Actions.openNewScheduleDialog()),
+    openEditScheduleDialog: data => dispatch(Actions.openEditScheduleDialog(data)),
+    openScheduleDetailsDialog: data => dispatch(Actions.openScheduleDetailsDialog(data)),
   };
 }
 
@@ -255,6 +267,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
-)(CompaniesList);
+)(SchedulesList);
