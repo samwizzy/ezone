@@ -127,7 +127,7 @@ const TaxType = () => {
     useEffect(() => {
       let mounted = true
       if(mounted){
-        getAssetType()
+        getTaxType()
       }
       return ()=>{
        mounted = false
@@ -138,7 +138,7 @@ const TaxType = () => {
       let taxes = []
       crud.getTaxType()
       .then((data)=>{
-        console.log(`Tax Type ${JSON.stringify(data.data)}`)
+        //console.log(`Tax Type ${JSON.stringify(data.data)}`)
        for(let i=0;i<data.data.length;i++){
         taxes.push({taxType:data.data[i].taxType,
           description:data.data[i].description,
@@ -185,7 +185,7 @@ const TaxType = () => {
     }
 
     function retriveUpdate(value){
-      console.log(`update ${value}`)
+      //console.log(`update ${value}`)
       setValues({...values,taxType:value.taxType,
       description:value.description,id:value.id})
       setIsUpate(true)

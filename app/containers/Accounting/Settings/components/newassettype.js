@@ -48,6 +48,7 @@ import moment from 'moment';
 // import ModuleLayout from '../../components/ModuleLayout';
 import months from './../../../../utils/months';
 import { SettingContext } from './SettingsLayout';
+import { PayloadContext } from './SettingsLayout';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -103,8 +104,9 @@ const useStyles = makeStyles(theme => ({
 const NewAssetType = () => {
     const classes = useStyles();
     const settingContext = useContext(SettingContext)
+    const payloadContext = useContext(PayloadContext)
     const [loadin,setLoadin] = useState(false)
-    const [isUpDate,setIsUpdate] = useState(settingContext.settingState.isUpDate)
+    const [isUpDate,setIsUpdate] = useState(false)
     const [values,setValues] = useState({
       assetClass:'',
       code:'',
@@ -124,10 +126,11 @@ const NewAssetType = () => {
 
 
     async function checkIfUpdate(){
-      console.log(`is Update payload ${(JSON.stringify(settingContext.settingState))}`)
-      setIsUpdate(settingContext.settingState.isUpDate)
-     if(settingContext.settingState.isUpDate){
-       setValues(settingContext.settingState.forUpDate)
+      console.log(`is Update payload ${(JSON.stringify(payloadContext.payloadState))}`)
+      let isupdate = payloadContext.payloadState.update
+      if(isupdate){
+        setIsUpdate(isupdate)
+       setValues(payloadContext.payloadState.payload)
      }
     }
 
@@ -165,7 +168,7 @@ const NewAssetType = () => {
     function isReady(){
       return values.assetClass.length >= 1
        && values.code.length >= 1 
-       && values.description.length >= 1
+       && (values.description != undefined && values.description.length) >= 1
        && values.name.length >= 1
     }
 
@@ -177,9 +180,18 @@ const NewAssetType = () => {
         },
         {
             value:'INTANGIBLE',
-            label:'Inangible'
+            label:'Intangible'
         }
     ]
+
+    const assetClassConverter = (value) =>{
+     switch(value){
+       case 'INTANGIBLE':
+         return 'Intangible'
+         default:
+           return 'Tangible'
+     }
+    }
 
     console.log(`Asset Type  got it  -> `, values);
     return ( 
@@ -200,24 +212,26 @@ const NewAssetType = () => {
                         value={values.code}
                         onChange ={handleChange('code')}
                         variant="outlined"
-                       fullWidth
+                       fullWidth={true}
                       />
                       </Grid>
                       <Grid item xs={6}>
                     <Autocomplete
                     id="assetcode"
                     options={assetClasses}
+                    inputValue={assetClassConverter(values.assetClass)}
                     getOptionLabel={option => option.label}
                     onChange={(event, value) => {
                       setValues({...values,assetClass:value.value})
                     }}
-                    fullWidth
+                    
                     renderInput={params => (
                       <TextField
                         {...params}
                         size={'small'}
                         label="Asset Class"
                         variant="outlined"
+                        fullWidth={true}
                         inputProps={{
                           ...params.inputProps,
                           autoComplete: 'new-password', // disable autocomplete and autofill
@@ -231,9 +245,10 @@ const NewAssetType = () => {
                       <TextField
                         size={'small'}
                         label="Name"
+                        value={values.name}
                         onChange ={handleChange('name')}
                         variant="outlined"
-                       fullWidth
+                        fullWidth={true}
                       />
                       </Grid>
 
@@ -241,11 +256,12 @@ const NewAssetType = () => {
                       <TextField
                         size={'small'}
                         label="Description"
+                        value={values.description === undefined ?'':values.description}
                         onChange ={handleChange('description')}
                         variant="outlined"
                         multiline
                         rows={5}
-                       fullWidth
+                        fullWidth={true}
                       />
                       </Grid>
                       <Grid item xs={12}>
@@ -287,6 +303,7 @@ const NewAssetType = () => {
                             <Button
                             variant="contained"
                             color="primary"
+                            disabled={!isReady()}
                             onClick={()=>upDateAssetType()}
                             style={{width:140}}
                                >

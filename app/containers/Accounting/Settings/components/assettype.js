@@ -48,6 +48,7 @@ import moment from 'moment';
 // import ModuleLayout from '../../components/ModuleLayout';
 import months from './../../../../utils/months';
 import { SettingContext } from './SettingsLayout';
+import { PayloadContext } from './SettingsLayout';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -104,6 +105,7 @@ const useStyles = makeStyles(theme => ({
 const AssetType = () => {
     const classes = useStyles();
     const settingContext = useContext(SettingContext)
+    const payloadContext = useContext(PayloadContext)
     const [assetsDetails,setAssetsDetails] = useState([])
 
     useEffect(() => {
@@ -142,7 +144,7 @@ const AssetType = () => {
     }
 
     function retriveUpdate(value){
-      settingContext.settingDispatch({type:'UPDATE',update:true,payload:value}) 
+      payloadContext.payloadDispatch({type:'UPDATE',update:true,payload:value}) 
       settingContext.settingDispatch({type:'NAVIGATION',page:'newassettype'})
     }
 
@@ -171,6 +173,7 @@ const AssetType = () => {
                       type="button"
                       onClick={(e) =>{
                         e.preventDefault();
+                        payloadContext.payloadDispatch({type:'UPDATE',update:false,payload:{}}) 
                         settingContext.settingDispatch({type:'NAVIGATION',page:'newassettype'})
                         
                       }}

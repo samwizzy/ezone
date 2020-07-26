@@ -35,7 +35,7 @@ export function Settings(props) {
   useInjectReducer({ key: 'settings', reducer });
   useInjectSaga({ key: 'settings', saga });
 
-  console.log('Settings index.js loaded');
+  //console.log('Settings index.js loaded');
 
   const { 
     loading,
@@ -45,11 +45,17 @@ export function Settings(props) {
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    dispatchGetAccountingSetupAction();
-    dispatchGetAllAccountingPeriodAction();
+    let mounted = true
+    if(mounted){
+      dispatchGetAccountingSetupAction();
+      dispatchGetAllAccountingPeriodAction();
+    }
+    return ()=>{
+      mounted = false
+    }
   }, []);
 
-  console.log(`Path from Settings -> `, props.path);
+  //console.log(`Path from Settings -> `, props.path);
 
 
   if (loading) {

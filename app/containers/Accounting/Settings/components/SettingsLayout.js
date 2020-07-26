@@ -22,6 +22,7 @@ import AssetType from './assettype';
 import NewAssetType from './newassettype';
 import DepreciationAreas from './depreciationAreas';
 export const SettingContext = React.createContext();
+export const PayloadContext = React.createContext();
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -37,8 +38,6 @@ const SettingsLayout = props => {
 	const {} = props 
 
 	const initialState ={
-		isUpDate:false,
-		forUpDate:{},
 		page:'setting',
 		setting:true,
 		depreciation:false,
@@ -52,6 +51,25 @@ const SettingsLayout = props => {
 		taxtype:false,
 		
 	  }
+
+	  const initialPayload ={
+		  payload:{},
+		  update:false
+	  }
+
+	  const reducerII = (state, action)=>{
+       switch(action.type){
+		case 'UPDATE':
+			state = {
+			  ...state,
+			  payload:action.payload,
+			  update:action.update
+			};
+			return state; 
+			default :
+			return state;	
+	   }
+	  }
   
 	  const reducer = (state, action) => {
 	   switch(action.type){
@@ -62,12 +80,6 @@ const SettingsLayout = props => {
 			[state.page] :false,
 			[action.page]:true,
 		  };
-		  case 'UPDATE':
-		  state = {
-			...state,
-			isUpDate:action.update,
-			forUpDate:action.payload
-		  };
 		  return state;
 		  default :
 		  return state;
@@ -77,6 +89,7 @@ const SettingsLayout = props => {
 
 
 	  const [state, dispatch] = useReducer(reducer, initialState);
+	  const [stateII, dispatchII] = useReducer(reducerII, initialPayload);
 	
 	  useEffect(() => {
 		let mounted = true
@@ -125,11 +138,13 @@ const SettingsLayout = props => {
 				  
 	  }
 
-	  console.log(`From settings Layout  -> `, JSON.stringify(state));
+	  //console.log(`From settings Layout  -> `, JSON.stringify(state));
 
 	return (
 		<SettingContext.Provider
-         value={{ settingState: state, settingDispatch: dispatch }}>
+		 value={{ settingState: state, settingDispatch: dispatch }}>
+		<PayloadContext.Provider
+			value={{ payloadState: stateII, payloadDispatch: dispatchII }}>
 		<div className={classes.root}>
 			<Grid container spacing={3}>
 				{/*<Grid item xs={2}>
@@ -212,6 +227,7 @@ const SettingsLayout = props => {
 				</Grid>
 			</Grid>
 		</div>
+		</PayloadContext.Provider>
 		</SettingContext.Provider>
 	)
 }
