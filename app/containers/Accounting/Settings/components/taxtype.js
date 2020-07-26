@@ -140,7 +140,7 @@ const TaxType = () => {
        }
        setCurrenciesDetails(taxes)
       })
-      .catch((data)=>{
+      .catch((error)=>{
 
       })
     }
@@ -189,7 +189,7 @@ const TaxType = () => {
                 <TextField
                         size={'small'}
                         value={values.taxType}
-                        onClick={handleChange('taxType')}
+                        onChange={handleChange('taxType')}
                         label="Tax type name"
                         variant="outlined"
                         fullWidth
@@ -222,7 +222,7 @@ const TaxType = () => {
                 <div className={classes.lightLift}>
                 <TextField
                         size={'small'}
-                        onClick={handleChange('description')}
+                        on={handleChange('description')}
                         label="Description"
                         value={values.description}
                         variant="outlined"
