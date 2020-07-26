@@ -145,9 +145,12 @@ const NewAsset = () => {
 
     //Get needed parameters
     useEffect(() => {
-      getRequiredParameter();
-      return ()=>{
+      let mounted = true
+      if(mounted){
         getRequiredParameter()
+      }
+      return ()=>{
+        mounted = false
       } 
     },[])
 
@@ -155,10 +158,10 @@ const NewAsset = () => {
      let location = []
      crud.getDeprecitionType()
      .then((data)=>{
-       console.log(`Confirming it ${JSON.stringify(data.data)}`)
+      // console.log(`Confirming it ${JSON.stringify(data.data)}`)
        for(let i=0;i<data.data.length;i++){
          if(data.data[i].calculationBase != null){
-           console.log(`for depreciation ${JSON.stringify(data.data[i])}`)
+           //console.log(`for depreciation ${JSON.stringify(data.data[i])}`)
            setValues({...values,depreciationAccountId:data.data[i].id,
             depreciationValue:data.data[i].depreciatedValue,depreciationType:data.data[i]})
           break;

@@ -98,9 +98,12 @@ const DepreciationArea = () => {
     };
 
     useEffect(() => {
-      checkAlreadyCreated()
-      return () =>{
+      let mounted = true
+      if(mounted){
         checkAlreadyCreated()
+      }
+      return () =>{
+        mounted = false
       }
       },[])   
 
@@ -114,7 +117,7 @@ const DepreciationArea = () => {
             })
             setIsCreated(true);
           }
-          console.log(`Depre ${JSON.stringify(data.data)}`)
+          //console.log(`Depre ${JSON.stringify(data.data)}`)
         })
         .catch((error)=>{
           console.log(`Error in DepreciationArea ${error}`)

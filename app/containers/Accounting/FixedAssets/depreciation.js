@@ -106,9 +106,12 @@ const DepreciationSetup = () => {
     }
 
     useEffect(() => {
-      checkAlreadyCreated()
-      return () =>{
+      let mounted = true
+      if(mounted){
         checkAlreadyCreated()
+      }
+      return () =>{
+        mounted = false
       }
       },[])
 
@@ -243,7 +246,7 @@ const DepreciationSetup = () => {
      })
     }
 
-    console.log(`values  got it  -> `, values);
+    //console.log(`values  got it  -> `, values);
 
     return (  
         <div className={classes.root}>

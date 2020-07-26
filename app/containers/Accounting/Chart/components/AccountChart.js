@@ -95,6 +95,7 @@ const AccountChart = props => {
 
   //Load AccTypes
   useEffect(() => {
+    let mounted = true
     async function getAllAccountChartFSev() {
     
       const config = {
@@ -143,17 +144,14 @@ const AccountChart = props => {
     .catch((err) => {
       console.log(`error ocurr at ChartofAccount ${err}`);
       setLoadingChart(false);
-    });
-    
+    })}
 
-
+    if(mounted){
+      getAllAccountTypeFSev();
+      getAllAccountChartFSev();
     }
-    getAllAccountTypeFSev();
-    getAllAccountChartFSev();
-
     return () => {
-      getAllAccountTypeFSev()
-      getAllAccountChartFSev()
+      mounted = false
     };
 
   },[chartContext.chartState.refresh]);

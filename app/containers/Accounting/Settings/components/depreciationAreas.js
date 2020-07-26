@@ -115,13 +115,19 @@ const DepreciationAreas = () => {
 
 
     useEffect(() => {
-    getAllDeprecitionArea()
+      let mounted = true
+      if(mounted){
+        getAllDeprecitionArea()
+      }
+      return ()=>{
+        mounted = false
+      } 
     },[])
 
     async function getAllDeprecitionArea(){
        await crud.getDeprecitionArea()
        .then((data)=>{
-        console.log(`Deprecition Areas ${JSON.stringify(data.data)}`)
+        //console.log(`Deprecition Areas ${JSON.stringify(data.data)}`)
        })
        .catch((error)=>{
        console.log(`Error from DeprecitionAreas ${error}`)

@@ -142,9 +142,12 @@ const AccountingPeriod = props => {
   });
 
   useEffect(() => {
-    getAccountingPeriod();
+    let mounted = true
+    if(mounted){
+      getAccountingPeriod();
+    }
     return ()=>{
-      getAccountingPeriod()
+     mounted = false
     } 
   },[])
 
@@ -306,7 +309,7 @@ const AccountingPeriod = props => {
   }
 
   function formatDate(){
-    console.log(` full date ${(lastYear)} ${calenderDay} ${calenderMonth}`)
+    //console.log(` full date ${(lastYear)} ${calenderDay} ${calenderMonth}`)
    let date = (new Date((lastYear + 1),(calenderDay),(calenderMonth -1))).toISOString();
    return date;
   }
@@ -332,7 +335,7 @@ const AccountingPeriod = props => {
     return currentY > values.year
   }
 
-  console.log('current period file -> ', JSON.stringify(accountingPeriods));
+  //console.log('current period file -> ', JSON.stringify(accountingPeriods));
   //console.log('accountToUpdate state -> ',  JSON.stringify(accountingSetupData));
 
 

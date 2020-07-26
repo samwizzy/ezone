@@ -129,7 +129,7 @@ const SettingsLayout = props => {
 
 	return (
 		<SettingContext.Provider
-    value={{ settingState: state, settingDispatch: dispatch }}>
+         value={{ settingState: state, settingDispatch: dispatch }}>
 		<div className={classes.root}>
 			<Grid container spacing={3}>
 				{/*<Grid item xs={2}>

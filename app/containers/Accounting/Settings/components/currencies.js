@@ -170,9 +170,12 @@ const Currencies = () => {
     };
 
     useEffect(() => {
-      getCurrencies()
-      return () =>{
+      let mounted = true
+      if(mounted){
         getCurrencies()
+      }
+      return () =>{
+        mounted = false
       }
       },[])
       

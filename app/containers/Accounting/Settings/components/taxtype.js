@@ -125,9 +125,12 @@ const TaxType = () => {
 
     //Update
     useEffect(() => {
-      getTaxType();
+      let mounted = true
+      if(mounted){
+        getAssetType()
+      }
       return ()=>{
-        getTaxType()
+       mounted = false
       } 
     },[])
 
