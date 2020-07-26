@@ -43,6 +43,7 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as crud from '../crud';
 import DialogOfAccountPeriod from './DialogOfAccountPeriod';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import moment from 'moment';
 // import ModuleLayout from '../../components/ModuleLayout';
 import months from './../../../../utils/months';
@@ -99,6 +100,7 @@ const AccountingPeriod = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [lastYear,setLastYear] = useState()
+  const  [loadin,setLoadin] =useState(false)
 
   const [open, setOpen] = useState(false);
 
@@ -132,7 +134,7 @@ const AccountingPeriod = props => {
   const [values, setValues] = useState({
     orgId: "",
     startDate:(new Date('2019-01-18T21:11:54')).toISOString(),
-    year: lastYear
+    year: (new Date('2019-01-18T21:11:54')).getFullYear()
   });
 
   const [accountToUpdate, setAccountToUpdate] = useState({
@@ -153,12 +155,12 @@ const AccountingPeriod = props => {
 
 
   async function getAccountingPeriod() {
-    let currentY = `${new Date().getUTCFullYear()}`
+    //let currentY = `${new Date().getUTCFullYear()}`
     await crud.getAccountingPeriods().then(data=>{
       for(let i=0;i<data.data.length;i++){
         if(data.data[i].activeYear){
-        setCurrentAccountPeriod(data.data[0])
-        setLastYear ((Number(data.data[i].year)));
+        setCurrentAccountPeriod(data.data[i])
+        //setLastYear ((Number(data.data[i].year)));
         break;
         }
       }
@@ -315,24 +317,52 @@ const AccountingPeriod = props => {
   }
 
   function addPeriod(){
+    setLoadin(true)
     let payload ={
     activeYear: false,
     startDate:values.startDate,
     status: true,
     year: `${values.year}`
     }
-    crud.creatAccountingPeriod(payload).then((data)=>{
-      handleClickClose();  
-    swal("Success", "Accounting Period added successfully", "success");
-    }).catch((error)=>{
-      swal("Error", "Something went wrong. Please check your network", "error");
-    })
-    
+    if(isReady() === undefined){
+      swal("Error", "Accounting Period already exist", "warning");
+      setLoadin(false)
+    }
+    else if(isReady()) {
+      crud.creatAccountingPeriod(payload).then((data)=>{
+        getAccountingPeriod()
+        setLoadin(true)
+        handleClickClose();  
+      swal("Success", "Accounting Period added successfully", "success");
+      }).catch((error)=>{
+        swal("Error", "Something went wrong. Please check your network", "error");
+        setLoadin(false)
+      })
+    }
+    else{
+    swal("Error", "You can only open Accounting Period for Previous Years", "warning");
+    setLoadin(false) 
+    }
   }
 
   function isReady(){
     let currentY = new Date().getUTCFullYear()
-    return currentY > values.year
+    console.log(`current Year ${currentY}`)
+    let isContained = false;
+    let previousYrs = Number(values.year)
+    console.log(`previous Year ${previousYrs}`)
+    for(let i=0; i<accountingPeriods.length;i++){
+      let result = Number(accountingPeriods[i].year) === previousYrs
+      if(result){
+        isContained = true;
+        break;
+      }
+    }
+
+    if(isContained){
+      return undefined
+    }
+    return  currentY > previousYrs
   }
 
   //console.log('current period file -> ', JSON.stringify(accountingPeriods));
@@ -439,9 +469,15 @@ const AccountingPeriod = props => {
           <Button variant="contained" onClick={handleClickClose} color="textSecondary">
             Cancel
           </Button>
-          <Button disabled={!isReady()} variant="contained" onClick={()=>addPeriod()} color="primary">
+          {!loadin?
+          (
+          <Button variant="contained" onClick={()=>addPeriod()} color="primary">
             Create
           </Button>
+          )
+          :
+          <CircularProgress size={30}/>
+          }
         </DialogActions>
       </Dialog>
       </div>
