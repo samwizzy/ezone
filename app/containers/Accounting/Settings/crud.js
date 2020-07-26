@@ -147,7 +147,7 @@ export async function setUptins() {
       export async function getTaxType(){
         let credentials = JSON.parse(localStorage.getItem('user'))
         let accessToken = localStorage.getItem('access_token')
-        const requestURL = `${Endpoints.GetTaxTypeByIdApi}?orgId=${credentials.organisation.orgId}`;
+        const requestURL = `${Endpoints.GetTaxTypeByOrgIdApi}?orgId=${credentials.organisation.orgId}`;
          const config = {
            headers: { Authorization: `Bearer ${accessToken}`,
            'Content-Type': 'application/json', }
@@ -158,6 +158,55 @@ export async function setUptins() {
       .catch(error => { console.error(error); return Promise.reject(error); });
 
       }
+
+      export async function getCurrencies(){
+        let credentials = JSON.parse(localStorage.getItem('user'))
+        let accessToken = localStorage.getItem('access_token')
+        const requestURL = `${Endpoints.GetCurrencyByIdApi}?orgId=${credentials.organisation.orgId}`;
+         const config = {
+           headers: { Authorization: `Bearer ${accessToken}`,
+           'Content-Type': 'application/json', }
+       }
+
+       return await axios.get(requestURL,config)
+      .then(result => { console.log(result); return result; })
+      .catch(error => { console.error(error); return Promise.reject(error); });
+
+      }
+
+      
+      export async function saveCurrencies(value){
+        let credentials = JSON.parse(localStorage.getItem('user'))
+        let accessToken = localStorage.getItem('access_token')
+        const requestURL = `${Endpoints.CreateCurrencyApi}`;
+         const config = {
+           headers: { Authorization: `Bearer ${accessToken}`,
+           'Content-Type': 'application/json', }
+       }
+       let payload ={...value,orgId:credentials.organisation.orgId}
+       console.log(`Before saving.... ${JSON.stringify(payload)}`)
+       return await axios.post(requestURL,payload,config)
+       .then(result => { console.log(result); return result; })
+       .catch(error => { console.error(error); return Promise.reject(error); });
+
+      }
+
+      export async function updateCurrency(value){
+        let credentials = JSON.parse(localStorage.getItem('user'))
+        let accessToken = localStorage.getItem('access_token')
+        const requestURL = `${Endpoints.UpdateCurrencyApi}`;
+         const config = {
+           headers: { Authorization: `Bearer ${accessToken}`,
+           'Content-Type': 'application/json', }
+       }
+       let payload ={...value,orgId:credentials.organisation.orgId}
+
+       return await axios.put(requestURL,payload,config)
+       .then(result => { console.log(result); return result; })
+       .catch(error => { console.error(error); return Promise.reject(error); });
+
+      }
+
 
       
 

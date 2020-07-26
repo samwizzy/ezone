@@ -25,6 +25,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { Autocomplete } from '@material-ui/lab';
 import { Euro, AttachMoney, Delete } from '@material-ui/icons';
 import DateFnsUtils from '@date-io/date-fns'; // choose your lib
@@ -106,21 +107,136 @@ const useStyles = makeStyles(theme => ({
 const Currencies = () => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
+    const [isUpDate,setIsUpDate] = useState(false)
+    const [loadin,setLoadin] = useState(false)
+    const [currencies,setCurrencies] = useState([])
     const handleClickClose = () => {
         setOpen(false);
       };
+    
+      const [values,setValues] = useState({
+        code:'',
+        description:'',
+        name:'',
+        symbol:''
+      })
+
     const currenciesDetails =[
         {
             code:'USD',
             name:'Dollar',
-            symbol:<AttachMoney />
+            symbol:'&#x24;'
         },
         {
             code:'EUR',
             name:'Euro',
-            symbol:<Euro />
-        }
+            symbol:'&#x20AC;'
+        },
+        {
+          code:'CENT',
+          name:'Cent',
+          symbol:'&#xa2;'
+      },
+      {
+        code:'PUD',
+        name:'Pounds',
+        symbol:'&#xa3;'
+    },
+    {
+      code:'YEN',
+      name:'Yen',
+      symbol:'&#xa5;'
+  },
+  {
+    code:'RUPEE',
+    name:'Rupee',
+    symbol:'&#x20B9;'
+},
+{
+  code:'RUBLE',
+  name:'Ruble',
+  symbol:'&#x20BD;'
+},
+{
+  code:'NGN',
+  name:'Naira',
+  symbol:'&#x20A6;'
+}
     ]
+
+
+    const handleChange = name => event => {
+      setValues({ ...values, [name]: event.target.value });
+    };
+
+    useEffect(() => {
+      getCurrencies()
+      return () =>{
+        getCurrencies()
+      }
+      },[])
+      
+     function getCurrencies(){
+       let total = []
+       crud.getCurrencies()
+       .then((data)=>{
+         for(let i =0;i<data.data.length; i++){
+         total.push({
+          code:data.data[i].code,
+          id:data.data[i].id, 
+          description:data.data[i].description,
+          name:data.data[i].name,
+          symbol:data.data[i].symbol
+      })
+         }
+         setCurrencies(total)
+       })
+       .catch((error)=>{
+         console.log(`Error in Currency ${error}`)
+       })
+     }
+
+     function saveCurrency(){
+      setLoadin(true) 
+     crud.saveCurrencies(values)
+     .then((date)=>{
+      getCurrencies()
+      swal("Success","Currency added successfully","success");
+      setLoadin(false)
+     })
+     .catch((error)=>{
+      console.log(`Error in Currency ${error}`)
+      swal("Error","Something went wrong","error");
+      setLoadin(false)
+     })
+     }
+
+     function updateCurrency(){
+      setLoadin(true) 
+     crud.updateCurrency(values)
+     .then((date)=>{
+      getCurrencies()
+      swal("Success","Currency Updated successfully","success");
+      setLoadin(false)
+      setOpen(false)
+     })
+     .catch((error)=>{
+      console.log(`Error in Currency ${error}`)
+      swal("Error","Something went wrong","error");
+      setLoadin(false)
+     })
+     }
+
+     function retriveUpdate(value){
+      setValues({...values,code:value.code,
+        id:value.id, 
+        description:value.description,
+        name:value.name,
+        symbol:value.symbol})
+      setIsUpDate(true)
+      setOpen(true)
+     }
+
 
     return ( 
         <div className={classes.base}>
@@ -146,20 +262,20 @@ const Currencies = () => {
                 <div className={classes.lightLift}>
                   <Autocomplete
                     id="code"
+                    inputValue={values.code}
                     options={currenciesDetails}
                     getOptionLabel={option => option.code}
-                    onChange={(event, value) => {
-                      //setMonthForCalender(event, value);
-                      //(value.value);
-                     
+                    onChange={(event, value) => { 
+                      setValues({...values,code:value.code,name:value.name,symbol:value.symbol})
                     }}
                     style={{ width: 300 }}
                     renderInput={params => (
                       <TextField
                         {...params}
                         size={'small'}
-                        //label={calenderMonth === 0 ? 'Select Month' : `Month ${monthOnly(calenderMonth)}`}
                         label="Code"
+                        value={values.code}
+                        
                         variant="outlined"
                         inputProps={{
                           ...params.inputProps,
@@ -172,10 +288,11 @@ const Currencies = () => {
                 <div className={classes.lightLift}>
                   <Autocomplete
                     id="cname"
+                    inputValue={values.name}
                     options={currenciesDetails}
                     getOptionLabel={option => option.name}
                     onChange={(event, value) => { 
-                     // setCalenderDay(value.value)
+                     setValues({...values,code:value.code,name:value.name,symbol:value.symbol})
                     }}
 
                     style={{ width: 300 }}
@@ -183,7 +300,6 @@ const Currencies = () => {
                       <TextField
                         {...params}
                         size={'small'}
-                        //label={calenderDay === 0 ? 'Select Day' : `Day ${calenderDay}`}
                         label="Currency Name"
                         variant="outlined"
                         inputProps={{
@@ -197,23 +313,23 @@ const Currencies = () => {
                 <div className={classes.lightLift}>
                   <Autocomplete
                     id="symbol"
+                    inputValue={values.name}
                     options={currenciesDetails}
                     getOptionLabel={option => option.name}
                     onChange={(event, value) => { 
-                     // setCalenderDay(value.value)
+                      setValues({...values,code:value.code,name:value.name,symbol:value.symbol})
                     }}
 
                     style={{ width:'100%'}}
                     renderOption={option => (
                         <React.Fragment>
-                          <span>{option.symbol}</span>
+                          <span dangerouslySetInnerHTML={ {__html:option.symbol} }></span>
                         </React.Fragment>
                       )}
                     renderInput={params => (
                       <TextField
                         {...params}
                         size={'small'}
-                        //label={calenderDay === 0 ? 'Select Day' : `Day ${calenderDay}`}
                         label="Currency Symbol"
                         variant="outlined"
                         inputProps={{
@@ -223,6 +339,20 @@ const Currencies = () => {
                       />
                     )}
                   />
+                </div>
+                <div className={classes.lightLift}>
+                <TextField 
+                        id="description"
+                         label="Description"
+                         value={values.description}
+                         onChange ={handleChange('description')}
+                         size={'small'}
+                          variant="outlined"
+                           margin="normal"
+                           multiline
+                           rows={5}
+                           fullWidth
+                          />
                 </div>
               </Box>
             </Grid>
@@ -236,9 +366,23 @@ const Currencies = () => {
           <Button variant="contained" onClick={handleClickClose} color="textSecondary">
             Cancel
           </Button>
-          <Button variant="contained" color="primary">
+          {!isUpDate?
+          (!loadin ?
+          <Button variant="contained" onClick={()=> saveCurrency()} color="primary">
             Add New
           </Button>
+          :
+          <CircularProgress size={30}/>
+          )
+          :
+          (!loadin ?
+            <Button variant="contained" onClick={()=> updateCurrency()} color="primary">
+            Update
+          </Button>
+          :
+          <CircularProgress size={30}/>
+          )
+          }
         </DialogActions>
       </Dialog>
       </div>
@@ -266,7 +410,9 @@ const Currencies = () => {
                       type="button"
                       onClick={(e) =>{
                         e.preventDefault();
+                        setIsUpDate(false)
                         setOpen(true);
+                        
                         
                       }}
                     >
@@ -285,6 +431,11 @@ const Currencies = () => {
                              <Grid item xs={12}>
                                  <div className={classes.header}>
                                     <Grid container spacing={2}>
+                                    <Grid item xs={4}>
+                                        <Typography variant="subtitle1" gutterBottom>
+                                         Code
+                                       </Typography>
+                                        </Grid>
                                         <Grid item xs={4}>
                                         <Typography variant="subtitle1" gutterBottom>
                                          Name
@@ -292,7 +443,7 @@ const Currencies = () => {
                                         </Grid>
                                         <Grid item xs={4}>
                                         <Typography variant="subtitle1" gutterBottom>
-                                         Code
+                                         Symbol
                                        </Typography>
                                         </Grid>
                                     </Grid>
@@ -301,18 +452,34 @@ const Currencies = () => {
                              <Grid item xs={12}>
                                  <div style={{paddingLeft:'20px'}}>
                              <Grid container spacing={3}>
-                                 {currenciesDetails.map((currency)=>
+                                 {currencies.map((currency)=>
                                   <Grid key={currency.code} item xs={12}>
                                       <Grid container spacing={3}>
                                         <Grid item xs={12}>
                                         <Grid container spacing={3}> 
-                                       <Grid item xs={4}>
+                                        <Grid item xs={3}>
+                                        <Typography variant="subtitle1" gutterBottom>
+                                         {currency.code}
+                                       </Typography>
+                                       </Grid>
+
+                                       <Grid item xs={3}>
                                         <Typography variant="subtitle1" gutterBottom>
                                          {currency.name}
                                        </Typography>
                                        </Grid>
-                                       <Grid item xs={4}>
-                                        {currency.symbol}
+                                       <Grid item xs={3}>
+                                       <Typography variant="subtitle1" gutterBottom>
+                                         <span style={{fontSize:25,position:'relative',top:'-.4em'}} dangerouslySetInnerHTML={ {__html:currency.symbol} }/>
+                                       </Typography>
+                                        
+                                       </Grid>
+                                       <Grid item xs={3}>
+                                       <div style={{position:'relative',top:'-10px'}}>
+                                         <Button onClick={()=>retriveUpdate(currency)} variant="contained" color="primary">
+                                          Update
+                                          </Button>
+                                         </div>
                                        </Grid>
                                        </Grid>
                                        </Grid>
