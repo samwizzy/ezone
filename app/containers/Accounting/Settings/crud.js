@@ -147,7 +147,7 @@ export async function setUptins() {
       export async function getTaxType(){
         let credentials = JSON.parse(localStorage.getItem('user'))
         let accessToken = localStorage.getItem('access_token')
-        const requestURL = `${Endpoints.GetTaxTypeByIdApi}?orgId=${credentials.organisation.orgId}`;
+        const requestURL = `${Endpoints.GetTaxTypeByOrgIdApi}?orgId=${credentials.organisation.orgId}`;
          const config = {
            headers: { Authorization: `Bearer ${accessToken}`,
            'Content-Type': 'application/json', }
