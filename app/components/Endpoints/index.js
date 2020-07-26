@@ -248,7 +248,21 @@ export const UpdateDeprecitionTypeApi = `${BaseUrl}/accountingserv/api/v1/type/u
 export const AddAssetApi = `${BaseUrl}/accountingserv/api/v1/asset/add`;
 export const GetAssetByIdApi = `${BaseUrl}/accountingserv/api/v1/asset/get_asset_by_id`;
 export const GetAssetByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/asset/get_assets_by_orgid`;
-//export const UpdateAssetApi = `${BaseUrl}/accountingserv/api/v1/asset/add`;
+export const AddTaxTypeApi = `${BaseUrl}/accountingserv/api/v1/tax/add`;
+export const UpdateTaxTypeApi = `${BaseUrl}/accountingserv/api/v1/tax/update`;
+export const GetTaxTypeByIdApi = `${BaseUrl}/accountingserv/api/v1/tax/get_by_id`;
+export const GetTaxTypeByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/tax/get_by_orgid`;
+export const CreateDisposalApi = `${BaseUrl}/accountingserv/api/v1/disposal/add`;
+export const GetDisposalByIdApi = `${BaseUrl}/accountingserv/api/v1/disposal/get_by_id`;
+export const GetDisposalByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/disposal/get_by_orgid`;
+export const CreateCurrencyApi = `${BaseUrl}/accountingserv/api/v1/currency/add`;
+export const UpdateCurrencyApi = `${BaseUrl}/accountingserv/api/v1/currency/update`;
+export const GetCurrencyByIdApi = `${BaseUrl}/accountingserv/api/v1/currency/get_by_id`;
+export const GetCurrencyByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/currency/get_by_orgid`;
+export const CreateAssetTypeApi = `${BaseUrl}/accountingserv/api/v1/assetType/add`;
+export const GetAssetTypeByIdApi = `${BaseUrl}/accountingserv/api/v1/assetType/get_asset_type_by_id`;
+export const GetAssetTypeByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/assetType/get_asset_type_by_orgid`;
+export const UpdateAssetTypeApi = `${BaseUrl}/accountingserv/api/v1/assetType/update`;
 
 /** *****************************************************************
  * Inventory endpoint

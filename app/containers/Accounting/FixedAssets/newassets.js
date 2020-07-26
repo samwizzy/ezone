@@ -20,6 +20,7 @@ import {
   import * as crud from './crud';
   import * as Enum from './enums';
   import Joker from './joker.jpg';
+  import swal from 'sweetalert';
   import UploadIcon from '@material-ui/icons/AddAPhotoOutlined';
   import { BrowserRouter as Router, Switch,useParams, Route,useRouteMatch } from "react-router-dom";
   import { FixedAssetContext } from './index';
