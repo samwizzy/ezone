@@ -37,6 +37,8 @@ const SettingsLayout = props => {
 	const {} = props 
 
 	const initialState ={
+		isUpDate:false,
+		forUpDate:{},
 		page:'setting',
 		setting:true,
 		depreciation:false,
@@ -47,7 +49,8 @@ const SettingsLayout = props => {
 		newassettype:false,
 		currencies:false,
 		taxrate:false,
-		taxtype:false
+		taxtype:false,
+		
 	  }
   
 	  const reducer = (state, action) => {
@@ -58,6 +61,12 @@ const SettingsLayout = props => {
 			page:action.page,
 			[state.page] :false,
 			[action.page]:true,
+		  };
+		  case 'UPDATE':
+		  state = {
+			...state,
+			isUpDate:action.update,
+			forUpDate:action.payload
 		  };
 		  return state;
 		  default :
@@ -70,18 +79,21 @@ const SettingsLayout = props => {
 	  const [state, dispatch] = useReducer(reducer, initialState);
 	
 	  useEffect(() => {
-	   getLocation()
+		let mounted = true
+		if(mounted){
+		getLocation()
+		}
 	   return ()=>{
-		   getLocation()
+		mounted = false
 	   }
 	  },[props.path])
 
 	  function getLocation(){
 		  let nav = `${props.path}`
-		  console.log(`Path path from layout ${nav}`)
+		  //.log(`Path path from layout ${nav}`)
 		  let k = nav.lastIndexOf('/');
 		  let newPath = nav.substr(k+1);
-		  console.log(`new Path ${newPath}`)
+		  //console.log(`new Path ${newPath}`)
 		  switch(newPath){
           case 'settings':
 		  case 'period':
@@ -112,6 +124,8 @@ const SettingsLayout = props => {
 		  }
 				  
 	  }
+
+	  console.log(`From settings Layout  -> `, JSON.stringify(state));
 
 	return (
 		<SettingContext.Provider

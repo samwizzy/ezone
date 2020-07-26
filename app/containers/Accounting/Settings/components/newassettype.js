@@ -104,13 +104,32 @@ const NewAssetType = () => {
     const classes = useStyles();
     const settingContext = useContext(SettingContext)
     const [loadin,setLoadin] = useState(false)
-    const [isUpDate,setIsUpdate] = useState(false)
+    const [isUpDate,setIsUpdate] = useState(settingContext.settingState.isUpDate)
     const [values,setValues] = useState({
       assetClass:'',
       code:'',
       description:'',
       name:''
     })
+
+    useEffect(() => {
+      let mounted = true
+      if(mounted){
+        checkIfUpdate();
+      }
+      return ()=>{
+        mounted = false
+      } 
+    },[])
+
+
+    async function checkIfUpdate(){
+      console.log(`is Update payload ${(JSON.stringify(settingContext.settingState))}`)
+      setIsUpdate(settingContext.settingState.isUpDate)
+     if(settingContext.settingState.isUpDate){
+       setValues(settingContext.settingState.forUpDate)
+     }
+    }
 
     const handleChange = name => event => {
       setValues({ ...values, [name]: event.target.value });
@@ -121,6 +140,20 @@ const NewAssetType = () => {
       crud.createAssetType(values)
       .then((data)=>{
         swal("Success","Asset Type created successfully","success");
+        setLoadin(false)
+      })
+      .catch((error)=>{
+       console.log(`Error in Asset Type ${error}`)
+       setLoadin(false)
+      })
+    }
+
+    function upDateAssetType(){
+      setLoadin(true)
+      crud.updateAssetType(values)
+      .then((data)=>{
+        swal("Success","Asset Type updated successfully","success");
+        settingContext.settingDispatch({type:'UPDATE',update:false,payload:{}}) 
         setLoadin(false)
       })
       .catch((error)=>{
@@ -227,6 +260,7 @@ const NewAssetType = () => {
                             <Grid container spacing={1}>
                               <Grid item xs={6}>
                               <Button
+                              onClick={()=>window.location.reload(false)}
                               variant="contained"
                               style={{width:140}}
                                  >
@@ -253,6 +287,7 @@ const NewAssetType = () => {
                             <Button
                             variant="contained"
                             color="primary"
+                            onClick={()=>upDateAssetType()}
                             style={{width:140}}
                                >
                             Update

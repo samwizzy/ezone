@@ -107,9 +107,12 @@ const AssetType = () => {
     const [assetsDetails,setAssetsDetails] = useState([])
 
     useEffect(() => {
-      getAssetType();
+      let mounted = true
+      if(mounted){
+        getAssetType();
+      } 
       return ()=>{
-        getAssetType()
+       mounted = false
       } 
     },[])
 
@@ -117,7 +120,7 @@ const AssetType = () => {
       let result = [];
       crud.getAssetType()
       .then((data)=>{
-        console.log(`Asset types ${JSON.stringify(data.data)}`)
+        //console.log(`Asset types ${JSON.stringify(data.data)}`)
        for(let i=0;i<data.data.length;i++){
          if(data.data[i].code != null){
          result.push({
@@ -139,7 +142,8 @@ const AssetType = () => {
     }
 
     function retriveUpdate(value){
-      
+      settingContext.settingDispatch({type:'UPDATE',update:true,payload:value}) 
+      settingContext.settingDispatch({type:'NAVIGATION',page:'newassettype'})
     }
 
     return ( 
