@@ -12,7 +12,7 @@ export async function creatAccountingPeriod(value){
   }
   let payload = {...value,orgId:credentials.organisation.orgId}
 
-  console.log(`payload b4 ${JSON.stringify(payload)}`)
+  //console.log(`payload b4 ${JSON.stringify(payload)}`)
   return await axios.post(requestURL,payload,config)
   .then(result => { console.log(result); return result; })
   .catch(error => { console.error(error); return Promise.reject(error); });
@@ -183,8 +183,8 @@ export async function setUptins() {
            headers: { Authorization: `Bearer ${accessToken}`,
            'Content-Type': 'application/json', }
        }
-       let payload ={...value,orgId:credentials.organisation.orgId}
-       console.log(`Before saving.... ${JSON.stringify(payload)}`)
+       let payload ={...value,orgId:credentials.organisation.orgId,dateCreated:(new Date).toISOString()}
+       //console.log(`Before saving.... ${JSON.stringify(payload)}`)
        return await axios.post(requestURL,payload,config)
        .then(result => { console.log(result); return result; })
        .catch(error => { console.error(error); return Promise.reject(error); });
@@ -239,10 +239,39 @@ export async function setUptins() {
           taxMonth: 0,
           taxType: "",
         }
-        
-    
         return await axios.post(requestURL,accountSetup,config)
        .then(result => { console.log(result); return result; })
        .catch(error => { console.error(error); return Promise.reject(error); });
     
+      }
+
+      export async function createAssetType(value){
+        let credentials = JSON.parse(localStorage.getItem('user'))
+        let accessToken = localStorage.getItem('access_token')
+        const requestURL = `${Endpoints.CreateAssetTypeApi}`;
+         const config = {
+           headers: { Authorization: `Bearer ${accessToken}`,
+           'Content-Type': 'application/json', }
+       }
+       let payload ={...value,orgId:credentials.organisation.orgId}
+
+       return await axios.post(requestURL,payload,config)
+       .then(result => { console.log(result); return result; })
+       .catch(error => { console.error(error); return Promise.reject(error); });
+
+      }
+
+      export async function getAssetType(){
+        let credentials = JSON.parse(localStorage.getItem('user'))
+        let accessToken = localStorage.getItem('access_token')
+        const requestURL = `${Endpoints.GetAssetTypeByOrgIdApi}?orgId=${credentials.organisation.orgId}`;
+         const config = {
+           headers: { Authorization: `Bearer ${accessToken}`,
+           'Content-Type': 'application/json', }
+       }
+
+       return await axios.get(requestURL,config)
+      .then(result => { console.log(result); return result; })
+      .catch(error => { console.error(error); return Promise.reject(error); });
+
       }

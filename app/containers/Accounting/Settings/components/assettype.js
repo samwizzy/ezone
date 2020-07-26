@@ -25,6 +25,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { Autocomplete } from '@material-ui/lab';
 import { Euro, AttachMoney, Delete } from '@material-ui/icons';
 import DateFnsUtils from '@date-io/date-fns'; // choose your lib
@@ -103,28 +104,46 @@ const useStyles = makeStyles(theme => ({
 const AssetType = () => {
     const classes = useStyles();
     const settingContext = useContext(SettingContext)
-    const assetsDetails =[
-        {
-            code:'01',
-            name:'Furniture',
-            assetclass:'Tangible'
-        },
-        {
-            code:'02',
-            name:'Office Equipments',
-            assetclass:'Intangible'
-        },
-        {
-            code:'03',
-            name:'Pants and Machinery',
-            assetclass:'Tangible'
-        },
-       
-    ]
+    const [assetsDetails,setAssetsDetails] = useState([])
+
+    useEffect(() => {
+      getAssetType();
+      return ()=>{
+        getAssetType()
+      } 
+    },[])
+
+    function getAssetType(){
+      let result = [];
+      crud.getAssetType()
+      .then((data)=>{
+        console.log(`Asset types ${JSON.stringify(data.data)}`)
+       for(let i=0;i<data.data.length;i++){
+         if(data.data[i].code != null){
+         result.push({
+           assetClass:data.data[i].assetClass,
+           code: data.data[i].code,
+           dateCreated:data.data[i].dateCreated,
+           dateUpdated:data.data[i].dateUpdated,
+           id:data.data[i].id,
+           name:data.data[i].name,
+           orgId:data.data[i].orgId
+         })
+        }
+       }
+       setAssetsDetails(result);
+      })
+      .catch((error)=>{
+       console.log(`Error in Asset ${error}`)
+      })
+    }
+
+    function retriveUpdate(value){
+      
+    }
 
     return ( 
-        <div className={classes.base}>
-            
+        <div className={classes.base}> 
             <div>
            <Paper elevation={2} className={classes.paper}>
                <Grid container spacing={3}>
@@ -193,20 +212,27 @@ const AssetType = () => {
                                       <Grid container spacing={3}>
                                         <Grid item xs={12}>
                                         <Grid container spacing={3}> 
-                                       <Grid item xs={4}>
+                                       <Grid item xs={3}>
                                         <Typography variant="subtitle1" gutterBottom>
                                          {asset.code}
                                        </Typography>
                                        </Grid>
-                                       <Grid item xs={4}>
+                                       <Grid item xs={3}>
                                         <Typography variant="subtitle1" gutterBottom>
                                          {asset.name}
                                        </Typography>
                                        </Grid>
-                                       <Grid item xs={4}>
+                                       <Grid item xs={3}>
                                        <Typography variant="subtitle1" gutterBottom>
-                                         {asset.assetclass}
+                                         {asset.assetClass}
                                        </Typography>
+                                       </Grid>
+                                       <Grid item xs={3}>
+                                       <div style={{position:'relative',top:'-10px'}}>
+                                         <Button onClick={()=>retriveUpdate(asset)} variant="contained" color="primary">
+                                          Update
+                                          </Button>
+                                         </div>
                                        </Grid>
                                        </Grid>
                                        </Grid>

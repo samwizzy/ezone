@@ -25,6 +25,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { Autocomplete } from '@material-ui/lab';
 import { Euro, AttachMoney, Delete,ArrowBack } from '@material-ui/icons';
 import DateFnsUtils from '@date-io/date-fns'; // choose your lib
@@ -102,17 +103,52 @@ const useStyles = makeStyles(theme => ({
 const NewAssetType = () => {
     const classes = useStyles();
     const settingContext = useContext(SettingContext)
+    const [loadin,setLoadin] = useState(false)
+    const [isUpDate,setIsUpdate] = useState(false)
+    const [values,setValues] = useState({
+      assetClass:'',
+      code:'',
+      description:'',
+      name:''
+    })
+
+    const handleChange = name => event => {
+      setValues({ ...values, [name]: event.target.value });
+    };
+
+    function createAssetType(){
+      setLoadin(true)
+      crud.createAssetType(values)
+      .then((data)=>{
+        swal("Success","Asset Type created successfully","success");
+        setLoadin(false)
+      })
+      .catch((error)=>{
+       console.log(`Error in Asset Type ${error}`)
+       setLoadin(false)
+      })
+    }
+
+    function isReady(){
+      return values.assetClass.length >= 1
+       && values.code.length >= 1 
+       && values.description.length >= 1
+       && values.name.length >= 1
+    }
+
+
     const assetClasses =[
         {
-            value:'01',
+            value:'TANGIBLE',
             label:'Tangible'
         },
         {
-            value:'02',
+            value:'INTANGIBLE',
             label:'Inangible'
         }
     ]
 
+    console.log(`Asset Type  got it  -> `, values);
     return ( 
         <div className={classes.base}>
               <div style={{marginBottom:'1em'}}>
@@ -128,6 +164,8 @@ const NewAssetType = () => {
                       <TextField
                         size={'small'}
                         label="Code"
+                        value={values.code}
+                        onChange ={handleChange('code')}
                         variant="outlined"
                        fullWidth
                       />
@@ -138,8 +176,7 @@ const NewAssetType = () => {
                     options={assetClasses}
                     getOptionLabel={option => option.label}
                     onChange={(event, value) => {
-                      //setMonthForCalender(event, value);
-                      //(value.value);
+                      setValues({...values,assetClass:value.value})
                     }}
                     fullWidth
                     renderInput={params => (
@@ -161,6 +198,7 @@ const NewAssetType = () => {
                       <TextField
                         size={'small'}
                         label="Name"
+                        onChange ={handleChange('name')}
                         variant="outlined"
                        fullWidth
                       />
@@ -170,6 +208,7 @@ const NewAssetType = () => {
                       <TextField
                         size={'small'}
                         label="Description"
+                        onChange ={handleChange('description')}
                         variant="outlined"
                         multiline
                         rows={5}
@@ -177,17 +216,55 @@ const NewAssetType = () => {
                       />
                       </Grid>
                       <Grid item xs={12}>
-                 <div style={{float:"right",padding:'10px'}}>
-                     <div>
-                     <Button
-                variant="contained"
-                onClick={()=>{settingContext.settingDispatch({type:'NAVIGATION',page:'assettype'})}}
-                startIcon={<ArrowBack />}
-              >
-                Back
-              </Button>
-                     </div>
-                 </div>
+                        <Grid container spacing={3}>
+                          <Grid item xs={4}>
+
+                          </Grid>
+                          <Grid item xs={4}>
+                            
+                          </Grid>
+                          <Grid item xs={4}>
+                            <Grid container spacing={1}>
+                              <Grid item xs={6}>
+                              <Button
+                              variant="contained"
+                              style={{width:140}}
+                                 >
+                              Back
+                           </Button>
+                              </Grid>
+                              <Grid item xs={6}>
+                                {!isUpDate ?
+                                (!loadin?
+                              <Button
+                              disabled={!isReady()}
+                              variant="contained"
+                              color="primary"
+                              onClick={()=>createAssetType()}
+                              style={{width:140}}
+                                 >
+                              Create
+                           </Button>
+                           :
+                           <CircularProgress size={30}/>
+                           )
+                           :
+                           (!loadin?
+                            <Button
+                            variant="contained"
+                            color="primary"
+                            style={{width:140}}
+                               >
+                            Update
+                         </Button>
+                         :
+                         <CircularProgress size={30}/>
+                         )
+                           }
+                              </Grid>
+                            </Grid>
+                          </Grid>
+                        </Grid>
               </Grid>
                   </Grid>
               </Paper>
