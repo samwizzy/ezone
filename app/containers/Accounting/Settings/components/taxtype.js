@@ -119,6 +119,10 @@ const TaxType = () => {
       description:''
     })
 
+    const handleChange = name => event => {
+      setValues({ ...values, [name]: event.target.value });
+    };
+
     //Update
     useEffect(() => {
       getTaxType();
@@ -185,6 +189,7 @@ const TaxType = () => {
                 <TextField
                         size={'small'}
                         value={values.taxType}
+                        onClick={handleChange('taxType')}
                         label="Tax type name"
                         variant="outlined"
                         fullWidth
@@ -217,6 +222,7 @@ const TaxType = () => {
                 <div className={classes.lightLift}>
                 <TextField
                         size={'small'}
+                        onClick={handleChange('description')}
                         label="Description"
                         value={values.description}
                         variant="outlined"
