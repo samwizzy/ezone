@@ -70,12 +70,8 @@ const NewAsset = () => {
     const [depreciationType,setDepreciationType] = useState()
     const [location,setLocation] = useState();
 
-    const assetType =[
-        {
-            value: 'PLANT_MACHINERY',
-            label: 'Plant and Machinery',
-          }
-    ]
+    const [assetType,setAssetType] = useState()
+    const [taxType,setTaxType] = useState()
 
     const onDrop = useCallback((acceptedFiles) => {
       acceptedFiles.forEach((file) => {
@@ -108,30 +104,31 @@ const NewAsset = () => {
 
    
     const [values,setValues] = useState({
-      aquisitionValue: '',//number
+      aquisitionDate: (new Date).toISOString(),
+      aquisitionValue: 0,
       assetId: '',
       assetName: '',
-     assetNumber: '',
-     assetType: '',
-     barcode: '',
-     condition: '',
-     depreciationAccountId:'',
-     depreciationType:{},
-     depreciationValue:0,
-    description: '',
-    //disposalAccountId: 0,
-    image: {
-    file: '',
-    fileName: '',
-    fileUrl: ''
-   },
-    length: '',//number
-   location: '',
-   measurement: '',
-   quantity: '',//number
-  // taxAccountId: 0,
-   weigth: '',//number
-   width: ''//number
+      assetNumber: '',
+      assetStatus: '',
+      assetTypeId: 0,
+      barcode: '',
+      condition: '',
+      description: '',
+      image: {
+        file: '',
+        fileName: '',
+        fileUrl: ''
+      },
+      length: 0,
+      location: '',
+      manufacturer: '',
+      measurement: '',
+      orgId: '',
+      quantity: 0,
+      taxAccountId: 0,
+      taxAmount: 0,
+      weigth: 0,
+      width: 0
     })
 
     function isReady(){
@@ -156,21 +153,35 @@ const NewAsset = () => {
 
     function getRequiredParameter(){
      let location = []
-     crud.getDeprecitionType()
+     let type = []
+     let tax = []
+     crud.getAssetType()
      .then((data)=>{
       // console.log(`Confirming it ${JSON.stringify(data.data)}`)
-       for(let i=0;i<data.data.length;i++){
-         if(data.data[i].calculationBase != null){
-           //console.log(`for depreciation ${JSON.stringify(data.data[i])}`)
-           setValues({...values,depreciationAccountId:data.data[i].id,
-            depreciationValue:data.data[i].depreciatedValue,depreciationType:data.data[i]})
-          break;
-         }
-         
-       }
+      for(let i=0;i<data.data.length;i++){
+      type.push(
+        {
+          id: data.data[i].id,
+          name: data.data[i].name
+        }
+      )
+     }
+     setAssetType(type)
      })
      .catch((error)=>{
-      console.log(`Error occured for depreciation ${error}`)
+      console.log(`Error occured for AssetType ${error}`)
+     })
+     //Get Tax
+     crud.getTaxType()
+     .then((data)=>{
+       for(let j=0;j<data.data[i].length;j++){
+        tax.push({id:data.data[i].id,taxType:data.data[i].taxType})
+       }
+       setTaxType(tax);
+      
+     })
+     .catch((error)=>{
+       console.log(`Tax Type Error ${error}`)
      })
      //Get Location
      crud.getOrganisationParties()
@@ -189,6 +200,11 @@ const NewAsset = () => {
      })
      setLocation(location);
     }
+
+    const handleDateChange = (date) => {
+      setValues({ ...values,aquisitionDate:(new Date(date)).toISOString()})
+    };
+  
 
     const status =Enum.AssetStatus
 
@@ -301,6 +317,7 @@ const NewAsset = () => {
                                     id="description"
                                     label="Description"
                                     variant="outlined"
+                                    value={values.description}
                                   margin="normal"
                                   onChange ={handleChange('description')}
                                 fullWidth
@@ -320,6 +337,7 @@ const NewAsset = () => {
                                     label="Asset Name"
                                     required
                                     size={'small'}
+                                    value={values.assetName}
                                     onChange ={handleChange('assetName')}
                                     variant="outlined"
                                     fullWidth
@@ -331,6 +349,7 @@ const NewAsset = () => {
                                     id="assetId"
                                     label="Asset ID"
                                     required
+                                    value={values.assetId}
                                     onChange ={handleChange('assetId')}
                                     size={'small'}
                                     fullWidth
@@ -342,9 +361,9 @@ const NewAsset = () => {
                                     <Autocomplete
                                     id="assetype"
                                     options={assetType}
-                                    getOptionLabel={option => option.label}
+                                    getOptionLabel={option => (option.name).toUpperCase()}
                                     onChange={(event, value) => {
-                                      setValues({...values,assetType:value.value})
+                                      setValues({...values,assetType:value.name,assetTypeId:value.id})
                                      }}
                                      renderInput={params => (
                                    <TextField
@@ -363,6 +382,7 @@ const NewAsset = () => {
                                     id="assetnum"
                                     label="Asset Number"
                                     required
+                                    value={values.assetNumber}
                                     onChange ={handleChange('assetNumber')}
                                     size={'small'}
                                     variant="outlined"
@@ -388,6 +408,7 @@ const NewAsset = () => {
                         label="Manufacturer"
                         required
                           variant="outlined"
+                          value={values.manufacturer}
                           onChange ={handleChange('manufacturer')}
                           size={'small'}
                           margin="normal"
@@ -400,6 +421,7 @@ const NewAsset = () => {
                        id="barcode"
                         label="Barcode"
                         required
+                          value={values.barcode}
                           variant="outlined"
                           onChange ={handleChange('barcode')}
                           size={'small'}
@@ -461,6 +483,7 @@ const NewAsset = () => {
                                  id="length"
                                  type="number"
                                  placeholder={'Select'}
+                                 value={values.length}
                                  variant="outlined"
                                  onChange ={handleChange('length')}
                                  size={'small'}
@@ -472,6 +495,7 @@ const NewAsset = () => {
                                  <TextField
                                  id="width"
                                  placeholder={'Select'}
+                                 value={values.width}
                                  size={'small'}
                                  type="number"
                                  onChange ={handleChange('width')}
@@ -492,6 +516,7 @@ const NewAsset = () => {
                                  id="weight"
                                  size={'small'}
                                  type="number"
+                                 value={values.weigth}
                                  onChange ={handleChange('weigth')}
                                  label="Weight"
                                  fullWidth
@@ -524,6 +549,7 @@ const NewAsset = () => {
                                  id="quantity"
                                  type="number"
                                  variant="outlined"
+                                 value={values.quantity}
                                  onChange ={handleChange('quantity')}
                                  label="Quantity"
                                  size={'small'}
@@ -590,6 +616,7 @@ const NewAsset = () => {
                                  type="number"
                                  size={'small'}
                                  variant="outlined"
+                                 value={values.aquisitionValue}
                                  onChange ={handleChange('aquisitionValue')}
                                  label="Aquisition value (Cost of Asset)"
                                     margin="normal"
@@ -609,15 +636,33 @@ const NewAsset = () => {
                                  </Grid>
 
                                  <Grid item xs={12}>
-                                <TextField style={{marginTop:'-2em'}}
+                                 <Autocomplete style={{marginTop:'-2em'}}
+                          id="taxacc"
+                          options={mesurement}
+                          getOptionLabel={option => option.taxType}
+                          onChange={(event, value) => {
+                            setValues({...values,taxAccountId:value.id})
+                           }}
+                          renderInput={params => (
+                            <TextField
+                              {...params}
+                              label="Tax Account"
+                              size={'small'}
+                              variant="outlined"
+                              fullWidth
+                            />
+                          )}
+                        />
+                               {/* <TextField }
                                  id="taxacc"
                                  size={'small'}
                                  variant="outlined"
-                                // onChange ={handleChange('taxAccount')}
+                                 value={values.taxAccountId}
+                                 onChange ={handleChange('taxAccount')}
                                  label="Tax Account"
                                     margin="normal"
                                     fullWidth
-                                 />   
+                                 /> */} 
                              </Grid>
 
                              <Grid item xs={12}>
@@ -625,7 +670,8 @@ const NewAsset = () => {
                                  id="taxacc"
                                  size={'small'}
                                  variant="outlined"
-                                // onChange ={handleChange('taxAmount')}
+                                 value={values.taxAmount}
+                                onChange ={handleChange('taxAmount')}
                                  label="Tax Amount"
                                     margin="normal"
                                     fullWidth
@@ -675,14 +721,24 @@ const NewAsset = () => {
 
                          <Grid item xs={6}>
                            <div style={{position:'relative',top:'-6.1em'}}>
-                         <TextField
-                                 id="aquidate"
-                                 size={'small'}
-                                 variant="outlined"
-                                 label="Aquisition Date"
-                                    margin="normal"
-                                    fullWidth
-                                 />  
+                           <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <KeyboardDatePicker
+                        autoOk
+                        format="MM/dd/yyyy"
+                        margin="normal"
+                        inputVariant="outlined"
+                        name="previous"
+                        size="small"
+                        id="date-picker-startDate"
+                        label="Aquisition Date"
+                        value={values.aquisitionDate}
+                        onChange={handleDateChange}
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                        }}
+                      />
+                    </MuiPickersUtilsProvider>
+                          
                                  </div> 
                          </Grid>
                          

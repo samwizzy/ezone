@@ -304,16 +304,16 @@ const TaxType = () => {
                      <div className={classes.softLift}>
                      <Grid container spacing={10}>
                          <Grid item xs={3}>
-                             <div>
-                             <Typography variant="subtitle1" gutterBottom>
-                             Taxes
+                          <div>
+                          <Typography variant="subtitle1" gutterBottom>
+                           Taxes
                            </Typography>
-                             </div>
+                          </div>
                          </Grid>
-                         <Grid item xs={9}>
-                             <div>
-                                 <div style={{float:'right'}}>
-                                 <Button className={classes.curve}
+                        <Grid item xs={9}>
+                       <div>
+                       <div style={{float:'right'}}>
+                       <Button className={classes.curve}
                       variant="contained"
                       color="primary"
                       type="button"
