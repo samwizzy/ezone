@@ -18,7 +18,6 @@ import {
   Typography,
   Tooltip
 } from '@material-ui/core';
-import swal from 'sweetalert';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -42,6 +41,8 @@ import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as crud from '../crud';
+import swal from 'sweetalert';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import DialogOfAccountPeriod from './DialogOfAccountPeriod';
 import moment from 'moment';
 // import ModuleLayout from '../../components/ModuleLayout';
@@ -106,9 +107,26 @@ const useStyles = makeStyles(theme => ({
 const TaxRate = () => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
+    const [loadin,setLoadin] = useState(false)
+    const [isUpdate,setIsUpdate] = useState(false)
     const handleClickClose = () => {
         setOpen(false);
       };
+    const [taxType, setTaxType] = useState() 
+
+    const [values,setValues] = useState({
+        description: '',
+        id: 0,
+        name: '',
+        orgId: '',
+        rate: 0,
+        taxType: ''
+    })
+
+    const handleChange = name => event => {
+      setValues({ ...values, [name]: event.target.value });
+    };
+
     const currenciesDetails =[
         {
             rate:'20%',
@@ -126,6 +144,40 @@ const TaxRate = () => {
             taxType:'VAT'
         }
     ]
+
+    //Get needed parameters
+    useEffect(() => {
+      let mounted = true
+      if(mounted){
+        getRequiredParameter()
+      }
+      return ()=>{
+        mounted = false
+      } 
+    },[])
+
+    function getRequiredParameter(){
+      let type = []
+      crud.getTaxType()
+      .then((data)=>{
+        for(let i=0;i<data.data.length;i++){
+          type.push({
+          description: data.data[i].description,
+          id: data.data[i].id,
+          name: data.data[i].name,
+          orgId: data.data[i].orgId,
+          rate: data.data[i].rate,
+          taxType: data.data[i].taxType
+        })
+        }
+       setTaxType(type)
+      })
+    }
+
+
+    function updateTaxController(){
+
+    }
 
     return ( 
         <div className={classes.base}>
@@ -151,9 +203,15 @@ const TaxRate = () => {
                 <div className={classes.lightLift}>
                   <Autocomplete
                     id="taxtype"
-                    options={currenciesDetails}
+                    options={taxType}
                     getOptionLabel={option => option.taxType}
                     onChange={(event, value) => {
+                      setValues({...values,
+                        id: value.id,
+                        name: value.name,
+                        orgId: value.orgId,
+                        taxType: value.taxType
+                      })
                       //setMonthForCalender(event, value);
                       //(value.value);
                      
@@ -175,54 +233,28 @@ const TaxRate = () => {
                   />
                 </div>
                 <div className={classes.lightLift}>
-                  <Autocomplete
-                    id="cname"
-                    options={currenciesDetails}
-                    getOptionLabel={option => option.name}
-                    onChange={(event, value) => { 
-                     // setCalenderDay(value.value)
-                    }}
-
-                    style={{ width: '100%' }}
-                    renderInput={params => (
+  
                       <TextField
-                        {...params}
                         size={'small'}
-                        //label={calenderDay === 0 ? 'Select Day' : `Day ${calenderDay}`}
+                        value={values.name}
                         label="Tax Name"
-                        variant="outlined"
-                        inputProps={{
-                          ...params.inputProps,
-                          autoComplete: 'new-password', // disable autocomplete and autofill
-                        }}
+                        fullWidth
+                        onChange={handleChange('name')}
+                        variant="outlined" 
                       />
-                    )}
-                  />
+                    
                 </div>
                 <div className={classes.lightLift}>
-                  <Autocomplete
-                    id="symbol"
-                    options={currenciesDetails}
-                    getOptionLabel={option => option.rate}
-                    onChange={(event, value) => { 
-                     // setCalenderDay(value.value)
-                    }}
-
-                    style={{ width:'100%'}}
-                    renderInput={params => (
-                      <TextField
-                        {...params}
+                  
+                <TextField
                         size={'small'}
-                        //label={calenderDay === 0 ? 'Select Day' : `Day ${calenderDay}`}
-                        label="Tax rate"
-                        variant="outlined"
-                        inputProps={{
-                          ...params.inputProps,
-                          autoComplete: 'new-password', // disable autocomplete and autofill
-                        }}
+                        value={values.rate}
+                        label="Tax Rate"
+                        type="number"
+                        onChange={handleChange('rate')}
+                        variant="outlined" 
+                        fullWidth
                       />
-                    )}
-                  />
                 </div>
               </Box>
             </Grid>

@@ -184,7 +184,7 @@ export async function setUptins() {
            'Content-Type': 'application/json', }
        }
        let payload ={...value,orgId:credentials.organisation.orgId,dateCreated:(new Date).toISOString()}
-       //console.log(`Before saving.... ${JSON.stringify(payload)}`)
+       console.log(`Before saving Currency.... ${JSON.stringify(payload)}`)
        return await axios.post(requestURL,payload,config)
        .then(result => { console.log(result); return result; })
        .catch(error => { console.error(error); return Promise.reject(error); });
@@ -280,6 +280,20 @@ export async function setUptins() {
            'Content-Type': 'application/json', }
        }
 
+       return await axios.put(requestURL,value,config)
+       .then(result => { console.log(result); return result; })
+       .catch(error => { console.error(error); return Promise.reject(error); });
+
+      }
+
+      export async function updatePeriod(value){
+        //let credentials = JSON.parse(localStorage.getItem('user'))
+        let accessToken = localStorage.getItem('access_token')
+        const requestURL = `${Endpoints.UpdateAccountPeriodApi}?id=${value.id}&status=true`;
+         const config = {
+           headers: { Authorization: `Bearer ${accessToken}`,
+           'Content-Type': 'application/json', }
+       }
        return await axios.put(requestURL,value,config)
        .then(result => { console.log(result); return result; })
        .catch(error => { console.error(error); return Promise.reject(error); });

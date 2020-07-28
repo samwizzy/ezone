@@ -21,6 +21,16 @@ import {
   import * as Enum from './enums';
   import Joker from './joker.jpg';
   import swal from 'sweetalert';
+  import CircularProgress from '@material-ui/core/CircularProgress';
+  import DateFnsUtils from '@date-io/date-fns'; // choose your lib
+import {
+  DatePicker,
+  TimePicker,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+  DateTimePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
   import UploadIcon from '@material-ui/icons/AddAPhotoOutlined';
   import { BrowserRouter as Router, Switch,useParams, Route,useRouteMatch } from "react-router-dom";
   import { FixedAssetContext } from './index';
@@ -67,6 +77,8 @@ const NewAsset = () => {
     const fileInput = useRef();
     const [imageView,setImageView] = useState('');
     const [isFilled,setIsFilled] = useState(false)
+    const [loadin,setLoadin] = useState(false)
+    const [isUpdate,setIsUpdate] = useState(false)
     const [depreciationType,setDepreciationType] = useState()
     const [location,setLocation] = useState();
 
@@ -93,6 +105,36 @@ const NewAsset = () => {
       
     }, [])
 
+
+    /*useEffect(() => {
+      let mounted = true
+      if(mounted){
+        isEdit()
+      }
+        return () =>{
+        mounted = false
+          }
+        },[])*/
+
+
+        function isEdit(){
+         crud.getAsset()
+         .then((data)=>{
+          let id = fixedContext.fixedState.display
+          for(let i=0;i<data.data.length;i++){
+            if(data.data[i].id === id){
+              setIsUpdate(true)
+              setValues(data.data[i])
+              break;
+            }
+          }
+         
+         })
+         .catch((error)=>{
+          console.log(`Error from Update ${error}`)
+         }) 
+        }
+
     const toBase64 = file => new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -105,7 +147,7 @@ const NewAsset = () => {
    
     const [values,setValues] = useState({
       aquisitionDate: (new Date).toISOString(),
-      aquisitionValue: 0,
+      aquisitionValue: '',//number
       assetId: '',
       assetName: '',
       assetNumber: '',
@@ -119,25 +161,25 @@ const NewAsset = () => {
         fileName: '',
         fileUrl: ''
       },
-      length: 0,
+      length: '',//number
       location: '',
       manufacturer: '',
       measurement: '',
       orgId: '',
-      quantity: 0,
+      quantity: '',//number
       taxAccountId: 0,
-      taxAmount: 0,
-      weigth: 0,
-      width: 0
+      taxAmount: '',//number
+      weigth: '',//number
+      width: ''//number
     })
 
     function isReady(){
       return values.weigth.length >= 1 && values.width.length >= 1 
-      && values.quantity.length >= 1 && values.measurement.length>= 1
-      && values.location.length >= 1 && values.length.length>= 1
-      && values.image.fileName.length >= 1 && values.description.length >= 1
-      && values.condition.length>=1 && values.barcode.length>=1 && values.assetId.length>=1
-      && values.assetName.length >= 1 && values.assetType.length >= 1 && values.aquisitionValue.length >= 1
+      && values.quantity.length >= 1 && values.measurement.length>= 1 && values.taxAmount.length >= 1
+      && values.location.length >= 1 && values.length.length>= 1 && values.manufacturer.length >= 1
+      && values.image.fileName.length >= 1 && values.description.length >= 1 && values.assetStatus.length >= 1
+      && values.assetStatus.length>=1 && values.barcode.length>=1 && values.assetId.length>=1
+      && values.assetName.length >= 1 && values.aquisitionValue.length >= 1
     }
 
     //Get needed parameters
@@ -157,14 +199,18 @@ const NewAsset = () => {
      let tax = []
      crud.getAssetType()
      .then((data)=>{
+       //console.log(`AssetTypes ${JSON.stringify(data.data)}`)
       // console.log(`Confirming it ${JSON.stringify(data.data)}`)
       for(let i=0;i<data.data.length;i++){
-      type.push(
-        {
-          id: data.data[i].id,
-          name: data.data[i].name
+        if(data.data[i].name != null){
+          type.push(
+            {
+              id: data.data[i].id,
+              name: data.data[i].name
+            }
+          )
         }
-      )
+      
      }
      setAssetType(type)
      })
@@ -174,8 +220,9 @@ const NewAsset = () => {
      //Get Tax
      crud.getTaxType()
      .then((data)=>{
-       for(let j=0;j<data.data[i].length;j++){
-        tax.push({id:data.data[i].id,taxType:data.data[i].taxType})
+       //console.log(`Tax Type ${JSON.stringify(data.data)}`)
+       for(let j=0;j<data.data.length;j++){
+        tax.push({id:data.data[j].id,taxType:data.data[j].taxType})
        }
        setTaxType(tax);
       
@@ -216,7 +263,20 @@ const NewAsset = () => {
 
 
     function createAsset(){
+      setLoadin(true)
       crud.createNewAsset(values)
+      .then((data)=>{
+       swal("Success","Asset created successfully","success");
+       setLoadin(false)
+      })
+      .catch((error)=>{
+       swal("Error","Something went wrong. Please check your connection","error");
+       setLoadin(false)
+      })
+    }
+
+    function updateAsset(){
+      crud.updateAsset(values)
       .then((data)=>{
        swal("Success","Asset created successfully","success");
       })
@@ -564,7 +624,7 @@ const NewAsset = () => {
                               options={status}
                           getOptionLabel={option => option.label}
                           onChange={(event, value) => {
-                            setValues({...values,condition:value.value})
+                            setValues({...values,assetStatus:value.value})
                            }}
                           renderInput={params => (
                             <TextField
@@ -638,7 +698,7 @@ const NewAsset = () => {
                                  <Grid item xs={12}>
                                  <Autocomplete style={{marginTop:'-2em'}}
                           id="taxacc"
-                          options={mesurement}
+                          options={taxType}
                           getOptionLabel={option => option.taxType}
                           onChange={(event, value) => {
                             setValues({...values,taxAccountId:value.id})
@@ -766,6 +826,8 @@ const NewAsset = () => {
               </Button>
                   </Grid> 
                   <Grid item xs={3}>
+                    {!isUpdate ?
+                    (!loadin?
                   <Button
                   disabled={!isReady()}
                   onClick={()=>createAsset()}
@@ -775,6 +837,24 @@ const NewAsset = () => {
               >
                 Create
               </Button>
+              :
+              <CircularProgress size={30}/>
+                )
+              :
+               (!loadin?
+                <Button
+                disabled={!isReady()}
+                onClick={()=>updateAsset()}
+                color="primary"
+                style={{width:'100%'}}
+              variant="contained"
+            >
+              Update
+            </Button>
+            :
+            <CircularProgress size={30}/>
+               )
+                }
                   </Grid> 
                   
                   </Grid> 

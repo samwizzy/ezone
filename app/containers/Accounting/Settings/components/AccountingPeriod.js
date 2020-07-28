@@ -100,6 +100,7 @@ const AccountingPeriod = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorElII, setAnchorElII] = useState(null);
+  const [anchorElIII, setAnchorElIII] = useState(null);
   const [lastYear,setLastYear] = useState()
   const  [loadin,setLoadin] =useState(false)
 
@@ -122,12 +123,16 @@ const AccountingPeriod = props => {
   } = props;
 
   const handleClose = (value) => {
-    console.log('Na here E dey hapen')
-    if(value === 0){
-      setAnchorEl(null);
+    switch(value){
+      case 0:
+        setAnchorEl(null);
+        break;
+        case 1:
+          setAnchorElII(null);
+          break;
+          default :
+          setAnchorElIII(null);    
     }
-    else
-    setAnchorElII(null);
     
   };
 
@@ -182,6 +187,19 @@ const AccountingPeriod = props => {
 
   const handleClickPeriod =(event ,value) =>{
     setAnchorEl(event.currentTarget);
+   setAccountToUpdate(
+     {
+       ...accountToUpdate,
+       id: value.id,
+       orgId: value.orgId,
+       year:value.year
+     }
+   )
+   
+  }
+
+  const handleClickPeriodII =(event ,value) =>{
+    setAnchorElIII(event.currentTarget);
    setAccountToUpdate(
      {
        ...accountToUpdate,
@@ -366,12 +384,24 @@ const AccountingPeriod = props => {
     }
   }
 
+  function openPeriod(value){
+    crud.updatePeriod(value)
+    .then((data)=>{
+      getAccountingPeriod()
+      swal("Success", "Accounting Period updated successfully", "success");
+    })
+    .catch((error)=>{
+      console.log(`Error in openingPeriod ${error}`)
+      swal("Error", "Something went wrong. Please check your network", "error");
+    })
+  }
+
   function isReady(){
     let currentY = new Date().getUTCFullYear()
-    console.log(`current Year ${currentY}`)
+    //console.log(`current Year ${currentY}`)
     let isContained = false;
     let previousYrs = Number(values.year)
-    console.log(`previous Year ${previousYrs}`)
+    //console.log(`previous Year ${previousYrs}`)
     for(let i=0; i<accountingPeriods.length;i++){
       let result = Number(accountingPeriods[i].year) === previousYrs
       if(result){
@@ -559,6 +589,7 @@ const AccountingPeriod = props => {
                         onClick={event=> {
                           event.preventDefault();
                           handleClickPeriod(event ,item)
+                          //getAccountingPeriod()
                         }}
                       >
                         Open InActive
@@ -571,12 +602,18 @@ const AccountingPeriod = props => {
                         onClose={()=>handleClose(0)}
                       >
                         <MenuItem 
-                          onClick={() => editOpenAccountPeriodDialogAction(accountToUpdate)}
+                          onClick={() => {
+                            editOpenAccountPeriodDialogAction(accountToUpdate)
+                            getAccountingPeriod()
+                          }}
                         >
                           Set As Active 
                         </MenuItem>
                         <MenuItem
-                          onClick={() => openDialogCloseAccountPeriodAction(accountToUpdate)}
+                          onClick={() => {
+                            openDialogCloseAccountPeriodAction(accountToUpdate)
+                            getAccountingPeriod()
+                          }}
                         >
                           Close Period
                         </MenuItem>
@@ -606,13 +643,16 @@ const AccountingPeriod = props => {
                       keepMounted
                       open={Boolean(anchorElII)}
                       onClose={()=>handleClose(1)}>
-                      <MenuItem 
+                      {/*<MenuItem 
                         onClick={() => editOpenAccountPeriodDialogAction(accountToUpdate)}
                       >
                         Set As InActive 
-                      </MenuItem>
+                      </MenuItem>*/}
                       <MenuItem
-                        onClick={() => openDialogCloseAccountPeriodAction(accountToUpdate)}
+                        onClick={() => {
+                          openDialogCloseAccountPeriodAction(accountToUpdate)
+                          getAccountingPeriod()
+                        }}
                       >
                         Close Period
                       </MenuItem>
@@ -621,14 +661,30 @@ const AccountingPeriod = props => {
                             )
                             :
                             (
+                              <div>
                         <Button 
                         aria-controls="simple-menu" 
                         aria-haspopup="true" 
                         size="small"
-                        //onClick={event => handleClick(event, item)}
+                        onClick={event => handleClickPeriodII(event, item)}
                       >
                         Closed
                       </Button>
+                      <Menu
+                      id="simple-menuIII"
+                      anchorEl={anchorElIII}
+                      keepMounted
+                      open={Boolean(anchorElIII)}
+                      onClose={()=>handleClose(2)}>
+                      <MenuItem
+                      onClick={() => {
+                         openPeriod(accountToUpdate)
+                      }}
+                    >
+                      Open Period
+                    </MenuItem>
+                    </Menu>
+                    </div>
                             )
                           }
                         </div>
