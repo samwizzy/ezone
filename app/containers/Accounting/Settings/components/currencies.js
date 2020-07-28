@@ -110,6 +110,7 @@ const Currencies = () => {
     const [isUpDate,setIsUpDate] = useState(false)
     const [loadin,setLoadin] = useState(false)
     const [currencies,setCurrencies] = useState([])
+    const [currency, setCurrency] = useState('USD');
     const handleClickClose = () => {
         setOpen(false);
       };
@@ -121,52 +122,652 @@ const Currencies = () => {
         symbol:''
       })
 
-    const currenciesDetails =[
-        {
-            code:'USD',
-            name:'Dollar',
-            symbol:'&#x24;'
-        },
-        {
-            code:'EUR',
-            name:'Euro',
-            symbol:'&#x20AC;'
-        },
-        {
-          code:'CENT',
-          name:'Cent',
-          symbol:'&#xa2;'
-      },
-      {
-        code:'PUD',
-        name:'Pounds',
-        symbol:'&#xa3;'
-    },
-    {
-      code:'YEN',
-      name:'Yen',
-      symbol:'&#xa5;'
-  },
-  {
-    code:'RUPEE',
-    name:'Rupee',
-    symbol:'&#x20B9;'
-},
-{
-  code:'RUBLE',
-  name:'Ruble',
-  symbol:'&#x20BD;'
-},
-{
-  code:'NGN',
-  name:'Naira',
-  symbol:'&#x20A6;'
-}
-    ]
+      function convertCurrency(value){
+        switch(value){
+          case 'AED':
+          return 'د.إ'
+          case 'AFN':
+          return 'Af'
+          case 'ALL':
+          return 'L'
+          case 'AMD':
+          return 'Դ' 
+          case 'AOA':
+          return 'Kz'
+          case 'ARS':
+          return '$' 
+          case 'AUD':
+          return '$'
+          case 'AWG':
+          return 'ƒ'
+          case 'AZN':
+          return 'ман'
+          case 'BAM':
+          return 'КМ'
+          case 'BBD':
+          return '$'
+          case 'BDT':
+          return '৳'
+          case 'BGN':
+          return 'лв'
+          case 'BHD':
+          return 'ب.د'
+          case 'BIF':
+          return '₣'
+          case 'BMD':
+          return '$'
+          case 'BND':
+          return '$'
+          case 'BOB':
+          return 'Bs.'
+          case 'BRL':
+          return 'R$'
+          case 'BSD':
+          return '$'
+          case 'BWP':
+          return 'P'
+          case 'BYN':
+          return 'Br'
+          case 'BZD':
+          return '$'
+          case 'CAD':
+          return  '$'
+          case 'EUR':
+          return '€'
+          case 'GBP':
+          return '£'
+          case 'HKD':
+          return '$'
+          case 'INR':
+          return '₹'
+          case 'JPY':
+          return '¥'
+          case 'NGN':
+          return '₦'
+          /*case 'USD':
+          return '$'*/ 
+          default :
+          return '$'
 
+        }
+      }
+
+      const currenciez = [
+        {
+          value: 'AED',
+          label: 'د.إ',
+          digitalCode:'784',
+          name:'UAE Dirham'
+        },
+        {
+          value: 'AFN',
+          label: 'Af',
+          digitalCode:'971',
+          name:'Afghani'
+        },
+        {
+          value: 'ALL',
+          label: 'L',
+          digitalCode:'008',
+          name:'Lek'
+        },
+        {
+          value: 'AMD',
+          label: 'Դ',
+          digitalCode:'051',
+          name:'Armenian Dram'
+        },
+        {
+          value: 'AOA',
+          label: 'Kz',
+          digitalCode:'973',
+          name:'Kwanza'
+        },
+        {
+          value: 'ARS',
+          label: '$',
+          digitalCode:'032',
+          name:'Argentine Peso'
+        },
+        {
+          value: 'AUD',
+          label: '$',
+          digitalCode:'036',
+          name:'Australian Dollar'
+        },
+        {
+          value: 'AWG',
+          label: 'ƒ',
+          digitalCode:'533',
+          name:'Aruban Guilder/Florin'
+        },
+        {
+          value: 'AZN',
+          label: 'ман',
+          digitalCode:'944',
+          name:'Azerbaijanian Manat'
+        },
+        {
+          value: 'BAM',
+          label: 'КМ',
+          digitalCode:'977',
+          name:'Konvertibilna Marka'
+        },
+        {
+          value: 'BBD',
+          label: '$',
+          digitalCode:'052',
+          name:'Barbados Dollar'
+        },
+        {
+          value: 'BDT',
+          label: '৳',
+          digitalCode:'050',
+          name:'Taka'
+        },
+        {
+          value: 'BGN',
+          label: 'лв',
+          digitalCode:'975',
+          name:'Bulgarian Lev'
+        },
+        {
+          value: 'BHD',
+          label: 'ب.د',
+          digitalCode:'048',
+          name:'Bahraini Dinar'
+        },
+        {
+          value: 'BIF',
+          label: '₣',
+          digitalCode:'108',
+          name:'Burundi Franc'
+        },
+        {
+          value: 'BMD',
+          label: '$',
+          digitalCode:'060',
+          name:'Bermudian Dollar'
+        },
+        {
+          value: 'BND',
+          label: '$',
+          digitalCode:'096',
+          name:'Brunei Dollar'
+        },
+        {
+          value: 'BOB',
+          label: 'Bs.',
+          digitalCode:'068',
+          name:'Boliviano'
+        },
+        {
+          value: 'BRL',
+          label: 'R$',
+          digitalCode:'986',
+          name:'Brazilian Real'
+        },
+        {
+          value: 'BSD',
+          label: '$',
+          digitalCode:'044',
+          name:'Bahamian Dollar'
+        },
+        {
+          value: 'BWP',
+          label: 'P',
+          digitalCode:'072',
+          name:'Pula'
+        },
+        {
+          value: 'BYN',
+          label: 'Br',
+          digitalCode:'933',
+          name:'Belarusian Ruble'
+        },
+        {
+          value: 'BZD',
+          label: '$',
+          digitalCode:'084',
+          name:'Belize Dollar'
+        },
+        {
+          value: 'CAD',
+          label: '$',
+          digitalCode:'124',
+          name:'Canadian Dollar'
+        },
+        {
+          value: 'EUR',
+          label: '€',
+          digitalCode:'978',
+          name:'Euro'
+        },
+        {
+          value: 'GBP',
+          label: '£',
+          digitalCode:'826',
+          name:'Pound Sterling'
+        },
+        {
+          value: 'HKD',
+          label: '$',
+          digitalCode:'344',
+          name:'Hong Kong Dollar'
+        },
+        {
+          value: 'INR',
+          label: '₹',
+          digitalCode:'356',
+          name:'Indian Rupee'
+        },
+        {
+          value: 'JPY',
+          label: '¥',
+          digitalCode:'392',
+          name:'Yen'
+        },
+        {
+          value: 'NGN',
+          label: '₦',
+          digitalCode:'566',
+          name:'Naira'
+        },
+        {
+          value: 'USD',
+          label: '$',
+          digitalCode:'840',
+          name:'US Dollar'
+        },
+      ];
+
+
+      const currenciezz = [
+        {
+          value: 'AED',
+          label: 'د.إ',
+          digitalCode:'784',
+          name:'UAE Dirham'
+        },
+        {
+          value: 'AFN',
+          label: 'Af',
+          digitalCode:'971',
+          name:'Afghani'
+        },
+        {
+          value: 'ALL',
+          label: 'L',
+          digitalCode:'008',
+          name:'Lek'
+        },
+        {
+          value: 'AMD',
+          label: 'Դ',
+          digitalCode:'051',
+          name:'Armenian Dram'
+        },
+        {
+          value: 'AOA',
+          label: 'Kz',
+          digitalCode:'973',
+          name:'Kwanza'
+        },
+        {
+          value: 'ARS',
+          label: '$',
+          digitalCode:'032',
+          name:'Argentine Peso'
+        },
+        {
+          value: 'AUD',
+          label: '$',
+          digitalCode:'036',
+          name:'Australian Dollar'
+        },
+        {
+          value: 'AWG',
+          label: 'ƒ',
+          digitalCode:'533',
+          name:'Aruban Guilder/Florin'
+        },
+        {
+          value: 'AZN',
+          label: 'ман',
+          digitalCode:'944',
+          name:'Azerbaijanian Manat'
+        },
+        {
+          value: 'BAM',
+          label: 'КМ',
+          digitalCode:'977',
+          name:'Konvertibilna Marka'
+        },
+        {
+          value: 'BBD',
+          label: '$',
+          digitalCode:'052',
+          name:'Barbados Dollar'
+        },
+        {
+          value: 'BDT',
+          label: '৳',
+          digitalCode:'050',
+          name:'Taka'
+        },
+        {
+          value: 'BGN',
+          label: 'лв',
+          digitalCode:'975',
+          name:'Bulgarian Lev'
+        },
+        {
+          value: 'BHD',
+          label: 'ب.د',
+          digitalCode:'048',
+          name:'Bahraini Dinar'
+        },
+        {
+          value: 'BIF',
+          label: '₣',
+          digitalCode:'108',
+          name:'Burundi Franc'
+        },
+        {
+          value: 'BMD',
+          label: '$',
+          digitalCode:'060',
+          name:'Bermudian Dollar'
+        },
+        {
+          value: 'BND',
+          label: '$',
+          digitalCode:'096',
+          name:'Brunei Dollar'
+        },
+        {
+          value: 'BOB',
+          label: 'Bs.',
+          digitalCode:'068',
+          name:'Boliviano'
+        },
+        {
+          value: 'BRL',
+          label: 'R$',
+          digitalCode:'986',
+          name:'Brazilian Real'
+        },
+        {
+          value: 'BSD',
+          label: '$',
+          digitalCode:'044',
+          name:'Bahamian Dollar'
+        },
+        {
+          value: 'BWP',
+          label: 'P',
+          digitalCode:'072',
+          name:'Pula'
+        },
+        {
+          value: 'BYN',
+          label: 'Br',
+          digitalCode:'933',
+          name:'Belarusian Ruble'
+        },
+        {
+          value: 'BZD',
+          label: '$',
+          digitalCode:'084',
+          name:'Belize Dollar'
+        },
+        {
+          value: 'CAD',
+          label: '$',
+          digitalCode:'124',
+          name:'Canadian Dollar'
+        },
+        {
+          value: 'EUR',
+          label: '€',
+          digitalCode:'978',
+          name:'Euro'
+        },
+        {
+          value: 'GBP',
+          label: '£',
+          digitalCode:'826',
+          name:'Pound Sterling'
+        },
+        {
+          value: 'HKD',
+          label: '$',
+          digitalCode:'344',
+          name:'Hong Kong Dollar'
+        },
+        {
+          value: 'INR',
+          label: '₹',
+          digitalCode:'356',
+          name:'Indian Rupee'
+        },
+        {
+          value: 'JPY',
+          label: '¥',
+          digitalCode:'392',
+          name:'Yen'
+        },
+        {
+          value: 'NGN',
+          label: '₦',
+          digitalCode:'566',
+          name:'Naira'
+        },
+        {
+          value: 'USD',
+          label: '$',
+          digitalCode:'840',
+          name:'US Dollar'
+        },
+      ];
+
+      const currenciezzz = [
+        {
+          value: 'AED',
+          label: 'د.إ',
+          digitalCode:'784',
+          name:'UAE Dirham'
+        },
+        {
+          value: 'AFN',
+          label: 'Af',
+          digitalCode:'971',
+          name:'Afghani'
+        },
+        {
+          value: 'ALL',
+          label: 'L',
+          digitalCode:'008',
+          name:'Lek'
+        },
+        {
+          value: 'AMD',
+          label: 'Դ',
+          digitalCode:'051',
+          name:'Armenian Dram'
+        },
+        {
+          value: 'AOA',
+          label: 'Kz',
+          digitalCode:'973',
+          name:'Kwanza'
+        },
+        {
+          value: 'ARS',
+          label: '$',
+          digitalCode:'032',
+          name:'Argentine Peso'
+        },
+        {
+          value: 'AUD',
+          label: '$',
+          digitalCode:'036',
+          name:'Australian Dollar'
+        },
+        {
+          value: 'AWG',
+          label: 'ƒ',
+          digitalCode:'533',
+          name:'Aruban Guilder/Florin'
+        },
+        {
+          value: 'AZN',
+          label: 'ман',
+          digitalCode:'944',
+          name:'Azerbaijanian Manat'
+        },
+        {
+          value: 'BAM',
+          label: 'КМ',
+          digitalCode:'977',
+          name:'Konvertibilna Marka'
+        },
+        {
+          value: 'BBD',
+          label: '$',
+          digitalCode:'052',
+          name:'Barbados Dollar'
+        },
+        {
+          value: 'BDT',
+          label: '৳',
+          digitalCode:'050',
+          name:'Taka'
+        },
+        {
+          value: 'BGN',
+          label: 'лв',
+          digitalCode:'975',
+          name:'Bulgarian Lev'
+        },
+        {
+          value: 'BHD',
+          label: 'ب.د',
+          digitalCode:'048',
+          name:'Bahraini Dinar'
+        },
+        {
+          value: 'BIF',
+          label: '₣',
+          digitalCode:'108',
+          name:'Burundi Franc'
+        },
+        {
+          value: 'BMD',
+          label: '$',
+          digitalCode:'060',
+          name:'Bermudian Dollar'
+        },
+        {
+          value: 'BND',
+          label: '$',
+          digitalCode:'096',
+          name:'Brunei Dollar'
+        },
+        {
+          value: 'BOB',
+          label: 'Bs.',
+          digitalCode:'068',
+          name:'Boliviano'
+        },
+        {
+          value: 'BRL',
+          label: 'R$',
+          digitalCode:'986',
+          name:'Brazilian Real'
+        },
+        {
+          value: 'BSD',
+          label: '$',
+          digitalCode:'044',
+          name:'Bahamian Dollar'
+        },
+        {
+          value: 'BWP',
+          label: 'P',
+          digitalCode:'072',
+          name:'Pula'
+        },
+        {
+          value: 'BYN',
+          label: 'Br',
+          digitalCode:'933',
+          name:'Belarusian Ruble'
+        },
+        {
+          value: 'BZD',
+          label: '$',
+          digitalCode:'084',
+          name:'Belize Dollar'
+        },
+        {
+          value: 'CAD',
+          label: '$',
+          digitalCode:'124',
+          name:'Canadian Dollar'
+        },
+        {
+          value: 'EUR',
+          label: '€',
+          digitalCode:'978',
+          name:'Euro'
+        },
+        {
+          value: 'GBP',
+          label: '£',
+          digitalCode:'826',
+          name:'Pound Sterling'
+        },
+        {
+          value: 'HKD',
+          label: '$',
+          digitalCode:'344',
+          name:'Hong Kong Dollar'
+        },
+        {
+          value: 'INR',
+          label: '₹',
+          digitalCode:'356',
+          name:'Indian Rupee'
+        },
+        {
+          value: 'JPY',
+          label: '¥',
+          digitalCode:'392',
+          name:'Yen'
+        },
+        {
+          value: 'NGN',
+          label: '₦',
+          digitalCode:'566',
+          name:'Naira'
+        },
+        {
+          value: 'USD',
+          label: '$',
+          digitalCode:'840',
+          name:'US Dollar'
+        },
+      ];
+
+    
 
     const handleChange = name => event => {
       setValues({ ...values, [name]: event.target.value });
+    };
+
+    const handleChanged = (event) => {
+      setCurrency(event.target.value);
     };
 
     useEffect(() => {
@@ -189,7 +790,7 @@ const Currencies = () => {
           id:data.data[i].id, 
           description:data.data[i].description,
           name:data.data[i].name,
-          symbol:data.data[i].symbol
+          symbol:convertCurrency(data.data[i].code)
       })
          }
          setCurrencies(total)
@@ -206,6 +807,7 @@ const Currencies = () => {
       getCurrencies()
       swal("Success","Currency added successfully","success");
       setLoadin(false)
+      setOpen(false)
      })
      .catch((error)=>{
       console.log(`Error in Currency ${error}`)
@@ -240,6 +842,13 @@ const Currencies = () => {
       setOpen(true)
      }
 
+     function isReady(){
+       return ((values.description).trim()).length > 0
+        && ((values.name).trim()).length > 0
+         && ((values.symbol).trim()).length > 0
+         && ((values.code).trim()).length > 0
+     }
+
 
     return ( 
         <div className={classes.base}>
@@ -266,19 +875,20 @@ const Currencies = () => {
                   <Autocomplete
                     id="code"
                     inputValue={values.code}
-                    options={currenciesDetails}
-                    getOptionLabel={option => option.code}
+                    options={currenciez}
+                    getOptionLabel={option => option.value}
                     onChange={(event, value) => { 
-                      setValues({...values,code:value.code,name:value.name,symbol:value.symbol})
+                      setValues({...values,code:value.value,name:value.name,symbol:value.label})
                     }}
+                    renderOption={option => (
+                      <span>{option.digitalCode} ({option.value})</span> 
+                      )}
                     style={{ width: 300 }}
                     renderInput={params => (
                       <TextField
                         {...params}
                         size={'small'}
                         label="Code"
-                        value={values.code}
-                        
                         variant="outlined"
                         inputProps={{
                           ...params.inputProps,
@@ -292,12 +902,14 @@ const Currencies = () => {
                   <Autocomplete
                     id="cname"
                     inputValue={values.name}
-                    options={currenciesDetails}
+                    options={currenciezz}
                     getOptionLabel={option => option.name}
                     onChange={(event, value) => { 
-                     setValues({...values,code:value.code,name:value.name,symbol:value.symbol})
+                      setValues({...values,code:value.value,name:value.name,symbol:value.label})
                     }}
-
+                    renderOption={option => (
+                      <span>{option.name} ({option.label})</span> 
+                      )}
                     style={{ width: 300 }}
                     renderInput={params => (
                       <TextField
@@ -316,18 +928,16 @@ const Currencies = () => {
                 <div className={classes.lightLift}>
                   <Autocomplete
                     id="symbol"
-                    inputValue={values.name}
-                    options={currenciesDetails}
-                    getOptionLabel={option => option.name}
+                    inputValue={values.symbol}
+                    options={currenciezzz}
+                    getOptionLabel={option => (option.label)}
                     onChange={(event, value) => { 
-                      setValues({...values,code:value.code,name:value.name,symbol:value.symbol})
+                      setValues({...values,code:value.value,name:value.name,symbol:value.label})
                     }}
 
                     style={{ width:'100%'}}
                     renderOption={option => (
-                        <React.Fragment>
-                          <span dangerouslySetInnerHTML={ {__html:option.symbol} }></span>
-                        </React.Fragment>
+                      <span>{option.name} ({option.label})</span> 
                       )}
                     renderInput={params => (
                       <TextField
@@ -342,6 +952,7 @@ const Currencies = () => {
                       />
                     )}
                   />
+
                 </div>
                 <div className={classes.lightLift}>
                 <TextField 
@@ -371,7 +982,7 @@ const Currencies = () => {
           </Button>
           {!isUpDate?
           (!loadin ?
-          <Button variant="contained" onClick={()=> saveCurrency()} color="primary">
+          <Button variant="contained" disabled={!isReady()} onClick={()=> saveCurrency()} color="primary">
             Add New
           </Button>
           :
@@ -434,17 +1045,17 @@ const Currencies = () => {
                              <Grid item xs={12}>
                                  <div className={classes.header}>
                                     <Grid container spacing={2}>
-                                    <Grid item xs={4}>
+                                    <Grid item xs={3}>
                                         <Typography variant="subtitle1" gutterBottom>
                                          Code
                                        </Typography>
                                         </Grid>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={3}>
                                         <Typography variant="subtitle1" gutterBottom>
                                          Name
                                        </Typography>
                                         </Grid>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={3}>
                                         <Typography variant="subtitle1" gutterBottom>
                                          Symbol
                                        </Typography>
@@ -473,13 +1084,13 @@ const Currencies = () => {
                                        </Grid>
                                        <Grid item xs={3}>
                                        <Typography variant="subtitle1" gutterBottom>
-                                         <span style={{fontSize:25,position:'relative',top:'-.4em'}} dangerouslySetInnerHTML={ {__html:currency.symbol} }/>
+                                         {currency.symbol}
                                        </Typography>
                                         
                                        </Grid>
                                        <Grid item xs={3}>
                                        <div style={{position:'relative',top:'-10px'}}>
-                                         <Button onClick={()=>retriveUpdate(currency)} variant="contained" color="primary">
+                                         <Button onClick={()=>retriveUpdate(currency)} variant="contained">
                                           Update
                                           </Button>
                                          </div>

@@ -193,17 +193,17 @@ const AssetType = () => {
                              <Grid item xs={12}>
                                  <div className={classes.header}>
                                     <Grid container spacing={2}>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={3}>
                                         <Typography variant="subtitle1" gutterBottom>
                                          Code
                                        </Typography>
                                         </Grid>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={3}>
                                         <Typography variant="subtitle1" gutterBottom>
                                         Name
                                        </Typography>
                                         </Grid>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={3}>
                                         <Typography variant="subtitle1" gutterBottom>
                                          Asset Class
                                        </Typography>
