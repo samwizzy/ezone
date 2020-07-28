@@ -12,7 +12,6 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors'
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
@@ -20,7 +19,6 @@ import moment from 'moment'
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../App/selectors';
-import { AddAnnouncement } from '../../Accounting/components/AddButton'
 import AnnouncementItem from './announcements/AnnouncementItem'
 
 const useStyles = makeStyles(theme => ({
@@ -49,6 +47,7 @@ const Announcement = props => {
   const { loading, openNewAnnouncementDialog, openAnnouncementViewDialog, announcements } = props;
 
   const [state, setState] = React.useState({
+    announcements,
     search: '',
     severity: '',
     month: moment().format('MM'),
@@ -62,6 +61,23 @@ const Announcement = props => {
 
   const handleDateChange = name => date => {
     setState({ ...state, [name]: name === 'year' ? moment(date).format('YYYY') : moment(date).format('MM') })
+  }
+
+  const handleTextChange = (e) => {
+    const value = e.target.value;
+    let filteredAnnouncements = [];
+    if (value.length > 0) {
+      const regex = new RegExp(`^${value}`, 'i');
+      filteredAnnouncements = announcements && announcements.sort().filter(v => regex.test(v.title))
+    } else {
+      filteredAnnouncements = [...announcements]
+    }
+
+    setState((state) => ({
+      ...state,
+      announcements: filteredAnnouncements,
+      search: value
+    }))
   }
 
   console.log(announcements, "announcements")
@@ -92,7 +108,7 @@ const Announcement = props => {
               label="Search announcement"
               value={state.search}
               style={{ minWidth: 200 }}
-              onChange={handleChange}
+              onChange={handleTextChange}
               size="small"
               variant="outlined"
               margin="normal"
@@ -159,7 +175,7 @@ const Announcement = props => {
           </Toolbar>
         </Grid>
         <Grid item xs={12}>
-          {announcements && announcements.map((announcement, i) =>
+          {state.announcements && state.announcements.map((announcement, i) =>
             <AnnouncementItem key={i} announcement={announcement} />
           )}
         </Grid>

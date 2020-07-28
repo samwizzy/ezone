@@ -6,7 +6,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { withStyles, AppBar, Avatar, Box, Button, Icon, IconButton, Checkbox, Divider, Dialog, DialogActions, DialogContent, Grid, MenuItem, Slide, Slider, Popover, Typography, TextField, Toolbar } from '@material-ui/core';
+import { withStyles, AppBar, Avatar, Box, Button, Icon, IconButton, Checkbox, Divider, Dialog, DialogActions, DialogContent, Grid, MenuItem, Slide, Popover, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../../selectors';
 import * as Actions from '../../../actions';
 import AddIcon from '@material-ui/icons/Add';
@@ -20,9 +20,6 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
   },
-  dialog: {
-    width: 400
-  }
 }));
 
 const Ruler = withStyles(theme => ({
@@ -39,7 +36,7 @@ const questionTypes = [
   { label: 'Selection boxes', value: 'SELECTION_BOXES' },
 ]
 
-const optionTypes = ['MUTIPLE_CHOICE', 'SELECTION_BOXES']
+const optionTypes = ['MUTIPLE_CHOICE', 'SELECTION_BOXES', 'SCALE']
 
 const marks = [
   { value: 0, label: 'Poor' },
@@ -81,7 +78,7 @@ function Form2(props) {
         </Toolbar>
       </AppBar>
 
-      <DialogContent dividers classes={{ root: classes.dialog }}>
+      <DialogContent dividers>
         <Grid container>
           {form.questions && form.questions.map((question, i) =>
             <Fragment key={i}>
@@ -151,16 +148,6 @@ function Form2(props) {
                     Add more option
                   </Button>
                 </Grid>
-              }
-              {question.questionType === 'scale' &&
-                <Slider
-                  defaultValue={80}
-                  getAriaValueText={valuetext}
-                  aria-labelledby="discrete-slider-always"
-                  step={10}
-                  marks={marks}
-                  valueLabelDisplay="on"
-                />
               }
               <Grid item xs={12}><Ruler /></Grid>
             </Fragment>

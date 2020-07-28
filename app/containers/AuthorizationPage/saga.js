@@ -179,12 +179,12 @@ export function* userProfile({ payload }) {
     yield put(AppActions.getUserProfileSuccessAction(response));
   } catch (err) {
     if (err.message) {
-      yield put(AppActions.openSnackBar({ message: 'Session timeout', status: 'warning' }));
+      // yield put(AppActions.openSnackBar({ message: 'Session timeout', status: 'warning' }));
     } else {
       const error = yield call(errorHandler, err.response.json())
       console.log(error, "user profile error")
       if (error.error === 'invalid_token') {
-        yield put(AppActions.openSnackBar({ message: 'Invalid Token Access', status: 'error' }));
+        yield put(AppActions.openSnackBar({ message: 'Invalid access token', status: 'error' }));
         yield put(AppActions.getUserProfileErrorAction(error));
       } else {
         yield put(AppActions.openSnackBar({ message: error.message, status: 'error' }));

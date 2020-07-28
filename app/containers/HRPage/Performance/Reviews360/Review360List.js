@@ -12,7 +12,7 @@ import _ from 'lodash'
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../../App/selectors';
-import Feedback360Item from './feedbacks/Feedback360Item'
+import Feedback360Item from './reviews/Feedback360Item'
 
 const useStyles = makeStyles(theme => ({
   root: {

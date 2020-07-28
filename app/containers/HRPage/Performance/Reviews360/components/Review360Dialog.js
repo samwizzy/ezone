@@ -46,11 +46,11 @@ function Feedback360Dialog(props) {
     description: '',
     reviwees: [],
     questions: [{ ...questionsInitialState }],
-    visibility: [
-      { reviewee: false },
-      { hideIdentity: false },
-      { hideReplies: false },
-    ],
+    visibility: {
+      reviewee: false,
+      hideIdentity: false,
+      hideReplies: false,
+    },
     reviewers: []
   });
 
@@ -63,6 +63,10 @@ function Feedback360Dialog(props) {
   const handleChange = (event) => {
     const { name, value } = event.target
     setForm({ ...form, [name]: value });
+  }
+
+  const handleVisibilityChange = (event) => {
+    setForm({ ...form, visibility: { ...form.visibility, [event.target.name]: event.target.checked } });
   }
 
   const handleSelectChange = name => (event, obj) => {
@@ -132,6 +136,8 @@ function Feedback360Dialog(props) {
         onClose={closeNewFeedbackDialog}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
+        fullWidth
+        maxWidth="xs"
       >
         {step === 0 && (
           <Form1
@@ -162,6 +168,7 @@ function Feedback360Dialog(props) {
             handleSubmit={handleSubmit}
             handleDateChange={handleDateChange}
             handleSelectChange={handleSelectChange}
+            handleVisibilityChange={handleVisibilityChange}
           />
         )}
       </Dialog>
@@ -175,7 +182,7 @@ Feedback360Dialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  dialog: Selectors.makeSelectFeedbackDialog(),
+  dialog: Selectors.makeSelectReviewDialog(),
   employees: Selectors.makeSelectEmployees(),
   departments: Selectors.makeSelectDepartments(),
   branches: Selectors.makeSelectBranches(),

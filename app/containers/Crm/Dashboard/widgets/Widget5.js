@@ -86,26 +86,32 @@ const Widget5 = ({ tasks }) => {
           title="Tasks"
         />
         <CardContent>
-          <Table className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <TableCell component="th" scope="row">Name</TableCell>
-                <TableCell align="right">Created</TableCell>
-                <TableCell>Status</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {orderedTasks && orderedTasks.slice(0, 3).map((task, i) =>
-                <TableRow key={i}>
-                  <TableCell component="th" scope="row">{task.title}</TableCell>
-                  <TableCell align="right">{moment(task.dateCreated).format('DD/MM/YYYY')}</TableCell>
-                  <TableCell>
-                    <LensSharp className={classNames(classes.status, { [task.status]: true })} /> {task.status}
-                  </TableCell>
+          {orderedTasks && orderedTasks.length > 0 ?
+            <Table className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <TableCell component="th" scope="row">Name</TableCell>
+                  <TableCell align="right">Created</TableCell>
+                  <TableCell>Status</TableCell>
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
+              </TableHead>
+              <TableBody>
+                {orderedTasks && orderedTasks.slice(0, 3).map((task, i) =>
+                  <TableRow key={i}>
+                    <TableCell component="th" scope="row">{task.title}</TableCell>
+                    <TableCell align="right">{moment(task.dateCreated).format('DD/MM/YYYY')}</TableCell>
+                    <TableCell>
+                      <LensSharp className={classNames(classes.status, { [task.status]: true })} /> {task.status}
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+            :
+            <Typography variant="subtitle1" color="textSecondary" align="center">
+              No Tasks Available
+          </Typography>
+          }
         </CardContent>
       </Card>
     </div>

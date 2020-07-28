@@ -11,9 +11,9 @@ import Goals from './../Goals';
 import GoalsDetail from './../Goals/goal';
 import Recognition from './../Recognition';
 import RecognitionDetail from './../Recognition/recognition';
-import Feedback from './../Feedback360';
-import Feedback360Detail from './../Feedback360/feedback';
-import Reviews from './../Reviews';
+import Reviews360 from './../Reviews360';
+import Reviews360Detail from './../Reviews360/review';
+import Reviews from './../Feedback';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -61,8 +61,8 @@ function ModuleLayout(props) {
             <Route exact path={`${path}/goal/:id`} component={GoalsDetail} />
             <Route exact path={`${path}/recognitions`} component={Recognition} />
             <Route exact path={`${path}/recognition/:id`} component={RecognitionDetail} />
-            <Route exact path={`${path}/feedbacks`} component={Feedback} />
-            <Route exact path={`${path}/feedback/:id`} component={Feedback360Detail} />
+            <Route exact path={`${path}/feedbacks`} component={Reviews360} />
+            <Route exact path={`${path}/feedback/:id`} component={Reviews360Detail} />
             <Route exact path={`${path}/reviews`} component={Reviews} />
             <Route exact path={`${path}/review/:id`} component={Reviews} />
           </div>

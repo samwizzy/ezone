@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, Link as NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { Breadcrumbs, Box, Button, Divider, IconButton, Link, List, ListItem, ListItemText, ListItemSecondaryAction, Table, TableRow, TableCell, TableBody, Grid, Paper, Typography } from '@material-ui/core';
+import { CircularProgress, Breadcrumbs, Box, Button, Divider, IconButton, Link, List, ListItem, ListItemText, ListItemSecondaryAction, Table, TableRow, TableCell, TableBody, Grid, Paper, Typography } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -94,7 +94,7 @@ const GoalsItem = props => {
   const handleClick = () => { }
 
   if (!goal) {
-    return ''
+    return <CircularProgress />
   }
 
   return (

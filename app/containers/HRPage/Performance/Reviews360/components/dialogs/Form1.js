@@ -15,9 +15,6 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
   },
-  dialog: {
-    width: 400
-  }
 }));
 
 function Form1(props) {
@@ -47,7 +44,7 @@ function Form1(props) {
         </Toolbar>
       </AppBar>
 
-      <DialogContent dividers classes={{ root: classes.dialog }}>
+      <DialogContent dividers>
         <Grid container>
           <Grid item xs={12}>
             <Autocomplete

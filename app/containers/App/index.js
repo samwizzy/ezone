@@ -28,6 +28,7 @@ import CompanyStructure from '../CompanyStructurePage/CompanyStructure/Loadable'
 import CompanyStructureParty from '../CompanyStructurePage/CompanyStructure/components/PartyPage';
 import CompanyStructurePosition from '../CompanyStructurePage/CompanyStructure/components/PositionPage';
 import UsersPage from '../UsersPage/Loadable';
+import RoleRightsApp from '../Roles/Loadable';
 import Employees from '../UsersPage/EmployeePage/Loadable';
 import UserProfilePage from '../UsersPage/UserProfilePage/Loadable';
 import UtilityPage from '../UtilityPage/Loadable';
@@ -127,6 +128,9 @@ const App = props => {
                   <PrivateRoute exact path="/organization" component={organizationPage} />
 
                   <PrivateRoute exact path="/users" component={Employees} />
+
+                  <PrivateRoute path="/roles" component={RoleRightsApp} />
+
                   <PrivateRoute exact path="/user-profile" component={UserProfilePage} />
                   <PrivateRoute
                     exact

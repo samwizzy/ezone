@@ -45,6 +45,26 @@ export const GetUserByUUIDApi = `${BaseUrl}/authserv/api/v1/users/get_by_uuid`;
 export const UpdateUserProfileApi = `${BaseUrl}/authserv/api/v1/user/update_profile`;
 
 /** *****************************************************************
+ * Roles Rights endpoint
+ ******************************************************************* */
+
+export const CreateRoleApi = `${BaseUrl}/authserv/api/v1/roles/add`;
+export const UpdateRoleApi = `${BaseUrl}/authserv/api/v1/roles/update`;
+export const GetRoleByIdApi = `${BaseUrl}/authserv/api/v1/roles/{id}`;
+export const GetRolesApi = `${BaseUrl}/authserv/api/v1/roles`;
+export const GetRightsByRoleIdApi = `${BaseUrl}/authserv/api/v1/role`;
+
+export const CreateRightApi = `${BaseUrl}/authserv/api/v1/rights/add`;
+export const UpdateRightApi = `${BaseUrl}/authserv/api/v1/rights/update`;
+export const GetRightByIdApi = `${BaseUrl}/authserv/api/v1/rights/{id}`;
+export const GetRightsApi = `${BaseUrl}/authserv/api/v1/rights`;
+
+export const CreateRoleRightsApi = `${BaseUrl}/authserv/api/v1/roleRights/add`;
+export const UpdateRoleRightsApi = `${BaseUrl}/authserv/api/v1/roleRights/update`;
+export const GetRoleRightsByIdApi = `${BaseUrl}/authserv/api/v1/roleRights/{id}`;
+export const GetRolesRightsApi = `${BaseUrl}/authserv/api/v1/roleRights`;
+
+/** *****************************************************************
  * Utility endpoint
  ******************************************************************* */
 

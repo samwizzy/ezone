@@ -21,9 +21,6 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
   },
-  dialog: {
-    width: 400
-  }
 }));
 
 function Form3(props) {
@@ -33,15 +30,15 @@ function Form3(props) {
     dialog,
     form,
     employees,
-    handleNext,
-    handleChange,
+    handleSubmit,
     handleSelectChange,
     handleDateChange,
+    handleVisibilityChange,
   } = props;
 
   const canSubmitForm = () => {
-    const { title, description, reviewers } = form
-    return title.length > 0 && description.length > 0 && reviewers.length > 0
+    const { timeline, visibility, reviewers } = form
+    return timeline && visibility && reviewers.length > 0
   }
 
   return (
@@ -54,7 +51,7 @@ function Form3(props) {
         </Toolbar>
       </AppBar>
 
-      <DialogContent dividers classes={{ root: classes.dialog }}>
+      <DialogContent dividers>
         <Grid container>
           <Grid item xs={12}>
             <Autocomplete
@@ -70,41 +67,42 @@ function Form3(props) {
                   {...params}
                   variant="outlined"
                   label="Reviewers"
+                  margin="normal"
                   placeholder="Employee"
                 />
               )}
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="subtitle1">
+            <Typography variant="h6">
               Visibility
             </Typography>
-            <Typography variant="subtitle2">
+            <Typography variant="subtitle1">
               Set who you want to see this review
             </Typography>
 
             <FormGroup row>
               <FormControlLabel
-                control={<Checkbox checked={form.visibility.reviewee} onChange={handleChange} name="reviewee" />}
+                control={<Checkbox checked={form.visibility.reviewee} onChange={handleVisibilityChange} name="reviewee" />}
                 label="Reviewee"
               />
               <FormControlLabel
-                control={<Checkbox checked={form.visibility.hideIdentity} onChange={handleChange} name="hideIdentity" />}
+                control={<Checkbox checked={form.visibility.hideIdentity} onChange={handleVisibilityChange} name="hideIdentity" />}
                 label="Hide reviewer Identity from reviewee"
               />
             </FormGroup>
             <FormGroup row>
               <FormControlLabel
-                control={<Checkbox checked={form.visibility.hideReplies} onChange={handleChange} name="hideReplies" />}
+                control={<Checkbox checked={form.visibility.hideReplies} onChange={handleVisibilityChange} name="hideReplies" />}
                 label="Hide reviewer replies from other reviewers"
               />
             </FormGroup>
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="subtitle1">
+            <Typography variant="h6">
               Timeline
             </Typography>
-            <Typography variant="subtitle2">
+            <Typography variant="subtitle1">
               Reviewers will no longer be able to submit reviews after the set time
             </Typography>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -132,9 +130,9 @@ function Form3(props) {
       <DialogActions>
         <Button onClick={closeNewFeedbackDialog} color="primary">
           Cancel
-          </Button>
-        <Button onClick={handleNext} disabled={!canSubmitForm()} color="primary">
-          Next
+        </Button>
+        <Button onClick={handleSubmit} disabled={!canSubmitForm()} color="primary">
+          Save
         </Button>
       </DialogActions>
     </div>

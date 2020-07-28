@@ -31,6 +31,12 @@ const makeSelectRecognitionDialog = () =>
     subState => subState.recognitionDialog,
   );
 
+const makeSelectReviewDialog = () =>
+  createSelector(
+    selectPerformance,
+    subState => subState.reviewDialog,
+  );
+
 const makeSelectFeedbackDialog = () =>
   createSelector(
     selectPerformance,
@@ -113,5 +119,6 @@ export {
   makeSelectReviews,
   makeSelectGoalsDialog,
   makeSelectRecognitionDialog,
+  makeSelectReviewDialog,
   makeSelectFeedbackDialog,
 };

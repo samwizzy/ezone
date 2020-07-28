@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   table: {
+    whiteSpace: "nowrap",
     "& .MuiTableFooter-root": {
       borderTop: `1px solid ${theme.palette.divider} !important`,
     },
@@ -76,7 +77,7 @@ const Widget1 = ({ contacts }) => {
             <TableBody>
               <TableRow>
                 <TableCell component="th" align="center">
-                  <Typography variant="h3">{contacts.length}</Typography>
+                  <Typography variant="h2">{contacts.length}</Typography>
                   <Typography variant="h5">Contacts</Typography>
                 </TableCell>
                 <TableCell align="right">

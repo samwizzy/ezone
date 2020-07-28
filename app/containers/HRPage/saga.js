@@ -22,7 +22,6 @@ export function* getEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}?orgId=${user && user.organisation.orgId}`; // ?start=0&limit=10
-  console.log(accessToken, "accessToken get employees")
 
   try {
     const response = yield call(request, requestURL, {
@@ -109,7 +108,6 @@ export function* getDeptEmployees(id) {
 export function* getEmployeeByUUID({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.GetUserByUUIDApi}/${payload}`;
-  console.log('getEmployeeByUUID testing');
 
   try {
     const response = yield call(request, requestURL, {

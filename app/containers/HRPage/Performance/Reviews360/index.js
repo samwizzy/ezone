@@ -13,11 +13,11 @@ import * as AppSelectors from '../../../App/selectors';
 import * as AppActions from '../../../App/actions';
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
-import Feedback360List from './Feedback360List'
-import Feedback360Details from './feedback'
-import Feedback360Dialog from './components/Feedback360Dialog'
+import Review360List from './Review360List'
+import Feedback360Details from './review'
+import Review360Dialog from './components/Review360Dialog'
 
-export function Feedback360Page(props) {
+export function Review360Page(props) {
   const { getRecognitions, match } = props;
   const { params } = match
 
@@ -28,18 +28,18 @@ export function Feedback360Page(props) {
   return (
     <React.Fragment>
       <Helmet>
-        <title>Feedback360 Page</title>
-        <meta name="description" content="ezone application employee feedback360 page" />
+        <title>Review360 Page</title>
+        <meta name="description" content="ezone application employee review360 page" />
       </Helmet>
 
-      <Feedback360List />
+      <Review360List />
 
-      <Feedback360Dialog />
+      <Review360Dialog />
     </React.Fragment>
   );
 }
 
-Feedback360Page.propTypes = {
+Review360Page.propTypes = {
   token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
@@ -62,4 +62,4 @@ export default compose(
   withRouter,
   withConnect,
   memo,
-)(Feedback360Page);
+)(Review360Page);
