@@ -31,6 +31,7 @@ import { Grid,
     MenuItem } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { FixedAssetContext } from '.';
+import { getAssetType } from '../Settings/crud';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -138,9 +139,12 @@ const Assets = () => {
 
 
     useEffect(() => {
-      getAsset()
-      return () =>{
+      let mounted = true
+      if(mounted){
         getAsset()
+      }
+      return () =>{
+        mounted = false
       }
       },[])
   

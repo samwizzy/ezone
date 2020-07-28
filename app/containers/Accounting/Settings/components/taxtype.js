@@ -42,6 +42,7 @@ import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as crud from '../crud';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import DialogOfAccountPeriod from './DialogOfAccountPeriod';
 import moment from 'moment';
 // import ModuleLayout from '../../components/ModuleLayout';
@@ -109,18 +110,94 @@ const TaxType = () => {
     const handleClickClose = () => {
         setOpen(false);
       };
-    const currenciesDetails =[
-        {
-           
-            name:'VAT',
-            description:'lorem ipsum dollo sit amet, consectactum'
-        }
-    ]
+      const [loadin,setLoadin] = useState(false)
+      const [isUpdate,setIsUpate] = useState(false)
+    const [currenciesDetails,setCurrenciesDetails] =useState([]) 
+
+    const [values,setValues] = useState({
+      taxType:'',
+      description:''
+    })
+
+    const handleChange = name => event => {
+      setValues({ ...values, [name]: event.target.value });
+    };
+
+    //Update
+    useEffect(() => {
+      let mounted = true
+      if(mounted){
+        getTaxType()
+      }
+      return ()=>{
+       mounted = false
+      } 
+    },[])
+
+    function getTaxType(){
+      let taxes = []
+      crud.getTaxType()
+      .then((data)=>{
+        //console.log(`Tax Type ${JSON.stringify(data.data)}`)
+       for(let i=0;i<data.data.length;i++){
+        taxes.push({taxType:data.data[i].taxType,
+          description:data.data[i].description,
+        id:data.data[i].id})
+       }
+       setCurrenciesDetails(taxes)
+      })
+      .catch((error)=>{
+        console.log(`Error in Tax Type ${error}`)
+      })
+    }
+
+    function createTaxType(){
+      setLoadin(true)
+      crud.saveTaxType(values)
+      .then((data)=>{
+        swal("Success","Tax type created successfully","success");
+        getTaxType()
+        setLoadin(false)
+      })
+      .catch((error)=>{
+        swal("Error","Something went wrong","error");
+        setLoadin(false)
+      })
+    }
+
+    function updateTaxType(){
+      setLoadin(true)
+      crud.updateTaxType(values)
+      .then((data)=>{
+        swal("Success","Tax type Update successfully","success");
+        getTaxType()
+        setLoadin(false)
+        setOpen(false)
+      })
+      .catch((error)=>{
+        swal("Error","Something went wrong","error");
+        setLoadin(false)
+      })
+    }
+
+    function isReady(){
+      return values.taxType.length >= 1 && values.description.length >= 1 
+    }
+
+    function retriveUpdate(value){
+      //console.log(`update ${value}`)
+      setValues({...values,taxType:value.taxType,
+      description:value.description,id:value.id})
+      setIsUpate(true)
+      setOpen(true)
+    }
+
+
 
     return ( 
         <div className={classes.base}>
            
-           <div>
+      <div>
       <Dialog
         open={open}
         TransitionComponent={Transition}
@@ -129,7 +206,7 @@ const TaxType = () => {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle id="alert-dialog-slide-title">{"New Tax type"}</DialogTitle>
+        <DialogTitle id="alert-dialog-slide-title">{isUpdate?'Update Tax Type':'New Tax type'}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
 
@@ -139,7 +216,16 @@ const TaxType = () => {
                 <Grid item xs={12}>
               <Box p={1} className={classes.boxed}>
                 <div className={classes.lightLift}>
-                  <Autocomplete
+                <TextField
+                        size={'small'}
+                        value={values.taxType}
+                        style={{width:300}}
+                        onChange={handleChange('taxType')}
+                        label="Tax type name"
+                        variant="outlined"
+                        fullWidth
+                      />
+                  {/*<Autocomplete
                     id="name"
                     options={currenciesDetails}
                     getOptionLabel={option => option.name}
@@ -162,13 +248,14 @@ const TaxType = () => {
                         }}
                       />
                     )}
-                  />
+                  />*/}
                 </div>
                 <div className={classes.lightLift}>
                 <TextField
                         size={'small'}
-                        //label={calenderDay === 0 ? 'Select Day' : `Day ${calenderDay}`}
+                        onChange={handleChange('description')}
                         label="Description"
+                        value={values.description}
                         variant="outlined"
                         multiline
                         rows={5}
@@ -188,9 +275,23 @@ const TaxType = () => {
           <Button variant="contained" onClick={handleClickClose} color="textSecondary">
             Cancel
           </Button>
-          <Button variant="contained" color="primary">
+          {isUpdate ?
+          (!loadin ?
+            <Button variant="contained" onClick={()=>updateTaxType()} color="primary">
+            Update
+          </Button>
+          :
+          <CircularProgress size={30}/>
+          )
+          :
+          (!loadin?
+          <Button variant="contained" onClick={()=>createTaxType()} color="primary">
             Add
           </Button>
+          :
+          <CircularProgress size={30}/>
+          )
+          }
         </DialogActions>
       </Dialog>
       </div>
@@ -203,21 +304,23 @@ const TaxType = () => {
                      <div className={classes.softLift}>
                      <Grid container spacing={10}>
                          <Grid item xs={3}>
-                             <div>
-                             <Typography variant="subtitle1" gutterBottom>
-                             Taxes
+                          <div>
+                          <Typography variant="subtitle1" gutterBottom>
+                           Taxes
                            </Typography>
-                             </div>
+                          </div>
                          </Grid>
-                         <Grid item xs={9}>
-                             <div>
-                                 <div style={{float:'right'}}>
-                                 <Button className={classes.curve}
+                        <Grid item xs={9}>
+                       <div>
+                       <div style={{float:'right'}}>
+                       <Button className={classes.curve}
                       variant="contained"
                       color="primary"
                       type="button"
                       onClick={(e) =>{
                         e.preventDefault();
+                        setIsUpate(false)
+                        setValues({taxType:'',description:''})
                         setOpen(true);
                         
                       }}
@@ -254,19 +357,26 @@ const TaxType = () => {
                                  <div style={{paddingLeft:'20px'}}>
                              <Grid container spacing={3}>
                                  {currenciesDetails.map((currency)=>
-                                  <Grid key={currency.name} item xs={12}>
+                                  <Grid key={currency.decription} item xs={12}>
                                       <Grid container spacing={3}>
                                         <Grid item xs={12}>
                                         <Grid container spacing={3}> 
                                        <Grid item xs={4}>
                                         <Typography variant="subtitle1" gutterBottom>
-                                         {currency.name}
+                                         {currency.taxType}
                                        </Typography>
                                        </Grid>
-                                       <Grid item xs={8}>
+                                       <Grid item xs={5}>
                                        <Typography variant="subtitle1" gutterBottom>
                                          {currency.description}
                                        </Typography>
+                                       </Grid>
+                                       <Grid item xs={3}>
+                                         <div style={{position:'relative',top:'-10px'}}>
+                                         <Button onClick={()=>retriveUpdate(currency)} variant="contained" color="primary">
+                                          Update
+                                          </Button>
+                                         </div>
                                        </Grid>
                                        </Grid>
                                        </Grid>

@@ -25,6 +25,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { Autocomplete } from '@material-ui/lab';
 import { Euro, AttachMoney, Delete,ArrowBack } from '@material-ui/icons';
 import DateFnsUtils from '@date-io/date-fns'; // choose your lib
@@ -47,6 +48,7 @@ import moment from 'moment';
 // import ModuleLayout from '../../components/ModuleLayout';
 import months from './../../../../utils/months';
 import { SettingContext } from './SettingsLayout';
+import { PayloadContext } from './SettingsLayout';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -102,17 +104,96 @@ const useStyles = makeStyles(theme => ({
 const NewAssetType = () => {
     const classes = useStyles();
     const settingContext = useContext(SettingContext)
+    const payloadContext = useContext(PayloadContext)
+    const [loadin,setLoadin] = useState(false)
+    const [isUpDate,setIsUpdate] = useState(false)
+    const [values,setValues] = useState({
+      assetClass:'',
+      code:'',
+      description:'',
+      name:''
+    })
+
+    useEffect(() => {
+      let mounted = true
+      if(mounted){
+        checkIfUpdate();
+      }
+      return ()=>{
+        mounted = false
+      } 
+    },[])
+
+
+    async function checkIfUpdate(){
+      console.log(`is Update payload ${(JSON.stringify(payloadContext.payloadState))}`)
+      let isupdate = payloadContext.payloadState.update
+      if(isupdate){
+        setIsUpdate(isupdate)
+       setValues(payloadContext.payloadState.payload)
+     }
+    }
+
+    const handleChange = name => event => {
+      setValues({ ...values, [name]: event.target.value });
+    };
+
+    function createAssetType(){
+      setLoadin(true)
+      crud.createAssetType(values)
+      .then((data)=>{
+        swal("Success","Asset Type created successfully","success");
+        setLoadin(false)
+      })
+      .catch((error)=>{
+       console.log(`Error in Asset Type ${error}`)
+       setLoadin(false)
+      })
+    }
+
+    function upDateAssetType(){
+      setLoadin(true)
+      crud.updateAssetType(values)
+      .then((data)=>{
+        swal("Success","Asset Type updated successfully","success");
+        settingContext.settingDispatch({type:'UPDATE',update:false,payload:{}}) 
+        setLoadin(false)
+      })
+      .catch((error)=>{
+       console.log(`Error in Asset Type ${error}`)
+       setLoadin(false)
+      })
+    }
+
+    function isReady(){
+      return values.assetClass.length >= 1
+       && values.code.length >= 1 
+       && (values.description != undefined && values.description.length) >= 1
+       && values.name.length >= 1
+    }
+
+
     const assetClasses =[
         {
-            value:'01',
+            value:'TANGIBLE',
             label:'Tangible'
         },
         {
-            value:'02',
-            label:'Inangible'
+            value:'INTANGIBLE',
+            label:'Intangible'
         }
     ]
 
+    const assetClassConverter = (value) =>{
+     switch(value){
+       case 'INTANGIBLE':
+         return 'Intangible'
+         default:
+           return 'Tangible'
+     }
+    }
+
+    console.log(`Asset Type  got it  -> `, values);
     return ( 
         <div className={classes.base}>
               <div style={{marginBottom:'1em'}}>
@@ -128,26 +209,29 @@ const NewAssetType = () => {
                       <TextField
                         size={'small'}
                         label="Code"
+                        value={values.code}
+                        onChange ={handleChange('code')}
                         variant="outlined"
-                       fullWidth
+                       fullWidth={true}
                       />
                       </Grid>
                       <Grid item xs={6}>
                     <Autocomplete
                     id="assetcode"
                     options={assetClasses}
+                    inputValue={assetClassConverter(values.assetClass)}
                     getOptionLabel={option => option.label}
                     onChange={(event, value) => {
-                      //setMonthForCalender(event, value);
-                      //(value.value);
+                      setValues({...values,assetClass:value.value})
                     }}
-                    fullWidth
+                    
                     renderInput={params => (
                       <TextField
                         {...params}
                         size={'small'}
                         label="Asset Class"
                         variant="outlined"
+                        fullWidth={true}
                         inputProps={{
                           ...params.inputProps,
                           autoComplete: 'new-password', // disable autocomplete and autofill
@@ -161,8 +245,10 @@ const NewAssetType = () => {
                       <TextField
                         size={'small'}
                         label="Name"
+                        value={values.name}
+                        onChange ={handleChange('name')}
                         variant="outlined"
-                       fullWidth
+                        fullWidth={true}
                       />
                       </Grid>
 
@@ -170,24 +256,67 @@ const NewAssetType = () => {
                       <TextField
                         size={'small'}
                         label="Description"
+                        value={values.description === undefined ?'':values.description}
+                        onChange ={handleChange('description')}
                         variant="outlined"
                         multiline
                         rows={5}
-                       fullWidth
+                        fullWidth={true}
                       />
                       </Grid>
                       <Grid item xs={12}>
-                 <div style={{float:"right",padding:'10px'}}>
-                     <div>
-                     <Button
-                variant="contained"
-                onClick={()=>{settingContext.settingDispatch({type:'NAVIGATION',page:'assettype'})}}
-                startIcon={<ArrowBack />}
-              >
-                Back
-              </Button>
-                     </div>
-                 </div>
+                        <Grid container spacing={3}>
+                          <Grid item xs={4}>
+
+                          </Grid>
+                          <Grid item xs={4}>
+                            
+                          </Grid>
+                          <Grid item xs={4}>
+                            <Grid container spacing={1}>
+                              <Grid item xs={6}>
+                              <Button
+                              onClick={()=>window.location.reload(false)}
+                              variant="contained"
+                              style={{width:140}}
+                                 >
+                              Back
+                           </Button>
+                              </Grid>
+                              <Grid item xs={6}>
+                                {!isUpDate ?
+                                (!loadin?
+                              <Button
+                              disabled={!isReady()}
+                              variant="contained"
+                              color="primary"
+                              onClick={()=>createAssetType()}
+                              style={{width:140}}
+                                 >
+                              Create
+                           </Button>
+                           :
+                           <CircularProgress size={30}/>
+                           )
+                           :
+                           (!loadin?
+                            <Button
+                            variant="contained"
+                            color="primary"
+                            disabled={!isReady()}
+                            onClick={()=>upDateAssetType()}
+                            style={{width:140}}
+                               >
+                            Update
+                         </Button>
+                         :
+                         <CircularProgress size={30}/>
+                         )
+                           }
+                              </Grid>
+                            </Grid>
+                          </Grid>
+                        </Grid>
               </Grid>
                   </Grid>
               </Paper>

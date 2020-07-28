@@ -119,12 +119,33 @@ export async function setUptins() {
        }
        let payload ={...value,orgId:credentials.organisation.orgId,
         aquisitionValue:Number(value.aquisitionValue),length:Number(value.length),
-        quantity:Number(value.quantity),weigth:Number(value.weigth),width:Number(value.width)
+        quantity:Number(value.quantity),taxAmount:Number(value.taxAmount),weigth:Number(value.weigth),width:Number(value.width)
         }
 
         console.log(`Payload after completion ${JSON.stringify(payload)}`)
 
        return await axios.post(requestURL,payload,config)
+       .then(result => { console.log(result); return result; })
+       .catch(error => { console.error(error); return Promise.reject(error); });
+
+      }
+
+      export async function updateAsset(value){
+        let credentials = JSON.parse(localStorage.getItem('user'))
+        let accessToken = localStorage.getItem('access_token')
+        const requestURL = `${Endpoints.AddAssetApi}`;
+         const config = {
+           headers: { Authorization: `Bearer ${accessToken}`,
+           'Content-Type': 'application/json', }
+       }
+       let payload ={...value,orgId:credentials.organisation.orgId,
+        aquisitionValue:Number(value.aquisitionValue),length:Number(value.length),
+        quantity:Number(value.quantity),weigth:Number(value.weigth),width:Number(value.width)
+        }
+
+        console.log(`Payload after completion ${JSON.stringify(payload)}`)
+
+       return await axios.put(requestURL,payload,config)
        .then(result => { console.log(result); return result; })
        .catch(error => { console.error(error); return Promise.reject(error); });
 
@@ -141,6 +162,38 @@ export async function setUptins() {
        let payload ={...value,depreciatedValue:Number(value.depreciatedValue),percentageValue:Number(value.percentageValue),orgId:credentials.organisation.orgId}
 
        return await axios.post(requestURL,payload,config)
+       .then(result => { console.log(result); return result; })
+       .catch(error => { console.error(error); return Promise.reject(error); });
+
+      }
+
+      export async function updateDeprecitionType(value){
+        let credentials = JSON.parse(localStorage.getItem('user'))
+        let accessToken = localStorage.getItem('access_token')
+        const requestURL = `${Endpoints.UpdateDeprecitionTypeApi}`;
+         const config = {
+           headers: { Authorization: `Bearer ${accessToken}`,
+           'Content-Type': 'application/json', }
+       }
+       let payload ={...value,depreciatedValue:Number(value.depreciatedValue),percentageValue:Number(value.percentageValue)}
+       console.log(`Before load ${JSON.stringify(payload)}`)
+       return await axios.put(requestURL,payload,config)
+       .then(result => { console.log(result); return result; })
+       .catch(error => { console.error(error); return Promise.reject(error); });
+
+      }
+
+      export async function updateDeprecitionArea(value){
+        let credentials = JSON.parse(localStorage.getItem('user'))
+        let accessToken = localStorage.getItem('access_token')
+        const requestURL = `${Endpoints.UpdateDeprecitionAreaApi}`;
+         const config = {
+           headers: { Authorization: `Bearer ${accessToken}`,
+           'Content-Type': 'application/json', }
+       }
+       let payload ={...value,orgId:credentials.organisation.orgId}
+
+       return await axios.put(requestURL,payload,config)
        .then(result => { console.log(result); return result; })
        .catch(error => { console.error(error); return Promise.reject(error); });
 
@@ -209,4 +262,34 @@ export async function setUptins() {
        .then(result => { console.log(result); return result; })
        .catch(error => { console.error(error); return Promise.reject(error); });
     
+      }
+
+      export async function getAssetType(){
+        let credentials = JSON.parse(localStorage.getItem('user'))
+        let accessToken = localStorage.getItem('access_token')
+        const requestURL = `${Endpoints.GetAssetTypeByOrgIdApi}?orgId=${credentials.organisation.orgId}`;
+         const config = {
+           headers: { Authorization: `Bearer ${accessToken}`,
+           'Content-Type': 'application/json', }
+       }
+
+       return await axios.get(requestURL,config)
+      .then(result => { console.log(result); return result; })
+      .catch(error => { console.error(error); return Promise.reject(error); });
+
+      }
+
+      export async function getTaxType(){
+        let credentials = JSON.parse(localStorage.getItem('user'))
+        let accessToken = localStorage.getItem('access_token')
+        const requestURL = `${Endpoints.GetTaxTypeByOrgIdApi}?orgId=${credentials.organisation.orgId}`;
+         const config = {
+           headers: { Authorization: `Bearer ${accessToken}`,
+           'Content-Type': 'application/json', }
+       }
+
+       return await axios.get(requestURL,config)
+      .then(result => { console.log(result); return result; })
+      .catch(error => { console.error(error); return Promise.reject(error); });
+
       }

@@ -95,9 +95,12 @@ const FixedDetails = () => {
     const [contentDis,setContentDis] = useState({})
 
     useEffect(() => {
+      let mounted = true
+      if(mounted){
         getDetails()
+      }
         return () =>{
-          getDetails()
+        mounted = false
         }
         },[])
     

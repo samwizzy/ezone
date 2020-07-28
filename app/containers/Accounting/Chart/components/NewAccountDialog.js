@@ -108,6 +108,7 @@ const NewAccountDialog = props => {
 
   // Load AccTypes
   useEffect(() => {
+    let mounted = true
     async function getAllAccountTypeFromSev() {
       /*  console.log(`context from new ${chartContext.chartState.viewId}`)
       const config = {
@@ -140,13 +141,11 @@ const NewAccountDialog = props => {
 
 
     }
-
-    getAllAccountTypeFromSev();
-    //makeParent();
-
-    return () => {
+     if(mounted){
       getAllAccountTypeFromSev();
-      //makeParent();
+     }
+    return () => {
+      mounted = false
     };
   }, []);
 
@@ -254,16 +253,19 @@ const NewAccountDialog = props => {
   };
 
   useEffect(() => {
+    let mounted = true
     function doUpdate() {
       if (accountDialog.type == 'edit') {
         const {accountCode,accountName,accountNumber, accountTypeId,bankBalance,bankName,description,openingBalance,id} = accountDialog.data
         setValues({ ...values, accountCode,accountName,accountNumber,accountTypeId,bankBalance,bankName,description,openingBalance,id});
       }
     }
-    doUpdate();
-
+    
+    if(mounted){
+    doUpdate()
+    }
     return () => {
-      doUpdate();
+      mounted = false
     };
 
   }, [accountDialog.data]);

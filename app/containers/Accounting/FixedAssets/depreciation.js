@@ -1,4 +1,4 @@
-import React,{useState,useContext} from 'react';
+import React,{useState,useContext,useEffect} from 'react';
 import {
     makeStyles,
     Button,
@@ -22,7 +22,8 @@ import {
   import Autocomplete from '@material-ui/lab/Autocomplete';
   import SendIcon from '@material-ui/icons/ArrowBack';
   import BackIcon from '@material-ui/icons/ArrowBack';
-  import * as crud from '../Settings/crud';
+  import CircularProgress from '@material-ui/core/CircularProgress';
+  import * as crud from './crud';
   import swal from 'sweetalert';
   import { BrowserRouter as Router, Switch,useParams, Route,useRouteMatch } from "react-router-dom";
   import * as Enum from '../Settings/enums';
@@ -43,6 +44,9 @@ import {
     titleText:{
         fontWeight:600,
         color:'black'
+    },
+    loading:{
+     fontSize:'10px'
     },
     curve:{
         borderRadius:'6px'
@@ -67,7 +71,9 @@ const DepreciationSetup = () => {
     const settingContext = useContext(SettingContext);
     const [method,setMethod] = useState('Straightline');
     const [calculation,setCalculation] = useState('ATU');
+    const [isCreated, setIsCreated] = useState(false);
     const methodType = Enum.DeprecitionMethod
+    const [loadin,setLoadin] = useState(false);
 
   const [selectedDate, setSelectedDate] = useState();
 
@@ -83,13 +89,60 @@ const DepreciationSetup = () => {
       calculationBase: 'MONTHLY',
       code: '',
       depreciatedValue: '',
-      depreciationRate: '',
+      //depreciationRate:0,
       description: '',
       method: 'STRAIGHT_LINE',
       percentageValue: '',
-      validFrom: (new Date('2020-08-18T21:11:54')).toISOString(),
-      validTo: (new Date('2021-08-18T21:11:54')).toISOString()
+      validFrom: getInitialDate('from'),
+      validTo: getInitialDate('to')
     })
+
+    function getInitialDate(value){
+     let date = new Date();
+     let month = date.getUTCMonth()
+     let day = date.getUTCDate()
+     let year = value==='from'?date.getUTCFullYear():date.getUTCFullYear() + 1
+     return (new Date(`${year}-${month}-${day}`)).toISOString()
+    }
+
+    useEffect(() => {
+      let mounted = true
+      if(mounted){
+        checkAlreadyCreated()
+      }
+      return () =>{
+        mounted = false
+      }
+      },[])
+
+      function checkAlreadyCreated(){
+        crud.getDeprecitionType()
+        .then((data)=>{
+          if(data.data.length > 0){
+            setValues({
+              ...values,
+              calculationBase:data.data[0].calculationBase,
+              code: data.data[0].code,
+              dateCreated:data.data[0].dateCreated,
+              dateUpdated:data.data[0].dateUpdated,
+             depreciatedValue: data.data[0].depreciatedValue,
+            depreciationRate:data.data[0].depreciationRate,
+            description: data.data[0].description,
+            id:data.data[0].id,
+           method: data.data[0].method,
+           orgId: data.data[0].orgId,
+          percentageValue: data.data[0].percentageValue,
+          validFrom: data.data[0].validFrom,
+          validTo: data.data[0].validTo
+            })
+            setIsCreated(true)
+          }
+         //.log(`DepreciationType...... ${JSON.stringify(data.data)}`)
+        })
+        .catch((error)=>{
+
+        })
+      }
 
     const handleChange = name => event => {
       setValues({ ...values, [name]: event.target.value });
@@ -109,10 +162,12 @@ const DepreciationSetup = () => {
     const calculationBase = Enum.DepreciationCalculationBase
 
     function isReady(){
+     let percent = Number(values.percentageValue)
+     let deprecition = Number(values.depreciatedValue)
       return values.code.length >= 1 
-      && values.depreciatedValue.length >= 1
+      && deprecition > 0
        && values.description.length > 1
-       && values.percentageValue.length > 1
+       && (100 > percent && percent > 0)
     }
 
     function calculationConverter(value){
@@ -125,18 +180,73 @@ const DepreciationSetup = () => {
          return 'Aquisition / Total useful';   
       }
     }
+   
 
-    function saveDeprecitionType(){
-      crud.saveDeprecitionType(values)
+   function calculationBaseConverter(value){
+     switch(value){
+     case 'QUARTERLY':
+       return 'Quarterly' 
+       default:
+         return 'Monthly' 
+     }
+   }
+
+    function methodConverter(value){
+      //console.log(`Who goes here ${value}`)
+      let result = '';
+      switch(value){
+      case 'STRAIGHT_LINE':
+      result = 'Straight Line'
+      break;
+      case 'UNIT_OF_PRODUCTION':
+        result = 'Unit of Production'
+        break;
+      case 'SUM_OF_THE_YEAR_DIGIT':
+       result = 'Sum of the year Digit'
+       break;
+       case 'DOUBLE_DECLINING':
+       result = 'Double Declining'
+       break;
+       case 'REDUCING_BALANCE':
+      result = 'Reducing Balance'
+      break;
+     default :
+     result = 'Straight Line'
+      }
+      //console.log(`swictcing result ${result}`)
+      return result;
+    }
+
+
+    function updateDeprecitionType(){
+      setLoadin(true);
+      crud.updateDeprecitionType(values)
      .then((data)=>{
-      swal("Success","Depreciation Type created successfully","success");
+      checkAlreadyCreated()
+      swal("Success","Depreciation Type Updated successfully","success");
+      setLoadin(false)
      })
      .catch((error)=>{
       swal("Error","Something went wrong. Please check your connection","error");
+      setLoadin(false)
      })
     }
 
-    console.log(`values  got it  -> `, values);
+    function saveDeprecitionType(){
+      setLoadin(true);
+      crud.saveDeprecitionType(values)
+     .then((data)=>{
+      checkAlreadyCreated()
+      swal("Success","Depreciation Type created successfully","success");
+      setLoadin(false)
+     })
+     .catch((error)=>{
+      swal("Error","Something went wrong. Please check your connection","error");
+      setLoadin(false)
+     })
+    }
+
+    //console.log(`values  got it  -> `, values);
 
     return (  
         <div className={classes.root}>
@@ -160,6 +270,7 @@ const DepreciationSetup = () => {
                       <TextField 
                         id="code"
                          label="Code"
+                         value={values.code}
                          onChange ={handleChange('code')}
                          size={'small'}
                           variant="outlined"
@@ -171,6 +282,7 @@ const DepreciationSetup = () => {
                       <TextField className={classes.inputBox}
                         id="description"
                          label="Description"
+                         value={values.description}
                          onChange ={handleChange('description')}
                          size={'small'}
                           variant="outlined"
@@ -185,6 +297,7 @@ const DepreciationSetup = () => {
                       <div className={classes.lift}>
                           <Autocomplete className={classes.inputBox}
                               id="methodType"
+                              inputValue ={methodConverter(values.method)}
                               onChange={(event, value) => {
                                setValues({...values,method:value.value})
                               }}
@@ -203,6 +316,7 @@ const DepreciationSetup = () => {
                       <div className={classes.lift}>
                           <Autocomplete className={classes.inputBox}
                               id="calculationBase"
+                              inputValue ={calculationBaseConverter(values.calculationBase)}
                              options={calculationBase}
                              getOptionLabel={(option) => option.label}
                              onChange={(event, value) => {
@@ -234,6 +348,7 @@ const DepreciationSetup = () => {
                         <TextField className={classes.inputBox}
                         id="mindepreciationvalue"
                         type="number"
+                        value={values.depreciatedValue}
                          label="Minimum Depreciated value(Residual value)"
                          onChange ={handleChange('depreciatedValue')}
                           variant="outlined"
@@ -266,7 +381,7 @@ const DepreciationSetup = () => {
                   <KeyboardDatePicker
                   disableToolbar
                   label="From"
-                  variant="outlined"
+                  inputVariant="outlined"
                   size={'small'}
                   format="MM/dd/yyyy"
                    margin="normal"
@@ -284,7 +399,7 @@ const DepreciationSetup = () => {
                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
                   disableToolbar
-                  variant="outlined"
+                  inputVariant="outlined"
                   label="To"
                   size={'small'}
                   format="MM/dd/yyyy"
@@ -527,7 +642,25 @@ const DepreciationSetup = () => {
 
               <Grid item>
                 <div>
-                  
+                  {isCreated ?
+                  (!loadin ?
+                   <Button
+                   variant="contained"
+                   color="primary"
+                   type="button"
+                   disabled={!isReady()}
+                   onClick={(e) =>{
+                     e.preventDefault();
+                     updateDeprecitionType()
+                   }}
+                 >
+                   Update
+               </Button>
+               :
+               <CircularProgress size={30}/>
+                  )
+                  :
+                  (!loadin ?
                     <Button
                       variant="contained"
                       color="primary"
@@ -540,8 +673,11 @@ const DepreciationSetup = () => {
                     >
                       Save
                   </Button>
+                  :
+                  <CircularProgress size={30}/>
+                  )
                   
-
+                    }
                 </div>
               </Grid>
             </Grid>

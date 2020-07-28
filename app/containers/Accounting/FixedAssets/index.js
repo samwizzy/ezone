@@ -47,7 +47,7 @@ const FixedAssets = () => {
       fixed:true,
       newasset:false,
       details:false,
-      display:0 
+      display:0, 
     }
 
     const reducer = (state, action) => {

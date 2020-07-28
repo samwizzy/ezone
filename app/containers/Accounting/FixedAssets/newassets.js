@@ -20,6 +20,17 @@ import {
   import * as crud from './crud';
   import * as Enum from './enums';
   import Joker from './joker.jpg';
+  import swal from 'sweetalert';
+  import CircularProgress from '@material-ui/core/CircularProgress';
+  import DateFnsUtils from '@date-io/date-fns'; // choose your lib
+import {
+  DatePicker,
+  TimePicker,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+  DateTimePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
   import UploadIcon from '@material-ui/icons/AddAPhotoOutlined';
   import { BrowserRouter as Router, Switch,useParams, Route,useRouteMatch } from "react-router-dom";
   import { FixedAssetContext } from './index';
@@ -66,15 +77,13 @@ const NewAsset = () => {
     const fileInput = useRef();
     const [imageView,setImageView] = useState('');
     const [isFilled,setIsFilled] = useState(false)
+    const [loadin,setLoadin] = useState(false)
+    const [isUpdate,setIsUpdate] = useState(false)
     const [depreciationType,setDepreciationType] = useState()
     const [location,setLocation] = useState();
 
-    const assetType =[
-        {
-            value: 'PLANT_MACHINERY',
-            label: 'Plant and Machinery',
-          }
-    ]
+    const [assetType,setAssetType] = useState()
+    const [taxType,setTaxType] = useState()
 
     const onDrop = useCallback((acceptedFiles) => {
       acceptedFiles.forEach((file) => {
@@ -96,6 +105,36 @@ const NewAsset = () => {
       
     }, [])
 
+
+    /*useEffect(() => {
+      let mounted = true
+      if(mounted){
+        isEdit()
+      }
+        return () =>{
+        mounted = false
+          }
+        },[])*/
+
+
+        function isEdit(){
+         crud.getAsset()
+         .then((data)=>{
+          let id = fixedContext.fixedState.display
+          for(let i=0;i<data.data.length;i++){
+            if(data.data[i].id === id){
+              setIsUpdate(true)
+              setValues(data.data[i])
+              break;
+            }
+          }
+         
+         })
+         .catch((error)=>{
+          console.log(`Error from Update ${error}`)
+         }) 
+        }
+
     const toBase64 = file => new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -107,65 +146,89 @@ const NewAsset = () => {
 
    
     const [values,setValues] = useState({
+      aquisitionDate: (new Date).toISOString(),
       aquisitionValue: '',//number
       assetId: '',
       assetName: '',
-     assetNumber: '',
-     assetType: '',
-     barcode: '',
-     condition: '',
-     depreciationAccountId:'',
-     depreciationType:{},
-     depreciationValue:0,
-    description: '',
-    //disposalAccountId: 0,
-    image: {
-    file: '',
-    fileName: '',
-    fileUrl: ''
-   },
-    length: '',//number
-   location: '',
-   measurement: '',
-   quantity: '',//number
-  // taxAccountId: 0,
-   weigth: '',//number
-   width: ''//number
+      assetNumber: '',
+      assetStatus: '',
+      assetTypeId: 0,
+      barcode: '',
+      condition: '',
+      description: '',
+      image: {
+        file: '',
+        fileName: '',
+        fileUrl: ''
+      },
+      length: '',//number
+      location: '',
+      manufacturer: '',
+      measurement: '',
+      orgId: '',
+      quantity: '',//number
+      taxAccountId: 0,
+      taxAmount: '',//number
+      weigth: '',//number
+      width: ''//number
     })
 
     function isReady(){
       return values.weigth.length >= 1 && values.width.length >= 1 
-      && values.quantity.length >= 1 && values.measurement.length>= 1
-      && values.location.length >= 1 && values.length.length>= 1
-      && values.image.fileName.length >= 1 && values.description.length >= 1
-      && values.condition.length>=1 && values.barcode.length>=1 && values.assetId.length>=1
-      && values.assetName.length >= 1 && values.assetType.length >= 1 && values.aquisitionValue.length >= 1
+      && values.quantity.length >= 1 && values.measurement.length>= 1 && values.taxAmount.length >= 1
+      && values.location.length >= 1 && values.length.length>= 1 && values.manufacturer.length >= 1
+      && values.image.fileName.length >= 1 && values.description.length >= 1 && values.assetStatus.length >= 1
+      && values.assetStatus.length>=1 && values.barcode.length>=1 && values.assetId.length>=1
+      && values.assetName.length >= 1 && values.aquisitionValue.length >= 1
     }
 
     //Get needed parameters
     useEffect(() => {
-      getRequiredParameter();
-      return ()=>{
+      let mounted = true
+      if(mounted){
         getRequiredParameter()
+      }
+      return ()=>{
+        mounted = false
       } 
     },[])
 
     function getRequiredParameter(){
      let location = []
-     crud.getDeprecitionType()
+     let type = []
+     let tax = []
+     crud.getAssetType()
      .then((data)=>{
-       console.log(`Confirming it ${JSON.stringify(data.data)}`)
-       for(let i=0;i<data.data.length;i++){
-         if(data.data[i].calculationBase != null){
-           setValues({...values,depreciationAccountId:data.data[i].id,
-            depreciationValue:data.data[i].depreciatedValue,depreciationType:data.data[i]})
-          break;
-         }
-         
-       }
+       //console.log(`AssetTypes ${JSON.stringify(data.data)}`)
+      // console.log(`Confirming it ${JSON.stringify(data.data)}`)
+      for(let i=0;i<data.data.length;i++){
+        if(data.data[i].name != null){
+          type.push(
+            {
+              id: data.data[i].id,
+              name: data.data[i].name
+            }
+          )
+        }
+      
+     }
+     setAssetType(type)
      })
      .catch((error)=>{
-      console.log(`Error occured for depreciation ${error}`)
+      console.log(`Error occured for AssetType ${error}`)
+     })
+     //Get Tax
+     crud.getTaxType()
+     .then((data)=>{
+       //console.log(`Tax Type ${JSON.stringify(data.data)}`)
+       for(let j=0;j<data.data.length;j++){
+        tax.push({id:data.data[j].id,taxType:data.data[j].taxType})
+       }
+       setTaxType(tax);
+      
+     })
+     .catch((error)=>{
+       console.log(`Tax Type Error ${error}`)
      })
      //Get Location
      crud.getOrganisationParties()
@@ -185,6 +248,11 @@ const NewAsset = () => {
      setLocation(location);
     }
 
+    const handleDateChange = (date) => {
+      setValues({ ...values,aquisitionDate:(new Date(date)).toISOString()})
+    };
+  
+
     const status =Enum.AssetStatus
 
     const mesurement = Enum.AssetMeasurement
@@ -195,7 +263,20 @@ const NewAsset = () => {
 
 
     function createAsset(){
+      setLoadin(true)
       crud.createNewAsset(values)
+      .then((data)=>{
+       swal("Success","Asset created successfully","success");
+       setLoadin(false)
+      })
+      .catch((error)=>{
+       swal("Error","Something went wrong. Please check your connection","error");
+       setLoadin(false)
+      })
+    }
+
+    function updateAsset(){
+      crud.updateAsset(values)
       .then((data)=>{
        swal("Success","Asset created successfully","success");
       })
@@ -296,6 +377,7 @@ const NewAsset = () => {
                                     id="description"
                                     label="Description"
                                     variant="outlined"
+                                    value={values.description}
                                   margin="normal"
                                   onChange ={handleChange('description')}
                                 fullWidth
@@ -315,6 +397,7 @@ const NewAsset = () => {
                                     label="Asset Name"
                                     required
                                     size={'small'}
+                                    value={values.assetName}
                                     onChange ={handleChange('assetName')}
                                     variant="outlined"
                                     fullWidth
@@ -326,6 +409,7 @@ const NewAsset = () => {
                                     id="assetId"
                                     label="Asset ID"
                                     required
+                                    value={values.assetId}
                                     onChange ={handleChange('assetId')}
                                     size={'small'}
                                     fullWidth
@@ -337,9 +421,9 @@ const NewAsset = () => {
                                     <Autocomplete
                                     id="assetype"
                                     options={assetType}
-                                    getOptionLabel={option => option.label}
+                                    getOptionLabel={option => (option.name).toUpperCase()}
                                     onChange={(event, value) => {
-                                      setValues({...values,assetType:value.value})
+                                      setValues({...values,assetType:value.name,assetTypeId:value.id})
                                      }}
                                      renderInput={params => (
                                    <TextField
@@ -358,6 +442,7 @@ const NewAsset = () => {
                                     id="assetnum"
                                     label="Asset Number"
                                     required
+                                    value={values.assetNumber}
                                     onChange ={handleChange('assetNumber')}
                                     size={'small'}
                                     variant="outlined"
@@ -383,6 +468,7 @@ const NewAsset = () => {
                         label="Manufacturer"
                         required
                           variant="outlined"
+                          value={values.manufacturer}
                           onChange ={handleChange('manufacturer')}
                           size={'small'}
                           margin="normal"
@@ -395,6 +481,7 @@ const NewAsset = () => {
                        id="barcode"
                         label="Barcode"
                         required
+                          value={values.barcode}
                           variant="outlined"
                           onChange ={handleChange('barcode')}
                           size={'small'}
@@ -456,6 +543,7 @@ const NewAsset = () => {
                                  id="length"
                                  type="number"
                                  placeholder={'Select'}
+                                 value={values.length}
                                  variant="outlined"
                                  onChange ={handleChange('length')}
                                  size={'small'}
@@ -467,6 +555,7 @@ const NewAsset = () => {
                                  <TextField
                                  id="width"
                                  placeholder={'Select'}
+                                 value={values.width}
                                  size={'small'}
                                  type="number"
                                  onChange ={handleChange('width')}
@@ -487,6 +576,7 @@ const NewAsset = () => {
                                  id="weight"
                                  size={'small'}
                                  type="number"
+                                 value={values.weigth}
                                  onChange ={handleChange('weigth')}
                                  label="Weight"
                                  fullWidth
@@ -519,6 +609,7 @@ const NewAsset = () => {
                                  id="quantity"
                                  type="number"
                                  variant="outlined"
+                                 value={values.quantity}
                                  onChange ={handleChange('quantity')}
                                  label="Quantity"
                                  size={'small'}
@@ -533,7 +624,7 @@ const NewAsset = () => {
                               options={status}
                           getOptionLabel={option => option.label}
                           onChange={(event, value) => {
-                            setValues({...values,condition:value.value})
+                            setValues({...values,assetStatus:value.value})
                            }}
                           renderInput={params => (
                             <TextField
@@ -579,36 +670,59 @@ const NewAsset = () => {
                     <Grid container spacing={3}>
                    
                          <Grid item xs={6}>
+                           <div style={{position:'relative',top:'.65em'}}>
                          <TextField
                                  id="aquivalue"
                                  type="number"
                                  size={'small'}
                                  variant="outlined"
+                                 value={values.aquisitionValue}
                                  onChange ={handleChange('aquisitionValue')}
                                  label="Aquisition value (Cost of Asset)"
                                     margin="normal"
                                     fullWidth
-                                 />   
+                                 /> 
+                                 </div>  
                          </Grid>
 
                          <Grid item xs={6}>
                          <Grid container spacing={3}>
                                  <Grid item xs={12}>
-                                 <Typography variant="subtext1" color="textSecondary">
+                                   <div style={{position:'relative',top:'-1em'}}>
+                                 <Typography variant="h6" color="textSecondary">
                                    Tax liable
                                    </Typography>
+                                   </div>
                                  </Grid>
 
                                  <Grid item xs={12}>
-                                <TextField style={{marginTop:'-1.8em'}}
+                                 <Autocomplete style={{marginTop:'-2em'}}
+                          id="taxacc"
+                          options={taxType}
+                          getOptionLabel={option => option.taxType}
+                          onChange={(event, value) => {
+                            setValues({...values,taxAccountId:value.id})
+                           }}
+                          renderInput={params => (
+                            <TextField
+                              {...params}
+                              label="Tax Account"
+                              size={'small'}
+                              variant="outlined"
+                              fullWidth
+                            />
+                          )}
+                        />
+                               {/* <TextField }
                                  id="taxacc"
                                  size={'small'}
                                  variant="outlined"
-                                // onChange ={handleChange('taxAccount')}
+                                 value={values.taxAccountId}
+                                 onChange ={handleChange('taxAccount')}
                                  label="Tax Account"
                                     margin="normal"
                                     fullWidth
-                                 />   
+                                 /> */} 
                              </Grid>
 
                              <Grid item xs={12}>
@@ -616,7 +730,8 @@ const NewAsset = () => {
                                  id="taxacc"
                                  size={'small'}
                                  variant="outlined"
-                                // onChange ={handleChange('taxAmount')}
+                                 value={values.taxAmount}
+                                onChange ={handleChange('taxAmount')}
                                  label="Tax Amount"
                                     margin="normal"
                                     fullWidth
@@ -665,15 +780,25 @@ const NewAsset = () => {
                          </Grid>
 
                          <Grid item xs={6}>
-                           <div style={{marginTop:'-5.6em'}}>
-                         <TextField
-                                 id="aquidate"
-                                 size={'small'}
-                                 variant="outlined"
-                                 label="Aquisition Date"
-                                    margin="normal"
-                                    fullWidth
-                                 />  
+                           <div style={{position:'relative',top:'-6.1em'}}>
+                           <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <KeyboardDatePicker
+                        autoOk
+                        format="MM/dd/yyyy"
+                        margin="normal"
+                        inputVariant="outlined"
+                        name="previous"
+                        size="small"
+                        id="date-picker-startDate"
+                        label="Aquisition Date"
+                        value={values.aquisitionDate}
+                        onChange={handleDateChange}
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                        }}
+                      />
+                    </MuiPickersUtilsProvider>
+                          
                                  </div> 
                          </Grid>
                          
@@ -701,6 +826,8 @@ const NewAsset = () => {
               </Button>
                   </Grid> 
                   <Grid item xs={3}>
+                    {!isUpdate ?
+                    (!loadin?
                   <Button
                   disabled={!isReady()}
                   onClick={()=>createAsset()}
@@ -710,6 +837,24 @@ const NewAsset = () => {
               >
                 Create
               </Button>
+              :
+              <CircularProgress size={30}/>
+                )
+              :
+               (!loadin?
+                <Button
+                disabled={!isReady()}
+                onClick={()=>updateAsset()}
+                color="primary"
+                style={{width:'100%'}}
+              variant="contained"
+            >
+              Update
+            </Button>
+            :
+            <CircularProgress size={30}/>
+               )
+                }
                   </Grid> 
                   
                   </Grid> 
