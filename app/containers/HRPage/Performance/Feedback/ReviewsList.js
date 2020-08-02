@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ReviewsList = props => {
+const FeedbacksList = props => {
   const classes = useStyles();
   const { loading, openNewReviewDialog, getReviews, getReviewById, reviews } = props;
 
@@ -114,7 +114,7 @@ const ReviewsList = props => {
         <Grid item md={12}>
           <MUIDataTable
             className={classes.datatable}
-            title="Reviews"
+            title="Feedbacks"
             data={reviews}
             columns={columns}
             options={options}
@@ -125,7 +125,7 @@ const ReviewsList = props => {
   );
 };
 
-ReviewsList.propTypes = {
+FeedbacksList.propTypes = {
   loading: PropTypes.bool,
   openNewReviewDialog: PropTypes.func,
 };
@@ -153,4 +153,4 @@ export default compose(
   withRouter,
   withConnect,
   memo,
-)(ReviewsList);
+)(FeedbacksList);

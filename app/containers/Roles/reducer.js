@@ -10,13 +10,14 @@ export const initialState = {
   loading: false,
   error: false,
   employees: [],
+  modules: [],
   roles: [],
   role: null,
   rights: [],
   right: null,
   roleRights: [],
   roleRight: null,
-  roleRightForm: {
+  roleRightState: {
     type: 'new'
   },
   roleDialog: {
@@ -282,6 +283,27 @@ const roleRightsReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_EMPLOYEES_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          messages: action.payload,
+        };
+      }
+      case Constants.GET_MODULES: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.GET_MODULES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          modules: action.payload,
+        };
+      }
+      case Constants.GET_MODULES_ERROR: {
         return {
           ...state,
           loading: false,

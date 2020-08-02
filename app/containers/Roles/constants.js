@@ -7,6 +7,10 @@ export const GET_EMPLOYEES = 'app/RolerRights/GET_EMPLOYEES';
 export const GET_EMPLOYEES_SUCCESS = 'app/RoleRights/GET_EMPLOYEES_SUCCESS';
 export const GET_EMPLOYEES_ERROR = 'app/RoleRights/GET_EMPLOYEES_ERROR';
 
+export const GET_MODULES = 'app/RoleRights/GET_MODULES';
+export const GET_MODULES_SUCCESS = 'app/RoleRights/GET_MODULES_SUCCESS';
+export const GET_MODULES_ERROR = 'app/RoleRights/GET_MODULES_ERROR';
+
 export const GET_ROLES = 'app/RoleRights/GET_ROLES';
 export const GET_ROLES_SUCCESS = 'app/RoleRights/GET_ROLES_SUCCESS';
 export const GET_ROLES_ERROR = 'app/RoleRights/GET_ROLES_ERROR';

@@ -30,13 +30,13 @@ const Ruler = withStyles(theme => ({
 
 const questionTypes = [
   { label: 'Text', value: 'TEXT' },
-  { label: 'Multiple choice', value: 'MUTIPLE_CHOICE' },
+  { label: 'Multiple choice', value: 'MULTIPLECHOICE' },
   { label: 'Scale', value: 'SCALE' },
   { label: 'Rating', value: 'RATING' },
-  { label: 'Selection boxes', value: 'SELECTION_BOXES' },
+  { label: 'Selection boxes', value: 'SELECTIONBOXES' },
 ]
 
-const optionTypes = ['MUTIPLE_CHOICE', 'SELECTION_BOXES', 'SCALE']
+const optionTypes = ['MULTIPLECHOICE', 'SELECTIONBOXES', 'SCALE']
 
 const marks = [
   { value: 0, label: 'Poor' },
@@ -50,7 +50,7 @@ function valuetext(value) {
 function Form2(props) {
   const classes = useStyles();
   const {
-    closeNewFeedbackDialog,
+    closeNewReviewDialog,
     dialog,
     form,
     addMore,
@@ -58,6 +58,7 @@ function Form2(props) {
     addMoreOption,
     removeOption,
     handleNext,
+    handlePrev,
     handleChange,
     handleQuestionChange,
     handleOptionChange,
@@ -159,9 +160,12 @@ function Form2(props) {
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={closeNewFeedbackDialog} color="primary">
+        <Button onClick={closeNewReviewDialog} color="primary">
           Cancel
-          </Button>
+        </Button>
+        <Button onClick={handlePrev} color="primary">
+          Prev
+        </Button>
         <Button onClick={handleNext} disabled={!canSubmitForm()} color="primary">
           Next
         </Button>
@@ -172,7 +176,7 @@ function Form2(props) {
 
 
 Form2.propTypes = {
-  closeNewFeedbackDialog: PropTypes.func,
+  closeNewReviewDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -185,8 +189,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeNewFeedbackDialog: () => dispatch(Actions.closeNewFeedbackDialog()),
-    createRecognition: (data) => dispatch(Actions.createRecognition(data)),
+    closeNewReviewDialog: () => dispatch(Actions.closeNewReviewDialog()),
   };
 }
 

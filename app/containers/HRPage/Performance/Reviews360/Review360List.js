@@ -28,9 +28,9 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar
 }));
 
-const Feedback360List = props => {
+const Review360List = props => {
   const classes = useStyles();
-  const { loading, openNewFeedbackDialog, recognitions } = props;
+  const { loading, openNewReviewDialog, recognitions } = props;
 
   console.log(recognitions, "recognitions")
 
@@ -47,9 +47,9 @@ const Feedback360List = props => {
           <AppBar position="static" color="inherit" elevation={1}>
             <Toolbar variant="dense">
               <Typography variant="h6" className={classes.title}>
-                360<sup>o</sup> Feedback
+                360<sup>o</sup> Reviews
               </Typography>
-              <Button variant="contained" color="primary" onClick={openNewFeedbackDialog}>Create Cycle</Button>
+              <Button variant="contained" color="primary" onClick={openNewReviewDialog}>Create Cycle</Button>
             </Toolbar>
           </AppBar>
         </Grid>
@@ -63,7 +63,7 @@ const Feedback360List = props => {
   );
 };
 
-Feedback360List.propTypes = {
+Review360List.propTypes = {
   loading: PropTypes.bool,
 };
 
@@ -74,7 +74,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewFeedbackDialog: () => dispatch(Actions.openNewFeedbackDialog())
+    openNewReviewDialog: () => dispatch(Actions.openNewReviewDialog())
   };
 }
 
@@ -87,4 +87,4 @@ export default compose(
   withRouter,
   withConnect,
   memo,
-)(Feedback360List);
+)(Review360List);

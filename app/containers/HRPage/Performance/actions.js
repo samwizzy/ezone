@@ -1,5 +1,5 @@
 /*
- * HRPage Actions
+ * HRPage Performance Actions
  */
 
 import * as Constants from './constants';

@@ -47,10 +47,10 @@ function ModuleLayout(props) {
               Recognitions
             </NavLink>
             <NavLink to="/human-resource/performance/feedbacks" activeClassName={classes.active}>
-              Feedback 360<sup>o</sup>
+              360<sup>o</sup> &nbsp;Reviews
             </NavLink>
             <NavLink to="/human-resource/performance/reviews" activeClassName={classes.active}>
-              Reviews
+              Feedback
             </NavLink>
           </React.Fragment>
         }

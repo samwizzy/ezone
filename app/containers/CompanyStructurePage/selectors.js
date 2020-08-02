@@ -82,12 +82,6 @@ const makeSelectSelectedPartyGroupData = () =>
     subState => subState.selectedPartyGroupData,
   );
 
-const createNewPartyGroupData = () =>
-  createSelector(
-    selectCompanyStructurePageDomain,
-    subState => subState.createNewPartyGroupData,
-  );
-
 const makeSelectUpdatePartyGroupData = () =>
   createSelector(
     selectCompanyStructurePageDomain,
@@ -148,12 +142,6 @@ const makeSelectPositionDialog = () =>
     subState => subState.positionDialog,
   );
 
-const makeSelectCreateNewPositionData = () =>
-  createSelector(
-    selectCompanyStructurePageDomain,
-    subState => subState.createNewPositionData,
-  );
-
 const makeSelectUpdatePositionData = () =>
   createSelector(
     selectCompanyStructurePageDomain,
@@ -170,12 +158,6 @@ const makeSelectAddEmployeeToPositionDialog = () =>
   createSelector(
     selectCompanyStructurePageDomain,
     subState => subState.addEmployeeToPositionDialog,
-  );
-
-const makeSelectAddEmployeeToPositionData = () =>
-  createSelector(
-    selectCompanyStructurePageDomain,
-    subState => subState.addEmployeeToPositionData,
   );
 
 const makeSelectGetAllTags = () =>
@@ -236,16 +218,12 @@ export {
   makeSelectParty,
   makeSelectPartyGroupData,
   makeSelectSelectedPartyGroupData,
-  createNewPartyGroupData,
   makeSelectAllUsersData,
   makeSelectCreateNewPartyData,
   makeSelectNewPartiesDialog,
   makeSelectPositionDialog,
-  makeSelectCreateNewPositionData,
   makeSelectGetAllPositions,
   makeSelectAddEmployeeToPositionDialog,
-  makeSelectAddEmployeeToPositionData,
-  // makeSelectGetAllEmployees,
   makeSelectSelectedParty,
   makeSelectSelectedPosition,
   // organization export function

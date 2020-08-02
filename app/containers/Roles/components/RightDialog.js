@@ -5,7 +5,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
-import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, MenuItem, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, MenuItem, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
 import moment from 'moment'
@@ -27,18 +28,17 @@ const initialState = {
   candelete: true,
   canedit: true,
   canview: true,
-  module: {
-    moduleName: ''
-  },
+  module: null,
   orgId: ''
 }
 
 function RightDialog(props) {
   const classes = useStyles();
-  const { closeNewRightDialog, dialog, createRight, updateRight } = props;
+  const { modules, closeNewRightDialog, dialog, createRight, updateRight } = props;
   const [form, setForm] = React.useState({ ...initialState });
 
   console.log(dialog, "dialog checking")
+  console.log(modules, "modules checking")
 
   React.useEffect(() => {
     if (dialog.type === 'edit') {
@@ -50,12 +50,11 @@ function RightDialog(props) {
 
   const canSubmitForm = () => {
     const { module } = form
-    return module.moduleName.length > 0
+    return true
   }
 
-  const handleChange = (event) => {
-    const { name, value } = event.target
-    setForm({ ...form, module: { [name]: value } });
+  const handleSelectChange = name => (event, obj) => {
+    setForm({ ...form, [name]: obj })
   }
 
   const handleSubmit = () => {
@@ -84,16 +83,23 @@ function RightDialog(props) {
         </AppBar>
 
         <DialogContent dividers>
-          <TextField
-            name="moduleName"
-            label="Module Name"
-            id="outlined-name"
-            fullWidth
-            margin="normal"
-            variant="outlined"
-            size="small"
-            value={form.moduleName}
-            onChange={handleChange}
+          <Autocomplete
+            id="tags-modules"
+            options={modules}
+            getOptionLabel={(option) => option.moduleName}
+            onChange={handleSelectChange('module')}
+            value={form.module}
+            style={{ width: 300 }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                label="Module"
+                fullWidth
+                margin="normal"
+                placeholder="Module"
+              />
+            )}
           />
         </DialogContent>
 
@@ -117,6 +123,7 @@ RightDialog.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   dialog: Selectors.makeSelectRightDialog(),
+  modules: Selectors.makeSelectModules(),
 });
 
 function mapDispatchToProps(dispatch) {

@@ -215,6 +215,26 @@ export function getEmployeesError(data) {
   };
 }
 
+export function getModules() {
+  return {
+    type: Constants.GET_MODULES,
+  };
+}
+
+export function getModulesSuccess(data) {
+  return {
+    type: Constants.GET_MODULES_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getModulesError(data) {
+  return {
+    type: Constants.GET_MODULES_ERROR,
+    payload: data,
+  };
+}
+
 export function getRoles() {
   return {
     type: Constants.GET_ROLES,

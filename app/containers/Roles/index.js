@@ -30,20 +30,22 @@ export function RoleRightsApp(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
-  const { match, getRoles, getRoleRights, getEmployees } = props;
+  const { match, getRoles, getRights, getRoleRights, getEmployees, getModules } = props;
   const { path, url } = match
 
   useEffect(() => {
     getRoles();
+    getRights();
     getRoleRights();
     getEmployees();
+    getModules();
   }, []);
 
   return (
     <div>
       <Helmet>
         <title>RoleRights</title>
-        <meta name="description" content="Description of RoleRights" />
+        <meta name="description" content="Description of Role Rights" />
       </Helmet>
 
       <ModuleLayout>
@@ -69,7 +71,9 @@ function mapDispatchToProps(dispatch) {
   return {
     getRoles: () => dispatch(Actions.getRoles()),
     getRoleRights: () => dispatch(Actions.getRoleRights()),
+    getRights: () => dispatch(Actions.getRights()),
     getEmployees: () => dispatch(Actions.getEmployees()),
+    getModules: () => dispatch(Actions.getModules()),
   };
 }
 

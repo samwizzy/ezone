@@ -41,6 +41,26 @@ export function* getEmployees() {
   }
 }
 
+export function* getModules() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetModulesApi}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getModulesSuccess(response));
+  } catch (err) {
+    yield put(Actions.getModulesError(err));
+  }
+}
+
 export function* getRoles() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
@@ -150,6 +170,26 @@ export function* updateRole({ payload }) {
   }
 }
 
+export function* getRights() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetRightsApi}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getRightsSuccess(response));
+  } catch (err) {
+    yield put(Actions.getRightsError(err));
+  }
+}
+
 export function* createRight({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
@@ -166,6 +206,9 @@ export function* createRight({ payload }) {
       }),
     });
 
+    console.log(response, "create right response")
+
+    yield put(AppActions.openSnackBar({ message: `${response.module.moduleName} right created successfully`, status: 'success' }));
     yield put(Actions.createRightSuccess(response));
     yield put(Actions.getRights());
     yield put(Actions.closeNewRightDialog());
@@ -297,6 +340,7 @@ export default function* rolesSaga() {
   yield takeLatest(Constants.UPDATE_ROLE, updateRole);
   yield takeLatest(Constants.GET_RIGHTS_BY_ROLE_ID, getRightsByRoleId);
 
+  yield takeLatest(Constants.GET_RIGHTS, getRights);
   yield takeLatest(Constants.CREATE_RIGHT, createRight);
   yield takeLatest(Constants.UPDATE_RIGHT, updateRight);
 
@@ -305,4 +349,5 @@ export default function* rolesSaga() {
   yield takeLatest(Constants.UPDATE_ROLE_RIGHT, updateRoleRight);
 
   yield takeLatest(Constants.GET_EMPLOYEES, getEmployees);
+  yield takeLatest(Constants.GET_MODULES, getModules);
 }

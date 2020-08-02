@@ -9,6 +9,7 @@ import {
   makeStyles,
   AppBar,
   Backdrop,
+  Box,
   Button,
   IconButton,
   Checkbox,
@@ -35,6 +36,11 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
+  },
+  card: {
+    "& .MuiCardActions-root": {
+      justifyContent: 'flex-end'
+    }
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -81,6 +87,10 @@ const RoleRights = props => {
     getRightsByRoleId(obj.id)
   };
 
+  const handleArrSelectChange = name => (event, arr) => {
+    setForm({ ...form, [name]: arr });
+  };
+
   const handleCheckChange = (bool, index) => event => {
     const { name, value } = event.target
     const { rights } = form
@@ -91,7 +101,7 @@ const RoleRights = props => {
   const canSubmitForm = () => {
     const { rights, role } = form;
     return (
-      rights.length > 0 && role.length > 0
+      rights.length > 0 && role
     );
   };
 
@@ -212,7 +222,7 @@ const RoleRights = props => {
         <CircularProgress color="inherit" />
       </Backdrop>
 
-      <Card>
+      <Card className={classes.card}>
         <CardHeader
           title="New Role"
           subheader="Assign rights on applications to roles"
@@ -232,6 +242,7 @@ const RoleRights = props => {
                 getOptionLabel={option => option.name}
                 onChange={handleSelectChange('role')}
                 value={form.role ? form.role : null}
+                style={{ width: 300 }}
                 renderInput={params => (
                   <TextField
                     {...params}
@@ -243,6 +254,39 @@ const RoleRights = props => {
                   />
                 )}
               />
+
+              <Autocomplete
+                multiple
+                id="tags-rights"
+                size="small"
+                options={rights ? rights : []}
+                getOptionLabel={(option) => option.module && option.module.moduleName}
+                onChange={handleArrSelectChange('rights')}
+                value={form.rights ? form.rights : []}
+                style={{ width: 300 }}
+                filterSelectedOptions
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant="outlined"
+                    label="Rights"
+                    margin="normal"
+                    fullWidth
+                    placeholder="Modules"
+                  />
+                )}
+              />
+
+              <Box my={2}>
+                <Button
+                  onClick={handleSubmit}
+                  disabled={!canSubmitForm()}
+                  color="primary"
+                  variant="outlined"
+                >
+                  Save
+                </Button>
+              </Box>
             </Grid>
 
             <Grid item xs={12}>
@@ -258,13 +302,14 @@ const RoleRights = props => {
         </CardContent>
 
         <CardActions>
-          <Button onClick={() => { }} color="primary">
+          <Button onClick={() => { }} color="primary" variant="outlined">
             Cancel
           </Button>
           <Button
             onClick={handleSubmit}
             disabled={!canSubmitForm()}
             color="primary"
+            variant="outlined"
           >
             Save
           </Button>

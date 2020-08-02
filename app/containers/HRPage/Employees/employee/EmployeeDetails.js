@@ -359,7 +359,7 @@ const EmployeeDetails = props => {
                 )}
               </List> :
               <Box p={2}>
-                <Typography variant="subtitle2" color="textSecondary" align="center">You do not have any work experience yet</Typography>
+                <Typography variant="body2" color="textSecondary" align="center">You do not have any work experience yet</Typography>
               </Box>
             }
           </Paper>
@@ -406,7 +406,7 @@ const EmployeeDetails = props => {
                 )}
               </List> :
               <Box p={2}>
-                <Typography variant="body1" color="textSecondary" align="center">You do not have any educational background yet</Typography>
+                <Typography variant="body2" color="textSecondary" align="center">You do not have any educational background yet</Typography>
               </Box>
             }
           </Paper>

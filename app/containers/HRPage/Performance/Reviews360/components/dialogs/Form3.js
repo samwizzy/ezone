@@ -26,10 +26,11 @@ const useStyles = makeStyles(theme => ({
 function Form3(props) {
   const classes = useStyles();
   const {
-    closeNewFeedbackDialog,
+    closeNewReviewDialog,
     dialog,
     form,
     employees,
+    handlePrev,
     handleSubmit,
     handleSelectChange,
     handleDateChange,
@@ -37,8 +38,8 @@ function Form3(props) {
   } = props;
 
   const canSubmitForm = () => {
-    const { timeline, visibility, reviewers } = form
-    return timeline && visibility && reviewers.length > 0
+    const { timeline, visibility, reviweers } = form
+    return timeline && visibility && reviweers.length > 0
   }
 
   return (
@@ -56,11 +57,11 @@ function Form3(props) {
           <Grid item xs={12}>
             <Autocomplete
               multiple
-              id="tags-employees-reviewers"
+              id="tags-employees-reviweers"
               options={employees}
               getOptionLabel={(option) => option.firstName + ' ' + option.lastName}
-              onChange={handleSelectChange('reviewers')}
-              value={form.reviewers ? form.reviewers : null}
+              onChange={handleSelectChange('reviweers')}
+              value={form.reviweers ? form.reviweers : null}
               filterSelectedOptions
               renderInput={(params) => (
                 <TextField
@@ -128,8 +129,11 @@ function Form3(props) {
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={closeNewFeedbackDialog} color="primary">
+        <Button onClick={closeNewReviewDialog} color="primary">
           Cancel
+        </Button>
+        <Button onClick={handlePrev} color="primary">
+          Prev
         </Button>
         <Button onClick={handleSubmit} disabled={!canSubmitForm()} color="primary">
           Save
@@ -141,7 +145,7 @@ function Form3(props) {
 
 
 Form3.propTypes = {
-  closeNewFeedbackDialog: PropTypes.func,
+  closeNewReviewDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -154,8 +158,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeNewFeedbackDialog: () => dispatch(Actions.closeNewFeedbackDialog()),
-    createRecognition: (data) => dispatch(Actions.createRecognition(data)),
+    closeNewReviewDialog: () => dispatch(Actions.closeNewReviewDialog()),
   };
 }
 

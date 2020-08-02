@@ -7,6 +7,10 @@ import * as Endpoints from '../../components/Endpoints';
 import * as Actions from './actions';
 import * as Constants from './constants';
 
+function errorHandler(promise) {
+  return promise
+}
+
 export function* getPartyGroupSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
@@ -24,54 +28,37 @@ export function* getPartyGroupSaga() {
       }),
     });
 
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
-
     yield put(Actions.getPartyGroupSuccessAction(response));
   } catch (err) {
     yield put(Actions.getPartyGroupErrorAction(err));
   }
 }
 
-export function* createNewPartyGroupSaga() {
+export function* createNewPartyGroupSaga({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  // const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-
-  const createNewPartyGroupParams = yield select(
-    Selectors.createNewPartyGroupData(),
-  );
-
-  // console.log(accessToken, 'accessToken');
-  // console.log(currentUser, 'currentUser');
-  const { name, description } = createNewPartyGroupParams;
-  const newData = {
-    name,
-    description,
-    // organisation: { orgId: currentUser.organisation.orgId }, // TODO: user object clear from store
-  };
-
   const requestURL = `${Endpoints.CreateNewPartyGroup}`;
 
   try {
     const response = yield call(request, requestURL, {
       method: 'POST',
-      body: JSON.stringify(newData),
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/Json',
+        'Content-Type': 'application/json',
       }),
     });
-
-    if (response.status === 400 || response.status === 500) {
-      yield put(AppActions.openSnackBar({ message: 'Party Group Created Successfully', status: 'success' }));
-    }
 
     yield put(Actions.createNewPartyGroupSuccessAction(response));
     yield put(Actions.getPartyGroupAction());
     yield put(Actions.closeNewPartyGroupDialog());
     yield put(AppActions.openSnackBar({ message: 'Party Group Created Successfully', status: 'success' }));
   } catch (err) {
+    if (err.message) {
+      //
+    } else {
+      const error = yield call(errorHandler, err.response.json())
+      console.log(error, "error party group")
+    }
     yield put(Actions.createNewPartyError(err));
     // yield put(AppActions.openSnackBar({message: `${err} Failed To Create Party Group`, status: 'error'}));
   }
@@ -97,15 +84,11 @@ export function* updatePartyGroupSaga() {
       }),
     });
 
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
-
     yield put(Actions.updatePartyGroupSuccessAction(response));
     yield put(Actions.getPartyGroupAction());
     yield put(Actions.closeEditPartyGroupDialog());
   } catch (err) {
-    console.log(err, 'errrrrrrr');
+    console.log(err, 'updatePartyGroupErrorAction');
     yield put(Actions.updatePartyGroupErrorAction(err));
   }
 }
@@ -124,10 +107,6 @@ export function* getAllUsers() {
         'Content-Type': 'application/json',
       }),
     });
-
-    if (response.status === 400 || response.status === 500) {
-      throw response.error
-    }
 
     yield put(Actions.getAllUsersSuccess(response));
   } catch (err) {
@@ -148,10 +127,6 @@ export function* getAllTags() {
         'Content-Type': 'application/json',
       }),
     });
-
-    if (response.status === 400 || response.status === 500) {
-      throw response.error
-    }
 
     yield put(Actions.getAllTagsSuccess(response));
   } catch (err) {
@@ -176,9 +151,6 @@ export function* createNewParty() {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response.error
-    }
 
     yield put(Actions.createNewPartySuccess(response));
     yield put(Actions.getPartyGroupAction());
@@ -205,10 +177,6 @@ export function* getPartyById() {
       }),
     });
 
-    if (response.status === 400 || response.status === 500) {
-      throw response.error
-    }
-
     console.log(response, "getPartyByIdResponse")
 
     yield put(Actions.getPartyByIdSuccess(response));
@@ -232,15 +200,12 @@ export function* updatePartySaga() {
         'Content-Type': 'application/Json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getPartyGroupAction());
     yield put(Actions.closeEditPartyDialog());
     yield put(AppActions.openSnackBar({ message: 'Party Updated Successfully', status: 'success' }));
   } catch (err) {
-    console.log(err, 'errrrrrrr');
+    console.log(err, 'updatePartyError');
     yield put(Actions.updatePartyError(err));
   }
 }
@@ -262,9 +227,6 @@ export function* createNewParties() {
         'Content-Type': 'application/json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getPartyById(createNewPartiesData.partyId));
     yield put(Actions.closeNewPartiesDialog());
@@ -277,7 +239,6 @@ export function* createNewParties() {
 
 export function* updatePartiesSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-
   const updatePartiesParams = yield select(
     Selectors.makeSelectUpdatePartiesData(),
   );
@@ -294,37 +255,29 @@ export function* updatePartiesSaga() {
       }),
     });
 
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
-
     yield put(Actions.getPartyById(updatePartiesParams.partyId));
     yield put(Actions.closeEditPartiesDialog());
   } catch (err) {
-    console.log(err, 'errrrrrrr');
+    console.log(err, 'updatePartiesError');
     yield put(Actions.updatePartiesError(err));
   }
 }
 
-export function* createNewPosition() {
+export function* createNewPosition({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const createNewPositionData = yield select(
-    Selectors.makeSelectCreateNewPositionData(),
-  );
-
   const requestURL = `${Endpoints.CreateNewPositionApi}`;
 
   try {
     const response = yield call(request, requestURL, {
       method: 'POST',
-      body: JSON.stringify(createNewPositionData),
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
-    yield put(Actions.getPartyById(createNewPositionData.party_id));
+    yield put(Actions.getPartyById(payload.party_id));
     yield put(Actions.closeNewPositionDialog());
     yield put(AppActions.openSnackBar({ message: 'Position Created Successfully', status: 'success' }));
   } catch (err) {
@@ -335,14 +288,9 @@ export function* createNewPosition() {
 
 export function* updatePositionSaga({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-
-  const updatePositionParams = yield select(
-    Selectors.makeSelectUpdatePositionData(),
-  );
   const getPartyById = yield select(
     Selectors.makeSelectGetPartyById(),
   );
-
   const requestURL = `${Endpoints.UpdatePositionApi}`;
 
   try {
@@ -354,16 +302,13 @@ export function* updatePositionSaga({ payload }) {
         'Content-Type': 'application/Json',
       }),
     });
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.updatePositionSuccess(response));
     yield put(Actions.getPartyGroupAction());
     yield put(Actions.getPartyById(getPartyById.id));
     yield put(Actions.closeEditPositionDialog());
   } catch (err) {
-    console.log(err, 'errrrrrrr');
+    console.log(err, 'updatePositionError');
     yield put(Actions.updatePositionError(err));
   }
 }
@@ -371,13 +316,7 @@ export function* updatePositionSaga({ payload }) {
 export function* getAllPosition() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const createNewPositionData = yield select(
-    Selectors.makeSelectCreateNewPositionData(),
-  );
-
-  const requestURL = `${Endpoints.GetAllPositionsApi}/${
-    currentUser.organisation.orgId
-    }`;
+  const requestURL = `${Endpoints.GetAllPositionsApi}/${currentUser.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -396,18 +335,14 @@ export function* getAllPosition() {
   }
 }
 
-export function* AddEmployeeToPosition() {
+export function* AddEmployeeToPosition({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const AddEmployeeToPositionData = yield select(
-    Selectors.makeSelectAddEmployeeToPositionData(),
-  );
-
   const requestURL = `${Endpoints.AddNewEmployeeToPositionApi}`;
 
   try {
     const response = yield call(request, requestURL, {
       method: 'POST',
-      body: JSON.stringify(AddEmployeeToPositionData),
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
@@ -432,12 +367,7 @@ export function* AddEmployeeToPosition() {
 export function* companyDetail() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-
-  console.log(accessToken, "accessToken accessToken accessToken")
-
-  const requestURL = `${Endpoints.CompanyInfoUrl}/${
-    currentUser && currentUser.organisation.orgId
-    }`;
+  const requestURL = `${Endpoints.CompanyInfoUrl}/${currentUser && currentUser.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -449,10 +379,6 @@ export function* companyDetail() {
     });
 
     console.log(response, "response getting organization info")
-
-    if (response.status === 400 || response.status === 500) {
-      throw response
-    }
 
     yield put(Actions.getCompanyInfoSuccess(response));
   } catch (err) {

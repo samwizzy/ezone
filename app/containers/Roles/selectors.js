@@ -83,11 +83,18 @@ const makeSelectEmployees = () =>
     subState => subState.employees,
   );
 
+const makeSelectModules = () =>
+  createSelector(
+    selectRoleRightsDomain,
+    subState => subState.modules,
+  );
+
 export default makeSelectRoleRightsApp;
 export {
   selectRoleRightsDomain,
   makeSelectLoading,
   makeSelectEmployees,
+  makeSelectModules,
   makeSelectRoles,
   makeSelectRights,
   makeSelectRightsByRoleId,

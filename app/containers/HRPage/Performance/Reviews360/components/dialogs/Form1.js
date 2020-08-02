@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 function Form1(props) {
   const classes = useStyles();
   const {
-    closeNewFeedbackDialog,
+    closeNewReviewDialog,
     dialog,
     form,
     employees,
@@ -99,7 +99,7 @@ function Form1(props) {
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={closeNewFeedbackDialog} color="primary">
+        <Button onClick={closeNewReviewDialog} color="primary">
           Cancel
           </Button>
         <Button onClick={handleNext} disabled={!canSubmitForm()} color="primary">
@@ -112,7 +112,7 @@ function Form1(props) {
 
 
 Form1.propTypes = {
-  closeNewFeedbackDialog: PropTypes.func,
+  closeNewReviewDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -125,8 +125,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeNewFeedbackDialog: () => dispatch(Actions.closeNewFeedbackDialog()),
-    createRecognition: (data) => dispatch(Actions.createRecognition(data)),
+    closeNewReviewDialog: () => dispatch(Actions.closeNewReviewDialog()),
   };
 }
 

@@ -37,7 +37,15 @@ const questionsInitialState = {
 
 function Feedback360Dialog(props) {
   const classes = useStyles();
-  const { closeNewFeedbackDialog, createRecognition, dialog, employees, departments, branches, roles } = props;
+  const {
+    closeNewReviewDialog,
+    createReview,
+    dialog,
+    employees,
+    departments,
+    branches,
+    roles
+  } = props;
   const [step, setStep] = React.useState(0);
 
   const [form, setForm] = React.useState({
@@ -49,9 +57,9 @@ function Feedback360Dialog(props) {
     visibility: {
       reviewee: false,
       hideIdentity: false,
-      hideReplies: false,
+      hideReplies: false
     },
-    reviewers: []
+    reviweers: []
   });
 
   React.useEffect(() => {
@@ -90,7 +98,7 @@ function Feedback360Dialog(props) {
   }
 
   const handleSubmit = () => {
-    createRecognition(form)
+    createReview(form)
   }
 
   const handleNext = () => {
@@ -133,7 +141,7 @@ function Feedback360Dialog(props) {
         {...dialog.props}
         TransitionComponent={Transition}
         keepMounted
-        onClose={closeNewFeedbackDialog}
+        onClose={closeNewReviewDialog}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
         fullWidth
@@ -151,6 +159,7 @@ function Feedback360Dialog(props) {
           <Form2
             form={form}
             handleNext={handleNext}
+            handlePrev={handlePrev}
             handleChange={handleChange}
             handleQuestionChange={handleQuestionChange}
             handleOptionChange={handleOptionChange}
@@ -164,6 +173,7 @@ function Feedback360Dialog(props) {
           <Form3
             form={form}
             handleNext={handleNext}
+            handlePrev={handlePrev}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
             handleDateChange={handleDateChange}
@@ -178,7 +188,7 @@ function Feedback360Dialog(props) {
 
 
 Feedback360Dialog.propTypes = {
-  closeNewFeedbackDialog: PropTypes.func,
+  closeNewReviewDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -191,8 +201,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeNewFeedbackDialog: () => dispatch(Actions.closeNewFeedbackDialog()),
-    createRecognition: (data) => dispatch(Actions.createRecognition(data)),
+    closeNewReviewDialog: () => dispatch(Actions.closeNewReviewDialog()),
+    createReview: (data) => dispatch(Actions.createReview(data)),
   };
 }
 

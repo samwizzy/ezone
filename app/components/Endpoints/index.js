@@ -48,6 +48,11 @@ export const UpdateUserProfileApi = `${BaseUrl}/authserv/api/v1/user/update_prof
  * Roles Rights endpoint
  ******************************************************************* */
 
+export const CreateModuleApi = `${BaseUrl}/authserv/api/v1/modules/add`;
+export const UpdateModuleApi = `${BaseUrl}/authserv/api/v1/modules/update`;
+export const GetModuleByIdApi = `${BaseUrl}/authserv/api/v1/modules/{id}`;
+export const GetModulesApi = `${BaseUrl}/authserv/api/v1/modules`;
+
 export const CreateRoleApi = `${BaseUrl}/authserv/api/v1/roles/add`;
 export const UpdateRoleApi = `${BaseUrl}/authserv/api/v1/roles/update`;
 export const GetRoleByIdApi = `${BaseUrl}/authserv/api/v1/roles/{id}`;

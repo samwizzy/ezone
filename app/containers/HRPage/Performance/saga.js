@@ -159,6 +159,80 @@ export function* getRecognitionById({ payload }) {
   }
 }
 
+export function* getReviews({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetReviewsApi}/${user && user.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "Reviews response")
+
+    yield put(Actions.getReviewsSuccess(response));
+  } catch (err) {
+    yield put(Actions.getReviewsError(response));
+  }
+}
+
+export function* getReviewById({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetReviewByIdApi}/${payload}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "Review by id response")
+
+    yield put(Actions.getReviewByIdSuccess(response));
+  } catch (err) {
+    yield put(Actions.getReviewByIdError(response));
+  }
+}
+
+export function* createReview({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.CreateReviewApi}`;
+  payload.orgId = user && user.organisation.orgId
+
+  console.log(payload, "creating recognition")
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "create recognition response")
+
+    yield put(Actions.createReviewSuccess(response));
+    yield put(Actions.closeNewReviewDialog());
+    yield put(Actions.getReviews());
+  } catch (err) {
+    const error = yield call(errorHandler, err.response.json());
+    console.log(error, "recognition create error")
+    yield put(Actions.createReviewError(err));
+  }
+}
+
 export function* createRecognition({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
@@ -327,12 +401,18 @@ export default function* PerformanceRootSaga() {
   yield takeLatest(Constants.GET_DEPARTMENTS, getDepartments);
   yield takeLatest(Constants.GET_BRANCHES, getBranches);
   yield takeLatest(Constants.GET_ROLES, getRoles);
+
   yield takeLatest(Constants.GET_GOALS, getGoals);
   yield takeLatest(Constants.GET_GOALS_BY_ID, getGoalsById);
+  yield takeLatest(Constants.CREATE_GOALS, createGoals);
+  yield takeLatest(Constants.COMMENT_GOALS, commentGoals);
+
+  yield takeLatest(Constants.GET_REVIEWS, getReviews);
+  yield takeLatest(Constants.GET_REVIEW_BY_ID, getReviewById);
+  yield takeLatest(Constants.CREATE_REVIEW, createReview);
+
   yield takeLatest(Constants.GET_RECOGNITIONS, getRecognitions);
   yield takeLatest(Constants.GET_RECOGNITION_BY_ID, getRecognitionById);
-  yield takeLatest(Constants.CREATE_GOALS, createGoals);
   yield takeLatest(Constants.CREATE_RECOGNITION, createRecognition);
-  yield takeLatest(Constants.COMMENT_GOALS, commentGoals);
   yield takeLatest(Constants.COMMENT_RECOGNITION, commentRecognition);
 }
