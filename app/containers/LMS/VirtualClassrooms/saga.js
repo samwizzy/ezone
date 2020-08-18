@@ -8,12 +8,10 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 import * as Endpoints from '../../../components/Endpoints';
 
-export function* getAllCompanies() {
+export function* getClassrooms() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllCompaniesApi}/${
-    currentUser && currentUser.organisation.orgId
-    }`;
+  const requestURL = `${Endpoints.GetAllCompaniesApi}/${currentUser && currentUser.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -24,69 +22,61 @@ export function* getAllCompanies() {
       }),
     });
 
-    yield put(Actions.getAllCompaniesSuccess(response));
+    yield put(Actions.getClassroomsSuccess(response));
   } catch (err) {
-    yield put(Actions.getAllCompaniesError(err));
+    yield put(Actions.getClassroomsError(err));
   }
 }
 
-export function* createNewCompany() {
+export function* createClassroom({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-
-  const newCompany = yield select(Selectors.makeSelectCreateNewCompany());
-  newCompany.orgId = currentUser.organisation.orgId;
-
-  console.log(newCompany, 'newCompany');
   const requestURL = `${Endpoints.CreateNewContactApi}`;
+  payload.orgId = currentUser.organisation.orgId;
 
   try {
-    const newCompanyResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
-      body: JSON.stringify(newCompany),
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
-    yield put(Actions.createNewCompanySuccess(newCompanyResponse));
-    yield put(Actions.getAllCompanies());
-    yield put(Actions.closeNewCompanyDialog());
+    yield put(Actions.createClassroomSuccess(response));
+    yield put(Actions.getClassrooms());
+    yield put(Actions.closeNewClassroomDialog());
   } catch (err) {
-    yield put(Actions.createNewCompanyError(err));
+    yield put(Actions.createClassroomError(err));
   }
 }
 
-export function* updateCompanySaga() {
+export function* updateClassroom({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-
-  const updateCompany = yield select(Selectors.makeSelectUpdateCompany());
-
-  console.log(updateCompany, 'updateCompany');
-  const requestURL = `${Endpoints.UpdateContactApi}/${updateCompany.id}`;
+  const requestURL = `${Endpoints.UpdateContactApi}/${payload.id}`;
 
   try {
-    const newCompanyResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'PUT',
-      body: JSON.stringify(updateCompany),
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
-    yield put(Actions.createNewCompanySuccess(newCompanyResponse));
-    yield put(Actions.getAllCompanies());
-    yield put(Actions.closeNewCompanyDialog());
+    yield put(Actions.updateClassroomSuccess(response));
+    yield put(Actions.getClassrooms());
+    yield put(Actions.closeNewClassroomDialog());
   } catch (err) {
-    yield put(Actions.createNewCompanyError(err));
+    yield put(Actions.updateClassroomError(err));
   }
 }
 
 // Individual exports for testing
-export default function* crmCompaniesSaga() {
-  yield takeLatest(Constants.UPDATE_COMPANY, updateCompanySaga);
-  yield takeLatest(Constants.CREATE_NEW_COMPANY, createNewCompany);
-  yield takeLatest(Constants.GET_ALL_COMPANIES, getAllCompanies);
+export default function* lmsClassroomsSaga() {
+  yield takeLatest(Constants.UPDATE_CLASSROOM, updateClassroom);
+  yield takeLatest(Constants.CREATE_CLASSROOM, createClassroom);
+  yield takeLatest(Constants.GET_CLASSROOMS, getClassrooms);
 }

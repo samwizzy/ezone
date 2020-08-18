@@ -1,6 +1,6 @@
 /*
  *
- * Companies reducer
+ * LMS Virtual Classrooms reducer
  *
  */
 import produce from 'immer';
@@ -9,10 +9,8 @@ import * as Constants from './constants';
 export const initialState = {
   loading: false,
   error: false,
-  getAllCompanies: [],
-  newCompanyDetails: {},
-  updateCompanyDetails: {},
-  companyDialog: {
+  classrooms: [],
+  classroomDialog: {
     type: 'new',
     props: {
       open: false,
@@ -22,20 +20,25 @@ export const initialState = {
 };
 
 /* eslint-disable default-case, no-param-reassign */
-const crmCompaniesReducer = (state = initialState, action) =>
+const lmsClassroomsReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
-      case Constants.OPEN_NEW_COMPANY_DIALOG: {
+      case Constants.OPEN_NEW_CLASSROOM_DIALOG: {
         return {
           ...state,
-          companyDialog: {
+          classroomDialog: {
             type: 'new',
             props: {
               open: true,
             },
             data: null,
           },
-          companyDetailsDialog: {
+        };
+      }
+      case Constants.CLOSE_NEW_CLASSROOM_DIALOG: {
+        return {
+          ...state,
+          classroomDialog: {
             type: 'new',
             props: {
               open: false,
@@ -44,22 +47,10 @@ const crmCompaniesReducer = (state = initialState, action) =>
           },
         };
       }
-      case Constants.CLOSE_NEW_COMPANY_DIALOG: {
+      case Constants.OPEN_EDIT_CLASSROOM_DIALOG: {
         return {
           ...state,
-          companyDialog: {
-            type: 'new',
-            props: {
-              open: false,
-            },
-            data: null,
-          },
-        };
-      }
-      case Constants.OPEN_EDIT_COMPANY_DIALOG: {
-        return {
-          ...state,
-          companyDialog: {
+          classroomDialog: {
             type: 'edit',
             props: {
               open: true,
@@ -68,10 +59,10 @@ const crmCompaniesReducer = (state = initialState, action) =>
           },
         };
       }
-      case Constants.CLOSE_EDIT_COMPANY_DIALOG: {
+      case Constants.CLOSE_EDIT_CLASSROOM_DIALOG: {
         return {
           ...state,
-          companyDialog: {
+          classroomDialog: {
             type: 'edit',
             props: {
               open: false,
@@ -80,45 +71,20 @@ const crmCompaniesReducer = (state = initialState, action) =>
           },
         };
       }
-      case Constants.OPEN_COMPANY_DETAILS_DIALOG: {
-        return {
-          ...state,
-          companyDetailsDialog: {
-            type: 'new',
-            props: {
-              open: true,
-            },
-            data: action.payload,
-          },
-        };
-      }
-      case Constants.CLOSE_COMPANY_DETAILS_DIALOG: {
-        return {
-          ...state,
-          companyDetailsDialog: {
-            type: 'new',
-            props: {
-              open: false,
-            },
-            data: null,
-          },
-        };
-      }
-      case Constants.CREATE_NEW_COMPANY: {
+      case Constants.CREATE_CLASSROOM: {
         return {
           ...state,
           loading: true,
-          newCompanyDetails: action.payload,
         };
       }
-      case Constants.CREATE_NEW_COMPANY_SUCCESS: {
+      case Constants.CREATE_CLASSROOM_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
         };
       }
-      case Constants.CREATE_NEW_COMPANY_ERROR: {
+      case Constants.CREATE_CLASSROOM_ERROR: {
         return {
           ...state,
           loading: false,
@@ -126,21 +92,20 @@ const crmCompaniesReducer = (state = initialState, action) =>
           messages: action.payload,
         };
       }
-      case Constants.UPDATE_COMPANY: {
+      case Constants.UPDATE_CLASSROOM: {
         return {
           ...state,
           loading: true,
-          updateCompanyDetails: action.payload,
         };
       }
-      case Constants.UPDATE_COMPANY_SUCCESS: {
+      case Constants.UPDATE_CLASSROOM_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
         };
       }
-      case Constants.UPDATE_COMPANY_ERROR: {
+      case Constants.UPDATE_CLASSROOM_ERROR: {
         return {
           ...state,
           loading: false,
@@ -148,20 +113,20 @@ const crmCompaniesReducer = (state = initialState, action) =>
           messages: action.payload,
         };
       }
-      case Constants.GET_ALL_COMPANIES: {
+      case Constants.GET_CLASSROOMS: {
         return {
           ...state,
           loading: true,
         };
       }
-      case Constants.GET_ALL_COMPANIES_SUCCESS: {
+      case Constants.GET_CLASSROOMS_SUCCESS: {
         return {
           ...state,
           loading: false,
-          getAllCompanies: action.payload,
+          classrooms: action.payload,
         };
       }
-      case Constants.GET_ALL_COMPANIES_ERROR: {
+      case Constants.GET_CLASSROOMS_ERROR: {
         return {
           ...state,
           loading: false,
@@ -172,4 +137,4 @@ const crmCompaniesReducer = (state = initialState, action) =>
     }
   });
 
-export default crmCompaniesReducer;
+export default lmsClassroomsReducer;

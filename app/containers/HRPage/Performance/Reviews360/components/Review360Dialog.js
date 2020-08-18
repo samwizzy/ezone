@@ -32,7 +32,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const questionsInitialState = {
   question: '',
   questionType: 'TEXT',
-  options: [{ option: '' }]
+  options: [{ choiceOption: '' }]
 }
 
 function Feedback360Dialog(props) {
@@ -122,7 +122,7 @@ function Feedback360Dialog(props) {
 
   const addMoreOption = i => event => {
     const { questions } = form
-    questions[i].options = [...questions[i].options, { option: '' }]
+    questions[i].options = [...questions[i].options, { choiceOption: '' }]
     setForm({ ...form, questions });
   };
 

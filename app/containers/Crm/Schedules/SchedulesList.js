@@ -68,6 +68,7 @@ const SchedulesList = props => {
   }
 
   const handleScheduleEdit = data => event => {
+    
     event.stopPropagation()
     openEditScheduleDialog(data)
   }

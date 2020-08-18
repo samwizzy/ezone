@@ -69,6 +69,12 @@ export function getContactsGroupsSuccess(data) {
     payload: data,
   };
 }
+export function getContactsGroupsError(data) {
+  return {
+    type: Constants.GET_CONTACTS_GROUPS_ERROR,
+    payload: data,
+  };
+}
 
 export function getAllContactsError() {
   return {

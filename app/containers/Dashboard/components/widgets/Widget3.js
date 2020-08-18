@@ -76,7 +76,7 @@ const Widget3 = () => {
         <CardActions>
           <Typography variant="button" className={classes.title} color="textPrimary">
             To be Shipped
-                    </Typography>
+          </Typography>
         </CardActions>
       </Card>
     </div>

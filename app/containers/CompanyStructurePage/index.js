@@ -19,7 +19,6 @@ import saga from './saga';
 import TabsPage from './components/TabsPage';
 import PartyDialog from './components/PartyDialog';
 import SubPartyDialog from './components/SubPartyDialog';
-
 import * as Actions from './actions';
 
 export function CompanyStructurePage(props) {

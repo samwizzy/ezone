@@ -2,75 +2,46 @@ import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
 /**
- * Direct selector to the companies state domain
+ * Direct selector to the quizzes state domain
  */
 
-const selectCompaniesDomain = state => state.crmCompanies || initialState;
+const selectLmsQuizzesDomain = state => state.lmsQuizzes || initialState;
 
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by Companies
- */
-
-const makeSelectCompanies = () =>
+const makeSelectLmsQuizzes = () =>
   createSelector(
-    selectCompaniesDomain,
+    selectLmsQuizzesDomain,
     substate => substate,
   );
 
 const makeSelectLoading = () =>
   createSelector(
-    selectCompaniesDomain,
+    selectLmsQuizzesDomain,
     subState => subState.loading,
   );
 
 const makeSelectError = () =>
   createSelector(
-    selectCompaniesDomain,
+    selectLmsQuizzesDomain,
     subState => subState.error,
   );
 
-const makeSelectCompanyDialog = () =>
+const makeSelectQuizDialog = () =>
   createSelector(
-    selectCompaniesDomain,
-    subState => subState.companyDialog,
+    selectLmsQuizzesDomain,
+    subState => subState.quizDialog,
   );
 
-const makeSelectCompanyDetailsDialog = () =>
+const makeSelectGetQuizzes = () =>
   createSelector(
-    selectCompaniesDomain,
-    subState => subState.companyDetailsDialog,
+    selectLmsQuizzesDomain,
+    subState => subState.quizzes,
   );
 
-const makeSelectCreateNewCompany = () =>
-  createSelector(
-    selectCompaniesDomain,
-    subState => subState.newCompanyDetails,
-  );
-
-const makeSelectUpdateCompany = () =>
-  createSelector(
-    selectCompaniesDomain,
-    subState => subState.updateCompanyDetails,
-  );
-
-const makeSelectGetAllCompanies = () =>
-  createSelector(
-    selectCompaniesDomain,
-    subState => subState.getAllCompanies,
-  );
-
-export default makeSelectCompanies;
+export default makeSelectLmsQuizzes;
 export {
-  selectCompaniesDomain,
+  selectLmsQuizzesDomain,
   makeSelectLoading,
   makeSelectError,
-  makeSelectCompanyDialog,
-  makeSelectCreateNewCompany,
-  makeSelectUpdateCompany,
-  makeSelectGetAllCompanies,
-  makeSelectCompanyDetailsDialog,
+  makeSelectGetQuizzes,
+  makeSelectQuizDialog,
 };

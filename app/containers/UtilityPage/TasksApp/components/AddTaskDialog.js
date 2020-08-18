@@ -53,18 +53,14 @@ function AddTaskDialog(props) {
   const { loading, closeNewTaskDialog, createUtilityTask, updateUtilityTask, dialog, users, task } = props;
   const [form, setForm] = React.useState({ ...initialState });
 
-  // React.useEffect(() => {
-  //   if (task && dialog.type === 'edit') {
-  //     const { id, title, description, status, startDate, endDate, assignedTo, assignedToName, assignedToEmail, supervisedBy } = task
-  //     setForm({ ...form, id, title, description, status, startDate: moment(startDate).format('YYYY-MM-DD'), endDate: moment(endDate).format('YYYY-MM-DD'), assignedTo, assignedToName, assignedToEmail, supervisedBy })
-  //   }
-  // }, []);
-
-  // React.useEffect(() => {
-  //   if (!loading) {
-  //     setForm(initialState)
-  //   }
-  // }, [loading])
+  React.useEffect(() => {
+    if (task && dialog.type === 'edit') {
+      const { id, title, description, status, startDate, endDate, assignedTo, assignedToName, assignedToEmail, supervisedBy } = task
+      setForm({ ...form, id, title, description, status, startDate: moment(startDate).format('YYYY-MM-DD'), endDate: moment(endDate).format('YYYY-MM-DD'), assignedTo, assignedToName, assignedToEmail, supervisedBy })
+    }else{
+      setForm(initialState)
+    }
+  }, []);
 
   const toBase64 = file => new Promise((resolve, reject) => {
     const reader = new FileReader();

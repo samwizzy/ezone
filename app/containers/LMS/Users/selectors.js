@@ -33,34 +33,16 @@ const makeSelectError = () =>
     subState => subState.error,
   );
 
-const makeSelectCompanyDialog = () =>
+const makeSelectStudentDialog = () =>
   createSelector(
     selectCompaniesDomain,
-    subState => subState.companyDialog,
+    subState => subState.studentDialog,
   );
 
-const makeSelectCompanyDetailsDialog = () =>
+const makeSelectGetStudents = () =>
   createSelector(
     selectCompaniesDomain,
-    subState => subState.companyDetailsDialog,
-  );
-
-const makeSelectCreateNewCompany = () =>
-  createSelector(
-    selectCompaniesDomain,
-    subState => subState.newCompanyDetails,
-  );
-
-const makeSelectUpdateCompany = () =>
-  createSelector(
-    selectCompaniesDomain,
-    subState => subState.updateCompanyDetails,
-  );
-
-const makeSelectGetAllCompanies = () =>
-  createSelector(
-    selectCompaniesDomain,
-    subState => subState.getAllCompanies,
+    subState => subState.students,
   );
 
 export default makeSelectCompanies;
@@ -68,9 +50,6 @@ export {
   selectCompaniesDomain,
   makeSelectLoading,
   makeSelectError,
-  makeSelectCompanyDialog,
-  makeSelectCreateNewCompany,
-  makeSelectUpdateCompany,
-  makeSelectGetAllCompanies,
-  makeSelectCompanyDetailsDialog,
+  makeSelectStudentDialog,
+  makeSelectGetStudents,
 };

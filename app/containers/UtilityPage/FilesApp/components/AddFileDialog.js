@@ -62,6 +62,7 @@ function AddFileDialog(props) {
                 fullWidth
                 defaultValue="Small"
                 variant="outlined"
+                margin="normal"
                 size="small"
                 value={form.email}
               />

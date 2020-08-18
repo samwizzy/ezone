@@ -12,6 +12,32 @@ function errorHandler(promise) {
   return promise
 }
 
+export function* getEmployees() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}?orgId=${user && user.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+    console.log(response, "get employee response")
+    yield put(Actions.getEmployeesSuccess(response));
+  } catch (err) {
+    if (err.message) {
+      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+    } else {
+      const error = yield call(errorHandler, err.response.json())
+      yield put(AppActions.openSnackBar({ message: error.message, status: 'error' }));
+      // yield put(Actions.getEmployeesError(err));
+    }
+  }
+}
+
 export function* getContacts() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
@@ -104,6 +130,7 @@ export function* getTasks() {
 
 // Individual exports for testing
 export default function* crmSaga() {
+  yield takeLatest(Constants.GET_EMPLOYEES, getEmployees);
   yield takeLatest(Constants.GET_CONTACTS, getContacts);
   yield takeLatest(Constants.GET_COMPANIES, getCompanies);
   yield takeLatest(Constants.GET_SCHEDULES, getSchedules);

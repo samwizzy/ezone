@@ -28,7 +28,6 @@ export function TaskPage(props) {
       </Helmet>
 
       <TaskList />
-
     </div>
   );
 };

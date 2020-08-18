@@ -62,7 +62,7 @@ const initialState = {
   city: '',
   fax: '',
   dob: moment(new Date()).format('YYYY-MM-DD'),
-  image: '',
+  image: null,
   notes: '',
   ownerId: '',
   type: 'INDIVIDUAL',

@@ -149,8 +149,7 @@ const ScheduleDialog = props => {
     return (
       title.length > 0 && location.length > 0 && description.length > 0 &&
       startDate.length > 0 && startTime.length > 0 && endDate.length > 0 &&
-      endTime.length > 0 && hostId &&
-      userParticipants.length > 0 && contactParticipants.length > 0
+      endTime.length > 0 && hostId && userParticipants.length > 0 && contactParticipants.length > 0
     )
   }
 

@@ -60,7 +60,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getJobs: () => dispatch(Actions.getJobs()),
-  };
+  }
 }
 
 const withConnect = connect(

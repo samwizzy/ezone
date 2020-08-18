@@ -1,107 +1,94 @@
 /*
  *
- * Companies actions
+ * Quizzes actions
  *
  */
 
 import * as Constants from './constants';
 
-export function openNewCompanyDialog() {
+export function openNewQuizDialog() {
   return {
-    type: Constants.OPEN_NEW_COMPANY_DIALOG,
+    type: Constants.OPEN_NEW_QUIZ_DIALOG,
   };
 }
 
-export function closeNewCompanyDialog() {
+export function closeNewQuizDialog() {
   return {
-    type: Constants.CLOSE_NEW_COMPANY_DIALOG,
+    type: Constants.CLOSE_NEW_QUIZ_DIALOG,
   };
 }
 
-export function openEditCompanyDialog(data) {
+export function openEditQuizDialog(data) {
   return {
-    type: Constants.OPEN_EDIT_COMPANY_DIALOG,
+    type: Constants.OPEN_EDIT_QUIZ_DIALOG,
     payload: data,
   };
 }
 
-export function closeEditCompanyDialog() {
+export function closeEditQuizDialog() {
   return {
-    type: Constants.CLOSE_EDIT_COMPANY_DIALOG,
+    type: Constants.CLOSE_EDIT_QUIZ_DIALOG,
   };
 }
 
-export function openCompanyDetailsDialog(data) {
+export function createQuiz(data) {
   return {
-    type: Constants.OPEN_COMPANY_DETAILS_DIALOG,
+    type: Constants.CREATE_QUIZ,
     payload: data,
   };
 }
 
-export function closeCompanyDetailsDialog() {
+export function createQuizSuccess(data) {
   return {
-    type: Constants.CLOSE_COMPANY_DETAILS_DIALOG,
-  };
-}
-
-export function createNewCompany(data) {
-  return {
-    type: Constants.CREATE_NEW_COMPANY,
+    type: Constants.CREATE_QUIZ_SUCCESS,
     payload: data,
   };
 }
 
-export function createNewCompanySuccess(data) {
+export function createQuizError(data) {
   return {
-    type: Constants.CREATE_NEW_COMPANY_SUCCESS,
+    type: Constants.CREATE_QUIZ_ERROR,
     payload: data,
   };
 }
 
-export function createNewCompanyError(data) {
+export function updateQuiz(data) {
   return {
-    type: Constants.CREATE_NEW_COMPANY_ERROR,
+    type: Constants.UPDATE_QUIZ,
+    payload: data,
+  }
+}
+
+export function updateQuizSuccess(data) {
+  return {
+    type: Constants.UPDATE_QUIZ_SUCCESS,
+    payload: data,
+  }
+}
+
+export function updateQuizError(data) {
+  return {
+    type: Constants.UPDATE_QUIZ_ERROR,
+    payload: data,
+  }
+}
+
+export function getQuizzes() {
+  return {
+    type: Constants.GET_QUIZZES,
+  };
+}
+
+export function getQuizzesSuccess(data) {
+  return {
+    type: Constants.GET_QUIZZES_SUCCESS,
     payload: data,
   };
 }
 
-export function updateCompany(data) {
+export function getQuizzesError(data) {
   return {
-    type: Constants.UPDATE_COMPANY,
-    payload: data,
-  };
-}
-
-export function updateCompanySuccess(data) {
-  return {
-    type: Constants.UPDATE_COMPANY_SUCCESS,
-    payload: data,
-  };
-}
-
-export function updateCompanyError(data) {
-  return {
-    type: Constants.UPDATE_COMPANY_ERROR,
-    payload: data,
-  };
-}
-
-export function getAllCompanies() {
-  return {
-    type: Constants.GET_ALL_COMPANIES,
-  };
-}
-
-export function getAllCompaniesSuccess(data) {
-  return {
-    type: Constants.GET_ALL_COMPANIES_SUCCESS,
-    payload: data,
-  };
-}
-
-export function getAllCompaniesError(data) {
-  return {
-    type: Constants.GET_ALL_COMPANIES_ERROR,
+    type: Constants.GET_QUIZZES_ERROR,
     payload: data,
   };
 }

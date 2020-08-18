@@ -12,9 +12,6 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
     marginTop: theme.spacing(2),
   },
-  active: {
-    backgroundColor: "red"
-  },
   list: {
     width: '100%',
     "& .MuiListItem-root": {
@@ -85,7 +82,7 @@ function AppSidebar(props) {
                           <ListItemText primary={menu.name} />
                           {open[menu.name] ? <ExpandLess /> : <ExpandMore />}
                         </ListItem>
-                        <Collapse in={open[menu.name]} timeout="auto">
+                        <Collapse in={open[menu.name]} timeout="auto" unmountOnExit>
                           <List component="div" disablePadding>
                             {menu.submenus.map((sub, i) =>
                               <ListItem

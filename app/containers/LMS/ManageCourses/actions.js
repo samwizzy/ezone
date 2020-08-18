@@ -1,107 +1,175 @@
 /*
  *
- * Companies actions
+ * Course Management actions
  *
  */
 
 import * as Constants from './constants';
 
-export function openNewCompanyDialog() {
+export function openNewAssignmentDialog() {
   return {
-    type: Constants.OPEN_NEW_COMPANY_DIALOG,
+    type: Constants.OPEN_NEW_ASSIGNMENT_DIALOG,
   };
 }
 
-export function closeNewCompanyDialog() {
+export function closeNewAssignmentDialog() {
   return {
-    type: Constants.CLOSE_NEW_COMPANY_DIALOG,
+    type: Constants.CLOSE_NEW_ASSIGNMENT_DIALOG,
   };
 }
 
-export function openEditCompanyDialog(data) {
+export function openNewLectureDialog() {
   return {
-    type: Constants.OPEN_EDIT_COMPANY_DIALOG,
+    type: Constants.OPEN_NEW_LECTURE_DIALOG,
+  };
+}
+
+export function closeNewLectureDialog() {
+  return {
+    type: Constants.CLOSE_NEW_LECTURE_DIALOG,
+  };
+}
+
+export function createAssignment(data) {
+  return {
+    type: Constants.CREATE_ASSIGNMENT,
     payload: data,
   };
 }
 
-export function closeEditCompanyDialog() {
+export function createAssignmentSuccess(data) {
   return {
-    type: Constants.CLOSE_EDIT_COMPANY_DIALOG,
-  };
-}
-
-export function openCompanyDetailsDialog(data) {
-  return {
-    type: Constants.OPEN_COMPANY_DETAILS_DIALOG,
+    type: Constants.CREATE_ASSIGNMENT_SUCCESS,
     payload: data,
   };
 }
 
-export function closeCompanyDetailsDialog() {
+export function createAssignmentError(data) {
   return {
-    type: Constants.CLOSE_COMPANY_DETAILS_DIALOG,
-  };
-}
-
-export function createNewCompany(data) {
-  return {
-    type: Constants.CREATE_NEW_COMPANY,
+    type: Constants.CREATE_ASSIGNMENT_ERROR,
     payload: data,
   };
 }
 
-export function createNewCompanySuccess(data) {
+export function updateAssignment(data) {
   return {
-    type: Constants.CREATE_NEW_COMPANY_SUCCESS,
+    type: Constants.UPDATE_ASSIGNMENT,
     payload: data,
   };
 }
 
-export function createNewCompanyError(data) {
+export function updateAssignmentSuccess(data) {
   return {
-    type: Constants.CREATE_NEW_COMPANY_ERROR,
+    type: Constants.UPDATE_ASSIGNMENT_SUCCESS,
     payload: data,
   };
 }
 
-export function updateCompany(data) {
+export function updateAssignmentError(data) {
   return {
-    type: Constants.UPDATE_COMPANY,
+    type: Constants.UPDATE_ASSIGNMENT_ERROR,
     payload: data,
   };
 }
 
-export function updateCompanySuccess(data) {
+export function getAssignments() {
   return {
-    type: Constants.UPDATE_COMPANY_SUCCESS,
+    type: Constants.GET_ASSIGNMENTS,
+  };
+}
+
+export function getAssignmentsSuccess(data) {
+  return {
+    type: Constants.GET_ASSIGNMENTS_SUCCESS,
     payload: data,
   };
 }
 
-export function updateCompanyError(data) {
+export function getAssignmentsError(data) {
   return {
-    type: Constants.UPDATE_COMPANY_ERROR,
+    type: Constants.GET_ASSIGNMENTS_ERROR,
     payload: data,
   };
 }
 
-export function getAllCompanies() {
+export function createLecture(data) {
   return {
-    type: Constants.GET_ALL_COMPANIES,
-  };
-}
-
-export function getAllCompaniesSuccess(data) {
-  return {
-    type: Constants.GET_ALL_COMPANIES_SUCCESS,
+    type: Constants.CREATE_LECTURE,
     payload: data,
   };
 }
 
-export function getAllCompaniesError(data) {
+export function createLectureSuccess(data) {
   return {
-    type: Constants.GET_ALL_COMPANIES_ERROR,
+    type: Constants.CREATE_LECTURE_SUCCESS,
+    payload: data,
+  };
+}
+
+export function createLectureError(data) {
+  return {
+    type: Constants.CREATE_LECTURE_ERROR,
+    payload: data,
+  };
+}
+
+export function updateLecture(data) {
+  return {
+    type: Constants.UPDATE_LECTURE,
+    payload: data,
+  };
+}
+
+export function updateLectureSuccess(data) {
+  return {
+    type: Constants.UPDATE_LECTURE_SUCCESS,
+    payload: data,
+  };
+}
+
+export function updateLectureError(data) {
+  return {
+    type: Constants.UPDATE_LECTURE_ERROR,
+    payload: data,
+  };
+}
+
+export function getLectures() {
+  return {
+    type: Constants.GET_LECTURES,
+  };
+}
+
+export function getLecturesSuccess(data) {
+  return {
+    type: Constants.GET_LECTURES_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getLecturesError(data) {
+  return {
+    type: Constants.GET_LECTURES_ERROR,
+    payload: data,
+  };
+}
+
+export function getCourses() {
+  return {
+    type: Constants.GET_COURSES,
+  };
+}
+
+export function getCoursesSuccess(data) {
+  return {
+    type: Constants.GET_COURSES_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getCoursesError(data) {
+  return {
+    type: Constants.GET_COURSES_ERROR,
     payload: data,
   };
 }

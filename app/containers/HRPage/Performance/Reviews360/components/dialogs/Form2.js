@@ -133,12 +133,12 @@ function Form2(props) {
                     <div key={x} className={classes.flex}>
                       <TextField
                         id={`option-${x}`}
-                        name="option"
+                        name="choiceOption"
                         placeholder="Option"
                         variant="outlined"
                         size="small"
                         label={`Option ${x + 1}`}
-                        value={option.option}
+                        value={option.choiceOption}
                         onChange={handleOptionChange(i, x)}
                       />
                       <IconButton onClick={() => { }}><Icon>edit</Icon></IconButton>

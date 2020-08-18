@@ -45,10 +45,10 @@ const makeSelectSocialMediaDetailsDialog = () =>
     subState => subState.socialMediaDetailsDialog,
   );
 
-const makeSelectSocialMedia = () =>
+const makeSelectFacebook = () =>
   createSelector(
     selectSocialMediaDomain,
-    subState => subState.socialMedias,
+    subState => subState.facebook,
   );
 
 const makeSelectEmployees = () =>
@@ -62,7 +62,7 @@ export {
   selectSocialMediaDomain,
   makeSelectLoading,
   makeSelectEmployees,
-  makeSelectSocialMedia,
+  makeSelectFacebook,
   makeSelectSocialMediaDialog,
   makeSelectSocialMediaDetailsDialog,
   makeSelectError,
