@@ -74,14 +74,10 @@ const Container = styled.div`
 
 function PaperDropzone(props) {
   const [files, setFiles] = useState([]);
-  const { uploadFileAction, currentUser } = props;
+  const { uploadFileAction } = props;
   const [form, setForm] = useState({
     attachments: [],
   });
-
-  React.useEffect(() => {
-    // setForm(_.set(form, 'taskId', task.id));
-  }, []);
 
   const {
     open,
@@ -105,7 +101,6 @@ function PaperDropzone(props) {
       );
 
       const image = {};
-      _.set(image, 'orgId', currentUser.organisation.orgId);
       _.set(image, 'fileName', acceptedFiles[0].name);
       _.set(image, 'format', acceptedFiles[0].type);
       _.set(image, 'size', acceptedFiles[0].size);
@@ -142,11 +137,6 @@ function PaperDropzone(props) {
     },
     [files],
   );
-
-  // console.log(acceptedFiles, 'References library');
-  // console.log(inputRef, "inputRef library")
-  // console.log(files, 'files state library');
-  // console.log(form, 'form state form');
 
   return (
     <RootRef rootRef={ref}>

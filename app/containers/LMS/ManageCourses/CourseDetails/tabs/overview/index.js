@@ -41,7 +41,14 @@ const useStyles = makeStyles(theme => ({
 
 const Overview = props => {
   const classes = useStyles();
-  const { loading, history } = props;
+  const { loading, history, course } = props;
+
+  if (!course) {
+    return ""
+  }
+
+  const requirements = course.courseDetails && course.courseDetails.filter(d => d.type === 'REQUIREMENT')
+  const whatYouWillLearns = course.courseDetails && course.courseDetails.filter(d => d.type === 'WHAT_WILL_LEARN')
 
   return (
     <Grid
@@ -50,24 +57,28 @@ const Overview = props => {
     >
       <Grid item md={12}>
         <div className={classes.content}>
-          <List
-            className={classes.list}
-            component="nav"
-            subheader={
-              <ListSubheader component="div" id="nested-list-subheader">
-                What will you learn
-              </ListSubheader>
-            }
-          >
-            {_.range(0, 4).map((row, i) =>
-              <ListItem key={i}>
-                <ListItemAvatar>
-                  <CheckCircleOutlineIcon />
-                </ListItemAvatar>
-                <ListItemText primary="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
-              </ListItem>
-            )}
-          </List>
+          {course.courseDetails.length > 0 ?
+            <List
+              className={classes.list}
+              component="nav"
+              subheader={
+                <ListSubheader component="div" id="nested-list-subheader">
+                  What will you learn
+                </ListSubheader>
+              }
+            >
+              {whatYouWillLearns.map((row, i) =>
+                <ListItem key={i}>
+                  <ListItemAvatar>
+                    <CheckCircleOutlineIcon />
+                  </ListItemAvatar>
+                  <ListItemText primary={row.details} />
+                </ListItem>
+              )}
+            </List>
+            :
+            <Typography variant="subtitle2" color="textSecondary">Course Details has not been added yet</Typography>
+          }
         </div>
         <div className={classes.content}>
           <List
@@ -79,12 +90,12 @@ const Overview = props => {
               </ListSubheader>
             }
           >
-            {_.range(0, 4).map((row, i) =>
+            {requirements.map((row, i) =>
               <ListItem key={i}>
                 <ListItemAvatar>
                   <LensIcon />
                 </ListItemAvatar>
-                <ListItemText primary="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
+                <ListItemText primary={row.details} />
               </ListItem>
             )}
           </List>
@@ -102,8 +113,8 @@ const Overview = props => {
             <ListItem>
               <ListItemText
                 primary={
-                  <Typography>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dolor eu porta laoreet augue facilisi. Magna amet malesuada at interdum viverra tempor. Tortor, porttitor quisque quis posuere amet feugiat imperdiet neque. Quis fames metus, et lacus pretium sed at ut ipsum. Commodo ut tincidunt faucibus mauris. Ut vestibulum augue in eu pulvinar facilisis. Vitae tortor sit elit, dui. Quis at id odio sit pharetra. Risus at id vulputate eu. Venenatis enim turpis dictumst odio scelerisque. Risus netus nunc et egestas. Nam orci, eget nulla enim enim euismod dis pretium sed. Elit non, consectetur ut venenatis. Placerat laoreet in nunc pharetra sed mus. Diam odio vestibulum, amet, porttitor in egestas. Rhoncus orci a mauris eget ridiculus eleifend. Diam velit orci eros, enim. Tincidunt potenti porta in vitae. Egestas imperdiet felis ultricies non interdum. In lorem aliquet in aliquet diam condimentum tincidunt eget. Consectetur in placerat semper euismod ut.
+                  <Typography vraint="subtitle1">
+                    {course.fullDescription}
                   </Typography>
                 }
               />

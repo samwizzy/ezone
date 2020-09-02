@@ -118,7 +118,7 @@ const LectureDialog = props => {
               <TextField
                 name="title"
                 label="Lecture Title"
-                id="outlined-title"
+                id="lecture-outlined-title"
                 fullWidth
                 variant="outlined"
                 margin="normal"
@@ -131,7 +131,7 @@ const LectureDialog = props => {
               <TextField
                 name="description"
                 label="Description"
-                id="outlined-description"
+                id="lecture-outlined-description"
                 fullWidth
                 variant="outlined"
                 margin="normal"
@@ -144,7 +144,7 @@ const LectureDialog = props => {
               <TextField
                 name="instructions"
                 label="Instructions"
-                id="outlined-instructions"
+                id="lecture-outlined-instructions"
                 fullWidth
                 variant="outlined"
                 margin="normal"
@@ -158,7 +158,7 @@ const LectureDialog = props => {
 
             <Grid item xs={12}>
               <Autocomplete
-                id="combo-box-type"
+                id="lecture-box-type"
                 size="small"
                 options={[]}
                 getOptionLabel={option => option.name}
@@ -184,7 +184,7 @@ const LectureDialog = props => {
                   margin="normal"
                   fullWidth
                   inputVariant="outlined"
-                  id="date-picker-dialog"
+                  id="lecture-date-picker-dialog"
                   label="Date"
                   size="small"
                   format="MM/dd/yyyy"
@@ -203,7 +203,7 @@ const LectureDialog = props => {
                   margin="normal"
                   fullWidth
                   inputVariant="outlined"
-                  id="start-time"
+                  id="lecture-start-time"
                   name="startTime"
                   label="Start Time"
                   size="small"
@@ -222,7 +222,7 @@ const LectureDialog = props => {
                   margin="normal"
                   fullWidth
                   inputVariant="outlined"
-                  id="end-time"
+                  id="lecture-end-time"
                   name="endTime"
                   label="End Time"
                   size="small"

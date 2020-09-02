@@ -154,7 +154,7 @@ const AddNewSection = props => {
                   <TextField
                     name="title"
                     label="Add title"
-                    id="outlined-title"
+                    id="section-outlined-title"
                     fullWidth
                     margin="normal"
                     variant="outlined"

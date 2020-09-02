@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import _ from 'lodash';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import {
   Button,
@@ -8,13 +11,10 @@ import {
   Grid,
   MenuItem,
   TextField,
-  Divider,
-  AppBar,
-  Toolbar,
-  Typography,
 } from '@material-ui/core';
 import PaperDropzone from './PaperDropzone';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import * as Selectors from '../selectors';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,16 +25,24 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const Overview = props => {
-  const { form, handleChange, handleSelectChange, handleTabChange } = props;
+const levels = [
+  { value: "BEGINNER", label: "Beginner" },
+  { value: "INTERMEDIATE", label: "Intermediate" },
+  { value: "PROFESSIONAL", label: "Professional" },
+]
+
+const Overview = props => {
+  const { categories, form, handleChange, handleSelectChange, handleTabChange, handleImageUpload } = props;
   const classes = useStyles();
+
+  console.log(categories, "categories overview")
 
   return (
     <Card className={classes.root}>
       <CardContent>
         <Grid container justify="center">
           <Grid item xs={6}>
-            <PaperDropzone />
+            <PaperDropzone handleImageUpload={handleImageUpload} name="thumbNail" />
 
             <TextField
               name="title"
@@ -64,8 +72,8 @@ export const Overview = props => {
             />
 
             <TextField
-              id="description"
-              name="description"
+              id="full-description"
+              name="fullDescription"
               placeholder="Description"
               fullWidth
               margin="normal"
@@ -74,17 +82,18 @@ export const Overview = props => {
               rows={3}
               size="small"
               label="Description"
-              value={form.description}
+              value={form.fullDescription}
               onChange={handleChange}
             />
 
             <Autocomplete
               id="combo-box-category"
-              name="category"
+              name="categoryId"
               size="small"
-              options={[]}
+              options={categories ? categories : []}
               getOptionLabel={option => option.name}
-              onChange={handleSelectChange('category')}
+              onChange={handleSelectChange('categoryId')}
+              value={form.categoryId ? _.find(categories, { id: form.categoryId }) : null}
               renderInput={params => (
                 <TextField
                   {...params}
@@ -101,8 +110,8 @@ export const Overview = props => {
               id="combo-box-level"
               name="level"
               size="small"
-              options={[]}
-              getOptionLabel={option => option.name}
+              options={levels}
+              getOptionLabel={option => option.label}
               onChange={handleSelectChange('level')}
               renderInput={params => (
                 <TextField
@@ -116,7 +125,7 @@ export const Overview = props => {
               )}
             />
 
-            <PaperDropzone />
+            <PaperDropzone handleImageUpload={handleImageUpload} name="coursePreview" />
           </Grid>
         </Grid>
       </CardContent>
@@ -133,3 +142,22 @@ export const Overview = props => {
     </Card>
   );
 };
+
+
+const mapStateToProps = createStructuredSelector({
+  categories: Selectors.makeSelectGetCategories(),
+});
+
+function mapDispatchToProps(dispatch) {
+  return {};
+}
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+export default compose(
+  withConnect,
+  memo,
+)(Overview);

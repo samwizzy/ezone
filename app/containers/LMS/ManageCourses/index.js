@@ -31,10 +31,11 @@ export function CourseManagement(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
-  const { getCourses, match } = props;
+  const { getCategories, getCourses, match } = props;
   const { path, url } = match
 
   useEffect(() => {
+    getCategories();
     getCourses();
   }, []);
 
@@ -48,7 +49,7 @@ export function CourseManagement(props) {
       <ModuleLayout>
         <Route exact path={path} component={CoursesList} />
         <Route exact path={`${path}/new`} component={AddCourse} />
-        <Route exact path={`/lms/course/:id`} component={CourseDetails} />
+        <Route path={`/lms/course/:id`} component={CourseDetails} />
         <Route exact path={`/lms/course/section/:id`} component={AddDocument} />
         <Route exact path={`${path}/learning-path`} component={LearningPath} />
       </ModuleLayout>
@@ -58,6 +59,7 @@ export function CourseManagement(props) {
 
 CourseManagement.propTypes = {
   getCourses: PropTypes.func,
+  getCategories: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -67,6 +69,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getCourses: () => dispatch(Actions.getCourses()),
+    getCategories: () => dispatch(Actions.getCategories()),
   };
 }
 

@@ -1,6 +1,6 @@
 import React, { Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Avatar, Button, IconButton, List, ListSubheader, ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction, ListItemAvatar, Menu, MenuItem, Grid, Paper, Toolbar, Typography } from '@material-ui/core';
 import { compose } from 'redux';
@@ -16,12 +16,9 @@ import * as AppSelectors from '../../../../../App/selectors';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import AddIcon from '@material-ui/icons/Add';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
-import AssignmentDialog from './components/AssignmentDialog';
-import LectureDialog from './components/LectureDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -52,7 +49,7 @@ const useStyles = makeStyles(theme => ({
 
 const StructureList = props => {
   const classes = useStyles();
-  const { loading, history, openNewAssignmentDialog, openNewLectureDialog } = props;
+  const { loading, history, match, course, openNewAssignmentDialog, openNewLectureDialog, openNewCourseVideoDialog } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -73,6 +70,11 @@ const StructureList = props => {
     handleClose()
   }
 
+  console.log(course, "sections list course by id")
+  if (!course) {
+    return ""
+  }
+
   return (
     <Fragment>
       <Grid
@@ -87,7 +89,14 @@ const StructureList = props => {
                   primary={<Typography variant="subtitle1">List of Course Syllabus</Typography>}
                 />
                 <ListItemSecondaryAction>
-                  <Button size="small" variant="contained" color="primary" disableElevation startIcon={<AddIcon />}>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    color="primary"
+                    disableElevation
+                    startIcon={<AddIcon />}
+                    onClick={() => openNewCourseVideoDialog(course)}
+                  >
                     Add
                   </Button>
                 </ListItemSecondaryAction>
@@ -103,19 +112,19 @@ const StructureList = props => {
                 <IconButton onClick={handleClick}><AddIcon /></IconButton>
               </Toolbar>
               <List dense={true}>
-                <ListItem>
+                <ListItem component={Link} to={`${match.url}/assignment/5`}>
                   <ListItemIcon><YouTubeIcon /></ListItemIcon>
                   <ListItemText
                     primary="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                   />
                 </ListItem>
-                <ListItem>
+                <ListItem component={Link} to={`${match.url}/assignment/5`}>
                   <ListItemIcon><HelpOutlineIcon /></ListItemIcon>
                   <ListItemText
                     primary="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                   />
                 </ListItem>
-                <ListItem>
+                <ListItem component={Link} to={`${match.url}/assignment/5`}>
                   <ListItemIcon><LibraryBooksIcon /></ListItemIcon>
                   <ListItemText
                     primary="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -159,26 +168,25 @@ const StructureList = props => {
           </Menu>
         </Grid>
       </Grid>
-
-      <LectureDialog />
-      <AssignmentDialog />
     </Fragment>
   );
 };
 
 StructureList.propTypes = {
   loading: PropTypes.bool,
-  getEmployees: PropTypes.func,
+  openNewCourseVideoDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
+  course: Selectors.makeSelectGetCourseById(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openNewAssignmentDialog: () => dispatch(Actions.openNewAssignmentDialog()),
-    openNewLectureDialog: () => dispatch(Actions.openNewLectureDialog())
+    openNewLectureDialog: () => dispatch(Actions.openNewLectureDialog()),
+    openNewCourseVideoDialog: (data) => dispatch(Actions.openNewCourseVideoDialog(data))
   };
 }
 

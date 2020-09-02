@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import _ from 'lodash';
 import clsx from 'clsx';
@@ -39,6 +39,7 @@ export const Requirement = props => {
   const {
     form,
     handleChange,
+    handleCourseChange,
     handleSelectChange,
     handleTabChange,
     addRequirement,
@@ -51,21 +52,25 @@ export const Requirement = props => {
       <CardContent>
         <Grid container justify="center">
           <Grid item xs={6}>
-            {form.requirements.map((req, i) =>
+            {form.courseDetails.map((req, i) =>
               <Toolbar key={i} variant="dense">
-                <TextField
-                  name="title"
-                  label="Requirement"
-                  id={`outlined-requirement-${i}`}
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                  value={req.title}
-                  onChange={handleChange}
-                />
+                {req.type === 'REQUIREMENT' &&
+                  <Fragment>
+                    <TextField
+                      name="details"
+                      label="Requirement"
+                      id={`outlined-requirement-${i}`}
+                      fullWidth
+                      variant="outlined"
+                      size="small"
+                      value={req.details}
+                      onChange={handleCourseChange(i)}
+                    />
 
-                <IconButton className={classes.iconButton} onClick={addRequirement}><AddIcon /></IconButton>
-                <IconButton className={classes.danger} onClick={removeRequirement(i)}><CloseOutlinedIcon /></IconButton>
+                    <IconButton className={classes.iconButton} onClick={addRequirement}><AddIcon /></IconButton>
+                    <IconButton className={classes.danger} onClick={removeRequirement(i)}><CloseOutlinedIcon /></IconButton>
+                  </Fragment>
+                }
               </Toolbar>
             )}
 

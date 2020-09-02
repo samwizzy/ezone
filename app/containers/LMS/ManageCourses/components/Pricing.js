@@ -34,6 +34,7 @@ export const Pricing = props => {
     handleOptionsChange,
     handleChange,
     handleTabChange,
+    handleSubmit
   } = props;
   const classes = useStyles();
 
@@ -50,13 +51,13 @@ export const Pricing = props => {
             {!options.free &&
               <Fragment>
                 <TextField
-                  name="price"
+                  name="coursePrice"
                   label="Course Price"
                   id='outlined-price'
                   fullWidth
                   variant="outlined"
                   size="small"
-                  value={form.price}
+                  value={form.coursePrice}
                   onChange={handleChange}
                 />
 
@@ -66,13 +67,13 @@ export const Pricing = props => {
                 />
                 {options.discount &&
                   <TextField
-                    name="discount"
+                    name="courseDiscountedPrice"
                     label="Discounted Price"
                     id='outlined-discount'
                     fullWidth
                     variant="outlined"
                     size="small"
-                    value={form.discount}
+                    value={form.courseDiscountedPrice}
                     onChange={handleChange}
                   />
                 }
@@ -92,7 +93,7 @@ export const Pricing = props => {
           Back
         </Button>
         <Button
-          onClick={event => { }}
+          onClick={handleSubmit}
           color="primary"
           variant="contained"
           endIcon={<ArrowForwardIcon />}

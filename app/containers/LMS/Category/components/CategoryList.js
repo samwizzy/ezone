@@ -22,7 +22,6 @@ import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-import AssignContactDialog from './CategoryDialog';
 import CategoryImage from '../../../../images/categoryImage.svg'
 
 const useStyles = makeStyles(theme => ({
@@ -65,12 +64,14 @@ const list = [
 
 const CategoryList = props => {
   const classes = useStyles();
-  const { loading, openNewCategoryDialog } = props;
+  const { loading, openNewCategoryDialog, categories } = props;
   const [form, setForm] = React.useState({ search: '' })
 
   const handleChange = ({ target }) => {
     setForm({ ...form, [target.name]: target.value })
   }
+
+  console.log(categories, "categories")
 
   return (
     <React.Fragment>
@@ -79,7 +80,7 @@ const CategoryList = props => {
       </Backdrop>
 
       <AppBar color="inherit" className={classes.appBar}>
-        <Toolbar><Typography variant="h6">Course category</Typography></Toolbar>
+        <Toolbar variant="dense"><Typography variant="h6">Course category</Typography></Toolbar>
       </AppBar>
       <AppBar color="inherit" className={classes.appBar}>
         <Toolbar className={classes.toolbar}>
@@ -101,18 +102,18 @@ const CategoryList = props => {
       </AppBar>
 
       <Grid container spacing={3}>
-        {[0, 1, 2].map((row, i) =>
+        {categories && categories.map((row, i) =>
           <Grid key={i} item xs={4}>
             <Card className={classes.card}>
               <CardActionArea>
                 <CardMedia
                   className={classes.media}
-                  image={CategoryImage}
-                  title="Contemplative Reptile"
+                  image={row.imageUrl ? row.imageUrl : CategoryImage}
+                  title={row.name}
                 />
 
                 <CardHeader
-                  title="UI Design"
+                  title={row.name}
                   subheader="5 sub categories"
                 />
 
@@ -144,6 +145,7 @@ CategoryList.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
+  categories: Selectors.makeSelectCourseCategories(),
 });
 
 function mapDispatchToProps(dispatch) {

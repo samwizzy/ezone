@@ -357,3 +357,19 @@ export const CreateCrmActivityApi = `${BaseUrl}/utilityserv/api/v1/add_log`;
 export const GetFacebookTokenApi = `${BaseUrl}/crmserv/api/v1/facebook`;
 export const GenerateFacebookAuthoriseUrlApi = `${BaseUrl}/crmserv/api/v1/generateFacebookAuthoriseUrl`;
 export const GetUserDataApi = `${BaseUrl}/crmserv/api/v1/get_user_data`;
+
+
+/*********************************** LMS MODULE ***********************************
+ **********************************************************************************/
+export const GetCategoriesApi = `${BaseUrl}/lmsserv/api/v1/lms/get_category_by_orgid`;
+export const AddCategoryApi = `${BaseUrl}/lmsserv/api/v1/lms/add_category`;
+export const UpdateCategoryApi = `${BaseUrl}/lmsserv/api/v1/lms/update_category`;
+export const DeleteCategoryApi = `${BaseUrl}/lmsserv/api/v1/lms/delete_category`;
+
+export const GetCoursesApi = `${BaseUrl}/lmsserv/api/v1/lms/get_course_by_orgid`;
+export const GetCourseByIdApi = `${BaseUrl}/lmsserv/api/v1/get_course_by_id`;
+export const AddCourseApi = `${BaseUrl}/lmsserv/api/v1/lms/add_course`;
+export const UpdateCourseApi = `${BaseUrl}/lmsserv/api/v1/lms/update_course`;
+export const DeleteCourseApi = `${BaseUrl}/lmsserv/api/v1/lms/delete_course`;
+export const UploadPreviewApi = `${BaseUrl}/lmsserv/api/v1/lms/upload_preview`;
+export const AddCourseVideoApi = `${BaseUrl}/lmsserv/api/v1/lms/add_course_video`;

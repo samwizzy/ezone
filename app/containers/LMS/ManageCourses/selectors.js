@@ -37,10 +37,28 @@ const makeSelectLectureDialog = () =>
     subState => subState.lectureDialog,
   );
 
+const makeSelectCourseVideoDialog = () =>
+  createSelector(
+    selectCoursesDomain,
+    subState => subState.courseVideoDialog,
+  );
+
+const makeSelectGetCategories = () =>
+  createSelector(
+    selectCoursesDomain,
+    subState => subState.categories,
+  );
+
 const makeSelectGetCourses = () =>
   createSelector(
     selectCoursesDomain,
     subState => subState.courses,
+  );
+
+const makeSelectGetCourseById = () =>
+  createSelector(
+    selectCoursesDomain,
+    subState => subState.course,
   );
 
 export default makeSelectLmsCourseMgt;
@@ -48,7 +66,10 @@ export {
   selectCoursesDomain,
   makeSelectLoading,
   makeSelectError,
+  makeSelectGetCategories,
   makeSelectGetCourses,
+  makeSelectGetCourseById,
   makeSelectLectureDialog,
   makeSelectAssignmentDialog,
+  makeSelectCourseVideoDialog,
 };

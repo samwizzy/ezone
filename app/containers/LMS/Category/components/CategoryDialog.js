@@ -65,13 +65,19 @@ const CategoryDialog = props => {
     dialog,
     closeNewCategoryDialog,
     createCategory,
+    categories,
     params,
   } = props;
 
   const [form, setForm] = React.useState({
-    title: '',
-    parentCategory: null,
-    id: '',
+    name: '',
+    parentCategoryId: null,
+    file: {
+      file: "",
+      fileName: "",
+      fileUrl: "",
+      oldFile: ""
+    },
   });
 
   const handleChange = ({ target }) => {
@@ -82,10 +88,18 @@ const CategoryDialog = props => {
     setForm({ ...form, [name]: obj });
   };
 
-  const canSubmitForm = () => {
-    const { title, parentCategory } = form;
-    return title.length > 0 && parentCategory;
+  const uploadFileAction = image => {
+    console.log(image, "image")
+    setForm({ ...form, file: image });
   };
+
+  const canSubmitForm = () => {
+    const { name, file, parentCategoryId } = form;
+    return name.length > 0 && file || parentCategoryId;
+  };
+
+  console.log(form, "form")
+  console.log(categories, "form categories")
 
   return (
     <div>
@@ -99,7 +113,8 @@ const CategoryDialog = props => {
         <Backdrop className={classes.backdrop} open={loading}>
           <CircularProgress color="inherit" />
         </Backdrop>
-        <AppBar position="relative">
+
+        <AppBar position="static">
           <Toolbar>
             <Typography variant="h6">New Category</Typography>
           </Toolbar>
@@ -110,14 +125,14 @@ const CategoryDialog = props => {
           <Grid container>
             <Grid item xs={12}>
               <TextField
-                name="title"
-                label="Assignment Title"
+                name="name"
+                label="Assignment title"
                 id="outlined-title"
                 fullWidth
                 variant="outlined"
                 margin="normal"
                 size="small"
-                value={form.title}
+                value={form.name}
                 onChange={handleChange}
               />
             </Grid>
@@ -125,11 +140,11 @@ const CategoryDialog = props => {
               <Autocomplete
                 id="combo-box-parent-category"
                 size="small"
-                options={[]}
+                options={categories ? categories : []}
                 getOptionLabel={option => option.name}
-                getOptionSelected={option => option.name === form.parentCategory}
-                value={form.parentCategory}
-                onChange={handleSelectChange('parentCategory')}
+                // getOptionSelected={option => option.name === form.parentCategoryId}
+                value={form.parentCategoryId ? form.parentCategoryId : null}
+                onChange={handleSelectChange('parentCategoryId')}
                 renderInput={params => (
                   <TextField
                     {...params}
@@ -143,22 +158,9 @@ const CategoryDialog = props => {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                name="description"
-                label="Description"
-                id="outlined-description"
-                fullWidth
-                variant="outlined"
-                margin="normal"
-                size="small"
-                value={form.description}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
               <FormControl margin="normal" fullWidth component="fieldset">
                 <FormLabel component="legend">Category Thumbnail</FormLabel>
-                <PaperDropzone />
+                <PaperDropzone uploadFileAction={uploadFileAction} />
               </FormControl>
             </Grid>
           </Grid>
@@ -191,6 +193,7 @@ CategoryDialog.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   dialog: Selectors.makeSelectCategoryDialog(),
+  categories: Selectors.makeSelectCourseCategories(),
 });
 
 function mapDispatchToProps(dispatch) {

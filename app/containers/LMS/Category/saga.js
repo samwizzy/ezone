@@ -8,9 +8,10 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 import * as Endpoints from '../../../components/Endpoints';
 
-export function* getAllContactsGroup() {
+export function* getCategories() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${Endpoints.GetAllContactsGroupApi}`;
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetCategoriesApi}/${currentUser.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -21,157 +22,88 @@ export function* getAllContactsGroup() {
       }),
     });
 
-    yield put(Actions.getAllContactsGroupSuccess(response));
+    yield put(Actions.getCategoriesSuccess(response.data));
   } catch (err) {
-    yield put(Actions.getAllContactsGroupError(err));
+    yield put(Actions.getCategoriesError(err));
   }
 }
 
-export function* createNewContactGroup() {
+export function* createCategory({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.AddCategoryApi}`;
+  payload.orgId = currentUser.organisation.orgId;
 
-  const newContactGroup = yield select(
-    Selectors.makeSelectCreateNewContactGroup(),
-  );
-  newContactGroup.orgId = currentUser.organisation.orgId;
-
-  const requestURL = `${Endpoints.CreateNewContactGroupApi}`;
+  console.log(payload, "payload add category")
 
   try {
-    const newContactGroupResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
-      body: JSON.stringify(newContactGroup),
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
-    yield put(Actions.createNewContactGroupSuccess(newContactGroupResponse));
-    yield put(Actions.getAllContactsGroup());
-    yield put(Actions.closeNewContactGroupsDialog());
+    yield put(AppActions.openSnackBar({ message: "Course category created successfully", status: 'success' }));
+
+    yield put(Actions.createCategorySuccess(response));
+    yield put(Actions.getCategories());
+    yield put(Actions.closeNewCategoryDialog());
   } catch (err) {
-    yield put(Actions.createNewContactGroupError(err));
+    yield put(Actions.createCategoryError(err));
   }
 }
 
-export function* updateContactGroup() {
+export function* updateCategory({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  // const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-
-  const updateContactGroupData = yield select(
-    Selectors.makeSelectUpdateContactGroup(),
-  );
-
-  console.log(updateContactGroupData, 'updateContactGroupData');
-  const requestURL = `${Endpoints.UpdateContactGroupApi}/${
-    updateContactGroupData.id
-    }`;
+  const requestURL = `${Endpoints.UpdateContactGroupApi}/${payload.id}`;
 
   try {
-    const newContactResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'PUT',
-      body: JSON.stringify(updateContactGroupData),
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
-    console.log(newContactResponse, 'newContactResponse');
-
-    yield put(Actions.updateContactGroupSuccess(newContactResponse));
-    yield put(Actions.getAllContactsGroup());
-    yield put(Actions.closeEditContactGroupsDialog());
+    yield put(Actions.updateCategorySuccess(response));
+    yield put(Actions.getCategories());
+    yield put(Actions.closeEditCategoryDialog());
   } catch (err) {
-    yield put(Actions.createNewContactGroupError(err));
+    yield put(Actions.createCategoryError(err));
   }
 }
 
-export function* getContactGroup() {
+export function* deleteCategory({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  // const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-
-  const getContactGroupById = yield select(
-    Selectors.makeSelectContactGroupById(),
-  );
-
-  const requestURL = `${
-    Endpoints.GetContactGroupByIdApi
-    }/${getContactGroupById}`;
+  const requestURL = `${Endpoints.DeleteCategoryApi}/${payload.id}`;
 
   try {
-    const getContactGroupByIdResponse = yield call(request, requestURL, {
-      method: 'GET',
-      headers: new Headers({
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      }),
-    });
-
-    yield put(Actions.getContactGroupByIdSuccess(getContactGroupByIdResponse));
-  } catch (err) {
-    yield put(Actions.getContactGroupByIdError(err));
-  }
-}
-
-export function* getContacts() {
-  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-
-  const requestURL = `${Endpoints.GetAllContactsApi}/?orgId=${
-    currentUser.organisation.orgId
-    }`;
-
-  try {
-    const getContactsResponse = yield call(request, requestURL, {
-      method: 'GET',
-      headers: new Headers({
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      }),
-    });
-
-    yield put(Actions.getContactsSuccess(getContactsResponse));
-  } catch (err) {
-    yield put(Actions.getContactsError(err));
-  }
-}
-
-export function* assignContactToGroup() {
-  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const contactDetails = yield select(Selectors.makeSelectContactDetails());
-
-  console.log(contactDetails, 'contactDetails');
-  const requestURL = `${Endpoints.UpdateContactGroupApi}/${contactDetails.id}`;
-
-  try {
-    const newContactResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'PUT',
-      body: JSON.stringify(contactDetails),
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
-    console.log(newContactResponse, 'newContactResponse');
-
-    yield put(Actions.assignContactToGroupSuccess(newContactResponse));
-    yield put(Actions.getContactGroupById(contactDetails.id));
-    yield put(Actions.closeNewAssignContactDialog());
+    yield put(Actions.deleteCategorySuccess(response));
+    yield put(Actions.getCategories());
   } catch (err) {
-    yield put(Actions.assignContactToGroupError(err));
+    yield put(Actions.deleteCategoryError(err));
   }
 }
+
 
 // Individual exports for testing
-export default function* crmContactsSaga() {
-  yield takeLatest(Constants.GET_ALL_CONTACTS, getContacts);
-  yield takeLatest(Constants.ASSIGN_CONTACT_TO_GROUP, assignContactToGroup);
-  yield takeLatest(Constants.GET_CONTACT_GROUP_BY_ID, getContactGroup);
-  yield takeLatest(Constants.CREATE_NEW_CONTACT_GROUP, createNewContactGroup);
-  yield takeLatest(Constants.UPDATE_CONTACT_GROUP, updateContactGroup);
-  yield takeLatest(Constants.GET_ALL_CONTACTS_GROUP, getAllContactsGroup);
+export default function* lmsCategoriesSaga() {
+  yield takeLatest(Constants.GET_CATEGORIES, getCategories);
+  yield takeLatest(Constants.CREATE_CATEGORY, createCategory);
+  yield takeLatest(Constants.UPDATE_CATEGORY, updateCategory);
+  yield takeLatest(Constants.DELETE_CATEGORY, deleteCategory);
 }

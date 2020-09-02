@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import _ from 'lodash';
 import clsx from 'clsx';
@@ -39,6 +39,7 @@ export const WhatYouLearn = props => {
   const {
     form,
     handleChange,
+    handleCourseChange,
     handleTabChange,
     addWhatYouLearn,
     removeWhatYouLearn
@@ -50,21 +51,25 @@ export const WhatYouLearn = props => {
       <CardContent>
         <Grid container justify="center">
           <Grid item xs={6}>
-            {form.whatYouLearns.map((row, i) =>
+            {form.courseDetails.map((row, i) =>
               <Toolbar key={i} variant="dense">
-                <TextField
-                  name="title"
-                  label="What you learn"
-                  id={`outlined-what-you-learn-${i}`}
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                  value={row.title}
-                  onChange={handleChange}
-                />
+                {row.type === 'WHAT_WILL_LEARN' &&
+                  <Fragment>
+                    <TextField
+                      name="details"
+                      label="What you learn"
+                      id={`outlined-what-you-learn-${i}`}
+                      fullWidth
+                      variant="outlined"
+                      size="small"
+                      value={row.details}
+                      onChange={handleCourseChange(i)}
+                    />
 
-                <IconButton className={classes.iconButton} onClick={addWhatYouLearn}><AddIcon /></IconButton>
-                <IconButton className={classes.danger} onClick={removeWhatYouLearn(i)}><CloseOutlinedIcon /></IconButton>
+                    <IconButton className={classes.iconButton} onClick={addWhatYouLearn}><AddIcon /></IconButton>
+                    <IconButton className={classes.danger} onClick={removeWhatYouLearn(i)}><CloseOutlinedIcon /></IconButton>
+                  </Fragment>
+                }
               </Toolbar>
             )}
           </Grid>

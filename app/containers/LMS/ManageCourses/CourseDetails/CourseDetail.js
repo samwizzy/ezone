@@ -2,7 +2,7 @@ import React, { Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { withStyles, AppBar, Button, ButtonGroup, Card, CardHeader, CardContent, CardMedia, Icon, IconButton, Tabs, Tab, TableContainer, Table, TableRow, TableCell, TableBody, Grid, Paper, Toolbar, Typography } from '@material-ui/core';
+import { withStyles, AppBar, Avatar, Box, Button, ButtonGroup, Card, CardHeader, CardContent, CardMedia, Chip, Divider, Icon, IconButton, Tabs, Tab, TableContainer, Table, TableRow, TableCell, TableBody, Grid, Paper, Toolbar, Typography } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -26,6 +26,14 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
+  },
+  box: {
+    display: "flex",
+    alignItems: "center",
+    border: `1px solid ${theme.palette.divider}`,
+    '& div, & p': {
+      margin: theme.spacing(0.5),
+    },
   },
   media: {
     width: '100%',
@@ -92,42 +100,51 @@ const initialState = {
 
 const CourseDetail = props => {
   const classes = useStyles();
-  const { loading, history } = props;
+  const { loading, history, course } = props;
   const [value, setValue] = React.useState('overview');
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  console.log(course, "selected course")
+  if (!course) {
+    return ""
+  }
+
   return (
     <Card className={classes.root} elevation={0} square>
       <CardMedia
         className={classes.media}
         image={LmsBanner}
-        title="Paella dish"
+        title={course.thumbNail && course.thumbNail.fileName}
       />
       <CardHeader
-        title="Building"
+        title={course.title}
         subheader={
           <Fragment>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lobortis tempus, eget semper sed.</p>
-            <Typography>Category: Architecture</Typography>
+            <p>{course.shortDescription}</p>
+            <Typography>Category: {course.category && course.category.name}</Typography>
           </Fragment>
         }
         action={
           <div className={classes.action}>
-            <Typography>Published</Typography>
-            <Typography><VisibilityIcon /> 30 &nbsp; 3rd Jul, 2019</Typography>
+            <Typography color="textPrimary">Published</Typography>
+            <Box className={classes.box}>
+              <Chip
+                avatar={<VisibilityIcon />}
+                label="30"
+                variant="outlined"
+              />
+              <Divider orientation="vertical" flexItem />
+              <Typography display="inline" variant="body2">{moment(course.dateCreated).format('ll')}</Typography>
+            </Box>
           </div>
         }
       />
 
       <CardContent>
-        <Grid
-          container
-          justify='space-between'
-        >
-
+        <Grid container>
           <Grid item md={12}>
             <div className={classes.content}>
               <AntTabs
@@ -143,10 +160,10 @@ const CourseDetail = props => {
               </AntTabs>
               <Typography className={classes.padding} />
               {value === 'overview' &&
-                <Overview />
+                <Overview course={course} />
               }
               {value === 'structure' &&
-                <Structure />
+                <Structure course={course} />
               }
               {value === 'sessions' &&
                 <div>sessions</div>
@@ -172,6 +189,7 @@ CourseDetail.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
+  course: Selectors.makeSelectGetCourseById(),
 });
 
 function mapDispatchToProps(dispatch) {

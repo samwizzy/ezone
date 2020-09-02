@@ -12,6 +12,7 @@ import * as Selectors from '../../../selectors';
 import * as AppSelectors from '../../../../../App/selectors';
 import AssignmentDialog from './components/AssignmentDialog';
 import LectureDialog from './components/LectureDialog';
+import AddCourseVideoDialog from './components/AddCourseVideoDialog';
 import SectionsList from './SectionsList';
 
 const useStyles = makeStyles(theme => ({
@@ -30,6 +31,7 @@ const StructurePage = props => {
 
       <LectureDialog />
       <AssignmentDialog />
+      <AddCourseVideoDialog />
     </Fragment>
   );
 };

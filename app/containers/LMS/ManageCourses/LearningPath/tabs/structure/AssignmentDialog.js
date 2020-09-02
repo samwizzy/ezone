@@ -115,6 +115,7 @@ const AssignmentDialog = props => {
         <Backdrop className={classes.backdrop} open={loading}>
           <CircularProgress color="inherit" />
         </Backdrop>
+
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6">
@@ -129,7 +130,7 @@ const AssignmentDialog = props => {
               <TextField
                 name="title"
                 label="Assignment Title"
-                id="outlined-title"
+                id="path-outlined-title"
                 fullWidth
                 variant="outlined"
                 margin="normal"
@@ -142,7 +143,7 @@ const AssignmentDialog = props => {
               <TextField
                 name="description"
                 label="Description"
-                id="outlined-description"
+                id="path-outlined-description"
                 fullWidth
                 variant="outlined"
                 margin="normal"
@@ -155,7 +156,7 @@ const AssignmentDialog = props => {
               <TextField
                 name="instructions"
                 label="Instructions"
-                id="outlined-instructions"
+                id="path-outlined-instructions"
                 fullWidth
                 variant="outlined"
                 margin="normal"
@@ -172,7 +173,7 @@ const AssignmentDialog = props => {
                   margin="normal"
                   fullWidth
                   inputVariant="outlined"
-                  id="date-picker-dialog"
+                  id="path-picker-dialog"
                   label="Date"
                   size="small"
                   format="MM/dd/yyyy"
@@ -191,7 +192,7 @@ const AssignmentDialog = props => {
                   margin="normal"
                   fullWidth
                   inputVariant="outlined"
-                  id="time"
+                  id="path-time"
                   name="time"
                   label="Time"
                   size="small"
@@ -208,7 +209,7 @@ const AssignmentDialog = props => {
               <TextField
                 name="marks"
                 label="Marks"
-                id="outlined-marks"
+                id="path-outlined-marks"
                 fullWidth
                 variant="outlined"
                 margin="normal"

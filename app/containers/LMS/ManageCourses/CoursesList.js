@@ -3,12 +3,14 @@ import React, { Fragment, memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import {
+  Avatar,
   Backdrop,
   CircularProgress,
   makeStyles,
-  List,
+  List, ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction,
   FormControlLabel,
   Icon,
+  IconButton,
   Button,
   Menu,
   MenuItem,
@@ -17,9 +19,14 @@ import {
 import { Add, Visibility } from '@material-ui/icons';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import MUIDataTable from 'mui-datatables';
+import AddIcon from '@material-ui/icons/Add';
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import EditIcon from '@material-ui/icons/Edit';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import _ from 'lodash';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
@@ -63,26 +70,43 @@ const CoursesList = props => {
     match,
     getCourses,
     courses,
+    deleteCourse,
     openNewCourseDialog,
     openEditCourseDialog,
   } = props;
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [selectedCourseId, setSelectedCourseId] = React.useState(null);
+
   console.log(match, "match mm")
+  console.log(courses, "courses")
+  console.log(selectedCourseId, "selectedCourseId")
 
-  useEffect(() => {
-    getCourses();
-  }, []);
+  const handleClick = id => (event) => {
+    event.stopPropagation()
+    setAnchorEl(event.currentTarget);
+    setSelectedCourseId(id)
+  };
 
-  const data = [
-    {
-      id: 1,
-      title: 'Statistics for Beginners',
-      category: 'Architecture',
-      stats: { sections: 20, lectures: 15 },
-      enrollment: 'Enrollment',
-      dateCreated: '2020-06-30T15:24:16.000+0000'
-    }
-  ];
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleEditCourse = () => {
+    handleClose()
+  }
+
+  const handleViewCourse = () => {
+    history.push('/lms/course/' + selectedCourseId)
+    handleClose()
+  }
+
+  const handleDeleteCourse = () => {
+    deleteCourse(selectedCourseId)
+    handleClose()
+  }
+
+  const sortedCourses = _.orderBy(courses, ['dateCreated'], ['desc']);
 
   const columns = [
     {
@@ -109,6 +133,17 @@ const CoursesList = props => {
       },
     },
     {
+      name: "thumbNail",
+      label: " ",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => {
+          return value.fileUrl ? <Avatar variant="square" fontSize="small" src={value.fileUrl} /> : <Avatar fontSize="small" />
+        }
+      }
+    },
+    {
       name: 'title',
       label: 'Title',
       options: {
@@ -117,7 +152,7 @@ const CoursesList = props => {
       },
     },
     {
-      name: 'category',
+      name: 'category.name',
       label: 'Category',
       options: {
         filter: true,
@@ -125,7 +160,7 @@ const CoursesList = props => {
       },
     },
     {
-      name: 'stats',
+      name: 'id',
       label: 'Section and Lecture',
       options: {
         filter: true,
@@ -133,15 +168,15 @@ const CoursesList = props => {
         customBodyRender: value => {
           return (
             <Fragment>
-              <Typography>Total sections: {value.sections}</Typography>
-              <Typography>Total lectures: {value.lectures}</Typography>
+              <Typography>Total sections: {20}</Typography>
+              <Typography>Total lectures: {15}</Typography>
             </Fragment>
           )
         }
       },
     },
     {
-      name: 'enrollment',
+      name: 'level',
       label: 'Enrollment',
       options: {
         filter: true,
@@ -156,6 +191,17 @@ const CoursesList = props => {
         sort: false,
         customBodyRender: value => {
           return moment(value).format('ll')
+        }
+      }
+    },
+    {
+      name: 'id',
+      label: ' ',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: value => {
+          return <IconButton onClick={handleClick(value)}><Icon>more_vert</Icon></IconButton>
         }
       }
     },
@@ -194,10 +240,37 @@ const CoursesList = props => {
 
       <MUIDataTable
         title="Courses"
-        data={data}
+        data={sortedCourses}
         columns={columns}
         options={options}
       />
+
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleViewCourse}>
+          <ListItemIcon>
+            <Visibility fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="View" />
+        </MenuItem>
+        {/* <MenuItem onClick={handleEditCourse}>
+          <ListItemIcon>
+            <EditIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Edit" />
+        </MenuItem> */}
+        <MenuItem onClick={handleDeleteCourse}>
+          <ListItemIcon>
+            <DeleteOutlineIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Delete" />
+        </MenuItem>
+      </Menu>
     </React.Fragment>
   );
 };
@@ -218,7 +291,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewCourseDialog: () => dispatch(Actions.openNewCourseDialog()),
-    openEditCourseDialog: evt => dispatch(Actions.openEditCourseDialog(evt)),
+    openEditCourseDialog: data => dispatch(Actions.openEditCourseDialog(data)),
+    deleteCourse: id => dispatch(Actions.deleteCourse(id)),
     getCourses: () => dispatch(Actions.getCourses()),
   };
 }

@@ -1,167 +1,116 @@
 /*
  *
- * Crm actions
+ * LMS Course Category actions
  *
  */
 
 import * as Constants from './constants';
 
 export function openNewCategoryDialog() {
+  console.log("open dialog for category")
   return {
     type: Constants.OPEN_NEW_CATEGORY_DIALOG,
-  };
+  }
 }
 
 export function closeNewCategoryDialog() {
   return {
     type: Constants.CLOSE_NEW_CATEGORY_DIALOG,
-  };
+  }
 }
 
 export function openEditCategoryDialog(data) {
   return {
     type: Constants.OPEN_EDIT_CATEGORY_DIALOG,
     payload: data,
-  };
+  }
 }
 
 export function closeEditCategoryDialog() {
   return {
     type: Constants.CLOSE_EDIT_CATEGORY_DIALOG,
-  };
-}
-
-export function openNewAssignContactDialog() {
-  return {
-    type: Constants.OPEN_ASSIGN_CONTACT_DIALOG,
-  };
-}
-
-export function closeNewAssignContactDialog() {
-  return {
-    type: Constants.CLOSE_ASSIGN_CONTACT_DIALOG,
-  };
-}
-
-export function getAllContactsGroup() {
-  return {
-    type: Constants.GET_ALL_CONTACTS_GROUP,
-  };
-}
-
-export function getAllContactsGroupSuccess(data) {
-  return {
-    type: Constants.GET_ALL_CONTACTS_GROUP_SUCCESS,
-    payload: data,
-  };
-}
-
-export function getAllContactsGroupError() {
-  return {
-    type: Constants.GET_ALL_CONTACTS_GROUP_ERROR,
-  };
+  }
 }
 
 export function createCategory(data) {
   return {
-    type: Constants.CREATE_CATEGORY_GROUP,
+    type: Constants.CREATE_CATEGORY,
     payload: data,
-  };
+  }
 }
 
 export function createCategorySuccess(data) {
   return {
     type: Constants.CREATE_CATEGORY_SUCCESS,
     payload: data,
-  };
+  }
 }
 
 export function createCategoryError(data) {
   return {
     type: Constants.CREATE_CATEGORY_ERROR,
     payload: data,
-  };
+  }
 }
 
-export function updateContactGroup(data) {
+export function updateCategory(data) {
   return {
-    type: Constants.UPDATE_CONTACT_GROUP,
+    type: Constants.UPDATE_CATEGORY,
     payload: data,
-  };
+  }
 }
 
-export function updateContactGroupSuccess(data) {
+export function updateCategorySuccess(data) {
   return {
-    type: Constants.UPDATE_CONTACT_GROUP_SUCCESS,
+    type: Constants.UPDATE_CATEGORY_SUCCESS,
     payload: data,
-  };
+  }
 }
 
-export function updateContactGroupError(data) {
+export function updateCategoryError(data) {
   return {
-    type: Constants.UPDATE_CONTACT_GROUP_ERROR,
+    type: Constants.UPDATE_CATEGORY_ERROR,
     payload: data,
-  };
+  }
 }
 
-export function getContactGroupById(data) {
+export function deleteCategory(data) {
   return {
-    type: Constants.GET_CONTACT_GROUP_BY_ID,
+    type: Constants.DELETE_CATEGORY,
     payload: data,
-  };
+  }
 }
 
-export function getContactGroupByIdSuccess(data) {
+export function deleteCategorySuccess(data) {
   return {
-    type: Constants.GET_CONTACT_GROUP_BY_ID_SUCCESS,
+    type: Constants.DELETE_CATEGORY_SUCCESS,
     payload: data,
-  };
+  }
 }
 
-export function getContactGroupByIdError(data) {
+export function deleteCategoryError(data) {
   return {
-    type: Constants.GET_CONTACT_GROUP_BY_ID_ERROR,
+    type: Constants.DELETE_CATEGORY_ERROR,
     payload: data,
-  };
+  }
 }
 
-export function assignContactToGroup(data) {
+export function getCategories() {
   return {
-    type: Constants.ASSIGN_CONTACT_TO_GROUP,
+    type: Constants.GET_CATEGORIES,
+  }
+}
+
+export function getCategoriesSuccess(data) {
+  return {
+    type: Constants.GET_CATEGORIES_SUCCESS,
     payload: data,
-  };
+  }
 }
 
-export function assignContactToGroupSuccess(data) {
+export function getCategoriesError(data) {
   return {
-    type: Constants.ASSIGN_CONTACT_TO_GROUP_SUCCESS,
+    type: Constants.GET_CATEGORIES_ERROR,
     payload: data,
-  };
-}
-
-export function assignContactToGroupError(data) {
-  return {
-    type: Constants.ASSIGN_CONTACT_TO_GROUP_ERROR,
-    payload: data,
-  };
-}
-
-export function getContacts() {
-  return {
-    type: Constants.GET_ALL_CONTACTS,
-  };
-}
-
-export function getContactsSuccess(data) {
-  return {
-    type: Constants.GET_ALL_CONTACTS_SUCCESS,
-    payload: data,
-  };
-}
-
-export function getContactsError(data) {
-  return {
-    type: Constants.GET_ALL_CONTACTS_ERROR,
-    payload: data,
-  };
+  }
 }

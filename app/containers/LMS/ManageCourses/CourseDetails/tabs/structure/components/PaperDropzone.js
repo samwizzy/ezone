@@ -74,14 +74,10 @@ const Container = styled.div`
 
 function PaperDropzone(props) {
   const [files, setFiles] = useState([]);
-  const { uploadFileAction, currentUser } = props;
+  const { handleImageUpload, currentUser } = props;
   const [form, setForm] = useState({
     attachments: [],
   });
-
-  React.useEffect(() => {
-    // setForm(_.set(form, 'taskId', task.id));
-  }, []);
 
   const {
     open,
@@ -110,7 +106,8 @@ function PaperDropzone(props) {
       _.set(image, 'format', acceptedFiles[0].type);
       _.set(image, 'size', acceptedFiles[0].size);
       getBase64(acceptedFiles[0], result => _.set(image, 'file', result));
-      uploadFileAction(image);
+      console.log(image, "image paperdropzone")
+      handleImageUpload(image);
     },
   });
 
@@ -143,11 +140,6 @@ function PaperDropzone(props) {
     [files],
   );
 
-  // console.log(acceptedFiles, 'References library');
-  // console.log(inputRef, "inputRef library")
-  // console.log(files, 'files state library');
-  // console.log(form, 'form state form');
-
   return (
     <RootRef rootRef={ref}>
       <div {...rootProps}>
@@ -174,7 +166,7 @@ function PaperDropzone(props) {
 
 PaperDropzone.propTypes = {
   currentUser: PropTypes.object,
-  uploadFileAction: PropTypes.func,
+  handleImageUpload: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({

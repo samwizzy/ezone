@@ -13,7 +13,7 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../../App/selectors';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { Overview } from './Overview'
+import Overview from './Overview'
 import { Requirement } from './Requirement'
 import { WhatYouLearn } from './WhatYouLearn'
 import { Pricing } from './Pricing'
@@ -67,21 +67,40 @@ const AntTab = withStyles(theme => ({
 
 const reqInitState = { title: '' }
 
+const initState = {
+  details: "",
+  type: "REQUIREMENT"
+}
+
 const initialState = {
   title: '',
   shortDescription: '',
-  description: '',
-  category: '',
-  level: '',
-  requirements: [{ ...reqInitState }],
-  whatYouLearns: [{ ...reqInitState }],
-  price: '',
-  discount: ''
+  categoryId: 0,
+  courseDetails: [
+    { details: "", type: "REQUIREMENT" },
+    { details: "", type: "WHAT_WILL_LEARN" },
+  ],
+  courseDiscountedPrice: 0,
+  coursePreview: {
+    file: "",
+    fileName: "",
+    fileUrl: "",
+    oldFile: ""
+  },
+  coursePrice: 0,
+  fullDescription: "",
+  level: "BEGINNER",
+  thumbNail: {
+    file: "",
+    fileName: "",
+    fileUrl: "",
+    oldFile: ""
+  },
 }
 
 const AddCourse = props => {
   const classes = useStyles();
-  const { loading, history } = props;
+  const { loading, history, createCourse } = props;
   const [value, setValue] = React.useState('overview');
   const [options, setOptions] = React.useState({ free: false, discount: false });
   const [form, setForm] = React.useState({ ...initialState });
@@ -90,34 +109,56 @@ const AddCourse = props => {
     setForm({ ...form, [target.name]: target.value })
   }
 
+  const handleCourseChange = i => ({ target }) => {
+    console.log(target.name)
+    console.log(target.value)
+    const { courseDetails } = form
+    courseDetails[i][target.name] = target.value
+    setForm({ ...form, courseDetails })
+  }
+
   const handleOptionsChange = ({ target }) => {
     console.log(target, "target")
     setOptions({ ...options, [target.name]: target.checked })
   }
 
   const handleSelectChange = name => (event, obj) => {
-    setForm({ ...form, [name]: obj })
+    if (name === 'level') {
+      setForm({ ...form, [name]: obj.value })
+    } else if (name === 'categoryId') {
+      setForm({ ...form, [name]: obj.id })
+    } else {
+      setForm({ ...form, [name]: obj })
+    }
   }
+
+  const handleImageUpload = (name, image) => {
+    setForm({ ...form, [name]: image });
+  };
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
   };
 
   const addRequirement = event => {
-    setForm({ ...form, requirements: [...form.requirements, reqInitState] });
+    setForm({ ...form, courseDetails: [...form.courseDetails, initState] });
   };
 
   const removeRequirement = i => event => {
-    setForm({ ...form, requirements: form.requirements.filter((r, index) => i !== index) });
+    setForm({ ...form, courseDetails: form.courseDetails.filter((r, index) => i !== index) });
   };
 
   const addWhatYouLearn = event => {
-    setForm({ ...form, whatYouLearns: [...form.whatYouLearns, reqInitState] });
+    setForm({ ...form, courseDetails: [...form.courseDetails, { ...initState, type: 'WHAT_WILL_LEARN' }] });
   };
 
   const removeWhatYouLearn = i => event => {
-    setForm({ ...form, whatYouLearns: form.whatYouLearns.filter((r, index) => i !== index) });
+    setForm({ ...form, courseDetails: form.courseDetails.filter((r, index) => i !== index) });
   };
+
+  const handleSubmit = () => {
+    createCourse(form)
+  }
 
   console.log(form, "form")
   console.log(options, "options")
@@ -156,12 +197,14 @@ const AddCourse = props => {
                 handleChange={handleChange}
                 handleSelectChange={handleSelectChange}
                 handleTabChange={handleTabChange}
+                handleImageUpload={handleImageUpload}
               />
             }
             {value === 'requirement' &&
               <Requirement
                 form={form}
                 handleChange={handleChange}
+                handleCourseChange={handleCourseChange}
                 handleSelectChange={handleSelectChange}
                 handleTabChange={handleTabChange}
                 addRequirement={addRequirement}
@@ -172,6 +215,7 @@ const AddCourse = props => {
               <WhatYouLearn
                 form={form}
                 handleChange={handleChange}
+                handleCourseChange={handleCourseChange}
                 handleSelectChange={handleSelectChange}
                 handleTabChange={handleTabChange}
                 addWhatYouLearn={addWhatYouLearn}
@@ -185,6 +229,7 @@ const AddCourse = props => {
                 handleOptionsChange={handleOptionsChange}
                 handleChange={handleChange}
                 handleTabChange={handleTabChange}
+                handleSubmit={handleSubmit}
               />
             }
           </div>
@@ -196,7 +241,7 @@ const AddCourse = props => {
 
 AddCourse.propTypes = {
   loading: PropTypes.bool,
-  getEmployees: PropTypes.func,
+  createCourse: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -204,7 +249,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    createCourse: (data) => dispatch(Actions.createCourse(data))
+  };
 }
 
 const withConnect = connect(

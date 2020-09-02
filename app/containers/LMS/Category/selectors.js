@@ -2,110 +2,46 @@ import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
 /**
- * Direct selector to the crm state domain
+ * Direct selector to the LMS categories state domain
  */
 
-const selectCrmDomain = state => state.crmContactGroups || initialState;
+const selectLMSDomain = state => state.lmsCategories || initialState;
 
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by Crm
- */
-
-const makeSelectCrm = () =>
+const makeSelectLMSCategory = () =>
   createSelector(
-    selectCrmDomain,
+    selectLMSDomain,
     substate => substate,
   );
 
 const makeSelectLoading = () =>
   createSelector(
-    selectCrmDomain,
+    selectLMSDomain,
     subState => subState.loading,
   );
 
 const makeSelectError = () =>
   createSelector(
-    selectCrmDomain,
+    selectLMSDomain,
     subState => subState.error,
-  );
-
-const makeSelectContactGroupsDialog = () =>
-  createSelector(
-    selectCrmDomain,
-    subState => subState.contactGroupsDialog,
   );
 
 const makeSelectCategoryDialog = () =>
   createSelector(
-    selectCrmDomain,
+    selectLMSDomain,
     subState => subState.categoryDialog,
   );
 
-const makeSelectAssignContactDialog = () =>
+const makeSelectCourseCategories = () =>
   createSelector(
-    selectCrmDomain,
-    subState => subState.assignContactDialog,
+    selectLMSDomain,
+    subState => subState.categories,
   );
 
-const makeSelectCreateNewContactGroup = () =>
-  createSelector(
-    selectCrmDomain,
-    subState => subState.createNewContactGroup,
-  );
-
-const makeSelectUpdateContactGroup = () =>
-  createSelector(
-    selectCrmDomain,
-    subState => subState.updateContactGroup,
-  );
-
-const makeSelectAllContactsGroup = () =>
-  createSelector(
-    selectCrmDomain,
-    subState => subState.allContactsGroup,
-  );
-
-const makeSelectContactGroupById = () =>
-  createSelector(
-    selectCrmDomain,
-    subState => subState.getContactGroupById,
-  );
-
-const makeSelectContactGroup = () =>
-  createSelector(
-    selectCrmDomain,
-    subState => subState.getContactGroup,
-  );
-
-const makeSelectContactDetails = () =>
-  createSelector(
-    selectCrmDomain,
-    subState => subState.contactDetails,
-  );
-
-const makeSelectGetContacts = () =>
-  createSelector(
-    selectCrmDomain,
-    subState => subState.allContacts,
-  );
-
-export default makeSelectCrm;
+export default makeSelectLMSCategory;
 export {
-  selectCrmDomain,
+  selectLMSDomain,
   makeSelectLoading,
   makeSelectError,
   makeSelectCategoryDialog,
-  makeSelectContactGroupsDialog,
-  makeSelectAssignContactDialog,
-  makeSelectCreateNewContactGroup,
-  makeSelectUpdateContactGroup,
-  makeSelectAllContactsGroup,
-  makeSelectContactGroupById,
-  makeSelectContactGroup,
-  makeSelectContactDetails,
-  makeSelectGetContacts,
+  makeSelectCourseCategories
 };

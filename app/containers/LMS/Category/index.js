@@ -9,16 +9,24 @@ import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import * as Actions from './actions';
-import makeSelectCrm from './selectors';
+import makeSelectLMSCategory from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import CategoryList from './components/CategoryList';
 import CategoryDialog from './components/CategoryDialog'
 import ModuleLayout from '../components/ModuleLayout';
 
+const key = "lmsCategories"
+
 export function CategoryApp(props) {
-  useInjectReducer({ key: 'crmContactGroups', reducer });
-  useInjectSaga({ key: 'crmContactGroups', saga });
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
+
+  const { getCategories } = props
+
+  useEffect(() => {
+    getCategories()
+  }, [])
 
   return (
     <div>
@@ -40,10 +48,13 @@ CategoryApp.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  lmsCategories: makeSelectLMSCategory()
 });
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    getCategories: () => dispatch(Actions.getCategories())
+  };
 }
 
 const withConnect = connect(
