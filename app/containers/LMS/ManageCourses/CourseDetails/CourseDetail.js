@@ -2,7 +2,7 @@ import React, { Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { withStyles, AppBar, Avatar, Box, Button, ButtonGroup, Card, CardHeader, CardContent, CardMedia, Chip, Divider, Icon, IconButton, Tabs, Tab, TableContainer, Table, TableRow, TableCell, TableBody, Grid, Paper, Toolbar, Typography } from '@material-ui/core';
+import { withStyles, AppBar, Avatar, Backdrop, Box, Button, ButtonGroup, CircularProgress, Card, CardHeader, CardContent, CardMedia, Chip, Divider, Icon, IconButton, Tabs, Tab, TableContainer, Table, TableRow, TableCell, TableBody, Grid, Paper, Toolbar, Typography } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -51,7 +51,11 @@ const useStyles = makeStyles(theme => ({
   toolbar: {
     justifyContent: "space-between",
     padding: theme.spacing(1),
-  }
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
 const AntTabs = withStyles({
@@ -109,76 +113,82 @@ const CourseDetail = props => {
 
   console.log(course, "selected course")
   if (!course) {
-    return ""
+    return (
+      <Backdrop className={classes.backdrop} open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    )
   }
 
   return (
-    <Card className={classes.root} elevation={0} square>
-      <CardMedia
-        className={classes.media}
-        image={LmsBanner}
-        title={course.thumbNail && course.thumbNail.fileName}
-      />
-      <CardHeader
-        title={course.title}
-        subheader={
-          <Fragment>
-            <p>{course.shortDescription}</p>
-            <Typography>Category: {course.category && course.category.name}</Typography>
-          </Fragment>
-        }
-        action={
-          <div className={classes.action}>
-            <Typography color="textPrimary">Published</Typography>
-            <Box className={classes.box}>
-              <Chip
-                avatar={<VisibilityIcon />}
-                label="30"
-                variant="outlined"
-              />
-              <Divider orientation="vertical" flexItem />
-              <Typography display="inline" variant="body2">{moment(course.dateCreated).format('ll')}</Typography>
-            </Box>
-          </div>
-        }
-      />
-
-      <CardContent>
-        <Grid container>
-          <Grid item md={12}>
-            <div className={classes.content}>
-              <AntTabs
-                value={value}
-                onChange={handleTabChange}
-                aria-label="ant example"
-              >
-                <AntTab label="Overview" value="overview" />
-                <AntTab label="Structure" value="structure" />
-                <AntTab label="Sessions" value="sessions" />
-                <AntTab label="Files" value="files" />
-                <AntTab label="Questions & Answers" value="questions-answers" />
-              </AntTabs>
-              <Typography className={classes.padding} />
-              {value === 'overview' &&
-                <Overview course={course} />
-              }
-              {value === 'structure' &&
-                <Structure course={course} />
-              }
-              {value === 'sessions' &&
-                <div>sessions</div>
-              }
-              {value === 'files' &&
-                <div>files</div>
-              }
-              {value === 'questions-answers' &&
-                <QA />
-              }
+    <div>
+      <Card className={classes.root} elevation={0} square>
+        <CardMedia
+          className={classes.media}
+          image={course.thumbNail && course.thumbNail.fileUrl}
+          title={course.thumbNail && course.thumbNail.fileName}
+        />
+        <CardHeader
+          title={course.title}
+          subheader={
+            <Fragment>
+              <p>{course.shortDescription}</p>
+              <Typography>Category: {course.category && course.category.name}</Typography>
+            </Fragment>
+          }
+          action={
+            <div className={classes.action}>
+              <Typography color="textPrimary">Published</Typography>
+              <Box className={classes.box}>
+                <Chip
+                  avatar={<VisibilityIcon />}
+                  label="30"
+                  variant="outlined"
+                />
+                <Divider orientation="vertical" flexItem />
+                <Typography display="inline" variant="body2">{moment(course.dateCreated).format('ll')}</Typography>
+              </Box>
             </div>
+          }
+        />
+
+        <CardContent>
+          <Grid container>
+            <Grid item md={12}>
+              <div className={classes.content}>
+                <AntTabs
+                  value={value}
+                  onChange={handleTabChange}
+                  aria-label="ant example"
+                >
+                  <AntTab label="Overview" value="overview" />
+                  <AntTab label="Structure" value="structure" />
+                  <AntTab label="Sessions" value="sessions" />
+                  <AntTab label="Files" value="files" />
+                  <AntTab label="Questions & Answers" value="questions-answers" />
+                </AntTabs>
+                <Typography className={classes.padding} />
+                {value === 'overview' &&
+                  <Overview course={course} />
+                }
+                {value === 'structure' &&
+                  <Structure course={course} />
+                }
+                {value === 'sessions' &&
+                  <div>sessions</div>
+                }
+                {value === 'files' &&
+                  <div>files</div>
+                }
+                {value === 'questions-answers' &&
+                  <QA />
+                }
+              </div>
+            </Grid>
           </Grid>
-        </Grid>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

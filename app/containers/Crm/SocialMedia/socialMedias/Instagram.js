@@ -128,7 +128,7 @@ Instagram.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  socialMedia: Selectors.makeSelectSocialMedia(),
+  socialMedia: Selectors.makeSelectFacebook(),
 });
 
 function mapDispatchToProps(dispatch) {

@@ -7,14 +7,6 @@ import { initialState } from './reducer';
 
 const selectSocialMediaDomain = state => state.crmSocialMedia || initialState;
 
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by SocialMedia
- */
-
 const makeSelectCrmSocialMedia = () =>
   createSelector(
     selectSocialMediaDomain,

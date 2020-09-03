@@ -48,7 +48,7 @@ export function SocialMedia(props) {
       <ModuleLayout>
         <Fragment>
           <Route exact path={path} component={SocialMediaList} />
-          <Route path={`${path}/setup`} component={SocialMediaTabs} />
+          <Route exact path={`${path}/setup`} component={SocialMediaTabs} />
         </Fragment>
       </ModuleLayout>
 

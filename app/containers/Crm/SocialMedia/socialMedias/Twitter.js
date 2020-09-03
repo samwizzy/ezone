@@ -114,7 +114,7 @@ function Twitter(props) {
             />
           </div>
           <div className={classes.flex}>
-            <Button marg size="medium" variant="contained" fullWidth color="primary" disableElevation>
+            <Button size="medium" variant="contained" fullWidth color="primary" disableElevation>
               Login
 						</Button>
           </div>
@@ -131,7 +131,7 @@ Twitter.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  socialMedia: Selectors.makeSelectSocialMedia(),
+  socialMedia: Selectors.makeSelectFacebook(),
 });
 
 function mapDispatchToProps(dispatch) {

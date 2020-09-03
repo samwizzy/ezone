@@ -121,7 +121,7 @@ const ContactReportList = props => {
   const options = {
     filterType: 'checkbox',
     responsive: 'scrollMaxHeight',
-    selectableRows: 'single',
+    selectableRows: 'none',
     elevation: 0
   };
 

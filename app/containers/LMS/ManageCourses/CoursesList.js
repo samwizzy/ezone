@@ -40,19 +40,8 @@ const useStyles = makeStyles(theme => ({
   },
   datatable: {
     whiteSpace: "nowrap",
-    '& .MuiTableRow-root:hover': {
+    '& tr:hover': {
       cursor: 'pointer'
-    },
-    '& .MuiTableHead-root': {
-      '& .MuiTableCell-head': {
-        color: theme.palette.common.white,
-      },
-      '& .MuiTableCell-root:nth-child(odd)': {
-        backgroundColor: theme.palette.primary.main,
-      },
-      '& .MuiTableCell-root:nth-child(even)': {
-        backgroundColor: darken(theme.palette.primary.main, 0.1),
-      },
     },
   },
   backdrop: {
@@ -123,12 +112,7 @@ const CoursesList = props => {
       options: {
         filter: true,
         customBodyRender: (value, tableMeta) => {
-          return (
-            <FormControlLabel
-              label={tableMeta.rowIndex + 1}
-              control={<Icon />}
-            />
-          );
+          return tableMeta.rowIndex + 1
         },
       },
     },
@@ -243,6 +227,7 @@ const CoursesList = props => {
         data={sortedCourses}
         columns={columns}
         options={options}
+        className={classes.datatable}
       />
 
       <Menu

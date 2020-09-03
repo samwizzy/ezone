@@ -11,6 +11,7 @@ import {
   Button,
   Menu,
   MenuItem,
+  Typography,
 } from '@material-ui/core';
 import { Add, Visibility } from '@material-ui/icons';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
@@ -77,15 +78,7 @@ const CompaniesList = props => {
       options: {
         filter: true,
         customBodyRender: (value, tableMeta) => {
-          if (value === '') {
-            return '';
-          }
-          return (
-            <FormControlLabel
-              label={tableMeta.rowIndex + 1}
-              control={<Icon />}
-            />
-          );
+          return <Typography variant="subtitle2">{tableMeta.rowIndex + 1}</Typography>
         },
       },
     },

@@ -7,7 +7,6 @@
 import * as Constants from './constants';
 
 export function openNewCategoryDialog() {
-  console.log("open dialog for category")
   return {
     type: Constants.OPEN_NEW_CATEGORY_DIALOG,
   }

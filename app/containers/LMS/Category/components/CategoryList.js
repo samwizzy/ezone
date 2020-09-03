@@ -7,14 +7,21 @@ import {
   CircularProgress,
   makeStyles,
   Button,
+  Icon,
+  IconButton,
   Card, CardActionArea, CardHeader, CardMedia, CardContent,
   Grid,
+  ListItemText, ListItemIcon,
+  Menu, MenuItem,
   Paper,
   Table, TableBody, TableRow, TableCell,
   TextField,
   Toolbar,
   Typography
 } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit'
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -37,12 +44,14 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(1)
   },
   card: {
+    borderRadius: 0,
     "& .MuiCardContent-root": {
-      padding: theme.spacing(2, 0)
+      padding: theme.spacing(0)
     },
     "& .MuiCardMedia-root": {
       width: '100%',
-      height: 180
+      height: 180,
+      backgroundSize: "contain"
     }
   },
   toolbar: {
@@ -64,11 +73,33 @@ const list = [
 
 const CategoryList = props => {
   const classes = useStyles();
-  const { loading, openNewCategoryDialog, categories } = props;
+  const { loading, openNewCategoryDialog, openEditCategoryDialog, deleteCategory, categories } = props;
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [selectedCategory, setSelectedCategory] = React.useState(null);
   const [form, setForm] = React.useState({ search: '' })
+
+  const handleClick = category => (event) => {
+    event.stopPropagation()
+    setAnchorEl(event.currentTarget);
+    setSelectedCategory(category)
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleChange = ({ target }) => {
     setForm({ ...form, [target.name]: target.value })
+  }
+
+  const handleEditCourse = () => {
+    openEditCategoryDialog(selectedCategory)
+    handleClose()
+  }
+
+  const handleDeleteCourse = () => {
+    deleteCategory(selectedCategory.id)
+    handleClose()
   }
 
   console.log(categories, "categories")
@@ -90,7 +121,7 @@ const CategoryList = props => {
             id="outlined-search"
             variant="outlined"
             margin="normal"
-            style={{ width: 300, margin: 8 }}
+            style={{ width: 300, margin: 4 }}
             size="small"
             value={form.search}
             onChange={handleChange}
@@ -105,9 +136,8 @@ const CategoryList = props => {
         {categories && categories.map((row, i) =>
           <Grid key={i} item xs={4}>
             <Card className={classes.card}>
-              <CardActionArea>
+              <CardActionArea component="fieldset">
                 <CardMedia
-                  className={classes.media}
                   image={row.imageUrl ? row.imageUrl : CategoryImage}
                   title={row.name}
                 />
@@ -115,6 +145,11 @@ const CategoryList = props => {
                 <CardHeader
                   title={row.name}
                   subheader="5 sub categories"
+                  action={
+                    <IconButton aria-label="settings" onClick={handleClick(row)}>
+                      <MoreVertIcon />
+                    </IconButton>
+                  }
                 />
 
                 <CardContent>
@@ -135,12 +170,34 @@ const CategoryList = props => {
           </Grid>
         )}
       </Grid>
+
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleEditCourse}>
+          <ListItemIcon>
+            <EditIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Edit" />
+        </MenuItem>
+        <MenuItem onClick={handleDeleteCourse}>
+          <ListItemIcon>
+            <DeleteOutlineIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Delete" />
+        </MenuItem>
+      </Menu>
     </React.Fragment>
   );
 };
 
 CategoryList.propTypes = {
   loading: PropTypes.bool,
+  deleteCategory: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -150,7 +207,9 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewCategoryDialog: () => dispatch(Actions.openNewCategoryDialog())
+    openNewCategoryDialog: () => dispatch(Actions.openNewCategoryDialog()),
+    openEditCategoryDialog: (data) => dispatch(Actions.openEditCategoryDialog(data)),
+    deleteCategory: (id) => dispatch(Actions.deleteCategory(id))
   };
 }
 

@@ -3,6 +3,7 @@ import React, { memo, useEffect } from 'react';
 import PropTypes, { object } from 'prop-types';
 import {
   makeStyles,
+  Box,
   List,
   FormControlLabel,
   Icon,
@@ -148,7 +149,13 @@ const ActivitiesList = props => {
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <VerticalTimeline activities={orderedActivities} />
+          {activities && activities.length > 0
+            ? <VerticalTimeline activities={orderedActivities} />
+            :
+            <Box>
+              <Typography variant="subtitle2" align="center">No activities has been recorded</Typography>
+            </Box>
+          }
         </Grid>
       </Grid>
     </div>

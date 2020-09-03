@@ -28,6 +28,7 @@ import PaperDropzone from './PaperDropzone'
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { Close } from '@material-ui/icons';
+import _ from 'lodash';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
 
@@ -58,6 +59,17 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const initialState = {
+  name: '',
+  parentCategoryId: null,
+  file: {
+    file: "",
+    fileName: "",
+    fileUrl: "",
+    oldFile: ""
+  },
+}
+
 const CategoryDialog = props => {
   const classes = useStyles();
   const {
@@ -65,27 +77,28 @@ const CategoryDialog = props => {
     dialog,
     closeNewCategoryDialog,
     createCategory,
+    updateCategory,
     categories,
     params,
   } = props;
 
-  const [form, setForm] = React.useState({
-    name: '',
-    parentCategoryId: null,
-    file: {
-      file: "",
-      fileName: "",
-      fileUrl: "",
-      oldFile: ""
-    },
-  });
+  const [form, setForm] = React.useState({ ...initialState });
+
+  useEffect(() => {
+    if (dialog.data && dialog.type === "edit") {
+      const { id, name, parentCategory } = dialog.data
+      setForm({ ...form, id, file: null, name, parentCategoryId: parentCategory })
+    } else {
+      setForm({ ...initialState })
+    }
+  }, [dialog])
 
   const handleChange = ({ target }) => {
     setForm({ ...form, [target.name]: target.value });
   };
 
   const handleSelectChange = name => (evt, obj) => {
-    setForm({ ...form, [name]: obj });
+    setForm({ ...form, [name]: _.some(obj, _.isEmpty) ? obj.id : obj });
   };
 
   const uploadFileAction = image => {
@@ -95,8 +108,14 @@ const CategoryDialog = props => {
 
   const canSubmitForm = () => {
     const { name, file, parentCategoryId } = form;
-    return name.length > 0 && file || parentCategoryId;
+    return name.length > 0 /*&& file || parentCategoryId;*/
   };
+
+  const handleSubmit = () => {
+    dialog.type === "new"
+      ? createCategory(form)
+      : updateCategory(form)
+  }
 
   console.log(form, "form")
   console.log(categories, "form categories")
@@ -116,7 +135,7 @@ const CategoryDialog = props => {
 
         <AppBar position="static">
           <Toolbar>
-            <Typography variant="h6">New Category</Typography>
+            <Typography variant="h6">{dialog.type === "new" ? "New Category" : "Update Category"}</Typography>
           </Toolbar>
         </AppBar>
         <Divider />
@@ -126,8 +145,8 @@ const CategoryDialog = props => {
             <Grid item xs={12}>
               <TextField
                 name="name"
-                label="Assignment title"
-                id="outlined-title"
+                label="Category Name"
+                id="outlined-name"
                 fullWidth
                 variant="outlined"
                 margin="normal"
@@ -140,10 +159,10 @@ const CategoryDialog = props => {
               <Autocomplete
                 id="combo-box-parent-category"
                 size="small"
-                options={categories ? categories : []}
+                options={categories}
                 getOptionLabel={option => option.name}
-                // getOptionSelected={option => option.name === form.parentCategoryId}
-                value={form.parentCategoryId ? form.parentCategoryId : null}
+                getOptionSelected={option => option.id === form.parentCategoryId}
+                value={form.parentCategoryId != null ? _.find(categories, { id: form.parentCategoryId }) : null}
                 onChange={handleSelectChange('parentCategoryId')}
                 renderInput={params => (
                   <TextField
@@ -160,7 +179,7 @@ const CategoryDialog = props => {
             <Grid item xs={12}>
               <FormControl margin="normal" fullWidth component="fieldset">
                 <FormLabel component="legend">Category Thumbnail</FormLabel>
-                <PaperDropzone uploadFileAction={uploadFileAction} />
+                <PaperDropzone uploadFileAction={uploadFileAction} dialog={dialog} />
               </FormControl>
             </Grid>
           </Grid>
@@ -171,7 +190,7 @@ const CategoryDialog = props => {
             Cancel
           </Button>
           <Button
-            onClick={() => createCategory(form)}
+            onClick={handleSubmit}
             disabled={!canSubmitForm()}
             color="primary"
           >
@@ -199,7 +218,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     closeNewCategoryDialog: () => dispatch(Actions.closeNewCategoryDialog()),
-    createCategory: evt => dispatch(Actions.createCategory(evt)),
+    createCategory: data => dispatch(Actions.createCategory(data)),
+    updateCategory: data => dispatch(Actions.updateCategory(data)),
   };
 }
 

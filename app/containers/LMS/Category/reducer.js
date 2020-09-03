@@ -24,7 +24,6 @@ const lmsCategoriesReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
       case Constants.OPEN_NEW_CATEGORY_DIALOG: {
-        console.log("I am the dialog in reducer")
         return {
           ...state,
           categoryDialog: {

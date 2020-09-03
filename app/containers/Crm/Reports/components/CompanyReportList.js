@@ -12,7 +12,6 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core';
-import { Add, Visibility } from '@material-ui/icons';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
@@ -121,7 +120,7 @@ const CompanyReportList = props => {
   const options = {
     filterType: 'checkbox',
     responsive: 'scrollMaxHeight',
-    selectableRows: 'single',
+    selectableRows: 'none',
     elevation: 0
   };
 

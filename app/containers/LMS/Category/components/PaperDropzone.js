@@ -74,7 +74,7 @@ const Container = styled.div`
 
 function PaperDropzone(props) {
   const [files, setFiles] = useState([]);
-  const { uploadFileAction } = props;
+  const { uploadFileAction, dialog } = props;
   const [form, setForm] = useState({
     attachments: [],
   });
@@ -129,6 +129,12 @@ function PaperDropzone(props) {
       </div>
     </div>
   ));
+
+  useEffect(() => {
+    if (dialog.type === "new" || dialog.type === "edit") {
+      setFiles([])
+    }
+  }, [dialog])
 
   useEffect(
     () => () => {

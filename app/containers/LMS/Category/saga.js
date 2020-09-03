@@ -8,6 +8,10 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 import * as Endpoints from '../../../components/Endpoints';
 
+function errorHandler(promise) {
+  return promise
+}
+
 export function* getCategories() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
@@ -34,8 +38,6 @@ export function* createCategory({ payload }) {
   const requestURL = `${Endpoints.AddCategoryApi}`;
   payload.orgId = currentUser.organisation.orgId;
 
-  console.log(payload, "payload add category")
-
   try {
     const response = yield call(request, requestURL, {
       method: 'POST',
@@ -57,13 +59,16 @@ export function* createCategory({ payload }) {
 }
 
 export function* updateCategory({ payload }) {
+  const { id, ...rest } = payload
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${Endpoints.UpdateContactGroupApi}/${payload.id}`;
+  const requestURL = `${Endpoints.UpdateCategoryApi}/${id}`;
+
+  console.log(rest, "payload update category")
 
   try {
     const response = yield call(request, requestURL, {
       method: 'PUT',
-      body: JSON.stringify(payload),
+      body: JSON.stringify(rest),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
@@ -74,18 +79,19 @@ export function* updateCategory({ payload }) {
     yield put(Actions.getCategories());
     yield put(Actions.closeEditCategoryDialog());
   } catch (err) {
-    yield put(Actions.createCategoryError(err));
+    const error = yield call(errorHandler, err.response.json())
+    console.log(error, "error update category")
+    yield put(Actions.updateCategoryError(err));
   }
 }
 
 export function* deleteCategory({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${Endpoints.DeleteCategoryApi}/${payload.id}`;
+  const requestURL = `${Endpoints.DeleteCategoryApi}/${payload}`;
 
   try {
     const response = yield call(request, requestURL, {
       method: 'PUT',
-      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',

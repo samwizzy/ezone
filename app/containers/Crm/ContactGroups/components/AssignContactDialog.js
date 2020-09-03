@@ -124,7 +124,7 @@ const AssignContactDialog = props => {
                   <Autocomplete
                     multiple
                     id="checkboxes-contact-company"
-                    options={getAllContacts}
+                    options={getAllContacts ? getAllContacts : []}
                     disableCloseOnSelect
                     getOptionLabel={option => `${option.firstName} ${option.lastName}`}
                     onChange={handleSelectChange('contactIds')}
@@ -154,60 +154,6 @@ const AssignContactDialog = props => {
                   />
                 </TableCell>
               </TableRow>
-              {/* <TableRow>
-                  <TableCell component="th">
-                    <FormLabel component="legend">Assign Group</FormLabel>
-                  </TableCell>
-                  <TableCell>
-                    <FormControl
-                      component="fieldset"
-                      className={classes.formControl}
-                    >
-                      <FormGroup>
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={form.groups.john}
-                              onChange={handleChange}
-                              name="john"
-                            />
-                          }
-                          label="John Foundation"
-                        />
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={form.groups.marine}
-                              onChange={handleChange}
-                              name="marine"
-                            />
-                          }
-                          label="First Marine"
-                        />
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={form.groups.optisoft}
-                              onChange={handleChange}
-                              name="optisoft"
-                            />
-                          }
-                          label="Optisoft Technology"
-                        />
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={form.groups.jitiful}
-                              onChange={handleChange}
-                              name="jitiful"
-                            />
-                          }
-                          label="Jitiful Technology"
-                        />
-                      </FormGroup>
-                    </FormControl>
-                  </TableCell>
-                </TableRow> */}
             </TableBody>
           </Table>
         </DialogContent>

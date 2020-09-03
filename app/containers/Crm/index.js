@@ -50,10 +50,10 @@ export function Crm({ match }) {
         <Route exact path={`${path}/contact-groups`} component={ContactGroups} />
         <Route exact path={`${path}/contact-groups/:contactId`} component={ContactGroups} />
         <Route exact path={`${path}/campaigns`} component={Campaigns} />
-        <Route exact path={`${path}/leads`} component={Leads} />
+        <Route path={`${path}/leads`} component={Leads} />
         <Route exact path={`${path}/reports`} component={Reports} />
         <Route path={`${path}/schedules`} component={Schedules} />
-        <Route exact path={`${path}/social-media`} component={SocialMedia} />
+        <Route path={`${path}/social-media`} component={SocialMedia} />
       </Fragment>
 
     </div>
