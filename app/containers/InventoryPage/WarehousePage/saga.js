@@ -11,9 +11,7 @@ export function* getAllEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
-  const requestURL = `${Endpoints.GetAllUsersApi}/${
-    currentUser.organisation.orgId
-  }`;
+  const requestURL = `${Endpoints.GetAllUsersApi}?orgId=${currentUser && currentUser.organisation.orgId}`;
 
   try {
     const getAllEmployeesResponse = yield call(request, requestURL, {
@@ -132,7 +130,7 @@ export function* updateWarehouse() {
 
   const requestURL = `${Endpoints.UpdateWarehouseApi}/${
     createNewWarehouseData.id
-  }`;
+    }`;
 
   try {
     const createNewEmployeeResponse = yield call(request, requestURL, {

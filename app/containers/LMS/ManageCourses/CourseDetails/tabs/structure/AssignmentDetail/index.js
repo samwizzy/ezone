@@ -63,7 +63,7 @@ const AssignmentDetails = props => {
 						<Toolbar variant="dense" className={classes.toolbar}>
 							<Typography variant="h6">
 								<IconButton onClick={() => history.goBack()}><ArrowBackIcon className={classes.icon} /></IconButton> Assignment Statistics
-              </Typography>
+							</Typography>
 						</Toolbar>
 					</AppBar>
 				</Grid>

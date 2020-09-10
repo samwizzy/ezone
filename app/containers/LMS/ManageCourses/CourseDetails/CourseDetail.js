@@ -121,7 +121,7 @@ const CourseDetail = props => {
   }
 
   return (
-    <div>
+    <div> 
       <Card className={classes.root} elevation={0} square>
         <CardMedia
           className={classes.media}

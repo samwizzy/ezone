@@ -373,3 +373,6 @@ export const UpdateCourseApi = `${BaseUrl}/lmsserv/api/v1/lms/update_course`;
 export const DeleteCourseApi = `${BaseUrl}/lmsserv/api/v1/lms/delete_course`;
 export const UploadPreviewApi = `${BaseUrl}/lmsserv/api/v1/lms/upload_preview`;
 export const AddCourseVideoApi = `${BaseUrl}/lmsserv/api/v1/lms/add_course_video`;
+
+// STUDENT API
+export const RegisterStudentApi = `${BaseUrl}/lmsserv/lms/v1/register_student`;

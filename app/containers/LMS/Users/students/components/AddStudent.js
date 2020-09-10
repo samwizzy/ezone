@@ -2,7 +2,13 @@ import React, { Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Avatar, Box, Button, Card, CardHeader, CardContent, CardActions, IconButton, FormControl, FormLabel, List, ListSubheader, ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction, ListItemAvatar, Menu, MenuItem, Grid, Paper, TextField, Toolbar, Typography } from '@material-ui/core';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import { Avatar, Box, Button, Card, CardHeader, CardContent, CardActions, Divider, IconButton, FormControl, FormControlLabel, FormLabel, List, ListSubheader, ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction, ListItemAvatar, Menu, MenuItem, Grid, Paper, TextField, Toolbar, Typography } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -10,6 +16,7 @@ import MUIRichTextEditor from "mui-rte";
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js'
 import { stateToHTML } from 'draft-js-export-html';
 import InvertColorsIcon from '@material-ui/icons/InvertColors'
+import CloseIcon from '@material-ui/icons/Close'
 import AddIcon from '@material-ui/icons/Add'
 import moment from 'moment'
 import _ from 'lodash'
@@ -58,15 +65,21 @@ const AddStudent = props => {
   const classes = useStyles();
   const { loading, history, createStudent } = props;
   const [form, setForm] = React.useState({
+    about: "",
+    address: "",
+    dob: moment().format("YYYY-MM-DDTHH:mm:ss"),
+    phoneNumber: "",
+    studentImage: null,
     email: '',
     firstName: '',
     lastName: '',
     password: '',
-    editorState: EditorState.createEmpty(),
-    rawContent: '',
-    html: '',
-    text: '',
-    socials: [{ ...content }]
+
+    // editorState: EditorState.createEmpty(),
+    // rawContent: '',
+    // html: '',
+    // text: '',
+    // socials: []
   });
 
   React.useEffect(() => { }, [])
@@ -75,8 +88,15 @@ const AddStudent = props => {
     setForm({ ...form, [target.name]: target.value });
   };
 
-  const addMore = event => {
+  const handleDateChange = name => date => {
+    setForm({ ...form, [name]: moment(date).format("YYYY-MM-DDTHH:mm:ss") });
+  };
+
+  const addSocial = event => {
     setForm({ ...form, socials: [...form.socials, content] });
+  };
+  const removeSocial = index => event => {
+    setForm({ ...form, socials: form.socials.filter((social, i) => index !== i) });
   };
 
   const HtmlToRaw = (html) => {
@@ -91,7 +111,7 @@ const AddStudent = props => {
     const html = stateToHTML(state.getCurrentContent())
     const text = state.getCurrentContent().getPlainText()
 
-    setForm({ ...form, rawContent, html, text })
+    setForm({ ...form, about: html })
 
     if (!state.getCurrentContent().hasText()) {
       console.log("empty")
@@ -101,6 +121,11 @@ const AddStudent = props => {
   const canSubmitForm = () => {
     const { firstName, lastName } = form;
     return firstName.length > 0 && lastName.length > 0;
+  };
+
+  const handleImageUpload = image => {
+    console.log(image, "image")
+    setForm({ ...form, studentImage: image });
   };
 
   const focus = () => {
@@ -138,7 +163,7 @@ const AddStudent = props => {
               <CardContent>
                 <div className={classes.content}>
                   <FormControl margin="normal" fullWidth>
-                    <PaperDropzone />
+                    <PaperDropzone handleImageUpload={handleImageUpload} />
                   </FormControl>
 
                   <TextField
@@ -165,8 +190,49 @@ const AddStudent = props => {
                     onChange={handleChange}
                   />
 
-                  <Box mb={4}>
-                    <FormControl margin="normal" fullWidth component="fieldset">
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      autoOk
+                      disableFuture
+                      variant="inline"
+                      inputVariant="outlined"
+                      margin="normal"
+                      label="Date of Birth"
+                      size="small"
+                      format="dd/MM/yyyy"
+                      value={form.dob}
+                      InputAdornmentProps={{ position: 'end' }}
+                      onChange={handleDateChange('dob')}
+                      fullWidth
+                    />
+                  </MuiPickersUtilsProvider>
+
+                  <TextField
+                    name="phoneNumber"
+                    label="Phone Number"
+                    id="outlined-phone-number"
+                    fullWidth
+                    margin="normal"
+                    size="small"
+                    variant="outlined"
+                    value={form.phoneNumber}
+                    onChange={handleChange}
+                  />
+
+                  <TextField
+                    name="address"
+                    label="Address"
+                    id="outlined-address"
+                    fullWidth
+                    margin="normal"
+                    size="small"
+                    variant="outlined"
+                    value={form.address}
+                    onChange={handleChange}
+                  />
+
+                  <Box mb={4} mt={1}>
+                    <FormControl variant="outlined" fullWidth margin="normal" component="fieldset">
                       <FormLabel component="legend">Biography</FormLabel>
                       <MUIRichTextEditor
                         label="Type something here..."
@@ -181,52 +247,57 @@ const AddStudent = props => {
                     </FormControl>
                   </Box>
 
-                  <Toolbar variant="dense">
-                    <Typography className={classes.title} variant="subtitle1">Login Credentials</Typography>
-                  </Toolbar>
+                  <Divider />
 
-                  <TextField
-                    name="email"
-                    label="Email"
-                    id="outlined-email"
-                    fullWidth
-                    margin="normal"
-                    size="small"
-                    variant="outlined"
-                    value={form.email}
-                    onChange={handleChange}
-                  />
-                  <TextField
-                    name="password"
-                    label="Password"
-                    id="outlined-password"
-                    fullWidth
-                    margin="normal"
-                    size="small"
-                    variant="outlined"
-                    value={form.password}
-                    onChange={handleChange}
-                  />
+                  <FormControl variant="outlined" component="fieldset" margin="normal" fullWidth>
+                    <FormLabel component="legend">Login Credentials</FormLabel>
 
-                  <Toolbar variant="dense">
-                    <Typography className={classes.title} variant="subtitle1">Social Information</Typography>
-                  </Toolbar>
+                    <TextField
+                      name="email"
+                      label="Email"
+                      id="outlined-email"
+                      fullWidth
+                      margin="normal"
+                      size="small"
+                      variant="outlined"
+                      value={form.email}
+                      onChange={handleChange}
+                    />
+                    <TextField
+                      name="password"
+                      label="Password"
+                      id="outlined-password"
+                      fullWidth
+                      margin="normal"
+                      size="small"
+                      variant="outlined"
+                      value={form.password}
+                      onChange={handleChange}
+                    />
+                  </FormControl>
 
-                  {form.socials.map((social, i) =>
-                    <Toolbar key={i} className={classes.toolbar}>
-                      <TextField
-                        name="socials"
-                        label="Socials"
-                        id={`outlined-social-${i}`}
-                        fullWidth
-                        size="small"
-                        variant="outlined"
-                        value={social.title}
-                        onChange={handleChange}
-                      />
-                      <IconButton><AddIcon /></IconButton>
-                    </Toolbar>
-                  )}
+                  <FormControl variant="outlined" component="fieldset" margin="normal" fullWidth>
+                    <FormLabel component="legend">Social Information</FormLabel>
+
+                    <Button onClick={addSocial} color="primary" startIcon={<AddIcon />}>Add Social</Button>
+
+                    {[].map((social, i) =>
+                      <Toolbar key={i} className={classes.toolbar}>
+                        <TextField
+                          name="socials"
+                          label="Socials"
+                          id={`outlined-social-${i}`}
+                          fullWidth
+                          size="small"
+                          variant="outlined"
+                          value={social.title}
+                          onChange={handleChange}
+                        />
+                        <IconButton onClick={addSocial}><AddIcon /></IconButton>
+                        <IconButton onClick={removeSocial(i)}><CloseIcon /></IconButton>
+                      </Toolbar>
+                    )}
+                  </FormControl>
                 </div>
               </CardContent>
               <CardActions>
@@ -261,7 +332,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    createStudent: () => dispatch(Actions.createStudent())
+    createStudent: data => dispatch(Actions.createStudent(data))
   };
 }
 

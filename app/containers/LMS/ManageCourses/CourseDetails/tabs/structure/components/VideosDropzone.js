@@ -9,7 +9,7 @@ import { IconButton } from '@material-ui/core';
 import RootRef from '@material-ui/core/RootRef';
 import styled from 'styled-components';
 import _ from 'lodash';
-import * as AppSelectors from '../../../App/selectors';
+import * as AppSelectors from '../../../../../../App/selectors';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 const getColor = props => {
@@ -88,7 +88,7 @@ function PaperDropzone(props) {
     isDragAccept,
     isDragReject,
   } = useDropzone({
-    accept: 'image/*',
+    accept: 'video/*',
     noClick: true,
     noKeyboard: true,
     onDrop: acceptedFiles => {
@@ -100,25 +100,10 @@ function PaperDropzone(props) {
         ),
       );
 
-      const image = {};
-      _.set(image, 'fileName', acceptedFiles[0].name.substr(0, 5).trim().concat('-' + moment().format('YYYY-MM-DDTHH:mm:ss')));
-      _.set(image, 'format', acceptedFiles[0].type);
-      _.set(image, 'size', acceptedFiles[0].size);
-      getBase64(acceptedFiles[0], result => _.set(image, 'file', result));
-      handleImageUpload(name, image);
+      console.log(acceptedFiles, "video dropzone")
+      handleImageUpload(name, acceptedFiles[0]);
     },
   });
-
-  const getBase64 = (file, cb) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      return cb(reader.result.split(',')[1]);
-    };
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
-    };
-  };
 
   const { ref, ...rootProps } = getRootProps();
 
@@ -138,6 +123,8 @@ function PaperDropzone(props) {
     [files],
   );
 
+  console.log(thumbs, "thumbs vide check")
+
   return (
     <RootRef rootRef={ref}>
       <div {...rootProps}>
@@ -150,13 +137,10 @@ function PaperDropzone(props) {
           })}
         >
           <input {...getInputProps()} multiple={false} />
-
+          <p>Drag 'n' drop some files here, or Upload a Thumbnail</p>
           <IconButton onClick={open}>
             <CloudUploadIcon fontSize="large" />
           </IconButton>
-          {name === 'thumbNail' ?
-            <p>Upload an Thumbnail</p> : <p>Upload an Video Overview</p>
-          }
         </Container>
 
         <aside style={thumbsContainer}>{thumbs}</aside>
@@ -176,7 +160,6 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
   };
 }
 
