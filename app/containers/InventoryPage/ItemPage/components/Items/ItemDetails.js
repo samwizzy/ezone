@@ -284,6 +284,7 @@ const ItemDetails = props => {
                   aria-controls={open ? 'menu-list-grow' : undefined}
                   aria-haspopup="true"
                   onClick={handleToggle}
+                  size="small"
                   endIcon={<KeyboardArrowDown className={classes.icon} />}
                 >
                   All Items
@@ -389,7 +390,7 @@ const ItemDetails = props => {
                     Edit
                   </Button>
                   <Button
-                    onClick={() => {}}
+                    onClick={() => { }}
                     startIcon={<Adjust className={classes.icon} />}
                   >
                     Adjust Stock
@@ -445,7 +446,7 @@ const ItemDetails = props => {
                                 aria-label="custom table"
                               >
                                 <TableBody>
-                                  <TableRow key={item.title}>
+                                  <TableRow>
                                     <TableCell component="th" scope="row">
                                       SKU
                                     </TableCell>
@@ -453,7 +454,7 @@ const ItemDetails = props => {
                                       {getItemById.sku}
                                     </TableCell>
                                   </TableRow>
-                                  <TableRow key={item.title}>
+                                  <TableRow>
                                     <TableCell component="th" scope="row">
                                       Unit
                                     </TableCell>
@@ -461,7 +462,7 @@ const ItemDetails = props => {
                                       {getItemById.unit}
                                     </TableCell>
                                   </TableRow>
-                                  <TableRow key={item.description}>
+                                  <TableRow>
                                     <TableCell component="th" scope="row">
                                       Manufacturer
                                     </TableCell>
@@ -485,7 +486,7 @@ const ItemDetails = props => {
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                  <TableRow key={item.title}>
+                                  <TableRow>
                                     <TableCell component="th" scope="row">
                                       Cost Price
                                     </TableCell>
@@ -493,7 +494,7 @@ const ItemDetails = props => {
                                       {getItemById.costPrice}
                                     </TableCell>
                                   </TableRow>
-                                  {/* <TableRow key={item.description}>
+                                  {/* <TableRow>
                                     <TableCell component="th" scope="row">
                                       Purchase Account
                                     </TableCell>
@@ -517,7 +518,7 @@ const ItemDetails = props => {
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                  <TableRow key={item.title}>
+                                  <TableRow>
                                     <TableCell component="th" scope="row">
                                       Selling Price
                                     </TableCell>
@@ -525,7 +526,7 @@ const ItemDetails = props => {
                                       {getItemById.sellingPrice}
                                     </TableCell>
                                   </TableRow>
-                                  {/* <TableRow key={item.description}>
+                                  {/* <TableRow>
                                     <TableCell component="th" scope="row">
                                       Sales Account
                                     </TableCell>
@@ -549,12 +550,12 @@ const ItemDetails = props => {
                                       <Button
                                         variant="contained"
                                         color="primary"
-                                        onClick={() => {}}
+                                        onClick={() => { }}
                                         disableElevation
                                       >
                                         Acccounting Stock
                                       </Button>
-                                      <Button onClick={() => {}}>
+                                      <Button onClick={() => { }}>
                                         Physical Stock
                                       </Button>
                                     </ButtonGroup>
@@ -610,7 +611,7 @@ const ItemDetails = props => {
                             <Grid item xs={3}>
                               <div>
                                 <ReactDropZone
-                                  uploadFileAction={() => {}}
+                                  uploadFileAction={() => { }}
                                   task={item}
                                 />
                               </div>
@@ -619,8 +620,9 @@ const ItemDetails = props => {
                                 {[
                                   { name: 'Accounting Stock' },
                                   { name: 'Physical Stock' },
-                                ].map(stock => (
+                                ].map((stock, i) => (
                                   <Table
+                                    key={i}
                                     className={classes.table}
                                     size="small"
                                     aria-label="custom table"
@@ -634,7 +636,7 @@ const ItemDetails = props => {
                                       </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                      <TableRow key={item.title}>
+                                      <TableRow>
                                         <TableCell component="th" scope="row">
                                           Stock on hand
                                         </TableCell>
@@ -642,7 +644,7 @@ const ItemDetails = props => {
                                           {'50.00'}
                                         </TableCell>
                                       </TableRow>
-                                      <TableRow key={item.description}>
+                                      <TableRow>
                                         <TableCell component="th" scope="row">
                                           Committed Stock
                                         </TableCell>
@@ -650,7 +652,7 @@ const ItemDetails = props => {
                                           {'50.00'}
                                         </TableCell>
                                       </TableRow>
-                                      <TableRow key={item.description}>
+                                      <TableRow>
                                         <TableCell component="th" scope="row">
                                           Available on Sale
                                         </TableCell>
@@ -665,13 +667,13 @@ const ItemDetails = props => {
                             </Grid>
                           </Grid>
                         ) : (
-                          <Skeleton
-                            variant="rect"
-                            animation="wave"
-                            width="100%"
-                            height={118}
-                          />
-                        )}
+                            <Skeleton
+                              variant="rect"
+                              animation="wave"
+                              width="100%"
+                              height={118}
+                            />
+                          )}
                       </div>
                     )}
                     {value == 1 && <div />}

@@ -7,6 +7,7 @@ import produce from 'immer';
 import * as Constants from './constants';
 
 export const initialState = {
+  accounts: [],
   getStockLocationBySku: false,
   getStockLocationBySkuResponse: [],
   getInventoryAdjustById: false,
@@ -146,6 +147,28 @@ const itemPageReducer = (state = initialState, action) =>
             },
             data: null,
           },
+        };
+      }
+      case Constants.GET_ACCOUNTS: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_ACCOUNTS_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          accounts: action.payload,
+        };
+      }
+      case Constants.GET_ACCOUNTS_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
         };
       }
       case Constants.GET_ALL_ITEMS: {

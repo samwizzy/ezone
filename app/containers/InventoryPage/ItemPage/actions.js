@@ -56,6 +56,26 @@ export function closeViewTransferOrderDialog() {
   };
 }
 
+export function getAccounts() {
+  return {
+    type: Constants.GET_ACCOUNTS,
+  };
+}
+
+export function getAccountsSuccess(data) {
+  return {
+    type: Constants.GET_ACCOUNTS_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getAccountsError(data) {
+  return {
+    type: Constants.GET_ACCOUNTS_ERROR,
+    payload: data,
+  };
+}
+
 export function getAllItems() {
   return {
     type: Constants.GET_ALL_ITEMS,

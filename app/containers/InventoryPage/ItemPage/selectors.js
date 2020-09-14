@@ -69,6 +69,12 @@ const makeSelectGetAllTransferOrder = () =>
     subState => subState.getAllTransferOrder,
   );
 
+const makeSelectGetAccounts = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.accounts,
+  );
+
 const makeSelectGetAllItems = () =>
   createSelector(
     selectItemPageDomain,
@@ -156,6 +162,7 @@ const makeSelectGetStockLocationBySkuResponse = () =>
 export default makeSelectItemPage;
 export {
   selectItemPageDomain,
+  makeSelectGetAccounts,
   makeSelectGetAllItems,
   makeSelectItemDetails,
   makeSelectItemDialog,

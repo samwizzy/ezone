@@ -29,13 +29,14 @@ export function ItemPage(props) {
   useInjectReducer({ key: 'itemPage', reducer });
   useInjectSaga({ key: 'itemPage', saga });
 
-  const { getAllItemsAction, getAllWarehousesAction, match } = props;
+  const { getAllItemsAction, getAllWarehousesAction, getAccounts, match } = props;
   const { params } = match;
   console.log(match.params, 'params');
 
   useEffect(() => {
     getAllItemsAction();
     getAllWarehousesAction();
+    getAccounts();
   }, []);
 
   return (
@@ -52,8 +53,8 @@ export function ItemPage(props) {
         ) : params.statusId ? (
           <ItemDetails />
         ) : (
-          <ItemsList />
-        )}
+                <ItemsList />
+              )}
       </ModuleLayout>
     </div>
   );
@@ -72,6 +73,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getAllItemsAction: () => dispatch(Actions.getAllItems()),
     getAllWarehousesAction: () => dispatch(Actions.getAllWarehouse()),
+    getAccounts: () => dispatch(Actions.getAccounts()),
     dispatch,
   };
 }

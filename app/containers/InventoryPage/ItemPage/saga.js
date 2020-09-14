@@ -8,6 +8,33 @@ import * as Selectors from './selectors';
 import * as Actions from './actions';
 import * as Constants from './constants';
 
+function errorHandler(promise) {
+  return promise
+}
+
+export function* getAccounts() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAllChartOfAccountApi}/${currentUser.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'response');
+
+    yield put(Actions.getAccountsSuccess(response));
+  } catch (err) {
+    yield put(Actions.getAccountsError(err));
+    yield put(AppActions.openSnackBar({ open: true, message: `${err}`, status: 'error' }));
+  }
+}
+
 export function* getAllItems() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   // const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
@@ -59,35 +86,11 @@ export function* createNewItem() {
     yield put(Actions.createNewItemSuccess(createNewItemResponse));
     yield put(Actions.getAllItems());
     yield put(push('/inventory/items'));
-    // yield put(Actions.closeNewItemDialog());
-
-    // if (createNewEmployeeResponse.success === true) {
-    //   yield put(
-    //     AppActions.openSnackBar({
-    //       open: true,
-    //       message: createNewEmployeeResponse.message,
-    //       status: 'success',
-    //     }),
-    //   );
-    // } else {
-    //   yield put(
-    //     AppActions.openSnackBar({
-    //       open: true,
-    //       message: createNewEmployeeResponse.message,
-    //       status: 'warning',
-    //     }),
-    //   );
-    // }
   } catch (err) {
     console.log(err);
     yield put(Actions.createNewItemError(err));
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: `${err}`,
-    //     status: 'error',
-    //   }),
-    // );
+    const error = yield call(errorHandler, err.response.json())
+    console.log(error, "error create item")
   }
 }
 
@@ -331,7 +334,7 @@ export function* getTransferOrderById() {
 
   const requestURL = `${
     Endpoints.GetTransferOrderByIdApi
-  }/${getItemByIdDetails}`;
+    }/${getItemByIdDetails}`;
 
   try {
     const getTransferOrderResponse = yield call(request, requestURL, {
@@ -375,28 +378,18 @@ export function* getInventoryAdjustById() {
 
 // Individual exports for testing
 export default function* itemPageSaga() {
-  yield takeLatest(
-    Constants.GET_INVENTORY_ADJUST_BY_ID,
-    getInventoryAdjustById,
-  );
+  yield takeLatest(Constants.GET_ACCOUNTS, getAccounts);
+
+  yield takeLatest(Constants.GET_INVENTORY_ADJUST_BY_ID, getInventoryAdjustById);
   yield takeLatest(Constants.GET_TRANSFER_ORDER_BY_ID, getTransferOrderById);
   yield takeLatest(Constants.GET_STOCK_LOCATIONS, getStockLocations);
-  yield takeLatest(
-    Constants.GET_ALL_ITEMS_PER_WAREHOUSE,
-    getAllItemsPerWarehouse,
-  );
+  yield takeLatest(Constants.GET_ALL_ITEMS_PER_WAREHOUSE, getAllItemsPerWarehouse);
   yield takeLatest(Constants.GET_ITEM_BY_ID, getItemById);
   yield takeLatest(Constants.GET_ALL_TRANSFER_ORDER, getAllTransferOrder);
   yield takeLatest(Constants.GET_ALL_ITEMS, getAllItems);
   yield takeLatest(Constants.CREATE_NEW_ITEM, createNewItem);
   yield takeLatest(Constants.GET_ALL_WAREHOUSE, getAllWarehouses);
   yield takeLatest(Constants.CREATE_NEW_TRANSFER_ORDER, createNewTransferOrder);
-  yield takeLatest(
-    Constants.CREATE_NEW_INVENTORY_ADJUSTMENT,
-    createNewInventoryAdjust,
-  );
-  yield takeLatest(
-    Constants.GET_ALL_INVENTORY_ADJUSTMENT,
-    getAllInventoryAdjusts,
-  );
+  yield takeLatest(Constants.CREATE_NEW_INVENTORY_ADJUSTMENT, createNewInventoryAdjust);
+  yield takeLatest(Constants.GET_ALL_INVENTORY_ADJUSTMENT, getAllInventoryAdjusts);
 }

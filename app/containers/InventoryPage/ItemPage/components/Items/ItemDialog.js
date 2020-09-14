@@ -26,8 +26,7 @@ import {
   FormLabel,
   RadioGroup,
 } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
-import PaperDropzone from '../../../components/PaperDropzone';
+import PaperDropzone from './PaperDropzone';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 
@@ -72,7 +71,9 @@ const ItemDialog = props => {
     message,
     loading,
     itemDialog,
+    accounts,
     getAllWarehouses,
+    getAllItems,
     closeEditEmployeeDialogAction,
     dispatchCreateNewItemAction,
     getItemByIdAction,
@@ -84,11 +85,10 @@ const ItemDialog = props => {
     barcode: '',
     costPrice: '',
     description: '',
-    fileFormat: '',
     state: '',
-    fileUrl: '',
     itemDimension: '',
     itemName: '',
+    itemCategory: '',
     itemType: '',
     itemWeight: '',
     manufacturer: '',
@@ -98,32 +98,19 @@ const ItemDialog = props => {
     unit: '',
     wareHouseId: '',
     orgId: '',
-    itemCategory: '',
+    componentItemIds: null,
+    inventoryAccountId: '',
+    taxAccountId: '',
+    salesAccountId: '',
+    purchaseAccountId: '',
     attachments: [],
   });
 
   const canBeSubmitted = () => {
-    const {
-      name,
-      firstStreet,
-      secondStreet,
-      city,
-      state,
-      zipCode,
-      warehousePhoneNumber,
-      wareHouseContactEmail,
-      headOfWareHouseId,
-    } = values;
+    const { itemName, itemType, description, costPrice, itemCategory, wareHouseId, manufacturer } = values;
     return (
-      name !== '' &&
-      firstStreet !== '' &&
-      secondStreet !== '' &&
-      city !== '' &&
-      state !== '' &&
-      zipCode !== '' &&
-      warehousePhoneNumber !== '' &&
-      wareHouseContactEmail !== '' &&
-      headOfWareHouseId !== ''
+      itemName.length > 0 && itemType.length > 0 && description.length > 0 &&
+      costPrice.length > 0 && manufacturer.length > 0 && wareHouseId && itemCategory.length > 0
     );
   };
 
@@ -131,32 +118,35 @@ const ItemDialog = props => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const handleWarehouseChange = (evt, value) => {
-    setValues({ ...values, wareHouseId: value.id });
+  const handleMultiSelectChange = name => (event, arrValues) => {
+    setValues({ ...values, [name]: arrValues });
   };
 
-  const handleCategoryChange = (evt, value) => {
-    setValues({ ...values, itemCategory: value.name });
+  const handleSelectChange = name => (event, value) => {
+    if (name === 'itemCategory') {
+      setValues({ ...values, [name]: value.name });
+    } else {
+      setValues({ ...values, [name]: value.id });
+    }
   };
-
-  const handleImageChange = ({ target }) => {
-    // const { name, files } = target
-    // const result = EzoneUtils.toBase64(files[0])
-    // result.then(data => updateCompanyInfo({ ...companyInfo, logo: data }))
-  }
 
   const uploadFileAction = file => {
-    // setValues({ ...values, attachments: file });
+    setValues({ ...values, attachments: [...values.attachments, file] });
   };
 
   const { params } = match;
   useEffect(() => {
-    getItemByIdAction(params.sku);
+    if (params.sku) {
+      getItemByIdAction(params.sku);
+    }
   }, []);
 
   useEffect(() => {
-    setValues({ ...getItemById });
+    // setValues({ ...getItemById });
   }, [getItemById]);
+
+  console.log(values, "values item")
+  // console.log(accounts, "accounts item")
 
   return (
     <div className={classes.root}>
@@ -192,15 +182,15 @@ const ItemDialog = props => {
                                 defaultValue="top"
                               >
                                 <FormControlLabel
-                                  value="GROUP"
+                                  value="GOODS"
                                   control={<Radio color="primary" />}
-                                  label="Group"
+                                  label="Goods"
                                   onChange={handleChange('itemType')}
                                 />
                                 <FormControlLabel
                                   value="SERVICE"
                                   control={<Radio color="primary" />}
-                                  label="Services"
+                                  label="Service"
                                   onChange={handleChange('itemType')}
                                 />
                               </RadioGroup>
@@ -262,21 +252,11 @@ const ItemDialog = props => {
                         </TableRow>
 
                         <TableRow>
-                          <TableCell>
-                            <TextField
-                              id="outlined-Dimensions"
-                              size="small"
-                              label="Dimensions (cm)"
-                              value={values.itemDimension}
-                              onChange={handleChange('itemDimension')}
-                              variant="outlined"
-                            />
-                          </TableCell>
-
-                          <TableCell>
+                          <TableCell colSpan="2">
                             <TextField
                               id="outlined-Manufacturer"
                               size="small"
+                              fullWidth
                               name="manufacturer"
                               label="Manufacturer"
                               value={values.manufacturer}
@@ -288,7 +268,30 @@ const ItemDialog = props => {
                         <TableRow>
                           <TableCell>
                             <TextField
-                              id="outlined-Weight"
+                              id="outlined-quantity"
+                              size="small"
+                              label="Quantity"
+                              value={values.quantity}
+                              onChange={handleChange('quantity')}
+                              variant="outlined"
+                            />
+                          </TableCell>
+
+                          <TableCell>
+                            <TextField
+                              id="outlined-dimensions"
+                              size="small"
+                              label="Dimensions (cm)"
+                              value={values.itemDimension}
+                              onChange={handleChange('itemDimension')}
+                              variant="outlined"
+                            />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>
+                            <TextField
+                              id="outlined-weight"
                               size="small"
                               label="Weight (kg)"
                               value={values.itemWeight}
@@ -299,12 +302,33 @@ const ItemDialog = props => {
 
                           <TableCell>
                             <TextField
-                              id="outlined-Selling-Price"
+                              id="outlined-selling-price"
                               size="small"
                               label="Selling Price"
                               value={values.sellingPrice}
                               onChange={handleChange('sellingPrice')}
                               variant="outlined"
+                            />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell colSpan="2">
+                            <Autocomplete
+                              multiple
+                              id="combo-component-item-ids"
+                              size="small"
+                              options={getAllItems}
+                              getOptionLabel={option => option.itemName}
+                              onChange={handleMultiSelectChange('componentItemIds')}
+                              renderInput={params => (
+                                <TextField
+                                  {...params}
+                                  label="Select Items"
+                                  variant="outlined"
+                                  fullWidth
+                                  placeholder="Select Items"
+                                />
+                              )}
                             />
                           </TableCell>
                         </TableRow>
@@ -323,16 +347,16 @@ const ItemDialog = props => {
                           <TableCell>
                             <Autocomplete
                               id="combo-itemCategory"
-                              fullWidth={false}
                               size="small"
                               options={category}
                               getOptionLabel={option => option.name}
-                              onChange={(evt, ve) => handleCategoryChange(evt, ve)}
+                              onChange={handleSelectChange('itemCategory')}
                               renderInput={params => (
                                 <TextField
                                   {...params}
                                   label="Select Category"
                                   variant="outlined"
+                                  fullWidth
                                   placeholder="Select Category"
                                 />
                               )}
@@ -340,13 +364,105 @@ const ItemDialog = props => {
                           </TableCell>
                         </TableRow>
                         <TableRow>
-                          <TableCell colSpan={2}>
+                          <TableCell colSpan="2">
+                            <Autocomplete
+                              id="combo-inventory-accounts"
+                              size="small"
+                              options={accounts}
+                              getOptionLabel={option => option.accountName}
+                              onChange={handleSelectChange('inventoryAccountId')}
+                              renderInput={params => (
+                                <TextField
+                                  {...params}
+                                  margin="normal"
+                                  label="Select Inventory Account"
+                                  variant="outlined"
+                                  fullWidth
+                                  placeholder="Accounts"
+                                />
+                              )}
+                            />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell colSpan="2">
+                            <Autocomplete
+                              id="combo-sales-accounts"
+                              size="small"
+                              options={accounts}
+                              getOptionLabel={option => option.accountName}
+                              onChange={handleSelectChange('salesAccountId')}
+                              renderInput={params => (
+                                <TextField
+                                  {...params}
+                                  label="Select Sales Account"
+                                  variant="outlined"
+                                  fullWidth
+                                  placeholder="Accounts"
+                                />
+                              )}
+                            />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell colSpan="2">
+                            <Autocomplete
+                              id="combo-purchase-accounts"
+                              size="small"
+                              options={accounts}
+                              getOptionLabel={option => option.accountName}
+                              onChange={handleSelectChange('purchaseAccountId')}
+                              renderInput={params => (
+                                <TextField
+                                  {...params}
+                                  label="Select Purchase Account"
+                                  variant="outlined"
+                                  fullWidth
+                                  placeholder="Accounts"
+                                />
+                              )}
+                            />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell colSpan="2">
+                            <Autocomplete
+                              id="combo-tax-accounts"
+                              size="small"
+                              options={accounts}
+                              getOptionLabel={option => option.accountName}
+                              onChange={handleSelectChange('taxAccountId')}
+                              renderInput={params => (
+                                <TextField
+                                  {...params}
+                                  label="Select Tax Account"
+                                  variant="outlined"
+                                  fullWidth
+                                  placeholder="Accounts"
+                                />
+                              )}
+                            />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>
+                            <TextField
+                              id="outlined-state"
+                              size="small"
+                              name="state"
+                              label="State"
+                              value={values.state}
+                              onChange={handleChange('state')}
+                              variant="outlined"
+                            />
+                          </TableCell>
+                          <TableCell>
                             <Autocomplete
                               id="combo-wareHouseId"
                               size="small"
                               options={getAllWarehouses}
                               getOptionLabel={option => option.name}
-                              onChange={(evt, ve) => handleWarehouseChange(evt, ve)}
+                              onChange={handleSelectChange('wareHouseId')}
                               renderInput={params => (
                                 <TextField
                                   {...params}
@@ -441,7 +557,9 @@ const mapStateToProps = createStructuredSelector({
   message: Selectors.makeSelectMessage(),
   itemDialog: Selectors.makeSelectItemDialog(),
   getAllWarehouses: Selectors.makeSelectGetAllWarehouses(),
+  accounts: Selectors.makeSelectGetAccounts(),
   getItemById: Selectors.makeSelectGetItemByIdResponse(),
+  getAllItems: Selectors.makeSelectGetAllItems(),
 });
 
 function mapDispatchToProps(dispatch) {
