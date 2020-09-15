@@ -48,7 +48,7 @@ const ListBoard = (props) => {
 
 const listcontents = props.contents.map((content) =>
   <Typography key={content} variant="subtitle1" color="textSecondary">
-  <Link style={{textDecoration:'none'}} to="/">{content}</Link>
+  <Link style={{textDecoration:'none'}} to={`/account/reports/${content}`} >{content}</Link>
  </Typography>
 );
 

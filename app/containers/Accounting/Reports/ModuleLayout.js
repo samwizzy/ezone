@@ -6,7 +6,7 @@ import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { darken } from '@material-ui/core/styles/colorManipulator';
-import MenuBar from '../../../components/MenuBar'
+import MenuBar from '../../../components/MenuBar';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   active: {
-    backgroundColor: theme.palette.common.white,  
+    // backgroundColor: theme.palette.common.white,
     color: `${darken(theme.palette.primary.main, 0.1)} !important`,
   },
 }));
@@ -27,11 +27,7 @@ function ModuleLayout(props) {
   return (
     <div className={classes.root}>
       <MenuBar
-        content={
-          <div className={classes.content}>
-            {props.children}
-          </div>
-        }
+        content={<div className={classes.content}>{props.children}</div>}
       />
     </div>
   );
