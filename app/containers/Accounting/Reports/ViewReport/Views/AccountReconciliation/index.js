@@ -104,7 +104,12 @@ const AccountReconciliation = () => {
           date="16th december, 2010"
         />
 
-        <Table ref={tableRef} data={tableData} TableFooterData={TableFooterData} TableHeadData={TableHeadData} />
+        <Table
+          ref={tableRef}
+          data={tableData}
+          TableFooterData={TableFooterData}
+          TableHeadData={TableHeadData}
+        />
       </div>
     </div>
   );

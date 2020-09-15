@@ -12,44 +12,42 @@ import FixedAsset from './Views/FixedAsset';
 // import ReportsPayable from './Views/ReportsPayable';
 import StatementFinPos from './Views/StatementFinPos';
 
-const ViewReport = () => {
-  return (
-    <ModuleLayout>
-      <Switch>
-        <Route
-          exact
-          path={`/account/reports/Customer Ledgers`}
-          component={CustomerLedger}
-        />
-        <Route
-          exact
-          path={`/account/reports/Fixed Asset Schedule`}
-          component={AssetSchedule}
-        />
+const ViewReport = () => (
+  <ModuleLayout>
+    <Switch>
+      <Route
+        exact
+        path="/account/reports/Customer Ledgers"
+        component={CustomerLedger}
+      />
+      <Route
+        exact
+        path="/account/reports/Fixed Asset Schedule"
+        component={AssetSchedule}
+      />
 
-        <Route
-          exact
-          path={`/account/reports/account`}
-          component={AccountReconcilliation}
-        />
+      <Route
+        exact
+        path="/account/reports/account"
+        component={AccountReconcilliation}
+      />
 
-        <Route
-          exact
-          path={`/account/reports/General ledger`}
-          component={GeneralLedger}
-        />
-        <Route
-          exact
-          path={`/account/reports/Charts of Accounts`}
-          component={FixedAsset}
-        />
-        <Route
-          exact
-          path={`/account/reports/Statement of financial position`}
-          component={StatementFinPos}
-        />
-      </Switch>
-    </ModuleLayout>
-  );
-};
+      <Route
+        exact
+        path="/account/reports/General ledger"
+        component={GeneralLedger}
+      />
+      <Route
+        exact
+        path="/account/reports/Charts of Accounts"
+        component={FixedAsset}
+      />
+      <Route
+        exact
+        path="/account/reports/Statement of financial position"
+        component={StatementFinPos}
+      />
+    </Switch>
+  </ModuleLayout>
+);
 export default ViewReport;
