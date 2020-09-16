@@ -8,13 +8,16 @@ import * as Constants from './constants';
 
 export const initialState = {
   accounts: [],
+  vendors: [],
+  itemsGroups: [],
+  itemsGroup: null,
   getStockLocationBySku: false,
   getStockLocationBySkuResponse: [],
   getInventoryAdjustById: false,
   getInventoryAdjustByIdResponse: false,
   getItemByIdResponse: false,
   getItemById: false,
-  getAllItemsPerWarehouse: [],
+  itemsPerWarehouse: [],
   getAllItemsPerWarehouseUuid: {},
   message: false,
   newTransferOrderDetails: false,
@@ -27,6 +30,13 @@ export const initialState = {
   loading: false,
   error: false,
   itemDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
+  itemGroupDialog: {
     type: 'new',
     props: {
       open: false,
@@ -70,6 +80,54 @@ const itemPageReducer = (state = initialState, action) =>
           ...state,
           itemDialog: {
             type: 'new',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.OPEN_NEW_ITEM_GROUP_DIALOG: {
+        return {
+          ...state,
+          itemGroupDialog: {
+            type: 'new',
+            props: {
+              open: true,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.CLOSE_NEW_ITEM_GROUP_DIALOG: {
+        return {
+          ...state,
+          itemGroupDialog: {
+            type: 'new',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.OPEN_EDIT_ITEM_GROUP_DIALOG: {
+        return {
+          ...state,
+          itemGroupDialog: {
+            type: 'edit',
+            props: {
+              open: true,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.CLOSE_EDIT_ITEM_GROUP_DIALOG: {
+        return {
+          ...state,
+          itemGroupDialog: {
+            type: 'edit',
             props: {
               open: false,
             },
@@ -171,6 +229,28 @@ const itemPageReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
+      case Constants.GET_VENDORS: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_VENDORS_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          vendors: action.payload,
+        };
+      }
+      case Constants.GET_VENDORS_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
       case Constants.GET_ALL_ITEMS: {
         return {
           ...state,
@@ -187,6 +267,50 @@ const itemPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_ALL_ITEMS_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_ITEMS_GROUPS: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_ITEMS_GROUPS_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          itemsGroups: action.payload,
+        };
+      }
+      case Constants.GET_ITEMS_GROUPS_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_ITEMS_GROUP_BY_ID: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_ITEMS_GROUP_BY_ID_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          itemsGroup: action.payload,
+        };
+      }
+      case Constants.GET_ITEMS_GROUP_BY_ID_ERROR: {
         return {
           ...state,
           loading: false,
@@ -210,6 +334,28 @@ const itemPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_NEW_ITEM_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.CREATE_ITEM_GROUP: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.CREATE_ITEM_GROUP_SUCCESS: {
+        return {
+          ...state,
+          message: action.payload,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.CREATE_ITEM_GROUP_ERROR: {
         return {
           ...state,
           loading: false,

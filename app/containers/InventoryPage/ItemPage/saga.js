@@ -26,11 +26,32 @@ export function* getAccounts() {
       }),
     });
 
-    console.log(response, 'response');
-
     yield put(Actions.getAccountsSuccess(response));
   } catch (err) {
     yield put(Actions.getAccountsError(err));
+    yield put(AppActions.openSnackBar({ open: true, message: `${err}`, status: 'error' }));
+  }
+}
+
+export function* getVendors() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAllContactsApi}/${currentUser.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'response get vendors');
+
+    yield put(Actions.getVendorsSuccess(response));
+  } catch (err) {
+    yield put(Actions.getVendorsError(err));
     yield put(AppActions.openSnackBar({ open: true, message: `${err}`, status: 'error' }));
   }
 }
@@ -65,6 +86,29 @@ export function* getAllItems() {
   }
 }
 
+export function* getItemsGroups() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetItemsGroupsApi}?orgid=${currentUser.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'response getItemsGroups');
+
+    yield put(Actions.getItemsGroupsSuccess(response));
+  } catch (err) {
+    yield put(Actions.getItemsGroupsError(err));
+    yield put(AppActions.openSnackBar({ open: true, message: `${err}`, status: 'error' }));
+  }
+}
+
 export function* createNewItem() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
@@ -94,13 +138,42 @@ export function* createNewItem() {
   }
 }
 
+export function* createItemGroup({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  payload.orgId = currentUser.organisation.orgId;
+
+  const requestURL = `${Endpoints.CreateItemGroupApi}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "response createItemGroup")
+
+    yield put(Actions.createItemGroupSuccess(response));
+    yield put(Actions.getItemsGroups());
+    yield put(Actions.closeNewItemGroupDialog());
+  } catch (err) {
+    console.log(err);
+    yield put(Actions.createItemGroupError(err));
+    const error = yield call(errorHandler, err.response.json())
+    console.log(error, "error create item")
+  }
+}
+
 export function* getAllWarehouses() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-
   const requestURL = `${Endpoints.GetAllWarehouses}`;
 
   try {
-    const getAllWarehouseResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -108,9 +181,9 @@ export function* getAllWarehouses() {
       }),
     });
 
-    console.log(getAllWarehouseResponse, 'getAllWarehouseResponse');
+    console.log(response, 'getAllWarehouseResponse');
 
-    yield put(Actions.getAllWarehouseSuccess(getAllWarehouseResponse));
+    yield put(Actions.getAllWarehouseSuccess(response));
   } catch (err) {
     yield put(Actions.getAllWarehouseError(err));
     yield put(
@@ -123,37 +196,41 @@ export function* getAllWarehouses() {
   }
 }
 
-export function* createNewTransferOrder() {
+export function* createNewTransferOrder({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const createNewTransferOrderDetails = yield select(
     Selectors.makeSelectTransferOrderDetails(),
   );
-  createNewTransferOrderDetails.orgId = currentUser.organisation.orgId;
+  payload.orgId = currentUser.organisation.orgId;
 
-  console.log(createNewTransferOrderDetails, 'createNewTransferOrderDetails');
+  console.log(payload, "payload createNewTransferOrder")
+
   const requestURL = `${Endpoints.CreateNewTransferOrdersApi}`;
   try {
-    const createNewTransferOrderResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
-      body: JSON.stringify(createNewTransferOrderDetails),
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
+    console.log(response, "response createNewTransferOrder")
+
     yield put(Actions.getAllTransferOrder());
     yield put(push('/inventory/transfer/orders'));
   } catch (err) {
     console.log(err);
     yield put(Actions.createNewTransferOrderError(err));
+    const error = yield call(errorHandler, err.response.json())
+    console.log(error, "error createNewTransferOrder")
   }
 }
 
 export function* getAllTransferOrder() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-
   const requestURL = `${Endpoints.GetAllTransferOrderApi}`;
 
   try {
@@ -168,13 +245,6 @@ export function* getAllTransferOrder() {
     yield put(Actions.getAllTransferOrderSuccess(getAllTransferOrderResponse));
   } catch (err) {
     yield put(Actions.getAllTransferOrderError(err));
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: `${err}`,
-    //     status: 'error',
-    //   }),
-    // );
   }
 }
 
@@ -188,7 +258,7 @@ export function* createNewInventoryAdjust() {
   const requestURL = `${Endpoints.CreateNewInventoryAdjustApi}`;
 
   try {
-    const createNewTransferOrderResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
       body: JSON.stringify(createNewInventoryAdjustDetails),
       headers: new Headers({
@@ -207,11 +277,10 @@ export function* createNewInventoryAdjust() {
 
 export function* getAllInventoryAdjusts() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-
   const requestURL = `${Endpoints.GetAllInventoryAdjustsApi}`;
 
   try {
-    const getAllInventoryAdjustResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -219,35 +288,22 @@ export function* getAllInventoryAdjusts() {
       }),
     });
 
-    console.log(getAllInventoryAdjustResponse, 'getAllInventoryAdjustResponse');
+    console.log(response, 'response');
 
     yield put(
-      Actions.getAllInventoryAdjustmentsSuccess(getAllInventoryAdjustResponse),
+      Actions.getAllInventoryAdjustmentsSuccess(response),
     );
   } catch (err) {
     yield put(Actions.getAllInventoryAdjustmentsError(err));
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: `${err}`,
-    //     status: 'error',
-    //   }),
-    // );
   }
 }
 
-export function* getAllItemsPerWarehouse() {
+export function* getAllItemsPerWarehouse({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const itemsPerWarehouseUuid = yield select(
-    Selectors.makeSelectGetAllItemsPerWarehouseUuid(),
-  );
-
-  const requestURL = `${
-    Endpoints.GetAllItemsPerWarehouseApi
-    }/${itemsPerWarehouseUuid}`;
+  const requestURL = `${Endpoints.GetAllItemsPerWarehouseApi}/${payload}`;
 
   try {
-    const getAllItemsPerWarehouseResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -255,9 +311,7 @@ export function* getAllItemsPerWarehouse() {
       }),
     });
 
-    yield put(
-      Actions.getAllItemsPerWarehouseSuccess(getAllItemsPerWarehouseResponse),
-    );
+    yield put(Actions.getAllItemsPerWarehouseSuccess(response));
   } catch (err) {
     yield put(Actions.getAllItemsPerWarehouseError(err));
     // yield put(
@@ -318,13 +372,6 @@ export function* getStockLocations() {
     yield put(Actions.getStockLocationsSuccess(getStockLocResponse));
   } catch (err) {
     yield put(Actions.getStockLocationsError(err));
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: `${err}`,
-    //     status: 'error',
-    //   }),
-    // );
   }
 }
 
@@ -332,9 +379,7 @@ export function* getTransferOrderById() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const getItemByIdDetails = yield select(Selectors.makeSelectGetItemById());
 
-  const requestURL = `${
-    Endpoints.GetTransferOrderByIdApi
-    }/${getItemByIdDetails}`;
+  const requestURL = `${Endpoints.GetTransferOrderByIdApi}/${getItemByIdDetails}`;
 
   try {
     const getTransferOrderResponse = yield call(request, requestURL, {
@@ -379,6 +424,7 @@ export function* getInventoryAdjustById() {
 // Individual exports for testing
 export default function* itemPageSaga() {
   yield takeLatest(Constants.GET_ACCOUNTS, getAccounts);
+  yield takeLatest(Constants.GET_VENDORS, getVendors);
 
   yield takeLatest(Constants.GET_INVENTORY_ADJUST_BY_ID, getInventoryAdjustById);
   yield takeLatest(Constants.GET_TRANSFER_ORDER_BY_ID, getTransferOrderById);
@@ -386,8 +432,10 @@ export default function* itemPageSaga() {
   yield takeLatest(Constants.GET_ALL_ITEMS_PER_WAREHOUSE, getAllItemsPerWarehouse);
   yield takeLatest(Constants.GET_ITEM_BY_ID, getItemById);
   yield takeLatest(Constants.GET_ALL_TRANSFER_ORDER, getAllTransferOrder);
+  yield takeLatest(Constants.GET_ITEMS_GROUPS, getItemsGroups);
   yield takeLatest(Constants.GET_ALL_ITEMS, getAllItems);
   yield takeLatest(Constants.CREATE_NEW_ITEM, createNewItem);
+  yield takeLatest(Constants.CREATE_ITEM_GROUP, createItemGroup);
   yield takeLatest(Constants.GET_ALL_WAREHOUSE, getAllWarehouses);
   yield takeLatest(Constants.CREATE_NEW_TRANSFER_ORDER, createNewTransferOrder);
   yield takeLatest(Constants.CREATE_NEW_INVENTORY_ADJUSTMENT, createNewInventoryAdjust);

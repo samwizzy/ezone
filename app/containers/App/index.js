@@ -260,13 +260,13 @@ const App = props => {
                     component={SalesPage}
                   />
 
-               <PrivateRoute
+                  <PrivateRoute
                     exact
                     path="/sales/:id"
                     component={SalesPage}
                   />
 
-                   <PrivateRoute
+                  <PrivateRoute
                     exact
                     path="/purchase/:id"
                     component={PurchasePage}
@@ -277,21 +277,14 @@ const App = props => {
                     component={WarehousePage}
                   />
                   <PrivateRoute
-                    exact
-                    path="/inventory/items/:statusId?"
+                    path="/inventory/items"
                     component={ItemPage}
                   />
                   <PrivateRoute
-                    exact
-                    path="/inventory/item/:statusId?/:sku?"
+                    path="/inventory/item"
                     component={ItemPage}
                   />
 
-                  {/* <PrivateRoute
-                  exact
-                  path="/inventory/item/:statusId?"
-                  component={ItemPage}
-                /> */}
                   <PrivateRoute
                     exact
                     path="/inventory/transfer/orders/:statusId?"

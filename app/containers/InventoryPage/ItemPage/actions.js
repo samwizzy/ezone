@@ -18,6 +18,30 @@ export function closeNewItemDialog() {
   };
 }
 
+export function openNewItemGroupDialog() {
+  return {
+    type: Constants.OPEN_NEW_ITEM_GROUP_DIALOG,
+  };
+}
+
+export function closeNewItemGroupDialog() {
+  return {
+    type: Constants.CLOSE_NEW_ITEM_GROUP_DIALOG,
+  };
+}
+
+export function openEditItemGroupDialog() {
+  return {
+    type: Constants.OPEN_EDIT_ITEM_GROUP_DIALOG,
+  };
+}
+
+export function closeEditItemGroupDialog() {
+  return {
+    type: Constants.CLOSE_EDIT_ITEM_GROUP_DIALOG,
+  };
+}
+
 export function openViewItemDialog(data) {
   return {
     type: Constants.OPEN_VIEW_ITEM_DIALOG,
@@ -76,6 +100,26 @@ export function getAccountsError(data) {
   };
 }
 
+export function getVendors() {
+  return {
+    type: Constants.GET_VENDORS,
+  };
+}
+
+export function getVendorsSuccess(data) {
+  return {
+    type: Constants.GET_VENDORS_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getVendorsError(data) {
+  return {
+    type: Constants.GET_VENDORS_ERROR,
+    payload: data,
+  };
+}
+
 export function getAllItems() {
   return {
     type: Constants.GET_ALL_ITEMS,
@@ -92,6 +136,46 @@ export function getAllItemsSuccess(data) {
 export function getAllItemsError(data) {
   return {
     type: Constants.GET_ALL_ITEMS_ERROR,
+    payload: data,
+  };
+}
+
+export function getItemsGroups() {
+  return {
+    type: Constants.GET_ITEMS_GROUPS,
+  };
+}
+
+export function getItemsGroupsSuccess(data) {
+  return {
+    type: Constants.GET_ITEMS_GROUPS_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getItemsGroupsError(data) {
+  return {
+    type: Constants.GET_ITEMS_GROUPS_ERROR,
+    payload: data,
+  };
+}
+
+export function getItemsGroupById() {
+  return {
+    type: Constants.GET_ITEMS_GROUP_BY_ID,
+  };
+}
+
+export function getItemsGroupByIdSuccess(data) {
+  return {
+    type: Constants.GET_ITEMS_GROUP_BY_ID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getItemsGroupByIdError(data) {
+  return {
+    type: Constants.GET_ITEMS_GROUP_BY_ID_ERROR,
     payload: data,
   };
 }
@@ -113,6 +197,26 @@ export function createNewItemSuccess(data) {
 export function createNewItemError(data) {
   return {
     type: Constants.CREATE_NEW_ITEM_ERROR,
+    payload: data,
+  };
+}
+export function createItemGroup(data) {
+  return {
+    type: Constants.CREATE_ITEM_GROUP,
+    payload: data,
+  };
+}
+
+export function createItemGroupSuccess(data) {
+  return {
+    type: Constants.CREATE_ITEM_GROUP_SUCCESS,
+    payload: data,
+  };
+}
+
+export function createItemGroupError(data) {
+  return {
+    type: Constants.CREATE_ITEM_GROUP_ERROR,
     payload: data,
   };
 }

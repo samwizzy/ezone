@@ -45,6 +45,12 @@ const makeSelectItemDialog = () =>
     subState => subState.itemDialog,
   );
 
+const makeSelectItemGroupDialog = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.itemGroupDialog,
+  );
+
 const makeSelectViewItemDialog = () =>
   createSelector(
     selectItemPageDomain,
@@ -75,10 +81,28 @@ const makeSelectGetAccounts = () =>
     subState => subState.accounts,
   );
 
+const makeSelectGetVendors = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.vendors,
+  );
+
 const makeSelectGetAllItems = () =>
   createSelector(
     selectItemPageDomain,
     subState => subState.getAllItems,
+  );
+
+const makeSelectGetAllItemsGroups = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.itemsGroups,
+  );
+
+const makeSelectGetAllItemsGroupById = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.itemsGroup,
   );
 
 const makeSelectItemDetails = () =>
@@ -114,7 +138,7 @@ const makeSelectGetAllInventoryAdjustments = () =>
 const makeSelectGetAllItemsPerWarehouse = () =>
   createSelector(
     selectItemPageDomain,
-    subState => subState.getAllItemsPerWarehouse,
+    subState => subState.itemsPerWarehouse,
   );
 
 const makeSelectGetAllItemsPerWarehouseUuid = () =>
@@ -163,9 +187,13 @@ export default makeSelectItemPage;
 export {
   selectItemPageDomain,
   makeSelectGetAccounts,
+  makeSelectGetVendors,
   makeSelectGetAllItems,
+  makeSelectGetAllItemsGroups,
+  makeSelectGetAllItemsGroupById,
   makeSelectItemDetails,
   makeSelectItemDialog,
+  makeSelectItemGroupDialog,
   makeSelectLoading,
   makeSelectError,
   makeSelectGetAllWarehouses,

@@ -4,13 +4,11 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom'
 import {
   makeStyles,
-  List,
   FormControlLabel,
   Icon,
-  Button,
-  Menu,
-  MenuItem,
+  Button
 } from '@material-ui/core';
+import moment from 'moment';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import AddIcon from '@material-ui/icons/Add';
 import MUIDataTable from 'mui-datatables';
@@ -51,43 +49,26 @@ const useStyles = makeStyles(theme => ({
 const TransferOrdersList = props => {
   useInjectReducer({ key: 'itemPage', reducer });
   useInjectSaga({ key: 'itemPage', saga });
-  const classes = useStyles();
-  const [values, setValues] = React.useState({
-    transferOrder: '',
-    destinationWarehouseUuId: '',
-    itemId: '',
-    itemSku: '',
-    reason: '',
-    sourceWareHouseUuid: '',
-    transferQuantity: '',
-  });
 
-  const handleChange = event => {
-    console.log(event.target, "event.target")
-    setValues({...values, [event.target.name]: event.target.value });
-    console.log('i am handling on change event')
-  };
+  const classes = useStyles();
 
   const {
     loading,
     history,
     transferOrders,
-    openNewTransferOrderDialogAction,
-    getAllWarehousesAction,
-    getAllItemsAction,
-    getAllTransferOrderAction,
+    openNewTransferOrderDialog,
+    getAllWarehouse,
+    getAllItems,
     getAllTransferOrder,
-    // openEditEmployeeDialogAction,
-    // openViewEmployeeDialogAction,
   } = props;
 
   useEffect(() => {
-    getAllItemsAction();
-    getAllWarehousesAction();
-    getAllTransferOrderAction();
+    getAllItems();
+    getAllWarehouse();
+    getAllTransferOrder();
   }, []);
 
-  console.log(getAllTransferOrder, 'getAllTransferOrder');
+  console.log(transferOrders, 'transferOrders');
   const columns = [
     {
       name: 'id',
@@ -103,9 +84,6 @@ const TransferOrdersList = props => {
       options: {
         filter: true,
         customBodyRender: (value, tableMeta) => {
-          if (value === '') {
-            return '';
-          }
           return (
             <FormControlLabel
               label={tableMeta.rowIndex + 1}
@@ -121,11 +99,21 @@ const TransferOrdersList = props => {
       options: {
         filter: true,
         sort: false,
+        customBodyRender: date => moment(date).format('ll')
+      },
+    },
+    {
+      name: 'items',
+      label: 'No of Items',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: items => items.length
       },
     },
     {
       name: 'referenceNumber',
-      label: 'Transfer Order ',
+      label: 'Ref No',
       options: {
         filter: true,
         sort: false,
@@ -140,7 +128,7 @@ const TransferOrdersList = props => {
       },
     },
     {
-      name: '',
+      name: 'status',
       label: 'Status',
       options: {
         filter: true,
@@ -156,7 +144,7 @@ const TransferOrdersList = props => {
       },
     },
     {
-      name: 'sourceWareHouseUuid',
+      name: 'sourceWarehouse',
       label: 'Source WareHouse',
       options: {
         filter: true,
@@ -164,14 +152,14 @@ const TransferOrdersList = props => {
       },
     },
     {
-      name: 'destinationWarehouseUuid',
+      name: 'destinationWarehouse',
       label: 'Destination WareHouse',
       options: {
         filter: true,
         sort: false,
       },
     },
-  ]; 
+  ];
 
   const options = {
     filterType: 'checkbox',
@@ -204,7 +192,7 @@ const TransferOrdersList = props => {
       <MUIDataTable
         className={classes.datatable}
         title="All Transfer Orders"
-        data={getAllTransferOrder}
+        data={transferOrders}
         columns={columns}
         options={options}
       />
@@ -215,28 +203,24 @@ const TransferOrdersList = props => {
 TransferOrdersList.propTypes = {
   loading: PropTypes.bool,
   getAllEmployees: PropTypes.array,
-  openNewTransferOrderDialogAction: PropTypes.func,
-  getAllWarehousesAction: PropTypes.func,
-  getAllItemsAction: PropTypes.func,
-  getAllTransferOrderAction: PropTypes.func,
-  getAllTransferOrder: PropTypes.array,
-  // openEditEmployeeDialogAction: PropTypes.func,
-  // openViewEmployeeDialogAction: PropTypes.func,
+  openNewTransferOrderDialog: PropTypes.func,
+  getAllWarehouse: PropTypes.func,
+  getAllItems: PropTypes.func,
+  getAllTransferOrder: PropTypes.func,
+  transferOrders: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  getAllTransferOrder: Selectors.makeSelectGetAllTransferOrder(),
+  transferOrders: Selectors.makeSelectGetAllTransferOrder(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAllTransferOrderAction: () =>
-      dispatch(Actions.getAllTransferOrder()),
-    openNewTransferOrderDialogAction: () =>
-      dispatch(Actions.openNewTransferOrderDialog()),
-    getAllWarehousesAction: () => dispatch(Actions.getAllWarehouse()),
-    getAllItemsAction: () => dispatch(Actions.getAllItems()),
+    getAllTransferOrder: () => dispatch(Actions.getAllTransferOrder()),
+    openNewTransferOrderDialog: () => dispatch(Actions.openNewTransferOrderDialog()),
+    getAllWarehouse: () => dispatch(Actions.getAllWarehouse()),
+    getAllItems: () => dispatch(Actions.getAllItems()),
   };
 }
 

@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ItemsList = props => {
+const ItemsGroupsList = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -59,16 +59,14 @@ const ItemsList = props => {
   const {
     loading,
     history,
-    getAllItems,
-    openNewItemDialogAction,
-    openViewItemDialogAction,
-    // openEditEmployeeDialogAction,
-    getItemByIdAction,
+    ItemsGroups,
+    openNewItemGroupDialog,
+    getItemsGroupById,
   } = props;
 
-  const orderedItems = _.orderBy(getAllItems, 'dateCreated', 'desc')
+  const orderedItemsGroups = _.orderBy(ItemsGroups, 'dateCreated', 'desc')
 
-  console.log(getAllItems, "getAllItems")
+  console.log(ItemsGroups, "ItemsGroups")
 
   const columns = [
     {
@@ -85,9 +83,7 @@ const ItemsList = props => {
       options: {
         filter: true,
         customBodyRender: (value, tableMeta) => {
-          if (value === '') {
-            return '';
-          }
+
           return (
             <FormControlLabel
               label={tableMeta.rowIndex + 1}
@@ -98,7 +94,7 @@ const ItemsList = props => {
       },
     },
     {
-      name: 'itemName',
+      name: 'groupName',
       label: 'Name',
       options: {
         filter: true,
@@ -106,27 +102,20 @@ const ItemsList = props => {
       },
     },
     {
-      name: 'sku',
-      label: 'SKU',
+      name: 'groupDescription',
+      label: 'Description',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'barcode',
-      label: 'Barcode',
+      name: 'items',
+      label: 'No of Items',
       options: {
         filter: true,
         sort: false,
-      },
-    },
-    {
-      name: 'quantity',
-      label: 'Stock On Hand',
-      options: {
-        filter: true,
-        sort: false,
+        customBodyRender: items => items.length
       },
     },
     {
@@ -136,15 +125,13 @@ const ItemsList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const item = getAllItems.find(post => value === post.id);
-          if (value === '') {
-            return '';
-          }
+          const itemGroup = ItemsGroups.find(itemGroup => value === itemGroup.id);
+
           return (
             <Button
               aria-controls="simple-menu"
               aria-haspopup="true"
-              onClick={() => openViewItemDialogAction(item)}
+              onClick={() => { }}
             >
               View
             </Button>
@@ -169,14 +156,14 @@ const ItemsList = props => {
         size="small"
         className={classes.button}
         startIcon={<AddIcon />}
-        onClick={() => history.push('/inventory/items/new')}
+        onClick={openNewItemGroupDialog}
       >
         New
       </Button>
     ),
     onRowClick: (rowData, rowState) => {
-      getItemByIdAction(rowData[0]);
-      props.history.push('/inventory/item/' + rowData[0] + '/' + rowData[3])
+      getItemsGroupById(rowData[0]);
+      props.history.push('/inventory/items/group/' + rowData[0])
     },
     elevation: 0
   };
@@ -189,8 +176,8 @@ const ItemsList = props => {
     <React.Fragment>
       <MUIDataTable
         className={classes.datatable}
-        title="All Items"
-        data={orderedItems}
+        title="All Items Groups"
+        data={orderedItemsGroups}
         columns={columns}
         options={options}
       />
@@ -198,27 +185,23 @@ const ItemsList = props => {
   );
 };
 
-ItemsList.propTypes = {
+ItemsGroupsList.propTypes = {
   loading: PropTypes.bool,
-  getAllItems: PropTypes.array,
-  openNewItemDialogAction: PropTypes.func,
-  openViewItemDialogAction: PropTypes.func,
-  // openEditEmployeeDialogAction: PropTypes.func,
+  ItemsGroups: PropTypes.array,
+  openNewItemGroupDialog: PropTypes.func,
+  openViewItemGroupDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  getAllItems: Selectors.makeSelectGetAllItems(),
+  ItemsGroups: Selectors.makeSelectGetAllItemsGroups(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getItemByIdAction: evt =>
-      dispatch(Actions.getItemById(evt)),
-    openViewItemDialogAction: evt =>
-      dispatch(Actions.openViewItemDialog(evt)),
-    openNewItemDialogAction: () =>
-      dispatch(Actions.openNewItemDialog()),
+    getItemsGroupById: evt => dispatch(Actions.getItemsGroupById(evt)),
+    openViewItemGroupDialog: data => dispatch(Actions.openNewItemGroupDialog(data)),
+    openNewItemGroupDialog: () => dispatch(Actions.openNewItemGroupDialog()),
   };
 }
 
@@ -231,4 +214,4 @@ export default compose(
   withRouter,
   withConnect,
   memo,
-)(ItemsList);
+)(ItemsGroupsList);

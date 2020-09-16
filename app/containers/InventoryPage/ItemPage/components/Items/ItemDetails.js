@@ -14,6 +14,9 @@ import {
   CircularProgress,
   ClickAwayListener,
   Breadcrumbs,
+  GridList,
+  GridListTile,
+  GridListTileBar,
   Grow,
   Popper,
   Tabs,
@@ -107,7 +110,7 @@ const useStyles = makeStyles(theme => ({
     },
     '& .MuiTableCell-root': {
       border: 'none !important',
-      fontSize: theme.typography.fontSize + 2,
+      fontSize: theme.typography.fontSize,
       '& button:nth-child(n+2)': {
         marginLeft: theme.spacing(1),
       },
@@ -137,6 +140,10 @@ const useStyles = makeStyles(theme => ({
       minWidth: '40px !important',
     },
   },
+  gridList: {
+    width: '100%',
+    height: 250,
+  },
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: drawerWidth,
@@ -157,7 +164,6 @@ const useStyles = makeStyles(theme => ({
   },
   buttonGroup: {
     textAlign: "right",
-    // padding: theme.spacing(1)
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -610,6 +616,21 @@ const ItemDetails = props => {
                             </Grid>
                             <Grid item xs={3}>
                               <div>
+                                <GridList cellHeight={180} className={classes.gridList}>
+                                  <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
+                                    {getItemById.itemsImages && getItemById.itemsImages.length > 0 ?
+                                      <ListSubheader component="div">Attachment Preview</ListSubheader> :
+                                      <ListSubheader component="div">There are no Attachment</ListSubheader>
+                                    }
+                                  </GridListTile>
+                                  {getItemById.itemsImages && getItemById.itemsImages.map((tile, index) => (
+                                    <GridListTile key={index} cols={2}>
+                                      <img src={tile.fileUrl} alt={tile.fileName} />
+                                      <GridListTileBar title={tile.fileName} />
+                                    </GridListTile>
+                                  ))}
+                                </GridList>
+
                                 <ReactDropZone
                                   uploadFileAction={() => { }}
                                   task={item}

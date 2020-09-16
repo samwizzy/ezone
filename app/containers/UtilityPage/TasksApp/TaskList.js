@@ -328,7 +328,7 @@ const TaskList = props => {
                     <TableRow>
                       <TableCell component="th" scope="row">
                         Date Issued
-                    </TableCell>
+                      </TableCell>
                       <TableCell align="left">
                         {task.startDate ? moment(task.startDate).format('lll') : ''}
                       </TableCell>
