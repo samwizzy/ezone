@@ -16,7 +16,7 @@ import { useInjectSaga } from 'utils/injectSaga';
 import * as AppSelectors from '../App/selectors';
 import * as AppActions from '../App/actions';
 import * as Actions from './actions';
-import makeSelectHRPage from './selectors';
+import makeSelectHRPage, * as Selectors from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import HumanResourcePage from './HumanResourcePage';
@@ -25,6 +25,7 @@ const key = 'hrPage';
 
 export function HRPage(props) {
   const {
+    dialog,
     getEmployees,
     getDepartmentsByOrgIdApi,
     getEnrollmentTypes,
@@ -62,6 +63,8 @@ export function HRPage(props) {
     getPartyGroups();
   }, []);
 
+  console.log(dialog, "dialog from human root")
+
   return (
     <React.Fragment>
       <Helmet>
@@ -82,6 +85,7 @@ HRPage.propTypes = {
 const mapStateToProps = createStructuredSelector({
   hrPage: makeSelectHRPage(),
   token: AppSelectors.makeSelectAccessToken(),
+  dialog: Selectors.makeSelectDeptDialog(),
 });
 
 export function mapDispatchToProps(dispatch) {

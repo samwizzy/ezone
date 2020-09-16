@@ -24,7 +24,7 @@ import * as Selectors from '../selectors';
 import FacebookIcon from '@material-ui/icons/Facebook'
 import TwitterIcon from '@material-ui/icons/Twitter'
 import InstagramIcon from '@material-ui/icons/Instagram'
-import FacebookImage from '../../../../images/facebook.jpg'
+import FacebookImage from '../../../../images/facebook.svg' // faceSmall.svg
 import Rectangle from '../../../../images/Rectangle.jpg'
 
 const useStyles = makeStyles(theme => ({

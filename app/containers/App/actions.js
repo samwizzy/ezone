@@ -24,7 +24,7 @@ export function loginErrorAction(data) {
 }
 
 export function getUserProfileAction(data) {
-  console.log("the user profile action got fired onome ojumah"+ JSON.stringify(data))
+  console.log("the user profile action got fired onome ojumah" + JSON.stringify(data))
   return {
     type: Constants.GET_USER_PROFILE,
     payload: data,
@@ -56,6 +56,18 @@ export function openSnackBar(data) {
 export function closeSnackBar() {
   return {
     type: Constants.CLOSE_SNACKBAR,
+  };
+}
+
+export function openNewScheduleReminderDialog() {
+  return {
+    type: Constants.OPEN_SCHEDULE_REMINDER_DIALOG,
+  };
+}
+
+export function closeNewScheduleReminderDialog() {
+  return {
+    type: Constants.CLOSE_SCHEDULE_REMINDER_DIALOG,
   };
 }
 

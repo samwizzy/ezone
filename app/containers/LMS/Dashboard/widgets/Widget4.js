@@ -1,75 +1,62 @@
-import * as React from 'react';
-import { withStyles, Card, CardContent, CardHeader, CardActions, Paper, Typography } from '@material-ui/core';
-import { ViewState } from '@devexpress/dx-react-scheduler';
+import React from "react"
 import {
-  Scheduler,
-  MonthView,
-  Appointments,
-} from '@devexpress/dx-react-scheduler-material-ui';
+  makeStyles,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardActions,
+  Divider,
+  Typography
+} from '@material-ui/core';
+import CrmDashImage1 from '../../../../images/crmDash.jpg'
 
-import { appointments } from './demo-data/month-appointments';
-
-const styles = theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
-  paper: { padding: 0 },
   card: {
     borderRadius: theme.shape.borderRadius * 4,
-    "& .MuiCardHeader-root": {
-      padding: theme.spacing(2),
-      fontSize: `${theme.typography.subtitle1.fontSize} !important`,
-      borderBottom: `1px solid ${theme.palette.divider}`,
-      "& .MuiTypography-root": {
-        fontSize: theme.typography.subtitle1.fontSize
-      }
+    backgroundImage: `url(${CrmDashImage1})`,
+    backgroundRepeat: `no-repeat`,
+    backgroundPosition: `center bottom`,
+    backgroundSize: 'cover',
+    "& .MuiCardActions-root": {
+      justifyContent: "center",
+      backgroundColor: theme.palette.common.white,
+      fontSize: theme.typography.subtitle1.fontSize,
+    },
+    "& .MuiCardContent-root": {
+      minHeight: 160,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      color: "#fff"
     }
   },
-})
+}));
 
-class Demo extends React.PureComponent {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      data: appointments,
-      currentDate: '2020-06-25',
-    };
-  }
+const Widget4 = () => {
+  const classes = useStyles()
 
-  render() {
-    const { data, currentDate } = this.state;
+  return (
+    <div>
+      <Card className={classes.card}>
+        <CardContent>
+          <Typography variant="h2">20</Typography>
+        </CardContent>
 
-    return (
-      <Paper elevation={0}>
-        <Scheduler
-          data={data}
-          width="100%"
-        >
-          <ViewState
-            currentDate={currentDate}
-          />
-          <MonthView />
-          <Appointments />
-        </Scheduler>
-      </Paper>
-    );
-  }
+        <Divider />
+
+        <CardActions>
+          <Button size="small" onClick={() => { }}>
+            Students
+          </Button>
+        </CardActions>
+      </Card>
+    </div>
+  )
 }
 
-export default withStyles(styles)(class Widget4 extends React.Component {
-  render() {
-    const { classes } = this.props
-
-    return (
-      <Card className={classes.card}>
-        <CardHeader
-          title="My Schedules"
-        />
-        <CardContent classes={{ root: classes.paper }}>
-          <Demo />
-        </CardContent>
-      </Card>
-    );
-  }
-})
+export default Widget4

@@ -8,6 +8,41 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 import * as Endpoints from '../../../components/Endpoints';
 
+function errorHandler(promise) {
+  return promise
+}
+
+export function* getEmployees() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}?orgId=${user && user.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "get employees response")
+
+    yield put(Actions.getEmployeesSuccess(response));
+  } catch (err) {
+    if (err.message) {
+      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      yield put(Actions.getEmployeesError(err.message));
+    } else {
+      const error = yield call(errorHandler, err.response.json())
+      if (error.status === 500 || error.status === 400) {
+        yield put(AppActions.openSnackBar({ message: error.message, status: 'error' }));
+        yield put(Actions.getEmployeesError(error.message));
+      }
+    }
+  }
+}
+
 export function* getAllCompanies() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
@@ -30,53 +65,48 @@ export function* getAllCompanies() {
   }
 }
 
-export function* createNewCompany() {
+export function* createNewCompany({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-
-  const newCompany = yield select(Selectors.makeSelectCreateNewCompany());
-  newCompany.orgId = currentUser.organisation.orgId;
-
-  console.log(newCompany, 'newCompany');
   const requestURL = `${Endpoints.CreateNewContactApi}`;
+  payload.orgId = currentUser && currentUser.organisation.orgId;
 
   try {
-    const newCompanyResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
-      body: JSON.stringify(newCompany),
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
-    yield put(Actions.createNewCompanySuccess(newCompanyResponse));
+    yield put(Actions.createNewCompanySuccess(response));
     yield put(Actions.getAllCompanies());
     yield put(Actions.closeNewCompanyDialog());
   } catch (err) {
+    const error = yield call(errorHandler, err.response.json())
+    console.log(error, "creating contact error")
     yield put(Actions.createNewCompanyError(err));
   }
 }
 
-export function* updateCompanySaga() {
+export function* updateCompanySaga({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-
-  const updateCompany = yield select(Selectors.makeSelectUpdateCompany());
-
-  console.log(updateCompany, 'updateCompany');
-  const requestURL = `${Endpoints.UpdateContactApi}/${updateCompany.id}`;
+  const requestURL = `${Endpoints.UpdateContactApi}/${payload.id}`;
+  const { imageName, imageUrl, ...rest } = payload
 
   try {
-    const newCompanyResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'PUT',
-      body: JSON.stringify(updateCompany),
+      body: JSON.stringify(rest),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
-    yield put(Actions.createNewCompanySuccess(newCompanyResponse));
+    yield put(Actions.createNewCompanySuccess(response));
     yield put(Actions.getAllCompanies());
     yield put(Actions.closeNewCompanyDialog());
   } catch (err) {
@@ -86,6 +116,7 @@ export function* updateCompanySaga() {
 
 // Individual exports for testing
 export default function* crmCompaniesSaga() {
+  yield takeLatest(Constants.GET_EMPLOYEES, getEmployees);
   yield takeLatest(Constants.UPDATE_COMPANY, updateCompanySaga);
   yield takeLatest(Constants.CREATE_NEW_COMPANY, createNewCompany);
   yield takeLatest(Constants.GET_ALL_COMPANIES, getAllCompanies);

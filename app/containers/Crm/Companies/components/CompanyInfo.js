@@ -14,6 +14,11 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 import { Autocomplete } from '@material-ui/lab';
 
 const useStyles = makeStyles(theme => ({
@@ -28,12 +33,13 @@ const useStyles = makeStyles(theme => ({
 export const CompanyInfo = props => {
   const {
     handleChange,
-    handleSelectLifeStage,
-    handleSelectOwnerId,
-    handleSelectAssociateId,
+    handleSelectChange,
+    handleDateChange,
+    handleSelectNameChange,
     closeNewCompanyDialog,
     handleNext,
     form,
+    employees,
   } = props;
   const classes = useStyles();
 
@@ -58,7 +64,6 @@ export const CompanyInfo = props => {
     { id: '2', name: 'VENDOR' },
   ];
 
-  console.log(form, 'form');
   return (
     <div>
       <AppBar className={classes.appBar}>
@@ -75,7 +80,7 @@ export const CompanyInfo = props => {
             <TextField
               name="firstName"
               label="Company Name"
-              id="outlined-title"
+              id="company-name"
               fullWidth
               margin="normal"
               variant="outlined"
@@ -88,7 +93,7 @@ export const CompanyInfo = props => {
             <TextField
               name="emailAddress"
               label="Email"
-              id="outlined-title"
+              id="email-address"
               fullWidth
               margin="normal"
               variant="outlined"
@@ -101,8 +106,8 @@ export const CompanyInfo = props => {
           <Grid item xs={6}>
             <TextField
               name="phoneNumber"
-              label="Mobile Number"
-              id="outlined-title"
+              label="Phone Number"
+              id="phone-number"
               fullWidth
               margin="normal"
               variant="outlined"
@@ -112,12 +117,45 @@ export const CompanyInfo = props => {
             />
           </Grid>
           <Grid item xs={6}>
+            <TextField
+              name="companyNumber"
+              label="Company Number"
+              id="company-number"
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              size="small"
+              value={form.companyNumber}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                autoOk
+                views={["year"]}
+                disableFuture
+                variant="inline"
+                inputVariant="outlined"
+                margin="normal"
+                label="Year Registered"
+                size="small"
+                format="yyyy"
+                value={form.regYear}
+                InputAdornmentProps={{ position: 'end' }}
+                onChange={handleDateChange('regYear')}
+                fullWidth
+              />
+            </MuiPickersUtilsProvider>
+          </Grid>
+          <Grid item xs={6}>
             <Autocomplete
               id="combo-life-stage"
               size="small"
               options={lifeStages}
               getOptionLabel={option => option.name}
-              onChange={(evt, value) => handleSelectLifeStage(evt, value)}
+              onChange={handleSelectNameChange('lifeStage')}
+              value={form.lifeStage ? _.find(lifeStages, { name: form.lifeStage }) : null}
               renderInput={params => (
                 <TextField
                   {...params}
@@ -126,18 +164,18 @@ export const CompanyInfo = props => {
                   placeholder="Select Life Stage"
                   fullWidth
                   margin="normal"
-                  value={form.lifeStage}
                 />
               )}
             />
           </Grid>
           <Grid item xs={6}>
             <Autocomplete
-              id="combo-ownerId"
+              id="combo-owner-id"
               size="small"
-              options={contactType}
-              getOptionLabel={option => option.name}
-              onChange={(evt, value) => handleSelectOwnerId(evt, value)}
+              options={employees ? employees : []}
+              getOptionLabel={option => option.firstName + ' ' + option.lastName}
+              onChange={handleSelectChange('ownerId')}
+              value={form.ownerId ? _.find(employees, { id: form.ownerId }) : null}
               renderInput={params => (
                 <TextField
                   {...params}
@@ -146,18 +184,18 @@ export const CompanyInfo = props => {
                   placeholder="Select Contact Owner"
                   fullWidth
                   margin="normal"
-                  value={form.ownerId}
                 />
               )}
             />
           </Grid>
           <Grid item xs={12}>
             <Autocomplete
-              id="combo-associationType"
+              id="combo-association-type"
               size="small"
               options={contactType}
               getOptionLabel={option => option.name}
-              onChange={(evt, value) => handleSelectAssociateId(evt, value)}
+              onChange={handleSelectNameChange('associationType')}
+              value={form.associationType ? _.find(contactType, { name: form.associationType }) : null}
               renderInput={params => (
                 <TextField
                   {...params}

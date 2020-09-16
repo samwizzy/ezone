@@ -11,6 +11,7 @@ export const initialState = {
   error: false,
   employees: [],
   campaigns: [],
+  campaign: null,
   campaignDialog: {
     type: 'new',
     props: {
@@ -156,6 +157,27 @@ const crmCampaignReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_CAMPAIGNS_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          messages: action.payload,
+        };
+      }
+      case Constants.GET_CAMPAIGN_BY_ID: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.GET_CAMPAIGN_BY_ID_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          campaign: action.payload,
+        };
+      }
+      case Constants.GET_CAMPAIGN_BY_ID_ERROR: {
         return {
           ...state,
           loading: false,

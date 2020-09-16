@@ -19,12 +19,6 @@ import RecognitionList from './RecognitionList'
 import RecognitionDetails from './Recognition'
 import RecognitionDialog from './components/RecognitionDialog'
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-}));
-
 export function RecognitionPage(props) {
   const { getRecognitions, match } = props;
   const { params } = match
@@ -40,9 +34,7 @@ export function RecognitionPage(props) {
         <meta name="description" content="ezone application recognition page" />
       </Helmet>
 
-      {params.pageId ?
-        <RecognitionDetails /> : <RecognitionList />
-      }
+      <RecognitionList />
 
       <RecognitionDialog />
     </React.Fragment>

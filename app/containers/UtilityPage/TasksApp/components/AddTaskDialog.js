@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import DateFnsUtils from '@date-io/date-fns'; // choose your lib
+import DateFnsUtils from '@date-io/date-fns';
 import {
   DatePicker,
   TimePicker,
@@ -15,8 +15,8 @@ import {
 } from '@material-ui/pickers';
 import _ from 'lodash';
 import { AppBar, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, Grid, MenuItem, Slide, Toolbar, Typography, TextField } from '@material-ui/core';
-import * as Selectors from '../../selectors';
-import * as Actions from '../../actions';
+import * as Selectors from '../selectors';
+import * as Actions from '../actions';
 import moment from 'moment'
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 
@@ -38,8 +38,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const initialState = {
   title: '',
   description: '',
-  startDate: moment(new Date()).format('YYYY-MM-DD'),
-  endDate: moment(new Date()).format('YYYY-MM-DD'),
+  startDate: moment().format('YYYY-MM-DD'),
+  endDate: moment().format('YYYY-MM-DD'),
   status: "PENDING",
   assignedTo: "",
   assignedToName: "",
@@ -57,14 +57,10 @@ function AddTaskDialog(props) {
     if (task && dialog.type === 'edit') {
       const { id, title, description, status, startDate, endDate, assignedTo, assignedToName, assignedToEmail, supervisedBy } = task
       setForm({ ...form, id, title, description, status, startDate: moment(startDate).format('YYYY-MM-DD'), endDate: moment(endDate).format('YYYY-MM-DD'), assignedTo, assignedToName, assignedToEmail, supervisedBy })
-    }
-  }, []);
-
-  React.useEffect(() => {
-    if (!loading) {
+    }else{
       setForm(initialState)
     }
-  }, [loading])
+  }, []);
 
   const toBase64 = file => new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -165,7 +161,6 @@ function AddTaskDialog(props) {
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
                       autoOk
-                      disableToolbar
                       disablePast
                       format="dd/MM/yyyy"
                       margin="normal"
@@ -187,7 +182,6 @@ function AddTaskDialog(props) {
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
                       autoOk
-                      disableToolbar
                       disablePast
                       format="dd/MM/yyyy"
                       inputVariant="outlined"

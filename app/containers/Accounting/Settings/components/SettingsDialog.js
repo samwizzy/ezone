@@ -74,7 +74,7 @@ const AddBankAccountDialog = props => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  console.log('values is: ', values);
+  //console.log('values is: ', values);
   // console.log('dialog data --> ', accountTypeData);
 
   return (

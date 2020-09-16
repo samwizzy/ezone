@@ -6,15 +6,16 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import tasksIcon from '../../../../images/tasksIcon.svg'
-import * as Actions from '../../actions';
-import * as Selectors from '../../selectors';
+import * as Selectors from '../selectors';
+import * as Actions from '../actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+    display: 'flex',
+    alignItems: 'center',
     textAlign: 'center',
     height: '100vh',
-    color: console.log(theme, "Theme")
   },
   button: {
     borderRadius: '20px',

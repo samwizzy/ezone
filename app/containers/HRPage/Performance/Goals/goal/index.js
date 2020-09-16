@@ -18,49 +18,49 @@ import * as Selectors from './../../selectors';
 import GoalsDetails from './GoalsDetails'
 
 export function GoalsDetailsApp(props) {
-	const { getGoalsById, match } = props;
-	const { params } = match
+  const { getGoalsById, match } = props;
+  const { params } = match
 
-	console.log(params, "goal details params")
+  console.log(params, "goal details params")
 
-	React.useEffect(() => {
-		getGoalsById(params.pageId);
-	}, []);
+  React.useEffect(() => {
+    getGoalsById(params.id);
+  }, []);
 
-	return (
-		<React.Fragment>
-			<Helmet>
-				<title> Performance Goals Detail Page</title>
-				<meta name="description" content="ezone application goals detail page" />
-			</Helmet>
+  return (
+    <React.Fragment>
+      <Helmet>
+        <title> Performance Goals Detail Page</title>
+        <meta name="description" content="ezone application goals detail page" />
+      </Helmet>
 
-			<GoalsDetails />
+      <GoalsDetails />
 
-		</React.Fragment>
-	);
+    </React.Fragment>
+  );
 }
 
 GoalsDetailsApp.propTypes = {
-	token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 const mapStateToProps = createStructuredSelector({
-	token: AppSelectors.makeSelectAccessToken(),
+  token: AppSelectors.makeSelectAccessToken(),
 });
 
 export function mapDispatchToProps(dispatch) {
-	return {
-		getGoalsById: (id) => dispatch(Actions.getGoalsById(id)),
-	};
+  return {
+    getGoalsById: (id) => dispatch(Actions.getGoalsById(id)),
+  };
 }
 
 const withConnect = connect(
-	mapStateToProps,
-	mapDispatchToProps,
+  mapStateToProps,
+  mapDispatchToProps,
 );
 
 export default compose(
-	withRouter,
-	withConnect,
-	memo,
+  withRouter,
+  withConnect,
+  memo,
 )(GoalsDetailsApp);

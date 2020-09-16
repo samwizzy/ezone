@@ -125,7 +125,7 @@ function AddEmployeeDialog(props) {
 
   const handleSubmit = () => {
     dialog.type === 'new' ?
-      createEmployee(form) : updateEmployee(form)
+      createEmployee(form) : updateEmployee(form);
   }
 
   const handleNext = () => {

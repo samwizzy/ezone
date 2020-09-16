@@ -8,8 +8,9 @@ import {
 import Header from '../../Header';
 import Sidebar from '../../Sidebar';
 import Snackbar from '../shared-components/Snackbar';
+import ScheduleReminderDialog from '../shared-components/ScheduleReminderDialog';
 import theme from './../themeConfig'
-import Backdrop from  './../../Backdrop/Loadable'
+import Backdrop from './../../Backdrop/Loadable'
 
 const styles = theme => ({
   root: {
@@ -22,16 +23,17 @@ class Layout3 extends React.Component {
     const { classes } = this.props;
 
     return (
-        <React.Fragment>
-          <ThemeProvider theme={theme}>
-            <Snackbar />
-            <Backdrop />
-            <Header />
-            <Sidebar
-              content={this.props.children}
-            />
-          </ThemeProvider>
-        </React.Fragment>
+      <React.Fragment>
+        <ThemeProvider theme={theme}>
+          <ScheduleReminderDialog />
+          <Snackbar />
+          <Backdrop />
+          <Header />
+          <Sidebar
+            content={this.props.children}
+          />
+        </ThemeProvider>
+      </React.Fragment>
     );
   }
 }

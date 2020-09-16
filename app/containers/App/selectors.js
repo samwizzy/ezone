@@ -45,6 +45,12 @@ const makeSelectSnackBar = () =>
     globalState => globalState.messageDialog,
   );
 
+const makeSelectReminderDialog = () =>
+  createSelector(
+    selectGlobal,
+    globalState => globalState.reminderDialog,
+  );
+
 const makeSelectPostFcmToken = () =>
   createSelector(
     selectGlobal,
@@ -64,6 +70,7 @@ export {
   makeSelectLoading,
   makeSelectError,
   makeSelectLoginDetails,
+  makeSelectReminderDialog,
   makeSelectAccessToken,
   makeSelectSnackBar,
   makeSelectCheckActiveSession,

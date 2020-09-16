@@ -8,6 +8,10 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 import * as Endpoints from '../../../components/Endpoints';
 
+function errorHandler(promise) {
+  return promise
+}
+
 export function* getEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
@@ -57,6 +61,26 @@ export function* getCampaigns() {
   }
 }
 
+export function* getCampaignById({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetCampaignByIdApi}/${payload}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getCampaignByIdSuccess(response));
+  } catch (err) {
+    yield put(Actions.getCampaignByIdError(err));
+  }
+}
+
 export function* createCampaign({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
@@ -77,6 +101,8 @@ export function* createCampaign({ payload }) {
     yield put(Actions.getCampaigns());
     yield put(Actions.closeNewCampaignDialog());
   } catch (err) {
+    const error = yield call(errorHandler, err.response.json())
+    console.log(error, "error creating campaign")
     yield put(Actions.createCampaignError(err));
   }
 }

@@ -8,56 +8,66 @@ import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
+import { Route, withRouter } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectCompanies from './selectors';
+import makeSelectLMSStudents from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import * as Actions from './actions';
-import CompaniesList from './components/CompaniesList';
-import ModuleLayout from '../components/ModuleLayout';
+import StudentsList from './students/StudentsList';
+import AddStudent from './students/components/AddStudent';
+import LecturersList from './lectures/LecturersList';
+import AddLecture from './lectures/components/AddLecture';
+import ModuleLayout from './ModuleLayout';
 
-export function Companies(props) {
-  useInjectReducer({ key: 'crmCompanies', reducer });
-  useInjectSaga({ key: 'crmCompanies', saga });
+const key = "lmsStudents"
 
-  const { getAllCompaniesAction } = props;
+export function StudentsApp(props) {
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
+
+  const { getStudents, match } = props;
+  const { path } = match
+  console.log(match, "match")
 
   useEffect(() => {
-    getAllCompaniesAction();
+    getStudents();
   }, []);
 
   return (
     <div>
       <Helmet>
-        <title>Companies</title>
-        <meta name="description" content="Description of Companies" />
+        <title>Students</title>
+        <meta name="description" content="Description of Students" />
       </Helmet>
-      
+
       <ModuleLayout>
-        <CompaniesList />
+        <Route exact path={path} component={StudentsList} />
+        <Route exact path={`${path}/students`} component={StudentsList} />
+        <Route exact path={`${path}/student/new`} component={AddStudent} />
+        <Route exact path={`${path}/lecturers`} component={LecturersList} />
+        <Route exact path={`${path}/lecturer/new`} component={AddLecture} />
       </ModuleLayout>
     </div>
   );
 }
 
-Companies.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  getAllCompaniesAction: PropTypes.func,
+StudentsApp.propTypes = {
+  getStudents: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  companies: makeSelectCompanies(),
+  lmsStudents: makeSelectLMSStudents(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAllCompaniesAction: () => dispatch(Actions.getAllCompanies()),
-    dispatch,
+    getStudents: () => dispatch(Actions.getStudents()),
   };
 }
 
@@ -67,6 +77,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
-)(Companies);
+)(StudentsApp);

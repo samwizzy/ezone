@@ -25,6 +25,7 @@ import CRMIcon from '../../../../images/crmIcon.svg';
 import FileIcon from '../../../../images/FileIcon.svg';
 import BudgetingIcon from '../../../../images/BudgetingIcon.svg';
 import TaskIcon from '../../../../images/TaskIcon.svg';
+import InventoryIcon from '../../../../images/taskIcon.svg';
 import LmsIcon from '../../../../images/lms.svg';
 import ProjectsIcon from '../../../../images/ProjectsIcon.svg';
 import ChatIcon from '../../../../images/chatIcon.svg';
@@ -40,9 +41,10 @@ const apps = [
   { id: 7, name: 'Human Resources', url: '/hr/dashboard', icon: AppIcon1, img: 'person' },
   { id: 8, name: 'Process Workflow', url: '/workflow', icon: ProjectsIcon, img: 'all_inclusive' },
   { id: 9, name: 'Store Management', url: '/inventory/dashboard', icon: StoreIcon, img: 'store' },
-  { id: 10, name: 'Task management', url: '/task-manager/tasks', icon: TaskIcon, img: 'list_alt' },
-  { id: 11, name: 'Work Order', url: '/work-order', icon: ProjectsIcon, img: 'ballot' },
-  // { id: 12, name: 'LMS', url: '/lms/dashboard', icon: ProjectsIcon, img: 'library_books' },
+  { id: 10, name: 'Project Management', url: '/project-manager/dashboard', icon: StoreIcon, img: 'store' },
+  { id: 11, name: 'Task Management', url: '/task-manager/tasks', icon: TaskIcon, img: 'list_alt' },
+  { id: 12, name: 'Work Order', url: '/work-order', icon: ProjectsIcon, img: 'ballot' },
+  // { id: 13, name: 'LMS', url: '/lms/dashboard', icon: ProjectsIcon, img: 'library_books' },
 ];
 
 export default apps;

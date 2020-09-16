@@ -5,72 +5,43 @@ import { initialState } from './reducer';
  * Direct selector to the companies state domain
  */
 
-const selectCompaniesDomain = state => state.crmCompanies || initialState;
+const selectClassroomsDomain = state => state.lmsClassrooms || initialState;
 
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by Companies
- */
-
-const makeSelectCompanies = () =>
+const makeSelectClassrooms = () =>
   createSelector(
-    selectCompaniesDomain,
+    selectClassroomsDomain,
     substate => substate,
   );
 
 const makeSelectLoading = () =>
   createSelector(
-    selectCompaniesDomain,
+    selectClassroomsDomain,
     subState => subState.loading,
   );
 
 const makeSelectError = () =>
   createSelector(
-    selectCompaniesDomain,
+    selectClassroomsDomain,
     subState => subState.error,
   );
 
-const makeSelectCompanyDialog = () =>
+const makeSelectClassroomDialog = () =>
   createSelector(
-    selectCompaniesDomain,
-    subState => subState.companyDialog,
+    selectClassroomsDomain,
+    subState => subState.classroomDialog,
   );
 
-const makeSelectCompanyDetailsDialog = () =>
+const makeSelectGetClassrooms = () =>
   createSelector(
-    selectCompaniesDomain,
-    subState => subState.companyDetailsDialog,
+    selectClassroomsDomain,
+    subState => subState.classrooms,
   );
 
-const makeSelectCreateNewCompany = () =>
-  createSelector(
-    selectCompaniesDomain,
-    subState => subState.newCompanyDetails,
-  );
-
-const makeSelectUpdateCompany = () =>
-  createSelector(
-    selectCompaniesDomain,
-    subState => subState.updateCompanyDetails,
-  );
-
-const makeSelectGetAllCompanies = () =>
-  createSelector(
-    selectCompaniesDomain,
-    subState => subState.getAllCompanies,
-  );
-
-export default makeSelectCompanies;
+export default makeSelectClassrooms;
 export {
-  selectCompaniesDomain,
+  selectClassroomsDomain,
   makeSelectLoading,
   makeSelectError,
-  makeSelectCompanyDialog,
-  makeSelectCreateNewCompany,
-  makeSelectUpdateCompany,
-  makeSelectGetAllCompanies,
-  makeSelectCompanyDetailsDialog,
+  makeSelectClassroomDialog,
+  makeSelectGetClassrooms,
 };

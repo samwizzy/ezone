@@ -69,6 +69,26 @@ const crmActivitiesReducer = (state = initialState, action) =>
           message: action.payload,
         };
       }
+      case Constants.CREATE_CRM_ACTIVITY: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.CREATE_CRM_ACTIVITY_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+        };
+      }
+      case Constants.CREATE_CRM_ACTIVITY_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          message: action.payload,
+        };
+      }
     }
   });
 

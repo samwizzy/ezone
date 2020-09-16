@@ -62,7 +62,7 @@ export default withStyles(styles)(class Widget13 extends React.Component {
 							))}
 						</List>
 						:
-						<Typography align="center">No announcement has been made yet</Typography>
+						<Typography align="center" color="textSecondary">No announcement has been made yet</Typography>
 					}
 				</CardContent>
 			</Card>

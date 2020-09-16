@@ -79,9 +79,9 @@ const DialogOfAccountPeriod = props => {
     year: Number(allAccountingPeriodData[allAccountingPeriodData.length - 1])
   });
   
-  console.log(' values is : ', values);
-  console.log('allAccountingPeriodData-> ', allAccountingPeriodData);
-  console.log('selected data-> ', accountPeriodDialog.data);
+ // console.log(' values is : ', values);
+  //console.log('allAccountingPeriodData-> ', allAccountingPeriodData);
+  //console.log('selected data-> ', accountPeriodDialog.data);
 
 
   return (

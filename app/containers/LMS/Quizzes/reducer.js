@@ -9,10 +9,8 @@ import * as Constants from './constants';
 export const initialState = {
   loading: false,
   error: false,
-  getAllCompanies: [],
-  newCompanyDetails: {},
-  updateCompanyDetails: {},
-  companyDialog: {
+  quizzes: [],
+  quizDialog: {
     type: 'new',
     props: {
       open: false,
@@ -22,20 +20,25 @@ export const initialState = {
 };
 
 /* eslint-disable default-case, no-param-reassign */
-const crmCompaniesReducer = (state = initialState, action) =>
+const lmsQuizReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
-      case Constants.OPEN_NEW_COMPANY_DIALOG: {
+      case Constants.OPEN_NEW_QUIZ_DIALOG: {
         return {
           ...state,
-          companyDialog: {
+          quizDialog: {
             type: 'new',
             props: {
               open: true,
             },
             data: null,
           },
-          companyDetailsDialog: {
+        };
+      }
+      case Constants.CLOSE_NEW_QUIZ_DIALOG: {
+        return {
+          ...state,
+          quizDialog: {
             type: 'new',
             props: {
               open: false,
@@ -44,22 +47,10 @@ const crmCompaniesReducer = (state = initialState, action) =>
           },
         };
       }
-      case Constants.CLOSE_NEW_COMPANY_DIALOG: {
+      case Constants.OPEN_EDIT_QUIZ_DIALOG: {
         return {
           ...state,
-          companyDialog: {
-            type: 'new',
-            props: {
-              open: false,
-            },
-            data: null,
-          },
-        };
-      }
-      case Constants.OPEN_EDIT_COMPANY_DIALOG: {
-        return {
-          ...state,
-          companyDialog: {
+          quizDialog: {
             type: 'edit',
             props: {
               open: true,
@@ -68,10 +59,10 @@ const crmCompaniesReducer = (state = initialState, action) =>
           },
         };
       }
-      case Constants.CLOSE_EDIT_COMPANY_DIALOG: {
+      case Constants.CLOSE_EDIT_QUIZ_DIALOG: {
         return {
           ...state,
-          companyDialog: {
+          quizDialog: {
             type: 'edit',
             props: {
               open: false,
@@ -80,45 +71,20 @@ const crmCompaniesReducer = (state = initialState, action) =>
           },
         };
       }
-      case Constants.OPEN_COMPANY_DETAILS_DIALOG: {
-        return {
-          ...state,
-          companyDetailsDialog: {
-            type: 'new',
-            props: {
-              open: true,
-            },
-            data: action.payload,
-          },
-        };
-      }
-      case Constants.CLOSE_COMPANY_DETAILS_DIALOG: {
-        return {
-          ...state,
-          companyDetailsDialog: {
-            type: 'new',
-            props: {
-              open: false,
-            },
-            data: null,
-          },
-        };
-      }
-      case Constants.CREATE_NEW_COMPANY: {
+      case Constants.CREATE_QUIZ: {
         return {
           ...state,
           loading: true,
-          newCompanyDetails: action.payload,
         };
       }
-      case Constants.CREATE_NEW_COMPANY_SUCCESS: {
+      case Constants.CREATE_QUIZ_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
         };
       }
-      case Constants.CREATE_NEW_COMPANY_ERROR: {
+      case Constants.CREATE_QUIZ_ERROR: {
         return {
           ...state,
           loading: false,
@@ -126,21 +92,20 @@ const crmCompaniesReducer = (state = initialState, action) =>
           messages: action.payload,
         };
       }
-      case Constants.UPDATE_COMPANY: {
+      case Constants.UPDATE_QUIZ: {
         return {
           ...state,
           loading: true,
-          updateCompanyDetails: action.payload,
         };
       }
-      case Constants.UPDATE_COMPANY_SUCCESS: {
+      case Constants.UPDATE_QUIZ_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
         };
       }
-      case Constants.UPDATE_COMPANY_ERROR: {
+      case Constants.UPDATE_QUIZ_ERROR: {
         return {
           ...state,
           loading: false,
@@ -148,20 +113,20 @@ const crmCompaniesReducer = (state = initialState, action) =>
           messages: action.payload,
         };
       }
-      case Constants.GET_ALL_COMPANIES: {
+      case Constants.GET_QUIZZES: {
         return {
           ...state,
           loading: true,
         };
       }
-      case Constants.GET_ALL_COMPANIES_SUCCESS: {
+      case Constants.GET_QUIZZES_SUCCESS: {
         return {
           ...state,
           loading: false,
-          getAllCompanies: action.payload,
+          quizzes: action.payload,
         };
       }
-      case Constants.GET_ALL_COMPANIES_ERROR: {
+      case Constants.GET_QUIZZES_ERROR: {
         return {
           ...state,
           loading: false,
@@ -172,4 +137,4 @@ const crmCompaniesReducer = (state = initialState, action) =>
     }
   });
 
-export default crmCompaniesReducer;
+export default lmsQuizReducer;

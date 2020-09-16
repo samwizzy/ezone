@@ -1,8 +1,10 @@
 /* eslint-disable prettier/prettier */
-import React, { memo, useEffect } from 'react';
+import React, { Fragment, memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
+  Backdrop,
+  CircularProgress,
   Card, CardHeader, CardContent,
   Grid,
   Button,
@@ -11,8 +13,10 @@ import {
   Typography,
   Paper
 } from '@material-ui/core';
+import moment from 'moment'
 import AddIcon from '@material-ui/icons/Add';
 import ColorLensIcon from '@material-ui/icons/ColorLens';
+import InfoIcon from '@material-ui/icons/Info';
 import { blue } from '@material-ui/core/colors';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -39,14 +43,19 @@ const useStyles = makeStyles(theme => ({
     }
   },
   table: {
-    "& th.MuiTableCell-root": {
+    "& th": {
       fontWeight: theme.typography.fontWeightBold,
       fontSize: theme.typography.h6.fontSize
     },
-    "& .MuiTableCell-root": {
+    "& th:last-child": {
+      fontWeight: theme.typography.fontWeightBold,
+      fontSize: theme.typography.h6.fontSize,
+      whiteSpace: 'nowrap'
+    },
+    "& td": {
       border: "0 !important",
       fontSize: theme.typography.subtitle1.fontSize
-    }
+    },
   },
   card: {
     "& .MuiCardHeader-root": {
@@ -65,64 +74,78 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
   }
 }));
 
 const SchedulesList = props => {
   const classes = useStyles();
-  const { loading } = props;
+  const { loading, openNewScheduleDialog, schedules, employees } = props;
 
-  useEffect(() => { }, []);
+  console.log(schedules, "schedules list")
 
-  if (loading) {
-    return <LoadingIndicator />;
-  }
+  const orderedSchedules = schedules && _.orderBy(schedules, ['dateCreated'], ['desc'])
+  const todaySchedules = orderedSchedules && orderedSchedules.filter(schedule => moment().diff(schedule.startDate, 'days') === 0)
 
   return (
     <div className={classes.root}>
+      <Backdrop className={classes.backdrop} open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Grid container className={classes.grid}>
         <Grid item xs={12}>
           <Toolbar>
             <Typography variant="h6" className={classes.title}>Schedules</Typography>
-            <Button variant="contained" color="primary" startIcon={<AddIcon />} disableElevation>Create New Schedule</Button>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<AddIcon />}
+              disableElevation
+              onClick={openNewScheduleDialog}
+            >
+              Create New Schedule
+            </Button>
           </Toolbar>
         </Grid>
         <Grid item xs={12}>
           <Grid container spacing={1}>
             <Grid item xs={8}>
-              <Schedules />
+              <Schedules schedules={schedules} employees={employees} />
             </Grid>
             <Grid item xs={4}>
               <Card className={classes.card} elevation={0}>
                 <CardHeader title="Today's Schedule" subheader="" />
 
                 <CardContent>
-                  <Paper className={classes.paper}>
-                    <Table className={classes.table}>
-                      <TableBody>
-                        <TableRow>
-                          <TableCell component="th">Daily Stand-Up</TableCell>
-                          <TableCell component="th">8:00</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell colSpan={2}>Invite team members for Skype meeting</TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  </Paper>
-                  <Paper className={classes.paper}>
-                    <Table className={classes.table}>
-                      <TableBody>
-                        <TableRow>
-                          <TableCell component="th">Daily Stand-Up</TableCell>
-                          <TableCell component="th">8:00</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell colSpan={2}>Invite team members for Skype meeting</TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  </Paper>
+                  {todaySchedules && todaySchedules.length > 0 ?
+                    <Fragment>
+                      {todaySchedules && todaySchedules.map((schedule, i) =>
+                        <Paper key={i} className={classes.paper}>
+                          <Table className={classes.table}>
+                            <TableBody>
+                              <TableRow>
+                                <TableCell component="th">{schedule.title}</TableCell>
+                                <TableCell component="th">{moment(schedule.startDate).format('HH:mm')}</TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell colSpan={2}>{schedule.description}</TableCell>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
+                        </Paper>
+                      )}
+                    </Fragment>
+                    :
+                    <Paper className={classes.paper}>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        <InfoIcon />&nbsp;
+                        There are no schedules today
+                      </Typography>
+                    </Paper>
+                  }
                 </CardContent>
               </Card>
             </Grid>
@@ -130,7 +153,7 @@ const SchedulesList = props => {
         </Grid>
       </Grid>
 
-      <ScheduleDialog />
+      {/* <ScheduleDialog /> */}
       <ParticipantDialog />
     </div>
   );
@@ -142,6 +165,8 @@ SchedulesList.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
+  schedules: Selectors.makeSelectSchedules(),
+  employees: Selectors.makeSelectEmployees(),
 });
 
 function mapDispatchToProps(dispatch) {

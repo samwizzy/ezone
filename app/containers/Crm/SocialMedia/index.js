@@ -4,10 +4,11 @@
  *
  */
 
-import React, { memo, useEffect } from 'react';
+import React, { Fragment, memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
+import { Route, withRouter } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -29,10 +30,11 @@ export function SocialMedia(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
-  const { getSocialMedias, getEmployees } = props;
+  const { getFacebookAccessToken, getEmployees, match } = props;
+  const { path, url } = match
 
   useEffect(() => {
-    getSocialMedias();
+    getFacebookAccessToken();
     getEmployees();
   }, []);
 
@@ -44,8 +46,10 @@ export function SocialMedia(props) {
       </Helmet>
 
       <ModuleLayout>
-        {/* <SocialMediaList /> */}
-        <SocialMediaTabs />
+        <Fragment>
+          <Route exact path={path} component={SocialMediaList} />
+          <Route exact path={`${path}/setup`} component={SocialMediaTabs} />
+        </Fragment>
       </ModuleLayout>
 
       <SocialMediaDialog />
@@ -54,7 +58,7 @@ export function SocialMedia(props) {
 }
 
 SocialMedia.propTypes = {
-  getSocialMedias: PropTypes.func,
+  getFacebookAccessToken: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -63,7 +67,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getSocialMedias: () => dispatch(Actions.getSocialMedias()),
+    getFacebookAccessToken: () => dispatch(Actions.getFacebookAccessToken()),
     getEmployees: () => dispatch(Actions.getEmployees()),
   };
 }
@@ -74,6 +78,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(SocialMedia);

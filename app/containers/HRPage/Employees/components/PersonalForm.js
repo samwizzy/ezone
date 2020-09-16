@@ -89,9 +89,8 @@ export const PersonalForm = props => {
               <KeyboardDatePicker
                 autoOk
                 disableFuture
-                format="MM/dd/yyyy"
+                format="dd/MM/yyyy"
                 inputVariant="outlined"
-                format="MM/dd/yyyy"
                 margin="normal"
                 size="small"
                 fullWidth

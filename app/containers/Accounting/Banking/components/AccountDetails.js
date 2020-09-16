@@ -115,8 +115,8 @@ const AccountDetails = props => {
     history.goBack();
   }
 
-  console.log('accountDetailsData -> ', props.location.accountDetailsData);
-  console.log('props.location.accountDetailsData.accountNumber -> ', props.location.accountDetailsData.accountNumber);
+  //console.log('accountDetailsData -> ', props.location.accountDetailsData);
+  //console.log('props.location.accountDetailsData.accountNumber -> ', props.location.accountDetailsData.accountNumber);
   
 
   return (

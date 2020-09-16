@@ -6,6 +6,7 @@ import {
   MonthView,
   Appointments,
 } from '@devexpress/dx-react-scheduler-material-ui';
+import moment from 'moment';
 
 import { appointments } from './demo-data/month-appointments';
 
@@ -31,9 +32,13 @@ class Demo extends React.PureComponent {
   constructor(props) {
     super(props);
 
+    const options = props.schedules.map(function (row) {
+      return { title: row.scheduleType, startDate: moment(row.startDate).format('YYYY-MM-DD'), endDate: moment(row.endDate).format('YYYY-MM-DD') }
+    })
+
     this.state = {
-      data: appointments,
-      currentDate: '2020-06-25',
+      data: options, // appointments,
+      currentDate: moment().format('YYYY-MM-DD'),
     };
   }
 
@@ -59,7 +64,7 @@ class Demo extends React.PureComponent {
 
 export default withStyles(styles)(class Widget4 extends React.Component {
   render() {
-    const { classes } = this.props
+    const { classes, schedules } = this.props
 
     return (
       <Card className={classes.card}>
@@ -67,7 +72,7 @@ export default withStyles(styles)(class Widget4 extends React.Component {
           title="My Schedules"
         />
         <CardContent classes={{ root: classes.paper }}>
-          <Demo />
+          <Demo schedules={schedules} />
         </CardContent>
       </Card>
     );

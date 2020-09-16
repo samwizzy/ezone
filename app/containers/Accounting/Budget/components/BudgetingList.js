@@ -21,7 +21,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-// import LoadingIndicator from '../../../../components/LoadingIndicator';
+import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   root: {

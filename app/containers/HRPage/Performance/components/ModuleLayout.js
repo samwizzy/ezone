@@ -2,15 +2,18 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
 import { compose } from 'redux';
-import { withRouter, NavLink } from 'react-router-dom';
+import { Route, withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { darken } from '@material-ui/core/styles/colorManipulator';
 import MenuBar from '../../../../components/MenuBar'
 import Goals from './../Goals';
+import GoalsDetail from './../Goals/goal';
 import Recognition from './../Recognition';
-import Feedback360 from './../Feedback360';
-import Reviews from './../Reviews';
+import RecognitionDetail from './../Recognition/recognition';
+import Reviews360 from './../Reviews360';
+import Reviews360Detail from './../Reviews360/review';
+import Reviews from './../Feedback';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 function ModuleLayout(props) {
   const classes = useStyles();
   const { match } = props
-  const { params } = match
+  const { params, path, url } = match
 
   console.log(match, "match performance")
 
@@ -44,19 +47,24 @@ function ModuleLayout(props) {
               Recognitions
             </NavLink>
             <NavLink to="/human-resource/performance/feedbacks" activeClassName={classes.active}>
-              Feedback360
+              360<sup>o</sup> &nbsp;Reviews
             </NavLink>
             <NavLink to="/human-resource/performance/reviews" activeClassName={classes.active}>
-              Reviews
+              Feedback
             </NavLink>
           </React.Fragment>
         }
         content={
           <div className={classes.content}>
-            {params.page === "goals" && <Goals />}
-            {params.page === "recognitions" && <Recognition />}
-            {params.page === "feedbacks" && <Feedback360 />}
-            {params.page === "reviews" && <Reviews />}
+            <Route exact path={path} component={Goals} />
+            <Route exact path={`${path}/goals`} component={Goals} />
+            <Route exact path={`${path}/goal/:id`} component={GoalsDetail} />
+            <Route exact path={`${path}/recognitions`} component={Recognition} />
+            <Route exact path={`${path}/recognition/:id`} component={RecognitionDetail} />
+            <Route exact path={`${path}/feedbacks`} component={Reviews360} />
+            <Route exact path={`${path}/feedback/:id`} component={Reviews360Detail} />
+            <Route exact path={`${path}/reviews`} component={Reviews} />
+            <Route exact path={`${path}/review/:id`} component={Reviews} />
           </div>
         }
       />

@@ -9,10 +9,26 @@ import * as Constants from './constants';
 export const initialState = {
   loading: false,
   error: false,
-  getAllCompanies: [],
-  newCompanyDetails: {},
-  updateCompanyDetails: {},
-  companyDialog: {
+  categories: [],
+  courses: [],
+  course: null,
+  assignments: [],
+  lectures: [],
+  assignmentDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
+  lectureDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
+  courseVideoDialog: {
     type: 'new',
     props: {
       open: false,
@@ -22,68 +38,13 @@ export const initialState = {
 };
 
 /* eslint-disable default-case, no-param-reassign */
-const crmCompaniesReducer = (state = initialState, action) =>
+const lmsCoursesReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
-      case Constants.OPEN_NEW_COMPANY_DIALOG: {
+      case Constants.OPEN_NEW_ASSIGNMENT_DIALOG: {
         return {
           ...state,
-          companyDialog: {
-            type: 'new',
-            props: {
-              open: true,
-            },
-            data: null,
-          },
-          companyDetailsDialog: {
-            type: 'new',
-            props: {
-              open: false,
-            },
-            data: null,
-          },
-        };
-      }
-      case Constants.CLOSE_NEW_COMPANY_DIALOG: {
-        return {
-          ...state,
-          companyDialog: {
-            type: 'new',
-            props: {
-              open: false,
-            },
-            data: null,
-          },
-        };
-      }
-      case Constants.OPEN_EDIT_COMPANY_DIALOG: {
-        return {
-          ...state,
-          companyDialog: {
-            type: 'edit',
-            props: {
-              open: true,
-            },
-            data: action.payload,
-          },
-        };
-      }
-      case Constants.CLOSE_EDIT_COMPANY_DIALOG: {
-        return {
-          ...state,
-          companyDialog: {
-            type: 'edit',
-            props: {
-              open: false,
-            },
-            data: null,
-          },
-        };
-      }
-      case Constants.OPEN_COMPANY_DETAILS_DIALOG: {
-        return {
-          ...state,
-          companyDetailsDialog: {
+          assignmentDialog: {
             type: 'new',
             props: {
               open: true,
@@ -92,10 +53,10 @@ const crmCompaniesReducer = (state = initialState, action) =>
           },
         };
       }
-      case Constants.CLOSE_COMPANY_DETAILS_DIALOG: {
+      case Constants.CLOSE_NEW_ASSIGNMENT_DIALOG: {
         return {
           ...state,
-          companyDetailsDialog: {
+          assignmentDialog: {
             type: 'new',
             props: {
               open: false,
@@ -104,21 +65,68 @@ const crmCompaniesReducer = (state = initialState, action) =>
           },
         };
       }
-      case Constants.CREATE_NEW_COMPANY: {
+      case Constants.OPEN_NEW_LECTURE_DIALOG: {
+        return {
+          ...state,
+          lectureDialog: {
+            type: 'new',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_NEW_LECTURE_DIALOG: {
+        return {
+          ...state,
+          lectureDialog: {
+            type: 'new',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.OPEN_NEW_COURSE_VIDEO_DIALOG: {
+        return {
+          ...state,
+          courseVideoDialog: {
+            type: 'new',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_NEW_COURSE_VIDEO_DIALOG: {
+        return {
+          ...state,
+          courseVideoDialog: {
+            type: 'new',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.CREATE_ASSIGNMENT: {
         return {
           ...state,
           loading: true,
-          newCompanyDetails: action.payload,
         };
       }
-      case Constants.CREATE_NEW_COMPANY_SUCCESS: {
+      case Constants.CREATE_ASSIGNMENT_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
         };
       }
-      case Constants.CREATE_NEW_COMPANY_ERROR: {
+      case Constants.CREATE_ASSIGNMENT_ERROR: {
         return {
           ...state,
           loading: false,
@@ -126,21 +134,20 @@ const crmCompaniesReducer = (state = initialState, action) =>
           messages: action.payload,
         };
       }
-      case Constants.UPDATE_COMPANY: {
+      case Constants.UPDATE_ASSIGNMENT: {
         return {
           ...state,
           loading: true,
-          updateCompanyDetails: action.payload,
         };
       }
-      case Constants.UPDATE_COMPANY_SUCCESS: {
+      case Constants.UPDATE_ASSIGNMENT_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
         };
       }
-      case Constants.UPDATE_COMPANY_ERROR: {
+      case Constants.UPDATE_ASSIGNMENT_ERROR: {
         return {
           ...state,
           loading: false,
@@ -148,20 +155,254 @@ const crmCompaniesReducer = (state = initialState, action) =>
           messages: action.payload,
         };
       }
-      case Constants.GET_ALL_COMPANIES: {
+      case Constants.GET_CATEGORIES: {
         return {
           ...state,
           loading: true,
         };
       }
-      case Constants.GET_ALL_COMPANIES_SUCCESS: {
+      case Constants.GET_CATEGORIES_SUCCESS: {
         return {
           ...state,
           loading: false,
-          getAllCompanies: action.payload,
+          categories: action.payload,
         };
       }
-      case Constants.GET_ALL_COMPANIES_ERROR: {
+      case Constants.GET_CATEGORIES_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          message: action.payload,
+        };
+      }
+      case Constants.GET_ASSIGNMENTS: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.GET_ASSIGNMENTS_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          assignments: action.payload,
+        };
+      }
+      case Constants.GET_ASSIGNMENTS_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          messages: action.payload,
+        };
+      }
+
+      // Lectures 
+      case Constants.CREATE_LECTURE: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.CREATE_LECTURE_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.CREATE_LECTURE_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          messages: action.payload,
+        };
+      }
+      case Constants.UPDATE_LECTURE: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.UPDATE_LECTURE_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.UPDATE_LECTURE_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          messages: action.payload,
+        };
+      }
+      case Constants.GET_LECTURES: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.GET_LECTURES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          assignments: action.payload,
+        };
+      }
+      case Constants.GET_LECTURES_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          messages: action.payload,
+        };
+      }
+
+      // Courses 
+      case Constants.CREATE_COURSE: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.CREATE_COURSE_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.CREATE_COURSE_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          messages: action.payload,
+        };
+      }
+      case Constants.UPDATE_COURSE: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.UPDATE_COURSE_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.UPDATE_COURSE_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          messages: action.payload,
+        };
+      }
+      case Constants.UPLOAD_COURSE_PREVIEW: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.UPLOAD_COURSE_PREVIEW_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.UPLOAD_COURSE_PREVIEW_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          messages: action.payload,
+        };
+      }
+      case Constants.DELETE_COURSE: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.DELETE_COURSE_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.DELETE_COURSE_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          messages: action.payload,
+        };
+      }
+      case Constants.GET_COURSES: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.GET_COURSES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          courses: action.payload,
+        };
+      }
+      case Constants.GET_COURSES_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          messages: action.payload,
+        };
+      }
+      case Constants.GET_COURSE_BY_ID: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.GET_COURSE_BY_ID_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          course: action.payload,
+        };
+      }
+      case Constants.GET_COURSE_BY_ID_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          messages: action.payload,
+        };
+      }
+      case Constants.ADD_COURSE_VIDEO: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.ADD_COURSE_VIDEO_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.ADD_COURSE_VIDEO_ERROR: {
         return {
           ...state,
           loading: false,
@@ -172,4 +413,4 @@ const crmCompaniesReducer = (state = initialState, action) =>
     }
   });
 
-export default crmCompaniesReducer;
+export default lmsCoursesReducer;

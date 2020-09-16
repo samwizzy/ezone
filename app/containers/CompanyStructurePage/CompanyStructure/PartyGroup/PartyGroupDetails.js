@@ -261,10 +261,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openEditPartyDialogAction: evt =>
-      dispatch(Actions.openEditPartyDialog(evt)),
-    dispatchOpenNewPartyAction: evt =>
-      dispatch(Actions.openNewPartyDialog(evt)),
+    openEditPartyDialogAction: evt => dispatch(Actions.openEditPartyDialog(evt)),
+    dispatchOpenNewPartyAction: evt => dispatch(Actions.openNewPartyDialog(evt)),
     getPartyByIdAction: evt => dispatch(Actions.getPartyById(evt)),
   };
 }

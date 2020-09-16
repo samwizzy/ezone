@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import moment from 'moment';
+import _ from 'lodash';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -49,64 +50,66 @@ const initialState = {
   lastName: '',
   emailAddress: '',
   phoneNumber: '',
-  mobileNo: '',
+  companyNumber: '',
   lifeStage: '',
   associationType: '',
   contactGroup: '',
-  contactGroupId: 1,
   contactSource: '',
-  address1: '',
-  address2: '',
+  address: '',
   country: '',
   state: '',
   city: '',
   fax: '',
-  dob: moment(new Date()).format('YYYY-MM-DD'),
-  image: '',
+  dob: moment().format('YYYY-MM-DD'),
+  regYear: moment().format('YYYY'),
+  image: null,
   notes: '',
   ownerId: '',
+  noOfEmployees: '',
   type: 'INDIVIDUAL',
   website: '',
 }
 
 const ContactDialog = props => {
   const classes = useStyles();
-
   const [step, setStep] = React.useState(0);
   const [form, setForm] = React.useState({ ...initialState });
 
   const {
     loading,
-    contactDialog,
+    employees,
+    dialog,
     createNewContact,
     updateContact,
     closeNewContactDialog,
-    closeEditEmployeeDialogAction,
     contactGroups
   } = props;
+
+  React.useEffect(() => {
+    if (dialog.type === 'edit') {
+      const { ownerName, ownerEmail, ...rest } = dialog.data
+      if (ownerName && ownerEmail && employees.length > 0) {
+        const emp = employees && _.find(employees, { emailAddress: ownerEmail })
+        console.log(emp, "emp ids check")
+        setForm({ ...rest, ownerId: emp ? emp.id : null, image: null });
+      }
+    } else {
+      setForm({ ...initialState })
+      setStep(0)
+    }
+  }, [dialog.data]);
 
   const handleChange = event => {
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
   };
 
-  const handleSelectLifeStage = (evt, value) => {
-    setForm({ ...form, lifeStage: value.name });
+  const handleSelectChange = name => (event, val) => {
+    setForm({ ...form, [name]: val.id });
   };
-  const handleSelectOwnerId = (evt, value) => {
-    setForm({ ...form, ownerId: value.id });
-  };
-  const handleSelectAssociateId = (evt, value) => {
-    setForm({ ...form, associationType: value.name });
-  };
-  const handleSelectCountry = (evt, value) => {
-    setForm({ ...form, country: value.name });
-  };
-  const handleSelectContactGroup = (evt, value) => {
-    setForm({ ...form, contactGroup: value.id });
-  };
-  const handleSelectContactSource = (evt, value) => {
-    setForm({ ...form, contactSource: value.id });
+
+  const handleSelectNameChange = name => (event, val) => {
+    setForm({ ...form, [name]: val.name });
   };
 
   const uploadFileAction = file => {
@@ -119,8 +122,10 @@ const ContactDialog = props => {
     }
   };
 
-  const handleDateChange = date => {
-    setForm({ ...form, dob: moment(date).format('YYYY-MM-DD') });
+  const handleDateChange = name => date => {
+    name === 'regYear' ?
+      setForm({ ...form, [name]: moment(date).format('YYYY') }) :
+      setForm({ ...form, [name]: moment(date).format('YYYY-MM-DD') });
   };
 
   const handlePrev = () => {
@@ -129,21 +134,19 @@ const ContactDialog = props => {
     }
   };
 
-  React.useEffect(() => {
-    if (contactDialog.type === 'edit') {
-      setForm({ ...contactDialog.data });
-    } else {
-      setForm({ ...initialState })
-    }
-  }, [contactDialog.data]);
+  const handleSubmit = () => {
+    dialog.type === 'new' ? createNewContact(form) : updateContact(form);
+    // setForm({ ...initialState })
+  }
 
-  // console.log(contactDialog, 'contactDialog');
+  // console.log(dialog, 'dialog');
   console.log(form, 'form');
+  console.log(employees, 'employees');
 
   return (
     <div>
       <Dialog
-        {...contactDialog.props}
+        {...dialog.props}
         onClose={closeNewContactDialog}
         keepMounted
         TransitionComponent={Transition}
@@ -152,10 +155,11 @@ const ContactDialog = props => {
         {step === 0 && (
           <BasicInfo
             handleChange={handleChange}
-            handleSelectLifeStage={handleSelectLifeStage}
-            handleSelectOwnerId={handleSelectOwnerId}
-            handleSelectAssociateId={handleSelectAssociateId}
+            handleSelectNameChange={handleSelectNameChange}
+            handleSelectChange={handleSelectChange}
+            handleSelectNameChange={handleSelectNameChange}
             form={form}
+            employees={employees}
             closeNewContactDialog={closeNewContactDialog}
             handleNext={handleNext}
           />
@@ -164,7 +168,7 @@ const ContactDialog = props => {
           <AdvanceInfo
             handleChange={handleChange}
             handleDateChange={handleDateChange}
-            handleSelectCountry={handleSelectCountry}
+            handleSelectNameChange={handleSelectNameChange}
             form={form}
             closeNewContactDialog={closeNewContactDialog}
             handleNext={handleNext}
@@ -173,8 +177,8 @@ const ContactDialog = props => {
         )}
         {step === 2 && (
           <UtilityInfo
-            handleSelectContactGroup={handleSelectContactGroup}
-            handleSelectContactSource={handleSelectContactSource}
+            handleSelectChange={handleSelectChange}
+            handleSelectChange={handleSelectChange}
             handleChange={handleChange}
             form={form}
             contactGroups={contactGroups}
@@ -185,9 +189,9 @@ const ContactDialog = props => {
         )}
         {step === 3 && (
           <ImageUpload
-            contactDialog={contactDialog}
+            dialog={dialog}
             updateContact={updateContact}
-            createNewContact={createNewContact}
+            handleSubmit={handleSubmit}
             uploadFileAction={uploadFileAction}
             handleChange={handleChange}
             handlePrev={handlePrev}
@@ -203,17 +207,16 @@ const ContactDialog = props => {
 
 ContactDialog.propTypes = {
   loading: PropTypes.bool,
-  contactDialog: PropTypes.object,
-  getAllWarehouses: PropTypes.array,
-  getAllItems: PropTypes.array,
+  dialog: PropTypes.object,
   closeNewContactDialog: PropTypes.func,
   updateContact: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  contactDialog: Selectors.makeSelectContactDialog(),
-  contactGroups: Selectors.makeSelectContactsGroups()
+  dialog: Selectors.makeSelectContactDialog(),
+  contactGroups: Selectors.makeSelectContactsGroups(),
+  employees: Selectors.makeSelectEmployees(),
 });
 
 function mapDispatchToProps(dispatch) {

@@ -17,6 +17,7 @@ import {
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { Link as RouteLink } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../../actions';
 import logo from '../../../../images/logo.svg';
@@ -165,39 +166,48 @@ const ForgotPasswordForm = props => {
               <Box className={classes.avatar}>
                 <img src={logo} alt="" />
               </Box>
-              {/* <form> */}
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="username"
-                label="Email Address"
-                type="email"
-                onChange={handleChange('username')}
-                value={values.username ? values.username : ''}
-                InputProps={{
-                  className: classes.input,
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                disabled={!canBeSubmitted()}
-                onClick={() => forgotPasswordAction(values)}
-              >
-                Reset Password
+              <Typography component="h1" variant="h6">
+                Forgot Password
+              </Typography>
+              <Typography variant="body2">
+                <span>Remembered your password?</span>&nbsp;
+                <RouteLink to="/login" variant="body2">
+                  Login
+                </RouteLink>
+              </Typography>
+              <div>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="username"
+                  label="Email Address"
+                  type="email"
+                  onChange={handleChange('username')}
+                  value={values.username ? values.username : ''}
+                  InputProps={{
+                    className: classes.input,
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  disabled={!canBeSubmitted()}
+                  onClick={() => forgotPasswordAction(values)}
+                >
+                  Reset Password
               </Button>
-              <Box mt={5}>
-                <Copyright />
-              </Box>
-              {/* </form> */}
+                <Box mt={5}>
+                  <Copyright />
+                </Box>
+              </div>
             </div>
           </Grid>
         </Grid>

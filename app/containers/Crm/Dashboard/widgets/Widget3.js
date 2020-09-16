@@ -1,79 +1,107 @@
 import React from "react"
+import { Link } from 'react-router-dom'
 import {
-    makeStyles,
-    Box,
-    Button,
-    Card, CardContent, CardActions, CardHeader,
-    Divider,
-    List,
-    Paper,
-    Grid,
-    TableContainer,
-    Table,
-    TableHead,
-    TableBody,
-    TableFooter,
-    TableRow,
-    TableCell,
-    Typography
+  makeStyles,
+  Box,
+  Button,
+  Card, CardContent, CardActions, CardHeader,
+  Divider,
+  List,
+  Paper,
+  Grid,
+  TableContainer,
+  Table,
+  TableHead,
+  TableBody,
+  TableFooter,
+  TableRow,
+  TableCell,
+  Typography
 } from '@material-ui/core';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
+  root: {
+    flexGrow: 1,
+  },
+  card: {
+    borderRadius: theme.shape.borderRadius * 4,
+    "& .MuiCardHeader-root": {
+      textAlign: "center",
+      borderBottom: `1px solid ${theme.palette.divider}`,
     },
-    grid: {
-        border: `1px solid ${theme.palette.divider}`,
-        '& .MuiGrid-item': {
-            flex: 1,
-            margin: theme.spacing(5)
-        }
+    "& .MuiCardActions-root": {
+      justifyContent: "center",
+      backgroundColor: theme.palette.common.white,
+      fontSize: theme.typography.subtitle1.fontSize
     },
-    card: {
-        borderRadius: theme.shape.borderRadius * 4,
-        "& .MuiCardHeader-root": {
-            textAlign: "center",
-            padding: theme.spacing(1),
-            fontSize: `${theme.typography.subtitle1.fontSize} !important`,
-            borderBottom: `1px solid ${theme.palette.divider}`,
-        }
-    },
-    table: {
-        "& .MuiTableCell-root": {
-            borderBottom: "none !important"
-        },
-        '& .MuiTableCell-body': {
-            padding: theme.spacing(7, 1),
-            color: theme.palette.text.secondary,
-            fontSize: theme.typography.h6.fontSize
-        },
+    "& .MuiCardContent-root": {
+      minHeight: `calc(180px - 53.09px)`,
     }
+  },
+  table: {
+    "& td, & th": {
+      borderBottom: "none !important",
+      fontSize: theme.typography.h6.fontSize
+    },
+    "& td": {
+      color: theme.palette.text.secondary,
+    },
+  }
 }));
 
-const Widget3 = () => {
-    const classes = useStyles()
+const Widget3 = ({ user, schedules }) => {
+  const classes = useStyles()
 
-    return (
-        <div>
-            <Card className={classes.card}>
-                <CardHeader
-                    title="Today's Schedule"
-                    disableTypography
-                />
-                <CardContent>
-                    <Table className={classes.table} size="small">
-                        <TableBody>
-                            <TableRow>
-                                <TableCell align="center">
-                                    <Typography>No Schedule Found</Typography>
-                                </TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
-                </CardContent>
-            </Card>
-        </div>
-    )
+  console.log(schedules, "schedules")
+  console.log(user, "currentuser")
+  const todaySchedules = schedules && schedules.filter(schedule => moment().diff(schedule.startDate, 'days') === 0)
+  const userSchedules = todaySchedules && todaySchedules.filter(schedule => schedule.hostId === user.id)
+
+  return (
+    <div>
+      <Card className={classes.card}>
+        <CardHeader
+          title="Today's Schedule"
+          disableTypography
+        />
+        <CardContent>
+          <Table className={classes.table} size="small">
+            <TableBody>
+              {userSchedules && userSchedules.length > 0 ?
+                <React.Fragment>
+                  {userSchedules.slice(0, 4).map((schedule, i) =>
+                    <TableRow key={i}>
+                      <TableCell component="th">
+                        <Typography>{schedule.title}</Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography>{moment(schedule.startDate).format('HH:mm')}</Typography>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </React.Fragment>
+                :
+                <TableRow>
+                  <TableCell align="center">
+                    <Typography>No Schedule Found</Typography>
+                  </TableCell>
+                </TableRow>
+              }
+            </TableBody>
+          </Table>
+        </CardContent>
+
+        <Divider />
+
+        <CardActions>
+          <Button component={Link} to='/crm/schedules/list'>
+            View All Schedules
+					</Button>
+        </CardActions>
+      </Card>
+    </div>
+  )
 }
 
 export default Widget3

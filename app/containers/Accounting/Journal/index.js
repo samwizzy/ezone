@@ -22,7 +22,8 @@ import ModuleLayout from '../components/ModuleLayout';
 import JournalListing from './components/JournalListing';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
-import LoadingIndicator from '../../../components/LoadingIndicator';
+//import LoadingIndicator from '../../../components/LoadingIndicator';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export function Journal(props) {
   useInjectReducer({ key: 'journal', reducer });
@@ -40,7 +41,7 @@ export function Journal(props) {
   }, []);
 
   if (loading) {
-    return <LoadingIndicator />;
+    return <div style={{textAlign:'center'}}><div style={{margin:'2px auto'}}><CircularProgress /></div></div>;
   }
 
   return (

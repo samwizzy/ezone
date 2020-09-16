@@ -1,17 +1,16 @@
 import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Icon, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
+import { Collapse, Icon, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
 import { AppContext } from '../../../containers/context/AppContext';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     width: "100%",
     marginTop: theme.spacing(2),
-  },
-  active: {
-    backgroundColor: "red"
   },
   list: {
     width: '100%',
@@ -37,15 +36,20 @@ const useStyles = makeStyles(theme => ({
       },
     }
   },
+  nested: {
+    paddingLeft: theme.spacing(4),
+  },
 }));
 
 function AppSidebar(props) {
   const classes = useStyles();
   const { location } = props
   const [selectedIndex, setSelectedIndex] = React.useState('')
+  const [open, setOpen] = React.useState({});
 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index)
+    setOpen({ [index]: !open[index] });
   }
 
   return (
@@ -62,18 +66,58 @@ function AppSidebar(props) {
             <List className={classes.list}>
               {menus.map((menu, index) => {
                 return (
-                  <ListItem
-                    button key={index}
-                    selected={menu.url.toLowerCase() === location.pathname}
-                    component={Link}
-                    onClick={(event) => handleListItemClick(event, menu.name)}
-                    to={menu.url}
-                  >
-                    <ListItemIcon>
-                      <Icon color="inherit">{menu.icon}</Icon>
-                    </ListItemIcon>
-                    <ListItemText primary={menu.name} />
-                  </ListItem>
+                  <div key={index}>
+                    {menu.submenus != null ?
+                      <React.Fragment>
+                        <ListItem
+                          button key={index}
+                          selected={menu.url.toLowerCase() === location.pathname}
+                          component={Link}
+                          onClick={(event) => handleListItemClick(event, menu.name)}
+                          to={menu.url}
+                        >
+                          <ListItemIcon>
+                            <Icon color="inherit">{menu.icon}</Icon>
+                          </ListItemIcon>
+                          <ListItemText primary={menu.name} />
+                          {open[menu.name] ? <ExpandLess /> : <ExpandMore />}
+                        </ListItem>
+                        <Collapse in={open[menu.name]} timeout="auto" unmountOnExit>
+                          <List component="div" disablePadding>
+                            {menu.submenus.map((sub, i) =>
+                              <ListItem
+                                button key={i}
+                                className={classes.nested}
+                                onClick={(event) => handleListItemClick(event, sub.name)}
+                                component={Link}
+                                to={sub.url}
+                              >
+                                <ListItemIcon>
+                                  <Icon color="inherit">{sub.icon}</Icon>
+                                </ListItemIcon>
+                                <ListItemText primary={sub.name} />
+                              </ListItem>
+                            )}
+                          </List>
+                        </Collapse>
+                      </React.Fragment>
+                      :
+                      <React.Fragment>
+                        <ListItem
+                          button key={index}
+                          selected={menu.url.toLowerCase() === location.pathname}
+                          component={Link}
+                          onClick={(event) => handleListItemClick(event, menu.name)}
+                          to={menu.url}
+                        >
+                          <ListItemIcon>
+                            <Icon color="inherit">{menu.icon}</Icon>
+                          </ListItemIcon>
+                          <ListItemText primary={menu.name} />
+                        </ListItem>
+                      </React.Fragment>
+                    }
+                  </div>
                 );
               })}
             </List>

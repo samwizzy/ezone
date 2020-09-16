@@ -1,5 +1,5 @@
 /*
- * HomePage
+ * Calendar
  *
  * This is the first thing users see of our App, at the '/' route
  */
@@ -7,41 +7,26 @@ import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { makeStyles } from '@material-ui/core/styles';
-// import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
-import {
-  makeSelectRepos,
-  makeSelectLoading,
-  makeSelectError,
-} from 'containers/App/selectors';
+import * as AppSelectors from '../App/selectors';
 import {
   CssBaseline
 } from '@material-ui/core';
-import { loadRepos } from '../App/actions';
-import { changeUsername } from './actions';
-import { makeSelectUsername } from './selectors';
+import * as AppActions from '../App/actions';
+import * as Actions from './actions';
+import makeSelectCalendar, * as Selectors from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import Calendar from './../UtilityPage/components/Calendar';
+import CalendarView from './components/CalendarView'
+import ModuleLayout from './ModuleLayout'
 
-const key = 'home';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    // height: '100vh',
-    backgroundColor: theme.palette.grey[50],
-    borderRadius: theme.spacing(5),
-    overflow: 'hidden',
-  }
-}));
-
-export function HomePage() {
-  const classes = useStyles();
+const key = 'calendar';
+export function CalendarPage() {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
@@ -49,39 +34,33 @@ export function HomePage() {
     <React.Fragment>
       <CssBaseline />
       <Helmet>
-        <title>Home Page</title>
+        <title>Calendar Page</title>
         <meta
           name="description"
-          content="A React.js Boilerplate application homepage"
+          content="A React.js Boilerplate application calendar page"
         />
       </Helmet>
-      <div>
-        <Calendar />
-      </div>
+
+      <ModuleLayout>
+        <CalendarView />
+      </ModuleLayout>
     </React.Fragment>
   );
 }
 
-HomePage.propTypes = {
-  // loading: PropTypes.bool,
-  // error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+CalendarPage.propTypes = {
+  loading: PropTypes.bool,
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
 };
 
 const mapStateToProps = createStructuredSelector({
-  // repos: makeSelectRepos(),
-  // username: makeSelectUsername(),
-  // loading: makeSelectLoading(),
-  // error: makeSelectError(),
+  calendar: makeSelectCalendar(),
+  username: Selectors.makeSelectUsername(),
+  loading: Selectors.makeSelectLoading(),
 });
 
 export function mapDispatchToProps(dispatch) {
-  return {
-    // onChangeUsername: evt => dispatch(changeUsername(evt.target.value)),
-    // onSubmitForm: evt => {
-    //   if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-    //   dispatch(loadRepos());
-    // },
-  };
+  return {};
 }
 
 const withConnect = connect(
@@ -92,4 +71,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(HomePage);
+)(CalendarPage);

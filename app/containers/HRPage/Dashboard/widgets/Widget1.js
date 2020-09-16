@@ -105,9 +105,7 @@ const Widget1 = (props) => {
 
 const mapStateToProps = createStructuredSelector({
 	loading: Selectors.makeSelectLoading(),
-	departments: Selectors.makeSelectDepartments(),
 	employees: Selectors.makeSelectEmployees(),
-	employee: Selectors.makeSelectEmployee(),
 	user: AppSelectors.makeSelectCurrentUser(),
 	departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
 });
@@ -126,4 +124,3 @@ export default compose(
 	withConnect,
 	memo,
 )(Widget1);
-// export default Widget1

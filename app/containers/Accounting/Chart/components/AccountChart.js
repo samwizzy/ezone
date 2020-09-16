@@ -27,8 +27,9 @@ import axios from "axios";
 import * as saga from '../saga'; 
 import ConfirmDeleteAccountDialog from './ConfirmDeleteAccountDialog';
 import { ChartContext } from '..';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import swal from 'sweetalert';
-// import LoadingIndicator from '../../../../components/LoadingIndicator';
+import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const buttonRef = React.createRef()
 
@@ -84,6 +85,7 @@ const AccountChart = props => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [account, setAccount] = useState('');
   const [allCoa,setAllCoa] = useState([])
+  const [loadingChart,setLoadingChart] = useState(true);
   const [credentials] = useState(JSON.parse(localStorage.getItem('user')))
   const [accessToken] = useState(localStorage.getItem('access_token'))
   const[refresh,setRefresh] = useState(true);
@@ -93,6 +95,7 @@ const AccountChart = props => {
 
   //Load AccTypes
   useEffect(() => {
+    let mounted = true
     async function getAllAccountChartFSev() {
     
       const config = {
@@ -125,31 +128,30 @@ const AccountChart = props => {
           accountName:coaData[i].accountName,accountNumber:coaData[i].accountNumber,
           accountType:(coaData[i].accountType === null ? 'Bank':coaData[i].accountType.accountType),
           accountTypeId:coaData[i].accountType === null? 14:coaData[i].accountType.id,bankBalance:coaData[i].bankBalance,
-          openingBalance:coaData[i].openingBalance,
+          openingBalance:coaData[i].accountType === null?coaData[i].bankBalance: coaData[i].openingBalance,
           bankName:coaData[i].bankName,
           description:coaData[i].description,id:coaData[i].id}]
         }
       }
-      setAllCoa(data)
+      setAllCoa(data.reverse())
       chartContext.chartDispatch({type:'PAYLOAD',payload:data});
       //setIsEmpty(chatData.length > 0 ?false :true);
       //setchartOfAccountData(chatData)
       chartContext.chartDispatch({type:'REFRESH',refresh:false})
+      setLoadingChart(false);
     })
 
     .catch((err) => {
       console.log(`error ocurr at ChartofAccount ${err}`);
-    });
-    
+      setLoadingChart(false);
+    })}
 
-
+    if(mounted){
+      getAllAccountTypeFSev();
+      getAllAccountChartFSev();
     }
-    getAllAccountTypeFSev();
-    getAllAccountChartFSev();
-
     return () => {
-      getAllAccountTypeFSev()
-      getAllAccountChartFSev()
+      mounted = false
     };
 
   },[chartContext.chartState.refresh]);
@@ -264,8 +266,9 @@ const AccountChart = props => {
        if(data[i].data.accountCode.length > 1 &&
         data[i].data.accountName.length > 1 &&
         data[i].data.accountType.length > 1 &&
-        data[i].data.accountDescription.length > 1 &&
-        data[i].data.amount > 1){
+        data[i].data.financialStatement.length > 1) 
+        //data[i].data.amount > 1){
+          {
           createChartOfAccountHandler(data[i].data)
         }
         else{
@@ -337,13 +340,37 @@ const AccountChart = props => {
       },
     },
     {
+      name: 'financialstatement',
+      label: 'Financial Statement',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: 'debitcredit',
+      label: 'Debit/Credit',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: '',
+      label: 'Status',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    /*{
       name: 'description',
       label: 'Account Description',
       options: {
         filter: true,
         sort: false,
       },
-    },
+    },*/
     {
       name: 'id',
       label: ' ',
@@ -371,8 +398,7 @@ const AccountChart = props => {
                 onClose={handleClose}
               >
                 <MenuItem onClick={(e) => {
-                  editOpenAccountDialogAction(account);
-                  console.log(`on Edit account ${JSON.stringify(account)}`)
+                  editOpenAccountDialogAction(account);            
                   localStorage.setItem("ezone-editable", '392');
                 }}>
                   Edit
@@ -385,6 +411,9 @@ const AccountChart = props => {
                   chartContext.chartDispatch({type:'VIEW_ID',id:account.id})
                 }}>
                   View Details
+                </MenuItem>
+                <MenuItem>
+                  Mark as Active
                 </MenuItem>
                 <MenuItem onClick={() => {
                   openDeleteAccountDialogAction(account);
@@ -473,23 +502,36 @@ const AccountChart = props => {
   };
 
   return (
-    <React.Fragment>
-      <NewAccountDialog />
-      <ConfirmDeleteAccountDialog />
-      <div className={classes.root}>
-        <Grid container>
-          <Grid item xs={12}>
-            <MUIDataTable
-              className={classes.datatable}
-              title="Account Charts"
-              data={allCoa}
-              columns={columns}
-              options={options}
-            />
-          </Grid>
-        </Grid>
-      </div>
-    </React.Fragment>
+    <div>
+      {
+        loadingChart ?
+        (
+          <div style={{textAlign:'center'}}><div style={{margin:'2px auto'}}><CircularProgress /></div></div>
+        )
+        :
+        (
+          <React.Fragment>
+          <NewAccountDialog />
+          <ConfirmDeleteAccountDialog />
+          <div className={classes.root}>
+            <Grid container>
+              <Grid item xs={12}>
+                <MUIDataTable
+                  className={classes.datatable}
+                  title="Account Charts"
+                  data={allCoa}
+                  columns={columns}
+                  options={options}
+                />
+              </Grid>
+            </Grid>
+          </div>
+        </React.Fragment>
+        )
+      }
+
+    </div>
+   
   );
 };
 

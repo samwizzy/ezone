@@ -8,54 +8,50 @@ import { createStructuredSelector } from 'reselect';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import LoadingIndicator from '../../../components/LoadingIndicator';
-import * as Actions from '../actions';
-import * as Selectors from '../selectors';
-import saga from '../saga';
-import reducer from '../reducer';
+import * as Actions from './actions';
+import makeSelectUtilityChats, * as Selectors from './selectors';
+import saga from './saga';
+import reducer from './reducer';
 import ChatTab from './ChatTab';
 import ChatBox from './ChatBox';
 import ModuleLayout from '../components/ModuleLayout';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-}));
+const key = "utilityChats";
 
 const ChatsApp = props => {
-  useInjectReducer({ key: 'utilityPage', reducer });
-  useInjectSaga({ key: 'utilityPage', saga });
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
 
-  const classes = useStyles();
-  const { dispatchGetUserChats, dispatchGetAllEmployees } = props;
+  const { getAllUsersChat, getEmployees } = props;
 
   React.useEffect(() => {
-    dispatchGetAllEmployees();
-    dispatchGetUserChats();
+    getEmployees();
+    getAllUsersChat();
   }, []);
 
   return (
-    // <ModuleLayout>
+    <ModuleLayout>
       <ChatTab />
-    // </ModuleLayout>
+    </ModuleLayout>
   );
 };
 
 ChatsApp.propTypes = {
-  dispatchGetAllEmployees: PropTypes.func,
-  dispatchGetUserChats: PropTypes.func,
+  getEmployees: PropTypes.func,
+  getAllUsersChat: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
+  utilityChats: makeSelectUtilityChats(),
   loading: Selectors.makeSelectLoading(),
   chats: Selectors.makeSelectAllUsersChat(),
-  allEmployees: Selectors.makeSelectAllEmployees(),
+  allEmployees: Selectors.makeSelectEmployees(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchGetAllEmployees: () => dispatch(Actions.getAllUsers()),
-    dispatchGetUserChats: () => dispatch(Actions.getAllUsersChat()),
+    getEmployees: () => dispatch(Actions.getEmployees()),
+    getAllUsersChat: () => dispatch(Actions.getAllUsersChat()),
   };
 }
 

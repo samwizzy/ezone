@@ -27,8 +27,7 @@ const useStyles = makeStyles(theme => ({
 export const UtilityInfo = props => {
   const {
     handleChange,
-    handleSelectContactSource,
-    handleSelectContactGroup,
+    handleSelectChange,
     closeNewContactDialog,
     handleNext,
     handlePrev,
@@ -61,8 +60,8 @@ export const UtilityInfo = props => {
               id="combo-contact-group"
               options={contactGroups ? contactGroups : []}
               getOptionLabel={option => option.groupName}
-              // value={form.contactGroup ? form.contactGroup : ''}
-              onChange={(evt, value) => handleSelectContactGroup(evt, value)}
+              value={form.contactGroup ? _.find(contactGroups, { id: form.contactGroup }) : null}
+              onChange={handleSelectChange('contactGroup')}
               renderInput={params => (
                 <TextField
                   {...params}
@@ -78,21 +77,19 @@ export const UtilityInfo = props => {
           </Grid>
           <Grid item xs={6}>
             <Autocomplete
-              id="combo-contactSource"
+              id="combo-contact-source"
               options={[]}
               getOptionLabel={option => option.name}
-              onChange={(evt, value) => handleSelectContactSource(evt, value)}
+              onChange={handleSelectChange('contactSource')}
               renderInput={params => (
                 <TextField
                   {...params}
                   label="Contact Sources"
                   variant="outlined"
-                  placeholder="Select Contact Sources"
+                  placeholder="Select Contact Source"
                   fullWidth
                   margin="normal"
                   size="small"
-                  name="contactSources"
-                  value={form.contactSources}
                 />
               )}
             />

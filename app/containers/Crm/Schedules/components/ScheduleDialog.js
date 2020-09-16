@@ -6,12 +6,12 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
 import {
+  CircularProgress,
   Checkbox,
   CardContent,
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableRow,
   Paper,
   TextField,
@@ -29,22 +29,25 @@ import {
   IconButton,
   Typography,
   FormControlLabel,
-  Radio,
-  Grid,
-  FormControl,
-  FormLabel,
-  RadioGroup,
 } from '@material-ui/core';
 import { Add, DeleteOutlined } from '@material-ui/icons';
+import moment from 'moment';
+import _ from 'lodash';
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker,
+  KeyboardDateTimePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -52,7 +55,7 @@ const useStyles = makeStyles(theme => ({
   },
   table: {
     whiteSpace: "nowrap",
-    "& .MuiTableCell-root": {
+    "& td": {
       border: "0 !important"
     },
     "& .MuiTableRow-root": {
@@ -62,7 +65,16 @@ const useStyles = makeStyles(theme => ({
         fontWeight: theme.typography.h6.fontWeight
       }
     }
-  }
+  },
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 200,
+  },
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -71,46 +83,83 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const ScheduleDialog = props => {
   const classes = useStyles();
-  const { loading, scheduleDialog, closeNewScheduleDialog } = props;
-  const [selectedDate, handleDateChange] = React.useState(new Date());
-
+  const { loading, scheduleDialog, closeNewScheduleDialog, employees, contacts, createSchedule } = props;
+  const [options, setOptions] = React.useState({ repeatReminderUnit: 'MINUTES', all: false })
   const [form, setForm] = React.useState({
-    firstName: '',
-    lastName: '',
-    emailAddress: '',
-    phoneNumber: '',
-    mobileNo: '',
-    lifeStage: '',
-    contactGroup: '',
-    contactGroupId: '',
-    contactSource: '',
-    address1: '',
-    address2: '',
-    country: '',
-    state: '',
-    city: '',
-    fax: '',
-    dob: '',
-    image: '',
-    notes: '',
-    ownerId: '',
-    type: '',
-    website: '',
+    title: "",
+    location: "",
+    startDate: moment().format('YYYY-MM-DD'),
+    endDate: moment().format('YYYY-MM-DD'),
+    startTime: moment().format('HH:mm:ss'),
+    endTime: moment().format('HH:mm:ss'),
+    hostId: 1,
+    repeatReminder: "15",
+    description: "",
+    userParticipants: [],
+    contactParticipants: []
   });
+
+  console.log(employees, "employees")
+  console.log(contacts, "contacts")
 
   const handleChange = event => {
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = () => {}
-  const canSubmitForm = () => {}
+  const handleOptionsChange = event => {
+    const { name, value } = event.target;
+    setOptions({ ...options, [name]: value });
+  };
+
+  const handleSelectChange = name => (event, val) => {
+    name === 'hostId' ?
+      setForm({ ...form, [name]: val.id }) :
+      setForm({ ...form, [name]: val.map(a => a.id) });
+  }
+
+  const handleDateChange = name => date => {
+    setForm({ ...form, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss') })
+  }
+
+  const handleTimeChange = (event) => {
+    const { name, value } = event.target
+    console.log(name, "name")
+    console.log(value, "value")
+    setForm({ ...form, [name]: value })
+  }
+
+  const handleSubmit = () => {
+    createSchedule(form)
+  }
+
+  const canSubmitForm = () => {
+    const {
+      title,
+      location,
+      description,
+      startDate,
+      startTime,
+      endDate,
+      endTime,
+      hostId,
+      userParticipants,
+      contactParticipants,
+    } = form
+    return (
+      title.length > 0 && location.length > 0 && description.length > 0 &&
+      startDate.length > 0 && startTime.length > 0 && endDate.length > 0 &&
+      endTime.length > 0 && hostId && userParticipants.length > 0 && contactParticipants.length > 0
+    )
+  }
+
+  console.log(form, "form schedules")
 
   return (
     <div className={classes.root}>
       <Dialog
         fullWidth={true}
-        maxWidth = {'md'}        
+        maxWidth={'md'}
         {...scheduleDialog.props}
         onClose={closeNewScheduleDialog}
         keepMounted
@@ -118,7 +167,7 @@ const ScheduleDialog = props => {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="simple-dialog-title">
-          <Typography variant="h6">
+          <Typography variant="h6" component="p">
             Add New Schedule
           </Typography>
         </DialogTitle>
@@ -128,16 +177,17 @@ const ScheduleDialog = props => {
           <Table className={classes.table}>
             <TableBody>
               <TableRow>
-                <TableCell>Schedule type</TableCell>
+                <TableCell>Schedule title</TableCell>
                 <TableCell>
                   <TextField
-                    name="firstName"
-                    label="Schedule type"
-                    id="outlined-title"
+                    name="title"
+                    label="Schedule title"
+                    id="outlined-schedule-title"
                     fullWidth
                     variant="outlined"
+                    margin="normal"
                     size="small"
-                    value={form.firstName}
+                    value={form.title}
                     onChange={handleChange}
                   />
                 </TableCell>
@@ -146,13 +196,14 @@ const ScheduleDialog = props => {
                 <TableCell>Location</TableCell>
                 <TableCell>
                   <TextField
-                    name="lastName"
+                    name="location"
                     label="Location"
-                    id="outlined-title"
+                    id="outlined-location"
                     fullWidth
+                    margin="normal"
                     variant="outlined"
                     size="small"
-                    value={form.lastName}
+                    value={form.location}
                     onChange={handleChange}
                   />
                 </TableCell>
@@ -169,15 +220,16 @@ const ScheduleDialog = props => {
                 <TableCell align="right">From</TableCell>
                 <TableCell>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
+                    <KeyboardDateTimePicker
+                      autoOk
                       margin="normal"
                       inputVariant="outlined"
-                      id="date-picker-dialog"
-                      label="Date"
+                      id="start-date"
+                      label="Start Date"
                       size="small"
-                      format="MM/dd/yyyy"
-                      value={selectedDate}
-                      onChange={handleDateChange}
+                      format="dd/MM/yyyy hh:mm:ss"
+                      value={form.startDate}
+                      onChange={handleDateChange('startDate')}
                       KeyboardButtonProps={{
                         'aria-label': 'change date',
                       }}
@@ -185,24 +237,30 @@ const ScheduleDialog = props => {
                   </MuiPickersUtilsProvider>
                 </TableCell>
                 <TableCell>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardTimePicker
-                      margin="normal"
-                      inputVariant="outlined"
-                      id="time-picker"
-                      label="Time"
+                  <div className={classes.container}>
+                    <TextField
+                      id="time"
+                      name="startTime"
+                      label="Start Time"
+                      type="time"
+                      className={classes.textField}
                       size="small"
-                      value={selectedDate}
-                      onChange={handleDateChange}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change time',
+                      variant="outlined"
+                      margin="normal"
+                      value={form.startTime}
+                      onChange={handleTimeChange}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      inputProps={{
+                        step: 300, // 5 min
                       }}
                     />
-                  </MuiPickersUtilsProvider>
+                  </div>
                 </TableCell>
                 <TableCell>
                   <FormControlLabel
-                    control={<Checkbox checked={form.all} onChange={handleChange} name="all" />}
+                    control={<Checkbox checked={options.all} onChange={handleOptionsChange} name="all" />}
                     label="All days"
                   />
                 </TableCell>
@@ -211,15 +269,16 @@ const ScheduleDialog = props => {
                 <TableCell align="right">To</TableCell>
                 <TableCell>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
+                    <KeyboardDateTimePicker
+                      autoOk
                       margin="normal"
                       inputVariant="outlined"
-                      id="date-picker-dialog"
-                      label="Date"
+                      id="end-date-picker"
+                      label="End Date"
                       size="small"
-                      format="MM/dd/yyyy"
-                      value={selectedDate}
-                      onChange={handleDateChange}
+                      format="dd/MM/yyyy hh:mm:ss"
+                      value={form.endDate}
+                      onChange={handleDateChange('endDate')}
                       KeyboardButtonProps={{
                         'aria-label': 'change date',
                       }}
@@ -227,156 +286,162 @@ const ScheduleDialog = props => {
                   </MuiPickersUtilsProvider>
                 </TableCell>
                 <TableCell>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardTimePicker
-                      margin="normal"
-                      inputVariant="outlined"
-                      id="time-picker"
-                      label="Time"
+                  <div className={classes.container}>
+                    <TextField
+                      id="time"
+                      name="endTime"
+                      label="End Time"
+                      type="time"
+                      className={classes.textField}
                       size="small"
-                      value={selectedDate}
-                      onChange={handleDateChange}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change time',
+                      variant="outlined"
+                      margin="normal"
+                      value={form.endTime}
+                      onChange={handleTimeChange}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      inputProps={{
+                        step: 300,
                       }}
                     />
-                  </MuiPickersUtilsProvider>
+                  </div>
                 </TableCell>
-                <TableCell></TableCell>
               </TableRow>
 
               <TableRow>
                 <TableCell align="right">Host</TableCell>
-                <TableCell colSpan={3}>
-                  <TextField
-                    id="Host"
-                    name="Host"
-                    placeholder="Select Host"
-                    select
-                    fullWidth
-                    className={classes.textField}
-                    variant="outlined"
+                <TableCell colSpan={2}>
+                  <Autocomplete
+                    id="host-employees"
                     size="small"
-                    label="Host"
-                    value={form.lifeStage}
-                    onChange={handleChange}
-                  >
-                    <MenuItem key={0} value="3">
-                      No record
-                    </MenuItem>
-                  </TextField>
+                    options={employees ? employees : []}
+                    getOptionLabel={option => option.firstName + ' ' + option.lastName}
+                    onChange={handleSelectChange('hostId')}
+                    value={form.hostId ? _.find(employees, { id: form.hostId }) : null}
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        label="Host"
+                        variant="outlined"
+                        placeholder="Select Host"
+                        fullWidth
+                        margin="normal"
+                      />
+                    )}
+                  />
                 </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell align="right">Participant Employees</TableCell>
-                <TableCell>
-                  <TextField
-                    id="lifeStage"
-                    name="lifeStage"
-                    placeholder="Select life Stage"
-                    select
-                    fullWidth
-                    className={classes.textField}
-                    variant="outlined"
+                <TableCell colSpan={2}>
+                  <Autocomplete
+                    multiple
+                    id="user-participants"
                     size="small"
-                    label="Participant Employees"
-                    value={form.lifeStage}
-                    onChange={handleChange}
-                  >
-                    <MenuItem key={0} value="3">
-                      No record
-                    </MenuItem>
-                  </TextField>
-                  <IconButton><DeleteOutlined /></IconButton>
+                    options={employees ? employees : []}
+                    disableCloseOnSelect
+                    getOptionLabel={(option) => option.firstName + ' ' + option.lastName}
+                    onChange={handleSelectChange('userParticipants')}
+                    value={
+                      form.userParticipants ?
+                        _.filter(employees, function (o) {
+                          return _.includes(form.userParticipants, o.id)
+                        }) : null
+                    }
+                    renderOption={(option, { selected }) => (
+                      <React.Fragment>
+                        <Checkbox
+                          icon={icon}
+                          checkedIcon={checkedIcon}
+                          style={{ marginRight: 8 }}
+                          checked={selected}
+                        />
+                        {option.firstName + ' ' + option.lastName}
+                      </React.Fragment>
+                    )}
+                    renderInput={(params) => (
+                      <TextField {...params} variant="outlined" label="Participants" placeholder="Employees" margin="normal" />
+                    )}
+                  />
                 </TableCell>
+              </TableRow>
+              <TableRow>
                 <TableCell align="right">Participant Contacts</TableCell>
                 <TableCell colSpan={2}>
-                  <TextField
-                    id="lifeStage"
-                    name="lifeStage"
-                    placeholder="Select life Stage"
-                    select
-                    fullWidth
-                    style={{width: '200px'}}
-                    className={classes.textField}
-                    variant="outlined"
+                  <Autocomplete
+                    multiple
+                    id="contact-participants"
                     size="small"
-                    label="Contact"
-                    value={form.lifeStage}
-                    onChange={handleChange}
-                  >
-                    <MenuItem key={0} value="3">
-                      No record
-                    </MenuItem>
-                  </TextField>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell></TableCell>
-                <TableCell>
-                  <TextField
-                    id="lifeStage"
-                    name="lifeStage"
-                    placeholder="Select life Stage"
-                    select
-                    fullWidth
-                    className={classes.textField}
-                    variant="outlined"
-                    size="small"
-                    label="Employee"
-                    value={form.lifeStage}
-                    onChange={handleChange}
-                  >
-                    <MenuItem key={0} value="3">
-                      No record
-                    </MenuItem>
-                  </TextField>
-                  <IconButton><Add /></IconButton>
-                </TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell align="right">Related to</TableCell>
-                <TableCell>
-                  <TextField
-                    id="lifeStage"
-                    name="lifeStage"
-                    placeholder="Select life Stage"
-                    select
-                    fullWidth
-                    className={classes.textField}
-                    variant="outlined"
-                    size="small"
-                    label="Related to"
-                    value={form.lifeStage}
-                    onChange={handleChange}
-                  >
-                    <MenuItem key={0} value="3">
-                      No record
-                    </MenuItem>
-                  </TextField>
+                    options={contacts ? contacts : []}
+                    disableCloseOnSelect
+                    getOptionLabel={(option) => option.firstName + ' ' + option.lastName}
+                    onChange={handleSelectChange('contactParticipants')}
+                    value={
+                      form.contactParticipants ?
+                        _.filter(contacts, function (o) {
+                          return _.includes(form.contactParticipants, o.id)
+                        }) : null
+                    }
+                    renderOption={(option, { selected }) => (
+                      <React.Fragment>
+                        <Checkbox
+                          icon={icon}
+                          checkedIcon={checkedIcon}
+                          style={{ marginRight: 8 }}
+                          checked={selected}
+                        />
+                        {option.firstName + ' ' + option.lastName}
+                      </React.Fragment>
+                    )}
+                    renderInput={(params) => (
+                      <TextField {...params} variant="outlined" label="Contact Participants" placeholder="Contacts" margin="normal" />
+                    )}
+                  />
                 </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell align="right">Repeat Reminder</TableCell>
                 <TableCell>
                   <TextField
-                    id="lifeStage"
-                    name="lifeStage"
-                    placeholder="Select life Stage"
+                    id="repeat-reminder"
+                    name="repeatReminder"
+                    placeholder="Repeat Reminder"
                     select
                     fullWidth
-                    className={classes.textField}
+                    margin="normal"
                     variant="outlined"
                     size="small"
                     label="Repeat Reminder"
-                    value={form.lifeStage}
+                    value={form.repeatReminder}
                     onChange={handleChange}
                   >
-                    <MenuItem key={0} value="3">
-                      No record
-                    </MenuItem>
+                    {_.range(5, 65, 5).map((time, i) =>
+                      <MenuItem key={i} value={time}>
+                        {time}
+                      </MenuItem>
+                    )}
+                  </TextField>
+                </TableCell>
+                <TableCell>
+                  <TextField
+                    id="repeat-reminder-unit"
+                    name="repeatReminderUnit"
+                    placeholder="Repeat Reminder Unit"
+                    select
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                    size="small"
+                    label="Repeat Reminder Unit"
+                    value={options.repeatReminderUnit}
+                    onChange={handleOptionsChange}
+                  >
+                    {['MINUTES', 'HOURS', 'DAYS'].map((unit, i) =>
+                      <MenuItem key={i} value={unit}>
+                        {unit}
+                      </MenuItem>
+                    )}
                   </TextField>
                 </TableCell>
               </TableRow>
@@ -384,39 +449,18 @@ const ScheduleDialog = props => {
                 <TableCell></TableCell>
                 <TableCell colSpan={3}>
                   <TextField
-                    name="phoneNumber"
+                    name="description"
                     label="Description"
-                    id="outlined-title"
+                    id="outlined-description"
                     fullWidth
                     variant="outlined"
                     size="small"
                     multiline
                     rows={3}
-                    value={form.phoneNumber}
+                    rowsMax={5}
+                    value={form.description}
                     onChange={handleChange}
                   />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell align="right">Reminder</TableCell>
-                <TableCell>
-                  <TextField
-                    id="lifeStage"
-                    name="lifeStage"
-                    placeholder="Select life Stage"
-                    select
-                    fullWidth
-                    className={classes.textField}
-                    variant="outlined"
-                    size="small"
-                    label="Reminder"
-                    value={form.lifeStage}
-                    onChange={handleChange}
-                  >
-                    <MenuItem key={0} value="3">
-                      No record
-                    </MenuItem>
-                  </TextField>
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -429,8 +473,9 @@ const ScheduleDialog = props => {
           </Button>
           <Button
             onClick={handleSubmit}
-            disabled={!canSubmitForm()}
             color="primary"
+            disabled={loading ? loading : !canSubmitForm()}
+            endIcon={loading && <CircularProgress size={20} />}
           >
             Save
           </Button>
@@ -449,11 +494,14 @@ ScheduleDialog.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   scheduleDialog: Selectors.makeSelectScheduleDialog(),
+  employees: Selectors.makeSelectEmployees(),
+  contacts: Selectors.makeSelectContacts(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     closeNewScheduleDialog: () => dispatch(Actions.closeNewScheduleDialog()),
+    createSchedule: (data) => dispatch(Actions.createSchedule(data)),
   };
 }
 

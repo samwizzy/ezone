@@ -41,93 +41,101 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const initialState = {
+  firstName: '',
+  emailAddress: '',
+  phoneNumber: '',
+  companyNumber: '',
+  lifeStage: '',
+  associationType: '',
+  address: '',
+  fax: '',
+  image: null,
+  ownerId: '',
+  type: 'COMPANY',
+  regYear: moment().format('YYYY'),
+  noOfEmployees: '',
+  website: '',
+}
+
 const CompaniesDialog = props => {
   const classes = useStyles();
 
   const [step, setStep] = React.useState(0);
-  const [form, setForm] = React.useState({
-    firstName: '',
-    emailAddress: '',
-    phoneNumber: '',
-    mobileNo: '',
-    lifeStage: '',
-    associationType: '',
-    address1: '',
-    fax: '',
-    image: '',
-    ownerId: '',
-    type: 'COMPANY',
-    website: '',
-  });
+  const [form, setForm] = React.useState({ ...initialState });
 
   const {
     loading,
-    companyDialog,
+    employees,
+    dialog,
     createNewCompany,
     updateCompany,
     closeNewCompanyDialog,
-    closeEditEmployeeDialogAction,
   } = props;
 
-  console.log(companyDialog, 'companyDialog');
+  React.useEffect(() => {
+    if (dialog.type === 'edit') {
+      const { ownerName, ownerEmail, ...rest } = dialog.data
+      if (ownerName && ownerEmail && employees.length > 0) {
+        const emp = employees && _.find(employees, { emailAddress: ownerEmail })
+        console.log(emp, "emp ids check")
+        setForm({ ...rest, ownerId: emp.id, image: null });
+      }
+    } else {
+      setForm({ ...initialState });
+    }
+  }, [dialog.data]);
+
+  console.log(dialog, 'dialog');
+  console.log(employees, 'employees companies');
 
   const handleChange = event => {
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
-  };
+  }
 
-  const handleSelectLifeStage = (evt, value) => {
-    setForm({ ...form, lifeStage: value.name });
-  };
-  const handleSelectOwnerId = (evt, value) => {
-    setForm({ ...form, ownerId: value.id });
-  };
-  const handleSelectAssociateId = (evt, value) => {
-    setForm({ ...form, associationType: value.name });
-  };
-  const handleSelectCountry = (evt, value) => {
-    setForm({ ...form, country: value.name });
-  };
-  const handleSelectContactGroup = (evt, value) => {
-    setForm({ ...form, contactGroup: value.id });
-  };
-  const handleSelectContactSource = (evt, value) => {
-    setForm({ ...form, contactSource: value.id });
-  };
+  const handleSelectChange = name => (event, val) => {
+    setForm({ ...form, [name]: val.id });
+  }
+
+  const handleSelectNameChange = name => (event, val) => {
+    setForm({ ...form, [name]: val.name });
+  }
 
   const uploadFileAction = file => {
     setForm({ ...form, image: file });
-  };
+  }
 
   const handleNext = () => {
     if (step > -1 && step <= 3) {
       setStep(step + 1);
     }
-  };
+  }
 
-  const handleDateChange = date => {
-    setForm({ ...form, dob: moment(date).format('YYYY-MM-DD') });
-  };
+  const handleDateChange = name => date => {
+    name === 'regYear' ?
+      setForm({ ...form, [name]: moment(date).format('YYYY') }) :
+      setForm({ ...form, [name]: moment(date).format('YYYY-MM-DD') });
+  }
 
   const handlePrev = () => {
     if (step => 1 && step <= 3) {
       setStep(step - 1);
     }
-  };
+  }
 
-  React.useEffect(() => {
-    if (companyDialog.type === 'edit') {
-      setForm({ ...companyDialog.data });
-    }
-  }, [companyDialog.data]);
+  const handleSubmit = () => {
+    dialog.type === 'new' ? createNewCompany(form) : updateCompany(form);
+    setForm({ ...initialState })
+  }
 
-  // console.log(companyDialog, 'companyDialog');
+  // console.log(dialog, 'dialog');
   console.log(form, 'form');
 
   return (
     <div>
       <Dialog
-        {...companyDialog.props}
+        {...dialog.props}
         onClose={closeNewCompanyDialog}
         keepMounted
         TransitionComponent={Transition}
@@ -139,10 +147,11 @@ const CompaniesDialog = props => {
         {step === 0 && (
           <CompanyInfo
             handleChange={handleChange}
-            handleSelectLifeStage={handleSelectLifeStage}
-            handleSelectOwnerId={handleSelectOwnerId}
-            handleSelectAssociateId={handleSelectAssociateId}
+            handleSelectChange={handleSelectChange}
+            handleSelectNameChange={handleSelectNameChange}
+            handleDateChange={handleDateChange}
             form={form}
+            employees={employees}
             closeNewCompanyDialog={closeNewCompanyDialog}
             handleNext={handleNext}
           />
@@ -151,7 +160,7 @@ const CompaniesDialog = props => {
           <OtherInfo
             handleChange={handleChange}
             handleDateChange={handleDateChange}
-            handleSelectCountry={handleSelectCountry}
+            handleSelectNameChange={handleSelectNameChange}
             form={form}
             closeNewCompanyDialog={closeNewCompanyDialog}
             handleNext={handleNext}
@@ -160,9 +169,8 @@ const CompaniesDialog = props => {
         )}
         {step === 2 && (
           <ImageUpload
-            companyDialog={companyDialog}
-            updateCompany={updateCompany}
-            createNewCompany={createNewCompany}
+            dialog={dialog}
+            handleSubmit={handleSubmit}
             uploadFileAction={uploadFileAction}
             handleChange={handleChange}
             handlePrev={handlePrev}
@@ -178,7 +186,7 @@ const CompaniesDialog = props => {
 
 CompaniesDialog.propTypes = {
   loading: PropTypes.bool,
-  companyDialog: PropTypes.object,
+  dialog: PropTypes.object,
   getAllWarehouses: PropTypes.array,
   getAllItems: PropTypes.array,
   closeNewCompanyDialog: PropTypes.func,
@@ -187,7 +195,8 @@ CompaniesDialog.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  companyDialog: Selectors.makeSelectCompanyDialog(),
+  dialog: Selectors.makeSelectCompanyDialog(),
+  employees: Selectors.makeSelectEmployees(),
 });
 
 function mapDispatchToProps(dispatch) {

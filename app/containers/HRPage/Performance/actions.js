@@ -1,5 +1,5 @@
 /*
- * HRPage Actions
+ * HRPage Performance Actions
  */
 
 import * as Constants from './constants';
@@ -156,6 +156,7 @@ export function createRecognitionSuccess(data) {
     payload: data
   };
 }
+
 export function commentRecognition(payload) {
   return {
     type: Constants.COMMENT_RECOGNITION,
@@ -173,6 +174,68 @@ export function commentRecognitionSuccess(data) {
 export function commentRecognitionError(data) {
   return {
     type: Constants.COMMENT_RECOGNITION_ERROR,
+    payload: data
+  };
+}
+
+export function getReviews() {
+  return {
+    type: Constants.GET_REVIEWS,
+  };
+}
+
+export function getReviewsSuccess(data) {
+  return {
+    type: Constants.GET_REVIEWS_SUCCESS,
+    payload: data
+  };
+}
+
+export function getReviewsError(data) {
+  return {
+    type: Constants.GET_REVIEWS_ERROR,
+    payload: data
+  };
+}
+
+export function getReviewById(payload) {
+  return {
+    type: Constants.GET_REVIEW_BY_ID,
+    payload
+  };
+}
+
+export function getReviewByIdSuccess(data) {
+  return {
+    type: Constants.GET_REVIEW_BY_ID_SUCCESS,
+    payload: data
+  };
+}
+
+export function getReviewByIdError(data) {
+  return {
+    type: Constants.GET_REVIEW_BY_ID_ERROR,
+    payload: data
+  };
+}
+
+export function createReview(payload) {
+  return {
+    type: Constants.CREATE_REVIEW,
+    payload
+  };
+}
+
+export function createReviewSuccess(data) {
+  return {
+    type: Constants.CREATE_REVIEW_SUCCESS,
+    payload: data
+  };
+}
+
+export function createReviewError(data) {
+  return {
+    type: Constants.CREATE_REVIEW_ERROR,
     payload: data
   };
 }
@@ -218,6 +281,28 @@ export function openEditRecognitionDialog(data) {
 export function closeEditRecognitionDialog(data) {
   return {
     type: Constants.CLOSE_EDIT_RECOGNITION_DIALOG,
+  };
+}
+
+export function openNewReviewDialog() {
+  return {
+    type: Constants.OPEN_NEW_REVIEW_DIALOG,
+  };
+}
+export function closeNewReviewDialog() {
+  return {
+    type: Constants.CLOSE_NEW_REVIEW_DIALOG,
+  };
+}
+
+export function openEditReviewDialog(data) {
+  return {
+    type: Constants.OPEN_EDIT_REVIEW_DIALOG,
+  };
+}
+export function closeEditReviewDialog(data) {
+  return {
+    type: Constants.CLOSE_EDIT_REVIEW_DIALOG,
   };
 }
 

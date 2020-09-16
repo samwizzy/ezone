@@ -2,75 +2,74 @@ import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
 /**
- * Direct selector to the companies state domain
+ * Direct selector to the course management state domain
  */
 
-const selectCompaniesDomain = state => state.crmCompanies || initialState;
+const selectCoursesDomain = state => state.lmsCourses || initialState;
 
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by Companies
- */
-
-const makeSelectCompanies = () =>
+const makeSelectLmsCourseMgt = () =>
   createSelector(
-    selectCompaniesDomain,
+    selectCoursesDomain,
     substate => substate,
   );
 
 const makeSelectLoading = () =>
   createSelector(
-    selectCompaniesDomain,
+    selectCoursesDomain,
     subState => subState.loading,
   );
 
 const makeSelectError = () =>
   createSelector(
-    selectCompaniesDomain,
+    selectCoursesDomain,
     subState => subState.error,
   );
 
-const makeSelectCompanyDialog = () =>
+const makeSelectAssignmentDialog = () =>
   createSelector(
-    selectCompaniesDomain,
-    subState => subState.companyDialog,
+    selectCoursesDomain,
+    subState => subState.assignmentDialog,
   );
 
-const makeSelectCompanyDetailsDialog = () =>
+const makeSelectLectureDialog = () =>
   createSelector(
-    selectCompaniesDomain,
-    subState => subState.companyDetailsDialog,
+    selectCoursesDomain,
+    subState => subState.lectureDialog,
   );
 
-const makeSelectCreateNewCompany = () =>
+const makeSelectCourseVideoDialog = () =>
   createSelector(
-    selectCompaniesDomain,
-    subState => subState.newCompanyDetails,
+    selectCoursesDomain,
+    subState => subState.courseVideoDialog,
   );
 
-const makeSelectUpdateCompany = () =>
+const makeSelectGetCategories = () =>
   createSelector(
-    selectCompaniesDomain,
-    subState => subState.updateCompanyDetails,
+    selectCoursesDomain,
+    subState => subState.categories,
   );
 
-const makeSelectGetAllCompanies = () =>
+const makeSelectGetCourses = () =>
   createSelector(
-    selectCompaniesDomain,
-    subState => subState.getAllCompanies,
+    selectCoursesDomain,
+    subState => subState.courses,
   );
 
-export default makeSelectCompanies;
+const makeSelectGetCourseById = () =>
+  createSelector(
+    selectCoursesDomain,
+    subState => subState.course,
+  );
+
+export default makeSelectLmsCourseMgt;
 export {
-  selectCompaniesDomain,
+  selectCoursesDomain,
   makeSelectLoading,
   makeSelectError,
-  makeSelectCompanyDialog,
-  makeSelectCreateNewCompany,
-  makeSelectUpdateCompany,
-  makeSelectGetAllCompanies,
-  makeSelectCompanyDetailsDialog,
+  makeSelectGetCategories,
+  makeSelectGetCourses,
+  makeSelectGetCourseById,
+  makeSelectLectureDialog,
+  makeSelectAssignmentDialog,
+  makeSelectCourseVideoDialog,
 };

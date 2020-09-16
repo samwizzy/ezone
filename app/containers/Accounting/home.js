@@ -16,6 +16,7 @@ import  ModuleLayout from './components/ModuleLayout';
 import LoadingIndicator from '../../components/LoadingIndicator';
 
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -73,12 +74,12 @@ const Home = () => {
            <Route exact path={path}>
               {loader?
                (
-                <div className={classes.root}>
-                <LoadingIndicator/>
+                <div>
+                <div style={{textAlign:'center'}}><div style={{margin:'2px auto'}}><CircularProgress /></div></div>
               </div>
                )
               :
-                (accoutSetup === null?<AccountSetup/>:((`${path}`).indexOf('settings')>0 ?<Settings/>:<Dashboard/>))
+                (accoutSetup === null?<AccountSetup/>:((`${path}`).indexOf('settings')>0 ?<Settings path={path}/>:<Dashboard/>))
                }
             </Route>
            

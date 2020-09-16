@@ -28,7 +28,6 @@ import {
   ListItemAvatar,
   Toolbar,
   Typography,
-  FormLabel,
 } from '@material-ui/core';
 import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
 import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -41,7 +40,7 @@ import { blue } from '@material-ui/core/colors';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-import user from '../../../../images/user.svg';
+// import user from '../../../../images/user.svg';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -166,9 +165,8 @@ const CampaignDetailsDialog = props => {
               </Toolbar>
             </AppBar>
           )}
-          <Divider />
 
-          <DialogContent>
+          <DialogContent dividers>
             {dialog.data && (
               <ExpansionPanel
                 square

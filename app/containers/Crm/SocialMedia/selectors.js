@@ -7,14 +7,6 @@ import { initialState } from './reducer';
 
 const selectSocialMediaDomain = state => state.crmSocialMedia || initialState;
 
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by SocialMedia
- */
-
 const makeSelectCrmSocialMedia = () =>
   createSelector(
     selectSocialMediaDomain,
@@ -45,10 +37,10 @@ const makeSelectSocialMediaDetailsDialog = () =>
     subState => subState.socialMediaDetailsDialog,
   );
 
-const makeSelectSocialMedia = () =>
+const makeSelectFacebook = () =>
   createSelector(
     selectSocialMediaDomain,
-    subState => subState.socialMedias,
+    subState => subState.facebook,
   );
 
 const makeSelectEmployees = () =>
@@ -62,7 +54,7 @@ export {
   selectSocialMediaDomain,
   makeSelectLoading,
   makeSelectEmployees,
-  makeSelectSocialMedia,
+  makeSelectFacebook,
   makeSelectSocialMediaDialog,
   makeSelectSocialMediaDetailsDialog,
   makeSelectError,

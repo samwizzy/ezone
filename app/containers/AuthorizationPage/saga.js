@@ -18,9 +18,8 @@ function errorHandler(promise) {
 }
 
 export function* signup({ payload }) {
-  console.log(payload, "reg payload")
-
   const requestURL = `${EndPoints.RegistrationUrl}`;
+
   try {
     const response = yield call(request, requestURL, {
       method: 'POST',
@@ -42,7 +41,7 @@ export function* signup({ payload }) {
     }
   } catch (err) {
     yield put(Actions.signupErrorRequest(err));
-    yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+    // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
   }
 }
 
@@ -74,7 +73,7 @@ export function* login({ payload }) {
 
   } catch (err) {
     if (err.message) {
-      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
       yield put(AppActions.loginErrorAction(err.message));
     } else {
       const error = yield call(errorHandler, err.response.json())
@@ -140,13 +139,13 @@ export function* userProfile({ payload }) {
 
   /* async function getChatfromServer() {
      // You can await here
-     //const response 
+     //const response
      //select uri
      const config = {
        headers: { Authorization: `Bearer ${accessToken}`,
        'Content-Type': 'application/x-www-form-urlencoded', }
    };
-   
+
      await axios
      .get(requestURL,
      config)
@@ -156,14 +155,14 @@ export function* userProfile({ payload }) {
        //let x = JSON.parse(JSON.stringify(userData))
        console.log(`User profile data ${userData.id} `)
      })
- 
+
      .catch((err) => {
        console.log(`error ocurr User profile ${err}`);
      });
-    
+
      // ...
    }
- 
+
    getChatfromServer()*/
 
   try {
@@ -180,12 +179,12 @@ export function* userProfile({ payload }) {
     yield put(AppActions.getUserProfileSuccessAction(response));
   } catch (err) {
     if (err.message) {
-      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      // yield put(AppActions.openSnackBar({ message: 'Session timeout', status: 'warning' }));
     } else {
       const error = yield call(errorHandler, err.response.json())
       console.log(error, "user profile error")
       if (error.error === 'invalid_token') {
-        yield put(AppActions.openSnackBar({ message: 'Invalid Token Access', status: 'error' }));
+        yield put(AppActions.openSnackBar({ message: 'Invalid access token', status: 'error' }));
         yield put(AppActions.getUserProfileErrorAction(error));
       } else {
         yield put(AppActions.openSnackBar({ message: error.message, status: 'error' }));
@@ -196,25 +195,27 @@ export function* userProfile({ payload }) {
   }
 }
 
-export function* forgotPassword() {
-  const forgotPasswordDetails = yield select(
-    Selectors.makeSelectForgotPasswordData(),
-  );
-  const requestURL = `${EndPoints.ForgotPasswordApi}`;
+export function* forgotPassword({ payload }) {
+  const requestURL = `${EndPoints.ForgotPasswordApi}?username=${payload.username}`;
+  console.log(payload, "payload")
 
   try {
     const response = yield call(request, requestURL, {
       method: 'POST',
-      body: JSON.stringify(forgotPasswordDetails),
+      body: JSON.stringify(payload),
       headers: {
         'Content-Type': 'application/json',
       },
     });
 
+    console.log(response, "forgot password response")
     yield put(Actions.forgotPasswordSuccess(response));
+    yield put(AppActions.openSnackBar({ message: 'OTP has been sent to your mail', status: 'success' }));
   } catch (err) {
+    const error = yield call(errorHandler, err.response.json())
+    console.log(error, "error forgot password")
     yield put(Actions.forgotPasswordError(err));
-    yield put(AppActions.openSnackBar({ message: 'Not Working Yet', status: 'error' }));
+    yield put(AppActions.openSnackBar({ message: 'Interval Server Error', status: 'error' }));
   }
 }
 

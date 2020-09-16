@@ -24,21 +24,21 @@ const useStyles = makeStyles(theme => ({
 const VerticalTime = props => {
   const classes = useStyles();
 
-  const { crmActivities } = props;
+  const { activities } = props;
 
   return (
     <div className={classes.root}>
       <VerticalTimeline layout="1-column">
-        {crmActivities && crmActivities.length > 0 &&
-          crmActivities.map((activity, i) => (
+        {activities && activities.length > 0 &&
+          activities.map((activity, i) => (
             <VerticalTimelineElement
               key={i}
               className="vertical-timeline-element--work"
-              contentStyle={{
+              contentStyle={activity.id % 2 === 0 ? {
                 background: 'rgb(33, 150, 243)',
                 color: '#fff',
                 padding: 0,
-              }}
+              } : {}}
               contentArrowStyle={{
                 borderRight: '7px solid  rgb(33, 150, 243)',
               }}

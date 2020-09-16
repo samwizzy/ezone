@@ -1,3 +1,6 @@
+import * as Endpoints from '../../components/Endpoints';
+import axios from "axios";
+
 export async function setUptins() {
     let credentials = JSON.parse(localStorage.getItem('user'))
      let accessToken = localStorage.getItem('access_token')
@@ -7,15 +10,8 @@ export async function setUptins() {
         'Content-Type': 'application/json', }
     }
      
-      await axios.get(requestURL,config)
-       .then((res) => {
-            let chatOfAccResponse = res.data;
-            return chatOfAccResponse;
-          })
-    
-          .catch((err) => {
-            //console.log(`error ocurr in Chart of Account ${err}`);
-            return null;
-          });
+      return await axios.get(requestURL,config)
+      .then(result => { console.log(result); return result; })
+      .catch(error => { console.error(error); return Promise.reject(error); });
   
       }

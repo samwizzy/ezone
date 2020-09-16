@@ -5,6 +5,7 @@ import * as Selectors from './selectors';
 import request from '../../../utils/request';
 import * as Endpoints from '../../../components/Endpoints';
 import * as Actions from './actions';
+import swal from 'sweetalert';
 import * as Constants from './constants';
 
 
@@ -26,19 +27,16 @@ export function* createAccountSetupSaga() {
       }),
     });
 
-    console.log('accountingSetupResponse -> ', accountingSetupResponse);
-    alert(`Accounting setup successful!`);
+    //console.log('accountingSetupResponse -> ', accountingSetupResponse);
+    swal("Success","Accounting setup successful","success");
     yield put(Actions.getAccountingSetupAction());
     yield put(Actions.createAccountingSetupSuccessAction(accountingSetupResponse));
   } catch (err) {
     console.log('createAccountingSetupErrorAction -> ', err);
-    alert(`Something went wrong.`);
+    swal("Error","Something went wrong","error");
     yield put(Actions.createAccountingSetupErrorAction(err));
   }
 }
-
-
-
 
 // Get accounting setup data
 export function* getAccountingSetupSaga() {
@@ -57,7 +55,7 @@ export function* getAccountingSetupSaga() {
 
     yield put(Actions.getAccountingSetupSuccessAction(accountingSetupResponse));
   } catch (err) {
-    console.log('getAccountingSetupErrorAction --> ', err);
+    //console.log('getAccountingSetupErrorAction --> ', err);
     yield put(Actions.getAccountingSetupErrorAction(err));
   }
 }
@@ -69,7 +67,7 @@ export function* getAllAccountingPeriodSaga() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetAllAccountingPeriodApi}/${currentUser.organisation.orgId}`;
 
-  console.log('acc period requestURL -> ', requestURL);
+  //console.log('acc period requestURL -> ', requestURL);
 
   try {
     const accountingPeriodResponse = yield call(request, requestURL, {
@@ -80,7 +78,7 @@ export function* getAllAccountingPeriodSaga() {
       }),
     });
 
-    console.log('accountingPeriodResponse -> ', accountingPeriodResponse);
+   // console.log('accountingPeriodResponse -> ', accountingPeriodResponse);
     yield put(Actions.getAllAccountingPeriodSuccessAction(accountingPeriodResponse));
   } catch (err) {
     console.log('getAllAccountingPeriodErrorAction --> ', err);
@@ -107,14 +105,14 @@ export function* createAccountPeriodSaga() {
       }),
     });
 
-    console.log('accountPeriodResponse -> ', accountPeriodResponse);
-    alert(`Accounting period created successfully!`);
+    //console.log('accountPeriodResponse -> ', accountPeriodResponse);
+    swal("Success","Accounting period created successfully","success");
     yield put(Actions.getAllAccountingPeriodAction());
     yield put(Actions.createAccountPeriodSuccessAction(accountPeriodResponse));
     yield put(Actions.closeAccountPeriodDialog());
   } catch (err) {
-    console.log('createAccountPeriodErrorAction -> ', err);
-    alert(`Something went wrong.`);
+    //console.log('createAccountPeriodErrorAction -> ', err);
+    swal("Error","Something went wrong","error");
     yield put(Actions.createAccountPeriodErrorAction(err));
   }
 }
@@ -139,14 +137,14 @@ export function* updateAccountPeriodSaga({ type, payload }) {
       }),
     });
 
-    console.log('updatedAccountPeriodResponse -> ', updatedAccountPeriodResponse);
-    alert(`Accounting period updated successfully!`);
+    //console.log('updatedAccountPeriodResponse -> ', updatedAccountPeriodResponse);
+    swal("Success","Accounting period updated successfully","success");
     yield put(Actions.getAllAccountingPeriodAction());
     yield put(Actions.updateAccountPeriodSuccessAction(updatedAccountPeriodResponse));
     yield put(Actions.closeAccountPeriodDialog());
   } catch (err) {
-    console.log('updateAccountPeriodErrorAction -> ', err);
-    alert(`Something went wrong.`);
+    //console.log('updateAccountPeriodErrorAction -> ', err);
+    swal("Error","Something went wrong","error");
     yield put(Actions.updateAccountPeriodErrorAction(err));
   }
 }
@@ -167,14 +165,15 @@ export function* setAccountPeriodAsActiveSaga({ type, payload }) {
       }),
     });
 
-    console.log('accountActiveResponse -> ', accountActiveResponse);
-    alert(`Accounting period set successfully!`);
+    //console.log('accountActiveResponse -> ', accountActiveResponse);
+    swal("Success","Accounting period set successfully","success");
     yield put(Actions.getAllAccountingPeriodAction());
     yield put(Actions.setAccountPeriodAsActiveSuccessAction(accountActiveResponse));
     yield put(Actions.closeAccountPeriodDialog());
   } catch (err) {
-    console.log('updateAccountPeriodErrorAction -> ', err);
-    alert(`Something went wrong.`);
+    //console.log('updateAccountPeriodErrorAction -> ', err);
+    //alert(`Something went wrong.`);
+    swal("Error","Something went wrong","error");
     yield put(Actions.setAccountPeriodAsActiveErrorAction(err));
   }
 }

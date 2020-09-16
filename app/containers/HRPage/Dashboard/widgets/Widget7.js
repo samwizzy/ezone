@@ -20,10 +20,7 @@ import {
 	TableCell,
 	Typography
 } from '@material-ui/core';
-import { green, orange, red } from '@material-ui/core/colors'
-import LensSharp from '@material-ui/icons/LensSharp'
-import AddIcon from '@material-ui/icons/Add'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
+import PersonIcon from '@material-ui/icons/Person';
 
 const useStyles = makeStyles((theme) => ({
 	root: {

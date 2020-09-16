@@ -34,9 +34,7 @@ const useStyles = makeStyles(theme => ({
 
 export const OtherInfo = props => {
   const {
-    handleDateChange,
     handleChange,
-    handleSelectCountry,
     closeNewCompanyDialog,
     handleNext,
     handlePrev,
@@ -45,8 +43,8 @@ export const OtherInfo = props => {
   const classes = useStyles();
 
   const canSubmitForm = () => {
-    const { fax, website, address1, mobileNo } = form;
-    return fax !== '' && website !== '' && address1 !== '' && mobileNo !== '';
+    const { fax, website, address } = form;
+    return fax !== '' && website !== '' && address !== '';
   };
 
   return (
@@ -63,23 +61,11 @@ export const OtherInfo = props => {
         <Grid container spacing={1}>
           <Grid item xs={6}>
             <TextField
-              name="mobileNo"
-              label="Mobile Number"
-              id="outlined-mobile-no"
-              fullWidth
-              variant="outlined"
-              size="small"
-              type="number"
-              value={form.mobileNo}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
               name="fax"
               label="Fax Number"
               id="outlined-fax"
               fullWidth
+              margin="normal"
               variant="outlined"
               size="small"
               value={form.fax}
@@ -92,6 +78,7 @@ export const OtherInfo = props => {
               label="Website"
               id="outlined-website"
               fullWidth
+              margin="normal"
               variant="outlined"
               size="small"
               value={form.website}
@@ -100,15 +87,29 @@ export const OtherInfo = props => {
           </Grid>
           <Grid item xs={6}>
             <TextField
-              name="address1"
-              label="Address 1"
-              id="outlined-address1"
+              name="noOfEmployees"
+              label="No of Employees"
+              id="outlined-no-of-employees"
               fullWidth
+              margin="normal"
+              variant="outlined"
+              size="small"
+              value={form.noOfEmployees ? form.noOfEmployees : ""}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              name="address"
+              label="Address"
+              id="outlined-address"
+              fullWidth
+              margin="normal"
               variant="outlined"
               size="small"
               multiline
               row={2}
-              value={form.address1}
+              value={form.address}
               onChange={handleChange}
             />
           </Grid>

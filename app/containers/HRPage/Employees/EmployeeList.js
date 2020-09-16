@@ -33,6 +33,11 @@ const useStyles = makeStyles(theme => ({
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
     },
+    '& .MuiTableBody-root': {
+      '& .MuiTableCell-root': {
+        padding: theme.spacing(1)
+      },
+    },
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
         color: theme.palette.common.white,
@@ -46,18 +51,9 @@ const useStyles = makeStyles(theme => ({
     },
   },
   avatar: {
-    width: 14,
-    height: 14,
+    boxShadow: theme.shadows[2]
   },
   toolbar: theme.mixins.toolbar,
-  icon: {
-    width: 20,
-    height: 20,
-    color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main },
-    '&.inProgress': { color: orange[500] },
-    '&.done': { color: green[500] },
-  },
   status: {
     color: red[500],
     '&.active': { color: green[500] },
@@ -93,7 +89,7 @@ const EmployeesApp = props => {
       },
     },
     {
-      name: 'organisation.logo',
+      name: 'employeeImage',
       label: ' ',
       options: {
         filter: true,

@@ -7,8 +7,8 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, Slide, Typography, TextField } from '@material-ui/core';
-import * as Selectors from '../../selectors';
-import * as Actions from '../../actions';
+import * as Selectors from '../selectors';
+import * as Actions from '../actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,7 +50,7 @@ function AddFolderDialog(props) {
   return (
     <div>
       <Dialog
-        // {...dialog.props}
+        {...dialog.props}
         TransitionComponent={Transition}
         keepMounted
         onClose={closeNewFolderDialog}
@@ -60,7 +60,7 @@ function AddFolderDialog(props) {
         <DialogTitle id="alert-dialog-slide-title">Add Folder</DialogTitle>
 
         <DialogContent dividers>
-          <Grid container>
+          <Grid container spacing={1}>
             <Grid item xs={12}>
               <TextField
                 name="folderName"
@@ -68,6 +68,7 @@ function AddFolderDialog(props) {
                 id="folder-name"
                 fullWidth
                 variant="outlined"
+                margin="normal"
                 size="small"
                 value={form.folderName}
                 onChange={handleChange}
@@ -85,6 +86,7 @@ function AddFolderDialog(props) {
                 value={form.description}
                 onChange={handleChange}
                 variant="outlined"
+                margin="normal"
               />
             </Grid>
           </Grid>

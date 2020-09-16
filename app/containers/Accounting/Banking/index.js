@@ -26,7 +26,8 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import ModuleLayout from '../components/ModuleLayout';
-import LoadingIndicator from './../../../components/LoadingIndicator';
+//import LoadingIndicator from './../../../components/LoadingIndicator';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import BankList from './components/BankList';
 
 export function Banking(props) {
@@ -52,7 +53,7 @@ export function Banking(props) {
 
 
   if (loading) {
-    return <LoadingIndicator />;
+    return <div style={{textAlign:'center'}}><div style={{margin:'2px auto'}}><CircularProgress /></div></div>;
   }
 
   return (

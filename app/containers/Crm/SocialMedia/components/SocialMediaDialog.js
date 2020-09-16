@@ -57,6 +57,7 @@ const SocialMediaDialog = props => {
   }, [dialog.data]);
 
   console.log(dialog, 'campaignDialog');
+  
   const canSubmitForm = () => {
     return true
   }

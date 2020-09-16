@@ -35,7 +35,7 @@ export const AdvanceInfo = props => {
   const {
     handleDateChange,
     handleChange,
-    handleSelectCountry,
+    handleSelectNameChange,
     closeNewContactDialog,
     handleNext,
     handlePrev,
@@ -44,11 +44,10 @@ export const AdvanceInfo = props => {
   const classes = useStyles();
 
   const canSubmitForm = () => {
-    const { dob, fax, website, address1, address2, mobileNo, country, state, city } = form;
+    const { dob, fax, website, address, companyNumber, country, state, city } = form;
     return (
       dob !== null && fax !== null && website !== null &&
-      address1 !== null && address2 !== null && mobileNo !== null &&
-      country !== null && state !== null && city !== null
+      country !== null && state !== null
     );
   };
 
@@ -66,15 +65,15 @@ export const AdvanceInfo = props => {
         <Grid container spacing={1}>
           <Grid item xs={6}>
             <TextField
-              name="mobileNo"
-              label="Mobile Number"
-              id="outlined-mobile-no"
+              name="companyNumber"
+              label="Company Number"
+              id="outlined-company-no"
               fullWidth
               margin="normal"
               variant="outlined"
               size="small"
               type="number"
-              value={form.mobileNo ? form.mobileNo : ""}
+              value={form.companyNumber ? form.companyNumber : ""}
               onChange={handleChange}
             />
           </Grid>
@@ -91,10 +90,42 @@ export const AdvanceInfo = props => {
                 format="dd/MM/yyyy"
                 value={form.dob ? form.dob : ''}
                 InputAdornmentProps={{ position: 'end' }}
-                onChange={date => handleDateChange(date)}
+                onChange={handleDateChange('dob')}
                 fullWidth
               />
             </MuiPickersUtilsProvider>
+          </Grid>
+          <Grid item xs={6}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                autoOk
+                views={["year"]}
+                disableFuture
+                variant="inline"
+                inputVariant="outlined"
+                margin="normal"
+                label="Year Registered"
+                size="small"
+                format="yyyy"
+                value={form.regYear}
+                InputAdornmentProps={{ position: 'end' }}
+                onChange={handleDateChange('regYear')}
+                fullWidth
+              />
+            </MuiPickersUtilsProvider>
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              name="noOfEmployees"
+              label="No of Employees"
+              id="outlined-no-of-employees"
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              size="small"
+              value={form.noOfEmployees ? form.noOfEmployees : ""}
+              onChange={handleChange}
+            />
           </Grid>
           <Grid item xs={6}>
             <TextField
@@ -122,33 +153,18 @@ export const AdvanceInfo = props => {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12}>
             <TextField
-              name="address1"
-              label="Address 1"
-              id="outlined-address1"
+              name="address"
+              label="Address"
+              id="outlined-company-address"
               fullWidth
               margin="normal"
               variant="outlined"
               size="small"
               multiline
               row={2}
-              value={form.address1 ? form.address1 : ""}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              name="address2"
-              label="Address2"
-              id="outlined-address2"
-              fullWidth
-              margin="normal"
-              variant="outlined"
-              size="small"
-              multiline
-              row={2}
-              value={form.address2 ? form.address2 : ""}
+              value={form.address ? form.address : ""}
               onChange={handleChange}
             />
           </Grid>
@@ -157,7 +173,8 @@ export const AdvanceInfo = props => {
               id="combo-country"
               options={CountriesAndStates}
               getOptionLabel={option => option.name}
-              onChange={(evt, value) => handleSelectCountry(evt, value)}
+              value={form.country ? _.find(CountriesAndStates, { name: form.country }) : null}
+              onChange={handleSelectNameChange('country')}
               renderInput={params => (
                 <TextField
                   {...params}
@@ -166,9 +183,7 @@ export const AdvanceInfo = props => {
                   placeholder="Select Country"
                   fullWidth
                   margin="normal"
-                  name="country"
                   size="small"
-                  value={form.country}
                 />
               )}
             />

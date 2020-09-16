@@ -28,6 +28,7 @@ import CompanyStructure from '../CompanyStructurePage/CompanyStructure/Loadable'
 import CompanyStructureParty from '../CompanyStructurePage/CompanyStructure/components/PartyPage';
 import CompanyStructurePosition from '../CompanyStructurePage/CompanyStructure/components/PositionPage';
 import UsersPage from '../UsersPage/Loadable';
+import RoleRightsApp from '../Roles/Loadable';
 import Employees from '../UsersPage/EmployeePage/Loadable';
 import UserProfilePage from '../UsersPage/UserProfilePage/Loadable';
 import UtilityPage from '../UtilityPage/Loadable';
@@ -65,6 +66,7 @@ import BankingPage from '../Accounting/Banking/Loadable';
 import BudgetPage from '../Accounting/Budget/Loadable';
 import SettingsPage from '../Accounting/Settings/Loadable';*/
 import SalesPage from '../SalesPage';
+import Payroll from '../Payroll';
 import PurchasePage from '../PurchasePage';
 //import AccountSetup from '../Accounting/Settings/components/AccountSetup';
 /*import PayrollPage from '../Accounting/Payroll/Loadable';
@@ -74,6 +76,7 @@ import DetailsOfAccountChart from '../Accounting/Chart/components/DetailsOfAccou
 import JournalPage from '../Accounting/Journal/Loadable';
 import AddNewJournal from '../Accounting/Journal/components/AddNewJournal';
 import JournalDetails from '../Accounting/Journal/components/JournalDetails';*/
+import CrmApp from '../Crm/Loadable';
 import CrmDashboard from '../Crm/Dashboard/Loadable';
 import CrmContacts from '../Crm/Contacts/Loadable';
 import CrmCompanies from '../Crm/Companies/Loadable';
@@ -83,20 +86,13 @@ import CrmSchedules from '../Crm/Schedules/Loadable';
 import CrmActivities from '../Crm/Activities/Loadable';
 import CrmReports from '../Crm/Reports/Loadable';
 import CrmSocialMedia from '../Crm/SocialMedia/Loadable';
+import CrmLeads from '../Crm/Leads/Loadable';
 
-import LMSDashboardModule from '../LMS/Dashboard/Loadable';
-import LMSAccountSettingsModule from '../LMS/AccountSettings/Loadable';
-import LMSIntegrationModule from '../LMS/Integration/Loadable';
-import LMSManageCoursesModule from '../LMS/ManageCourses/Loadable';
-import LMSMessagesModule from '../LMS/Messages/Loadable';
-import LMSQuizzesModule from '../LMS/Quizzes/Loadable';
-import LMSVirtualClassroomsModule from '../LMS/VirtualClassrooms/Loadable';
-import LMSUsersModule from '../LMS/Users/Loadable';
-import LMSFileLibraryModule from '../LMS/FileLibrary/Loadable';
-import LMSAttendanceModule from '../LMS/Attendance/Loadable';
-import LMSContactsModule from '../LMS/Contacts/Loadable';
-import LMSActivitiesModule from '../LMS/Activities/Loadable';
-import LMSSchedulesModule from '../LMS/Schedules/Loadable';
+import CalendarPage from '../CalendarPage/Loadable';
+
+import LMSApp from '../LMS/Loadable';
+
+import ProjectManagementModule from '../ProjectManagement/Loadable';
 
 // import { messaging } from '../../utils/firebase-notification';
 
@@ -128,22 +124,14 @@ const App = props => {
                 <Layout3>
                   <PrivateRoute exact path="/home" component={Home} />
                   <PrivateRoute exact path="/dashboard" component={Dashboard} />
-                  <PrivateRoute
-                    exact
-                    path="/organization"
-                    component={organizationPage}
-                  />
-                  {/* <PrivateRoute exact path="/users" component={UsersPage} /> */}
-                  <PrivateRoute
-                    exact
-                    path="/users"
-                    component={Employees}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/user-profile"
-                    component={UserProfilePage}
-                  />
+                  <PrivateRoute exact path="/calendar" component={CalendarPage} />
+                  <PrivateRoute exact path="/organization" component={organizationPage} />
+
+                  <PrivateRoute exact path="/users" component={Employees} />
+
+                  <PrivateRoute path="/roles" component={RoleRightsApp} />
+
+                  <PrivateRoute exact path="/user-profile" component={UserProfilePage} />
                   <PrivateRoute
                     exact
                     path="/organization/company/structure/:groupId?"
@@ -160,42 +148,15 @@ const App = props => {
                     component={CompanyStructure}
                   />
 
-                  <PrivateRoute
-                    exact
-                    path="/utility/:tab?"
-                    component={UtilityPage}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/task-manager/tasks"
-                    component={TasksPage}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/task-manager/task/:id"
-                    component={TasksPage}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/file-manager/folders"
-                    component={FilesApp}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/file-manager/folder/:folderId"
-                    component={FilesApp}
-                  />
+                  <PrivateRoute exact path="/utility/:tab?" component={UtilityPage} />
+                  <PrivateRoute exact path="/task-manager/tasks" component={TasksPage} />
+                  <PrivateRoute path="/task-manager/task" component={TasksPage} />
+                  <PrivateRoute exact path="/file-manager/folders" component={FilesApp} />
+                  <PrivateRoute path="/file-manager/folder" component={FilesApp} />
                   <PrivateRoute exact path="/chats" component={ChatApp} />
 
-                  <PrivateRoute
-                    exact
-                    path="/settings/email"
-                    component={EmailConfig}
-                  />
-                  <PrivateRoute
-                    path="/settings/email/configuration"
-                    component={EmailConfigs}
-                  />
+                  <PrivateRoute exact path="/settings/email" component={EmailConfig} />
+                  <PrivateRoute path="/settings/email/configuration" component={EmailConfigs} />
                   <PrivateRoute
                     path="/settings/email/template/:emailType?"
                     component={EmailTemplates}
@@ -205,21 +166,16 @@ const App = props => {
                     path="/settings/email/password/template"
                     component={EmailPasswordTemplate}
                   />
-                  <PrivateRoute exact path="/lms/dashboard" component={LMSDashboardModule} />
-                  <PrivateRoute exact path="/lms/account-settings" component={LMSAccountSettingsModule} />
-                  <PrivateRoute exact path="/lms/integration" component={LMSIntegrationModule} />
-                  <PrivateRoute exact path="/lms/messages" component={LMSMessagesModule} />
-                  <PrivateRoute exact path="/lms/file-library" component={LMSFileLibraryModule} />
-                  <PrivateRoute exact path="/lms/users" component={LMSUsersModule} />
-                  <PrivateRoute exact path="/lms/manage-courses" component={LMSManageCoursesModule} />
-                  <PrivateRoute exact path="/lms/virtual-classrooms" component={LMSVirtualClassroomsModule} />
-                  <PrivateRoute exact path="/lms/quizzes" component={LMSQuizzesModule} />
-                  <PrivateRoute exact path="/lms/attendance" component={LMSAttendanceModule} />
+
+                  <PrivateRoute path="/project-manager" component={ProjectManagementModule} />
+
+                  <PrivateRoute path="/lms" component={LMSApp} />
 
                   <PrivateRoute exact path="/work-order" component={WorkOrderPage} />
 
                   <PrivateRoute exact path="/human-resource/leave-management/:page?/:pageId?" component={LeaveManagementPage} />
-                  <PrivateRoute exact path="/human-resource/performance/:page/:pageId?" component={PerformancePage} />
+                  {/* <PrivateRoute exact path="/human-resource/performance/:page/:pageId?" component={PerformancePage} /> */}
+                  <PrivateRoute path="/human-resource/performance" component={PerformancePage} />
 
                   <PrivateRoute exact path="/human-resource/attendance" component={AttendancePage} />
                   {/*<PrivateRoute exact path="/hr/attendance" component={AttendancePage} />*/}
@@ -230,6 +186,8 @@ const App = props => {
                   <PrivateRoute exact path="/account" component={AccountPage} />
                   <PrivateRoute exact path="/account/:id" component={AccountPage} />
                   <PrivateRoute exact path="/account/:id/:name" component={AccountPage} />
+
+                  <PrivateRoute exact path="/payroll" component={Payroll} />
                   {/*<PrivateRoute exact path="/account/reports" component={ReportsPage} />*/}
 
                   {/*<PrivateRoute exact path="/account/chart" component={ChartPage} />*/}
@@ -300,52 +258,7 @@ const App = props => {
                     path="/inventory/adjustments/:statusId?"
                     component={InventoryAdjustmentApp}
                   />
-                  <PrivateRoute exact path="/crm" component={CrmDashboard} />
-                  <PrivateRoute
-                    exact
-                    path="/crm/dashboard"
-                    component={CrmDashboard}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/crm/contacts"
-                    component={CrmContacts}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/crm/companies"
-                    component={CrmCompanies}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/crm/campaigns"
-                    component={CrmCampaigns}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/crm/contact-groups/:contactId?"
-                    component={CrmContactGroups}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/crm/schedules"
-                    component={CrmSchedules}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/crm/activities"
-                    component={CrmActivities}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/crm/reports"
-                    component={CrmReports}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/crm/social-media"
-                    component={CrmSocialMedia}
-                  />
+                  <PrivateRoute path="/crm" component={CrmApp} />
                 </Layout3>
                 <Route path="" component={NotFoundPage} />
               </Switch>

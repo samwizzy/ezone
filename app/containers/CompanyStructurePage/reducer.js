@@ -12,15 +12,12 @@ export const initialState = {
   updatePositionData: {},
   updatePartyData: {},
   allEmployees: false,
-  addEmployeeToPositionData: false,
   allPositions: false,
   getPartyById: false,
   selectedParty: false,
   selectedPosition: false,
   createNewPartyData: false,
   createNewPartiesData: false,
-  createNewPositionData: false,
-  createNewPartyGroupData: false,
   updatePartyGroupData: false,
   partyGroupData: false,
   loading: false,
@@ -271,7 +268,6 @@ const companyStructurePageReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: true,
-          createNewPartyGroupData: action.payload,
         };
       }
       case Constants.CREATE_NEW_PARTY_GROUP_SUCCESS: {
@@ -552,7 +548,6 @@ const companyStructurePageReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          createNewPositionData: action.payload,
         };
       }
       case Constants.CREATE_NEW_POSITION_SUCCESS: {
@@ -644,7 +639,6 @@ const companyStructurePageReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          addEmployeeToPositionData: action.payload,
         };
       }
       case Constants.ADD_EMPLOYEE_TO_POSITION_SUCCESS: {

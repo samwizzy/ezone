@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import VideocamSharp from '@material-ui/icons/VideocamSharp';
 import Phone from '@material-ui/icons/Phone';
-import * as Actions from '../../actions';
+import * as Actions from './../actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,7 +30,7 @@ const ChatHeader = props => {
   const classes = useStyles();
 
   console.log(userChatData, 'userChatData')
-  const handleMenu = () => {};
+  const handleMenu = () => { };
 
   return (
     <React.Fragment>

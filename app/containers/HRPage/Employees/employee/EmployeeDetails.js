@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import EzoneUtils from '../../../../utils/EzoneUtils'
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Avatar, Box, Button, IconButton, List, ListItem, ListItemText, ListItemAvatar, ListItemSecondaryAction, Table, TableRow, TableCell, TableBody, Grid, Paper, Typography, Toolbar, Stepper, Step, StepLabel } from '@material-ui/core';
@@ -12,13 +13,12 @@ import moment from 'moment'
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import * as AppSelectors from '../../../App/selectors';
+import { fade, darken, lighten } from '@material-ui/core/styles/colorManipulator';
 import EditOutlined from '@material-ui/icons/EditOutlined';
 import DeleteOutlined from '@material-ui/icons/DeleteOutlined';
 import RefreshSharp from '@material-ui/icons/RefreshSharp';
 import AddIcon from '@material-ui/icons/Add';
-import Check from '@material-ui/icons/Check';
-import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -53,6 +53,9 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     "& p": {
       color: '#fff'
+    },
+    "& .MuiListItemAvatar-root": {
+      marginRight: theme.spacing(1)
     }
   },
   toolbar: {
@@ -69,7 +72,34 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     width: 100,
     height: 100,
-    marginRight: theme.spacing(1)
+    border: `1px solid ${lighten(theme.palette.primary.main, 0.3)}`,
+  },
+  container: {
+    position: "relative",
+    "&:hover > $overlay": {
+      opacity: 1,
+    }
+  },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: "100%",
+    width: "100%",
+    opacity: 0,
+    transition: ".3s ease",
+  },
+  icon: {
+    color: theme.palette.text.secondary,
+    position: "absolute",
+    zIndex: theme.zIndex.drawer + 1,
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    "-ms-transform": "translate(-50%, -50%)",
+    textAlign: "center",
   },
   button: {
     borderRadius: theme.shape.borderRadius * 5,
@@ -79,11 +109,31 @@ const useStyles = makeStyles(theme => ({
 
 const EmployeeDetails = props => {
   const classes = useStyles();
-  const { loading, match, openEditEmployeeDialog, openWorkExperienceDialog, openEducationBackgroundDialog, getEmployee, employees, employee } = props;
+  const {
+    loading,
+    match,
+    openEditEmployeeDialog,
+    openWorkExperienceDialog,
+    openEducationBackgroundDialog,
+    getEmployee,
+    updateEmployee,
+    employees,
+    employee
+  } = props;
   const { params } = match
   const emp = employee ? employee : employees && employees.find(emp => emp.uuId === params.status)
 
+  const [form, setForm] = React.useState({ ...emp })
+
+  const handleImageChange = ({ target }) => {
+    const { name, files } = target
+    console.log(name, "name")
+    const result = EzoneUtils.toBase64(files[0])
+    result.then(data => updateEmployee({ ...emp, [name]: data }))
+  }
+
   console.log(employee, "get details gotten employee")
+  console.log(form, "get details form")
 
   if (!emp) {
     return ''
@@ -91,9 +141,7 @@ const EmployeeDetails = props => {
 
   return (
     <div className={classes.root}>
-      <Grid
-        container
-      >
+      <Grid container>
         <Grid item xs={12}>
           <AppBar position="static" color="inherit" elevation={1}>
             <Toolbar variant="dense">
@@ -111,15 +159,31 @@ const EmployeeDetails = props => {
             <Grid container alignItems="center">
               <Grid item xs={6}>
                 <List className={classes.list}>
-                  <ListItem
-                    alignItems="center"
-                  >
+                  <ListItem alignItems="center">
                     <ListItemAvatar>
-                      <Avatar
-                        alt="applicant avi"
-                        src={''}
-                        className={classes.avatar}
-                      />
+                      <div className={classes.container}>
+                        <div className={classes.overlay}>
+                          <IconButton
+                            component="label"
+                            className={classes.icon}
+                          >
+                            <PhotoCameraIcon />
+                            <input
+                              name="employeeImage"
+                              type="file"
+                              style={{ display: "none" }}
+                              onChange={handleImageChange}
+                            />
+                          </IconButton>
+                        </div>
+                        <label htmlFor="contained-button-file">
+                          <Avatar
+                            alt={emp.lastName}
+                            src={`data:image/jpg;base64,${emp.employeeImage}`}
+                            className={classes.avatar}
+                          />
+                        </label>
+                      </div>
                     </ListItemAvatar>
                     <ListItemText
                       primary={
@@ -128,7 +192,6 @@ const EmployeeDetails = props => {
                         </Typography>
                       }
                       secondary={'IT Project Manager' /*'designation'*/}
-
                     />
                   </ListItem>
                 </List>
@@ -258,7 +321,7 @@ const EmployeeDetails = props => {
               <Typography variant="subtitle1" component="span" color="inherit" className={classes.title}>Work Experience</Typography>
               <Button color="primary" startIcon={<AddIcon />} onClick={() => openWorkExperienceDialog(emp)}>Add</Button>
             </Toolbar>
-            {emp.workExperience.length > 0 ?
+            {emp.workExperience && emp.workExperience.length > 0 ?
               <List dense={false}>
                 {emp.workExperience.map((work, i) =>
                   <ListItem key={i}>
@@ -295,7 +358,9 @@ const EmployeeDetails = props => {
                   </ListItem>
                 )}
               </List> :
-              <Typography variant="subtitle2" color="textSecondary" align="center">You do not have any work experience yet</Typography>
+              <Box p={2}>
+                <Typography variant="body2" color="textSecondary" align="center">You do not have any work experience yet</Typography>
+              </Box>
             }
           </Paper>
         </Grid>
@@ -305,7 +370,7 @@ const EmployeeDetails = props => {
               <Typography variant="subtitle1" color="inherit" className={classes.title}>Educational Background</Typography>
               <Button color="primary" startIcon={<AddIcon />} onClick={() => openEducationBackgroundDialog(emp)}>Add</Button>
             </Toolbar>
-            {emp.education.length > 0 ?
+            {emp.education && emp.education.length > 0 ?
               <List dense={false}>
                 {emp.education.map((edu, i) =>
                   <ListItem key={i}>
@@ -340,7 +405,9 @@ const EmployeeDetails = props => {
                   </ListItem>
                 )}
               </List> :
-              <Typography variant="subtitle2" color="textSecondary" align="center">You do not have any educational background yet</Typography>
+              <Box p={2}>
+                <Typography variant="body2" color="textSecondary" align="center">You do not have any educational background yet</Typography>
+              </Box>
             }
           </Paper>
         </Grid>
@@ -373,6 +440,7 @@ function mapDispatchToProps(dispatch) {
     openEditEmployeeDialog: (data) => dispatch(Actions.openEditEmployeeDialog(data)),
     getEmployees: () => dispatch(Actions.getEmployees()),
     getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
+    updateEmployee: (data) => dispatch(Actions.updateEmployee(data)),
   };
 }
 

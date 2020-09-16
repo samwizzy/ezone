@@ -22,7 +22,6 @@ export function* getEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}?orgId=${user && user.organisation.orgId}`; // ?start=0&limit=10
-  console.log(accessToken, "accessToken get employees")
 
   try {
     const response = yield call(request, requestURL, {
@@ -37,7 +36,7 @@ export function* getEmployees() {
     yield put(Actions.getEmployeesSuccess(response));
   } catch (err) {
     if (err.message) {
-      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
     } else {
       const error = yield call(errorHandler, err.response.json())
       if (error.status === 500 || error.status === 400) {
@@ -67,7 +66,7 @@ export function* getBranchEmployees(id) {
     yield put(Actions.getEmployeesSuccess(response));
   } catch (err) {
     if (err.message) {
-      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
     } else {
       const error = yield call(errorHandler, err.response.json())
       if (error.status === 500 || error.status === 400) {
@@ -96,7 +95,7 @@ export function* getDeptEmployees(id) {
     yield put(Actions.getEmployeesSuccess(response));
   } catch (err) {
     if (err.message) {
-      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
     } else {
       const error = yield call(errorHandler, err.response.json())
       if (error.status === 500 || error.status === 400) {
@@ -109,7 +108,6 @@ export function* getDeptEmployees(id) {
 export function* getEmployeeByUUID({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.GetUserByUUIDApi}/${payload}`;
-  console.log('getEmployeeByUUID testing');
 
   try {
     const response = yield call(request, requestURL, {
@@ -152,7 +150,7 @@ export function* createEmployee({ type, payload }) {
     yield put({ type: Constants.CLOSE_NEW_EMPLOYEE_DIALOG });
   } catch (err) {
     if (err.message) {
-      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
       yield put(Actions.createEmployeeError(err.message));
     } else {
       const error = yield call(errorHandler, err.response.json())
@@ -191,7 +189,7 @@ export function* updateEmployee({ payload }) {
     }
   } catch (err) {
     if (err.message) {
-      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
     } else {
       const error = yield call(errorHandler, err.response.json())
       if (error.status === 500 || error.status === 400) {
@@ -265,7 +263,7 @@ export function* getDepartmentsByOrgIdApi() {
     yield put(Actions.getDepartmentsByOrgIdApiSuccess(response));
   } catch (err) {
     if (err.message) {
-      yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+      // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
     } else {
       const error = yield call(errorHandler, err.response.json())
       if (error.status === 500 || error.status === 400) {

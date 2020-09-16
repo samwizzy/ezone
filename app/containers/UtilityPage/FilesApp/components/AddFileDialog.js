@@ -14,8 +14,8 @@ import {
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Slide, Typography, TextField } from '@material-ui/core';
-import * as Selectors from '../../selectors';
-import * as Actions from '../../actions';
+import * as Selectors from '../selectors';
+import * as Actions from '../actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -62,6 +62,7 @@ function AddFileDialog(props) {
                 fullWidth
                 defaultValue="Small"
                 variant="outlined"
+                margin="normal"
                 size="small"
                 value={form.email}
               />

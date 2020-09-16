@@ -66,14 +66,20 @@ const AddBankAccountDialog = props => {
     return accountCode.length > 0 && accountName.length > 0 && accountNumber.length > 0 && isAphaNumeric && bankBalance.length > 0 && bankName.length > 0 && description.length > 0;
   }
  //
-  React.useEffect(() => {
-    if (bankAccountDialog.type == 'edit') {
-      const { accountCode, accountName, accountNumber, bankBalance, bankName, description } = bankAccountDialog.data;
-      setValues({ ...values, accountCode, accountName, accountNumber, bankBalance, bankName, description });
+  useEffect(() => {
+    let mounted = true
+    if(mounted){
+      if (bankAccountDialog.type == 'edit') {
+        const { accountCode, accountName, accountNumber, bankBalance, bankName, description } = bankAccountDialog.data;
+        setValues({ ...values, accountCode, accountName, accountNumber, bankBalance, bankName, description });
+      }
+    }
+    return ()=>{
+      mounted = false
     }
   }, [bankAccountDialog.data]);
 
-  const [isAphaNumeric,setIsAphaNumeric] = useState(false)
+  const [isAphaNumeric,setIsAphaNumeric] = useState(true)
 
   const checkAlphaNumeric = event =>{
     let value= event.target.value;

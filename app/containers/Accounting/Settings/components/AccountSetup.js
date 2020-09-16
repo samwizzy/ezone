@@ -18,38 +18,6 @@ const AccountSetup = props => {
   const [accessToken] = useState(localStorage.getItem('access_token'))
 
 
-  useEffect(() => {
-    
-    async function getChatfromServer() {
-      // You can await here
-      //const response 
-      //select uri
-      const config = {
-        headers: { Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json', }
-    };
-    
-      await axios
-      .get(`${Endpoints.GetAllChartOfAccountApi}/${credentials.organisation.orgId}`,
-      config)
-      .then((res) => {
-        let chatData = res.data;
-        //setIsEmpty(chatData.length > 0 ?false :true);
-        //setchartOfAccountData(chatData)
-        console.log(`Good ${chatData}`)
-      })
-
-      .catch((err) => {
-        console.log(`error ocurr ${err}`);
-      });
-     
-      // ...
-    }
-    getChatfromServer();
-  },[]
-  )
-
-
 
 const initialState ={
     accountChart: Enums.AccountChart.DEFAULT,

@@ -49,10 +49,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const options = [
+  'Show some love to Material-UI',
+  'Show all notification content',
+  'Hide sensitive notification content',
+  'Hide all notification content',
+];
 
 const UserMenu = props => {
   const classes = useStyles();
   const [userMenu, setUserMenu] = useState(null);
+  const [userNotification, setUserNotification] = useState(null);
 
   const userMenuClick = event => {
     setUserMenu(event.currentTarget);
@@ -60,6 +67,14 @@ const UserMenu = props => {
 
   const userMenuClose = () => {
     setUserMenu(null);
+  };
+
+  const userNotificationClick = event => {
+    setUserNotification(event.currentTarget);
+  };
+
+  const userNotificationClose = () => {
+    setUserNotification(null);
   };
 
   const { logoutAction, currentUser } = props;
@@ -71,11 +86,45 @@ const UserMenu = props => {
   return (
     <React.Fragment>
       <div className={classes.root}>
-        <IconButton aria-label="show 17 new notifications" color="inherit">
+        <IconButton aria-label="show 17 new notifications" color="inherit" onClick={userNotificationClick}>
           <Badge badgeContent={1} color="secondary">
             <NotificationsIcon />
           </Badge>
         </IconButton>
+
+        <Popover
+          open={Boolean(userNotification)}
+          anchorEl={userNotification}
+          onClose={userNotificationClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+          classes={{
+            paper: classes.list,
+          }}
+        >
+          {currentUser && (
+            <React.Fragment>
+              {options.map((option, i) =>
+                <MenuItem
+                  key={i}
+                  component={Link}
+                  to="/user-profile"
+                >
+                  <ListItemIcon>
+                    <Icon>notifications</Icon>
+                  </ListItemIcon>
+                  <ListItemText primary={option} />
+                </MenuItem>
+              )}
+            </React.Fragment>
+          )}
+        </Popover>
 
         <Button
           onClick={userMenuClick}
@@ -88,10 +137,10 @@ const UserMenu = props => {
               src={`data:image/jpg;base64,${currentUser.organisation.logo}`}
             />
           ) : (
-            <Avatar className={classes.avatar}>
-              {currentUser && currentUser.lastName}
-            </Avatar>
-          )}
+              <Avatar className={classes.avatar}>
+                {currentUser && currentUser.lastName}
+              </Avatar>
+            )}
 
           <div>
             <Typography color="inherit">
@@ -125,8 +174,8 @@ const UserMenu = props => {
                 <ListItemIcon>
                   <Icon>account_circle</Icon>
                 </ListItemIcon>
-                <ListItemText primary="My Account"/>
-              </MenuItem>  
+                <ListItemText primary="My Account" />
+              </MenuItem>
               <MenuItem
                 component={Link}
                 to="/subscriptions"
@@ -134,7 +183,7 @@ const UserMenu = props => {
                 <ListItemIcon>
                   <Icon>subscriptions</Icon>
                 </ListItemIcon>
-                <ListItemText primary="Subscriptions"/>
+                <ListItemText primary="Subscriptions" />
               </MenuItem>
               <MenuItem
                 component={Link}
@@ -143,8 +192,8 @@ const UserMenu = props => {
                 <ListItemIcon>
                   <Icon>help_outline</Icon>
                 </ListItemIcon>
-                <ListItemText primary="Help"/>
-              </MenuItem>  
+                <ListItemText primary="Help" />
+              </MenuItem>
               <MenuItem
                 onClick={() => logoutAction()}
               >
@@ -168,7 +217,6 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     logoutAction: () => dispatch(AppActions.logout()),
-    dispatch,
   };
 }
 

@@ -20,116 +20,116 @@ import TodayIcon from '@material-ui/icons/Today';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        flexGrow: 1,
-    },
-    paper: {
-        position: "relative",
-        padding: theme.spacing(4, 2, 0, 2),
-        margin: theme.spacing(1, 0)
-    },
-    flex: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        margin: theme.spacing(1, 0)
-    },
-    icon: {
-        width: 20,
-        height: 20,
-        marginRight: theme.spacing(0.5),
-        '&.active': { color: green[500] },
-    },
-    link: {
-        display: 'flex',
-    }
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    position: "relative",
+    padding: theme.spacing(4, 2, 0, 2),
+    margin: theme.spacing(1, 0)
+  },
+  flex: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    margin: theme.spacing(1, 0)
+  },
+  icon: {
+    width: 20,
+    height: 20,
+    marginRight: theme.spacing(0.5),
+    '&.active': { color: green[500] },
+  },
+  link: {
+    display: 'flex',
+  }
 }));
 
 
 const AnnouncementItem = props => {
-    const classes = useStyles();
-    const { loading, match, openAnnouncementViewDialog, announcement } = props;
+  const classes = useStyles();
+  const { loading, match, openAnnouncementViewDialog, announcement } = props;
 
-    const handleClick = () => { }
+  const handleClick = () => { }
 
-    if (!announcement) {
-        return ''
-    }
+  if (!announcement) {
+    return ''
+  }
 
-    return (
-        <div className={classes.root}>
-            <Paper square className={classes.paper}>
-                <List dense={true}>
-                    <ListItem button onClick={() => openAnnouncementViewDialog(announcement)}>
-                        <ListItemText
-                            disableTypography
-                            primary={
-                                <React.Fragment>
-                                    <Typography variant="h6">
-                                        <NavLink to={`${match.url}/${announcement.id}`}>{announcement.title}</NavLink>
-                                    </Typography>
-                                    <Typography variant="subtitle2" color="textPrimary">
-                                        {announcement.message}
-                                    </Typography>
-                                </React.Fragment>
-                            }
-                            secondary={
-                                <div className={classes.flex}>
-                                    <Breadcrumbs aria-label="breadcrumb" separator="">
-                                        <Typography color="textPrimary" className={classes.link}>
-                                            Priority : &nbsp;
+  return (
+    <div className={classes.root}>
+      <Paper square className={classes.paper}>
+        <List dense={true}>
+          <ListItem button onClick={() => openAnnouncementViewDialog(announcement)}>
+            <ListItemText
+              disableTypography
+              primary={
+                <React.Fragment>
+                  <Typography variant="h6">
+                    <NavLink to={`${match.url}/${announcement.id}`}>{announcement.title}</NavLink>
+                  </Typography>
+                  <Typography variant="subtitle2" color="textPrimary">
+                    {announcement.message}
+                  </Typography>
+                </React.Fragment>
+              }
+              secondary={
+                <div className={classes.flex}>
+                  <Breadcrumbs aria-label="breadcrumb" separator="">
+                    <Typography color="textPrimary" className={classes.link}>
+                      Priority : &nbsp;
 											<LensIcon className={clsx(classes.icon, { "active": true })} />
-                                            {announcement.priorityLevel}
-                                        </Typography>
-                                        <Typography color="textPrimary" className={classes.link}>
-                                            <TodayIcon className={classes.icon} />
+                      {announcement.priorityLevel}
+                    </Typography>
+                    <Typography color="textPrimary" className={classes.link}>
+                      <TodayIcon className={classes.icon} />
 											Published Date : {announcement.dateCreated ? moment(announcement.dateCreated).format('YYYY/MM/DD') : 'NIL'}
-                                        </Typography>
-                                    </Breadcrumbs>
-                                    <Breadcrumbs aria-label="breadcrumb" separator="">
-                                        <Typography color="textPrimary" className={classes.link}>
-                                            Sent to: &nbsp;
+                    </Typography>
+                  </Breadcrumbs>
+                  <Breadcrumbs aria-label="breadcrumb" separator="">
+                    <Typography color="textPrimary" className={classes.link}>
+                      Sent to: &nbsp;
 											<Link color="textSecondary" href="/" onClick={handleClick} className={classes.link}>
-                                                View employees
+                        View employees
 											</Link>
-                                        </Typography>
-                                    </Breadcrumbs>
-                                </div>
-                            }
-                        />
-                        <ListItemSecondaryAction>
-                            <IconButton edge="end" aria-label="delete">
-                                <MoreVertIcon />
-                            </IconButton>
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                </List>
-            </Paper>
-        </div>
-    );
+                    </Typography>
+                  </Breadcrumbs>
+                </div>
+              }
+            />
+            <ListItemSecondaryAction>
+              <IconButton edge="end" aria-label="delete">
+                <MoreVertIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+        </List>
+      </Paper>
+    </div>
+  );
 };
 
 AnnouncementItem.propTypes = {
-    loading: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
-    loading: Selectors.makeSelectLoading(),
+  loading: Selectors.makeSelectLoading(),
 });
 
 function mapDispatchToProps(dispatch) {
-    return {
-        openAnnouncementViewDialog: (data) => dispatch(Actions.openAnnouncementViewDialog(data)),
-    };
+  return {
+    openAnnouncementViewDialog: (data) => dispatch(Actions.openAnnouncementViewDialog(data)),
+  };
 }
 
 const withConnect = connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  mapStateToProps,
+  mapDispatchToProps,
 );
 
 export default compose(
-    withRouter,
-    withConnect,
-    memo,
+  withRouter,
+  withConnect,
+  memo,
 )(AnnouncementItem);

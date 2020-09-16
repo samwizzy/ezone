@@ -23,12 +23,6 @@ import ModuleLayout from './components/ModuleLayout';
 
 const key = 'leaveMgt';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-}));
-
 export function LeaveManagementPage(props) {
   const {
     getAttendance,

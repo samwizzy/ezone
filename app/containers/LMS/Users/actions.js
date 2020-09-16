@@ -6,102 +6,102 @@
 
 import * as Constants from './constants';
 
-export function openNewCompanyDialog() {
+export function openNewStudentDialog() {
   return {
-    type: Constants.OPEN_NEW_COMPANY_DIALOG,
+    type: Constants.OPEN_NEW_STUDENT_DIALOG,
   };
 }
 
-export function closeNewCompanyDialog() {
+export function closeNewStudentDialog() {
   return {
-    type: Constants.CLOSE_NEW_COMPANY_DIALOG,
+    type: Constants.CLOSE_NEW_STUDENT_DIALOG,
   };
 }
 
-export function openEditCompanyDialog(data) {
+export function openEditStudentDialog(data) {
   return {
-    type: Constants.OPEN_EDIT_COMPANY_DIALOG,
+    type: Constants.OPEN_EDIT_STUDENT_DIALOG,
     payload: data,
   };
 }
 
-export function closeEditCompanyDialog() {
+export function closeEditStudentDialog() {
   return {
-    type: Constants.CLOSE_EDIT_COMPANY_DIALOG,
+    type: Constants.CLOSE_EDIT_STUDENT_DIALOG,
   };
 }
 
-export function openCompanyDetailsDialog(data) {
+export function openStudentDetailsDialog(data) {
   return {
-    type: Constants.OPEN_COMPANY_DETAILS_DIALOG,
+    type: Constants.OPEN_STUDENT_DETAILS_DIALOG,
     payload: data,
   };
 }
 
-export function closeCompanyDetailsDialog() {
+export function closeStudentDetailsDialog() {
   return {
-    type: Constants.CLOSE_COMPANY_DETAILS_DIALOG,
+    type: Constants.CLOSE_STUDENT_DETAILS_DIALOG,
   };
 }
 
-export function createNewCompany(data) {
+export function createStudent(data) {
   return {
-    type: Constants.CREATE_NEW_COMPANY,
+    type: Constants.CREATE_STUDENT,
     payload: data,
   };
 }
 
-export function createNewCompanySuccess(data) {
+export function createStudentSuccess(data) {
   return {
-    type: Constants.CREATE_NEW_COMPANY_SUCCESS,
+    type: Constants.CREATE_STUDENT_SUCCESS,
     payload: data,
   };
 }
 
-export function createNewCompanyError(data) {
+export function createStudentError(data) {
   return {
-    type: Constants.CREATE_NEW_COMPANY_ERROR,
+    type: Constants.CREATE_STUDENT_ERROR,
     payload: data,
   };
 }
 
-export function updateCompany(data) {
+export function updateStudent(data) {
   return {
-    type: Constants.UPDATE_COMPANY,
+    type: Constants.UPDATE_STUDENT,
     payload: data,
   };
 }
 
-export function updateCompanySuccess(data) {
+export function updateStudentSuccess(data) {
   return {
-    type: Constants.UPDATE_COMPANY_SUCCESS,
+    type: Constants.UPDATE_STUDENT_SUCCESS,
     payload: data,
   };
 }
 
-export function updateCompanyError(data) {
+export function updateStudentError(data) {
   return {
-    type: Constants.UPDATE_COMPANY_ERROR,
+    type: Constants.UPDATE_STUDENT_ERROR,
     payload: data,
   };
 }
 
-export function getAllCompanies() {
+export function getStudents() {
   return {
-    type: Constants.GET_ALL_COMPANIES,
+    type: Constants.GET_STUDENTS,
   };
 }
 
-export function getAllCompaniesSuccess(data) {
+export function getStudentsSuccess(data) {
   return {
-    type: Constants.GET_ALL_COMPANIES_SUCCESS,
+    type: Constants.GET_STUDENTS_SUCCESS,
     payload: data,
   };
 }
 
-export function getAllCompaniesError(data) {
+export function getStudentsError(data) {
   return {
-    type: Constants.GET_ALL_COMPANIES_ERROR,
+    type: Constants.GET_STUDENTS_ERROR,
     payload: data,
   };
 }

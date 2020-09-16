@@ -1,20 +1,22 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { withRouter } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles'
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import LoadingIndicator from '../../../components/LoadingIndicator';
-import * as Actions from '../actions';
-import makeSelectUtilityPage, * as Selectors from '../selectors';
-import saga from './../saga';
-import reducer from './../reducer';
+import * as Actions from './actions';
+import makeSelectUtilityFiles, * as Selectors from '../selectors';
+import saga from './saga';
+import reducer from './reducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import FilesList from './FoldersList'
-import FileList from './FolderList'
+import FoldersList from './folders'
+import FolderList from './folder'
+// import FilesList from './FoldersList'
+// import FileList from './FolderList'
 import ModuleLayout from '../components/ModuleLayout'
 import FileUploadDialog from './components/FileUploadDialog'
 import ShareFileDialog from './components/ShareFileDialog'
@@ -22,14 +24,14 @@ import AddFileDialog from './components/AddFileDialog'
 import AddFolderDialog from './components/AddFolderDialog'
 import FilePreviewDialog from './components/FilePreviewDialog'
 
-const key = "utilityPage"
+const key = "utilityFiles"
 
 export function FilesApp(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
   const { loading, getAllFoldersAndDocs, getEmployees, match } = props;
-  const { params } = match
+  const { params, path, url } = match
 
   console.log(params, "params")
 
@@ -46,9 +48,9 @@ export function FilesApp(props) {
       </Helmet>
 
       <ModuleLayout>
-        {params.folderId ?
-          <FileList /> : <FilesList />
-        }
+        <Route exact path={path} component={FoldersList} />
+        <Route path={`${path}/:id`} component={FolderList} />
+
       </ModuleLayout>
 
       <FileUploadDialog />
@@ -67,7 +69,7 @@ FilesApp.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  utilityPage: makeSelectUtilityPage(),
+  utilityFiles: makeSelectUtilityFiles(),
   loading: Selectors.makeSelectLoading(),
   files: Selectors.makeSelectFiles(),
 });

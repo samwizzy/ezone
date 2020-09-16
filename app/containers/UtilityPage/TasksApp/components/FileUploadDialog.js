@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -11,8 +11,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import DropZone from './DropZone';
-import * as Selectors from '../../selectors';
-import * as Actions from '../../actions';
+import * as Selectors from '../selectors';
+import * as Actions from '../actions';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -34,7 +34,7 @@ function FileUploadDialog(props) {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description" style={{display: 'flex'}}>
+          <DialogContentText id="alert-dialog-slide-description" style={{ display: 'flex' }}>
             <DropZone />
           </DialogContentText>
         </DialogContent>

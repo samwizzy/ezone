@@ -1,0 +1,92 @@
+/*
+ *
+ * UtilityPage file constants
+ *
+ */
+
+export const OPEN_FILE_UPLOAD_DIALOG = 'app/UtilityPage/OPEN_FILE_UPLOAD_DIALOG';
+export const CLOSE_FILE_UPLOAD_DIALOG = 'app/UtilityPage/CLOSE_FILE_UPLOAD_DIALOG';
+
+export const OPEN_SHARE_FILE_DIALOG = 'app/UtilityPage/OPEN_SHARE_FILE_DIALOG';
+export const CLOSE_SHARE_FILE_DIALOG = 'app/UtilityPage/CLOSE_SHARE_FILE_DIALOG';
+
+export const OPEN_PREVIEW_FILE_DIALOG = 'app/UtilityPage/OPEN_PREVIEW_FILE_DIALOG';
+export const CLOSE_PREVIEW_FILE_DIALOG = 'app/UtilityPage/CLOSE_PREVIEW_FILE_DIALOG';
+
+
+export const OPEN_NEW_FILE_DIALOG = 'app/UtilityPage/OPEN NEW FILE DIALOG';
+export const CLOSE_NEW_FILE_DIALOG = 'app/UtilityPage/CLOSE NEW FILE DIALOG';
+
+export const OPEN_NEW_FOLDER_DIALOG = 'app/UtilityPage/OPEN NEW FOLDER DIALOG';
+export const CLOSE_NEW_FOLDER_DIALOG = 'app/UtilityPage/CLOSE NEW FOLDER DIALOG';
+
+export const ADD_PREV_ID = 'app/UtilityPage/ADD PREV ID';
+export const REMOVE_PREV_ID = 'app/UtilityPage/REMOVE PREV ID';
+
+export const ADD_DOC_TO_FOLDER = 'app/UtilityPage/ADD DOC TO FOLDER';
+export const ADD_DOC_TO_FOLDER_SUCCESS = 'app/UtilityPage/ADD DOC TO FOLDER SUCCESS';
+export const ADD_DOC_TO_FOLDER_ERROR = 'app/UtilityPage/ADD DOC TO FOLDER ERROR';
+
+export const ADD_FOLDER_TO_FOLDER = 'app/UtilityPage/ADD FOLDER TO FOLDER';
+export const ADD_FOLDER_TO_FOLDER_SUCCESS = 'app/UtilityPage/ADD FOLDER TO FOLDER SUCCESS';
+export const ADD_FOLDER_TO_FOLDER_ERROR = 'app/UtilityPage/ADD FOLDER TO FOLDER ERROR';
+
+export const GET_FOLDER_BY_ID = 'app/UtilityPage/GET FOLDER BY ID';
+export const GET_FOLDER_BY_ID_SUCCESS = 'app/UtilityPage/GET FOLDER BY ID SUCCESS';
+export const GET_FOLDER_BY_ID_ERROR = 'app/UtilityPage/GET FOLDER BY ID ERROR';
+
+export const GET_UTILITY_FILE = 'app/UtilityPage/GET UTILITY FILE';
+export const GET_UTILITY_FILE_SUCCESS = 'app/UtilityPage/GET UTILITY FILE SUCCESS';
+export const GET_UTILITY_FILE_ERROR = 'app/UtilityPage/GET UTILITY FILE ERROR';
+
+export const GET_UTILITY_FILES = 'app/UtilityPage/GET UTILITY FILES';
+export const GET_UTILITY_FILES_SUCCESS = 'app/UtilityPage/GET UTILITY FILES SUCCESS';
+export const GET_UTILITY_FILES_ERROR = 'app/UtilityPage/GET UTILITY FILES ERROR';
+
+export const GET_FOLDERS_AND_DOC = 'app/UtilityPage/GET UTILITY FOLDERS AND DOC';
+export const GET_FOLDERS_AND_DOC_SUCCESS = 'app/UtilityPage/GET UTILITY FOLDERS AND DOC SUCCESS';
+export const GET_FOLDERS_AND_DOC_ERROR = 'app/UtilityPage/GET UTILITY FOLDERS AND DOC ERROR';
+
+export const GET_NESTED_FOLDERS_AND_DOC = 'app/UtilityPage/GET UTILITY NESTED FOLDERS AND DOC';
+export const GET_NESTED_FOLDERS_AND_DOC_SUCCESS = 'app/UtilityPage/GET UTILITY NESTED FOLDERS AND DOC SUCCESS';
+export const GET_NESTED_FOLDERS_AND_DOC_ERROR = 'app/UtilityPage/GET UTILITY NESTED FOLDERS AND DOC ERROR';
+
+export const DELETE_DOCUMENT = 'app/UtilityPage/DELETE DOCUMENT SUCCESS';
+export const DELETE_DOCUMENT_SUCCESS = 'app/UtilityPage/DELETE DOCUMENT SUCCESS';
+export const DELETE_DOCUMENT_ERROR = 'app/UtilityPage/DELETE DOCUMENT ERROR';
+
+export const GET_TRASHED_DOCS_BY_UUID = 'app/UtilityPage/GET TRASHED DOCS BY UUID';
+export const GET_TRASHED_DOCS_BY_UUID_SUCCESS = 'app/UtilityPage/GET TRASHED DOCS BY UUID SUCCESS';
+export const GET_TRASHED_DOCS_BY_UUID_ERROR = 'app/UtilityPage/GET TRASHED DOCS BY UUID ERROR';
+
+export const SHARE_DOCUMENT = 'app/UtilityPage/SHARE DOCUMENT';
+export const SHARE_DOCUMENT_SUCCESS = 'app/UtilityPage/SHARE DOCUMENT SUCCESS';
+export const SHARE_DOCUMENT_ERROR = 'app/UtilityPage/SHARE DOCUMENT ERROR';
+
+export const GET_SHARED_DOCS_BY_UUID = 'app/UtilityPage/GET SHARED DOCS BY UUID';
+export const GET_SHARED_DOCS_BY_UUID_SUCCESS = 'app/UtilityPage/GET SHARED DOCS BY UUID SUCCESS';
+export const GET_SHARED_DOCS_BY_UUID_ERROR = 'app/UtilityPage/GET SHARED DOCS BY UUID ERROR';
+
+export const GET_FAVORITE_DOCS_BY_UUID = 'app/UtilityPage/GET FAVORITE DOCS BY UUID';
+export const GET_FAVORITE_DOCS_BY_UUID_SUCCESS = 'app/UtilityPage/GET FAVORITE DOCS BY UUID SUCCESS';
+export const GET_FAVORITE_DOCS_BY_UUID_ERROR = 'app/UtilityPage/GET FAVORITE DOCS BY UUID ERROR';
+
+export const FAVORITE_FILE_BY_DOC_ID = 'app/UtilityPage/FAVORITE FILE BY DOC ID';
+export const FAVORITE_FILE_BY_DOC_ID_SUCCESS = 'app/UtilityPage/FAVORITE FILE BY DOC ID SUCCESS';
+export const FAVORITE_FILE_BY_DOC_ID_ERROR = 'app/UtilityPage/FAVORITE FILE BY DOC ID ERROR';
+
+export const UNFAVORITE_FILE_BY_DOC_ID = 'app/UtilityPage/UNFAVORITE FILE BY DOC ID';
+export const UNFAVORITE_FILE_BY_DOC_ID_SUCCESS = 'app/UtilityPage/UNFAVORITE FILE BY DOC ID SUCCESS';
+export const UNFAVORITE_FILE_BY_DOC_ID_ERROR = 'app/UtilityPage/UNFAVORITE FILE BY DOC ID ERROR';
+
+export const CREATE_UTILITY_FILES = 'app/UtilityPage/CREATE UTILITY FILES';
+export const CREATE_UTILITY_FILES_SUCCESS = 'app/UtilityPage/CREATE UTILITY FILES SUCCESS';
+export const CREATE_UTILITY_FILES_ERROR = 'app/UtilityPage/CREATE UTILITY FILES ERROR';
+
+export const GET_EMPLOYEES = 'app/UtilityPage/GET EMPLOYEES';
+export const GET_EMPLOYEES_SUCCESS = 'app/UtilityPage/GET EMPLOYEES SUCCESS';
+export const GET_EMPLOYEES_ERROR = 'app/UtilityPage/GET EMPLOYEES ERROR';
+
+export const GET_USER_BY_UUID = 'app/UtilityPage/GET USER BY UUID';
+export const GET_USER_BY_UUID_SUCCESS = 'app/UtilityPage/GET USER BY UUID SUCCESS';
+export const GET_USER_BY_UUID_ERROR = 'app/UtilityPage/GET USER BY UUID ERROR';

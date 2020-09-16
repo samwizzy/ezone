@@ -31,31 +31,31 @@ const NoAvailableChats = props => {
 
   return (
     <React.Fragment>
-        <Grid
-            justify="center"
-            alignItems="center"
-            container
-            className={classes.root}
-        >
-            <Grid item style={{ border: '1px solid #efefef', padding: '10px' }}>
-                <Box my={2}>
-                    <img src={ChatIcon} title="ChatIcon" />
-                </Box>
-                <Typography variant="subtitle1" component="h1">
-                    You currently have no chat
-                </Typography>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                >
-                    Start New Chat
-                </Button>
-            </Grid>
+      <Grid
+        justify="center"
+        alignItems="center"
+        container
+        className={classes.root}
+      >
+        <Grid item style={{ border: '1px solid #efefef', padding: '10px' }}>
+          <Box my={2}>
+            <img src={ChatIcon} title="ChatIcon" />
+          </Box>
+          <Typography variant="subtitle1" component="h1">
+            You currently have no chat
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+          >
+            Start New Chat
+          </Button>
         </Grid>
+      </Grid>
     </React.Fragment>
   );
-};
+}
 
 NoAvailableChats.propTypes = {};
 

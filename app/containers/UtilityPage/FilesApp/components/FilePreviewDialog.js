@@ -7,8 +7,8 @@ import { createStructuredSelector } from 'reselect';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Dialog, DialogContent, IconButton, Toolbar, Typography, Slide } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import * as Actions from '../../actions'
-import * as Selectors from '../../selectors';
+import * as Selectors from '../selectors';
+import * as Actions from '../actions';
 
 const useStyles = makeStyles(theme => ({
   appBar: {

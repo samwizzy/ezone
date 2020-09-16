@@ -11,6 +11,12 @@ import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import {
+  BrowserRouter as Route,
+  Switch,
+  useParams,
+  useRouteMatch,
+} from "react-router-dom";
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -19,7 +25,8 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import ModuleLayout from '../components/ModuleLayout';
-import LoadingIndicator from './../../../components/LoadingIndicator';
+//import LoadingIndicator from './../../../components/LoadingIndicator';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import SettingsLayout from './components/SettingsLayout';
 import AccountingPeriod from './components/AccountingPeriod';
 
@@ -28,7 +35,7 @@ export function Settings(props) {
   useInjectReducer({ key: 'settings', reducer });
   useInjectSaga({ key: 'settings', saga });
 
-  console.log('Settings index.js loaded');
+  //console.log('Settings index.js loaded');
 
   const { 
     loading,
@@ -38,13 +45,21 @@ export function Settings(props) {
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    dispatchGetAccountingSetupAction();
-    dispatchGetAllAccountingPeriodAction();
+    let mounted = true
+    if(mounted){
+      dispatchGetAccountingSetupAction();
+      dispatchGetAllAccountingPeriodAction();
+    }
+    return ()=>{
+      mounted = false
+    }
   }, []);
+
+  //console.log(`Path from Settings -> `, props.path);
 
 
   if (loading) {
-    return <LoadingIndicator />;
+    return <div style={{textAlign:'center'}}><div style={{margin:'2px auto'}}><CircularProgress /></div></div>;
   }
 
   return (
@@ -54,9 +69,9 @@ export function Settings(props) {
         <meta name="description" content="Description of Settings." />
       </Helmet>
      
-        <SettingsLayout>
-          <AccountingPeriod />
-        </SettingsLayout>
+        <SettingsLayout path={props.path}/>
+         {/* <AccountingPeriod />
+        </SettingsLayout>*/}
       
     </div>
   );

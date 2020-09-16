@@ -45,6 +45,31 @@ export const GetUserByUUIDApi = `${BaseUrl}/authserv/api/v1/users/get_by_uuid`;
 export const UpdateUserProfileApi = `${BaseUrl}/authserv/api/v1/user/update_profile`;
 
 /** *****************************************************************
+ * Roles Rights endpoint
+ ******************************************************************* */
+
+export const CreateModuleApi = `${BaseUrl}/authserv/api/v1/modules/add`;
+export const UpdateModuleApi = `${BaseUrl}/authserv/api/v1/modules/update`;
+export const GetModuleByIdApi = `${BaseUrl}/authserv/api/v1/modules/{id}`;
+export const GetModulesApi = `${BaseUrl}/authserv/api/v1/modules`;
+
+export const CreateRoleApi = `${BaseUrl}/authserv/api/v1/roles/add`;
+export const UpdateRoleApi = `${BaseUrl}/authserv/api/v1/roles/update`;
+export const GetRoleByIdApi = `${BaseUrl}/authserv/api/v1/roles/{id}`;
+export const GetRolesApi = `${BaseUrl}/authserv/api/v1/roles`;
+export const GetRightsByRoleIdApi = `${BaseUrl}/authserv/api/v1/role`;
+
+export const CreateRightApi = `${BaseUrl}/authserv/api/v1/rights/add`;
+export const UpdateRightApi = `${BaseUrl}/authserv/api/v1/rights/update`;
+export const GetRightByIdApi = `${BaseUrl}/authserv/api/v1/rights/{id}`;
+export const GetRightsApi = `${BaseUrl}/authserv/api/v1/rights`;
+
+export const CreateRoleRightsApi = `${BaseUrl}/authserv/api/v1/roleRights/add`;
+export const UpdateRoleRightsApi = `${BaseUrl}/authserv/api/v1/roleRights/update`;
+export const GetRoleRightsByIdApi = `${BaseUrl}/authserv/api/v1/roleRights/{id}`;
+export const GetRolesRightsApi = `${BaseUrl}/authserv/api/v1/roleRights`;
+
+/** *****************************************************************
  * Utility endpoint
  ******************************************************************* */
 
@@ -136,6 +161,11 @@ export const CreateRecognitionApi = `${BaseUrl}/authserv/api/v1/recognition/add`
 export const GetRecognitionByIdApi = `${BaseUrl}/authserv/api/v1/recognition/get_by_id`;
 export const UpdateRecognition = `${BaseUrl}/authserv/api/v1/recognition/update`;
 export const RecognitionCommentApi = `${BaseUrl}/authserv/api/v1/recognition/comment`;
+// HR:Performance - Reviews
+export const GetReviewsApi = `${BaseUrl}/authserv/api/v1/review/get_by_orgid`;
+export const CreateReviewApi = `${BaseUrl}/authserv/api/v1/review`;
+export const GetReviewByIdApi = `${BaseUrl}/authserv/api/v1/review/{id}`;
+export const UpdateReview = `${BaseUrl}/authserv/api/v1/review/update`;
 
 // HR:Leave-Management - Leave Request
 export const GetLeaveRequestsApi = `${BaseUrl}/authserv/api/v1/all_leave_requests_by_orgid`;
@@ -207,7 +237,7 @@ export const DeleteWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/delete_workorde
 export const GetListOfWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/find_all_workorders`;
 
 
-// Account Api 
+// Account Api
 export const GetAllAccountTypeApi = `${BaseUrl}/accountingserv/api/v1/account/get_all_account_types`;
 export const GetDetailTypeApi = `${BaseUrl}/accountingserv/api/v1/account/get_detail_types`;
 export const CreateChartOfAccountApi = `${BaseUrl}/accountingserv/api/v1/account/add_chart_of_account`;
@@ -232,10 +262,35 @@ export const SetAccountPeriodAsActiveApi = `${BaseUrl}/accountingserv/api/v1/acc
 export const DeleteBankAccountApi = `${BaseUrl}/accountingserv/api/v1/bank/delete_bank`;
 export const UpdateBankAccountApi = `${BaseUrl}/accountingserv/api/v1/bank/update_bank`;
 export const SetActiveStatusForBankAccountApi = `${BaseUrl}/accountingserv/api/v1/bank/acivate_or_deactivate_bank`;
+export const AddDeprecitionAreaApi = `${BaseUrl}/accountingserv/api/v1/area/add`;
+export const GetDeprecitionAreaByIdApi = `${BaseUrl}/accountingserv/api/v1/area/get_depreciation_area_by_id`;
+export const GetDeprecitionAreaByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/area/get_depreciation_area_by_orgid`;
+export const UpdateDeprecitionAreaApi = `${BaseUrl}/accountingserv/api/v1/area/update`;
+export const AddDeprecitionTypeApi = `${BaseUrl}/accountingserv/api/v1/type/add`;
+export const GetDeprecitionTypeByIdApi = `${BaseUrl}/accountingserv/api/v1/type/get_depreciation_type_by_id`;
+export const GetDeprecitionTypeByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/type/get_depreciation_type_by_orgid`;
+export const UpdateDeprecitionTypeApi = `${BaseUrl}/accountingserv/api/v1/type/update`;
+export const AddAssetApi = `${BaseUrl}/accountingserv/api/v1/asset/add`;
+export const GetAssetByIdApi = `${BaseUrl}/accountingserv/api/v1/asset/get_asset_by_id`;
+export const GetAssetByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/asset/get_assets_by_orgid`;
+export const AddTaxTypeApi = `${BaseUrl}/accountingserv/api/v1/tax/add`;
+export const UpdateTaxTypeApi = `${BaseUrl}/accountingserv/api/v1/tax/update`;
+export const GetTaxTypeByIdApi = `${BaseUrl}/accountingserv/api/v1/tax/get_by_id`;
+export const GetTaxTypeByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/tax/get_by_orgid`;
+export const CreateDisposalApi = `${BaseUrl}/accountingserv/api/v1/disposal/add`;
+export const GetDisposalByIdApi = `${BaseUrl}/accountingserv/api/v1/disposal/get_by_id`;
+export const GetDisposalByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/disposal/get_by_orgid`;
+export const CreateCurrencyApi = `${BaseUrl}/accountingserv/api/v1/currency/add`;
+export const UpdateCurrencyApi = `${BaseUrl}/accountingserv/api/v1/currency/update`;
+export const GetCurrencyByIdApi = `${BaseUrl}/accountingserv/api/v1/currency/get_by_id`;
+export const GetCurrencyByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/currency/get_by_orgid`;
+export const CreateAssetTypeApi = `${BaseUrl}/accountingserv/api/v1/assetType/add`;
+export const GetAssetTypeByIdApi = `${BaseUrl}/accountingserv/api/v1/assetType/get_asset_type_by_id`;
+export const GetAssetTypeByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/assetType/get_asset_type_by_orgid`;
+export const UpdateAssetTypeApi = `${BaseUrl}/accountingserv/api/v1/assetType/update`;
 
-
-/** ***************************************************************** 
- * Inventory endpoint  
+/** *****************************************************************
+ * Inventory endpoint
  ******************************************************************* */
 
 // Warehouse Apis
@@ -266,7 +321,7 @@ export const CreateNewInventoryAdjustApi = `${BaseUrl}/inventoryserv/api/v1/do_m
 export const GetAllInventoryAdjustsApi = `${BaseUrl}/inventoryserv/api/v1/get_all_adjustments`;
 export const GetAdjustmentByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_adjustment_by_id`;
 
-/** ***************************************************************** 
+/** *****************************************************************
  * CRM endpoint
  ******************************************************************* */
 
@@ -283,10 +338,47 @@ export const GetContactGroupByIdApi = `${BaseUrl}/crmserv/api/v1/get_contact_gro
 export const GetAllContactsGroupApi = `${BaseUrl}/crmserv/api/v1/get_all_contact_groups`;
 
 // Campaigns Group Apis
-export const CreateCampaignApi = `${BaseUrl}/crmserv//api/v1/add_campaign`;
-export const UpdateCampaignApi = `${BaseUrl}/crmserv/api/v1/update_campaign/{userId}/{id}`;
+export const CreateCampaignApi = `${BaseUrl}/crmserv/api/v1/add_campaign`;
+export const UpdateCampaignApi = `${BaseUrl}/crmserv/api/v1/update_campaign`;
 export const GetCampaignByIdApi = `${BaseUrl}/crmserv/api/v1/get_campaign_by_id/{id}`;
-export const GetCampaignsApi = `${BaseUrl}/crmserv/api/v1/get_campaigns_by_orgid/{orgId}`;
+export const GetCampaignsApi = `${BaseUrl}/crmserv/api/v1/get_campaigns_by_orgid`;
+
+// Schedules Group Apis
+export const GetSchedulesApi = `${BaseUrl}/crmserv/api/v1/get_all_schedules`;
+export const CreateScheduleApi = `${BaseUrl}/crmserv/api/v1/add_schedule`;
+export const UpdateScheduleApi = `${BaseUrl}/crmserv/api/v1/update_schedule/{id}`;
+export const DeleteScheduleByIdApi = `${BaseUrl}/crmserv/api/v1/delete_schedule_by_id/{id}`;
+export const DeleteAllSchedulesApi = `${BaseUrl}/crmserv/api/v1/delete_all_schedules`;
+export const RemoveUserFromScheduleApi = `${BaseUrl}/crmserv/api/remove_user_from_schedule/{id}`;
+export const RemoveContactFromScheduleApi = `${BaseUrl}/crmserv/api/remove_contact_from_schedule/{id}`;
+export const GetScheduleByIdApi = `${BaseUrl}/crmserv/api/v1/get_schedule_by_id/{id}`;
+export const GetAllScheduleByStartDateApi = `${BaseUrl}/crmserv/api/v1/get_all_schedules_by_start_date`;
+export const GetAllScheduleForTodayApi = `${BaseUrl}/crmserv/api/v1/get_all_schedules_for_today`;
 
 // Crm Activities Apis
 export const GetCrmActivitiesApi = `${BaseUrl}/utilityserv/api/v1/find_by_orgid_and_module`;
+export const CreateCrmActivityApi = `${BaseUrl}/utilityserv/api/v1/add_log`;
+
+// Crm Social Media Apis
+export const GetFacebookTokenApi = `${BaseUrl}/crmserv/api/v1/facebook`;
+export const GenerateFacebookAuthoriseUrlApi = `${BaseUrl}/crmserv/api/v1/generateFacebookAuthoriseUrl`;
+export const GetUserDataApi = `${BaseUrl}/crmserv/api/v1/get_user_data`;
+
+
+/*********************************** LMS MODULE ***********************************
+ **********************************************************************************/
+export const GetCategoriesApi = `${BaseUrl}/lmsserv/api/v1/lms/get_category_by_orgid`;
+export const AddCategoryApi = `${BaseUrl}/lmsserv/api/v1/lms/add_category`;
+export const UpdateCategoryApi = `${BaseUrl}/lmsserv/api/v1/lms/update_category`;
+export const DeleteCategoryApi = `${BaseUrl}/lmsserv/api/v1/lms/delete_category`;
+
+export const GetCoursesApi = `${BaseUrl}/lmsserv/api/v1/lms/get_course_by_orgid`;
+export const GetCourseByIdApi = `${BaseUrl}/lmsserv/api/v1/get_course_by_id`;
+export const AddCourseApi = `${BaseUrl}/lmsserv/api/v1/lms/add_course`;
+export const UpdateCourseApi = `${BaseUrl}/lmsserv/api/v1/lms/update_course`;
+export const DeleteCourseApi = `${BaseUrl}/lmsserv/api/v1/lms/delete_course`;
+export const UploadPreviewApi = `${BaseUrl}/lmsserv/api/v1/lms/upload_preview`;
+export const AddCourseVideoApi = `${BaseUrl}/lmsserv/api/v1/lms/add_course_video`;
+
+// STUDENT API
+export const RegisterStudentApi = `${BaseUrl}/lmsserv/lms/v1/register_student`;

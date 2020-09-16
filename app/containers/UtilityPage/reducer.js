@@ -5,6 +5,7 @@
  */
 import produce from 'immer';
 import * as Constants from './constants';
+
 export const initialState = {
   postFcmToken: false,
   postMsg: false,
@@ -59,7 +60,7 @@ export const initialState = {
     props: {
       open: false,
     },
-    data: null,
+    data: null
   },
   confirmTaskDeleteDialog: {
     type: 'new',
@@ -104,7 +105,7 @@ export const initialState = {
 
 /* eslint-disable default-case, no-param-reassign */
 const utilityPageReducer = (state = initialState, action) =>
-  produce(state, (/* draft */) => {
+  produce(state, draft => {
     switch (action.type) {
       case Constants.OPEN_FILE_UPLOAD_DIALOG: {
         return {

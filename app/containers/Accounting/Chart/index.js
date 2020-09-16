@@ -13,6 +13,7 @@ import * as Selectors from './selectors';
 import LoadingIndicator from './../../../components/LoadingIndicator';
 import ModuleLayout from '../components/ModuleLayout';
 import AccountChart from '../Chart/components/AccountChart';
+import CircularProgress from '@material-ui/core/CircularProgress';
 export const ChartContext = React.createContext();
 
 
@@ -75,7 +76,7 @@ const Chart = props => {
 
 
   if (loading) {
-    return <LoadingIndicator />;
+    return <div style={{textAlign:'center'}}><div style={{margin:'2px auto'}}><CircularProgress /></div></div>;
   }
 
   return (

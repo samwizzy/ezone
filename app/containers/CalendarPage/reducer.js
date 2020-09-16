@@ -1,5 +1,5 @@
 /*
- * HomeReducer
+ * CalendarReducer
  *
  * The reducer takes care of our data. Using actions, we can
  * update our application state. To add a new action,
@@ -12,11 +12,12 @@ import { CHANGE_USERNAME } from './constants';
 
 // The initial state of the App
 export const initialState = {
+  loading: false,
   username: '',
 };
 
 /* eslint-disable default-case, no-param-reassign */
-const homeReducer = (state = initialState, action) =>
+const calendarReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
       case CHANGE_USERNAME:
@@ -26,4 +27,4 @@ const homeReducer = (state = initialState, action) =>
     }
   });
 
-export default homeReducer;
+export default calendarReducer;

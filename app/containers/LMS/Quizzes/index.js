@@ -1,12 +1,13 @@
 /**
  *
- * Companies
+ * Lms Quizzes
  *
  */
 
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Route, withRouter } from 'react-router-dom'
 import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
@@ -14,50 +15,51 @@ import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectCompanies from './selectors';
+import makeSelectLmsQuizzes from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import * as Actions from './actions';
-import CompaniesList from './components/CompaniesList';
+import QuizzesList from './QuizzesList';
+import AddQuiz from './components/AddQuiz';
 import ModuleLayout from '../components/ModuleLayout';
 
-export function Companies(props) {
-  useInjectReducer({ key: 'crmCompanies', reducer });
-  useInjectSaga({ key: 'crmCompanies', saga });
+const key = "lmsQuizzes"
+export function QuizzesApp(props) {
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
 
-  const { getAllCompaniesAction } = props;
+  const { match } = props;
+  const { path } = match
+
+  console.log(match, "match quizzes")
 
   useEffect(() => {
-    getAllCompaniesAction();
   }, []);
 
   return (
     <div>
       <Helmet>
-        <title>Companies</title>
-        <meta name="description" content="Description of Companies" />
+        <title>Quizzes</title>
+        <meta name="description" content="Description of Quizzes" />
       </Helmet>
-      
+
       <ModuleLayout>
-        <CompaniesList />
+        <Route exact path={path} component={QuizzesList} />
+        <Route path={`${path}/new`} component={AddQuiz} />
       </ModuleLayout>
     </div>
   );
 }
 
-Companies.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  getAllCompaniesAction: PropTypes.func,
+QuizzesApp.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  companies: makeSelectCompanies(),
+  lmsQuizzes: makeSelectLmsQuizzes(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAllCompaniesAction: () => dispatch(Actions.getAllCompanies()),
-    dispatch,
   };
 }
 
@@ -67,6 +69,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
-)(Companies);
+)(QuizzesApp);

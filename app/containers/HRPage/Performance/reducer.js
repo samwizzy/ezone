@@ -221,6 +221,64 @@ const performanceReducer = (state = initialState, action) =>
           loading: false,
         }
       }
+      case Constants.GET_REVIEWS: {
+        return {
+          ...state,
+          loading: true
+        }
+      }
+      case Constants.GET_REVIEWS_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          recognitions: action.payload
+        }
+      }
+      case Constants.GET_REVIEWS_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          recognitions: action.payload
+        }
+      }
+      case Constants.GET_REVIEW_BY_ID: {
+        return {
+          ...state,
+          loading: true
+        }
+      }
+      case Constants.GET_REVIEW_BY_ID_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          recognition: action.payload
+        }
+      }
+      case Constants.GET_REVIEW_BY_ID_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          recognition: action.payload
+        }
+      }
+      case Constants.CREATE_REVIEW: {
+        return {
+          ...state,
+          loading: true,
+        }
+      }
+      case Constants.CREATE_REVIEW_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+        }
+      }
+      case Constants.CREATE_REVIEW_ERROR: {
+        return {
+          ...state,
+          loading: false,
+        }
+      }
       case Constants.OPEN_NEW_GOALS_DIALOG: {
         return {
           ...state,
@@ -243,6 +301,30 @@ const performanceReducer = (state = initialState, action) =>
         return {
           ...state,
           recognitionDialog: { ...state.recognitionDialog, props: { open: false } },
+        }
+      }
+      case Constants.OPEN_NEW_REVIEW_DIALOG: {
+        return {
+          ...state,
+          reviewDialog: { ...state.reviewDialog, props: { open: true }, type: 'new' },
+        }
+      }
+      case Constants.CLOSE_NEW_REVIEW_DIALOG: {
+        return {
+          ...state,
+          reviewDialog: { ...state.reviewDialog, props: { open: false }, type: 'edit' },
+        }
+      }
+      case Constants.OPEN_NEW_FEEDBACK_DIALOG: {
+        return {
+          ...state,
+          feedbackDialog: { ...state.feedbackDialog, props: { open: true }, type: 'new' },
+        }
+      }
+      case Constants.CLOSE_NEW_FEEDBACK_DIALOG: {
+        return {
+          ...state,
+          feedbackDialog: { ...state.feedbackDialog, props: { open: false }, type: 'edit' },
         }
       }
     }

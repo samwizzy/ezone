@@ -9,8 +9,8 @@ import { createStructuredSelector } from 'reselect';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import MoreVertRounded from '@material-ui/icons/MoreVertRounded'
 import tasksIcon from '../../../../images/tasksIcon.svg'
-import * as Actions from '../../actions';
-import * as Selectors from './../../selectors';
+import * as Selectors from '../selectors';
+import * as Actions from '../actions';
 import AddFileDialog from './AddFileDialog'
 import FileUploadDialog from './FileUploadDialog'
 

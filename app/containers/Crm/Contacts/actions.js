@@ -6,6 +6,26 @@
 
 import * as Constants from './constants';
 
+export function getEmployees() {
+  return {
+    type: Constants.GET_EMPLOYEES,
+  }
+}
+
+export function getEmployeesSuccess(data) {
+  return {
+    type: Constants.GET_EMPLOYEES_SUCCESS,
+    payload: data,
+  }
+}
+
+export function getEmployeesError(data) {
+  return {
+    type: Constants.GET_EMPLOYEES_ERROR,
+    payload: data,
+  }
+}
+
 export function openNewContactDialog() {
   return {
     type: Constants.OPEN_NEW_CONTACT_DIALOG,
@@ -66,6 +86,12 @@ export function getContactsGroups() {
 export function getContactsGroupsSuccess(data) {
   return {
     type: Constants.GET_CONTACTS_GROUPS_SUCCESS,
+    payload: data,
+  };
+}
+export function getContactsGroupsError(data) {
+  return {
+    type: Constants.GET_CONTACTS_GROUPS_ERROR,
     payload: data,
   };
 }

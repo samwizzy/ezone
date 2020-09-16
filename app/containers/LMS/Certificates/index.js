@@ -1,0 +1,57 @@
+/** LMS Cateory **/
+import React, { memo, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Helmet } from 'react-helmet';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
+
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
+import * as Actions from './actions';
+import makeSelectCrm from './selectors';
+import reducer from './reducer';
+import saga from './saga';
+import CategoryList from './components/CategoryList';
+import CategoryDialog from './components/CategoryDialog'
+import ModuleLayout from '../components/ModuleLayout';
+
+export function CategoryApp(props) {
+  useInjectReducer({ key: 'crmContactGroups', reducer });
+  useInjectSaga({ key: 'crmContactGroups', saga });
+
+  return (
+    <div>
+      <Helmet>
+        <title>LMS - Category</title>
+        <meta name="description" content="Description of LMS Category" />
+      </Helmet>
+
+      <ModuleLayout>
+        <CategoryList />
+      </ModuleLayout>
+
+      <CategoryDialog />
+    </div>
+  );
+}
+
+CategoryApp.propTypes = {
+};
+
+const mapStateToProps = createStructuredSelector({
+});
+
+function mapDispatchToProps(dispatch) {
+  return {};
+}
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+export default compose(
+  withConnect,
+  memo,
+)(CategoryApp);

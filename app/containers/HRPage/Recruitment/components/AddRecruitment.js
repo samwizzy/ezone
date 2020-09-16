@@ -75,11 +75,6 @@ function AddRecruitment(props) {
     submissionDeadline: moment().format('YYYY-MM-DD'),
   });
 
-  const canSubmitForm = () => {
-    const { address, country, departmentId, enrollmentTypeId, jobDescription, jobTitle, noOfVancancies, orgId, submissionDeadline } = form
-    return address.length > 0 && country.length > 0 && departmentId && enrollmentTypeId && jobDescription.length > 0 && jobTitle.length > 0 && noOfVancancies
-  }
-
   const handleChange = (event) => {
     const { name, value } = event.target
     setForm({ ...form, [name]: value });
@@ -100,8 +95,6 @@ function AddRecruitment(props) {
 
   const handleStepChange = (event) => {
     const { name, value } = event.target
-    console.log(name, "name")
-    console.log(value, "value")
     form.hiringSteps.some(data => data.title === value) ?
       setForm({ ...form, [name]: form.hiringSteps.filter(step => step.title !== value) }) :
       setForm({
@@ -175,7 +168,7 @@ function AddRecruitment(props) {
       /*
       case 3:
         return (
-          <BasicInfoForm 
+          <BasicInfoForm
             handleChange={handleChange}
             form={form}
             handleSubmit={handleSubmit}
