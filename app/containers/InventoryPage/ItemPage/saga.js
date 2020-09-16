@@ -58,12 +58,10 @@ export function* getVendors() {
 
 export function* getAllItems() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  // const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-
   const requestURL = `${Endpoints.GetAllItems}`;
 
   try {
-    const getAllItemsResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -71,9 +69,9 @@ export function* getAllItems() {
       }),
     });
 
-    console.log(getAllItemsResponse, 'getAllItemsResponse');
+    console.log(response, 'response');
 
-    yield put(Actions.getAllItemsSuccess(getAllItemsResponse));
+    yield put(Actions.getAllItemsSuccess(response));
   } catch (err) {
     yield put(Actions.getAllItemsError(err));
     yield put(
@@ -109,25 +107,24 @@ export function* getItemsGroups() {
   }
 }
 
-export function* createNewItem() {
+export function* createNewItem({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const createNewItemDetails = yield select(Selectors.makeSelectItemDetails());
-  createNewItemDetails.orgId = currentUser.organisation.orgId;
+  payload.orgId = currentUser.organisation.orgId;
 
   const requestURL = `${Endpoints.CreateNewItemApi}`;
 
   try {
-    const createNewItemResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
-      body: JSON.stringify(createNewItemDetails),
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
-    yield put(Actions.createNewItemSuccess(createNewItemResponse));
+    yield put(Actions.createNewItemSuccess(response));
     yield put(Actions.getAllItems());
     yield put(push('/inventory/items'));
   } catch (err) {
@@ -199,9 +196,6 @@ export function* getAllWarehouses() {
 export function* createNewTransferOrder({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const createNewTransferOrderDetails = yield select(
-    Selectors.makeSelectTransferOrderDetails(),
-  );
   payload.orgId = currentUser.organisation.orgId;
 
   console.log(payload, "payload createNewTransferOrder")
@@ -248,19 +242,17 @@ export function* getAllTransferOrder() {
   }
 }
 
-export function* createNewInventoryAdjust() {
+export function* createNewInventoryAdjust({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const createNewInventoryAdjustDetails = yield select(
-    Selectors.makeSelectInventoryAdjustmentDetails(),
-  );
-  createNewInventoryAdjustDetails.orgId = currentUser.organisation.orgId;
+
+  payload.orgId = currentUser.organisation.orgId;
   const requestURL = `${Endpoints.CreateNewInventoryAdjustApi}`;
 
   try {
     const response = yield call(request, requestURL, {
       method: 'POST',
-      body: JSON.stringify(createNewInventoryAdjustDetails),
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
@@ -314,13 +306,6 @@ export function* getAllItemsPerWarehouse({ payload }) {
     yield put(Actions.getAllItemsPerWarehouseSuccess(response));
   } catch (err) {
     yield put(Actions.getAllItemsPerWarehouseError(err));
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: `${err}`,
-    //     status: 'error',
-    //   }),
-    // );
   }
 }
 
@@ -342,13 +327,6 @@ export function* getItemById() {
     yield put(Actions.getItemByIdSuccess(getItemByIdResponse));
   } catch (err) {
     yield put(Actions.getItemByIdError(err));
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: `${err}`,
-    //     status: 'error',
-    //   }),
-    // );
   }
 }
 
@@ -361,7 +339,7 @@ export function* getStockLocations() {
   const requestURL = `${Endpoints.GetStockLocations}/${getStockLocBySku}`;
 
   try {
-    const getStockLocResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -369,7 +347,7 @@ export function* getStockLocations() {
       }),
     });
 
-    yield put(Actions.getStockLocationsSuccess(getStockLocResponse));
+    yield put(Actions.getStockLocationsSuccess(response));
   } catch (err) {
     yield put(Actions.getStockLocationsError(err));
   }
@@ -382,7 +360,7 @@ export function* getTransferOrderById() {
   const requestURL = `${Endpoints.GetTransferOrderByIdApi}/${getItemByIdDetails}`;
 
   try {
-    const getTransferOrderResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -390,7 +368,7 @@ export function* getTransferOrderById() {
       }),
     });
 
-    yield put(Actions.getTransferOrderByIdSuccess(getTransferOrderResponse));
+    yield put(Actions.getTransferOrderByIdSuccess(response));
   } catch (err) {
     yield put(Actions.getTransferOrderByIdError(err));
   }
@@ -405,7 +383,7 @@ export function* getInventoryAdjustById() {
   const requestURL = `${Endpoints.GetAdjustmentByIdApi}/${getItemByIdDetails}`;
 
   try {
-    const getInventoryAdjustResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -413,9 +391,7 @@ export function* getInventoryAdjustById() {
       }),
     });
 
-    yield put(
-      Actions.getInventoryAdjustByIdSuccess(getInventoryAdjustResponse),
-    );
+    yield put(Actions.getInventoryAdjustByIdSuccess(response));
   } catch (err) {
     yield put(Actions.getInventoryAdjustByIdError(err));
   }

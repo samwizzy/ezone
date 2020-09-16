@@ -35,7 +35,6 @@ import AddIcon from '@material-ui/icons/Add';
 import CancelIcon from '@material-ui/icons/Cancel';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
-import LoadingIndicator from '../../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   root: {
