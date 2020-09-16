@@ -88,7 +88,7 @@ const CustomerLedger = () => {
       <div ref={componentRef}>
         <Company
           Logo={Logo}
-          name="Fixed Asset Schedule"
+          name="Customer Ledgers"
           date="16th december, 2010"
         />
 

@@ -100,7 +100,7 @@ const AccountReconciliation = () => {
       <div ref={componentRef}>
         <Company
           Logo={Logo}
-          name="Fixed Asset Schedule"
+          name="Cash account register"
           date="16th december, 2010"
         />
 

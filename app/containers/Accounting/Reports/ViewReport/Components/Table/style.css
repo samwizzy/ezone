@@ -2,13 +2,16 @@
   overflow-x: auto;
   width: 100% !important;
   margin: 20px auto;
-  /* padding: 1px 15px */
+  padding: 15px 1px;
 }
 table {
   border-collapse: collapse;
   border-spacing: 0;
-  width: 90%;
-  /* min-width: 560px; */
+  width: 95% !important;
+  margin: 1px auto;
+  overflow-x: scroll;
+  min-width: 760px;
+  /* min-width: 400px; */
 }
 
 table,
@@ -18,9 +21,7 @@ th {
   text-align: left;
   /* padding: 8px; */
 }
-.table {
-  padding: 15px;
-}
+
 .table tr {
   padding: 20px;
   font-weight: 600;

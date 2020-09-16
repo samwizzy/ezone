@@ -128,7 +128,7 @@ const GeneralLedger = () => {
       <div ref={componentRef}>
         <Company
           Logo={Logo}
-          name="Fixed Asset Schedule"
+          name="General Ledgers"
           date="16th december, 2010"
         />
 

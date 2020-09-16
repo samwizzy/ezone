@@ -1,7 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import ModuleLayout from '../ModuleLayout';
-import './style.css';
 import CustomerLedger from './Views/CustomerLedgers';
 import GeneralLedger from './Views/GeneralLedger';
 import Inventory from './Views/Inventory';
@@ -11,6 +10,8 @@ import FixedAsset from './Views/FixedAsset';
 // import PayRoll from './Views/PayRoll';
 // import ReportsPayable from './Views/ReportsPayable';
 import StatementFinPos from './Views/StatementFinPos';
+import Reports from '../index';
+import './style.css';
 
 const ViewReport = () => (
   <ModuleLayout>
@@ -22,13 +23,13 @@ const ViewReport = () => (
       />
       <Route
         exact
-        path="/account/reports/Fixed Asset Schedule"
+        path="/account/reports/Fixed Asset Register"
         component={AssetSchedule}
       />
 
       <Route
         exact
-        path="/account/reports/account"
+        path="/account/reports/Cash account register"
         component={AccountReconcilliation}
       />
 
@@ -39,7 +40,7 @@ const ViewReport = () => (
       />
       <Route
         exact
-        path="/account/reports/Charts of Accounts"
+        path="/account/reports/Fixed Asset Schedule"
         component={FixedAsset}
       />
       <Route
@@ -47,6 +48,12 @@ const ViewReport = () => (
         path="/account/reports/Statement of financial position"
         component={StatementFinPos}
       />
+      <Route
+        exact
+        path="/account/reports/Cost of goods sold"
+        component={Inventory}
+      />
+      <Route component={Reports} />
     </Switch>
   </ModuleLayout>
 );

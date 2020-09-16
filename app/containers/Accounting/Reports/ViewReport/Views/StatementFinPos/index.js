@@ -13,7 +13,7 @@ const FinPosition = () => {
       <div ref={componentRef}>
         <Company
           Logo={Logo}
-          name="Fixed Asset Schedule"
+          name="Statement of Financial Position"
           date="16th december, 2010"
         />
 

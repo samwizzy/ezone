@@ -90,6 +90,7 @@ export function Accounting(props) {
   return (
     <div>
       <Switch>
+        <Route path={`/account/reports/${name}`} component={ViewReport} />
         {id === undefined ? (
           <Route exact path="/account" component={Home} />
         ) : name === undefined ? (
@@ -117,32 +118,25 @@ export function Accounting(props) {
             }
           />
         ) : (
-          // <>
           <Route
             exact
-            path={`/account/reports/${name}`}
-            component={ViewReport}
+            path={`/account/${id}/${name}`}
+            component={
+              name === 'add'
+                ? id === 'budgeting'
+                  ? NewBudgeting
+                  : AddNewJournal
+                : id === 'journal'
+                ? JournalDetails
+                : id === 'charts'
+                ? DetailsOfAccountChat
+                : id === 'budgeting'
+                ? BudgetingDetails
+                : id === 'settings'
+                ? Home
+                : AccountDetails
+            }
           />
-          // <Route
-          //   exact
-          //   path={`/account/${id}/${name}`}
-          //   component={
-          //     name === 'add'
-          //       ? id === 'budgeting'
-          //         ? NewBudgeting
-          //         : AddNewJournal
-          //       : id === 'journal'
-          //       ? JournalDetails
-          //       : id === 'charts'
-          //       ? DetailsOfAccountChat
-          //       : id === 'budgeting'
-          //       ? BudgetingDetails
-          //       : id === 'settings'
-          //       ? Home
-          //       : AccountDetails
-          //   }
-          // />
-          // </>
         )}
       </Switch>
     </div>
@@ -161,3 +155,9 @@ export default compose(
   withConnect,
   memo,
 )(Accounting);
+
+// <Route
+// exact
+// path={`/account/reports/${name}`}
+// component={ViewReport}
+// />

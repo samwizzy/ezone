@@ -166,7 +166,7 @@ const AssetSchedule = () => {
       <div ref={componentRef}>
         <Company
           Logo={Logo}
-          name="Fixed Asset Schedule"
+          name="Fixed Asset Registers"
           date="16th december, 2010"
         />
 
