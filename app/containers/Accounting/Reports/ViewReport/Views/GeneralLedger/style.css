@@ -1,0 +1,43 @@
+.flex-b {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 10px 0px 10px;
+}
+
+.view-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  justify-self: center;
+  text-align: center;
+}
+.view-main img {
+  height: 70px;
+  width: 170px;
+  margin: 10px auto;
+}
+.flex-r {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 20px;
+}
+.bell {
+  margin: 5px;
+}
+.view-main h5,
+h4 {
+  margin: 10px 0px;
+}
+/* @media screen and (max-width: 650px) {
+  font-size: 0.9em;
+  h3,
+  h5 {
+    color: white;
+    span {
+      color: white;
+    }
+  }
+} */

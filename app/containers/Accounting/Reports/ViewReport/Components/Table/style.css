@@ -1,0 +1,42 @@
+.tableWrap {
+  overflow-x: auto;
+  width: 100% !important;
+  margin: 20px auto;
+  padding: 15px 1px;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 95% !important;
+  margin: 1px auto;
+  overflow-x: scroll;
+  min-width: 760px;
+  /* min-width: 400px; */
+}
+
+table,
+td,
+th {
+  border-top: none !important;
+  text-align: left;
+  /* padding: 8px; */
+}
+
+.table tr {
+  padding: 20px;
+  font-weight: 600;
+  background: white;
+  color: #656565;
+  font-family: Montserrat;
+  border: none !important;
+}
+.table thead tr {
+  background: #eef4f9;
+  color: black;
+  font-family: Montserrat;
+}
+.table tfoot tr {
+  background: black;
+  color: white;
+  font-family: Montserrat;
+}
