@@ -54,6 +54,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 	table: {
 		whiteSpace: "nowrap",
+		overflowX: 'hidden',
+		display: 'flex',
 		"& .MuiTableFooter-root": {
 			borderTop: `1px solid ${theme.palette.divider} !important`,
 		},

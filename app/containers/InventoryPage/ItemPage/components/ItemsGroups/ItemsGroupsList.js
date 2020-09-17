@@ -6,9 +6,7 @@ import {
   makeStyles,
   FormControlLabel,
   Icon,
-  Button,
-  Menu,
-  MenuItem,
+  Button
 } from '@material-ui/core';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import AddIcon from '@material-ui/icons/Add';
@@ -23,9 +21,6 @@ import LoadingIndicator from '../../../../../components/LoadingIndicator';
 import ViewItemDialog from './ViewItemDialog';
 
 const useStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(1),
-  },
   datatable: {
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
@@ -59,10 +54,13 @@ const ItemsGroupsList = props => {
   const {
     loading,
     history,
+    match,
     ItemsGroups,
     openNewItemGroupDialog,
     getItemsGroupById,
   } = props;
+
+  console.log(match, "match grouop list")
 
   const orderedItemsGroups = _.orderBy(ItemsGroups, 'dateCreated', 'desc')
 
@@ -83,7 +81,6 @@ const ItemsGroupsList = props => {
       options: {
         filter: true,
         customBodyRender: (value, tableMeta) => {
-
           return (
             <FormControlLabel
               label={tableMeta.rowIndex + 1}
@@ -131,7 +128,10 @@ const ItemsGroupsList = props => {
             <Button
               aria-controls="simple-menu"
               aria-haspopup="true"
-              onClick={() => { }}
+              onClick={event => {
+                event.stopPropagation()
+                history.push(`/inventory/items/groups/${itemGroup.id}`)
+              }}
             >
               View
             </Button>
@@ -154,7 +154,6 @@ const ItemsGroupsList = props => {
         variant="contained"
         color="primary"
         size="small"
-        className={classes.button}
         startIcon={<AddIcon />}
         onClick={openNewItemGroupDialog}
       >
@@ -163,7 +162,7 @@ const ItemsGroupsList = props => {
     ),
     onRowClick: (rowData, rowState) => {
       getItemsGroupById(rowData[0]);
-      props.history.push('/inventory/items/group/' + rowData[0])
+      props.history.push(`${match.url}/${rowData[0]}`)
     },
     elevation: 0
   };

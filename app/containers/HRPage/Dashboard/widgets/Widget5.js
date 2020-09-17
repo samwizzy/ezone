@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 		}
 	},
 	card: {
+		minHeight: 212,
 		borderRadius: theme.shape.borderRadius * 2,
 		"& .MuiCardHeader-root": {
 			"& .MuiTypography-root": {
@@ -48,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	table: {
 		display: "flex",
+		overflowX: 'hidden',
 		flexDirection: "row",
 		alignItems: "center",
 		whiteSpace: "nowrap",

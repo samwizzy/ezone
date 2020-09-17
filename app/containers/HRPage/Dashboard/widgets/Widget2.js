@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	table: {
 		whiteSpace: "nowrap",
+		overflowX: 'hidden',
 		display: "flex",
 		'& tr': {
 			display: "flex",

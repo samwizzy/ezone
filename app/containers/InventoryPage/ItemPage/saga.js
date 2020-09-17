@@ -332,6 +332,27 @@ export function* getItemById() {
   }
 }
 
+export function* getItemsGroupById({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const requestURL = `${Endpoints.GetItemGroupByIdApi}/${payload}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "response, getItemsGroupById")
+
+    yield put(Actions.getItemsGroupByIdSuccess(response));
+  } catch (err) {
+    yield put(Actions.getItemsGroupByIdError(err));
+  }
+}
+
 export function* getStockLocations() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const getStockLocBySku = yield select(
@@ -355,11 +376,9 @@ export function* getStockLocations() {
   }
 }
 
-export function* getTransferOrderById() {
+export function* getTransferOrderById({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const getItemByIdDetails = yield select(Selectors.makeSelectGetItemById());
-
-  const requestURL = `${Endpoints.GetTransferOrderByIdApi}/${getItemByIdDetails}`;
+  const requestURL = `${Endpoints.GetTransferOrderByIdApi}/${payload}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -376,13 +395,9 @@ export function* getTransferOrderById() {
   }
 }
 
-export function* getInventoryAdjustById() {
+export function* getInventoryAdjustById({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const getItemByIdDetails = yield select(
-    Selectors.makeSelectGetInventoryAdjustById(),
-  );
-
-  const requestURL = `${Endpoints.GetAdjustmentByIdApi}/${getItemByIdDetails}`;
+  const requestURL = `${Endpoints.GetAdjustmentByIdApi}/${payload}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -399,6 +414,7 @@ export function* getInventoryAdjustById() {
   }
 }
 
+
 // Individual exports for testing
 export default function* itemPageSaga() {
   yield takeLatest(Constants.GET_ACCOUNTS, getAccounts);
@@ -409,6 +425,7 @@ export default function* itemPageSaga() {
   yield takeLatest(Constants.GET_STOCK_LOCATIONS, getStockLocations);
   yield takeLatest(Constants.GET_ALL_ITEMS_PER_WAREHOUSE, getAllItemsPerWarehouse);
   yield takeLatest(Constants.GET_ITEM_BY_ID, getItemById);
+  yield takeLatest(Constants.GET_ITEMS_GROUP_BY_ID, getItemsGroupById);
   yield takeLatest(Constants.GET_ALL_TRANSFER_ORDER, getAllTransferOrder);
   yield takeLatest(Constants.GET_ITEMS_GROUPS, getItemsGroups);
   yield takeLatest(Constants.GET_ALL_ITEMS, getAllItems);

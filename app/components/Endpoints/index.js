@@ -304,7 +304,7 @@ export const GetStockLocations = `${BaseUrl}/inventoryserv/api/v1/get_item_statu
 // Item Groups Apis
 export const CreateItemGroupApi = `${BaseUrl}/inventoryserv/api/v1/add_item_group`;
 export const GetItemsGroupsApi = `${BaseUrl}/inventoryserv/api/v1/get_item_group_by_orgid`;
-export const GetItemGroupByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_item_group_by_id/{id}`;
+export const GetItemGroupByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_item_group_by_id`;
 export const UpdateItemGroupByIdApi = `${BaseUrl}/inventoryserv/api/v1/update_item_group/{id}`;
 
 // Transfer Order APIs

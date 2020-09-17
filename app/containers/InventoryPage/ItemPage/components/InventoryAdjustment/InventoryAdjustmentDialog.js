@@ -283,7 +283,7 @@ const InventoryAdjustmentDialog = props => {
                           </TableCell>
                           <TableCell>
                             <TextField
-                              disabled
+                              // disabled
                               id={`item-description-${i}`}
                               size="small"
                               label="Description"

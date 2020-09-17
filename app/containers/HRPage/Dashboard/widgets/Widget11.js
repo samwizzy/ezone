@@ -10,6 +10,7 @@ import * as AppSelectors from '../../../App/selectors';
 
 const styles = theme => ({
 	root: {
+		minHeight: 388,
 		borderRadius: theme.shape.borderRadius * 2,
 		"& .MuiCardHeader-root": {
 			"& .MuiTypography-root": {

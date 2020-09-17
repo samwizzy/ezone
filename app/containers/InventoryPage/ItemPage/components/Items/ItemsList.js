@@ -60,10 +60,8 @@ const ItemsList = props => {
     loading,
     history,
     getAllItems,
-    openNewItemDialogAction,
-    openViewItemDialogAction,
-    // openEditEmployeeDialogAction,
-    getItemByIdAction,
+    openViewItemDialog,
+    getItemById,
   } = props;
 
   const orderedItems = _.orderBy(getAllItems, 'dateCreated', 'desc')
@@ -137,14 +135,12 @@ const ItemsList = props => {
         sort: false,
         customBodyRender: value => {
           const item = getAllItems.find(post => value === post.id);
-          if (value === '') {
-            return '';
-          }
+
           return (
             <Button
               aria-controls="simple-menu"
               aria-haspopup="true"
-              onClick={() => openViewItemDialogAction(item)}
+              onClick={() => openViewItemDialog(item)}
             >
               View
             </Button>
@@ -175,7 +171,7 @@ const ItemsList = props => {
       </Button>
     ),
     onRowClick: (rowData, rowState) => {
-      getItemByIdAction(rowData[0]);
+      getItemById(rowData[0]);
       props.history.push('/inventory/item/' + rowData[0] + '/' + rowData[3])
     },
     elevation: 0
@@ -201,9 +197,7 @@ const ItemsList = props => {
 ItemsList.propTypes = {
   loading: PropTypes.bool,
   getAllItems: PropTypes.array,
-  openNewItemDialogAction: PropTypes.func,
-  openViewItemDialogAction: PropTypes.func,
-  // openEditEmployeeDialogAction: PropTypes.func,
+  openViewItemDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -213,12 +207,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getItemByIdAction: evt =>
-      dispatch(Actions.getItemById(evt)),
-    openViewItemDialogAction: evt =>
-      dispatch(Actions.openViewItemDialog(evt)),
-    openNewItemDialogAction: () =>
-      dispatch(Actions.openNewItemDialog()),
+    getItemById: id => dispatch(Actions.getItemById(id)),
+    openViewItemDialog: data => dispatch(Actions.openViewItemDialog(data)),
   };
 }
 

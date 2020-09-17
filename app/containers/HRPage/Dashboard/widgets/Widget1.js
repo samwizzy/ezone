@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 		}
 	},
 	card: {
+		flexGrow: 1,
 		borderRadius: theme.shape.borderRadius * 2,
 		backgroundImage: `url(${hrDash1})`,
 		backgroundRepeat: `no-repeat`,
@@ -56,6 +57,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 	table: {
 		whiteSpace: "nowrap",
+		overflowX: 'hidden',
+		display: "flex",
 		"& .MuiTableFooter-root": {
 			borderTop: `1px solid ${theme.palette.divider} !important`,
 		},

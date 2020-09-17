@@ -160,9 +160,10 @@ export function getItemsGroupsError(data) {
   };
 }
 
-export function getItemsGroupById() {
+export function getItemsGroupById(id) {
   return {
     type: Constants.GET_ITEMS_GROUP_BY_ID,
+    payload: id
   };
 }
 

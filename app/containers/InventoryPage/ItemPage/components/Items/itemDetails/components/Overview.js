@@ -196,8 +196,8 @@ const Overview = (props) => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {getStockLocations.map(getStockLocation => (
-                                            <TableRow key={getStockLocation.id}>
+                                        {getStockLocations && getStockLocations.map((getStockLocation, i) => (
+                                            <TableRow key={i}>
                                                 <TableCell component="th">
                                                     {getStockLocation.warehouseName}
                                                 </TableCell>

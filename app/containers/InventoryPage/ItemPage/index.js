@@ -15,11 +15,10 @@ import * as Actions from './actions';
 import TransferOrderDialog from './components/TransferOrder/TransferOrderDialog';
 import ViewItemDialog from './components/Items/ViewItemDialog';
 import ItemDialog from './components/Items/ItemDialog';
-// import ItemDetails from './components/Items/ItemDetails';
 import ItemDetails from './components/Items/itemDetails/ItemDetails';
 import ItemsList from './components/Items/ItemsList';
-import ItemsGroupsList from './components/Items/ItemsGroupsList';
-import ItemGroupDialog from './components/Items/ItemGroupDialog';
+import ItemsGroupsPage from './components/ItemsGroups';
+import ItemGroupDialog from './components/ItemsGroups/ItemGroupDialog';
 import ModuleLayout from '../components/ModuleLayout';
 
 export function ItemPage(props) {
@@ -42,16 +41,16 @@ export function ItemPage(props) {
     <div>
       <ModuleLayout>
         <Helmet>
-          <title>ItemPage</title>
-          <meta name="description" content="Description of ItemPage" />
+          <title>Item Page</title>
+          <meta name="description" content="Description of Item Page" />
         </Helmet>
 
         <Fragment>
           <Route exact path={path} component={ItemsList} />
           <Route exact path={`${path}/new`} component={ItemDialog} />
           <Route exact path={`${path}/edit`} component={ItemDialog} />
-          <Route exact path={`${path}/groups`} component={ItemsGroupsList} />
-          <Route exact path={`${path}/:statusId/:sku`} component={ItemDetails} />
+          <Route path={`${path}/groups`} component={ItemsGroupsPage} />
+          <Route exact path={`/inventory/item/:statusId/:sku`} component={ItemDetails} />
         </Fragment>
       </ModuleLayout>
 

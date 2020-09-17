@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import AddIcon from '@material-ui/icons/Add';
+import moment from 'moment';
 import MUIDataTable from 'mui-datatables';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -51,6 +52,7 @@ const useStyles = makeStyles(theme => ({
 const InventoryAdjustmentList = props => {
   useInjectReducer({ key: 'itemPage', reducer });
   useInjectSaga({ key: 'itemPage', saga });
+
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -65,14 +67,10 @@ const InventoryAdjustmentList = props => {
   const {
     loading,
     history,
-    getAllEmployees,
-    openNewInventoryAdjustDialogAction,
     getAllWarehousesAction,
     getAllItemsAction,
     getAllInventoryAdjustmentsAction,
     getAllInventoryAdjusts,
-    // openEditEmployeeDialogAction,
-    // openViewEmployeeDialogAction,
   } = props;
 
   useEffect(() => {
@@ -97,9 +95,7 @@ const InventoryAdjustmentList = props => {
       options: {
         filter: true,
         customBodyRender: (value, tableMeta) => {
-          if (value === '') {
-            return '';
-          }
+
           return (
             <FormControlLabel
               label={tableMeta.rowIndex + 1}
@@ -115,6 +111,7 @@ const InventoryAdjustmentList = props => {
       options: {
         filter: true,
         sort: false,
+        customBodyRender: date => moment(date).format('ll')
       },
     },
     {
@@ -139,23 +136,6 @@ const InventoryAdjustmentList = props => {
       options: {
         filter: true,
         sort: false,
-        // customBodyRender: value => {
-        //   const Post = getAllPosts.find(post => value === post.id);
-
-        //   if (value === '') {
-        //     return '';
-        //   }
-        //   return (
-        //     <FormControlLabel
-        //       label="Edit"
-        //       control={<Icon>create</Icon>}
-        //       onClick={evt => {
-        //         evt.stopPropagation();
-        //         openEditPostDialog(Post);
-        //       }}
-        //     />
-        //   );
-        // },
       },
     },
     {
@@ -167,8 +147,8 @@ const InventoryAdjustmentList = props => {
       }
     },
     {
-      name: 'type',
-      label: 'Type',
+      name: 'warehouseName',
+      label: 'Warehouse',
       options: {
         filter: true,
         sort: false,
@@ -212,13 +192,13 @@ const InventoryAdjustmentList = props => {
 
   return (
     <React.Fragment>
-        <MUIDataTable
-          className={classes.datatable}
-          title="All Inventory Adjustments"
-          data={getAllInventoryAdjusts}
-          columns={columns}
-          options={options}
-        />
+      <MUIDataTable
+        className={classes.datatable}
+        title="All Inventory Adjustments"
+        data={getAllInventoryAdjusts}
+        columns={columns}
+        options={options}
+      />
     </React.Fragment>
   );
 };

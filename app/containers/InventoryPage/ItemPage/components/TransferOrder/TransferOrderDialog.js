@@ -324,7 +324,6 @@ const TransferOrderDialog = props => {
                           </TableCell>
                           <TableCell>
                             <TextField
-                              disabled
                               id={`transfer-quantity-${i}`}
                               size="small"
                               label="Transfer Quantity"
