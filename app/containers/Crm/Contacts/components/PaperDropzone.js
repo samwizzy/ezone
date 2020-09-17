@@ -5,12 +5,10 @@ import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { useDropzone } from 'react-dropzone';
-import { IconButton } from '@material-ui/core';
 import RootRef from '@material-ui/core/RootRef';
 import styled from 'styled-components';
 import _ from 'lodash';
 import * as AppSelectors from '../../../App/selectors';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 const getColor = props => {
   if (props.isDragAccept) {
@@ -74,7 +72,7 @@ const Container = styled.div`
 
 function PaperDropzone(props) {
   const [files, setFiles] = useState([]);
-  const { handleImageUpload, name } = props;
+  const { uploadFileAction, currentUser } = props;
   const [form, setForm] = useState({
     attachments: [],
   });
@@ -101,11 +99,12 @@ function PaperDropzone(props) {
       );
 
       const image = {};
-      _.set(image, 'fileName', acceptedFiles[0].name.substr(0, 5).trim().concat('-' + moment().format('YYYY-MM-DDTHH:mm:ss')));
+      _.set(image, 'orgId', currentUser.organisation.orgId);
+      _.set(image, 'fileName', acceptedFiles[0].name);
       _.set(image, 'format', acceptedFiles[0].type);
       _.set(image, 'size', acceptedFiles[0].size);
       getBase64(acceptedFiles[0], result => _.set(image, 'file', result));
-      handleImageUpload(name, image);
+      uploadFileAction(image);
     },
   });
 
@@ -130,6 +129,10 @@ function PaperDropzone(props) {
     </div>
   ));
 
+  useEffect(() => {
+    setFiles([])
+  }, [])
+
   useEffect(
     () => () => {
       // Make sure to revoke the data uris to avoid memory leaks
@@ -137,6 +140,9 @@ function PaperDropzone(props) {
     },
     [files],
   );
+
+  console.log(files, "files paperdropzone")
+  console.log(thumbs, "thumbs paperdropzone")
 
   return (
     <RootRef rootRef={ref}>
@@ -150,13 +156,10 @@ function PaperDropzone(props) {
           })}
         >
           <input {...getInputProps()} multiple={false} />
-
-          <IconButton onClick={open}>
-            <CloudUploadIcon fontSize="large" />
-          </IconButton>
-          {name === 'thumbNail' ?
-            <p>Upload an Thumbnail</p> : <p>Upload an Video Overview</p>
-          }
+          <p>Drag 'n' drop some files here, or click to select files</p>
+          <button type="button" onClick={open}>
+            Open File Dialog
+          </button>
         </Container>
 
         <aside style={thumbsContainer}>{thumbs}</aside>
@@ -167,7 +170,7 @@ function PaperDropzone(props) {
 
 PaperDropzone.propTypes = {
   currentUser: PropTypes.object,
-  handleImageUpload: PropTypes.func,
+  uploadFileAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -175,9 +178,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
+  return {};
 }
 
 const withConnect = connect(

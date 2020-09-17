@@ -61,7 +61,9 @@ export function* createCategory({ payload }) {
 export function* updateCategory({ payload }) {
   const { id, ...rest } = payload
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.UpdateCategoryApi}/${id}`;
+  rest.orgId = currentUser.organisation.orgId;
 
   console.log(rest, "payload update category")
 
@@ -75,6 +77,7 @@ export function* updateCategory({ payload }) {
       }),
     });
 
+    yield put(AppActions.openSnackBar({ message: "Course category updated successfully", status: 'success' }));
     yield put(Actions.updateCategorySuccess(response));
     yield put(Actions.getCategories());
     yield put(Actions.closeEditCategoryDialog());
@@ -98,6 +101,7 @@ export function* deleteCategory({ payload }) {
       }),
     });
 
+    yield put(AppActions.openSnackBar({ message: "Course category deleted successfully", status: 'success' }));
     yield put(Actions.deleteCategorySuccess(response));
     yield put(Actions.getCategories());
   } catch (err) {

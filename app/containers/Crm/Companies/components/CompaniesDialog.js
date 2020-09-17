@@ -45,7 +45,6 @@ const initialState = {
   firstName: '',
   emailAddress: '',
   phoneNumber: '',
-  mobileNo: '',
   companyNumber: '',
   lifeStage: '',
   associationType: '',

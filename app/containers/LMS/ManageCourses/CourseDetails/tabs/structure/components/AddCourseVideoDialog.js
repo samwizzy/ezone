@@ -29,6 +29,7 @@ import InvertColorsIcon from '@material-ui/icons/InvertColors'
 import * as Selectors from '../../../../selectors';
 import * as Actions from '../../../../actions';
 import PaperDropzone from './PaperDropzone'
+import VideosDropzone from './VideosDropzone'
 import VideoDropzone from './VideoDropzone'
 
 const useStyles = makeStyles(theme => ({
@@ -78,24 +79,32 @@ const AddCourseVideoDialog = props => {
   };
 
   const handleImageUpload = (name, image) => {
-    setForm({ ...form, [name]: image });
+    const duration = image.size
+    setForm({ ...form, [name]: image, duration });
   };
 
   const handleImageChange = (event) => {
     const duration = event.target.files[0].size
     const selectedFile = event.target.files[0]
+
+    setForm({ ...form, media: selectedFile, duration });
+  };
+
+  const handleSubmit = () => {
+    const { courseId, title, description, duration, lectureType, media } = form
     const formData = new FormData();
 
-    formData.append("file", selectedFile);
-    setForm({ ...form, media: formData, duration });
+    formData.append("courseId", courseId);
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("duration", duration);
+    formData.append("lectureType", lectureType);
+    formData.append("media", media);
 
     for (var [key, value] of formData.entries()) {
       console.log(key, value);
     }
-  };
-
-  const handleSubmit = () => {
-    addCourseVideo(form)
+    addCourseVideo(formData)
   }
 
   console.log(form, "form course video")
@@ -179,7 +188,11 @@ const AddCourseVideoDialog = props => {
             </Grid>
             <Grid item xs={12}>
               <FormControl margin="normal" fullWidth>
-                {/* <PaperDropzone handleImageUpload={handleImageUpload} /> */}
+                <VideosDropzone handleImageUpload={handleImageUpload} name="media" />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl margin="normal" fullWidth>
                 <VideoDropzone />
               </FormControl>
             </Grid>

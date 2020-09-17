@@ -7,6 +7,7 @@ import * as Selectors from './selectors';
 import * as Actions from './actions';
 import * as Constants from './constants';
 import * as Endpoints from '../../../components/Endpoints';
+import history from '../../../utils/history';
 
 function errorHandler(promise) {
   return promise
@@ -93,6 +94,7 @@ export function* createCourse({ payload }) {
     yield put(Actions.createCourseSuccess(response));
     yield put(Actions.getCourses());
     yield put(Actions.closeNewCourseDialog());
+    yield put(history.push("/lms/courses"))
   } catch (err) {
     yield put(Actions.createCourseError(err));
     const error = yield call(errorHandler, err.response.json())
@@ -114,6 +116,7 @@ export function* updateCourse({ payload }) {
       }),
     });
 
+    yield put(AppActions.openSnackBar({ message: "Course updated successfully", status: 'success' }));
     yield put(Actions.updateCourseSuccess(response));
     yield put(Actions.getCourses());
     yield put(Actions.closeEditCourseDialog());
@@ -136,6 +139,7 @@ export function* uploadCoursePreview({ payload }) {
       }),
     });
 
+    yield put(AppActions.openSnackBar({ message: "Course preview added successfully", status: 'success' }));
     yield put(Actions.uploadCoursePreviewSuccess(response));
     yield put(Actions.getCourses());
     yield put(Actions.closeEditCourseDialog());
@@ -151,13 +155,14 @@ export function* addCourseVideo({ payload }) {
   try {
     const response = yield call(request, requestURL, {
       method: 'PUT',
-      body: JSON.stringify(payload),
+      body: payload,
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
+    yield put(AppActions.openSnackBar({ message: "Course video uploaded successfully", status: 'success' }));
     yield put(Actions.addCourseVideoSuccess(response));
     yield put(Actions.getCourses());
     yield put(Actions.closeEditCourseDialog());
@@ -179,6 +184,7 @@ export function* deleteCourse({ payload }) {
       }),
     });
 
+    yield put(AppActions.openSnackBar({ message: "Course deleted successfully", status: 'success' }));
     yield put(Actions.deleteCourseSuccess(response));
     yield put(Actions.getCourses());
   } catch (err) {

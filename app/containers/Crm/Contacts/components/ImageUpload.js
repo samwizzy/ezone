@@ -14,7 +14,8 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import PaperDropzone from '../../components/PaperDropzone';
+// import PaperDropzone from '../../components/PaperDropzone';
+import PaperDropzone from './PaperDropzone';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -66,9 +67,9 @@ export const ImageUpload = props => {
           <Grid item xs={12}>
             <PaperDropzone uploadFileAction={uploadFileAction} />
 
-            <div style={thumbInner}>
+            {/* <div style={thumbInner}>
               <img src={form.imageUrl} alt={form.imageName} style={img} />
-            </div>
+            </div> */}
           </Grid>
         </Grid>
       </DialogContent>

@@ -15,7 +15,7 @@ import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectCompanies from './selectors';
+import makeSelectLMSStudents from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import * as Actions from './actions';
@@ -25,9 +25,11 @@ import LecturersList from './lectures/LecturersList';
 import AddLecture from './lectures/components/AddLecture';
 import ModuleLayout from './ModuleLayout';
 
+const key = "lmsStudents"
+
 export function StudentsApp(props) {
-  useInjectReducer({ key: 'crmCompanies', reducer });
-  useInjectSaga({ key: 'crmCompanies', saga });
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
 
   const { getStudents, match } = props;
   const { path } = match
@@ -60,7 +62,7 @@ StudentsApp.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  companies: makeSelectCompanies(),
+  lmsStudents: makeSelectLMSStudents(),
 });
 
 function mapDispatchToProps(dispatch) {

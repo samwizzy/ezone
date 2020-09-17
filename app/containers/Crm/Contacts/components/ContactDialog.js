@@ -91,7 +91,7 @@ const ContactDialog = props => {
       if (ownerName && ownerEmail && employees.length > 0) {
         const emp = employees && _.find(employees, { emailAddress: ownerEmail })
         console.log(emp, "emp ids check")
-        setForm({ ...rest, /*ownerId: emp.id,*/ image: null });
+        setForm({ ...rest, ownerId: emp ? emp.id : null, image: null });
       }
     } else {
       setForm({ ...initialState })
@@ -136,7 +136,7 @@ const ContactDialog = props => {
 
   const handleSubmit = () => {
     dialog.type === 'new' ? createNewContact(form) : updateContact(form);
-    setForm({ ...initialState })
+    // setForm({ ...initialState })
   }
 
   // console.log(dialog, 'dialog');

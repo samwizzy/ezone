@@ -374,3 +374,6 @@ export const AddCourseVideoApi = `${BaseUrl}/lmsserv/api/v1/lms/add_course_video
  ***************************************************************
  ************************************************************** */
 export const GetGeneralJournalApi = `${BaseUrl}/accountingserv/api/v1/report/get_general_journal`;
+// STUDENT API
+export const RegisterStudentApi = `${BaseUrl}/lmsserv/lms/v1/register_student`;
+

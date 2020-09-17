@@ -60,7 +60,7 @@ export const UtilityInfo = props => {
               id="combo-contact-group"
               options={contactGroups ? contactGroups : []}
               getOptionLabel={option => option.groupName}
-              // value={form.contactGroup ? _.find(contactGroups, { id: form.contactGroup }) : null}
+              value={form.contactGroup ? _.find(contactGroups, { id: form.contactGroup }) : null}
               onChange={handleSelectChange('contactGroup')}
               renderInput={params => (
                 <TextField

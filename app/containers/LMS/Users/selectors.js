@@ -5,49 +5,41 @@ import { initialState } from './reducer';
  * Direct selector to the companies state domain
  */
 
-const selectCompaniesDomain = state => state.crmCompanies || initialState;
+const selectLMSStudentsDomain = state => state.lmsStudents || initialState;
 
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by Companies
- */
-
-const makeSelectCompanies = () =>
+const makeSelectLMSStudents = () =>
   createSelector(
-    selectCompaniesDomain,
+    selectLMSStudentsDomain,
     substate => substate,
   );
 
 const makeSelectLoading = () =>
   createSelector(
-    selectCompaniesDomain,
+    selectLMSStudentsDomain,
     subState => subState.loading,
   );
 
 const makeSelectError = () =>
   createSelector(
-    selectCompaniesDomain,
+    selectLMSStudentsDomain,
     subState => subState.error,
   );
 
 const makeSelectStudentDialog = () =>
   createSelector(
-    selectCompaniesDomain,
+    selectLMSStudentsDomain,
     subState => subState.studentDialog,
   );
 
 const makeSelectGetStudents = () =>
   createSelector(
-    selectCompaniesDomain,
+    selectLMSStudentsDomain,
     subState => subState.students,
   );
 
-export default makeSelectCompanies;
+export default makeSelectLMSStudents;
 export {
-  selectCompaniesDomain,
+  selectLMSStudentsDomain,
   makeSelectLoading,
   makeSelectError,
   makeSelectStudentDialog,

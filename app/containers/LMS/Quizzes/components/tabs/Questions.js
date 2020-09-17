@@ -352,7 +352,7 @@ const Questions = props => {
                     <TextField
                       name="feedback"
                       label="Feedback"
-                      id="outlined-feedback"
+                      id="outlined-feedback-2"
                       fullWidth
                       margin="dense"
                       size="small"
@@ -394,7 +394,7 @@ const Questions = props => {
                     <TextField
                       name="feedback"
                       label="Feedback"
-                      id="outlined-feedback"
+                      id="outlined-feedback-1"
                       fullWidth
                       margin="dense"
                       size="small"
