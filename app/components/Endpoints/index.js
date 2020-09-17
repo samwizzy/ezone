@@ -185,7 +185,6 @@ export const UpdateLeaveTypeApi = `${BaseUrl}/authserv/api/api/v1/update_leave_t
 export const GetRoles = `${BaseUrl}/authserv/api/v1/generic_entities/for_organinisation`;
 export const CreateRole = `${BaseUrl}/authserv/api/v1/generic_entity/add`;
 
-
 // Department
 export const DepartmentApi = `${BaseUrl}/hrserv/api/v1/department`;
 export const DepartmentsApi = `${BaseUrl}/hrserv/api/v1/departments`;
@@ -206,12 +205,12 @@ export const AnnouncementComment = `${BaseUrl}/authserv/api/v1/announcement/comm
 // HR:Attendance API
 export const GetAttendances = `${BaseUrl}/authserv/api/v1/find_attendance_by_orgid`;
 export const CreateAttendanceApi = `${BaseUrl}/authserv/api/v1/add_attendance`;
-export const GetDays = `${BaseUrl}/authserv/api/v1/all_days`
-export const CreateShift = `${BaseUrl}/authserv/api/v1/add_shift`
+export const GetDays = `${BaseUrl}/authserv/api/v1/all_days`;
+export const CreateShift = `${BaseUrl}/authserv/api/v1/add_shift`;
 export const GetShifts = `${BaseUrl}/authserv/api/v1/find_shift_by_orgid`;
-export const AssignShift = `${BaseUrl}/authserv/api/v1/assign_shift_to_users`
-export const AssignPartyToShift = `${BaseUrl}/authserv/api/v1/assign_shift_to_branch_or_dept`
-export const GetUserByShift = `${BaseUrl}/authserv/api/v1/get_user_by_shift`
+export const AssignShift = `${BaseUrl}/authserv/api/v1/assign_shift_to_users`;
+export const AssignPartyToShift = `${BaseUrl}/authserv/api/v1/assign_shift_to_branch_or_dept`;
+export const GetUserByShift = `${BaseUrl}/authserv/api/v1/get_user_by_shift`;
 //
 // App Api
 export const GetOrgAppsApi = `${BaseUrl}/utilityserv/api/v1/organisation/orgApps`;
@@ -227,7 +226,6 @@ export const GetSmsProviderApi = `${BaseUrl}/messagingserv/api/v1/get_all_sms_pr
 export const GetSmsConfigApi = `${BaseUrl}/messagingserv/api/v1/get_sms_config_by_orgId`;
 export const SaveSmsConfigApi = `${BaseUrl}/messagingserv/api/v1/smsConfig`;
 
-
 // Work order Api
 export const SaveVendorApi = `${BaseUrl}/utilityserv/api/v1/add_vendor`;
 export const GetListOfVendorsApi = `${BaseUrl}/utilityserv/api/v1/find_all_vendors`;
@@ -235,7 +233,6 @@ export const CreateWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/add_workorder`;
 export const UpdateWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/update_workorder`;
 export const DeleteWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/delete_workorder`;
 export const GetListOfWorkOrderApi = `${BaseUrl}/utilityserv/api/v1/find_all_workorders`;
-
 
 // Account Api
 export const GetAllAccountTypeApi = `${BaseUrl}/accountingserv/api/v1/account/get_all_account_types`;
@@ -358,7 +355,6 @@ export const GetFacebookTokenApi = `${BaseUrl}/crmserv/api/v1/facebook`;
 export const GenerateFacebookAuthoriseUrlApi = `${BaseUrl}/crmserv/api/v1/generateFacebookAuthoriseUrl`;
 export const GetUserDataApi = `${BaseUrl}/crmserv/api/v1/get_user_data`;
 
-
 /*********************************** LMS MODULE ***********************************
  **********************************************************************************/
 export const GetCategoriesApi = `${BaseUrl}/lmsserv/api/v1/lms/get_category_by_orgid`;
@@ -373,3 +369,8 @@ export const UpdateCourseApi = `${BaseUrl}/lmsserv/api/v1/lms/update_course`;
 export const DeleteCourseApi = `${BaseUrl}/lmsserv/api/v1/lms/delete_course`;
 export const UploadPreviewApi = `${BaseUrl}/lmsserv/api/v1/lms/upload_preview`;
 export const AddCourseVideoApi = `${BaseUrl}/lmsserv/api/v1/lms/add_course_video`;
+
+/*************************Reports Api***************************
+ ***************************************************************
+ ***************************************************************/
+export const GetGeneralJournalApi = `${BaseUrl}/accountingserv/api/v1/report/get_general_journal`;

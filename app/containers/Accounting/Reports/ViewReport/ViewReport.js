@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import ModuleLayout from '../ModuleLayout';
 import CustomerLedger from './Views/CustomerLedgers';
 import GeneralLedger from './Views/GeneralLedger';
+import GeneralJournal from './Views/GeneralJournal';
 import Inventory from './Views/Inventory';
 import AccountReconcilliation from './Views/AccountReconciliation';
 import AssetSchedule from './Views/AssetSchedule';
@@ -25,6 +26,11 @@ const ViewReport = () => (
         exact
         path="/account/reports/Fixed Asset Register"
         component={AssetSchedule}
+      />
+      <Route
+        exact
+        path="/account/reports/General Journal"
+        component={GeneralJournal}
       />
 
       <Route
