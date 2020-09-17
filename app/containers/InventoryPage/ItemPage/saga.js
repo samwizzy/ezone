@@ -249,6 +249,8 @@ export function* createNewInventoryAdjust({ payload }) {
   payload.orgId = currentUser.organisation.orgId;
   const requestURL = `${Endpoints.CreateNewInventoryAdjustApi}`;
 
+  console.log(payload, "payload createNewInventoryAdjust")
+
   try {
     const response = yield call(request, requestURL, {
       method: 'POST',
