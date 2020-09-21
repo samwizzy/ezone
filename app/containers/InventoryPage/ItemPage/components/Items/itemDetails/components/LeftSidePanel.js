@@ -33,10 +33,20 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const Drawer = ({ history, items, handleItemById, selectedIndex }) => {
+const Drawer = ({ history, items, handleItemById, handleNewClick, selectedIndex }) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
+
+    // return focus to the button when we transitioned from !open -> open
+    const prevOpen = React.useRef(open);
+    React.useEffect(() => {
+        if (prevOpen.current === true && open === false) {
+            anchorRef.current.focus();
+        }
+
+        prevOpen.current = open;
+    }, [open])
 
     const filteredItems = _.orderBy(items, ['dateCreated'], ['desc']);
 
@@ -117,9 +127,7 @@ const Drawer = ({ history, items, handleItemById, selectedIndex }) => {
                                 size="small"
                                 color="primary"
                                 startIcon={<AddIcon />}
-                                onClick={() =>
-                                    history.push({ pathname: '/inventory/item/new' })
-                                }
+                                onClick={handleNewClick}
                                 disableElevation
                             >
                                 Add

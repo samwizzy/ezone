@@ -1,5 +1,7 @@
 /* eslint-disable no-nested-ternary */
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
+import EzoneUtils from '../../../../../utils/EzoneUtils'
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -8,6 +10,7 @@ import { Autocomplete } from '@material-ui/lab';
 import {
   makeStyles,
   Button,
+  CircularProgress,
   Card,
   CardHeader,
   CardContent,
@@ -32,8 +35,6 @@ import DateFnsUtils from '@date-io/date-fns';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
-import LoadingIndicator from '../../../../../components/LoadingIndicator';
-// import TableTransfer from './TableTransfer';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -86,6 +87,14 @@ const initialItem = {
   transferQuantity: ''
 }
 
+const initialState = {
+  referenceNumber: '',
+  destinationWarehouseUuId: '',
+  reason: '',
+  sourceWareHouseUuid: '',
+  items: []
+}
+
 const TransferOrderDialog = props => {
   const {
     loading,
@@ -97,20 +106,23 @@ const TransferOrderDialog = props => {
   } = props;
 
   const classes = useStyles();
-  const [selectedDate, handleDateChange] = React.useState(new Date());
+  const [values, setValues] = React.useState({ ...initialState })
 
-  const [values, setValues] = React.useState({
-    referenceNumber: '',
-    transferOrder: '',
-    destinationWarehouseUuId: '',
-    reason: '',
-    sourceWareHouseUuid: '',
-    items: []
-  })
+  useEffect(() => {
+    if (dialog.type === 'edit' && dialog.data) {
+      const matchedData = EzoneUtils.matchWithPairs({ ...initialState }, dialog.data)
+      const items = EzoneUtils.matchArrayPairs({ sku: 'itemSku', transferredQuantity: 'transferQuantity' }, dialog.data.items)
+      const { id, sourceWarehouseUuid: sourceWareHouseUuid, destinationWarehouseUuid: destinationWarehouseUuId } = dialog.data
+      const newData = Object.assign({}, values, { ...matchedData, items }, { id, sourceWareHouseUuid, destinationWarehouseUuId })
+      setValues(newData);
+    } else {
+      setValues({ ...initialState });
+    }
+  }, []);
 
   const canBeSubmitted = () => {
-    const { referenceNumber, transferOrder, destinationWarehouseUuId, reason } = values;
-    return referenceNumber.length > 0 && transferOrder.length > 0 && destinationWarehouseUuId.length > 0 && reason.length > 0;
+    const { referenceNumber, destinationWarehouseUuId, reason } = values;
+    return referenceNumber.length > 0 && destinationWarehouseUuId.length > 0 && reason.length > 0;
   }
 
   const handleItemChange = i => event => {
@@ -151,6 +163,7 @@ const TransferOrderDialog = props => {
   console.log(getAllWarehouses, 'getAllWarehouses');
 
   console.log(values, 'values');
+  console.log(dialog, 'trasnsferDialog den');
   return (
     <div>
       <Card elevation={0} className={classes.card}>
@@ -179,40 +192,6 @@ const TransferOrderDialog = props => {
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Transfer Order</TableCell>
-                    <TableCell>
-                      <TextField
-                        id="outlined-transfer-order"
-                        size="small"
-                        name="transferOrder"
-                        label="Transfer Order"
-                        value={values.transferOrder}
-                        style={{ width: 300 }}
-                        onChange={handleChange}
-                        variant="outlined"
-                      />
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Selected Date</TableCell>
-                    <TableCell>
-                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker
-                          autoOk
-                          variant="inline"
-                          size="small"
-                          inputVariant="outlined"
-                          style={{ width: 300 }}
-                          label="Date"
-                          format="dd/MM/yyyy"
-                          value={selectedDate}
-                          InputAdornmentProps={{ position: 'end' }}
-                          onChange={handleDateChange}
-                        />
-                      </MuiPickersUtilsProvider>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
                     <TableCell>Source Warehouse</TableCell>
                     <TableCell>
                       <Autocomplete
@@ -221,6 +200,7 @@ const TransferOrderDialog = props => {
                         options={getAllWarehouses}
                         getOptionLabel={option => option.name}
                         onChange={handleSelectChange('sourceWareHouseUuid')}
+                        value={values.sourceWareHouseUuid ? _.find(getAllWarehouses, { uuid: values.sourceWareHouseUuid }) : null}
                         style={{ width: 300 }}
                         renderInput={params => (
                           <TextField
@@ -242,6 +222,7 @@ const TransferOrderDialog = props => {
                         options={getAllWarehouses}
                         getOptionLabel={option => option.name}
                         onChange={handleSelectChange('destinationWarehouseUuId')}
+                        value={values.destinationWarehouseUuId ? _.find(getAllWarehouses, { uuid: values.destinationWarehouseUuId }) : null}
                         style={{ width: 300 }}
                         renderInput={params => (
                           <TextField
@@ -299,6 +280,7 @@ const TransferOrderDialog = props => {
                               options={items}
                               getOptionLabel={option => option.itemName}
                               onChange={handleSelectItemChange(i)}
+                              value={row.id ? _.find(items, { id: row.id }) : null}
                               renderInput={params => (
                                 <TextField
                                   {...params}
@@ -375,9 +357,10 @@ const TransferOrderDialog = props => {
             onClick={handleSubmit}
             color="primary"
             variant="contained"
-            disabled={!canBeSubmitted()}
+            disabled={loading ? loading : !canBeSubmitted()}
+            endIcon={loading && <CircularProgress size={20} />}
           >
-            Save
+            {dialog.type === 'new' ? 'Save' : 'Update'}
           </Button>
           <Button
             size="small"

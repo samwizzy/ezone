@@ -12,11 +12,11 @@ import makeSelectItemPage from './../../selectors';
 import reducer from './../../reducer';
 import saga from './../../saga';
 import * as Actions from './../../actions';
-import ItemsGroupsList from './ItemsGroupsList';
-import ItemsGroupDetails from './itemsGroupDetails';
-import ItemGroupDialog from './ItemGroupDialog';
+import ItemsList from './ItemsList';
+import ItemDetails from './itemDetails/ItemDetails';
+import ItemDialog from './ItemDialog';
 
-export function ItemsGroupsPage(props) {
+export function ItemsPage(props) {
 	useInjectReducer({ key: 'itemPage', reducer });
 	useInjectSaga({ key: 'itemPage', saga });
 
@@ -29,21 +29,19 @@ export function ItemsGroupsPage(props) {
 	return (
 		<div>
 			<Helmet>
-				<title>Items Groups</title>
-				<meta name="description" content="Description of Items Groups" />
+				<title>Items</title>
+				<meta name="description" content="Description of Items" />
 			</Helmet>
 
 			<Fragment>
-				<Route exact path={path} component={ItemsGroupsList} />
-				<Route path={`${path}/:groupId`} component={ItemsGroupDetails} />
+				<Route exact path={`${path}/:itemId/:sku`} component={ItemDetails} />
+				<Route exact path={`${path}/:itemId/:sku/edit`} component={ItemDialog} />
 			</Fragment>
-
-			<ItemGroupDialog />
 		</div>
 	);
 }
 
-ItemsGroupsPage.propTypes = {};
+ItemsPage.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
 	itemPage: makeSelectItemPage(),
@@ -62,4 +60,4 @@ export default compose(
 	withRouter,
 	withConnect,
 	memo,
-)(ItemsGroupsPage);
+)(ItemsPage);

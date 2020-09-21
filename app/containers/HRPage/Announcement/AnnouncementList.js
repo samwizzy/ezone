@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -13,13 +13,12 @@ import DateFnsUtils from '@date-io/date-fns';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { green, orange } from '@material-ui/core/colors'
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import moment from 'moment'
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../App/selectors';
 import AnnouncementItem from './announcements/AnnouncementItem'
+import DataMessage from '../components/DataMessage'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1
-  }
+  },
 }));
 
 const severity = [
@@ -101,6 +100,7 @@ const Announcement = props => {
               <Button variant="contained" color="primary" onClick={openNewAnnouncementDialog}>Add Announcement</Button>
             </Toolbar>
           </AppBar>
+
           <Toolbar variant="dense" className={classes.toolbar}>
             <TextField
               id="search"
@@ -175,9 +175,15 @@ const Announcement = props => {
           </Toolbar>
         </Grid>
         <Grid item xs={12}>
-          {state.announcements && state.announcements.map((announcement, i) =>
-            <AnnouncementItem key={i} announcement={announcement} />
-          )}
+          {state.announcements && state.announcements.length ?
+            <Fragment>
+              {state.announcements.map((announcement, i) =>
+                <AnnouncementItem key={i} announcement={announcement} />
+              )}
+            </Fragment>
+            :
+            <DataMessage message="No announcement has been taken yet" />
+          }
         </Grid>
       </Grid>
     </div>

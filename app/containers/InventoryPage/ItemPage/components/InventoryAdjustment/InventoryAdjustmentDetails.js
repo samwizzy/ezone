@@ -160,7 +160,7 @@ const useStyles = makeStyles(theme => ({
 
 const InventoryAdjustmentDetails = props => {
   const classes = useStyles();
-  const { loading, getInventoryAdjustByIdAction, inventoryAdjusts, inventoryAdjust, match, getAllInventoryAdjustmentsAction } = props;
+  const { loading, getInventoryAdjustById, inventoryAdjusts, inventoryAdjust, match, getAllInventoryAdjustments } = props;
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const anchorRef = React.useRef(null);
 
@@ -168,15 +168,15 @@ const InventoryAdjustmentDetails = props => {
   console.log(params, 'params');
 
   React.useEffect(() => {
-    getAllInventoryAdjustmentsAction();
-    getInventoryAdjustByIdAction(params.statusId);
+    getAllInventoryAdjustments();
+    getInventoryAdjustById(params.statusId);
   }, []);
 
   const filteredItems = _.orderBy(inventoryAdjusts, ['dateCreated'], ['desc']);
 
   const handleItemById = id => {
     setSelectedIndex(id);
-    getInventoryAdjustByIdAction(id);
+    getInventoryAdjustById(id);
     props.history.push({ pathname: `/inventory/adjustments/${id}` });
   };
 
@@ -421,8 +421,8 @@ const InventoryAdjustmentDetails = props => {
 
 InventoryAdjustmentDetails.propTypes = {
   loading: PropTypes.bool,
-  getInventoryAdjustByIdAction: PropTypes.func,
-  getAllInventoryAdjustmentsAction: PropTypes.func,
+  getInventoryAdjustById: PropTypes.func,
+  getAllInventoryAdjustments: PropTypes.func,
   inventoryAdjusts: PropTypes.array,
   inventoryAdjust: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
 };
@@ -430,15 +430,13 @@ InventoryAdjustmentDetails.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   inventoryAdjusts: Selectors.makeSelectGetAllInventoryAdjustments(),
-  inventoryAdjust: Selectors.makeSelectGetInventoryAdjustByIdResponse(),
+  inventoryAdjust: Selectors.makeSelectGetInventoryAdjustedById(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getInventoryAdjustByIdAction: evt =>
-      dispatch(Actions.getInventoryAdjustById(evt)),
-    getAllInventoryAdjustmentsAction: () =>
-      dispatch(Actions.getAllInventoryAdjustments()),
+    getInventoryAdjustById: evt => dispatch(Actions.getInventoryAdjustById(evt)),
+    getAllInventoryAdjustments: () => dispatch(Actions.getAllInventoryAdjustments()),
   };
 }
 

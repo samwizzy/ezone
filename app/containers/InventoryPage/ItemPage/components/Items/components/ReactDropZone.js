@@ -1,18 +1,18 @@
 import React, { useMemo, useRef, useState, useEffect } from 'react';
-import {useDropzone} from 'react-dropzone'
+import { useDropzone } from 'react-dropzone'
 import RootRef from '@material-ui/core/RootRef'
 import styled from 'styled-components';
 import _ from 'lodash'
- 
+
 const getColor = (props) => {
   if (props.isDragAccept) {
-      return '#00e676';
+    return '#00e676';
   }
   if (props.isDragReject) {
-      return '#ff1744';
+    return '#ff1744';
   }
   if (props.isDragActive) {
-      return '#2196f3';
+    return '#2196f3';
   }
   return '#eeeeee';
 }
@@ -66,19 +66,11 @@ const Container = styled.div`
 
 function PaperDropzone(props) {
   const [files, setFiles] = useState([]);
-  const { uploadFileAction, task } = props
-  const [form, setForm] = useState({
-    attachments: [],
-    taskId: ""
-  });
-
-  React.useEffect(() => {
-    setForm(_.set(form, "taskId", task.id))
-  }, [task])
+  const { uploadFileAction } = props
 
   const {
     open,
-    acceptedFiles, 
+    acceptedFiles,
     getRootProps,
     getInputProps,
     isDragActive,
@@ -95,15 +87,13 @@ function PaperDropzone(props) {
 
       let attachments = []
       let attachment = {}
-      
+
       _.set(attachment, "fileName", acceptedFiles[0].name)
       _.set(attachment, "format", acceptedFiles[0].type)
       _.set(attachment, "size", acceptedFiles[0].size)
       getBase64(acceptedFiles[0], (result) => _.set(attachment, "file", result))
       attachments.push(attachment)
-      setForm(_.set(form, "attachments", attachments))
-      setForm(_.set(form, "taskId", task.id))
-      uploadFileAction(form)
+      uploadFileAction(attachments)
     },
   });
 
@@ -111,14 +101,14 @@ function PaperDropzone(props) {
     let reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = function () {
-        return cb(reader.result.split(',')[1])
+      return cb(reader.result.split(',')[1])
     };
     reader.onerror = function (error) {
-        console.log('Error: ', error);
+      console.log('Error: ', error);
     };
   }
 
-  const {ref, ...rootProps} = getRootProps();
+  const { ref, ...rootProps } = getRootProps();
 
   const thumbs = files.map(file => (
     <div style={thumb} key={file.name}>
@@ -136,16 +126,12 @@ function PaperDropzone(props) {
     files.forEach(file => URL.revokeObjectURL(file.preview));
   }, [files]);
 
-  console.log(acceptedFiles, "References library")
-  // console.log(inputRef, "inputRef library")
   console.log(files, "files state library")
-  console.log(form, "form state form")
-  
-  
+
   return (
     <RootRef rootRef={ref}>
       <div {...rootProps}>
-        <Container {...getRootProps({ className: 'dropzone', isDragActive, isDragAccept, isDragReject})}>
+        <Container {...getRootProps({ className: 'dropzone', isDragActive, isDragAccept, isDragReject })}>
           <input {...getInputProps()} multiple={false} />
           <p>Drag 'n' drop some files here, or click to select files</p>
           <button type="button" onClick={open}>

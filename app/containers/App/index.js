@@ -244,15 +244,14 @@ const App = props => {
                   />
 
                   <PrivateRoute
-                    exact
-                    path="/inventory/transfer/orders/:statusId?"
+                    path="/inventory/transfers"
                     component={TransferOrdersApp}
                   />
                   <PrivateRoute
-                    exact
-                    path="/inventory/transfer/new"
-                    component={NewTransferOrder}
+                    path="/inventory/transfer"
+                    component={TransferOrdersApp}
                   />
+
                   <PrivateRoute
                     exact
                     path="/inventory/adjustments/:statusId?"

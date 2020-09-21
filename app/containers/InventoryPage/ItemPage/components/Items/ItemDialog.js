@@ -1,27 +1,26 @@
 /* eslint-disable no-nested-ternary */
 import React, { memo, useEffect } from 'react';
+import EzoneUtils from '../../../../../utils/EzoneUtils'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter, Redirect } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import _ from 'lodash';
 import { Autocomplete } from '@material-ui/lab';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import EzoneUtils from './../../../../../utils/EzoneUtils';
 import {
   TextField,
   makeStyles,
   Button,
-  Box,
   Collapse,
-  Checkbox,
   CircularProgress,
   Card,
   CardContent,
   CardActions,
   Divider,
-  List, ListItem, ListItemIcon, ListItemText,
+  List, ListItem, ListItemText,
   Typography,
   Table, TableBody, TableRow, TableCell,
   FormControlLabel,
@@ -62,78 +61,77 @@ const useStyles = makeStyles(theme => ({
   title: {
     fontWeight: theme.typography.fontWeightMedium,
   },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular,
-  },
 }));
 
 const category = [
-  { id: 1, name: 'STOCK_ITEM' },
-  { id: 2, name: 'COMPONENT_ITEM' },
+  { id: 1, value: 'STOCK_ITEM', label: 'Stock' },
+  { id: 2, value: 'COMPONENT_ITEM', label: 'Component' },
 ];
+
+const initialState = {
+  barcode: '',
+  costPrice: '',
+  description: '',
+  state: '',
+  itemDimension: '',
+  itemName: '',
+  itemCategory: '',
+  itemType: '',
+  itemWeight: '',
+  manufacturer: '',
+  quantity: '',
+  sellingPrice: '',
+  sku: '',
+  unit: '',
+  wareHouseId: '',
+  vendorId: '',
+  orgId: '',
+  componentItemIds: null,
+  inventoryAccountId: '',
+  taxAccountId: '',
+  salesAccountId: '',
+  purchaseAccountId: '',
+  attachments: [],
+}
 
 const ItemDialog = props => {
   const {
     match,
-    history,
-    message,
     loading,
-    itemDialog,
+    dialog,
     accounts,
     vendors,
-    getAllWarehouses,
+    warehouses,
     getAllItems,
-    closeEditEmployeeDialogAction,
-    dispatchCreateNewItemAction,
-    getItemByIdAction,
-    getItemById,
+    createNewItem,
+    updateItem,
+    itemById,
   } = props;
 
   const classes = useStyles();
-  const [values, setValues] = React.useState({
-    barcode: '',
-    costPrice: '',
-    description: '',
-    state: '',
-    itemDimension: '',
-    itemName: '',
-    itemCategory: '',
-    itemType: '',
-    itemWeight: '',
-    manufacturer: '',
-    quantity: '',
-    sellingPrice: '',
-    sku: '',
-    unit: '',
-    wareHouseId: '',
-    vendorId: '',
-    orgId: '',
-    componentItemIds: null,
-    inventoryAccountId: '',
-    taxAccountId: '',
-    salesAccountId: '',
-    purchaseAccountId: '',
-    attachments: [],
-  });
+  const [values, setValues] = React.useState({ ...initialState });
 
   const [open, setOpen] = React.useState(false);
 
   const handleClick = () => {
     setOpen(!open);
-  };
+  }
 
   const canBeSubmitted = () => {
     const { itemName, itemType, description, costPrice, itemCategory, wareHouseId, manufacturer } = values;
     return (
       itemName.length > 0 && itemType.length > 0 && description.length > 0 &&
-      costPrice.length > 0 && manufacturer.length > 0 && wareHouseId && itemCategory.length > 0
-    );
-  };
+      costPrice && manufacturer.length > 0 && wareHouseId && itemCategory.length > 0
+    )
+  }
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
-  };
+  }
+
+  const handleSubmit = () => {
+    dialog.type === 'new' ? createNewItem(values) : updateItem(values)
+  }
 
   const handleMultiSelectChange = name => (event, arrValues) => {
     setValues({ ...values, [name]: arrValues });
@@ -141,7 +139,7 @@ const ItemDialog = props => {
 
   const handleSelectChange = name => (event, value) => {
     if (name === 'itemCategory') {
-      setValues({ ...values, [name]: value.name });
+      setValues({ ...values, [name]: value.value });
     } else {
       setValues({ ...values, [name]: value.id });
     }
@@ -153,18 +151,21 @@ const ItemDialog = props => {
 
   const { params } = match;
   useEffect(() => {
-    if (params.sku) {
-      getItemByIdAction(params.sku);
+    if (dialog.type === 'edit' && dialog.data) {
+      const matchedData = EzoneUtils.matchWithPairs({ ...initialState }, dialog.data)
+      const { id, componentItems: componentItemIds, wareHouseUuid: wareHouseId } = dialog.data
+      const newData = Object.assign({}, values, matchedData, { id, wareHouseId, componentItemIds })
+      setValues(newData);
+    } else {
+      setValues({ ...initialState });
     }
   }, []);
 
   useEffect(() => {
-    // setValues({ ...getItemById });
-  }, [getItemById]);
+  }, [itemById]);
 
   console.log(values, "values item")
-  console.log(vendors, "vendors item")
-  // console.log(accounts, "accounts item")
+  console.log(loading, "loading item")
 
   return (
     <div className={classes.root}>
@@ -176,7 +177,7 @@ const ItemDialog = props => {
                 variant="h6"
                 className={classes.title}
               >
-                {itemDialog.type === 'new' ? 'New Item' : 'Edit Item'}
+                {params.status === 'new' ? 'New Item' : 'Edit Item'}
               </Typography>
             </CardContent>
             <Divider />
@@ -184,20 +185,17 @@ const ItemDialog = props => {
             <CardContent>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-
                   <Table size="small" className={classes.table}>
                     <TableBody>
                       <TableRow>
                         <TableCell colSpan={2}>
                           <FormControl component="fieldset">
-                            <FormLabel component="legend">
-                              Item Type
-                            </FormLabel>
+                            <FormLabel component="legend">Item Type</FormLabel>
                             <RadioGroup
                               row
                               aria-label="position"
                               name="position"
-                              defaultValue="top"
+                              value={values.itemType}
                             >
                               <FormControlLabel
                                 value="GOODS"
@@ -218,25 +216,23 @@ const ItemDialog = props => {
                       <TableRow>
                         <TableCell>
                           <TextField
-                            id="outlined-itemName"
+                            id="outlined-item-name"
                             size="small"
                             label="Item Name"
                             value={values.itemName}
                             onChange={handleChange('itemName')}
                             variant="outlined"
-                            className={classes.textField}
                           />
                         </TableCell>
 
                         <TableCell>
                           <TextField
-                            id="outlined-SKU"
+                            id="outlined-sku"
                             size="small"
                             label="SKU"
                             value={values.sku}
                             onChange={handleChange('sku')}
                             variant="outlined"
-                            className={classes.textField}
                           />
                         </TableCell>
                       </TableRow>
@@ -342,13 +338,14 @@ const ItemDialog = props => {
                             options={getAllItems}
                             getOptionLabel={option => option.itemName}
                             onChange={handleMultiSelectChange('componentItemIds')}
+                            value={values.componentItemIds ? values.componentItemIds : []}
                             renderInput={params => (
                               <TextField
                                 {...params}
                                 label="Select Items"
                                 variant="outlined"
                                 fullWidth
-                                placeholder="Select Items"
+                                placeholder="Items"
                               />
                             )}
                           />
@@ -371,15 +368,16 @@ const ItemDialog = props => {
                             id="combo-item-category"
                             size="small"
                             options={category}
-                            getOptionLabel={option => option.name}
+                            getOptionLabel={option => option.label}
                             onChange={handleSelectChange('itemCategory')}
+                            value={values.itemCategory ? _.find(category, { value: values.itemCategory }) : null}
                             renderInput={params => (
                               <TextField
                                 {...params}
                                 label="Select Category"
                                 variant="outlined"
                                 fullWidth
-                                placeholder="Select Category"
+                                placeholder="Category"
                               />
                             )}
                           />
@@ -393,6 +391,7 @@ const ItemDialog = props => {
                             options={vendors}
                             getOptionLabel={option => option.fullName}
                             onChange={handleSelectChange('vendorId')}
+                            value={values.vendorId ? _.find(vendors, { id: values.vendorId }) : null}
                             renderInput={params => (
                               <TextField
                                 {...params}
@@ -419,17 +418,18 @@ const ItemDialog = props => {
                         </TableCell>
                         <TableCell>
                           <Autocomplete
-                            id="combo-wareHouseId"
+                            id="combo-warehouse-id"
                             size="small"
-                            options={getAllWarehouses}
+                            options={warehouses}
                             getOptionLabel={option => option.name}
                             onChange={handleSelectChange('wareHouseId')}
+                            value={values.wareHouseId ? _.find(warehouses, { uuid: values.wareHouseId }) : null}
                             renderInput={params => (
                               <TextField
                                 {...params}
                                 label="Select WareHouse"
                                 variant="outlined"
-                                placeholder="Select WareHouse"
+                                placeholder="WareHouse"
                               />
                             )}
                           />
@@ -442,7 +442,7 @@ const ItemDialog = props => {
                             size="small"
                             label="Description"
                             variant="outlined"
-                            value={values.description}
+                            value={values.description ? values.description : ""}
                             onChange={handleChange('description')}
                             margin="normal"
                             fullWidth
@@ -455,15 +455,6 @@ const ItemDialog = props => {
                         <TableCell colSpan="2">
                           <List>
                             <ListItem button onClick={handleClick} dense>
-                              {/* <ListItemIcon>
-                                <Checkbox
-                                  edge="start"
-                                  checked={values.checked}
-                                  tabIndex={-1}
-                                  disableRipple
-                                  inputProps={{ 'aria-labelledby': 'collapse-accounting' }}
-                                />
-                              </ListItemIcon> */}
                               <ListItemText primary="Accounting" />
                               {open ? <ExpandLess /> : <ExpandMore />}
                             </ListItem>
@@ -474,6 +465,7 @@ const ItemDialog = props => {
                                 options={accounts}
                                 getOptionLabel={option => option.accountName}
                                 onChange={handleSelectChange('inventoryAccountId')}
+                                value={values.inventoryAccountId ? _.find(accounts, { id: values.inventoryAccountId }) : null}
                                 renderInput={params => (
                                   <TextField
                                     {...params}
@@ -492,6 +484,7 @@ const ItemDialog = props => {
                                 options={accounts}
                                 getOptionLabel={option => option.accountName}
                                 onChange={handleSelectChange('salesAccountId')}
+                                value={values.salesAccountId ? _.find(accounts, { id: values.salesAccountId }) : null}
                                 renderInput={params => (
                                   <TextField
                                     {...params}
@@ -510,6 +503,7 @@ const ItemDialog = props => {
                                 options={accounts}
                                 getOptionLabel={option => option.accountName}
                                 onChange={handleSelectChange('purchaseAccountId')}
+                                value={values.purchaseAccountId ? _.find(accounts, { id: values.purchaseAccountId }) : null}
                                 renderInput={params => (
                                   <TextField
                                     {...params}
@@ -528,6 +522,7 @@ const ItemDialog = props => {
                                 options={accounts}
                                 getOptionLabel={option => option.accountName}
                                 onChange={handleSelectChange('taxAccountId')}
+                                value={values.taxAccountId ? _.find(accounts, { id: values.taxAccountId }) : null}
                                 renderInput={params => (
                                   <TextField
                                     {...params}
@@ -549,44 +544,24 @@ const ItemDialog = props => {
               </Grid>
             </CardContent>
 
-
             <CardActions>
-              <div>
-                <Button
-                  color="primary"
-                  variant="outlined"
-                  size="small"
-                >
-                  Cancel
-                </Button>
-                {params.statusId === 'new' ?
-                  <Button
-                    onClick={() => {
-                      dispatchCreateNewItemAction(values);
-                    }}
-                    color="primary"
-                    variant="contained"
-                    size="small"
-                    disabled={loading ? loading : !canBeSubmitted()}
-                    endIcon={loading && <CircularProgress size={20} />}
-                  >
-                    Save
-                  </Button>
-                  :
-                  <Button
-                    onClick={() => {
-                      dispatchCreateNewItemAction(values);
-                    }}
-                    color="primary"
-                    variant="contained"
-                    disabled={loading ? loading : !canBeSubmitted()}
-                    endIcon={loading && <CircularProgress size={20} />}
-                  >
-                    Update
-                  </Button>
-                }
-              </div>
-
+              <Button
+                color="primary"
+                variant="outlined"
+                size="small"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleSubmit}
+                color="primary"
+                variant="contained"
+                size="small"
+                disabled={loading ? loading : !canBeSubmitted()}
+                endIcon={loading && <CircularProgress size={20} />}
+              >
+                {dialog.type === 'new' ? 'Save' : 'Update Item'}
+              </Button>
             </CardActions>
           </Card>
         </Grid>
@@ -598,29 +573,27 @@ const ItemDialog = props => {
 ItemDialog.propTypes = {
   loading: PropTypes.bool,
   message: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
-  itemDialog: PropTypes.object,
-  getAllWarehouses: PropTypes.array,
-  dispatchCreateNewItemAction: PropTypes.func,
-  getItemByIdAction: PropTypes.func,
-  getItemById: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+  dialog: PropTypes.object,
+  warehouses: PropTypes.array,
+  createNewItem: PropTypes.func,
+  itemById: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   message: Selectors.makeSelectMessage(),
-  itemDialog: Selectors.makeSelectItemDialog(),
-  getAllWarehouses: Selectors.makeSelectGetAllWarehouses(),
+  dialog: Selectors.makeSelectItemDialog(),
+  warehouses: Selectors.makeSelectGetAllWarehouses(),
   accounts: Selectors.makeSelectGetAccounts(),
   vendors: Selectors.makeSelectGetVendors(),
-  getItemById: Selectors.makeSelectGetItemByIdResponse(),
+  itemById: Selectors.makeSelectGetItemById(),
   getAllItems: Selectors.makeSelectGetAllItems(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchCreateNewItemAction: evt => dispatch(Actions.createNewItem(evt)),
-    getItemByIdAction: evt => dispatch(Actions.getItemById(evt)),
-    dispatch,
+    createNewItem: data => dispatch(Actions.createNewItem(data)),
+    updateItem: data => dispatch(Actions.updateItem(data)),
   };
 }
 

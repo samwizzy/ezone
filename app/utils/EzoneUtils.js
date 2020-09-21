@@ -1,4 +1,45 @@
+import _ from 'lodash'
+
 class EzoneUtils {
+
+  mergeWithPairs(object, sources) {
+    function customizer(objValue, srcValue, key) {
+      return _.has(object, key) ? srcValue : null;
+    }
+
+    var defaults = _.partialRight(_.assignInWith, customizer);
+
+    const result = defaults(object, sources, [customizer]);
+    return _.pickBy(result, _.identity)
+  }
+
+  matchWithPairs(initial, sources) {
+    if (!initial || !sources) {
+      return;
+    }
+
+    let objectMap = new Map()
+    for (let key in sources) {
+      if (_.has(initial, key)) {
+        objectMap.has(key) ? objectMap.delete(key) : objectMap.set(key, sources[key])
+      }
+    }
+
+    return Object.fromEntries(objectMap.entries());
+  }
+
+  matchArrayPairs(initial, sources) {
+    const result = []
+    sources.map(source => {
+      const matchedObject = _.mapKeys(source, function (value, key) {
+        return _.has(initial, key) ? initial[key] : key;
+      });
+      // const matchedObject = this.matchWithPairs(initial, source)
+      result.push(matchedObject)
+    })
+
+    return result
+  }
 
   toTitleCase = str => (str ? str[0].toUpperCase() + str.slice(1) : '');
 

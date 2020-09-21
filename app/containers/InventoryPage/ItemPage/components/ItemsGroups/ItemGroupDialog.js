@@ -6,26 +6,18 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
 import {
+  CircularProgress,
   TextField,
   makeStyles,
   Button,
   Dialog,
   DialogContent,
   DialogActions,
-  MenuItem,
   DialogTitle,
-  Divider,
   Slide,
 } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1
-  }
-}));
-
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -38,7 +30,7 @@ const ItemGroupDialog = props => {
     dialog,
     closeNewItemGroupDialog,
     createItemGroup,
-    updateItemGroup
+    updateItemsGroup
   } = props;
 
   useEffect(() => {
@@ -46,7 +38,6 @@ const ItemGroupDialog = props => {
       setValues({ ...dialog.data });
   }, [dialog.data]);
 
-  const classes = useStyles();
   const [values, setValues] = React.useState({
     groupDescription: "",
     groupName: "",
@@ -64,7 +55,7 @@ const ItemGroupDialog = props => {
 
   const handleSubmit = () => {
     dialog.type === 'new' ?
-      createItemGroup(values) : updateItemGroup(values)
+      createItemGroup(values) : updateItemsGroup(values)
   }
 
   const handleSelectChange = name => (event, value) => {
@@ -72,6 +63,7 @@ const ItemGroupDialog = props => {
   };
 
   console.log(values, "values")
+  console.log(dialog, "dialog")
 
   return (
     <div>
@@ -121,6 +113,7 @@ const ItemGroupDialog = props => {
               options={items}
               getOptionLabel={option => option.itemName}
               onChange={handleSelectChange('items')}
+              value={values.items}
               renderInput={params => (
                 <TextField
                   {...params}
@@ -140,7 +133,8 @@ const ItemGroupDialog = props => {
             onClick={handleSubmit}
             color="primary"
             variant="contained"
-            disabled={!canBeSubmitted()}
+            disabled={loading ? loading : !canBeSubmitted()}
+            endIcon={loading && <CircularProgress size={20} />}
           >
             {dialog.type === 'new' ? "Save" : "Update"}
           </Button>
@@ -174,7 +168,7 @@ function mapDispatchToProps(dispatch) {
   return {
     createItemGroup: data => dispatch(Actions.createItemGroup(data)),
     closeNewItemGroupDialog: () => dispatch(Actions.closeNewItemGroupDialog()),
-    updateItemGroup: data => dispatch(Actions.updateItemGroup(data)),
+    updateItemsGroup: data => dispatch(Actions.updateItemsGroup(data)),
     closeEditItemGroupDialog: () => dispatch(Actions.closeEditItemGroupDialog()),
   };
 }

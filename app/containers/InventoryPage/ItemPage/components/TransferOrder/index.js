@@ -7,37 +7,40 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import TransferOrderDetails from './TransferOrderDetails';
+import * as Actions from '../../actions';
+import TransferOrderDetails from './TransferOrderDetails/TransferOrderDetails';
 import TransferOrderDialog from './TransferOrderDialog';
 import TransferOrdersList from './TransferOrdersList';
 import ModuleLayout from '../../../components/ModuleLayout';
 
 function TransferOrderApp(props) {
-  const { match } = props;
-  const { params } = match
-  console.log(match.params, "params")
+  const { match, getAllItems, getAllWarehouse, getAllTransferOrder, } = props;
+  const { path } = match
+  console.log(match, "match TransferOrderApp")
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getAllItems();
+    getAllWarehouse();
+    getAllTransferOrder();
+  }, []);
 
   return (
     <div>
-        <Helmet>
-          <title>Transfer Order</title>
-          <meta name="description" content="Description of Transfer Order" />
-        </Helmet>
-        <ModuleLayout>
-            {
-            params.statusId == 'new'?
-            <TransferOrderDialog />
-            :
-            params.statusId?
-            <TransferOrderDetails />:<TransferOrdersList />
-            }
-        </ModuleLayout>
+      <Helmet>
+        <title>Transfer Order</title>
+        <meta name="description" content="Description of Transfer Order" />
+      </Helmet>
+
+      <ModuleLayout>
+        <Route exact path={path} component={TransferOrdersList} />
+        <Route exact path={`${path}/create/new`} component={TransferOrderDialog} />
+        <Route exact path={`/inventory/transfer/:transferId`} component={TransferOrderDetails} />
+        <Route exact path={`/inventory/transfer/:transferId/edit`} component={TransferOrderDialog} />
+      </ModuleLayout>
     </div>
   );
 }
@@ -48,7 +51,9 @@ const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    getAllTransferOrder: () => dispatch(Actions.getAllTransferOrder()),
+    getAllWarehouse: () => dispatch(Actions.getAllWarehouse()),
+    getAllItems: () => dispatch(Actions.getAllItems()),
   };
 }
 

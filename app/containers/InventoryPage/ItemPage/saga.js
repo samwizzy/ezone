@@ -135,6 +135,33 @@ export function* createNewItem({ payload }) {
   }
 }
 
+export function* updateItem({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  payload.orgId = currentUser.organisation.orgId;
+
+  const requestURL = `${Endpoints.UpdateItemApi}/${payload.id}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.updateItemSuccess(response));
+    yield put(Actions.getItemById(payload));
+  } catch (err) {
+    console.log(err);
+    yield put(Actions.updateItemError(err));
+    const error = yield call(errorHandler, err.response.json())
+    console.log(error, "error create item")
+  }
+}
+
 export function* createItemGroup({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
@@ -165,6 +192,38 @@ export function* createItemGroup({ payload }) {
   }
 }
 
+export function* updateItemGroup({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  payload.orgId = currentUser.organisation.orgId;
+
+  const requestURL = `${Endpoints.UpdateItemGroupApi}/${payload.id}`;
+
+  console.log(payload, "payload updateItemGroup")
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "response createItemGroup")
+
+    yield put(Actions.updateItemsGroupSuccess(response));
+    yield put(Actions.getItemsGroups());
+    yield put(Actions.closeNewItemGroupDialog());
+  } catch (err) {
+    console.log(err);
+    yield put(Actions.updateItemsGroupError(err));
+    const error = yield call(errorHandler, err.response.json())
+    console.log(error, "error update item")
+  }
+}
+
 export function* getAllWarehouses() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.GetAllWarehouses}`;
@@ -183,13 +242,7 @@ export function* getAllWarehouses() {
     yield put(Actions.getAllWarehouseSuccess(response));
   } catch (err) {
     yield put(Actions.getAllWarehouseError(err));
-    yield put(
-      AppActions.openSnackBar({
-        open: true,
-        message: `${err}`,
-        status: 'error',
-      }),
-    );
+    yield put(AppActions.openSnackBar({ open: true, message: `${err}`, status: 'error' }));
   }
 }
 
@@ -228,7 +281,7 @@ export function* getAllTransferOrder() {
   const requestURL = `${Endpoints.GetAllTransferOrderApi}`;
 
   try {
-    const getAllTransferOrderResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -236,7 +289,7 @@ export function* getAllTransferOrder() {
       }),
     });
 
-    yield put(Actions.getAllTransferOrderSuccess(getAllTransferOrderResponse));
+    yield put(Actions.getAllTransferOrderSuccess(response));
   } catch (err) {
     yield put(Actions.getAllTransferOrderError(err));
   }
@@ -245,11 +298,8 @@ export function* getAllTransferOrder() {
 export function* createNewInventoryAdjust({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-
   payload.orgId = currentUser.organisation.orgId;
   const requestURL = `${Endpoints.CreateNewInventoryAdjustApi}`;
-
-  console.log(payload, "payload createNewInventoryAdjust")
 
   try {
     const response = yield call(request, requestURL, {
@@ -284,9 +334,7 @@ export function* getAllInventoryAdjusts() {
 
     console.log(response, 'response');
 
-    yield put(
-      Actions.getAllInventoryAdjustmentsSuccess(response),
-    );
+    yield put(Actions.getAllInventoryAdjustmentsSuccess(response));
   } catch (err) {
     yield put(Actions.getAllInventoryAdjustmentsError(err));
   }
@@ -311,14 +359,12 @@ export function* getAllItemsPerWarehouse({ payload }) {
   }
 }
 
-export function* getItemById() {
+export function* getItemById({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const getItemByIdDetails = yield select(Selectors.makeSelectGetItemById());
-
-  const requestURL = `${Endpoints.GetItemByIdApi}/${getItemByIdDetails}`;
+  const requestURL = `${Endpoints.GetItemByIdApi}/${payload}`;
 
   try {
-    const getItemByIdResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -326,7 +372,7 @@ export function* getItemById() {
       }),
     });
 
-    yield put(Actions.getItemByIdSuccess(getItemByIdResponse));
+    yield put(Actions.getItemByIdSuccess(response));
   } catch (err) {
     yield put(Actions.getItemByIdError(err));
   }
@@ -353,13 +399,9 @@ export function* getItemsGroupById({ payload }) {
   }
 }
 
-export function* getStockLocations() {
+export function* getStockLocations({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const getStockLocBySku = yield select(
-    Selectors.makeSelectGetStockLocationBySku(),
-  );
-
-  const requestURL = `${Endpoints.GetStockLocations}/${getStockLocBySku}`;
+  const requestURL = `${Endpoints.GetStockLocations}/${payload}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -380,6 +422,8 @@ export function* getTransferOrderById({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.GetTransferOrderByIdApi}/${payload}`;
 
+  console.log(payload, "payload getTransferOrderById")
+
   try {
     const response = yield call(request, requestURL, {
       method: 'GET',
@@ -388,6 +432,8 @@ export function* getTransferOrderById({ payload }) {
         'Content-Type': 'application/json',
       }),
     });
+
+    console.log(response, "response getTransferOrderById")
 
     yield put(Actions.getTransferOrderByIdSuccess(response));
   } catch (err) {
@@ -425,12 +471,14 @@ export default function* itemPageSaga() {
   yield takeLatest(Constants.GET_STOCK_LOCATIONS, getStockLocations);
   yield takeLatest(Constants.GET_ALL_ITEMS_PER_WAREHOUSE, getAllItemsPerWarehouse);
   yield takeLatest(Constants.GET_ITEM_BY_ID, getItemById);
+  yield takeLatest(Constants.UPDATE_ITEM_BY_ID, updateItem);
   yield takeLatest(Constants.GET_ITEMS_GROUP_BY_ID, getItemsGroupById);
   yield takeLatest(Constants.GET_ALL_TRANSFER_ORDER, getAllTransferOrder);
   yield takeLatest(Constants.GET_ITEMS_GROUPS, getItemsGroups);
   yield takeLatest(Constants.GET_ALL_ITEMS, getAllItems);
   yield takeLatest(Constants.CREATE_NEW_ITEM, createNewItem);
   yield takeLatest(Constants.CREATE_ITEM_GROUP, createItemGroup);
+  yield takeLatest(Constants.UPDATE_ITEMS_GROUP_BY_ID, updateItemGroup);
   yield takeLatest(Constants.GET_ALL_WAREHOUSE, getAllWarehouses);
   yield takeLatest(Constants.CREATE_NEW_TRANSFER_ORDER, createNewTransferOrder);
   yield takeLatest(Constants.CREATE_NEW_INVENTORY_ADJUSTMENT, createNewInventoryAdjust);

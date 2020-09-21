@@ -12,13 +12,11 @@ import makeSelectItemPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import * as Actions from './actions';
-import TransferOrderDialog from './components/TransferOrder/TransferOrderDialog';
-import ViewItemDialog from './components/Items/ViewItemDialog';
 import ItemDialog from './components/Items/ItemDialog';
 import ItemDetails from './components/Items/itemDetails/ItemDetails';
 import ItemsList from './components/Items/ItemsList';
+import ItemApp from './components/Items';
 import ItemsGroupsPage from './components/ItemsGroups';
-import ItemGroupDialog from './components/ItemsGroups/ItemGroupDialog';
 import ModuleLayout from '../components/ModuleLayout';
 
 export function ItemPage(props) {
@@ -26,8 +24,7 @@ export function ItemPage(props) {
   useInjectSaga({ key: 'itemPage', saga });
 
   const { getAllItems, getItemsGroups, getAllWarehouse, getAccounts, getVendors, match } = props;
-  const { params, path } = match;
-  console.log(match, 'match');
+  const { path } = match;
 
   useEffect(() => {
     getAllItems();
@@ -47,14 +44,11 @@ export function ItemPage(props) {
 
         <Fragment>
           <Route exact path={path} component={ItemsList} />
-          <Route exact path={`${path}/new`} component={ItemDialog} />
-          <Route exact path={`${path}/edit`} component={ItemDialog} />
-          <Route path={`${path}/groups`} component={ItemsGroupsPage} />
-          <Route exact path={`/inventory/item/:statusId/:sku`} component={ItemDetails} />
+          <Route path={`/inventory/items/groups`} component={ItemsGroupsPage} />
+          <Route exact path={`/inventory/items/create/:status?`} component={ItemDialog} />
+          <Route path={`/inventory/item`} component={ItemApp} />
         </Fragment>
       </ModuleLayout>
-
-      <ItemGroupDialog />
     </div>
   );
 }

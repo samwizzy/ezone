@@ -7,28 +7,22 @@ import produce from 'immer';
 import * as Constants from './constants';
 
 export const initialState = {
+  loading: false,
+  error: false,
+  message: false,
   accounts: [],
   vendors: [],
   itemsGroups: [],
   itemsGroup: null,
-  getStockLocationBySku: false,
-  getStockLocationBySkuResponse: [],
-  getInventoryAdjustById: false,
-  getInventoryAdjustByIdResponse: false,
-  getItemByIdResponse: false,
-  getItemById: false,
+  stockLocationBySku: [],
+  items: [],
+  itemById: null,
   itemsPerWarehouse: [],
-  getAllItemsPerWarehouseUuid: {},
-  message: false,
-  newTransferOrderDetails: false,
-  newItemDetails: false,
-  newInventoryAdjustmentDetails: false,
-  getAllInventoryAdjustments: [],
-  getAllTransferOrder: [],
-  getAllWarehouses: [],
-  getAllItems: [],
-  loading: false,
-  error: false,
+  inventoryAdjustments: [],
+  inventoryAdjustedById: null,
+  transferOrders: [],
+  transferOrderById: null,
+  warehouses: [],
   itemDialog: {
     type: 'new',
     props: {
@@ -73,7 +67,7 @@ const itemPageReducer = (state = initialState, action) =>
             },
             data: null,
           },
-        };
+        }
       }
       case Constants.CLOSE_NEW_ITEM_DIALOG: {
         return {
@@ -85,7 +79,31 @@ const itemPageReducer = (state = initialState, action) =>
             },
             data: null,
           },
-        };
+        }
+      }
+      case Constants.OPEN_EDIT_ITEM_DIALOG: {
+        return {
+          ...state,
+          itemDialog: {
+            type: 'edit',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        }
+      }
+      case Constants.CLOSE_EDIT_ITEM_DIALOG: {
+        return {
+          ...state,
+          itemDialog: {
+            type: 'edit',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        }
       }
       case Constants.OPEN_NEW_ITEM_GROUP_DIALOG: {
         return {
@@ -119,7 +137,7 @@ const itemPageReducer = (state = initialState, action) =>
             props: {
               open: true,
             },
-            data: null,
+            data: action.payload,
           },
         };
       }
@@ -176,6 +194,30 @@ const itemPageReducer = (state = initialState, action) =>
           ...state,
           transferOrderDialog: {
             type: 'new',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.OPEN_EDIT_TRANSFER_ORDER_DIALOG: {
+        return {
+          ...state,
+          transferOrderDialog: {
+            type: 'edit',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_EDIT_TRANSFER_ORDER_DIALOG: {
+        return {
+          ...state,
+          transferOrderDialog: {
+            type: 'edit',
             props: {
               open: false,
             },
@@ -263,7 +305,7 @@ const itemPageReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          getAllItems: action.payload,
+          items: action.payload,
         };
       }
       case Constants.GET_ALL_ITEMS_ERROR: {
@@ -317,12 +359,33 @@ const itemPageReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
+      case Constants.UPDATE_ITEMS_GROUP_BY_ID: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.UPDATE_ITEMS_GROUP_BY_ID_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          itemsGroup: action.payload,
+        };
+      }
+      case Constants.UPDATE_ITEMS_GROUP_BY_ID_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
       case Constants.CREATE_NEW_ITEM: {
         return {
           ...state,
           loading: true,
           error: false,
-          newItemDetails: action.payload,
         };
       }
       case Constants.CREATE_NEW_ITEM_SUCCESS: {
@@ -374,7 +437,7 @@ const itemPageReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          getAllWarehouses: action.payload,
+          warehouses: action.payload,
         };
       }
       case Constants.GET_ALL_WAREHOUSE_ERROR: {
@@ -389,7 +452,6 @@ const itemPageReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          newTransferOrderDetails: action.payload,
         };
       }
       case Constants.CREATE_NEW_TRANSFER_ORDER_SUCCESS: {
@@ -418,7 +480,7 @@ const itemPageReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          getAllTransferOrder: action.payload,
+          transferOrders: action.payload,
         };
       }
       case Constants.GET_ALL_TRANSFER_ORDER_ERROR: {
@@ -457,7 +519,6 @@ const itemPageReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          newInventoryAdjustmentDetails: action.payload,
         };
       }
       case Constants.CREATE_NEW_INVENTORY_ADJUSTMENT_SUCCESS: {
@@ -486,7 +547,7 @@ const itemPageReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          getAllInventoryAdjustments: action.payload,
+          inventoryAdjustments: action.payload,
         };
       }
       case Constants.GET_ALL_INVENTORY_ADJUSTMENT_ERROR: {
@@ -499,7 +560,6 @@ const itemPageReducer = (state = initialState, action) =>
       case Constants.GET_ALL_ITEMS_PER_WAREHOUSE: {
         return {
           ...state,
-          getAllItemsPerWarehouseUuid: action.payload,
           loading: true,
           error: false,
         };
@@ -509,7 +569,7 @@ const itemPageReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          getAllItemsPerWarehouse: action.payload,
+          itemsPerWarehouse: action.payload,
         };
       }
       case Constants.GET_ALL_ITEMS_PER_WAREHOUSE_ERROR: {
@@ -522,7 +582,6 @@ const itemPageReducer = (state = initialState, action) =>
       case Constants.GET_ITEM_BY_ID: {
         return {
           ...state,
-          getItemById: action.payload,
           loading: true,
           error: false,
         };
@@ -532,7 +591,7 @@ const itemPageReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          getItemByIdResponse: action.payload,
+          itemById: action.payload,
         };
       }
       case Constants.GET_ITEM_BY_ID_ERROR: {
@@ -542,10 +601,31 @@ const itemPageReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
+      case Constants.UPDATE_ITEM_BY_ID: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.UPDATE_ITEM_BY_ID_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          itemById: action.payload,
+        };
+      }
+      case Constants.UPDATE_ITEM_BY_ID_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
       case Constants.GET_STOCK_LOCATIONS: {
         return {
           ...state,
-          getStockLocationBySku: action.payload,
           loading: true,
           error: false,
         };
@@ -555,7 +635,7 @@ const itemPageReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          getStockLocationBySkuResponse: action.payload,
+          stockLocationBySku: action.payload,
         };
       }
       case Constants.GET_STOCK_LOCATIONS_ERROR: {
@@ -568,7 +648,6 @@ const itemPageReducer = (state = initialState, action) =>
       case Constants.GET_TRANSFER_ORDER_BY_ID: {
         return {
           ...state,
-          getItemById: action.payload,
           loading: true,
           error: false,
         };
@@ -578,7 +657,7 @@ const itemPageReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          getItemByIdResponse: action.payload,
+          transferOrderById: action.payload,
         };
       }
       case Constants.GET_TRANSFER_ORDER_BY_ID_ERROR: {
@@ -591,7 +670,6 @@ const itemPageReducer = (state = initialState, action) =>
       case Constants.GET_INVENTORY_ADJUST_BY_ID: {
         return {
           ...state,
-          getInventoryAdjustById: action.payload,
           loading: true,
           error: false,
         };
@@ -601,7 +679,7 @@ const itemPageReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          getInventoryAdjustByIdResponse: action.payload,
+          inventoryAdjustedById: action.payload,
         };
       }
       case Constants.GET_INVENTORY_ADJUST_BY_ID_ERROR: {

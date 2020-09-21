@@ -8,7 +8,7 @@ import {
   Icon,
   Button
 } from '@material-ui/core';
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
+import { darken } from '@material-ui/core/styles/colorManipulator';
 import AddIcon from '@material-ui/icons/Add';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
@@ -18,7 +18,6 @@ import _ from 'lodash';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import LoadingIndicator from '../../../../../components/LoadingIndicator';
-import ViewItemDialog from './ViewItemDialog';
 
 const useStyles = makeStyles(theme => ({
   datatable: {
@@ -41,15 +40,6 @@ const useStyles = makeStyles(theme => ({
 
 const ItemsGroupsList = props => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const {
     loading,
@@ -60,11 +50,11 @@ const ItemsGroupsList = props => {
     getItemsGroupById,
   } = props;
 
-  console.log(match, "match grouop list")
+  const handleRoute = groupId => {
+    history.push(`${match.url}/${groupId}`)
+  }
 
   const orderedItemsGroups = _.orderBy(ItemsGroups, 'dateCreated', 'desc')
-
-  console.log(ItemsGroups, "ItemsGroups")
 
   const columns = [
     {
@@ -130,7 +120,7 @@ const ItemsGroupsList = props => {
               aria-haspopup="true"
               onClick={event => {
                 event.stopPropagation()
-                history.push(`/inventory/items/groups/${itemGroup.id}`)
+                handleRoute(itemGroup.id)
               }}
             >
               View
@@ -162,7 +152,7 @@ const ItemsGroupsList = props => {
     ),
     onRowClick: (rowData, rowState) => {
       getItemsGroupById(rowData[0]);
-      props.history.push(`${match.url}/${rowData[0]}`)
+      handleRoute(rowData[0])
     },
     elevation: 0
   };

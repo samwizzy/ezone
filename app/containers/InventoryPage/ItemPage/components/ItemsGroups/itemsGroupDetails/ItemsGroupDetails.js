@@ -132,6 +132,7 @@ const ItemsGroupDetails = props => {
     itemsGroup,
     match,
     openNewItemGroupDialog,
+    openEditItemGroupDialog,
     getItemsGroupById,
   } = props;
 
@@ -186,16 +187,16 @@ const ItemsGroupDetails = props => {
         <Grid item xs={10}>
           <Grid container>
             <Grid item xs={12}>
-              <ControlsButtons />
-            </Grid>
-            <Grid item xs={12}>
               <div className={classes.content}>
                 <Backdrop className={classes.backdrop} open={loading}>
                   <CircularProgress color="inherit" />
                 </Backdrop>
 
-                <Box px={2}>
-                  <Typography variant="h6">{itemsGroup && itemsGroup.groupName}</Typography>
+                <Box p={2}>
+                  <div className={classes.flex}>
+                    <Typography variant="h6">{itemsGroup && itemsGroup.groupName}</Typography>
+                    <ControlsButtons openEditItemGroupDialog={openEditItemGroupDialog} itemsGroup={itemsGroup} />
+                  </div>
                   <Breadcrumbs aria-label="breadcrumb" separator="›">
                     <Typography color="textPrimary" className={classes.link}>
                       Items Group
@@ -219,7 +220,7 @@ const ItemsGroupDetails = props => {
                     <AntTab label="History" />
                   </AntTabs>
                   <Typography className={classes.padding} />
-                  <Box p={1} mb={2}>
+                  <Box my={2}>
                     {value == 0 && (
                       <Overview itemsGroup={itemsGroup} />
                     )}
@@ -252,6 +253,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getItemsGroupById: data => dispatch(Actions.getItemsGroupById(data)),
     openNewItemGroupDialog: () => dispatch(Actions.openNewItemGroupDialog()),
+    openEditItemGroupDialog: data => dispatch(Actions.openEditItemGroupDialog(data)),
   };
 }
 

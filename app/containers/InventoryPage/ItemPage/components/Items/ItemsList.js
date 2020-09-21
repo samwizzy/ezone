@@ -46,23 +46,23 @@ const useStyles = makeStyles(theme => ({
 
 const ItemsList = props => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const {
     loading,
     history,
     getAllItems,
-    openViewItemDialog,
     getItemById,
+    openNewItemDialog,
   } = props;
+
+  const handleNewClick = () => {
+    openNewItemDialog()
+    history.push('/inventory/items/create/new')
+  }
+
+  const handleItemClick = (itemId, sku) => {
+    history.push(`/inventory/item/${itemId}/${sku}`)
+  }
 
   const orderedItems = _.orderBy(getAllItems, 'dateCreated', 'desc')
 
@@ -83,9 +83,7 @@ const ItemsList = props => {
       options: {
         filter: true,
         customBodyRender: (value, tableMeta) => {
-          if (value === '') {
-            return '';
-          }
+
           return (
             <FormControlLabel
               label={tableMeta.rowIndex + 1}
@@ -134,13 +132,13 @@ const ItemsList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const item = getAllItems.find(post => value === post.id);
+          const item = getAllItems.find(item => value === item.id);
 
           return (
             <Button
               aria-controls="simple-menu"
               aria-haspopup="true"
-              onClick={() => openViewItemDialog(item)}
+              onClick={() => handleItemClick(item.id, item.sku)}
             >
               View
             </Button>
@@ -165,14 +163,15 @@ const ItemsList = props => {
         size="small"
         className={classes.button}
         startIcon={<AddIcon />}
-        onClick={() => history.push('/inventory/items/new')}
+        onClick={handleNewClick}
       >
         New
       </Button>
     ),
     onRowClick: (rowData, rowState) => {
       getItemById(rowData[0]);
-      props.history.push('/inventory/item/' + rowData[0] + '/' + rowData[3])
+      handleItemClick(rowData[0], rowData[3])
+      // props.history.push(`/inventory/item/${rowData[0]}/${rowData[3]}`)
     },
     elevation: 0
   };
@@ -197,7 +196,6 @@ const ItemsList = props => {
 ItemsList.propTypes = {
   loading: PropTypes.bool,
   getAllItems: PropTypes.array,
-  openViewItemDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -208,7 +206,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getItemById: id => dispatch(Actions.getItemById(id)),
-    openViewItemDialog: data => dispatch(Actions.openViewItemDialog(data)),
+    openNewItemDialog: data => dispatch(Actions.openNewItemDialog(data)),
   };
 }
 

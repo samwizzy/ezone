@@ -35,11 +35,11 @@ const useStyles = makeStyles(theme => ({
         '& .MuiTableHead-root': {
             '& .MuiTableCell-head': {
                 fontWeight: theme.typography.fontWeightBold,
+                borderBottom: `1px solid ${theme.palette.divider}`
             },
         },
         '& .MuiTableCell-root': {
             border: 'none !important',
-            fontSize: theme.typography.fontSize,
             '& button:nth-child(n+2)': {
                 marginLeft: theme.spacing(1),
             },
@@ -63,14 +63,7 @@ const useStyles = makeStyles(theme => ({
             color: theme.palette.text.secondary,
         },
     },
-    gridList: {
-        width: '100%',
-        height: 250,
-    },
     toolbar: theme.mixins.toolbar,
-    drawerPaper: {
-        width: drawerWidth,
-    },
     icon: {
         '&.status': { color: green[500] }
     },
@@ -111,7 +104,7 @@ const Overview = (props) => {
                             <Box p={1} mt={2}>
                                 <Box my={1}>
                                     <div className={classes.flex}>
-                                        <Typography variant="h6">{itemsGroup.groupName} Items</Typography>
+                                        <Typography variant="subtitle1">{itemsGroup.groupName} Items</Typography>
                                         <ButtonGroup
                                             size="small"
                                             aria-label="small outlined button group"

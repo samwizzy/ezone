@@ -31,13 +31,6 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
 	},
-	grid: {
-		border: `1px solid ${theme.palette.divider}`,
-		'& .MuiGrid-item': {
-			flex: 1,
-			margin: theme.spacing(5)
-		}
-	},
 	card: {
 		borderRadius: theme.shape.borderRadius * 2,
 		backgroundImage: `url(${crmDash})`,
@@ -46,10 +39,12 @@ const useStyles = makeStyles((theme) => ({
 		backgroundSize: 'cover',
 		"& .MuiCardActions-root": {
 			justifyContent: "center",
-			backgroundColor: theme.palette.common.white,
+			backgroundColor: theme.palette.secondary.contrastText,
 		},
 		"& .MuiCardContent-root": {
-			minHeight: 160
+			minHeight: 160,
+			display: 'flex',
+			alignItems: 'center',
 		}
 	},
 	table: {

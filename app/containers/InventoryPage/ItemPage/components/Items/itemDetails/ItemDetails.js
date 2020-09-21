@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
@@ -17,7 +17,6 @@ import {
   Hidden,
 } from '@material-ui/core';
 import { green, orange } from '@material-ui/core/colors';
-import _ from 'lodash';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 import * as Selectors from '../../../selectors';
 import * as Actions from '../../../actions';
@@ -69,9 +68,6 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-  },
-  paper: {
-    // backgroundColor: theme.palette.background.paper,
   },
   icon: {
     color: theme.palette.grey[800],
@@ -131,67 +127,51 @@ const ItemDetails = props => {
   const classes = useStyles();
   const {
     loading,
+    history,
     items,
-    item,
     match,
-    getItemByIdAction,
     getItemById,
-    getStockLocationsAction,
+    itemById,
+    openNewItemDialog,
+    openEditItemDialog,
     getStockLocations,
+    stockLocations,
   } = props;
   const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
-
+  const [value, setValue] = React.useState(0);
   const { params } = match;
 
-  const handleToggle = () => {
-    setOpen(prevOpen => !prevOpen);
-  };
-
-  const handleClose = event => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
-
-    setOpen(false);
-  };
-
-  function handleListKeyDown(event) {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      setOpen(false);
-    }
-  }
-
-  // return focus to the button when we transitioned from !open -> open
-  const prevOpen = React.useRef(open);
   React.useEffect(() => {
-    getItemByIdAction(params.statusId);
-    getStockLocationsAction(params.sku);
-    if (prevOpen.current === true && open === false) {
-      anchorRef.current.focus();
-    }
-
-    prevOpen.current = open;
-  }, [open]);
-
-  const [value, setValue] = React.useState(0);
-  const filteredItems = _.orderBy(items, ['dateCreated'], ['desc']);
+    getItemById(params.itemId);
+    params.sku && getStockLocations(params.sku);
+  }, [params.itemId]);
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
-  };
+  }
 
   const handleItemById = (id, sku) => {
     setSelectedIndex(id);
-    getItemByIdAction(id);
-    getStockLocationsAction(sku);
+    getItemById(id);
+    getStockLocations(sku);
     props.history.push({ pathname: `/inventory/item/${id}/${sku}` });
-  };
+  }
+
+  const handleNewClick = () => {
+    openNewItemDialog()
+    history.push('/inventory/items/create/new')
+  }
+
+  console.log(itemById, "itemById")
+  console.log(stockLocations, "stockLocations")
+  console.log(params, "params")
 
   return (
     <div className={classes.root}>
+      <Backdrop className={classes.backdrop} open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+
       <Grid container justify="space-between">
         <Grid item md={2}>
           <nav className={classes.drawer} aria-label="inventory item">
@@ -199,7 +179,12 @@ const ItemDetails = props => {
             <Hidden smUp implementation="css" />
             <Hidden xsDown implementation="css">
               <div className={classes.drawerPaper}>
-                <Drawer items={items} handleItemById={handleItemById} selectedIndex={selectedIndex} />
+                <Drawer
+                  items={items}
+                  handleItemById={handleItemById}
+                  selectedIndex={selectedIndex}
+                  handleNewClick={handleNewClick}
+                />
               </div>
             </Hidden>
           </nav>
@@ -207,26 +192,23 @@ const ItemDetails = props => {
         <Grid item xs={10}>
           <Grid container>
             <Grid item xs={12}>
-              <ControlsButtons />
-            </Grid>
-            <Grid item xs={12}>
               <div className={classes.content}>
-                <Backdrop className={classes.backdrop} open={loading}>
-                  <CircularProgress color="inherit" />
-                </Backdrop>
-                <Box px={2}>
-                  <Typography variant="h6">{getItemById.itemName}</Typography>
+                <Box p={2}>
+                  <div className={classes.flex}>
+                    <Typography variant="h6">{itemById && itemById.itemName}</Typography>
+                    <ControlsButtons openEditItemDialog={openEditItemDialog} itemById={itemById} />
+                  </div>
+
                   <Breadcrumbs aria-label="breadcrumb" separator="›">
                     <Typography color="textPrimary" className={classes.link}>
-                      {getItemById.sku}
+                      Items
                     </Typography>
                     <Typography color="textPrimary" className={classes.link}>
-                      <KeyboardReturn className={classes.icon} />
-                      Returnable Items
+                      <KeyboardReturn className={classes.icon} /> {itemById && itemById.itemName}
                     </Typography>
                   </Breadcrumbs>
                 </Box>
-                <div className={classes.paper}>
+                <Fragment>
                   <AntTabs
                     value={value}
                     onChange={handleTabChange}
@@ -239,14 +221,15 @@ const ItemDetails = props => {
                     <AntTab label="History" />
                   </AntTabs>
                   <Typography className={classes.padding} />
-                  <Box p={1} mb={2}>
+
+                  <Box my={2}>
                     {value == 0 && (
-                      <Overview item={item} getItemById={getItemById} getStockLocations={getStockLocations} />
+                      <Overview itemById={itemById} stockLocations={stockLocations} />
                     )}
                     {value == 1 && <div />}
                     {value == 2 && <div />}
                   </Box>
-                </div>
+                </Fragment>
               </div>
             </Grid>
           </Grid>
@@ -258,25 +241,26 @@ const ItemDetails = props => {
 
 ItemDetails.propTypes = {
   loading: PropTypes.bool,
-  getItemByIdAction: PropTypes.func,
-  getItemById: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
-  getStockLocationsAction: PropTypes.func,
-  getStockLocations: PropTypes.array,
-};
+  getItemById: PropTypes.func,
+  itemById: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+  getStockLocations: PropTypes.func,
+  stockLocations: PropTypes.array,
+}
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   items: Selectors.makeSelectGetAllItems(),
-  item: Selectors.makeSelectItemDetails(),
-  getItemById: Selectors.makeSelectGetItemByIdResponse(),
-  getStockLocations: Selectors.makeSelectGetStockLocationBySkuResponse(),
+  itemById: Selectors.makeSelectGetItemById(),
+  stockLocations: Selectors.makeSelectGetStockLocationBySku(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getItemByIdAction: evt => dispatch(Actions.getItemById(evt)),
-    getStockLocationsAction: evt => dispatch(Actions.getStockLocations(evt)),
-  };
+    getItemById: id => dispatch(Actions.getItemById(id)),
+    openNewItemDialog: () => dispatch(Actions.openNewItemDialog()),
+    openEditItemDialog: data => dispatch(Actions.openEditItemDialog(data)),
+    getStockLocations: data => dispatch(Actions.getStockLocations(data)),
+  }
 }
 
 const withConnect = connect(

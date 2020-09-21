@@ -8,13 +8,9 @@ import {
 	Avatar,
 	Button,
 	Card, CardContent, CardHeader,
+	List, ListItem, ListItemText, ListItemAvatar, ListItemSecondaryAction,
 	Menu,
 	MenuItem,
-	Table,
-	TableHead,
-	TableBody,
-	TableRow,
-	TableCell,
 	Typography
 } from '@material-ui/core';
 import * as Selectors from '../../selectors';
@@ -29,30 +25,17 @@ const useStyles = makeStyles((theme) => ({
 		flexGrow: 1,
 	},
 	card: {
-		minHeight: 212,
+		minHeight: 210,
 		borderRadius: theme.shape.borderRadius * 2,
+		"& .MuiCardContent-root": {
+			padding: 0,
+			fontSize: theme.typography.body2.fontSize,
+		},
 		"& .MuiCardHeader-root": {
 			"& .MuiTypography-root": {
 				fontSize: theme.typography.subtitle1.fontSize
 			}
 		}
-	},
-	table: {
-		display: "flex",
-		overflowX: 'hidden',
-		flexDirection: "row",
-		alignItems: "center",
-		whiteSpace: "nowrap",
-		"& .MuiTableFooter-root": {
-			borderTop: `1px solid ${theme.palette.divider} !important`
-		},
-		"& .MuiTableCell-root": {
-			borderBottom: "none",
-			padding: theme.spacing(1),
-		},
-		'& .MuiTableCell-body': {
-			color: theme.palette.text.secondary,
-		},
 	},
 }));
 
@@ -91,7 +74,7 @@ const Widget6 = ({ employees }) => {
 				<CardHeader
 					action={
 						<React.Fragment>
-							<Button color="primary" aria-label="settings" onClick={handleClickListItem}>
+							<Button color="primary" size="small" aria-label="settings" onClick={handleClickListItem}>
 								{selectedIndex} <ExpandMoreIcon />
 							</Button>
 							<Menu
@@ -118,21 +101,21 @@ const Widget6 = ({ employees }) => {
 				/>
 				<CardContent>
 					{birthdayEmps.length > 0 ?
-						<Table className={classes.table}>
-							<TableBody>
-								{birthdayEmps.slice(0, 2).map((emp, i) =>
-									<TableRow key={i}>
-										<TableCell component="th" scope="row">
-											<Avatar aria-label="recipe" className={classes.avatar}>
-												{emp.lastName ? emp.lastName[0].toUpperCase() : <PersonIcon />}
-											</Avatar>
-										</TableCell>
-										<TableCell align="left">{emp.firstName + ' ' + emp.lastName}</TableCell>
-										<TableCell align="right">{moment(emp.dob).format('MMM DD')}</TableCell>
-									</TableRow>
-								)}
-							</TableBody>
-						</Table>
+						<List className={classes.root}>
+							{birthdayEmps.slice(0, 2).map((emp, i) =>
+								<ListItem key={i}>
+									<ListItemAvatar>
+										<Avatar>
+											{emp.lastName ? emp.lastName[0].toUpperCase() : <PersonIcon />}
+										</Avatar>
+									</ListItemAvatar>
+									<ListItemText primary={emp.firstName + ' ' + emp.lastName} />
+									<ListItemSecondaryAction>
+										<Typography>{moment(emp.dob).format('MMM DD')}</Typography>
+									</ListItemSecondaryAction>
+								</ListItem>
+							)}
+						</List>
 						:
 						<Typography align="center" color="textSecondary">No upcoming birthdays</Typography>
 					}

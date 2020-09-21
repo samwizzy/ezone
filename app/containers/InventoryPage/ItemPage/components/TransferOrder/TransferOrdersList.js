@@ -57,6 +57,7 @@ const TransferOrdersList = props => {
     history,
     transferOrders,
     openNewTransferOrderDialog,
+    getTransferOrderById,
     getAllWarehouse,
     getAllItems,
     getAllTransferOrder,
@@ -172,13 +173,14 @@ const TransferOrdersList = props => {
         size="small"
         className={classes.button}
         startIcon={<AddIcon />}
-        onClick={() => history.push('/inventory/transfer/orders/new')}
+        onClick={() => history.push('/inventory/transfers/create/new')}
       >
         New
       </Button>
     ),
     onRowClick: (rowData, rowState) => {
-      props.history.push('/inventory/transfer/orders/' + rowData[0])
+      getTransferOrderById(rowData[0])
+      props.history.push('/inventory/transfer/' + rowData[0])
     },
     elevation: 0
   };
@@ -218,6 +220,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getAllTransferOrder: () => dispatch(Actions.getAllTransferOrder()),
+    getTransferOrderById: id => dispatch(Actions.getTransferOrderById(id)),
     openNewTransferOrderDialog: () => dispatch(Actions.openNewTransferOrderDialog()),
     getAllWarehouse: () => dispatch(Actions.getAllWarehouse()),
     getAllItems: () => dispatch(Actions.getAllItems()),

@@ -1,10 +1,8 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
+import _ from 'lodash';
 import {
-    Backdrop,
     Box,
-    Button,
-    ButtonGroup,
     GridList,
     GridListTile,
     GridListTileBar,
@@ -13,15 +11,16 @@ import {
     TableRow,
     TableCell,
     TableBody,
+    Tabs, Tab,
     Grid,
     Paper,
     ListSubheader,
     Typography
 } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { green, orange } from '@material-ui/core/colors';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import ReactDropZone from './../../components/ReactDropZone';
+import StockLocationsTable from './overview/StockLocationsTable'
 
 const drawerWidth = '100%';
 
@@ -38,11 +37,11 @@ const useStyles = makeStyles(theme => ({
         '& .MuiTableHead-root': {
             '& .MuiTableCell-head': {
                 fontWeight: theme.typography.fontWeightBold,
+                borderBottom: `1px solid ${theme.palette.divider} !important`,
             },
         },
         '& .MuiTableCell-root': {
             border: 'none !important',
-            fontSize: theme.typography.fontSize,
             '& button:nth-child(n+2)': {
                 marginLeft: theme.spacing(1),
             },
@@ -77,16 +76,35 @@ const useStyles = makeStyles(theme => ({
     content: {
         flexGrow: 1,
     },
+    tabs: {
+        minHeight: 36,
+        '& .MuiTabs-flexContainer': {
+            justifyContent: 'flex-end'
+        },
+        '& .Mui-selected': {
+            color: theme.palette.secondary.contrastText,
+            background: theme.palette.primary.main
+        },
+        '& .MuiTab-root': {
+            minHeight: 36,
+        }
+    },
 }));
 
 
 const Overview = (props) => {
-    const { getStockLocations, getItemById, item } = props
+    const { stockLocations, itemById } = props
     const classes = useStyles()
+
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
 
     return (
         <div className={classes.root}>
-            {Object.keys({ id: 1, title: 'Infinix' }).length > 0
+            {itemById
                 ? (
                     <Grid container>
                         <Grid item xs={9}>
@@ -97,30 +115,19 @@ const Overview = (props) => {
                             >
                                 <TableBody>
                                     <TableRow>
-                                        <TableCell component="th" scope="row">
-                                            SKU
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            {getItemById.sku}
-                                        </TableCell>
+                                        <TableCell component="th" scope="row">SKU</TableCell>
+                                        <TableCell align="right">{itemById.sku}</TableCell>
                                     </TableRow>
                                     <TableRow>
-                                        <TableCell component="th" scope="row">
-                                            Unit
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            {getItemById.unit}
-                                        </TableCell>
+                                        <TableCell component="th" scope="row">Unit</TableCell>
+                                        <TableCell align="right">{itemById.unit}</TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell component="th" scope="row">Manufacturer</TableCell>
-                                        <TableCell align="right">
-                                            {getItemById.manufacturer}
-                                        </TableCell>
+                                        <TableCell align="right">{itemById.manufacturer}</TableCell>
                                     </TableRow>
                                 </TableBody>
                             </Table>
-                            <br />
                             <Table
                                 className={classes.table}
                                 size="small"
@@ -134,11 +141,10 @@ const Overview = (props) => {
                                 <TableBody>
                                     <TableRow>
                                         <TableCell component="th" scope="row">Cost Price </TableCell>
-                                        <TableCell align="right">{getItemById.costPrice}</TableCell>
+                                        <TableCell align="right">{itemById.costPrice}</TableCell>
                                     </TableRow>
                                 </TableBody>
                             </Table>
-                            <br />
                             <Table
                                 className={classes.table}
                                 size="small"
@@ -152,80 +158,57 @@ const Overview = (props) => {
                                 <TableBody>
                                     <TableRow>
                                         <TableCell component="th" scope="row">Selling Price</TableCell>
-                                        <TableCell align="right">{getItemById.sellingPrice}</TableCell>
+                                        <TableCell align="right">{itemById.sellingPrice}</TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                            <Table
+                                className={classes.table}
+                                size="small"
+                                aria-label="custom table"
+                            >
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Item Description</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell component="th">{itemById.description}</TableCell>
                                     </TableRow>
                                 </TableBody>
                             </Table>
 
                             <Box p={1} mt={2}>
-                                <Box my={1}>
-                                    <div className={classes.flex}>
-                                        <Typography variant="h6">Stock Locations </Typography>
-                                        <ButtonGroup
-                                            size="small"
-                                            aria-label="small outlined button group"
-                                        >
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={() => { }}
-                                                disableElevation
-                                            >
-                                                Acccounting Stock
-                                            </Button>
-                                            <Button onClick={() => { }}>
-                                                Physical Stock
-                                            </Button>
-                                        </ButtonGroup>
-                                    </div>
-                                </Box>
-                                <Table
-                                    className={classes.table2}
-                                    size="small"
-                                    aria-label="custom table"
-                                >
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell rowSpan={2} align="center">WAREHOUSE NAME</TableCell>
-                                            <TableCell colSpan={3} align="center">ACCOUNTING STOCK</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell align="center">STOCK ON HAND</TableCell>
-                                            <TableCell align="center">COMMITTED STOCK</TableCell>
-                                            <TableCell align="center">AVAILABLE FOR SALE</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {getStockLocations && getStockLocations.map((getStockLocation, i) => (
-                                            <TableRow key={i}>
-                                                <TableCell component="th">
-                                                    {getStockLocation.warehouseName}
-                                                </TableCell>
-                                                <TableCell align="right">
-                                                    {getStockLocation.stockOnHand}
-                                                </TableCell>
-                                                <TableCell align="right">
-                                                    {getStockLocation.committedStock}
-                                                </TableCell>
-                                                <TableCell align="right">
-                                                    {getStockLocation.availableForSale}
-                                                </TableCell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
+                                <Typography variant="h6" gutterBottom>Stock Locations </Typography>
+
+                                <Paper square elevation={0}>
+                                    <Tabs
+                                        className={classes.tabs}
+                                        value={value}
+                                        indicatorColor="primary"
+                                        textColor="primary"
+                                        onChange={handleChange}
+                                        aria-label="stocks tabs"
+                                    >
+                                        <Tab label="Acccounting Stock" />
+                                        <Tab label="Physical Stock" />
+                                    </Tabs>
+                                </Paper>
+                                {value === 0 && <StockLocationsTable stockLocations={stockLocations} />}
+                                {value === 1 && <div />}
                             </Box>
                         </Grid>
                         <Grid item xs={3}>
                             <div>
                                 <GridList cellHeight={180} className={classes.gridList}>
                                     <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-                                        {getItemById.itemsImages && getItemById.itemsImages.length > 0 ?
+                                        {itemById.itemsImages && itemById.itemsImages.length > 0 ?
                                             <ListSubheader component="div">Attachment Preview</ListSubheader> :
                                             <ListSubheader component="div">There are no Attachment</ListSubheader>
                                         }
                                     </GridListTile>
-                                    {getItemById.itemsImages && getItemById.itemsImages.map((tile, index) => (
+                                    {itemById.itemsImages && itemById.itemsImages.map((tile, index) => (
                                         <GridListTile key={index} cols={2}>
                                             <img src={tile.fileUrl} alt={tile.fileName} />
                                             <GridListTileBar title={tile.fileName} />
@@ -233,10 +216,7 @@ const Overview = (props) => {
                                     ))}
                                 </GridList>
 
-                                <ReactDropZone
-                                    uploadFileAction={() => { }}
-                                    task={item}
-                                />
+                                <ReactDropZone uploadFileAction={() => { }} />
                             </div>
 
                             <Paper square elevation={0}>
@@ -264,7 +244,7 @@ const Overview = (props) => {
                                                     Stock on hand
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    {'50.00'}
+                                                    {_.sumBy(stockLocations, 'stockOnHand')}
                                                 </TableCell>
                                             </TableRow>
                                             <TableRow>
@@ -272,7 +252,7 @@ const Overview = (props) => {
                                                     Committed Stock
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    {'50.00'}
+                                                    {_.sumBy(stockLocations, 'committedStock')}
                                                 </TableCell>
                                             </TableRow>
                                             <TableRow>
@@ -280,7 +260,7 @@ const Overview = (props) => {
                                                     Available on Sale
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    {'50.00'}
+                                                    {_.sumBy(stockLocations, 'availableForSale')}
                                                 </TableCell>
                                             </TableRow>
                                         </TableBody>
