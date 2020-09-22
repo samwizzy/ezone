@@ -32,12 +32,12 @@ h4 {
   margin: 10px 0px;
 }
 /* @media screen and (max-width: 650px) {
-  font-size: 0.9em;
-  h3,
-  h5 {
-    color: white;
-    span {
+    font-size: 0.9em;
+    h3,
+    h5 {
       color: white;
+      span {
+        color: white;
+      }
     }
-  }
-} */
+  } */

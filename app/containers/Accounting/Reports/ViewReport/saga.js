@@ -1,17 +1,24 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
 import * as AppSelectors from '../../../App/selectors';
 // import * as AppActions from '../../App/actions';
-// import * as Selectors from './selectors';
+import * as Selectors from './selectors';
 import request from '../../../../utils/request';
 // import swal from 'sweetalert';
 import * as Endpoints from '../../../../components/Endpoints';
 import * as Actions from './actions';
-// import * as Constants from './constants';
+import * as Constants from './constants';
 
-export function* getAllAccountTypeSaga() {
+export function* getGeneralJournalSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetGeneralJournalApi}`;
+  const { startDate, endDate } = yield select(Selectors.makeSelectTime());
+
+  const requestURL = `${
+    Endpoints.GetGeneralJournalApi
+  }?endDate=${endDate}&startDate=${startDate}&orgId=${
+    currentUser.organisation.orgId
+  }`;
+  console.log('requestURL', requestURL);
 
   try {
     const generalJournalResponse = yield call(request, requestURL, {
@@ -21,10 +28,114 @@ export function* getAllAccountTypeSaga() {
         'Content-Type': 'application/json',
       }),
     });
-
-    yield put(Actions.getGeneralJournalAction(generalJournalResponse));
+    yield put(Actions.getGeneralJournalSuccesAction(generalJournalResponse));
   } catch (err) {
     console.log('Something went wrong at fetch reports saga');
+
     yield put(Actions.getGeneralJournalErrorAction(err));
   }
+}
+/*General chats of accounts*/
+export function* getChatOfAccountSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const { startDate, endDate } = yield select(Selectors.makeSelectTime());
+
+  const requestURL = `${Endpoints.GetChatsOfAccountApi}/${
+    currentUser.organisation.orgId
+  }?endDate=${endDate}&startDate=${startDate}}`;
+  console.log('tttttttttrequestURL', requestURL);
+
+  try {
+    const getChatsOfAccountResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Origin': '*',
+      }),
+    });
+    console.log('ttttttttttttttttttttt', getChatsOfAccountResponse);
+    yield put(Actions.getChatsOfAccountSuccesAction(getChatsOfAccountResponse));
+  } catch (err) {
+    console.log('Something went wrong at fetch reports saga', err);
+
+    yield put(Actions.getChatsOfAccountErrorAction(err));
+  }
+}
+/**General Ledger */
+
+export function* getGeneralLedgerSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const { startDate, endDate } = yield select(Selectors.makeSelectTime());
+
+  const requestURL = `${
+    Endpoints.GetGeneralLedgerApi
+  }?endDate=${endDate}&startDate=${startDate}&orgId=${
+    currentUser.organisation.orgId
+  }`;
+  console.log('requestURL', requestURL);
+
+  try {
+    const generalLedgerResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+    yield put(Actions.getGeneralLedgerSuccesAction(generalLedgerResponse));
+  } catch (err) {
+    console.log('Something went wrong at fetch reports saga');
+
+    yield put(Actions.getGeneralLedgerErrorAction(err));
+  }
+}
+
+export function* getTrialBalanceSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const { startDate, endDate } = yield select(Selectors.makeSelectTime());
+
+  const requestURL = `${
+    Endpoints.GetTrialBalanceApi
+  }?endDate=${endDate}&startDate=${startDate}&orgId=${
+    currentUser.organisation.orgId
+  }`;
+  console.log('requestURL', requestURL);
+
+  try {
+    const trialBalanceResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+    yield put(Actions.getTrialBalanceSuccesAction(trialBalanceResponse));
+  } catch (err) {
+    console.log('Something went wrong at fetch reports saga');
+
+    yield put(Actions.getTrialBalanceErrorAction(err));
+  }
+}
+
+// Individual exports for testing
+export default function* ReportSaga() {
+  // See example in containers/HomePage/saga.js
+  yield takeLatest(
+    Constants.GET_ALL_GENERAL_JOURNAL_TYPES,
+    getGeneralJournalSaga,
+  );
+  yield takeLatest(
+    Constants.GET_ALL_CHATS_OF_ACCOUNT_TYPES,
+    getChatOfAccountSaga,
+  );
+  yield takeLatest(
+    Constants.GET_ALL_GENERAL_LEDGER_TYPES,
+    getGeneralLedgerSaga,
+  );
+  yield takeLatest(Constants.GET_ALL_TRIAL_BALANCE_TYPES, getTrialBalanceSaga);
 }

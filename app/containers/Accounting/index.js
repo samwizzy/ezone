@@ -54,10 +54,6 @@ export function Accounting(props) {
   console.log(
     `Accounting index.js loaded ${id} ${name}  ${JSON.stringify(param)}`,
   );
-  console.log(
-    'I am hwere kkkkkkkkkkkkkkkkkkkkkkkkkkkkk ddddddddddddddddddddddddddddddd at account',
-    useLocation(),
-  );
 
   const { loading } = props;
 
