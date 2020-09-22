@@ -27,12 +27,6 @@ const makeSelectLoading = () =>
     subState => subState.loading,
   );
 
-const makeSelectAccountingSetupPostData = () =>
-  createSelector(
-    selectSettingsDomain,
-    subState => subState.accountSetupPostData,
-);
-
 const makeSelectGetAccountingSetupData = () =>
   createSelector(
     selectSettingsDomain,
@@ -51,20 +45,26 @@ const makeSelectAccountPeriodDialog = () =>
     substate => substate.accountPeriodDialog,
   );
 
-const makeSelectAccountPeriodPostData = () =>
+const makeSelectBusinessTypes = () =>
   createSelector(
     selectSettingsDomain,
-    subState => subState.periodOfAccountPostData,
-);
-  
+    substate => substate.businessTypes,
+  );
+
+const makeSelectCurrencies = () =>
+  createSelector(
+    selectSettingsDomain,
+    substate => substate.currencies,
+  );
+
 export default makeSelectSettings;
 
-export { 
-  selectSettingsDomain, 
+export {
+  selectSettingsDomain,
   makeSelectLoading,
-  makeSelectAccountingSetupPostData,
   makeSelectGetAccountingSetupData,
   makeSelectGetAllAccountingPeriodData,
   makeSelectAccountPeriodDialog,
-  makeSelectAccountPeriodPostData
+  makeSelectBusinessTypes,
+  makeSelectCurrencies,
 };

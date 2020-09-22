@@ -1,146 +1,156 @@
-import React, { useReducer,useState,useContext,useEffect } from 'react';
+import React, { memo, useState } from 'react';
+import { compose } from 'redux'
+import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
+import { makeStyles, Card, CardHeader, CardContent, CardActions, Grid, Typography } from '@material-ui/core'
 import FinancialYearSetup from '../../Settings/components/FinancialYearSetup';
 import BussinessActivity from '../../Settings/components/BussinessActivity';
 import SetChartOfAccount from "../../Settings/components/SetChartOfAccount";
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
-import * as Endpoints from '../../../../components/Endpoints';
+import Logo from '../images/Logo.svg';
+import accSettingDemo2 from '../images/accSettingDemo2.svg';
 import * as Enums from '../enums';
-import axios from "axios";
-import 'date-fns';
-export const AccSetupContext = React.createContext();
+import moment from 'moment'
+import * as Selectors from './../selectors';
+import * as Actions from './../actions';
 
+const useStyles = makeStyles(theme => ({
+  sideDemo: {
+    backgroundColor: theme.palette.background.paper,
+  },
+  bgImage: {
+    width: '100%',
+    height: '493px',
+    backgroundImage: `url(${accSettingDemo2})`,
+    backgroundSize: '100%',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+  },
+}));
 
+const initialState = {
+  accountChart: Enums.AccountChart.DEFAULT,
+  accountMethod: Enums.AccountMethod.ACCURAL,
+  businessType: null,
+  currency: null,
+  multiCurrency: false,
+  startDay: 1,
+  startMonth: 1,
+  taxDay: 0,
+  taxMonth: 0,
+  taxType: "",
+}
 
 const AccountSetup = props => {
+  const { getBusinessTypes, businessTypes } = props
+  const [form, setForm] = useState({ ...initialState })
+  const [step, setStep] = useState(0)
+  const classes = useStyles(props)
 
-  const [credentials] = useState(JSON.parse(localStorage.getItem('user')))
-  const [accessToken] = useState(localStorage.getItem('access_token'))
-
-
-
-const initialState ={
-    accountChart: Enums.AccountChart.DEFAULT,
-    accountMethod: Enums.AccountMethod.ACCURAL,
-    currency: "",
-    dateCreated: "",
-    dateUpdated: "",
-    id: credentials.id,
-    multiCurrency: false,
-    orgId:credentials.organisation.orgId,
-    startDay: 0,
-    startMonth: 0,
-    taxDay: 0,
-    taxMonth: 0,
-    taxType: "",
-    msg:{
-      open:false,
-      message:'',
-      severity:'success'
-    },
-    businessActivity:"",
-    financialYear:true,
-    chatofAcc:false,
-    busService:false,
-    currentPage:'financialYear',
-}
-
-
-   
-const reducer = (state, action) => {
-    switch (action.type) {
-        case "NAVIGATION":
-        state = {
-          ...state,
-          currentPage:action.page,
-          [state.currentPage] :false,
-          [action.page]:true,
-        };
-        return state;
-        case "PAYLOAD":
-        state = {
-          ...state,
-          [action.payload.label]: action.payload.value,
-        };
-        return state;
-        case "SUBMIT":
-        createAccountSetup() 
-        return state;
-        case "MSG":
-        state = {
-          ...state,
-          msg:{
-            ...state.msg,
-            open:action.msg.open,
-            message:action.msg.message,
-            severity:action.msg.severity
-          }
-        };
-        return state;
-        default :
-        return state;
-    }
-}
-
-const [state, dispatch] = useReducer(reducer, initialState);
-
-/*const handleClick = () => {
-  setOpen(true);
-};*/
-
-const handleClose = (event, reason) => {
-  if (reason === 'clickaway') {
-    return;
+  const handleChange = event => {
+    const { name, value, type, checked } = event.target
+    setForm({ ...form, [name]: type === 'checkbox' ? checked : value })
   }
 
-  dispatch({type:'MSG',msg:{open:false,message:'',severity:'success'}});
-};
+  const handleSelectChange = name => (event, object) => {
+    setForm({ ...form, [name]: object })
+  }
 
+  const handleDateChange = name => date => {
+    if (name === 'startDay')
+      setForm({ ...form, [name]: moment(date).format('DD') })
+    else
+      setForm({ ...form, [name]: moment(date).format('MM') })
+  }
 
-  console.log(`values  got it  -> `, state);
+  const handleSubmit = event => {
 
-  
+  }
+
+  const handleNext = () => {
+    if (step > -1 && step <= 2) {
+      setStep(step + 1);
+    }
+  }
+
+  const handlePrev = () => {
+    if (step => 1 && step <= 2) {
+      setStep(step - 1);
+    }
+  }
+
+  console.log(form, "form accouting setup")
+  console.log(businessTypes, "businessTypes accounting setup")
+
   return (
-    <AccSetupContext.Provider
-    value={{ accState: state, accDispatch: dispatch }}>
-  <div>
-       <div>
-       <Snackbar  anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }} open={state.msg.open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={state.msg.severity}>
-          {state.msg.message}
-        </Alert>
-      </Snackbar>
-       </div>
-    
-       <div>
-       {state.financialYear?
-       <FinancialYearSetup/>
-       :<div/>
-       }
-       </div>
-        
-        <div>
-        {state.chatofAcc?
-        <SetChartOfAccount/>
-        :<div/>
+    <Card className={classes.root}>
+      <CardHeader
+        title={
+          <Typography variant="h4" color="textPrimary" align="center" gutterBottom>
+            Welcome To <img src={Logo} height="30" /> Accounting
+          </Typography>
         }
-        </div>
-
-        <div>
-        {state.busService?
-        <BussinessActivity credentials={credentials} accessToken={accessToken}/>
-        :<div/>
+        subheader={
+          <Typography variant="h6" color="textPrimary" align="center" gutterBottom>
+            Setup Your Accounting Structure
+          </Typography>
         }
-        </div>
-        
-        
+      />
 
-  </div>
-  </AccSetupContext.Provider>
+      <CardContent>
+        <Grid container>
+          <Grid item xs={6} className={classes.sideDemo}>
+            {step < 2 && <div className={classes.bgImage} />}
+          </Grid>
+
+          <Grid item xs={step < 2 ? 6 : 12}>
+            {step === 0 &&
+              <FinancialYearSetup
+                form={form}
+                handleNext={handleNext}
+                handlePrev={handlePrev}
+                handleChange={handleChange}
+                handleDateChange={handleDateChange}
+                handleSelectChange={handleSelectChange}
+              />
+            }
+
+            {step === 1 &&
+              <SetChartOfAccount
+                form={form}
+                handleChange={handleChange}
+                handleNext={handleNext}
+                handlePrev={handlePrev}
+              />
+            }
+
+            {step === 2 &&
+              <BussinessActivity
+                form={form}
+                handleChange={handleChange}
+                handlePrev={handlePrev}
+              />
+            }
+          </Grid>
+        </Grid>
+      </CardContent>
+    </Card>
   );
 };
 
-export default AccountSetup 
+const mapStateToProps = createStructuredSelector({
+  loading: Selectors.makeSelectLoading(),
+  businessTypes: Selectors.makeSelectBusinessTypes(),
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getBusinessTypes: () => dispatch(Actions.getBusinessTypes()),
+  }
+}
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(
+  withConnect,
+  memo,
+)(AccountSetup);

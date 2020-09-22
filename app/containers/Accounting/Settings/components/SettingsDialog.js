@@ -45,11 +45,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const AddBankAccountDialog = props => {
   const classes = useStyles();
 
-  const { 
+  const {
     loading,
-    currentUser, 
+    currentUser,
     accountTypeData,
-    bankAccountDialog, 
+    bankAccountDialog,
     closeNewBankAccountDialogAction,
     dispatchCreateNewBankAction,
     dispatchUpdateBankAccountAction
@@ -69,7 +69,7 @@ const AddBankAccountDialog = props => {
     const { accountCode, accountName, accountNumber, bankBalance, bankName, description } = values;
     return accountCode.length > 0 && accountName.length > 0 && accountNumber.length > 0 && bankBalance.length > 0 && bankName.length > 0 && description.length > 0;
   }
-  
+
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
@@ -183,116 +183,116 @@ const AddBankAccountDialog = props => {
               </Grid>
             </form>
           ) : (
-            <form className={classes.root}>
-              <Grid container spacing={1}>
-                <Grid item xs={12}>
-                  <TextField
-                    id="standard-accountName"
-                    label="Account Name"
-                    type="name"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.accountName}
-                    onChange={handleChange('accountName')}
-                    margin="normal"
-                    fullWidth
-                  />
+              <form className={classes.root}>
+                <Grid container spacing={1}>
+                  <Grid item xs={12}>
+                    <TextField
+                      id="standard-accountName"
+                      label="Account Name"
+                      type="name"
+                      variant="outlined"
+                      size="small"
+                      className={classes.textField}
+                      value={values.accountName}
+                      onChange={handleChange('accountName')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="standard-accountCode"
+                      label="Account Code"
+                      type="number"
+                      variant="outlined"
+                      size="small"
+                      className={classes.textField}
+                      value={values.accountCode}
+                      onChange={handleChange('accountCode')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="standard-bankName"
+                      label="Bank Name"
+                      type="name"
+                      variant="outlined"
+                      size="small"
+                      className={classes.textField}
+                      value={values.bankName}
+                      onChange={handleChange('bankName')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="standard-accountNumber"
+                      label="Bank Account Number"
+                      type="number"
+                      variant="outlined"
+                      size="small"
+                      className={classes.textField}
+                      value={values.accountNumber}
+                      onChange={handleChange('accountNumber')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="standard-bankBalance"
+                      label="Bank balance"
+                      type="number"
+                      variant="outlined"
+                      size="small"
+                      className={classes.textField}
+                      value={values.bankBalance}
+                      onChange={handleChange('bankBalance')}
+                      margin="normal"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      id="standard-description"
+                      label="Description"
+                      variant="outlined"
+                      size="small"
+                      className={classes.textField}
+                      value={values.description}
+                      onChange={handleChange('description')}
+                      margin="normal"
+                      fullWidth
+                      rows={2}
+                      multiline
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="standard-accountCode"
-                    label="Account Code"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.accountCode}
-                    onChange={handleChange('accountCode')}
-                    margin="normal"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="standard-bankName"
-                    label="Bank Name"
-                    type="name"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.bankName}
-                    onChange={handleChange('bankName')}
-                    margin="normal"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="standard-accountNumber"
-                    label="Bank Account Number"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.accountNumber}
-                    onChange={handleChange('accountNumber')}
-                    margin="normal"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="standard-bankBalance"
-                    label="Bank balance"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.bankBalance}
-                    onChange={handleChange('bankBalance')}
-                    margin="normal"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    id="standard-description"
-                    label="Description"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.description}
-                    onChange={handleChange('description')}
-                    margin="normal"
-                    fullWidth
-                    rows={2}
-                    multiline
-                  />
-                </Grid>
-              </Grid>
-            </form>
-          )}
+              </form>
+            )}
         </DialogContent>
         <DialogActions>
           {loading ? (
             <LoadingIndicator />
           ) : (
-            <Button
-              onClick={() => {
-                bankAccountDialog.type === 'new' ? dispatchCreateNewBankAction(values) : dispatchUpdateBankAccountAction(values);
-              }}
-              color="primary"
-              // variant="contained"
-              disabled={!canSubmitValues()}
-            >
-              Save
-            </Button>
-          )}
+              <Button
+                onClick={() => {
+                  bankAccountDialog.type === 'new' ? dispatchCreateNewBankAction(values) : dispatchUpdateBankAccountAction(values);
+                }}
+                color="primary"
+                // variant="contained"
+                disabled={!canSubmitValues()}
+              >
+                Save
+              </Button>
+            )}
           <Button
-            onClick={ closeNewBankAccountDialogAction }
+            onClick={closeNewBankAccountDialogAction}
             color="inherit"
-            // variant="contained"
+          // variant="contained"
           >
             Cancel
           </Button>
@@ -305,7 +305,7 @@ const AddBankAccountDialog = props => {
 AddBankAccountDialog.propTypes = {
   loading: PropTypes.bool,
   bankAccountDialog: PropTypes.object,
-//   accountTypeData: PropTypes.array,
+  //   accountTypeData: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -313,8 +313,8 @@ const mapStateToProps = createStructuredSelector({
   currentUser: AppSelectors.makeSelectCurrentUser(),
   bankAccountDialog: Selectors.makeSelectBankAccountDialog(),
   accountTypeData: Selectors.makeSelectAccountTypeData(),
-//   accountTypeData: Selectors.makeSelectAccountTypeData(),
-//   parentAccountTypeData: Selectors.makeSelectParentAccountTypeData(),
+  //   accountTypeData: Selectors.makeSelectAccountTypeData(),
+  //   parentAccountTypeData: Selectors.makeSelectParentAccountTypeData(),
 });
 
 

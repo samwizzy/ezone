@@ -22,7 +22,6 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
   },
   drawer: {
-    overflowY: 'visible',
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
@@ -37,7 +36,8 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    overflowX: 'visible',
+    overflowX: 'hidden',
+    overflowY: 'visible',
   },
   drawerClose: {
     transition: theme.transitions.create('width', {

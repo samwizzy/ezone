@@ -132,18 +132,18 @@ const NewAccountDialog = props => {
       console.log(`error ocurr at NewAccountDialog ${err}`);
     }) */ await crud.getAllAccountTypeFSever()
         .then(data => {
-        console.log(`What a data getAllAccountTypeFSever ${JSON.stringify(data.data)}`)
+          console.log(`What a data getAllAccountTypeFSever ${JSON.stringify(data.data)}`)
           let chatOfAccResponse = data.data;
-          setAccountType(chatOfAccResponse);    
-      }).catch((err)=>{
-        console.log(`Error from setUptins ${err}`)
-      })
+          setAccountType(chatOfAccResponse);
+        }).catch((err) => {
+          console.log(`Error from setUptins ${err}`)
+        })
 
 
     }
-     if(mounted){
+    if (mounted) {
       getAllAccountTypeFromSev();
-     }
+    }
     return () => {
       mounted = false
     };
@@ -152,7 +152,7 @@ const NewAccountDialog = props => {
   function onlyAccountLabel(code) {
     let result = '';
     for (let i = 0; i < accountType.length; i++) {
-      if(accountType[i].id === code){
+      if (accountType[i].id === code) {
         result = accountType[i].accountType
         break;
       }
@@ -160,22 +160,22 @@ const NewAccountDialog = props => {
     return result;
   }
 
-  const [parent,setParent] =useState([]);
+  const [parent, setParent] = useState([]);
 
   //Get Chart of Account
-  async function makeParent(){
+  async function makeParent() {
     await crud
-    .getChatfromServer()
-    .then(data=>{
-      let x = [];
-      for(let i =0;i<data.data.length;i++){
-        x = [...x,{id:data.data[i].id,accountName:data.data[i].accountName}]
-      }
-      setParent(x);
-    })
-    .catch(error=>{
-      console.log(`Error from make parent ${err}`);
-    })
+      .getChatfromServer()
+      .then(data => {
+        let x = [];
+        for (let i = 0; i < data.data.length; i++) {
+          x = [...x, { id: data.data[i].id, accountName: data.data[i].accountName }]
+        }
+        setParent(x);
+      })
+      .catch(error => {
+        console.log(`Error from make parent ${err}`);
+      })
   }
 
   //Create New Account
@@ -184,11 +184,11 @@ const NewAccountDialog = props => {
     await crud
       .createChartOfAccountHandler(values)
       .then(data => {
-        
+
         // let chatOfAccResponse = data.data;
-      chartContext.chartDispatch({type:'REFRESH',refresh:true})
-      swal("Success","Chart of Account created successfully","success");
-      closeNewAccountDialogAction()
+        chartContext.chartDispatch({ type: 'REFRESH', refresh: true })
+        swal("Success", "Chart of Account created successfully", "success");
+        closeNewAccountDialogAction()
       })
       .catch(err => {
         swal('Error', 'Something went wrong', 'error');
@@ -201,15 +201,15 @@ const NewAccountDialog = props => {
     await crud
       .updateChartOfAccount(values)
       .then(data => {
-      console.log(`What a data updateChartOfAccount ${JSON.stringify(data.data)}`)
-      // let chatOfAccResponse = data.data;
-      chartContext.chartDispatch({type:'REFRESH',refresh:true})
-      swal("Success","Chart of Account Updated successfully","success");
-      closeNewAccountDialogAction()
-      }).catch((err)=>{
-      swal("Error","Something went wrong","error");
-      console.log(`Error from setUptins ${err}`)
-    })
+        console.log(`What a data updateChartOfAccount ${JSON.stringify(data.data)}`)
+        // let chatOfAccResponse = data.data;
+        chartContext.chartDispatch({ type: 'REFRESH', refresh: true })
+        swal("Success", "Chart of Account Updated successfully", "success");
+        closeNewAccountDialogAction()
+      }).catch((err) => {
+        swal("Error", "Something went wrong", "error");
+        console.log(`Error from setUptins ${err}`)
+      })
   }
   // Create New Account
 
@@ -234,7 +234,7 @@ const NewAccountDialog = props => {
     makeParent();
     // Call parent type api if checked
     if (!checkBox.checkedG) {
-      
+
       // dispatchGetParentAccountTypeAction(values);
     } else {
       console.log('unchecked');
@@ -244,7 +244,7 @@ const NewAccountDialog = props => {
   const [isAphaNumeric, setIsAphaNumeric] = useState(true);
 
   const checkAlphaNumeric = event => {
-    const {value} = event.target;
+    const { value } = event.target;
     const txt = alphaNumeric(value);
     console.log(`alphanumeric ${txt}`);
     if (txt) {
@@ -256,13 +256,13 @@ const NewAccountDialog = props => {
     let mounted = true
     function doUpdate() {
       if (accountDialog.type == 'edit') {
-        const {accountCode,accountName,accountNumber, accountTypeId,bankBalance,bankName,description,openingBalance,id} = accountDialog.data
-        setValues({ ...values, accountCode,accountName,accountNumber,accountTypeId,bankBalance,bankName,description,openingBalance,id});
+        const { accountCode, accountName, accountNumber, accountTypeId, bankBalance, bankName, description, openingBalance, id } = accountDialog.data
+        setValues({ ...values, accountCode, accountName, accountNumber, accountTypeId, bankBalance, bankName, description, openingBalance, id });
       }
     }
-    
-    if(mounted){
-    doUpdate()
+
+    if (mounted) {
+      doUpdate()
     }
     return () => {
       mounted = false
@@ -305,7 +305,7 @@ const NewAccountDialog = props => {
                   />
                 </Grid>
                 <Grid item xs={6}>
-                  {isAphaNumeric ? 
+                  {isAphaNumeric ?
                     <TextField
                       id="standard-accountCode"
                       label="Account Code"
@@ -337,24 +337,24 @@ const NewAccountDialog = props => {
                 </Grid>
                 <Grid item xs={6}>
                   {checkBox.isBank ?
-                  <div/>
-                  :
-                  <TextField
-                    id="standard-openingBalance"
-                    label={
-                      values.openingBalance === 0
-                        ? 'Opening Balance'
-                        : `Balance ${values.openingBalance}`
-                    }
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    className={classes.textField}
-                    value={values.openingBalance}
-                    onChange={handleChange('openingBalance')}
-                    margin="normal"
-                    fullWidth
-                  />
+                    <div />
+                    :
+                    <TextField
+                      id="standard-openingBalance"
+                      label={
+                        values.openingBalance === 0
+                          ? 'Opening Balance'
+                          : `Balance ${values.openingBalance}`
+                      }
+                      type="number"
+                      variant="outlined"
+                      size="small"
+                      className={classes.textField}
+                      value={values.openingBalance}
+                      onChange={handleChange('openingBalance')}
+                      margin="normal"
+                      fullWidth
+                    />
                   }
                 </Grid>
                 <Grid item xs={6}>
@@ -375,23 +375,23 @@ const NewAccountDialog = props => {
                         parentId: null,
                       });
                     }
-                  }
+                    }
 
-                  renderInput={params => (
-                    <TextField
-                      {...params}
-                      label={
-                        values.accountTypeId === 0
-                          ? 'Select Account Type'
-                          : onlyAccountLabel(values.accountTypeId)
-                      }
-                      className={classes.textField}
-                      variant="outlined"
-                      placeholder="Search"
-                      fullWidth
-                    />
-                  )}
-                  
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        label={
+                          values.accountTypeId === 0
+                            ? 'Select Account Type'
+                            : onlyAccountLabel(values.accountTypeId)
+                        }
+                        className={classes.textField}
+                        variant="outlined"
+                        placeholder="Search"
+                        fullWidth
+                      />
+                    )}
+
                   />
                 </Grid>
                 {checkBox.isBank ? (
@@ -444,11 +444,11 @@ const NewAccountDialog = props => {
                     <Grid item xs={6}>
                       <FormGroup row>
                         <FormControlLabel
-                          control={<GreenCheckbox 
-                            checked={checkBox.checkedG} 
+                          control={<GreenCheckbox
+                            checked={checkBox.checkedG}
                             onChange={handleCheckBoxChange
-                            } 
-                            name="checkedG" 
+                            }
+                            name="checkedG"
                           />}
                           label="Make parent account."
                         />
@@ -462,7 +462,8 @@ const NewAccountDialog = props => {
                           options={parent}
                           getOptionLabel={option => option.accountName}
                           onChange={(evt, value) => {
-                            setValues({...values,parentId:value.id})}
+                            setValues({ ...values, parentId: value.id })
+                          }
                           }
                           renderInput={params => (
                             <TextField
@@ -503,20 +504,20 @@ const NewAccountDialog = props => {
           {loading ? (
             <LoadingIndicator />
           ) : (
-            <Button
-            variant="contained"
-              disabled={!isAphaNumeric}
-              onClick={() => {
-                accountDialog.type === 'new'
-                  ? createChartOfAccountHandler()
-                  : updateChartOfAccount();
-              }}
-              color="primary"
+              <Button
+                variant="contained"
+                disabled={!isAphaNumeric}
+                onClick={() => {
+                  accountDialog.type === 'new'
+                    ? createChartOfAccountHandler()
+                    : updateChartOfAccount();
+                }}
+                color="primary"
               // disabled={ accountDialog.type === "new" ? !canSubmitValues() : "" }
-            >
-              {accountDialog.type === 'new' ? 'Save Account' : 'Update Account'}
-            </Button>
-          )}
+              >
+                {accountDialog.type === 'new' ? 'Save Account' : 'Update Account'}
+              </Button>
+            )}
           <Button variant="contained" onClick={closeNewAccountDialogAction} color="inherit">
             Cancel
           </Button>

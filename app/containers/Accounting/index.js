@@ -1,37 +1,25 @@
-/**
- *
- * Accounting
- *
- */
-
-import React, { memo, useEffect } from 'react';
+import React, { Fragment, memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import {
-  BrowserRouter as Router,
-  Switch,
   useParams,
-  useLocation,
   Route,
   useRouteMatch,
 } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import axios from 'axios';
 import reducer from './reducer';
 import saga from './saga';
-import * as crud from './crud';
 import * as Actions from './actions';
 import makeSelectAccounting, * as Selectors from './selectors';
 import Charts from './Chart/Loadable';
 import Reports from './Reports/index';
 import Home from './home';
-import ModuleLayout from './components/ModuleLayout';
+import Dashboard from './Dashboard';
 import Journal from './Journal';
 import AddNewJournal from './Journal/components/AddNewJournal';
 import JournalDetails from './Journal/components/JournalDetails';
@@ -44,101 +32,102 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import DetailsOfAccountChat from './Chart/components/DetailsOfAccountChart';
 import FixedAssets from './FixedAssets/index';
 import ViewReport from './Reports/ViewReport/ViewReport';
+// import AccountSetup from './Settings/components/AccountSetup';
+import Settings from './Settings';
+
+const key = "accounting"
 
 export function Accounting(props) {
-  const { id, name } = useParams();
-  const param = useParams();
-  useInjectReducer({ key: 'accounting', reducer });
-  useInjectSaga({ key: 'accounting', saga });
-
-  console.log(
-    `Accounting index.js loaded ${id} ${name}  ${JSON.stringify(param)}`,
-  );
-  console.log(
-    'I am hwere kkkkkkkkkkkkkkkkkkkkkkkkkkkkk ddddddddddddddddddddddddddddddd at account',
-    useLocation(),
-  );
-
-  const { loading } = props;
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
+  const { loading, accSetUpData, getAccountingSetup, accounting } = props;
 
   useEffect(() => {
-    async function dataCall() {
-      await crud
-        .setUptins()
-        .then(data => {
-          console.log(`What a data ${JSON.stringify(data.data)}`);
-        })
-        .catch(err => {
-          console.log(`Error from setUptins ${err}`);
-        });
-    }
+    getAccountingSetup()
+  }, [])
 
-    dataCall();
-  }, []);
-  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {
+    console.log(accSetUpData, "On update useeffect")
+  }, [accSetUpData])
 
-  // Routing based on api response
+  const { path } = useRouteMatch();
+  const { id, name } = useParams();
+  console.log("accounting", accounting);
+
   if (loading) {
-    return (
-      <div style={{ textAlign: 'center' }}>
-        <div style={{ margin: '2px auto' }}>
-          <CircularProgress />
-        </div>
-      </div>
-    );
+    return <CircularProgress />
   }
+
+  if (accSetUpData) {
+    return <Settings />
+  }
+
   return (
     <div>
-      <Switch>
-        <Route path={`/account/reports/${name}`} component={ViewReport} />
-        {id === undefined ? (
-          <Route exact path="/account" component={Home} />
-        ) : name === undefined ? (
-          <Route
-            exact
-            path={`/account/${id}`}
-            component={
-              id === 'reports'
-                ? Reports
-                : id === 'charts'
+      <Helmet>
+        <title>Accounting</title>
+        <meta name="description" content="Description of Accounting" />
+      </Helmet>
+
+      <Fragment>
+        <Route exact path={path} component={Dashboard} />
+        <Route path={`${path}/dashboard`} component={Dashboard} />
+        <Route path={`${path}/charts`} component={Charts} />
+        <Route path={`${path}/banking`} component={Banking} />
+        <Route path={`${path}/journal`} component={Journal} />
+        <Route path={`${path}/budgeting`} component={Budget} />
+        <Route path={`${path}/fixedassets`} component={FixedAssets} />
+        <Route path={`${path}/reports/:reportId?`} component={Reports} />
+
+        {/* <Route path={`/account/reports/${name}`} component={ViewReport} />
+      {id === undefined ? (
+        <Route exact path="/account" component={Home} />
+      ) : name === undefined ? (
+        <Route
+          exact
+          path={`/account/${id}`}
+          component={
+            id === 'reports'
+              ? Reports
+              : id === 'charts'
                 ? Charts
                 : id === 'journal'
-                ? Journal
-                : id === 'fixedassets'
-                ? FixedAssets
-                : id === 'banking'
-                ? Banking
-                : id === 'budgeting'
-                ? Budget
-                : id === 'settings'
-                ? Home
-                : id === 'fixedassets'
-                ? FixedAssets
-                : Home
-            }
-          />
-        ) : (
-          <Route
-            exact
-            path={`/account/${id}/${name}`}
-            component={
-              name === 'add'
-                ? id === 'budgeting'
-                  ? NewBudgeting
-                  : AddNewJournal
-                : id === 'journal'
-                ? JournalDetails
-                : id === 'charts'
-                ? DetailsOfAccountChat
-                : id === 'budgeting'
-                ? BudgetingDetails
-                : id === 'settings'
-                ? Home
-                : AccountDetails
-            }
-          />
-        )}
-      </Switch>
+                  ? Journal
+                  : id === 'fixedassets'
+                    ? FixedAssets
+                    : id === 'banking'
+                      ? Banking
+                      : id === 'budgeting'
+                        ? Budget
+                        : id === 'settings'
+                          ? Home
+                          : id === 'fixedassets'
+                            ? FixedAssets
+                            : Home
+          }
+        />
+      ) : (
+            <Route
+              exact
+              path={`/account/${id}/${name}`}
+              component={
+                name === 'add'
+                  ? id === 'budgeting'
+                    ? NewBudgeting
+                    : AddNewJournal
+                  : id === 'journal'
+                    ? JournalDetails
+                    : id === 'charts'
+                      ? DetailsOfAccountChat
+                      : id === 'budgeting'
+                        ? BudgetingDetails
+                        : id === 'settings'
+                          ? Home
+                          : AccountDetails
+              }
+            />
+          )} */}
+      </Fragment>
     </div>
   );
 }
@@ -146,18 +135,20 @@ export function Accounting(props) {
 Accounting.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
+  accounting: makeSelectAccounting(),
   loading: Selectors.makeSelectLoading(),
+  accSetUpData: Selectors.makeSelectGetAccountingSetupData(),
 });
 
-const withConnect = connect(mapStateToProps);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getAccountingSetup: () => dispatch(Actions.getAccountingSetupAction()),
+  }
+}
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 export default compose(
   withConnect,
   memo,
 )(Accounting);
-
-// <Route
-// exact
-// path={`/account/reports/${name}`}
-// component={ViewReport}
-// />

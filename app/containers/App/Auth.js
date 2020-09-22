@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import * as Actions from './actions';
@@ -28,8 +28,8 @@ class Auth extends Component {
 			/** Retrieve user data from Auth **/
 			console.log(this.props.currentUser, 'currentUser from Auth');
 		} else {
-			console.log(this.props, "i am already here with nothing in current user")
-			// history.push('/login')
+			console.log(this.props, "You're getting this because accessToken && currentUser is not set")
+			history.push('/logout')
 		}
 
 	};

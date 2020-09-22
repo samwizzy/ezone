@@ -1,17 +1,15 @@
-/*
- *
- * Settings reducer
- *
- */
+
 import produce from 'immer';
 import * as Constants from './constants';
 
 export const initialState = {
   loading: false,
   error: false,
-  accountingSetupData: {},
+  accountingSetupData: null,
   accountSetupPostData: {},
   accountingPeriodData: [],
+  businessTypes: [],
+  currencies: [],
   accountPeriodDialog: {
     type: 'new',
     props: {
@@ -19,7 +17,6 @@ export const initialState = {
     },
     data: null,
   },
-  periodOfAccountPostData: {}
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -107,12 +104,10 @@ const settingsReducer = (state = initialState, action) =>
 
       // Case to create accounting setup
       case Constants.CREATE_ACCOUNTING_SETUP: {
-        console.log('CREATE_ACCOUNTING_SETUP reducer');
         return {
           ...state,
           loading: true,
           error: false,
-          accountSetupPostData: action.payload
         };
       }
       case Constants.CREATE_ACCOUNTING_SETUP_SUCCESS: {
@@ -120,7 +115,6 @@ const settingsReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          accountSetupPostData: action.payload
         };
       }
       case Constants.CREATE_ACCOUNTING_SETUP_ERR: {
@@ -161,7 +155,7 @@ const settingsReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-        };
+        }
       }
       case Constants.GET_ALL_ACCOUNTING_PERIOD_SUCCESS: {
         return {
@@ -169,14 +163,62 @@ const settingsReducer = (state = initialState, action) =>
           loading: false,
           error: false,
           accountingPeriodData: action.payload
-        };
+        }
       }
       case Constants.GET_ALL_ACCOUNTING_PERIOD_ERR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
-        };
+        }
+      }
+
+      // Case to get business types
+      case Constants.GET_BUSINESS_TYPES: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        }
+      }
+      case Constants.GET_BUSINESS_TYPES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          businessTypes: action.payload
+        }
+      }
+      case Constants.GET_BUSINESS_TYPES_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        }
+      }
+
+      // Case to get currencies
+      case Constants.GET_CURRENCIES: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        }
+      }
+      case Constants.GET_CURRENCIES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          currencies: action.payload
+        }
+      }
+      case Constants.GET_CURRENCIES_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        }
       }
 
       // Case to create accounting period
@@ -185,7 +227,6 @@ const settingsReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          periodOfAccountPostData: action.payload
         };
       }
       case Constants.CREATE_ACCOUNT_PERIOD_SUCCESS: {
@@ -193,7 +234,6 @@ const settingsReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          periodOfAccountPostData: action.payload
         };
       }
       case Constants.CREATE_ACCOUNT_PERIOD_ERR: {
@@ -210,7 +250,6 @@ const settingsReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          periodOfAccountPostData: action.payload
         };
       }
       case Constants.UPDATE_ACCOUNT_PERIOD_SUCCESS: {
@@ -218,7 +257,6 @@ const settingsReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          periodOfAccountPostData: action.payload
         };
       }
       case Constants.UPDATE_ACCOUNT_PERIOD_ERR: {
