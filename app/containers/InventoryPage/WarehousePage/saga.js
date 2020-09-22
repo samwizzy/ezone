@@ -11,12 +11,10 @@ export function* getAllEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
-  const requestURL = `${Endpoints.GetAllUsersApi}/${
-    currentUser.organisation.orgId
-  }`;
+  const requestURL = `${Endpoints.GetAllUsersApi}?orgId=${currentUser && currentUser.organisation.orgId}`;
 
   try {
-    const getAllEmployeesResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -24,27 +22,18 @@ export function* getAllEmployees() {
       }),
     });
 
-    yield put(Actions.getAllEmployeesSuccess(getAllEmployeesResponse));
+    yield put(Actions.getAllEmployeesSuccess(response));
   } catch (err) {
     yield put(Actions.getAllEmployeesError(err));
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: `${err}`,
-    //     status: 'error',
-    //   }),
-    // );
   }
 }
 
 export function* getAllWarehouses() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  // const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-
   const requestURL = `${Endpoints.GetAllWarehouses}`;
 
   try {
-    const getAllWarehouseResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -52,34 +41,25 @@ export function* getAllWarehouses() {
       }),
     });
 
-    console.log(getAllWarehouseResponse, 'getAllWarehouseResponse');
+    console.log(response, 'response');
 
-    yield put(Actions.getAllWarehouseSuccess(getAllWarehouseResponse));
+    yield put(Actions.getAllWarehouseSuccess(response));
   } catch (err) {
     yield put(Actions.getAllWarehouseError(err));
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: `${err}`,
-    //     status: 'error',
-    //   }),
-    // );
   }
 }
 
 export function* createNewWarehouse() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const createNewWarehouseData = yield select(
-    Selectors.makeSelectWarehouseDetails(),
-  );
+  const createNewWarehouseData = yield select(Selectors.makeSelectWarehouseDetails());
   createNewWarehouseData.orgId = currentUser.organisation.orgId;
 
   console.log(createNewWarehouseData, 'createNewWarehouseData');
   const requestURL = `${Endpoints.CreateNewWarehouseApi}`;
 
   try {
-    const createNewEmployeeResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
       body: JSON.stringify(createNewWarehouseData),
       headers: new Headers({
@@ -91,34 +71,9 @@ export function* createNewWarehouse() {
     // yield put(Actions.createNewEmployeeSuccess(createNewEmployeeResponse));
     yield put(Actions.getAllWarehouse());
     yield put(Actions.closeNewWarehouseDialog());
-
-    // if (createNewEmployeeResponse.success === true) {
-    //   yield put(
-    //     AppActions.openSnackBar({
-    //       open: true,
-    //       message: createNewEmployeeResponse.message,
-    //       status: 'success',
-    //     }),
-    //   );
-    // } else {
-    //   yield put(
-    //     AppActions.openSnackBar({
-    //       open: true,
-    //       message: createNewEmployeeResponse.message,
-    //       status: 'warning',
-    //     }),
-    //   );
-    // }
   } catch (err) {
     console.log(err);
     yield put(Actions.createNewWarehouseError(err));
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: `${err}`,
-    //     status: 'error',
-    //   }),
-    // );
   }
 }
 
@@ -132,10 +87,10 @@ export function* updateWarehouse() {
 
   const requestURL = `${Endpoints.UpdateWarehouseApi}/${
     createNewWarehouseData.id
-  }`;
+    }`;
 
   try {
-    const createNewEmployeeResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'PUT',
       body: JSON.stringify(createNewWarehouseData),
       headers: new Headers({

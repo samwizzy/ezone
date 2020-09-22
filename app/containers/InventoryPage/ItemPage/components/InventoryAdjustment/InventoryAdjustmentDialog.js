@@ -7,6 +7,7 @@ import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
 import {
   Card,
+  CardHeader,
   CardContent,
   CardActions,
   Divider,
@@ -27,12 +28,13 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import moment from 'moment';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import DateFnsUtils from '@date-io/date-fns';
 import AddIcon from '@material-ui/icons/Add';
+import CancelIcon from '@material-ui/icons/Cancel';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
-import LoadingIndicator from '../../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -65,11 +67,13 @@ const useStyles = makeStyles(theme => ({
     '& .MuiTableFooter-root': {
       '& .MuiTableCell-root': {
         border: 'none !important',
+        padding: theme.spacing(2, 0)
       },
     },
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
         color: theme.palette.common.white,
+        padding: theme.spacing(1, 2)
       },
       '& .MuiTableCell-root:nth-child(odd)': {
         backgroundColor: theme.palette.primary.main,
@@ -79,180 +83,119 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
-  button: {
-    marginRight: theme.spacing(1),
-  },
 }));
+
+const initialItem = {
+  adjustedQuantity: 0,
+  itemDescription: "",
+  itemId: 0
+}
 
 const InventoryAdjustmentDialog = props => {
   const {
     loading,
-    inventoryAdjustDialog,
-    getAllItems,
-    getAllWarehouses,
-    closeNewInventoryAdjustDialogAction,
-    closeEditEmployeeDialogAction,
-    dispatchCreateNewInventoryAdjustmentAction,
+    dialog,
+    items,
+    createNewInventoryAdjustment,
   } = props;
 
-  console.log(inventoryAdjustDialog, 'inventoryAdjustDialog');
   const classes = useStyles();
-  const [selectedDate, handleDateChange] = React.useState(new Date());
 
-  const [rows, setRows] = React.useState([{}]);
   const [values, setValues] = React.useState({
-    transferOrder: '',
-    destinationWarehouseUuId: '',
-    reason: '',
-    sourceWareHouseUuid: '',
-    // itemId: '',
-    // itemSku: '',
-    // transferQuantity: '',
+    inventoryAdjustedDate: moment().format('YYYY-MM-DDTHH:mm:ss'),
+    items: [],
+    reason: "",
+    reasonDescription: "",
+    referenceNumber: ""
   });
 
   const canBeSubmitted = () => {
-    const {
-      name,
-      firstStreet,
-      secondStreet,
-      city,
-      state,
-      zipCode,
-      warehousePhoneNumber,
-      wareHouseContactEmail,
-      headOfWareHouseId,
-    } = values;
-    return (
-      name !== '' &&
-      firstStreet !== '' &&
-      secondStreet !== '' &&
-      city !== '' &&
-      state !== '' &&
-      zipCode !== '' &&
-      warehousePhoneNumber !== '' &&
-      wareHouseContactEmail !== '' &&
-      headOfWareHouseId !== ''
-    );
+    const { reason, reasonDescription, referenceNumber, items } = values;
+    return reason.length > 0 && reasonDescription.length > 0 && referenceNumber.length > 0 && items.length > 0;
   };
 
-  const handleQuantityChange = idx => e => {
-    const { value } = e.target;
-    const newRow = rows;
-    newRow[idx].transferQuantity = parseFloat(value);
-    setRows(newRow);
-  };
+  const handleItemChange = i => event => {
+    const { name, value } = event.target
+    const items = [...values.items]
+    items[i][name] = value
+    setValues({ ...values, items });
+  }
 
-  const handleItemChange = (e, value, idx) => {
-    const newRoww = rows;
-    newRoww[idx] = {
-      itemId: value.id,
-      itemSku: value.sku,
-    };
-    setRows(newRoww);
-  };
+  const handleSelectItemChange = i => (event, object) => {
+    const items = [...values.items]
+    const { id: itemId, description: itemDescription, quantity: adjustedQuantity } = object
+    items[i] = Object.assign({}, { itemId, itemDescription, adjustedQuantity })
+    setValues({ ...values, items });
+  }
 
   const addRow = () => {
-    console.log(rows, 'rows values');
-    const item = {
-      itemId: '',
-      itemSku: '',
-      transferQuantity: '',
-    };
-    setRows([...rows, item]);
-  };
+    setValues({ ...values, items: [...values.items, { ...initialItem }] });
+  }
 
-  const removeRow = idx => {
-    setRows(rows.filter((item, id) => id !== idx));
-  };
+  const removeRow = i => () => {
+    setValues({ ...values, items: values.items.filter((item, id) => id !== i) });
+  }
 
-  const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
-  };
+  const handleChange = event => {
+    setValues({ ...values, [event.target.name]: event.target.value });
+  }
 
-  const handleSourceChange = (evt, value) => {
-    setValues({ ...values, sourceWareHouseUuid: value.id });
-  };
+  const handleDateChange = name => date => {
+    setValues({ ...values, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss') });
+  }
 
-  const handleDestinationChange = (evt, value) => {
-    setValues({ ...values, destinationWarehouseUuId: value.id });
-  };
+  const handleSubmit = () => {
+    dialog.type === 'new' ? createNewInventoryAdjustment(values) : ""
+  }
+
+  console.log(items, "items")
+  console.log(values, "values")
 
   return (
     <div className={classes.root}>
-      <Card className={classes.card} elevation={0}>
-        <Toolbar>
-          <Typography
-            variant="h5"
-            color="textPrimary"
-            className={classes.title}
-          >
-            {inventoryAdjustDialog.type === 'new'
-              ? 'Inventory Adjustment'
-              : 'Edit Inventory Adjustment'}
-          </Typography>
-        </Toolbar>
+      <Card elevation={0} className={classes.card}>
+        <CardHeader title={dialog.type === 'new' ? 'New Inventory Adjustment Order' : 'Update Inventory Adjustment'} />
+
         <Divider />
 
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Table container size="small" className={classes.formTable} spacing={2}>
+              <Table size="small" className={classes.formTable}>
                 <TableBody>
                   <TableRow>
-                    <TableCell>Transfer Order</TableCell>
+                    <TableCell>Reference Number</TableCell>
                     <TableCell>
                       <TextField
-                        id="outlined-transfer-order"
+                        id="outlined-reference-number"
                         size="small"
-                        label="Transfer Order"
+                        name="referenceNumber"
+                        label="Reference Number"
+                        value={values.referenceNumber}
                         style={{ width: 300 }}
-                        value={values.transferOrder}
-                        onChange={handleChange('transferOrder')}
+                        onChange={handleChange}
                         variant="outlined"
-                        className={classes.textField}
                       />
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Date</TableCell>
+                    <TableCell>Inventory Adjusted Date</TableCell>
                     <TableCell>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
+                          disablePast
                           autoOk
                           variant="inline"
-                          inputVariant="outlined"
                           size="small"
-                          label="Date"
+                          inputVariant="outlined"
                           style={{ width: 300 }}
+                          label="Inventory Adjusted Date"
                           format="dd/MM/yyyy"
-                          value={selectedDate}
+                          value={values.inventoryAdjustedDate}
                           InputAdornmentProps={{ position: 'end' }}
-                          onChange={date => handleDateChange(date)}
-                          className={classes.textField}
+                          onChange={handleDateChange('inventoryAdjustedDate')}
                         />
                       </MuiPickersUtilsProvider>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Source Warehouse</TableCell>
-                    <TableCell>
-                      <Autocomplete
-                        id="combo-Source"
-                        size="small"
-                        options={getAllWarehouses}
-                        getOptionLabel={option => option.name}
-                        onChange={(evt, ve) => handleSourceChange(evt, ve)}
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            label="Source Warehouse"
-                            variant="outlined"
-                            style={{ width: 300 }}
-                            placeholder="Source Warehouse"
-                            className={classes.textField}
-                          />
-                        )}
-                      />
                     </TableCell>
                   </TableRow>
                   <TableRow>
@@ -261,12 +204,27 @@ const InventoryAdjustmentDialog = props => {
                       <TextField
                         id="outlined-reason"
                         size="small"
+                        name="reason"
                         label="Reason"
                         value={values.reason}
-                        style={{ width: 300 }}
-                        onChange={handleChange('reason')}
+                        onChange={handleChange}
                         variant="outlined"
-                        className={classes.textField}
+                        style={{ width: 300 }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Description</TableCell>
+                    <TableCell>
+                      <TextField
+                        id="outlined-reason"
+                        size="small"
+                        name="reasonDescription"
+                        label="Description"
+                        value={values.reasonDescription}
+                        onChange={handleChange}
+                        variant="outlined"
+                        style={{ width: 300 }}
                         multiline
                         rows={3}
                       />
@@ -277,136 +235,113 @@ const InventoryAdjustmentDialog = props => {
             </Grid>
 
             <Grid item xs={12}>
-              {/* <TableTransfer
-                getAllItems={getAllItems}
-                values={values}
-                setValues={setValues}
-                addRow={addRow}
-                removeRow={removeRow}
-                handleItemChange={handleItemChange}
-                handleQuantityChange={handleQuantityChange}
-              /> */}
-
-              <Table className={classes.table} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Item Details</TableCell>
-                    <TableCell align="center">Quantity Available</TableCell>
-                    <TableCell align="center">New Quantity on hand</TableCell>
-                    <TableCell align="center">Quantity Adjusted</TableCell>
-                    <TableCell align="center" />
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row, id) => (
-                    <TableRow key={id}>
-                      <TableCell component="th" scope="row">
-                        <Autocomplete
-                          id="combo-items"
-                          size="small"
-                          options={getAllItems}
-                          getOptionLabel={option => option.itemName}
-                          onChange={(evt, ve) => handleItemChange(evt, ve, id)}
-                          renderInput={params => (
-                            <TextField
-                              {...params}
-                              label="Items"
-                              variant="outlined"
-                              name="itemId"
-                              placeholder="Items"
-                              fullWidth
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Table className={classes.table} aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Item</TableCell>
+                        <TableCell>Item SKU</TableCell>
+                        <TableCell>Transfer Quantity</TableCell>
+                        <TableCell align="right">
+                          <Button color="inherit" onClick={addRow} startIcon={<AddIcon />}>New</Button>
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {values.items.map((row, i) => (
+                        <TableRow key={i}>
+                          <TableCell>
+                            <Autocomplete
+                              id={`combo-items-${i}`}
+                              size="small"
+                              options={items}
+                              getOptionLabel={option => option.itemName}
+                              onChange={handleSelectItemChange(i)}
+                              renderInput={params => (
+                                <TextField
+                                  {...params}
+                                  label="Select Items"
+                                  variant="outlined"
+                                  placeholder="Items"
+                                  fullWidth
+                                />
+                              )}
                             />
-                          )}
-                        />
-                      </TableCell>
-                      <TableCell align="center">
-                        <TextField
-                          size="small"
-                          disabled
-                          id={`filled-${id + 1}`}
-                          label=""
-                          // defaultValue="0.00"
-                          variant="filled"
-                          placeholder="0.00"
-                        />
-                      </TableCell>
-                      <TableCell align="center">
-                        <TextField
-                          size="small"
-                          id={`filled-${id + 2}`}
-                          label=""
-                          defaultValue="0.00"
-                          variant="filled"
-                          placeholder="0.00"
-                        />
-                      </TableCell>
-                      <TableCell align="center">
-                        <TextField
-                          size="small"
-                          id={`filled-${id + 3}`}
-                          label=""
-                          defaultValue="1.00"
-                          variant="outlined"
-                          name="transferQuantity"
-                          onChange={handleQuantityChange(id)}
-                        />
-                      </TableCell>
-                      <TableCell align="center">
-                        <Button
-                          size="small"
-                          variant="outlined"
-                          color="secondary"
-                          onClick={() => removeRow(id)}
-                        >
-                          Remove
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-                <TableFooter>
-                  <TableRow>
-                    <TableCell colSpan={5}>
-                      <Button
-                        variant="contained"
-                        size="small"
-                        color="primary"
-                        onClick={() => addRow()}
-                        startIcon={<AddIcon />}
-                      >
-                        Add Row
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                </TableFooter>
-              </Table>
+                          </TableCell>
+                          <TableCell>
+                            <TextField
+                              disabled
+                              id={`adjusted-quantity-${i}`}
+                              size="small"
+                              variant="outlined"
+                              label="Adjusted Quantity"
+                              name="adjustedQuantity"
+                              onChange={handleItemChange(i)}
+                              value={row.adjustedQuantity ? row.adjustedQuantity : ""}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <TextField
+                              // disabled
+                              id={`item-description-${i}`}
+                              size="small"
+                              label="Description"
+                              variant="outlined"
+                              name="itemDescription"
+                              onChange={handleItemChange(i)}
+                              value={row.itemDescription ? row.itemDescription : ""}
+                            />
+                          </TableCell>
+                          <TableCell align="right">
+                            <Button
+                              variant="outlined"
+                              size="small"
+                              color="secondary"
+                              onClick={removeRow(i)}
+                              startIcon={<CancelIcon />}
+                            >
+                              Remove
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                    <TableFooter>
+                      <TableRow>
+                        <TableCell colSpan={4}>
+                          <Button
+                            variant="contained"
+                            size="small"
+                            color="primary"
+                            onClick={addRow}
+                            startIcon={<AddIcon />}
+                          >
+                            Add Row
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    </TableFooter>
+                  </Table>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </CardContent>
 
         <CardActions>
-          {loading ? (
-            <LoadingIndicator />
-          ) : (
-              <Button
-                size="small"
-                className={classes.button}
-                onClick={() => {
-                  dispatchCreateNewInventoryAdjustmentAction(
-                    Object.assign(values, { items: rows }),
-                  );
-                }}
-                color="primary"
-                variant="contained"
-              // disabled={!canBeSubmitted()}
-              >
-                Save
-              </Button>
-            )}
           <Button
-            className={classes.button}
             size="small"
-            onClick={() => closeNewInventoryAdjustDialogAction()}
+            onClick={handleSubmit}
+            color="primary"
+            variant="contained"
+            disabled={!canBeSubmitted()}
+          >
+            Save
+          </Button>
+          <Button
+            size="small"
+            onClick={() => { }}
             color="primary"
             variant="outlined"
           >
@@ -420,26 +355,24 @@ const InventoryAdjustmentDialog = props => {
 
 InventoryAdjustmentDialog.propTypes = {
   loading: PropTypes.bool,
-  inventoryAdjustDialog: PropTypes.object,
+  dialog: PropTypes.object,
   getAllWarehouses: PropTypes.array,
-  getAllItems: PropTypes.array,
-  dispatchCreateNewInventoryAdjustmentAction: PropTypes.func,
-  closeNewInventoryAdjustDialogAction: PropTypes.func,
+  items: PropTypes.array,
+  createNewInventoryAdjustment: PropTypes.func,
+  closeNewInventoryAdjustDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  inventoryAdjustDialog: Selectors.makeSelectInventoryAdjustDialog(),
+  dialog: Selectors.makeSelectInventoryAdjustDialog(),
   getAllWarehouses: Selectors.makeSelectGetAllWarehouses(),
-  getAllItems: Selectors.makeSelectGetAllItems(),
+  items: Selectors.makeSelectGetAllItems(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchCreateNewInventoryAdjustmentAction: evt =>
-      dispatch(Actions.createNewInventoryAdjustment(evt)),
-    closeNewInventoryAdjustDialogAction: () =>
-      dispatch(Actions.closeNewInventoryAdjustDialog()),
+    createNewInventoryAdjustment: data => dispatch(Actions.createNewInventoryAdjustment(data)),
+    closeNewInventoryAdjustDialog: () => dispatch(Actions.closeNewInventoryAdjustDialog()),
   };
 }
 

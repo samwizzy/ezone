@@ -1,6 +1,6 @@
 import React from 'react';
 import { Line } from 'react-chartjs-2';
-import { Card, CardContent, Typography } from '@material-ui/core';
+import { Card, CardContent, CardHeader } from '@material-ui/core';
 
 const data = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -33,10 +33,10 @@ export default class Widget3 extends React.Component {
   render() {
     return (
       <Card>
+        <CardHeader
+          title="Income and Expenses"
+        />
         <CardContent>
-          <Typography variant="h6" component="" color="textSecondary">
-            Income and Expenses
-          </Typography>
           <Line data={data} />
         </CardContent>
       </Card>

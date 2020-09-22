@@ -10,11 +10,12 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core';
-import { fade, darken } from '@material-ui/core/styles/colorManipulator' 
+import { fade, darken } from '@material-ui/core/styles/colorManipulator'
 import AddIcon from '@material-ui/icons/Add';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
@@ -66,6 +67,8 @@ const WarehouseList = props => {
   useEffect(() => {
     getAllEmployeesAction();
   }, []);
+
+  const orderedWarehouses = _.orderBy(getAllWarehouses, 'dateCreated', 'desc')
 
   const columns = [
     {
@@ -185,7 +188,7 @@ const WarehouseList = props => {
       <MUIDataTable
         className={classes.datatable}
         title="All Warehouses"
-        data={getAllWarehouses}
+        data={orderedWarehouses}
         columns={columns}
         options={options}
       />

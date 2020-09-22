@@ -1,79 +1,226 @@
-/*
- *
- * ItemPage actions
- *
- */
-
 import * as Constants from './constants';
 
 export function openNewItemDialog() {
   return {
     type: Constants.OPEN_NEW_ITEM_DIALOG,
-  };
+  }
 }
 
 export function closeNewItemDialog() {
   return {
     type: Constants.CLOSE_NEW_ITEM_DIALOG,
-  };
+  }
+}
+
+export function openEditItemDialog(data) {
+  return {
+    type: Constants.OPEN_EDIT_ITEM_DIALOG,
+    payload: data
+  }
+}
+
+export function closeEditItemDialog() {
+  return {
+    type: Constants.CLOSE_EDIT_ITEM_DIALOG,
+  }
+}
+
+export function openNewItemGroupDialog() {
+  return {
+    type: Constants.OPEN_NEW_ITEM_GROUP_DIALOG,
+  }
+}
+
+export function closeNewItemGroupDialog() {
+  return {
+    type: Constants.CLOSE_NEW_ITEM_GROUP_DIALOG,
+  }
+}
+
+export function openEditItemGroupDialog(data) {
+  return {
+    type: Constants.OPEN_EDIT_ITEM_GROUP_DIALOG,
+    payload: data
+  }
+}
+
+export function closeEditItemGroupDialog() {
+  return {
+    type: Constants.CLOSE_EDIT_ITEM_GROUP_DIALOG,
+  }
 }
 
 export function openViewItemDialog(data) {
   return {
     type: Constants.OPEN_VIEW_ITEM_DIALOG,
     payload: data,
-  };
+  }
 }
 
 export function closeViewItemDialog() {
   return {
     type: Constants.CLOSE_VIEW_ITEM_DIALOG,
-  };
+  }
 }
 
 export function openNewTransferOrderDialog() {
   return {
     type: Constants.OPEN_NEW_TRANSFER_ORDER_DIALOG,
-  };
+  }
 }
 
 export function closeNewTransferOrderDialog() {
   return {
     type: Constants.CLOSE_NEW_TRANSFER_ORDER_DIALOG,
-  };
+  }
+}
+
+export function openEditTransferOrderDialog(data) {
+  return {
+    type: Constants.OPEN_EDIT_TRANSFER_ORDER_DIALOG,
+    payload: data
+  }
+}
+
+export function closeEditTransferOrderDialog() {
+  return {
+    type: Constants.CLOSE_EDIT_TRANSFER_ORDER_DIALOG,
+  }
 }
 
 export function openViewTransferOrderDialog(data) {
   return {
     type: Constants.OPEN_VIEW_TRANSFER_ORDER_DIALOG,
     payload: data,
-  };
+  }
 }
 
 export function closeViewTransferOrderDialog() {
   return {
     type: Constants.CLOSE_VIEW_TRANSFER_ORDER_DIALOG,
-  };
+  }
+}
+
+export function getAccounts() {
+  return {
+    type: Constants.GET_ACCOUNTS,
+  }
+}
+
+export function getAccountsSuccess(data) {
+  return {
+    type: Constants.GET_ACCOUNTS_SUCCESS,
+    payload: data,
+  }
+}
+
+export function getAccountsError(data) {
+  return {
+    type: Constants.GET_ACCOUNTS_ERROR,
+    payload: data,
+  }
+}
+
+export function getVendors() {
+  return {
+    type: Constants.GET_VENDORS,
+  }
+}
+
+export function getVendorsSuccess(data) {
+  return {
+    type: Constants.GET_VENDORS_SUCCESS,
+    payload: data,
+  }
+}
+
+export function getVendorsError(data) {
+  return {
+    type: Constants.GET_VENDORS_ERROR,
+    payload: data,
+  }
 }
 
 export function getAllItems() {
   return {
     type: Constants.GET_ALL_ITEMS,
-  };
+  }
 }
 
 export function getAllItemsSuccess(data) {
   return {
     type: Constants.GET_ALL_ITEMS_SUCCESS,
     payload: data,
-  };
+  }
 }
 
 export function getAllItemsError(data) {
   return {
     type: Constants.GET_ALL_ITEMS_ERROR,
     payload: data,
+  }
+}
+
+export function getItemsGroups() {
+  return {
+    type: Constants.GET_ITEMS_GROUPS,
+  }
+}
+
+export function getItemsGroupsSuccess(data) {
+  return {
+    type: Constants.GET_ITEMS_GROUPS_SUCCESS,
+    payload: data,
   };
+}
+
+export function getItemsGroupsError(data) {
+  return {
+    type: Constants.GET_ITEMS_GROUPS_ERROR,
+    payload: data,
+  };
+}
+
+export function getItemsGroupById(id) {
+  return {
+    type: Constants.GET_ITEMS_GROUP_BY_ID,
+    payload: id
+  }
+}
+
+export function getItemsGroupByIdSuccess(data) {
+  return {
+    type: Constants.GET_ITEMS_GROUP_BY_ID_SUCCESS,
+    payload: data,
+  }
+}
+
+export function getItemsGroupByIdError(data) {
+  return {
+    type: Constants.GET_ITEMS_GROUP_BY_ID_ERROR,
+    payload: data,
+  }
+}
+
+export function updateItemsGroup(data) {
+  return {
+    type: Constants.UPDATE_ITEMS_GROUP_BY_ID,
+    payload: data
+  }
+}
+
+export function updateItemsGroupSuccess(data) {
+  return {
+    type: Constants.UPDATE_ITEMS_GROUP_BY_ID_SUCCESS,
+    payload: data,
+  }
+}
+
+export function updateItemsGroupError(data) {
+  return {
+    type: Constants.UPDATE_ITEMS_GROUP_BY_ID_ERROR,
+    payload: data,
+  }
 }
 
 export function createNewItem(data) {
@@ -93,6 +240,26 @@ export function createNewItemSuccess(data) {
 export function createNewItemError(data) {
   return {
     type: Constants.CREATE_NEW_ITEM_ERROR,
+    payload: data,
+  };
+}
+export function createItemGroup(data) {
+  return {
+    type: Constants.CREATE_ITEM_GROUP,
+    payload: data,
+  };
+}
+
+export function createItemGroupSuccess(data) {
+  return {
+    type: Constants.CREATE_ITEM_GROUP_SUCCESS,
+    payload: data,
+  };
+}
+
+export function createItemGroupError(data) {
+  return {
+    type: Constants.CREATE_ITEM_GROUP_ERROR,
     payload: data,
   };
 }
@@ -249,6 +416,27 @@ export function getItemByIdSuccess(data) {
 export function getItemByIdError(data) {
   return {
     type: Constants.GET_ITEM_BY_ID_ERROR,
+    payload: data,
+  };
+}
+
+export function updateItem(data) {
+  return {
+    type: Constants.UPDATE_ITEM_BY_ID,
+    payload: data,
+  };
+}
+
+export function updateItemSuccess(data) {
+  return {
+    type: Constants.UPDATE_ITEM_BY_ID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function updateItemError(data) {
+  return {
+    type: Constants.UPDATE_ITEM_BY_ID_ERROR,
     payload: data,
   };
 }

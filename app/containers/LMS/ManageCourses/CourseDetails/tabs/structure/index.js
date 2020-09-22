@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 
 const StructurePage = props => {
   const classes = useStyles();
-  const { loading, history } = props;
+  const { loading, history, course } = props;
 
   return (
     <Fragment>

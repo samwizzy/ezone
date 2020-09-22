@@ -7,14 +7,6 @@ import { initialState } from './reducer';
 
 const selectItemPageDomain = state => state.itemPage || initialState;
 
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by ItemPage
- */
-
 const makeSelectItemPage = () =>
   createSelector(
     selectItemPageDomain,
@@ -45,6 +37,12 @@ const makeSelectItemDialog = () =>
     subState => subState.itemDialog,
   );
 
+const makeSelectItemGroupDialog = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.itemGroupDialog,
+  );
+
 const makeSelectViewItemDialog = () =>
   createSelector(
     selectItemPageDomain,
@@ -57,34 +55,52 @@ const makeSelectTransferOrderDialog = () =>
     subState => subState.transferOrderDialog,
   );
 
-const makeSelectTransferOrderDetails = () =>
-  createSelector(
-    selectItemPageDomain,
-    subState => subState.newTransferOrderDetails,
-  );
-
 const makeSelectGetAllTransferOrder = () =>
   createSelector(
     selectItemPageDomain,
-    subState => subState.getAllTransferOrder,
+    subState => subState.transferOrders,
+  );
+
+const makeSelectGetTransferOrderById = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.transferOrderById,
+  );
+
+const makeSelectGetAccounts = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.accounts,
+  );
+
+const makeSelectGetVendors = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.vendors,
   );
 
 const makeSelectGetAllItems = () =>
   createSelector(
     selectItemPageDomain,
-    subState => subState.getAllItems,
+    subState => subState.items,
   );
 
-const makeSelectItemDetails = () =>
+const makeSelectGetAllItemsGroups = () =>
   createSelector(
     selectItemPageDomain,
-    subState => subState.newItemDetails,
+    subState => subState.itemsGroups,
+  );
+
+const makeSelectGetAllItemsGroupById = () =>
+  createSelector(
+    selectItemPageDomain,
+    subState => subState.itemsGroup,
   );
 
 const makeSelectGetAllWarehouses = () =>
   createSelector(
     selectItemPageDomain,
-    subState => subState.getAllWarehouses,
+    subState => subState.warehouses,
   );
 
 const makeSelectInventoryAdjustDialog = () =>
@@ -93,89 +109,59 @@ const makeSelectInventoryAdjustDialog = () =>
     subState => subState.inventoryAdjustDialog,
   );
 
-const makeSelectInventoryAdjustmentDetails = () =>
-  createSelector(
-    selectItemPageDomain,
-    subState => subState.newInventoryAdjustmentDetails,
-  );
-
 const makeSelectGetAllInventoryAdjustments = () =>
   createSelector(
     selectItemPageDomain,
-    subState => subState.getAllInventoryAdjustments,
+    subState => subState.inventoryAdjustments,
   );
 
 const makeSelectGetAllItemsPerWarehouse = () =>
   createSelector(
     selectItemPageDomain,
-    subState => subState.getAllItemsPerWarehouse,
-  );
-
-const makeSelectGetAllItemsPerWarehouseUuid = () =>
-  createSelector(
-    selectItemPageDomain,
-    subState => subState.getAllItemsPerWarehouseUuid,
+    subState => subState.itemsPerWarehouse,
   );
 
 const makeSelectGetItemById = () =>
   createSelector(
     selectItemPageDomain,
-    subState => subState.getItemById,
+    subState => subState.itemById,
   );
 
-const makeSelectGetInventoryAdjustById = () =>
+const makeSelectGetInventoryAdjustedById = () =>
   createSelector(
     selectItemPageDomain,
-    subState => subState.getInventoryAdjustById,
-  );
-
-const makeSelectGetItemByIdResponse = () =>
-  createSelector(
-    selectItemPageDomain,
-    subState => subState.getItemByIdResponse,
-  );
-
-const makeSelectGetInventoryAdjustByIdResponse = () =>
-  createSelector(
-    selectItemPageDomain,
-    subState => subState.getInventoryAdjustByIdResponse,
+    subState => subState.inventoryAdjustedById,
   );
 
 const makeSelectGetStockLocationBySku = () =>
   createSelector(
     selectItemPageDomain,
-    subState => subState.getStockLocationBySku,
+    subState => subState.stockLocationBySku,
   );
 
-const makeSelectGetStockLocationBySkuResponse = () =>
-  createSelector(
-    selectItemPageDomain,
-    subState => subState.getStockLocationBySkuResponse,
-  );
 
 export default makeSelectItemPage;
 export {
   selectItemPageDomain,
-  makeSelectGetAllItems,
-  makeSelectItemDetails,
-  makeSelectItemDialog,
   makeSelectLoading,
   makeSelectError,
+  makeSelectMessage,
+  makeSelectGetAccounts,
+  makeSelectGetVendors,
+  makeSelectGetAllItems,
+  makeSelectGetItemById,
+  makeSelectItemDialog,
+  makeSelectGetAllItemsGroups,
+  makeSelectGetAllItemsGroupById,
+  makeSelectItemGroupDialog,
   makeSelectGetAllWarehouses,
   makeSelectTransferOrderDialog,
-  makeSelectTransferOrderDetails,
   makeSelectViewItemDialog,
   makeSelectGetAllTransferOrder,
+  makeSelectGetTransferOrderById,
   makeSelectInventoryAdjustDialog,
-  makeSelectInventoryAdjustmentDetails,
   makeSelectGetAllInventoryAdjustments,
-  makeSelectMessage,
   makeSelectGetAllItemsPerWarehouse,
-  makeSelectGetAllItemsPerWarehouseUuid,
-  makeSelectGetItemById,
-  makeSelectGetItemByIdResponse,
   makeSelectGetStockLocationBySku,
-  makeSelectGetStockLocationBySkuResponse,
-  makeSelectGetInventoryAdjustByIdResponse,
-  makeSelectGetInventoryAdjustById,
+  makeSelectGetInventoryAdjustedById,
 };

@@ -226,12 +226,6 @@ const App = props => {
 
                   <PrivateRoute
                     exact
-                    path="/purchase"
-                    component={PurchasePage}
-                  />
-
-                  <PrivateRoute
-                    exact
                     path="/purchase/:id"
                     component={PurchasePage}
                   />
@@ -241,31 +235,23 @@ const App = props => {
                     component={WarehousePage}
                   />
                   <PrivateRoute
-                    exact
-                    path="/inventory/items/:statusId?"
+                    path="/inventory/items"
                     component={ItemPage}
                   />
                   <PrivateRoute
-                    exact
-                    path="/inventory/item/:statusId?/:sku?"
+                    path="/inventory/item"
                     component={ItemPage}
                   />
 
-                  {/* <PrivateRoute
-                  exact
-                  path="/inventory/item/:statusId?"
-                  component={ItemPage}
-                /> */}
                   <PrivateRoute
-                    exact
-                    path="/inventory/transfer/orders/:statusId?"
+                    path="/inventory/transfers"
                     component={TransferOrdersApp}
                   />
                   <PrivateRoute
-                    exact
-                    path="/inventory/transfer/new"
-                    component={NewTransferOrder}
+                    path="/inventory/transfer"
+                    component={TransferOrdersApp}
                   />
+
                   <PrivateRoute
                     exact
                     path="/inventory/adjustments/:statusId?"

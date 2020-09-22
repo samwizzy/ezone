@@ -9,16 +9,10 @@ import {
 	Divider,
 	Icon,
 	IconButton,
-	List,
-	Paper,
-	Grid,
-	Table,
-	TableHead,
-	TableBody,
-	TableRow,
-	TableCell,
+	List, ListItem, ListItemText, ListItemAvatar,
 	Typography
 } from '@material-ui/core';
+import ImageIcon from '@material-ui/icons/Image';
 import moment from 'moment'
 import _ from 'lodash'
 import { green, orange, red } from '@material-ui/core/colors'
@@ -31,36 +25,18 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
 	},
-	grid: {
-		border: `1px solid ${theme.palette.divider}`,
-		'& .MuiGrid-item': {
-			flex: 1,
-			margin: theme.spacing(5)
-		}
-	},
 	card: {
+		minHeight: 210,
 		borderRadius: theme.shape.borderRadius * 2,
+		"& .MuiCardContent-root": {
+			padding: 0,
+			fontSize: theme.typography.body2.fontSize,
+		},
 		"& .MuiCardHeader-root": {
 			"& .MuiTypography-root": {
 				fontSize: theme.typography.subtitle1.fontSize
 			}
 		}
-	},
-	table: {
-		display: "flex",
-		flexDirection: "row",
-		alignItems: "center",
-		whiteSpace: "nowrap",
-		"& .MuiTableFooter-root": {
-			borderTop: `1px solid ${theme.palette.divider} !important`
-		},
-		"& .MuiTableCell-root": {
-			borderBottom: "none",
-			padding: theme.spacing(1),
-		},
-		'& .MuiTableCell-body': {
-			color: theme.palette.text.secondary,
-		},
 	},
 }));
 
@@ -78,7 +54,7 @@ const Widget5 = ({ employees }) => {
 			<Card className={classes.card}>
 				<CardHeader
 					action={
-						<Button color="primary" aria-label="settings">
+						<Button size="small" color="primary" aria-label="settings">
 							see all
 						</Button>
 					}
@@ -86,20 +62,19 @@ const Widget5 = ({ employees }) => {
 				/>
 				<CardContent>
 					{newHires.length > 0 ?
-						<Table className={classes.table}>
-							<TableBody>
-								{sortedHires.slice(0, 2).map((hire, i) =>
-									<TableRow key={i}>
-										<TableCell component="th" scope="row">
-											<Avatar aria-label="recipe" className={classes.avatar}>
-												{hire.lastName ? hire.lastName[0].toUpperCase() : <PersonIcon />}
-											</Avatar>
-										</TableCell>
-										<TableCell align="left">{hire.firstName + ' ' + hire.lastName}</TableCell>
-									</TableRow>
-								)}
-							</TableBody>
-						</Table> :
+						<List className={classes.root}>
+							{sortedHires.slice(0, 2).map((hire, i) =>
+								<ListItem key={i}>
+									<ListItemAvatar>
+										<Avatar>
+											{hire.lastName ? hire.lastName[0].toUpperCase() : <PersonIcon />}
+										</Avatar>
+									</ListItemAvatar>
+									<ListItemText primary={hire.firstName + ' ' + hire.lastName} />
+								</ListItem>
+							)}
+						</List>
+						:
 						<Typography align="center" color="textSecondary">There are no new hires</Typography>
 					}
 				</CardContent>

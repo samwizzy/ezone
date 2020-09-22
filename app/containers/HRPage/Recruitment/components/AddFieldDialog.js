@@ -11,11 +11,7 @@ import * as Actions from '../../actions';
 import moment from 'moment'
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1, 0)
-    },
-  },
+  root: {},
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {

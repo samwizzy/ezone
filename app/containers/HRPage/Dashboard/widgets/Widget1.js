@@ -33,13 +33,6 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
 	},
-	grid: {
-		border: `1px solid ${theme.palette.divider}`,
-		'& .MuiGrid-item': {
-			flex: 1,
-			margin: theme.spacing(5)
-		}
-	},
 	card: {
 		borderRadius: theme.shape.borderRadius * 2,
 		backgroundImage: `url(${hrDash1})`,
@@ -48,17 +41,17 @@ const useStyles = makeStyles((theme) => ({
 		backgroundSize: 'cover',
 		"& .MuiCardActions-root": {
 			justifyContent: "center",
-			backgroundColor: theme.palette.common.white,
+			backgroundColor: theme.palette.secondary.contrastText,
 		},
 		"& .MuiCardContent-root": {
-			minHeight: 160
+			minHeight: 160,
+			display: 'flex',
+			alignItems: 'center',
 		}
 	},
 	table: {
+		minWidth: 280,
 		whiteSpace: "nowrap",
-		"& .MuiTableFooter-root": {
-			borderTop: `1px solid ${theme.palette.divider} !important`,
-		},
 		"& .MuiTableCell-root": {
 			borderBottom: "none !important",
 		},
@@ -72,7 +65,6 @@ const useStyles = makeStyles((theme) => ({
 const Widget1 = (props) => {
 	const classes = useStyles()
 	const { employees } = props
-	console.log(employees, "employees")
 
 	return (
 		<div>
@@ -84,7 +76,7 @@ const Widget1 = (props) => {
 								<TableCell component="th">
 									<Typography variant="h3">{employees && employees.length}</Typography>
 								</TableCell>
-								<TableCell align="right">
+								<TableCell>
 									<Typography variant="subtitle2">Employees</Typography>
 								</TableCell>
 							</TableRow>

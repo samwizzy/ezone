@@ -1,23 +1,11 @@
 import React from 'react'
-import classNames from 'classnames'
 import {
 	makeStyles,
 	Avatar,
-	Box,
 	Button,
-	Card, CardContent, CardActions, CardHeader,
-	Divider,
-	Icon,
-	IconButton,
-	List,
+	Card, CardContent, CardHeader,
+	List, ListItem, ListItemText, ListItemAvatar, ListItemSecondaryAction,
 	Paper,
-	Grid,
-	Table,
-	TableHead,
-	TableBody,
-	TableFooter,
-	TableRow,
-	TableCell,
 	Typography
 } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
@@ -26,37 +14,19 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
 	},
-	grid: {
-		border: `1px solid ${theme.palette.grey[100]}`,
-		'& .MuiGrid-item': {
-			flex: 1,
-			margin: theme.spacing(5)
-		}
-	},
 	card: {
+		minHeight: 210,
 		borderRadius: theme.shape.borderRadius * 2,
+		"& .MuiCardContent-root": {
+			padding: 0,
+			fontSize: theme.typography.body2.fontSize,
+		},
 		"& .MuiCardHeader-root": {
 			padding: theme.spacing(2),
 			"& .MuiTypography-root": {
 				fontSize: theme.typography.subtitle1.fontSize
 			}
 		}
-	},
-	table: {
-		display: "flex",
-		flexDirection: "row",
-		alignItems: "center",
-		whiteSpace: "nowrap",
-		"& .MuiTableFooter-root": {
-			borderTop: `1px solid ${theme.palette.divider} !important`
-		},
-		"& .MuiTableCell-root": {
-			borderBottom: "none",
-			padding: theme.spacing(1),
-		},
-		'& .MuiTableCell-body': {
-			color: theme.palette.text.secondary,
-		},
 	},
 }));
 
@@ -71,7 +41,7 @@ const Widget7 = () => {
 			<Card className={classes.card}>
 				<CardHeader
 					action={
-						<Button color="primary" aria-label="settings">
+						<Button color="primary" size="small" aria-label="settings">
 							see all
 						</Button>
 					}
@@ -79,21 +49,21 @@ const Widget7 = () => {
 				/>
 				<CardContent>
 					{leaveRequests.length > 0 ?
-						<Table className={classes.table}>
-							<TableBody>
-								{[0, 1].map((hire, i) =>
-									<TableRow key={i}>
-										<TableCell component="th" scope="row">
-											<Avatar aria-label="recipe" className={classes.avatar}>
-												R
-											</Avatar>
-										</TableCell>
-										<TableCell align="left">Christian Okeme</TableCell>
-										<TableCell align="right">Sick Leave</TableCell>
-									</TableRow>
-								)}
-							</TableBody>
-						</Table>
+						<List className={classes.root}>
+							{[0, 1].slice(0, 2).map((emp, i) =>
+								<ListItem key={i}>
+									<ListItemAvatar>
+										<Avatar>
+											{emp.lastName ? emp.lastName[0].toUpperCase() : <PersonIcon />}
+										</Avatar>
+									</ListItemAvatar>
+									<ListItemText primary={emp.firstName + ' ' + emp.lastName} />
+									<ListItemSecondaryAction>
+										<Typography>Sick Leave</Typography>
+									</ListItemSecondaryAction>
+								</ListItem>
+							)}
+						</List>
 						:
 						<Typography align="center" color="textSecondary">No Leave has been requested</Typography>
 					}

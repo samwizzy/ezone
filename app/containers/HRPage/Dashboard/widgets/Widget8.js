@@ -4,6 +4,7 @@ import { withStyles, Button, Card, CardHeader, CardContent, Typography } from '@
 
 const styles = theme => ({
 	root: {
+		minHeight: 388,
 		borderRadius: theme.shape.borderRadius * 2,
 		"& .MuiCardHeader-root": {
 			"& .MuiTypography-root": {

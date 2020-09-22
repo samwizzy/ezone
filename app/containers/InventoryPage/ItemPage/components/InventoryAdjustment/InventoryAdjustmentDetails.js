@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
@@ -12,26 +12,15 @@ import {
   Button,
   ButtonGroup,
   CircularProgress,
-  ClickAwayListener,
-  Breadcrumbs,
-  Grow,
-  Popper,
-  Tabs,
-  Tab,
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableSortLabel,
   TableBody,
-  TableFooter,
-  TextField,
   Toolbar,
   Grid,
   Divider,
-  Menu,
-  MenuItem,
-  MenuList,
   Paper,
   List,
   ListItem,
@@ -65,11 +54,13 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.common.white,
+    padding: theme.spacing(2, 0)
   },
   flex: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    padding: theme.spacing(1, 0)
   },
   drawer: {
     [theme.breakpoints.up('sm')]: {
@@ -106,7 +97,7 @@ const useStyles = makeStyles(theme => ({
     },
     '& .MuiTableCell-root': {
       border: 'none !important',
-      fontSize: theme.typography.fontSize + 2,
+      fontSize: theme.typography.fontSize,
       '& button:nth-child(n+2)': {
         marginLeft: theme.spacing(1),
       },
@@ -139,11 +130,12 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3, 0),
+    padding: theme.spacing(2),
   },
   tabsPaper: {
     backgroundColor: theme.palette.background.paper,
   },
+  title: { flexGrow: 1 },
   icon: {
     width: 20,
     height: 20,
@@ -168,54 +160,23 @@ const useStyles = makeStyles(theme => ({
 
 const InventoryAdjustmentDetails = props => {
   const classes = useStyles();
-  const { loading, getInventoryAdjustByIdAction, inventoryAdjusts, inventoryAdjust, match, getAllInventoryAdjustmentsAction } = props;
+  const { loading, getInventoryAdjustById, inventoryAdjusts, inventoryAdjust, match, getAllInventoryAdjustments } = props;
   const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
 
   const { params } = match;
-  const handleToggle = () => {
-    setOpen(prevOpen => !prevOpen);
-  };
-
-  const handleClose = event => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
-
-    setOpen(false);
-  };
-
-  function handleListKeyDown(event) {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      setOpen(false);
-    }
-  }
-
-  // return focus to the button when we transitioned from !open -> open
-  const prevOpen = React.useRef(open);
   console.log(params, 'params');
+
   React.useEffect(() => {
-    getAllInventoryAdjustmentsAction();
-    getInventoryAdjustByIdAction(params.statusId);
-    if (prevOpen.current === true && open === false) {
-      anchorRef.current.focus();
-    }
+    getAllInventoryAdjustments();
+    getInventoryAdjustById(params.statusId);
+  }, []);
 
-    prevOpen.current = open;
-  }, [open]);
-
-  const [value, setValue] = React.useState(0);
   const filteredItems = _.orderBy(inventoryAdjusts, ['dateCreated'], ['desc']);
-
-  const handleTabChange = (event, newValue) => {
-    setValue(newValue);
-  };
 
   const handleItemById = id => {
     setSelectedIndex(id);
-    getInventoryAdjustByIdAction(id);
+    getInventoryAdjustById(id);
     props.history.push({ pathname: `/inventory/adjustments/${id}` });
   };
 
@@ -229,11 +190,10 @@ const InventoryAdjustmentDetails = props => {
         subheader={
           <ListSubheader component="div" id="nested-list-subheader">
             <div className={classes.flex}>
-              <div>
-                <Typography variant="h6" color="textPrimary">
-                  Inventory Adjustments
-                </Typography>
-              </div>
+              <Typography variant="h6" color="textPrimary">
+                Inventory Adjustments
+              </Typography>
+
               <Button
                 variant="contained"
                 size="small"
@@ -244,7 +204,7 @@ const InventoryAdjustmentDetails = props => {
                 }
                 disableElevation
               >
-                Add
+                New
               </Button>
             </div>
           </ListSubheader>
@@ -293,32 +253,30 @@ const InventoryAdjustmentDetails = props => {
         <Grid item xs={9}>
           <Grid container justify="center">
             <Grid item xs={12}>
-              <Box mx={2}>
-                <div className={classes.flex}>
-                  <Typography variant="h6" color="textPrimary">
-                    Adjustment Details
-                  </Typography>
-                  <ButtonGroup aria-label="small outlined button group">
-                    <Button onClick={() => {}}>
-                      <EditOutlinedIcon className={classes.icon} />
-                    </Button>
-                    <Button onClick={() => {}}>
-                      <DeleteSweepOutlinedIcon className={classes.icon} />
-                    </Button>
-                  </ButtonGroup>
-                </div>
-              </Box>
+              <Toolbar>
+                <Typography variant="h6" color="textPrimary" className={classes.title}>
+                  Adjustment Details
+                </Typography>
+
+                <ButtonGroup aria-label="small outlined button group">
+                  <IconButton onClick={() => { }}>
+                    <EditOutlinedIcon className={classes.icon} />
+                  </IconButton>
+                  <IconButton onClick={() => { }}>
+                    <DeleteSweepOutlinedIcon className={classes.icon} />
+                  </IconButton>
+                </ButtonGroup>
+              </Toolbar>
             </Grid>
-            <Grid item md={9}>
+            <Grid item md={11}>
               <div className={classes.content}>
                 <Backdrop className={classes.backdrop} open={loading}>
                   <CircularProgress color="inherit" />
                 </Backdrop>
 
-                <div className={classes.tabsPape}>
-                  {/* {Object.keys({ id: 1, title: 'Infinix' }).length > 0 ? ( */}
-                  {inventoryAdjust ? (
-                    <div>
+                {inventoryAdjust
+                  ? (
+                    <Fragment>
                       <Table
                         className={classes.table}
                         size="small"
@@ -364,20 +322,6 @@ const InventoryAdjustmentDetails = props => {
                               </Typography>
                             </TableCell>
                           </TableRow>
-                          {/* <TableRow key={inventoryAdjust.description}>
-                            <TableCell component="th" scope="row">
-                              Account
-                            </TableCell>
-                            <TableCell align="right">
-                              {'Afeez Ismaila'}
-                            </TableCell>
-                          </TableRow> */}
-                          {/* <TableRow key={inventoryAdjust.description}>
-                            <TableCell component="th" scope="row">
-                              Adjustment Type
-                            </TableCell>
-                            <TableCell align="right">Quantity</TableCell>
-                          </TableRow> */}
                           <TableRow>
                             <TableCell component="th" scope="row">
                               Reference Number
@@ -386,18 +330,30 @@ const InventoryAdjustmentDetails = props => {
                           </TableRow>
                           <TableRow>
                             <TableCell component="th" scope="row">
+                              Warehouse
+                            </TableCell>
+                            <TableCell align="right">{inventoryAdjust.warehouseName}</TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell component="th" scope="row">
                               Adjusted By
                             </TableCell>
                             <TableCell align="right">{inventoryAdjust.addedBy}</TableCell>
                           </TableRow>
-                          {/* <TableRow key={inventoryAdjust.description}>
-                            <TableCell component="th" scope="row">
-                              Description
+                        </TableBody>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell colSpan={2}>
+                              Product Description
                             </TableCell>
-                            <TableCell align="right">
-                              {'Cost of goods sold description'}
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell colSpan={2}>
+                              {inventoryAdjust.reasonDescription}
                             </TableCell>
-                          </TableRow> */}
+                          </TableRow>
                         </TableBody>
                       </Table>
 
@@ -432,9 +388,9 @@ const InventoryAdjustmentDetails = props => {
                                   <Typography variant="subtitle1">
                                     {item.itemName}
                                   </Typography>
-                                  {/* <Typography variant="caption">
-                                    SKU 26392403
-                                  </Typography> */}
+                                  <Typography variant="caption">
+                                    {item.sku}
+                                  </Typography>
                                 </TableCell>
                                 <TableCell>Optisoft Tech</TableCell>
                                 <TableCell align="right">
@@ -445,7 +401,7 @@ const InventoryAdjustmentDetails = props => {
                           </TableBody>
                         </Table>
                       </Box>
-                    </div>
+                    </Fragment>
                   ) : (
                     <Skeleton
                       variant="rect"
@@ -454,7 +410,6 @@ const InventoryAdjustmentDetails = props => {
                       height={118}
                     />
                   )}
-                </div>
               </div>
             </Grid>
           </Grid>
@@ -466,8 +421,8 @@ const InventoryAdjustmentDetails = props => {
 
 InventoryAdjustmentDetails.propTypes = {
   loading: PropTypes.bool,
-  getInventoryAdjustByIdAction: PropTypes.func,
-  getAllInventoryAdjustmentsAction: PropTypes.func,
+  getInventoryAdjustById: PropTypes.func,
+  getAllInventoryAdjustments: PropTypes.func,
   inventoryAdjusts: PropTypes.array,
   inventoryAdjust: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
 };
@@ -475,15 +430,13 @@ InventoryAdjustmentDetails.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   inventoryAdjusts: Selectors.makeSelectGetAllInventoryAdjustments(),
-  inventoryAdjust: Selectors.makeSelectGetInventoryAdjustByIdResponse(),
+  inventoryAdjust: Selectors.makeSelectGetInventoryAdjustedById(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getInventoryAdjustByIdAction: evt =>
-      dispatch(Actions.getInventoryAdjustById(evt)),
-    getAllInventoryAdjustmentsAction: () =>
-      dispatch(Actions.getAllInventoryAdjustments()),
+    getInventoryAdjustById: evt => dispatch(Actions.getInventoryAdjustById(evt)),
+    getAllInventoryAdjustments: () => dispatch(Actions.getAllInventoryAdjustments()),
   };
 }
 

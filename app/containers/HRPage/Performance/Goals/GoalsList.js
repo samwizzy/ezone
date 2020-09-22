@@ -13,6 +13,7 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../../App/selectors';
 import GoalsItem from './goals/GoalsItem'
+import DataMessage from '../../components/DataMessage'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,6 +27,12 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1, 0)
   },
   toolbar: theme.mixins.toolbar,
+  box: {
+    border: `1px solid ${theme.palette.divider}`,
+    margin: theme.spacing(3),
+    padding: theme.spacing(4),
+    textAlign: 'center'
+  }
 }));
 
 const GoalsList = props => {
@@ -49,9 +56,15 @@ const GoalsList = props => {
           </AppBar>
         </Grid>
         <Grid item md={12}>
-          {orderedGoals && orderedGoals.map((goal, i) =>
-            <GoalsItem key={i} goal={goal} />
-          )}
+          {orderedGoals && orderedGoals.length ?
+            <Fragment>
+              {orderedGoals.map((goal, i) =>
+                <GoalsItem key={i} goal={goal} />
+              )}
+            </Fragment>
+            :
+            <DataMessage message="No goal has been recorded yet" />
+          }
         </Grid>
       </Grid>
     </div>

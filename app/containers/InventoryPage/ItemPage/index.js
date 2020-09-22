@@ -1,13 +1,7 @@
-/**
- *
- * ItemPage
- *
- */
-
-import React, { memo, useEffect } from 'react';
+import React, { Fragment, memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -18,50 +12,50 @@ import makeSelectItemPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import * as Actions from './actions';
-import TransferOrderDialog from './components/TransferOrder/TransferOrderDialog';
-import ViewItemDialog from './components/Items/ViewItemDialog';
 import ItemDialog from './components/Items/ItemDialog';
-import ItemDetails from './components/Items/ItemDetails';
+import ItemDetails from './components/Items/itemDetails/ItemDetails';
 import ItemsList from './components/Items/ItemsList';
+import ItemApp from './components/Items';
+import ItemsGroupsPage from './components/ItemsGroups';
 import ModuleLayout from '../components/ModuleLayout';
 
 export function ItemPage(props) {
   useInjectReducer({ key: 'itemPage', reducer });
   useInjectSaga({ key: 'itemPage', saga });
 
-  const { getAllItemsAction, getAllWarehousesAction, match } = props;
-  const { params } = match;
-  console.log(match.params, 'params');
+  const { getAllItems, getItemsGroups, getAllWarehouse, getAccounts, getVendors, match } = props;
+  const { path } = match;
 
   useEffect(() => {
-    getAllItemsAction();
-    getAllWarehousesAction();
+    getAllItems();
+    getItemsGroups();
+    getAllWarehouse();
+    getAccounts();
+    getVendors();
   }, []);
 
   return (
     <div>
       <ModuleLayout>
         <Helmet>
-          <title>ItemPage</title>
-          <meta name="description" content="Description of ItemPage" />
+          <title>Item Page</title>
+          <meta name="description" content="Description of Item Page" />
         </Helmet>
-        {params.statusId == 'new' ? (
-          <ItemDialog />
-        ) : params.statusId == 'edit' ? (
-          <ItemDialog />
-        ) : params.statusId ? (
-          <ItemDetails />
-        ) : (
-          <ItemsList />
-        )}
+
+        <Fragment>
+          <Route exact path={path} component={ItemsList} />
+          <Route path={`/inventory/items/groups`} component={ItemsGroupsPage} />
+          <Route exact path={`/inventory/items/create/:status?`} component={ItemDialog} />
+          <Route path={`/inventory/item`} component={ItemApp} />
+        </Fragment>
       </ModuleLayout>
     </div>
   );
 }
 
 ItemPage.propTypes = {
-  getAllItemsAction: PropTypes.func,
-  getAllWarehousesAction: PropTypes.func,
+  getAllItems: PropTypes.func,
+  getAllWarehouse: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -70,9 +64,11 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAllItemsAction: () => dispatch(Actions.getAllItems()),
-    getAllWarehousesAction: () => dispatch(Actions.getAllWarehouse()),
-    dispatch,
+    getAllItems: () => dispatch(Actions.getAllItems()),
+    getItemsGroups: () => dispatch(Actions.getItemsGroups()),
+    getAllWarehouse: () => dispatch(Actions.getAllWarehouse()),
+    getAccounts: () => dispatch(Actions.getAccounts()),
+    getVendors: () => dispatch(Actions.getVendors()),
   };
 }
 

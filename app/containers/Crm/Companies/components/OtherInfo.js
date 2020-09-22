@@ -43,8 +43,8 @@ export const OtherInfo = props => {
   const classes = useStyles();
 
   const canSubmitForm = () => {
-    const { fax, website, address, mobileNo } = form;
-    return fax !== '' && website !== '' && address !== '' && mobileNo !== '';
+    const { fax, website, address } = form;
+    return fax !== '' && website !== '' && address !== '';
   };
 
   return (
@@ -59,20 +59,6 @@ export const OtherInfo = props => {
 
       <DialogContent dividers>
         <Grid container spacing={1}>
-          <Grid item xs={6}>
-            <TextField
-              name="mobileNo"
-              label="Mobile Number"
-              id="outlined-mobile-no"
-              fullWidth
-              margin="normal"
-              variant="outlined"
-              size="small"
-              type="number"
-              value={form.mobileNo}
-              onChange={handleChange}
-            />
-          </Grid>
           <Grid item xs={6}>
             <TextField
               name="fax"

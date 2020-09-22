@@ -224,10 +224,10 @@ export function* createRole({ type, payload }) {
   }
 }
 
-export function* getDepartments({ type, payload }) {
+export function* getDepartments() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.DepartmentsApi}`;
+  const requestURL = `${Endpoints.GetDepartmentsByOrgIdApi}?orgId=${user && user.organisation.id}&tagId=5`;
 
   try {
     const response = yield call(request, requestURL, {

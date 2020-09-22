@@ -31,13 +31,6 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
 	},
-	grid: {
-		border: `1px solid ${theme.palette.grey[100]}`,
-		'& .MuiGrid-item': {
-			flex: 1,
-			margin: theme.spacing(5)
-		}
-	},
 	card: {
 		borderRadius: theme.shape.borderRadius * 2,
 		backgroundImage: `url(${hrDash2})`,
@@ -46,17 +39,17 @@ const useStyles = makeStyles((theme) => ({
 		backgroundSize: 'cover',
 		"& .MuiCardActions-root": {
 			justifyContent: "center",
-			backgroundColor: theme.palette.common.white,
+			backgroundColor: theme.palette.secondary.contrastText,
 		},
 		"& .MuiCardContent-root": {
-			minHeight: 160
+			minHeight: 160,
+			display: 'flex',
+			alignItems: 'center',
 		}
 	},
 	table: {
 		whiteSpace: "nowrap",
-		"& .MuiTableFooter-root": {
-			borderTop: `1px solid ${theme.palette.divider} !important`,
-		},
+		minWidth: 280,
 		"& .MuiTableCell-root": {
 			borderBottom: "none !important",
 		},
@@ -74,8 +67,6 @@ const Widget3 = (props) => {
 	if (!branches) {
 		return ''
 	}
-
-	console.log(branches, "branches")
 
 	return (
 		<div>

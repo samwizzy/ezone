@@ -31,14 +31,15 @@ export function* getStudents() {
 export function* createStudent({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  payload.orgId = currentUser.organisation.orgId;
+  const requestURL = `${Endpoints.RegisterStudentApi}`;
 
-  const requestURL = `${Endpoints.CreateNewContactApi}`;
+  console.log(currentUser, "create student currentUser")
+  console.log(payload, "create student payload")
 
   try {
     const response = yield call(request, requestURL, {
       method: 'POST',
-      body: JSON.stringify(newCompany),
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',

@@ -16,6 +16,7 @@ import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import _ from 'lodash';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import LoadingIndicator from '../../../../../components/LoadingIndicator';
@@ -45,25 +46,27 @@ const useStyles = makeStyles(theme => ({
 
 const ItemsList = props => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const {
     loading,
     history,
     getAllItems,
-    openNewItemDialogAction,
-    openViewItemDialogAction,
-    // openEditEmployeeDialogAction,
-    getItemByIdAction,
+    getItemById,
+    openNewItemDialog,
   } = props;
+
+  const handleNewClick = () => {
+    openNewItemDialog()
+    history.push('/inventory/items/create/new')
+  }
+
+  const handleItemClick = (itemId, sku) => {
+    history.push(`/inventory/item/${itemId}/${sku}`)
+  }
+
+  const orderedItems = _.orderBy(getAllItems, 'dateCreated', 'desc')
+
+  console.log(getAllItems, "getAllItems")
 
   const columns = [
     {
@@ -80,9 +83,7 @@ const ItemsList = props => {
       options: {
         filter: true,
         customBodyRender: (value, tableMeta) => {
-          if (value === '') {
-            return '';
-          }
+
           return (
             <FormControlLabel
               label={tableMeta.rowIndex + 1}
@@ -97,7 +98,7 @@ const ItemsList = props => {
       label: 'Name',
       options: {
         filter: true,
-        sort: false,
+        sort: true,
       },
     },
     {
@@ -131,15 +132,13 @@ const ItemsList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const item = getAllItems.find(post => value === post.id);
-          if (value === '') {
-            return '';
-          }
+          const item = getAllItems.find(item => value === item.id);
+
           return (
             <Button
               aria-controls="simple-menu"
               aria-haspopup="true"
-              onClick={() => openViewItemDialogAction(item)}
+              onClick={() => handleItemClick(item.id, item.sku)}
             >
               View
             </Button>
@@ -153,6 +152,10 @@ const ItemsList = props => {
     filterType: 'checkbox',
     responsive: 'scrollMaxHeight',
     selectableRows: 'none',
+    sortOrder: {
+      name: 'itemName',
+      direction: 'desc'
+    },
     customToolbar: () => (
       <Button
         variant="contained"
@@ -160,14 +163,15 @@ const ItemsList = props => {
         size="small"
         className={classes.button}
         startIcon={<AddIcon />}
-        onClick={() => history.push('/inventory/items/new')}
+        onClick={handleNewClick}
       >
         New
       </Button>
     ),
     onRowClick: (rowData, rowState) => {
-      getItemByIdAction(rowData[0]);
-      props.history.push('/inventory/item/' + rowData[0] + '/' + rowData[3])
+      getItemById(rowData[0]);
+      handleItemClick(rowData[0], rowData[3])
+      // props.history.push(`/inventory/item/${rowData[0]}/${rowData[3]}`)
     },
     elevation: 0
   };
@@ -181,7 +185,7 @@ const ItemsList = props => {
       <MUIDataTable
         className={classes.datatable}
         title="All Items"
-        data={getAllItems}
+        data={orderedItems}
         columns={columns}
         options={options}
       />
@@ -192,9 +196,6 @@ const ItemsList = props => {
 ItemsList.propTypes = {
   loading: PropTypes.bool,
   getAllItems: PropTypes.array,
-  openNewItemDialogAction: PropTypes.func,
-  openViewItemDialogAction: PropTypes.func,
-  // openEditEmployeeDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -204,12 +205,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getItemByIdAction: evt =>
-      dispatch(Actions.getItemById(evt)),
-    openViewItemDialogAction: evt =>
-      dispatch(Actions.openViewItemDialog(evt)),
-    openNewItemDialogAction: () =>
-      dispatch(Actions.openNewItemDialog()),
+    getItemById: id => dispatch(Actions.getItemById(id)),
+    openNewItemDialog: data => dispatch(Actions.openNewItemDialog(data)),
   };
 }
 

@@ -1,9 +1,3 @@
-/**
- *
- * ItemPage
- *
- */
-
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -21,23 +15,23 @@ function InventoryAdjustmentApp(props) {
   const { params } = match
   console.log(match.params, "params")
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   return (
     <div>
-        <Helmet>
-          <title>Inventory Adjustment</title>
-          <meta name="description" content="Description of Inventory Adjustment" />
-        </Helmet>
-        <ModuleLayout>
-            {
-            params.statusId == 'new'?
+      <Helmet>
+        <title>Inventory Adjustment</title>
+        <meta name="description" content="Description of Inventory Adjustment" />
+      </Helmet>
+      <ModuleLayout>
+        {
+          params.statusId == 'new' ?
             <InventoryAdjustmentDialog />
             :
-            params.statusId?
-            <InventoryAdjustmentDetails />:<InventoryAdjustmentList />
-            }
-        </ModuleLayout>
+            params.statusId ?
+              <InventoryAdjustmentDetails /> : <InventoryAdjustmentList />
+        }
+      </ModuleLayout>
     </div>
   );
 }
@@ -47,9 +41,7 @@ InventoryAdjustmentApp.propTypes = {};
 const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
+  return {};
 }
 
 const withConnect = connect(

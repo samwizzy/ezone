@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -61,9 +61,15 @@ const RecognitionList = props => {
           </AppBar>
         </Grid>
         <Grid item md={12}>
-          {orderedRecognitions && orderedRecognitions.map((recognition, i) =>
-            <RecognitionItem key={i} recognition={recognition} />
-          )}
+          {orderedRecognitions && orderedRecognitions.length ?
+            <Fragment>
+              {orderedRecognitions.map((recognition, i) =>
+                <RecognitionItem key={i} recognition={recognition} />
+              )}
+            </Fragment>
+            :
+            <DataMessage message="No recognition has been recorded yet" />
+          }
         </Grid>
       </Grid>
     </div>

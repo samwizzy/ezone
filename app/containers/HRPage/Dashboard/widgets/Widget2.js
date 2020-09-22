@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
 		flexGrow: 1,
 	},
 	card: {
-		flexGrow: 1,
 		borderRadius: theme.shape.borderRadius * 2,
 		backgroundImage: `url(${hrDash3})`,
 		backgroundRepeat: `no-repeat`,
@@ -42,27 +41,24 @@ const useStyles = makeStyles((theme) => ({
 		backgroundSize: 'cover',
 		"& .MuiCardActions-root": {
 			justifyContent: "center",
-			backgroundColor: theme.palette.common.white,
+			backgroundColor: theme.palette.secondary.contrastText,
 		},
 		"& .MuiCardContent-root": {
-			minHeight: 160
+			minHeight: 160,
+			display: 'flex',
+			alignItems: 'center',
 		}
 	},
 	table: {
 		whiteSpace: "nowrap",
-		display: "flex",
-		'& tr': {
-			display: "flex",
-		},
+		minWidth: 280,
 		"& td, & th": {
 			borderBottom: "none !important",
 			color: theme.palette.common.white,
 		},
 	},
 	childTable: {
-		'& tr': {
-			display: "flex",
-		},
+		minWidth: 200,
 		'& td, & th': {
 			color: theme.palette.common.white,
 		},

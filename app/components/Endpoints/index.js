@@ -297,9 +297,17 @@ export const GetAllWarehouses = `${BaseUrl}/inventoryserv/api/v1/get_all_warehou
 
 // Item Apis
 export const CreateNewItemApi = `${BaseUrl}/inventoryserv/api/v1/upload_item`;
+export const UpdateItemApi = `${BaseUrl}/inventoryserv/api/v1/update_item`;
 export const GetAllItems = `${BaseUrl}/inventoryserv/api/v1/get_all_items`;
 export const GetItemByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_item_by_id`;
 export const GetStockLocations = `${BaseUrl}/inventoryserv/api/v1/get_item_status_in_all_warehouses`;
+
+// Item Groups Apis
+export const CreateItemGroupApi = `${BaseUrl}/inventoryserv/api/v1/add_item_group`;
+export const UpdateItemGroupApi = `${BaseUrl}/inventoryserv/api/v1/update_item_group`;
+export const GetItemsGroupsApi = `${BaseUrl}/inventoryserv/api/v1/get_item_group_by_orgid`;
+export const GetItemGroupByIdApi = `${BaseUrl}/inventoryserv/api/v1/get_item_group_by_id`;
+export const UpdateItemGroupByIdApi = `${BaseUrl}/inventoryserv/api/v1/update_item_group/{id}`;
 
 // Transfer Order APIs
 export const CreateNewTransferOrdersApi = `${BaseUrl}/inventoryserv/api/v1/add_transfer_orders`;
@@ -374,6 +382,12 @@ export const AddCourseVideoApi = `${BaseUrl}/lmsserv/api/v1/lms/add_course_video
  ***************************************************************
  ************************************************************** */
 export const GetGeneralJournalApi = `${BaseUrl}/accountingserv/api/v1/report/get_general_journal`;
+<<<<<<< HEAD
 export const GetGeneralLedgerApi = `${BaseUrl}/accountingserv/api/v1/report/get_general_ledger`;
 export const GetChatsOfAccountApi = `${BaseUrl}/accountingserv/api/v1/report/get_chart_of_account`;
 export const GetTrialBalanceApi = `${BaseUrl}/accountingserv/api/v1/report/get_trial_balance`;
+=======
+// STUDENT API
+export const RegisterStudentApi = `${BaseUrl}/lmsserv/lms/v1/register_student`;
+
+>>>>>>> dev

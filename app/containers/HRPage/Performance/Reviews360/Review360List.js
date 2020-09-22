@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,6 +13,7 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../../App/selectors';
 import Feedback360Item from './reviews/Feedback360Item'
+import DataMessage from '../../components/DataMessage'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -54,9 +55,15 @@ const Review360List = props => {
           </AppBar>
         </Grid>
         <Grid item md={12}>
-          {orderedRecognitions && orderedRecognitions.map((recognition, i) =>
-            <Feedback360Item key={i} recognition={recognition} />
-          )}
+          {orderedRecognitions && orderedRecognitions.length ?
+            <Fragment>
+              {orderedRecognitions.map((recognition, i) =>
+                <Feedback360Item key={i} recognition={recognition} />
+              )}
+            </Fragment>
+            :
+            <DataMessage message="No recognition has been recorded yet" />
+          }
         </Grid>
       </Grid>
     </div>

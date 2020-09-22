@@ -101,7 +101,7 @@ function PaperDropzone(props) {
       );
 
       const image = {};
-      _.set(image, 'fileName', acceptedFiles[0].name);
+      _.set(image, 'fileName', acceptedFiles[0].name.substr(0, 5).trim().concat('-' + moment().format('YYYY-MM-DDTHH:mm:ss')));
       _.set(image, 'format', acceptedFiles[0].type);
       _.set(image, 'size', acceptedFiles[0].size);
       getBase64(acceptedFiles[0], result => _.set(image, 'file', result));
