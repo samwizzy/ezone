@@ -383,12 +383,8 @@ export const AddCourseVideoApi = `${BaseUrl}/lmsserv/api/v1/lms/add_course_video
  ***************************************************************
  ************************************************************** */
 export const GetGeneralJournalApi = `${BaseUrl}/accountingserv/api/v1/report/get_general_journal`;
-<<<<<<< HEAD
 export const GetGeneralLedgerApi = `${BaseUrl}/accountingserv/api/v1/report/get_general_ledger`;
 export const GetChatsOfAccountApi = `${BaseUrl}/accountingserv/api/v1/report/get_chart_of_account`;
 export const GetTrialBalanceApi = `${BaseUrl}/accountingserv/api/v1/report/get_trial_balance`;
-=======
 // STUDENT API
 export const RegisterStudentApi = `${BaseUrl}/lmsserv/lms/v1/register_student`;
-
->>>>>>> dev
