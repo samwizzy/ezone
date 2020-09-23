@@ -8,7 +8,6 @@ import * as Endpoints from '../../components/Endpoints';
 import * as Actions from './actions';
 import * as Constants from './constants';
 
-
 // Get accounting setup
 export function* getAccountingSetupSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
@@ -16,7 +15,7 @@ export function* getAccountingSetupSaga() {
   const requestURL = `${Endpoints.GetAccountingSetupApi}/${currentUser.organisation.orgId}`;
 
   try {
-    const accountingSetupResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -24,20 +23,15 @@ export function* getAccountingSetupSaga() {
       }),
     });
 
-    console.log('saga accountingSetup response ->', accountingSetupResponse);
-    yield put(Actions.getAccountingSetupSuccessAction(accountingSetupResponse));
+    console.log('saga accountingSetup response ->', response);
+    yield put(Actions.getAccountingSetupSuccessAction(response));
   } catch (err) {
-    console.log('getAccountingSetupErrorAction --> ', err);
     yield put(Actions.getAccountingSetupErrorAction(err));
   }
 }
 
 
-
-
-
 // Individual exports for testing
 export default function* AccountingSaga() {
-  // See example in containers/HomePage/saga.js
   yield takeLatest(Constants.GET_ACCOUNTING_SETUP, getAccountingSetupSaga);
 }

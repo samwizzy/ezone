@@ -27,22 +27,22 @@ const makeSelectLoading = () =>
     subState => subState.loading,
   );
 
-const makeSelectAccountingSetupPostData = () =>
-  createSelector(
-    selectSettingsDomain,
-    subState => subState.accountSetupPostData,
-);
-
 const makeSelectGetAccountingSetupData = () =>
   createSelector(
     selectSettingsDomain,
     substate => substate.accountingSetupData,
   );
 
-const makeSelectGetAllAccountingPeriodData = () =>
+const makeSelectGetAccountingPeriods = () =>
   createSelector(
     selectSettingsDomain,
-    substate => substate.accountingPeriodData,
+    substate => substate.accountingPeriods,
+  );
+
+const makeSelectGetChartOfAccounts = () =>
+  createSelector(
+    selectSettingsDomain,
+    substate => substate.chartOfAccounts,
   );
 
 const makeSelectAccountPeriodDialog = () =>
@@ -51,20 +51,34 @@ const makeSelectAccountPeriodDialog = () =>
     substate => substate.accountPeriodDialog,
   );
 
-const makeSelectAccountPeriodPostData = () =>
+const makeSelectBusinessTypes = () =>
   createSelector(
     selectSettingsDomain,
-    subState => subState.periodOfAccountPostData,
-);
-  
+    substate => substate.businessTypes,
+  );
+
+const makeSelectDepreciationArea = () =>
+  createSelector(
+    selectSettingsDomain,
+    substate => substate.depreciationArea,
+  );
+
+const makeSelectCurrencies = () =>
+  createSelector(
+    selectSettingsDomain,
+    substate => substate.currencies,
+  );
+
 export default makeSelectSettings;
 
-export { 
-  selectSettingsDomain, 
+export {
+  selectSettingsDomain,
   makeSelectLoading,
-  makeSelectAccountingSetupPostData,
   makeSelectGetAccountingSetupData,
-  makeSelectGetAllAccountingPeriodData,
+  makeSelectGetAccountingPeriods,
+  makeSelectGetChartOfAccounts,
   makeSelectAccountPeriodDialog,
-  makeSelectAccountPeriodPostData
+  makeSelectBusinessTypes,
+  makeSelectDepreciationArea,
+  makeSelectCurrencies,
 };

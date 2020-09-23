@@ -1,0 +1,13 @@
+.daterange {
+  background: white;
+  height: 40px;
+  width: 231px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+}
+
+.search-wrap {
+  position: absolute !important;
+  min-width: 700px;
+  overflow-x: auto;
+}

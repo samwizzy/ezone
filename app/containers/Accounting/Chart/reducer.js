@@ -1,8 +1,3 @@
-/*
- *
- * Chart reducer
- *
- */
 import produce from 'immer';
 import * as Constants from './constants';
 
@@ -23,10 +18,8 @@ export const initialState = {
     },
     data: null,
   },
-  accountTypeData: [],
-  parentAccountTypeData: [],
-  chartOfAccountPostData: {},
-  chartOfAccountData: [],
+  accountTypes: [],
+  chartOfAccounts: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -125,35 +118,10 @@ const accountChartReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          accountTypeData: action.payload,
+          accountTypes: action.payload,
         };
       }
       case Constants.GET_ALL_ACCOUNT_TYPES_ERR: {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload,
-        };
-      }
-
-      // Case to get account type
-      case Constants.GET_PARENT_ACCOUNT_TYPES: {
-        return {
-          ...state,
-          // loading: true,
-          error: false,
-          parentAccountTypeData: action.payload,
-        };
-      }
-      case Constants.GET_PARENT_ACCOUNT_TYPES_SUCCESS: {
-        return {
-          ...state,
-          // loading: false,
-          error: false,
-          parentAccountTypeData: action.payload,
-        };
-      }
-      case Constants.GET_PARENT_ACCOUNT_TYPES_ERR: {
         return {
           ...state,
           loading: false,
@@ -167,7 +135,6 @@ const accountChartReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          chartOfAccountPostData: action.payload
         };
       }
       case Constants.CREATE_NEW_CHART_OF_ACCOUNT_SUCCESS: {
@@ -175,7 +142,6 @@ const accountChartReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          chartOfAccountPostData: action.payload
         };
       }
       case Constants.CREATE_NEW_CHART_OF_ACCOUNT_ERR: {
@@ -199,7 +165,7 @@ const accountChartReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          chartOfAccountData: action.payload,
+          chartOfAccounts: action.payload,
         };
       }
       case Constants.GET_ALL_CHART_OF_ACCOUNT_ERR: {
@@ -216,7 +182,6 @@ const accountChartReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          chartOfAccountPostData: action.payload
         };
       }
       case Constants.DELETE_CHART_OF_ACCOUNT_SUCCESS: {
@@ -224,7 +189,6 @@ const accountChartReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          chartOfAccountPostData: action.payload
         };
       }
       case Constants.DELETE_CHART_OF_ACCOUNT_ERR: {
@@ -241,7 +205,6 @@ const accountChartReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          chartOfAccountPostData: action.payload
         };
       }
       case Constants.UPDATE_CHART_OF_ACCOUNT_SUCCESS: {
@@ -249,7 +212,6 @@ const accountChartReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          chartOfAccountPostData: action.payload
         };
       }
       case Constants.UPDATE_CHART_OF_ACCOUNT_ERR: {

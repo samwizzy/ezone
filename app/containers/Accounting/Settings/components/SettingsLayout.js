@@ -1,16 +1,10 @@
-import React, {memo,useReducer,useEffect} from 'react'
+import React, { memo, useReducer, useEffect } from 'react'
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { createStructuredSelector } from 'reselect';
-import { 
-  makeStyles, 
-  Grid,
-  Paper,
-  Typography  
-} from '@material-ui/core';
-import SettingsSideBar from './SettingsSideBar';
+import { makeStyles, Grid, Paper, Typography } from '@material-ui/core';
 import AccountingPeriod from './AccountingPeriod';
 import DepreciationSetup from '../../FixedAssets/depreciation';
 import DepreciationArea from '../../FixedAssets/depreciationarea';
@@ -28,226 +22,207 @@ const useStyles = makeStyles(theme => ({
 	root: {
 		flexGrow: 1
 	},
-	pap:{
-		padding:'8px'
+	pap: {
+		padding: '8px'
 	}
 }))
 
 const SettingsLayout = props => {
 	const classes = useStyles()
-	const {} = props 
+	const { } = props
 
-	const initialState ={
-		page:'setting',
-		setting:true,
-		depreciation:false,
-		newdeprecition:false,
-		deprecitionarea:false,
-		newdeprecitionarea:false,
-		assettype:false,
-		newassettype:false,
-		currencies:false,
-		taxrate:false,
-		taxtype:false,
-		
-	  }
+	const initialState = {
+		page: 'setting',
+		setting: true,
+		depreciation: false,
+		newdeprecition: false,
+		deprecitionarea: false,
+		newdeprecitionarea: false,
+		assettype: false,
+		newassettype: false,
+		currencies: false,
+		taxrate: false,
+		taxtype: false,
 
-	  const initialPayload ={
-		  payload:{},
-		  update:false
-	  }
+	}
 
-	  const reducerII = (state, action)=>{
-       switch(action.type){
-		case 'UPDATE':
-			state = {
-			  ...state,
-			  payload:action.payload,
-			  update:action.update
-			};
-			return state; 
-			default :
-			return state;	
-	   }
-	  }
-  
-	  const reducer = (state, action) => {
-	   switch(action.type){
-		 case 'NAVIGATION':
-		  state = {
-			...state,
-			page:action.page,
-			[state.page] :false,
-			[action.page]:true,
-		  };
-		  return state;
-		  default :
-		  return state;
-	   }
-	  }
+	const initialPayload = {
+		payload: {},
+		update: false
+	}
 
-
-
-	  const [state, dispatch] = useReducer(reducer, initialState);
-	  const [stateII, dispatchII] = useReducer(reducerII, initialPayload);
-	
-	  useEffect(() => {
-		let mounted = true
-		if(mounted){
-		getLocation()
+	const reducerII = (state, action) => {
+		switch (action.type) {
+			case 'UPDATE':
+				state = {
+					...state,
+					payload: action.payload,
+					update: action.update
+				};
+				return state;
+			default:
+				return state;
 		}
-	   return ()=>{
-		mounted = false
-	   }
-	  },[props.path])
+	}
 
-	  function getLocation(){
-		  let nav = `${props.path}`
-		  //.log(`Path path from layout ${nav}`)
-		  let k = nav.lastIndexOf('/');
-		  let newPath = nav.substr(k+1);
-		  //console.log(`new Path ${newPath}`)
-		  switch(newPath){
-          case 'settings':
-		  case 'period':
-		  dispatch({type:'NAVIGATION',page:'setting'})	  
-		  break;
-		  case'fixedasset':
-		  case 'deprecitiontype':
-		 dispatch({type:'NAVIGATION',page:'depreciation'})	  
-			break; 
-		 case 'deprecitionarea':
-			dispatch({type:'NAVIGATION',page:'deprecitionarea'})
-			break;
-	    case 'assettype':
-			dispatch({type:'NAVIGATION',page:'assettype'})
-			break;	
-			case 'currencies':
-			dispatch({type:'NAVIGATION',page:'currencies'})
-			break;
-			case 'taxes':
-		    case 'taxrate':
-				dispatch({type:'NAVIGATION',page:'taxrate'})
+	const reducer = (state, action) => {
+		switch (action.type) {
+			case 'NAVIGATION':
+				state = {
+					...state,
+					page: action.page,
+					[state.page]: false,
+					[action.page]: true,
+				};
+				return state;
+			default:
+				return state;
+		}
+	}
+
+
+
+	const [state, dispatch] = useReducer(reducer, initialState);
+	const [stateII, dispatchII] = useReducer(reducerII, initialPayload);
+
+	useEffect(() => {
+		let mounted = true
+		if (mounted) {
+			getLocation()
+		}
+		return () => {
+			mounted = false
+		}
+	}, [props.path])
+
+	function getLocation() {
+		let nav = `${props.path}`
+		//.log(`Path path from layout ${nav}`)
+		let k = nav.lastIndexOf('/');
+		let newPath = nav.substr(k + 1);
+		//console.log(`new Path ${newPath}`)
+		switch (newPath) {
+			case 'settings':
+			case 'period':
+				dispatch({ type: 'NAVIGATION', page: 'setting' })
 				break;
-		  case 'taxtype':
-			dispatch({type:'NAVIGATION',page:'taxtype'})
-			break; 	
-		default:
-			dispatch({type:'NAVIGATION',page:'setting'})					 	  	  	  
-		  }
-				  
-	  }
+			case 'fixedasset':
+			case 'deprecitiontype':
+				dispatch({ type: 'NAVIGATION', page: 'depreciation' })
+				break;
+			case 'deprecitionarea':
+				dispatch({ type: 'NAVIGATION', page: 'deprecitionarea' })
+				break;
+			case 'assettype':
+				dispatch({ type: 'NAVIGATION', page: 'assettype' })
+				break;
+			case 'currencies':
+				dispatch({ type: 'NAVIGATION', page: 'currencies' })
+				break;
+			case 'taxes':
+			case 'taxrate':
+				dispatch({ type: 'NAVIGATION', page: 'taxrate' })
+				break;
+			case 'taxtype':
+				dispatch({ type: 'NAVIGATION', page: 'taxtype' })
+				break;
+			default:
+				dispatch({ type: 'NAVIGATION', page: 'setting' })
+		}
 
-	  //console.log(`From settings Layout  -> `, JSON.stringify(state));
+	}
 
 	return (
 		<SettingContext.Provider
-		 value={{ settingState: state, settingDispatch: dispatch }}>
-		<PayloadContext.Provider
-			value={{ payloadState: stateII, payloadDispatch: dispatchII }}>
-		<div className={classes.root}>
-			<Grid container spacing={3}>
-				{/*<Grid item xs={2}>
-					<SettingsSideBar/>
-				</Grid>*/}
-				 <Grid item xs={12}>
-                <Paper className={classes.pap} elevation={3} >
-                <Typography gutterBottom variant="h6" component="h1">
-                 Settings
+			value={{ settingState: state, settingDispatch: dispatch }}>
+			<PayloadContext.Provider
+				value={{ payloadState: stateII, payloadDispatch: dispatchII }}>
+				<div className={classes.root}>
+					<Grid container spacing={3}>
+						<Grid item xs={12}>
+							<Paper className={classes.pap} elevation={3} >
+								<Typography gutterBottom variant="h6" component="h1">
+									Settings
                 </Typography>
-            </Paper>
-                </Grid>
-				<Grid item xs={12}>
-					<div>
-					{state.setting?
-					<AccountingPeriod/>
-					:
-					<div/>
-					}
-					</div>
-					<div>
-						{state.depreciation?
-						<DepreciationSetup/>
-						:
-						<div/>
-						}
-					</div>
-					{/*<div>
-						{state.deprecitionarea?
-						<DepreciationAreas/>
-						:
-						<div/>
-						}
-					</div>*/}
-					<div>
-						{state.deprecitionarea?
-						<DepreciationArea/>
-						:
-						<div/>
-						}
-					</div>
-					<div>
-						{state.currencies?
-						<Currencies/>
-						:
-						<div/>
-						}
-					</div>
-					<div>
-						{state.taxrate?
-						<TaxRate/>
-						:
-						<div/>
-						}
-					</div>
-					<div>
-						{state.taxtype?
-						<TaxType/>
-						:
-						<div/>
-						}
-					</div>
-					<div>
-						{state.assettype?
-						<AssetType/>
-						:
-						<div/>
-						}
-					</div>
+							</Paper>
+						</Grid>
+						<Grid item xs={12}>
+							<div>
+								{state.setting ?
+									<AccountingPeriod />
+									:
+									<div />
+								}
+							</div>
+							<div>
+								{state.depreciation ?
+									<DepreciationSetup />
+									:
+									<div />
+								}
+							</div>
+							<div>
+								{state.deprecitionarea ?
+									<DepreciationArea />
+									:
+									<div />
+								}
+							</div>
+							<div>
+								{state.currencies ?
+									<Currencies />
+									:
+									<div />
+								}
+							</div>
+							<div>
+								{state.taxrate ?
+									<TaxRate />
+									:
+									<div />
+								}
+							</div>
+							<div>
+								{state.taxtype ?
+									<TaxType />
+									:
+									<div />
+								}
+							</div>
+							<div>
+								{state.assettype ?
+									<AssetType />
+									:
+									<div />
+								}
+							</div>
 
-					<div>
-						{state.newassettype?
-						<NewAssetType/>
-						:
-						<div/>
-						}
-					</div>
-					
-					
-				</Grid>
-			</Grid>
-		</div>
-		</PayloadContext.Provider>
+							<div>
+								{state.newassettype ?
+									<NewAssetType />
+									:
+									<div />
+								}
+							</div>
+						</Grid>
+					</Grid>
+				</div>
+			</PayloadContext.Provider>
 		</SettingContext.Provider>
 	)
 }
 
-SettingsLayout.propTypes = {
+SettingsLayout.propTypes = {};
 
-};
-
-const mapStateToProps = createStructuredSelector({
-});
+const mapStateToProps = createStructuredSelector({})
 
 function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
+	return {}
 }
 
 const withConnect = connect(
-  mapStateToProps,
-  mapDispatchToProps,
+	mapStateToProps,
+	mapDispatchToProps,
 );
 
 export default compose(

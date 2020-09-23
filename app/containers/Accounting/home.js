@@ -15,8 +15,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import ModuleLayout from './components/ModuleLayout';
 import LoadingIndicator from '../../components/LoadingIndicator';
 
-
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -70,24 +68,18 @@ const Home = () => {
   return (
     <div>
       <ModuleLayout>
-
-        <Switch>
-
-          <Route exact path={path}>
-            {loader ?
-              (
-                <div>
-                  <div style={{ textAlign: 'center' }}><div style={{ margin: '2px auto' }}><CircularProgress /></div></div>
-                </div>
-              )
-              :
-              (accoutSetup === null ? <AccountSetup /> : ((`${path}`).indexOf('settings') > 0 ? <Settings path={path} /> : <Dashboard />))
-            }
-          </Route>
-
-        </Switch>
+        <Route exact path={path}>
+          {loader ?
+            (
+              <div>
+                <div style={{ textAlign: 'center' }}><div style={{ margin: '2px auto' }}><CircularProgress /></div></div>
+              </div>
+            )
+            :
+            (accoutSetup === null ? <AccountSetup /> : ((`${path}`).indexOf('settings') > 0 ? <Settings path={path} /> : <Dashboard />))
+          }
+        </Route>
       </ModuleLayout>
-
     </div>
   );
 }

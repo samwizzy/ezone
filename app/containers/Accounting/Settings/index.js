@@ -1,102 +1,80 @@
-/**
- *
- * Settings
- *
- */
-
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Route, useRouteMatch } from 'react-router-dom'
 import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import {
-  BrowserRouter as Route,
-  Switch,
-  useParams,
-  useRouteMatch,
-} from "react-router-dom";
-
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import * as Actions from './actions';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
-import ModuleLayout from '../components/ModuleLayout';
-//import LoadingIndicator from './../../../components/LoadingIndicator';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SettingsLayout from './components/SettingsLayout';
+import AccountSetup from './components/AccountSetup';
 import AccountingPeriod from './components/AccountingPeriod';
-
+import DepreciationAreas from './components/depreciationAreas';
+import AssetType from './components/assettype';
+import TaxRate from './components/taxrate';
+import TaxType from './components/taxtype';
+import Currencies from './components/currencies';
 
 export function Settings(props) {
   useInjectReducer({ key: 'settings', reducer });
   useInjectSaga({ key: 'settings', saga });
+  const { path } = useRouteMatch()
 
-  //console.log('Settings index.js loaded');
+  const { loading, getAccountingSetupAction, getAllAccountingPeriodAction, getChartOfAccounts, getBusinessTypes, getCurrencies } = props;
 
-  const { 
-    loading,
-    dispatchGetAccountingSetupAction,
-    dispatchGetAllAccountingPeriodAction 
-  } = props;
-
-  // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    let mounted = true
-    if(mounted){
-      dispatchGetAccountingSetupAction();
-      dispatchGetAllAccountingPeriodAction();
-    }
-    return ()=>{
-      mounted = false
-    }
+    getChartOfAccounts()
+    getBusinessTypes()
+    getCurrencies()
   }, []);
 
-  //console.log(`Path from Settings -> `, props.path);
-
-
   if (loading) {
-    return <div style={{textAlign:'center'}}><div style={{margin:'2px auto'}}><CircularProgress /></div></div>;
+    return <CircularProgress />
   }
 
   return (
     <div>
       <Helmet>
         <title>Settings</title>
-        <meta name="description" content="Description of Settings." />
+        <meta name="description" content="Description of Settings" />
       </Helmet>
-     
-        <SettingsLayout path={props.path}/>
-         {/* <AccountingPeriod />
-        </SettingsLayout>*/}
-      
+
+      <Route exact path={path} component={AccountSetup} />
+      <Route path={`${path}/period`} component={AccountingPeriod} />
+      <Route path={`${path}/depreciation-type`} component={SettingsLayout} />
+      <Route path={`${path}/depreciation-area`} component={DepreciationAreas} />
+      <Route path={`${path}/asset-type`} component={AssetType} />
+      <Route path={`${path}/taxrate`} component={TaxRate} />
+      <Route path={`${path}/taxtype`} component={TaxType} />
+      <Route path={`${path}/currencies`} component={Currencies} />
+
     </div>
   );
 }
 
-Settings.propTypes = {
+Settings.propTypes = {};
 
-};
-
-const mapStateToProps = createStructuredSelector({
-  // loading: Selectors.makeSelectLoading(),
-});
+const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchGetAccountingSetupAction: () => dispatch(Actions.getAccountingSetupAction()),
-    dispatchGetAllAccountingPeriodAction: () => dispatch(Actions.getAllAccountingPeriodAction()),
-    dispatch,
-  };
+    getAccountingSetupAction: () => dispatch(Actions.getAccountingSetupAction()),
+    getAllAccountingPeriodAction: () => dispatch(Actions.getAllAccountingPeriodAction()),
+    getChartOfAccounts: () => dispatch(Actions.getChartOfAccounts()),
+    getBusinessTypes: () => dispatch(Actions.getBusinessTypes()),
+    getCurrencies: () => dispatch(Actions.getCurrencies()),
+  }
 }
 
 const withConnect = connect(
   mapStateToProps,
   mapDispatchToProps,
-);
+)
 
 export default compose(
   withConnect,

@@ -28,15 +28,14 @@ export const initialState = {
     data: null,
   },
   bankTransferPostData: {},
-  transferByAccountIdData: {}
+  transferByAccountIdData: {},
 };
 
 /* eslint-disable default-case, no-param-reassign */
 const bankingReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
-      
-      // Open dialog for adding new bank account 
+      // Open dialog for adding new bank account
       case Constants.OPEN_NEW_BANK_ACCOUNT_DIALOG: {
         return {
           ...state,
@@ -192,7 +191,7 @@ const bankingReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          newBankPostData: action.payload
+          newBankPostData: action.payload,
         };
       }
       case Constants.CREATE_NEW_BANK_SUCCESS: {
@@ -200,7 +199,7 @@ const bankingReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          newBankPostData: action.payload
+          newBankPostData: action.payload,
         };
       }
       case Constants.CREATE_NEW_BANK_ERR: {
@@ -241,7 +240,7 @@ const bankingReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          newBankPostData: action.payload
+          newBankPostData: action.payload,
         };
       }
       case Constants.UPDATE_BANK_ACCOUNT_SUCCESS: {
@@ -249,7 +248,7 @@ const bankingReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          newBankPostData: action.payload
+          newBankPostData: action.payload,
         };
       }
       case Constants.UPDATE_BANK_ACCOUNT_ERR: {
@@ -266,7 +265,7 @@ const bankingReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          newBankPostData: action.payload
+          newBankPostData: action.payload,
         };
       }
       case Constants.DELETE_BANK_ACCOUNT_SUCCESS: {
@@ -274,7 +273,7 @@ const bankingReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          newBankPostData: action.payload
+          newBankPostData: action.payload,
         };
       }
       case Constants.DELETE_BANK_ACCOUNT_ERR: {
@@ -341,7 +340,7 @@ const bankingReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          bankTransferPostData: action.payload
+          bankTransferPostData: action.payload,
         };
       }
       case Constants.CREATE_BANK_TRANSFER_SUCCESS: {
@@ -349,7 +348,7 @@ const bankingReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          bankTransferPostData: action.payload
+          bankTransferPostData: action.payload,
         };
       }
       case Constants.CREATE_BANK_TRANSFER_ERR: {
@@ -407,7 +406,6 @@ const bankingReducer = (state = initialState, action) =>
         };
       }
 
-
       // Deactivate bank account (query params request)
       case Constants.DEACTIVATE_BANK_ACCOUNT: {
         return {
@@ -430,7 +428,6 @@ const bankingReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
-
     }
   });
 

@@ -8,38 +8,30 @@ import * as Actions from './actions';
 import swal from 'sweetalert';
 import * as Constants from './constants';
 
-
-// Create accounting setup
-export function* createAccountSetupSaga() {
+export function* createAccountSetup({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const accountingSetupPostData = yield select(
-    Selectors.makeSelectAccountingSetupPostData(),
-  );
   const requestURL = `${Endpoints.CreateAccountingSetupApi}`;
 
   try {
-    const accountingSetupResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
-      body: JSON.stringify(accountingSetupPostData),
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
-    //console.log('accountingSetupResponse -> ', accountingSetupResponse);
-    swal("Success","Accounting setup successful","success");
+    swal("Success", "Accounting setup successful", "success");
     yield put(Actions.getAccountingSetupAction());
-    yield put(Actions.createAccountingSetupSuccessAction(accountingSetupResponse));
+    yield put(Actions.createAccountingSetupSuccessAction(response));
   } catch (err) {
-    console.log('createAccountingSetupErrorAction -> ', err);
-    swal("Error","Something went wrong","error");
+    swal("Error", "Something went wrong", "error");
     yield put(Actions.createAccountingSetupErrorAction(err));
   }
 }
 
-// Get accounting setup data
-export function* getAccountingSetupSaga() {
+export function* getAccountingSetup() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetAccountingSetupApi}/${currentUser.organisation.orgId}`;
@@ -55,22 +47,18 @@ export function* getAccountingSetupSaga() {
 
     yield put(Actions.getAccountingSetupSuccessAction(accountingSetupResponse));
   } catch (err) {
-    //console.log('getAccountingSetupErrorAction --> ', err);
     yield put(Actions.getAccountingSetupErrorAction(err));
   }
 }
 
 
-// Get list of accounting period data
-export function* getAllAccountingPeriodSaga() {
+export function* getAllAccountingPeriod() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetAllAccountingPeriodApi}/${currentUser.organisation.orgId}`;
 
-  //console.log('acc period requestURL -> ', requestURL);
-
   try {
-    const accountingPeriodResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -78,17 +66,116 @@ export function* getAllAccountingPeriodSaga() {
       }),
     });
 
-   // console.log('accountingPeriodResponse -> ', accountingPeriodResponse);
-    yield put(Actions.getAllAccountingPeriodSuccessAction(accountingPeriodResponse));
+    yield put(Actions.getAllAccountingPeriodSuccessAction(response));
   } catch (err) {
-    console.log('getAllAccountingPeriodErrorAction --> ', err);
     yield put(Actions.getAllAccountingPeriodErrorAction(err));
   }
 }
 
+export function* GetDefaultChartOfAccounts() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAllChartOfAccountApi}/${currentUser.organisation.orgId}`; // API for the default charts pending
 
-// Create accounting period
-export function* createAccountPeriodSaga() {
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getDefaultChartOfAccountsSuccess(response));
+  } catch (err) {
+    yield put(Actions.getDefaultChartOfAccountsError(err));
+  }
+}
+
+export function* GetDepreciationArea() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetDepreciationAreaByOrgIdApi}/${currentUser.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getDepreciationAreaSuccess(response));
+  } catch (err) {
+    yield put(Actions.getDepreciationAreaError(err));
+  }
+}
+
+export function* GetChartOfAccounts() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAllChartOfAccountApi}/${currentUser.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getChartOfAccountsSuccess(response));
+  } catch (err) {
+    yield put(Actions.getChartOfAccountsError(err));
+  }
+}
+
+export function* GetAllBusinessTypes() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const requestURL = `${Endpoints.GetAllBusinessTypesApi}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "response GetAllBusinessTypes")
+
+    yield put(Actions.getBusinessTypesSuccess(response));
+  } catch (err) {
+    yield put(Actions.getBusinessTypesError(err));
+  }
+}
+
+export function* GetCurrencies() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetCurrencyByOrgIdApi}?orgId=${currentUser.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "response getCurrencies")
+
+    yield put(Actions.getCurrenciesSuccess(response));
+  } catch (err) {
+    yield put(Actions.getCurrenciesError(err));
+  }
+}
+
+export function* createAccountPeriod({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const accountPeriodPostData = yield select(
     Selectors.makeSelectAccountPeriodPostData(),
@@ -96,7 +183,7 @@ export function* createAccountPeriodSaga() {
   const requestURL = `${Endpoints.CreateAccountPeriodApi}`;
 
   try {
-    const accountPeriodResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
       body: JSON.stringify(accountPeriodPostData),
       headers: new Headers({
@@ -105,20 +192,16 @@ export function* createAccountPeriodSaga() {
       }),
     });
 
-    //console.log('accountPeriodResponse -> ', accountPeriodResponse);
-    swal("Success","Accounting period created successfully","success");
+    swal("Success", "Accounting period created successfully", "success");
     yield put(Actions.getAllAccountingPeriodAction());
-    yield put(Actions.createAccountPeriodSuccessAction(accountPeriodResponse));
+    yield put(Actions.createAccountPeriodSuccessAction(response));
     yield put(Actions.closeAccountPeriodDialog());
   } catch (err) {
-    //console.log('createAccountPeriodErrorAction -> ', err);
-    swal("Error","Something went wrong","error");
+    swal("Error", "Something went wrong", "error");
     yield put(Actions.createAccountPeriodErrorAction(err));
   }
 }
 
-
-// Create accounting period
 export function* updateAccountPeriodSaga({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const accountPeriodPostData = yield select(
@@ -128,7 +211,7 @@ export function* updateAccountPeriodSaga({ type, payload }) {
   console.log('payload -> ', payload);
 
   try {
-    const updatedAccountPeriodResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'PUT',
       body: JSON.stringify(accountPeriodPostData),
       headers: new Headers({
@@ -137,22 +220,18 @@ export function* updateAccountPeriodSaga({ type, payload }) {
       }),
     });
 
-    //console.log('updatedAccountPeriodResponse -> ', updatedAccountPeriodResponse);
-    swal("Success","Accounting period updated successfully","success");
+    swal("Success", "Accounting period updated successfully", "success");
     yield put(Actions.getAllAccountingPeriodAction());
-    yield put(Actions.updateAccountPeriodSuccessAction(updatedAccountPeriodResponse));
+    yield put(Actions.updateAccountPeriodSuccessAction(response));
     yield put(Actions.closeAccountPeriodDialog());
   } catch (err) {
-    //console.log('updateAccountPeriodErrorAction -> ', err);
-    swal("Error","Something went wrong","error");
+    swal("Error", "Something went wrong", "error");
     yield put(Actions.updateAccountPeriodErrorAction(err));
   }
 }
 
-
-// Set accounting period as active
-export function* setAccountPeriodAsActiveSaga({ type, payload }) {
-  const accessToken = yield select(AppSelectors.makeSelectAccessToken());  
+export function* setAccountPeriodAsActive({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.SetAccountPeriodAsActiveApi}?id=${payload.id}&orgId=${payload.orgId}&year=true`;
 
   try {
@@ -165,15 +244,12 @@ export function* setAccountPeriodAsActiveSaga({ type, payload }) {
       }),
     });
 
-    //console.log('accountActiveResponse -> ', accountActiveResponse);
-    swal("Success","Accounting period set successfully","success");
+    swal("Success", "Accounting period set successfully", "success");
     yield put(Actions.getAllAccountingPeriodAction());
     yield put(Actions.setAccountPeriodAsActiveSuccessAction(accountActiveResponse));
     yield put(Actions.closeAccountPeriodDialog());
   } catch (err) {
-    //console.log('updateAccountPeriodErrorAction -> ', err);
-    //alert(`Something went wrong.`);
-    swal("Error","Something went wrong","error");
+    swal("Error", "Something went wrong", "error");
     yield put(Actions.setAccountPeriodAsActiveErrorAction(err));
   }
 }
@@ -181,12 +257,16 @@ export function* setAccountPeriodAsActiveSaga({ type, payload }) {
 
 // Individual exports for testing
 export default function* SettingsSaga() {
-  // See example in containers/HomePage/saga.js
-  yield takeLatest(Constants.CREATE_ACCOUNTING_SETUP, createAccountSetupSaga);
-  yield takeLatest(Constants.GET_ACCOUNTING_SETUP, getAccountingSetupSaga);
-  yield takeLatest(Constants.GET_ALL_ACCOUNTING_PERIOD, getAllAccountingPeriodSaga);
-  yield takeLatest(Constants.CREATE_ACCOUNT_PERIOD, createAccountPeriodSaga);
+  yield takeLatest(Constants.CREATE_ACCOUNTING_SETUP, createAccountSetup);
+  yield takeLatest(Constants.GET_ACCOUNTING_SETUP, getAccountingSetup);
+  yield takeLatest(Constants.GET_ALL_ACCOUNTING_PERIOD, getAllAccountingPeriod);
+  yield takeLatest(Constants.GET_CHART_OF_ACCOUNTS, GetChartOfAccounts);
+  yield takeLatest(Constants.GET_DEFAULT_CHART_OF_ACCOUNTS, GetDefaultChartOfAccounts);
+  yield takeLatest(Constants.GET_BUSINESS_TYPES, GetAllBusinessTypes);
+  yield takeLatest(Constants.GET_DEPRECIATION_AREA, GetDepreciationArea);
+  yield takeLatest(Constants.GET_CURRENCIES, GetCurrencies);
+  yield takeLatest(Constants.CREATE_ACCOUNT_PERIOD, createAccountPeriod);
   yield takeLatest(Constants.UPDATE_ACCOUNT_PERIOD, updateAccountPeriodSaga);
-  yield takeLatest(Constants.SET_ACCOUNT_PERIOD_AS_ACTIVE, setAccountPeriodAsActiveSaga);
+  yield takeLatest(Constants.SET_ACCOUNT_PERIOD_AS_ACTIVE, setAccountPeriodAsActive);
 }
 

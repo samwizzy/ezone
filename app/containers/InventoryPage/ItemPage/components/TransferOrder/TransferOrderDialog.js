@@ -277,10 +277,10 @@ const TransferOrderDialog = props => {
                             <Autocomplete
                               id={`combo-items-${i}`}
                               size="small"
-                              options={items}
+                              options={items.filter(item => item.wareHouseUuid === values.sourceWareHouseUuid)}
                               getOptionLabel={option => option.itemName}
                               onChange={handleSelectItemChange(i)}
-                              value={row.id ? _.find(items, { id: row.id }) : null}
+                              value={row.itemId ? _.find(items, { id: row.itemId }) : null}
                               renderInput={params => (
                                 <TextField
                                   {...params}

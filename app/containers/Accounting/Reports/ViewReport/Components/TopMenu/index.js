@@ -1,11 +1,11 @@
 import React from 'react';
-import Search from '../../Search';
+import Search from '../Search';
 import ExportAs from '../PrintSelect';
 import PrintIcon from '../../Assets/Print';
 import PdfIcon from '../../Assets/Pdf';
 import './style.css';
 
-const index = ({ componentRef, print, setPrint, tableData }) => (
+const index = ({ componentRef, print, setPrint, tableData, search }) => (
   <div className="flex-b md">
     <div className="flex-b">
       <h6>Filter: </h6>

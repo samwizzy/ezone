@@ -22,13 +22,13 @@ import saga from '../../saga';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import LoadingIndicator from '../../../../../components/LoadingIndicator';
-import TransferOrderDialog from './TransferOrderDialog';
 
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1),
   },
   datatable: {
+    whiteSpace: 'nowrap',
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer'
     },
@@ -121,14 +121,6 @@ const TransferOrdersList = props => {
       },
     },
     {
-      name: 'reason',
-      label: 'Reason',
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
       name: 'status',
       label: 'Status',
       options: {
@@ -146,7 +138,7 @@ const TransferOrdersList = props => {
     },
     {
       name: 'sourceWarehouse',
-      label: 'Source WareHouse',
+      label: 'Source Warehouse',
       options: {
         filter: true,
         sort: false,
@@ -154,7 +146,7 @@ const TransferOrdersList = props => {
     },
     {
       name: 'destinationWarehouse',
-      label: 'Destination WareHouse',
+      label: 'Destination Warehouse',
       options: {
         filter: true,
         sort: false,

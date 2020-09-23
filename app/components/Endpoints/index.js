@@ -253,6 +253,7 @@ export const CreateBankTransferApi = `${BaseUrl}/accountingserv/api/v1/bank/tran
 export const GetTransferByAccountIdApi = `${BaseUrl}/accountingserv/api/v1/bank/get_bank_transfer_by_id`;
 export const GetJounalListApi = `${BaseUrl}/accountingserv/api/v1/journal/get_journals_by_orgid`;
 export const GetAllAccountingPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/get_periods_by_orgid`;
+export const GetAllBusinessTypesApi = `${BaseUrl}/accountingserv/api/v1/business/get_all_business_type`;
 export const CreateAccountPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/add_account_period`;
 export const UpdateAccountPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/update_account_period_status`;
 export const SetAccountPeriodAsActiveApi = `${BaseUrl}/accountingserv/api/v1/account/update_account_active_year`;
@@ -261,7 +262,7 @@ export const UpdateBankAccountApi = `${BaseUrl}/accountingserv/api/v1/bank/updat
 export const SetActiveStatusForBankAccountApi = `${BaseUrl}/accountingserv/api/v1/bank/acivate_or_deactivate_bank`;
 export const AddDeprecitionAreaApi = `${BaseUrl}/accountingserv/api/v1/area/add`;
 export const GetDeprecitionAreaByIdApi = `${BaseUrl}/accountingserv/api/v1/area/get_depreciation_area_by_id`;
-export const GetDeprecitionAreaByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/area/get_depreciation_area_by_orgid`;
+export const GetDepreciationAreaByOrgIdApi = `${BaseUrl}/accountingserv/api/v1/area/get_depreciation_area_by_orgid`;
 export const UpdateDeprecitionAreaApi = `${BaseUrl}/accountingserv/api/v1/area/update`;
 export const AddDeprecitionTypeApi = `${BaseUrl}/accountingserv/api/v1/type/add`;
 export const GetDeprecitionTypeByIdApi = `${BaseUrl}/accountingserv/api/v1/type/get_depreciation_type_by_id`;
@@ -382,6 +383,12 @@ export const AddCourseVideoApi = `${BaseUrl}/lmsserv/api/v1/lms/add_course_video
  ***************************************************************
  ************************************************************** */
 export const GetGeneralJournalApi = `${BaseUrl}/accountingserv/api/v1/report/get_general_journal`;
+<<<<<<< HEAD
+export const GetGeneralLedgerApi = `${BaseUrl}/accountingserv/api/v1/report/get_general_ledger`;
+export const GetChatsOfAccountApi = `${BaseUrl}/accountingserv/api/v1/report/get_chart_of_account`;
+export const GetTrialBalanceApi = `${BaseUrl}/accountingserv/api/v1/report/get_trial_balance`;
+=======
 // STUDENT API
 export const RegisterStudentApi = `${BaseUrl}/lmsserv/lms/v1/register_student`;
 
+>>>>>>> dev

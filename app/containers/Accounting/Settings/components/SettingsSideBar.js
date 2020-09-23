@@ -1,4 +1,4 @@
-import React, { memo,useContext} from 'react';
+import React, { memo, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles'
 import { withRouter } from 'react-router-dom'
@@ -9,9 +9,9 @@ import { createStructuredSelector } from 'reselect';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet'
 import * as Actions from '../actions';
 import * as Selectors from './../selectors';
-import * as AppSelectors from './../../../App/selectors'; 
+import * as AppSelectors from './../../../App/selectors';
 import Collapse from '@material-ui/core/Collapse';
-import EventIcon from '@material-ui/icons/Event'; 
+import EventIcon from '@material-ui/icons/Event';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import AssessmentIcon from '@material-ui/icons/Assessment';
@@ -50,23 +50,23 @@ const SettingsSideBar = props => {
   const [tax, setTax] = React.useState(false);
 
   const handleClick = (value) => {
-    switch(value){
+    switch (value) {
       case 'asset':
-        {setOpen(!open)}
-        case 'tax':
-        {setTax(!tax);}  
+        { setOpen(!open) }
+      case 'tax':
+        { setTax(!tax); }
     }
-    
+
   };
 
   const handleClickPage = (value) => {
-    settingContext.settingDispatch({type:'NAVIGATION',page:value});
+    settingContext.settingDispatch({ type: 'NAVIGATION', page: value });
   };
-  
+
   return (
     <div className={classes.root}>
-      <List 
-        component="nav" 
+      <List
+        component="nav"
         aria-label="secondary mailbox folders"
         subheader={
           <ListSubheader component="div" id="nested-list-subheader">
@@ -74,44 +74,44 @@ const SettingsSideBar = props => {
           </ListSubheader>
         }
       >
-        <ListItem selected={settingContext.settingState.setting} button onClick={() => {handleClickPage('setting')}}>
-         {/*<ListItemIcon>
+        <ListItem selected={settingContext.settingState.setting} button onClick={() => { handleClickPage('setting') }}>
+          {/*<ListItemIcon>
             <EventIcon />
          </ListItemIcon>*/}
           <ListItemText primary="Accounting Period" />
         </ListItem>
-        <ListItem button onClick={()=>setOpen(!open)}>
-        <ListItemText primary="Fixed Asset Setup" />
-      </ListItem>
-      <Collapse in={open} timeout="auto">
-        <List component="div" disablePadding>
-          <ListItem selected={settingContext.settingState.deprecition}  button className={classes.nested} onClick={()=>handleClickPage('deprecition')}>
-            <ListItemText primary="Deprecition Type" />
-          </ListItem>
-          <ListItem button  selected={settingContext.settingState.deprecitionarea} className={classes.nested} onClick={()=>handleClickPage('deprecitionarea')}>
-            <ListItemText primary="Deprecition Area" />
-          </ListItem>
-          <ListItem button selected={settingContext.settingState.assettype ||settingContext.settingState.newassettype } className={classes.nested} onClick={()=>handleClickPage('assettype')}>
-            <ListItemText primary="Asset Type" />
-          </ListItem>
-        </List>
-      </Collapse>
-      <ListItem button selected={settingContext.settingState.currencies}>
-        <ListItemText primary="Currencies" onClick={()=>handleClickPage('currencies')}/>
-      </ListItem>
-      <ListItem button onClick={()=>setTax(!tax)}>
-        <ListItemText primary="Taxes" />
-      </ListItem>
-      <Collapse in={tax} timeout="auto">
-        <List component="div" disablePadding>
-          <ListItem button selected={settingContext.settingState.taxrate} className={classes.nested} onClick={()=>handleClickPage('taxrate')}>
-            <ListItemText primary="Tax rate" />
-          </ListItem>
-          <ListItem button className={classes.nested} selected={settingContext.settingState.taxtype} onClick={()=>handleClickPage('taxtype')}>
-            <ListItemText primary="Tax type" />
-          </ListItem>
-        </List>
-      </Collapse>
+        <ListItem button onClick={() => setOpen(!open)}>
+          <ListItemText primary="Fixed Asset Setup" />
+        </ListItem>
+        <Collapse in={open} timeout="auto">
+          <List component="div" disablePadding>
+            <ListItem selected={settingContext.settingState.deprecition} button className={classes.nested} onClick={() => handleClickPage('deprecition')}>
+              <ListItemText primary="Deprecition Type" />
+            </ListItem>
+            <ListItem button selected={settingContext.settingState.deprecitionarea} className={classes.nested} onClick={() => handleClickPage('deprecitionarea')}>
+              <ListItemText primary="Deprecition Area" />
+            </ListItem>
+            <ListItem button selected={settingContext.settingState.assettype || settingContext.settingState.newassettype} className={classes.nested} onClick={() => handleClickPage('assettype')}>
+              <ListItemText primary="Asset Type" />
+            </ListItem>
+          </List>
+        </Collapse>
+        <ListItem button selected={settingContext.settingState.currencies}>
+          <ListItemText primary="Currencies" onClick={() => handleClickPage('currencies')} />
+        </ListItem>
+        <ListItem button onClick={() => setTax(!tax)}>
+          <ListItemText primary="Taxes" />
+        </ListItem>
+        <Collapse in={tax} timeout="auto">
+          <List component="div" disablePadding>
+            <ListItem button selected={settingContext.settingState.taxrate} className={classes.nested} onClick={() => handleClickPage('taxrate')}>
+              <ListItemText primary="Tax rate" />
+            </ListItem>
+            <ListItem button className={classes.nested} selected={settingContext.settingState.taxtype} onClick={() => handleClickPage('taxtype')}>
+              <ListItemText primary="Tax type" />
+            </ListItem>
+          </List>
+        </Collapse>
       </List>
     </div>
   );
