@@ -6,7 +6,7 @@ import { Grid } from '@material-ui/core';
 import ModuleLayout from './ModuleLayout';
 import ListBoard from '../Reports/ListBoard';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -17,42 +17,90 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   paperBase: {
-    padding: '15px'
+    padding: '15px',
   },
   base: {
     paddingTop: '5px',
     paddingLeft: '5px',
     paddingRight: '5px',
-    marginBottom: '20px'
+    marginBottom: '20px',
   },
   pap: {
     padding: '8px',
-    marginBottom: '15px'
-  }
+    marginBottom: '15px',
+  },
 }));
 
 const Reports = () => {
   const classes = useStyles();
-  const recievables = ['Customer Ledgers', 'Aged Receivables'
-    , 'Customer master file', 'Cash Receipt Jornals', 'Invoice Register',
-    'Sales Order Details', 'Sales Journal', 'Sales taxes', 'Taxes/Exempt Sales', 'Quote register']
-  const fixedAsset = ['Fixed Asset Register', 'Fixed Asset Schedule']
-  const payables = ['Vendor Ledgers', 'Aged Payables',
-    'Cash Journal report', 'Purchase order register',
-    'Bill reports', 'Payments reports', 'Quotation reports', 'Purchase journal', 'vendor master life', 'Purchase order report']
-  const ledger = ['Cash account register', 'Charts of Accounts', 'General Journal', 'General ledger', 'Trial Balance']
-  const financialStatement = ['income Statement', 'Statement of financial position'
-    , 'Cashflow']
-  const inventory = ['Cost of goods sold', 'Inventory status report', 'Inv.valuation report', 'Item list', 'Physical Inventory list']
-  const payroll = ['Payroll Journals', 'Payroll Check Register',
-    'Payroll Tax report', 'Tax liability Report', 'Employee Earnings Report', 'Employee Compensation Report', 'Employee List']
+  const receivables = [
+    'Customer Ledgers',
+    'Aged Receivables',
+    'Customer master file',
+    'Cash Receipt Jornals',
+    'Invoice Register',
+    'Sales Order Details',
+    'Sales Journal',
+    'Sales taxes',
+    'Taxes/Exempt Sales',
+    'Quote register',
+  ];
+  const fixedAsset = ['Fixed Asset Register', 'Fixed Asset Schedule'];
+  const payables = [
+    'Vendor Ledgers',
+    'Aged Payables',
+    'Cash Journal report',
+    'Purchase order register',
+    'Bill reports',
+    'Payments reports',
+    'Quotation reports',
+    'Purchase journal',
+    'vendor master life',
+    'Purchase order report',
+  ];
+  const ledger = [
+    'Cash account register',
+    'Charts of Accounts',
+    'General Journal',
+    'General ledger',
+    'Trial Balance',
+  ];
+  const financialStatement = [
+    'income Statement',
+    'Comprehensive Income Statement',
+    'Statement of financial position',
+    'Cashflow',
+  ];
+  const inventory = [
+    'Cost of goods sold',
+    'Inventory status report',
+    'Inv.valuation report',
+    'Item list',
+    'Physical Inventory list',
+  ];
+  const payroll = [
+    'Payroll Journals',
+    'Payroll Check Register',
+    'Payroll Tax report',
+    'Tax liability Report',
+    'Employee Earnings Report',
+    'Employee Compensation Report',
+    'Employee List',
+  ];
+  const accountReconcilation = [
+    'Bank Reconcilation',
+    'Bank deposit report',
+    'Deposit in Transit',
+    'Other outstanding items',
+    'Outstanding checks',
+  ];
   return (
     <ModuleLayout>
       <div className={classes.base}>
         <Paper className={classes.paperBase} elevation={1}>
-          <Grid container >
+          <Grid container>
             <Grid item xs={12}>
-              <Paper className={classes.pap} elevation={3} >
+              <Paper className={classes.pap} elevation={3}>
                 <Typography gutterBottom variant="h6" component="h1">
                   Reports
                 </Typography>
@@ -64,115 +112,143 @@ const Reports = () => {
                 <Grid item xs={3}>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
-                      <Paper elevation={3} >
+                      <Paper elevation={3}>
                         <Paper elevation={1}>
-                          <ListBoard bar={'blue'} title={'Recievables'} contents={recievables} />
+                          <ListBoard
+                            bar={'blue'}
+                            title={'Receivables'}
+                            contents={receivables}
+                          />
                         </Paper>
                       </Paper>
                     </Grid>
 
                     <Grid item xs={12}>
-                      <Paper elevation={3} >
+                      <Paper elevation={3}>
                         <Paper elevation={1}>
-                          <ListBoard bar={'orchild'} title={'Fixed Asset'} contents={fixedAsset} />
+                          <ListBoard
+                            bar={'orchild'}
+                            title={'Fixed Asset'}
+                            contents={fixedAsset}
+                          />
                         </Paper>
                       </Paper>
                     </Grid>
-
                   </Grid>
-
                 </Grid>
 
                 <Grid item xs={3}>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
-
-                      <Paper elevation={3} >
+                      <Paper elevation={3}>
                         <Paper elevation={1}>
-                          <ListBoard bar={'green'} title={'Payables'} contents={payables} />
+                          <ListBoard
+                            bar={'green'}
+                            title={'Payables'}
+                            contents={payables}
+                          />
                         </Paper>
                       </Paper>
-
                     </Grid>
-
                     <Grid item xs={12}>
-
-                      <Paper elevation={3} >
+                      <Paper elevation={3}>
                         <Paper elevation={1}>
-                          <ListBoard bar={'orchild'} title={'Taxes'} contents={['Tax Summary']} />
+                          <ListBoard
+                            bar={'322F7C'}
+                            title={'Account Reconcilation'}
+                            contents={accountReconcilation}
+                          />
                         </Paper>
                       </Paper>
-
                     </Grid>
-
-
                   </Grid>
-
                 </Grid>
-
-
 
                 <Grid item xs={3}>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
-                      <Paper elevation={3} >
+                      <Paper elevation={3}>
                         <Paper elevation={1}>
-                          <ListBoard bar={'yellow'} title={'General Ledger'} contents={ledger} />
+                          <ListBoard
+                            bar={'yellow'}
+                            title={'General Ledger'}
+                            contents={ledger}
+                          />
                         </Paper>
                       </Paper>
                     </Grid>
 
                     <Grid item xs={12}>
-                      <Paper elevation={3} >
+                      <Paper elevation={3}>
                         <Paper elevation={1}>
-                          <ListBoard bar={'purple'} title={'Budget'} contents={['Budget report', 'Budget Vs Actuals']} />
+                          <ListBoard
+                            bar={'purple'}
+                            title={'Budget'}
+                            contents={['Budget report', 'Budget Vs Actuals']}
+                          />
                         </Paper>
                       </Paper>
                     </Grid>
 
                     <Grid item xs={12}>
-                      <Paper elevation={3} >
+                      <Paper elevation={3}>
                         <Paper elevation={1}>
-                          <ListBoard bar={'green'} title={'Inventory'} contents={inventory} />
+                          <ListBoard
+                            bar={'green'}
+                            title={'Inventory'}
+                            contents={inventory}
+                          />
                         </Paper>
                       </Paper>
                     </Grid>
-
                   </Grid>
-
                 </Grid>
-
 
                 <Grid item xs={3}>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
-                      <Paper elevation={3} >
+                      <Paper elevation={3}>
                         <Paper elevation={1}>
-                          <ListBoard bar={'pink'} title={'Financial Statement'} contents={financialStatement} />
+                          <ListBoard
+                            bar={'pink'}
+                            title={'Financial Statement'}
+                            contents={financialStatement}
+                          />
                         </Paper>
                       </Paper>
                     </Grid>
 
                     <Grid item xs={12}>
-                      <Paper elevation={3} >
+                      <Paper elevation={3}>
                         <Paper elevation={1}>
-                          <ListBoard bar={'purple'} title={'Payroll'} contents={payroll} />
+                          <ListBoard
+                            bar={'purple'}
+                            title={'Payroll'}
+                            contents={payroll}
+                          />
                         </Paper>
                       </Paper>
                     </Grid>
-
+                    <Grid item xs={12}>
+                      <Paper elevation={3}>
+                        <Paper elevation={1}>
+                          <ListBoard
+                            bar={'orchild'}
+                            title={'Taxes'}
+                            contents={['Tax Summary']}
+                          />
+                        </Paper>
+                      </Paper>
+                    </Grid>
                   </Grid>
-
                 </Grid>
-
               </Grid>
             </Grid>
           </Grid>
-
         </Paper>
       </div>
     </ModuleLayout>
   );
-}
+};
 
 export default Reports;

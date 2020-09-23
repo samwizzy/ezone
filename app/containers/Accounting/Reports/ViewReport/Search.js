@@ -50,6 +50,21 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+// const getDates = (startDate) => {
+//   // const year = startDate.split('-').[2];
+//   // forEach((Ele, index) =>{ increaseyear = Number(year) + count;
+//     // const currentDate = moment(startDate).format('DD-MM-YYYY');
+//     const nextDate =  moment(startDate)
+//     .add(0, 'd')
+//     .add(0, 'm')
+//     .add(1, 'y')
+//     .format('DD-MM-YYYY'),
+//   return <option value={10}>{`${startDate} - ${nextDate}`} </option>
+//   }
+
+// const dateRange = currentDate.format('DD-MM-YYYY') +' - '+ nextDate.format('DD-MM-YYYY');
+
+// }
 export default function CustomizedSelects() {
   const classes = useStyles();
   const [age, setAge] = React.useState('');

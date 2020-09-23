@@ -8,7 +8,6 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import {
   withRouter,
-  useParams,
   Route,
   useRouteMatch,
 } from 'react-router-dom';
@@ -76,55 +75,6 @@ export function Accounting(props) {
         <Route path={`${path}/fixedassets`} component={FixedAssets} />
         <Route path={`${path}/reports/:reportId?`} component={Reports} />
         <Route path={`${path}/settings`} component={Settings} />
-
-        {/* <Route path={`/account/reports/${name}`} component={ViewReport} />
-      {id === undefined ? (
-        <Route exact path="/account" component={Home} />
-      ) : name === undefined ? (
-        <Route
-          exact
-          path={`/account/${id}`}
-          component={
-            id === 'reports'
-              ? Reports
-              : id === 'charts'
-                ? Charts
-                : id === 'journal'
-                  ? Journal
-                  : id === 'fixedassets'
-                    ? FixedAssets
-                    : id === 'banking'
-                      ? Banking
-                      : id === 'budgeting'
-                        ? Budget
-                        : id === 'settings'
-                          ? Home
-                          : id === 'fixedassets'
-                            ? FixedAssets
-                            : Home
-          }
-        />
-      ) : (
-            <Route
-              exact
-              path={`/account/${id}/${name}`}
-              component={
-                name === 'add'
-                  ? id === 'budgeting'
-                    ? NewBudgeting
-                    : AddNewJournal
-                  : id === 'journal'
-                    ? JournalDetails
-                    : id === 'charts'
-                      ? DetailsOfAccountChat
-                      : id === 'budgeting'
-                        ? BudgetingDetails
-                        : id === 'settings'
-                          ? Home
-                          : AccountDetails
-              }
-            />
-          )} */}
       </Fragment>
     </div>
   );
