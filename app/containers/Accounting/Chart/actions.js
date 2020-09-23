@@ -1,9 +1,3 @@
-/*
- *
- * Chart actions
- *
- */
-
 import * as Constants from './constants';
 
 // Chart dialog operations (Open new)
@@ -34,20 +28,20 @@ export function editCloseAccountDialog() {
 }
 
 // Get account types 
-export function getAllAccountTypeAction() {
+export function getAccountTypes() {
   return {
     type: Constants.GET_ALL_ACCOUNT_TYPES,
   };
 }
 
-export function getAllAccountTypeSuccessAction(data) {
+export function getAccountTypesSuccess(data) {
   return {
     type: Constants.GET_ALL_ACCOUNT_TYPES_SUCCESS,
     payload: data,
   };
 }
 
-export function getAllAccountTypeErrorAction(data) {
+export function getAccountTypesError(data) {
   return {
     type: Constants.GET_ALL_ACCOUNT_TYPES_ERR,
     payload: data,
@@ -55,21 +49,21 @@ export function getAllAccountTypeErrorAction(data) {
 }
 
 // Get parent account types 
-export function getParentAccountTypeAction(data) {
+export function getParentAccountType(data) {
   return {
     type: Constants.GET_PARENT_ACCOUNT_TYPES,
     payload: data,
   };
 }
 
-export function getParentAccountTypeSuccessAction(data) {
+export function getParentAccountTypeSuccess(data) {
   return {
     type: Constants.GET_PARENT_ACCOUNT_TYPES_SUCCESS,
     payload: data,
   };
 }
 
-export function getParentAccountTypeErrorAction(data) {
+export function getParentAccountTypeError(data) {
   return {
     type: Constants.GET_PARENT_ACCOUNT_TYPES_ERR,
     payload: data,
@@ -78,42 +72,42 @@ export function getParentAccountTypeErrorAction(data) {
 
 
 // Create new chart of account
-export function createNewChartOfAccountAction(data) {
+export function createChartOfAccount(data) {
   return {
     type: Constants.CREATE_NEW_CHART_OF_ACCOUNT,
     payload: data,
   };
 }
 
-export function createNewChartOfAccountSuccessAction(data) {
+export function createChartOfAccountSuccess(data) {
   return {
     type: Constants.CREATE_NEW_CHART_OF_ACCOUNT_SUCCESS,
     payload: data,
   };
 }
 
-export function createNewChartOfAccountErrorAction(data) {
+export function createChartOfAccountError(data) {
   return {
     type: Constants.CREATE_NEW_CHART_OF_ACCOUNT_ERR,
     payload: data,
   };
 }
 
-// Get all chart of accounts
-export function getAllChartOfAccountTypeAction() {
+// Get all chart of accounts types
+export function getChartOfAccounts() {
   return {
     type: Constants.GET_ALL_CHART_OF_ACCOUNT,
   };
 }
 
-export function getAllChartOfAccountTypeSuccessAction(data) {
+export function getChartOfAccountsSuccess(data) {
   return {
     type: Constants.GET_ALL_CHART_OF_ACCOUNT_SUCCESS,
     payload: data,
   };
 }
 
-export function getAllChartOfAccountTypeErrorAction(data) {
+export function getChartOfAccountsError(data) {
   return {
     type: Constants.GET_ALL_CHART_OF_ACCOUNT_ERR,
     payload: data,
@@ -122,21 +116,21 @@ export function getAllChartOfAccountTypeErrorAction(data) {
 
 
 // Delete a chart of account
-export function deleteChartOfAccountAction(data) {
+export function deleteChartOfAccount(data) {
   return {
     type: Constants.DELETE_CHART_OF_ACCOUNT,
     payload: data,
   };
 }
 
-export function deleteChartOfAccountSuccessAction(data) {
+export function deleteChartOfAccountSuccess(data) {
   return {
     type: Constants.DELETE_CHART_OF_ACCOUNT_SUCCESS,
     payload: data,
   };
 }
 
-export function deleteChartOfAccountErrorAction(data) {
+export function deleteChartOfAccountError(data) {
   return {
     type: Constants.DELETE_CHART_OF_ACCOUNT_ERR,
     payload: data,
@@ -145,21 +139,21 @@ export function deleteChartOfAccountErrorAction(data) {
 
 
 // Update a chart of account
-export function updateChartOfAccountAction(data) {
+export function updateChartOfAccount(data) {
   return {
     type: Constants.UPDATE_CHART_OF_ACCOUNT,
     payload: data,
   };
 }
 
-export function updateChartOfAccountSuccessAction(data) {
+export function updateChartOfAccountSuccess(data) {
   return {
     type: Constants.UPDATE_CHART_OF_ACCOUNT_SUCCESS,
     payload: data,
   };
 }
 
-export function updateChartOfAccountErrorAction(data) {
+export function updateChartOfAccountError(data) {
   return {
     type: Constants.UPDATE_CHART_OF_ACCOUNT_ERR,
     payload: data,

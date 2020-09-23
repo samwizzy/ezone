@@ -6,13 +6,12 @@ import * as Selectors from './../selectors';
 import {
   makeStyles,
   Button,
-  Card, CardHeader, CardContent, CardActions,
+  CardActions,
   Paper,
   Grid,
   TextField,
   Typography,
   Checkbox,
-  FormGroup,
   FormControlLabel,
   FormControl,
   Table, TableBody, TableRow, TableCell,
@@ -38,12 +37,6 @@ import CanadaFlag from '../images/flag/canada.png';
 import SpainFlag from '../images/flag/spain.png';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-    "& .MuiCardActions-root": {
-      justifyContent: 'flex-end'
-    }
-  },
   table: {
     minWidth: 200,
     '& tr': {
@@ -60,17 +53,6 @@ const useStyles = makeStyles(theme => ({
   paper: {
     padding: theme.spacing(2, 2),
     color: theme.palette.text.secondary,
-  },
-  sideDemo: {
-    backgroundColor: theme.palette.background.paper,
-  },
-  bgImage: {
-    width: '100%',
-    height: '493px',
-    backgroundImage: `url(${accSettingDemo2})`,
-    backgroundSize: '100%',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
   },
   flag: {
     width: 20,

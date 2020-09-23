@@ -267,7 +267,7 @@ export function* createNewTransferOrder({ payload }) {
     console.log(response, "response createNewTransferOrder")
 
     yield put(Actions.getAllTransferOrder());
-    yield put(push('/inventory/transfer/orders'));
+    yield put(push('/inventory/transfers'));
   } catch (err) {
     console.log(err);
     yield put(Actions.createNewTransferOrderError(err));

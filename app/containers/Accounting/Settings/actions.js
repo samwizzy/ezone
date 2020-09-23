@@ -85,6 +85,27 @@ export function getBusinessTypesError(data) {
   }
 }
 
+// Get depreciation area
+export function getDepreciationArea() {
+  return {
+    type: Constants.GET_DEPRECIATION_AREA,
+  }
+}
+
+export function getDepreciationAreaSuccess(data) {
+  return {
+    type: Constants.GET_DEPRECIATION_AREA_SUCCESS,
+    payload: data,
+  }
+}
+
+export function getDepreciationAreaError(data) {
+  return {
+    type: Constants.GET_DEPRECIATION_AREA_ERROR,
+    payload: data,
+  }
+}
+
 // Get currencies
 export function getCurrencies() {
   return {
@@ -102,6 +123,48 @@ export function getCurrenciesSuccess(data) {
 export function getCurrenciesError(data) {
   return {
     type: Constants.GET_CURRENCIES_ERROR,
+    payload: data,
+  }
+}
+
+// Get default chart of accounts
+export function getDefaultChartOfAccounts() {
+  return {
+    type: Constants.GET_DEFAULT_CHART_OF_ACCOUNTS,
+  }
+}
+
+export function getDefaultChartOfAccountsSuccess(data) {
+  return {
+    type: Constants.GET_DEFAULT_CHART_OF_ACCOUNTS_SUCCESS,
+    payload: data,
+  }
+}
+
+export function getDefaultChartOfAccountsError(data) {
+  return {
+    type: Constants.GET_DEFAULT_CHART_OF_ACCOUNTS_ERROR,
+    payload: data,
+  }
+}
+
+// Get chart of accounts
+export function getChartOfAccounts() {
+  return {
+    type: Constants.GET_CHART_OF_ACCOUNTS,
+  }
+}
+
+export function getChartOfAccountsSuccess(data) {
+  return {
+    type: Constants.GET_CHART_OF_ACCOUNTS_SUCCESS,
+    payload: data,
+  }
+}
+
+export function getChartOfAccountsError(data) {
+  return {
+    type: Constants.GET_CHART_OF_ACCOUNTS_ERROR,
     payload: data,
   }
 }

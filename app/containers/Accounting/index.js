@@ -7,18 +7,18 @@ import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import {
+  withRouter,
   useParams,
   Route,
   useRouteMatch,
 } from 'react-router-dom';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import reducer from './reducer';
 import saga from './saga';
 import * as Actions from './actions';
 import makeSelectAccounting, * as Selectors from './selectors';
+import { CircleLoader } from '../../components/LoadingIndicator';
 import Charts from './Chart/Loadable';
 import Reports from './Reports/index';
-import Home from './home';
 import Dashboard from './Dashboard';
 import Journal from './Journal';
 import AddNewJournal from './Journal/components/AddNewJournal';
@@ -28,11 +28,9 @@ import BudgetingDetails from './Budget/components/BudgetingDetails';
 import NewBudgeting from './Budget/components/NewBudgeting';
 import Banking from './Banking';
 import AccountDetails from './Banking/components/AccountDetails';
-import LoadingIndicator from '../../components/LoadingIndicator';
 import DetailsOfAccountChat from './Chart/components/DetailsOfAccountChart';
 import FixedAssets from './FixedAssets/index';
 import ViewReport from './Reports/ViewReport/ViewReport';
-// import AccountSetup from './Settings/components/AccountSetup';
 import Settings from './Settings';
 
 const key = "accounting"
@@ -47,18 +45,17 @@ export function Accounting(props) {
   }, [])
 
   useEffect(() => {
-    console.log(accSetUpData, "On update useeffect")
   }, [accSetUpData])
 
   const { path } = useRouteMatch();
-  const { id, name } = useParams();
-  console.log("accounting", accounting);
+
+  console.log(path, "path accounts")
 
   if (loading) {
-    return <CircularProgress />
+    return <CircleLoader />
   }
 
-  if (accSetUpData) {
+  if (!accSetUpData && !loading) {
     return <Settings />
   }
 
@@ -78,6 +75,7 @@ export function Accounting(props) {
         <Route path={`${path}/budgeting`} component={Budget} />
         <Route path={`${path}/fixedassets`} component={FixedAssets} />
         <Route path={`${path}/reports/:reportId?`} component={Reports} />
+        <Route path={`${path}/settings`} component={Settings} />
 
         {/* <Route path={`/account/reports/${name}`} component={ViewReport} />
       {id === undefined ? (
@@ -149,6 +147,7 @@ const mapDispatchToProps = (dispatch) => {
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(Accounting);

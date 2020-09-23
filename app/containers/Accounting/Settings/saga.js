@@ -72,6 +72,66 @@ export function* getAllAccountingPeriod() {
   }
 }
 
+export function* GetDefaultChartOfAccounts() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAllChartOfAccountApi}/${currentUser.organisation.orgId}`; // API for the default charts pending
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getDefaultChartOfAccountsSuccess(response));
+  } catch (err) {
+    yield put(Actions.getDefaultChartOfAccountsError(err));
+  }
+}
+
+export function* GetDepreciationArea() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetDepreciationAreaByOrgIdApi}/${currentUser.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getDepreciationAreaSuccess(response));
+  } catch (err) {
+    yield put(Actions.getDepreciationAreaError(err));
+  }
+}
+
+export function* GetChartOfAccounts() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAllChartOfAccountApi}/${currentUser.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getChartOfAccountsSuccess(response));
+  } catch (err) {
+    yield put(Actions.getChartOfAccountsError(err));
+  }
+}
+
 export function* GetAllBusinessTypes() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.GetAllBusinessTypesApi}`;
@@ -200,7 +260,10 @@ export default function* SettingsSaga() {
   yield takeLatest(Constants.CREATE_ACCOUNTING_SETUP, createAccountSetup);
   yield takeLatest(Constants.GET_ACCOUNTING_SETUP, getAccountingSetup);
   yield takeLatest(Constants.GET_ALL_ACCOUNTING_PERIOD, getAllAccountingPeriod);
+  yield takeLatest(Constants.GET_CHART_OF_ACCOUNTS, GetChartOfAccounts);
+  yield takeLatest(Constants.GET_DEFAULT_CHART_OF_ACCOUNTS, GetDefaultChartOfAccounts);
   yield takeLatest(Constants.GET_BUSINESS_TYPES, GetAllBusinessTypes);
+  yield takeLatest(Constants.GET_DEPRECIATION_AREA, GetDepreciationArea);
   yield takeLatest(Constants.GET_CURRENCIES, GetCurrencies);
   yield takeLatest(Constants.CREATE_ACCOUNT_PERIOD, createAccountPeriod);
   yield takeLatest(Constants.UPDATE_ACCOUNT_PERIOD, updateAccountPeriodSaga);

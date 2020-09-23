@@ -6,8 +6,10 @@ export const initialState = {
   loading: false,
   error: false,
   accountingSetupData: null,
-  accountSetupPostData: {},
-  accountingPeriodData: [],
+  accountingPeriods: [],
+  chartOfAccounts: [],
+  defaultChartOfAccounts: [],
+  depreciationArea: [],
   businessTypes: [],
   currencies: [],
   accountPeriodDialog: {
@@ -162,10 +164,58 @@ const settingsReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          accountingPeriodData: action.payload
+          accountingPeriods: action.payload
         }
       }
       case Constants.GET_ALL_ACCOUNTING_PERIOD_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        }
+      }
+
+      // Case to get default chart of accounts
+      case Constants.GET_DEFAULT_CHART_OF_ACCOUNTS: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        }
+      }
+      case Constants.GET_DEFAULT_CHART_OF_ACCOUNTS_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          defaultChartOfAccounts: action.payload
+        }
+      }
+      case Constants.GET_DEFAULT_CHART_OF_ACCOUNTS_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        }
+      }
+
+      // Case to get all chart of accounts
+      case Constants.GET_CHART_OF_ACCOUNTS: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        }
+      }
+      case Constants.GET_CHART_OF_ACCOUNTS_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          chartOfAccounts: action.payload
+        }
+      }
+      case Constants.GET_CHART_OF_ACCOUNTS_ERROR: {
         return {
           ...state,
           loading: false,
@@ -190,6 +240,30 @@ const settingsReducer = (state = initialState, action) =>
         }
       }
       case Constants.GET_BUSINESS_TYPES_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        }
+      }
+
+      // Case to get depreciation area 
+      case Constants.GET_DEPRECIATION_AREA: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        }
+      }
+      case Constants.GET_DEPRECIATION_AREA_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          depreciationArea: action.payload
+        }
+      }
+      case Constants.GET_DEPRECIATION_AREA_ERROR: {
         return {
           ...state,
           loading: false,

@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import { makeStyles, Card, CardHeader, CardContent, CardActions, Grid, Typography } from '@material-ui/core'
 import FinancialYearSetup from '../../Settings/components/FinancialYearSetup';
-import BussinessActivity from '../../Settings/components/BussinessActivity';
+import BusinessActivity from '../../Settings/components/BusinessActivity';
 import SetChartOfAccount from "../../Settings/components/SetChartOfAccount";
 import Logo from '../images/Logo.svg';
 import accSettingDemo2 from '../images/accSettingDemo2.svg';
@@ -14,6 +14,12 @@ import * as Selectors from './../selectors';
 import * as Actions from './../actions';
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+    "& .MuiCardActions-root": {
+      justifyContent: 'flex-end'
+    }
+  },
   sideDemo: {
     backgroundColor: theme.palette.background.paper,
   },
@@ -124,7 +130,7 @@ const AccountSetup = props => {
             }
 
             {step === 2 &&
-              <BussinessActivity
+              <BusinessActivity
                 form={form}
                 handleChange={handleChange}
                 handlePrev={handlePrev}

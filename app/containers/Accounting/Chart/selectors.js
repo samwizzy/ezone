@@ -7,14 +7,6 @@ import { initialState } from './reducer';
 
 const selectChartDomain = state => state.chart || initialState;
 
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by Chart
- */
-
 const makeSelectAccounting = () =>
   createSelector(
     selectChartDomain,
@@ -42,37 +34,23 @@ const makeSelectConfirmAccountDeleteDialog = () =>
 const makeSelectAccountTypeData = () =>
   createSelector(
     selectChartDomain,
-    substate => substate.accountTypeData,
+    substate => substate.accountTypes,
   );
 
-const makeSelectParentAccountTypeData = () =>
+const makeSelectGetChartOfAccounts = () =>
   createSelector(
     selectChartDomain,
-    substate => substate.parentAccountTypeData,
-  );
-
-const makeSelectChartOfAccountPostData = () =>
-  createSelector(
-    selectChartDomain,
-    subState => subState.chartOfAccountPostData,
-  );
-
-const makeSelectGetChartOfAccountData = () =>
-  createSelector(
-    selectChartDomain,
-    substate => substate.chartOfAccountData,
+    substate => substate.chartOfAccounts,
   );
 
 
 export default makeSelectAccounting;
 
-export { 
+export {
   selectChartDomain,
   makeSelectLoading,
   makeSelectNewAccountDialog,
   makeSelectConfirmAccountDeleteDialog,
   makeSelectAccountTypeData,
-  makeSelectParentAccountTypeData,
-  makeSelectChartOfAccountPostData,
-  makeSelectGetChartOfAccountData
+  makeSelectGetChartOfAccounts
 };
