@@ -123,8 +123,8 @@ const SidebarConfig = [
       {
         id: 8, name: 'Settings', url: '#', icon: 'settings', submenus: [
           { id: 1, name: 'Account Period', url: '/account/settings/period', icon: '' },
-          { id: 2, name: 'Deprecition Type', url: '/account/settings/deprecitiontype', icon: '' },
-          { id: 3, name: 'Deprecition Area', url: '/account/settings/deprecitionarea', icon: '' },
+          { id: 2, name: 'Depreciation Type', url: '/account/settings/depreciation-type', icon: '' },
+          { id: 3, name: 'Depreciation Area', url: '/account/settings/depreciation-area', icon: '' },
           { id: 4, name: 'Asset Type', url: '/account/settings/assettype', icon: '' },
           { id: 5, name: 'Tax Rate', url: '/account/settings/taxrate', icon: '' },
           { id: 6, name: 'Tax Type', url: '/account/settings/taxtype', icon: '' },

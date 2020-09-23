@@ -255,7 +255,7 @@ export const GetJounalListApi = `${BaseUrl}/accountingserv/api/v1/journal/get_jo
 export const GetAllAccountingPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/get_periods_by_orgid`;
 export const GetAllBusinessTypesApi = `${BaseUrl}/accountingserv/api/v1/business/get_all_business_type`;
 export const CreateAccountPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/add_account_period`;
-export const UpdateAccountPeriodApi = `${BaseUrl}/accountingserv/api/v1/account/update_account_period_status`;
+export const UpdateAccountPeriodStatusApi = `${BaseUrl}/accountingserv/api/v1/account/update_account_period_status`;
 export const SetAccountPeriodAsActiveApi = `${BaseUrl}/accountingserv/api/v1/account/update_account_active_year`;
 export const DeleteBankAccountApi = `${BaseUrl}/accountingserv/api/v1/bank/delete_bank`;
 export const UpdateBankAccountApi = `${BaseUrl}/accountingserv/api/v1/bank/update_bank`;
@@ -383,12 +383,6 @@ export const AddCourseVideoApi = `${BaseUrl}/lmsserv/api/v1/lms/add_course_video
  ***************************************************************
  ************************************************************** */
 export const GetGeneralJournalApi = `${BaseUrl}/accountingserv/api/v1/report/get_general_journal`;
-<<<<<<< HEAD
-export const GetGeneralLedgerApi = `${BaseUrl}/accountingserv/api/v1/report/get_general_ledger`;
-export const GetChatsOfAccountApi = `${BaseUrl}/accountingserv/api/v1/report/get_chart_of_account`;
-export const GetTrialBalanceApi = `${BaseUrl}/accountingserv/api/v1/report/get_trial_balance`;
-=======
 // STUDENT API
 export const RegisterStudentApi = `${BaseUrl}/lmsserv/lms/v1/register_student`;
 
->>>>>>> dev
