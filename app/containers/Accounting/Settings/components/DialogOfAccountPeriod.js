@@ -1,23 +1,25 @@
-import React, { memo, useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
+import moment from 'moment';
 import {
-  TextField,
-  Typography,
   makeStyles,
   Button,
+  Checkbox,
   Dialog,
   DialogContent,
   DialogActions,
   DialogTitle,
   Divider,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
+  FormHelperText,
   Slide,
-  Grid,
 } from '@material-ui/core';
-
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -25,25 +27,14 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-
 import * as AppSelectors from '../../../App/selectors';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    margin: theme.spacing(1.5, 0),
-  },
-  dense: {
-    marginTop: 19,
-  },
-  menu: {
-    width: 100,
+  root: {},
+  formControl: {
+    marginTop: theme.spacing(2),
   },
 }));
 
@@ -51,115 +42,150 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const initialState = {
+  activeYear: false,
+  endDate: moment().format('YYYY-MM-DDTHH:mm:ss'),
+  journals: [],
+  startDate: moment().format('YYYY-MM-DDTHH:mm:ss'),
+  status: false,
+  year: moment().format('YYYY')
+}
+
 const DialogOfAccountPeriod = props => {
   const classes = useStyles();
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
+  const [form, setForm] = React.useState({ ...initialState });
 
   const {
     loading,
     currentUser,
-    accountPeriodDialog, 
-    allAccountingPeriodData,
-    closeAccountPeriodDialogAction,
-    dispatchCreateAccountPeriodAction,
-    dispatchSetAccountPeriodAsActiveAction,
-    dispatchUpdateAccountPeriodAction
+    accountPeriodDialog,
+    accountingPeriods,
+    closeAccountPeriodDialog,
+    createAccountPeriod,
+    setAccountPeriodAsActive,
+    updateAccountPeriod
   } = props;
 
-  const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
+  useEffect(() => {
+    if (accountPeriodDialog.type === 'edit') {
+      setForm({ ...initialState })
+    } else {
+      setForm({ ...initialState })
+    }
+  }, [])
+
+  const handleChange = (event) => {
+    setForm({ ...form, [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value });
   };
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
+  const handleDateChange = name => (date) => {
+    name === 'year'
+      ? setForm({ ...form, [name]: moment(date).format('YYYY') })
+      : setForm({ ...form, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss') })
   };
 
-  const [values, setValues] = React.useState({
-    orgId: currentUser.organisation.orgId,
-    year: Number(allAccountingPeriodData[allAccountingPeriodData.length - 1])
-  });
-  
- // console.log(' values is : ', values);
-  //console.log('allAccountingPeriodData-> ', allAccountingPeriodData);
-  //console.log('selected data-> ', accountPeriodDialog.data);
+  const handleSubmit = () => {
+    accountPeriodDialog.type === 'new' ?
+      createAccountPeriod(form) : updateAccountPeriod(form)
+  };
 
+  console.log(form, "form")
 
   return (
     <div>
       <Dialog
         {...accountPeriodDialog.props}
-        onClose={closeAccountPeriodDialogAction}
+        onClose={closeAccountPeriodDialog}
         keepMounted
         TransitionComponent={Transition}
         maxWidth={'xs'}
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {accountPeriodDialog.type === 'new' ? 'Add Accounting Period' : accountPeriodDialog.type === 'new' ? 'Mark Accounting Period As Active' : accountPeriodDialog.type === 'close' ? "Close Accounting Period" : ""}
+          {accountPeriodDialog.type === 'new' && 'Add Accounting Period'}
+          {accountPeriodDialog.type === 'edit' && 'Mark Accounting Period As Active'}
+          {accountPeriodDialog.type === 'close' && "Close Accounting Period"}
         </DialogTitle>
-        <Divider />
-        <DialogContent>
-          {accountPeriodDialog.type === 'new' ? (
-            <form className={classes.root}>
-              <Grid container spacing={1}>
-                <Grid item xs={12}>
-                  <TextField
-                    id="standard-amount"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    // InputProps={{
-                    //   readOnly: true,
-                    // }}
-                    className={classes.textField}
-                    value={Number(allAccountingPeriodData[allAccountingPeriodData.length - 1])}
-                    onChange={handleChange('amount')}
-                    margin="normal"
-                    fullWidth
-                  />
-                </Grid>
-              </Grid>
-            </form>
-          ) : accountPeriodDialog.type === 'edit' ? (
-            <form className={classes.root}>
-              <Grid container spacing={1}>
-                <Grid item xs={12}>
-                  <TextField
-                    id="standard-amount"
-                    label={accountPeriodDialog.data.year}
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    className={classes.textField}
-                    margin="normal"
-                    fullWidth
-                  />
-                </Grid>
-              </Grid>
-            </form>
-          ) : accountPeriodDialog.type === 'close' ? (
-            <Typography>Are you sure you want to close this account period?</Typography>
-          ) : null}
+
+        <DialogContent dividers>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              autoOk
+              disableToolbar
+              id="start-year"
+              inputVariant="outlined"
+              format="yyyy"
+              fullWidth
+              margin="normal"
+              views={["year"]}
+              label="Year"
+              value={form.year}
+              onChange={handleDateChange('year')}
+              KeyboardButtonProps={{
+                'aria-label': 'change date',
+              }}
+            />
+          </MuiPickersUtilsProvider>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              autoOk
+              id="start-date"
+              inputVariant="outlined"
+              format="dd/MM/yyyy"
+              fullWidth
+              margin="normal"
+              label="Start Date"
+              value={form.startDate}
+              onChange={handleDateChange('startDate')}
+              KeyboardButtonProps={{
+                'aria-label': 'change date',
+              }}
+            />
+          </MuiPickersUtilsProvider>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              autoOk
+              id="end-date"
+              inputVariant="outlined"
+              format="dd/MM/yyyy"
+              fullWidth
+              margin="normal"
+              label="End Date"
+              value={form.endDate}
+              onChange={handleDateChange('endDate')}
+              KeyboardButtonProps={{
+                'aria-label': 'change date',
+              }}
+            />
+          </MuiPickersUtilsProvider>
+
+          <FormControl component="fieldset" className={classes.formControl}>
+            <FormLabel component="legend">Preferences</FormLabel>
+            <FormGroup>
+              <FormControlLabel
+                control={<Checkbox checked={form.activeYear} onChange={handleChange} name="activeYear" />}
+                label="Active year"
+              />
+              <FormControlLabel
+                control={<Checkbox checked={form.status} onChange={handleChange} name="status" />}
+                label="Keep this period open"
+              />
+            </FormGroup>
+            <FormHelperText>Be careful</FormHelperText>
+          </FormControl>
         </DialogContent>
         <DialogActions>
-          {loading ? (
-            <LoadingIndicator />
-          ) : (
-            <Button
-              onClick={() => {
-                accountPeriodDialog.type === 'new' ? dispatchCreateAccountPeriodAction(values) : accountPeriodDialog.type === 'edit' ? dispatchSetAccountPeriodAsActiveAction(accountPeriodDialog.data) : accountPeriodDialog.type === 'close' ? dispatchUpdateAccountPeriodAction(accountPeriodDialog.data) : "" ;
-              }}
-              color="primary"
-            >
-              {accountPeriodDialog.type === 'close' ? 'Close' : 'Save'}
-            </Button>
-          )}
           <Button
-            onClick={ closeAccountPeriodDialogAction }
-            color="inherit"
+            variant="contained"
+            onClick={handleSubmit}
+            color="primary"
+          >
+            {accountPeriodDialog.type === 'edit' ? 'Update' : 'Save'}
+          </Button>
+
+          <Button
+            variant="contained"
+            onClick={closeAccountPeriodDialog}
           >
             Cancel
           </Button>
@@ -167,28 +193,26 @@ const DialogOfAccountPeriod = props => {
       </Dialog>
     </div>
   );
-};
+}
 
 DialogOfAccountPeriod.propTypes = {
-//   loading: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   currentUser: AppSelectors.makeSelectCurrentUser(),
   accountPeriodDialog: Selectors.makeSelectAccountPeriodDialog(),
-  allAccountingPeriodData: Selectors.makeSelectGetAllAccountingPeriodData(),
+  accountingPeriods: Selectors.makeSelectGetAccountingPeriods(),
 });
-
 
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeAccountPeriodDialogAction: () => dispatch(Actions.closeAccountPeriodDialog()),
-    dispatchCreateAccountPeriodAction: evt => dispatch(Actions.createAccountPeriodAction(evt)),
-    dispatchSetAccountPeriodAsActiveAction: evt => dispatch(Actions.setAccountPeriodAsActiveAction(evt)),
-    dispatchUpdateAccountPeriodAction: evt => dispatch(Actions.updateAccountPeriodAction(evt)),
-    dispatch,
+    closeAccountPeriodDialog: () => dispatch(Actions.closeAccountPeriodDialog()),
+    createAccountPeriod: data => dispatch(Actions.createAccountPeriod(data)),
+    setAccountPeriodAsActive: data => dispatch(Actions.setAccountPeriodAsActive(data)),
+    updateAccountPeriod: data => dispatch(Actions.updateAccountPeriod(data)),
   };
 }
 

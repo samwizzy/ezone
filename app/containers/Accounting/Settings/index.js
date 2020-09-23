@@ -19,15 +19,18 @@ import AssetType from './components/assettype';
 import TaxRate from './components/taxrate';
 import TaxType from './components/taxtype';
 import Currencies from './components/currencies';
+import ModuleLayout from './../components/ModuleLayout'
 
 export function Settings(props) {
   useInjectReducer({ key: 'settings', reducer });
   useInjectSaga({ key: 'settings', saga });
   const { path } = useRouteMatch()
 
-  const { loading, getAccountingSetupAction, getAllAccountingPeriodAction, getChartOfAccounts, getBusinessTypes, getCurrencies } = props;
+  const { loading, getAccountingSetup, getAllAccountingPeriod, getChartOfAccounts, getBusinessTypes, getCurrencies } = props;
 
   useEffect(() => {
+    getAccountingSetup()
+    getAllAccountingPeriod()
     getChartOfAccounts()
     getBusinessTypes()
     getCurrencies()
@@ -44,14 +47,16 @@ export function Settings(props) {
         <meta name="description" content="Description of Settings" />
       </Helmet>
 
-      <Route exact path={path} component={AccountSetup} />
-      <Route path={`${path}/period`} component={AccountingPeriod} />
-      <Route path={`${path}/depreciation-type`} component={SettingsLayout} />
-      <Route path={`${path}/depreciation-area`} component={DepreciationAreas} />
-      <Route path={`${path}/asset-type`} component={AssetType} />
-      <Route path={`${path}/taxrate`} component={TaxRate} />
-      <Route path={`${path}/taxtype`} component={TaxType} />
-      <Route path={`${path}/currencies`} component={Currencies} />
+      <ModuleLayout>
+        <Route exact path={path} component={AccountSetup} />
+        <Route path={`${path}/period`} component={AccountingPeriod} />
+        <Route path={`${path}/depreciation-type`} component={SettingsLayout} />
+        <Route path={`${path}/depreciation-area`} component={DepreciationAreas} />
+        <Route path={`${path}/assettype`} component={AssetType} />
+        <Route path={`${path}/taxrate`} component={TaxRate} />
+        <Route path={`${path}/taxtype`} component={TaxType} />
+        <Route path={`${path}/currencies`} component={Currencies} />
+      </ModuleLayout>
 
     </div>
   );
@@ -63,8 +68,8 @@ const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAccountingSetupAction: () => dispatch(Actions.getAccountingSetupAction()),
-    getAllAccountingPeriodAction: () => dispatch(Actions.getAllAccountingPeriodAction()),
+    getAccountingSetup: () => dispatch(Actions.getAccountingSetup()),
+    getAllAccountingPeriod: () => dispatch(Actions.getAllAccountingPeriod()),
     getChartOfAccounts: () => dispatch(Actions.getChartOfAccounts()),
     getBusinessTypes: () => dispatch(Actions.getBusinessTypes()),
     getCurrencies: () => dispatch(Actions.getCurrencies()),

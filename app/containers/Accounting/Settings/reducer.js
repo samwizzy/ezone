@@ -318,7 +318,7 @@ const settingsReducer = (state = initialState, action) =>
         };
       }
 
-      // Case to create accounting period
+      // Case to update accounting period
       case Constants.UPDATE_ACCOUNT_PERIOD: {
         return {
           ...state,
@@ -334,6 +334,29 @@ const settingsReducer = (state = initialState, action) =>
         };
       }
       case Constants.UPDATE_ACCOUNT_PERIOD_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+
+      // Case to UPDATE accounting period
+      case Constants.UPDATE_ACCOUNT_PERIOD_STATUS: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.UPDATE_ACCOUNT_PERIOD_STATUS_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.UPDATE_ACCOUNT_PERIOD_STATUS_ERR: {
         return {
           ...state,
           loading: false,

@@ -1,21 +1,20 @@
 import * as Constants from './constants';
 
-export function createAccountingSetupAction(data) {
-  console.log('action triggered from settings module');
+export function createAccountingSetup(data) {
   return {
     type: Constants.CREATE_ACCOUNTING_SETUP,
     payload: data,
   }
 }
 
-export function createAccountingSetupSuccessAction(data) {
+export function createAccountingSetupSuccess(data) {
   return {
     type: Constants.CREATE_ACCOUNTING_SETUP_SUCCESS,
     payload: data,
   }
 }
 
-export function createAccountingSetupErrorAction(data) {
+export function createAccountingSetupError(data) {
   return {
     type: Constants.CREATE_ACCOUNTING_SETUP_ERR,
     payload: data,
@@ -23,20 +22,20 @@ export function createAccountingSetupErrorAction(data) {
 }
 
 // Get accounting setup data
-export function getAccountingSetupAction() {
+export function getAccountingSetup() {
   return {
     type: Constants.GET_ACCOUNTING_SETUP,
   }
 }
 
-export function getAccountingSetupSuccessAction(data) {
+export function getAccountingSetupSuccess(data) {
   return {
     type: Constants.GET_ACCOUNTING_SETUP_SUCCESS,
     payload: data,
   }
 }
 
-export function getAccountingSetupErrorAction(data) {
+export function getAccountingSetupError(data) {
   return {
     type: Constants.GET_ACCOUNTING_SETUP_ERR,
     payload: data,
@@ -44,20 +43,20 @@ export function getAccountingSetupErrorAction(data) {
 }
 
 // Get account periods
-export function getAllAccountingPeriodAction() {
+export function getAllAccountingPeriod() {
   return {
     type: Constants.GET_ALL_ACCOUNTING_PERIOD,
   }
 }
 
-export function getAllAccountingPeriodSuccessAction(data) {
+export function getAllAccountingPeriodSuccess(data) {
   return {
     type: Constants.GET_ALL_ACCOUNTING_PERIOD_SUCCESS,
     payload: data,
   }
 }
 
-export function getAllAccountingPeriodErrorAction(data) {
+export function getAllAccountingPeriodError(data) {
   return {
     type: Constants.GET_ALL_ACCOUNTING_PERIOD_ERR,
     payload: data,
@@ -183,95 +182,115 @@ export function closeAccountPeriodDialog() {
 }
 
 // Edit account period dialog
-export function editOpenAccountPeriodDialog(data) {
-  console.log('editOpenAccountPeriodDialog data ', data);
+export function openEditAccountPeriodDialog(data) {
   return {
     type: Constants.EDIT_OPEN_ACCOUNT_PERIOD_DIALOG,
     payload: data,
   }
 }
 
-export function editCloseAccountPeriodDialog() {
+export function closeEditAccountPeriodDialog() {
   return {
     type: Constants.EDIT_CLOSE_ACCOUNT_PERIOD_DIALOG,
-  };
+  }
 }
 
 // Edit account period dialog
-export function openDialogCloseAccountPeriod(data) {
+export function openAccountPeriodCloseDialog(data) {
   return {
     type: Constants.OPEN_DIALOG_CLOSE_ACCOUNT_PERIOD,
     payload: data,
   };
 }
 
-export function closeDialogCloseAccountPeriod() {
+export function closeAccountPeriodCloseDialog() {
   return {
     type: Constants.CLOSE_DIALOG_CLOSE_ACCOUNT_PERIOD,
   }
 }
 
 // Create accounting period
-export function createAccountPeriodAction(data) {
+export function createAccountPeriod(data) {
   return {
     type: Constants.CREATE_ACCOUNT_PERIOD,
     payload: data,
   }
 }
 
-export function createAccountPeriodSuccessAction(data) {
+export function createAccountPeriodSuccess(data) {
   return {
     type: Constants.CREATE_ACCOUNT_PERIOD_SUCCESS,
     payload: data,
   }
 }
 
-export function createAccountPeriodErrorAction(data) {
+export function createAccountPeriodError(data) {
   return {
     type: Constants.CREATE_ACCOUNT_PERIOD_ERR,
     payload: data,
   }
 }
 
-// Create accounting period
-export function updateAccountPeriodAction(data) {
-  console.log('updateAccountPeriodAction data ', data);
+// update accounting period
+export function updateAccountPeriod(data) {
   return {
     type: Constants.UPDATE_ACCOUNT_PERIOD,
     payload: data,
   }
 }
 
-export function updateAccountPeriodSuccessAction(data) {
+export function updateAccountPeriodSuccess(data) {
   return {
     type: Constants.UPDATE_ACCOUNT_PERIOD_SUCCESS,
     payload: data,
   }
 }
 
-export function updateAccountPeriodErrorAction(data) {
+export function updateAccountPeriodError(data) {
   return {
     type: Constants.UPDATE_ACCOUNT_PERIOD_ERR,
     payload: data,
   }
 }
 
+// update accounting period status
+export function updateAccountPeriodStatus(data) {
+  return {
+    type: Constants.UPDATE_ACCOUNT_PERIOD_STATUS,
+    payload: data,
+  }
+}
+
+export function updateAccountPeriodStatusSuccess(data) {
+  return {
+    type: Constants.UPDATE_ACCOUNT_PERIOD_STATUS_SUCCESS,
+    payload: data,
+  }
+}
+
+export function updateAccountPeriodStatusError(data) {
+  return {
+    type: Constants.UPDATE_ACCOUNT_PERIOD_STATUS_ERR,
+    payload: data,
+  }
+}
+
 // Set accounting period as active
-export function setAccountPeriodAsActiveAction(data) {
+export function setAccountPeriodAsActive(data) {
   return {
     type: Constants.SET_ACCOUNT_PERIOD_AS_ACTIVE,
     payload: data,
   }
 }
 
-export function setAccountPeriodAsActiveSuccessAction(data) {
+export function setAccountPeriodAsActiveSuccess(data) {
   return {
     type: Constants.SET_ACCOUNT_PERIOD_AS_ACTIVE_SUCCESS,
     payload: data,
   }
 }
 
-export function setAccountPeriodAsActiveErrorAction(data) {
+export function setAccountPeriodAsActiveError(data) {
   return {
     type: Constants.SET_ACCOUNT_PERIOD_AS_ACTIVE_ERR,
     payload: data,
