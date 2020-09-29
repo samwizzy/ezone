@@ -150,7 +150,7 @@ const EmployeesApp = props => {
 
   const options = {
     filterType: 'dropdown',
-    responsive: 'scrollMaxHeight',
+    responsive: 'stacked',
     selectableRows: 'none',
     print: false,
     download: true,
@@ -166,20 +166,13 @@ const EmployeesApp = props => {
 
   return (
     <div className={classes.root}>
-      <Grid
-        container
-        justify='space-around'
-      >
-        <Grid item md={12}>
-          <MUIDataTable
-            className={classes.datatable}
-            title="Employee List"
-            data={employees && employees}
-            columns={columns}
-            options={options}
-          />
-        </Grid>
-      </Grid>
+      <MUIDataTable
+        className={classes.datatable}
+        title="Employee List"
+        data={employees && employees}
+        columns={columns}
+        options={options}
+      />
     </div>
   );
 };

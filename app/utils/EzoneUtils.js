@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import moment from 'moment'
 
 class EzoneUtils {
 
@@ -31,9 +32,7 @@ class EzoneUtils {
   matchArrayPairs(initial, sources) {
     const result = []
     sources.map(source => {
-      const matchedObject = _.mapKeys(source, function (value, key) {
-        return _.has(initial, key) ? initial[key] : key;
-      });
+      const matchedObject = _.mapKeys(source, (value, key) => initial[key] || key);
       // const matchedObject = this.matchWithPairs(initial, source)
       result.push(matchedObject)
     })
@@ -42,6 +41,11 @@ class EzoneUtils {
   }
 
   toTitleCase = str => (str ? str[0].toUpperCase() + str.slice(1) : '');
+
+  formatFileName = fileName => {
+    let fName = fileName.split('.')[0];
+    return fName.substr(0, Math.ceil(fName.length / 2)).trim() + '-' + moment().format('YYYY-MM-DDTHH:mm:ss');
+  }
 
   toBase64(file) {
     return new Promise((resolve, reject) => {

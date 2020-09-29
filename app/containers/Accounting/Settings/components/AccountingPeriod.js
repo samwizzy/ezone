@@ -21,29 +21,17 @@ import {
   Tooltip
 } from '@material-ui/core';
 import { green } from '@material-ui/core/colors'
-import swal from 'sweetalert';
-import Slide from '@material-ui/core/Slide';
 import AddIcon from '@material-ui/icons/Add';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  DatePicker,
-  TimePicker,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-  DateTimePicker,
-  MuiPickersUtilsProvider,
-} from '@material-ui/pickers';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import DialogOfAccountPeriod from './DialogOfAccountPeriod';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import moment from 'moment';
-import months from './../../../../utils/months';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -80,10 +68,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
 }));
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 const initialState = {
   orgId: "",
@@ -137,6 +121,10 @@ const AccountingPeriod = props => {
     console.log(data, "data")
     setAccountPeriodAsActive(data)
     handleClose()
+  }
+
+  if (!accountingSetupData || !accountingPeriods) {
+    return null
   }
 
   const currentAccountingPeriod = accountingPeriods.find(account => account.activeYear === true)

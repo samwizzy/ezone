@@ -25,6 +25,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import * as Selectors from './../selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import { createStructuredSelector } from 'reselect';
 import moment from 'moment';
@@ -50,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     "&::after": {
       content: "''",
       position: "absolute",
-      top: 0, 
+      top: 0,
       right: "-52.67px",
       width: 0,
       height: 0,
@@ -60,7 +61,7 @@ const useStyles = makeStyles(theme => ({
     "&::before": {
       content: "''",
       position: "absolute",
-      top: 0, 
+      top: 0,
       right: "-52.67px",
       width: 0,
       height: 0,
@@ -69,7 +70,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   paper: {
-    padding:'15px',
+    padding: '15px',
     backgroundColor: theme.palette.grey[200],
   },
   grid: {
@@ -79,13 +80,13 @@ const useStyles = makeStyles(theme => ({
       margin: theme.spacing(2, 0),
     }
   },
-  padme:{
-  padding:'15px'
+  padme: {
+    padding: '15px'
   },
-  closingBalance:{
-  padding:'25px',
-  backgroundColor: theme.palette.primary.main,
-  color: theme.palette.common.white,
+  closingBalance: {
+    padding: '25px',
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.common.white,
   },
   gridMargin: { marginBottom: theme.spacing(2) },
   label: { marginLeft: theme.spacing(1) },
@@ -110,7 +111,7 @@ const useStyles = makeStyles(theme => ({
       },
     },
     '& th.MuiTableCell-root': {
-        fontWeight: theme.typography.fontWeightBold
+      fontWeight: theme.typography.fontWeightBold
     }
   },
   title: { flexGrow: 1 },
@@ -122,18 +123,18 @@ const useStyles = makeStyles(theme => ({
 const DetailsOfAccountChart = props => {
   const classes = useStyles();
 
-  const {history} = props;
+  const { history, chartOfAccount } = props;
 
   const handleBack = () => {
     history.goBack();
   }
 
-  console.log("Selected journal data ", props.location.chartDetailsData);
+  console.log("Selected chartOfAccount", chartOfAccount);
 
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-      <Grid item xs={12} className={classNames(classes.gridMargin)}>
+        <Grid item xs={12} className={classNames(classes.gridMargin)}>
           <Toolbar className={classes.iconPaper} variant="dense">
             <Typography>
               <IconButton onClick={handleBack}>
@@ -153,106 +154,106 @@ const DetailsOfAccountChart = props => {
               <Grid item xs={12}>
                 <Grid container spacing={3}>
                   <Grid item xs={4}>
-                  <Typography variant="body1" gutterBottom>
-                   Account Name
+                    <Typography variant="body1" gutterBottom>
+                      Account Name
                   </Typography>
                   </Grid>
                   <Grid item xs={4}>
-                  <Typography variant="body1" gutterBottom>
-                  {props.location.chartDetailsData.accountName}
-                  </Typography>
+                    <Typography variant="body1" gutterBottom>
+                      {chartOfAccount.accountName}
+                    </Typography>
                   </Grid>
                 </Grid>
               </Grid>
               <Grid item xs={12}>
                 <Grid container spacing={3}>
                   <Grid item xs={4}>
-                  <Typography variant="body1" gutterBottom>
-                   Account Code
+                    <Typography variant="body1" gutterBottom>
+                      Account Code
                   </Typography>
                   </Grid>
                   <Grid item xs={4}>
-                  <Typography variant="body1" gutterBottom>
-                  {props.location.chartDetailsData.accountCode}
-                  </Typography>
+                    <Typography variant="body1" gutterBottom>
+                      {chartOfAccount.accountCode}
+                    </Typography>
                   </Grid>
                 </Grid>
               </Grid>
               <Grid item xs={12}>
                 <Grid container spacing={3}>
                   <Grid item xs={4}>
-                  <Typography variant="body2" gutterBottom>
-                   Account Type
+                    <Typography variant="body2" gutterBottom>
+                      Account Type
                   </Typography>
                   </Grid>
                   <Grid item xs={4}>
-                  <Typography variant="body2" gutterBottom>
-                  {props.location.chartDetailsData.accountType}
-                  </Typography>
+                    <Typography variant="body2" gutterBottom>
+                      {chartOfAccount.accountType}
+                    </Typography>
                   </Grid>
                 </Grid>
               </Grid>
-              { props.location.chartDetailsData.accountType === "Bank" ? (
-               <Grid item xs={12}> 
-               <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <Grid container spacing={3}>
-                  <Grid item xs={4}>
-                  <Typography variant="body2" gutterBottom>
-                   Bank Name
+              {chartOfAccount.accountType === "Bank" ? (
+                <Grid item xs={12}>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                      <Grid container spacing={3}>
+                        <Grid item xs={4}>
+                          <Typography variant="body2" gutterBottom>
+                            Bank Name
                   </Typography>
-                  </Grid>
-                  <Grid item xs={4}>
-                  <Typography variant="body2" gutterBottom>
-                  {props.location.chartDetailsData.bankName}
-                  </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12}>
-              <Grid container spacing={3}>
-                <Grid item xs={4}>
-                <Typography variant="body2" gutterBottom>
-                 Account Number
+                        </Grid>
+                        <Grid item xs={4}>
+                          <Typography variant="body2" gutterBottom>
+                            {chartOfAccount.bankName}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Grid container spacing={3}>
+                        <Grid item xs={4}>
+                          <Typography variant="body2" gutterBottom>
+                            Account Number
                 </Typography>
+                        </Grid>
+                        <Grid item xs={4}>
+                          <Typography variant="body2" gutterBottom>
+                            {chartOfAccount.accountNumber}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Grid>
                 </Grid>
-                <Grid item xs={4}>
-                <Typography variant="body2" gutterBottom>
-                {props.location.chartDetailsData.accountNumber}
-                </Typography>
-                </Grid>
-              </Grid>
-            </Grid>
-            </Grid>
-            </Grid>
-              ):null}
+              ) : null}
 
               <Grid item xs={12}>
                 <Grid container spacing={3}>
                   <Grid item xs={4}>
-                  <Typography color="textSecondary" variant="body2" display="block" gutterBottom>
-                   Description
+                    <Typography color="textSecondary" variant="body2" display="block" gutterBottom>
+                      Description
                   </Typography>
                   </Grid>
                   <Grid item xs={8}>
-                  <Typography color="textSecondary" variant="body2" display="block" gutterBottom>
-                  {props.location.chartDetailsData.description}
-                  </Typography>
+                    <Typography color="textSecondary" variant="body2" display="block" gutterBottom>
+                      {chartOfAccount.description}
+                    </Typography>
                   </Grid>
                 </Grid>
               </Grid>
               <Grid item xs={12}>
                 <Grid container spacing={3}>
                   <Grid item xs={4}>
-                  <Typography variant="body2" display="block" gutterBottom>
-                   Transaction Period
+                    <Typography variant="body2" display="block" gutterBottom>
+                      Transaction Period
                   </Typography>
                   </Grid>
                   <Grid item xs={8}>
-                  <Typography variant="body2" display="block" gutterBottom>
-                  { moment(props.location.chartDetailsData.dateCreated).format('LL') }
-                  </Typography>
-                 
+                    <Typography variant="body2" display="block" gutterBottom>
+                      {moment(chartOfAccount.dateCreated).format('ll')}
+                    </Typography>
+
                   </Grid>
                 </Grid>
               </Grid>
@@ -261,156 +262,147 @@ const DetailsOfAccountChart = props => {
         </Grid>
         <Grid item xs={12}>
           <Paper elevation={3} className={classes.closingBalance}>
-          <Grid container spacing={3}>
-                  <Grid item xs={4}>
-                  <Typography variant="h6" display="block" gutterBottom>
-                   Closing Balance
+            <Grid container spacing={3}>
+              <Grid item xs={4}>
+                <Typography variant="h6" display="block" gutterBottom>
+                  Closing Balance
                   </Typography>
-                  </Grid>
-                  <Grid item xs={8}>
-                  <Typography variant="h5" display="block" gutterBottom>
-                  NGN {props.location.chartDetailsData.accountType === "Bank"?
-                  props.location.chartDetailsData.bankBalance:
-                   props.location.chartDetailsData.openingBalance}
-                  </Typography>
-                  </Grid>
-                </Grid>
+              </Grid>
+              <Grid item xs={8}>
+                <Typography variant="h5" display="block" gutterBottom>
+                  NGN {chartOfAccount.accountType === "Bank"
+                    ? chartOfAccount.bankBalance
+                    : chartOfAccount.openingBalance}
+                </Typography>
+              </Grid>
+            </Grid>
           </Paper>
         </Grid>
         <Grid item xs={12}>
           <div className={classes.transactions}>
-           <Grid container spacing={3}>
-             <Grid item xs={12}>
-               <div style={{textAlign:'center'}}>
-               <Typography variant="h6" gutterBottom>
-                Transactions
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <div style={{ textAlign: 'center' }}>
+                  <Typography variant="h6" gutterBottom>
+                    Transactions
                 </Typography>
-               </div>
-             </Grid>
-             <Grid item xs={12}>
-               <div>
-               <Paper elevation={2} className={classes.paper}>
-               <Grid container spacing={3}>
-                <Grid item xs={2}>
-                <Typography variant="body1" display="block" gutterBottom>
-                   Trs Date
-                  </Typography>
-                </Grid>
-                <Grid item xs={2}>
-                <Typography  variant="body1" display="block" gutterBottom>
-                   Created at
-                  </Typography>
-                </Grid>
-                <Grid item xs={2}>
-                <Typography variant="body1" display="block" gutterBottom>
-                   Ref no
-                  </Typography>
-                </Grid>
-                <Grid item xs={2}>
-                <Typography variant="body1" display="block" gutterBottom>
-                   Debit
-                  </Typography>
-                </Grid>
-                <Grid item xs={2}>
-                <Typography variant="body1" display="block" gutterBottom>
-                   Credit
-                  </Typography>
-                </Grid>
-                <Grid item xs={2}>
-                <Typography variant="body1" display="block" gutterBottom>
-                   Balance
-                  </Typography>
-                </Grid>
-               </Grid>
-               </Paper>
-               </div>
+                </div>
+              </Grid>
+              <Grid item xs={12}>
+                <div>
+                  <Paper elevation={2} className={classes.paper}>
+                    <Grid container spacing={3}>
+                      <Grid item xs={2}>
+                        <Typography variant="body1" display="block" gutterBottom>
+                          Trs Date
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Typography variant="body1" display="block" gutterBottom>
+                          Created at
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Typography variant="body1" display="block" gutterBottom>
+                          Ref no
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Typography variant="body1" display="block" gutterBottom>
+                          Debit
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Typography variant="body1" display="block" gutterBottom>
+                          Credit
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Typography variant="body1" display="block" gutterBottom>
+                          Balance
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </Paper>
+                </div>
 
-               <div>
-                 <Paper elevation={1}>
-                 <Grid container spacing={3}>
-                <Grid item xs={2}>
-                <Typography variant="body1" display="block" gutterBottom>
-                
-                  </Typography>
-                </Grid>
-                <Grid item xs={2}>
-                <Typography variant="body1" display="block" gutterBottom>
-                { moment(props.location.chartDetailsData.dateCreated).format('LL') }
-                  </Typography>
-                </Grid>
-                <Grid item xs={2}>
-                <Typography variant="body1" display="block" gutterBottom>
-                   09089
-                  </Typography>
-                </Grid>
-                <Grid item xs={2}>
-                <Typography variant="body1" display="block" gutterBottom>
-                   $2000
-                  </Typography>
-                </Grid>
-                <Grid item xs={2}>
-                  <Grid container spacing={4}>
-                    <Grid item xs={12}>
-                    <Typography variant="body1" display="block" gutterBottom>
-                   $1200
-                  </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                    <Typography variant="body1" display="block" gutterBottom>
-                   $30000
-                  </Typography>
-                    </Grid>
-                  </Grid>
-               
-                </Grid>
-                <Grid item xs={2}>
-                <Grid container spacing={4}>
-                    <Grid item xs={12}>
-                    <Typography variant="body1" display="block" gutterBottom>
-                   $1000
-                  </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Grid container spacing={3}>
-                        <Grid item xs={8}>
+                <div>
+                  <Paper elevation={1}>
+                    <Grid container spacing={3}>
+                      <Grid item xs={2}>
                         <Typography variant="body1" display="block" gutterBottom>
-                        $200000
-                      </Typography>
-                        </Grid>
-                        <Grid item xs={4}>
+
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={2}>
                         <Typography variant="body1" display="block" gutterBottom>
-                          Total
-                      </Typography>
+                          {moment(props.location.chartDetailsData.dateCreated).format('LL')}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Typography variant="body1" display="block" gutterBottom>
+                          09089
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Typography variant="body1" display="block" gutterBottom>
+                          $2000
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Grid container spacing={4}>
+                          <Grid item xs={12}>
+                            <Typography variant="body1" display="block" gutterBottom>
+                              $1200
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <Typography variant="body1" display="block" gutterBottom>
+                              $30000
+                            </Typography>
+                          </Grid>
                         </Grid>
                       </Grid>
-                    
+                      <Grid item xs={2}>
+                        <Grid container spacing={4}>
+                          <Grid item xs={12}>
+                            <Typography variant="body1" display="block" gutterBottom>
+                              $1000
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <Grid container spacing={3}>
+                              <Grid item xs={8}>
+                                <Typography variant="body1" display="block" gutterBottom>
+                                  $200000
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={4}>
+                                <Typography variant="body1" display="block" gutterBottom>
+                                  Total
+                                </Typography>
+                              </Grid>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </Grid>
-               </Grid>
-                 </Paper>
-               </div>
-               <div>
-                 <Divider />
-               </div>
-
-               <div>
-                
-               </div>
-               
-             </Grid>
-           </Grid>
+                  </Paper>
+                </div>
+              </Grid>
+            </Grid>
           </div>
         </Grid>
       </Grid>
-  </div>
-  );
-};
+    </div>
+  )
+}
 
 DetailsOfAccountChart.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
-  //   loading: Selectors.makeSelectLoading(),
+  loading: Selectors.makeSelectLoading(),
+  chartOfAccount: Selectors.makeSelectGetChartOfAccountById(),
 });
 
 function mapDispatchToProps(dispatch) {

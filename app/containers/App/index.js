@@ -41,9 +41,7 @@ import PrivateRoute from '../AuthProvider/PrivateRoute';
 import { AppContext } from '../context/AppContext';
 import sideBarconfig from '../../components/Sidebar/components/SidebarConfig';
 import AccountPage from '../Accounting/Loadable';
-import SalesPage from '../SalesPage';
 import Payroll from '../Payroll';
-import PurchasePage from '../PurchasePage';
 import CrmApp from '../Crm/Loadable';
 import CalendarPage from '../CalendarPage/Loadable';
 import LMSApp from '../LMS/Loadable';
@@ -121,29 +119,19 @@ const App = props => {
                 <PrivateRoute exact path="/hr/:section?/:status?/applicant/:applicantId?" component={HRPage} />
 
                 <PrivateRoute path="/account" component={AccountPage} />
-                {/* <PrivateRoute exact path="/account/:id" component={AccountPage} />
-                <PrivateRoute exact path="/account/:id/:name" component={AccountPage} /> */}
 
                 <PrivateRoute exact path="/payroll" component={Payroll} />
 
-                {/*<PrivateRoute exact path="/inventory" />*/}
+                <PrivateRoute path="/inventory" component={InventoryPage} />
 
-                <PrivateRoute exact path="/inventory/dashboard" component={InventoryPage} />
-
-                <PrivateRoute exact path="/sales" component={SalesPage} />
-
-                <PrivateRoute exact path="/sales/:id" component={SalesPage} />
-
-                <PrivateRoute exact path="/purchase/:id" component={PurchasePage} />
-
-                <PrivateRoute path="/inventory/warehouses" component={WarehousePage} />
+                {/* <PrivateRoute path="/inventory/warehouses" component={WarehousePage} />
                 <PrivateRoute path="/inventory/items" component={ItemPage} />
                 <PrivateRoute path="/inventory/item" component={ItemPage} />
 
                 <PrivateRoute path="/inventory/transfers" component={TransferOrdersApp} />
                 <PrivateRoute path="/inventory/transfer" component={TransferOrdersApp} />
 
-                <PrivateRoute exact path="/inventory/adjustments/:statusId?" component={InventoryAdjustmentApp} />
+                <PrivateRoute exact path="/inventory/adjustments/:statusId?" component={InventoryAdjustmentApp} /> */}
                 <PrivateRoute path="/crm" component={CrmApp} />
               </Layout3>
               <Route path="" component={NotFoundPage} />

@@ -3,27 +3,22 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import {
   makeStyles,
-  List,
-  FormControlLabel,
-  Icon,
+  IconButton,
   Button,
   Menu,
   MenuItem,
-  Grid,
   Tooltip
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
+import { darken } from '@material-ui/core/styles/colorManipulator';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import moment from 'moment';
-// import AddBankAccountDialog from './AddBankAccountDialog';
-// import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,28 +28,19 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     alignItems: "center",
     alignContent: "center",
-  }, 
-  table: {
-    marginTop: theme.spacing(2),
-    '& .MuiTableCell-body': {
-      fontSize: theme.typography.fontSize - 1,
-    },
-    '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
-    },
   },
   datatable: {
-    '& .MuiTableRow-root:hover': {
+    '& tr:hover': {
       cursor: 'pointer'
     },
-    '& .MuiTableHead-root': {
-      '& .MuiTableCell-head': {
+    '& thead': {
+      '& th': {
         color: theme.palette.common.white,
       },
-      '& .MuiTableCell-root:nth-child(odd)': {
+      '& th:nth-child(odd)': {
         backgroundColor: theme.palette.primary.main,
       },
-      '& .MuiTableCell-root:nth-child(even)': {
+      '& th:nth-child(even)': {
         backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
@@ -81,29 +67,22 @@ const useStyles = makeStyles(theme => ({
 const JournalListing = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [account, setAccount] = React.useState('');
-  
+  const [selectedJournal, setSelectedJournal] = React.useState(null);
 
-  const {
-    history,
-    journalListData,
-  } = props;
+  const { history, journalListData } = props;
 
   console.log('journalListData -> ', journalListData);
 
-  const jornallist = [];
-
-
   const handleClick = (event, id) => {
-		console.log("id value -> ", id);
     setAnchorEl(event.currentTarget);
-    const selectedAccount = journalListData && journalListData.find(acc => id === acc.id);
-    setAccount(selectedAccount);
-  };
+    setSelectedJournal(_.find(journalListData, { id }));
+  }
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
+  }
+
+  journalListData.reverse()
 
   const columns = [
     {
@@ -113,7 +92,7 @@ const JournalListing = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          return moment(value).format('LLL')
+          return moment(value).format('ll')
         }
       },
     },
@@ -126,25 +105,17 @@ const JournalListing = props => {
       },
     },
     {
-      name: '',
+      name: 'amount',
       label: 'Amount',
       options: {
         filter: true,
         sort: false,
       },
     },
-   
+
     {
-			name: 'entryByName',
-			label: 'Created by',
-			options: {
-				filter: true,
-				sort: false,
-			},
-    },
-    {
-      name: 'status',
-      label: 'Status',
+      name: 'entryByName',
+      label: 'Created by',
       options: {
         filter: true,
         sort: false,
@@ -165,40 +136,14 @@ const JournalListing = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          if (value === '') {
-            return '';
-          }
           return (
-            <div>
-              <Button
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={event => handleClick(event, value)}
-              >
-                Options
-              </Button>
-              <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={() => {
-                  // editOpenBankAccountDialogAction(account);
-                }}>
-                  Edit
-                </MenuItem>
-                <MenuItem onClick={() => {
-                  history.push({
-                    pathname: '/account/journal/details',
-                    journalDetailsData: account,
-                  });
-                }}>
-                  View Details
-                </MenuItem>
-              </Menu>
-            </div>
+            <IconButton
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={event => handleClick(event, value)}
+            >
+              <MoreVertIcon />
+            </IconButton>
           );
         },
       },
@@ -207,15 +152,20 @@ const JournalListing = props => {
 
   const options = {
     filterType: 'checkbox',
-    responsive: 'scrollMaxHeight',
+    responsive: 'stacked',
     selectableRows: 'none',
+    textLabels: {
+      body: {
+        noMatch: 'Sorry, no journals found',
+        toolTip: 'Sort',
+        columnHeaderTooltip: column => `Sort for ${column.label}`,
+      },
+    },
     customToolbar: () => (
-      <Tooltip title="Post New Journal">
+      <Tooltip title="Post New Entry">
         <Button
           variant="contained"
           color="primary"
-          size="small"
-          className={classes.button}
           startIcon={<AddIcon />}
           onClick={() => history.push('/account/journal/add')}
         >
@@ -228,36 +178,43 @@ const JournalListing = props => {
 
   return (
     <React.Fragment>
-      <div className={classes.root}>
-        <Grid container>
-          <Grid item xs={12}>
-            <MUIDataTable
-              className={classes.datatable}
-              title="Journal"
-              data={journalListData.reverse()}
-              columns={columns}
-              options={options}
-            />
-          </Grid>
-        </Grid>
-      </div>
+      <MUIDataTable
+        className={classes.datatable}
+        title="Journal"
+        data={journalListData}
+        columns={columns}
+        options={options}
+      />
+
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={() => { }}>
+          Edit
+        </MenuItem>
+        <MenuItem onClick={() => history.push({ pathname: '/account/journal/details' })}>
+          View Details
+        </MenuItem>
+      </Menu>
     </React.Fragment>
   );
 };
 
 JournalListing.propTypes = {
-//   loading: PropTypes.bool,
-};
+  loading: PropTypes.bool,
+}
 
 const mapStateToProps = createStructuredSelector({
-  // loading: Selectors.makeSelectLoading(),
+  loading: Selectors.makeSelectLoading(),
   journalListData: Selectors.makeSelectJournalListData(),
 });
 
 function mapDispatchToProps(dispatch) {
-  return {
-    dispatch
-  };
+  return {};
 }
 
 const withConnect = connect(

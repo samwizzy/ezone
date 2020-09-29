@@ -1,17 +1,10 @@
-/**
- *
- * Journal
- *
- */
-
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
+import { withRouter, Route } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectJournal from './selectors';
@@ -20,28 +13,27 @@ import saga from './saga';
 import messages from './messages';
 import ModuleLayout from '../components/ModuleLayout';
 import JournalListing from './components/JournalListing';
+import AddNewJournal from './components/AddNewJournal';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
-//import LoadingIndicator from '../../../components/LoadingIndicator';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { CircleLoader } from '../../../components/LoadingIndicator';
 
 export function Journal(props) {
   useInjectReducer({ key: 'journal', reducer });
   useInjectSaga({ key: 'journal', saga });
 
-  const {
-    loading,
-    dispatchGetJournalListAction
-  } = props;
-
-  console.log('Journal index.js loaded');
+  const { loading, match, getJournalList, getCurrencies, getChartOfAccounts, getAccountingPeriods } = props;
+  const { path } = match
 
   useEffect(() => {
-    dispatchGetJournalListAction();
+    getJournalList();
+    getCurrencies();
+    getChartOfAccounts();
+    getAccountingPeriods();
   }, []);
 
   if (loading) {
-    return <div style={{textAlign:'center'}}><div style={{margin:'2px auto'}}><CircularProgress /></div></div>;
+    return <CircleLoader />
   }
 
   return (
@@ -50,16 +42,19 @@ export function Journal(props) {
         <title>Journal</title>
         <meta name="description" content="Description of Journal" />
       </Helmet>
+
       <ModuleLayout>
-        <JournalListing />
+        <Route exact path={path} component={JournalListing} />
+        <Route path={`${path}/add`} component={AddNewJournal} />
+        <Route path={`${path}/edit/:journalId`} component={JournalListing} />
       </ModuleLayout>
     </div>
   );
 }
 
 Journal.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
+  loading: PropTypes.bool
+}
 
 const mapStateToProps = createStructuredSelector({
   journal: makeSelectJournal(),
@@ -68,9 +63,11 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchGetJournalListAction: () => dispatch(Actions.getJournalListAction()),
-    dispatch,
-  };
+    getJournalList: () => dispatch(Actions.getJournalList()),
+    getCurrencies: () => dispatch(Actions.getCurrencies()),
+    getChartOfAccounts: () => dispatch(Actions.getChartOfAccounts()),
+    getAccountingPeriods: () => dispatch(Actions.getAccountingPeriods()),
+  }
 }
 
 const withConnect = connect(
@@ -79,6 +76,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(Journal);

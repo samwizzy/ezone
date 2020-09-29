@@ -24,12 +24,12 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.primary.main
       },
       "&:hover": {
-        color: theme.palette.primary.main,
-        backgroundColor: theme.palette.common.white,
+        // color: theme.palette.primary.main,
+        // backgroundColor: theme.palette.common.white,
       }
     },
     "& .MuiListItem-root.Mui-selected, .MuiListItem-root.Mui-selected:hover": {
-      backgroundColor: theme.palette.common.white,
+      backgroundColor: theme.palette.background.paper,
       color: theme.palette.primary.main,
       "& .MuiListItemIcon-root": {
         color: theme.palette.primary.main,

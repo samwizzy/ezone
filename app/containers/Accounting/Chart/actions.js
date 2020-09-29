@@ -113,6 +113,27 @@ export function getChartOfAccountsError(data) {
     payload: data,
   };
 }
+// Get all chart of account by id
+export function getChartOfAccountById(data) {
+  return {
+    type: Constants.GET_CHART_OF_ACCOUNT_BY_ID,
+    payload: { id: data }
+  }
+}
+
+export function getChartOfAccountByIdSuccess(data) {
+  return {
+    type: Constants.GET_CHART_OF_ACCOUNT_BY_ID_SUCCESS,
+    payload: data,
+  }
+}
+
+export function getChartOfAccountByIdError(data) {
+  return {
+    type: Constants.GET_CHART_OF_ACCOUNT_BY_ID_ERROR,
+    payload: data,
+  }
+}
 
 
 // Delete a chart of account

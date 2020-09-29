@@ -53,7 +53,6 @@ export function CrmContactGroups(props) {
 }
 
 CrmContactGroups.propTypes = {
-  dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -64,7 +63,6 @@ function mapDispatchToProps(dispatch) {
   return {
     getAllContactsGroupAction: () => dispatch(Actions.getAllContactsGroup()),
     // getAllContacts: () => dispatch(ContactActions.getAllContacts()),
-    dispatch,
   };
 }
 

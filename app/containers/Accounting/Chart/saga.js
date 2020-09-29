@@ -55,7 +55,6 @@ export function* getAccountTypes() {
 export function* createChartOfAccount({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  // Delete payload prop not using
   delete payload.subAccount;
 
   console.log('new payload ', payload);
@@ -74,12 +73,12 @@ export function* createChartOfAccount({ payload }) {
     });
 
     console.log('chartOfAccountResponse -> ', response);
-    alert(`Account Name: ${response.accountName} was saved successfully!`);
+    swal("Success", `Account Name: ${response.accountName} was saved successfully!`, "success");
     yield put(Actions.createChartOfAccountSuccess(response));
     yield put(Actions.getChartOfAccounts());
     yield put(Actions.closeNewAccountDialog());
   } catch (err) {
-    alert(`Something went wrong.`);
+    swal("Error", 'Something went wrong', "error");
     yield put(Actions.createChartOfAccountError(err));
   }
 }
@@ -106,22 +105,40 @@ export function* getChartOfAccounts() {
   }
 }
 
-// Delete a chart of account
-export function* deleteChartOfAccount({ payload }) {
+// Get chart of account by id
+export function* getChartOfAccountById({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${Endpoints.DeleteChartOfAccountApi}/${deleteChartOfAccountData.id}`;
+  const requestURL = `${Endpoints.GetChartOfAccountByIdApi}/${payload.id}`;
 
   try {
     const response = yield call(request, requestURL, {
-      method: 'PUT',
-      body: JSON.stringify(payload),
+      method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
-    console.log('deleteChartOfAccountResponse -> ', response);
+    yield put(Actions.getChartOfAccountByIdSuccess(response));
+  } catch (err) {
+    yield put(Actions.getChartOfAccountByIdError(err));
+  }
+}
+
+// Delete a chart of account
+export function* deleteChartOfAccount({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const requestURL = `${Endpoints.DeleteChartOfAccountApi}/${payload.id}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'PUT',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
     swal("Success", "Account deleted successfully", "success");
     yield put(Actions.deleteChartOfAccountSuccess(response));
     yield put(Actions.getChartOfAccounts());
@@ -198,11 +215,11 @@ export async function createChartOfAccountHandler(value) {
 
 // Individual exports for testing
 export default function* AccountChartSaga() {
-  // See example in containers/HomePage/saga.js
   yield takeLatest(Constants.DEFAULT_ACTION, getDashBoardData);
   yield takeLatest(Constants.GET_ALL_ACCOUNT_TYPES, getAccountTypes);
   yield takeLatest(Constants.CREATE_NEW_CHART_OF_ACCOUNT, createChartOfAccount);
   yield takeLatest(Constants.GET_ALL_CHART_OF_ACCOUNT, getChartOfAccounts);
+  yield takeLatest(Constants.GET_CHART_OF_ACCOUNT_BY_ID, getChartOfAccountById);
   yield takeLatest(Constants.DELETE_CHART_OF_ACCOUNT, deleteChartOfAccount);
   yield takeLatest(Constants.UPDATE_CHART_OF_ACCOUNT, updateChartOfAccount);
 }

@@ -1,58 +1,64 @@
-/**
- *
- * InventoryPage
- *
- */
-
-import React, { memo } from 'react';
+import React, { Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
+import { Route, withRouter } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectInventoryPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import ModuleLayout from './components/ModuleLayout';
-import WarehousePage from './WarehousePage/index';
-import ItemPage from './ItemPage/index';
+import WarehousePage from './WarehousePage';
+import ItemPage from './ItemPage';
+import TransferOrdersApp from './ItemPage/components/TransferOrder';
+import InventoryAdjustmentApp from './ItemPage/components/InventoryAdjustment';
 import Dashboard from './Dashboard'
+import SalesPage from './SalesPage'
+import PurchasePage from './PurchasePage'
 
-export function InventoryPage() {
-  useInjectReducer({ key: 'inventoryPage', reducer });
-  useInjectSaga({ key: 'inventoryPage', saga });
+const key = "inventoryPage";
+export function InventoryPage(props) {
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
+  const { path } = props.match
 
   return (
     <div>
-      <ModuleLayout>
-        <Helmet>
-          <title>InventoryPage</title>
-          <meta name="description" content="Description of InventoryPage" />
-        </Helmet>
-        <Dashboard />
-        {/* <WarehousePage />
-        <ItemPage /> */}
-      </ModuleLayout>
+      <Helmet>
+        <title>Inventory Page</title>
+        <meta name="description" content="Description of Inventory Page" />
+      </Helmet>
+
+      <Fragment>
+        <Route exact path={path} component={Dashboard} />
+        <Route exact path={`${path}/dashboard`} component={Dashboard} />
+        <Route exact path={`${path}/purchase`} component={PurchasePage} />
+        <Route exact path={`${path}/purchase/:id`} component={PurchasePage} />
+        <Route exact path={`${path}/sales`} component={SalesPage} />
+        <Route exact path={`${path}/sales/:id`} component={SalesPage} />
+
+        <Route path={`${path}/warehouses`} component={WarehousePage} />
+        <Route path={`${path}/items`} component={ItemPage} />
+        <Route path={`${path}/item`} component={ItemPage} />
+        <Route path={`${path}/transfers`} component={TransferOrdersApp} />
+        <Route path={`${path}/transfer`} component={TransferOrdersApp} />
+        <Route exact path={`${path}/adjustments/:statusId?`} component={InventoryAdjustmentApp} />
+      </Fragment>
     </div>
   );
 }
 
-InventoryPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
+InventoryPage.propTypes = {}
 
 const mapStateToProps = createStructuredSelector({
   inventoryPage: makeSelectInventoryPage(),
 });
 
 function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
+  return {};
 }
 
 const withConnect = connect(
@@ -61,6 +67,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(InventoryPage);

@@ -192,7 +192,11 @@ const LoginForm = props => {
                   fullWidth
                   name="password"
                   label="Password"
-                  type={visibility ? 'text' : 'password'}
+                  inputProps={{
+                    type: visibility ? 'text' : 'password',
+                    autoComplete: 'new-password'
+                  }}
+                  // type={visibility ? 'text' : 'password'}
                   id="password"
                   InputProps={{
                     className: classes.input,

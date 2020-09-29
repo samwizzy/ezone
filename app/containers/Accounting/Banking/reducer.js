@@ -1,8 +1,3 @@
-/*
- *
- * Banking reducer
- *
- */
 import produce from 'immer';
 import * as Constants from './constants';
 
@@ -16,9 +11,17 @@ export const initialState = {
     },
     data: null,
   },
-  accountTypeData: [],
-  newBankPostData: {},
-  bankAccountData: [],
+  bankAccountConfirmDialog: {
+    type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
+  currencies: [],
+  accountTypes: [],
+  bankAccounts: [],
+  bankAccount: null,
   bankTransferByOrgIdData: [],
   transactionTransferDialog: {
     type: 'new',
@@ -27,8 +30,7 @@ export const initialState = {
     },
     data: null,
   },
-  bankTransferPostData: {},
-  transferByAccountIdData: {},
+  transferByAccountIdData: null,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -89,7 +91,7 @@ const bankingReducer = (state = initialState, action) =>
       case Constants.OPEN_DELETE_BANK_ACCOUNT_DIALOG: {
         return {
           ...state,
-          bankAccountDialog: {
+          bankAccountConfirmDialog: {
             type: 'delete',
             props: {
               open: true,
@@ -101,7 +103,7 @@ const bankingReducer = (state = initialState, action) =>
       case Constants.CLOSE_DELETE_BANK_ACCOUNT_DIALOG: {
         return {
           ...state,
-          bankAccountDialog: {
+          bankAccountConfirmDialog: {
             type: 'delete',
             props: {
               open: false,
@@ -136,7 +138,7 @@ const bankingReducer = (state = initialState, action) =>
         };
       }
 
-      case Constants.DEACTIVATE_BANK_ACCOUNT_DIALOG_OPEN: {
+      case Constants.OPEN_DEACTIVATE_BANK_ACCOUNT_DIALOG: {
         return {
           ...state,
           bankAccountDialog: {
@@ -148,7 +150,7 @@ const bankingReducer = (state = initialState, action) =>
           },
         };
       }
-      case Constants.DEACTIVATE_BANK_ACCOUNT_DIALOG_CLOSE: {
+      case Constants.CLOSE_DEACTIVATE_BANK_ACCOUNT_DIALOG: {
         return {
           ...state,
           bankAccountDialog: {
@@ -159,6 +161,30 @@ const bankingReducer = (state = initialState, action) =>
             data: action.payload,
           },
         };
+      }
+
+      // Case to get currencies
+      case Constants.GET_CURRENCIES: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        }
+      }
+      case Constants.GET_CURRENCIES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          currencies: action.payload
+        }
+      }
+      case Constants.GET_CURRENCIES_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        }
       }
 
       // Case to get account type data
@@ -174,7 +200,7 @@ const bankingReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          accountTypeData: action.payload,
+          accountTypes: action.payload,
         };
       }
       case Constants.GET_ALL_ACCOUNT_TYPES_ERR: {
@@ -191,7 +217,6 @@ const bankingReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          newBankPostData: action.payload,
         };
       }
       case Constants.CREATE_NEW_BANK_SUCCESS: {
@@ -199,7 +224,6 @@ const bankingReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          newBankPostData: action.payload,
         };
       }
       case Constants.CREATE_NEW_BANK_ERR: {
@@ -223,10 +247,34 @@ const bankingReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          bankAccountData: action.payload,
+          bankAccounts: action.payload,
         };
       }
       case Constants.GET_ALL_BANK_ACCOUNT_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+
+      // Case to get bank account by id
+      case Constants.GET_BANK_ACCOUNT_BY_ID: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_BANK_ACCOUNT_BY_ID_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          bankAccount: action.payload,
+        };
+      }
+      case Constants.GET_BANK_ACCOUNT_BY_ID_ERROR: {
         return {
           ...state,
           loading: false,
@@ -240,7 +288,6 @@ const bankingReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          newBankPostData: action.payload,
         };
       }
       case Constants.UPDATE_BANK_ACCOUNT_SUCCESS: {
@@ -248,7 +295,6 @@ const bankingReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          newBankPostData: action.payload,
         };
       }
       case Constants.UPDATE_BANK_ACCOUNT_ERR: {
@@ -265,7 +311,6 @@ const bankingReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          newBankPostData: action.payload,
         };
       }
       case Constants.DELETE_BANK_ACCOUNT_SUCCESS: {
@@ -273,7 +318,6 @@ const bankingReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          newBankPostData: action.payload,
         };
       }
       case Constants.DELETE_BANK_ACCOUNT_ERR: {
@@ -340,7 +384,6 @@ const bankingReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          bankTransferPostData: action.payload,
         };
       }
       case Constants.CREATE_BANK_TRANSFER_SUCCESS: {
@@ -348,7 +391,6 @@ const bankingReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          bankTransferPostData: action.payload,
         };
       }
       case Constants.CREATE_BANK_TRANSFER_ERR: {

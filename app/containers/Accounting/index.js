@@ -6,11 +6,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import {
-  withRouter,
-  Route,
-  useRouteMatch,
-} from 'react-router-dom';
+import { withRouter, Route, useRouteMatch } from 'react-router-dom';
 import reducer from './reducer';
 import saga from './saga';
 import * as Actions from './actions';
@@ -28,7 +24,7 @@ import NewBudgeting from './Budget/components/NewBudgeting';
 import Banking from './Banking';
 import AccountDetails from './Banking/components/AccountDetails';
 import DetailsOfAccountChat from './Chart/components/DetailsOfAccountChart';
-import FixedAssets from './FixedAssets/index';
+import FixedAssets from './Assets';
 import ViewReport from './Reports/ViewReport/ViewReport';
 import Settings from './Settings';
 

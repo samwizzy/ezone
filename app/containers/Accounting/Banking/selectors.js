@@ -33,25 +33,31 @@ const makeSelectBankAccountDialog = () =>
     substate => substate.bankAccountDialog,
   );
 
-const makeSelectAccountTypeData = () =>
+const makeSelectBankAccountConfirmDialog = () =>
   createSelector(
     selectBankingDomain,
-    substate => substate.accountTypeData,
+    substate => substate.bankAccountConfirmDialog,
   );
 
-const makeSelectNewBankPostData = () =>
+const makeSelectAccountTypes = () =>
   createSelector(
     selectBankingDomain,
-    substate => substate.newBankPostData,
+    substate => substate.accountTypes,
   );
 
 const makeSelectBankAccountData = () =>
   createSelector(
     selectBankingDomain,
-    substate => substate.bankAccountData,
+    substate => substate.bankAccounts,
   );
 
-const makeSelectBankTransferByOrgIdData= () =>
+const makeSelectBankAccountByIdData = () =>
+  createSelector(
+    selectBankingDomain,
+    substate => substate.bankAccount,
+  );
+
+const makeSelectBankTransferByOrgIdData = () =>
   createSelector(
     selectBankingDomain,
     substate => substate.bankTransferByOrgIdData,
@@ -63,29 +69,31 @@ const makeSelectTransactionTransferDialog = () =>
     substate => substate.transactionTransferDialog,
   );
 
-const makeSelectBankTransferPostData = () =>
-  createSelector(
-    selectBankingDomain,
-    substate => substate.bankTransferPostData,
-  );
-
-const makeSelectTransferByAccountIdData= () =>
+const makeSelectTransferByAccountIdData = () =>
   createSelector(
     selectBankingDomain,
     substate => substate.transferByAccountIdData,
   );
-  
+
+const makeSelectCurrencies = () =>
+  createSelector(
+    selectBankingDomain,
+    subState => subState.currencies,
+  );
+
+
 export default makeSelectBanking;
 
-export { 
-  selectBankingDomain, 
+export {
+  selectBankingDomain,
   makeSelectLoading,
   makeSelectBankAccountDialog,
-  makeSelectAccountTypeData,
-  makeSelectNewBankPostData,
+  makeSelectBankAccountConfirmDialog,
+  makeSelectCurrencies,
+  makeSelectAccountTypes,
   makeSelectBankAccountData,
+  makeSelectBankAccountByIdData,
   makeSelectBankTransferByOrgIdData,
   makeSelectTransactionTransferDialog,
-  makeSelectBankTransferPostData,
   makeSelectTransferByAccountIdData
 };

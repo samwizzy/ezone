@@ -5,7 +5,7 @@ import { initialState } from './reducer';
  * Direct selector to the accounting state domain
  */
 
-const selectAccountingDomain = state => state.accounting || initialState;
+const selectAccountingDomain = state => state.dashboard || initialState;
 
 /**
  * Other specific selectors
@@ -49,7 +49,7 @@ const makeSelectChartOfAccountPostData = () =>
   createSelector(
     selectAccountingDomain,
     subState => subState.chartOfAccPostData,
-);
+  );
 
 const makeSelectGetChartOfAccountData = () =>
   createSelector(
@@ -67,7 +67,7 @@ const makeSelectAccountingSetupPostData = () =>
   createSelector(
     selectAccountingDomain,
     subState => subState.accountSetupPostData,
-);
+  );
 
 const makeSelectGetAllAccountPeriodData = () =>
   createSelector(
@@ -78,7 +78,7 @@ const makeSelectGetAllAccountPeriodData = () =>
 
 export default makeSelectAccounting;
 
-export { 
+export {
   selectAccountingDomain,
   makeSelectLoading,
   makeSelectNewAccountDialog,
@@ -88,5 +88,5 @@ export {
   makeSelectGetChartOfAccountData,
   makeSelectGetAccountingSetupData,
   makeSelectAccountingSetupPostData,
-  makeSelectGetAllAccountPeriodData 
+  makeSelectGetAllAccountPeriodData
 };

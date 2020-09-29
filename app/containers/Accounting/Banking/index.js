@@ -1,22 +1,10 @@
-/**
- *
- * Banking
- *
- */
-
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import {
-  BrowserRouter as Route,
-  Switch,
-  useParams,
-  useRouteMatch,
-} from "react-router-dom";
+import { Route, useRouteMatch } from "react-router-dom";
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectBanking from './selectors';
@@ -26,34 +14,36 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import ModuleLayout from '../components/ModuleLayout';
-//import LoadingIndicator from './../../../components/LoadingIndicator';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { CircleLoader } from './../../../components/LoadingIndicator';
 import BankList from './components/BankList';
+import BankDetails from './bankDetails';
+import AddBankAccountDialog from './components/AddBankAccountDialog';
+import ConfirmDeleteBankAccountDialog from './components/ConfirmDeleteBankAccountDialog';
+import TransactionTransferDialog from './components/TransactionTransferDialog';
 
 export function Banking(props) {
-  const {id} = useRouteMatch();
   useInjectReducer({ key: 'banking', reducer });
   useInjectSaga({ key: 'banking', saga });
-
-  console.log(`Banking index.js loaded ${id}`);
+  const { path } = useRouteMatch();
 
   const {
     loading,
-    dispatchGetAllBankAccountAction,
-    dispatchGetAllAccountTypeAction,
-    dispatchGetAllTransferByOrgIdAction,
+    getBankAccounts,
+    getCurrencies,
+    getAccountTypes,
+    getTransfersByOrgId,
   } = props;
 
-  // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    dispatchGetAllBankAccountAction();
-    dispatchGetAllAccountTypeAction();
-    dispatchGetAllTransferByOrgIdAction();
+    getBankAccounts();
+    getCurrencies();
+    getAccountTypes();
+    getTransfersByOrgId();
   }, []);
 
 
   if (loading) {
-    return <div style={{textAlign:'center'}}><div style={{margin:'2px auto'}}><CircularProgress /></div></div>;
+    return <CircleLoader />
   }
 
   return (
@@ -62,16 +52,20 @@ export function Banking(props) {
         <title>Banking</title>
         <meta name="description" content="Description of Banking" />
       </Helmet>
+
       <ModuleLayout>
-        <BankList />
+        <Route exact path={path} component={BankList} />
+        <Route path={`${path}/:bankId`} component={BankDetails} />
       </ModuleLayout>
+
+      <AddBankAccountDialog />
+      <ConfirmDeleteBankAccountDialog />
+      <TransactionTransferDialog />
     </div>
   );
 }
 
-Banking.propTypes = {
-  // dispatch: PropTypes.func.isRequired,
-};
+Banking.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
   banking: makeSelectBanking(),
@@ -80,10 +74,10 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchGetAllBankAccountAction: () => dispatch(Actions.getAllBankAccountAction()),
-    dispatchGetAllAccountTypeAction: () => dispatch(Actions.getAllAccountTypeAction()),
-    dispatchGetAllTransferByOrgIdAction: () => dispatch(Actions.getAllTransferByOrgIdAction()),
-    dispatch,
+    getBankAccounts: () => dispatch(Actions.getBankAccounts()),
+    getAccountTypes: () => dispatch(Actions.getAccountTypes()),
+    getTransfersByOrgId: () => dispatch(Actions.getTransfersByOrgId()),
+    getCurrencies: () => dispatch(Actions.getCurrencies()),
   };
 }
 

@@ -7,14 +7,6 @@ import { initialState } from './reducer';
 
 const selectJournalDomain = state => state.journal || initialState;
 
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by Journal
- */
-
 const makeSelectJournal = () =>
   createSelector(
     selectJournalDomain,
@@ -39,25 +31,32 @@ const makeSelectGetAccountPeriodData = () =>
     substate => substate.accountPeriodData,
   );
 
-const makeSelectNewAccountJournalPostData = () =>
+const makeSelectJournalDialog = () =>
   createSelector(
     selectJournalDomain,
-    subState => subState.accountJournalPostData,
-);
+    subState => subState.journalDialog,
+  );
 
 const makeSelectJournalListData = () =>
   createSelector(
     selectJournalDomain,
     subState => subState.journalListData,
-);
+  );
+
+const makeSelectCurrencies = () =>
+  createSelector(
+    selectJournalDomain,
+    subState => subState.currencies,
+  );
 
 export default makeSelectJournal;
 
-export { 
+export {
   selectJournalDomain,
   makeSelectLoading,
   makeSelectGetChartOfAccountData,
   makeSelectGetAccountPeriodData,
-  makeSelectNewAccountJournalPostData,
-  makeSelectJournalListData
+  makeSelectJournalDialog,
+  makeSelectJournalListData,
+  makeSelectCurrencies,
 };

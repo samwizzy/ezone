@@ -1,9 +1,10 @@
-import React, { memo } from 'react';
+import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import {
   makeStyles,
   Button,
+  Card, CardHeader, CardActions,
   Icon,
   IconButton,
   Paper,
@@ -11,7 +12,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
   TextField,
@@ -27,14 +27,13 @@ import AttachFileIcon from '@material-ui/icons/AttachFile';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import TrendingFlatIcon from '@material-ui/icons/TrendingFlat';
 import AddIcon from '@material-ui/icons/Add';
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
+import { darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import moment from 'moment';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import TransactionTransferDialog from './TransactionTransferDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -43,8 +42,8 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3),
   },
   paper: {
-    padding: theme.spacing(1, 2),
-    backgroundColor: theme.palette.grey[100],
+    padding: theme.spacing(2),
+    backgroundColor: theme.palette.grey[50],
   },
   grid: {
     justifyContent: 'space-between',
@@ -57,15 +56,16 @@ const useStyles = makeStyles(theme => ({
   title: { flexGrow: 1 },
   label: { marginLeft: theme.spacing(1) },
   table: {
-    display: 'flex',
+    minWidth: 200,
     '& td, & th': {
-      border: '0 !important',
+      border: 0,
     },
     '& td': {
       color: theme.palette.text.secondary,
     },
   },
   datatable: {
+    minWidth: 200,
     whiteSpace: 'nowrap',
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
@@ -97,8 +97,14 @@ const useStyles = makeStyles(theme => ({
 const AccountDetails = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const { history, match, openAccountTransferDialog, backAccount, getBankAccountById } = props;
+  const { params } = match
+  console.log(params, "params")
 
-  const { history, openAccountTransferDialogAction } = props;
+  useEffect(() => {
+    // getBankAccountById(params.bankId)
+    // return () => { }
+  }, [])
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -112,20 +118,20 @@ const AccountDetails = props => {
     history.goBack();
   };
 
-  // console.log('props.location.accountDetailsData.accountNumber -> ', props.location.accountDetailsData.accountNumber);
+  console.log(backAccount, "backAccount")
+
+  if (!backAccount) {
+    return null
+  }
 
   return (
     <div className={classes.root}>
-      <TransactionTransferDialog />
       <Grid container>
         <Grid item xs={12} className={classNames(classes.gridMargin)}>
           <Toolbar className={classes.iconPaper} variant="dense">
-            <Typography>
-              <IconButton onClick={handleBack}>
-                <KeyboardBackspaceIcon />
-              </IconButton>{' '}
-              Back
-            </Typography>
+            <IconButton onClick={handleBack}>
+              <KeyboardBackspaceIcon />
+            </IconButton>
             <Typography className={classes.title} />
             <IconButton>
               <Icon>add</Icon>
@@ -141,64 +147,60 @@ const AccountDetails = props => {
             </IconButton>
           </Toolbar>
         </Grid>
-        <Grid item xs={12} className={classNames(classes.gridMargin)}>
+        <Grid item xs={12} className={classNames(classes.gridMargi)}>
           <Paper square>
-            <div className={classes.flex}>
-              <Table className={classes.table}>
-                <TableBody>
-                  <TableRow>
-                    <TableCell component="th">Account Name:</TableCell>
-                    <TableCell align="left">
-                      {props.location.accountDetailsData.accountName}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell component="th">Account Code:</TableCell>
-                    <TableCell align="left">
-                      {props.location.accountDetailsData.accountCode}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell component="th">Account Type:</TableCell>
-                    <TableCell align="left">
-                      {props.location.accountDetailsData.accountType}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell component="th">Bank Name:</TableCell>
-                    <TableCell align="left">
-                      {props.location.accountDetailsData.bankName}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell component="th">Description:</TableCell>
-                    <TableCell align="left">
-                      {props.location.accountDetailsData.description}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell component="th">Date Created:</TableCell>
-                    <TableCell align="left">
-                      {moment(
-                        props.location.accountDetailsData.dateCreated,
-                      ).format('dddd do-MMM-YYYY')}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell component="th">Closing Balance:</TableCell>
-                    <TableCell align="left">
-                      NGN {props.location.accountDetailsData.bankBalance}
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </div>
+            <Table className={classes.table}>
+              <TableBody>
+                <TableRow>
+                  <TableCell component="th">Account Name:</TableCell>
+                  <TableCell>
+                    {backAccount.accountName}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell component="th">Account Code:</TableCell>
+                  <TableCell>
+                    {backAccount.accountCode}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell component="th">Account Type:</TableCell>
+                  <TableCell>
+                    {backAccount.accountType}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell component="th">Bank Name:</TableCell>
+                  <TableCell>
+                    {backAccount.bankName}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell component="th">Description:</TableCell>
+                  <TableCell>
+                    {backAccount.description}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell component="th">Date Created:</TableCell>
+                  <TableCell>
+                    {moment(backAccount.dateCreated).format('dddd do-MMM-YYYY')}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell component="th">Closing Balance:</TableCell>
+                  <TableCell>
+                    NGN {backAccount.bankBalance}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
           </Paper>
         </Grid>
       </Grid>
 
-      {props.location.accountDetailsData.transfers.length ? (
-        <Grid container>
+      {backAccount.transfers.length
+        ? (<Grid container>
           <Grid item xs={12}>
             <Table className={classes.datatable} aria-label="simple table">
               <TableHead>
@@ -212,21 +214,19 @@ const AccountDetails = props => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {props.location.accountDetailsData.transfers.map(
-                  (entry, id) => (
-                    <TableRow key={id}>
-                      <TableCell align="left">
-                        {props.location.accountDetailsData.accountNumber}
-                      </TableCell>
-                      <TableCell align="left">{entry.description}</TableCell>
-                      <TableCell align="left">
-                        {entry.referenceNumber}
-                      </TableCell>
-                      <TableCell align="left">{entry.transferType}</TableCell>
-                      <TableCell align="left">{entry.amount}</TableCell>
-                    </TableRow>
-                  ),
-                )}
+                {backAccount.transfers.map((entry, id) => (
+                  <TableRow key={id}>
+                    <TableCell align="left">
+                      {backAccount.accountNumber}
+                    </TableCell>
+                    <TableCell align="left">{entry.description}</TableCell>
+                    <TableCell align="left">
+                      {entry.referenceNumber}
+                    </TableCell>
+                    <TableCell align="left">{entry.transferType}</TableCell>
+                    <TableCell align="left">{entry.amount}</TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
               <TableFooter>
                 <TableRow>
@@ -236,17 +236,16 @@ const AccountDetails = props => {
                   <TableCell>
                     <Paper elevation={0} square className={classes.paper}>
                       <Typography variant="button">
-                        {/* { props.location.journalDetailsData.transfers.reduce((a, b) => a + Number(b.amount), 0) } */}
+                        {backAccount.transfers.length > 0 && backAccount.transfers.reduce((a, b) => a + Number(b.amount), 0)}
                       </Typography>
                     </Paper>
                   </TableCell>
                   <TableCell>
-                    {/* <Paper elevation={0} square className={classes.paper}>
-                  <Typography variant="h6">
-                    0 */}
-                    {/* NGN { props.location.journalDetailsData.entries.reduce((a, b) => a + Number(b.credit), 0) } */}
-                    {/* </Typography> */}
-                    {/* </Paper> */}
+                    <Paper elevation={0} square className={classes.paper}>
+                      <Typography variant="h6">
+                        {/* 0 NGN {backAccount.entries.reduce((a, b) => a + Number(b.credit), 0)} */}
+                      </Typography>
+                    </Paper>
                   </TableCell>
                   <TableCell />
                 </TableRow>
@@ -268,14 +267,10 @@ const AccountDetails = props => {
                     <Button
                       aria-controls="simple-menu"
                       aria-haspopup="true"
-                      onClick={() => {
-                        openAccountTransferDialogAction(
-                          props.location.accountDetailsData,
-                        );
-                      }}
+                      onClick={() => openAccountTransferDialog(backAccount)}
                       color="primary"
                       variant="contained"
-                      disabled={!props.location.accountDetailsData.status}
+                      disabled={!backAccount.status}
                       endIcon={<TrendingFlatIcon />}
                     >
                       Transfer
@@ -286,56 +281,52 @@ const AccountDetails = props => {
             </Grid>
           </Grid>
         </Grid>
-      ) : (
-        <Grid item xs={12}>
-          <Grid container className={classes.grid}>
-            <Grid item xs={12}>
-              <Paper square className={classes.paper}>
-                <Typography variant="h6" gutterBottom>
-                  You haven’t recorded any transactions for this account
-                </Typography>
-                <Button
-                  aria-controls="simple-menu"
-                  aria-haspopup="true"
-                  onClick={() => {
-                    openAccountTransferDialogAction(
-                      props.location.accountDetailsData,
-                    );
-                  }}
-                  color="primary"
-                  variant="contained"
-                  disabled={!props.location.accountDetailsData.status}
-                  endIcon={<TrendingFlatIcon />}
-                >
-                  Transfer
-                </Button>
-                {/* <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={() => {
-                openAccountTransferDialogAction(1);
-              }}>
-                <Typography>
-                  Transfer from another account
-                </Typography>
-              </MenuItem>
-              <MenuItem onClick={() => {
-                openAccountTransferDialogAction();
-              }}>
-                <Typography>
-                  Transfer to another account
-                </Typography>
-              </MenuItem>
-            </Menu> */}
-              </Paper>
+        )
+        :
+        (
+          <Grid item xs={12}>
+            <Grid container className={classes.grid}>
+              <Grid item xs={12}>
+                <Card square className={classes.paper}>
+                  <CardHeader title="You haven’t recorded any transactions for this account" />
+                  <CardActions>
+                    <Button
+                      aria-controls="simple-menu"
+                      aria-haspopup="true"
+                      onClick={() => openAccountTransferDialog(backAccount)}
+                      color="primary"
+                      variant="contained"
+                      disabled={!backAccount.status}
+                      endIcon={<TrendingFlatIcon />}
+                    >
+                      Transfer
+                  </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      )}
+        )
+      }
+
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={() => openAccountTransferDialog(1)}>
+          <Typography>
+            Transfer from another account
+          </Typography>
+        </MenuItem>
+        <MenuItem onClick={() => openAccountTransferDialog()}>
+          <Typography>
+            Transfer to another account
+          </Typography>
+        </MenuItem>
+      </Menu>
     </div>
   );
 };
@@ -343,16 +334,17 @@ const AccountDetails = props => {
 AccountDetails.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
-  //   loading: Selectors.makeSelectLoading(),
+  loading: Selectors.makeSelectLoading(),
+  backAccount: Selectors.makeSelectBankAccountByIdData(),
   bankTransferByOrgIdData: Selectors.makeSelectBankTransferByOrgIdData(),
   transferByAccountIdData: Selectors.makeSelectTransferByAccountIdData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openAccountTransferDialogAction: evt =>
-      dispatch(Actions.openAccountTransferDialog(evt)),
-  };
+    openAccountTransferDialog: data => dispatch(Actions.openAccountTransferDialog(data)),
+    getBankAccountById: data => dispatch(Actions.getBankAccountById(data)),
+  }
 }
 
 const withConnect = connect(

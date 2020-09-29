@@ -11,15 +11,16 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from './actions';
-import * as Selectors from './selectors';
+import makeSelectAccountChart, * as Selectors from './selectors';
 import ModuleLayout from '../components/ModuleLayout';
-import AccountChart from './components/AccountChart';
-import DetailsOfAccountChart from './components/DetailsOfAccountChart';
+import AccountsList from './components/AccountsList';
+import ChartAccountDetails from './chartAccountDetails';
 import { CircleLoader } from '../../../components/LoadingIndicator';
 
+const key = "chart";
 const ChartOfAccounts = props => {
-  useInjectReducer({ key: 'chart', reducer });
-  useInjectSaga({ key: 'chart', saga });
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
 
   const { loading, getChartOfAccounts, getAccountTypes, match } = props;
   const { path } = match
@@ -29,7 +30,6 @@ const ChartOfAccounts = props => {
     getAccountTypes();
   }, []);
 
-
   if (loading) {
     return <CircleLoader />;
   }
@@ -37,14 +37,13 @@ const ChartOfAccounts = props => {
   return (
     <div>
       <Helmet>
-        <title>Settings</title>
-        <meta name="description" content="Description of Settings" />
+        <title>Chart of Accounts</title>
+        <meta name="description" content="Description of Accounts" />
       </Helmet>
 
       <ModuleLayout>
-        <Route path={path} component={AccountChart} />
-        {/* <Route path={`${path}/:accountId`} component={DetailsOfAccountChart} /> */}
-        {/* <AccountChart /> */}
+        <Route exact path={path} component={AccountsList} />
+        <Route path={`${path}/:accountId`} component={ChartAccountDetails} />
       </ModuleLayout>
     </div>
   );
@@ -55,6 +54,7 @@ ChartOfAccounts.propTypes = {
 }
 
 const mapStateToProps = createStructuredSelector({
+  chart: makeSelectAccountChart(),
   loading: Selectors.makeSelectLoading(),
 })
 

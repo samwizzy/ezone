@@ -1,11 +1,10 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import _ from 'lodash';
 import {
   makeStyles,
-  List,
-  FormControlLabel,
-  Icon,
+  IconButton,
   Button,
   Menu,
   MenuItem,
@@ -14,55 +13,42 @@ import {
 } from '@material-ui/core';
 import classNames from 'classnames';
 import AddIcon from '@material-ui/icons/Add';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import MUIDataTable from 'mui-datatables';
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
-import { green, red } from '@material-ui/core/colors';
+import { darken } from '@material-ui/core/styles/colorManipulator';
+import { green } from '@material-ui/core/colors';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import AddBankAccountDialog from './AddBankAccountDialog';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
+import { CircleLoader } from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
-  flex: {
-    display: "flex",
-    alignItems: "center",
-    alignContent: "center",
-  }, 
-  table: {
-    marginTop: theme.spacing(2),
-    '& .MuiTableCell-body': {
-      fontSize: theme.typography.fontSize - 1,
-    },
-    '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
-    },
-  },
   datatable: {
-    '& .MuiTableRow-root:hover': {
+    whiteSpace: 'nowrap',
+    '& tr:hover': {
       cursor: 'pointer'
     },
-    '& .MuiTableHead-root': {
-      '& .MuiTableCell-head': {
+    '& td': { padding: theme.spacing(1, 2) },
+    '& thead': {
+      '& th': {
         color: theme.palette.common.white,
       },
-      '& .MuiTableCell-root:nth-child(odd)': {
+      '& th:nth-child(odd)': {
         backgroundColor: theme.palette.primary.main,
       },
-      '& .MuiTableCell-root:nth-child(even)': {
+      '& th:nth-child(even)': {
         backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
   },
   status: {
-    '&.active': {color: green[500]},
-    '&.inactive': {color: theme.status.danger},
+    '&.active': { color: green[500] },
+    '&.inactive': { color: theme.status.danger },
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -73,32 +59,59 @@ const useStyles = makeStyles(theme => ({
 const BankList = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [account, setAccount] = React.useState('');
+  const [selectedBankAccount, setSelectedBankAccount] = React.useState(null);
 
   const {
     loading,
     history,
-		openNewBankAccountDialogAction,
-    editOpenBankAccountDialogAction,
-    openDeleteBankAccountDialogAction,
-    openActivateBankAccountDialogAction,
-    deactivateBankAccountDialogOpenAction,
-    bankAccountData,
+    match,
+    getBankAccountById,
+    openNewBankAccountDialog,
+    openEditBankAccountDialog,
+    openDeleteBankAccountDialog,
+    activateDeactivateBankAccount,
+    bankAccounts,
   } = props;
 
   const handleClick = (event, id) => {
-    console.log("account id -> ", id);
     setAnchorEl(event.currentTarget);
-    const selectedAccount = bankAccountData && bankAccountData.find(acc => id === acc.id);
-    setAccount(selectedAccount);
+    setSelectedBankAccount(_.find(bankAccounts, { id }));
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  
+  const handleActivateDeactivateBankAccount = () => {
+    const data = { id: selectedBankAccount.id, status: !selectedBankAccount.status }
+    activateDeactivateBankAccount(data)
+    setAnchorEl(null);
+  };
+
+  const handleView = () => {
+    const { id } = selectedBankAccount
+    getBankAccountById(id)
+    history.push(`${match.url}/${id}`)
+    setAnchorEl(null);
+  };
+
+  const handleRoute = (id) => {
+    getBankAccountById(id)
+    history.push(`${match.url}/${id}`)
+  };
+
+  bankAccounts.reverse()
+
   const columns = [
+    {
+      name: 'id',
+      label: ' ',
+      options: {
+        display: 'excluded',
+        filter: true,
+        sort: false,
+      },
+    },
     {
       name: 'accountName',
       label: 'Account Name',
@@ -132,12 +145,12 @@ const BankList = props => {
       },
     },
     {
-			name: 'bankBalance',
-			label: 'Bank Balance',
-			options: {
-				filter: true,
-				sort: false,
-			},
+      name: 'bankBalance',
+      label: 'Bank Balance',
+      options: {
+        filter: true,
+        sort: false,
+      },
     },
     {
       name: 'status',
@@ -146,7 +159,7 @@ const BankList = props => {
         filter: true,
         sort: true,
         customBodyRender: status => (
-          <span className={classNames(classes.status, {'active': status})}>{status ? 'Active' : 'Inactive'}</span>
+          <span className={classNames(classes.status, { 'active': status })}>{status ? 'Active' : 'Inactive'}</span>
         ),
       },
     },
@@ -157,55 +170,14 @@ const BankList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          if (value === '') {
-            return '';
-          }
           return (
-            <div>
-              <Button
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={event => handleClick(event, value)}
-              >
-                Options
-              </Button>
-              <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={() => openActivateBankAccountDialogAction(account) }
-                  disabled={account.status}
-                >
-                  Activate
-                </MenuItem>
-                <MenuItem onClick={() => deactivateBankAccountDialogOpenAction(account) }
-                  disabled={!account.status}
-                >
-                  Deactivate
-                </MenuItem>
-                <MenuItem onClick={() => openDeleteBankAccountDialogAction(account) }
-                  disabled={account && account.transfers.length}
-                >
-                  Delete
-                </MenuItem>
-                <MenuItem onClick={() => editOpenBankAccountDialogAction(account) }
-                  disabled={account && account.transfers.length}
-                >
-                  Edit
-                </MenuItem>
-                <MenuItem onClick={() => {
-                  history.push({
-                    pathname: '/account/banking/details',
-                    accountDetailsData: account,
-                  });
-                }}>
-                  View Details
-                </MenuItem>
-              </Menu>
-            </div>
+            <IconButton
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={event => handleClick(event, value)}
+            >
+              <MoreVertIcon />
+            </IconButton>
           );
         },
       },
@@ -214,66 +186,100 @@ const BankList = props => {
 
   const options = {
     filterType: 'checkbox',
-    responsive: 'scrollMaxHeight',
+    responsive: 'stacked',
     selectableRows: 'none',
+    textLabels: {
+      body: {
+        noMatch: 'Sorry, no bank accounts found',
+        toolTip: 'Sort',
+        columnHeaderTooltip: column => `Sort for ${column.label}`,
+      },
+    },
     customToolbar: () => (
-      <Tooltip title="Create New Account">
+      <Tooltip title="Create New Bank Account">
         <Button
           variant="contained"
           color="primary"
-          size="small"
-          className={classes.button}
           startIcon={<AddIcon />}
-          onClick={() => openNewBankAccountDialogAction()}
+          onClick={() => openNewBankAccountDialog()}
         >
           Add Bank Account
         </Button>
       </Tooltip>
     ),
+    onRowClick: (rowData, rowState) => {
+      handleRoute(rowData[0])
+    },
     elevation: 0
   };
 
-  console.log('account data -> ', bankAccountData);
+  console.log('account data -> ', bankAccounts);
 
   return (
-    
-    (
-    <React.Fragment>
-      <AddBankAccountDialog />
-      <div className={classes.root}>
-        <Grid container>
-          <Grid item xs={12}>
-            <MUIDataTable
-              className={classes.datatable}
-              title="Banking"
-              data={bankAccountData}
-              columns={columns}
-              options={options}
-            />
-          </Grid>
-        </Grid>
-      </div>
-    </React.Fragment>
-  )
+    <div className={classes.root}>
+      <MUIDataTable
+        className={classes.datatable}
+        title="Banking"
+        data={bankAccounts}
+        columns={columns}
+        options={options}
+      />
+
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem
+          onClick={handleActivateDeactivateBankAccount}
+          disabled={selectedBankAccount && selectedBankAccount.status}
+        >
+          Activate
+        </MenuItem>
+        <MenuItem
+          onClick={handleActivateDeactivateBankAccount}
+          disabled={selectedBankAccount && !selectedBankAccount.status}
+        >
+          Deactivate
+        </MenuItem>
+        <MenuItem
+          onClick={() => openDeleteBankAccountDialog(selectedBankAccount)}
+          disabled={selectedBankAccount && Boolean(selectedBankAccount.transfers.length)}
+        >
+          Delete
+        </MenuItem>
+        <MenuItem
+          onClick={() => openEditBankAccountDialog(selectedBankAccount)}
+          disabled={selectedBankAccount && Boolean(selectedBankAccount.transfers.length)}
+        >
+          Edit
+        </MenuItem>
+        <MenuItem onClick={handleView}>
+          View Details
+        </MenuItem>
+      </Menu>
+    </div>
   );
 };
 
 BankList.propTypes = {
-//   loading: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
-  // loading: Selectors.makeSelectLoading(),
-  bankAccountData: Selectors.makeSelectBankAccountData()
+  loading: Selectors.makeSelectLoading(),
+  bankAccounts: Selectors.makeSelectBankAccountData()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewBankAccountDialogAction: () => dispatch(Actions.openNewBankAccountDialog()),
-    editOpenBankAccountDialogAction: evt => dispatch(Actions.editOpenBankAccountDialog(evt)),
-    openDeleteBankAccountDialogAction: evt => dispatch(Actions.openDeleteBankAccountDialog(evt)),
-    openActivateBankAccountDialogAction: evt => dispatch(Actions.openActivateBankAccountDialog(evt)),
-    deactivateBankAccountDialogOpenAction: evt => dispatch(Actions.deactivateBankAccountDialogOpen(evt)),
+    getBankAccountById: (data) => dispatch(Actions.getBankAccountById(data)),
+    openNewBankAccountDialog: () => dispatch(Actions.openNewBankAccountDialog()),
+    openEditBankAccountDialog: evt => dispatch(Actions.openEditBankAccountDialog(evt)),
+    openDeleteBankAccountDialog: evt => dispatch(Actions.openDeleteBankAccountDialog(evt)),
+    activateDeactivateBankAccount: data => dispatch(Actions.activateDeactivateBankAccount(data)),
   };
 }
 
