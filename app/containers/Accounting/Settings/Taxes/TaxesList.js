@@ -9,7 +9,6 @@ import {
   Button,
   Menu,
   MenuItem,
-  Toolbar,
   Tooltip
 } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
@@ -18,6 +17,7 @@ import AddIcon from '@material-ui/icons/Add';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import moment from 'moment';
+import _ from 'lodash';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,28 +25,34 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
   },
   datatable: {
-    '& .MuiTableRow-root:hover': {
+    whiteSpace: 'nowrap',
+    '& tr:hover': {
       cursor: 'pointer'
     },
-    '& tbody': {
-      '& td': {
-        padding: theme.spacing(1)
-      },
+    '& td': {
+      padding: theme.spacing(1, 2)
     },
   },
 }));
 
 const TaxesList = (props) => {
   const classes = useStyles(props);
-  const { taxes, openNewTaxDialog } = props
+  const { taxes, openNewTaxDialog, openEditTaxDialog } = props
   const [anchorEl, setAnchorEl] = useState(null)
+  const [selectedTax, setSelectedTax] = useState(null)
 
   const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget)
+    setSelectedTax(_.find(taxes, { id }))
   }
 
   const handleClose = () => {
     setAnchorEl(null)
+  }
+
+  const handleEditClick = () => {
+    openEditTaxDialog(selectedTax)
+    handleClose()
   }
 
   console.log(taxes, "taxes")
@@ -158,7 +164,7 @@ const TaxesList = (props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => { }}>
+        <MenuItem onClick={handleEditClick}>
           Edit
         </MenuItem>
       </Menu>
@@ -173,6 +179,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewTaxDialog: () => dispatch(Actions.openNewTaxDialog()),
+    openEditTaxDialog: data => dispatch(Actions.openEditTaxDialog(data)),
   };
 }
 

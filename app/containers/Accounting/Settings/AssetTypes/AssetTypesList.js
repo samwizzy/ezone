@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import _ from 'lodash';
 import {
   makeStyles,
   IconButton,
   Button,
   Menu,
   MenuItem,
-  Toolbar,
   Tooltip
 } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
@@ -17,7 +17,6 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import AddIcon from '@material-ui/icons/Add';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,29 +24,37 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
   },
   datatable: {
-    '& .MuiTableRow-root:hover': {
+    whiteSpace: 'nowrap',
+    '& tr:hover': {
       cursor: 'pointer'
     },
-    '& tbody': {
-      '& td': {
-        padding: theme.spacing(1)
-      },
+    '& td': {
+      padding: theme.spacing(1, 2)
     },
   },
 }));
 
 const AssetTypesList = (props) => {
   const classes = useStyles(props);
-  const { assetTypes, openNewAssetTypeDialog } = props
+  const { assetTypes, openNewAssetTypeDialog, openEditAssetTypeDialog } = props
   const [anchorEl, setAnchorEl] = useState(null)
+  const [selectedAssetType, setSelectedAssetType] = useState(null)
 
   const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget)
+    setSelectedAssetType(_.find(assetTypes, { id }))
   }
 
   const handleClose = () => {
     setAnchorEl(null)
   }
+
+  const handleEditClick = () => {
+    openEditAssetTypeDialog(selectedAssetType)
+    handleClose()
+  }
+
+  const orderedAssetTypes = _.orderBy(assetTypes, 'dateCreated', 'desc');
 
   console.log(assetTypes, "asset Types")
 
@@ -79,6 +86,14 @@ const AssetTypesList = (props) => {
     {
       name: 'assetClass',
       label: 'Asset Class',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: 'description',
+      label: 'Description',
       options: {
         filter: true,
         sort: false,
@@ -136,7 +151,7 @@ const AssetTypesList = (props) => {
       <MUIDataTable
         className={classes.datatable}
         title="All Asset Types"
-        data={assetTypes}
+        data={orderedAssetTypes}
         columns={columns}
         options={options}
       />
@@ -148,7 +163,7 @@ const AssetTypesList = (props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => { }}>
+        <MenuItem onClick={handleEditClick}>
           Edit
         </MenuItem>
       </Menu>
@@ -163,6 +178,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewAssetTypeDialog: () => dispatch(Actions.openNewAssetTypeDialog()),
+    openEditAssetTypeDialog: data => dispatch(Actions.openEditAssetTypeDialog(data)),
   };
 }
 

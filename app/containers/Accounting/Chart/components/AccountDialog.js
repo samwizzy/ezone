@@ -64,12 +64,12 @@ const initialState = {
   type: '',
 }
 
-const NewAccountDialog = props => {
+const AccountDialog = props => {
   const classes = useStyles(props);
 
   const {
     loading,
-    accountDialog,
+    dialog,
     closeNewAccountDialog,
     chartOfAccounts,
     accountTypes,
@@ -89,8 +89,8 @@ const NewAccountDialog = props => {
     setValues({ ...values, [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value });
   }
 
-  const handleSelectChange = name => (event, value) => {
-    setValues({ ...values, [name]: value.id });
+  const handleSelectChange = name => (event, object) => {
+    setValues({ ...values, [name]: object ? object.id : object });
   }
 
   const handleOptionsChange = (event) => {
@@ -98,20 +98,20 @@ const NewAccountDialog = props => {
   }
 
   const handleSubmit = () => {
-    accountDialog.type === 'new'
+    dialog.type === 'new'
       ? createChartOfAccount(values)
       : updateChartOfAccount(values);
   }
 
   useEffect(() => {
-    if (accountDialog.type === 'edit' && accountDialog.data) {
-      const { accountCode, accountName, accountNumber, accountType: accountTypeId, bankBalance, description, openingBalance, id, type } = accountDialog.data
-      setValues({ ...values, accountCode, accountName, accountNumber, accountTypeId, bankBalance, description, openingBalance, id, type });
+    if (dialog.type === 'edit' && dialog.data) {
+      const { accountCode, accountName, accountNumber, accountType, bankBalance, financialStatement, description, openingBalance, id, type } = dialog.data
+      setValues({ ...values, accountCode, accountName, accountNumber, accountTypeId: accountType ? accountType.id : accountType, bankBalance, financialStatement, description, openingBalance, id, type });
     } else {
       setValues({ ...initialState })
     }
 
-  }, [accountDialog.data]);
+  }, [dialog.data]);
 
   const canSubmitValues = () => {
     const { accountCode, accountName, accountNumber, accountTypeId, bankBalance, description, type } = values
@@ -119,13 +119,13 @@ const NewAccountDialog = props => {
   }
 
   console.log(`values  got it b4 post  -> `, values);
-  console.log(`accountDialog -> `, accountDialog);
+  console.log(`dialog -> `, dialog);
   console.log('accountTypes', accountTypes);
 
   return (
     <div>
       <Dialog
-        {...accountDialog.props}
+        {...dialog.props}
         onClose={closeNewAccountDialog}
         keepMounted
         TransitionComponent={Transition}
@@ -133,7 +133,7 @@ const NewAccountDialog = props => {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-account-title">
-          {accountDialog.type === 'new' ? 'New Account' : 'Edit Account'}
+          {dialog.type === 'new' ? 'New Account' : 'Edit Account'}
         </DialogTitle>
 
         <DialogContent dividers>
@@ -193,7 +193,6 @@ const NewAccountDialog = props => {
                   id="standard-opening-balance"
                   label='Opening Balance'
                   name="openingBalance"
-                  // type="number"
                   variant="outlined"
                   size="small"
                   value={values.openingBalance ? values.openingBalance : ""}
@@ -210,6 +209,7 @@ const NewAccountDialog = props => {
                 options={accountTypes}
                 getOptionLabel={option => option.accountType}
                 onChange={handleSelectChange('accountTypeId')}
+                value={values.accountTypeId ? _.find(accountTypes, { id: values.accountTypeId }) : null}
                 renderInput={params => (
                   <TextField
                     {...params}
@@ -223,7 +223,7 @@ const NewAccountDialog = props => {
               />
             </Grid>
 
-            {!(values.accountTypeId && _.find(accountTypes, { id: values.accountTypeId }).subAccount) &&
+            {!(_.find(accountTypes, { id: values.accountTypeId }) && _.find(accountTypes, { id: values.accountTypeId }).subAccount) &&
               <>
                 <Grid item xs={6}>
                   <TextField
@@ -269,7 +269,7 @@ const NewAccountDialog = props => {
               </>
             }
 
-            {(values.accountTypeId && _.find(accountTypes, { id: values.accountTypeId }).subAccount) ?
+            {(_.find(accountTypes, { id: values.accountTypeId }) && _.find(accountTypes, { id: values.accountTypeId }).subAccount) ?
               <>
                 <Grid item xs={12}>
                   <FormControlLabel
@@ -286,11 +286,12 @@ const NewAccountDialog = props => {
 
                 <Grid item xs={12}>
                   <Autocomplete
-                    id="combo-account-types"
+                    id="combo-account-chart"
                     size="small"
                     options={chartOfAccounts}
                     getOptionLabel={option => option.accountName}
                     onChange={handleSelectChange('parentId')}
+                    value={values.parentId ? _.find(chartOfAccounts, { id: values.parentId }) : null}
                     renderInput={params => (
                       <TextField
                         {...params}
@@ -349,7 +350,7 @@ const NewAccountDialog = props => {
             disabled={loading ? loading : !canSubmitValues()}
             endIcon={loading && <CircularProgress size={20} />}
           >
-            {accountDialog.type === 'new' ? 'Save Account' : 'Update Account'}
+            {dialog.type === 'new' ? 'Save Account' : 'Update Account'}
           </Button>
 
           <Button variant="contained" onClick={closeNewAccountDialog} color="inherit" disableElevation>
@@ -361,15 +362,15 @@ const NewAccountDialog = props => {
   );
 }
 
-NewAccountDialog.propTypes = {
+AccountDialog.propTypes = {
   loading: PropTypes.bool,
-  accountDialog: PropTypes.object,
+  dialog: PropTypes.object,
   accountTypes: PropTypes.array,
 }
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  accountDialog: Selectors.makeSelectNewAccountDialog(),
+  dialog: Selectors.makeSelectNewAccountDialog(),
   accountTypes: Selectors.makeSelectAccountTypeData(),
   chartOfAccounts: Selectors.makeSelectGetChartOfAccounts(),
 });
@@ -390,4 +391,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(NewAccountDialog);
+)(AccountDialog);

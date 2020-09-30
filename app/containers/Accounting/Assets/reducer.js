@@ -832,6 +832,28 @@ const settingsReducer = (state = initialState, action) =>
           error: action.payload,
         }
       }
+      // Case to update asset
+      case Constants.UPDATE_ASSET: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        }
+      }
+      case Constants.UPDATE_ASSET_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        }
+      }
+      case Constants.UPDATE_ASSET_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        }
+      }
       // Case to get asset types
       case Constants.GET_ASSET_TYPES: {
         return {

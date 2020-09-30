@@ -249,6 +249,27 @@ export function createAssetError(data) {
     payload: data,
   }
 }
+// update asset actions
+export function updateAsset(data) {
+  return {
+    type: Constants.UPDATE_ASSET,
+    payload: data
+  }
+}
+
+export function updateAssetSuccess(data) {
+  return {
+    type: Constants.UPDATE_ASSET_SUCCESS,
+    payload: data,
+  }
+}
+
+export function updateAssetError(data) {
+  return {
+    type: Constants.UPDATE_ASSET_ERROR,
+    payload: data,
+  }
+}
 
 // get asset types actions
 export function getAssetTypes() {
@@ -473,6 +494,7 @@ export function getCurrenciesError(data) {
     payload: data,
   }
 }
+
 // create currency action
 export function createCurrency(data) {
   return {

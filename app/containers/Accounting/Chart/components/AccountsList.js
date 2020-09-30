@@ -17,8 +17,6 @@ import { darken } from '@material-ui/core/styles/colorManipulator';
 import { green } from '@material-ui/core/colors';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import NewAccountDialog from './NewAccountDialog';
-import ConfirmDeleteAccountDialog from './ConfirmDeleteAccountDialog';
 import ImportControl from './ImportControl'
 
 const useStyles = makeStyles(theme => ({
@@ -93,14 +91,15 @@ const AccountChart = props => {
     handleClose()
   }
 
-  console.log(chartOfAccounts, "chartOfAccounts")
-
   const orderedAccounts = _.orderBy(chartOfAccounts, 'dateCreated', 'desc')
 
   console.log(orderedAccounts, "orderedAccounts")
 
-  // chartOfAccounts.reverse()
   const fileInput = useRef();
+
+  if (!chartOfAccounts.length > 0) {
+    return <CircleLoader />;
+  }
 
   const columns = [
     {
@@ -197,18 +196,18 @@ const AccountChart = props => {
     viewColumns: false,
     customToolbar: () => (
       <>
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          startIcon={<AddIcon />}
+          onClick={openNewAccountDialog}
+        >
+          New Account
+        </Button>
         <Tooltip title="Import and Create">
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            startIcon={<AddIcon />}
-            onClick={openNewAccountDialog}
-          >
-            New Account
-          </Button>
+          <ImportControl />
         </Tooltip>
-        <ImportControl />
       </>
     ),
     elevation: 0
@@ -241,9 +240,6 @@ const AccountChart = props => {
           Delete
         </MenuItem>
       </Menu>
-
-      <NewAccountDialog />
-      <ConfirmDeleteAccountDialog />
     </div>
   );
 };
