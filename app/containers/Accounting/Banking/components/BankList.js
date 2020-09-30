@@ -106,6 +106,10 @@ const BankList = props => {
 
   bankAccounts.reverse()
 
+  if (!bankAccounts.length > 0) {
+    return <CircleLoader />
+  }
+
   const columns = [
     {
       name: 'id',

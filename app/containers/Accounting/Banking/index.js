@@ -14,7 +14,6 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import ModuleLayout from '../components/ModuleLayout';
-import { CircleLoader } from './../../../components/LoadingIndicator';
 import BankList from './components/BankList';
 import BankDetails from './bankDetails';
 import AddBankAccountDialog from './components/AddBankAccountDialog';
@@ -40,11 +39,6 @@ export function Banking(props) {
     getAccountTypes();
     getTransfersByOrgId();
   }, []);
-
-
-  if (loading) {
-    return <CircleLoader />
-  }
 
   return (
     <div>

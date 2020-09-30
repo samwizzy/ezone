@@ -17,7 +17,6 @@ import AccountsList from './components/AccountsList';
 import ChartAccountDetails from './chartAccountDetails';
 import AccountDialog from './components/AccountDialog';
 import ConfirmDeleteAccountDialog from './components/ConfirmDeleteAccountDialog';
-import { CircleLoader } from '../../../components/LoadingIndicator';
 
 const key = "chart";
 const ChartOfAccounts = props => {

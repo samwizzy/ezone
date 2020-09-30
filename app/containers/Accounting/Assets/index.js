@@ -11,7 +11,6 @@ import * as Actions from './actions';
 import reducer from './reducer';
 import saga from './saga';
 import makeSelectFixedAssets, * as Selectors from './selectors';
-import { CircleLoader } from '../../../components/LoadingIndicator';
 import AssetsList from './AssetsList'
 import NewAsset from './NewAsset'
 import AssetDialog from './components/AssetDialog'

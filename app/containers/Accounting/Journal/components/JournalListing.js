@@ -1,6 +1,7 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import _ from 'lodash';
 import {
   makeStyles,
   IconButton,
@@ -16,6 +17,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { darken } from '@material-ui/core/styles/colorManipulator';
+import { CircleLoader } from '../../../../components/LoadingIndicator';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import moment from 'moment';
@@ -74,6 +76,10 @@ const JournalListing = props => {
   }
 
   journalListData.reverse()
+
+  if (!journalListData.length > 0) {
+    return <CircleLoader />
+  }
 
   const columns = [
     {

@@ -6,6 +6,7 @@ import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import { makeStyles, IconButton, Button, Menu, MenuItem, Tooltip } from '@material-ui/core';
+import { CircleLoader } from '../../../../components/LoadingIndicator';
 import AddIcon from '@material-ui/icons/Add';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import classNames from 'classnames';

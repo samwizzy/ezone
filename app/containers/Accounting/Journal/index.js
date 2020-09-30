@@ -16,7 +16,6 @@ import JournalListing from './components/JournalListing';
 import AddNewJournal from './components/AddNewJournal';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
-import { CircleLoader } from '../../../components/LoadingIndicator';
 
 export function Journal(props) {
   useInjectReducer({ key: 'journal', reducer });
@@ -31,10 +30,6 @@ export function Journal(props) {
     getChartOfAccounts();
     getAccountingPeriods();
   }, []);
-
-  if (loading) {
-    return <CircleLoader />
-  }
 
   return (
     <div>
