@@ -286,6 +286,7 @@ const TransactionTransferDialog = props => {
             onClick={handleSubmit}
             color="primary"
             variant="contained"
+            disableElevation
             disabled={loading ? loading : !canSubmitForm()}
             endIcon={loading && <CircularProgress size={20} />}
           >
@@ -295,6 +296,7 @@ const TransactionTransferDialog = props => {
             onClick={closeAccountTransferDialog}
             color="inherit"
             variant="contained"
+            disableElevation
           >
             Cancel
           </Button>

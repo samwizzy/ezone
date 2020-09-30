@@ -89,8 +89,9 @@ const AddBankAccountDialog = props => {
           <Button
             onClick={handleSubmit}
             color="primary"
-            disabled={loading}
             variant="contained"
+            disableElevation
+            disabled={loading}
             endIcon={loading && <CircularProgress size={20} />}
           >
             {dialog.type === "delete" ? "Delete" : ""}
@@ -100,6 +101,7 @@ const AddBankAccountDialog = props => {
             onClick={closeDeleteBankAccountDialog}
             color="inherit"
             variant="contained"
+            disableElevation
           >
             Cancel
           </Button>

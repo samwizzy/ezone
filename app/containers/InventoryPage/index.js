@@ -35,10 +35,8 @@ export function InventoryPage(props) {
       <Fragment>
         <Route exact path={path} component={Dashboard} />
         <Route exact path={`${path}/dashboard`} component={Dashboard} />
-        <Route exact path={`${path}/purchase`} component={PurchasePage} />
-        <Route exact path={`${path}/purchase/:id`} component={PurchasePage} />
-        <Route exact path={`${path}/sales`} component={SalesPage} />
-        <Route exact path={`${path}/sales/:id`} component={SalesPage} />
+        <Route path={`${path}/purchase`} component={PurchasePage} />
+        <Route path={`${path}/sales`} component={SalesPage} />
 
         <Route path={`${path}/warehouses`} component={WarehousePage} />
         <Route path={`${path}/items`} component={ItemPage} />
