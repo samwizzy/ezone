@@ -205,7 +205,7 @@ const DepreciationTypes = (props) => {
     <div className={classes.root}>
       <MUIDataTable
         className={classes.datatable}
-        title="Depreciation Types"
+        title="Depreciation types"
         data={orderedDepreciationTypes}
         columns={columns}
         options={options}
