@@ -30,9 +30,11 @@ const useStyles = makeStyles(theme => ({
     alignContent: "center",
   },
   datatable: {
+    whiteSpace: 'nowrap',
     '& tr:hover': {
       cursor: 'pointer'
     },
+    '& td': { padding: theme.spacing(1, 2) },
     '& thead': {
       '& th': {
         color: theme.palette.common.white,

@@ -10,6 +10,7 @@ import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
 import {
   makeStyles,
+  InputAdornment,
   Button,
   IconButton,
   CircularProgress,
@@ -40,6 +41,8 @@ import DateFnsUtils from '@date-io/date-fns';
 import AddIcon from '@material-ui/icons/Add';
 import CancelIcon from '@material-ui/icons/Cancel';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import ExpandLess from '@material-ui/icons/ExpandLess';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
@@ -123,7 +126,7 @@ const NewJournal = props => {
     createJournal,
   } = props;
 
-  const classes = useStyles();
+  const classes = useStyles(props);
   const [values, setValues] = React.useState({ ...initialState })
 
   useEffect(() => {
@@ -253,6 +256,14 @@ const NewJournal = props => {
                           />
                         )}
                       />
+
+                      <FormControl component="fieldset">
+                        <FormControlLabel
+                          control={<Checkbox checked={values.taxApplicable} onChange={handleChange} name="taxApplicable" />}
+                          label="Tax Applicable"
+                        />
+                        <FormHelperText>Accepting this means you acknowledge all tax related conditions</FormHelperText>
+                      </FormControl>
                     </TableCell>
                   </TableRow>
                   <TableRow>
@@ -294,6 +305,18 @@ const NewJournal = props => {
                         onChange={handleChange}
                         variant="outlined"
                         margin="dense"
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              1 Dollar (USD) =
+                            </InputAdornment>
+                          ),
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              NGN
+                            </InputAdornment>
+                          )
+                        }}
                         InputLabelProps={{
                           shrink: true,
                         }}
@@ -301,7 +324,7 @@ const NewJournal = props => {
                       />
                     </TableCell>
                   </TableRow>
-                  <TableRow>
+                  {/* <TableRow>
                     <TableCell>Tax Rate</TableCell>
                     <TableCell>
                       <TextField
@@ -359,7 +382,7 @@ const NewJournal = props => {
                         style={{ width: 300 }}
                       />
                     </TableCell>
-                  </TableRow>
+                  </TableRow> */}
                   <TableRow>
                     <TableCell>Transaction Date</TableCell>
                     <TableCell>
@@ -423,19 +446,6 @@ const NewJournal = props => {
                         </Button>
 
                         <FormHelperText>{values.attachments.length > 0 ? `${values.attachments.length} files selected` : ""}</FormHelperText>
-                      </FormControl>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell></TableCell>
-                    <TableCell>
-                      <FormControl component="fieldset">
-                        <FormLabel component="legend">Tax Preference</FormLabel>
-                        <FormControlLabel
-                          control={<Checkbox checked={values.taxApplicable} onChange={handleChange} name="taxApplicable" />}
-                          label="Tax Applicable"
-                        />
-                        <FormHelperText>Accepting this means you acknowledge all tax related conditions</FormHelperText>
                       </FormControl>
                     </TableCell>
                   </TableRow>

@@ -68,7 +68,6 @@ const useStyles = makeStyles(theme => ({
     }
   },
   toolbarHead: {
-    // marginTop: theme.spacing(1),
     alignItems: 'center',
     '& .MuiAvatar-root': {
       background: theme.palette.primary.main,
@@ -254,13 +253,13 @@ const AccountingPeriods = props => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleChangeStatus}>
+        <MenuItem onClick={handleChangeStatus} disabled={selectedPeriod && selectedPeriod.status}>
           Open
         </MenuItem>
-        <MenuItem onClick={handleActivatePeriod}>
+        <MenuItem onClick={handleActivatePeriod} disabled={selectedPeriod && selectedPeriod.activeYear}>
           Set as active
         </MenuItem>
-        <MenuItem onClick={handleChangeStatus}>
+        <MenuItem onClick={handleChangeStatus} disabled={selectedPeriod && !selectedPeriod.status}>
           Close
         </MenuItem>
       </Menu>

@@ -191,8 +191,9 @@ const AddBankAccountDialog = props => {
           <Button
             onClick={handleSubmit}
             color="primary"
-            disabled={loading ? loading : !canSubmitValues()}
             variant="contained"
+            disableElevation
+            disabled={loading ? loading : !canSubmitValues()}
             endIcon={loading && <CircularProgress size={20} />}
           >
             {dialog.type === "new" ? "Save" : "Update"}
@@ -202,6 +203,7 @@ const AddBankAccountDialog = props => {
             onClick={closeNewBankAccountDialog}
             color="inherit"
             variant="contained"
+            disableElevation
           >
             Cancel
           </Button>
