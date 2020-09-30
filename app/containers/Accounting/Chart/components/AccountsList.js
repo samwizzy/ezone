@@ -167,7 +167,7 @@ const AccountChart = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          return value ? <CheckCircleIcon className={classNames(classes.status, { 'active': true })} /> : <CheckCircleOutlineIcon />
+          return value ? <CheckCircleIcon className={classNames(classes.status, { 'active': value })} /> : <CheckCircleOutlineIcon />
         }
       },
     },
