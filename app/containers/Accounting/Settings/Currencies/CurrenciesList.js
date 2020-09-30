@@ -26,13 +26,12 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
   },
   datatable: {
+    whiteSpace: 'nowrap',
     '& tr:hover': {
       cursor: 'pointer'
     },
-    '& tbody': {
-      '& td': {
-        padding: theme.spacing(0, 1)
-      },
+    '& td': {
+      padding: theme.spacing(1, 2)
     },
   },
 }));
@@ -178,7 +177,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewCurrencyDialog: () => dispatch(Actions.openNewCurrencyDialog()),
-    openEditCurrencyDialog: () => dispatch(Actions.openEditCurrencyDialog()),
+    openEditCurrencyDialog: data => dispatch(Actions.openEditCurrencyDialog(data)),
   };
 }
 

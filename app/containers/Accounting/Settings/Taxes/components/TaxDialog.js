@@ -43,11 +43,12 @@ const TaxDialog = props => {
     dialog,
     closeNewTaxDialog,
     createTax,
+    updateTax,
   } = props;
 
   useEffect(() => {
-    if (dialog.type === 'edit') {
-      setForm({ ...initialState })
+    if (dialog.type === 'edit' && dialog.data) {
+      setForm({ ...dialog.data })
     } else {
       setForm({ ...initialState })
     }
@@ -62,7 +63,7 @@ const TaxDialog = props => {
 
   const handleSubmit = () => {
     dialog.type === 'new' ?
-      createTax(form) : ""
+      createTax(form) : updateTax(form)
   };
 
   const canSubmitForm = () => {
@@ -146,6 +147,7 @@ const TaxDialog = props => {
             variant="contained"
             onClick={handleSubmit}
             color="primary"
+            disableElevation
             disabled={loading ? loading : !canSubmitForm()}
             endIcon={loading && <CircularProgress size={20} />}
           >
@@ -155,6 +157,7 @@ const TaxDialog = props => {
           <Button
             variant="contained"
             onClick={closeNewTaxDialog}
+            disableElevation
           >
             Cancel
           </Button>
@@ -178,6 +181,7 @@ function mapDispatchToProps(dispatch) {
   return {
     closeNewTaxDialog: () => dispatch(Actions.closeNewTaxDialog()),
     createTax: data => dispatch(Actions.createTax(data)),
+    updateTax: data => dispatch(Actions.updateTax(data)),
   }
 }
 

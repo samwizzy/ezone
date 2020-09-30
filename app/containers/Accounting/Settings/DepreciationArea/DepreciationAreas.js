@@ -9,16 +9,15 @@ import {
   Button,
   Menu,
   MenuItem,
-  Toolbar,
   Tooltip
 } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import AddIcon from '@material-ui/icons/Add';
-import { Euro, AttachMoney, Delete, Check } from '@material-ui/icons';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import moment from 'moment';
+import _ from 'lodash';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,31 +25,37 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
   },
   datatable: {
-    '& .MuiTableRow-root:hover': {
+    whiteSpace: 'nowrap',
+    '& tr:hover': {
       cursor: 'pointer'
     },
-    '& tbody': {
-      '& td': {
-        padding: theme.spacing(1)
-      },
+    '& td': {
+      padding: theme.spacing(1, 2)
     },
   },
 }));
 
 const DepreciationAreas = (props) => {
   const classes = useStyles(props);
-  const { depreciationAreas, openNewDepreciationAreaDialog } = props
+  const { depreciationAreas, openNewDepreciationAreaDialog, openEditDepreciationAreaDialog } = props
   const [anchorEl, setAnchorEl] = useState(null)
+  const [selectedDepreciationArea, setSelectedDepreciationArea] = useState(null)
 
   const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget)
+    setSelectedDepreciationArea(_.find(depreciationAreas, { id }))
   }
 
   const handleClose = () => {
     setAnchorEl(null)
   }
 
-  depreciationAreas.reverse()
+  const handleEditClick = () => {
+    openEditDepreciationAreaDialog(selectedDepreciationArea)
+    handleClose()
+  }
+
+  const orderedDepreciationAreas = _.orderBy(depreciationAreas, 'dateCreated', 'desc');
 
   console.log(depreciationAreas, "depreciationAreas")
 
@@ -148,7 +153,7 @@ const DepreciationAreas = (props) => {
       <MUIDataTable
         className={classes.datatable}
         title="Depreciation Areas"
-        data={depreciationAreas}
+        data={orderedDepreciationAreas}
         columns={columns}
         options={options}
       />
@@ -160,7 +165,7 @@ const DepreciationAreas = (props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => { }}>
+        <MenuItem onClick={handleEditClick}>
           Edit
         </MenuItem>
       </Menu>
@@ -175,7 +180,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewDepreciationAreaDialog: () => dispatch(Actions.openNewDepreciationAreaDialog()),
-  };
+    openEditDepreciationAreaDialog: (data) => dispatch(Actions.openEditDepreciationAreaDialog(data)),
+  }
 }
 
 const withConnect = connect(

@@ -133,11 +133,39 @@ export function* createDepreciationArea({ payload }) {
       }),
     });
 
+    swal("Success", "Depreciation area created successfully", "success");
     yield put(Actions.createDepreciationAreaSuccess(response));
     yield put(Actions.getDepreciationArea());
     yield put(Actions.closeNewDepreciationAreaDialog());
   } catch (err) {
+    swal("Error", "Something went wrong", "error");
     yield put(Actions.createDepreciationAreaError(err));
+  }
+}
+
+export function* updateDepreciationArea({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.UpdateDepreciationAreaApi}`;
+  payload.orgId = currentUser.organisation.orgId
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    swal("Success", "Depreciation area updated successfully", "success");
+    yield put(Actions.updateDepreciationAreaSuccess(response));
+    yield put(Actions.getDepreciationArea());
+    yield put(Actions.closeNewDepreciationAreaDialog());
+  } catch (err) {
+    swal("Error", "Something went wrong", "error");
+    yield put(Actions.updateDepreciationAreaError(err));
   }
 }
 
@@ -157,6 +185,7 @@ export function* getDepreciationTypes() {
 
     yield put(Actions.getDepreciationTypesSuccess(response));
   } catch (err) {
+    swal("Error", "Something went wrong", "error");
     yield put(Actions.getDepreciationTypesError(err));
   }
 }
@@ -177,11 +206,39 @@ export function* createDepreciationType({ payload }) {
       }),
     });
 
+    swal("Success", "Depreciation type created successfully", "success");
     yield put(Actions.createDepreciationTypeSuccess(response));
     yield put(Actions.getDepreciationTypes());
     yield put(Actions.closeNewDepreciationTypeDialog());
   } catch (err) {
+    swal("Error", "Something went wrong", "error");
     yield put(Actions.createDepreciationTypeError(err));
+  }
+}
+
+export function* updateDepreciationType({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.UpdateDepreciationTypeApi}`;
+  payload.orgId = currentUser.organisation.orgId
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    swal("Success", "Depreciation type updated successfully", "success");
+    yield put(Actions.updateDepreciationTypeSuccess(response));
+    yield put(Actions.getDepreciationTypes());
+    yield put(Actions.closeNewDepreciationTypeDialog());
+  } catch (err) {
+    swal("Error", "Something went wrong", "error");
+    yield put(Actions.updateDepreciationTypeError(err));
   }
 }
 
@@ -240,8 +297,6 @@ export function* getCurrencies() {
       }),
     });
 
-    console.log(response, "response getCurrencies")
-
     yield put(Actions.getCurrenciesSuccess(response));
   } catch (err) {
     yield put(Actions.getCurrenciesError(err));
@@ -264,18 +319,46 @@ export function* createCurrency({ payload }) {
       }),
     });
 
+    swal("Success", "Currency created successfully", "success");
     yield put(Actions.createCurrencySuccess(response));
     yield put(Actions.getCurrencies());
     yield put(Actions.closeNewCurrencyDialog());
   } catch (err) {
+    swal("Error", "Something went wrong", "error");
     yield put(Actions.createCurrencyError(err));
+  }
+}
+
+export function* updateCurrency({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.UpdateCurrencyApi}`;
+  payload.orgId = currentUser.organisation.orgId
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    swal("Success", "Currency updated successfully", "success");
+    yield put(Actions.updateCurrencySuccess(response));
+    yield put(Actions.getCurrencies());
+    yield put(Actions.closeNewCurrencyDialog());
+  } catch (err) {
+    swal("Error", "Something went wrong", "error");
+    yield put(Actions.updateCurrencyError(err));
   }
 }
 
 export function* getTaxes() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetTaxTypeByOrgIdApi}?orgId=${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetTaxesByOrgIdApi}?orgId=${currentUser.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -285,8 +368,6 @@ export function* getTaxes() {
         'Content-Type': 'application/json',
       }),
     });
-
-    console.log(response, "response getCurrencies")
 
     yield put(Actions.getTaxesSuccess(response));
   } catch (err) {
@@ -310,13 +391,41 @@ export function* createTax({ payload }) {
       }),
     });
 
-    console.log(response, "response createtax")
-
+    swal("Success", "Tax created successfully", "success");
     yield put(Actions.createTaxSuccess(response));
     yield put(Actions.getTaxes());
     yield put(Actions.closeNewTaxDialog());
   } catch (err) {
+    swal("Error", "Something went wrong", "error");
     yield put(Actions.createTaxError(err));
+  }
+}
+
+export function* updateTax({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.UpdateTaxApi}`;
+  payload.orgId = currentUser.organisation.orgId
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "response createtax")
+
+    swal("Success", "Tax updated successfully", "success");
+    yield put(Actions.updateTaxSuccess(response));
+    yield put(Actions.getTaxes());
+    yield put(Actions.closeNewTaxDialog());
+  } catch (err) {
+    swal("Error", "Something went wrong", "error");
+    yield put(Actions.updateTaxError(err));
   }
 }
 
@@ -380,8 +489,6 @@ export function* getAssetTypes() {
       }),
     });
 
-    console.log(response, "response getCurrencies")
-
     yield put(Actions.getAssetTypesSuccess(response));
   } catch (err) {
     yield put(Actions.getAssetTypesError(err));
@@ -404,11 +511,39 @@ export function* createAssetType({ payload }) {
       }),
     });
 
+    swal("Success", "Asset type created successfully", "success");
     yield put(Actions.createAssetTypeSuccess(response));
     yield put(Actions.getAssetTypes());
     yield put(Actions.closeNewAssetTypeDialog());
   } catch (err) {
+    swal("Error", "Something went wrong", "error");
     yield put(Actions.createAssetTypeError(err));
+  }
+}
+
+export function* updateAssetType({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.UpdateAssetTypeApi}`;
+  payload.orgId = currentUser.organisation.orgId
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    swal("Success", "Asset Type updated successfully", "success");
+    yield put(Actions.updateAssetTypeSuccess(response));
+    yield put(Actions.getAssetTypes());
+    yield put(Actions.closeNewAssetTypeDialog());
+  } catch (err) {
+    swal("Error", "Something went wrong", "error");
+    yield put(Actions.updateAssetTypeError(err));
   }
 }
 
@@ -499,8 +634,6 @@ export function* setAccountPeriodAsActive({ payload }) {
       }),
     });
 
-    console.log(response, "response setAccountPeriodAsActive")
-
     swal("Success", "Accounting period has been activated successfully", "success");
     yield put(Actions.getAllAccountingPeriod());
     yield put(Actions.setAccountPeriodAsActiveSuccess(response));
@@ -522,16 +655,21 @@ export default function* SettingsSaga() {
   yield takeLatest(Constants.GET_BUSINESS_TYPES, getAllBusinessTypes);
   yield takeLatest(Constants.GET_DEPRECIATION_AREA, getDepreciationArea);
   yield takeLatest(Constants.CREATE_DEPRECIATION_AREA, createDepreciationArea);
+  yield takeLatest(Constants.UPDATE_DEPRECIATION_AREA, updateDepreciationArea);
   yield takeLatest(Constants.GET_DEPRECIATION_TYPES, getDepreciationTypes);
   yield takeLatest(Constants.CREATE_DEPRECIATION_TYPE, createDepreciationType);
+  yield takeLatest(Constants.UPDATE_DEPRECIATION_TYPE, updateDepreciationType);
   yield takeLatest(Constants.GET_CURRENCIES, getCurrencies);
   yield takeLatest(Constants.CREATE_CURRENCY, createCurrency);
+  yield takeLatest(Constants.UPDATE_CURRENCY, updateCurrency);
   yield takeLatest(Constants.GET_TAXES, getTaxes);
   yield takeLatest(Constants.CREATE_TAX, createTax);
+  yield takeLatest(Constants.UPDATE_TAX, updateTax);
   yield takeLatest(Constants.GET_ASSETS, getAssets);
   yield takeLatest(Constants.CREATE_ASSET, createAsset);
   yield takeLatest(Constants.GET_ASSET_TYPES, getAssetTypes);
   yield takeLatest(Constants.CREATE_ASSET_TYPE, createAssetType);
+  yield takeLatest(Constants.UPDATE_ASSET_TYPE, updateAssetType);
   yield takeLatest(Constants.CREATE_ACCOUNT_PERIOD, createAccountPeriod);
   yield takeLatest(Constants.UPDATE_ACCOUNT_PERIOD, updateAccountPeriod);
   yield takeLatest(Constants.UPDATE_ACCOUNT_PERIOD_STATUS, updateAccountPeriodStatus);

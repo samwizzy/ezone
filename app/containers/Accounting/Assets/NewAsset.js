@@ -88,11 +88,12 @@ const NewAsset = props => {
     chartOfAccounts,
     assetTypes,
     createAsset,
+    updateAsset,
   } = props;
 
   useEffect(() => {
-    if (dialog.type === 'edit') {
-      setForm({ ...initialState })
+    if (dialog.type === 'edit' && dialog.data) {
+      setForm({ ...dialog.data })
     } else {
       setForm({ ...initialState })
     }
@@ -119,7 +120,7 @@ const NewAsset = props => {
 
   const handleSubmit = () => {
     dialog.type === 'new' ?
-      createAsset(form) : "";
+      createAsset(form) : updateAsset(form);
   };
 
   const canSubmitForm = () => {
@@ -550,6 +551,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     createAsset: data => dispatch(Actions.createAsset(data)),
+    updateAsset: data => dispatch(Actions.updateAsset(data)),
   }
 }
 

@@ -59,6 +59,7 @@ const ConfirmDeleteAccountDialog = props => {
             onClick={() => deleteChartOfAccount(dialog.data)}
             color="primary"
             variant="contained"
+            disableElevation
             disabled={loading}
             endIcon={loading && <CircularProgress size={20} />}
           >
@@ -68,6 +69,7 @@ const ConfirmDeleteAccountDialog = props => {
             onClick={closeDeleteAccountDialog}
             color="inherit"
             variant="contained"
+            disableElevation
           >
             Cancel
           </Button>

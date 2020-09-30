@@ -43,15 +43,16 @@ const DepreciationAreaDialog = props => {
     dialog,
     closeNewDepreciationAreaDialog,
     createDepreciationArea,
+    updateDepreciationArea,
   } = props;
 
   useEffect(() => {
-    if (dialog.type === 'edit') {
-      setForm({ ...initialState })
+    if (dialog.type === 'edit' && dialog.data) {
+      setForm({ ...dialog.data })
     } else {
       setForm({ ...initialState })
     }
-  }, [])
+  }, [dialog.data])
 
   const handleChange = (event) => {
     setForm({ ...form, [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value });
@@ -59,7 +60,7 @@ const DepreciationAreaDialog = props => {
 
   const handleSubmit = () => {
     dialog.type === 'new' ?
-      createDepreciationArea(form) : ""
+      createDepreciationArea(form) : updateDepreciationArea(form)
   };
 
   const canSubmitForm = () => {
@@ -91,6 +92,7 @@ const DepreciationAreaDialog = props => {
             name="code"
             label="Code"
             variant="outlined"
+            value={form.code}
             onChange={handleChange}
             margin="normal"
             size="small"
@@ -102,6 +104,7 @@ const DepreciationAreaDialog = props => {
             name="type"
             label="Type"
             variant="outlined"
+            value={form.type}
             onChange={handleChange}
             margin="normal"
             size="small"
@@ -129,6 +132,7 @@ const DepreciationAreaDialog = props => {
             variant="contained"
             onClick={handleSubmit}
             color="primary"
+            disableElevation
             disabled={loading ? loading : !canSubmitForm()}
             endIcon={loading && <CircularProgress size={20} />}
           >
@@ -138,6 +142,7 @@ const DepreciationAreaDialog = props => {
           <Button
             variant="contained"
             onClick={closeNewDepreciationAreaDialog}
+            disableElevation
           >
             Cancel
           </Button>
@@ -161,6 +166,7 @@ function mapDispatchToProps(dispatch) {
   return {
     closeNewDepreciationAreaDialog: () => dispatch(Actions.closeNewDepreciationAreaDialog()),
     createDepreciationArea: data => dispatch(Actions.createDepreciationArea(data)),
+    updateDepreciationArea: data => dispatch(Actions.updateDepreciationArea(data)),
   }
 }
 
