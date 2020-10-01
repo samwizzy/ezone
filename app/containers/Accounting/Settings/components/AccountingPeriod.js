@@ -1,857 +1,319 @@
-import React, { memo,useState,useEffect } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { 
-  makeStyles, 
-  Box, 
-  Button, 
-  Menu,
-  MenuItem,
-  Grid, 
-  Paper, 
-  Table, 
-  TableBody,
-  TableFooter, 
-  TableRow, 
-  TableCell, 
-  TextField, 
-  Toolbar, 
-  Typography,
-  Tooltip
-} from '@material-ui/core';
-import swal from 'sweetalert';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-import { Autocomplete } from '@material-ui/lab';
-import { Add, Check, Delete } from '@material-ui/icons';
-import DateFnsUtils from '@date-io/date-fns'; // choose your lib
-import {
-  DatePicker,
-  TimePicker,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-  DateTimePicker,
-  MuiPickersUtilsProvider,
-} from '@material-ui/pickers';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import * as Actions from '../actions';
-import * as Selectors from '../selectors';
-import * as crud from '../crud';
-import DialogOfAccountPeriod from './DialogOfAccountPeriod';
+import classNames from 'classnames';
+import {
+  makeStyles,
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  Grid,
+  Paper,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  Toolbar,
+  Typography,
+  Tooltip,
+} from '@material-ui/core';
+import { green } from '@material-ui/core/colors';
+import AddIcon from '@material-ui/icons/Add';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import EventAvailableIcon from '@material-ui/icons/EventAvailable';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import moment from 'moment';
-// import ModuleLayout from '../../components/ModuleLayout';
-import months from './../../../../utils/months';
-import { getAccountingPeriods } from '../../FixedAssets/crud';
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import * as Actions from '../actions';
+import * as Selectors from '../selectors';
+import DialogOfAccountPeriod from './DialogOfAccountPeriod';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(3),
   },
   paper: {
-    padding: theme.spacing(1, 2),
-    backgroundColor: theme.palette.grey[300],
+    padding: theme.spacing(2, 0),
   },
-  grid: {
-    justifyContent: "space-between",
-    '& .MuiGrid-item': {
-      flex: 1,
-      margin: theme.spacing(2, 0),
-    }
-  },
-  box: {
-		backgroundColor: theme.palette.grey[200]
-  },
-  curve:{
-    borderRadius:'8px'
-  },
-  lightLift: {
-    marginBottom: '20px',
-  },
-  paperBase:{
-    padding: theme.spacing(1, 2),
-  },
-	table: {
-    display: "flex",
-    flexDirection: "column",
-    whiteSpace: "nowrap",
-    '& .MuiTableFooter-root': {},
-    '& th.MuiTableCell-root': {
-			borderBottom: 'none !important',
+  table: {
+    minWidth: 200,
+    whiteSpace: 'nowrap',
+    '& tr': {
+      '& th': {
+        fontWeight: theme.typography.fontWeightMedium, // 500 + 100, bold=700
+      },
     },
-    '& .MuiTableCell-root': {
-      borderBottom: 'none !important'
+    '& td': {
+      // borderBottom: 0
     },
+  },
+  toolbar: {
+    ...theme.mixins.toolbar,
+    alignItems: 'center',
+    '& svg': {
+      marginRight: theme.spacing(1),
+      color: theme.palette.primary.main,
+    },
+  },
+  status: {
+    '&.active': { color: green[500] },
+  },
+  title: {
+    flexGrow: 1,
   },
 }));
+
+const initialState = {
+  orgId: '',
+  startDate: moment().format('YYYY-MM-DDTHH:mm:ss'),
+  year: moment().format('YYYY'),
+};
 
 const AccountingPeriod = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [anchorElII, setAnchorElII] = useState(null);
-  const [anchorElIII, setAnchorElIII] = useState(null);
-  const [lastYear,setLastYear] = useState()
-  const  [loadin,setLoadin] =useState(false)
 
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    
-  };
-
-  const handleClickClose = () => {
-    setOpen(false);
-  };
-  
   const {
     accountingSetupData,
-    allAccountingPeriodData,
-    openAccountPeriodDialogAction,
-    editOpenAccountPeriodDialogAction,
-    openDialogCloseAccountPeriodAction
+    accountingPeriods,
+    openAccountPeriodDialog,
+    setAccountPeriodAsActive,
+    updateAccountPeriodStatus,
+    openEditAccountPeriodDialog,
+    openAccountPeriodCloseDialog,
   } = props;
 
-  const handleClose = (value) => {
-    switch(value){
-      case 0:
-        setAnchorEl(null);
-        break;
-        case 1:
-          setAnchorElII(null);
-          break;
-          default :
-          setAnchorElIII(null);    
-    }
-    
+  const [values, setValues] = useState({ ...initialState });
+  const [selectedPeriod, setSelectedPeriod] = useState({ ...initialState });
+
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
-  const handleDateChange = (date) => {
-    setValues({ ...values,startDate:(new Date(date)).toISOString(), year:(new Date(date)).getFullYear()})
+  const handleDateChange = name => date => {
+    setValues({
+      ...values,
+      [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss'),
+      year: moment(date).format('YYYY'),
+    });
   };
 
-  const [currentAccountPeriod,setCurrentAccountPeriod] = useState({});
-  const [accountingPeriods,setAccountingPeriods] = useState([]);
+  useEffect(() => {}, []);
 
-  const [values, setValues] = useState({
-    orgId: "",
-    startDate:(new Date('2019-01-18T21:11:54')).toISOString(),
-    year: (new Date('2019-01-18T21:11:54')).getFullYear()
-  });
-
-  const [accountToUpdate, setAccountToUpdate] = useState({
-    id: "",
-    orgId: "",
-    startDate:'',
-    year: ""
-  });
-
-  useEffect(() => {
-    let mounted = true
-    if(mounted){
-      getAccountingPeriod();
-    }
-    return ()=>{
-     mounted = false
-    } 
-  },[])
-
-
-  async function getAccountingPeriod() {
-    //let currentY = `${new Date().getUTCFullYear()}`
-    await crud.getAccountingPeriods().then(data=>{
-      for(let i=0;i<data.data.length;i++){
-        if(data.data[i].activeYear){
-        setCurrentAccountPeriod(data.data[i])
-        //setLastYear ((Number(data.data[i].year)));
-        break;
-        }
-      }
-      setAccountingPeriods(data.data);
-      
-    }).catch((err)=>{
-     
-      console.log(`Error from setUptins ${err}`)
-    })
-  }
-
-  const handleClickPeriod =(event ,value) =>{
+  const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
-   setAccountToUpdate(
-     {
-       ...accountToUpdate,
-       id: value.id,
-       orgId: value.orgId,
-       year:value.year
-     }
-   )
-   
-  }
-
-  const handleClickPeriodII =(event ,value) =>{
-    setAnchorElIII(event.currentTarget);
-   setAccountToUpdate(
-     {
-       ...accountToUpdate,
-       id: value.id,
-       orgId: value.orgId,
-       year:value.year
-     }
-   )
-   
-  }
-
-  const handleClick = (event, value) => {
-    setAnchorElII(event.currentTarget);
-    setAccountToUpdate(
-      {
-        ...accountToUpdate,
-        id: value.id,
-        orgId: value.orgId,
-        year:value.year
-      }
-    )
+    setSelectedPeriod(_.find(accountingPeriods, { id }));
   };
 
-  const [calenderDay, setCalenderDay] = useState(0);
-  const [calenderMonth,setCalenderMonth] = useState(0);
+  const handleChangeStatus = () => {
+    const data = { status: !selectedPeriod.status, id: selectedPeriod.id };
+    console.log(data, 'data');
+    updateAccountPeriodStatus(data);
+    handleClose();
+  };
 
-  const months = [
-    {
-      value: 1,
-      label: 'January',
-    },
-    {
-      value: 2,
-      label: 'Febuary',
-    },
-    {
-      value: 3,
-      label: 'March',
-    },
-    {
-      value: 4,
-      label: 'April',
-    },
-    {
-      value: 5,
-      label: 'May',
-    },
-    {
-      value: 6,
-      label: 'June',
-    },
-    {
-      value: 7,
-      label: 'July',
-    },
-    {
-      value: 8,
-      label: 'August',
-    },
-    {
-      value: 9,
-      label: 'September',
-    },
-    {
-      value: 10,
-      label: 'October',
-    },
-    {
-      value: 11,
-      label: 'November',
-    },
-    {
-      value: 12,
-      label: 'December',
-    },
-  ];
+  const handleActivatePeriod = () => {
+    const data = { id: selectedPeriod.id };
+    console.log(data, 'data');
+    setAccountPeriodAsActive(data);
+    handleClose();
+  };
 
-  function leapYear(year) {
-    return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
+  if (!accountingSetupData || !accountingPeriods) {
+    return null;
   }
 
-  function calculateDaysOfMonth(length) {
-    let days = [{ label: '1', value: 1 }];
-    for (let i = 2; i <= length; i++) {
-      days = [...days, { label: `${i}`, value:i }];
-    }
-    return days;
-  }
+  const currentAccountingPeriod = accountingPeriods.find(
+    account => account.activeYear === true,
+  );
 
-  function getDaysOfTheMonth(value) {
-    switch (value) {
-      case 1:
-      case 3:
-      case 5:
-      case 7:
-      case 8:
-      case 10:
-      case 12:
-        return calculateDaysOfMonth(31);
-      case '2': {
-        if (leapYear(new Date().getFullYear())) {
-          return calculateDaysOfMonth(29);
-        }
-        return calculateDaysOfMonth(28);
-      }
-      case 4:
-      case 6:
-      case 9:
-      case 11:
-        return calculateDaysOfMonth(30);
-    }
-  }
-
-  const [dmonth, setDmonth] = useState(1);
-
-  function setMonthForCalender(event, value) {
-    setDmonth(value.value);
-  }
-
-  function monthOnly(month){
-    switch(month){
-      
-        case 1 :
-        return 'January'
-        case 2 :
-          return 'Febuary'
-        case 3 :
-         return 'March'  
-         case 4 :
-          return 'April'
-        case 5 :
-          return 'May'
-        case 6 :
-          return 'June'  
-        case 7 :
-          return 'July'
-        case 8 :
-          return 'August' 
-        case 9 :
-          return 'September' 
-        case 10 :
-          return 'October'   
-        case 11 :
-            return 'November'
-         default :
-         return 'December'  
-    }
-  }
-
-  function formatDate(){
-    //console.log(` full date ${(lastYear)} ${calenderDay} ${calenderMonth}`)
-   let date = (new Date((lastYear + 1),(calenderDay),(calenderMonth -1))).toISOString();
-   return date;
-  }
-
-  function addPeriod(){
-    setLoadin(true)
-    let payload ={
-    activeYear: false,
-    startDate:values.startDate,
-    status: true,
-    year: `${values.year}`
-    }
-    if(isReady() === undefined){
-      swal("Error", "Accounting Period already exist", "warning");
-      setLoadin(false)
-    }
-    else if(isReady()) {
-      crud.creatAccountingPeriod(payload).then((data)=>{
-        getAccountingPeriod()
-        setLoadin(true)
-        handleClickClose();  
-      swal("Success", "Accounting Period added successfully", "success");
-      }).catch((error)=>{
-        swal("Error", "Something went wrong. Please check your network", "error");
-        setLoadin(false)
-      })
-    }
-    else{
-    swal("Error", "You can only open Accounting Period for Previous Years", "warning");
-    setLoadin(false) 
-    }
-  }
-
-  function openPeriod(value){
-    crud.updatePeriod(value)
-    .then((data)=>{
-      getAccountingPeriod()
-      swal("Success", "Accounting Period updated successfully", "success");
-    })
-    .catch((error)=>{
-      console.log(`Error in openingPeriod ${error}`)
-      swal("Error", "Something went wrong. Please check your network", "error");
-    })
-  }
-
-  function isReady(){
-    let currentY = new Date().getUTCFullYear()
-    //console.log(`current Year ${currentY}`)
-    let isContained = false;
-    let previousYrs = Number(values.year)
-    //console.log(`previous Year ${previousYrs}`)
-    for(let i=0; i<accountingPeriods.length;i++){
-      let result = Number(accountingPeriods[i].year) === previousYrs
-      if(result){
-        isContained = true;
-        break;
-      }
-    }
-
-    if(isContained){
-      return undefined
-    }
-    return  currentY > previousYrs
-  }
-
-  //console.log('current period file -> ', JSON.stringify(accountingPeriods));
-  //console.log('accountToUpdate state -> ',  JSON.stringify(accountingSetupData));
-
+  console.log(accountingSetupData, 'accountingSetupData');
+  console.log(accountingPeriods, 'accountingPeriods');
 
   return (
     <div>
-      <div>
-    
-      </div>
-      <div>
-      <Dialog
-        open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClickClose}
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle id="alert-dialog-slide-title">{"Start Date"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-
-            <div>
-              <Paper elevation={1} className={classes.paperBase}>
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <KeyboardDatePicker
-                        autoOk
-                        format="MM/dd/yyyy"
-                        margin="normal"
-                        inputVariant="outlined"
-                        name="previous"
-                        size="small"
-                        id="date-picker-startDate"
-                        label="Finacial Year"
-                        value={values.startDate}
-                        onChange={handleDateChange}
-                        KeyboardButtonProps={{
-                          'aria-label': 'change date',
-                        }}
-                      />
-                    </MuiPickersUtilsProvider>
-                  </Grid>
-                  <Grid item xs={12}>
-
-                  </Grid>
-                </Grid>
-              </Paper>
-            </div>
-           
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" onClick={handleClickClose} color="textSecondary">
-            Cancel
-          </Button>
-          {!loadin?
-          (
-          <Button variant="contained" onClick={()=>addPeriod()} color="primary">
-            Create
-          </Button>
-          )
-          :
-          <CircularProgress size={30}/>
-          }
-        </DialogActions>
-      </Dialog>
-      </div>
-    <React.Fragment>
-      <DialogOfAccountPeriod />
-      <div className={classes.root}>
       <Grid container>
-        <Grid item xs={5}>
+        <Grid item xs={12}>
           <Toolbar>
-            <Typography variant="h4">Settings</Typography>
+            <Typography variant="h5">Settings</Typography>
           </Toolbar>
-          <Paper square elevation={0}>
-            <Toolbar>
-              <Typography variant="h6">Accounting Period</Typography>
-            </Toolbar>
-            <Table size="small" className={classes.table}>
+
+          <Toolbar className={classes.toolbar}>
+            <AccountTreeIcon />
+            <Typography variant="h6">Accounting Period</Typography>
+          </Toolbar>
+          <Paper square className={classes.paper}>
+            <Table className={classes.table}>
               <TableBody>
                 <TableRow>
-                  <TableCell>Financial Year Start</TableCell>
+                  <TableCell component="th">Financial Year Start</TableCell>
                   <TableCell>
-                    <Box className={classes.box} p={2}>
-                      {moment(currentAccountPeriod.startDate).format('Do, MMM')}
-                    </Box>
+                    {moment(currentAccountingPeriod.startDate).format(
+                      'Do, MMM',
+                    )}
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>Accounting Method</TableCell>
+                  <TableCell component="th">Accounting Method</TableCell>
                   <TableCell>
-                    <Box className={classes.box} p={2}>
-                      {accountingSetupData.accountMethod}
-                    </Box>
+                    {accountingSetupData && accountingSetupData.accountMethod}
                   </TableCell>
                 </TableRow>
-               
+                <TableRow>
+                  <TableCell component="th">Tax Year Start</TableCell>
+                  <TableCell>
+                    {accountingSetupData && accountingSetupData.taxDay}
+                    {accountingSetupData && accountingSetupData.taxMonth}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell component="th">Tax Type</TableCell>
+                  <TableCell>
+                    {accountingSetupData && accountingSetupData.taxType}
+                  </TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           </Paper>
         </Grid>
-        <Grid item xs={7}></Grid>
-      </Grid>
-      <Grid container>
+
         <Grid item xs={12}>
-          <Paper square elevation={0}>
+          <Toolbar className={classes.toolbar}>
+            <EventAvailableIcon />
+            <Typography variant="h6">Accounting Year</Typography>
+          </Toolbar>
+
+          <Paper square className={classes.paper}>
             <Toolbar>
-              <Typography variant="h6">Accounting Years</Typography>
+              <Typography
+                variant="subtitle1"
+                className={classes.title}
+                component="div"
+              >
+                Current Accounting Year
+              </Typography>
             </Toolbar>
-             <div>
-               <div style={{textAlign:'center',paddingLeft:'5em',paddingRight:'5em'}}>
-               <Grid container spacing={2}>
-                 <Grid item xs={12}>
-                 <Typography variant="body1">Current Accounting Year</Typography>
-                 </Grid>
-                 <Grid item xs={8}>
-                  <div style={{padding:'2px'}}>
-                    <Paper elevation={2} className={classes.paper}>
-                    <Grid container spacing={4}>
-                      <Grid item xs={6}>
-                     <Typography variant="subtitle1" >Start Date : {moment(currentAccountPeriod.startDate).format('YYYY-MM-DD')}</Typography>
-                      </Grid>
-                      <Grid item xs={6}>
-                      <Typography variant="subtitle1">End Date : {moment(currentAccountPeriod.endDate).format('YYYY-MM-DD')}</Typography>
-                      </Grid>
-                    </Grid>
-                    </Paper>
-                  </div>
-                 </Grid>
-                 <Grid item xs={4}>
-                 <Button className={classes.curve}
-                      variant="contained"
-                      color="primary"
-                      type="button"
-                      onClick={(e) =>{
-                        e.preventDefault();
-                        setOpen(true);
-                        
-                      }}
-                    >
-                      Add Period
-                  </Button>
-                 </Grid>
-               </Grid>
-               </div>
-             </div>
 
-             <div>
-               <div style={{textAlign:'center'}}>
-               <Grid container spacing={3}>
-                 {accountingPeriods.map((item) =>
-                   <Grid key={item.id.toString()} item xs={12}>
-                     <Grid container spacing={3}>
-                     <Grid item xs={4}>
-                      <Typography variant="subtitle1" >Start Date : {moment(item.startDate).format('YYYY-MM-DD')}</Typography>
-                      </Grid>
-                      <Grid item xs={4}>
-                       <Typography variant="subtitle1" >End Date : {moment(item.endDate).format('YYYY-MM-DD')}</Typography>
-                      </Grid>
-                      <Grid item xs={4}>
-                        {item.status && !item.activeYear ?
-                        (
-                         <div>
-                      <Button 
-                        aria-controls="simple-menu" 
-                        aria-haspopup="true" 
-                        size="small"
-                        onClick={event=> {
-                          event.preventDefault();
-                          handleClickPeriod(event ,item)
-                          //getAccountingPeriod()
-                        }}
-                      >
-                        Open InActive
-                      </Button>
-                      <Menu
-                        id="simple-menu"
-                        anchorEl={anchorEl}
-                        keepMounted
-                        open={Boolean(anchorEl)}
-                        onClose={()=>handleClose(0)}
-                      >
-                        <MenuItem 
-                          onClick={() => {
-                            editOpenAccountPeriodDialogAction(accountToUpdate)
-                            getAccountingPeriod()
-                          }}
-                        >
-                          Set As Active 
-                        </MenuItem>
-                        <MenuItem
-                          onClick={() => {
-                            openDialogCloseAccountPeriodAction(accountToUpdate)
-                            getAccountingPeriod()
-                          }}
-                        >
-                          Close Period
-                        </MenuItem>
-                      </Menu>
-                        </div>
-                      )
-                       :
-                       (
-                        <div>
-                          {item.status && item.activeYear ?
-                            (
-                              <div>
-                        <Button 
-                        aria-controls="simple-menuII" 
-                        aria-haspopup="true" 
-                        size="small"
-                        onClick={event =>{
-                          event.preventDefault();
-                          handleClick(event, item)
-                        }}
-                      >
-                        Open Active
-                      </Button>
-                      <Menu
-                      id="simple-menuII"
-                      anchorEl={anchorElII}
-                      keepMounted
-                      open={Boolean(anchorElII)}
-                      onClose={()=>handleClose(1)}>
-                      {/*<MenuItem 
-                        onClick={() => editOpenAccountPeriodDialogAction(accountToUpdate)}
-                      >
-                        Set As InActive 
-                      </MenuItem>*/}
-                      <MenuItem
-                        onClick={() => {
-                          openDialogCloseAccountPeriodAction(accountToUpdate)
-                          getAccountingPeriod()
-                        }}
-                      >
-                        Close Period
-                      </MenuItem>
-                    </Menu>
-                    </div>
-                            )
-                            :
-                            (
-                              <div>
-                        <Button 
-                        aria-controls="simple-menu" 
-                        aria-haspopup="true" 
-                        size="small"
-                        onClick={event => handleClickPeriodII(event, item)}
-                      >
-                        Closed
-                      </Button>
-                      <Menu
-                      id="simple-menuIII"
-                      anchorEl={anchorElIII}
-                      keepMounted
-                      open={Boolean(anchorElIII)}
-                      onClose={()=>handleClose(2)}>
-                      <MenuItem
-                      onClick={() => {
-                         openPeriod(accountToUpdate)
-                      }}
-                    >
-                      Open Period
-                    </MenuItem>
-                    </Menu>
-                    </div>
-                            )
-                          }
-                        </div>
-                       )
-                      
-                        }
-                       </Grid>
-                     </Grid>
-                   </Grid>
-                 )}
-               </Grid>
-               </div>
-             </div>
-
-            {/*<Table size="small" className={classes.table}>
+            <Table className={classes.table}>
               <TableBody>
-                {allAccountingPeriodData && allAccountingPeriodData.map(item => (
                 <TableRow>
-                  <TableCell component="th">Name</TableCell>
-                  <TableCell>
-                    <TextField 
-                      id="outlined-basic" 
-                      label="Name" 
-                      variant="outlined" 
-                      value={item.year}
-                      size="small"
-                      margin="normal"
-                    />
-                  </TableCell>
                   <TableCell component="th">Start Date</TableCell>
                   <TableCell>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <KeyboardDatePicker
-                        format="MM/dd/yyyy"
-                        margin="normal"
-                        inputVariant="outlined"
-                        size="small"
-                        name="startDate"
-                        id="date-picker-startDate"
-                        label="Start Date"
-                        value={values.startDate}
-                        onChange={(date, formatted) => handleDateChange(date, formatted, 'startDate')}
-                        KeyboardButtonProps={{
-                          'aria-label': 'change date',
-                        }}
-                      />
-                    </MuiPickersUtilsProvider>
+                    {moment(currentAccountingPeriod.startDate).format('ll')}
                   </TableCell>
+                </TableRow>
+                <TableRow>
                   <TableCell component="th">End Date</TableCell>
                   <TableCell>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <KeyboardDatePicker
-                        autoOk
-                        format="MM/dd/yyyy"
-                        margin="normal"
-                        inputVariant="outlined"
-                        name="endDate"
-                        size="small"
-                        id="date-picker-startDate"
-                        label="End Date"
-                        value={values.endDate}
-                        onChange={(date, formatted) => handleDateChange(date, formatted, 'endDate')}
-                        KeyboardButtonProps={{
-                          'aria-label': 'change date',
-                        }}
-                      />
-                    </MuiPickersUtilsProvider>
+                    {moment(currentAccountingPeriod.endDate).format('ll')}
                   </TableCell>
-
-                  {item.status && !item.activeYear ? (
-                    <TableCell component="th">
-                      <Button 
-                        aria-controls="simple-menu" 
-                        aria-haspopup="true" 
-                        size="small"
-                        onClick={event => handleClick(event, item.id)}
-                      >
-                        Open InActive
-                      </Button>
-                      <Menu
-                        id="simple-menu"
-                        anchorEl={anchorEl}
-                        keepMounted
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
-                      >
-                        <MenuItem 
-                          onClick={() => editOpenAccountPeriodDialogAction(accountToUpdate)}
-                        >
-                          Set As Active 
-                        </MenuItem>
-                        <MenuItem
-                          onClick={() => openDialogCloseAccountPeriodAction(accountToUpdate)}
-                        >
-                          Close Period
-                        </MenuItem>
-                      </Menu>
-                    </TableCell>
-                  ) : item.status && item.activeYear ? (
-                    <TableCell component="th">
-                      <Button 
-                        aria-controls="simple-menu" 
-                        aria-haspopup="true" 
-                        size="small"
-                        onClick={event => handleClick(event, item.id)}
-                      >
-                        Open Active
-                      </Button>
-                    </TableCell>
-                  ) : !item.status && !item.activeYear ? (
-                    <TableCell component="th">
-                      <Button 
-                        aria-controls="simple-menu" 
-                        aria-haspopup="true" 
-                        size="small"
-                        onClick={event => handleClick(event, item.id)}
-                      >
-                        Closed
-                      </Button>
-                    </TableCell>
-                  ) : null} 
                 </TableRow>
-                ))}
               </TableBody>
-              <TableFooter>
-                <TableRow>
-                  <TableCell colSpan={7}>
-                    <Tooltip title="Create Account Period">
-                      <Button
-                        variant="contained"
-                        color="default"
-                        // size="small"
-                        className={classes.button}
-                        onClick={() => openAccountPeriodDialogAction()}
-                        startIcon={<Add />}
-                        disableElevation
-                      >
-                        Add more
-                      </Button>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-              </TableFooter>
-                  </Table>*/}
+            </Table>
+          </Paper>
 
+          <Paper square className={classes.paper}>
+            <Toolbar>
+              <Typography
+                variant="subtitle1"
+                className={classes.title}
+                component="div"
+              >
+                Accounting Periods
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={openAccountPeriodDialog}
+                startIcon={<AddIcon />}
+              >
+                Add Period
+              </Button>
+            </Toolbar>
+
+            <Table size="small" className={classes.table}>
+              <TableBody>
+                {accountingPeriods &&
+                  accountingPeriods.map(item => (
+                    <TableRow>
+                      <TableCell component="th">Account Year</TableCell>
+                      <TableCell>{item.year}</TableCell>
+                      <TableCell component="th">Start Date</TableCell>
+                      <TableCell>
+                        {moment(item.startDate).format('ll')}
+                      </TableCell>
+                      <TableCell component="th">End Date</TableCell>
+                      <TableCell>{moment(item.endDate).format('ll')}</TableCell>
+                      <TableCell>{item.status ? 'Open' : 'Closed'}</TableCell>
+                      <TableCell>
+                        {item.activeYear ? (
+                          <CheckCircleIcon
+                            className={classNames(classes.status, {
+                              active: item.activeYear,
+                            })}
+                          />
+                        ) : (
+                          <CheckCircleOutlineIcon />
+                        )}
+                      </TableCell>
+                      <TableCell component="th">
+                        <IconButton
+                          aria-controls="simple-menu"
+                          aria-haspopup="true"
+                          onClick={event => handleClick(event, item.id)}
+                        >
+                          <MoreVertIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
           </Paper>
         </Grid>
       </Grid>
+
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleChangeStatus}>Open</MenuItem>
+        <MenuItem onClick={handleActivatePeriod}>Set as active</MenuItem>
+        <MenuItem onClick={handleChangeStatus}>Close</MenuItem>
+      </Menu>
+
+      <DialogOfAccountPeriod />
     </div>
-  </React.Fragment>
-  </div>
   );
 };
 
-AccountingPeriod.propTypes = {
-};
+AccountingPeriod.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
   accountingSetupData: Selectors.makeSelectGetAccountingSetupData(),
-  allAccountingPeriodData: Selectors.makeSelectGetAllAccountingPeriodData(),
+  accountingPeriods: Selectors.makeSelectGetAccountingPeriods(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openAccountPeriodDialogAction: () => dispatch(Actions.openAccountPeriodDialog()),
-    editOpenAccountPeriodDialogAction: evt => dispatch(Actions.editOpenAccountPeriodDialog(evt)),
-    openDialogCloseAccountPeriodAction: evt => dispatch(Actions.openDialogCloseAccountPeriod(evt)),
+    openAccountPeriodDialog: () => dispatch(Actions.openAccountPeriodDialog()),
+    openEditAccountPeriodDialog: data =>
+      dispatch(Actions.openEditAccountPeriodDialog(data)),
+    openAccountPeriodCloseDialog: data =>
+      dispatch(Actions.openAccountPeriodCloseDialog(data)),
+    setAccountPeriodAsActive: data =>
+      dispatch(Actions.setAccountPeriodAsActive(data)),
+    updateAccountPeriodStatus: data =>
+      dispatch(Actions.updateAccountPeriodStatus(data)),
   };
 }
 

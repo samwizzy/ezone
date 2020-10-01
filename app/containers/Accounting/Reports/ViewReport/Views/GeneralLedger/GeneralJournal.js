@@ -16,8 +16,9 @@ import Table from '../../Components/Table';
 // import Logo from '../../Assets/firstMarine.png';
 import TopMenu from '../../Components/TopMenu';
 import Company from '../../Components/CompanyLogo';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import formatDate from '../../Helpers';
+import moment from 'moment';
+
 import * as Select from '../../../../../App/selectors';
 
 const GeneralJournal = ({
@@ -32,39 +33,33 @@ const GeneralJournal = ({
 }) => {
   const { startDate, endDate } = time;
 
-  console.log('uuuuuuuuuuuuuuuuuuuuuoooooUser', user);
-
   const componentRef = useRef();
   const tableRef = useRef();
   const [print, setPrint] = useState(false);
+  const [display, setDisplay] = useState(false);
 
   useInjectReducer({ key: 'reports', reducer: viewReportReducer });
   useInjectSaga({ key: 'reports', saga: ReportSaga });
 
-  useEffect(() => {
-    dispatchGetAllGeneralJournalTypeAction();
-    return async () => await dispatchCleanUpAction();
-  }, [time]);
+  useEffect(() => async () => await dispatchCleanUpAction(), [time]);
   const { journalEntries, debitTotal, creditTotal } = generalJournal;
   const { organisation } = user;
 
   const tableData =
     error === false && journalEntries
-      ? journalEntries.map(journal => {
-          return {
-            Date: `${formatDate(journal.dateCreated)}`,
-            'Account ID': `${journal.accountId}`,
-            Reference: `${journal.reference}`,
-            'Trans Description': `${journal.description}`,
-            'Debit Amt': `${journal.debit}`,
-            'Credit Amt': `${journal.credit}`,
-          };
-        })
+      ? journalEntries.map(journal => ({
+        Date: `${formatDate(journal.dateCreated)}`,
+          'Account Code': `${journal.accountCode}`,
+        Reference: `${journal.reference}`,
+        'Trans Description': `${journal.description}`,
+        'Debit Amt': `${journal.debit}`,
+        'Credit Amt': `${journal.credit}`,
+        }))
       : '';
 
   const TableHeadData = [
     'Date',
-    'Account ID',
+    'Account Code',
     'Reference',
     'Trans Description',
     'Debit Amt',
@@ -80,39 +75,43 @@ const GeneralJournal = ({
       'Credit Amt': `${journalEntries ? creditTotal : ''}`,
     },
   ];
+  const handleData = () => {
+    dispatchGetAllGeneralJournalTypeAction();
 
-  const screen = loading ? (
-    <div style={{ textAlign: 'center' }}>
-      <div style={{ margin: '2px auto' }}>
-        <CircularProgress />
-      </div>
-    </div>
-  ) : (
+    setDisplay(true);
+  };
+
+  return (
     <React.Fragment>
       <TopMenu
         componentRef={componentRef}
         print={print}
         setPrint={setPrint}
         tableData={tableData}
-        search={dispatchGetGeneralJournalTimeAction}
+        handleFetch={handleData}
       />
       <div ref={componentRef}>
         <Company
-          Logo={organisation.logo}
+          ComLogo={organisation.logo}
           name="General Journal"
-          date={`${formatDate(startDate)} - ${formatDate(endDate)}`}
+          date={
+            display &&
+            `${moment(startDate).format('MMM Do YYYY')} - ${moment(
+              endDate,
+            ).format('MMM Do YYYY')}`
+          }
         />
-
-        <Table
-          ref={tableRef}
-          data={tableData}
-          TableHeadData={TableHeadData}
-          TableFooterData={TableFooterData}
-        />
+        {display && (
+          <Table
+            ref={tableRef}
+            data={tableData}
+            TableHeadData={TableHeadData}
+            TableFooterData={TableFooterData}
+          />
+        )}
       </div>
     </React.Fragment>
   );
-  return <React.Fragment>{screen}</React.Fragment>;
 };
 
 const mapStateToProps = createStructuredSelector({

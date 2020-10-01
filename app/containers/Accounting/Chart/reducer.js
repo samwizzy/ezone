@@ -20,13 +20,13 @@ export const initialState = {
   },
   accountTypes: [],
   chartOfAccounts: [],
+  chartOfAccount: null,
 };
 
 /* eslint-disable default-case, no-param-reassign */
 const accountChartReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
-
       // Open dialog for adding new account to chart of account
       case Constants.OPEN_NEW_ACCOUNT_DIALOG: {
         return {
@@ -175,6 +175,52 @@ const accountChartReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
+      // Case to get all chart of accounts
+      case Constants.GET_ALL_CHART_OF_ACCOUNT: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_ALL_CHART_OF_ACCOUNT_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          chartOfAccounts: action.payload,
+        };
+      }
+      case Constants.GET_ALL_CHART_OF_ACCOUNT_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      // Case to get chart of account by id
+      case Constants.GET_CHART_OF_ACCOUNT_BY_ID: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_CHART_OF_ACCOUNT_BY_ID_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          chartOfAccount: action.payload,
+        };
+      }
+      case Constants.GET_CHART_OF_ACCOUNT_BY_ID_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
 
       // Case to delete a chart of account
       case Constants.DELETE_CHART_OF_ACCOUNT: {
@@ -221,7 +267,6 @@ const accountChartReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
-
     }
   });
 

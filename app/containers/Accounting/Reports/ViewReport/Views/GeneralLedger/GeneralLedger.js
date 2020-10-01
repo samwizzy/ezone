@@ -36,36 +36,32 @@ const GeneralLedger = ({
   const componentRef = useRef();
   const tableRef = useRef();
   const [print, setPrint] = useState(false);
+  const [display, setDisplay] = useState(false);
 
   useInjectReducer({ key: 'reports', reducer: viewReportReducer });
   useInjectSaga({ key: 'reports', saga: ReportSaga });
 
-  useEffect(() => {
-    dispatchGetAllGeneralLedgerTypeAction();
-    return async () => await dispatchCleanUpAction();
-  }, []);
+  useEffect(() => async () => await dispatchCleanUpAction(), [generalLedger]);
 
   const formatDate = dateTime => moment(dateTime).format('DD-MM-YYYY');
   const { organisation } = user;
 
   const tableData =
     error === false && generalLedger
-      ? generalLedger.map(ledger => {
-          return {
-            'Account ID': `${ledger.accountId}`,
-            'Account Desc': `${ledger.accountDescription}`,
-            Date: `${formatDate(ledger.date)}`,
-            Reference: `${ledger.reference}`,
-            'Transaction Desc': `${ledger.transactionDescription}`,
-            'Debit Amt': `${ledger.debitAmount}`,
-            'Credit Amt': `${ledger.creditAmount}`,
-            Balance: `${ledger.balance}`,
-          };
-        })
+      ? generalLedger.map(ledger => ({
+        'Account ID': `${ledger.accountId}`,
+          'Account Desc': `${ledger.accountDescription}`,
+          Date: `${formatDate(ledger.date)}`,
+        Reference: `${ledger.reference}`,
+          'Transaction Desc': `${ledger.transactionDescription}`,
+        'Debit Amt': `${ledger.debitAmount}`,
+          'Credit Amt': `${ledger.creditAmount}`,
+          Balance: `${ledger.balance}`,
+        }))
       : '';
 
   const TableHeadData = [
-    'Account ID',
+    'Account Code',
     'Account Desc',
     'Date',
     'Reference',
@@ -74,24 +70,19 @@ const GeneralLedger = ({
     'Credit Amt',
     'Balance',
   ];
-  // const TableFooterData = [
-  //   {
-  //     ' Date': '',
-  //     'Account ID': '',
-  //     ' Reference': 'Total',
-  //     'Trans Description': '',
-  //     'Debit Amt': `${journalEntries ? debitTotal : ''}`,
-  //     'Credit Amt': `${journalEntries ? creditTotal : ''}`,
-  //   },
-  // ];
 
-  const screen = loading ? (
-    <div style={{ textAlign: 'center' }}>
-      <div style={{ margin: '2px auto' }}>
-        <CircularProgress />
-      </div>
-    </div>
-  ) : (
+  const setDate = startDate
+    ? `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
+        'MMM Do YYYY',
+      )}`
+    : '';
+
+  const handleData = () => {
+    dispatchGetAllGeneralLedgerTypeAction();
+    setDisplay(true);
+  };
+
+  return (
     <React.Fragment>
       <TopMenu
         componentRef={componentRef}
@@ -99,27 +90,26 @@ const GeneralLedger = ({
         setPrint={setPrint}
         tableData={tableData}
         search={dispatchGetGeneralLedgerTimeAction}
+        handleFetch={handleData}
       />
       <div ref={componentRef}>
         <Company
-          // Logo={Logo}
-          Logo={organisation.logo}
+          ComLogo={organisation.logo}
           name="General Ledger"
-          date={`${moment(startDate).format('MMM Do YYYY')} - ${moment(
-            endDate,
-          ).format('MMM Do YYYY')}`}
+          date={setDate}
         />
 
-        <Table
-          ref={tableRef}
-          data={tableData}
-          TableHeadData={TableHeadData}
-          // TableFooterData={TableFooterData}
-        />
+        {display && (
+          <Table
+            ref={tableRef}
+            data={tableData}
+            TableHeadData={TableHeadData}
+            // TableFooterData={TableFooterData}
+          />
+        )}
       </div>
     </React.Fragment>
   );
-  return <React.Fragment>{screen}</React.Fragment>;
 };
 
 const mapStateToProps = createStructuredSelector({

@@ -24,19 +24,35 @@ th {
 
 .table tr {
   padding: 20px;
-  font-weight: 600;
+  /* font-weight: 600; */
   background: white;
   color: #656565;
-  font-family: Montserrat;
+  /* font-family: Montserrat; */
+  font-size: 0.7777777777777778rem;
+  /* text-align: left; */
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-weight: 400;
+  line-height: 1.43;
   border: none !important;
 }
 .table thead tr {
   background: #eef4f9;
   color: black;
-  font-family: Montserrat;
+  /* font-family: Montserrat; */
+  font-size: 0.7777777777777778rem;
+  /* text-align: left; */
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-weight: 400;
+  line-height: 1.43;
 }
 .table tfoot tr {
   background: black;
   color: white;
-  font-family: Montserrat;
+  /* font-family: Montserrat;
+   */
+  font-size: 0.7777777777777778rem;
+  /* text-align: left; */
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-weight: 400;
+  line-height: 1.43;
 }

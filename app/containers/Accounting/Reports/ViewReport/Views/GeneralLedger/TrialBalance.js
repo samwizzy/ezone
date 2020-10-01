@@ -34,14 +34,12 @@ const TrialBalance = ({
   const componentRef = useRef();
   const tableRef = useRef();
   const [print, setPrint] = useState(false);
+  const [display, setDisplay] = useState(false);
 
   useInjectReducer({ key: 'reports', reducer: viewReportReducer });
   useInjectSaga({ key: 'reports', saga: ReportSaga });
 
-  useEffect(() => {
-    dispatchGetAllTrialBalanceAction();
-    return async () => await dispatchCleanUpAction();
-  }, []);
+  useEffect(() => async () => await dispatchCleanUpAction(), []);
 
   const formatDate = dateTime => moment(dateTime).format('DD-MM-YYYY');
 
@@ -50,18 +48,21 @@ const TrialBalance = ({
 
   const tableData =
     error === false && trialBalances
-      ? trialBalances.map(balance => {
-          return {
-            'Account ID': `${balance.accountId}`,
-            'Account Desc': `${balance.accountDescription}`,
-            'Debit Amt': `${balance.debitAmount}`,
-            'Credit Amt': `${balance.creditAmount}`,
-          };
-        })
+      ? trialBalances.map(balance => ({
+        'Account ID': `${balance.accountId}`,
+          'Account Desc': `${balance.accountDescription}`,
+        'Debit Amt': `${balance.debitAmount}`,
+          'Credit Amt': `${balance.creditAmount}`,
+        }))
       : '';
-
+  console.log(
+    '============================>',
+    reports,
+    ';;;;;;;;',
+    trialBalances,
+  );
   const TableHeadData = [
-    'Account ID',
+    'Account Code',
     'Account Desc',
     'Debit Amt',
     'Credit Amt',
@@ -75,41 +76,43 @@ const TrialBalance = ({
   //     },
   //   ];
 
-  const screen = loading ? (
-    <div style={{ textAlign: 'center' }}>
-      <div style={{ margin: '2px auto' }}>
-        <CircularProgress />
-      </div>
-    </div>
-  ) : (
+  const handleData = () => {
+    // dispatchGetAllGeneralJournalTypeAction();
+    dispatchGetAllTrialBalanceAction();
+    setDisplay(true);
+  };
+
+  return (
     <React.Fragment>
       <TopMenu
         componentRef={componentRef}
         print={print}
         setPrint={setPrint}
         tableData={tableData}
-        search={dispatchGetGeneralTimeAction}
+        handleFetch={handleData}
       />
       <div ref={componentRef}>
         <Company
-          // Logo={Logo}
-          Logo={organisation.logo}
+          ComLogo={organisation.logo}
           name="Trial Balance"
-          date={`${moment(startDate).format('MMM Do YYYY')} - ${moment(
-            endDate,
-          ).format('MMM Do YYYY')}`}
+          date={
+            display &&
+            `${moment(startDate).format('MMM Do YYYY')} - ${moment(
+              endDate,
+            ).format('MMM Do YYYY')}`
+          }
         />
-
-        <Table
-          ref={tableRef}
-          data={tableData}
-          TableHeadData={TableHeadData}
-          // TableFooterData={TableFooterData}
-        />
+        {display && (
+          <Table
+            ref={tableRef}
+            data={tableData}
+            TableHeadData={TableHeadData}
+            // TableFooterData={TableFooterData}
+          />
+        )}
       </div>
     </React.Fragment>
   );
-  return <React.Fragment>{screen}</React.Fragment>;
 };
 
 const mapStateToProps = createStructuredSelector({

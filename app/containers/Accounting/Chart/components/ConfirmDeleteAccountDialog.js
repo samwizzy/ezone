@@ -3,40 +3,22 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
-
 import {
-  TextField,
+  CircularProgress,
   makeStyles,
   Button,
   Dialog,
   DialogContent,
   DialogActions,
   DialogTitle,
-  Divider,
+  DialogContentText,
   Slide,
-  Grid,
-  Typography
 } from '@material-ui/core';
-
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    margin: theme.spacing(1.5, 0),
-  },
-  dense: {
-    marginTop: 19,
-  },
-  menu: {
-    width: 100,
-  },
+  root: {},
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -48,46 +30,42 @@ const ConfirmDeleteAccountDialog = props => {
 
   const {
     loading,
-    confirmAccountDeleteDialog,
-    closeDeleteAccountDialogAction,
-    deleteChartOfAccountAction
+    dialog,
+    closeDeleteAccountDialog,
+    deleteChartOfAccount,
   } = props;
-
 
   return (
     <div>
       <Dialog
-        {...confirmAccountDeleteDialog.props}
-        onClose={closeDeleteAccountDialogAction}
+        {...dialog.props}
+        onClose={closeDeleteAccountDialog}
         keepMounted
         TransitionComponent={Transition}
-        maxWidth={'xs'}
+        maxWidth="xs"
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="alert-dialog-slide-title">
-          Confirm Action.
-        </DialogTitle>
-        <Divider />
-        <DialogContent>
-          <Typography>Are you sure you want to delete this item?</Typography>
+        <DialogTitle id="alert-dialog-slide-title">Confirm Delete</DialogTitle>
+
+        <DialogContent dividers>
+          <DialogContentText variant="h6">
+            Are you sure you want to delete this Chart of Account?
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
-          {loading ? (
-            <LoadingIndicator />
-          ) : (
-            <Button
-              onClick={() => {
-                deleteChartOfAccountAction(confirmAccountDeleteDialog.data);
-              }}
-              color="primary"
-            >
-              Delete
-            </Button>
-          )}
           <Button
-            onClick={ closeDeleteAccountDialogAction }
+            onClick={() => deleteChartOfAccount(dialog.data)}
+            color="primary"
+            variant="contained"
+            disabled={loading}
+            endIcon={loading && <CircularProgress size={20} />}
+          >
+            Delete
+          </Button>
+          <Button
+            onClick={closeDeleteAccountDialog}
             color="inherit"
-            // variant="contained"
+            variant="contained"
           >
             Cancel
           </Button>
@@ -98,19 +76,19 @@ const ConfirmDeleteAccountDialog = props => {
 };
 
 ConfirmDeleteAccountDialog.propTypes = {
-//   loading: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  confirmAccountDeleteDialog: Selectors.makeSelectConfirmAccountDeleteDialog(),
+  dialog: Selectors.makeSelectConfirmAccountDeleteDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    deleteChartOfAccountAction: evt => dispatch(Actions.deleteChartOfAccountAction(evt)),
-    closeDeleteAccountDialogAction: () => dispatch(Actions.closeDeleteAccountDialog()),
-    dispatch,
+    deleteChartOfAccount: data => dispatch(Actions.deleteChartOfAccount(data)),
+    closeDeleteAccountDialog: () =>
+      dispatch(Actions.closeDeleteAccountDialog()),
   };
 }
 

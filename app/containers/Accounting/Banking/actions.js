@@ -1,12 +1,5 @@
-/*
- *
- * Banking actions
- *
- */
-
 import * as Constants from './constants';
 
-// New bank account dialog
 export function openNewBankAccountDialog() {
   return {
     type: Constants.OPEN_NEW_BANK_ACCOUNT_DIALOG,
@@ -19,14 +12,14 @@ export function closeNewBankAccountDialog() {
   };
 }
 
-export function editOpenBankAccountDialog(data) {
+export function openEditBankAccountDialog(data) {
   return {
     type: Constants.EDIT_OPEN_ACCOUNT_DIALOG,
     payload: data,
   };
 }
 
-export function editCloseBankAccountDialog() {
+export function closeEditBankAccountDialog() {
   return {
     type: Constants.EDIT_CLOSE_ACCOUNT_DIALOG,
   };
@@ -61,34 +54,55 @@ export function closeActivateBankAccountDialog() {
 }
 
 // Deactivate bank account action
-export function deactivateBankAccountDialogOpen(data) {
+export function openDeactivateBankAccountDialog(data) {
   return {
-    type: Constants.DEACTIVATE_BANK_ACCOUNT_DIALOG_OPEN,
+    type: Constants.OPEN_DEACTIVATE_BANK_ACCOUNT_DIALOG,
     payload: data,
   };
 }
 
-export function deactivateBankAccountDialogClose() {
+export function closeDeactivateBankAccountDialog() {
   return {
-    type: Constants.DEACTIVATE_BANK_ACCOUNT_DIALOG_CLOSE,
+    type: Constants.CLOSE_DEACTIVATE_BANK_ACCOUNT_DIALOG,
   };
 }
 
-// Get account types 
-export function getAllAccountTypeAction() {
+// Get currencies
+export function getCurrencies() {
+  return {
+    type: Constants.GET_CURRENCIES,
+  };
+}
+
+export function getCurrenciesSuccess(data) {
+  return {
+    type: Constants.GET_CURRENCIES_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getCurrenciesError(data) {
+  return {
+    type: Constants.GET_CURRENCIES_ERROR,
+    payload: data,
+  };
+}
+
+// Get account types
+export function getAccountTypes() {
   return {
     type: Constants.GET_ALL_ACCOUNT_TYPES,
   };
 }
 
-export function getAllAccountTypeSuccessAction(data) {
+export function getAccountTypesSuccess(data) {
   return {
     type: Constants.GET_ALL_ACCOUNT_TYPES_SUCCESS,
     payload: data,
   };
 }
 
-export function getAllAccountTypeErrorAction(data) {
+export function getAccountTypesError(data) {
   return {
     type: Constants.GET_ALL_ACCOUNT_TYPES_ERR,
     payload: data,
@@ -96,93 +110,112 @@ export function getAllAccountTypeErrorAction(data) {
 }
 
 // Create new bank
-export function createNewBankAction(data) {
+export function createNewBank(data) {
   return {
     type: Constants.CREATE_NEW_BANK,
     payload: data,
   };
 }
 
-export function createNewBankSuccessAction(data) {
+export function createNewBankSuccess(data) {
   return {
     type: Constants.CREATE_NEW_BANK_SUCCESS,
     payload: data,
   };
 }
 
-export function createNewBankErrorAction(data) {
+export function createNewBankError(data) {
   return {
     type: Constants.CREATE_NEW_BANK_ERR,
     payload: data,
   };
 }
 
-// Get bank account 
-export function getAllBankAccountAction() {
+// Get bank account
+export function getBankAccounts() {
   return {
     type: Constants.GET_ALL_BANK_ACCOUNT,
   };
 }
 
-export function getAllBankAccountSuccessAction(data) {
+export function getBankAccountsSuccess(data) {
   return {
     type: Constants.GET_ALL_BANK_ACCOUNT_SUCCESS,
     payload: data,
   };
 }
 
-export function getAllBankAccountErrorAction(data) {
+export function getBankAccountsError(data) {
   return {
     type: Constants.GET_ALL_BANK_ACCOUNT_ERR,
     payload: data,
   };
 }
 
+// Get bank account by id
+export function getBankAccountById(data) {
+  return {
+    type: Constants.GET_BANK_ACCOUNT_BY_ID,
+    payload: { id: data },
+  };
+}
+
+export function getBankAccountByIdSuccess(data) {
+  return {
+    type: Constants.GET_BANK_ACCOUNT_BY_ID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getBankAccountByIdError(data) {
+  return {
+    type: Constants.GET_BANK_ACCOUNT_BY_ID_ERROR,
+    payload: data,
+  };
+}
 
 // Update a bank account
-export function updateBankAccountAction(data) {
+export function updateBankAccount(data) {
   return {
     type: Constants.UPDATE_BANK_ACCOUNT,
     payload: data,
   };
 }
 
-export function updateBankAccountSuccessAction(data) {
+export function updateBankAccountSuccess(data) {
   return {
     type: Constants.UPDATE_BANK_ACCOUNT_SUCCESS,
     payload: data,
   };
 }
 
-export function updateBankAccountErrorAction(data) {
+export function updateBankAccountError(data) {
   return {
     type: Constants.UPDATE_BANK_ACCOUNT_ERR,
     payload: data,
   };
 }
 
-
-// Get all bank transfers made by organisation 
-export function getAllTransferByOrgIdAction() {
+// Get all bank transfers made by organisation
+export function getTransfersByOrgId() {
   return {
     type: Constants.GET_ALL_TRANSFER_BY_ORGID,
   };
 }
 
-export function getAllTransferByOrgIdSuccessAction(data) {
+export function getTransfersByOrgIdSuccess(data) {
   return {
     type: Constants.GET_ALL_TRANSFER_BY_ORGID_SUCCESS,
     payload: data,
   };
 }
 
-export function getAllTransferByOrgIdErrorAction(data) {
+export function getTransfersByOrgIdError(data) {
   return {
     type: Constants.GET_ALL_TRANSFER_BY_ORGID_ERR,
     payload: data,
   };
 }
-
 
 // Transaction transfer dialog
 export function openAccountTransferDialog(data) {
@@ -198,116 +231,88 @@ export function closeAccountTransferDialog() {
   };
 }
 
-
 // Create a bank transfer
-export function createBankTransferAction(data) {
+export function createBankTransfer(data) {
   return {
     type: Constants.CREATE_BANK_TRANSFER,
     payload: data,
   };
 }
 
-export function createBankTransferSuccessAction(data) {
+export function createBankTransferSuccess(data) {
   return {
     type: Constants.CREATE_BANK_TRANSFER_SUCCESS,
     payload: data,
   };
 }
 
-export function createBankTransferErrorAction(data) {
+export function createBankTransferError(data) {
   return {
     type: Constants.CREATE_BANK_TRANSFER_ERR,
     payload: data,
   };
 }
 
-
-// Get all bank transfers made account 
-export function getTransferByAccountIdAction(data) {
-  console.log('data getTransferByAccountIdAction -> ', data);
+// Get all bank transfers made account
+export function getTransferByAccountId(data) {
   return {
     type: Constants.GET_TRANSFERS_BY_ACCOUNT_ID,
     payload: data,
   };
 }
 
-export function getTransferByAccountIdSuccessAction(data) {
+export function getTransferByAccountIdSuccess(data) {
   return {
     type: Constants.GET_TRANSFERS_BY_ACCOUNT_ID_SUCCESS,
     payload: data,
   };
 }
 
-export function getTransferByAccountIdErrorAction(data) {
+export function getTransferByAccountIdError(data) {
   return {
     type: Constants.GET_TRANSFERS_BY_ACCOUNT_ID_ERR,
     payload: data,
   };
 }
 
-
-// Activate bank account
-export function activateBankAccountAction(data) {
+// activate or deactivate bank account
+export function activateDeactivateBankAccount(data) {
   return {
-    type: Constants.ACTIVATE_BANK_ACCOUNT,
+    type: Constants.ACTIVATE_DEACTIVATE_BANK_ACCOUNT,
     payload: data,
   };
 }
 
-export function activateBankAccountSuccessAction(data) {
+export function activateDeactivateBankAccountSuccess(data) {
   return {
-    type: Constants.ACTIVATE_BANK_ACCOUNT_SUCCESS,
+    type: Constants.ACTIVATE_DEACTIVATE_BANK_ACCOUNT_SUCCESS,
     payload: data,
   };
 }
 
-export function activateBankAccountErrorAction(data) {
+export function activateDeactivateBankAccountError(data) {
   return {
-    type: Constants.ACTIVATE_BANK_ACCOUNT_ERR,
+    type: Constants.ACTIVATE_DEACTIVATE_BANK_ACCOUNT_ERR,
     payload: data,
   };
 }
-
-
-// Deactivate bank account
-export function deactivateBankAccountAction(data) {
-  return {
-    type: Constants.DEACTIVATE_BANK_ACCOUNT,
-    payload: data,
-  };
-}
-
-export function deactivateBankAccountSuccessAction(data) {
-  return {
-    type: Constants.DEACTIVATE_BANK_ACCOUNT_SUCCESS,
-    payload: data,
-  };
-}
-
-export function deactivateBankAccountErrorAction(data) {
-  return {
-    type: Constants.DEACTIVATE_BANK_ACCOUNT_ERR,
-    payload: data,
-  };
-}
-
 
 // Delete a bank account
-export function deleteBankAccountAction(data) {
+export function deleteBankAccount(data) {
   return {
     type: Constants.DELETE_BANK_ACCOUNT,
     payload: data,
   };
 }
 
-export function deleteBankAccountSuccessAction(data) {
+export function deleteBankAccountSuccess(data) {
   return {
     type: Constants.DELETE_BANK_ACCOUNT_SUCCESS,
     payload: data,
   };
 }
 
-export function deleteBankAccountErrorAction(data) {
+export function deleteBankAccountError(data) {
   return {
     type: Constants.DELETE_BANK_ACCOUNT_ERR,
     payload: data,

@@ -10,6 +10,7 @@ import {
   withRouter,
   Route,
   useRouteMatch,
+  useLocation,
 } from 'react-router-dom';
 import reducer from './reducer';
 import saga from './saga';
@@ -17,22 +18,18 @@ import * as Actions from './actions';
 import makeSelectAccounting, * as Selectors from './selectors';
 import { CircleLoader } from '../../components/LoadingIndicator';
 import Charts from './Chart/Loadable';
-import Reports from './Reports/index';
+import Reports from './Reports';
 import Dashboard from './Dashboard';
 import Journal from './Journal';
-import AddNewJournal from './Journal/components/AddNewJournal';
-import JournalDetails from './Journal/components/JournalDetails';
 import Budget from './Budget';
 import BudgetingDetails from './Budget/components/BudgetingDetails';
 import NewBudgeting from './Budget/components/NewBudgeting';
 import Banking from './Banking';
-import AccountDetails from './Banking/components/AccountDetails';
-import DetailsOfAccountChat from './Chart/components/DetailsOfAccountChart';
-import FixedAssets from './FixedAssets/index';
+import FixedAssets from './Assets';
 import ViewReport from './Reports/ViewReport/ViewReport';
 import Settings from './Settings';
 
-const key = "accounting"
+const key = 'accounting';
 
 export function Accounting(props) {
   useInjectReducer({ key, reducer });
@@ -40,22 +37,19 @@ export function Accounting(props) {
   const { loading, accSetUpData, getAccountingSetup, accounting } = props;
 
   useEffect(() => {
-    getAccountingSetup()
-  }, [])
+    getAccountingSetup();
+  }, []);
 
-  useEffect(() => {
-  }, [accSetUpData])
+  useEffect(() => {}, [accSetUpData]);
 
   const { path } = useRouteMatch();
 
-  console.log(path, "path accounts")
-
   if (loading) {
-    return <CircleLoader />
+    return <CircleLoader />;
   }
 
   if (!accSetUpData && !loading) {
-    return <Settings />
+    return <Settings />;
   }
 
   return (
@@ -88,13 +82,14 @@ const mapStateToProps = createStructuredSelector({
   accSetUpData: Selectors.makeSelectGetAccountingSetupData(),
 });
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getAccountingSetup: () => dispatch(Actions.getAccountingSetupAction()),
-  }
-}
+const mapDispatchToProps = dispatch => ({
+  getAccountingSetup: () => dispatch(Actions.getAccountingSetupAction()),
+});
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
 
 export default compose(
   withRouter,

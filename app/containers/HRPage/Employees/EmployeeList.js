@@ -2,26 +2,22 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {
-  Avatar,
-  Grid,
-  Typography,
-} from '@material-ui/core';
+import { Avatar, Grid, Typography } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
-import { green, red, orange } from '@material-ui/core/colors'
+import { green, red, orange } from '@material-ui/core/colors';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
-import moment from 'moment'
-import MUIDataTable from 'mui-datatables'
-import * as Actions from '../actions';
-import * as Selectors from '../selectors';
-import * as AppSelectors from '../../App/selectors';
+import moment from 'moment';
+import MUIDataTable from 'mui-datatables';
 import EditSharp from '@material-ui/icons/EditSharp';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import Person from '@material-ui/icons/Person';
+import * as AppSelectors from '../../App/selectors';
+import * as Selectors from '../selectors';
+import * as Actions from '../actions';
 import { AddEmployee } from '../../Accounting/components/AddButton';
 
 const useStyles = makeStyles(theme => ({
@@ -31,11 +27,11 @@ const useStyles = makeStyles(theme => ({
   },
   datatable: {
     '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& .MuiTableBody-root': {
       '& .MuiTableCell-root': {
-        padding: theme.spacing(1)
+        padding: theme.spacing(1),
       },
     },
     '& .MuiTableHead-root': {
@@ -51,7 +47,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   avatar: {
-    boxShadow: theme.shadows[2]
+    boxShadow: theme.shadows[2],
   },
   toolbar: theme.mixins.toolbar,
   status: {
@@ -74,10 +70,10 @@ const EmployeesApp = props => {
     employee,
   } = props;
 
-  const handleRoute = (id) => {
+  const handleRoute = id => {
     getEmployee(id);
-    history.push(`/hr/employees/${id}`)
-  }
+    history.push(`/hr/employees/${id}`);
+  };
 
   const columns = [
     {
@@ -95,7 +91,11 @@ const EmployeesApp = props => {
         filter: true,
         sort: true,
         customBodyRender: logo => (
-          <Avatar aria-label="avatar" src={`data:image/jpg;base64,${logo}`} className={classes.avatar} />
+          <Avatar
+            aria-label="avatar"
+            src={`data:image/jpg;base64,${logo}`}
+            className={classes.avatar}
+          />
         ),
       },
     },
@@ -142,7 +142,13 @@ const EmployeesApp = props => {
         filter: true,
         sort: true,
         customBodyRender: enabled => (
-          <span className={classNames(classes.status, { 'active': enabled })}>{enabled ? <CheckCircleOutlineIcon /> : <RadioButtonUncheckedIcon />}</span>
+          <span className={classNames(classes.status, { active: enabled })}>
+            {enabled ? (
+              <CheckCircleOutlineIcon />
+            ) : (
+              <RadioButtonUncheckedIcon />
+            )}
+          </span>
         ),
       },
     },
@@ -150,7 +156,7 @@ const EmployeesApp = props => {
 
   const options = {
     filterType: 'dropdown',
-    responsive: 'scrollMaxHeight',
+    responsive: 'stacked',
     selectableRows: 'none',
     print: false,
     download: true,
@@ -159,27 +165,20 @@ const EmployeesApp = props => {
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
-      handleRoute(rowData[0])
+      handleRoute(rowData[0]);
     },
     elevation: 0,
   };
 
   return (
     <div className={classes.root}>
-      <Grid
-        container
-        justify='space-around'
-      >
-        <Grid item md={12}>
-          <MUIDataTable
-            className={classes.datatable}
-            title="Employee List"
-            data={employees && employees}
-            columns={columns}
-            options={options}
-          />
-        </Grid>
-      </Grid>
+      <MUIDataTable
+        className={classes.datatable}
+        title="Employee List"
+        data={employees && employees}
+        columns={columns}
+        options={options}
+      />
     </div>
   );
 };

@@ -1,16 +1,16 @@
-import _ from 'lodash'
+import _ from 'lodash';
+import moment from 'moment';
 
 class EzoneUtils {
-
   mergeWithPairs(object, sources) {
     function customizer(objValue, srcValue, key) {
       return _.has(object, key) ? srcValue : null;
     }
 
-    var defaults = _.partialRight(_.assignInWith, customizer);
+    const defaults = _.partialRight(_.assignInWith, customizer);
 
     const result = defaults(object, sources, [customizer]);
-    return _.pickBy(result, _.identity)
+    return _.pickBy(result, _.identity);
   }
 
   matchWithPairs(initial, sources) {
@@ -18,10 +18,12 @@ class EzoneUtils {
       return;
     }
 
-    let objectMap = new Map()
-    for (let key in sources) {
+    const objectMap = new Map();
+    for (const key in sources) {
       if (_.has(initial, key)) {
-        objectMap.has(key) ? objectMap.delete(key) : objectMap.set(key, sources[key])
+        objectMap.has(key)
+          ? objectMap.delete(key)
+          : objectMap.set(key, sources[key]);
       }
     }
 
@@ -29,19 +31,27 @@ class EzoneUtils {
   }
 
   matchArrayPairs(initial, sources) {
-    const result = []
+    const result = [];
     sources.map(source => {
-      const matchedObject = _.mapKeys(source, function (value, key) {
-        return _.has(initial, key) ? initial[key] : key;
-      });
+      const matchedObject = _.mapKeys(
+        source,
+        (value, key) => initial[key] || key,
+      );
       // const matchedObject = this.matchWithPairs(initial, source)
-      result.push(matchedObject)
-    })
+      result.push(matchedObject);
+    });
 
-    return result
+    return result;
   }
 
   toTitleCase = str => (str ? str[0].toUpperCase() + str.slice(1) : '');
+
+  formatFileName = fileName => {
+    const fName = fileName.split('.')[0];
+    return `${fName
+      .substr(0, Math.ceil(fName.length / 2))
+      .trim()}-${moment().format('YYYY-MM-DDTHH:mm:ss')}`;
+  };
 
   toBase64(file) {
     return new Promise((resolve, reject) => {
@@ -49,33 +59,33 @@ class EzoneUtils {
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result.split(',')[1]);
       reader.onerror = error => reject(error);
-    })
+    });
   }
 
   getBase64 = (file, cb) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = function () {
+    reader.onload = function() {
       return cb(reader.result.split(',')[1]);
     };
-    reader.onerror = function (error) {
+    reader.onerror = function(error) {
       console.log('Error: ', error);
     };
   };
 
   reformattedDate(date) {
-    var month = date.getMonth() + 1; //months from 1-12
+    var month = date.getMonth() + 1; // months from 1-12
     var day = date.getDate();
-    var year = date.getFullYear();
+    const year = date.getFullYear();
 
-    var day = day.length > 0 ? day : day.toString().padStart(2, '0')
-    var month = month.length > 0 ? month : month.toString().padStart(2, '0')
+    var day = day.length > 0 ? day : day.toString().padStart(2, '0');
+    var month = month.length > 0 ? month : month.toString().padStart(2, '0');
 
-    const newdate = year + "-" + month + "-" + day;
+    const newdate = `${year}-${month}-${day}`;
     return newdate;
   }
 }
 
-const Instance = new EzoneUtils
+const Instance = new EzoneUtils();
 
-export default Instance
+export default Instance;

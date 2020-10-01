@@ -1,10 +1,12 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { Grid } from '@material-ui/core';
 import ModuleLayout from './ModuleLayout';
-import ListBoard from '../Reports/ListBoard';
+import ListBoard from './ListBoard';
+import ViewReports from './ViewReport/ViewReport';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -42,7 +44,7 @@ const Reports = () => {
     'Sales Order Details',
     'Sales Journal',
     'Sales taxes',
-    'Taxes/Exempt Sales',
+    'Taxes Exempt Sales',
     'Quote register',
   ];
   const fixedAsset = ['Fixed Asset Register', 'Fixed Asset Schedule'];
@@ -94,6 +96,10 @@ const Reports = () => {
     'Other outstanding items',
     'Outstanding checks',
   ];
+  const { reportsId } = useParams();
+
+  if (reportsId) return <ViewReports reportId={reportsId} />;
+
   return (
     <ModuleLayout>
       <div className={classes.base}>
@@ -115,8 +121,8 @@ const Reports = () => {
                       <Paper elevation={3}>
                         <Paper elevation={1}>
                           <ListBoard
-                            bar={'blue'}
-                            title={'Receivables'}
+                            bar="blue"
+                            title="Receivables"
                             contents={receivables}
                           />
                         </Paper>
@@ -127,8 +133,8 @@ const Reports = () => {
                       <Paper elevation={3}>
                         <Paper elevation={1}>
                           <ListBoard
-                            bar={'orchild'}
-                            title={'Fixed Asset'}
+                            bar="orchild"
+                            title="Fixed Asset"
                             contents={fixedAsset}
                           />
                         </Paper>
@@ -143,8 +149,8 @@ const Reports = () => {
                       <Paper elevation={3}>
                         <Paper elevation={1}>
                           <ListBoard
-                            bar={'green'}
-                            title={'Payables'}
+                            bar="green"
+                            title="Payables"
                             contents={payables}
                           />
                         </Paper>
@@ -154,8 +160,8 @@ const Reports = () => {
                       <Paper elevation={3}>
                         <Paper elevation={1}>
                           <ListBoard
-                            bar={'322F7C'}
-                            title={'Account Reconcilation'}
+                            bar="322F7C"
+                            title="Account Reconcilation"
                             contents={accountReconcilation}
                           />
                         </Paper>
@@ -170,8 +176,8 @@ const Reports = () => {
                       <Paper elevation={3}>
                         <Paper elevation={1}>
                           <ListBoard
-                            bar={'yellow'}
-                            title={'General Ledger'}
+                            bar="yellow"
+                            title="General Ledger"
                             contents={ledger}
                           />
                         </Paper>
@@ -182,8 +188,8 @@ const Reports = () => {
                       <Paper elevation={3}>
                         <Paper elevation={1}>
                           <ListBoard
-                            bar={'purple'}
-                            title={'Budget'}
+                            bar="purple"
+                            title="Budget"
                             contents={['Budget report', 'Budget Vs Actuals']}
                           />
                         </Paper>
@@ -194,8 +200,8 @@ const Reports = () => {
                       <Paper elevation={3}>
                         <Paper elevation={1}>
                           <ListBoard
-                            bar={'green'}
-                            title={'Inventory'}
+                            bar="green"
+                            title="Inventory"
                             contents={inventory}
                           />
                         </Paper>
@@ -210,8 +216,8 @@ const Reports = () => {
                       <Paper elevation={3}>
                         <Paper elevation={1}>
                           <ListBoard
-                            bar={'pink'}
-                            title={'Financial Statement'}
+                            bar="pink"
+                            title="Financial Statement"
                             contents={financialStatement}
                           />
                         </Paper>
@@ -222,8 +228,8 @@ const Reports = () => {
                       <Paper elevation={3}>
                         <Paper elevation={1}>
                           <ListBoard
-                            bar={'purple'}
-                            title={'Payroll'}
+                            bar="purple"
+                            title="Payroll"
                             contents={payroll}
                           />
                         </Paper>
@@ -233,8 +239,8 @@ const Reports = () => {
                       <Paper elevation={3}>
                         <Paper elevation={1}>
                           <ListBoard
-                            bar={'orchild'}
-                            title={'Taxes'}
+                            bar="orchild"
+                            title="Taxes"
                             contents={['Tax Summary']}
                           />
                         </Paper>
@@ -247,6 +253,7 @@ const Reports = () => {
           </Grid>
         </Paper>
       </div>
+      )
     </ModuleLayout>
   );
 };

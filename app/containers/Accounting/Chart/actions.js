@@ -27,7 +27,7 @@ export function editCloseAccountDialog() {
   };
 }
 
-// Get account types 
+// Get account types
 export function getAccountTypes() {
   return {
     type: Constants.GET_ALL_ACCOUNT_TYPES,
@@ -48,7 +48,7 @@ export function getAccountTypesError(data) {
   };
 }
 
-// Get parent account types 
+// Get parent account types
 export function getParentAccountType(data) {
   return {
     type: Constants.GET_PARENT_ACCOUNT_TYPES,
@@ -69,7 +69,6 @@ export function getParentAccountTypeError(data) {
     payload: data,
   };
 }
-
 
 // Create new chart of account
 export function createChartOfAccount(data) {
@@ -113,7 +112,27 @@ export function getChartOfAccountsError(data) {
     payload: data,
   };
 }
+// Get all chart of account by id
+export function getChartOfAccountById(data) {
+  return {
+    type: Constants.GET_CHART_OF_ACCOUNT_BY_ID,
+    payload: { id: data },
+  };
+}
 
+export function getChartOfAccountByIdSuccess(data) {
+  return {
+    type: Constants.GET_CHART_OF_ACCOUNT_BY_ID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getChartOfAccountByIdError(data) {
+  return {
+    type: Constants.GET_CHART_OF_ACCOUNT_BY_ID_ERROR,
+    payload: data,
+  };
+}
 
 // Delete a chart of account
 export function deleteChartOfAccount(data) {
@@ -137,7 +156,6 @@ export function deleteChartOfAccountError(data) {
   };
 }
 
-
 // Update a chart of account
 export function updateChartOfAccount(data) {
   return {
@@ -159,7 +177,6 @@ export function updateChartOfAccountError(data) {
     payload: data,
   };
 }
-
 
 // Confirm delete dialog
 export function openDeleteAccountDialog(data) {

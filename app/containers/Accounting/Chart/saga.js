@@ -1,14 +1,13 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
+import axios from 'axios';
+import swal from 'sweetalert';
 import * as AppSelectors from '../../App/selectors';
 import * as AppActions from '../../App/actions';
 import * as Selectors from './selectors';
 import request from '../../../utils/request';
 import * as Endpoints from '../../../components/Endpoints';
 import * as Actions from './actions';
-import axios from "axios";
-import swal from 'sweetalert';
 import * as Constants from './constants';
-
 
 export function* getDashBoardData() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
@@ -24,12 +23,10 @@ export function* getDashBoardData() {
     });
 
     yield put(Actions.getAccountTypesSuccess(response));
-
   } catch (err) {
     yield put(Actions.getAccountTypesError(err));
   }
 }
-
 
 export function* getAccountTypes() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
@@ -55,7 +52,6 @@ export function* getAccountTypes() {
 export function* createChartOfAccount({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  // Delete payload prop not using
   delete payload.subAccount;
 
   console.log('new payload ', payload);
@@ -74,22 +70,27 @@ export function* createChartOfAccount({ payload }) {
     });
 
     console.log('chartOfAccountResponse -> ', response);
-    alert(`Account Name: ${response.accountName} was saved successfully!`);
+    swal(
+      'Success',
+      `Account Name: ${response.accountName} was saved successfully!`,
+      'success',
+    );
     yield put(Actions.createChartOfAccountSuccess(response));
     yield put(Actions.getChartOfAccounts());
     yield put(Actions.closeNewAccountDialog());
   } catch (err) {
-    alert(`Something went wrong.`);
+    swal('Error', 'Something went wrong', 'error');
     yield put(Actions.createChartOfAccountError(err));
   }
 }
-
 
 // Get list of chart of account
 export function* getChartOfAccounts() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllChartOfAccountApi}/${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetAllChartOfAccountApi}/${
+    currentUser.organisation.orgId
+  }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -106,23 +107,41 @@ export function* getChartOfAccounts() {
   }
 }
 
-// Delete a chart of account
-export function* deleteChartOfAccount({ payload }) {
+// Get chart of account by id
+export function* getChartOfAccountById({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${Endpoints.DeleteChartOfAccountApi}/${deleteChartOfAccountData.id}`;
+  const requestURL = `${Endpoints.GetChartOfAccountByIdApi}/${payload.id}`;
 
   try {
     const response = yield call(request, requestURL, {
-      method: 'PUT',
-      body: JSON.stringify(payload),
+      method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
-    console.log('deleteChartOfAccountResponse -> ', response);
-    swal("Success", "Account deleted successfully", "success");
+    yield put(Actions.getChartOfAccountByIdSuccess(response));
+  } catch (err) {
+    yield put(Actions.getChartOfAccountByIdError(err));
+  }
+}
+
+// Delete a chart of account
+export function* deleteChartOfAccount({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const requestURL = `${Endpoints.DeleteChartOfAccountApi}/${payload.id}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'PUT',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    swal('Success', 'Account deleted successfully', 'success');
     yield put(Actions.deleteChartOfAccountSuccess(response));
     yield put(Actions.getChartOfAccounts());
     yield put(Actions.closeDeleteAccountDialog());
@@ -155,15 +174,15 @@ export function* updateChartOfAccount({ payload }) {
 }
 
 export async function createChartOfAccountHandler(value) {
-  let credentials = JSON.parse(localStorage.getItem('user'))
-  let accessToken = localStorage.getItem('access_token')
-  let postData = {
+  const credentials = JSON.parse(localStorage.getItem('user'));
+  const accessToken = localStorage.getItem('access_token');
+  const postData = {
     accountCode: value.accountCode,
     accountName: value.accountName,
-    accountNumber: "",
+    accountNumber: '',
     accountTypeId: value.accountTypeId,
     bankBalance: 0,
-    bankName: "",
+    bankName: '',
     description: value.accountDescription,
     id: credentials.id,
     openingBalance: Number(value.amount),
@@ -171,38 +190,36 @@ export async function createChartOfAccountHandler(value) {
     parentId: null,
     rate: 0,
     status: true,
-  }
+  };
   const config = {
     headers: {
       Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
-    }
-  }
+    },
+  };
 
-  console.log(`post data ${postData}`)
+  console.log(`post data ${postData}`);
 
-  await axios.post(`${Endpoints.CreateChartOfAccountApi}`, postData, config)
-    .then((res) => {
-      let chatOfAccResponse = res.data;
+  await axios
+    .post(`${Endpoints.CreateChartOfAccountApi}`, postData, config)
+    .then(res => {
+      const chatOfAccResponse = res.data;
       return chatOfAccResponse;
     })
 
-    .catch((err) => {
+    .catch(err => {
       console.log(`error ocurr in Chart of Account ${err}`);
       return null;
     });
-
 }
-
-
 
 // Individual exports for testing
 export default function* AccountChartSaga() {
-  // See example in containers/HomePage/saga.js
   yield takeLatest(Constants.DEFAULT_ACTION, getDashBoardData);
   yield takeLatest(Constants.GET_ALL_ACCOUNT_TYPES, getAccountTypes);
   yield takeLatest(Constants.CREATE_NEW_CHART_OF_ACCOUNT, createChartOfAccount);
   yield takeLatest(Constants.GET_ALL_CHART_OF_ACCOUNT, getChartOfAccounts);
+  yield takeLatest(Constants.GET_CHART_OF_ACCOUNT_BY_ID, getChartOfAccountById);
   yield takeLatest(Constants.DELETE_CHART_OF_ACCOUNT, deleteChartOfAccount);
   yield takeLatest(Constants.UPDATE_CHART_OF_ACCOUNT, updateChartOfAccount);
 }

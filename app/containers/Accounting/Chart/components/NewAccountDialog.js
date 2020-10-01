@@ -1,15 +1,12 @@
 import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as Actions from '../actions';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
-import { alphaNumeric } from '../validator';
-import swal from 'sweetalert';
-
 import {
   withStyles,
+  CircularProgress,
   TextField,
   makeStyles,
   Button,
@@ -17,18 +14,18 @@ import {
   DialogContent,
   DialogActions,
   DialogTitle,
-  Divider,
   Slide,
   Grid,
-  FormGroup,
   FormControlLabel,
   Checkbox,
 } from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
+import _ from 'lodash';
 import * as Selectors from '../selectors';
+import * as Actions from '../actions';
 
 const useStyles = makeStyles(theme => ({
-  root: {}
+  root: {},
 }));
 
 const GreenCheckbox = withStyles({
@@ -45,6 +42,28 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const types = [
+  { label: 'Credit', id: 'CREDIT' },
+  { label: 'Debit', id: 'DEBIT' },
+];
+
+const initialState = {
+  id: '',
+  accountCode: '',
+  accountName: '',
+  accountNumber: '',
+  accountTypeId: 0,
+  bankBalance: 0,
+  bankName: '',
+  description: '',
+  financialStatement: '',
+  openingBalance: '',
+  parentId: null,
+  rate: 0,
+  status: true,
+  type: '',
+};
+
 const NewAccountDialog = props => {
   const classes = useStyles(props);
 
@@ -52,53 +71,96 @@ const NewAccountDialog = props => {
     loading,
     accountDialog,
     closeNewAccountDialog,
+    chartOfAccounts,
     accountTypes,
     createChartOfAccount,
     updateChartOfAccount,
   } = props;
 
   const [options, setOptions] = useState({
-    checkedG: false,
+    isParent: false,
     isBank: false,
     canHaveParent: false,
   });
 
-  const [values, setValues] = useState({
-    accountCode: '',
-    accountName: '',
-    accountNumber: '',
-    accountTypeId: 0,
-    bankBalance: 0,
-    bankName: '',
-    description: '',
-    openingBalance: '',
-    parentId: null,
-    rate: 0,
-    status: true,
-  });
+  const [values, setValues] = useState({ ...initialState });
 
-  const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
-  }
+  const handleChange = event => {
+    setValues({
+      ...values,
+      [event.target.name]:
+        event.target.type === 'checkbox'
+          ? event.target.checked
+          : event.target.value,
+    });
+  };
 
-  const handleSelectChange = (name, value) => {
+  const handleSelectChange = name => (event, value) => {
     setValues({ ...values, [name]: value.id });
-  }
+  };
+
+  const handleOptionsChange = event => {
+    setOptions({ ...options, [event.target.name]: event.target.checked });
+  };
+
   const handleSubmit = () => {
     accountDialog.type === 'new'
       ? createChartOfAccount(values)
       : updateChartOfAccount(values);
-  }
+  };
 
   useEffect(() => {
-    if (accountDialog.type == 'edit') {
-      const { accountCode, accountName, accountNumber, accountTypeId, bankBalance, bankName, description, openingBalance, id } = accountDialog.data
-      setValues({ ...values, accountCode, accountName, accountNumber, accountTypeId, bankBalance, bankName, description, openingBalance, id });
+    if (accountDialog.type === 'edit' && accountDialog.data) {
+      const {
+        accountCode,
+        accountName,
+        accountNumber,
+        accountType: accountTypeId,
+        bankBalance,
+        description,
+        openingBalance,
+        id,
+        type,
+      } = accountDialog.data;
+      setValues({
+        ...values,
+        accountCode,
+        accountName,
+        accountNumber,
+        accountTypeId,
+        bankBalance,
+        description,
+        openingBalance,
+        id,
+        type,
+      });
+    } else {
+      setValues({ ...initialState });
     }
-
   }, [accountDialog.data]);
 
+  const canSubmitValues = () => {
+    const {
+      accountCode,
+      accountName,
+      accountNumber,
+      accountTypeId,
+      bankBalance,
+      description,
+      type,
+    } = values;
+    return (
+      accountCode.length > 0 &&
+      accountName.length > 0 &&
+      accountTypeId &&
+      bankBalance &&
+      description.length > 0 &&
+      type
+    );
+  };
+
   console.log(`values  got it b4 post  -> `, values);
+  console.log(`accountDialog -> `, accountDialog);
   console.log('accountTypes', accountTypes);
 
   return (
@@ -122,89 +184,109 @@ const NewAccountDialog = props => {
                 id="standard-account-name"
                 label="Account Name"
                 name="accountName"
-                type="name"
                 variant="outlined"
                 size="small"
                 value={values.accountName}
                 onChange={handleChange}
-                margin="normal"
+                margin="dense"
                 fullWidth
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
-                id="standard-accountCode"
+                id="standard-account-code"
                 label="Account Code"
                 name="accountCode"
                 variant="outlined"
-                onBlur={() => { }}
-                error={!/^[a-zA-Z0-9]+$/i.test(values.accountCode)}
-                helperText="value must be alpha numeric"
+                onBlur={() => {}}
+                error={
+                  !/^[a-z0-9]+$/i.test(values.accountCode) &&
+                  values.accountCode.length > 0
+                }
+                helperText={
+                  !/^[a-z0-9]+$/i.test(values.accountCode) &&
+                  values.accountCode.length > 0
+                    ? 'Account Code must be alphanumeric'
+                    : ''
+                }
                 size="small"
                 value={values.accountCode}
                 onChange={handleChange}
-                margin="normal"
+                margin="dense"
                 fullWidth
               />
             </Grid>
             <Grid item xs={6}>
-              {!options.isBank &&
+              <Autocomplete
+                id="accounting-entry-type"
+                size="small"
+                options={types}
+                getOptionLabel={option => option.label}
+                onChange={handleSelectChange('type')}
+                value={values.type ? _.find(types, { id: values.type }) : null}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Select Type"
+                    variant="outlined"
+                    placeholder="Type"
+                    margin="dense"
+                    fullWidth
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              {!options.isBank && (
                 <TextField
                   id="standard-opening-balance"
-                  label='Opening Balance'
+                  label="Opening Balance"
                   name="openingBalance"
-                  type="number"
+                  // type="number"
                   variant="outlined"
                   size="small"
-                  value={values.openingBalance}
+                  value={values.openingBalance ? values.openingBalance : ''}
                   onChange={handleChange}
-                  margin="normal"
+                  margin="dense"
                   fullWidth
                 />
-              }
+              )}
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <Autocomplete
                 id="combo-account-type"
                 size="small"
                 options={accountTypes}
                 getOptionLabel={option => option.accountType}
-                onChange={(evt, value) => {
-                  // setOptions({
-                  //   ...options,
-                  //   isBank: value.accountTypeId === 'Bank' ? true : false,
-                  //   canHaveParent: value.subAccount,
-                  // });
-                  setValues({
-                    ...values,
-                    accountTypeId: value.id,
-                    parentId: null,
-                  });
-                }}
+                onChange={handleSelectChange('accountTypeId')}
                 renderInput={params => (
                   <TextField
                     {...params}
-                    label='Select Account Type'
+                    label="Select Account Type"
                     variant="outlined"
+                    margin="dense"
                     placeholder="Account Types"
                     fullWidth
                   />
                 )}
               />
             </Grid>
-            {options.isBank &&
-              <Grid container spacing={1}>
+
+            {!(
+              values.accountTypeId &&
+              _.find(accountTypes, { id: values.accountTypeId }).subAccount
+            ) && (
+              <>
                 <Grid item xs={6}>
                   <TextField
-                    id="standard-bankName"
+                    id="standard-bank-name"
                     label="Bank Name"
                     name="bankName"
-                    type="name"
                     variant="outlined"
                     size="small"
                     value={values.bankName}
                     onChange={handleChange}
-                    margin="normal"
+                    margin="dense"
                     fullWidth
                   />
                 </Grid>
@@ -218,11 +300,11 @@ const NewAccountDialog = props => {
                     size="small"
                     value={values.bankBalance}
                     onChange={handleChange}
-                    margin="normal"
+                    margin="dense"
                     fullWidth
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                   <TextField
                     id="standard-account-number"
                     label="Account Number"
@@ -232,51 +314,66 @@ const NewAccountDialog = props => {
                     size="small"
                     value={values.accountNumber}
                     onChange={handleChange}
-                    margin="normal"
+                    margin="dense"
                     fullWidth
                   />
                 </Grid>
-              </Grid>
-            }
+              </>
+            )}
 
-            {options.canHaveParent &&
-              <Grid container spacing={1}>
-                <Grid item xs={6}>
+            {values.accountTypeId &&
+            _.find(accountTypes, { id: values.accountTypeId }).subAccount ? (
+              <>
+                <Grid item xs={12}>
                   <FormControlLabel
                     control={
                       <GreenCheckbox
-                        checked={options.checkedG}
-                        onChange={() => { }}
-                        name="checkedG"
+                        checked={options.isParent}
+                        onChange={handleOptionsChange}
+                        name="isParent"
                       />
                     }
                     label="Make parent account."
                   />
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                   <Autocomplete
                     id="combo-account-types"
                     size="small"
-                    options={parent}
+                    options={chartOfAccounts}
                     getOptionLabel={option => option.accountName}
-                    onChange={(evt, value) => {
-                      setValues({ ...values, parentId: value.id })
-                    }}
+                    onChange={handleSelectChange('parentId')}
                     renderInput={params => (
                       <TextField
                         {...params}
                         label="Select Parent Type"
                         variant="outlined"
                         placeholder="Search"
+                        margin="dense"
                         fullWidth
                       />
                     )}
                   />
                 </Grid>
-              </Grid>
-            }
+              </>
+              ) : null}
 
+            <Grid item xs={12}>
+              <TextField
+                id="standard-financial-statement"
+                label="Financial Statement"
+                name="financialStatement"
+                variant="outlined"
+                size="small"
+                value={values.financialStatement}
+                onChange={handleChange}
+                margin="dense"
+                fullWidth
+                rows={3}
+                multiline
+              />
+            </Grid>
             <Grid item xs={12}>
               <TextField
                 id="standard-description"
@@ -286,7 +383,7 @@ const NewAccountDialog = props => {
                 size="small"
                 value={values.description}
                 onChange={handleChange}
-                margin="normal"
+                margin="dense"
                 fullWidth
                 rows={3}
                 multiline
@@ -299,30 +396,38 @@ const NewAccountDialog = props => {
             variant="contained"
             onClick={handleSubmit}
             color="primary"
-          // disabled={loading ? loading : !canSubmitValues()}
+            disableElevation
+            disabled={loading || !canSubmitValues()}
+            endIcon={loading && <CircularProgress size={20} />}
           >
             {accountDialog.type === 'new' ? 'Save Account' : 'Update Account'}
           </Button>
 
-          <Button variant="contained" onClick={closeNewAccountDialog} color="inherit">
+          <Button
+            variant="contained"
+            onClick={closeNewAccountDialog}
+            color="inherit"
+            disableElevation
+          >
             Cancel
           </Button>
         </DialogActions>
       </Dialog>
     </div>
   );
-}
+};
 
 NewAccountDialog.propTypes = {
   loading: PropTypes.bool,
   accountDialog: PropTypes.object,
   accountTypes: PropTypes.array,
-}
+};
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   accountDialog: Selectors.makeSelectNewAccountDialog(),
   accountTypes: Selectors.makeSelectAccountTypeData(),
+  chartOfAccounts: Selectors.makeSelectGetChartOfAccounts(),
 });
 
 function mapDispatchToProps(dispatch) {

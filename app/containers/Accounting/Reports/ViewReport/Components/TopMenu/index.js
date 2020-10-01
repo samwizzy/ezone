@@ -5,11 +5,11 @@ import PrintIcon from '../../Assets/Print';
 import PdfIcon from '../../Assets/Pdf';
 import './style.css';
 
-const index = ({ componentRef, print, setPrint, tableData, search }) => (
+const index = ({ componentRef, print, setPrint, handleFetch, tableData }) => (
   <div className="flex-b md">
     <div className="flex-b">
       <h6>Filter: </h6>
-      <Search />
+      <Search handleFetch={handleFetch} />
     </div>
     <div className="flex-r">
       <PdfIcon
