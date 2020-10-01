@@ -7,14 +7,6 @@ import { initialState } from './reducer';
 
 const selectBankingDomain = state => state.banking || initialState;
 
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by Banking
- */
-
 const makeSelectBanking = () =>
   createSelector(
     selectBankingDomain,
@@ -75,6 +67,12 @@ const makeSelectTransferByAccountIdData = () =>
     substate => substate.transferByAccountIdData,
   );
 
+const makeSelectAccountingPeriods = () =>
+  createSelector(
+    selectBankingDomain,
+    subState => subState.accountingPeriods,
+  );
+
 const makeSelectCurrencies = () =>
   createSelector(
     selectBankingDomain,
@@ -89,6 +87,7 @@ export {
   makeSelectLoading,
   makeSelectBankAccountDialog,
   makeSelectBankAccountConfirmDialog,
+  makeSelectAccountingPeriods,
   makeSelectCurrencies,
   makeSelectAccountTypes,
   makeSelectBankAccountData,

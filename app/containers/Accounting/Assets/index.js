@@ -19,7 +19,12 @@ const key = "fixedAssets"
 export function AssetsSettings(props) {
 	useInjectReducer({ key, reducer });
 	useInjectSaga({ key, saga });
+	const { getAssets } = props
 	const { path } = useRouteMatch()
+
+	useEffect(() => {
+		getAssets()
+	}, [])
 
 	return (
 		<div>

@@ -18,6 +18,7 @@ export const initialState = {
     },
     data: null,
   },
+  accountingPeriods: [],
   currencies: [],
   accountTypes: [],
   bankAccounts: [],
@@ -160,6 +161,30 @@ const bankingReducer = (state = initialState, action) =>
             },
             data: action.payload,
           },
+        };
+      }
+
+      // Case to get accounting periods
+      case Constants.GET_ACCOUNTING_PERIODS: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_ACCOUNTING_PERIODS_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          accountingPeriods: action.payload,
+        };
+      }
+      case Constants.GET_ACCOUNTING_PERIODS_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
         };
       }
 

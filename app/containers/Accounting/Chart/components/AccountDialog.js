@@ -178,9 +178,9 @@ const AccountDialog = props => {
                 renderInput={params => (
                   <TextField
                     {...params}
-                    label="Select Type"
+                    label="Select Debit/Credit"
                     variant="outlined"
-                    placeholder="Type"
+                    placeholder="DEBIT/CREDIT"
                     margin="dense"
                     fullWidth
                   />
@@ -188,19 +188,17 @@ const AccountDialog = props => {
               />
             </Grid>
             <Grid item xs={12}>
-              {!options.isBank &&
-                <TextField
-                  id="standard-opening-balance"
-                  label='Opening Balance'
-                  name="openingBalance"
-                  variant="outlined"
-                  size="small"
-                  value={values.openingBalance ? values.openingBalance : ""}
-                  onChange={handleChange}
-                  margin="dense"
-                  fullWidth
-                />
-              }
+              <TextField
+                id="standard-opening-balance"
+                label='Opening Balance'
+                name="openingBalance"
+                variant="outlined"
+                size="small"
+                value={values.openingBalance ? values.openingBalance : ""}
+                onChange={handleChange}
+                margin="dense"
+                fullWidth
+              />
             </Grid>
             <Grid item xs={12}>
               <Autocomplete
@@ -223,7 +221,7 @@ const AccountDialog = props => {
               />
             </Grid>
 
-            {!(_.find(accountTypes, { id: values.accountTypeId }) && _.find(accountTypes, { id: values.accountTypeId }).subAccount) &&
+            {(_.find(accountTypes, { id: values.accountTypeId }) && _.find(accountTypes, { id: values.accountTypeId }).accountType.toLowerCase() === 'bank') &&
               <>
                 <Grid item xs={6}>
                   <TextField
@@ -239,20 +237,6 @@ const AccountDialog = props => {
                   />
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField
-                    id="standard-bank-balance"
-                    label="Bank balance"
-                    name="bankBalance"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    value={values.bankBalance}
-                    onChange={handleChange}
-                    margin="dense"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12}>
                   <TextField
                     id="standard-account-number"
                     label="Account Number"

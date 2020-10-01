@@ -30,11 +30,15 @@ const useStyles = makeStyles(theme => ({
     '& .MuiCardActions-root': {
       justifyContent: 'flex-end',
       borderTop: `1px solid ${theme.palette.divider}`
-    }
+    },
+    '& .MuiCardHeader-root': {
+      borderBottom: `1px solid ${theme.palette.divider}`
+    },
   },
   paper: {
     padding: theme.spacing(2),
     color: theme.palette.text.secondary,
+    boxShadow: theme.shadows[0]
   },
 }));
 
@@ -326,12 +330,12 @@ const NewAsset = props => {
                 />
 
                 <TextField
-                  id="length"
-                  name="length"
-                  label="Length"
+                  id="asset-id"
+                  name="assetId"
+                  label="Asset Identification"
                   required
                   variant="outlined"
-                  value={form.length}
+                  value={form.assetId}
                   onChange={handleChange}
                   InputLabelProps={{
                     shrink: true,
@@ -340,6 +344,42 @@ const NewAsset = props => {
                   size="small"
                   fullWidth
                 />
+
+                <Grid container>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="length"
+                      name="length"
+                      label="Length"
+                      required
+                      variant="outlined"
+                      value={form.length}
+                      onChange={handleChange}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      margin="normal"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="width"
+                      name="width"
+                      label="Width"
+                      variant="outlined"
+                      value={form.width}
+                      onChange={handleChange}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      margin="normal"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
 
                 <TextField
                   id="weigth"
@@ -348,21 +388,6 @@ const NewAsset = props => {
                   required
                   variant="outlined"
                   value={form.weight}
-                  onChange={handleChange}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  margin="normal"
-                  size="small"
-                  fullWidth
-                />
-
-                <TextField
-                  id="width"
-                  name="width"
-                  label="Width"
-                  variant="outlined"
-                  value={form.width}
                   onChange={handleChange}
                   InputLabelProps={{
                     shrink: true,
@@ -472,22 +497,6 @@ const NewAsset = props => {
             </Grid>
             <Grid item xs>
               <Paper className={classes.paper}>
-                <TextField
-                  id="asset-id"
-                  name="assetId"
-                  label="Asset Identification"
-                  required
-                  variant="outlined"
-                  value={form.assetId}
-                  onChange={handleChange}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  margin="normal"
-                  size="small"
-                  fullWidth
-                />
-
                 <FormControl variant="outlined" margin="normal">
                   <Button
                     variant="outlined"

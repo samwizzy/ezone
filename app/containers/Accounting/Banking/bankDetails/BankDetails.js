@@ -29,6 +29,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import moment from 'moment';
+import _ from 'lodash';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import ControlledButtons from './components/ControlledButtons'
@@ -43,6 +44,13 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     backgroundColor: theme.palette.grey[50],
   },
+  card: {
+    padding: theme.spacing(2),
+    backgroundColor: theme.palette.grey[50],
+    '& .MuiCardActions-root': {
+      justifyContent: 'center'
+    }
+  },
   grid: {
     justifyContent: 'space-between',
     '& .MuiGrid-item': {
@@ -53,37 +61,40 @@ const useStyles = makeStyles(theme => ({
   title: { flexGrow: 1 },
   label: { marginLeft: theme.spacing(1) },
   table: {
-    minWidth: 200,
+    width: '100% !important',
     '& td, & th': {
       border: 0,
     },
     '& td': {
       color: theme.palette.text.secondary,
     },
+    '& tfoot': {
+      '& td': {
+        ...theme.typography.subtitle1,
+        color: theme.palette.secondary.contrastText
+      },
+      background: theme.palette.primary.main,
+    },
   },
   datatable: {
     minWidth: 200,
     whiteSpace: 'nowrap',
-    '& .MuiTableHead-root': {
+    '& thead': {
       '& .MuiTableCell-head': {
         color: theme.palette.common.white,
       },
-      '& .MuiTableCell-root:nth-child(odd)': {
+      '& th:nth-child(odd)': {
         backgroundColor: theme.palette.primary.main,
       },
-      '& .MuiTableCell-root:nth-child(even)': {
+      '& th:nth-child(even)': {
         backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
-    '& .MuiTableFooter-root': {},
-    '& .MuiTableCell-root': {
+    '& td': {
       fontSize: theme.typography.fontSize,
       '& button:nth-child(n+2)': {
         marginLeft: theme.spacing(1),
       },
-    },
-    '& th.MuiTableCell-root': {
-      fontWeight: theme.typography.fontWeightBold,
     },
   },
   iconPaper: {
@@ -94,7 +105,9 @@ const useStyles = makeStyles(theme => ({
 const AccountDetails = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { history, match, openAccountTransferDialog, backAccount, getBankAccountById } = props;
+  const { history, match, accountingPeriods, openAccountTransferDialog, backAccount, getBankAccountById } = props;
+
+  const activePeriod = _.find(accountingPeriods, { activeYear: true, status: true })
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -105,6 +118,7 @@ const AccountDetails = props => {
   };
 
   console.log(backAccount, "backAccount")
+  console.log(activePeriod, "activePeriod")
 
   if (!backAccount) {
     return null
@@ -157,12 +171,20 @@ const AccountDetails = props => {
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell component="th">Closing Balance:</TableCell>
+                  <TableCell component="th">Transaction Period</TableCell>
+                  <TableCell>
+                    {activePeriod && `${moment(activePeriod.startDate).format('ll')} to ${moment(activePeriod.endDate).format('ll')}`}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+              <TableFooter>
+                <TableRow>
+                  <TableCell>Bank Balance</TableCell>
                   <TableCell>
                     {new Intl.NumberFormat("en-NG", { style: 'currency', currency: 'NGN' }).format(backAccount.bankBalance)}
                   </TableCell>
                 </TableRow>
-              </TableBody>
+              </TableFooter>
             </Table>
           </Paper>
         </Grid>
@@ -171,6 +193,16 @@ const AccountDetails = props => {
       {backAccount.transfers.length
         ? (<Grid container>
           <Grid item xs={12}>
+            <Toolbar>
+              <Typography variant="subtitle1" className={classes.title}>Add transaction</Typography>
+              <Button
+                onClick={() => openAccountTransferDialog(backAccount)}
+                color="primary"
+                variant="contained"
+              >
+                Add transaction
+              </Button>
+            </Toolbar>
             <Table className={classes.datatable} aria-label="simple table">
               <TableHead>
                 <TableRow>
@@ -212,7 +244,7 @@ const AccountDetails = props => {
                   <TableCell>
                     <Paper elevation={0} square className={classes.paper}>
                       <Typography variant="h6">
-                        {/* 0 NGN {backAccount.entries.reduce((a, b) => a + Number(b.credit), 0)} */}
+                        {backAccount.transfers.reduce((a, b) => a + Number(b.credit), 0)}
                       </Typography>
                     </Paper>
                   </TableCell>
@@ -254,9 +286,9 @@ const AccountDetails = props => {
         :
         (
           <Grid item xs={12}>
-            <Card square className={classes.paper}>
+            <Card square className={classes.card}>
               <CardContent>
-                <Typography>You haven’t recorded any transactions for this account</Typography>
+                <Typography align="center">You haven’t recorded any transactions for this account</Typography>
               </CardContent>
               <CardActions>
                 <Button
@@ -268,7 +300,7 @@ const AccountDetails = props => {
                   disabled={!backAccount.status}
                   endIcon={<ArrowForwardIcon />}
                 >
-                  Transfer
+                  Add Transaction
                 </Button>
               </CardActions>
             </Card>
@@ -305,6 +337,7 @@ const mapStateToProps = createStructuredSelector({
   backAccount: Selectors.makeSelectBankAccountByIdData(),
   bankTransferByOrgIdData: Selectors.makeSelectBankTransferByOrgIdData(),
   transferByAccountIdData: Selectors.makeSelectTransferByAccountIdData(),
+  accountingPeriods: Selectors.makeSelectAccountingPeriods(),
 });
 
 function mapDispatchToProps(dispatch) {

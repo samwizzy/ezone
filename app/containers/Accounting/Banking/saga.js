@@ -8,6 +8,26 @@ import * as Endpoints from '../../../components/Endpoints';
 import * as Actions from './actions';
 import * as Constants from './constants';
 
+export function* getAccountingPeriods() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAllAccountingPeriodApi}/${currentUser.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getAccountingPeriodsSuccess(response));
+  } catch (err) {
+    yield put(Actions.getAccountingPeriodsError(err));
+  }
+}
+
 export function* getCurrencies() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
@@ -279,6 +299,7 @@ export function* activateDeactivateBankAccount({ payload }) {
 
 // Individual exports for testing
 export default function* BankingSaga() {
+  yield takeLatest(Constants.GET_ACCOUNTING_PERIODS, getAccountingPeriods);
   yield takeLatest(Constants.GET_CURRENCIES, getCurrencies);
   yield takeLatest(Constants.GET_ALL_ACCOUNT_TYPES, getAccountTypes);
   yield takeLatest(Constants.CREATE_NEW_BANK, createNewBankAccount);

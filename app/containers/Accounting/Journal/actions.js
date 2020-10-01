@@ -6,6 +6,47 @@ export function defaultAction() {
   }
 }
 
+// Get accounting setup data
+export function getAccountingSetup() {
+  return {
+    type: Constants.GET_ACCOUNTING_SETUP,
+  }
+}
+
+export function getAccountingSetupSuccess(data) {
+  return {
+    type: Constants.GET_ACCOUNTING_SETUP_SUCCESS,
+    payload: data,
+  }
+}
+
+export function getAccountingSetupError(data) {
+  return {
+    type: Constants.GET_ACCOUNTING_SETUP_ERROR,
+    payload: data,
+  }
+}
+
+export function getTaxes() {
+  return {
+    type: Constants.GET_TAXES,
+  }
+}
+
+export function getTaxesSuccess(data) {
+  return {
+    type: Constants.GET_TAXES_SUCCESS,
+    payload: data,
+  }
+}
+
+export function getTaxesError(data) {
+  return {
+    type: Constants.GET_TAXES_ERROR,
+    payload: data,
+  }
+}
+
 export function openNewJournalDialog() {
   return {
     type: Constants.OPEN_NEW_JOURNAL_DIALOG,
@@ -133,6 +174,27 @@ export function getJournalListSuccess(data) {
 export function getJournalListError(data) {
   return {
     type: Constants.GET_JOURNAL_LIST_ERR,
+    payload: data,
+  }
+}
+
+export function getJournalById(data) {
+  return {
+    type: Constants.GET_JOURNAL_BY_ID,
+    payload: { id: data }
+  }
+}
+
+export function getJournalByIdSuccess(data) {
+  return {
+    type: Constants.GET_JOURNAL_BY_ID_SUCCESS,
+    payload: data,
+  }
+}
+
+export function getJournalByIdError(data) {
+  return {
+    type: Constants.GET_JOURNAL_BY_ID_ERROR,
     payload: data,
   }
 }

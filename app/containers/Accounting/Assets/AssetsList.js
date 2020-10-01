@@ -55,7 +55,7 @@ const useStyles = makeStyles(theme => ({
 
 const AssetsList = (props) => {
   const classes = useStyles(props);
-  const { history, match, assets, openNewAssetDialog, openEditAssetDialog } = props
+  const { loading, history, match, assets, openNewAssetDialog, openEditAssetDialog } = props
   const [anchorEl, setAnchorEl] = useState(null)
   const [selectedAsset, setSelectedAsset] = useState(null)
 
@@ -82,7 +82,7 @@ const AssetsList = (props) => {
 
   const orderedAssets = _.orderBy(assets, 'dateCreated', 'desc')
 
-  if (!assets.length > 0) {
+  if (loading) {
     return <CircleLoader />
   }
 
@@ -197,6 +197,7 @@ const AssetsList = (props) => {
 }
 
 const mapStateToProps = createStructuredSelector({
+  loading: Selectors.makeSelectLoading(),
   assets: Selectors.makeSelectAssets(),
 });
 

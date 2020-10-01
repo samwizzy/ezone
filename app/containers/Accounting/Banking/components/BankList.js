@@ -78,6 +78,7 @@ const BankList = props => {
   } = props;
 
   const handleClick = (event, id) => {
+    event.stopPropagation()
     setAnchorEl(event.currentTarget);
     setSelectedBankAccount(_.find(bankAccounts, { id }));
   };
@@ -104,7 +105,7 @@ const BankList = props => {
     history.push(`${match.url}/${id}`)
   };
 
-  bankAccounts.reverse()
+  const orderedBankAccounts = _.orderBy(bankAccounts, 'dateCreated', 'desc')
 
   if (!bankAccounts.length > 0) {
     return <CircleLoader />
@@ -228,7 +229,7 @@ const BankList = props => {
       <MUIDataTable
         className={classes.datatable}
         title="Banking"
-        data={bankAccounts}
+        data={orderedBankAccounts}
         columns={columns}
         options={options}
       />

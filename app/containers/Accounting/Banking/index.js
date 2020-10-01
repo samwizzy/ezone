@@ -29,12 +29,14 @@ export function Banking(props) {
     loading,
     getBankAccounts,
     getCurrencies,
+    getAccountingPeriods,
     getAccountTypes,
     getTransfersByOrgId,
   } = props;
 
   useEffect(() => {
     getBankAccounts();
+    getAccountingPeriods();
     getCurrencies();
     getAccountTypes();
     getTransfersByOrgId();
@@ -72,6 +74,7 @@ function mapDispatchToProps(dispatch) {
     getAccountTypes: () => dispatch(Actions.getAccountTypes()),
     getTransfersByOrgId: () => dispatch(Actions.getTransfersByOrgId()),
     getCurrencies: () => dispatch(Actions.getCurrencies()),
+    getAccountingPeriods: () => dispatch(Actions.getAccountingPeriods()),
   };
 }
 

@@ -12,17 +12,16 @@ import {
   TableRow,
   Typography,
   Toolbar,
-  Divider,
 } from '@material-ui/core';
 import classNames from 'classnames';
+import moment from 'moment';
+import _ from 'lodash';
 import { darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import * as Selectors from './../selectors';
 import { createStructuredSelector } from 'reselect';
-import moment from 'moment';
 import ControlledButtons from './components/ControlledButtons'
-
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -64,10 +63,12 @@ const useStyles = makeStyles(theme => ({
 
 const ChartAccountDetails = props => {
   const classes = useStyles(props);
-
-  const { history, chartOfAccount } = props;
+  const { history, chartOfAccount, accountingPeriods } = props;
 
   console.log("Selected chartOfAccount", chartOfAccount);
+  console.log("chartOfAccount accountingPeriods", accountingPeriods);
+
+  const activePeriod = _.find(accountingPeriods, { activeYear: true, status: true })
 
   if (!chartOfAccount) {
     return null
@@ -103,17 +104,23 @@ const ChartAccountDetails = props => {
                     </TableRow>
                     <TableRow>
                       <TableCell>Account Number</TableCell>
-                      <TableCell>{chartOfAccount.accountNumber}</TableCell>
+                      <TableCell>{chartOfAccount.accountNumber && chartOfAccount.accountNumber}</TableCell>
                     </TableRow>
                   </React.Fragment>
                 }
+                <TableRow>
+                  <TableCell>Financial Statement</TableCell>
+                  <TableCell>{chartOfAccount.financialStatement && chartOfAccount.financialStatement}</TableCell>
+                </TableRow>
                 <TableRow>
                   <TableCell>Description</TableCell>
                   <TableCell>{chartOfAccount.description}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Transaction Period</TableCell>
-                  <TableCell>{moment(chartOfAccount.dateCreated).format('ll')}</TableCell>
+                  <TableCell>
+                    {activePeriod && `${moment(activePeriod.startDate).format('ll')} to ${moment(activePeriod.endDate).format('ll')}`}
+                  </TableCell>
                 </TableRow>
               </TableBody>
               <TableFooter>
@@ -178,6 +185,7 @@ ChartAccountDetails.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
+  accountingPeriods: Selectors.makeSelectAccountingPeriodsData(),
   chartOfAccount: Selectors.makeSelectGetChartOfAccountById(),
 });
 
