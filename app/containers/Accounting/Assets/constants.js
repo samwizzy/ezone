@@ -1,8 +1,3 @@
-/*
- *
- * Settings constants
- *
- */
 export const DEFAULT_ACTION = 'app/Settings/DEFAULT_ACTION';
 
 export const CREATE_ACCOUNTING_SETUP = 'app/Settings/CREATE_ACCOUNTING_SETUP';
@@ -63,6 +58,10 @@ export const GET_TAXES_ERROR = 'app/Settings/GET_TAXES_ERROR';
 export const CREATE_ASSET = 'app/Settings/CREATE_ASSET';
 export const CREATE_ASSET_SUCCESS = 'app/Settings/CREATE_ASSET_SUCCESS';
 export const CREATE_ASSET_ERROR = 'app/Settings/CREATE_ASSET_ERROR';
+
+export const UPDATE_ASSET = 'app/Settings/UPDATE_ASSET';
+export const UPDATE_ASSET_SUCCESS = 'app/Settings/UPDATE_ASSET_SUCCESS';
+export const UPDATE_ASSET_ERROR = 'app/Settings/UPDATE_ASSET_ERROR';
 
 export const GET_ASSETS = 'app/Settings/GET_ASSETS';
 export const GET_ASSETS_SUCCESS = 'app/Settings/GET_ASSETS_SUCCESS';

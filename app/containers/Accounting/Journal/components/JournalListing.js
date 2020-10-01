@@ -24,12 +24,11 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
-  flex: {
-    display: 'flex',
-    alignItems: 'center',
-    alignContent: 'center',
-  },
   datatable: {
+    '& table': {
+      width: '96% !important',
+      margin: '4px auto',
+    },
     whiteSpace: 'nowrap',
     '& tr:hover': {
       cursor: 'pointer',
@@ -47,16 +46,6 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
-  // iconButton: {
-  //   '&.favorite': { color: orange[300]},
-  //   '&.shared': { color: orange[500]},
-  //   '&.delete': { color: theme.status.danger},
-  // },
-  // icon: {
-  //   '&.favorite': { color: orange[300]},
-  //   '&.shared': { color: orange[500]},
-  //   '&.delete': { color: theme.status.danger},
-  // },
   button: {
     marginLeft: theme.spacing(1),
   },

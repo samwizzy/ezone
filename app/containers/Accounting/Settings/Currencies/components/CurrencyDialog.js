@@ -37,15 +37,21 @@ const CurrencyDialog = props => {
   const classes = useStyles(props);
   const [form, setForm] = React.useState({ ...initialState });
 
-  const { loading, dialog, closeNewCurrencyDialog, createCurrency } = props;
+  const {
+    loading,
+    dialog,
+    closeNewCurrencyDialog,
+    createCurrency,
+    updateCurrency,
+  } = props;
 
   useEffect(() => {
-    if (dialog.type === 'edit') {
-      setForm({ ...initialState });
+    if (dialog.type === 'edit' && dialog.data) {
+      setForm({ ...dialog.data });
     } else {
       setForm({ ...initialState });
     }
-  }, []);
+  }, [dialog.data]);
 
   const handleChange = event => {
     setForm({
@@ -58,7 +64,7 @@ const CurrencyDialog = props => {
   };
 
   const handleSubmit = () => {
-    dialog.type === 'new' ? createCurrency(form) : '';
+    dialog.type === 'new' ? createCurrency(form) : updateCurrency(form);
   };
 
   const canSubmitForm = () => {
@@ -95,6 +101,7 @@ const CurrencyDialog = props => {
             name="code"
             label="Code"
             variant="outlined"
+            value={form.code}
             onChange={handleChange}
             margin="normal"
             size="small"
@@ -106,6 +113,7 @@ const CurrencyDialog = props => {
             name="name"
             label="Name"
             variant="outlined"
+            value={form.name ? form.name : ''}
             onChange={handleChange}
             margin="normal"
             size="small"
@@ -117,6 +125,7 @@ const CurrencyDialog = props => {
             name="symbol"
             label="Symbol"
             variant="outlined"
+            value={form.symbol ? form.symbol : ''}
             onChange={handleChange}
             margin="normal"
             size="small"
@@ -134,7 +143,7 @@ const CurrencyDialog = props => {
             multiline
             rows={3}
             rowsMax={4}
-            value={form.description}
+            value={form.description ? form.description : ''}
             onChange={handleChange}
           />
         </DialogContent>
@@ -143,13 +152,18 @@ const CurrencyDialog = props => {
             variant="contained"
             onClick={handleSubmit}
             color="primary"
-            disabled={loading || !canSubmitForm()}
+            disableElevation
+            disabled={loading ? loading : !canSubmitForm()}
             endIcon={loading && <CircularProgress size={20} />}
           >
             {dialog.type === 'edit' ? 'Update' : 'Save'}
           </Button>
 
-          <Button variant="contained" onClick={closeNewCurrencyDialog}>
+          <Button
+            variant="contained"
+            onClick={closeNewCurrencyDialog}
+            disableElevation
+          >
             Cancel
           </Button>
         </DialogActions>
@@ -171,6 +185,7 @@ function mapDispatchToProps(dispatch) {
   return {
     closeNewCurrencyDialog: () => dispatch(Actions.closeNewCurrencyDialog()),
     createCurrency: data => dispatch(Actions.createCurrency(data)),
+    updateCurrency: data => dispatch(Actions.updateCurrency(data)),
   };
 }
 

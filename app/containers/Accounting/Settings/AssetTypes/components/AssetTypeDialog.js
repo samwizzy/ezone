@@ -41,24 +41,24 @@ const AssetTypeDialog = props => {
   const classes = useStyles(props);
   const [form, setForm] = React.useState({ ...initialState });
 
-  const { loading, dialog, closeNewAssetTypeDialog, createAssetType } = props;
+  const {
+    loading,
+    dialog,
+    closeNewAssetTypeDialog,
+    createAssetType,
+    updateAssetType,
+  } = props;
 
   useEffect(() => {
-    if (dialog.type === 'edit') {
-      setForm({ ...initialState });
+    if (dialog.type === 'edit' && dialog.data) {
+      setForm({ ...dialog.data })
     } else {
       setForm({ ...initialState });
     }
-  }, []);
+  }, [dialog.data])
 
-  const handleChange = event => {
-    setForm({
-      ...form,
-      [event.target.name]:
-        event.target.type === 'checkbox'
-          ? event.target.checked
-          : event.target.value,
-    });
+  const handleChange = (event) => {
+    setForm({ ...form, [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value });
   };
 
   const handleSelectChange = name => (event, object) => {
@@ -66,7 +66,8 @@ const AssetTypeDialog = props => {
   };
 
   const handleSubmit = () => {
-    dialog.type === 'new' ? createAssetType(form) : '';
+    dialog.type === 'new' ?
+      createAssetType(form) : updateAssetType(form)
   };
 
   const canSubmitForm = () => {
@@ -79,9 +80,9 @@ const AssetTypeDialog = props => {
     );
   };
 
-  console.log(loading, 'loading');
-  console.log(form, 'form');
-  console.log(dialog, 'form dialog');
+  console.log(loading, "loading")
+  console.log(form, "form")
+  console.log(dialog, "edit asset type form dialog")
 
   return (
     <div>
@@ -103,6 +104,7 @@ const AssetTypeDialog = props => {
             name="name"
             label="Name"
             variant="outlined"
+            value={form.name}
             onChange={handleChange}
             margin="normal"
             size="small"
@@ -114,6 +116,7 @@ const AssetTypeDialog = props => {
             name="code"
             label="Code"
             variant="outlined"
+            value={form.code}
             onChange={handleChange}
             margin="normal"
             size="small"
@@ -163,13 +166,18 @@ const AssetTypeDialog = props => {
             variant="contained"
             onClick={handleSubmit}
             color="primary"
-            disabled={loading || !canSubmitForm()}
+            disableElevation
+            disabled={loading ? loading : !canSubmitForm()}
             endIcon={loading && <CircularProgress size={20} />}
           >
             {dialog.type === 'edit' ? 'Update' : 'Save'}
           </Button>
 
-          <Button variant="contained" onClick={closeNewAssetTypeDialog}>
+          <Button
+            variant="contained"
+            onClick={closeNewAssetTypeDialog}
+            disableElevation
+          >
             Cancel
           </Button>
         </DialogActions>
@@ -191,7 +199,8 @@ function mapDispatchToProps(dispatch) {
   return {
     closeNewAssetTypeDialog: () => dispatch(Actions.closeNewAssetTypeDialog()),
     createAssetType: data => dispatch(Actions.createAssetType(data)),
-  };
+    updateAssetType: data => dispatch(Actions.updateAssetType(data)),
+  }
 }
 
 const withConnect = connect(

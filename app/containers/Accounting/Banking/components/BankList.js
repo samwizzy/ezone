@@ -29,6 +29,10 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   datatable: {
+    '& table': {
+      width: '96% !important',
+      margin: '4px auto',
+    },
     whiteSpace: 'nowrap',
     '& tr:hover': {
       cursor: 'pointer',

@@ -15,6 +15,8 @@ import makeSelectAccountChart, * as Selectors from './selectors';
 import ModuleLayout from '../components/ModuleLayout';
 import AccountsList from './components/AccountsList';
 import ChartAccountDetails from './chartAccountDetails';
+import AccountDialog from './components/AccountDialog';
+import ConfirmDeleteAccountDialog from './components/ConfirmDeleteAccountDialog';
 import { CircleLoader } from '../../../components/LoadingIndicator';
 
 const key = 'chart';
@@ -30,10 +32,6 @@ const ChartOfAccounts = props => {
     getAccountTypes();
   }, []);
 
-  if (loading) {
-    return <CircleLoader />;
-  }
-
   return (
     <div>
       <Helmet>
@@ -45,6 +43,9 @@ const ChartOfAccounts = props => {
         <Route exact path={path} component={AccountsList} />
         <Route path={`${path}/:accountId`} component={ChartAccountDetails} />
       </ModuleLayout>
+
+      <AccountDialog />
+      <ConfirmDeleteAccountDialog />
     </div>
   );
 };

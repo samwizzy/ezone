@@ -383,6 +383,30 @@ export function* createAsset({ payload }) {
   }
 }
 
+export function* updateAsset({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.UpdateAssetApi}`;
+  payload.orgId = currentUser.organisation.orgId
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.updateAssetSuccess(response));
+    yield put(Actions.getAssets());
+    yield put(Actions.closeNewAssetDialog());
+  } catch (err) {
+    yield put(Actions.updateAssetError(err));
+  }
+}
+
 export function* getAssetTypes() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
@@ -561,6 +585,7 @@ export default function* SettingsSaga() {
   yield takeLatest(Constants.CREATE_TAX, createTax);
   yield takeLatest(Constants.GET_ASSETS, getAssets);
   yield takeLatest(Constants.CREATE_ASSET, createAsset);
+  yield takeLatest(Constants.UPDATE_ASSET, updateAsset);
   yield takeLatest(Constants.GET_ASSET_TYPES, getAssetTypes);
   yield takeLatest(Constants.CREATE_ASSET_TYPE, createAssetType);
   yield takeLatest(Constants.CREATE_ACCOUNT_PERIOD, createAccountPeriod);

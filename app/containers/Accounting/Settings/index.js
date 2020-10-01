@@ -15,7 +15,6 @@ import AccountSetup from './AccountSetup';
 import AccountingPeriod from './AccountingPeriod';
 import DepreciationAreas from './DepreciationArea';
 import DepreciationType from './DepreciationType';
-import Assets from './Assets';
 import AssetTypes from './AssetTypes';
 import Taxes from './Taxes';
 import Currencies from './Currencies';

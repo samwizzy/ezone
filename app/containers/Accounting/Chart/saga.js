@@ -54,8 +54,6 @@ export function* createChartOfAccount({ payload }) {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   delete payload.subAccount;
 
-  console.log('new payload ', payload);
-
   payload.orgId = currentUser.organisation.orgId;
   const requestURL = `${Endpoints.CreateChartOfAccountApi}`;
 
@@ -153,22 +151,27 @@ export function* deleteChartOfAccount({ payload }) {
 // Update a chart of account
 export function* updateChartOfAccount({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.UpdateChartOfAccountApi}`;
+
+  payload.orgId = currentUser.organisation.orgId;
 
   try {
     const response = yield call(request, requestURL, {
       method: 'PUT',
-      body: JSON.stringify(updateChartOfAccountData),
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
+    swal("Success", "Account updated successfully", "success");
     yield put(Actions.updateChartOfAccountSuccess(response));
     yield put(Actions.getChartOfAccounts());
     yield put(Actions.closeNewAccountDialog());
   } catch (err) {
+    swal("Error", "Something went wrong", "error");
     yield put(Actions.updateChartOfAccountError(err));
   }
 }

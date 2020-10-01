@@ -650,6 +650,28 @@ const settingsReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
+      // Case to update depreciation area 
+      case Constants.UPDATE_DEPRECIATION_AREA: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        }
+      }
+      case Constants.UPDATE_DEPRECIATION_AREA_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        }
+      }
+      case Constants.UPDATE_DEPRECIATION_AREA_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        }
+      }
 
       // Case to get depreciation types
       case Constants.GET_DEPRECIATION_TYPES: {
@@ -695,6 +717,28 @@ const settingsReducer = (state = initialState, action) =>
           loading: false,
           error: action.payload,
         };
+      }
+      // Case to update depreciation type
+      case Constants.UPDATE_DEPRECIATION_TYPE: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        }
+      }
+      case Constants.UPDATE_DEPRECIATION_TYPE_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        }
+      }
+      case Constants.UPDATE_DEPRECIATION_TYPE_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        }
       }
 
       // Case to get currencies
@@ -742,6 +786,28 @@ const settingsReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
+      // Case to update currency
+      case Constants.UPDATE_CURRENCY: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        }
+      }
+      case Constants.UPDATE_CURRENCY_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        }
+      }
+      case Constants.UPDATE_CURRENCY_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        }
+      }
 
       // Case to get taxes
       case Constants.GET_TAXES: {
@@ -788,6 +854,29 @@ const settingsReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
+      // Case to update tax
+      case Constants.UPDATE_TAX: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        }
+      }
+      case Constants.UPDATE_TAX_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        }
+      }
+      case Constants.UPDATE_TAX_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        }
+      }
+
       // Case to get assets
       case Constants.GET_ASSETS: {
         return {
@@ -856,7 +945,8 @@ const settingsReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
-      // Case to create type asset
+
+      // Case to create asset type
       case Constants.CREATE_ASSET_TYPE: {
         return {
           ...state,
@@ -877,6 +967,28 @@ const settingsReducer = (state = initialState, action) =>
           loading: false,
           error: action.payload,
         };
+      }
+      // Case to update asset type
+      case Constants.UPDATE_ASSET_TYPE: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        }
+      }
+      case Constants.UPDATE_ASSET_TYPE_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        }
+      }
+      case Constants.UPDATE_ASSET_TYPE_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        }
       }
 
       // Case to create accounting period

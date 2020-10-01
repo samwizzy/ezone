@@ -38,11 +38,11 @@ const TaxDialog = props => {
   const classes = useStyles(props);
   const [form, setForm] = React.useState({ ...initialState });
 
-  const { loading, dialog, closeNewTaxDialog, createTax } = props;
+  const { loading, dialog, closeNewTaxDialog, createTax, updateTax } = props;
 
   useEffect(() => {
-    if (dialog.type === 'edit') {
-      setForm({ ...initialState });
+    if (dialog.type === 'edit' && dialog.data) {
+      setForm({ ...dialog.data });
     } else {
       setForm({ ...initialState });
     }
@@ -52,14 +52,14 @@ const TaxDialog = props => {
     const { name, value, type, checked } = event.target;
     name === 'rate'
       ? setForm({
-        ...form,
-        [name]: type === 'checkbox' ? checked : value.replace(/[^0-9]/g, ''),
-      })
+          ...form,
+          [name]: type === 'checkbox' ? checked : value.replace(/[^0-9]/g, ''),
+        })
       : setForm({ ...form, [name]: type === 'checkbox' ? checked : value });
   };
 
   const handleSubmit = () => {
-    dialog.type === 'new' ? createTax(form) : '';
+    dialog.type === 'new' ? createTax(form) : updateTax(form);
   };
 
   const canSubmitForm = () => {
@@ -147,13 +147,18 @@ const TaxDialog = props => {
             variant="contained"
             onClick={handleSubmit}
             color="primary"
-            disabled={loading || !canSubmitForm()}
+            disableElevation
+            disabled={loading ? loading : !canSubmitForm()}
             endIcon={loading && <CircularProgress size={20} />}
           >
             {dialog.type === 'edit' ? 'Update' : 'Save'}
           </Button>
 
-          <Button variant="contained" onClick={closeNewTaxDialog}>
+          <Button
+            variant="contained"
+            onClick={closeNewTaxDialog}
+            disableElevation
+          >
             Cancel
           </Button>
         </DialogActions>
@@ -175,6 +180,7 @@ function mapDispatchToProps(dispatch) {
   return {
     closeNewTaxDialog: () => dispatch(Actions.closeNewTaxDialog()),
     createTax: data => dispatch(Actions.createTax(data)),
+    updateTax: data => dispatch(Actions.updateTax(data)),
   };
 }
 

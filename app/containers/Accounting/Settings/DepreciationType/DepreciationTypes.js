@@ -2,6 +2,7 @@ import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import {
   makeStyles,
@@ -9,16 +10,16 @@ import {
   Button,
   Menu,
   MenuItem,
-  Toolbar,
   Tooltip,
 } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import AddIcon from '@material-ui/icons/Add';
-import { Euro, AttachMoney, Delete, Check } from '@material-ui/icons';
-import moment from 'moment';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
+import moment from 'moment';
+import _ from 'lodash';
+import { methods } from './components/DepreciationTypeDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,31 +27,55 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
   },
   datatable: {
-    '& .MuiTableRow-root:hover': {
+    whiteSpace: 'nowrap',
+    '& tr:hover': {
       cursor: 'pointer',
     },
-    '& tbody': {
-      '& td': {
-        padding: theme.spacing(1),
-      },
+    '& td': {
+      padding: theme.spacing(1, 2),
     },
   },
 }));
 
 const DepreciationTypes = props => {
   const classes = useStyles(props);
-  const { depreciationTypes, openNewDepreciationTypeDialog } = props;
+  const {
+    history,
+    match,
+    depreciationTypes,
+    openNewDepreciationTypeDialog,
+    openEditDepreciationTypeDialog,
+  } = props;
   const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedDepreciationType, setSelectedDepreciationType] = useState(
+    null,
+  );
 
   const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
+    setSelectedDepreciationType(_.find(depreciationTypes, { id }));
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  depreciationTypes.reverse();
+  const handleEditClick = () => {
+    openEditDepreciationTypeDialog(selectedDepreciationType);
+    handleClose();
+  };
+
+  const handleViewClick = () => {
+    const { id } = selectedDepreciationType;
+    history.push(`${match.url}/${id}`);
+    handleClose();
+  };
+
+  const orderedDepreciationTypes = _.orderBy(
+    depreciationTypes,
+    'dateCreated',
+    'desc',
+  );
 
   console.log(depreciationTypes, 'DepreciationTypes');
 
@@ -77,6 +102,8 @@ const DepreciationTypes = props => {
       options: {
         filter: true,
         sort: false,
+        customBodyRender: value =>
+          value ? _.find(methods, { value }).label : null,
       },
     },
     {
@@ -193,7 +220,7 @@ const DepreciationTypes = props => {
       <MUIDataTable
         className={classes.datatable}
         title="Depreciation Types"
-        data={depreciationTypes}
+        data={orderedDepreciationTypes}
         columns={columns}
         options={options}
       />
@@ -205,12 +232,8 @@ const DepreciationTypes = props => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => {}}>Edit</MenuItem>
-        <MenuItem
-          onClick={() => history.push({ pathname: '/account/journal/details' })}
-        >
-          View Details
-        </MenuItem>
+        <MenuItem onClick={handleEditClick}>Edit</MenuItem>
+        <MenuItem onClick={handleViewClick}>View Details</MenuItem>
       </Menu>
     </div>
   );
@@ -224,6 +247,8 @@ function mapDispatchToProps(dispatch) {
   return {
     openNewDepreciationTypeDialog: () =>
       dispatch(Actions.openNewDepreciationTypeDialog()),
+    openEditDepreciationTypeDialog: data =>
+      dispatch(Actions.openEditDepreciationTypeDialog(data)),
   };
 }
 
@@ -233,6 +258,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(DepreciationTypes);

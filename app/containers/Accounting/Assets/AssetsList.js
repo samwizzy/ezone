@@ -10,10 +10,10 @@ import {
   Button,
   Menu,
   MenuItem,
-  Toolbar,
   Tooltip,
 } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
+import { darken } from '@material-ui/core/styles/colorManipulator';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import AddIcon from '@material-ui/icons/Add';
 import moment from 'moment';
@@ -26,12 +26,26 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
   },
   datatable: {
-    '& .MuiTableRow-root:hover': {
+    '& table': {
+      width: '96% !important',
+      margin: '4px auto',
+    },
+    whiteSpace: 'nowrap',
+    '& tr:hover': {
       cursor: 'pointer',
     },
-    '& tbody': {
-      '& td': {
-        padding: theme.spacing(1),
+    '& td': {
+      padding: theme.spacing(1, 2),
+    },
+    '& thead': {
+      '& th': {
+        color: theme.palette.common.white,
+      },
+      '& th:nth-child(odd)': {
+        backgroundColor: theme.palette.primary.main,
+      },
+      '& th:nth-child(even)': {
+        backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
   },
@@ -134,7 +148,7 @@ const AssetsList = props => {
     <div className={classes.root}>
       <MUIDataTable
         className={classes.datatable}
-        title="All Assets"
+        title="Fixed Assets"
         data={assets}
         columns={columns}
         options={options}

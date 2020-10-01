@@ -37,11 +37,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const methods = [{ label: 'Straight Line', value: 'STRAIGHT_LINE' }];
+export const methods = [
+  { label: 'Straight Line', value: 'STRAIGHT_LINE' },
+  { label: 'Unit of Production', value: 'UNIT_OF_PRODUCTION' },
+  { label: 'Sum of the year digit', value: 'SUM_OF_THE_YEAR_DIGIT' },
+  { label: 'Double Declining', value: 'DOUBLE_DECLINING' },
+  { label: 'Reducing Balance', value: 'REDUCING_BALANCE' },
+];
 const calculationBases = [
   { label: 'Monthly', value: 'MONTHLY' },
   { label: 'Quarterly', value: 'QUARTERLY' },
-  { label: 'Yearly', value: 'YEARLY' },
 ];
 
 const initialState = {
@@ -65,15 +70,16 @@ const DepreciationTypeDialog = props => {
     dialog,
     closeNewDepreciationTypeDialog,
     createDepreciationType,
+    updateDepreciationType,
   } = props;
 
   useEffect(() => {
-    if (dialog.type === 'edit') {
-      setForm({ ...initialState });
+    if (dialog.type === 'edit' && dialog.data) {
+      setForm({ ...dialog.data });
     } else {
       setForm({ ...initialState });
     }
-  }, []);
+  }, [dialog.data]);
 
   const handleChange = event => {
     const { name, value, type, checked } = event.target;
@@ -100,7 +106,9 @@ const DepreciationTypeDialog = props => {
   };
 
   const handleSubmit = () => {
-    dialog.type === 'new' ? createDepreciationType(form) : '';
+    dialog.type === 'new'
+      ? createDepreciationType(form)
+      : updateDepreciationType(form);
   };
 
   const canSubmitForm = () => {
@@ -113,9 +121,7 @@ const DepreciationTypeDialog = props => {
       depreciationRate,
       description,
     } = form;
-    return (
-      code.length > 0 && calculationBase.length > 0 && description.length > 0
-    );
+    return code.length > 0 && calculationBase && description.length > 0;
   };
 
   console.log(loading, 'loading');
@@ -156,7 +162,7 @@ const DepreciationTypeDialog = props => {
             label="Depreciated Value"
             variant="outlined"
             onChange={handleChange}
-            value={form.depreciatedValue}
+            value={form.depreciatedValue ? form.depreciatedValue : ''}
             margin="normal"
             fullWidth
           />
@@ -167,7 +173,7 @@ const DepreciationTypeDialog = props => {
             label="Depreciation Rate"
             variant="outlined"
             onChange={handleChange}
-            value={form.depreciationRate}
+            value={form.depreciationRate ? form.depreciationRate : ''}
             margin="normal"
             fullWidth
           />
@@ -181,7 +187,7 @@ const DepreciationTypeDialog = props => {
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             }}
             onChange={handleChange}
-            value={form.percentageValue}
+            value={form.percentageValue ? form.percentageValue : ''}
             margin="normal"
             fullWidth
           />
@@ -253,7 +259,7 @@ const DepreciationTypeDialog = props => {
               format="dd/MM/yyyy"
               fullWidth
               margin="normal"
-              label="valid To"
+              label="Valid To"
               value={form.validTo}
               onChange={handleDateChange('validTo')}
               KeyboardButtonProps={{
@@ -273,7 +279,7 @@ const DepreciationTypeDialog = props => {
             multiline
             rows={3}
             rowsMax={4}
-            value={form.description}
+            value={form.description ? form.description : ''}
             onChange={handleChange}
           />
         </DialogContent>
@@ -282,13 +288,18 @@ const DepreciationTypeDialog = props => {
             variant="contained"
             onClick={handleSubmit}
             color="primary"
-            disabled={loading || !canSubmitForm()}
+            disableElevation
+            disabled={loading ? loading : !canSubmitForm()}
             endIcon={loading && <CircularProgress size={20} />}
           >
             {dialog.type === 'edit' ? 'Update' : 'Save'}
           </Button>
 
-          <Button variant="contained" onClick={closeNewDepreciationTypeDialog}>
+          <Button
+            variant="contained"
+            onClick={closeNewDepreciationTypeDialog}
+            disableElevation
+          >
             Cancel
           </Button>
         </DialogActions>
@@ -312,6 +323,8 @@ function mapDispatchToProps(dispatch) {
       dispatch(Actions.closeNewDepreciationTypeDialog()),
     createDepreciationType: data =>
       dispatch(Actions.createDepreciationType(data)),
+    updateDepreciationType: data =>
+      dispatch(Actions.updateDepreciationType(data)),
   };
 }
 

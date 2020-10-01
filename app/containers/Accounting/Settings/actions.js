@@ -125,6 +125,27 @@ export function createDepreciationAreaError(data) {
     payload: data,
   };
 }
+// update depreciation area
+export function updateDepreciationArea(data) {
+  return {
+    type: Constants.UPDATE_DEPRECIATION_AREA,
+    payload: data
+  }
+}
+
+export function updateDepreciationAreaSuccess(data) {
+  return {
+    type: Constants.UPDATE_DEPRECIATION_AREA_SUCCESS,
+    payload: data,
+  }
+}
+
+export function updateDepreciationAreaError(data) {
+  return {
+    type: Constants.UPDATE_DEPRECIATION_AREA_ERROR,
+    payload: data,
+  }
+}
 
 export function getDepreciationTypes() {
   return {
@@ -166,6 +187,27 @@ export function createDepreciationTypeError(data) {
     payload: data,
   };
 }
+// update depreciation type
+export function updateDepreciationType(data) {
+  return {
+    type: Constants.UPDATE_DEPRECIATION_TYPE,
+    payload: data
+  }
+}
+
+export function updateDepreciationTypeSuccess(data) {
+  return {
+    type: Constants.UPDATE_DEPRECIATION_TYPE_SUCCESS,
+    payload: data,
+  }
+}
+
+export function updateDepreciationTypeError(data) {
+  return {
+    type: Constants.UPDATE_DEPRECIATION_TYPE_ERROR,
+    payload: data,
+  }
+}
 
 export function getTaxes() {
   return {
@@ -206,6 +248,27 @@ export function createTaxError(data) {
     type: Constants.CREATE_TAX_ERROR,
     payload: data,
   };
+}
+// update tax action
+export function updateTax(data) {
+  return {
+    type: Constants.UPDATE_TAX,
+    payload: data
+  }
+}
+
+export function updateTaxSuccess(data) {
+  return {
+    type: Constants.UPDATE_TAX_SUCCESS,
+    payload: data,
+  }
+}
+
+export function updateTaxError(data) {
+  return {
+    type: Constants.UPDATE_TAX_ERROR,
+    payload: data,
+  }
 }
 
 // get assets actions
@@ -290,6 +353,27 @@ export function createAssetTypeError(data) {
     type: Constants.CREATE_ASSET_TYPE_ERROR,
     payload: data,
   };
+}
+// update asset types actions
+export function updateAssetType(data) {
+  return {
+    type: Constants.UPDATE_ASSET_TYPE,
+    payload: data
+  }
+}
+
+export function updateAssetTypeSuccess(data) {
+  return {
+    type: Constants.UPDATE_ASSET_TYPE_SUCCESS,
+    payload: data,
+  }
+}
+
+export function updateAssetTypeError(data) {
+  return {
+    type: Constants.UPDATE_ASSET_TYPE_ERROR,
+    payload: data,
+  }
 }
 
 // Open depreciation area dialog
@@ -473,6 +557,7 @@ export function getCurrenciesError(data) {
     payload: data,
   };
 }
+
 // create currency action
 export function createCurrency(data) {
   return {
@@ -493,6 +578,27 @@ export function createCurrencyError(data) {
     type: Constants.CREATE_CURRENCY_ERROR,
     payload: data,
   };
+}
+// update currency action
+export function updateCurrency(data) {
+  return {
+    type: Constants.UPDATE_CURRENCY,
+    payload: data
+  }
+}
+
+export function updateCurrencySuccess(data) {
+  return {
+    type: Constants.UPDATE_CURRENCY_SUCCESS,
+    payload: data,
+  }
+}
+
+export function updateCurrencyError(data) {
+  return {
+    type: Constants.UPDATE_CURRENCY_ERROR,
+    payload: data,
+  }
 }
 
 // Get default chart of accounts
