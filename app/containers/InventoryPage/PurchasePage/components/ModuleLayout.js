@@ -15,7 +15,7 @@ import { createStructuredSelector } from 'reselect';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import RefreshSharp from '@material-ui/icons/RefreshSharp';
 import UserMenu from '../../../components/layouts/shared-components/UserMenu';
-import MenuBar from '../../../components/MenuBar'
+import MenuBar from '../../../components/MenuBar';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,11 +36,7 @@ function ModuleLayout(props) {
   return (
     <div className={classes.root}>
       <MenuBar
-        content={
-          <div className={classes.content}>
-            {props.children}
-          </div>
-        }
+        content={<div className={classes.content}>{props.children}</div>}
       />
     </div>
   );

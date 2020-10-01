@@ -8,9 +8,15 @@ import {
   Paper,
   Typography,
   MenuItem,
-  Grid
+  Grid,
 } from '@material-ui/core';
-import { BrowserRouter as Router, Switch, useParams, Route, useRouteMatch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  useParams,
+  Route,
+  useRouteMatch,
+} from 'react-router-dom';
 import SendInvoice from './sendinvoice';
 import Payment from './payment';
 import InvoiceReciept from './invoicereciept';
@@ -27,8 +33,8 @@ const Home = () => {
     sendinvoice: false,
     payment: false,
     sendinvoice: false,
-    payment: false
-  }
+    payment: false,
+  };
 
   const reducer = (state, action) => {
     switch (action.type) {
@@ -43,36 +49,23 @@ const Home = () => {
       default:
         return state;
     }
-  }
+  };
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
     <InvoiceContext.Provider
-      value={{ invoiceState: state, invoiceDispatch: dispatch }}>
+      value={{ invoiceState: state, invoiceDispatch: dispatch }}
+    >
       <div>
-
-        <div>
-          {state.newinvoice ? <NewInvoice /> : <div />}
-        </div>
-        <div>
-          {state.invoice ? <Invoice /> : <div />}
-        </div>
-        <div>
-          {state.invoicereciept ? <InvoiceReciept /> : <div />}
-        </div>
-        <div>
-          {state.payment ? <Payment /> : <div />}
-        </div>
-        <div>
-          {state.sendinvoice ? <SendInvoice /> : <div />}
-        </div>
-
-
+        <div>{state.newinvoice ? <NewInvoice /> : <div />}</div>
+        <div>{state.invoice ? <Invoice /> : <div />}</div>
+        <div>{state.invoicereciept ? <InvoiceReciept /> : <div />}</div>
+        <div>{state.payment ? <Payment /> : <div />}</div>
+        <div>{state.sendinvoice ? <SendInvoice /> : <div />}</div>
       </div>
     </InvoiceContext.Provider>
-
   );
-}
+};
 
 export default Home;

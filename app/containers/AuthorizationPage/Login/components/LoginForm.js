@@ -194,7 +194,7 @@ const LoginForm = props => {
                   label="Password"
                   inputProps={{
                     type: visibility ? 'text' : 'password',
-                    autoComplete: 'new-password'
+                    autoComplete: 'new-password',
                   }}
                   // type={visibility ? 'text' : 'password'}
                   id="password"
@@ -212,8 +212,8 @@ const LoginForm = props => {
                           {visibility ? (
                             <VisibilityOutlined />
                           ) : (
-                              <VisibilityOffOutlined />
-                            )}
+                            <VisibilityOffOutlined />
+                          )}
                         </IconButton>
                       </Tooltip>
                     ),
@@ -242,7 +242,7 @@ const LoginForm = props => {
                   variant="contained"
                   color="primary"
                   className={classes.submit}
-                  disabled={loading ? loading : !canBeSubmitted()}
+                  disabled={loading || !canBeSubmitted()}
                   onClick={() => loginAction(values)}
                   endIcon={loading && <CircularProgress size={20} />}
                 >

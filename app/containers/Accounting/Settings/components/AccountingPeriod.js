@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import classNames from 'classnames'
+import classNames from 'classnames';
 import {
   makeStyles,
   Button,
@@ -18,20 +18,20 @@ import {
   TableCell,
   Toolbar,
   Typography,
-  Tooltip
+  Tooltip,
 } from '@material-ui/core';
-import { green } from '@material-ui/core/colors'
+import { green } from '@material-ui/core/colors';
 import AddIcon from '@material-ui/icons/Add';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import moment from 'moment';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import DialogOfAccountPeriod from './DialogOfAccountPeriod';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -43,11 +43,11 @@ const useStyles = makeStyles(theme => ({
   },
   table: {
     minWidth: 200,
-    whiteSpace: "nowrap",
+    whiteSpace: 'nowrap',
     '& tr': {
       '& th': {
         fontWeight: theme.typography.fontWeightMedium, // 500 + 100, bold=700
-      }
+      },
     },
     '& td': {
       // borderBottom: 0
@@ -58,22 +58,22 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     '& svg': {
       marginRight: theme.spacing(1),
-      color: theme.palette.primary.main
-    }
+      color: theme.palette.primary.main,
+    },
   },
   status: {
-    '&.active': { color: green[500] }
+    '&.active': { color: green[500] },
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
   },
 }));
 
 const initialState = {
-  orgId: "",
+  orgId: '',
   startDate: moment().format('YYYY-MM-DDTHH:mm:ss'),
-  year: moment().format('YYYY')
-}
+  year: moment().format('YYYY'),
+};
 
 const AccountingPeriod = props => {
   const classes = useStyles();
@@ -86,51 +86,55 @@ const AccountingPeriod = props => {
     setAccountPeriodAsActive,
     updateAccountPeriodStatus,
     openEditAccountPeriodDialog,
-    openAccountPeriodCloseDialog
+    openAccountPeriodCloseDialog,
   } = props;
 
-  const [values, setValues] = useState({ ...initialState })
-  const [selectedPeriod, setSelectedPeriod] = useState({ ...initialState })
+  const [values, setValues] = useState({ ...initialState });
+  const [selectedPeriod, setSelectedPeriod] = useState({ ...initialState });
 
   const handleClose = () => {
     setAnchorEl(null);
-  }
+  };
 
   const handleDateChange = name => date => {
-    setValues({ ...values, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss'), year: moment(date).format('YYYY') })
-  }
+    setValues({
+      ...values,
+      [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss'),
+      year: moment(date).format('YYYY'),
+    });
+  };
 
-  useEffect(() => {
-
-  }, [])
+  useEffect(() => {}, []);
 
   const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
-    setSelectedPeriod(_.find(accountingPeriods, { id }))
+    setSelectedPeriod(_.find(accountingPeriods, { id }));
   };
 
   const handleChangeStatus = () => {
-    const data = { status: !selectedPeriod.status, id: selectedPeriod.id }
-    console.log(data, "data")
-    updateAccountPeriodStatus(data)
-    handleClose()
-  }
+    const data = { status: !selectedPeriod.status, id: selectedPeriod.id };
+    console.log(data, 'data');
+    updateAccountPeriodStatus(data);
+    handleClose();
+  };
 
   const handleActivatePeriod = () => {
-    const data = { id: selectedPeriod.id }
-    console.log(data, "data")
-    setAccountPeriodAsActive(data)
-    handleClose()
-  }
+    const data = { id: selectedPeriod.id };
+    console.log(data, 'data');
+    setAccountPeriodAsActive(data);
+    handleClose();
+  };
 
   if (!accountingSetupData || !accountingPeriods) {
-    return null
+    return null;
   }
 
-  const currentAccountingPeriod = accountingPeriods.find(account => account.activeYear === true)
+  const currentAccountingPeriod = accountingPeriods.find(
+    account => account.activeYear === true,
+  );
 
-  console.log(accountingSetupData, "accountingSetupData")
-  console.log(accountingPeriods, "accountingPeriods")
+  console.log(accountingSetupData, 'accountingSetupData');
+  console.log(accountingPeriods, 'accountingPeriods');
 
   return (
     <div>
@@ -149,11 +153,17 @@ const AccountingPeriod = props => {
               <TableBody>
                 <TableRow>
                   <TableCell component="th">Financial Year Start</TableCell>
-                  <TableCell>{moment(currentAccountingPeriod.startDate).format('Do, MMM')}</TableCell>
+                  <TableCell>
+                    {moment(currentAccountingPeriod.startDate).format(
+                      'Do, MMM',
+                    )}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Accounting Method</TableCell>
-                  <TableCell>{accountingSetupData && accountingSetupData.accountMethod}</TableCell>
+                  <TableCell>
+                    {accountingSetupData && accountingSetupData.accountMethod}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Tax Year Start</TableCell>
@@ -164,7 +174,9 @@ const AccountingPeriod = props => {
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Tax Type</TableCell>
-                  <TableCell>{accountingSetupData && accountingSetupData.taxType}</TableCell>
+                  <TableCell>
+                    {accountingSetupData && accountingSetupData.taxType}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -179,18 +191,28 @@ const AccountingPeriod = props => {
 
           <Paper square className={classes.paper}>
             <Toolbar>
-              <Typography variant="subtitle1" className={classes.title} component="div">Current Accounting Year</Typography>
+              <Typography
+                variant="subtitle1"
+                className={classes.title}
+                component="div"
+              >
+                Current Accounting Year
+              </Typography>
             </Toolbar>
 
             <Table className={classes.table}>
               <TableBody>
                 <TableRow>
                   <TableCell component="th">Start Date</TableCell>
-                  <TableCell>{moment(currentAccountingPeriod.startDate).format('ll')}</TableCell>
+                  <TableCell>
+                    {moment(currentAccountingPeriod.startDate).format('ll')}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">End Date</TableCell>
-                  <TableCell>{moment(currentAccountingPeriod.endDate).format('ll')}</TableCell>
+                  <TableCell>
+                    {moment(currentAccountingPeriod.endDate).format('ll')}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -198,39 +220,59 @@ const AccountingPeriod = props => {
 
           <Paper square className={classes.paper}>
             <Toolbar>
-              <Typography variant="subtitle1" className={classes.title} component="div">Accounting Periods</Typography>
-              <Button variant="contained" color="primary" onClick={openAccountPeriodDialog} startIcon={<AddIcon />}>
+              <Typography
+                variant="subtitle1"
+                className={classes.title}
+                component="div"
+              >
+                Accounting Periods
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={openAccountPeriodDialog}
+                startIcon={<AddIcon />}
+              >
                 Add Period
               </Button>
             </Toolbar>
 
             <Table size="small" className={classes.table}>
               <TableBody>
-                {accountingPeriods && accountingPeriods.map(item => (
-                  <TableRow>
-                    <TableCell component="th">Account Year</TableCell>
-                    <TableCell>{item.year}</TableCell>
-                    <TableCell component="th">Start Date</TableCell>
-                    <TableCell>{moment(item.startDate).format('ll')}</TableCell>
-                    <TableCell component="th">End Date</TableCell>
-                    <TableCell>{moment(item.endDate).format('ll')}</TableCell>
-                    <TableCell>{item.status ? 'Open' : 'Closed'}</TableCell>
-                    <TableCell>
-                      {item.activeYear
-                        ? <CheckCircleIcon className={classNames(classes.status, { 'active': item.activeYear })} />
-                        : <CheckCircleOutlineIcon />}
-                    </TableCell>
-                    <TableCell component="th">
-                      <IconButton
-                        aria-controls="simple-menu"
-                        aria-haspopup="true"
-                        onClick={event => handleClick(event, item.id)}
-                      >
-                        <MoreVertIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {accountingPeriods &&
+                  accountingPeriods.map(item => (
+                    <TableRow>
+                      <TableCell component="th">Account Year</TableCell>
+                      <TableCell>{item.year}</TableCell>
+                      <TableCell component="th">Start Date</TableCell>
+                      <TableCell>
+                        {moment(item.startDate).format('ll')}
+                      </TableCell>
+                      <TableCell component="th">End Date</TableCell>
+                      <TableCell>{moment(item.endDate).format('ll')}</TableCell>
+                      <TableCell>{item.status ? 'Open' : 'Closed'}</TableCell>
+                      <TableCell>
+                        {item.activeYear ? (
+                          <CheckCircleIcon
+                            className={classNames(classes.status, {
+                              active: item.activeYear,
+                            })}
+                          />
+                        ) : (
+                          <CheckCircleOutlineIcon />
+                        )}
+                      </TableCell>
+                      <TableCell component="th">
+                        <IconButton
+                          aria-controls="simple-menu"
+                          aria-haspopup="true"
+                          onClick={event => handleClick(event, item.id)}
+                        >
+                          <MoreVertIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </Paper>
@@ -244,15 +286,9 @@ const AccountingPeriod = props => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleChangeStatus}>
-          Open
-        </MenuItem>
-        <MenuItem onClick={handleActivatePeriod}>
-          Set as active
-        </MenuItem>
-        <MenuItem onClick={handleChangeStatus}>
-          Close
-        </MenuItem>
+        <MenuItem onClick={handleChangeStatus}>Open</MenuItem>
+        <MenuItem onClick={handleActivatePeriod}>Set as active</MenuItem>
+        <MenuItem onClick={handleChangeStatus}>Close</MenuItem>
       </Menu>
 
       <DialogOfAccountPeriod />
@@ -260,8 +296,7 @@ const AccountingPeriod = props => {
   );
 };
 
-AccountingPeriod.propTypes = {
-};
+AccountingPeriod.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
   accountingSetupData: Selectors.makeSelectGetAccountingSetupData(),
@@ -271,10 +306,14 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openAccountPeriodDialog: () => dispatch(Actions.openAccountPeriodDialog()),
-    openEditAccountPeriodDialog: data => dispatch(Actions.openEditAccountPeriodDialog(data)),
-    openAccountPeriodCloseDialog: data => dispatch(Actions.openAccountPeriodCloseDialog(data)),
-    setAccountPeriodAsActive: data => dispatch(Actions.setAccountPeriodAsActive(data)),
-    updateAccountPeriodStatus: data => dispatch(Actions.updateAccountPeriodStatus(data)),
+    openEditAccountPeriodDialog: data =>
+      dispatch(Actions.openEditAccountPeriodDialog(data)),
+    openAccountPeriodCloseDialog: data =>
+      dispatch(Actions.openAccountPeriodCloseDialog(data)),
+    setAccountPeriodAsActive: data =>
+      dispatch(Actions.setAccountPeriodAsActive(data)),
+    updateAccountPeriodStatus: data =>
+      dispatch(Actions.updateAccountPeriodStatus(data)),
   };
 }
 

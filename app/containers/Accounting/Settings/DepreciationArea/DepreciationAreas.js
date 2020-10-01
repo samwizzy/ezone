@@ -9,7 +9,7 @@ import {
   Button,
   Menu,
   MenuItem,
-  Tooltip
+  Tooltip,
 } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -27,37 +27,47 @@ const useStyles = makeStyles(theme => ({
   datatable: {
     whiteSpace: 'nowrap',
     '& tr:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& td': {
-      padding: theme.spacing(1, 2)
+      padding: theme.spacing(1, 2),
     },
   },
 }));
 
-const DepreciationAreas = (props) => {
+const DepreciationAreas = props => {
   const classes = useStyles(props);
-  const { depreciationAreas, openNewDepreciationAreaDialog, openEditDepreciationAreaDialog } = props
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [selectedDepreciationArea, setSelectedDepreciationArea] = useState(null)
+  const {
+    depreciationAreas,
+    openNewDepreciationAreaDialog,
+    openEditDepreciationAreaDialog,
+  } = props;
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedDepreciationArea, setSelectedDepreciationArea] = useState(
+    null,
+  );
 
   const handleClick = (event, id) => {
-    setAnchorEl(event.currentTarget)
-    setSelectedDepreciationArea(_.find(depreciationAreas, { id }))
-  }
+    setAnchorEl(event.currentTarget);
+    setSelectedDepreciationArea(_.find(depreciationAreas, { id }));
+  };
 
   const handleClose = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
 
   const handleEditClick = () => {
-    openEditDepreciationAreaDialog(selectedDepreciationArea)
-    handleClose()
-  }
+    openEditDepreciationAreaDialog(selectedDepreciationArea);
+    handleClose();
+  };
 
-  const orderedDepreciationAreas = _.orderBy(depreciationAreas, 'dateCreated', 'desc');
+  const orderedDepreciationAreas = _.orderBy(
+    depreciationAreas,
+    'dateCreated',
+    'desc',
+  );
 
-  console.log(depreciationAreas, "depreciationAreas")
+  console.log(depreciationAreas, 'depreciationAreas');
 
   const columns = [
     {
@@ -65,7 +75,7 @@ const DepreciationAreas = (props) => {
       label: ' ',
       options: {
         filter: true,
-        display: 'excluded'
+        display: 'excluded',
       },
     },
     {
@@ -98,7 +108,7 @@ const DepreciationAreas = (props) => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: date => date ? moment(date).format('ll') : ""
+        customBodyRender: date => (date ? moment(date).format('ll') : ''),
       },
     },
     {
@@ -107,17 +117,15 @@ const DepreciationAreas = (props) => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => {
-          return (
-            <IconButton
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={event => handleClick(event, value)}
-            >
-              <MoreVertIcon />
-            </IconButton>
-          );
-        },
+        customBodyRender: value => (
+          <IconButton
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={event => handleClick(event, value)}
+          >
+            <MoreVertIcon />
+          </IconButton>
+        ),
       },
     },
   ];
@@ -145,7 +153,7 @@ const DepreciationAreas = (props) => {
         </Button>
       </Tooltip>
     ),
-    elevation: 0
+    elevation: 0,
   };
 
   return (
@@ -165,13 +173,11 @@ const DepreciationAreas = (props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleEditClick}>
-          Edit
-        </MenuItem>
+        <MenuItem onClick={handleEditClick}>Edit</MenuItem>
       </Menu>
     </div>
   );
-}
+};
 
 const mapStateToProps = createStructuredSelector({
   depreciationAreas: Selectors.makeSelectDepreciationArea(),
@@ -179,9 +185,11 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewDepreciationAreaDialog: () => dispatch(Actions.openNewDepreciationAreaDialog()),
-    openEditDepreciationAreaDialog: (data) => dispatch(Actions.openEditDepreciationAreaDialog(data)),
-  }
+    openNewDepreciationAreaDialog: () =>
+      dispatch(Actions.openNewDepreciationAreaDialog()),
+    openEditDepreciationAreaDialog: data =>
+      dispatch(Actions.openEditDepreciationAreaDialog(data)),
+  };
 }
 
 const withConnect = connect(

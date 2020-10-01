@@ -9,7 +9,7 @@ import {
   Menu,
   MenuItem,
   Grid,
-  Tooltip
+  Tooltip,
 } from '@material-ui/core';
 import classNames from 'classnames';
 import AddIcon from '@material-ui/icons/Add';
@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     },
     whiteSpace: 'nowrap',
     '& tr:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& td': { padding: theme.spacing(1, 2) },
     '& thead': {
@@ -88,21 +88,24 @@ const BankList = props => {
   };
 
   const handleActivateDeactivateBankAccount = () => {
-    const data = { id: selectedBankAccount.id, status: !selectedBankAccount.status }
-    activateDeactivateBankAccount(data)
+    const data = {
+      id: selectedBankAccount.id,
+      status: !selectedBankAccount.status,
+    };
+    activateDeactivateBankAccount(data);
     setAnchorEl(null);
   };
 
   const handleView = () => {
-    const { id } = selectedBankAccount
-    getBankAccountById(id)
-    history.push(`${match.url}/${id}`)
+    const { id } = selectedBankAccount;
+    getBankAccountById(id);
+    history.push(`${match.url}/${id}`);
     setAnchorEl(null);
   };
 
-  const handleRoute = (id) => {
-    getBankAccountById(id)
-    history.push(`${match.url}/${id}`)
+  const handleRoute = id => {
+    getBankAccountById(id);
+    history.push(`${match.url}/${id}`);
   };
 
   const orderedBankAccounts = _.orderBy(bankAccounts, 'dateCreated', 'desc')
@@ -168,7 +171,9 @@ const BankList = props => {
         filter: true,
         sort: true,
         customBodyRender: status => (
-          <span className={classNames(classes.status, { 'active': status })}>{status ? 'Active' : 'Inactive'}</span>
+          <span className={classNames(classes.status, { active: status })}>
+            {status ? 'Active' : 'Inactive'}
+          </span>
         ),
       },
     },
@@ -178,17 +183,15 @@ const BankList = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => {
-          return (
-            <IconButton
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={event => handleClick(event, value)}
-            >
-              <MoreVertIcon />
-            </IconButton>
-          );
-        },
+        customBodyRender: value => (
+          <IconButton
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={event => handleClick(event, value)}
+          >
+            <MoreVertIcon />
+          </IconButton>
+        ),
       },
     },
   ];
@@ -217,9 +220,9 @@ const BankList = props => {
       </Tooltip>
     ),
     onRowClick: (rowData, rowState) => {
-      handleRoute(rowData[0])
+      handleRoute(rowData[0]);
     },
-    elevation: 0
+    elevation: 0,
   };
 
   console.log('account data -> ', bankAccounts);
@@ -255,19 +258,21 @@ const BankList = props => {
         </MenuItem>
         <MenuItem
           onClick={() => openDeleteBankAccountDialog(selectedBankAccount)}
-          disabled={selectedBankAccount && Boolean(selectedBankAccount.transfers.length)}
+          disabled={
+            selectedBankAccount && Boolean(selectedBankAccount.transfers.length)
+          }
         >
           Delete
         </MenuItem>
         <MenuItem
           onClick={() => openEditBankAccountDialog(selectedBankAccount)}
-          disabled={selectedBankAccount && Boolean(selectedBankAccount.transfers.length)}
+          disabled={
+            selectedBankAccount && Boolean(selectedBankAccount.transfers.length)
+          }
         >
           Edit
         </MenuItem>
-        <MenuItem onClick={handleView}>
-          View Details
-        </MenuItem>
+        <MenuItem onClick={handleView}>View Details</MenuItem>
       </Menu>
     </div>
   );
@@ -279,16 +284,20 @@ BankList.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  bankAccounts: Selectors.makeSelectBankAccountData()
+  bankAccounts: Selectors.makeSelectBankAccountData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getBankAccountById: (data) => dispatch(Actions.getBankAccountById(data)),
-    openNewBankAccountDialog: () => dispatch(Actions.openNewBankAccountDialog()),
-    openEditBankAccountDialog: evt => dispatch(Actions.openEditBankAccountDialog(evt)),
-    openDeleteBankAccountDialog: evt => dispatch(Actions.openDeleteBankAccountDialog(evt)),
-    activateDeactivateBankAccount: data => dispatch(Actions.activateDeactivateBankAccount(data)),
+    getBankAccountById: data => dispatch(Actions.getBankAccountById(data)),
+    openNewBankAccountDialog: () =>
+      dispatch(Actions.openNewBankAccountDialog()),
+    openEditBankAccountDialog: evt =>
+      dispatch(Actions.openEditBankAccountDialog(evt)),
+    openDeleteBankAccountDialog: evt =>
+      dispatch(Actions.openDeleteBankAccountDialog(evt)),
+    activateDeactivateBankAccount: data =>
+      dispatch(Actions.activateDeactivateBankAccount(data)),
   };
 }
 

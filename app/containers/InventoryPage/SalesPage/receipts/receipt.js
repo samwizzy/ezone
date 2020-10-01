@@ -176,7 +176,7 @@ const Receipt = () => {
                             variant="contained"
                             color="primary"
                           >
-                             New Receipt
+                            New Receipt
                           </Button>
                         </div>
                       </Grid>
@@ -191,7 +191,7 @@ const Receipt = () => {
                                   size="small"
                                   variant="contained"
                                 >
-                                   Import
+                                  Import
                                 </Button>
                               </div>
                             </Grid>

@@ -15,7 +15,7 @@ import {
   Divider,
   Slide,
   Grid,
-  Typography
+  Typography,
 } from '@material-ui/core';
 import * as AppSelectors from '../../../App/selectors';
 import * as Selectors from '../selectors';
@@ -33,13 +33,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const initialState = {
-  accountCode: "",
-  accountName: "",
-  accountNumber: "",
-  bankBalance: "",
-  bankName: "",
-  description: "",
-}
+  accountCode: '',
+  accountName: '',
+  accountNumber: '',
+  bankBalance: '',
+  bankName: '',
+  description: '',
+};
 
 const AddBankAccountDialog = props => {
   const classes = useStyles();
@@ -53,33 +53,64 @@ const AddBankAccountDialog = props => {
     updateBankAccount,
     deleteBankAccount,
     activateBankAccount,
-    deactivateBankAccount
+    deactivateBankAccount,
   } = props;
 
   const [values, setValues] = React.useState({ ...initialState });
 
   const canSubmitValues = () => {
-    const { accountCode, accountName, accountNumber, bankBalance, bankName, description } = values;
-    return accountCode.length > 0 && accountName.length > 0 && accountNumber && bankBalance && bankName.length > 0 && description.length > 0;
-  }
+    const {
+      accountCode,
+      accountName,
+      accountNumber,
+      bankBalance,
+      bankName,
+      description,
+    } = values;
+    return (
+      accountCode.length > 0 &&
+      accountName.length > 0 &&
+      accountNumber &&
+      bankBalance &&
+      bankName.length > 0 &&
+      description.length > 0
+    );
+  };
 
   useEffect(() => {
     if (dialog.type === 'edit') {
-      const { accountCode, accountName, accountNumber, bankBalance, bankName, description } = bankAccountDialog.data;
-      setValues({ ...values, accountCode, accountName, accountNumber, bankBalance, bankName, description });
+      const {
+        accountCode,
+        accountName,
+        accountNumber,
+        bankBalance,
+        bankName,
+        description,
+      } = bankAccountDialog.data;
+      setValues({
+        ...values,
+        accountCode,
+        accountName,
+        accountNumber,
+        bankBalance,
+        bankName,
+        description,
+      });
     }
   }, [dialog.data]);
 
-
   const handleChange = event => {
     event.target.name === 'bankBalance' || event.target.name === 'accountNumber'
-      ? setValues({ ...values, [event.target.name]: event.target.value.replace(/[^0-9]/g, '') })
-      : setValues({ ...values, [event.target.name]: event.target.value })
-  }
+      ? setValues({
+        ...values,
+        [event.target.name]: event.target.value.replace(/[^0-9]/g, ''),
+      })
+      : setValues({ ...values, [event.target.name]: event.target.value });
+  };
 
   const handleSubmit = () => {
-    dialog.type === 'new' ? createNewBank(values) : updateBankAccount(values)
-  }
+    dialog.type === 'new' ? createNewBank(values) : updateBankAccount(values);
+  };
 
   console.log('values is: ', values);
   console.log('dialog: ', dialog);
@@ -91,11 +122,11 @@ const AddBankAccountDialog = props => {
         onClose={closeNewBankAccountDialog}
         keepMounted
         TransitionComponent={Transition}
-        maxWidth={'xs'}
+        maxWidth="xs"
         aria-labelledby="bank-account-dialog-form"
       >
         <DialogTitle id="bank-account-dialog-title">
-          {dialog.type === 'new' ? "Add Bank Account" : "Edit Bank Account"}
+          {dialog.type === 'new' ? 'Add Bank Account' : 'Edit Bank Account'}
         </DialogTitle>
 
         <DialogContent dividers>
@@ -119,9 +150,17 @@ const AddBankAccountDialog = props => {
                 id="standard-account-code"
                 label="Account Code"
                 name="accountCode"
-                onBlur={() => { }}
-                error={!/^[a-z0-9]+$/i.test(values.accountCode) && values.accountCode.length > 0}
-                helperText={!/^[a-z0-9]+$/i.test(values.accountCode) && values.accountCode.length > 0 ? "Account code must be alphanumeric" : ""}
+                onBlur={() => {}}
+                error={
+                  !/^[a-z0-9]+$/i.test(values.accountCode) &&
+                  values.accountCode.length > 0
+                }
+                helperText={
+                  !/^[a-z0-9]+$/i.test(values.accountCode) &&
+                  values.accountCode.length > 0
+                    ? 'Account code must be alphanumeric'
+                    : ''
+                }
                 variant="outlined"
                 size="small"
                 value={values.accountCode}
@@ -193,10 +232,10 @@ const AddBankAccountDialog = props => {
             color="primary"
             variant="contained"
             disableElevation
-            disabled={loading ? loading : !canSubmitValues()}
+            disabled={loading || !canSubmitValues()}
             endIcon={loading && <CircularProgress size={20} />}
           >
-            {dialog.type === "new" ? "Save" : "Update"}
+            {dialog.type === 'new' ? 'Save' : 'Update'}
           </Button>
 
           <Button
@@ -224,16 +263,16 @@ const mapStateToProps = createStructuredSelector({
   accountTypes: Selectors.makeSelectAccountTypes(),
 });
 
-
-
 function mapDispatchToProps(dispatch) {
   return {
-    closeNewBankAccountDialog: () => dispatch(Actions.closeNewBankAccountDialog()),
+    closeNewBankAccountDialog: () =>
+      dispatch(Actions.closeNewBankAccountDialog()),
     createNewBank: data => dispatch(Actions.createNewBank(data)),
     updateBankAccount: data => dispatch(Actions.updateBankAccount(data)),
     deleteBankAccount: data => dispatch(Actions.deleteBankAccount(data)),
     activateBankAccount: data => dispatch(Actions.activateBankAccount(data)),
-    deactivateBankAccount: data => dispatch(Actions.deactivateBankAccount(data)),
+    deactivateBankAccount: data =>
+      dispatch(Actions.deactivateBankAccount(data)),
   };
 }
 

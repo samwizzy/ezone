@@ -1,8 +1,7 @@
 import React, { Fragment, memo, useState } from 'react';
 import PropTypes from 'prop-types';
-import { compose } from 'redux'
-import { connect } from 'react-redux'
-import * as Selectors from './../../selectors';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import {
   makeStyles,
   Box,
@@ -21,6 +20,7 @@ import BackIcon from '@material-ui/icons/ArrowBack';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import { darken } from '@material-ui/core/styles/colorManipulator';
 import { createStructuredSelector } from 'reselect';
+import * as Selectors from '../../selectors';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   },
   datatable: {
     '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
@@ -49,9 +49,9 @@ const useStyles = makeStyles(theme => ({
 
 const BusinessActivity = props => {
   const classes = useStyles(props);
-  const { form, handlePrev, handleSubmit, chartOfAccounts } = props
+  const { form, handlePrev, handleSubmit, chartOfAccounts } = props;
 
-  console.log(chartOfAccounts, "chartOfAccounts chartOfAccounts")
+  console.log(chartOfAccounts, 'chartOfAccounts chartOfAccounts');
 
   const columns = [
     {
@@ -78,7 +78,7 @@ const BusinessActivity = props => {
         sort: false,
       },
     },
-  ]
+  ];
 
   const options = {
     filterType: 'checkbox',
@@ -88,16 +88,16 @@ const BusinessActivity = props => {
     print: false,
     viewColumns: false,
     search: false,
-    elevation: 0
-  }
+    elevation: 0,
+  };
 
-  const handleImageChange = (file) => { }
+  const handleImageChange = file => {};
 
   return (
     <Grid container>
       <Grid item xs={12}>
         <div className={classes.formContainer}>
-          {form.accountChart === 'IMPORT' &&
+          {form.accountChart === 'IMPORT' && (
             <Fragment>
               <Button
                 variant="contained"
@@ -135,7 +135,7 @@ const BusinessActivity = props => {
                 Upload from URL
               </Button>
             </Fragment>
-          }
+          )}
         </div>
 
         <MUIDataTable
@@ -145,7 +145,9 @@ const BusinessActivity = props => {
           options={options}
         />
 
-        <Box m={4}><FormHelperText>NB: You can edit account after setup</FormHelperText></Box>
+        <Box m={4}>
+          <FormHelperText>NB: You can edit account after setup</FormHelperText>
+        </Box>
       </Grid>
 
       <Grid item xs={12}>
@@ -170,8 +172,7 @@ const BusinessActivity = props => {
       </Grid>
     </Grid>
   );
-}
-
+};
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
@@ -179,7 +180,10 @@ const mapStateToProps = createStructuredSelector({
   chartOfAccounts: Selectors.makeSelectGetChartOfAccounts(),
 });
 
-const withConnect = connect(mapStateToProps, null);
+const withConnect = connect(
+  mapStateToProps,
+  null,
+);
 
 export default compose(
   withConnect,

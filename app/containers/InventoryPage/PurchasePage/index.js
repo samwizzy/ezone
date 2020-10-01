@@ -6,17 +6,17 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectInventoryPage from './../selectors';
+import makeSelectInventoryPage from '../selectors';
 import reducer from './reducer';
 import saga from './saga';
 import Purchases from './purchase/PurchaseOrders';
-import ModuleLayout from './../components/ModuleLayout';
+import ModuleLayout from '../components/ModuleLayout';
 
-const key = "inventoryPurchase";
-const PurchasePage = (props) => {
+const key = 'inventoryPurchase';
+const PurchasePage = props => {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
-  const { path } = props.match
+  const { path } = props.match;
 
   return (
     <div>
@@ -31,7 +31,7 @@ const PurchasePage = (props) => {
       </ModuleLayout>
     </div>
   );
-}
+};
 
 const mapStateToProps = createStructuredSelector({
   inventoryPage: makeSelectInventoryPage(),

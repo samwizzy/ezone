@@ -18,7 +18,7 @@ import * as Selectors from '../selectors';
 import * as Actions from '../actions';
 
 const useStyles = makeStyles(theme => ({
-  root: {}
+  root: {},
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -32,7 +32,7 @@ const ConfirmDeleteAccountDialog = props => {
     loading,
     dialog,
     closeDeleteAccountDialog,
-    deleteChartOfAccount
+    deleteChartOfAccount,
   } = props;
 
   return (
@@ -42,12 +42,10 @@ const ConfirmDeleteAccountDialog = props => {
         onClose={closeDeleteAccountDialog}
         keepMounted
         TransitionComponent={Transition}
-        maxWidth={'xs'}
+        maxWidth="xs"
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="alert-dialog-slide-title">
-          Confirm Delete
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-slide-title">Confirm Delete</DialogTitle>
 
         <DialogContent dividers>
           <DialogContentText variant="h6">
@@ -91,8 +89,9 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     deleteChartOfAccount: data => dispatch(Actions.deleteChartOfAccount(data)),
-    closeDeleteAccountDialog: () => dispatch(Actions.closeDeleteAccountDialog()),
-  }
+    closeDeleteAccountDialog: () =>
+      dispatch(Actions.closeDeleteAccountDialog()),
+  };
 }
 
 const withConnect = connect(

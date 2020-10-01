@@ -25,11 +25,10 @@ import AddIcon from '@material-ui/icons/Add';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import * as Selectors from './../selectors';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
 import { createStructuredSelector } from 'reselect';
 import moment from 'moment';
-
+import * as Selectors from '../selectors';
+import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,50 +37,51 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3),
   },
   flex: {
-    position: "relative",
-    padding: theme.spacing(8, 5)
+    position: 'relative',
+    padding: theme.spacing(8, 5),
   },
   status: {
-    textAlign: "center",
+    textAlign: 'center',
     padding: theme.spacing(2, 5),
-    position: "absolute",
+    position: 'absolute',
     backgroundColor: '#6DCC4C',
     color: theme.palette.common.white,
-    top: 0, left: 0,
-    "&::after": {
+    top: 0,
+    left: 0,
+    '&::after': {
       content: "''",
-      position: "absolute",
+      position: 'absolute',
       top: 0,
-      right: "-52.67px",
+      right: '-52.67px',
       width: 0,
       height: 0,
-      borderTop: "52.67px solid #6DCC4C",
-      borderRight: "52.67px solid transparent"
+      borderTop: '52.67px solid #6DCC4C',
+      borderRight: '52.67px solid transparent',
     },
-    "&::before": {
+    '&::before': {
       content: "''",
-      position: "absolute",
+      position: 'absolute',
       top: 0,
-      right: "-52.67px",
+      right: '-52.67px',
       width: 0,
       height: 0,
-      borderBottom: "52.67px solid #6DCC4C",
-      borderRight: "52.67px solid transparent"
-    }
+      borderBottom: '52.67px solid #6DCC4C',
+      borderRight: '52.67px solid transparent',
+    },
   },
   paper: {
     padding: '15px',
     backgroundColor: theme.palette.grey[200],
   },
   grid: {
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     '& .MuiGrid-item': {
       flex: 1,
       margin: theme.spacing(2, 0),
-    }
+    },
   },
   padme: {
-    padding: '15px'
+    padding: '15px',
   },
   closingBalance: {
     padding: '25px',
@@ -104,20 +104,20 @@ const useStyles = makeStyles(theme => ({
     },
     '& .MuiTableFooter-root': {},
     '& .MuiTableCell-root': {
-      border: "none !important",
+      border: 'none !important',
       fontSize: theme.typography.fontSize,
       '& button:nth-child(n+2)': {
         marginLeft: theme.spacing(1),
       },
     },
     '& th.MuiTableCell-root': {
-      fontWeight: theme.typography.fontWeightBold
-    }
+      fontWeight: theme.typography.fontWeightBold,
+    },
   },
   title: { flexGrow: 1 },
   iconPaper: {
-    boxShadow: theme.shadows[1]
-  }
+    boxShadow: theme.shadows[1],
+  },
 }));
 
 const DetailsOfAccountChart = props => {
@@ -127,9 +127,9 @@ const DetailsOfAccountChart = props => {
 
   const handleBack = () => {
     history.goBack();
-  }
+  };
 
-  console.log("Selected chartOfAccount", chartOfAccount);
+  console.log('Selected chartOfAccount', chartOfAccount);
 
   return (
     <div className={classes.root}>
@@ -139,13 +139,22 @@ const DetailsOfAccountChart = props => {
             <Typography>
               <IconButton onClick={handleBack}>
                 <KeyboardBackspaceIcon />
-              </IconButton> Back
+              </IconButton>{' '}
+              Back
             </Typography>
             <Typography className={classes.title} />
-            <IconButton><Icon>add</Icon></IconButton>
-            <IconButton><Icon>person</Icon></IconButton>
-            <IconButton><Icon>edit</Icon></IconButton>
-            <IconButton><Icon>cloud_download</Icon></IconButton>
+            <IconButton>
+              <Icon>add</Icon>
+            </IconButton>
+            <IconButton>
+              <Icon>person</Icon>
+            </IconButton>
+            <IconButton>
+              <Icon>edit</Icon>
+            </IconButton>
+            <IconButton>
+              <Icon>cloud_download</Icon>
+            </IconButton>
           </Toolbar>
         </Grid>
         <Grid item xs={12}>
@@ -156,7 +165,7 @@ const DetailsOfAccountChart = props => {
                   <Grid item xs={4}>
                     <Typography variant="body1" gutterBottom>
                       Account Name
-                  </Typography>
+                    </Typography>
                   </Grid>
                   <Grid item xs={4}>
                     <Typography variant="body1" gutterBottom>
@@ -170,7 +179,7 @@ const DetailsOfAccountChart = props => {
                   <Grid item xs={4}>
                     <Typography variant="body1" gutterBottom>
                       Account Code
-                  </Typography>
+                    </Typography>
                   </Grid>
                   <Grid item xs={4}>
                     <Typography variant="body1" gutterBottom>
@@ -184,7 +193,7 @@ const DetailsOfAccountChart = props => {
                   <Grid item xs={4}>
                     <Typography variant="body2" gutterBottom>
                       Account Type
-                  </Typography>
+                    </Typography>
                   </Grid>
                   <Grid item xs={4}>
                     <Typography variant="body2" gutterBottom>
@@ -193,7 +202,7 @@ const DetailsOfAccountChart = props => {
                   </Grid>
                 </Grid>
               </Grid>
-              {chartOfAccount.accountType === "Bank" ? (
+              {chartOfAccount.accountType === 'Bank' ? (
                 <Grid item xs={12}>
                   <Grid container spacing={3}>
                     <Grid item xs={12}>
@@ -201,7 +210,7 @@ const DetailsOfAccountChart = props => {
                         <Grid item xs={4}>
                           <Typography variant="body2" gutterBottom>
                             Bank Name
-                  </Typography>
+                          </Typography>
                         </Grid>
                         <Grid item xs={4}>
                           <Typography variant="body2" gutterBottom>
@@ -215,7 +224,7 @@ const DetailsOfAccountChart = props => {
                         <Grid item xs={4}>
                           <Typography variant="body2" gutterBottom>
                             Account Number
-                </Typography>
+                          </Typography>
                         </Grid>
                         <Grid item xs={4}>
                           <Typography variant="body2" gutterBottom>
@@ -231,12 +240,22 @@ const DetailsOfAccountChart = props => {
               <Grid item xs={12}>
                 <Grid container spacing={3}>
                   <Grid item xs={4}>
-                    <Typography color="textSecondary" variant="body2" display="block" gutterBottom>
+                    <Typography
+                      color="textSecondary"
+                      variant="body2"
+                      display="block"
+                      gutterBottom
+                    >
                       Description
-                  </Typography>
+                    </Typography>
                   </Grid>
                   <Grid item xs={8}>
-                    <Typography color="textSecondary" variant="body2" display="block" gutterBottom>
+                    <Typography
+                      color="textSecondary"
+                      variant="body2"
+                      display="block"
+                      gutterBottom
+                    >
                       {chartOfAccount.description}
                     </Typography>
                   </Grid>
@@ -247,13 +266,12 @@ const DetailsOfAccountChart = props => {
                   <Grid item xs={4}>
                     <Typography variant="body2" display="block" gutterBottom>
                       Transaction Period
-                  </Typography>
+                    </Typography>
                   </Grid>
                   <Grid item xs={8}>
                     <Typography variant="body2" display="block" gutterBottom>
                       {moment(chartOfAccount.dateCreated).format('ll')}
                     </Typography>
-
                   </Grid>
                 </Grid>
               </Grid>
@@ -266,11 +284,12 @@ const DetailsOfAccountChart = props => {
               <Grid item xs={4}>
                 <Typography variant="h6" display="block" gutterBottom>
                   Closing Balance
-                  </Typography>
+                </Typography>
               </Grid>
               <Grid item xs={8}>
                 <Typography variant="h5" display="block" gutterBottom>
-                  NGN {chartOfAccount.accountType === "Bank"
+                  NGN{' '}
+                  {chartOfAccount.accountType === 'Bank'
                     ? chartOfAccount.bankBalance
                     : chartOfAccount.openingBalance}
                 </Typography>
@@ -285,7 +304,7 @@ const DetailsOfAccountChart = props => {
                 <div style={{ textAlign: 'center' }}>
                   <Typography variant="h6" gutterBottom>
                     Transactions
-                </Typography>
+                  </Typography>
                 </div>
               </Grid>
               <Grid item xs={12}>
@@ -293,32 +312,56 @@ const DetailsOfAccountChart = props => {
                   <Paper elevation={2} className={classes.paper}>
                     <Grid container spacing={3}>
                       <Grid item xs={2}>
-                        <Typography variant="body1" display="block" gutterBottom>
+                        <Typography
+                          variant="body1"
+                          display="block"
+                          gutterBottom
+                        >
                           Trs Date
                         </Typography>
                       </Grid>
                       <Grid item xs={2}>
-                        <Typography variant="body1" display="block" gutterBottom>
+                        <Typography
+                          variant="body1"
+                          display="block"
+                          gutterBottom
+                        >
                           Created at
                         </Typography>
                       </Grid>
                       <Grid item xs={2}>
-                        <Typography variant="body1" display="block" gutterBottom>
+                        <Typography
+                          variant="body1"
+                          display="block"
+                          gutterBottom
+                        >
                           Ref no
                         </Typography>
                       </Grid>
                       <Grid item xs={2}>
-                        <Typography variant="body1" display="block" gutterBottom>
+                        <Typography
+                          variant="body1"
+                          display="block"
+                          gutterBottom
+                        >
                           Debit
                         </Typography>
                       </Grid>
                       <Grid item xs={2}>
-                        <Typography variant="body1" display="block" gutterBottom>
+                        <Typography
+                          variant="body1"
+                          display="block"
+                          gutterBottom
+                        >
                           Credit
                         </Typography>
                       </Grid>
                       <Grid item xs={2}>
-                        <Typography variant="body1" display="block" gutterBottom>
+                        <Typography
+                          variant="body1"
+                          display="block"
+                          gutterBottom
+                        >
                           Balance
                         </Typography>
                       </Grid>
@@ -330,34 +373,58 @@ const DetailsOfAccountChart = props => {
                   <Paper elevation={1}>
                     <Grid container spacing={3}>
                       <Grid item xs={2}>
-                        <Typography variant="body1" display="block" gutterBottom>
-
+                        <Typography
+                          variant="body1"
+                          display="block"
+                          gutterBottom
+                        />
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Typography
+                          variant="body1"
+                          display="block"
+                          gutterBottom
+                        >
+                          {moment(
+                            props.location.chartDetailsData.dateCreated,
+                          ).format('LL')}
                         </Typography>
                       </Grid>
                       <Grid item xs={2}>
-                        <Typography variant="body1" display="block" gutterBottom>
-                          {moment(props.location.chartDetailsData.dateCreated).format('LL')}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <Typography variant="body1" display="block" gutterBottom>
+                        <Typography
+                          variant="body1"
+                          display="block"
+                          gutterBottom
+                        >
                           09089
                         </Typography>
                       </Grid>
                       <Grid item xs={2}>
-                        <Typography variant="body1" display="block" gutterBottom>
+                        <Typography
+                          variant="body1"
+                          display="block"
+                          gutterBottom
+                        >
                           $2000
                         </Typography>
                       </Grid>
                       <Grid item xs={2}>
                         <Grid container spacing={4}>
                           <Grid item xs={12}>
-                            <Typography variant="body1" display="block" gutterBottom>
+                            <Typography
+                              variant="body1"
+                              display="block"
+                              gutterBottom
+                            >
                               $1200
                             </Typography>
                           </Grid>
                           <Grid item xs={12}>
-                            <Typography variant="body1" display="block" gutterBottom>
+                            <Typography
+                              variant="body1"
+                              display="block"
+                              gutterBottom
+                            >
                               $30000
                             </Typography>
                           </Grid>
@@ -366,19 +433,31 @@ const DetailsOfAccountChart = props => {
                       <Grid item xs={2}>
                         <Grid container spacing={4}>
                           <Grid item xs={12}>
-                            <Typography variant="body1" display="block" gutterBottom>
+                            <Typography
+                              variant="body1"
+                              display="block"
+                              gutterBottom
+                            >
                               $1000
                             </Typography>
                           </Grid>
                           <Grid item xs={12}>
                             <Grid container spacing={3}>
                               <Grid item xs={8}>
-                                <Typography variant="body1" display="block" gutterBottom>
+                                <Typography
+                                  variant="body1"
+                                  display="block"
+                                  gutterBottom
+                                >
                                   $200000
                                 </Typography>
                               </Grid>
                               <Grid item xs={4}>
-                                <Typography variant="body1" display="block" gutterBottom>
+                                <Typography
+                                  variant="body1"
+                                  display="block"
+                                  gutterBottom
+                                >
                                   Total
                                 </Typography>
                               </Grid>
@@ -395,8 +474,8 @@ const DetailsOfAccountChart = props => {
         </Grid>
       </Grid>
     </div>
-  )
-}
+  );
+};
 
 DetailsOfAccountChart.propTypes = {};
 

@@ -31,22 +31,13 @@
 h4 {
   margin: 10px 0px;
 }
-/* Use a media query to add a breakpoint at 800px: */
-@media screen and (max-width: 800px) {
-  .md {
-    flex-direction: column;
-  }
-}
-
-@media screen and (max-width: 800px) {
-  .md {
-    flex-direction: column;
-  }
-}
-
-@media screen and (max-width: 360px) {
-  .md-f {
-    display: flex;
-    flex-direction: column;
-  }
-}
+/* @media screen and (max-width: 650px) {
+        font-size: 0.9em;
+        h3,
+        h5 {
+          color: white;
+          span {
+            color: white;
+          }
+        }
+      } */

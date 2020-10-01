@@ -19,7 +19,6 @@ import _ from 'lodash';
 import { darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import * as Selectors from './../selectors';
 import { createStructuredSelector } from 'reselect';
 import ControlledButtons from './components/ControlledButtons'
 
@@ -50,7 +49,7 @@ const useStyles = makeStyles(theme => ({
     '& tfoot': {
       '& td': {
         ...theme.typography.subtitle1,
-        color: theme.palette.secondary.contrastText
+        color: theme.palette.secondary.contrastText,
       },
       background: theme.palette.primary.main,
     },
@@ -58,7 +57,7 @@ const useStyles = makeStyles(theme => ({
       borderRight: `1px solid ${theme.palette.divider}`,
     },
   },
-  title: { flexGrow: 1 }
+  title: { flexGrow: 1 },
 }));
 
 const ChartAccountDetails = props => {
@@ -71,7 +70,7 @@ const ChartAccountDetails = props => {
   const activePeriod = _.find(accountingPeriods, { activeYear: true, status: true })
 
   if (!chartOfAccount) {
-    return null
+    return null;
   }
 
   return (
@@ -94,20 +93,24 @@ const ChartAccountDetails = props => {
                 </TableRow>
                 <TableRow>
                   <TableCell>Account Type</TableCell>
-                  <TableCell>{chartOfAccount.accountType && chartOfAccount.accountType.accountType}</TableCell>
+                  <TableCell>
+                    {chartOfAccount.accountType &&
+                      chartOfAccount.accountType.accountType}
+                  </TableCell>
                 </TableRow>
-                {chartOfAccount.accountType && chartOfAccount.accountType.accountType === "Bank" &&
-                  <React.Fragment>
-                    <TableRow>
-                      <TableCell>Bank Name</TableCell>
-                      <TableCell>{chartOfAccount.bankName}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Account Number</TableCell>
-                      <TableCell>{chartOfAccount.accountNumber && chartOfAccount.accountNumber}</TableCell>
-                    </TableRow>
-                  </React.Fragment>
-                }
+                {chartOfAccount.accountType &&
+                  chartOfAccount.accountType.accountType === 'Bank' && (
+                    <React.Fragment>
+                      <TableRow>
+                        <TableCell>Bank Name</TableCell>
+                        <TableCell>{chartOfAccount.bankName}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Account Number</TableCell>
+                        <TableCell>{chartOfAccount.accountNumber && chartOfAccount.accountNumber}</TableCell>
+                      </TableRow>
+                    </React.Fragment>
+                  )}
                 <TableRow>
                   <TableCell>Financial Statement</TableCell>
                   <TableCell>{chartOfAccount.financialStatement && chartOfAccount.financialStatement}</TableCell>
@@ -127,10 +130,16 @@ const ChartAccountDetails = props => {
                 <TableRow>
                   <TableCell>Closing Balance</TableCell>
                   <TableCell>
-                    {chartOfAccount.accountType && chartOfAccount.accountType.accountType === "Bank"
-                      ? new Intl.NumberFormat("en-US", { style: 'currency', currency: 'NGN' }).format(chartOfAccount.bankBalance)
-                      : new Intl.NumberFormat("en-US", { style: 'currency', currency: 'NGN' }).format(chartOfAccount.openingBalance)
-                    }
+                    {chartOfAccount.accountType &&
+                      chartOfAccount.accountType.accountType === 'Bank'
+                      ? new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'NGN',
+                      }).format(chartOfAccount.bankBalance)
+                      : new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'NGN',
+                      }).format(chartOfAccount.openingBalance)}
                   </TableCell>
                 </TableRow>
               </TableFooter>
@@ -158,15 +167,17 @@ const ChartAccountDetails = props => {
               </TableHead>
               <TableBody>
                 <TableRow>
-                  <TableCell></TableCell>
-                  <TableCell>{moment(chartOfAccount.dateCreated).format('ll')}</TableCell>
+                  <TableCell />
+                  <TableCell>
+                    {moment(chartOfAccount.dateCreated).format('ll')}
+                  </TableCell>
                   <TableCell>09089</TableCell>
                   <TableCell>$2000</TableCell>
                   <TableCell>$30000</TableCell>
                   <TableCell>$320000</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell colSpan={2}></TableCell>
+                  <TableCell colSpan={2} />
                   <TableCell>Total</TableCell>
                   <TableCell>$2000</TableCell>
                   <TableCell>$30000</TableCell>
@@ -178,8 +189,8 @@ const ChartAccountDetails = props => {
         </Grid>
       </Grid>
     </div>
-  )
-}
+  );
+};
 
 ChartAccountDetails.propTypes = {};
 

@@ -27,11 +27,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const initialState = {
-  code: "",
-  description: "",
-  name: "",
-  symbol: ""
-}
+  code: '',
+  description: '',
+  name: '',
+  symbol: '',
+};
 
 const CurrencyDialog = props => {
   const classes = useStyles(props);
@@ -47,29 +47,39 @@ const CurrencyDialog = props => {
 
   useEffect(() => {
     if (dialog.type === 'edit' && dialog.data) {
-      setForm({ ...dialog.data })
+      setForm({ ...dialog.data });
     } else {
-      setForm({ ...initialState })
+      setForm({ ...initialState });
     }
-  }, [dialog.data])
+  }, [dialog.data]);
 
-  const handleChange = (event) => {
-    setForm({ ...form, [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value });
+  const handleChange = event => {
+    setForm({
+      ...form,
+      [event.target.name]:
+        event.target.type === 'checkbox'
+          ? event.target.checked
+          : event.target.value,
+    });
   };
 
   const handleSubmit = () => {
-    dialog.type === 'new' ?
-      createCurrency(form) : updateCurrency(form)
+    dialog.type === 'new' ? createCurrency(form) : updateCurrency(form);
   };
 
   const canSubmitForm = () => {
-    const { code, name, description, symbol } = form
-    return code.length > 0 && name.length > 0 && description.length > 0 && symbol.length > 0
-  }
+    const { code, name, description, symbol } = form;
+    return (
+      code.length > 0 &&
+      name.length > 0 &&
+      description.length > 0 &&
+      symbol.length > 0
+    );
+  };
 
-  console.log(loading, "loading")
-  console.log(form, "form")
-  console.log(dialog, "form dialog")
+  console.log(loading, 'loading');
+  console.log(form, 'form');
+  console.log(dialog, 'form dialog');
 
   return (
     <div>
@@ -78,7 +88,7 @@ const CurrencyDialog = props => {
         onClose={closeNewCurrencyDialog}
         keepMounted
         TransitionComponent={Transition}
-        maxWidth={'xs'}
+        maxWidth="xs"
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-depreciation-title">
@@ -103,7 +113,7 @@ const CurrencyDialog = props => {
             name="name"
             label="Name"
             variant="outlined"
-            value={form.name ? form.name : ""}
+            value={form.name ? form.name : ''}
             onChange={handleChange}
             margin="normal"
             size="small"
@@ -115,7 +125,7 @@ const CurrencyDialog = props => {
             name="symbol"
             label="Symbol"
             variant="outlined"
-            value={form.symbol ? form.symbol : ""}
+            value={form.symbol ? form.symbol : ''}
             onChange={handleChange}
             margin="normal"
             size="small"
@@ -133,10 +143,9 @@ const CurrencyDialog = props => {
             multiline
             rows={3}
             rowsMax={4}
-            value={form.description ? form.description : ""}
+            value={form.description ? form.description : ''}
             onChange={handleChange}
           />
-
         </DialogContent>
         <DialogActions>
           <Button
@@ -161,7 +170,7 @@ const CurrencyDialog = props => {
       </Dialog>
     </div>
   );
-}
+};
 
 CurrencyDialog.propTypes = {
   loading: PropTypes.bool,
@@ -172,13 +181,12 @@ const mapStateToProps = createStructuredSelector({
   dialog: Selectors.makeSelectCurrencyDialog(),
 });
 
-
 function mapDispatchToProps(dispatch) {
   return {
     closeNewCurrencyDialog: () => dispatch(Actions.closeNewCurrencyDialog()),
     createCurrency: data => dispatch(Actions.createCurrency(data)),
     updateCurrency: data => dispatch(Actions.updateCurrency(data)),
-  }
+  };
 }
 
 const withConnect = connect(

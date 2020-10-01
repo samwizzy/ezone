@@ -15,15 +15,15 @@ import WarehousePage from './WarehousePage';
 import ItemPage from './ItemPage';
 import TransferOrdersApp from './ItemPage/components/TransferOrder';
 import InventoryAdjustmentApp from './ItemPage/components/InventoryAdjustment';
-import Dashboard from './Dashboard'
-import SalesPage from './SalesPage'
-import PurchasePage from './PurchasePage'
+import Dashboard from './Dashboard';
+import SalesPage from './SalesPage';
+import PurchasePage from './PurchasePage';
 
-const key = "inventoryPage";
+const key = 'inventoryPage';
 export function InventoryPage(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
-  const { path } = props.match
+  const { path } = props.match;
 
   return (
     <div>
@@ -43,13 +43,17 @@ export function InventoryPage(props) {
         <Route path={`${path}/item`} component={ItemPage} />
         <Route path={`${path}/transfers`} component={TransferOrdersApp} />
         <Route path={`${path}/transfer`} component={TransferOrdersApp} />
-        <Route exact path={`${path}/adjustments/:statusId?`} component={InventoryAdjustmentApp} />
+        <Route
+          exact
+          path={`${path}/adjustments/:statusId?`}
+          component={InventoryAdjustmentApp}
+        />
       </Fragment>
     </div>
   );
 }
 
-InventoryPage.propTypes = {}
+InventoryPage.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
   inventoryPage: makeSelectInventoryPage(),

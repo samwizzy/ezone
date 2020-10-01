@@ -11,10 +11,10 @@ import makeSelectCrm from '../selectors';
 import reducer from '../reducer';
 import saga from '../saga';
 import messages from '../messages';
-import Dashboard from './Dashboard'
-import ModuleLayout from './../components/ModuleLayout';
+import Dashboard from './Dashboard';
+import ModuleLayout from '../components/ModuleLayout';
 
-const key = "dashboard";
+const key = 'dashboard';
 export function InventoryDashboard() {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });

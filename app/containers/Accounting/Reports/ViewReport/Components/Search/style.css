@@ -1,7 +1,8 @@
 .daterange {
   background: white;
   height: 40px;
-  width: 231px;
+  width: 220px;
+  margin-left: 15px;
   border: 1px solid #ced4da;
   border-radius: 6px;
 }

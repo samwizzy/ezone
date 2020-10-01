@@ -1,6 +1,5 @@
 /* eslint-disable no-nested-ternary */
 import React, { memo, useEffect } from 'react';
-import EzoneUtils from '../../../../utils/EzoneUtils'
 import _ from 'lodash';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -40,6 +39,7 @@ import AttachFileIcon from '@material-ui/icons/AttachFile';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
+import EzoneUtils from '../../../../utils/EzoneUtils';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
 import { IsoCodeToFlag } from '../../components/IsoCodeFormatter'
@@ -49,8 +49,8 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   card: {
-    "& .MuiCardActions-root": {
-      justifyContent: "flex-end",
+    '& .MuiCardActions-root': {
+      justifyContent: 'flex-end',
       padding: theme.spacing(2),
       borderTop: `1px solid ${theme.palette.divider}`
     },
@@ -74,7 +74,7 @@ const useStyles = makeStyles(theme => ({
     },
     '& thead': {
       '& th': {
-        padding: theme.spacing(1, 2)
+        padding: theme.spacing(1, 2),
       },
       '& th:nth-child(odd)': {
         backgroundColor: lighten(theme.palette.divider, 0.5),
@@ -101,23 +101,23 @@ const initialEntry = {
   accountId: 0,
   credit: 0,
   debit: 0,
-  description: "",
-}
+  description: '',
+};
 
 const initialState = {
   attachments: [],
   currencyId: 0,
   entries: [],
   exchangeRate: 0,
-  note: "",
+  note: '',
   periodId: 0,
-  reference: "",
+  reference: '',
   taxApplicable: false,
   taxRate: 0,
   taxTotal: 0,
   total: 0,
-  transactionDate: moment().format('YYYY-MM-DDTHH:mm:ss')
-}
+  transactionDate: moment().format('YYYY-MM-DDTHH:mm:ss'),
+};
 
 const NewJournal = props => {
   const {
@@ -149,31 +149,51 @@ const NewJournal = props => {
   }, [dialog.data]);
 
   const canBeSubmitted = () => {
-    const { attachments, currencyId, entries, exchangeRate, note, periodId, reference, taxRate, taxtTotal, total } = values;
-    return attachments.length > 0 && currencyId && entries.length > 0 && exchangeRate.length > 0 && note.length > 0;
-  }
+    const {
+      attachments,
+      currencyId,
+      entries,
+      exchangeRate,
+      note,
+      periodId,
+      reference,
+      taxRate,
+      taxtTotal,
+      total,
+    } = values;
+    return (
+      attachments.length > 0 &&
+      currencyId &&
+      entries.length > 0 &&
+      exchangeRate.length > 0 &&
+      note.length > 0
+    );
+  };
 
   const handleItemChange = i => event => {
-    const { name, value } = event.target
-    const entries = [...values.entries]
-    entries[i][name] = value
+    const { name, value } = event.target;
+    const entries = [...values.entries];
+    entries[i][name] = value;
     setValues({ ...values, entries });
-  }
+  };
 
   const handleSelectEntryChange = i => (event, object) => {
-    const entries = [...values.entries]
-    const { id: accountId } = object
-    entries[i] = { ...entries[i], accountId }
+    const entries = [...values.entries];
+    const { id: accountId } = object;
+    entries[i] = { ...entries[i], accountId };
     setValues({ ...values, entries });
-  }
+  };
 
   const addRow = () => {
     setValues({ ...values, entries: [...values.entries, { ...initialEntry }] });
-  }
+  };
 
   const removeRow = i => () => {
-    setValues({ ...values, entries: values.entries.filter((entry, id) => id !== i) });
-  }
+    setValues({
+      ...values,
+      entries: values.entries.filter((entry, id) => id !== i),
+    });
+  };
 
   const handleMetricChange = event => {
     setMetrics({ ...metrics, [event.target.name]: event.target.value })
@@ -195,26 +215,28 @@ const NewJournal = props => {
     }
   }
 
-  const handleDateChange = name => (date) => {
-    setValues({ ...values, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss') })
-  }
+  const handleDateChange = name => date => {
+    setValues({
+      ...values,
+      [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss'),
+    });
+  };
 
-  const handleImageChange = async (event) => {
-    const { files } = event.target
-    const attachments = []
+  const handleImageChange = async event => {
+    const { files } = event.target;
+    const attachments = [];
     for (let i = 0; i < files.length; i++) {
       const fileName = EzoneUtils.formatFileName(files[i].name);
-      await EzoneUtils.toBase64(files[i])
-        .then(base64 => {
-          attachments.push({ file: base64, fileName })
-          setValues({ ...values, attachments })
-        });
+      await EzoneUtils.toBase64(files[i]).then(base64 => {
+        attachments.push({ file: base64, fileName });
+        setValues({ ...values, attachments });
+      });
     }
-  }
+  };
 
   const handleSubmit = () => {
-    dialog.type === 'new' ? createJournal(values) : ""
-  }
+    dialog.type === 'new' ? createJournal(values) : '';
+  };
 
   console.log(journals, 'journals');
   console.log(accountingPeriods, 'accountingPeriods');
@@ -412,7 +434,13 @@ const NewJournal = props => {
                         <TableCell>Credit <ArrowUpwardIcon /></TableCell>
                         <TableCell>Debit <ArrowDownwardIcon /></TableCell>
                         <TableCell align="right">
-                          <Button color="inherit" onClick={addRow} startIcon={<AddIcon />}>New</Button>
+                          <Button
+                            color="inherit"
+                            onClick={addRow}
+                            startIcon={<AddIcon />}
+                          >
+                            New
+                          </Button>
                         </TableCell>
                       </TableRow>
                     </TableHead>
@@ -426,7 +454,13 @@ const NewJournal = props => {
                               options={chartOfAccounts}
                               getOptionLabel={option => option.accountName}
                               onChange={handleSelectEntryChange(i)}
-                              value={row.accountId ? _.find(chartOfAccounts, { id: row.accountId }) : null}
+                              value={
+                                row.accountId
+                                  ? _.find(chartOfAccounts, {
+                                    id: row.accountId,
+                                  })
+                                  : null
+                              }
                               style={{ minWidth: 250 }}
                               renderInput={params => (
                                 <TextField
@@ -447,7 +481,7 @@ const NewJournal = props => {
                               label="Description"
                               name="description"
                               onChange={handleItemChange(i)}
-                              value={row.description ? row.description : ""}
+                              value={row.description ? row.description : ''}
                               style={{ minWidth: 300 }}
                             />
                           </TableCell>
@@ -557,7 +591,7 @@ const NewJournal = props => {
             onClick={handleSubmit}
             color="primary"
             variant="contained"
-            disabled={loading ? loading : !canBeSubmitted()}
+            disabled={loading || !canBeSubmitted()}
             endIcon={loading && <CircularProgress size={20} />}
           >
             {dialog.type === 'new' ? 'Save' : 'Update'}

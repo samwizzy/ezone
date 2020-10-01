@@ -16,15 +16,11 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import {
-  Grid,
-  Button,
-  TextField
-} from '@material-ui/core';
+import { Grid, Button, TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { InvoiceContext } from '.';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
@@ -34,12 +30,12 @@ const useStyles = makeStyles((theme) => ({
       fontSize: theme.typography.fontSize - 1,
     },
     '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
   },
   datatable: {
     '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
@@ -54,53 +50,52 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   paperBase: {
-    padding: '15px'
+    padding: '15px',
   },
   base: {
     paddingTop: '5px',
     paddingLeft: '5px',
     paddingRight: '5px',
-    marginBottom: '20px'
+    marginBottom: '20px',
   },
   pap: {
     padding: '10px',
-    marginBottom: '10px'
+    marginBottom: '10px',
   },
   papy: {
     padding: '12px',
-    marginBottom: '15px'
+    marginBottom: '15px',
   },
   pushForward: {
-    marginTop: '40px'
+    marginTop: '40px',
   },
   controlButtons: {
     padding: '10px',
-    marginBottom: '15px'
+    marginBottom: '15px',
   },
   controlButton: {
-    margin: '5px'
+    margin: '5px',
   },
   totals: {
     float: 'left',
-    padding: '10px'
+    padding: '10px',
   },
   totalsButtons: {
-    margin: '20px'
+    margin: '20px',
   },
   totalButton: {
-    margin: '5px'
+    margin: '5px',
   },
   divContent: {
     textAlign: 'center',
-    margin: '3px'
-  }
+    margin: '3px',
+  },
 }));
-
 
 const NewInvoice = () => {
   const classes = useStyles();
-  const invoicesContext = useContext(InvoiceContext)
-  const [salesorders, setSaleorders] = useState([])
+  const invoicesContext = useContext(InvoiceContext);
+  const [salesorders, setSaleorders] = useState([]);
 
   const columns = [
     {
@@ -151,7 +146,7 @@ const NewInvoice = () => {
         filter: true,
         sort: false,
       },
-    }
+    },
   ];
 
   const customer = [
@@ -162,7 +157,7 @@ const NewInvoice = () => {
     {
       value: 2,
       label: 'Alex Hunter',
-    }
+    },
   ];
   const salesperson = [
     {
@@ -172,22 +167,22 @@ const NewInvoice = () => {
     {
       value: 2,
       label: 'Mable Chigbe',
-    }
+    },
   ];
   const handleDateChange = (date, name) => {
-    //setValues({...values, [name]: date })
-  }
+    // setValues({...values, [name]: date })
+  };
 
   return (
     <div>
       <Paper elevation={1} className={classes.paperBase}>
-        <Grid container spacing={3} >
+        <Grid container spacing={3}>
           <Grid item xs={12}>
             <Paper className={classes.pap} elevation={3}>
               <div>
                 <Typography gutterBottom variant="h5" component="h1">
                   New Invoice
-                     </Typography>
+                </Typography>
               </div>
             </Paper>
           </Grid>
@@ -199,17 +194,17 @@ const NewInvoice = () => {
                     required
                     id="customer"
                     options={customer}
-                    size={'small'}
+                    size="small"
                     getOptionLabel={option => option.label}
                     onChange={(event, value) => {
-                      //accContext.accDispatch({type:'PAYLOAD',payload:{label:'startDay',value:value.value}})
+                      // accContext.accDispatch({type:'PAYLOAD',payload:{label:'startDay',value:value.value}})
                       // setFinancialYearDate();
                     }}
                     style={{ width: '100%' }}
                     renderInput={params => (
                       <TextField
                         {...params}
-                        label={'Customer'}
+                        label="Customer"
                         variant="outlined"
                         inputProps={{
                           ...params.inputProps,
@@ -221,8 +216,14 @@ const NewInvoice = () => {
                 </Grid>
 
                 <Grid item xs={6}>
-                  <TextField style={{ width: '100%' }} id="filled-basic"
-                    size={'small'} placeholder="INV/000001" label="Invoice" variant="outlined" />
+                  <TextField
+                    style={{ width: '100%' }}
+                    id="filled-basic"
+                    size="small"
+                    placeholder="INV/000001"
+                    label="Invoice"
+                    variant="outlined"
+                  />
                 </Grid>
 
                 <Grid item xs={6}>
@@ -238,15 +239,15 @@ const NewInvoice = () => {
                       format="MM/dd/yyyy"
                       fullWidth
                       // value={values.transactionDate}
-                      onChange={(date) => handleDateChange(date, "transactionDate")}
+                      onChange={date =>
+                        handleDateChange(date, 'transactionDate')
+                      }
                       KeyboardButtonProps={{
                         'aria-label': 'change date',
                       }}
                     />
                   </MuiPickersUtilsProvider>
                 </Grid>
-
-
 
                 <Grid item xs={6}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -261,7 +262,9 @@ const NewInvoice = () => {
                       format="MM/dd/yyyy"
                       fullWidth
                       // value={values.transactionDate}
-                      onChange={(date) => handleDateChange(date, "transactionDate")}
+                      onChange={date =>
+                        handleDateChange(date, 'transactionDate')
+                      }
                       KeyboardButtonProps={{
                         'aria-label': 'change date',
                       }}
@@ -270,8 +273,14 @@ const NewInvoice = () => {
                 </Grid>
 
                 <Grid item xs={6}>
-                  <TextField style={{ width: '100%' }} id="so"
-                    size={'small'} placeholder="Enter number" label="SO/PO number" variant="outlined" />
+                  <TextField
+                    style={{ width: '100%' }}
+                    id="so"
+                    size="small"
+                    placeholder="Enter number"
+                    label="SO/PO number"
+                    variant="outlined"
+                  />
                 </Grid>
 
                 <Grid item xs={6}>
@@ -279,17 +288,17 @@ const NewInvoice = () => {
                     required
                     id="salesperson"
                     options={customer}
-                    size={'small'}
+                    size="small"
                     getOptionLabel={option => option.label}
                     onChange={(event, value) => {
-                      //accContext.accDispatch({type:'PAYLOAD',payload:{label:'startDay',value:value.value}})
+                      // accContext.accDispatch({type:'PAYLOAD',payload:{label:'startDay',value:value.value}})
                       // setFinancialYearDate();
                     }}
                     style={{ width: '100%' }}
                     renderInput={params => (
                       <TextField
                         {...params}
-                        label={'Sales Person'}
+                        label="Sales Person"
                         variant="outlined"
                         inputProps={{
                           ...params.inputProps,
@@ -313,7 +322,9 @@ const NewInvoice = () => {
                       format="MM/dd/yyyy"
                       fullWidth
                       // value={values.transactionDate}
-                      onChange={(date) => handleDateChange(date, "transactionDate")}
+                      onChange={date =>
+                        handleDateChange(date, 'transactionDate')
+                      }
                       KeyboardButtonProps={{
                         'aria-label': 'change date',
                       }}
@@ -321,7 +332,7 @@ const NewInvoice = () => {
                   </MuiPickersUtilsProvider>
                 </Grid>
 
-                {/*<Grid item xs={6}>
+                {/* <Grid item xs={6}>
                         <Autocomplete
                     id="customer"
                     options={salesperson}
@@ -344,7 +355,7 @@ const NewInvoice = () => {
                       />
                     )}
                   /> 
-                        </Grid>*/}
+                        </Grid> */}
 
                 <Grid item xs={8}>
                   <TextField
@@ -356,7 +367,6 @@ const NewInvoice = () => {
                     variant="outlined"
                   />
                 </Grid>
-
               </Grid>
             </Paper>
           </Grid>
@@ -389,10 +399,7 @@ const NewInvoice = () => {
                 <Grid item xs={6}>
                   <Grid item xs={12}>
                     <div className={classes.controlButton}>
-                      <Button
-                        color="primary"
-                        size={'small'}
-                        variant="contained">
+                      <Button color="primary" size="small" variant="contained">
                         Add New Line
                       </Button>
                     </div>
@@ -402,8 +409,9 @@ const NewInvoice = () => {
                     <div className={classes.pushForward}>
                       <Button
                         startIcon={<AttachIcon />}
-                        size={'small'}
-                        variant="contained">
+                        size="small"
+                        variant="contained"
+                      >
                         Attach a file
                       </Button>
                     </div>
@@ -418,9 +426,13 @@ const NewInvoice = () => {
                           <Paper className={classes.pap} elevation={1}>
                             <Grid container spacing={1}>
                               <Grid item xs={3}>
-                                <Typography variant="h6" component="h6" gutterBottom>
+                                <Typography
+                                  variant="h6"
+                                  component="h6"
+                                  gutterBottom
+                                >
                                   Discount
-                            </Typography>
+                                </Typography>
                               </Grid>
                               <Grid item xs={9}>
                                 <TextField
@@ -434,9 +446,13 @@ const NewInvoice = () => {
                                 />
                               </Grid>
                               <Grid item xs={3}>
-                                <Typography variant="h6" component="h6" gutterBottom>
+                                <Typography
+                                  variant="h6"
+                                  component="h6"
+                                  gutterBottom
+                                >
                                   Shipping fee
-                            </Typography>
+                                </Typography>
                               </Grid>
                               <Grid item xs={9}>
                                 <TextField
@@ -451,13 +467,13 @@ const NewInvoice = () => {
                               </Grid>
                               <Grid item xs={12}>
                                 <div>
-                                  <div style={{ float: 'right', margin: '5px' }}>
+                                  <div
+                                    style={{ float: 'right', margin: '5px' }}
+                                  >
                                     <div className={classes.controlButton}>
-                                      <Button
-                                        size={'small'}
-                                        variant="contained">
+                                      <Button size="small" variant="contained">
                                         Add Charges
-                                </Button>
+                                      </Button>
                                     </div>
                                   </div>
                                 </div>
@@ -472,7 +488,7 @@ const NewInvoice = () => {
                               <Grid item xs={3}>
                                 <Typography variant="h6" gutterBottom>
                                   Sub Total
-                            </Typography>
+                                </Typography>
                               </Grid>
                               <Grid item xs={9}>
                                 <TextField
@@ -480,7 +496,11 @@ const NewInvoice = () => {
                                   style={{ width: '100%' }}
                                   id="sub-total"
                                   InputProps={{
-                                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                                    startAdornment: (
+                                      <InputAdornment position="start">
+                                        $
+                                      </InputAdornment>
+                                    ),
                                   }}
                                   variant="filled"
                                 />
@@ -489,7 +509,7 @@ const NewInvoice = () => {
                               <Grid item xs={3}>
                                 <Typography variant="h6" gutterBottom>
                                   Total
-                            </Typography>
+                                </Typography>
                               </Grid>
                               <Grid item xs={9}>
                                 <TextField
@@ -497,7 +517,11 @@ const NewInvoice = () => {
                                   style={{ width: '100%' }}
                                   id="total"
                                   InputProps={{
-                                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                                    startAdornment: (
+                                      <InputAdornment position="start">
+                                        $
+                                      </InputAdornment>
+                                    ),
                                   }}
                                   variant="filled"
                                 />
@@ -513,32 +537,45 @@ const NewInvoice = () => {
                                 <Grid item>
                                   <div className={classes.controlButton}>
                                     <Button
-                                      size={'small'}
-                                      onClick={() => { invoicesContext.invoiceDispatch({ type: 'NAVIGATION', page: 'invoice' }) }}
-                                      variant="contained">
+                                      size="small"
+                                      onClick={() => {
+                                        invoicesContext.invoiceDispatch({
+                                          type: 'NAVIGATION',
+                                          page: 'invoice',
+                                        });
+                                      }}
+                                      variant="contained"
+                                    >
                                       Cancel
-                                </Button>
+                                    </Button>
                                   </div>
                                 </Grid>
                                 <Grid item>
                                   <div className={classes.controlButton}>
                                     <Button
-                                      size={'small'}
+                                      size="small"
                                       color="primary"
-                                      variant="contained">
+                                      variant="contained"
+                                    >
                                       Save
-                                </Button>
+                                    </Button>
                                   </div>
                                 </Grid>
                                 <Grid item>
                                   <div className={classes.controlButton}>
                                     <Button
-                                      size={'small'}
+                                      size="small"
                                       color="primary"
-                                      onClick={() => { invoicesContext.invoiceDispatch({ type: 'NAVIGATION', page: 'invoicereciept' }) }}
-                                      variant="contained">
+                                      onClick={() => {
+                                        invoicesContext.invoiceDispatch({
+                                          type: 'NAVIGATION',
+                                          page: 'invoicereciept',
+                                        });
+                                      }}
+                                      variant="contained"
+                                    >
                                       Save and Sumbit
-                                </Button>
+                                    </Button>
                                   </div>
                                 </Grid>
                               </Grid>
@@ -546,19 +583,16 @@ const NewInvoice = () => {
                           </div>
                         </Grid>
                       </Grid>
-
                     </div>
                   </div>
                 </Grid>
-
               </Grid>
             </div>
           </Grid>
-
         </Grid>
       </Paper>
     </div>
   );
-}
+};
 
 export default NewInvoice;

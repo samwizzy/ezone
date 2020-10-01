@@ -194,22 +194,22 @@ const bankingReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-        }
+        };
       }
       case Constants.GET_CURRENCIES_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-          currencies: action.payload
-        }
+          currencies: action.payload,
+        };
       }
       case Constants.GET_CURRENCIES_ERROR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
-        }
+        };
       }
 
       // Case to get account type data

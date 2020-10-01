@@ -28,7 +28,6 @@ export const initialState = {
 const accountChartReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
-
       // Open dialog for adding new account to chart of account
       case Constants.OPEN_NEW_ACCOUNT_DIALOG: {
         return {
@@ -293,7 +292,6 @@ const accountChartReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
-
     }
   });
 

@@ -100,25 +100,74 @@ const SidebarConfig = [
       'banking',
       'fixedassets',
       'charts',
-      'settings'
+      'settings',
     ],
     menus: [
       { id: 1, name: 'Dashboard', url: '/account', icon: 'dashboard' },
-      { id: 2, name: 'Chart of Account', url: '/account/charts', icon: 'account_tree' },
+      {
+        id: 2,
+        name: 'Chart of Account',
+        url: '/account/charts',
+        icon: 'account_tree',
+      },
       { id: 3, name: 'Journal', url: '/account/journal', icon: 'menu_book' },
       { id: 4, name: 'Fixed Asset', url: '/account/fixedassets', icon: 'note' },
-      { id: 5, name: 'Banking', url: '/account/banking', icon: 'account_balance' },
-      { id: 6, name: 'Reports', url: '/account/reports', icon: 'local_library' },
-      { id: 7, name: 'Budgeting', url: '/account/budgeting', icon: 'account_balance_wallet' },
       {
-        id: 8, name: 'Settings', url: '#', icon: 'settings', submenus: [
-          { id: 1, name: 'Account Period', url: '/account/settings/period', icon: '' },
-          { id: 2, name: 'Depreciation Type', url: '/account/settings/depreciation-type', icon: '' },
-          { id: 3, name: 'Depreciation Area', url: '/account/settings/depreciation-area', icon: '' },
-          { id: 4, name: 'Asset Types', url: '/account/settings/assettypes', icon: '' },
+        id: 5,
+        name: 'Banking',
+        url: '/account/banking',
+        icon: 'account_balance',
+      },
+      {
+        id: 6,
+        name: 'Reports',
+        url: '/account/reports',
+        icon: 'local_library',
+      },
+      {
+        id: 7,
+        name: 'Budgeting',
+        url: '/account/budgeting',
+        icon: 'account_balance_wallet',
+      },
+      {
+        id: 8,
+        name: 'Settings',
+        url: '#',
+        icon: 'settings',
+        submenus: [
+          {
+            id: 1,
+            name: 'Account Period',
+            url: '/account/settings/period',
+            icon: '',
+          },
+          {
+            id: 2,
+            name: 'Depreciation Type',
+            url: '/account/settings/depreciation-type',
+            icon: '',
+          },
+          {
+            id: 3,
+            name: 'Depreciation Area',
+            url: '/account/settings/depreciation-area',
+            icon: '',
+          },
+          {
+            id: 4,
+            name: 'Asset Types',
+            url: '/account/settings/assettypes',
+            icon: '',
+          },
           { id: 5, name: 'Taxes', url: '/account/settings/taxes', icon: '' },
-          { id: 6, name: 'Currencies', url: '/account/settings/currencies', icon: '' },
-        ]
+          {
+            id: 6,
+            name: 'Currencies',
+            url: '/account/settings/currencies',
+            icon: '',
+          },
+        ],
       },
     ],
   },
@@ -126,26 +175,49 @@ const SidebarConfig = [
     module: ['crm'],
     menus: [
       { id: 1, name: 'Dashboard', url: '/crm/dashboard', icon: 'dashboard' },
-      { id: 2, name: 'Contacts', url: '/crm/contacts', icon: 'business_center' },
+      {
+        id: 2,
+        name: 'Contacts',
+        url: '/crm/contacts',
+        icon: 'business_center',
+      },
       { id: 3, name: 'Companies', url: '/crm/companies', icon: 'find_in_page' },
       { id: 4, name: 'Activities', url: '/crm/activities', icon: 'person' },
       { id: 5, name: 'Schedules', url: '/crm/schedules', icon: 'payment' },
-      { id: 6, name: 'Contact Groups', url: '/crm/contact-groups', icon: 'announcement' },
-      { id: 7, name: 'Reports', url: '/crm/reports', icon: 'local_activity' },
-      { id: 8, name: 'Campaigns', url: '/crm/campaigns', icon: 'local_activity' },
       {
-        id: 9, name: 'Social Media', url: '#', icon: 'local_activity', submenus: [
-          { id: 1, name: 'Social Media', url: '/crm/social-media', icon: '' },
-          { id: 1, name: 'Set Up', url: '/crm/social-media/setup', icon: '' },
-        ]
+        id: 6,
+        name: 'Contact Groups',
+        url: '/crm/contact-groups',
+        icon: 'announcement',
+      },
+      { id: 7, name: 'Reports', url: '/crm/reports', icon: 'local_activity' },
+      {
+        id: 8,
+        name: 'Campaigns',
+        url: '/crm/campaigns',
+        icon: 'local_activity',
       },
       {
-        id: 10, name: 'Leads', url: '#', icon: 'local_activity', submenus: [
+        id: 9,
+        name: 'Social Media',
+        url: '#',
+        icon: 'local_activity',
+        submenus: [
+          { id: 1, name: 'Social Media', url: '/crm/social-media', icon: '' },
+          { id: 1, name: 'Set Up', url: '/crm/social-media/setup', icon: '' },
+        ],
+      },
+      {
+        id: 10,
+        name: 'Leads',
+        url: '#',
+        icon: 'local_activity',
+        submenus: [
           { id: 1, name: 'Leads', url: '/crm/leads', icon: '' },
           { id: 2, name: 'Lead Sources', url: '/crm/leads/sources', icon: '' },
           { id: 3, name: 'Lead Tags', url: '/crm/leads/tags', icon: '' },
           { id: 4, name: 'Lead Stages', url: '/crm/leads/stages', icon: '' },
-        ]
+        ],
       },
     ],
   },
@@ -155,11 +227,31 @@ const SidebarConfig = [
       { id: 1, name: 'Dashboard', url: '/lms/dashboard', icon: 'dashboard' },
       // { id: 2, name: 'Account & Settings', url: '/lms/account-settings',icon: 'settings'},
       // { id: 3, name: 'Integration', url: '/lms/integration', icon: 'business_center' },
-      { id: 4, name: 'Certificates', url: '/lms/certificates', icon: 'find_in_page' },
-      { id: 5, name: 'Content Management', url: '/lms/content-mgt', icon: 'library_books' },
+      {
+        id: 4,
+        name: 'Certificates',
+        url: '/lms/certificates',
+        icon: 'find_in_page',
+      },
+      {
+        id: 5,
+        name: 'Content Management',
+        url: '/lms/content-mgt',
+        icon: 'library_books',
+      },
       { id: 6, name: 'Users', url: '/lms/user', icon: 'person' },
-      { id: 7, name: 'Course Management', url: '/lms/courses', icon: 'library_books' },
-      { id: 8, name: 'Virtual Classrooms', url: '/lms/virtual-classrooms', icon: 'person' },
+      {
+        id: 7,
+        name: 'Course Management',
+        url: '/lms/courses',
+        icon: 'library_books',
+      },
+      {
+        id: 8,
+        name: 'Virtual Classrooms',
+        url: '/lms/virtual-classrooms',
+        icon: 'person',
+      },
       { id: 9, name: 'Enrollments', url: '/lms/enrollments', icon: 'person' },
       { id: 10, name: 'Quizzes', url: '/lms/quizzes', icon: 'person' },
       { id: 11, name: 'Category', url: '/lms/category', icon: 'category' },
@@ -170,51 +262,166 @@ const SidebarConfig = [
     module: ['inventory', 'sales', 'purchase'],
     menus: [
       {
-        id: 2, name: 'Inventory', url: '#', icon: 'label', submenus: [
-          { id: 1, name: 'Dashboard', url: '/inventory/dashboard', icon: 'dashboard' },
-          { id: 2, name: 'Warehouses', url: '/inventory/warehouses', icon: 'storage' },
+        id: 2,
+        name: 'Inventory',
+        url: '#',
+        icon: 'label',
+        submenus: [
+          {
+            id: 1,
+            name: 'Dashboard',
+            url: '/inventory/dashboard',
+            icon: 'dashboard',
+          },
+          {
+            id: 2,
+            name: 'Warehouses',
+            url: '/inventory/warehouses',
+            icon: 'storage',
+          },
           { id: 3, name: 'Items', url: '/inventory/items', icon: 'label' },
-          { id: 4, name: 'Items Groups', url: '/inventory/items/groups', icon: 'group_work' },
-          { id: 5, name: 'Transfer Orders', url: '/inventory/transfers', icon: 'transfer_within_a_station' },
-          { id: 6, name: 'Adjustments', url: '/inventory/adjustments', icon: 'equalizer' },
-          { id: 7, name: 'Reports', url: '/inventory/reports', icon: 'assessment' },
-        ]
+          {
+            id: 4,
+            name: 'Items Groups',
+            url: '/inventory/items/groups',
+            icon: 'group_work',
+          },
+          {
+            id: 5,
+            name: 'Transfer Orders',
+            url: '/inventory/transfers',
+            icon: 'transfer_within_a_station',
+          },
+          {
+            id: 6,
+            name: 'Adjustments',
+            url: '/inventory/adjustments',
+            icon: 'equalizer',
+          },
+          {
+            id: 7,
+            name: 'Reports',
+            url: '/inventory/reports',
+            icon: 'assessment',
+          },
+        ],
       },
       {
-        id: 2, name: 'Sales', url: '#', icon: 'label', submenus: [
-          { id: 2, name: 'Sales Orders', url: '/inventory/sales', icon: 'storage' },
-          { id: 3, name: 'Invoice', url: '/inventory/sales/invoice', icon: 'label' },
-          { id: 4, name: 'Receipts', url: '/inventory/sales/receipts', icon: 'group_work' },
-        ]
+        id: 2,
+        name: 'Sales',
+        url: '#',
+        icon: 'label',
+        submenus: [
+          {
+            id: 2,
+            name: 'Sales Orders',
+            url: '/inventory/sales',
+            icon: 'storage',
+          },
+          {
+            id: 3,
+            name: 'Invoice',
+            url: '/inventory/sales/invoice',
+            icon: 'label',
+          },
+          {
+            id: 4,
+            name: 'Receipts',
+            url: '/inventory/sales/receipts',
+            icon: 'group_work',
+          },
+        ],
       },
       {
-        id: 2, name: 'Purchases', url: '#', icon: 'label', submenus: [
-          { id: 2, name: 'Purchase Orders', url: '/inventory/purchase', icon: 'storage' },
-          { id: 3, name: 'Bills', url: '/inventory/purchase/bills', icon: 'label' },
-          { id: 4, name: 'Payments', url: '/inventory/purchase/payments', icon: 'group_work' },
-        ]
+        id: 2,
+        name: 'Purchases',
+        url: '#',
+        icon: 'label',
+        submenus: [
+          {
+            id: 2,
+            name: 'Purchase Orders',
+            url: '/inventory/purchase',
+            icon: 'storage',
+          },
+          {
+            id: 3,
+            name: 'Bills',
+            url: '/inventory/purchase/bills',
+            icon: 'label',
+          },
+          {
+            id: 4,
+            name: 'Payments',
+            url: '/inventory/purchase/payments',
+            icon: 'group_work',
+          },
+        ],
       },
     ],
   },
   {
     module: ['project-manager'],
     menus: [
-      { id: 1, name: 'Dashboard', url: '/project-manager/dashboard', icon: 'dashboard' },
       {
-        id: 2, name: 'Work Order', url: '#', icon: 'label', submenus: [
-          { id: 1, name: 'Dashboard', url: '/project-manager/dashboard', icon: '' },
-          { id: 2, name: 'Work Orders', url: '/project-manager/work-orders', icon: '' },
-          { id: 3, name: 'Vendors', url: '/project-manager/work-orders', icon: '' },
-        ]
+        id: 1,
+        name: 'Dashboard',
+        url: '/project-manager/dashboard',
+        icon: 'dashboard',
       },
       {
-        id: 4, name: 'Jobs', url: '#', icon: 'group_work', submenus: [
-          { id: 1, name: 'Dashboard', url: '/project-manager/dashboard', icon: '' },
+        id: 2,
+        name: 'Work Order',
+        url: '#',
+        icon: 'label',
+        submenus: [
+          {
+            id: 1,
+            name: 'Dashboard',
+            url: '/project-manager/dashboard',
+            icon: '',
+          },
+          {
+            id: 2,
+            name: 'Work Orders',
+            url: '/project-manager/work-orders',
+            icon: '',
+          },
+          {
+            id: 3,
+            name: 'Vendors',
+            url: '/project-manager/work-orders',
+            icon: '',
+          },
+        ],
+      },
+      {
+        id: 4,
+        name: 'Jobs',
+        url: '#',
+        icon: 'group_work',
+        submenus: [
+          {
+            id: 1,
+            name: 'Dashboard',
+            url: '/project-manager/dashboard',
+            icon: '',
+          },
           { id: 2, name: 'Jobs list', url: '/project-manager/jobs', icon: '' },
-          { id: 3, name: 'Add Job', url: '/project-manager/jobs/new', icon: '' },
-        ]
+          {
+            id: 3,
+            name: 'Add Job',
+            url: '/project-manager/jobs/new',
+            icon: '',
+          },
+        ],
       },
-      { id: 5, name: 'Reports', url: '/project-manager/reports', icon: 'assessment' },
+      {
+        id: 5,
+        name: 'Reports',
+        url: '/project-manager/reports',
+        icon: 'assessment',
+      },
     ],
   },
 ];

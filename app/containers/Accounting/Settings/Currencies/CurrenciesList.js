@@ -10,15 +10,15 @@ import {
   Menu,
   MenuItem,
   Toolbar,
-  Tooltip
+  Tooltip,
 } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import AddIcon from '@material-ui/icons/Add';
 import { Euro, AttachMoney, Delete, Check } from '@material-ui/icons';
+import _ from 'lodash';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import _ from 'lodash';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,34 +28,34 @@ const useStyles = makeStyles(theme => ({
   datatable: {
     whiteSpace: 'nowrap',
     '& tr:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& td': {
-      padding: theme.spacing(1, 2)
+      padding: theme.spacing(1, 2),
     },
   },
 }));
 
-const CurrenciesList = (props) => {
+const CurrenciesList = props => {
   const classes = useStyles(props);
-  const { currencies, openNewCurrencyDialog, openEditCurrencyDialog } = props
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [selectedCurrency, setSelectedCurrency] = useState(null)
+  const { currencies, openNewCurrencyDialog, openEditCurrencyDialog } = props;
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedCurrency, setSelectedCurrency] = useState(null);
 
   const handleClick = (event, id) => {
-    setAnchorEl(event.currentTarget)
-    setSelectedCurrency(_.find(currencies, { id }))
-  }
+    setAnchorEl(event.currentTarget);
+    setSelectedCurrency(_.find(currencies, { id }));
+  };
 
   const handleClose = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
 
   const handleEditClick = () => {
-    openEditCurrencyDialog(selectedCurrency)
-  }
+    openEditCurrencyDialog(selectedCurrency);
+  };
 
-  console.log(currencies, "currencies")
+  console.log(currencies, 'currencies');
 
   const columns = [
     {
@@ -63,7 +63,7 @@ const CurrenciesList = (props) => {
       label: ' ',
       options: {
         filter: true,
-        display: 'excluded'
+        display: 'excluded',
       },
     },
     {
@@ -104,17 +104,15 @@ const CurrenciesList = (props) => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => {
-          return (
-            <IconButton
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={event => handleClick(event, value)}
-            >
-              <MoreVertIcon />
-            </IconButton>
-          );
-        },
+        customBodyRender: value => (
+          <IconButton
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={event => handleClick(event, value)}
+          >
+            <MoreVertIcon />
+          </IconButton>
+        ),
       },
     },
   ];
@@ -142,7 +140,7 @@ const CurrenciesList = (props) => {
         </Button>
       </Tooltip>
     ),
-    elevation: 0
+    elevation: 0,
   };
 
   return (
@@ -162,13 +160,11 @@ const CurrenciesList = (props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleEditClick}>
-          Edit
-        </MenuItem>
+        <MenuItem onClick={handleEditClick}>Edit</MenuItem>
       </Menu>
     </div>
   );
-}
+};
 
 const mapStateToProps = createStructuredSelector({
   currencies: Selectors.makeSelectCurrencies(),
@@ -177,7 +173,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewCurrencyDialog: () => dispatch(Actions.openNewCurrencyDialog()),
-    openEditCurrencyDialog: data => dispatch(Actions.openEditCurrencyDialog(data)),
+    openEditCurrencyDialog: data =>
+      dispatch(Actions.openEditCurrencyDialog(data)),
   };
 }
 

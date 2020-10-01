@@ -4,7 +4,7 @@ import * as Constants from './constants';
 export const initialState = {
   loading: true,
   error: false,
-  time: { startDate: '2020/04/15', endDate: '2020/09/11' },
+  time: { startDate: '', endDate: '' },
   generaljournal: [],
   chatsOfAccount: [],
   generalLedger: [],
@@ -32,7 +32,7 @@ const viewReportReducer = (state = initialState, action) =>
           error: false,
         };
       }
-      //Time case
+      // Time case
       case Constants.GET_GENERAL_JOURNAL_TIME: {
         return {
           ...state,
@@ -52,6 +52,7 @@ const viewReportReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
+          time: { startDate: '', endDate: '' },
         };
       }
       // Case to get chats of account type
@@ -71,7 +72,7 @@ const viewReportReducer = (state = initialState, action) =>
           chatsOfAccount: action.payload,
         };
       }
-      //error
+      // error
       case Constants.GET_CHATS_OF_ACCOUNTS_ERR: {
         return {
           ...state,
@@ -96,7 +97,7 @@ const viewReportReducer = (state = initialState, action) =>
           generalLedger: action.payload,
         };
       }
-      //error
+      // error
       case Constants.GET_GENERAL_LEDGER_ERR: {
         return {
           ...state,
@@ -121,7 +122,7 @@ const viewReportReducer = (state = initialState, action) =>
           trialBalance: action.payload,
         };
       }
-      //error
+      // error
       case Constants.GET_TRIAL_BALANCE_ERR: {
         return {
           ...state,

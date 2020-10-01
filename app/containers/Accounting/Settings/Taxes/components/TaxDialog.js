@@ -28,52 +28,53 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const initialState = {
-  description: "",
-  name: "",
-  rate: "",
-  taxType: ""
-}
+  description: '',
+  name: '',
+  rate: '',
+  taxType: '',
+};
 
 const TaxDialog = props => {
   const classes = useStyles(props);
   const [form, setForm] = React.useState({ ...initialState });
 
-  const {
-    loading,
-    dialog,
-    closeNewTaxDialog,
-    createTax,
-    updateTax,
-  } = props;
+  const { loading, dialog, closeNewTaxDialog, createTax, updateTax } = props;
 
   useEffect(() => {
     if (dialog.type === 'edit' && dialog.data) {
-      setForm({ ...dialog.data })
+      setForm({ ...dialog.data });
     } else {
-      setForm({ ...initialState })
+      setForm({ ...initialState });
     }
-  }, [])
+  }, []);
 
-  const handleChange = (event) => {
-    const { name, value, type, checked } = event.target
+  const handleChange = event => {
+    const { name, value, type, checked } = event.target;
     name === 'rate'
-      ? setForm({ ...form, [name]: type === 'checkbox' ? checked : value.replace(/[^0-9]/g, '') })
+      ? setForm({
+          ...form,
+          [name]: type === 'checkbox' ? checked : value.replace(/[^0-9]/g, ''),
+        })
       : setForm({ ...form, [name]: type === 'checkbox' ? checked : value });
   };
 
   const handleSubmit = () => {
-    dialog.type === 'new' ?
-      createTax(form) : updateTax(form)
+    dialog.type === 'new' ? createTax(form) : updateTax(form);
   };
 
   const canSubmitForm = () => {
-    const { name, rate, taxType, description } = form
-    return name.length > 0 && rate.length > 0 && taxType.length > 0 && description.length > 0
-  }
+    const { name, rate, taxType, description } = form;
+    return (
+      name.length > 0 &&
+      rate.length > 0 &&
+      taxType.length > 0 &&
+      description.length > 0
+    );
+  };
 
-  console.log(loading, "loading")
-  console.log(form, "form")
-  console.log(dialog, "form dialog")
+  console.log(loading, 'loading');
+  console.log(form, 'form');
+  console.log(dialog, 'form dialog');
 
   return (
     <div>
@@ -82,7 +83,7 @@ const TaxDialog = props => {
         onClose={closeNewTaxDialog}
         keepMounted
         TransitionComponent={Transition}
-        maxWidth={'xs'}
+        maxWidth="xs"
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-asset-title">
@@ -140,7 +141,6 @@ const TaxDialog = props => {
             value={form.description}
             onChange={handleChange}
           />
-
         </DialogContent>
         <DialogActions>
           <Button
@@ -165,7 +165,7 @@ const TaxDialog = props => {
       </Dialog>
     </div>
   );
-}
+};
 
 TaxDialog.propTypes = {
   loading: PropTypes.bool,
@@ -176,13 +176,12 @@ const mapStateToProps = createStructuredSelector({
   dialog: Selectors.makeSelectTaxDialog(),
 });
 
-
 function mapDispatchToProps(dispatch) {
   return {
     closeNewTaxDialog: () => dispatch(Actions.closeNewTaxDialog()),
     createTax: data => dispatch(Actions.createTax(data)),
     updateTax: data => dispatch(Actions.updateTax(data)),
-  }
+  };
 }
 
 const withConnect = connect(

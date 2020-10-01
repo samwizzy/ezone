@@ -52,8 +52,7 @@ export function CrmContactGroups(props) {
   );
 }
 
-CrmContactGroups.propTypes = {
-};
+CrmContactGroups.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
   // crmContactGroups: makeSelectCrm(),

@@ -28,11 +28,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const initialState = {
-  code: "",
-  description: "",
-  orgId: "",
-  type: ""
-}
+  code: '',
+  description: '',
+  orgId: '',
+  type: '',
+};
 
 const DepreciationAreaDialog = props => {
   const classes = useStyles(props);
@@ -48,29 +48,36 @@ const DepreciationAreaDialog = props => {
 
   useEffect(() => {
     if (dialog.type === 'edit' && dialog.data) {
-      setForm({ ...dialog.data })
+      setForm({ ...dialog.data });
     } else {
-      setForm({ ...initialState })
+      setForm({ ...initialState });
     }
-  }, [dialog.data])
+  }, [dialog.data]);
 
-  const handleChange = (event) => {
-    setForm({ ...form, [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value });
+  const handleChange = event => {
+    setForm({
+      ...form,
+      [event.target.name]:
+        event.target.type === 'checkbox'
+          ? event.target.checked
+          : event.target.value,
+    });
   };
 
   const handleSubmit = () => {
-    dialog.type === 'new' ?
-      createDepreciationArea(form) : updateDepreciationArea(form)
+    dialog.type === 'new'
+      ? createDepreciationArea(form)
+      : updateDepreciationArea(form);
   };
 
   const canSubmitForm = () => {
-    const { code, type, description } = form
-    return code.length > 0 && type.length > 0 && description.length > 0
-  }
+    const { code, type, description } = form;
+    return code.length > 0 && type.length > 0 && description.length > 0;
+  };
 
-  console.log(loading, "loading")
-  console.log(form, "form")
-  console.log(dialog, "form dialog")
+  console.log(loading, 'loading');
+  console.log(form, 'form');
+  console.log(dialog, 'form dialog');
 
   return (
     <div>
@@ -79,11 +86,13 @@ const DepreciationAreaDialog = props => {
         onClose={closeNewDepreciationAreaDialog}
         keepMounted
         TransitionComponent={Transition}
-        maxWidth={'xs'}
+        maxWidth="xs"
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-depreciation-title">
-          {dialog.type === 'new' ? 'Create Depreciation Area' : 'Edit Depreciation Area'}
+          {dialog.type === 'new'
+            ? 'Create Depreciation Area'
+            : 'Edit Depreciation Area'}
         </DialogTitle>
 
         <DialogContent dividers>
@@ -125,7 +134,6 @@ const DepreciationAreaDialog = props => {
             value={form.description}
             onChange={handleChange}
           />
-
         </DialogContent>
         <DialogActions>
           <Button
@@ -150,7 +158,7 @@ const DepreciationAreaDialog = props => {
       </Dialog>
     </div>
   );
-}
+};
 
 DepreciationAreaDialog.propTypes = {
   loading: PropTypes.bool,
@@ -161,13 +169,15 @@ const mapStateToProps = createStructuredSelector({
   dialog: Selectors.makeSelectDepreciationAreaDialog(),
 });
 
-
 function mapDispatchToProps(dispatch) {
   return {
-    closeNewDepreciationAreaDialog: () => dispatch(Actions.closeNewDepreciationAreaDialog()),
-    createDepreciationArea: data => dispatch(Actions.createDepreciationArea(data)),
-    updateDepreciationArea: data => dispatch(Actions.updateDepreciationArea(data)),
-  }
+    closeNewDepreciationAreaDialog: () =>
+      dispatch(Actions.closeNewDepreciationAreaDialog()),
+    createDepreciationArea: data =>
+      dispatch(Actions.createDepreciationArea(data)),
+    updateDepreciationArea: data =>
+      dispatch(Actions.updateDepreciationArea(data)),
+  };
 }
 
 const withConnect = connect(

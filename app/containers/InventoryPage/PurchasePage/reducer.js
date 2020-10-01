@@ -67,7 +67,7 @@ const itemPageReducer = (state = initialState, action) =>
             },
             data: null,
           },
-        }
+        };
       }
       case Constants.CLOSE_NEW_ITEM_DIALOG: {
         return {
@@ -79,7 +79,7 @@ const itemPageReducer = (state = initialState, action) =>
             },
             data: null,
           },
-        }
+        };
       }
       case Constants.OPEN_EDIT_ITEM_DIALOG: {
         return {
@@ -91,7 +91,7 @@ const itemPageReducer = (state = initialState, action) =>
             },
             data: action.payload,
           },
-        }
+        };
       }
       case Constants.CLOSE_EDIT_ITEM_DIALOG: {
         return {
@@ -103,7 +103,7 @@ const itemPageReducer = (state = initialState, action) =>
             },
             data: null,
           },
-        }
+        };
       }
       case Constants.OPEN_NEW_ITEM_GROUP_DIALOG: {
         return {

@@ -8,15 +8,14 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import * as Selectors from './../selectors';
+import * as Selectors from '../selectors';
 import SalesOrders from './SalesOrders';
 
-
-const key = "inventoryPage";
+const key = 'inventoryPage';
 export function SalesApp(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
-  const { path } = props.match
+  const { path } = props.match;
 
   return (
     <div>
@@ -25,7 +24,7 @@ export function SalesApp(props) {
   );
 }
 
-SalesApp.propTypes = {}
+SalesApp.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
   inventoryPage: makeSelectInventoryPage(),

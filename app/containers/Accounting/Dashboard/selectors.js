@@ -75,7 +75,6 @@ const makeSelectGetAllAccountPeriodData = () =>
     substate => substate.allAccountPeriodData,
   );
 
-
 export default makeSelectAccounting;
 
 export {
@@ -88,5 +87,5 @@ export {
   makeSelectGetChartOfAccountData,
   makeSelectGetAccountingSetupData,
   makeSelectAccountingSetupPostData,
-  makeSelectGetAllAccountPeriodData
+  makeSelectGetAllAccountPeriodData,
 };

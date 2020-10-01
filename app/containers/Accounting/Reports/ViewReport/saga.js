@@ -30,12 +30,10 @@ export function* getGeneralJournalSaga() {
     });
     yield put(Actions.getGeneralJournalSuccesAction(generalJournalResponse));
   } catch (err) {
-    console.log('Something went wrong at fetch reports saga');
-
     yield put(Actions.getGeneralJournalErrorAction(err));
   }
 }
-/*General chats of accounts*/
+/* General chats of accounts */
 export function* getChatOfAccountSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
@@ -44,7 +42,6 @@ export function* getChatOfAccountSaga() {
   const requestURL = `${Endpoints.GetChatsOfAccountApi}/${
     currentUser.organisation.orgId
   }?endDate=${endDate}&startDate=${startDate}}`;
-  console.log('tttttttttrequestURL', requestURL);
 
   try {
     const getChatsOfAccountResponse = yield call(request, requestURL, {
@@ -56,7 +53,6 @@ export function* getChatOfAccountSaga() {
         'Access-Control-Allow-Origin': '*',
       }),
     });
-    console.log('ttttttttttttttttttttt', getChatsOfAccountResponse);
     yield put(Actions.getChatsOfAccountSuccesAction(getChatsOfAccountResponse));
   } catch (err) {
     console.log('Something went wrong at fetch reports saga', err);
@@ -64,7 +60,7 @@ export function* getChatOfAccountSaga() {
     yield put(Actions.getChatsOfAccountErrorAction(err));
   }
 }
-/**General Ledger */
+/** General Ledger */
 
 export function* getGeneralLedgerSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
@@ -115,6 +111,7 @@ export function* getTrialBalanceSaga() {
       }),
     });
     yield put(Actions.getTrialBalanceSuccesAction(trialBalanceResponse));
+    console.log('ttttttttttttttttttttt', trialBalanceResponse);
   } catch (err) {
     console.log('Something went wrong at fetch reports saga');
 

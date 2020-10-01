@@ -25,7 +25,7 @@ import * as Selectors from '../selectors';
 import _ from 'lodash';
 
 const useStyles = makeStyles(theme => ({
-  root: {}
+  root: {},
 }));
 
 const GreenCheckbox = withStyles({
@@ -45,7 +45,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const types = [
   { label: 'Credit', id: 'CREDIT' },
   { label: 'Debit', id: 'DEBIT' },
-]
+];
 
 const initialState = {
   id: '',
@@ -62,7 +62,7 @@ const initialState = {
   rate: 0,
   status: true,
   type: '',
-}
+};
 
 const AccountDialog = props => {
   const classes = useStyles(props);
@@ -86,37 +86,80 @@ const AccountDialog = props => {
   const [values, setValues] = useState({ ...initialState });
 
   const handleChange = event => {
-    setValues({ ...values, [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value });
-  }
+    setValues({
+      ...values,
+      [event.target.name]:
+        event.target.type === 'checkbox'
+          ? event.target.checked
+          : event.target.value,
+    });
+  };
 
   const handleSelectChange = name => (event, object) => {
     setValues({ ...values, [name]: object ? object.id : object });
-  }
+  };
 
-  const handleOptionsChange = (event) => {
+  const handleOptionsChange = event => {
     setOptions({ ...options, [event.target.name]: event.target.checked });
-  }
+  };
 
   const handleSubmit = () => {
     dialog.type === 'new'
       ? createChartOfAccount(values)
       : updateChartOfAccount(values);
-  }
+  };
 
   useEffect(() => {
     if (dialog.type === 'edit' && dialog.data) {
-      const { accountCode, accountName, accountNumber, accountType, bankBalance, financialStatement, description, openingBalance, id, type } = dialog.data
-      setValues({ ...values, accountCode, accountName, accountNumber, accountTypeId: accountType ? accountType.id : accountType, bankBalance, financialStatement, description, openingBalance, id, type });
+      const {
+        accountCode,
+        accountName,
+        accountNumber,
+        accountType,
+        bankBalance,
+        financialStatement,
+        description,
+        openingBalance,
+        id,
+        type,
+      } = dialog.data;
+      setValues({
+        ...values,
+        accountCode,
+        accountName,
+        accountNumber,
+        accountTypeId: accountType ? accountType.id : accountType,
+        bankBalance,
+        financialStatement,
+        description,
+        openingBalance,
+        id,
+        type,
+      });
     } else {
-      setValues({ ...initialState })
+      setValues({ ...initialState });
     }
-
   }, [dialog.data]);
 
   const canSubmitValues = () => {
-    const { accountCode, accountName, accountNumber, accountTypeId, bankBalance, description, type } = values
-    return accountCode.length > 0 && accountName.length > 0 && accountTypeId && bankBalance && description.length > 0 && type
-  }
+    const {
+      accountCode,
+      accountName,
+      accountNumber,
+      accountTypeId,
+      bankBalance,
+      description,
+      type,
+    } = values;
+    return (
+      accountCode.length > 0 &&
+      accountName.length > 0 &&
+      accountTypeId &&
+      bankBalance &&
+      description.length > 0 &&
+      type
+    );
+  };
 
   console.log(`values  got it b4 post  -> `, values);
   console.log(`dialog -> `, dialog);
@@ -158,8 +201,16 @@ const AccountDialog = props => {
                 name="accountCode"
                 variant="outlined"
                 onBlur={() => { }}
-                error={!/^[a-z0-9]+$/i.test(values.accountCode) && values.accountCode.length > 0}
-                helperText={!/^[a-z0-9]+$/i.test(values.accountCode) && values.accountCode.length > 0 ? "Account Code must be alphanumeric" : ""}
+                error={
+                  !/^[a-z0-9]+$/i.test(values.accountCode) &&
+                  values.accountCode.length > 0
+                }
+                helperText={
+                  !/^[a-z0-9]+$/i.test(values.accountCode) &&
+                    values.accountCode.length > 0
+                    ? 'Account Code must be alphanumeric'
+                    : ''
+                }
                 size="small"
                 value={values.accountCode}
                 onChange={handleChange}
@@ -207,11 +258,15 @@ const AccountDialog = props => {
                 options={accountTypes}
                 getOptionLabel={option => option.accountType}
                 onChange={handleSelectChange('accountTypeId')}
-                value={values.accountTypeId ? _.find(accountTypes, { id: values.accountTypeId }) : null}
+                value={
+                  values.accountTypeId
+                    ? _.find(accountTypes, { id: values.accountTypeId })
+                    : null
+                }
                 renderInput={params => (
                   <TextField
                     {...params}
-                    label='Select Account Type'
+                    label="Select Account Type"
                     variant="outlined"
                     margin="dense"
                     placeholder="Account Types"
@@ -253,45 +308,48 @@ const AccountDialog = props => {
               </>
             }
 
-            {(_.find(accountTypes, { id: values.accountTypeId }) && _.find(accountTypes, { id: values.accountTypeId }).subAccount) ?
-              <>
-                <Grid item xs={12}>
-                  <FormControlLabel
-                    control={
-                      <GreenCheckbox
-                        checked={options.isParent}
-                        onChange={handleOptionsChange}
-                        name="isParent"
-                      />
-                    }
-                    label="Make parent account."
-                  />
-                </Grid>
+            {_.find(accountTypes, { id: values.accountTypeId }) &&
+              _.find(accountTypes, { id: values.accountTypeId }).subAccount ? (
+                <>
+                  <Grid item xs={12}>
+                    <FormControlLabel
+                      control={
+                        <GreenCheckbox
+                          checked={options.isParent}
+                          onChange={handleOptionsChange}
+                          name="isParent"
+                        />
+                      }
+                      label="Make parent account."
+                    />
+                  </Grid>
 
-                <Grid item xs={12}>
-                  <Autocomplete
-                    id="combo-account-chart"
-                    size="small"
-                    options={chartOfAccounts}
-                    getOptionLabel={option => option.accountName}
-                    onChange={handleSelectChange('parentId')}
-                    value={values.parentId ? _.find(chartOfAccounts, { id: values.parentId }) : null}
-                    renderInput={params => (
-                      <TextField
-                        {...params}
-                        label="Select Parent Type"
-                        variant="outlined"
-                        placeholder="Search"
-                        margin="dense"
-                        fullWidth
-                      />
-                    )}
-                  />
-                </Grid>
-              </>
-              :
-              null
-            }
+                  <Grid item xs={12}>
+                    <Autocomplete
+                      id="combo-account-chart"
+                      size="small"
+                      options={chartOfAccounts}
+                      getOptionLabel={option => option.accountName}
+                      onChange={handleSelectChange('parentId')}
+                      value={
+                        values.parentId
+                          ? _.find(chartOfAccounts, { id: values.parentId })
+                          : null
+                      }
+                      renderInput={params => (
+                        <TextField
+                          {...params}
+                          label="Select Parent Type"
+                          variant="outlined"
+                          placeholder="Search"
+                          margin="dense"
+                          fullWidth
+                        />
+                      )}
+                    />
+                  </Grid>
+                </>
+              ) : null}
 
             <Grid item xs={12}>
               <TextField
@@ -337,20 +395,25 @@ const AccountDialog = props => {
             {dialog.type === 'new' ? 'Save Account' : 'Update Account'}
           </Button>
 
-          <Button variant="contained" onClick={closeNewAccountDialog} color="inherit" disableElevation>
+          <Button
+            variant="contained"
+            onClick={closeNewAccountDialog}
+            color="inherit"
+            disableElevation
+          >
             Cancel
           </Button>
         </DialogActions>
       </Dialog>
     </div>
   );
-}
+};
 
 AccountDialog.propTypes = {
   loading: PropTypes.bool,
   dialog: PropTypes.object,
   accountTypes: PropTypes.array,
-}
+};
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),

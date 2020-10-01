@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { useRouteMatch } from "react-router-dom";
-import * as Actions from './../actions';
-import * as Selectors from './../selectors';
-import { CircleLoader } from './../../../../components/LoadingIndicator';
+import { useRouteMatch } from 'react-router-dom';
+import * as Actions from '../actions';
+import * as Selectors from '../selectors';
+import { CircleLoader } from '../../../../components/LoadingIndicator';
 import BankDetails from './BankDetails';
 // import TransactionTransferDialog from './../components/TransactionTransferDialog';
 

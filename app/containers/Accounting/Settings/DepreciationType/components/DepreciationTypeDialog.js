@@ -5,7 +5,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import moment from 'moment';
 import _ from 'lodash';
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import {
   makeStyles,
   InputAdornment,
@@ -43,23 +43,23 @@ export const methods = [
   { label: 'Sum of the year digit', value: 'SUM_OF_THE_YEAR_DIGIT' },
   { label: 'Double Declining', value: 'DOUBLE_DECLINING' },
   { label: 'Reducing Balance', value: 'REDUCING_BALANCE' },
-]
+];
 const calculationBases = [
   { label: 'Monthly', value: 'MONTHLY' },
   { label: 'Quarterly', value: 'QUARTERLY' },
-]
+];
 
 const initialState = {
-  calculationBase: "MONTHLY",
-  code: "",
+  calculationBase: 'MONTHLY',
+  code: '',
   depreciatedValue: 0,
   depreciationRate: 0,
-  description: "",
-  method: "STRAIGHT_LINE",
+  description: '',
+  method: 'STRAIGHT_LINE',
   percentageValue: 0,
   validFrom: moment().format('YYYY-MM-DDTHH:mm:ss'),
-  validTo: moment().format('YYYY-MM-DDTHH:mm:ss')
-}
+  validTo: moment().format('YYYY-MM-DDTHH:mm:ss'),
+};
 
 const DepreciationTypeDialog = props => {
   const classes = useStyles(props);
@@ -75,42 +75,58 @@ const DepreciationTypeDialog = props => {
 
   useEffect(() => {
     if (dialog.type === 'edit' && dialog.data) {
-      setForm({ ...dialog.data })
+      setForm({ ...dialog.data });
     } else {
-      setForm({ ...initialState })
+      setForm({ ...initialState });
     }
-  }, [dialog.data])
+  }, [dialog.data]);
 
-  const handleChange = (event) => {
-    const { name, value, type, checked } = event.target
-    if (name === 'depreciatedValue' || name === 'depreciationRate' || name === 'percentageValue') {
-      setForm({ ...form, [name]: type === 'checkbox' ? checked : value.replace(/[^0-9]/g, '') });
+  const handleChange = event => {
+    const { name, value, type, checked } = event.target;
+    if (
+      name === 'depreciatedValue' ||
+      name === 'depreciationRate' ||
+      name === 'percentageValue'
+    ) {
+      setForm({
+        ...form,
+        [name]: type === 'checkbox' ? checked : value.replace(/[^0-9]/g, ''),
+      });
     } else {
       setForm({ ...form, [name]: type === 'checkbox' ? checked : value });
     }
   };
 
   const handleSelectChange = name => (event, object) => {
-    setForm({ ...form, [name]: object ? object.value : object })
-  }
+    setForm({ ...form, [name]: object ? object.value : object });
+  };
 
-  const handleDateChange = name => (date) => {
-    setForm({ ...form, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss') })
+  const handleDateChange = name => date => {
+    setForm({ ...form, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss') });
   };
 
   const handleSubmit = () => {
-    dialog.type === 'new' ?
-      createDepreciationType(form) : updateDepreciationType(form)
+    dialog.type === 'new'
+      ? createDepreciationType(form)
+      : updateDepreciationType(form);
   };
 
   const canSubmitForm = () => {
-    const { code, calculationBase, method, percentageValue, depreciatedValue, depreciationRate, description } = form
-    return code.length > 0 && calculationBase && description.length > 0
-  }
+    const {
+      code,
+      calculationBase,
+      method,
+      percentageValue,
+      depreciatedValue,
+      depreciationRate,
+      description,
+    } = form;
+    return code.length > 0 && calculationBase && description.length > 0;
+  };
 
-  console.log(loading, "loading")
-  console.log(form, "form")
-  console.log(dialog, "form dialog")
+  console.log(loading, 'loading');
+  console.log(form, 'form');
+  console.log(dialog, 'form dialog');
 
   return (
     <div>
@@ -119,11 +135,13 @@ const DepreciationTypeDialog = props => {
         onClose={closeNewDepreciationTypeDialog}
         keepMounted
         TransitionComponent={Transition}
-        maxWidth={'xs'}
+        maxWidth="xs"
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-depreciation-title">
-          {dialog.type === 'new' ? 'Create Depreciation Type' : 'Edit Depreciation Type'}
+          {dialog.type === 'new'
+            ? 'Create Depreciation Type'
+            : 'Edit Depreciation Type'}
         </DialogTitle>
 
         <DialogContent dividers>
@@ -144,7 +162,7 @@ const DepreciationTypeDialog = props => {
             label="Depreciated Value"
             variant="outlined"
             onChange={handleChange}
-            value={form.depreciatedValue ? form.depreciatedValue : ""}
+            value={form.depreciatedValue ? form.depreciatedValue : ''}
             margin="normal"
             fullWidth
           />
@@ -155,7 +173,7 @@ const DepreciationTypeDialog = props => {
             label="Depreciation Rate"
             variant="outlined"
             onChange={handleChange}
-            value={form.depreciationRate ? form.depreciationRate : ""}
+            value={form.depreciationRate ? form.depreciationRate : ''}
             margin="normal"
             fullWidth
           />
@@ -169,7 +187,7 @@ const DepreciationTypeDialog = props => {
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             }}
             onChange={handleChange}
-            value={form.percentageValue ? form.percentageValue : ""}
+            value={form.percentageValue ? form.percentageValue : ''}
             margin="normal"
             fullWidth
           />
@@ -179,12 +197,16 @@ const DepreciationTypeDialog = props => {
             options={calculationBases}
             getOptionLabel={option => option.label}
             onChange={handleSelectChange('calculationBase')}
-            value={form.calculationBase ? _.find(calculationBases, { value: form.calculationBase }) : null}
+            value={
+              form.calculationBase
+                ? _.find(calculationBases, { value: form.calculationBase })
+                : null
+            }
             getOptionSelected={(option, value) => _.some(option, { value })}
             renderInput={params => (
               <TextField
                 {...params}
-                label='Select Calculation Base'
+                label="Select Calculation Base"
                 variant="outlined"
                 margin="normal"
                 placeholder="Calculation Base"
@@ -203,7 +225,7 @@ const DepreciationTypeDialog = props => {
             renderInput={params => (
               <TextField
                 {...params}
-                label='Select method'
+                label="Select method"
                 variant="outlined"
                 margin="normal"
                 placeholder="Method"
@@ -257,10 +279,9 @@ const DepreciationTypeDialog = props => {
             multiline
             rows={3}
             rowsMax={4}
-            value={form.description ? form.description : ""}
+            value={form.description ? form.description : ''}
             onChange={handleChange}
           />
-
         </DialogContent>
         <DialogActions>
           <Button
@@ -285,7 +306,7 @@ const DepreciationTypeDialog = props => {
       </Dialog>
     </div>
   );
-}
+};
 
 DepreciationTypeDialog.propTypes = {
   loading: PropTypes.bool,
@@ -296,13 +317,15 @@ const mapStateToProps = createStructuredSelector({
   dialog: Selectors.makeSelectDepreciationTypeDialog(),
 });
 
-
 function mapDispatchToProps(dispatch) {
   return {
-    closeNewDepreciationTypeDialog: () => dispatch(Actions.closeNewDepreciationTypeDialog()),
-    createDepreciationType: data => dispatch(Actions.createDepreciationType(data)),
-    updateDepreciationType: data => dispatch(Actions.updateDepreciationType(data)),
-  }
+    closeNewDepreciationTypeDialog: () =>
+      dispatch(Actions.closeNewDepreciationTypeDialog()),
+    createDepreciationType: data =>
+      dispatch(Actions.createDepreciationType(data)),
+    updateDepreciationType: data =>
+      dispatch(Actions.updateDepreciationType(data)),
+  };
 }
 
 const withConnect = connect(

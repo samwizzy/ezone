@@ -9,15 +9,15 @@ import {
   Menu,
   MenuItem,
   Toolbar,
-  Tooltip
+  Tooltip,
 } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import AddIcon from '@material-ui/icons/Add';
 import { Euro, AttachMoney, Delete, Check } from '@material-ui/icons';
+import moment from 'moment';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,20 +26,20 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const DepreciationAreas = (props) => {
+const DepreciationAreas = props => {
   const classes = useStyles(props);
-  const { depreciationAreas } = - props
-  const [anchorEl, setAnchorEl] = useState(null)
+  const { depreciationAreas } = -props;
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event, id) => {
-    setAnchorEl(event.currentTarget)
-  }
+    setAnchorEl(event.currentTarget);
+  };
 
   const handleClose = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
 
-  console.log(depreciationAreas, "depreciationAreas")
+  console.log(depreciationAreas, 'depreciationAreas');
 
   const columns = [
     {
@@ -47,7 +47,7 @@ const DepreciationAreas = (props) => {
       label: ' ',
       options: {
         filter: true,
-        display: 'excluded'
+        display: 'excluded',
       },
     },
     {
@@ -88,17 +88,15 @@ const DepreciationAreas = (props) => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => {
-          return (
-            <IconButton
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={event => handleClick(event, value)}
-            >
-              <MoreVertIcon />
-            </IconButton>
-          );
-        },
+        customBodyRender: value => (
+          <IconButton
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={event => handleClick(event, value)}
+          >
+            <MoreVertIcon />
+          </IconButton>
+        ),
       },
     },
   ];
@@ -126,7 +124,7 @@ const DepreciationAreas = (props) => {
         </Button>
       </Tooltip>
     ),
-    elevation: 0
+    elevation: 0,
   };
 
   return (
@@ -146,16 +144,16 @@ const DepreciationAreas = (props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => { }}>
-          Edit
-        </MenuItem>
-        <MenuItem onClick={() => history.push({ pathname: '/account/journal/details' })}>
+        <MenuItem onClick={() => {}}>Edit</MenuItem>
+        <MenuItem
+          onClick={() => history.push({ pathname: '/account/journal/details' })}
+        >
           View Details
         </MenuItem>
       </Menu>
     </div>
   );
-}
+};
 
 const mapStateToProps = createStructuredSelector({
   depreciationAreas: Selectors.makeSelectDepreciationArea(),

@@ -79,7 +79,6 @@ const makeSelectCurrencies = () =>
     subState => subState.currencies,
   );
 
-
 export default makeSelectBanking;
 
 export {
@@ -94,5 +93,5 @@ export {
   makeSelectBankAccountByIdData,
   makeSelectBankTransferByOrgIdData,
   makeSelectTransactionTransferDialog,
-  makeSelectTransferByAccountIdData
+  makeSelectTransferByAccountIdData,
 };

@@ -9,14 +9,14 @@ import {
   Button,
   Menu,
   MenuItem,
-  Tooltip
+  Tooltip,
 } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import AddIcon from '@material-ui/icons/Add';
+import moment from 'moment';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import moment from 'moment';
 import _ from 'lodash';
 
 const useStyles = makeStyles(theme => ({
@@ -27,35 +27,35 @@ const useStyles = makeStyles(theme => ({
   datatable: {
     whiteSpace: 'nowrap',
     '& tr:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& td': {
-      padding: theme.spacing(1, 2)
+      padding: theme.spacing(1, 2),
     },
   },
 }));
 
-const TaxesList = (props) => {
+const TaxesList = props => {
   const classes = useStyles(props);
-  const { taxes, openNewTaxDialog, openEditTaxDialog } = props
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [selectedTax, setSelectedTax] = useState(null)
+  const { taxes, openNewTaxDialog, openEditTaxDialog } = props;
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedTax, setSelectedTax] = useState(null);
 
   const handleClick = (event, id) => {
-    setAnchorEl(event.currentTarget)
-    setSelectedTax(_.find(taxes, { id }))
-  }
+    setAnchorEl(event.currentTarget);
+    setSelectedTax(_.find(taxes, { id }));
+  };
 
   const handleClose = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
 
   const handleEditClick = () => {
-    openEditTaxDialog(selectedTax)
-    handleClose()
-  }
+    openEditTaxDialog(selectedTax);
+    handleClose();
+  };
 
-  console.log(taxes, "taxes")
+  console.log(taxes, 'taxes');
 
   const columns = [
     {
@@ -63,7 +63,7 @@ const TaxesList = (props) => {
       label: ' ',
       options: {
         filter: true,
-        display: 'excluded'
+        display: 'excluded',
       },
     },
     {
@@ -80,7 +80,7 @@ const TaxesList = (props) => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => new Intl.NumberFormat().format(value)
+        customBodyRender: value => new Intl.NumberFormat().format(value),
       },
     },
     {
@@ -97,7 +97,7 @@ const TaxesList = (props) => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: date => date ? moment(date).format('ll') : ""
+        customBodyRender: date => (date ? moment(date).format('ll') : ''),
       },
     },
     {
@@ -106,17 +106,15 @@ const TaxesList = (props) => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => {
-          return (
-            <IconButton
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={event => handleClick(event, value)}
-            >
-              <MoreVertIcon />
-            </IconButton>
-          );
-        },
+        customBodyRender: value => (
+          <IconButton
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={event => handleClick(event, value)}
+          >
+            <MoreVertIcon />
+          </IconButton>
+        ),
       },
     },
   ];
@@ -144,7 +142,7 @@ const TaxesList = (props) => {
         </Button>
       </Tooltip>
     ),
-    elevation: 0
+    elevation: 0,
   };
 
   return (
@@ -164,13 +162,11 @@ const TaxesList = (props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleEditClick}>
-          Edit
-        </MenuItem>
+        <MenuItem onClick={handleEditClick}>Edit</MenuItem>
       </Menu>
     </div>
   );
-}
+};
 
 const mapStateToProps = createStructuredSelector({
   taxes: Selectors.makeSelectTaxes(),

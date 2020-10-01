@@ -18,7 +18,7 @@ import { darken } from '@material-ui/core/styles/colorManipulator';
 import { green } from '@material-ui/core/colors';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import ImportControl from './ImportControl'
+import ImportControl from './ImportControl';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,11 +31,11 @@ const useStyles = makeStyles(theme => ({
     },
     whiteSpace: 'nowrap',
     '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& tbody': {
       '& td': {
-        padding: theme.spacing(1, 2)
+        padding: theme.spacing(1, 2),
       },
     },
     '& thead': {
@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   status: {
-    '&.active': { color: green[500] }
+    '&.active': { color: green[500] },
   },
 }));
 
@@ -73,28 +73,28 @@ const AccountChart = props => {
 
   const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
-    setSelectedAccount(_.find(chartOfAccounts, { id }))
-  }
+    setSelectedAccount(_.find(chartOfAccounts, { id }));
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
-  }
+  };
 
   const handleView = () => {
-    const { id } = selectedAccount
-    getChartOfAccountById(id)
-    history.push(`${match.url}/${id}`)
-    handleClose()
-  }
+    const { id } = selectedAccount;
+    getChartOfAccountById(id);
+    history.push(`${match.url}/${id}`);
+    handleClose();
+  };
 
   const handleEditClick = () => {
-    editOpenAccountDialog(selectedAccount)
-    handleClose()
-  }
+    editOpenAccountDialog(selectedAccount);
+    handleClose();
+  };
 
-  const orderedAccounts = _.orderBy(chartOfAccounts, 'dateCreated', 'desc')
+  const orderedAccounts = _.orderBy(chartOfAccounts, 'dateCreated', 'desc');
 
-  console.log(orderedAccounts, "orderedAccounts")
+  console.log(orderedAccounts, 'orderedAccounts');
 
   const fileInput = useRef();
 
@@ -160,8 +160,14 @@ const AccountChart = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          return value ? <CheckCircleIcon className={classNames(classes.status, { 'active': value })} /> : <CheckCircleOutlineIcon />
-        }
+          return value ? (
+            <CheckCircleIcon
+              className={classNames(classes.status, { active: value })}
+            />
+          ) : (
+              <CheckCircleOutlineIcon />
+            );
+        },
       },
     },
     {
@@ -170,14 +176,11 @@ const AccountChart = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => {
-          return (
-            <IconButton onClick={event => handleClick(event, value)}>
-              <MoreVertIcon />
-            </IconButton>
-
-          );
-        },
+        customBodyRender: value => (
+          <IconButton onClick={event => handleClick(event, value)}>
+            <MoreVertIcon />
+          </IconButton>
+        ),
       },
     },
   ];
@@ -204,7 +207,7 @@ const AccountChart = props => {
         <ImportControl />
       </>
     ),
-    elevation: 0
+    elevation: 0,
   };
 
   return (
@@ -224,12 +227,8 @@ const AccountChart = props => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleEditClick}>
-          Edit
-        </MenuItem>
-        <MenuItem onClick={handleView}>
-          View Details
-        </MenuItem>
+        <MenuItem onClick={handleEditClick}>Edit</MenuItem>
+        <MenuItem onClick={handleView}>View Details</MenuItem>
         <MenuItem onClick={() => openDeleteAccountDialog(selectedAccount)}>
           Delete
         </MenuItem>
@@ -253,9 +252,12 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewAccountDialog: () => dispatch(Actions.openNewAccountDialog()),
-    openDeleteAccountDialog: data => dispatch(Actions.openDeleteAccountDialog(data)),
-    editOpenAccountDialog: data => dispatch(Actions.editOpenAccountDialog(data)),
-    getChartOfAccountById: data => dispatch(Actions.getChartOfAccountById(data)),
+    openDeleteAccountDialog: data =>
+      dispatch(Actions.openDeleteAccountDialog(data)),
+    editOpenAccountDialog: data =>
+      dispatch(Actions.editOpenAccountDialog(data)),
+    getChartOfAccountById: data =>
+      dispatch(Actions.getChartOfAccountById(data)),
   };
 }
 

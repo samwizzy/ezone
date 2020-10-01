@@ -46,9 +46,9 @@ import WallpaperIcon from '@material-ui/icons/Wallpaper';
 import * as Selectors from '../../../selectors';
 import * as AppSelectors from '../../../../../App/selectors';
 import * as Actions from '../../../actions';
-import ControlledButtons from './components/ControlledButtons'
-import LeftSidePanel from './components/LeftSidePanel'
-import Overview from './components/Overview'
+import ControlledButtons from './components/ControlledButtons';
+import LeftSidePanel from './components/LeftSidePanel';
+import Overview from './components/Overview';
 
 const drawerWidth = '100%';
 
@@ -230,7 +230,10 @@ const TransferOrderDetails = props => {
         <Grid item xs={9}>
           <Grid container justify="center" alignItems="center">
             <Grid item xs={12}>
-              <ControlledButtons transferOrder={transferOrder} openEditTransferOrderDialog={openEditTransferOrderDialog} />
+              <ControlledButtons
+                transferOrder={transferOrder}
+                openEditTransferOrderDialog={openEditTransferOrderDialog}
+              />
             </Grid>
             <Grid item xs={12}>
               <div className={classes.content}>
@@ -262,7 +265,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getTransferOrderById: data => dispatch(Actions.getTransferOrderById(data)),
-    openEditTransferOrderDialog: data => dispatch(Actions.openEditTransferOrderDialog(data)),
+    openEditTransferOrderDialog: data =>
+      dispatch(Actions.openEditTransferOrderDialog(data)),
   };
 }
 

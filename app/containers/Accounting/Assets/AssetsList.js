@@ -11,16 +11,16 @@ import {
   Button,
   Menu,
   MenuItem,
-  Tooltip
+  Tooltip,
 } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import { darken } from '@material-ui/core/styles/colorManipulator';
 import { CircleLoader } from '../../../components/LoadingIndicator';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import AddIcon from '@material-ui/icons/Add';
+import moment from 'moment';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
-import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,10 +34,10 @@ const useStyles = makeStyles(theme => ({
     },
     whiteSpace: 'nowrap',
     '& tr:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& td': {
-      padding: theme.spacing(1, 2)
+      padding: theme.spacing(1, 2),
     },
     '& thead': {
       '& th': {
@@ -53,7 +53,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AssetsList = (props) => {
+const AssetsList = props => {
   const classes = useStyles(props);
   const { loading, history, match, assets, openNewAssetDialog, openEditAssetDialog } = props
   const [anchorEl, setAnchorEl] = useState(null)
@@ -65,8 +65,8 @@ const AssetsList = (props) => {
   }
 
   const handleClose = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
 
   const handleEditClick = () => {
     openEditAssetDialog(selectedAsset)
@@ -94,7 +94,7 @@ const AssetsList = (props) => {
       label: ' ',
       options: {
         filter: true,
-        display: 'excluded'
+        display: 'excluded',
       },
     },
     {
@@ -127,17 +127,15 @@ const AssetsList = (props) => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => {
-          return (
-            <IconButton
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={event => handleClick(event, value)}
-            >
-              <MoreVertIcon />
-            </IconButton>
-          );
-        },
+        customBodyRender: value => (
+          <IconButton
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={event => handleClick(event, value)}
+          >
+            <MoreVertIcon />
+          </IconButton>
+        ),
       },
     },
   ];
@@ -165,7 +163,7 @@ const AssetsList = (props) => {
         </Button>
       </Tooltip>
     ),
-    elevation: 0
+    elevation: 0,
   };
 
   return (
@@ -194,7 +192,7 @@ const AssetsList = (props) => {
       </Menu>
     </div>
   );
-}
+};
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),

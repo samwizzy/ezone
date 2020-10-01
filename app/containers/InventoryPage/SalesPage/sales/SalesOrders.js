@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
 import {
   makeStyles,
   FormControlLabel,
@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   datatable: {
     whiteSpace: 'nowrap',
     '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
@@ -56,25 +56,25 @@ const SalesOrdersList = props => {
   } = props;
 
   const handleNewClick = () => {
-    openNewItemDialog()
-    history.push(`${match.url}/new`)
-  }
+    openNewItemDialog();
+    history.push(`${match.url}/new`);
+  };
 
-  const handleItemClick = (saleId) => {
-    history.push(`${match.url}/${saleId}`)
-  }
+  const handleItemClick = saleId => {
+    history.push(`${match.url}/${saleId}`);
+  };
 
-  const orderedItems = _.orderBy(getAllItems, 'dateCreated', 'desc')
+  const orderedItems = _.orderBy(getAllItems, 'dateCreated', 'desc');
 
-  console.log(getAllItems, "getAllItems")
+  console.log(getAllItems, 'getAllItems');
 
   const columns = [
     {
       name: 'id',
       label: ' ',
       options: {
-        display: "excluded",
-        filter: true
+        display: 'excluded',
+        filter: true,
       },
     },
     {
@@ -82,15 +82,9 @@ const SalesOrdersList = props => {
       label: 'S/N',
       options: {
         filter: true,
-        customBodyRender: (value, tableMeta) => {
-
-          return (
-            <FormControlLabel
-              label={tableMeta.rowIndex + 1}
-              control={<Icon />}
-            />
-          );
-        },
+        customBodyRender: (value, tableMeta) => (
+          <FormControlLabel label={tableMeta.rowIndex + 1} control={<Icon />} />
+        ),
       },
     },
     {
@@ -154,7 +148,7 @@ const SalesOrdersList = props => {
     selectableRows: 'none',
     sortOrder: {
       name: 'itemName',
-      direction: 'desc'
+      direction: 'desc',
     },
     customToolbar: () => (
       <Button
@@ -170,9 +164,9 @@ const SalesOrdersList = props => {
     ),
     onRowClick: (rowData, rowState) => {
       getItemById(rowData[0]);
-      handleItemClick(rowData[0])
+      handleItemClick(rowData[0]);
     },
-    elevation: 0
+    elevation: 0,
   };
 
   if (loading) {

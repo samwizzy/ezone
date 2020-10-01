@@ -55,7 +55,6 @@ const makeSelectGetChartOfAccountById = () =>
     substate => substate.chartOfAccount,
   );
 
-
 export default makeSelectAccountChart;
 
 export {

@@ -139,7 +139,6 @@ const makeSelectGetStockLocationBySku = () =>
     subState => subState.stockLocationBySku,
   );
 
-
 export default makeSelectItemPage;
 export {
   selectItemPageDomain,

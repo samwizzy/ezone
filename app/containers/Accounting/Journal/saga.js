@@ -1,15 +1,15 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
+import swal from 'sweetalert';
 import * as AppSelectors from '../../App/selectors';
 import * as AppActions from '../../App/actions';
 import * as Selectors from './selectors';
 import request from '../../../utils/request';
-import swal from 'sweetalert';
 import * as Endpoints from '../../../components/Endpoints';
 import * as Actions from './actions';
 import * as Constants from './constants';
 
 function errorHandler(promise) {
-  return promise
+  return promise;
 }
 
 export function* getAccountingSetup() {
@@ -56,7 +56,9 @@ export function* getTaxes() {
 export function* getChartOfAccounts() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllChartOfAccountApi}/${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetAllChartOfAccountApi}/${
+    currentUser.organisation.orgId
+    }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -73,11 +75,12 @@ export function* getChartOfAccounts() {
   }
 }
 
-
 export function* getAccountingPeriods() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAccountPeriodApi}/${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetAccountPeriodApi}/${
+    currentUser.organisation.orgId
+    }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -94,15 +97,14 @@ export function* getAccountingPeriods() {
   }
 }
 
-
 // Create account journal
 export function* createAccountJournal({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.CreateAccountJournalApi}`;
-  payload.orgId = currentUser.organisation.orgId
+  payload.orgId = currentUser.organisation.orgId;
 
-  console.log(payload, "payload createAccountJournal")
+  console.log(payload, 'payload createAccountJournal');
 
   try {
     const response = yield call(request, requestURL, {
@@ -114,16 +116,15 @@ export function* createAccountJournal({ payload }) {
       }),
     });
 
-    swal("Success", "Account journal posted successfully", "success");
+    swal('Success', 'Account journal posted successfully', 'success');
     yield put(Actions.createJournalSuccess(response));
   } catch (err) {
-    const error = yield call(errorHandler, err.response.json())
-    console.log(error, "error createJournalSuccess")
-    swal("Error", "Something went wrong", "error");
+    const error = yield call(errorHandler, err.response.json());
+    console.log(error, 'error createJournalSuccess');
+    swal('Error', 'Something went wrong', 'error');
     yield put(Actions.createJournalError(err));
   }
 }
-
 
 export function* getJournalList() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
@@ -170,7 +171,9 @@ export function* getJournalById({ payload }) {
 export function* getCurrencies() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetCurrencyByOrgIdApi}?orgId=${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetCurrencyByOrgIdApi}?orgId=${
+    currentUser.organisation.orgId
+    }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -181,14 +184,13 @@ export function* getCurrencies() {
       }),
     });
 
-    console.log(response, "response getCurrencies")
+    console.log(response, 'response getCurrencies');
 
     yield put(Actions.getCurrenciesSuccess(response));
   } catch (err) {
     yield put(Actions.getCurrenciesError(err));
   }
 }
-
 
 // Individual exports for testing
 export default function* journalSaga() {

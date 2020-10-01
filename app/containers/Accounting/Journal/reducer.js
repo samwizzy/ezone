@@ -18,7 +18,7 @@ export const initialState = {
       open: true,
     },
     data: null,
-  }
+  },
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -179,22 +179,22 @@ const journalReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-        }
+        };
       }
       case Constants.GET_CURRENCIES_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-          currencies: action.payload
-        }
+          currencies: action.payload,
+        };
       }
       case Constants.GET_CURRENCIES_ERROR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
-        }
+        };
       }
 
       // Case to create account journal
@@ -204,7 +204,7 @@ const journalReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          accountJournalPostData: action.payload
+          accountJournalPostData: action.payload,
         };
       }
       case Constants.CREATE_NEW_ACCOUNT_JOURNAL_SUCCESS: {
@@ -212,7 +212,7 @@ const journalReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          accountJournalPostData: action.payload
+          accountJournalPostData: action.payload,
         };
       }
       case Constants.CREATE_NEW_ACCOUNT_JOURNAL_ERR: {

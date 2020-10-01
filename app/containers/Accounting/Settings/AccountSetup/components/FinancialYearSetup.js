@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
-import { compose } from 'redux'
-import { connect } from 'react-redux'
-import { createStructuredSelector } from 'reselect'
-import * as Selectors from './../../selectors';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import {
   makeStyles,
   Button,
@@ -14,9 +13,12 @@ import {
   Checkbox,
   FormControlLabel,
   FormControl,
-  Table, TableBody, TableRow, TableCell,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
   Toolbar,
-  RadioGroup
+  RadioGroup,
 } from '@material-ui/core';
 import _ from 'lodash';
 import {
@@ -28,6 +30,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { Autocomplete } from '@material-ui/lab';
 import SendIcon from '@material-ui/icons/ArrowForward';
 import Radio from '@material-ui/core/Radio';
+import * as Selectors from '../../selectors';
 import NigeriaFlag from '../../images/flag/nigeria.png';
 import UsaFlag from '../../images/flag/usa.png';
 import EnglandFlag from '../../images/flag/great-britain.png';
@@ -39,14 +42,14 @@ const useStyles = makeStyles(theme => ({
     minWidth: 200,
     '& tr': {
       '& td:first-child': {
-        whiteSpace: 'nowrap'
-      }
+        whiteSpace: 'nowrap',
+      },
     },
     '& tr:last-child': {
       '& td': {
-        border: 0
-      }
-    }
+        border: 0,
+      },
+    },
   },
   paper: {
     padding: theme.spacing(2, 2),
@@ -59,16 +62,24 @@ const useStyles = makeStyles(theme => ({
   toolbar: {
     ...theme.mixins.toolbar,
     background: theme.palette.grey[50],
-    border: `2px dotted ${theme.palette.divider}`
-  }
+    border: `2px dotted ${theme.palette.divider}`,
+  },
 }));
 
-const FinancialYearSetup = (props) => {
+const FinancialYearSetup = props => {
   const classes = useStyles();
-  const { businessTypes, currencies, form, handleNext, handleChange, handleDateChange, handleSelectChange } = props
+  const {
+    businessTypes,
+    currencies,
+    form,
+    handleNext,
+    handleChange,
+    handleDateChange,
+    handleSelectChange,
+  } = props;
 
-  console.log(businessTypes, "businessTypes in financial setup")
-  console.log(currencies, "currencies in financial setup")
+  console.log(businessTypes, 'businessTypes in financial setup');
+  console.log(currencies, 'currencies in financial setup');
 
   const flag = src => <img className={classes.flag} src={src} />;
 
@@ -87,12 +98,12 @@ const FinancialYearSetup = (props) => {
     }
   }
 
-  const canSubmitValues = () => {
-    return (
-      form.accountMethod && form.businessType && form.startDay > 0 &&
-      form.currency && form.startMonth > 0
-    )
-  };
+  const canSubmitValues = () =>
+    form.accountMethod &&
+    form.businessType &&
+    form.startDay > 0 &&
+    form.currency &&
+    form.startMonth > 0;
 
   return (
     <div>
@@ -102,8 +113,8 @@ const FinancialYearSetup = (props) => {
             Financial year starts:
           </Typography>
           <Typography>
-            Accural accounting reports revenue and expences as they are
-            earned and incurred
+            Accural accounting reports revenue and expences as they are earned
+            and incurred
           </Typography>
         </Grid>
 
@@ -116,7 +127,7 @@ const FinancialYearSetup = (props) => {
               inputVariant="outlined"
               format="MMMM"
               margin="normal"
-              views={["month"]}
+              views={['month']}
               name="month"
               label="Start Month"
               value={form.startMonth}
@@ -138,7 +149,7 @@ const FinancialYearSetup = (props) => {
               inputVariant="outlined"
               format="dd"
               margin="normal"
-              views={["date"]}
+              views={['date']}
               name="startDay"
               label="Start Day"
               value={`${form.startMonth}-${form.startDay}`}
@@ -157,13 +168,18 @@ const FinancialYearSetup = (props) => {
         </Toolbar>
 
         <FormControl component="fieldset">
-          <RadioGroup aria-label="account-method" name="accountMethod" value={form.accountMethod} onChange={handleChange}>
+          <RadioGroup
+            aria-label="account-method"
+            name="accountMethod"
+            value={form.accountMethod}
+            onChange={handleChange}
+          >
             <Table className={classes.table}>
               <TableBody>
                 <TableRow>
                   <TableCell>
                     <FormControlLabel
-                      value='ACCURAL'
+                      value="ACCURAL"
                       checked={form.accountMethod === 'ACCURAL'}
                       control={<Radio color="primary" />}
                       label="Accural"
@@ -171,17 +187,17 @@ const FinancialYearSetup = (props) => {
                     />
                   </TableCell>
                   <TableCell>
-                    Accural accounting reports revenue and expences as they
-                    are earned and incurred
+                    Accural accounting reports revenue and expences as they are
+                    earned and incurred
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>
                     <FormControlLabel
-                      value='CASH'
+                      value="CASH"
                       checked={form.accountMethod === 'CASH'}
                       control={<Radio color="primary" />}
-                      label='Cash'
+                      label="Cash"
                       labelPlacement="end"
                     />
                   </TableCell>
@@ -210,7 +226,7 @@ const FinancialYearSetup = (props) => {
           renderInput={params => (
             <TextField
               {...params}
-              label='Select Business Type'
+              label="Select Business Type"
               variant="outlined"
               margin="normal"
               placeholder="Business Type"
@@ -225,7 +241,9 @@ const FinancialYearSetup = (props) => {
           onChange={handleSelectChange('currency')}
           value={form.currency}
           autoHighlight
-          getOptionLabel={option => option ? `${option.code} - ${option.name}` : ""}
+          getOptionLabel={option =>
+            option ? `${option.code} - ${option.name}` : ''
+          }
           renderOption={option => (
             <React.Fragment>
               <span>{flag(currencyToFlag(option.code))}</span>
@@ -235,7 +253,7 @@ const FinancialYearSetup = (props) => {
           renderInput={params => (
             <TextField
               {...params}
-              label='Choose a currency'
+              label="Choose a currency"
               variant="outlined"
               margin="normal"
             />
@@ -255,7 +273,8 @@ const FinancialYearSetup = (props) => {
         </FormControl>
 
         <Typography variant="overline" component="h1" gutterBottom>
-          Your Financial year or Accounting method cannot change after Setup is completed
+          Your Financial year or Accounting method cannot change after Setup is
+          completed
         </Typography>
       </Paper>
 
@@ -272,7 +291,7 @@ const FinancialYearSetup = (props) => {
       </CardActions>
     </div>
   );
-}
+};
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
@@ -280,11 +299,12 @@ const mapStateToProps = createStructuredSelector({
   currencies: Selectors.makeSelectCurrencies(),
 });
 
-const withConnect = connect(mapStateToProps, null);
+const withConnect = connect(
+  mapStateToProps,
+  null,
+);
 
 export default compose(
   withConnect,
   memo,
 )(FinancialYearSetup);
-
-

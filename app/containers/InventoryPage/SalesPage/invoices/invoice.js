@@ -11,8 +11,7 @@ import { Grid, Button, TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { InvoiceContext } from '.';
 
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
@@ -22,12 +21,12 @@ const useStyles = makeStyles((theme) => ({
       fontSize: theme.typography.fontSize - 1,
     },
     '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
   },
   datatable: {
     '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
@@ -42,32 +41,32 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   paperBase: {
-    padding: '15px'
+    padding: '15px',
   },
   base: {
     paddingTop: '10px',
     paddingLeft: '10px',
     paddingRight: '10px',
-    marginBottom: '20px'
+    marginBottom: '20px',
   },
   pap: {
     padding: '10px',
-    marginBottom: '15px'
+    marginBottom: '15px',
   },
   papy: {
     padding: '12px',
-    marginBottom: '15px'
+    marginBottom: '15px',
   },
   controlButtons: {
-    float: 'right'
+    float: 'right',
   },
   divContent: {
     textAlign: 'center',
-    margin: '3px'
-  }
+    margin: '3px',
+  },
 }));
 const Invoice = () => {
-  const invoiceContext = useContext(InvoiceContext)
+  const invoiceContext = useContext(InvoiceContext);
   const classes = useStyles();
   const [salesorders] = useState([]);
   const sales = [
@@ -78,7 +77,7 @@ const Invoice = () => {
     {
       value: 2,
       label: 'House Rent',
-    }
+    },
   ];
 
   const columns = [
@@ -122,14 +121,12 @@ const Invoice = () => {
         filter: true,
         sort: false,
       },
-    }
-
+    },
   ];
 
   return (
     <div className={classes.base}>
-      <Grid container spacing={2} >
-
+      <Grid container spacing={2}>
         <Grid item xs={12}>
           <Paper className={classes.papy} elevation={3}>
             <Grid container spacing={3}>
@@ -138,7 +135,7 @@ const Invoice = () => {
                   <div>
                     <Typography gutterBottom variant="h5" component="h1">
                       Invoice
-                             </Typography>
+                    </Typography>
                   </div>
                 </Grid>
                 <Grid item xs={12}>
@@ -146,17 +143,17 @@ const Invoice = () => {
                     <Autocomplete
                       id="sales"
                       options={sales}
-                      size={'small'}
+                      size="small"
                       getOptionLabel={option => option.label}
                       onChange={(event, value) => {
-                        //accContext.accDispatch({type:'PAYLOAD',payload:{label:'startDay',value:value.value}})
+                        // accContext.accDispatch({type:'PAYLOAD',payload:{label:'startDay',value:value.value}})
                         // setFinancialYearDate();
                       }}
                       style={{ width: 200 }}
                       renderInput={params => (
                         <TextField
                           {...params}
-                          label={''}
+                          label=""
                           variant="outlined"
                           inputProps={{
                             ...params.inputProps,
@@ -175,37 +172,38 @@ const Invoice = () => {
                       <Grid item xs={12}>
                         <div className={classes.divContent}>
                           <Button
-                            size={'small'}
+                            size="small"
                             variant="contained"
-                            color="primary">
+                            color="primary"
+                          >
                             New Invoice
-                                            </Button>
+                          </Button>
                         </div>
                       </Grid>
                       <Grid item xs={12}>
                         <div className={classes.divContent}>
                           <Grid container spacing={0}>
-                            <Grid item xs={2}>
-
-                            </Grid>
+                            <Grid item xs={2} />
                             <Grid item xs={4}>
                               <div>
                                 <Button
                                   startIcon={<ImportIcon />}
-                                  size={'small'}
-                                  variant="contained">
+                                  size="small"
+                                  variant="contained"
+                                >
                                   Import
-                                            </Button>
+                                </Button>
                               </div>
                             </Grid>
                             <Grid item xs={4}>
                               <div>
                                 <Button
                                   startIcon={<ExportIcon />}
-                                  size={'small'}
-                                  variant="contained">
+                                  size="small"
+                                  variant="contained"
+                                >
                                   Export
-                                        </Button>
+                                </Button>
                               </div>
                             </Grid>
                           </Grid>
@@ -213,12 +211,9 @@ const Invoice = () => {
                       </Grid>
                     </Grid>
                   </div>
-
                 </div>
-
               </Grid>
             </Grid>
-
           </Paper>
         </Grid>
 
@@ -238,18 +233,22 @@ const Invoice = () => {
                   </Grid>
                 </div>
               </React.Fragment>
-
             </div>
           </div>
         </Grid>
 
         <Grid item xs={12}>
-          <div style={{ float: "right", padding: '10px' }}>
+          <div style={{ float: 'right', padding: '10px' }}>
             <div>
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => { invoiceContext.invoiceDispatch({ type: 'NAVIGATION', page: 'newinvoice' }) }}
+                onClick={() => {
+                  invoiceContext.invoiceDispatch({
+                    type: 'NAVIGATION',
+                    page: 'newinvoice',
+                  });
+                }}
                 endIcon={<SendIcon />}
               >
                 Next
@@ -257,11 +256,9 @@ const Invoice = () => {
             </div>
           </div>
         </Grid>
-
       </Grid>
-
     </div>
   );
-}
+};
 
 export default Invoice;

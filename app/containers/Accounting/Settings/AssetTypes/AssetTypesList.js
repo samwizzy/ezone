@@ -10,11 +10,12 @@ import {
   Button,
   Menu,
   MenuItem,
-  Tooltip
+  Tooltip,
 } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import AddIcon from '@material-ui/icons/Add';
+import moment from 'moment';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 
@@ -26,37 +27,37 @@ const useStyles = makeStyles(theme => ({
   datatable: {
     whiteSpace: 'nowrap',
     '& tr:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& td': {
-      padding: theme.spacing(1, 2)
+      padding: theme.spacing(1, 2),
     },
   },
 }));
 
-const AssetTypesList = (props) => {
+const AssetTypesList = props => {
   const classes = useStyles(props);
-  const { assetTypes, openNewAssetTypeDialog, openEditAssetTypeDialog } = props
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [selectedAssetType, setSelectedAssetType] = useState(null)
+  const { assetTypes, openNewAssetTypeDialog, openEditAssetTypeDialog } = props;
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedAssetType, setSelectedAssetType] = useState(null);
 
   const handleClick = (event, id) => {
-    setAnchorEl(event.currentTarget)
-    setSelectedAssetType(_.find(assetTypes, { id }))
-  }
+    setAnchorEl(event.currentTarget);
+    setSelectedAssetType(_.find(assetTypes, { id }));
+  };
 
   const handleClose = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
 
   const handleEditClick = () => {
-    openEditAssetTypeDialog(selectedAssetType)
-    handleClose()
-  }
+    openEditAssetTypeDialog(selectedAssetType);
+    handleClose();
+  };
 
   const orderedAssetTypes = _.orderBy(assetTypes, 'dateCreated', 'desc');
 
-  console.log(assetTypes, "asset Types")
+  console.log(assetTypes, 'asset Types');
 
   const columns = [
     {
@@ -64,7 +65,7 @@ const AssetTypesList = (props) => {
       label: ' ',
       options: {
         filter: true,
-        display: 'excluded'
+        display: 'excluded',
       },
     },
     {
@@ -105,17 +106,15 @@ const AssetTypesList = (props) => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => {
-          return (
-            <IconButton
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={event => handleClick(event, value)}
-            >
-              <MoreVertIcon />
-            </IconButton>
-          );
-        },
+        customBodyRender: value => (
+          <IconButton
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={event => handleClick(event, value)}
+          >
+            <MoreVertIcon />
+          </IconButton>
+        ),
       },
     },
   ];
@@ -143,7 +142,7 @@ const AssetTypesList = (props) => {
         </Button>
       </Tooltip>
     ),
-    elevation: 0
+    elevation: 0,
   };
 
   return (
@@ -163,13 +162,11 @@ const AssetTypesList = (props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleEditClick}>
-          Edit
-        </MenuItem>
+        <MenuItem onClick={handleEditClick}>Edit</MenuItem>
       </Menu>
     </div>
   );
-}
+};
 
 const mapStateToProps = createStructuredSelector({
   assetTypes: Selectors.makeSelectAssetTypes(),
@@ -178,7 +175,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewAssetTypeDialog: () => dispatch(Actions.openNewAssetTypeDialog()),
-    openEditAssetTypeDialog: data => dispatch(Actions.openEditAssetTypeDialog(data)),
+    openEditAssetTypeDialog: data =>
+      dispatch(Actions.openEditAssetTypeDialog(data)),
   };
 }
 

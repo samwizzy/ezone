@@ -16,7 +16,7 @@ import {
   Divider,
   Slide,
   Grid,
-  Typography
+  Typography,
 } from '@material-ui/core';
 import * as AppSelectors from '../../../App/selectors';
 import * as Selectors from '../selectors';
@@ -33,7 +33,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const initialState = {}
+const initialState = {};
 
 const AddBankAccountDialog = props => {
   const classes = useStyles();
@@ -48,9 +48,23 @@ const AddBankAccountDialog = props => {
   const [values, setValues] = React.useState({ ...initialState });
 
   const canSubmitValues = () => {
-    const { accountCode, accountName, accountNumber, bankBalance, bankName, description } = values;
-    return accountCode.length > 0 && accountName.length > 0 && accountNumber && bankBalance && bankName.length > 0 && description.length > 0;
-  }
+    const {
+      accountCode,
+      accountName,
+      accountNumber,
+      bankBalance,
+      bankName,
+      description,
+    } = values;
+    return (
+      accountCode.length > 0 &&
+      accountName.length > 0 &&
+      accountNumber &&
+      bankBalance &&
+      bankName.length > 0 &&
+      description.length > 0
+    );
+  };
 
   useEffect(() => {
     if (dialog.type === 'delete' && dialog.data) {
@@ -58,10 +72,9 @@ const AddBankAccountDialog = props => {
     }
   }, [dialog]);
 
-
   const handleSubmit = () => {
-    dialog.type === 'delete' ? deleteBankAccount(values) : ""
-  }
+    dialog.type === 'delete' ? deleteBankAccount(values) : '';
+  };
 
   console.log('values is: ', values);
   console.log('dialog: ', dialog);
@@ -73,11 +86,11 @@ const AddBankAccountDialog = props => {
         onClose={closeDeleteBankAccountDialog}
         keepMounted
         TransitionComponent={Transition}
-        maxWidth={'xs'}
+        maxWidth="xs"
         aria-labelledby="bank-account-dialog-form"
       >
         <DialogTitle id="bank-account-dialog-title">
-          {dialog.type === 'delete' ? "Delete Bank Account" : ""}
+          {dialog.type === 'delete' ? 'Delete Bank Account' : ''}
         </DialogTitle>
 
         <DialogContent dividers>
@@ -94,7 +107,7 @@ const AddBankAccountDialog = props => {
             disabled={loading}
             endIcon={loading && <CircularProgress size={20} />}
           >
-            {dialog.type === "delete" ? "Delete" : ""}
+            {dialog.type === 'delete' ? 'Delete' : ''}
           </Button>
 
           <Button
@@ -122,10 +135,10 @@ const mapStateToProps = createStructuredSelector({
   accountTypes: Selectors.makeSelectAccountTypes(),
 });
 
-
 function mapDispatchToProps(dispatch) {
   return {
-    closeDeleteBankAccountDialog: () => dispatch(Actions.closeDeleteBankAccountDialog()),
+    closeDeleteBankAccountDialog: () =>
+      dispatch(Actions.closeDeleteBankAccountDialog()),
     deleteBankAccount: data => dispatch(Actions.deleteBankAccount(data)),
   };
 }

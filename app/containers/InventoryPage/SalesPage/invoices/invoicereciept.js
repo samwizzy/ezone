@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import MUIDataTable from 'mui-datatables';
-import logo from '../../../../images/octivier-logo.svg';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import EditIcon from '@material-ui/icons/EditOutlined';
 import PdfIcon from '@material-ui/icons/PictureAsPdfOutlined';
@@ -17,11 +16,21 @@ import AttachIcon from '@material-ui/icons/AttachFile';
 import SendIcon from '@material-ui/icons/ArrowForward';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import CheckIcon from '@material-ui/icons/CheckCircleOutline';
-import { Grid, Button, TextField, MenuItem, Select, Menu, IconButton, Divider } from '@material-ui/core';
+import {
+  Grid,
+  Button,
+  TextField,
+  MenuItem,
+  Select,
+  Menu,
+  IconButton,
+  Divider,
+} from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
+import logo from '../../../../images/octivier-logo.svg';
 import { InvoiceContext } from '.';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
@@ -38,12 +47,12 @@ const useStyles = makeStyles((theme) => ({
       fontSize: theme.typography.fontSize - 1,
     },
     '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
   },
   datatable: {
     '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
@@ -58,77 +67,80 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   flex: {
-    position: "relative",
-    padding: theme.spacing(8, 5)
+    position: 'relative',
+    padding: theme.spacing(8, 5),
   },
   status: {
-    textAlign: "center",
+    textAlign: 'center',
     padding: theme.spacing(2, 5),
-    position: "absolute",
+    position: 'absolute',
     backgroundColor: '#bbb',
     color: theme.palette.common.white,
-    top: 0, left: 0,
-    "&::after": {
+    top: 0,
+    left: 0,
+    '&::after': {
       content: "''",
-      position: "absolute",
+      position: 'absolute',
       top: 0,
-      right: "-52.67px",
+      right: '-52.67px',
       width: 0,
       height: 0,
-      borderTop: "52.67px solid #bbb",
-      borderRight: "52.67px solid transparent"
+      borderTop: '52.67px solid #bbb',
+      borderRight: '52.67px solid transparent',
     },
-    "&::before": {
+    '&::before': {
       content: "''",
-      position: "absolute",
+      position: 'absolute',
       top: 0,
-      right: "-52.67px",
+      right: '-52.67px',
       width: 0,
       height: 0,
-      borderBottom: "52.67px solid #bbb",
-      borderRight: "52.67px solid transparent"
-    }
+      borderBottom: '52.67px solid #bbb',
+      borderRight: '52.67px solid transparent',
+    },
   },
   paperBase: {
-    padding: '15px'
+    padding: '15px',
   },
   littleMargin: {
-    marginBottom: '10px'
+    marginBottom: '10px',
   },
   base: {
     paddingTop: '5px',
     paddingLeft: '5px',
     paddingRight: '5px',
-    marginBottom: '20px'
+    marginBottom: '20px',
   },
   pap: {
     padding: '8px',
-    marginBottom: '15px'
+    marginBottom: '15px',
   },
   papy: {
     padding: '12px',
   },
   controlButtons: {
-    float: 'right'
+    float: 'right',
   },
   divContent: {
     textAlign: 'center',
-    margin: '3px'
+    margin: '3px',
   },
   divRight: {
     float: 'right',
-    padding: '5px'
+    padding: '5px',
   },
   pushForward: {
-    marginTop: '10em'
-  }
+    marginTop: '10em',
+  },
 }));
 
 const InvoiceReciept = () => {
   const classes = useStyles();
   const invoiceContext = useContext(InvoiceContext);
   const [paction, setPaction] = React.useState('CONFIRMED');
-  const [activity, setActivity] = React.useState('Activity (Comment and History)');
+  const [activity, setActivity] = React.useState(
+    'Activity (Comment and History)',
+  );
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const columns = [
@@ -171,16 +183,27 @@ const InvoiceReciept = () => {
         filter: true,
         sort: false,
       },
-    }
+    },
   ];
 
   const salesValue = [
-    { item: 'Hp laptops', description: 'Lorem ipsum dolor', quantity: 2, rate: '$600', amount: '$600' },
-    { item: 'Hp laptops', description: 'Lorem ipsum dolor', quantity: 3, rate: '$600', amount: '$600' }
-  ]
+    {
+      item: 'Hp laptops',
+      description: 'Lorem ipsum dolor',
+      quantity: 2,
+      rate: '$600',
+      amount: '$600',
+    },
+    {
+      item: 'Hp laptops',
+      description: 'Lorem ipsum dolor',
+      quantity: 3,
+      rate: '$600',
+      amount: '$600',
+    },
+  ];
 
-
-  const handleClickMenu = (event) => {
+  const handleClickMenu = event => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -188,8 +211,7 @@ const InvoiceReciept = () => {
     setAnchorEl(null);
   };
 
-
-  const handleChange = (event) => {
+  const handleChange = event => {
     setPaction(event.target.value);
   };
   const performAction = [
@@ -214,7 +236,11 @@ const InvoiceReciept = () => {
     <div className={classes.paperBase}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Paper style={{ minHeight: '50px' }} className={classes.pap} elevation={3}>
+          <Paper
+            style={{ minHeight: '50px' }}
+            className={classes.pap}
+            elevation={3}
+          >
             <div>
               <Paper elevation={1}>
                 <div style={{ float: 'right' }}>
@@ -247,7 +273,7 @@ const InvoiceReciept = () => {
                       <TextField
                         id="paction"
                         select
-                        size={'small'}
+                        size="small"
                         label=""
                         value={paction}
                         onChange={handleChange}
@@ -256,7 +282,7 @@ const InvoiceReciept = () => {
                         }}
                         variant="outlined"
                       >
-                        {performAction.map((option) => (
+                        {performAction.map(option => (
                           <option key={option.value} value={option.value}>
                             {option.label}
                           </option>
@@ -264,11 +290,9 @@ const InvoiceReciept = () => {
                       </TextField>
                     </Grid>
                   </Grid>
-
                 </div>
               </Paper>
             </div>
-
           </Paper>
         </Grid>
 
@@ -294,8 +318,12 @@ const InvoiceReciept = () => {
                         </Grid>
                         <Grid item xs={1}>
                           <div style={{ position: 'relative', left: '-2.5em' }}>
-                            <IconButton color="primary" aria-controls="simple-menu"
-                              component="span" onClick={handleClickMenu}>
+                            <IconButton
+                              color="primary"
+                              aria-controls="simple-menu"
+                              component="span"
+                              onClick={handleClickMenu}
+                            >
                               <DropIcon color="primary" />
                             </IconButton>
                             <Menu
@@ -304,25 +332,39 @@ const InvoiceReciept = () => {
                               open={Boolean(anchorEl)}
                               onClose={handleClose}
                             >
-                              <MenuItem value={1} onClick={(e) => {
-                                setActivity('Activity (Comment and History)')
-                                setAnchorEl(null);
-                              }}><Typography color="primary" variant="body1">
-                                  Activity (Comment and History)
-                     </Typography></MenuItem>
-                              <MenuItem value={2} onClick={(e) => {
-                                setActivity('Activity (Confirmed and Saved)')
-                                setAnchorEl(null);
-                              }}>
+                              <MenuItem
+                                value={1}
+                                onClick={e => {
+                                  setActivity('Activity (Comment and History)');
+                                  setAnchorEl(null);
+                                }}
+                              >
                                 <Typography color="primary" variant="body1">
-                                  Activity (Confirmed and Saved)</Typography></MenuItem>
-                              <MenuItem value={3} onClick={(e) => {
-                                setActivity('Activity (Rejected)')
-                                setAnchorEl(null);
-                              }}>
+                                  Activity (Comment and History)
+                                </Typography>
+                              </MenuItem>
+                              <MenuItem
+                                value={2}
+                                onClick={e => {
+                                  setActivity('Activity (Confirmed and Saved)');
+                                  setAnchorEl(null);
+                                }}
+                              >
+                                <Typography color="primary" variant="body1">
+                                  Activity (Confirmed and Saved)
+                                </Typography>
+                              </MenuItem>
+                              <MenuItem
+                                value={3}
+                                onClick={e => {
+                                  setActivity('Activity (Rejected)');
+                                  setAnchorEl(null);
+                                }}
+                              >
                                 <Typography color="primary" variant="body1">
                                   Activity (Rejected)
-                       </Typography></MenuItem>
+                                </Typography>
+                              </MenuItem>
                             </Menu>
                           </div>
                         </Grid>
@@ -332,7 +374,7 @@ const InvoiceReciept = () => {
                 </Grid>
               </Grid>
               <Grid item xs={8}>
-                {/*<div>
+                {/* <div>
                         <div className={classes.divRight}>
                          
                         <Typography variant="subtitle1" gutterBottom>
@@ -342,7 +384,7 @@ const InvoiceReciept = () => {
                         
                         </div>
               
-                      </div>*/}
+                      </div> */}
               </Grid>
             </Grid>
           </Paper>
@@ -363,7 +405,7 @@ const InvoiceReciept = () => {
                     </Grid>
                     <Grid item xs={8}>
                       <div style={{ position: 'relative', top: '-3em' }}>
-                        {/*<div className={classes.divRight}>
+                        {/* <div className={classes.divRight}>
                               <Grid container spacing={1}>
                                 <Grid item>
                                 <Typography variant="subtitle1">
@@ -379,7 +421,7 @@ const InvoiceReciept = () => {
                                 </Grid>
                                
                               </Grid>
-                           </div>*/}
+                           </div> */}
                       </div>
                     </Grid>
                   </Grid>
@@ -390,7 +432,6 @@ const InvoiceReciept = () => {
                     <Grid item xs={6}>
                       <div style={{ marginTop: '2em' }}>
                         <Grid container spacing={2}>
-
                           <Grid item xs={12}>
                             <Grid item xs={12}>
                               <Grid container spacing={0}>
@@ -398,10 +439,16 @@ const InvoiceReciept = () => {
                                   <img src={logo} />
                                 </Grid>
                                 <Grid item xs={5}>
-                                  <div style={{ position: 'relative', top: '.9em', left: '-1.4em' }}>
+                                  <div
+                                    style={{
+                                      position: 'relative',
+                                      top: '.9em',
+                                      left: '-1.4em',
+                                    }}
+                                  >
                                     <Typography variant="h6" component="h1">
                                       First Marine
-                           </Typography>
+                                    </Typography>
                                   </div>
                                 </Grid>
                               </Grid>
@@ -410,63 +457,98 @@ const InvoiceReciept = () => {
 
                           <Grid item xs={12}>
                             <div>
-                              <Typography variant="h4" component="h1" gutterBottom>
+                              <Typography
+                                variant="h4"
+                                component="h1"
+                                gutterBottom
+                              >
                                 Invoice
-                           </Typography>
+                              </Typography>
                             </div>
                             <div className={classes.littleMargin}>
-                              <Typography variant="h6" component="h1" gutterBottom>
+                              <Typography
+                                variant="h6"
+                                component="h1"
+                                gutterBottom
+                              >
                                 Invoice number: INV/0000001
-                           </Typography>
+                              </Typography>
                             </div>
                             <div>
-                              <Typography style={{ color: 'grey' }} variant="subtitle2" gutterBottom>
+                              <Typography
+                                style={{ color: 'grey' }}
+                                variant="subtitle2"
+                                gutterBottom
+                              >
                                 Invoice Date: 3rd Jul 2019
-                           </Typography>
+                              </Typography>
                             </div>
                             <div>
-                              <Typography style={{ color: 'grey' }} variant="subtitle2" gutterBottom>
+                              <Typography
+                                style={{ color: 'grey' }}
+                                variant="subtitle2"
+                                gutterBottom
+                              >
                                 Due Date: 3rd Jul 2019
-                           </Typography>
+                              </Typography>
                             </div>
                           </Grid>
                         </Grid>
                       </div>
-
                     </Grid>
 
                     <Grid item xs={6}>
                       <div>
-                        <div style={{ marginTop: '2em' }} className={classes.divRight}>
+                        <div
+                          style={{ marginTop: '2em' }}
+                          className={classes.divRight}
+                        >
                           <Grid container spacing={2}>
                             <Grid item xs={12}>
                               <div>
-                                <Typography variant="h6" component="h1" gutterBottom>
+                                <Typography
+                                  variant="h6"
+                                  component="h1"
+                                  gutterBottom
+                                >
                                   Bill To
-                               </Typography>
+                                </Typography>
                               </div>
                             </Grid>
 
                             <Grid item xs={12}>
                               <div>
-                                <Typography Typography variant="subtitle2" gutterBottom>
+                                <Typography
+                                  Typography
+                                  variant="subtitle2"
+                                  gutterBottom
+                                >
                                   John Well
-                               </Typography>
+                                </Typography>
                               </div>
                             </Grid>
 
                             <Grid item xs={12}>
                               <div>
-                                <Typography Typography variant="subtitle2" gutterBottom>
+                                <Typography
+                                  Typography
+                                  variant="subtitle2"
+                                  gutterBottom
+                                >
                                   Holder's Limited
-                               </Typography>
+                                </Typography>
                               </div>
                             </Grid>
                             <Grid item xs={12}>
                               <div>
-                                <Typography Typography style={{ color: 'grey' }} variant="subtitle2" gutterBottom>
+                                <Typography
+                                  Typography
+                                  style={{ color: 'grey' }}
+                                  variant="subtitle2"
+                                  gutterBottom
+                                >
                                   3a Idowu Martins Victoria Island Lagos
-                               </Typography>
+                                </Typography>
                               </div>
                             </Grid>
                           </Grid>
@@ -474,7 +556,6 @@ const InvoiceReciept = () => {
                       </div>
                     </Grid>
                   </Grid>
-
                 </Grid>
 
                 <Grid item xs={12}>
@@ -483,11 +564,16 @@ const InvoiceReciept = () => {
                 <Grid item xs={12}>
                   <Typography Typography variant="subtitle1" gutterBottom>
                     Notes
-                     </Typography>
-                  <Typography Typography style={{ color: 'grey' }} variant="subtitle1" gutterBottom>
-                    Lorem ipsum dolor sit amet, consecteur adipiscing elit,sed do elusmod tempor
-                    incididnut ut labore
-                     </Typography>
+                  </Typography>
+                  <Typography
+                    Typography
+                    style={{ color: 'grey' }}
+                    variant="subtitle1"
+                    gutterBottom
+                  >
+                    Lorem ipsum dolor sit amet, consecteur adipiscing elit,sed
+                    do elusmod tempor incididnut ut labore
+                  </Typography>
                 </Grid>
                 <Grid item xs={12}>
                   <Divider />
@@ -521,10 +607,11 @@ const InvoiceReciept = () => {
                       <div className={classes.pushForward}>
                         <Button
                           startIcon={<AttachIcon />}
-                          size={'small'}
-                          variant="contained">
+                          size="small"
+                          variant="contained"
+                        >
                           Attach a file
-                      </Button>
+                        </Button>
                       </div>
                     </Grid>
                     <Grid item xs={6}>
@@ -532,109 +619,162 @@ const InvoiceReciept = () => {
                         <div className={classes.divRight}>
                           <Grid container spacing={1}>
                             <Grid item xs={6}>
-                              <Typography Typography style={{ color: 'grey' }} variant="subtitle1" gutterBottom>
+                              <Typography
+                                Typography
+                                style={{ color: 'grey' }}
+                                variant="subtitle1"
+                                gutterBottom
+                              >
                                 Tax
-                      </Typography>
+                              </Typography>
                             </Grid>
                             <Grid item xs={6}>
-                              <Typography Typography style={{ color: 'grey' }} variant="subtitle1" gutterBottom>
+                              <Typography
+                                Typography
+                                style={{ color: 'grey' }}
+                                variant="subtitle1"
+                                gutterBottom
+                              >
                                 $600
-                      </Typography>
+                              </Typography>
                             </Grid>
                             <Grid item xs={6}>
-                              <Typography Typography style={{ color: 'grey' }} variant="subtitle1" gutterBottom>
+                              <Typography
+                                Typography
+                                style={{ color: 'grey' }}
+                                variant="subtitle1"
+                                gutterBottom
+                              >
                                 Discount
-                      </Typography>
+                              </Typography>
                             </Grid>
                             <Grid item xs={6}>
-                              <Typography Typography style={{ color: 'grey' }} variant="subtitle1" gutterBottom>
+                              <Typography
+                                Typography
+                                style={{ color: 'grey' }}
+                                variant="subtitle1"
+                                gutterBottom
+                              >
                                 $600
-                      </Typography>
+                              </Typography>
                             </Grid>
                             <Grid item xs={6}>
-                              <Typography Typography style={{ color: 'grey' }} variant="subtitle1" gutterBottom>
+                              <Typography
+                                Typography
+                                style={{ color: 'grey' }}
+                                variant="subtitle1"
+                                gutterBottom
+                              >
                                 Shipping Fee
-                      </Typography>
+                              </Typography>
                             </Grid>
                             <Grid item xs={6}>
-                              <Typography Typography style={{ color: 'grey' }} variant="subtitle1" gutterBottom>
+                              <Typography
+                                Typography
+                                style={{ color: 'grey' }}
+                                variant="subtitle1"
+                                gutterBottom
+                              >
                                 $600
-                      </Typography>
+                              </Typography>
                             </Grid>
                             <Grid item xs={6}>
-                              <Typography Typography style={{ color: 'grey' }} variant="subtitle1" gutterBottom>
+                              <Typography
+                                Typography
+                                style={{ color: 'grey' }}
+                                variant="subtitle1"
+                                gutterBottom
+                              >
                                 Sub Total
-                      </Typography>
+                              </Typography>
                             </Grid>
                             <Grid item xs={6}>
-                              <Typography Typography style={{ color: 'grey' }} variant="subtitle1" gutterBottom>
+                              <Typography
+                                Typography
+                                style={{ color: 'grey' }}
+                                variant="subtitle1"
+                                gutterBottom
+                              >
                                 $600
-                      </Typography>
+                              </Typography>
                             </Grid>
                             <Grid item xs={12}>
                               <div className={classes.total}>
                                 <Grid container spacing={10}>
                                   <Grid item xs={6}>
-                                    <Typography Typography style={{ color: 'grey' }} variant="subtitle1" gutterBottom>
+                                    <Typography
+                                      Typography
+                                      style={{ color: 'grey' }}
+                                      variant="subtitle1"
+                                      gutterBottom
+                                    >
                                       Total
-                      </Typography>
+                                    </Typography>
                                   </Grid>
                                   <Grid item xs={6}>
-                                    <Typography Typography style={{ color: 'grey' }} variant="subtitle1" gutterBottom>
+                                    <Typography
+                                      Typography
+                                      style={{ color: 'grey' }}
+                                      variant="subtitle1"
+                                      gutterBottom
+                                    >
                                       $600
-                      </Typography>
+                                    </Typography>
                                   </Grid>
                                 </Grid>
                               </div>
-
                             </Grid>
                           </Grid>
-
                         </div>
                       </div>
-
                     </Grid>
                   </Grid>
                 </Grid>
-
               </Grid>
             </div>
           </Paper>
-
         </Grid>
 
         <Grid item xs={12}>
-          <div style={{ float: "right", padding: '10px' }}>
+          <div style={{ float: 'right', padding: '10px' }}>
             <div>
               <Grid container spacing={2}>
-                <Grid item >
+                <Grid item>
                   <Button
                     variant="contained"
-                    onClick={() => { invoiceContext.invoiceDispatch({ type: 'NAVIGATION', page: 'newinvoice' }) }}
+                    onClick={() => {
+                      invoiceContext.invoiceDispatch({
+                        type: 'NAVIGATION',
+                        page: 'newinvoice',
+                      });
+                    }}
                     startIcon={<BackIcon />}
                   >
                     Back
-                      </Button>
+                  </Button>
                 </Grid>
-                <Grid item >
+                <Grid item>
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => { invoiceContext.invoiceDispatch({ type: 'NAVIGATION', page: ' sendinvoice' }) }}
+                    onClick={() => {
+                      invoiceContext.invoiceDispatch({
+                        type: 'NAVIGATION',
+                        page: ' sendinvoice',
+                      });
+                    }}
                     endIcon={<SendIcon />}
                   >
                     Next
-                      </Button>
+                  </Button>
                 </Grid>
               </Grid>
-
             </div>
           </div>
         </Grid>
-
       </Grid>
     </div>
   );
-}
+};
 
 export default InvoiceReciept;

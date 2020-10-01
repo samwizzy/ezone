@@ -9,13 +9,15 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 
 function errorHandler(promise) {
-  return promise
+  return promise;
 }
 
 export function* getAccounts() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllChartOfAccountApi}/${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetAllChartOfAccountApi}/${
+    currentUser.organisation.orgId
+  }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -29,14 +31,22 @@ export function* getAccounts() {
     yield put(Actions.getAccountsSuccess(response));
   } catch (err) {
     yield put(Actions.getAccountsError(err));
-    yield put(AppActions.openSnackBar({ open: true, message: `${err}`, status: 'error' }));
+    yield put(
+      AppActions.openSnackBar({
+        open: true,
+        message: `${err}`,
+        status: 'error',
+      }),
+    );
   }
 }
 
 export function* getVendors() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllContactsApi}/${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetAllContactsApi}/${
+    currentUser.organisation.orgId
+  }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -52,7 +62,13 @@ export function* getVendors() {
     yield put(Actions.getVendorsSuccess(response));
   } catch (err) {
     yield put(Actions.getVendorsError(err));
-    yield put(AppActions.openSnackBar({ open: true, message: `${err}`, status: 'error' }));
+    yield put(
+      AppActions.openSnackBar({
+        open: true,
+        message: `${err}`,
+        status: 'error',
+      }),
+    );
   }
 }
 
@@ -87,7 +103,9 @@ export function* getAllItems() {
 export function* getItemsGroups() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetItemsGroupsApi}?orgid=${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetItemsGroupsApi}?orgid=${
+    currentUser.organisation.orgId
+  }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -103,7 +121,13 @@ export function* getItemsGroups() {
     yield put(Actions.getItemsGroupsSuccess(response));
   } catch (err) {
     yield put(Actions.getItemsGroupsError(err));
-    yield put(AppActions.openSnackBar({ open: true, message: `${err}`, status: 'error' }));
+    yield put(
+      AppActions.openSnackBar({
+        open: true,
+        message: `${err}`,
+        status: 'error',
+      }),
+    );
   }
 }
 
@@ -130,8 +154,8 @@ export function* createNewItem({ payload }) {
   } catch (err) {
     console.log(err);
     yield put(Actions.createNewItemError(err));
-    const error = yield call(errorHandler, err.response.json())
-    console.log(error, "error create item")
+    const error = yield call(errorHandler, err.response.json());
+    console.log(error, 'error create item');
   }
 }
 
@@ -157,8 +181,8 @@ export function* updateItem({ payload }) {
   } catch (err) {
     console.log(err);
     yield put(Actions.updateItemError(err));
-    const error = yield call(errorHandler, err.response.json())
-    console.log(error, "error create item")
+    const error = yield call(errorHandler, err.response.json());
+    console.log(error, 'error create item');
   }
 }
 
@@ -179,7 +203,7 @@ export function* createItemGroup({ payload }) {
       }),
     });
 
-    console.log(response, "response createItemGroup")
+    console.log(response, 'response createItemGroup');
 
     yield put(Actions.createItemGroupSuccess(response));
     yield put(Actions.getItemsGroups());
@@ -187,8 +211,8 @@ export function* createItemGroup({ payload }) {
   } catch (err) {
     console.log(err);
     yield put(Actions.createItemGroupError(err));
-    const error = yield call(errorHandler, err.response.json())
-    console.log(error, "error create item")
+    const error = yield call(errorHandler, err.response.json());
+    console.log(error, 'error create item');
   }
 }
 
@@ -199,7 +223,7 @@ export function* updateItemGroup({ payload }) {
 
   const requestURL = `${Endpoints.UpdateItemGroupApi}/${payload.id}`;
 
-  console.log(payload, "payload updateItemGroup")
+  console.log(payload, 'payload updateItemGroup');
 
   try {
     const response = yield call(request, requestURL, {
@@ -211,7 +235,7 @@ export function* updateItemGroup({ payload }) {
       }),
     });
 
-    console.log(response, "response createItemGroup")
+    console.log(response, 'response createItemGroup');
 
     yield put(Actions.updateItemsGroupSuccess(response));
     yield put(Actions.getItemsGroups());
@@ -219,8 +243,8 @@ export function* updateItemGroup({ payload }) {
   } catch (err) {
     console.log(err);
     yield put(Actions.updateItemsGroupError(err));
-    const error = yield call(errorHandler, err.response.json())
-    console.log(error, "error update item")
+    const error = yield call(errorHandler, err.response.json());
+    console.log(error, 'error update item');
   }
 }
 
@@ -242,7 +266,13 @@ export function* getAllWarehouses() {
     yield put(Actions.getAllWarehouseSuccess(response));
   } catch (err) {
     yield put(Actions.getAllWarehouseError(err));
-    yield put(AppActions.openSnackBar({ open: true, message: `${err}`, status: 'error' }));
+    yield put(
+      AppActions.openSnackBar({
+        open: true,
+        message: `${err}`,
+        status: 'error',
+      }),
+    );
   }
 }
 
@@ -251,7 +281,7 @@ export function* createNewTransferOrder({ payload }) {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   payload.orgId = currentUser.organisation.orgId;
 
-  console.log(payload, "payload createNewTransferOrder")
+  console.log(payload, 'payload createNewTransferOrder');
 
   const requestURL = `${Endpoints.CreateNewTransferOrdersApi}`;
   try {
@@ -264,15 +294,15 @@ export function* createNewTransferOrder({ payload }) {
       }),
     });
 
-    console.log(response, "response createNewTransferOrder")
+    console.log(response, 'response createNewTransferOrder');
 
     yield put(Actions.getAllTransferOrder());
     yield put(push('/inventory/transfers'));
   } catch (err) {
     console.log(err);
     yield put(Actions.createNewTransferOrderError(err));
-    const error = yield call(errorHandler, err.response.json())
-    console.log(error, "error createNewTransferOrder")
+    const error = yield call(errorHandler, err.response.json());
+    console.log(error, 'error createNewTransferOrder');
   }
 }
 
@@ -391,7 +421,7 @@ export function* getItemsGroupById({ payload }) {
       }),
     });
 
-    console.log(response, "response, getItemsGroupById")
+    console.log(response, 'response, getItemsGroupById');
 
     yield put(Actions.getItemsGroupByIdSuccess(response));
   } catch (err) {
@@ -422,7 +452,7 @@ export function* getTransferOrderById({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.GetTransferOrderByIdApi}/${payload}`;
 
-  console.log(payload, "payload getTransferOrderById")
+  console.log(payload, 'payload getTransferOrderById');
 
   try {
     const response = yield call(request, requestURL, {
@@ -433,7 +463,7 @@ export function* getTransferOrderById({ payload }) {
       }),
     });
 
-    console.log(response, "response getTransferOrderById")
+    console.log(response, 'response getTransferOrderById');
 
     yield put(Actions.getTransferOrderByIdSuccess(response));
   } catch (err) {
@@ -460,16 +490,21 @@ export function* getInventoryAdjustById({ payload }) {
   }
 }
 
-
 // Individual exports for testing
 export default function* itemPageSaga() {
   yield takeLatest(Constants.GET_ACCOUNTS, getAccounts);
   yield takeLatest(Constants.GET_VENDORS, getVendors);
 
-  yield takeLatest(Constants.GET_INVENTORY_ADJUST_BY_ID, getInventoryAdjustById);
+  yield takeLatest(
+    Constants.GET_INVENTORY_ADJUST_BY_ID,
+    getInventoryAdjustById,
+  );
   yield takeLatest(Constants.GET_TRANSFER_ORDER_BY_ID, getTransferOrderById);
   yield takeLatest(Constants.GET_STOCK_LOCATIONS, getStockLocations);
-  yield takeLatest(Constants.GET_ALL_ITEMS_PER_WAREHOUSE, getAllItemsPerWarehouse);
+  yield takeLatest(
+    Constants.GET_ALL_ITEMS_PER_WAREHOUSE,
+    getAllItemsPerWarehouse,
+  );
   yield takeLatest(Constants.GET_ITEM_BY_ID, getItemById);
   yield takeLatest(Constants.UPDATE_ITEM_BY_ID, updateItem);
   yield takeLatest(Constants.GET_ITEMS_GROUP_BY_ID, getItemsGroupById);
@@ -481,6 +516,12 @@ export default function* itemPageSaga() {
   yield takeLatest(Constants.UPDATE_ITEMS_GROUP_BY_ID, updateItemGroup);
   yield takeLatest(Constants.GET_ALL_WAREHOUSE, getAllWarehouses);
   yield takeLatest(Constants.CREATE_NEW_TRANSFER_ORDER, createNewTransferOrder);
-  yield takeLatest(Constants.CREATE_NEW_INVENTORY_ADJUSTMENT, createNewInventoryAdjust);
-  yield takeLatest(Constants.GET_ALL_INVENTORY_ADJUSTMENT, getAllInventoryAdjusts);
+  yield takeLatest(
+    Constants.CREATE_NEW_INVENTORY_ADJUSTMENT,
+    createNewInventoryAdjust,
+  );
+  yield takeLatest(
+    Constants.GET_ALL_INVENTORY_ADJUSTMENT,
+    getAllInventoryAdjusts,
+  );
 }

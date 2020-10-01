@@ -1,4 +1,3 @@
-
 import produce from 'immer';
 import * as Constants from './constants';
 
@@ -71,7 +70,6 @@ export const initialState = {
 const settingsReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
-
       // Open account period dialog
       case Constants.OPEN_ACCOUNT_PERIOD_DIALOG: {
         return {
@@ -492,12 +490,15 @@ const settingsReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_ACCOUNTING_SETUP_SUCCESS: {
-        console.log(action.payload, "action.payload GET_ACCOUNTING_SETUP_SUCCESS")
+        console.log(
+          action.payload,
+          'action.payload GET_ACCOUNTING_SETUP_SUCCESS',
+        );
         return {
           ...state,
           loading: false,
           error: false,
-          accountingSetupData: action.payload
+          accountingSetupData: action.payload,
         };
       }
       case Constants.GET_ACCOUNTING_SETUP_ERR: {
@@ -514,22 +515,22 @@ const settingsReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-        }
+        };
       }
       case Constants.GET_ALL_ACCOUNTING_PERIOD_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-          accountingPeriods: action.payload
-        }
+          accountingPeriods: action.payload,
+        };
       }
       case Constants.GET_ALL_ACCOUNTING_PERIOD_ERR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
-        }
+        };
       }
 
       // Case to get default chart of accounts
@@ -538,22 +539,22 @@ const settingsReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-        }
+        };
       }
       case Constants.GET_DEFAULT_CHART_OF_ACCOUNTS_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-          defaultChartOfAccounts: action.payload
-        }
+          defaultChartOfAccounts: action.payload,
+        };
       }
       case Constants.GET_DEFAULT_CHART_OF_ACCOUNTS_ERROR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
-        }
+        };
       }
 
       // Case to get all chart of accounts
@@ -562,22 +563,22 @@ const settingsReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-        }
+        };
       }
       case Constants.GET_CHART_OF_ACCOUNTS_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-          chartOfAccounts: action.payload
-        }
+          chartOfAccounts: action.payload,
+        };
       }
       case Constants.GET_CHART_OF_ACCOUNTS_ERROR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
-        }
+        };
       }
 
       // Case to get business types
@@ -586,114 +587,114 @@ const settingsReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-        }
+        };
       }
       case Constants.GET_BUSINESS_TYPES_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-          businessTypes: action.payload
-        }
+          businessTypes: action.payload,
+        };
       }
       case Constants.GET_BUSINESS_TYPES_ERROR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
-        }
+        };
       }
 
-      // Case to get depreciation area 
+      // Case to get depreciation area
       case Constants.GET_DEPRECIATION_AREA: {
         return {
           ...state,
           loading: true,
           error: false,
-        }
+        };
       }
       case Constants.GET_DEPRECIATION_AREA_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-          depreciationArea: action.payload
-        }
+          depreciationArea: action.payload,
+        };
       }
       case Constants.GET_DEPRECIATION_AREA_ERROR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
-        }
+        };
       }
-      // Case to create depreciation area 
+      // Case to create depreciation area
       case Constants.CREATE_DEPRECIATION_AREA: {
         return {
           ...state,
           loading: true,
           error: false,
-        }
+        };
       }
       case Constants.CREATE_DEPRECIATION_AREA_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-        }
+        };
       }
       case Constants.CREATE_DEPRECIATION_AREA_ERROR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
-        }
+        };
       }
 
-      // Case to get depreciation types 
+      // Case to get depreciation types
       case Constants.GET_DEPRECIATION_TYPES: {
         return {
           ...state,
           loading: true,
           error: false,
-        }
+        };
       }
       case Constants.GET_DEPRECIATION_TYPES_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-          depreciationTypes: action.payload
-        }
+          depreciationTypes: action.payload,
+        };
       }
       case Constants.GET_DEPRECIATION_TYPES_ERROR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
-        }
+        };
       }
-      // Case to create depreciation types 
+      // Case to create depreciation types
       case Constants.CREATE_DEPRECIATION_TYPE: {
         return {
           ...state,
           loading: true,
           error: false,
-        }
+        };
       }
       case Constants.CREATE_DEPRECIATION_TYPE_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-        }
+        };
       }
       case Constants.CREATE_DEPRECIATION_TYPE_ERROR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
-        }
+        };
       }
 
       // Case to get currencies
@@ -702,22 +703,22 @@ const settingsReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-        }
+        };
       }
       case Constants.GET_CURRENCIES_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-          currencies: action.payload
-        }
+          currencies: action.payload,
+        };
       }
       case Constants.GET_CURRENCIES_ERROR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
-        }
+        };
       }
       // Case to create currency
       case Constants.CREATE_CURRENCY: {
@@ -725,21 +726,21 @@ const settingsReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-        }
+        };
       }
       case Constants.CREATE_CURRENCY_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-        }
+        };
       }
       case Constants.CREATE_CURRENCY_ERROR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
-        }
+        };
       }
 
       // Case to get taxes
@@ -748,22 +749,22 @@ const settingsReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-        }
+        };
       }
       case Constants.GET_TAXES_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-          taxes: action.payload
-        }
+          taxes: action.payload,
+        };
       }
       case Constants.GET_TAXES_ERROR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
-        }
+        };
       }
       // Case to create tax
       case Constants.CREATE_TAX: {
@@ -771,21 +772,21 @@ const settingsReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-        }
+        };
       }
       case Constants.CREATE_TAX_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-        }
+        };
       }
       case Constants.CREATE_TAX_ERROR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
-        }
+        };
       }
       // Case to get assets
       case Constants.GET_ASSETS: {
@@ -793,22 +794,22 @@ const settingsReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-        }
+        };
       }
       case Constants.GET_ASSETS_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-          assets: action.payload
-        }
+          assets: action.payload,
+        };
       }
       case Constants.GET_ASSETS_ERROR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
-        }
+        };
       }
       // Case to create asset
       case Constants.CREATE_ASSET: {
@@ -816,21 +817,21 @@ const settingsReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-        }
+        };
       }
       case Constants.CREATE_ASSET_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-        }
+        };
       }
       case Constants.CREATE_ASSET_ERROR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
-        }
+        };
       }
       // Case to update asset
       case Constants.UPDATE_ASSET: {
@@ -860,22 +861,22 @@ const settingsReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-        }
+        };
       }
       case Constants.GET_ASSET_TYPES_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-          assetTypes: action.payload
-        }
+          assetTypes: action.payload,
+        };
       }
       case Constants.GET_ASSET_TYPES_ERROR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
-        }
+        };
       }
       // Case to create type asset
       case Constants.CREATE_ASSET_TYPE: {
@@ -883,21 +884,21 @@ const settingsReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-        }
+        };
       }
       case Constants.CREATE_ASSET_TYPE_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-        }
+        };
       }
       case Constants.CREATE_ASSET_TYPE_ERROR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
-        }
+        };
       }
 
       // Case to create accounting period

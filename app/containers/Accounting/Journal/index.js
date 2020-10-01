@@ -51,12 +51,12 @@ export function Journal(props) {
 }
 
 Journal.propTypes = {
-  loading: PropTypes.bool
-}
+  loading: PropTypes.bool,
+};
 
 const mapStateToProps = createStructuredSelector({
   journal: makeSelectJournal(),
-  loading: Selectors.makeSelectLoading()
+  loading: Selectors.makeSelectLoading(),
 });
 
 function mapDispatchToProps(dispatch) {

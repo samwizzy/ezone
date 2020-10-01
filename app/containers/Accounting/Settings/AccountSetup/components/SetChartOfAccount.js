@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
-import { compose } from 'redux'
-import { connect } from 'react-redux'
-import { createStructuredSelector } from 'reselect'
-import * as Selectors from './../../selectors';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import NextIcon from '@material-ui/icons/ArrowForward';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import Radio from '@material-ui/core/Radio';
@@ -15,9 +14,9 @@ import {
   RadioGroup,
   FormControlLabel,
   FormControl,
-  FormLabel
+  FormLabel,
 } from '@material-ui/core';
-
+import * as Selectors from '../../selectors';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,9 +28,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const SetChartOfAccount = (props) => {
+const SetChartOfAccount = props => {
   const classes = useStyles();
-  const { form, handleChange, handleNext, handlePrev } = props
+  const { form, handleChange, handleNext, handlePrev } = props;
 
   return (
     <div className={classes.root}>
@@ -39,29 +38,32 @@ const SetChartOfAccount = (props) => {
         <Grid item xs={12}>
           <FormControl component="fieldset">
             <FormLabel component="legend">Chart Of Account</FormLabel>
-            <RadioGroup aria-label="account-chart" name="accountChart" value={form.accountChart} onChange={handleChange}>
-
+            <RadioGroup
+              aria-label="account-chart"
+              name="accountChart"
+              value={form.accountChart}
+              onChange={handleChange}
+            >
               <FormControlLabel
-                value='CREATE'
+                value="CREATE"
                 control={<Radio color="primary" />}
                 label="Create your Chart of Accounts"
                 labelPlacement="end"
               />
 
               <FormControlLabel
-                value='IMPORT'
+                value="IMPORT"
                 control={<Radio color="primary" />}
                 label="Import Existing Chart of Accounts"
                 labelPlacement="end"
               />
 
               <FormControlLabel
-                value='DEFAULT'
+                value="DEFAULT"
                 control={<Radio color="primary" />}
                 label="Use system generated Chart of Accounts (NonAccountants)"
                 labelPlacement="end"
               />
-
             </RadioGroup>
           </FormControl>
 
@@ -87,15 +89,18 @@ const SetChartOfAccount = (props) => {
       </Paper>
     </div>
   );
-}
+};
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   businessTypes: Selectors.makeSelectBusinessTypes(),
   currencies: Selectors.makeSelectCurrencies(),
-})
+});
 
-const withConnect = connect(mapStateToProps, null);
+const withConnect = connect(
+  mapStateToProps,
+  null,
+);
 
 export default compose(
   withConnect,

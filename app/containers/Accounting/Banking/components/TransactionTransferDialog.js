@@ -1,5 +1,4 @@
 import React, { memo, useEffect, useState } from 'react';
-import EzoneUtils from '../../../../utils/EzoneUtils';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -29,6 +28,7 @@ import {
 } from '@material-ui/pickers';
 import moment from 'moment';
 import _ from 'lodash';
+import EzoneUtils from '../../../../utils/EzoneUtils';
 import * as AppSelectors from '../../../App/selectors';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
@@ -46,7 +46,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const transferTypes = [
   { label: 'Transfer In', id: 'TRANSFERIN' },
   { label: 'Transfer Out', id: 'TRANSFEROUT' },
-]
+];
 
 const TransactionTransferDialog = props => {
   const classes = useStyles();
@@ -58,31 +58,34 @@ const TransactionTransferDialog = props => {
     accountTypes,
     dialog,
     closeAccountTransferDialog,
-    createBankTransfer
+    createBankTransfer,
   } = props;
 
   const [values, setValues] = useState({
-    amount: "",
+    amount: '',
     attachments: [],
-    bankId: "",
-    currentBankId: "",
+    bankId: '',
+    currentBankId: '',
     currencyId: 0,
     rate: 0,
-    description: "",
-    referenceNumber: "",
+    description: '',
+    referenceNumber: '',
     transferDate: moment().format('YYYY-MM-DDTHH:mm:ss'),
-    transferType: "TRANSFERIN" // TRANSFEROUT
+    transferType: 'TRANSFERIN', // TRANSFEROUT
   });
 
   useEffect(() => {
     if (dialog.type === 'new' && dialog.data) {
-      setValues({ ...values, currentBankId: dialog.data.id })
+      setValues({ ...values, currentBankId: dialog.data.id });
     }
-  }, [dialog.data])
+  }, [dialog.data]);
 
   const handleChange = event => {
     event.target.name === 'amount'
-      ? setValues({ ...values, [event.target.name]: event.target.value.replace(/[^0-9]/g, '') })
+      ? setValues({
+        ...values,
+        [event.target.name]: event.target.value.replace(/[^0-9]/g, ''),
+      })
       : setValues({ ...values, [event.target.name]: event.target.value });
   };
 
@@ -91,36 +94,53 @@ const TransactionTransferDialog = props => {
   };
 
   const handleDateChange = name => date => {
-    setValues({ ...values, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss') });
+    setValues({
+      ...values,
+      [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss'),
+    });
   };
 
-  const handleImageChange = async (event) => {
-    const { files } = event.target
-    let attachments = []
+  const handleImageChange = async event => {
+    const { files } = event.target;
+    const attachments = [];
     for (let i = 0; i < files.length; i++) {
-      const fileName = EzoneUtils.formatFileName(files[i].name)
-      await EzoneUtils.toBase64(files[i])
-        .then(file => {
-          attachments.push(Object.assign({}, { fileName, file }))
-          setValues({ ...values, attachments })
-        })
+      const fileName = EzoneUtils.formatFileName(files[i].name);
+      await EzoneUtils.toBase64(files[i]).then(file => {
+        attachments.push(Object.assign({}, { fileName, file }));
+        setValues({ ...values, attachments });
+      });
     }
-  }
+  };
 
   const handleSubmit = () => {
     createBankTransfer(values);
-  }
+  };
 
   const canSubmitForm = () => {
-    const { amount, attachments, bankId, currentBankId, referenceNumber, transferType, description } = values
-    return amount && attachments.length > 0 && bankId && currentBankId && referenceNumber.length > 0 && description.length > 0
-  }
+    const {
+      amount,
+      attachments,
+      bankId,
+      currentBankId,
+      referenceNumber,
+      transferType,
+      description,
+    } = values;
+    return (
+      amount &&
+      attachments.length > 0 &&
+      bankId &&
+      currentBankId &&
+      referenceNumber.length > 0 &&
+      description.length > 0
+    );
+  };
 
-  console.log("values before submit ", values);
-  console.log("dialog ", dialog);
-  console.log("accountTypes ", accountTypes);
-  console.log("bankAccounts ", bankAccounts);
-  console.log("currencies ", currencies);
+  console.log('values before submit ', values);
+  console.log('dialog ', dialog);
+  console.log('accountTypes ', accountTypes);
+  console.log('bankAccounts ', bankAccounts);
+  console.log('currencies ', currencies);
 
   return (
     <div>
@@ -129,12 +149,10 @@ const TransactionTransferDialog = props => {
         onClose={closeAccountTransferDialog}
         keepMounted
         TransitionComponent={Transition}
-        maxWidth={'xs'}
+        maxWidth="xs"
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="alert-dialog-slide-title">
-          Bank Transfer
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-slide-title">Bank Transfer</DialogTitle>
 
         <DialogContent dividers>
           <Grid container spacing={1}>
@@ -183,7 +201,11 @@ const TransactionTransferDialog = props => {
                 options={currencies}
                 getOptionLabel={option => option.name}
                 onChange={handleSelectChange('currencyId')}
-                value={values.currencyId ? _.find(currencies, { id: values.currencyId }) : null}
+                value={
+                  values.currencyId
+                    ? _.find(currencies, { id: values.currencyId })
+                    : null
+                }
                 renderInput={params => (
                   <TextField
                     {...params}
@@ -231,9 +253,17 @@ const TransactionTransferDialog = props => {
                 id="standard-reference-number"
                 label="Reference Number"
                 name="referenceNumber"
-                onBlur={() => { }}
-                error={!/^[a-z0-9]+$/i.test(values.referenceNumber) && values.referenceNumber.length > 0}
-                helperText={!/^[a-z0-9]+$/i.test(values.referenceNumber) && values.referenceNumber.length > 0 ? "Reference number must be alphanumeric" : ""}
+                onBlur={() => {}}
+                error={
+                  !/^[a-z0-9]+$/i.test(values.referenceNumber) &&
+                  values.referenceNumber.length > 0
+                }
+                helperText={
+                  !/^[a-z0-9]+$/i.test(values.referenceNumber) &&
+                  values.referenceNumber.length > 0
+                    ? 'Reference number must be alphanumeric'
+                    : ''
+                }
                 variant="outlined"
                 size="small"
                 value={values.referenceNumber}
@@ -276,7 +306,10 @@ const TransactionTransferDialog = props => {
                   />
                 </Button>
 
-                <FormHelperText>{values.attachments && `${values.attachments.length} files selected`}</FormHelperText>
+                <FormHelperText>
+                  {values.attachments &&
+                    `${values.attachments.length} files selected`}
+                </FormHelperText>
               </FormControl>
             </Grid>
           </Grid>
@@ -287,7 +320,7 @@ const TransactionTransferDialog = props => {
             color="primary"
             variant="contained"
             disableElevation
-            disabled={loading ? loading : !canSubmitForm()}
+            disabled={loading || !canSubmitForm()}
             endIcon={loading && <CircularProgress size={20} />}
           >
             Save
@@ -319,10 +352,10 @@ const mapStateToProps = createStructuredSelector({
   currencies: Selectors.makeSelectCurrencies(),
 });
 
-
 function mapDispatchToProps(dispatch) {
   return {
-    closeAccountTransferDialog: () => dispatch(Actions.closeAccountTransferDialog()),
+    closeAccountTransferDialog: () =>
+      dispatch(Actions.closeAccountTransferDialog()),
     createBankTransfer: data => dispatch(Actions.createBankTransfer(data)),
   };
 }

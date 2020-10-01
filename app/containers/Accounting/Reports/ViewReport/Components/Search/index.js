@@ -8,13 +8,11 @@ import * as Actions from '../../actions';
 import './style.css';
 import formatDate from '../../Helpers';
 
-const Search = ({ dispatchGetGeneralJournalTimeAction, time }) => {
+const Search = ({ dispatchGetGeneralJournalTimeAction, handleFetch, time }) => {
   const { startDate, endDate } = time;
   const [open, setOpen] = useState(false);
   const [dateRange, setDateRange] = useState();
-  const [date, setDate] = useState(
-    `${formatDate(startDate)} - ${formatDate(endDate)}`,
-  );
+  const [date, setDate] = useState('Select date range');
   const toggle = () => setOpen(!open);
 
   useEffect(() => {
@@ -39,7 +37,6 @@ const Search = ({ dispatchGetGeneralJournalTimeAction, time }) => {
       <div className="search-wrap">
         <DateRangePicker
           open={open}
-          // wrapperClassName={}
           toggle={toggle}
           onChange={range => {
             setDateRange(range);
@@ -48,6 +45,7 @@ const Search = ({ dispatchGetGeneralJournalTimeAction, time }) => {
               startDate: formatDateYear(range.startDate),
               endDate: formatDateYear(range.endDate),
             });
+            handleFetch();
           }}
         />
       </div>

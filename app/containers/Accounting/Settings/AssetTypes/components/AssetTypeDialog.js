@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import {
   makeStyles,
   Button,
@@ -27,17 +27,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const assetClasses = [
-  { label: 'Tangible', value: 'TANGIBLE' }
-]
+const assetClasses = [{ label: 'Tangible', value: 'TANGIBLE' }];
 
 const initialState = {
-  assetClass: "TANGIBLE",
-  code: "",
-  description: "",
-  name: "",
-  orgId: ""
-}
+  assetClass: 'TANGIBLE',
+  code: '',
+  description: '',
+  name: '',
+  orgId: '',
+};
 
 const AssetTypeDialog = props => {
   const classes = useStyles(props);
@@ -55,7 +53,7 @@ const AssetTypeDialog = props => {
     if (dialog.type === 'edit' && dialog.data) {
       setForm({ ...dialog.data })
     } else {
-      setForm({ ...initialState })
+      setForm({ ...initialState });
     }
   }, [dialog.data])
 
@@ -64,8 +62,8 @@ const AssetTypeDialog = props => {
   };
 
   const handleSelectChange = name => (event, object) => {
-    setForm({ ...form, [name]: object ? object.value : object })
-  }
+    setForm({ ...form, [name]: object ? object.value : object });
+  };
 
   const handleSubmit = () => {
     dialog.type === 'new' ?
@@ -73,9 +71,14 @@ const AssetTypeDialog = props => {
   };
 
   const canSubmitForm = () => {
-    const { name, code, assetClass, description } = form
-    return name.length > 0 && code.length > 0 && assetClass.length > 0 && description.length > 0
-  }
+    const { name, code, assetClass, description } = form;
+    return (
+      name.length > 0 &&
+      code.length > 0 &&
+      assetClass.length > 0 &&
+      description.length > 0
+    );
+  };
 
   console.log(loading, "loading")
   console.log(form, "form")
@@ -88,7 +91,7 @@ const AssetTypeDialog = props => {
         onClose={closeNewAssetTypeDialog}
         keepMounted
         TransitionComponent={Transition}
-        maxWidth={'xs'}
+        maxWidth="xs"
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-asset-title">
@@ -125,12 +128,16 @@ const AssetTypeDialog = props => {
             options={assetClasses}
             getOptionLabel={option => option.label}
             onChange={handleSelectChange('assetClass')}
-            value={form.assetClass ? _.find(assetClasses, { value: form.assetClass }) : null}
+            value={
+              form.assetClass
+                ? _.find(assetClasses, { value: form.assetClass })
+                : null
+            }
             getOptionSelected={(option, value) => _.some(option, { value })}
             renderInput={params => (
               <TextField
                 {...params}
-                label='Select Asset Class'
+                label="Select Asset Class"
                 variant="outlined"
                 margin="normal"
                 placeholder="Asset Class"
@@ -153,7 +160,6 @@ const AssetTypeDialog = props => {
             value={form.description}
             onChange={handleChange}
           />
-
         </DialogContent>
         <DialogActions>
           <Button
@@ -178,7 +184,7 @@ const AssetTypeDialog = props => {
       </Dialog>
     </div>
   );
-}
+};
 
 AssetTypeDialog.propTypes = {
   loading: PropTypes.bool,
@@ -188,7 +194,6 @@ const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   dialog: Selectors.makeSelectAssetTypeDialog(),
 });
-
 
 function mapDispatchToProps(dispatch) {
   return {

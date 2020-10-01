@@ -1,9 +1,9 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
+import swal from 'sweetalert';
 import * as AppSelectors from '../../App/selectors';
 import * as AppActions from '../../App/actions';
 import * as Selectors from './selectors';
 import request from '../../../utils/request';
-import swal from 'sweetalert';
 import * as Endpoints from '../../../components/Endpoints';
 import * as Actions from './actions';
 import * as Constants from './constants';
@@ -31,7 +31,9 @@ export function* getAccountingPeriods() {
 export function* getCurrencies() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetCurrencyByOrgIdApi}?orgId=${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetCurrencyByOrgIdApi}?orgId=${
+    currentUser.organisation.orgId
+  }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -42,7 +44,7 @@ export function* getCurrencies() {
       }),
     });
 
-    console.log(response, "response getCurrencies")
+    console.log(response, 'response getCurrencies');
 
     yield put(Actions.getCurrenciesSuccess(response));
   } catch (err) {
@@ -88,15 +90,14 @@ export function* createNewBankAccount({ payload }) {
     });
 
     yield put(Actions.createNewBankSuccess(response));
-    swal("Success", "Account Created Successfully", "success");
+    swal('Success', 'Account Created Successfully', 'success');
     yield put(Actions.getBankAccounts());
     yield put(Actions.closeNewBankAccountDialog());
   } catch (err) {
-    swal("Error", "Something went wrong", "error");
+    swal('Error', 'Something went wrong', 'error');
     yield put(Actions.createNewBankError(err));
   }
 }
-
 
 // Update new bank account
 export function* updateBankAccount({ payload }) {
@@ -106,7 +107,7 @@ export function* updateBankAccount({ payload }) {
 
   try {
     const response = yield call(request, requestURL, {
-      method: "PUT",
+      method: 'PUT',
       body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -115,21 +116,22 @@ export function* updateBankAccount({ payload }) {
     });
 
     yield put(Actions.updateBankAccountSuccess(response));
-    swal("Success", "Account Updated Successfully", "success");
+    swal('Success', 'Account Updated Successfully', 'success');
     yield put(Actions.getBankAccounts());
     yield put(Actions.closeNewBankAccountDialog());
   } catch (err) {
-    swal("Error", "Something went wrong", "error");
+    swal('Error', 'Something went wrong', 'error');
     yield put(Actions.updateBankAccountError(err));
   }
 }
-
 
 // Get bank account list
 export function* getAllBankAccounts() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllBankAccount}/${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetAllBankAccount}/${
+    currentUser.organisation.orgId
+  }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -170,11 +172,13 @@ export function* getBankAccountById({ payload }) {
   }
 }
 
-// Get all bank transactions made by organisation 
+// Get all bank transactions made by organisation
 export function* getTransfersByOrgId() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllTransferByOrgIdApi}/${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetAllTransferByOrgIdApi}/${
+    currentUser.organisation.orgId
+  }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -210,12 +214,12 @@ export function* createBankTransfer({ payload }) {
     });
 
     console.log('bankTransferResponse -> ', response);
-    swal("Success", "Transaction Successful", "success");
+    swal('Success', 'Transaction Successful', 'success');
     yield put(Actions.createBankTransferSuccess(response));
     yield put(Actions.getTransfersByOrgId());
     yield put(Actions.closeAccountTransferDialog());
   } catch (err) {
-    swal("Error", "Something went wrong", "error");
+    swal('Error', 'Something went wrong', 'error');
     yield put(Actions.createBankTransferError(err));
   }
 }
@@ -245,7 +249,6 @@ export function* getTransferByAccountId({ type, payload }) {
   }
 }
 
-
 // Delete bank account
 export function* deleteBankAccount({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
@@ -262,20 +265,21 @@ export function* deleteBankAccount({ payload }) {
 
     console.log('deleteAccountResponse -> ', response);
     yield put(Actions.getBankAccounts());
-    swal("Success", "Account deleted Successfully", "success");
+    swal('Success', 'Account deleted Successfully', 'success');
     yield put(Actions.deleteBankAccountSuccess(response));
     yield put(Actions.closeDeleteBankAccountDialog());
   } catch (err) {
-    swal("Error", "Something went wrong", "error");
+    swal('Error', 'Something went wrong', 'error');
     yield put(Actions.deleteBankAccountError(err));
   }
 }
 
-
 export function* activateDeactivateBankAccount({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${Endpoints.ActivateDeactivateBankAccountApi}?id=${payload.id}&status=${payload.status}`;
-  console.log(payload, "payload activateDeactivateBankAccount")
+  const requestURL = `${Endpoints.ActivateDeactivateBankAccountApi}?id=${
+    payload.id
+  }&status=${payload.status}`;
+  console.log(payload, 'payload activateDeactivateBankAccount');
 
   try {
     const response = yield call(request, requestURL, {
@@ -288,14 +292,13 @@ export function* activateDeactivateBankAccount({ payload }) {
 
     console.log('isBankAccountActiveResponse -> ', response);
     yield put(Actions.getBankAccounts());
-    swal("Success", "Bank Account status updated Successfully", "success");
+    swal('Success', 'Bank Account status updated Successfully', 'success');
     yield put(Actions.activateDeactivateBankAccountSuccess(response));
   } catch (err) {
-    swal("Error", "Something went wrong", "error");
+    swal('Error', 'Something went wrong', 'error');
     yield put(Actions.activateDeactivateBankAccountError(err));
   }
 }
-
 
 // Individual exports for testing
 export default function* BankingSaga() {
@@ -307,9 +310,14 @@ export default function* BankingSaga() {
   yield takeLatest(Constants.GET_BANK_ACCOUNT_BY_ID, getBankAccountById);
   yield takeLatest(Constants.GET_ALL_TRANSFER_BY_ORGID, getTransfersByOrgId);
   yield takeLatest(Constants.CREATE_BANK_TRANSFER, createBankTransfer);
-  yield takeLatest(Constants.GET_TRANSFERS_BY_ACCOUNT_ID, getTransferByAccountId);
+  yield takeLatest(
+    Constants.GET_TRANSFERS_BY_ACCOUNT_ID,
+    getTransferByAccountId,
+  );
   yield takeLatest(Constants.DELETE_BANK_ACCOUNT, deleteBankAccount);
-  yield takeLatest(Constants.ACTIVATE_DEACTIVATE_BANK_ACCOUNT, activateDeactivateBankAccount);
+  yield takeLatest(
+    Constants.ACTIVATE_DEACTIVATE_BANK_ACCOUNT,
+    activateDeactivateBankAccount,
+  );
   yield takeLatest(Constants.UPDATE_BANK_ACCOUNT, updateBankAccount);
 }
-

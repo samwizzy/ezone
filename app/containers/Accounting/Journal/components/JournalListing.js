@@ -9,7 +9,7 @@ import {
   Button,
   Menu,
   MenuItem,
-  Tooltip
+  Tooltip,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
     },
     whiteSpace: 'nowrap',
     '& tr:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& td': { padding: theme.spacing(1, 2) },
     '& thead': {
@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   button: {
-    marginLeft: theme.spacing(1)
+    marginLeft: theme.spacing(1),
   },
   status: {
     '&.pending': { color: green[500] },
@@ -81,7 +81,7 @@ const JournalListing = props => {
 
   const handleClose = () => {
     setAnchorEl(null);
-  }
+  };
 
   const handleEditClick = () => {
     const { id } = selectedJournal
@@ -164,17 +164,15 @@ const JournalListing = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => {
-          return (
-            <IconButton
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={event => handleClick(event, value)}
-            >
-              <MoreVertIcon />
-            </IconButton>
-          );
-        },
+        customBodyRender: value => (
+          <IconButton
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={event => handleClick(event, value)}
+          >
+            <MoreVertIcon />
+          </IconButton>
+        ),
       },
     },
   ];
@@ -202,7 +200,7 @@ const JournalListing = props => {
         </Button>
       </Tooltip>
     ),
-    elevation: 0
+    elevation: 0,
   };
 
   return (
@@ -235,7 +233,7 @@ const JournalListing = props => {
 
 JournalListing.propTypes = {
   loading: PropTypes.bool,
-}
+};
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),

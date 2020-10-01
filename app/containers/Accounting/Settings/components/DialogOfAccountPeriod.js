@@ -48,8 +48,8 @@ const initialState = {
   journals: [],
   startDate: moment().format('YYYY-MM-DDTHH:mm:ss'),
   status: false,
-  year: moment().format('YYYY')
-}
+  year: moment().format('YYYY'),
+};
 
 const DialogOfAccountPeriod = props => {
   const classes = useStyles();
@@ -63,33 +63,43 @@ const DialogOfAccountPeriod = props => {
     closeAccountPeriodDialog,
     createAccountPeriod,
     setAccountPeriodAsActive,
-    updateAccountPeriod
+    updateAccountPeriod,
   } = props;
 
   useEffect(() => {
     if (accountPeriodDialog.type === 'edit') {
-      setForm({ ...initialState })
+      setForm({ ...initialState });
     } else {
-      setForm({ ...initialState })
+      setForm({ ...initialState });
     }
-  }, [])
+  }, []);
 
-  const handleChange = (event) => {
-    setForm({ ...form, [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value });
+  const handleChange = event => {
+    setForm({
+      ...form,
+      [event.target.name]:
+        event.target.type === 'checkbox'
+          ? event.target.checked
+          : event.target.value,
+    });
   };
 
-  const handleDateChange = name => (date) => {
+  const handleDateChange = name => date => {
     name === 'year'
       ? setForm({ ...form, [name]: moment(date).format('YYYY') })
-      : setForm({ ...form, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss') })
+      : setForm({
+        ...form,
+        [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss'),
+      });
   };
 
   const handleSubmit = () => {
-    accountPeriodDialog.type === 'new' ?
-      createAccountPeriod(form) : updateAccountPeriod(form)
+    accountPeriodDialog.type === 'new'
+      ? createAccountPeriod(form)
+      : updateAccountPeriod(form);
   };
 
-  console.log(form, "form")
+  console.log(form, 'form');
 
   return (
     <div>
@@ -98,13 +108,14 @@ const DialogOfAccountPeriod = props => {
         onClose={closeAccountPeriodDialog}
         keepMounted
         TransitionComponent={Transition}
-        maxWidth={'xs'}
+        maxWidth="xs"
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
           {accountPeriodDialog.type === 'new' && 'Add Accounting Period'}
-          {accountPeriodDialog.type === 'edit' && 'Mark Accounting Period As Active'}
-          {accountPeriodDialog.type === 'close' && "Close Accounting Period"}
+          {accountPeriodDialog.type === 'edit' &&
+            'Mark Accounting Period As Active'}
+          {accountPeriodDialog.type === 'close' && 'Close Accounting Period'}
         </DialogTitle>
 
         <DialogContent dividers>
@@ -117,7 +128,7 @@ const DialogOfAccountPeriod = props => {
               format="yyyy"
               fullWidth
               margin="normal"
-              views={["year"]}
+              views={['year']}
               label="Year"
               value={form.year}
               onChange={handleDateChange('year')}
@@ -163,11 +174,23 @@ const DialogOfAccountPeriod = props => {
             <FormLabel component="legend">Preferences</FormLabel>
             <FormGroup>
               <FormControlLabel
-                control={<Checkbox checked={form.activeYear} onChange={handleChange} name="activeYear" />}
+                control={
+                  <Checkbox
+                    checked={form.activeYear}
+                    onChange={handleChange}
+                    name="activeYear"
+                  />
+                }
                 label="Active year"
               />
               <FormControlLabel
-                control={<Checkbox checked={form.status} onChange={handleChange} name="status" />}
+                control={
+                  <Checkbox
+                    checked={form.status}
+                    onChange={handleChange}
+                    name="status"
+                  />
+                }
                 label="Keep this period open"
               />
             </FormGroup>
@@ -175,25 +198,18 @@ const DialogOfAccountPeriod = props => {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button
-            variant="contained"
-            onClick={handleSubmit}
-            color="primary"
-          >
+          <Button variant="contained" onClick={handleSubmit} color="primary">
             {accountPeriodDialog.type === 'edit' ? 'Update' : 'Save'}
           </Button>
 
-          <Button
-            variant="contained"
-            onClick={closeAccountPeriodDialog}
-          >
+          <Button variant="contained" onClick={closeAccountPeriodDialog}>
             Cancel
           </Button>
         </DialogActions>
       </Dialog>
     </div>
   );
-}
+};
 
 DialogOfAccountPeriod.propTypes = {
   loading: PropTypes.bool,
@@ -206,12 +222,13 @@ const mapStateToProps = createStructuredSelector({
   accountingPeriods: Selectors.makeSelectGetAccountingPeriods(),
 });
 
-
 function mapDispatchToProps(dispatch) {
   return {
-    closeAccountPeriodDialog: () => dispatch(Actions.closeAccountPeriodDialog()),
+    closeAccountPeriodDialog: () =>
+      dispatch(Actions.closeAccountPeriodDialog()),
     createAccountPeriod: data => dispatch(Actions.createAccountPeriod(data)),
-    setAccountPeriodAsActive: data => dispatch(Actions.setAccountPeriodAsActive(data)),
+    setAccountPeriodAsActive: data =>
+      dispatch(Actions.setAccountPeriodAsActive(data)),
     updateAccountPeriod: data => dispatch(Actions.updateAccountPeriod(data)),
   };
 }

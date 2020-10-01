@@ -33,8 +33,6 @@ const ListBoard = props => {
         return 'color_pink_bar';
       case 'orchild':
         return 'color_orchild_bar';
-      case '322F7C':
-        return 'color_322F7C_bar';
       default:
         return 'color_purple_bar';
     }

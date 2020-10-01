@@ -1,7 +1,7 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Route, useRouteMatch } from 'react-router-dom'
+import { Route, useRouteMatch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -15,7 +15,7 @@ import AssetsList from './AssetsList'
 import NewAsset from './NewAsset'
 import AssetDialog from './components/AssetDialog'
 
-const key = "fixedAssets"
+const key = 'fixedAssets';
 export function AssetsSettings(props) {
 	useInjectReducer({ key, reducer });
 	useInjectSaga({ key, saga });
@@ -52,13 +52,13 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
 	return {
 		getAssets: () => dispatch(Actions.getAssets()),
-	}
+	};
 }
 
 const withConnect = connect(
 	mapStateToProps,
 	mapDispatchToProps,
-)
+);
 
 export default compose(
 	withConnect,
