@@ -37,8 +37,6 @@ export function* getAccountingSetup() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetAccountingSetupApi}/${currentUser.organisation.orgId}`;
 
-  console.log("We never goit to you account setup geyt")
-
   try {
     const response = yield call(request, requestURL, {
       method: 'GET',
@@ -55,7 +53,6 @@ export function* getAccountingSetup() {
     yield put(Actions.getAccountingSetupError(err));
   }
 }
-
 
 export function* getAllAccountingPeriod() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
@@ -275,8 +272,6 @@ export function* getAllBusinessTypes() {
       }),
     });
 
-    console.log(response, "response GetAllBusinessTypes")
-
     yield put(Actions.getBusinessTypesSuccess(response));
   } catch (err) {
     yield put(Actions.getBusinessTypesError(err));
@@ -417,8 +412,6 @@ export function* updateTax({ payload }) {
       }),
     });
 
-    console.log(response, "response createtax")
-
     swal("Success", "Tax updated successfully", "success");
     yield put(Actions.updateTaxSuccess(response));
     yield put(Actions.getTaxes());
@@ -442,8 +435,6 @@ export function* getAssets() {
         'Content-Type': 'application/json',
       }),
     });
-
-    console.log(response, "response getCurrencies")
 
     yield put(Actions.getAssetsSuccess(response));
   } catch (err) {
@@ -537,7 +528,7 @@ export function* updateAssetType({ payload }) {
       }),
     });
 
-    swal("Success", "Asset Type updated successfully", "success");
+    swal("Success", "Asset type updated successfully", "success");
     yield put(Actions.updateAssetTypeSuccess(response));
     yield put(Actions.getAssetTypes());
     yield put(Actions.closeNewAssetTypeDialog());

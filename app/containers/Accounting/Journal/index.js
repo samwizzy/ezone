@@ -10,31 +10,28 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectJournal from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
 import ModuleLayout from '../components/ModuleLayout';
 import JournalListing from './components/JournalListing';
+import JournalDetails from './journalDetails';
 import AddNewJournal from './components/AddNewJournal';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
-import { CircleLoader } from '../../../components/LoadingIndicator';
 
 export function Journal(props) {
   useInjectReducer({ key: 'journal', reducer });
   useInjectSaga({ key: 'journal', saga });
 
-  const { loading, match, getJournalList, getCurrencies, getChartOfAccounts, getAccountingPeriods } = props;
+  const { loading, match, getAccountingSetup, getJournalList, getCurrencies, getChartOfAccounts, getTaxes, getAccountingPeriods } = props;
   const { path } = match
 
   useEffect(() => {
+    getAccountingSetup();
     getJournalList();
     getCurrencies();
     getChartOfAccounts();
+    getTaxes();
     getAccountingPeriods();
   }, []);
-
-  if (loading) {
-    return <CircleLoader />
-  }
 
   return (
     <div>
@@ -47,6 +44,7 @@ export function Journal(props) {
         <Route exact path={path} component={JournalListing} />
         <Route path={`${path}/add`} component={AddNewJournal} />
         <Route path={`${path}/edit/:journalId`} component={JournalListing} />
+        <Route path={`${path}/view/:journalId`} component={JournalDetails} />
       </ModuleLayout>
     </div>
   );
@@ -66,7 +64,9 @@ function mapDispatchToProps(dispatch) {
     getJournalList: () => dispatch(Actions.getJournalList()),
     getCurrencies: () => dispatch(Actions.getCurrencies()),
     getChartOfAccounts: () => dispatch(Actions.getChartOfAccounts()),
+    getTaxes: () => dispatch(Actions.getTaxes()),
     getAccountingPeriods: () => dispatch(Actions.getAccountingPeriods()),
+    getAccountingSetup: () => dispatch(Actions.getAccountingSetup()),
   }
 }
 

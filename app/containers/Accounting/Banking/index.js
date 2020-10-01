@@ -14,7 +14,6 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import ModuleLayout from '../components/ModuleLayout';
-import { CircleLoader } from './../../../components/LoadingIndicator';
 import BankList from './components/BankList';
 import BankDetails from './bankDetails';
 import AddBankAccountDialog from './components/AddBankAccountDialog';
@@ -30,21 +29,18 @@ export function Banking(props) {
     loading,
     getBankAccounts,
     getCurrencies,
+    getAccountingPeriods,
     getAccountTypes,
     getTransfersByOrgId,
   } = props;
 
   useEffect(() => {
     getBankAccounts();
+    getAccountingPeriods();
     getCurrencies();
     getAccountTypes();
     getTransfersByOrgId();
   }, []);
-
-
-  if (loading) {
-    return <CircleLoader />
-  }
 
   return (
     <div>
@@ -78,6 +74,7 @@ function mapDispatchToProps(dispatch) {
     getAccountTypes: () => dispatch(Actions.getAccountTypes()),
     getTransfersByOrgId: () => dispatch(Actions.getTransfersByOrgId()),
     getCurrencies: () => dispatch(Actions.getCurrencies()),
+    getAccountingPeriods: () => dispatch(Actions.getAccountingPeriods()),
   };
 }
 

@@ -31,6 +31,12 @@ const makeSelectConfirmAccountDeleteDialog = () =>
     substate => substate.confirmDeleteDialog,
   );
 
+const makeSelectAccountingPeriodsData = () =>
+  createSelector(
+    selectChartDomain,
+    substate => substate.accountingPeriods,
+  );
+
 const makeSelectAccountTypeData = () =>
   createSelector(
     selectChartDomain,
@@ -57,6 +63,7 @@ export {
   makeSelectLoading,
   makeSelectNewAccountDialog,
   makeSelectConfirmAccountDeleteDialog,
+  makeSelectAccountingPeriodsData,
   makeSelectAccountTypeData,
   makeSelectGetChartOfAccounts,
   makeSelectGetChartOfAccountById,

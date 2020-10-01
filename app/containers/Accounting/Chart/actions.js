@@ -47,27 +47,47 @@ export function getAccountTypesError(data) {
     payload: data,
   };
 }
+// Get accounting periods 
+export function getAccountingPeriods() {
+  return {
+    type: Constants.GET_ACCOUNTING_PERIODS,
+  }
+}
+
+export function getAccountingPeriodsSuccess(data) {
+  return {
+    type: Constants.GET_ACCOUNTING_PERIODS_SUCCESS,
+    payload: data,
+  }
+}
+
+export function getAccountingPeriodsError(data) {
+  return {
+    type: Constants.GET_ACCOUNTING_PERIODS_ERROR,
+    payload: data,
+  }
+}
 
 // Get parent account types 
 export function getParentAccountType(data) {
   return {
     type: Constants.GET_PARENT_ACCOUNT_TYPES,
     payload: data,
-  };
+  }
 }
 
 export function getParentAccountTypeSuccess(data) {
   return {
     type: Constants.GET_PARENT_ACCOUNT_TYPES_SUCCESS,
     payload: data,
-  };
+  }
 }
 
 export function getParentAccountTypeError(data) {
   return {
     type: Constants.GET_PARENT_ACCOUNT_TYPES_ERR,
     payload: data,
-  };
+  }
 }
 
 

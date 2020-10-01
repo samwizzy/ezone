@@ -6,6 +6,14 @@
 
 export const DEFAULT_ACTION = 'app/Journal/DEFAULT_ACTION';
 
+export const GET_ACCOUNTING_SETUP = 'app/Settings/GET_ACCOUNTING_SETUP';
+export const GET_ACCOUNTING_SETUP_SUCCESS = 'app/Settings/GET_ACCOUNTING_SETUP_SUCCESS';
+export const GET_ACCOUNTING_SETUP_ERROR = 'app/Settings/GET_ACCOUNTING_SETUP_ERROR';
+
+export const GET_TAXES = 'app/Settings/GET_TAXES';
+export const GET_TAXES_SUCCESS = 'app/Settings/GET_TAXES_SUCCESS';
+export const GET_TAXES_ERROR = 'app/Settings/GET_TAXES_ERROR';
+
 export const OPEN_NEW_JOURNAL_DIALOG = 'app/Settings/OPEN_NEW_JOURNAL_DIALOG';
 export const CLOSE_NEW_JOURNAL_DIALOG = 'app/Settings/CLOSE_NEW_JOURNAL_DIALOG';
 
@@ -31,3 +39,7 @@ export const CREATE_NEW_ACCOUNT_JOURNAL_ERR = 'app/Journal/CREATE_NEW_ACCOUNT_JO
 export const GET_JOURNAL_LIST = 'app/Journal/GET_JOURNAL_LIST';
 export const GET_JOURNAL_LIST_SUCCESS = 'app/Journal/GET_JOURNAL_LIST_SUCCESS';
 export const GET_JOURNAL_LIST_ERR = 'app/Journal/GET_JOURNAL_LIST_ERR';
+
+export const GET_JOURNAL_BY_ID = 'app/Journal/GET_JOURNAL_BY_ID';
+export const GET_JOURNAL_BY_ID_SUCCESS = 'app/Journal/GET_JOURNAL_BY_ID_SUCCESS';
+export const GET_JOURNAL_BY_ID_ERROR = 'app/Journal/GET_JOURNAL_BY_ID_ERROR';

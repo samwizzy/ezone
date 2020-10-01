@@ -150,7 +150,7 @@ const AssetTypesList = (props) => {
     <div className={classes.root}>
       <MUIDataTable
         className={classes.datatable}
-        title="All Asset Types"
+        title="All Asset types"
         data={orderedAssetTypes}
         columns={columns}
         options={options}

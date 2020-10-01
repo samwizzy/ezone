@@ -67,6 +67,27 @@ export function closeDeactivateBankAccountDialog() {
   }
 }
 
+// Get accounting periods 
+export function getAccountingPeriods() {
+  return {
+    type: Constants.GET_ACCOUNTING_PERIODS,
+  }
+}
+
+export function getAccountingPeriodsSuccess(data) {
+  return {
+    type: Constants.GET_ACCOUNTING_PERIODS_SUCCESS,
+    payload: data,
+  }
+}
+
+export function getAccountingPeriodsError(data) {
+  return {
+    type: Constants.GET_ACCOUNTING_PERIODS_ERROR,
+    payload: data,
+  }
+}
+
 // Get currencies
 export function getCurrencies() {
   return {

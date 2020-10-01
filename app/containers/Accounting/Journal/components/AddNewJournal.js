@@ -12,6 +12,7 @@ import {
   makeStyles,
   InputAdornment,
   Button,
+  ButtonGroup,
   IconButton,
   CircularProgress,
   Card,
@@ -19,10 +20,8 @@ import {
   CardContent,
   CardActions,
   Checkbox,
-  Divider,
   FormControl,
   FormControlLabel,
-  FormLabel,
   FormHelperText,
   Grid,
   Table,
@@ -31,21 +30,19 @@ import {
   TableFooter,
   TableRow,
   TableCell,
-  TextField
+  TextField,
 } from '@material-ui/core';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import AddIcon from '@material-ui/icons/Add';
 import CancelIcon from '@material-ui/icons/Cancel';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import ExpandLess from '@material-ui/icons/ExpandLess';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
+import { IsoCodeToFlag } from '../../components/IsoCodeFormatter'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -56,27 +53,23 @@ const useStyles = makeStyles(theme => ({
       justifyContent: "flex-end",
       padding: theme.spacing(2),
       borderTop: `1px solid ${theme.palette.divider}`
+    },
+    "& .MuiCardHeader-root": {
+      borderBottom: `1px solid ${theme.palette.divider}`
     }
   },
-  formTable: {
-    width: 500,
-    "& th.MuiTableCell-root": {
-      fontWeight: theme.typography.fontWeightMedium
-    },
-    "& .MuiTableCell-root": {
-      borderBottom: "none !important"
-    },
-  },
   table: {
+    width: '100% !important',
     whiteSpace: 'nowrap',
-    marginTop: theme.spacing(2),
+    margin: theme.spacing(2, 0),
     '& tr:hover': {
       cursor: 'pointer',
     },
     '& tfoot': {
       '& td': {
-        border: 'none !important',
-        padding: theme.spacing(2, 0)
+        borderTop: `1px solid ${theme.palette.divider}`,
+        padding: theme.spacing(2),
+        fontSize: theme.typography.subtitle1.fontSize
       },
     },
     '& thead': {
@@ -90,6 +83,17 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: lighten(theme.palette.grey[100], 0.5),
       },
     },
+  },
+  total: {
+    border: `1px solid ${theme.palette.divider}`,
+    borderRadius: theme.shape.borderRadius,
+    padding: theme.spacing(1),
+    minWidth: 202,
+    display: 'inline-flex'
+  },
+  flag: {
+    width: 20,
+    marginRight: theme.spacing(1),
   },
 }));
 
@@ -119,23 +123,30 @@ const NewJournal = props => {
   const {
     loading,
     dialog,
+    accountSetupData,
     journals,
     accountingPeriods,
     chartOfAccounts,
     currencies,
+    taxes,
     createJournal,
   } = props;
 
+  const activePeriod = _.find(accountingPeriods, { activeYear: true, status: true })
+
   const classes = useStyles(props);
   const [values, setValues] = React.useState({ ...initialState })
+  const [metrics, setMetrics] = React.useState({ taxTotal: 0 })
+
+  const flag = src => <img className={classes.flag} src={src} />;
 
   useEffect(() => {
     if (dialog.type === 'edit' && dialog.data) {
-      setValues({ ...initialState });
+      setValues({ ...dialog.data });
     } else {
-      setValues({ ...initialState });
+      setValues({ ...initialState, periodId: activePeriod && activePeriod.id });
     }
-  }, []);
+  }, [dialog.data]);
 
   const canBeSubmitted = () => {
     const { attachments, currencyId, entries, exchangeRate, note, periodId, reference, taxRate, taxtTotal, total } = values;
@@ -164,12 +175,24 @@ const NewJournal = props => {
     setValues({ ...values, entries: values.entries.filter((entry, id) => id !== i) });
   }
 
+  const handleMetricChange = event => {
+    setMetrics({ ...metrics, [event.target.name]: event.target.value })
+    setValues({ ...values, [event.target.name]: Math.ceil(metrics.taxTotal * (values.taxRate / 100)) })
+  }
+
   const handleChange = event => {
-    setValues({ ...values, [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value });
+    if (event.target.name === 'taxTotal')
+      setValues({ ...values, [event.target.name]: event.target.value });
+    else
+      setValues({ ...values, [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value });
   }
 
   const handleSelectChange = name => (event, object) => {
-    setValues({ ...values, [name]: object.id });
+    if (name === 'taxRate') {
+      setValues({ ...values, [name]: object ? object.rate : object, taxTotal: object && Math.ceil(metrics.taxTotal * (object.rate / 100)) })
+    } else {
+      setValues({ ...values, [name]: object ? object.id : object });
+    }
   }
 
   const handleDateChange = name => (date) => {
@@ -197,271 +220,197 @@ const NewJournal = props => {
   console.log(accountingPeriods, 'accountingPeriods');
   console.log(chartOfAccounts, 'chartOfAccounts');
   console.log(currencies, 'currencies');
+  console.log(taxes, 'taxes');
+  console.log(accountSetupData, 'accountSetupData');
 
   console.log(values, 'values');
   console.log(dialog, 'new journal form');
+  console.log(metrics, 'new journal metrics');
   return (
     <div>
       <Card elevation={0} className={classes.card}>
-        <CardHeader title={dialog.type === 'new' ? 'New Entry' : 'Update Entry'} />
-
-        <Divider />
+        <CardHeader
+          titleTypographyProps={{ variant: 'h6' }}
+          title={dialog.type === 'new' ? 'New Journal' : 'Update Journal'}
+          subheader="Post a new entry"
+          action={
+            <Autocomplete
+              id="period-id"
+              size="small"
+              options={accountingPeriods}
+              getOptionLabel={option => `FY: ${moment(option.startDate).format('ll')} - ${moment(option.endDate).format('ll')}`}
+              onChange={handleSelectChange('periodId')}
+              value={values.periodId ? _.find(accountingPeriods, { id: values.periodId }) : null}
+              style={{ width: 300 }}
+              renderInput={params => (
+                <TextField
+                  {...params}
+                  InputLabelProps={{
+                    shrink: false,
+                  }}
+                  margin="dense"
+                />
+              )}
+            />
+          }
+        />
 
         <CardContent>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Table size="small" className={classes.formTable}>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>Reference</TableCell>
-                    <TableCell>
-                      <TextField
-                        id="outlined-reference"
-                        size="small"
-                        name="reference"
-                        label="Reference"
-                        placeholder="Reference"
-                        value={values.reference}
-                        style={{ width: 300 }}
-                        margin="dense"
-                        onChange={handleChange}
-                        variant="outlined"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                      />
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Currency</TableCell>
-                    <TableCell>
-                      <Autocomplete
-                        id="journal-currency"
-                        size="small"
-                        options={currencies}
-                        getOptionLabel={option => option.name}
-                        onChange={handleSelectChange('currencyId')}
-                        value={values.currencyId ? _.find(currencies, { id: values.currencyId }) : null}
-                        style={{ width: 300 }}
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            label="Currency"
-                            variant="outlined"
-                            margin="dense"
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            placeholder="Currencies"
-                          />
-                        )}
-                      />
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  autoOk
+                  id="transaction-date"
+                  required
+                  inputVariant="outlined"
+                  format="dd/MM/yyyy"
+                  margin="normal"
+                  size="small"
+                  style={{ width: 300 }}
+                  label="Transaction Date"
+                  value={values.transactionDate}
+                  onChange={handleDateChange('transactionDate')}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </MuiPickersUtilsProvider>
 
-                      <FormControl component="fieldset">
-                        <FormControlLabel
-                          control={<Checkbox checked={values.taxApplicable} onChange={handleChange} name="taxApplicable" />}
-                          label="Tax Applicable"
-                        />
-                        <FormHelperText>Accepting this means you acknowledge all tax related conditions</FormHelperText>
-                      </FormControl>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Accounting Period</TableCell>
-                    <TableCell>
-                      <Autocomplete
-                        id="period-id"
-                        size="small"
-                        options={accountingPeriods}
-                        getOptionLabel={option => option.year}
-                        onChange={handleSelectChange('periodId')}
-                        value={values.periodId ? _.find(accountingPeriods, { id: values.periodId }) : null}
-                        style={{ width: 300 }}
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            label="Accounting Period"
-                            variant="outlined"
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            margin="dense"
-                            placeholder="Accounting Periods"
-                          />
-                        )}
-                      />
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Exchange Rate</TableCell>
-                    <TableCell>
-                      <TextField
-                        id="exchange-rate"
-                        size="small"
-                        name="exchangeRate"
-                        label="Exchange Rate"
-                        placeholder="Exchange Rate"
-                        value={values.exchangeRate}
-                        onChange={handleChange}
-                        variant="outlined"
-                        margin="dense"
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              1 Dollar (USD) =
-                            </InputAdornment>
-                          ),
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              NGN
-                            </InputAdornment>
-                          )
-                        }}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        style={{ width: 300 }}
-                      />
-                    </TableCell>
-                  </TableRow>
-                  {/* <TableRow>
-                    <TableCell>Tax Rate</TableCell>
-                    <TableCell>
-                      <TextField
-                        id="tax-rate"
-                        size="small"
-                        name="taxRate"
-                        label="Tax Rate"
-                        placeholder="Tax Rate"
-                        value={values.taxRate}
-                        onChange={handleChange}
-                        variant="outlined"
-                        margin="dense"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        style={{ width: 300 }}
-                      />
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Tax Total</TableCell>
-                    <TableCell>
-                      <TextField
-                        id="tax-total"
-                        size="small"
-                        name="taxTotal"
-                        label="Tax Total"
-                        placeholder="Tax Total"
-                        value={values.taxTotal}
-                        onChange={handleChange}
-                        variant="outlined"
-                        margin="dense"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        style={{ width: 300 }}
-                      />
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Total</TableCell>
-                    <TableCell>
-                      <TextField
-                        id="outlined-total"
-                        size="small"
-                        name="total"
-                        label="Total"
-                        placeholder="Total"
-                        value={values.total}
-                        onChange={handleChange}
-                        variant="outlined"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        style={{ width: 300 }}
-                      />
-                    </TableCell>
-                  </TableRow> */}
-                  <TableRow>
-                    <TableCell>Transaction Date</TableCell>
-                    <TableCell>
-                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker
-                          autoOk
-                          id="transaction-date"
-                          inputVariant="outlined"
-                          format="dd/MM/yyyy"
-                          margin="dense"
-                          size="small"
-                          style={{ width: 300 }}
-                          label="Transaction Date"
-                          value={values.transactionDate}
-                          onChange={handleDateChange('transactionDate')}
-                          KeyboardButtonProps={{
-                            'aria-label': 'change date',
-                          }}
-                        />
-                      </MuiPickersUtilsProvider>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Note</TableCell>
-                    <TableCell>
-                      <TextField
-                        id="journal-note"
-                        size="small"
-                        name="note"
-                        label="Note"
-                        placeholder="Note"
-                        value={values.note}
-                        onChange={handleChange}
-                        variant="outlined"
-                        margin="dense"
-                        style={{ width: 300 }}
-                        multiline
-                        rows={3}
-                      />
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Attachments</TableCell>
-                    <TableCell>
-                      <FormControl variant="outlined" margin="normal">
-                        <Button
-                          variant="outlined"
-                          component="label"
-                          color="secondary"
-                          disableElevation
-                          startIcon={<AttachFileIcon />}
-                        >
-                          Upload File
-                          <input
-                            type="file"
-                            name="attachments"
-                            multiple
-                            style={{ display: "none" }}
-                            onChange={handleImageChange}
-                          />
-                        </Button>
+              <Autocomplete
+                id="journal-currency"
+                size="small"
+                options={accountSetupData ? currencies.filter(currency => currency.code !== accountSetupData.currency.code) : []}
+                getOptionLabel={option => `${option.name} ( ${option.symbol} )`}
+                renderOption={option => (
+                  <React.Fragment>
+                    <span>{flag(IsoCodeToFlag(option.code))}</span> {option.name}
+                  </React.Fragment>
+                )}
+                onChange={handleSelectChange('currencyId')}
+                value={values.currencyId ? _.find(currencies, { id: values.currencyId }) : null}
+                style={{ width: 300 }}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Currency"
+                    variant="outlined"
+                    margin="normal"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    placeholder="Currencies"
+                  />
+                )}
+              />
 
-                        <FormHelperText>{values.attachments.length > 0 ? `${values.attachments.length} files selected` : ""}</FormHelperText>
-                      </FormControl>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
+              <FormControl component="fieldset">
+                <FormControlLabel
+                  control={<Checkbox checked={values.taxApplicable} onChange={handleChange} name="taxApplicable" />}
+                  label="Tax Applicable"
+                />
+              </FormControl>
+
+              {values.taxApplicable &&
+                <Autocomplete
+                  id="journal-taxes"
+                  size="small"
+                  options={taxes}
+                  getOptionLabel={option => `${option.name} ${option.rate}%`}
+                  onChange={handleSelectChange('taxRate')}
+                  style={{ width: 300 }}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label="Applicable rates"
+                      variant="outlined"
+                      margin="normal"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      placeholder="Rates"
+                    />
+                  )}
+                />
+              }
+
             </Grid>
+            <Grid item xs={12} sm={6} style={{ textAlign: 'right' }}>
+              <TextField
+                id="outlined-reference"
+                required
+                size="small"
+                name="reference"
+                label="Reference"
+                placeholder="Reference"
+                value={values.reference}
+                style={{ width: 300 }}
+                margin="normal"
+                onChange={handleChange}
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
 
+              <TextField
+                id="exchange-rate"
+                required
+                size="small"
+                name="exchangeRate"
+                label="Exchange Rate"
+                placeholder="Exchange Rate"
+                value={values.exchangeRate}
+                onChange={handleChange}
+                variant="outlined"
+                margin="normal"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      {values.currencyId ? `1 ${_.find(currencies, { id: values.currencyId }).name} =` : ""}
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">NGN</InputAdornment>
+                  )
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                style={{ width: 300 }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                id="journal-note"
+                required
+                size="small"
+                name="note"
+                label="Note"
+                placeholder="Note"
+                value={values.note}
+                onChange={handleChange}
+                variant="outlined"
+                fullWidth
+                margin="dense"
+                multiline
+                rows={3}
+              />
+            </Grid>
+          </Grid>
+
+
+          <Grid container spacing={2}>
             <Grid item xs={12}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Table className={classes.table} aria-label="simple table">
                     <TableHead>
                       <TableRow>
-                        <TableCell colSpan={2}>Account</TableCell>
-                        <TableCell>Credit (Outgoing)</TableCell>
-                        <TableCell>Debit (Incoming)</TableCell>
+                        <TableCell>Account</TableCell>
+                        <TableCell>Description</TableCell>
+                        <TableCell>Credit <ArrowUpwardIcon /></TableCell>
+                        <TableCell>Debit <ArrowDownwardIcon /></TableCell>
                         <TableCell align="right">
                           <Button color="inherit" onClick={addRow} startIcon={<AddIcon />}>New</Button>
                         </TableCell>
@@ -504,18 +453,6 @@ const NewJournal = props => {
                           </TableCell>
                           <TableCell>
                             <TextField
-                              id={`entry-credit-${i}`}
-                              size="small"
-                              variant="outlined"
-                              label="Credit"
-                              name="credit"
-                              onChange={handleItemChange(i)}
-                              value={row.credit ? row.credit : ""}
-                              disabled={Boolean(Number(row.debit))}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <TextField
                               id={`entry-debit-${i}`}
                               size="small"
                               label="Debit"
@@ -524,6 +461,18 @@ const NewJournal = props => {
                               onChange={handleItemChange(i)}
                               value={row.debit ? row.debit : ""}
                               disabled={Boolean(Number(row.credit))}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <TextField
+                              id={`entry-credit-${i}`}
+                              size="small"
+                              variant="outlined"
+                              label="Credit"
+                              name="credit"
+                              onChange={handleItemChange(i)}
+                              value={row.credit ? row.credit : ""}
+                              disabled={Boolean(Number(row.debit))}
                             />
                           </TableCell>
                           <TableCell align="right">
@@ -540,20 +489,62 @@ const NewJournal = props => {
                     </TableBody>
                     <TableFooter>
                       <TableRow>
-                        <TableCell colSpan={4}>
-                          <Button
-                            variant="contained"
+                        <TableCell colSpan={2} align="right">Total</TableCell>
+                        <TableCell><div className={classes.total}>{values.entries.reduce((curVal, b) => curVal + Number(b.debit), 0)}</div></TableCell>
+                        <TableCell><div className={classes.total}>{values.entries.reduce((curVal, b) => curVal + Number(b.credit), 0)}</div></TableCell>
+                        <TableCell />
+                      </TableRow>
+                      <TableRow>
+                        <TableCell colSpan={2} align="right">Tax amount</TableCell>
+                        <TableCell>
+                          <TextField
+                            id="outlined-tax-amount"
                             size="small"
-                            color="primary"
-                            onClick={addRow}
-                            startIcon={<AddIcon />}
-                          >
-                            Add Row
-                          </Button>
+                            name="taxTotal"
+                            label="Tax Amount"
+                            placeholder="taxTotal"
+                            value={metrics.taxTotal}
+                            onChange={handleMetricChange}
+                            variant="outlined"
+                          />
+                          <FormHelperText>{values.taxTotal && `${values.taxRate}% of ${metrics.taxTotal} = ${values.taxTotal}`}</FormHelperText>
                         </TableCell>
+                        <TableCell colSpan={2} />
                       </TableRow>
                     </TableFooter>
                   </Table>
+
+                  <ButtonGroup color="primary" aria-label="outlined primary button group">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={addRow}
+                      startIcon={<AddIcon />}
+                    >
+                      Add Row
+                    </Button>
+
+                    <Button
+                      variant="outlined"
+                      component="label"
+                      color="secondary"
+                      disableElevation
+                      startIcon={<AttachFileIcon />}
+                    >
+                      Upload File
+                      <input
+                        type="file"
+                        name="attachments"
+                        multiple
+                        style={{ display: "none" }}
+                        onChange={handleImageChange}
+                      />
+                    </Button>
+                  </ButtonGroup>
+
+                  <FormControl variant="outlined">
+                    <FormHelperText>{values.attachments.length > 0 ? `${values.attachments.length} files selected` : ""}</FormHelperText>
+                  </FormControl>
                 </Grid>
               </Grid>
             </Grid>
@@ -597,6 +588,8 @@ const mapStateToProps = createStructuredSelector({
   accountingPeriods: Selectors.makeSelectGetAccountPeriodData(),
   chartOfAccounts: Selectors.makeSelectGetChartOfAccountData(),
   currencies: Selectors.makeSelectCurrencies(),
+  taxes: Selectors.makeSelectGetTaxesData(),
+  accountSetupData: Selectors.makeSelectGetAccountSetupData(),
 });
 
 function mapDispatchToProps(dispatch) {

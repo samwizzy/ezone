@@ -30,6 +30,25 @@ export function* getDashBoardData() {
   }
 }
 
+export function* getAccountingPeriods() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAllAccountingPeriodApi}/${currentUser.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getAccountingPeriodsSuccess(response));
+  } catch (err) {
+    yield put(Actions.getAccountingPeriodsError(err));
+  }
+}
 
 export function* getAccountTypes() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
@@ -219,6 +238,7 @@ export async function createChartOfAccountHandler(value) {
 // Individual exports for testing
 export default function* AccountChartSaga() {
   yield takeLatest(Constants.DEFAULT_ACTION, getDashBoardData);
+  yield takeLatest(Constants.GET_ACCOUNTING_PERIODS, getAccountingPeriods);
   yield takeLatest(Constants.GET_ALL_ACCOUNT_TYPES, getAccountTypes);
   yield takeLatest(Constants.CREATE_NEW_CHART_OF_ACCOUNT, createChartOfAccount);
   yield takeLatest(Constants.GET_ALL_CHART_OF_ACCOUNT, getChartOfAccounts);

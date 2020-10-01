@@ -12,6 +12,46 @@ function errorHandler(promise) {
   return promise
 }
 
+export function* getAccountingSetup() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAccountingSetupApi}/${currentUser.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getAccountingSetupSuccess(response));
+  } catch (err) {
+    yield put(Actions.getAccountingSetupError(err));
+  }
+}
+
+export function* getTaxes() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetTaxesByOrgIdApi}?orgId=${currentUser.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getTaxesSuccess(response));
+  } catch (err) {
+    yield put(Actions.getTaxesError(err));
+  }
+}
+
 // Get list of chart of account
 export function* getChartOfAccounts() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
@@ -88,7 +128,7 @@ export function* createAccountJournal({ payload }) {
 export function* getJournalList() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetJounalListApi}?orgId=${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetJournalListApi}?orgId=${currentUser.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -102,6 +142,28 @@ export function* getJournalList() {
     yield put(Actions.getJournalListSuccess(response));
   } catch (err) {
     yield put(Actions.getJournalListError(err));
+  }
+}
+
+export function* getJournalById({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetJournalByIdApi}/${payload.id}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log("Get the gadman journal by id", response)
+
+    yield put(Actions.getJournalByIdSuccess(response));
+  } catch (err) {
+    yield put(Actions.getJournalByIdError(err));
   }
 }
 
@@ -130,9 +192,12 @@ export function* getCurrencies() {
 
 // Individual exports for testing
 export default function* journalSaga() {
+  yield takeLatest(Constants.GET_ACCOUNTING_SETUP, getAccountingSetup);
+  yield takeLatest(Constants.GET_TAXES, getTaxes);
   yield takeLatest(Constants.GET_ALL_CHART_OF_ACCOUNT, getChartOfAccounts);
   yield takeLatest(Constants.GET_ACCOUNT_PERIOD, getAccountingPeriods);
   yield takeLatest(Constants.CREATE_NEW_ACCOUNT_JOURNAL, createAccountJournal);
   yield takeLatest(Constants.GET_JOURNAL_LIST, getJournalList);
+  yield takeLatest(Constants.GET_JOURNAL_BY_ID, getJournalById);
   yield takeLatest(Constants.GET_CURRENCIES, getCurrencies);
 }

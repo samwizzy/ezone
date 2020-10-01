@@ -7,36 +7,33 @@ import { compose } from 'redux';
 import { useRouteMatch } from "react-router-dom";
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
-import { CircleLoader } from './../../../../components/LoadingIndicator';
-import BankDetails from './BankDetails';
-// import TransactionTransferDialog from './../components/TransactionTransferDialog';
+import JournalDetails from './JournalDetails';
 
-export function BankDetailsPage(props) {
+export function JournalDetailsPage(props) {
 	const { params } = useRouteMatch();
-	const { loading, getBankAccountById } = props;
-	const { bankId } = params
+	const { loading, getJournalById } = props;
+	const { journalId } = params
+	console.log(params, "paramss")
 
 	useEffect(() => {
-		if (bankId) {
-			getBankAccountById(bankId);
+		if (journalId) {
+			getJournalById(journalId);
 		}
 	}, []);
 
 	return (
 		<div>
 			<Helmet>
-				<title>Bank Details</title>
-				<meta name="description" content="Description of Bank Details" />
+				<title>Journal Details</title>
+				<meta name="description" content="Description of Journal Details" />
 			</Helmet>
 
-			<BankDetails />
-
-			{/* <TransactionTransferDialog /> */}
+			<JournalDetails />
 		</div>
-	);
+	)
 }
 
-BankDetailsPage.propTypes = {};
+JournalDetailsPage.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
 	loading: Selectors.makeSelectLoading(),
@@ -44,8 +41,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
 	return {
-		getBankAccountById: data => dispatch(Actions.getBankAccountById(data)),
-	};
+		getJournalById: data => dispatch(Actions.getJournalById(data)),
+	}
 }
 
 const withConnect = connect(
@@ -56,4 +53,4 @@ const withConnect = connect(
 export default compose(
 	withConnect,
 	memo,
-)(BankDetailsPage);
+)(JournalDetailsPage);

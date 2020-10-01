@@ -17,19 +17,19 @@ import AccountsList from './components/AccountsList';
 import ChartAccountDetails from './chartAccountDetails';
 import AccountDialog from './components/AccountDialog';
 import ConfirmDeleteAccountDialog from './components/ConfirmDeleteAccountDialog';
-import { CircleLoader } from '../../../components/LoadingIndicator';
 
 const key = "chart";
 const ChartOfAccounts = props => {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
-  const { loading, getChartOfAccounts, getAccountTypes, match } = props;
+  const { loading, getChartOfAccounts, getAccountTypes, getAccountingPeriods, match } = props;
   const { path } = match
 
   useEffect(() => {
     getChartOfAccounts();
     getAccountTypes();
+    getAccountingPeriods();
   }, []);
 
   return (
@@ -63,6 +63,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getChartOfAccounts: () => dispatch(Actions.getChartOfAccounts()),
     getAccountTypes: () => dispatch(Actions.getAccountTypes()),
+    getAccountingPeriods: () => dispatch(Actions.getAccountingPeriods()),
   }
 }
 

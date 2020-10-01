@@ -1,4 +1,4 @@
-import React, { memo, useState, useRef } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
@@ -9,8 +9,7 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import { CSVReader } from 'react-papaparse';
 import _ from 'lodash';
-import { makeStyles, IconButton, Button, Tooltip } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+import { makeStyles, Button } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
 const buttonRef = React.createRef()
@@ -79,8 +78,8 @@ const ImportControl = (props) => {
 			{({ file }) => (
 				<aside className={classes.flex}>
 					<Button
-						variant="contained"
-						color="primary"
+						variant="outlined"
+						color="secondary"
 						onClick={handleOpenDialog}
 						startIcon={<GetAppIcon />}
 						className={classes.button}

@@ -6,6 +6,7 @@ import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import { makeStyles, IconButton, Button, Menu, MenuItem, Tooltip } from '@material-ui/core';
+import { CircleLoader } from '../../../../components/LoadingIndicator';
 import AddIcon from '@material-ui/icons/Add';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import classNames from 'classnames';
@@ -55,7 +56,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AccountChart = props => {
-  const classes = useStyles();
+  const classes = useStyles(props);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedAccount, setSelectedAccount] = useState(null);
 
@@ -137,23 +138,16 @@ const AccountChart = props => {
     },
     {
       name: 'openingBalance',
-      label: 'Open Balance',
+      label: 'Balance',
       options: {
         filter: true,
         sort: false,
-      },
-    },
-    {
-      name: 'bankBalance',
-      label: 'Bank Balance',
-      options: {
-        filter: true,
-        sort: false,
+        customBodyRender: value => new Intl.NumberFormat("en-US").format(value)
       },
     },
     {
       name: 'type',
-      label: 'Type',
+      label: 'Debit / Credit',
       options: {
         filter: true,
         sort: false,
@@ -196,18 +190,18 @@ const AccountChart = props => {
     viewColumns: false,
     customToolbar: () => (
       <>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          startIcon={<AddIcon />}
-          onClick={openNewAccountDialog}
-        >
-          New Account
-        </Button>
-        <Tooltip title="Import and Create">
-          <ImportControl />
+        <Tooltip title="Create new account">
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            disableElevation
+            onClick={openNewAccountDialog}
+          >
+            New Account
+          </Button>
         </Tooltip>
+        <ImportControl />
       </>
     ),
     elevation: 0

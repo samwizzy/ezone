@@ -4,10 +4,13 @@ import * as Constants from './constants';
 export const initialState = {
   loading: false,
   error: false,
+  accountSetupData: null,
+  taxes: [],
   chartOfAccountData: [],
   accountPeriodData: [],
   accountJournalPostData: {},
   journalListData: [],
+  journalData: null,
   currencies: [],
   journalDialog: {
     type: 'new',
@@ -72,6 +75,54 @@ const journalReducer = (state = initialState, action) =>
             data: action.payload,
           },
         };
+      }
+
+      // Case to get accounting setup
+      case Constants.GET_ACCOUNTING_SETUP: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_ACCOUNTING_SETUP_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          accountSetupData: action.payload
+        };
+      }
+      case Constants.GET_ACCOUNTING_SETUP_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+
+      // Case to get taxes
+      case Constants.GET_TAXES: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        }
+      }
+      case Constants.GET_TAXES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          taxes: action.payload
+        }
+      }
+      case Constants.GET_TAXES_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        }
       }
 
       // Case to get all chart of accounts
@@ -174,7 +225,6 @@ const journalReducer = (state = initialState, action) =>
 
       // Case to get list of journals
       case Constants.GET_JOURNAL_LIST: {
-        console.log('GET_JOURNAL_LIST reducer');
         return {
           ...state,
           loading: true,
@@ -190,6 +240,29 @@ const journalReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_JOURNAL_LIST_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      // Case to get journal by id
+      case Constants.GET_JOURNAL_BY_ID: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_JOURNAL_BY_ID_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          journalData: action.payload,
+        };
+      }
+      case Constants.GET_JOURNAL_BY_ID_ERROR: {
         return {
           ...state,
           loading: false,

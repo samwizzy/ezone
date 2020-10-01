@@ -4,6 +4,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
+import _ from 'lodash';
 import {
   makeStyles,
   IconButton,
@@ -14,6 +15,7 @@ import {
 } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import { darken } from '@material-ui/core/styles/colorManipulator';
+import { CircleLoader } from '../../../components/LoadingIndicator';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import AddIcon from '@material-ui/icons/Add';
 import * as Actions from './actions';
@@ -53,15 +55,35 @@ const useStyles = makeStyles(theme => ({
 
 const AssetsList = (props) => {
   const classes = useStyles(props);
-  const { history, match, assets, openNewAssetDialog } = props
+  const { loading, history, match, assets, openNewAssetDialog, openEditAssetDialog } = props
   const [anchorEl, setAnchorEl] = useState(null)
+  const [selectedAsset, setSelectedAsset] = useState(null)
 
   const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget)
+    setSelectedAsset(_.find(assets, { id }))
   }
 
   const handleClose = () => {
     setAnchorEl(null)
+  }
+
+  const handleEditClick = () => {
+    openEditAssetDialog(selectedAsset)
+    history.push(`${match.url}/edit/${id}`)
+    handleClose()
+  }
+
+  const handleViewClick = () => {
+    const { id } = selectedAsset
+    history.push(`${match.url}/${id}`)
+    handleClose()
+  }
+
+  const orderedAssets = _.orderBy(assets, 'dateCreated', 'desc')
+
+  if (loading) {
+    return <CircleLoader />
   }
 
   console.log(assets, "assets")
@@ -126,7 +148,7 @@ const AssetsList = (props) => {
     selectableRows: 'none',
     textLabels: {
       body: {
-        noMatch: 'Sorry, no assets found',
+        noMatch: 'Sorry, no fixed assets found',
         toolTip: 'Sort',
         columnHeaderTooltip: column => `Sort for ${column.label}`,
       },
@@ -151,7 +173,7 @@ const AssetsList = (props) => {
       <MUIDataTable
         className={classes.datatable}
         title="Fixed Assets"
-        data={assets}
+        data={orderedAssets}
         columns={columns}
         options={options}
       />
@@ -163,10 +185,10 @@ const AssetsList = (props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => { }}>
+        <MenuItem onClick={handleEditClick}>
           Edit
         </MenuItem>
-        <MenuItem onClick={() => history.push({ pathname: '#' })}>
+        <MenuItem onClick={handleViewClick}>
           View Details
         </MenuItem>
       </Menu>
@@ -175,12 +197,14 @@ const AssetsList = (props) => {
 }
 
 const mapStateToProps = createStructuredSelector({
+  loading: Selectors.makeSelectLoading(),
   assets: Selectors.makeSelectAssets(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openNewAssetDialog: () => dispatch(Actions.openNewAssetDialog()),
+    openEditAssetDialog: data => dispatch(Actions.openEditAssetDialog(data)),
   };
 }
 

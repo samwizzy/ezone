@@ -23,8 +23,7 @@ import classNames from 'classnames';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
-import AddIcon from '@material-ui/icons/Add';
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
+import { darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -51,7 +50,7 @@ const useStyles = makeStyles(theme => ({
     "&::after": {
       content: "''",
       position: "absolute",
-      top: 0, 
+      top: 0,
       right: "-52.67px",
       width: 0,
       height: 0,
@@ -61,7 +60,7 @@ const useStyles = makeStyles(theme => ({
     "&::before": {
       content: "''",
       position: "absolute",
-      top: 0, 
+      top: 0,
       right: "-52.67px",
       width: 0,
       height: 0,
@@ -89,7 +88,7 @@ const useStyles = makeStyles(theme => ({
       border: "0 !important"
     },
     "& td": {
-      color: theme.palette.text.secondary 
+      color: theme.palette.text.secondary
     }
   },
   datatable: {
@@ -113,7 +112,7 @@ const useStyles = makeStyles(theme => ({
       },
     },
     '& th.MuiTableCell-root': {
-        fontWeight: theme.typography.fontWeightBold
+      fontWeight: theme.typography.fontWeightBold
     }
   },
   iconPaper: {
@@ -185,80 +184,80 @@ const JournalDetails = props => {
             </div>
           </Paper>
         </Grid>
-    </Grid>
-
-    <Grid container>
-      <Grid item xs={12}>
-        <Table className={classes.datatable} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell component="th">Account</TableCell>
-              <TableCell component="th">Description</TableCell>
-              <TableCell component="th">Debit</TableCell>
-              <TableCell component="th">Credit</TableCell>
-              <TableCell component="th" />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-          {props.location.journalDetailsData.entries.map((entry, id) => (
-            <TableRow key={id}>
-              <TableCell align="left">
-                  {entry.accountId}
-              </TableCell>
-              <TableCell align="left">
-                {entry.description}
-              </TableCell>
-              <TableCell align="left">
-                NGN {entry.debit}
-              </TableCell>
-              <TableCell align="left">
-                NGN {entry.credit}
-              </TableCell>
-            </TableRow>
-          ))}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TableCell colSpan={2} align="right">
-                <Typography variant="h6">Total</Typography>
-              </TableCell>
-              <TableCell>
-                <Paper elevation={0} square className={classes.paper}>
-                  <Typography variant="button">
-                    NGN { props.location.journalDetailsData.entries.reduce((a, b) => a + Number(b.debit), 0) }
-                  </Typography>
-                </Paper>
-              </TableCell>
-              <TableCell>
-                <Paper elevation={0} square className={classes.paper}>
-                  <Typography variant="button">
-                    NGN { props.location.journalDetailsData.entries.reduce((a, b) => a + Number(b.credit), 0) }
-                  </Typography>
-                </Paper>
-              </TableCell>
-              <TableCell />
-            </TableRow>
-          </TableFooter>
-        </Table>
-        <Table className={classes.table}>
-          <TableFooter>
-            <TableRow>
-              <TableCell colSpan={5} component="th">
-                <Typography variant="subtitle1">Attachments</Typography>
-              </TableCell>
-            </TableRow>
-          </TableFooter>
-        </Table>
       </Grid>
-    </Grid>
-  </div>
+
+      <Grid container>
+        <Grid item xs={12}>
+          <Table className={classes.datatable} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell component="th">Account</TableCell>
+                <TableCell component="th">Description</TableCell>
+                <TableCell component="th">Debit</TableCell>
+                <TableCell component="th">Credit</TableCell>
+                <TableCell component="th" />
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {props.location.journalDetailsData.entries.map((entry, id) => (
+                <TableRow key={id}>
+                  <TableCell align="left">
+                    {entry.accountId}
+                  </TableCell>
+                  <TableCell align="left">
+                    {entry.description}
+                  </TableCell>
+                  <TableCell align="left">
+                    NGN {entry.debit}
+                  </TableCell>
+                  <TableCell align="left">
+                    NGN {entry.credit}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={2} align="right">
+                  <Typography variant="h6">Total</Typography>
+                </TableCell>
+                <TableCell>
+                  <Paper elevation={0} square className={classes.paper}>
+                    <Typography variant="button">
+                      NGN {props.location.journalDetailsData.entries.reduce((a, b) => a + Number(b.debit), 0)}
+                    </Typography>
+                  </Paper>
+                </TableCell>
+                <TableCell>
+                  <Paper elevation={0} square className={classes.paper}>
+                    <Typography variant="button">
+                      NGN {props.location.journalDetailsData.entries.reduce((a, b) => a + Number(b.credit), 0)}
+                    </Typography>
+                  </Paper>
+                </TableCell>
+                <TableCell />
+              </TableRow>
+            </TableFooter>
+          </Table>
+          <Table className={classes.table}>
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={5} component="th">
+                  <Typography variant="subtitle1">Attachments</Typography>
+                </TableCell>
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </Grid>
+      </Grid>
+    </div>
   );
 };
 
 JournalDetails.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
-  //   loading: Selectors.makeSelectLoading(),
+  loading: Selectors.makeSelectLoading(),
 });
 
 function mapDispatchToProps(dispatch) {
