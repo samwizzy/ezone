@@ -17,7 +17,6 @@ import AddIcon from '@material-ui/icons/Add';
 import moment from 'moment';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import moment from 'moment';
 import _ from 'lodash';
 
 const useStyles = makeStyles(theme => ({
