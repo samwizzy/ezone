@@ -2,7 +2,6 @@ import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { Route, withRouter } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import { compose } from 'redux';

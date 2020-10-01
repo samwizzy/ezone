@@ -106,7 +106,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AccountDetails = props => {
-  const classes = useStyles();
+  const classes = useStyles(props);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { history, match, accountingPeriods, openAccountTransferDialog, backAccount, getBankAccountById } = props;
 
@@ -305,6 +305,11 @@ const AccountDetails = props => {
     </div>
   )
 }
+
+const mapStateToProps = createStructuredSelector({
+  loading: Selectors.makeSelectLoading(),
+  backAccount: Selectors.makeSelectBankAccountByIdData(),
+});
 
 function mapDispatchToProps(dispatch) {
   return {

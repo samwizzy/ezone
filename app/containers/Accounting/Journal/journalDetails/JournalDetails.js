@@ -178,7 +178,7 @@ const JournalDetails = props => {
             <TableBody>
               {journalData.entries.map((entry, id) => (
                 <TableRow key={id}>
-                  <TableCell>{_.find(chartOfAccounts, { id: entry.accountId }).accountName}</TableCell>
+                  <TableCell>{_.find(chartOfAccounts, { id: entry.accountId }) && _.find(chartOfAccounts, { id: entry.accountId }).accountName}</TableCell>
                   <TableCell>{entry.description}</TableCell>
                   <TableCell>
                     {new Intl.NumberFormat('en-US', { style: 'currency', currency: journalData.currency && journalData.currency.code }).format(entry.debit)}

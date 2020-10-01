@@ -13,13 +13,14 @@ import {
   Typography,
   Toolbar,
 } from '@material-ui/core';
-import classNames from 'classnames';
 import moment from 'moment';
 import _ from 'lodash';
 import { darken } from '@material-ui/core/styles/colorManipulator';
+import { CircleLoader } from '../../../../components/LoadingIndicator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import * as Selectors from '../selectors';
 import ControlledButtons from './components/ControlledButtons'
 
 const useStyles = makeStyles(theme => ({
@@ -33,11 +34,10 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.grey[50],
   },
   table: {
-    margin: 0,
     width: '100% !important',
     '& thead': {
       '& th': {
-        color: theme.palette.common.white,
+        color: theme.palette.secondary.contrastText,
       },
       '& th:nth-child(odd)': {
         backgroundColor: theme.palette.primary.main,
@@ -57,7 +57,6 @@ const useStyles = makeStyles(theme => ({
       borderRight: `1px solid ${theme.palette.divider}`,
     },
   },
-  title: { flexGrow: 1 },
 }));
 
 const ChartAccountDetails = props => {
@@ -70,7 +69,7 @@ const ChartAccountDetails = props => {
   const activePeriod = _.find(accountingPeriods, { activeYear: true, status: true })
 
   if (!chartOfAccount) {
-    return null;
+    return <CircleLoader />;
   }
 
   return (
@@ -153,11 +152,11 @@ const ChartAccountDetails = props => {
           </Toolbar>
         </Grid>
         <Grid item xs={12}>
-          <Paper square className={classes.pape}>
+          <Paper square>
             <Table className={classes.table}>
               <TableHead>
                 <TableRow>
-                  <TableCell component="th">Trs Date</TableCell>
+                  <TableCell component="th">Transaction Date</TableCell>
                   <TableCell component="th">Created at</TableCell>
                   <TableCell component="th">Ref no</TableCell>
                   <TableCell component="th">Debit</TableCell>
