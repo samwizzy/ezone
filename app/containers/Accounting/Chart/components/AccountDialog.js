@@ -77,11 +77,7 @@ const AccountDialog = props => {
     updateChartOfAccount,
   } = props;
 
-  const [options, setOptions] = useState({
-    isParent: false,
-    isBank: false,
-    canHaveParent: false,
-  });
+  const [options, setOptions] = useState({ isParent: false });
 
   const [values, setValues] = useState({ ...initialState });
 
@@ -276,7 +272,9 @@ const AccountDialog = props => {
               />
             </Grid>
 
-            {(_.find(accountTypes, { id: values.accountTypeId }) && _.find(accountTypes, { id: values.accountTypeId }).accountType.toLowerCase() === 'bank') &&
+            {(_.find(accountTypes, { id: values.accountTypeId }) &&
+              _.find(accountTypes, { id: values.accountTypeId }).accountType.toLowerCase() === 'bank') &&
+              _.find(accountTypes, { id: values.accountTypeId }).subAccount &&
               <>
                 <Grid item xs={6}>
                   <TextField
@@ -309,47 +307,47 @@ const AccountDialog = props => {
             }
 
             {_.find(accountTypes, { id: values.accountTypeId }) &&
-              _.find(accountTypes, { id: values.accountTypeId }).subAccount ? (
-                <>
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      control={
-                        <GreenCheckbox
-                          checked={options.isParent}
-                          onChange={handleOptionsChange}
-                          name="isParent"
-                        />
-                      }
-                      label="Make parent account."
-                    />
-                  </Grid>
+              _.find(accountTypes, { id: values.accountTypeId }).subAccount && (
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={
+                      <GreenCheckbox
+                        checked={options.isParent}
+                        onChange={handleOptionsChange}
+                        name="isParent"
+                      />
+                    }
+                    label="Make parent account."
+                  />
+                </Grid>
+              )}
 
-                  <Grid item xs={12}>
-                    <Autocomplete
-                      id="combo-account-chart"
-                      size="small"
-                      options={chartOfAccounts}
-                      getOptionLabel={option => option.accountName}
-                      onChange={handleSelectChange('parentId')}
-                      value={
-                        values.parentId
-                          ? _.find(chartOfAccounts, { id: values.parentId })
-                          : null
-                      }
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          label="Select Parent Type"
-                          variant="outlined"
-                          placeholder="Search"
-                          margin="dense"
-                          fullWidth
-                        />
-                      )}
+            {options.isParent &&
+              <Grid item xs={12}>
+                <Autocomplete
+                  id="combo-account-chart"
+                  size="small"
+                  options={chartOfAccounts}
+                  getOptionLabel={option => option.accountName}
+                  onChange={handleSelectChange('parentId')}
+                  value={
+                    values.parentId
+                      ? _.find(chartOfAccounts, { id: values.parentId })
+                      : null
+                  }
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label="Select Parent Type"
+                      variant="outlined"
+                      placeholder="Search"
+                      margin="dense"
+                      fullWidth
                     />
-                  </Grid>
-                </>
-              ) : null}
+                  )}
+                />
+              </Grid>
+            }
 
             <Grid item xs={12}>
               <TextField

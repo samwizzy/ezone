@@ -138,25 +138,25 @@ const SidebarConfig = [
         submenus: [
           {
             id: 1,
-            name: 'Account Period',
+            name: 'Account period',
             url: '/account/settings/period',
             icon: '',
           },
           {
             id: 2,
-            name: 'Depreciation Type',
+            name: 'Depreciation type',
             url: '/account/settings/depreciation-type',
             icon: '',
           },
           {
             id: 3,
-            name: 'Depreciation Area',
+            name: 'Depreciation area',
             url: '/account/settings/depreciation-area',
             icon: '',
           },
           {
             id: 4,
-            name: 'Asset Types',
+            name: 'Asset types',
             url: '/account/settings/assettypes',
             icon: '',
           },
@@ -314,7 +314,7 @@ const SidebarConfig = [
         submenus: [
           {
             id: 2,
-            name: 'Sales Orders',
+            name: 'Sales orders',
             url: '/inventory/sales',
             icon: 'storage',
           },
@@ -340,7 +340,7 @@ const SidebarConfig = [
         submenus: [
           {
             id: 2,
-            name: 'Purchase Orders',
+            name: 'Purchase orders',
             url: '/inventory/purchase',
             icon: 'storage',
           },
@@ -371,7 +371,7 @@ const SidebarConfig = [
       },
       {
         id: 2,
-        name: 'Work Order',
+        name: 'Work order',
         url: '#',
         icon: 'label',
         submenus: [
@@ -383,7 +383,7 @@ const SidebarConfig = [
           },
           {
             id: 2,
-            name: 'Work Orders',
+            name: 'Work orders',
             url: '/project-manager/work-orders',
             icon: '',
           },

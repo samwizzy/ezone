@@ -15,9 +15,9 @@ export function* getGeneralJournalSaga() {
 
   const requestURL = `${
     Endpoints.GetGeneralJournalApi
-  }?endDate=${endDate}&startDate=${startDate}&orgId=${
+    }?endDate=${endDate}&startDate=${startDate}&orgId=${
     currentUser.organisation.orgId
-  }`;
+    }`;
   console.log('requestURL', requestURL);
 
   try {
@@ -41,7 +41,7 @@ export function* getChatOfAccountSaga() {
 
   const requestURL = `${Endpoints.GetChatsOfAccountApi}/${
     currentUser.organisation.orgId
-  }?endDate=${endDate}&startDate=${startDate}}`;
+    }?endDate=${endDate}&startDate=${startDate}}`;
 
   try {
     const getChatsOfAccountResponse = yield call(request, requestURL, {
@@ -69,9 +69,9 @@ export function* getGeneralLedgerSaga() {
 
   const requestURL = `${
     Endpoints.GetGeneralLedgerApi
-  }?endDate=${endDate}&startDate=${startDate}&orgId=${
+    }?endDate=${endDate}&startDate=${startDate}&orgId=${
     currentUser.organisation.orgId
-  }`;
+    }`;
   console.log('requestURL', requestURL);
 
   try {
@@ -97,9 +97,9 @@ export function* getTrialBalanceSaga() {
 
   const requestURL = `${
     Endpoints.GetTrialBalanceApi
-  }?endDate=${endDate}&startDate=${startDate}&orgId=${
+    }?endDate=${endDate}&startDate=${startDate}&orgId=${
     currentUser.organisation.orgId
-  }`;
+    }`;
   console.log('requestURL', requestURL);
 
   try {

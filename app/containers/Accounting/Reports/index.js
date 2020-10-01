@@ -96,9 +96,9 @@ const Reports = () => {
     'Other outstanding items',
     'Outstanding checks',
   ];
-  const { reportsId } = useParams();
+  const { reportId } = useParams();
 
-  if (reportsId) return <ViewReports reportId={reportsId} />;
+  if (reportId) return <ViewReports reportId={reportId} />;
 
   return (
     <ModuleLayout>
