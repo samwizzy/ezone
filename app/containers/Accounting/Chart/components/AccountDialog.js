@@ -131,9 +131,8 @@ const AccountDialog = props => {
     const {
       accountCode,
       accountName,
-      accountNumber,
       accountTypeId,
-      bankBalance,
+      openingBalance,
       description,
       type,
     } = values;
@@ -141,7 +140,7 @@ const AccountDialog = props => {
       accountCode.length > 0 &&
       accountName.length > 0 &&
       accountTypeId &&
-      bankBalance &&
+      openingBalance &&
       description.length > 0 &&
       type
     );
