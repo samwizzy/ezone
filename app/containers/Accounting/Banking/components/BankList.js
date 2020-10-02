@@ -6,6 +6,7 @@ import {
   makeStyles,
   IconButton,
   Button,
+  Chip,
   Menu,
   MenuItem,
   Grid,
@@ -14,6 +15,8 @@ import {
 import classNames from 'classnames';
 import AddIcon from '@material-ui/icons/Add';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import MUIDataTable from 'mui-datatables';
 import { darken } from '@material-ui/core/styles/colorManipulator';
 import { green } from '@material-ui/core/colors';
@@ -170,11 +173,11 @@ const BankList = props => {
       options: {
         filter: true,
         sort: true,
-        customBodyRender: status => (
-          <span className={classNames(classes.status, { active: status })}>
-            {status ? 'Active' : 'Inactive'}
-          </span>
-        ),
+        customBodyRender: status => {
+          return status
+            ? <Chip label="Active" variant="outlined" icon={<CheckCircleIcon className={classNames(classes.status, { active: status })} />} />
+            : <Chip label="Inactive" variant="outlined" icon={<RadioButtonUncheckedIcon />} />
+        },
       },
     },
     {
@@ -290,14 +293,10 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getBankAccountById: data => dispatch(Actions.getBankAccountById(data)),
-    openNewBankAccountDialog: () =>
-      dispatch(Actions.openNewBankAccountDialog()),
-    openEditBankAccountDialog: evt =>
-      dispatch(Actions.openEditBankAccountDialog(evt)),
-    openDeleteBankAccountDialog: evt =>
-      dispatch(Actions.openDeleteBankAccountDialog(evt)),
-    activateDeactivateBankAccount: data =>
-      dispatch(Actions.activateDeactivateBankAccount(data)),
+    openNewBankAccountDialog: () => dispatch(Actions.openNewBankAccountDialog()),
+    openEditBankAccountDialog: data => dispatch(Actions.openEditBankAccountDialog(data)),
+    openDeleteBankAccountDialog: data => dispatch(Actions.openDeleteBankAccountDialog(data)),
+    activateDeactivateBankAccount: data => dispatch(Actions.activateDeactivateBankAccount(data)),
   };
 }
 

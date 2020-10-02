@@ -8,6 +8,7 @@ import {
   TextField,
   makeStyles,
   Button,
+  InputAdornment,
   Dialog,
   DialogContent,
   DialogActions,
@@ -31,11 +32,17 @@ import _ from 'lodash';
 import EzoneUtils from '../../../../utils/EzoneUtils';
 import * as AppSelectors from '../../../App/selectors';
 import * as Selectors from '../selectors';
+import * as AccSelectors from '../../selectors';
 import * as Actions from '../actions';
+import { IsoCodeToFlag } from '../../components/IsoCodeFormatter'
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+  },
+  flag: {
+    width: 20,
+    marginRight: theme.spacing(1),
   },
 }));
 
@@ -53,6 +60,7 @@ const TransactionTransferDialog = props => {
 
   const {
     loading,
+    accountSetupData,
     bankAccounts,
     currencies,
     accountTypes,
@@ -79,6 +87,8 @@ const TransactionTransferDialog = props => {
       setValues({ ...values, currentBankId: dialog.data.id });
     }
   }, [dialog.data]);
+
+  const flag = src => <img className={classes.flag} src={src} />;
 
   const handleChange = event => {
     event.target.name === 'amount'
@@ -166,10 +176,10 @@ const TransactionTransferDialog = props => {
                 renderInput={params => (
                   <TextField
                     {...params}
-                    label="Select Bank Account"
+                    label="Select bank account"
                     variant="outlined"
                     placeholder="Account"
-                    margin="normal"
+                    margin="dense"
                     fullWidth
                   />
                 )}
@@ -185,10 +195,10 @@ const TransactionTransferDialog = props => {
                 renderInput={params => (
                   <TextField
                     {...params}
-                    label="Select Transfer Type"
+                    label="Select transfer type"
                     variant="outlined"
-                    placeholder="Transfer Type"
-                    margin="normal"
+                    placeholder="Transfer type"
+                    margin="dense"
                     fullWidth
                   />
                 )}
@@ -198,30 +208,61 @@ const TransactionTransferDialog = props => {
               <Autocomplete
                 id="transfer-currency"
                 size="small"
-                options={currencies}
-                getOptionLabel={option => option.name}
+                options={accountSetupData ? currencies.filter(currency => currency.code !== accountSetupData.currency.code) : []}
+                getOptionLabel={option => `${option.name} ( ${option.symbol} )`}
                 onChange={handleSelectChange('currencyId')}
                 value={
                   values.currencyId
                     ? _.find(currencies, { id: values.currencyId })
                     : null
                 }
+                renderOption={option => (
+                  <React.Fragment>
+                    <span>{flag(IsoCodeToFlag(option.code))}</span> {option.name}
+                  </React.Fragment>
+                )}
                 renderInput={params => (
                   <TextField
                     {...params}
                     label="Currency"
                     variant="outlined"
+                    margin="dense"
                     placeholder="Currencies"
                     fullWidth
                   />
                 )}
               />
             </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id="exchange-rate"
+                size="small"
+                name="exchangeRate"
+                label="Exchange Rate"
+                placeholder="Exchange Rate"
+                value={values.rate}
+                onChange={handleChange}
+                variant="outlined"
+                margin="dense"
+                fullWidth
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      {values.currencyId ? `1 ${_.find(currencies, { id: values.currencyId }).name} =` : ""}
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">NGN</InputAdornment>
+                  )
+                }}
+              />
+            </Grid>
+
             <Grid item xs={6}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
                   autoOk
-                  margin="normal"
+                  margin="dense"
                   inputVariant="outlined"
                   size="small"
                   id="transfer-date-dialog"
@@ -244,7 +285,7 @@ const TransactionTransferDialog = props => {
                 size="small"
                 value={values.amount}
                 onChange={handleChange}
-                margin="normal"
+                margin="dense"
                 fullWidth
               />
             </Grid>
@@ -253,14 +294,14 @@ const TransactionTransferDialog = props => {
                 id="standard-reference-number"
                 label="Reference Number"
                 name="referenceNumber"
-                onBlur={() => {}}
+                onBlur={() => { }}
                 error={
                   !/^[a-z0-9]+$/i.test(values.referenceNumber) &&
                   values.referenceNumber.length > 0
                 }
                 helperText={
                   !/^[a-z0-9]+$/i.test(values.referenceNumber) &&
-                  values.referenceNumber.length > 0
+                    values.referenceNumber.length > 0
                     ? 'Reference number must be alphanumeric'
                     : ''
                 }
@@ -268,7 +309,7 @@ const TransactionTransferDialog = props => {
                 size="small"
                 value={values.referenceNumber}
                 onChange={handleChange}
-                margin="normal"
+                margin="dense"
                 fullWidth
               />
             </Grid>
@@ -281,7 +322,7 @@ const TransactionTransferDialog = props => {
                 size="small"
                 value={values.description}
                 onChange={handleChange}
-                margin="normal"
+                margin="dense"
                 fullWidth
                 rows={3}
                 multiline
@@ -346,6 +387,7 @@ TransactionTransferDialog.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
+  accountSetupData: AccSelectors.makeSelectGetAccountingSetupData(),
   bankAccounts: Selectors.makeSelectBankAccountData(),
   dialog: Selectors.makeSelectTransactionTransferDialog(),
   accountTypes: Selectors.makeSelectAccountTypes(),
@@ -354,8 +396,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeAccountTransferDialog: () =>
-      dispatch(Actions.closeAccountTransferDialog()),
+    closeAccountTransferDialog: () => dispatch(Actions.closeAccountTransferDialog()),
     createBankTransfer: data => dispatch(Actions.createBankTransfer(data)),
   };
 }

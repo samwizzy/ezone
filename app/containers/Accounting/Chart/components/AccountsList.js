@@ -1,15 +1,15 @@
-import React, { memo, useState, useRef } from 'react';
+import React, { Fragment, memo, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
-import { makeStyles, IconButton, Button, Menu, MenuItem, Tooltip } from '@material-ui/core';
+import { makeStyles, IconButton, Button, Chip, Menu, MenuItem, Tooltip } from '@material-ui/core';
 import { CircleLoader } from '../../../../components/LoadingIndicator';
 import AddIcon from '@material-ui/icons/Add';
 import classNames from 'classnames';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import MUIDataTable from 'mui-datatables';
@@ -159,13 +159,9 @@ const AccountChart = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          return value ? (
-            <CheckCircleIcon
-              className={classNames(classes.status, { active: value })}
-            />
-          ) : (
-              <CheckCircleOutlineIcon />
-            );
+          return value
+            ? <Chip label="Active" variant="outlined" icon={<CheckCircleIcon className={classNames(classes.status, { active: value })} />} />
+            : <Chip label="Inactive" variant="outlined" icon={<RadioButtonUncheckedIcon />} />
         },
       },
     },
@@ -228,7 +224,16 @@ const AccountChart = props => {
       >
         <MenuItem onClick={handleEditClick}>Edit</MenuItem>
         <MenuItem onClick={handleView}>View Details</MenuItem>
-        <MenuItem onClick={() => openDeleteAccountDialog(selectedAccount)}>
+        <MenuItem
+          onClick={() => { }}
+          disabled={selectedAccount && !Boolean(selectedAccount.entries.length)}
+        >
+          Mark as active
+        </MenuItem>
+        <MenuItem
+          onClick={() => openDeleteAccountDialog(selectedAccount)}
+          disabled={selectedAccount && Boolean(selectedAccount.entries.length)}
+        >
           Delete
         </MenuItem>
       </Menu>
@@ -251,12 +256,9 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewAccountDialog: () => dispatch(Actions.openNewAccountDialog()),
-    openDeleteAccountDialog: data =>
-      dispatch(Actions.openDeleteAccountDialog(data)),
-    editOpenAccountDialog: data =>
-      dispatch(Actions.editOpenAccountDialog(data)),
-    getChartOfAccountById: data =>
-      dispatch(Actions.getChartOfAccountById(data)),
+    openDeleteAccountDialog: data => dispatch(Actions.openDeleteAccountDialog(data)),
+    editOpenAccountDialog: data => dispatch(Actions.editOpenAccountDialog(data)),
+    getChartOfAccountById: data => dispatch(Actions.getChartOfAccountById(data)),
   };
 }
 

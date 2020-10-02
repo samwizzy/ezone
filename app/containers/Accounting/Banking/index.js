@@ -16,7 +16,7 @@ import messages from './messages';
 import ModuleLayout from '../components/ModuleLayout';
 import BankList from './components/BankList';
 import BankDetails from './bankDetails';
-import AddBankAccountDialog from './components/AddBankAccountDialog';
+import BankAccountDialog from './components/BankAccountDialog';
 import ConfirmDeleteBankAccountDialog from './components/ConfirmDeleteBankAccountDialog';
 import TransactionTransferDialog from './components/TransactionTransferDialog';
 
@@ -54,7 +54,7 @@ export function Banking(props) {
         <Route path={`${path}/:bankId`} component={BankDetails} />
       </ModuleLayout>
 
-      <AddBankAccountDialog />
+      <BankAccountDialog />
       <ConfirmDeleteBankAccountDialog />
       <TransactionTransferDialog />
     </div>

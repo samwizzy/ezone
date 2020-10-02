@@ -1,5 +1,7 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
 import swal from 'sweetalert';
+import { push } from 'connected-react-router';
+import history from './../../../utils/history'
 import * as AppSelectors from '../../App/selectors';
 import * as AppActions from '../../App/actions';
 import * as Selectors from './selectors';
@@ -118,6 +120,8 @@ export function* createAccountJournal({ payload }) {
 
     swal('Success', 'Account journal posted successfully', 'success');
     yield put(Actions.createJournalSuccess(response));
+    yield put(Actions.getJournalList());
+    yield put(push('/account/journal'))
   } catch (err) {
     const error = yield call(errorHandler, err.response.json());
     console.log(error, 'error createJournalSuccess');

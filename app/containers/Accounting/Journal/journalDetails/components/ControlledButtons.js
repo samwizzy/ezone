@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, Icon, IconButton, Toolbar, Typography } from '@material-ui/core';
-import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 
@@ -31,18 +31,18 @@ const ControlledButtons = props => {
 		<div className={classes.root}>
 			<Toolbar className={classes.iconPaper} variant="dense">
 				<IconButton onClick={handleBack}>
-					<KeyboardBackspaceIcon />
+					<ArrowBackIcon />
 				</IconButton>
 				<Typography>Back</Typography>
 				<Typography className={classes.title} />
 				<IconButton>
-					<Icon>add</Icon>
+					<Icon>print</Icon>
 				</IconButton>
 				<IconButton>
 					<Icon>edit</Icon>
 				</IconButton>
 				<IconButton>
-					<Icon>cloud_download</Icon>
+					<Icon>delete</Icon>
 				</IconButton>
 			</Toolbar>
 		</div>

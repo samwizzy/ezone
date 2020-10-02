@@ -28,10 +28,10 @@ import AddIcon from '@material-ui/icons/Add';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import SettingsIcon from '@material-ui/icons/Settings';
-import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import moment from 'moment';
+import _ from 'lodash';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import { CircleLoader } from '../../../../components/LoadingIndicator';
@@ -39,22 +39,21 @@ import { CircleLoader } from '../../../../components/LoadingIndicator';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
   },
   paper: {
-    padding: theme.spacing(2, 0),
+    marginBottom: theme.spacing(1),
     boxShadow: theme.shadows[0],
   },
   table: {
-    minWidth: 200,
+    width: '100% !important',
     whiteSpace: 'nowrap',
     '& tr': {
+      borderTop: `1px solid ${theme.palette.divider}`,
       '& th': {
-        fontWeight: theme.typography.fontWeightMedium, // 500 + 100, bold=700
+        fontWeight: theme.typography.fontWeightBold, // 500 + 100, bold=700
       },
     },
     '& td, & th': {
-      // borderBottom: 0,
       border: `1px solid ${theme.palette.divider}`,
     },
   },
@@ -70,9 +69,9 @@ const useStyles = makeStyles(theme => ({
   toolbarHead: {
     alignItems: 'center',
     '& .MuiAvatar-root': {
-      background: theme.palette.primary.main,
+      color: theme.palette.primary.main,
       marginRight: theme.spacing(1),
-      color: theme.palette.secondary.contrastText,
+      background: theme.palette.background.paper,
     },
   },
   status: {
@@ -139,9 +138,7 @@ const AccountingPeriods = props => {
     return <CircleLoader />;
   }
 
-  const currentAccountingPeriod = accountingPeriods.find(
-    account => account.activeYear === true,
-  );
+  const currentAccountingPeriod = _.find(accountingPeriods, { activeYear: true })
 
   console.log(accountingSetupData, 'accountingSetupData');
   console.log(accountingPeriods, 'accountingPeriods');
@@ -159,8 +156,7 @@ const AccountingPeriods = props => {
             </Toolbar>
           </AppBar>
 
-          <Toolbar className={classes.toolbar}>
-            <EventAvailableIcon />
+          <Toolbar variant="dense" className={classes.toolbar}>
             <Typography variant="h6" className={classes.title}>
               Accounting Period
             </Typography>
@@ -172,9 +168,7 @@ const AccountingPeriods = props => {
                 <TableRow>
                   <TableCell component="th">Financial Year Start</TableCell>
                   <TableCell>
-                    {moment(currentAccountingPeriod.startDate).format(
-                      'Do, MMM',
-                    )}
+                    {moment(currentAccountingPeriod.startDate).format('Do, MMM')}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -202,12 +196,9 @@ const AccountingPeriods = props => {
         </Grid>
 
         <Grid item xs={12}>
-          <Toolbar className={classes.toolbar}>
-            <EventAvailableIcon />
-            <Typography variant="h6" className={classes.title}>
-              Accounting Year
-            </Typography>
-            <Chip label="Current Accounting Year" />
+          <Toolbar variant="dense">
+            <Chip label="Current Accounting Year" variant="outlined" icon={<EventAvailableIcon />} />
+            <Typography variant="h6" className={classes.title} />
           </Toolbar>
 
           <Paper square className={classes.paper}>
@@ -218,8 +209,6 @@ const AccountingPeriods = props => {
                   <TableCell>
                     {moment(currentAccountingPeriod.startDate).format('ll')}
                   </TableCell>
-                </TableRow>
-                <TableRow>
                   <TableCell component="th">End Date</TableCell>
                   <TableCell>
                     {moment(currentAccountingPeriod.endDate).format('ll')}
@@ -230,13 +219,9 @@ const AccountingPeriods = props => {
           </Paper>
 
           <Paper square className={classes.paper}>
-            <Toolbar>
-              <Typography
-                variant="subtitle1"
-                className={classes.title}
-                component="div"
-              >
-                Accounting Periods
+            <Toolbar variant="dense">
+              <Typography variant="h6" className={classes.title}>
+                Accounting Years
               </Typography>
               <Button
                 variant="contained"
@@ -263,15 +248,10 @@ const AccountingPeriods = props => {
                       <TableCell>{moment(item.endDate).format('ll')}</TableCell>
                       <TableCell>{item.status ? 'Open' : 'Closed'}</TableCell>
                       <TableCell>
-                        {item.activeYear ? (
-                          <CheckCircleIcon
-                            className={classNames(classes.status, {
-                              active: item.activeYear,
-                            })}
-                          />
-                        ) : (
-                          <CheckCircleOutlineIcon />
-                        )}
+                        {item.activeYear
+                          ? <CheckCircleIcon className={classNames(classes.status, { active: item.activeYear })} />
+                          : <RadioButtonUncheckedIcon />
+                        }
                       </TableCell>
                       <TableCell component="th">
                         <IconButton

@@ -21,17 +21,19 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Selectors from '../selectors';
+import * as AccSelectors from '../../selectors';
 import ControlledButtons from './components/ControlledButtons'
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(2),
   },
   paper: {
-    padding: theme.spacing(2),
-    backgroundColor: theme.palette.grey[50],
+    margin: theme.spacing(2, 0),
+  },
+  toolbar: {
+    ...theme.mixins.toolbar,
+    border: `1px dotted ${theme.palette.divider}`
   },
   table: {
     width: '100% !important',
@@ -61,10 +63,11 @@ const useStyles = makeStyles(theme => ({
 
 const ChartAccountDetails = props => {
   const classes = useStyles(props);
-  const { history, chartOfAccount, accountingPeriods } = props;
+  const { history, accountSetupData, chartOfAccount, accountingPeriods } = props;
 
   console.log("Selected chartOfAccount", chartOfAccount);
   console.log("chartOfAccount accountingPeriods", accountingPeriods);
+  console.log("chartOfAccount accountSetupData", accountSetupData);
 
   const activePeriod = _.find(accountingPeriods, { activeYear: true, status: true })
 
@@ -76,10 +79,10 @@ const ChartAccountDetails = props => {
     <div className={classes.root}>
       <Grid container>
         <Grid item xs={12}>
-          <ControlledButtons />
+          <ControlledButtons chartOfAccount={chartOfAccount} />
         </Grid>
         <Grid item xs={12}>
-          <Paper square>
+          <Paper square className={classes.paper}>
             <Table className={classes.table}>
               <TableBody>
                 <TableRow>
@@ -93,8 +96,7 @@ const ChartAccountDetails = props => {
                 <TableRow>
                   <TableCell>Account Type</TableCell>
                   <TableCell>
-                    {chartOfAccount.accountType &&
-                      chartOfAccount.accountType.accountType}
+                    {chartOfAccount.accountType && chartOfAccount.accountType.accountType}
                   </TableCell>
                 </TableRow>
                 {chartOfAccount.accountType &&
@@ -106,13 +108,13 @@ const ChartAccountDetails = props => {
                       </TableRow>
                       <TableRow>
                         <TableCell>Account Number</TableCell>
-                        <TableCell>{chartOfAccount.accountNumber && chartOfAccount.accountNumber}</TableCell>
+                        <TableCell>{chartOfAccount.accountNumber}</TableCell>
                       </TableRow>
                     </React.Fragment>
                   )}
                 <TableRow>
                   <TableCell>Financial Statement</TableCell>
-                  <TableCell>{chartOfAccount.financialStatement && chartOfAccount.financialStatement}</TableCell>
+                  <TableCell>{chartOfAccount.financialStatement}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Description</TableCell>
@@ -133,11 +135,11 @@ const ChartAccountDetails = props => {
                       chartOfAccount.accountType.accountType === 'Bank'
                       ? new Intl.NumberFormat('en-US', {
                         style: 'currency',
-                        currency: 'NGN',
+                        currency: accountSetupData.currency.code,
                       }).format(chartOfAccount.bankBalance)
                       : new Intl.NumberFormat('en-US', {
                         style: 'currency',
-                        currency: 'NGN',
+                        currency: accountSetupData.currency.code,
                       }).format(chartOfAccount.openingBalance)}
                   </TableCell>
                 </TableRow>
@@ -147,40 +149,40 @@ const ChartAccountDetails = props => {
         </Grid>
 
         <Grid item xs={12}>
-          <Toolbar>
+          <Toolbar className={classes.toolbar}>
             <Typography variant="h6">Transactions</Typography>
           </Toolbar>
         </Grid>
         <Grid item xs={12}>
-          <Paper square>
+          <Paper square className={classes.paper}>
             <Table className={classes.table}>
               <TableHead>
                 <TableRow>
                   <TableCell component="th">Transaction Date</TableCell>
                   <TableCell component="th">Created at</TableCell>
-                  <TableCell component="th">Ref no</TableCell>
+                  <TableCell component="th">Description</TableCell>
                   <TableCell component="th">Debit</TableCell>
                   <TableCell component="th">Credit</TableCell>
                   <TableCell component="th">Balance</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow>
-                  <TableCell />
-                  <TableCell>
-                    {moment(chartOfAccount.dateCreated).format('ll')}
-                  </TableCell>
-                  <TableCell>09089</TableCell>
-                  <TableCell>$2000</TableCell>
-                  <TableCell>$30000</TableCell>
-                  <TableCell>$320000</TableCell>
-                </TableRow>
+                {chartOfAccount.entries.map((entry, i) =>
+                  <TableRow key={i}>
+                    <TableCell>{moment(entry.dateCreated).format('ll')}</TableCell>
+                    <TableCell>{moment(entry.dateCreated).format('ll')}</TableCell>
+                    <TableCell>{entry.description}</TableCell>
+                    <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: accountSetupData.currency.code }).format(entry.debit)}</TableCell>
+                    <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: accountSetupData.currency.code }).format(entry.credit)}</TableCell>
+                    <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: accountSetupData.currency.code }).format(Number(entry.debit) + Number(entry.credit))}</TableCell>
+                  </TableRow>
+                )}
                 <TableRow>
                   <TableCell colSpan={2} />
                   <TableCell>Total</TableCell>
-                  <TableCell>$2000</TableCell>
-                  <TableCell>$30000</TableCell>
-                  <TableCell>$320000</TableCell>
+                  <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: accountSetupData.currency.code }).format(chartOfAccount.entries.reduce((curVal, b) => curVal + b.debit, 0))}</TableCell>
+                  <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: accountSetupData.currency.code }).format(chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit, 0))}</TableCell>
+                  <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: accountSetupData.currency.code }).format(chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit + b.debit, 0))}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -197,6 +199,7 @@ const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   accountingPeriods: Selectors.makeSelectAccountingPeriodsData(),
   chartOfAccount: Selectors.makeSelectGetChartOfAccountById(),
+  accountSetupData: AccSelectors.makeSelectGetAccountingSetupData(),
 });
 
 function mapDispatchToProps(dispatch) {

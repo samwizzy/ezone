@@ -89,8 +89,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     deleteChartOfAccount: data => dispatch(Actions.deleteChartOfAccount(data)),
-    closeDeleteAccountDialog: () =>
-      dispatch(Actions.closeDeleteAccountDialog()),
+    closeDeleteAccountDialog: () => dispatch(Actions.closeDeleteAccountDialog()),
   };
 }
 

@@ -23,6 +23,7 @@ import {
 import { green } from '@material-ui/core/colors';
 import * as Selectors from '../selectors';
 import _ from 'lodash';
+import { financialStatements } from './../enums'
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -77,7 +78,7 @@ const AccountDialog = props => {
     updateChartOfAccount,
   } = props;
 
-  const [options, setOptions] = useState({ isParent: false });
+  const [options, setOptions] = useState({ makeSubAccount: false });
 
   const [values, setValues] = useState({ ...initialState });
 
@@ -262,10 +263,10 @@ const AccountDialog = props => {
                 renderInput={params => (
                   <TextField
                     {...params}
-                    label="Select Account Type"
+                    label="Select account type"
                     variant="outlined"
                     margin="dense"
-                    placeholder="Account Types"
+                    placeholder="Account type"
                     fullWidth
                   />
                 )}
@@ -312,22 +313,22 @@ const AccountDialog = props => {
                   <FormControlLabel
                     control={
                       <GreenCheckbox
-                        checked={options.isParent}
+                        checked={options.makeSubAccount}
                         onChange={handleOptionsChange}
-                        name="isParent"
+                        name="makeSubAccount"
                       />
                     }
-                    label="Make parent account."
+                    label="Make sub account"
                   />
                 </Grid>
               )}
 
-            {options.isParent &&
+            {options.makeSubAccount &&
               <Grid item xs={12}>
                 <Autocomplete
                   id="combo-account-chart"
                   size="small"
-                  options={chartOfAccounts}
+                  options={chartOfAccounts.filter(account => account.accountType && account.accountType.id === values.accountTypeId)}
                   getOptionLabel={option => option.accountName}
                   onChange={handleSelectChange('parentId')}
                   value={
@@ -338,7 +339,7 @@ const AccountDialog = props => {
                   renderInput={params => (
                     <TextField
                       {...params}
-                      label="Select Parent Type"
+                      label="Select Parent Account"
                       variant="outlined"
                       placeholder="Search"
                       margin="dense"
@@ -350,20 +351,30 @@ const AccountDialog = props => {
             }
 
             <Grid item xs={12}>
-              <TextField
-                id="standard-financial-statement"
-                label="Financial Statement"
-                name="financialStatement"
-                variant="outlined"
+              <Autocomplete
+                id="account-financial-statement"
                 size="small"
-                value={values.financialStatement}
-                onChange={handleChange}
-                margin="dense"
-                fullWidth
-                rows={3}
-                multiline
+                options={financialStatements}
+                getOptionLabel={option => option.label}
+                onChange={handleSelectChange('financialStatement')}
+                value={
+                  values.financialStatement
+                    ? _.find(financialStatements, { id: values.financialStatement })
+                    : null
+                }
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Select financial statement"
+                    variant="outlined"
+                    margin="dense"
+                    placeholder="Financial Statement"
+                    fullWidth
+                  />
+                )}
               />
             </Grid>
+
             <Grid item xs={12}>
               <TextField
                 id="standard-description"

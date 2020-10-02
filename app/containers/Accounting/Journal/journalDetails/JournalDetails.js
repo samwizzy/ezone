@@ -19,6 +19,7 @@ import {
 import classNames from 'classnames';
 import CropOriginalIcon from '@material-ui/icons/CropOriginal';
 import { darken } from '@material-ui/core/styles/colorManipulator';
+import { green, red, yellow, grey } from '@material-ui/core/colors';
 import { CircleLoader } from '../../../../components/LoadingIndicator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -28,23 +29,41 @@ import * as Selectors from './../selectors';
 import moment from 'moment';
 import _ from 'lodash';
 import ControlledButtons from './components/ControlledButtons'
+import { statuses } from '../enums'
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    margin: theme.spacing(3),
   },
   flex: {
     position: "relative",
     padding: theme.spacing(8, 2)
   },
-  status: {
+  ribbon: {
     textAlign: "center",
     padding: theme.spacing(2, 5),
     position: "absolute",
-    backgroundColor: '#6DCC4C',
-    color: theme.palette.common.white,
+    '&.pending': {
+      backgroundColor: green[500],
+      "&::after": { borderTop: `52.67px solid ${green[500]}` },
+      "&::before": { borderBottom: `52.67px solid ${green[500]}` },
+    },
+    '&.rejected': {
+      backgroundColor: red[500],
+      "&::after": { borderTop: `52.67px solid ${red[500]}` },
+      "&::before": { borderBottom: `52.67px solid ${red[500]}` },
+    },
+    '&.submitted': {
+      backgroundColor: yellow[500],
+      "&::after": { borderTop: `52.67px solid ${yellow[500]}` },
+      "&::before": { borderBottom: `52.67px solid ${yellow[500]}` },
+    },
+    '&.drafted': {
+      backgroundColor: grey[500],
+      "&::after": { borderTop: `52.67px solid ${grey[500]}` },
+      "&::before": { borderBottom: `52.67px solid ${grey[500]}` },
+    },
+    color: theme.palette.secondary.contrastText,
     top: 0, left: 0,
     "&::after": {
       content: "''",
@@ -53,7 +72,6 @@ const useStyles = makeStyles(theme => ({
       right: "-52.67px",
       width: 0,
       height: 0,
-      borderTop: "52.67px solid #6DCC4C", //52.67
       borderRight: "52.67px solid transparent"
     },
     "&::before": {
@@ -63,9 +81,8 @@ const useStyles = makeStyles(theme => ({
       right: "-52.67px",
       width: 0,
       height: 0,
-      borderBottom: "52.67px solid #6DCC4C",
       borderRight: "52.67px solid transparent"
-    }
+    },
   },
   paper: {
     padding: theme.spacing(1),
@@ -76,21 +93,22 @@ const useStyles = makeStyles(theme => ({
   label: { marginLeft: theme.spacing(1) },
   title: { flexGrow: 1 },
   table: {
-    minWidth: 200,
+    display: 'flex',
+    overflowX: 'hidden',
     "& td, & th": {
-      border: 0
+      border: 0,
+      ...theme.typography.subtitle1,
     },
-    "& td": {
-      color: theme.palette.text.secondary
+    "& th": {
+      paddingLeft: 0,
     }
   },
   datatable: {
-    minWidth: 200,
     width: '100% !important',
     marginTop: theme.spacing(1),
     '& thead': {
       '& th': {
-        color: theme.palette.common.white,
+        color: theme.palette.secondary.contrastText,
       },
       '& th:nth-child(odd)': {
         backgroundColor: theme.palette.primary.main,
@@ -135,8 +153,8 @@ const JournalDetails = props => {
         </Grid>
         <Grid item xs={12} className={classNames(classes.gridItem)}>
           <Paper square className={classes.flex}>
-            <div className={classes.status}>
-              <Typography>Published</Typography>
+            <div className={classNames(classes.ribbon, { [journalData.status.toLowerCase()]: true })}>
+              <Typography>{_.find(statuses, { value: journalData.status }).label}</Typography>
             </div>
             <Toolbar>
               <Typography variant="h5">Journal</Typography>
@@ -220,7 +238,7 @@ const JournalDetails = props => {
 
           <Box my={2}>
             <Chip
-              avatar={<CropOriginalIcon />}
+              icon={<CropOriginalIcon />}
               label={journalData.attachments && `${journalData.attachments.length} attachments`}
               variant="outlined"
             />

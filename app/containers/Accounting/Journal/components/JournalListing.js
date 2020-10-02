@@ -128,12 +128,15 @@ const JournalListing = props => {
       },
     },
     {
-      name: 'total',
+      name: 'id',
       label: 'Amount',
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => new Intl.NumberFormat('en-US', {}).format(value)
+        customBodyRender: value => {
+          const journal = journals.find(journal => journal.id === value)
+          return new Intl.NumberFormat('en-US', { style: 'currency', currency: journal.currency && journal.currency.code }).format(journal.total)
+        }
       },
     },
 

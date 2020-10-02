@@ -33,7 +33,7 @@ export function* getCurrencies() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetCurrencyByOrgIdApi}?orgId=${
     currentUser.organisation.orgId
-  }`;
+    }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -90,7 +90,7 @@ export function* createNewBankAccount({ payload }) {
     });
 
     yield put(Actions.createNewBankSuccess(response));
-    swal('Success', 'Account Created Successfully', 'success');
+    swal('Success', 'Bank Account Created Successfully', 'success');
     yield put(Actions.getBankAccounts());
     yield put(Actions.closeNewBankAccountDialog());
   } catch (err) {
@@ -131,7 +131,7 @@ export function* getAllBankAccounts() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetAllBankAccount}/${
     currentUser.organisation.orgId
-  }`;
+    }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -178,7 +178,7 @@ export function* getTransfersByOrgId() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetAllTransferByOrgIdApi}/${
     currentUser.organisation.orgId
-  }`;
+    }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -278,7 +278,7 @@ export function* activateDeactivateBankAccount({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.ActivateDeactivateBankAccountApi}?id=${
     payload.id
-  }&status=${payload.status}`;
+    }&status=${payload.status}`;
   console.log(payload, 'payload activateDeactivateBankAccount');
 
   try {

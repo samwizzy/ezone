@@ -138,7 +138,7 @@ const SidebarConfig = [
         submenus: [
           {
             id: 1,
-            name: 'Account period',
+            name: 'Account Settings',
             url: '/account/settings/period',
             icon: '',
           },
@@ -148,12 +148,12 @@ const SidebarConfig = [
             url: '/account/settings/depreciation-type',
             icon: '',
           },
-          {
-            id: 3,
-            name: 'Depreciation area',
-            url: '/account/settings/depreciation-area',
-            icon: '',
-          },
+          // {
+          //   id: 3,
+          //   name: 'Depreciation area',
+          //   url: '/account/settings/depreciation-area',
+          //   icon: '',
+          // },
           {
             id: 4,
             name: 'Asset types',

@@ -41,7 +41,7 @@ const initialState = {
   description: '',
 };
 
-const AddBankAccountDialog = props => {
+const BankAccountDialog = props => {
   const classes = useStyles();
 
   const {
@@ -86,7 +86,7 @@ const AddBankAccountDialog = props => {
         bankBalance,
         bankName,
         description,
-      } = bankAccountDialog.data;
+      } = dialog.data;
       setValues({
         ...values,
         accountCode,
@@ -141,7 +141,7 @@ const AddBankAccountDialog = props => {
                 size="small"
                 value={values.accountName}
                 onChange={handleChange}
-                margin="normal"
+                margin="dense"
                 fullWidth
               />
             </Grid>
@@ -150,14 +150,14 @@ const AddBankAccountDialog = props => {
                 id="standard-account-code"
                 label="Account Code"
                 name="accountCode"
-                onBlur={() => {}}
+                onBlur={() => { }}
                 error={
                   !/^[a-z0-9]+$/i.test(values.accountCode) &&
                   values.accountCode.length > 0
                 }
                 helperText={
                   !/^[a-z0-9]+$/i.test(values.accountCode) &&
-                  values.accountCode.length > 0
+                    values.accountCode.length > 0
                     ? 'Account code must be alphanumeric'
                     : ''
                 }
@@ -165,7 +165,7 @@ const AddBankAccountDialog = props => {
                 size="small"
                 value={values.accountCode}
                 onChange={handleChange}
-                margin="normal"
+                margin="dense"
                 fullWidth
               />
             </Grid>
@@ -178,7 +178,7 @@ const AddBankAccountDialog = props => {
                 size="small"
                 value={values.bankName}
                 onChange={handleChange}
-                margin="normal"
+                margin="dense"
                 fullWidth
               />
             </Grid>
@@ -191,7 +191,7 @@ const AddBankAccountDialog = props => {
                 size="small"
                 value={values.accountNumber}
                 onChange={handleChange}
-                margin="normal"
+                margin="dense"
                 fullWidth
               />
             </Grid>
@@ -204,7 +204,7 @@ const AddBankAccountDialog = props => {
                 size="small"
                 value={values.bankBalance}
                 onChange={handleChange}
-                margin="normal"
+                margin="dense"
                 fullWidth
               />
             </Grid>
@@ -217,7 +217,7 @@ const AddBankAccountDialog = props => {
                 size="small"
                 value={values.description}
                 onChange={handleChange}
-                margin="normal"
+                margin="dense"
                 fullWidth
                 rows={3}
                 rowsMax={4}
@@ -252,7 +252,7 @@ const AddBankAccountDialog = props => {
   );
 };
 
-AddBankAccountDialog.propTypes = {
+BankAccountDialog.propTypes = {
   loading: PropTypes.bool,
   dialog: PropTypes.object,
 };
@@ -265,14 +265,12 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeNewBankAccountDialog: () =>
-      dispatch(Actions.closeNewBankAccountDialog()),
+    closeNewBankAccountDialog: () => dispatch(Actions.closeNewBankAccountDialog()),
     createNewBank: data => dispatch(Actions.createNewBank(data)),
     updateBankAccount: data => dispatch(Actions.updateBankAccount(data)),
     deleteBankAccount: data => dispatch(Actions.deleteBankAccount(data)),
     activateBankAccount: data => dispatch(Actions.activateBankAccount(data)),
-    deactivateBankAccount: data =>
-      dispatch(Actions.deactivateBankAccount(data)),
+    deactivateBankAccount: data => dispatch(Actions.deactivateBankAccount(data)),
   };
 }
 
@@ -284,4 +282,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(AddBankAccountDialog);
+)(BankAccountDialog);

@@ -1,15 +1,12 @@
-import React, { useEffect, memo } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import {
   makeStyles,
   Button,
   Card,
-  CardHeader,
   CardContent,
   CardActions,
-  Icon,
-  IconButton,
   Paper,
   Grid,
   Table,
@@ -17,17 +14,16 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TextField,
   Toolbar,
   Typography,
   TableFooter,
   Menu,
   MenuItem,
+  ListItemText,
 } from '@material-ui/core';
 import classNames from 'classnames';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import { darken } from '@material-ui/core/styles/colorManipulator';
+import { CircleLoader } from '../../../../components/LoadingIndicator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -35,41 +31,47 @@ import moment from 'moment';
 import _ from 'lodash';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
+import * as AccSelectors from '../../selectors';
 import ControlledButtons from './components/ControlledButtons';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(3),
   },
   paper: {
-    padding: theme.spacing(2),
-    backgroundColor: theme.palette.grey[50],
+    margin: theme.spacing(2, 0),
   },
   card: {
-    padding: theme.spacing(2),
-    backgroundColor: theme.palette.grey[50],
+    marginTop: theme.spacing(2),
+    padding: theme.spacing(4),
     '& .MuiCardActions-root': {
       justifyContent: 'center'
     }
   },
-  grid: {
-    justifyContent: 'space-between',
-    '& .MuiGrid-item': {
-      flex: 1,
-      margin: theme.spacing(2, 0),
-    },
-  },
   title: { flexGrow: 1 },
   label: { marginLeft: theme.spacing(1) },
+  total: {
+    display: 'inline-flex',
+    padding: theme.spacing(1),
+    border: `1px solid ${theme.palette.divider}`,
+  },
+  toolbar: {
+    ...theme.mixins.toolbar,
+    border: `1px dotted ${theme.palette.divider}`
+  },
   table: {
     width: '100% !important',
-    '& td, & th': {
-      border: 0,
-    },
-    '& td': {
-      color: theme.palette.text.secondary,
+    '& tbody': {
+      // '& tr': {
+      //   display: 'flex',
+      //   overflowX: 'hidden',
+      // },
+      '& td, & th': {
+        border: 0,
+      },
+      '& td': {
+        color: theme.palette.text.secondary,
+      },
     },
     '& tfoot': {
       '& td': {
@@ -80,10 +82,9 @@ const useStyles = makeStyles(theme => ({
     },
   },
   datatable: {
-    minWidth: 200,
     whiteSpace: 'nowrap',
     '& thead': {
-      '& .MuiTableCell-head': {
+      '& th': {
         color: theme.palette.common.white,
       },
       '& th:nth-child(odd)': {
@@ -100,15 +101,12 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
-  iconPaper: {
-    boxShadow: theme.shadows[1],
-  },
 }));
 
 const AccountDetails = props => {
   const classes = useStyles(props);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const { history, match, accountingPeriods, openAccountTransferDialog, backAccount, getBankAccountById } = props;
+  const [anchorEl, setAnchorEl] = useState(null);
+  const { history, match, accountSetupData, accountingPeriods, openAccountTransferDialog, backAccount, getBankAccountById } = props;
 
   const activePeriod = _.find(accountingPeriods, { activeYear: true, status: true })
 
@@ -120,21 +118,32 @@ const AccountDetails = props => {
     setAnchorEl(null);
   };
 
+  const handleBankTransferTo = () => {
+    openAccountTransferDialog(backAccount)
+    setAnchorEl(null);
+  }
+
+  const handleBankTransferFrom = () => {
+    openAccountTransferDialog(backAccount)
+    setAnchorEl(null);
+  }
+
   console.log(backAccount, "backAccount")
   console.log(activePeriod, "activePeriod")
+  console.log(accountSetupData, "accountSetupData")
 
   if (!backAccount) {
-    return null;
+    return <CircleLoader />;
   }
 
   return (
     <div className={classes.root}>
       <Grid container>
         <Grid item xs={12}>
-          <ControlledButtons />
+          <ControlledButtons backAccount={backAccount} />
         </Grid>
         <Grid item xs={12}>
-          <Paper square>
+          <Paper square className={classes.paper}>
             <Table className={classes.table}>
               <TableBody>
                 <TableRow>
@@ -187,15 +196,17 @@ const AccountDetails = props => {
         ? (
           <Grid container>
             <Grid item xs={12}>
-              <Toolbar>
-                <Typography variant="subtitle1" className={classes.title}>Add transaction</Typography>
+              <Toolbar className={classes.toolbar}>
+                <Typography variant="subtitle1" className={classes.title}>Transactions</Typography>
                 <Button
-                  onClick={() => openAccountTransferDialog(backAccount)}
+                  aria-controls="simple-menu"
+                  aria-haspopup="true"
+                  onClick={handleClick}
                   color="primary"
                   variant="contained"
                 >
                   Add transaction
-              </Button>
+                </Button>
               </Toolbar>
               <Table className={classes.datatable} aria-label="simple table">
                 <TableHead>
@@ -211,13 +222,11 @@ const AccountDetails = props => {
                 <TableBody>
                   {backAccount.transfers.map((entry, id) => (
                     <TableRow key={id}>
-                      <TableCell align="left">
-                        {backAccount.accountNumber}
-                      </TableCell>
-                      <TableCell align="left">{entry.description}</TableCell>
-                      <TableCell align="left">{entry.referenceNumber}</TableCell>
-                      <TableCell align="left">{entry.transferType}</TableCell>
-                      <TableCell align="left">{entry.amount}</TableCell>
+                      <TableCell>{backAccount.accountNumber}</TableCell>
+                      <TableCell>{entry.description}</TableCell>
+                      <TableCell>{entry.referenceNumber}</TableCell>
+                      <TableCell>{entry.transferType}</TableCell>
+                      <TableCell>{entry.amount}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -227,22 +236,10 @@ const AccountDetails = props => {
                       <Typography variant="h6">Total</Typography>
                     </TableCell>
                     <TableCell>
-                      <Paper elevation={0} square className={classes.paper}>
-                        <Typography variant="button">
-                          {backAccount.transfers.length > 0 &&
-                            backAccount.transfers.reduce(
-                              (a, b) => a + Number(b.amount),
-                              0,
-                            )}
-                        </Typography>
-                      </Paper>
+                      <div className={classes.total}>{backAccount.transfers.reduce((a, b) => a + Number(b.amount), 0)}</div>
                     </TableCell>
                     <TableCell>
-                      <Paper elevation={0} square className={classes.paper}>
-                        <Typography variant="h6">
-                          {backAccount.transfers.reduce((a, b) => a + Number(b.credit), 0)}
-                        </Typography>
-                      </Paper>
+                      <div className={classes.total}>{backAccount.transfers.reduce((a, b) => a + Number(b.credit), 0)}</div>
                     </TableCell>
                     <TableCell />
                   </TableRow>
@@ -257,25 +254,6 @@ const AccountDetails = props => {
                   </TableRow>
                 </TableFooter>
               </Table>
-              <Grid item xs={12}>
-                <Grid container className={classes.grid}>
-                  <Grid item xs={12}>
-                    <Paper square className={classes.paper}>
-                      <Button
-                        aria-controls="simple-menu"
-                        aria-haspopup="true"
-                        onClick={() => openAccountTransferDialog(backAccount)}
-                        color="primary"
-                        variant="contained"
-                        disabled={!backAccount.status}
-                        endIcon={<ArrowForwardIcon />}
-                      >
-                        Transfer
-                    </Button>
-                    </Paper>
-                  </Grid>
-                </Grid>
-              </Grid>
             </Grid>
           </Grid>
         )
@@ -290,11 +268,10 @@ const AccountDetails = props => {
                 <Button
                   aria-controls="simple-menu"
                   aria-haspopup="true"
-                  onClick={() => openAccountTransferDialog(backAccount)}
+                  onClick={handleClick}
                   color="primary"
                   variant="contained"
                   disabled={!backAccount.status}
-                  endIcon={<ArrowForwardIcon />}
                 >
                   Add Transaction
                 </Button>
@@ -302,6 +279,21 @@ const AccountDetails = props => {
             </Card>
           </Grid>
         )}
+
+      <Menu
+        id="lock-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleBankTransferFrom}>
+          <ListItemText primary="Transfer from another account" secondary="Money In" />
+        </MenuItem>
+        <MenuItem onClick={handleBankTransferTo}>
+          <ListItemText primary="Transfer to another account" secondary="Money Out" />
+        </MenuItem>
+      </Menu>
     </div>
   )
 }
@@ -309,12 +301,13 @@ const AccountDetails = props => {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   backAccount: Selectors.makeSelectBankAccountByIdData(),
+  accountingPeriods: Selectors.makeSelectAccountingPeriods(),
+  accountSetupData: AccSelectors.makeSelectGetAccountingSetupData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openAccountTransferDialog: data =>
-      dispatch(Actions.openAccountTransferDialog(data)),
+    openAccountTransferDialog: data => dispatch(Actions.openAccountTransferDialog(data)),
     getBankAccountById: data => dispatch(Actions.getBankAccountById(data)),
   };
 }

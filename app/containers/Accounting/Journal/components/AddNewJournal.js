@@ -41,6 +41,7 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import EzoneUtils from '../../../../utils/EzoneUtils';
 import * as Selectors from '../selectors';
+import * as AccSelectors from '../../selectors';
 import * as Actions from '../actions';
 import { IsoCodeToFlag } from '../../components/IsoCodeFormatter'
 
@@ -149,24 +150,9 @@ const NewJournal = props => {
   }, [dialog.data]);
 
   const canBeSubmitted = () => {
-    const {
-      attachments,
-      currencyId,
-      entries,
-      exchangeRate,
-      note,
-      periodId,
-      reference,
-      taxRate,
-      taxtTotal,
-      total,
-    } = values;
+    const { transactionDate, entries, periodId, reference, total, taxApplicable, taxTotal } = values;
     return (
-      attachments.length > 0 &&
-      currencyId &&
-      entries.length > 0 &&
-      exchangeRate.length > 0 &&
-      note.length > 0
+      reference.length > 0 && transactionDate && entries.length > 0 && total && periodId && (taxApplicable ? taxTotal : true)
     );
   };
 
@@ -174,7 +160,7 @@ const NewJournal = props => {
     const { name, value } = event.target;
     const entries = [...values.entries];
     entries[i][name] = value;
-    setValues({ ...values, entries });
+    setValues({ ...values, entries, total: entries.reduce((curVal, b) => curVal + Number(b.debit), 0) });
   };
 
   const handleSelectEntryChange = i => (event, object) => {
@@ -259,7 +245,7 @@ const NewJournal = props => {
             <Autocomplete
               id="period-id"
               size="small"
-              options={accountingPeriods}
+              options={accountingPeriods.filter(period => period.status)}
               getOptionLabel={option => `FY: ${moment(option.startDate).format('ll')} - ${moment(option.endDate).format('ll')}`}
               onChange={handleSelectChange('periodId')}
               value={values.periodId ? _.find(accountingPeriods, { id: values.periodId }) : null}
@@ -338,7 +324,7 @@ const NewJournal = props => {
                   id="journal-taxes"
                   size="small"
                   options={taxes}
-                  getOptionLabel={option => `${option.name} ${option.rate}%`}
+                  getOptionLabel={option => `${option.name} ( ${option.rate}% )`}
                   onChange={handleSelectChange('taxRate')}
                   style={{ width: 300 }}
                   renderInput={params => (
@@ -377,7 +363,6 @@ const NewJournal = props => {
 
               <TextField
                 id="exchange-rate"
-                required
                 size="small"
                 name="exchangeRate"
                 label="Exchange Rate"
@@ -405,7 +390,6 @@ const NewJournal = props => {
             <Grid item xs={12} sm={12}>
               <TextField
                 id="journal-note"
-                required
                 size="small"
                 name="note"
                 label="Note"
@@ -431,8 +415,8 @@ const NewJournal = props => {
                       <TableRow>
                         <TableCell>Account</TableCell>
                         <TableCell>Description</TableCell>
-                        <TableCell>Credit <ArrowUpwardIcon /></TableCell>
                         <TableCell>Debit <ArrowDownwardIcon /></TableCell>
+                        <TableCell>Credit <ArrowUpwardIcon /></TableCell>
                         <TableCell align="right">
                           <Button
                             color="inherit"
@@ -528,23 +512,26 @@ const NewJournal = props => {
                         <TableCell><div className={classes.total}>{values.entries.reduce((curVal, b) => curVal + Number(b.credit), 0)}</div></TableCell>
                         <TableCell />
                       </TableRow>
-                      <TableRow>
-                        <TableCell colSpan={2} align="right">Tax amount</TableCell>
-                        <TableCell>
-                          <TextField
-                            id="outlined-tax-amount"
-                            size="small"
-                            name="taxTotal"
-                            label="Tax Amount"
-                            placeholder="taxTotal"
-                            value={metrics.taxTotal}
-                            onChange={handleMetricChange}
-                            variant="outlined"
-                          />
-                          <FormHelperText>{values.taxTotal && `${values.taxRate}% of ${metrics.taxTotal} = ${values.taxTotal}`}</FormHelperText>
-                        </TableCell>
-                        <TableCell colSpan={2} />
-                      </TableRow>
+                      {values.taxApplicable &&
+                        <TableRow>
+                          <TableCell colSpan={2} align="right">Tax amount</TableCell>
+                          <TableCell>
+                            <TextField
+                              id="outlined-tax-amount"
+                              required
+                              size="small"
+                              name="taxTotal"
+                              label="Tax Amount"
+                              placeholder="taxTotal"
+                              value={metrics.taxTotal}
+                              onChange={handleMetricChange}
+                              variant="outlined"
+                            />
+                            <FormHelperText>{values.taxTotal && `${values.taxRate}% of ${metrics.taxTotal} = ${values.taxTotal}`}</FormHelperText>
+                          </TableCell>
+                          <TableCell colSpan={2} />
+                        </TableRow>
+                      }
                     </TableFooter>
                   </Table>
 
@@ -587,7 +574,6 @@ const NewJournal = props => {
 
         <CardActions>
           <Button
-            size="small"
             onClick={handleSubmit}
             color="primary"
             variant="contained"
@@ -597,10 +583,10 @@ const NewJournal = props => {
             {dialog.type === 'new' ? 'Save' : 'Update'}
           </Button>
           <Button
-            size="small"
             onClick={() => { }}
             color="primary"
             variant="outlined"
+            disableElevation
           >
             Cancel
           </Button>
@@ -623,7 +609,7 @@ const mapStateToProps = createStructuredSelector({
   chartOfAccounts: Selectors.makeSelectGetChartOfAccountData(),
   currencies: Selectors.makeSelectCurrencies(),
   taxes: Selectors.makeSelectGetTaxesData(),
-  accountSetupData: Selectors.makeSelectGetAccountSetupData(),
+  accountSetupData: AccSelectors.makeSelectGetAccountingSetupData(),
 });
 
 function mapDispatchToProps(dispatch) {

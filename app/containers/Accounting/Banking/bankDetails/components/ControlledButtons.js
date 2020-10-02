@@ -1,4 +1,4 @@
-import React, { useEffect, memo } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -11,8 +11,7 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import classNames from 'classnames';
-import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 
@@ -28,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 
 const ControlledButtons = props => {
   const classes = useStyles();
-  const { history, match } = props;
+  const { history, match, backAccount, openEditBankAccountDialog, openDeleteBankAccountDialog } = props;
 
   const handleBack = () => {
     history.goBack();
@@ -38,17 +37,17 @@ const ControlledButtons = props => {
     <div className={classes.root}>
       <Toolbar className={classes.iconPaper} variant="dense">
         <IconButton onClick={handleBack}>
-          <KeyboardBackspaceIcon />
+          <ArrowBackIcon />
         </IconButton>
         <Typography className={classes.title} />
         <IconButton>
-          <Icon>add</Icon>
+          <Icon>print</Icon>
         </IconButton>
-        <IconButton>
+        <IconButton onClick={() => openEditBankAccountDialog(backAccount)}>
           <Icon>edit</Icon>
         </IconButton>
-        <IconButton>
-          <Icon>cloud_download</Icon>
+        <IconButton onClick={() => openDeleteBankAccountDialog(backAccount)}>
+          <Icon>delete</Icon>
         </IconButton>
       </Toolbar>
     </div>
@@ -62,7 +61,10 @@ const mapStateToProps = createStructuredSelector({
 });
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    openEditBankAccountDialog: data => dispatch(Actions.openEditBankAccountDialog(data)),
+    openDeleteBankAccountDialog: data => dispatch(Actions.openDeleteBankAccountDialog(data)),
+  };
 }
 
 const withConnect = connect(
