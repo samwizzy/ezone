@@ -144,7 +144,7 @@ const AccountChart = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => new Intl.NumberFormat("en-NG", { style: 'currency', currency: accountSetupData.currency.code }).format(value)
+        customBodyRender: value => new Intl.NumberFormat("en-NG", { style: 'currency', currency: accountSetupData && accountSetupData.currency.code }).format(value)
       },
     },
     {
