@@ -17,6 +17,7 @@ import { darken } from '@material-ui/core/styles/colorManipulator';
 import { green } from '@material-ui/core/colors';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
+import * as AccSelectors from '../../selectors';
 import ImportControl from './ImportControl';
 
 const useStyles = makeStyles(theme => ({
@@ -67,6 +68,7 @@ const AccountChart = props => {
     openDeleteAccountDialog,
     editOpenAccountDialog,
     chartOfAccounts,
+    accountSetupData,
     getChartOfAccountById,
   } = props;
 
@@ -94,6 +96,7 @@ const AccountChart = props => {
   const orderedAccounts = _.orderBy(chartOfAccounts, 'dateCreated', 'desc');
 
   console.log(orderedAccounts, 'orderedAccounts');
+  console.log(accountSetupData, 'accountSetupData');
 
   const fileInput = useRef();
 
@@ -141,7 +144,7 @@ const AccountChart = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => new Intl.NumberFormat("en-US").format(value)
+        customBodyRender: value => new Intl.NumberFormat("en-NG", { style: 'currency', currency: accountSetupData.currency.code }).format(value)
       },
     },
     {
@@ -251,6 +254,7 @@ const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   newAccountDialog: Selectors.makeSelectNewAccountDialog(),
   chartOfAccounts: Selectors.makeSelectGetChartOfAccounts(),
+  accountSetupData: AccSelectors.makeSelectGetAccountingSetupData(),
 });
 
 function mapDispatchToProps(dispatch) {

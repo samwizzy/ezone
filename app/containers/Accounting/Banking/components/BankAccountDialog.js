@@ -33,6 +33,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const initialState = {
+  id: '',
   accountCode: '',
   accountName: '',
   accountNumber: '',
@@ -79,16 +80,10 @@ const BankAccountDialog = props => {
 
   useEffect(() => {
     if (dialog.type === 'edit') {
-      const {
-        accountCode,
-        accountName,
-        accountNumber,
-        bankBalance,
-        bankName,
-        description,
-      } = dialog.data;
+      const { id, accountCode, accountName, accountNumber, bankBalance, bankName, description } = dialog.data;
       setValues({
         ...values,
+        id,
         accountCode,
         accountName,
         accountNumber,

@@ -25,6 +25,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
+import * as AccSelectors from '../../selectors';
 import { CircleLoader } from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
@@ -72,6 +73,7 @@ const BankList = props => {
     loading,
     history,
     match,
+    accountSetupData,
     getBankAccountById,
     openNewBankAccountDialog,
     openEditBankAccountDialog,
@@ -103,6 +105,11 @@ const BankList = props => {
     const { id } = selectedBankAccount;
     getBankAccountById(id);
     history.push(`${match.url}/${id}`);
+    setAnchorEl(null);
+  };
+
+  const handleEditClick = () => {
+    openEditBankAccountDialog(selectedBankAccount)
     setAnchorEl(null);
   };
 
@@ -160,11 +167,15 @@ const BankList = props => {
       },
     },
     {
-      name: 'bankBalance',
+      name: 'id',
       label: 'Bank Balance',
       options: {
         filter: true,
         sort: false,
+        customBodyRender: value => {
+          const bankAccount = bankAccounts.find(account => account.id === value)
+          return new Intl.NumberFormat('en-NG', { style: 'currency', currency: accountSetupData.currency.code }).format(bankAccount.bankBalance)
+        }
       },
     },
     {
@@ -268,7 +279,7 @@ const BankList = props => {
           Delete
         </MenuItem>
         <MenuItem
-          onClick={() => openEditBankAccountDialog(selectedBankAccount)}
+          onClick={handleEditClick}
           disabled={
             selectedBankAccount && Boolean(selectedBankAccount.transfers.length)
           }
@@ -288,6 +299,7 @@ BankList.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   bankAccounts: Selectors.makeSelectBankAccountData(),
+  accountSetupData: AccSelectors.makeSelectGetAccountingSetupData(),
 });
 
 function mapDispatchToProps(dispatch) {
