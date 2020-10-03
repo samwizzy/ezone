@@ -46,15 +46,15 @@ const TaxDialog = props => {
     } else {
       setForm({ ...initialState });
     }
-  }, []);
+  }, [dialog.data]);
 
   const handleChange = event => {
     const { name, value, type, checked } = event.target;
     name === 'rate'
       ? setForm({
-          ...form,
-          [name]: type === 'checkbox' ? checked : value.replace(/[^0-9]/g, ''),
-        })
+        ...form,
+        [name]: type === 'checkbox' ? checked : value.replace(/[^0-9]/g, ''),
+      })
       : setForm({ ...form, [name]: type === 'checkbox' ? checked : value });
   };
 
@@ -66,7 +66,7 @@ const TaxDialog = props => {
     const { name, rate, taxType, description } = form;
     return (
       name.length > 0 &&
-      rate.length > 0 &&
+      rate &&
       taxType.length > 0 &&
       description.length > 0
     );

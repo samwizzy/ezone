@@ -53,6 +53,7 @@ const CurrenciesList = props => {
 
   const handleEditClick = () => {
     openEditCurrencyDialog(selectedCurrency);
+    handleClose()
   };
 
   console.log(currencies, 'currencies');

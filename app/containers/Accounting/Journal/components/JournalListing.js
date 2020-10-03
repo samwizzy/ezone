@@ -223,11 +223,8 @@ const JournalListing = props => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleEditClick}>
-          Edit
-        </MenuItem>
         <MenuItem onClick={handleViewClick}>
-          View Details
+          View details
         </MenuItem>
       </Menu>
     </React.Fragment>

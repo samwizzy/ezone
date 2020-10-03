@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import moment from 'moment';
+import _ from 'lodash';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
@@ -367,7 +368,7 @@ const NewAsset = props => {
                   fullWidth
                 />
 
-                <Grid container>
+                <Grid container spacing={1}>
                   <Grid item xs={6}>
                     <TextField
                       id="length"

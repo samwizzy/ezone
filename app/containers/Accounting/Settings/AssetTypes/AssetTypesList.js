@@ -138,7 +138,7 @@ const AssetTypesList = props => {
           startIcon={<AddIcon />}
           onClick={openNewAssetTypeDialog}
         >
-          New Asset
+          New Asset type
         </Button>
       </Tooltip>
     ),

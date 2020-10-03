@@ -149,9 +149,7 @@ const AccountingPeriods = props => {
         <Grid item xs={12}>
           <AppBar color="inherit" position="static" elevation={1}>
             <Toolbar variant="dense" className={classes.toolbarHead}>
-              <Avatar>
-                <SettingsIcon />
-              </Avatar>
+              <Avatar><SettingsIcon /></Avatar>
               <Typography variant="h5">Settings</Typography>
             </Toolbar>
           </AppBar>
@@ -310,14 +308,10 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openAccountPeriodDialog: () => dispatch(Actions.openAccountPeriodDialog()),
-    openEditAccountPeriodDialog: data =>
-      dispatch(Actions.openEditAccountPeriodDialog(data)),
-    openAccountPeriodCloseDialog: data =>
-      dispatch(Actions.openAccountPeriodCloseDialog(data)),
-    setAccountPeriodAsActive: data =>
-      dispatch(Actions.setAccountPeriodAsActive(data)),
-    updateAccountPeriodStatus: data =>
-      dispatch(Actions.updateAccountPeriodStatus(data)),
+    openEditAccountPeriodDialog: data => dispatch(Actions.openEditAccountPeriodDialog(data)),
+    openAccountPeriodCloseDialog: data => dispatch(Actions.openAccountPeriodCloseDialog(data)),
+    setAccountPeriodAsActive: data => dispatch(Actions.setAccountPeriodAsActive(data)),
+    updateAccountPeriodStatus: data => dispatch(Actions.updateAccountPeriodStatus(data)),
   };
 }
 

@@ -18,6 +18,7 @@ import {
 import * as AppSelectors from '../../../../App/selectors';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
+import { assetClasses } from '../../enums'
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -26,8 +27,6 @@ const useStyles = makeStyles(theme => ({
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
-const assetClasses = [{ label: 'Tangible', value: 'TANGIBLE' }];
 
 const initialState = {
   assetClass: 'TANGIBLE',
@@ -138,6 +137,7 @@ const AssetTypeDialog = props => {
               <TextField
                 {...params}
                 label="Select Asset Class"
+                size="small"
                 variant="outlined"
                 margin="normal"
                 placeholder="Asset Class"
