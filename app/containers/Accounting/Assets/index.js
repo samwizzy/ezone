@@ -12,11 +12,12 @@ import reducer from './reducer';
 import saga from './saga';
 import makeSelectFixedAssets, * as Selectors from './selectors';
 import AssetsList from './AssetsList'
+import AssetDetails from './assetDetails'
 import NewAsset from './NewAsset'
 import AssetDialog from './components/AssetDialog'
 
 const key = 'fixedAssets';
-export function AssetsSettings(props) {
+export function FixedAssetsPage(props) {
 	useInjectReducer({ key, reducer });
 	useInjectSaga({ key, saga });
 	const { getAssets, getAssetTypes } = props
@@ -30,20 +31,21 @@ export function AssetsSettings(props) {
 	return (
 		<div>
 			<Helmet>
-				<title>Fixed Assets Settings</title>
-				<meta name="description" content="Description of Fixed Assets Settings" />
+				<title>Fixed Assets</title>
+				<meta name="description" content="Description of Fixed Assets" />
 			</Helmet>
 
 			<Route exact path={path} component={AssetsList} />
 			<Route path={`${path}/new`} component={NewAsset} />
 			<Route path={`${path}/edit/:assetId`} component={NewAsset} />
+			<Route path={`${path}/view/:assetId`} component={AssetDetails} />
 
 			<AssetDialog />
 		</div>
 	);
 }
 
-AssetsSettings.propTypes = {};
+FixedAssetsPage.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
 	fixedAssets: makeSelectFixedAssets(),
@@ -65,4 +67,4 @@ const withConnect = connect(
 export default compose(
 	withConnect,
 	memo,
-)(AssetsSettings);
+)(FixedAssetsPage);

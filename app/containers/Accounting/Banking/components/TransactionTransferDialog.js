@@ -68,6 +68,7 @@ const TransactionTransferDialog = props => {
     closeAccountTransferDialog,
     createBankTransfer,
   } = props;
+  const { currency } = accountSetupData
 
   const [values, setValues] = useState({
     amount: '',
@@ -208,7 +209,7 @@ const TransactionTransferDialog = props => {
               <Autocomplete
                 id="transfer-currency"
                 size="small"
-                options={accountSetupData ? currencies.filter(currency => currency.code !== accountSetupData.currency.code) : []}
+                options={currency ? currencies.filter(ccy => ccy.code !== currency.code) : []}
                 getOptionLabel={option => `${option.name} ( ${option.symbol} )`}
                 onChange={handleSelectChange('currencyId')}
                 value={

@@ -69,6 +69,7 @@ const AssetsList = props => {
   };
 
   const handleEditClick = () => {
+    const { id } = selectedAsset
     openEditAssetDialog(selectedAsset)
     history.push(`${match.url}/edit/${id}`)
     handleClose()
@@ -76,7 +77,7 @@ const AssetsList = props => {
 
   const handleViewClick = () => {
     const { id } = selectedAsset
-    history.push(`${match.url}/${id}`)
+    history.push(`${match.url}/view/${id}`)
     handleClose()
   }
 
@@ -98,24 +99,48 @@ const AssetsList = props => {
       },
     },
     {
-      name: 'code',
-      label: 'Code',
+      name: 'assetName',
+      label: 'Asset Name',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'name',
-      label: 'Name',
+      name: 'assetId',
+      label: 'Asset ID',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'assetClass',
-      label: 'Asset Class',
+      name: 'aquisitionValue',
+      label: 'Aquisition Cost',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: 'location',
+      label: 'Location',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: 'quantity',
+      label: 'Quantity',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: 'assetStatus',
+      label: 'Status',
       options: {
         filter: true,
         sort: false,

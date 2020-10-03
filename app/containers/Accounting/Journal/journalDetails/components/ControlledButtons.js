@@ -38,12 +38,6 @@ const ControlledButtons = props => {
 				<IconButton>
 					<Icon>print</Icon>
 				</IconButton>
-				<IconButton>
-					<Icon>edit</Icon>
-				</IconButton>
-				<IconButton>
-					<Icon>delete</Icon>
-				</IconButton>
 			</Toolbar>
 		</div>
 	)

@@ -228,6 +228,28 @@ export function getAssetsError(data) {
     payload: data,
   };
 }
+// get asset by id actions
+export function getAssetById(data) {
+  return {
+    type: Constants.GET_ASSET_BY_ID,
+    payload: data
+  };
+}
+
+export function getAssetByIdSuccess(data) {
+  return {
+    type: Constants.GET_ASSET_BY_ID_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getAssetByIdError(data) {
+  return {
+    type: Constants.GET_ASSET_BY_ID_ERROR,
+    payload: data,
+  };
+}
+
 // create asset actions
 export function createAsset(data) {
   return {

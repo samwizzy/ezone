@@ -22,6 +22,7 @@ import { green, red, grey, yellow } from '@material-ui/core/colors';
 import { CircleLoader } from '../../../../components/LoadingIndicator';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
+import * as AccSelectors from '../../selectors';
 import moment from 'moment';
 import { statuses } from './../enums'
 
@@ -68,9 +69,10 @@ const useStyles = makeStyles(theme => ({
 
 const JournalListing = props => {
   const classes = useStyles();
-  const { history, match, journals, getJournalById, openEditJournalDialog } = props;
+  const { history, match, accountSetupData, journals, getJournalById, openEditJournalDialog } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedJournal, setSelectedJournal] = React.useState(null);
+  const { currency } = accountSetupData
 
   console.log('journals -> ', journals);
 
@@ -135,7 +137,7 @@ const JournalListing = props => {
         sort: false,
         customBodyRender: value => {
           const journal = journals.find(journal => journal.id === value)
-          return new Intl.NumberFormat('en-US', { style: 'currency', currency: journal.currency && journal.currency.code }).format(journal.total)
+          return new Intl.NumberFormat('en-US', { style: 'currency', currency: journal.currency ? journal.currency.code : currency ? currency.code : 'NGN' }).format(journal.total)
         }
       },
     },
@@ -238,6 +240,7 @@ JournalListing.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   journals: Selectors.makeSelectJournalListData(),
+  accountSetupData: AccSelectors.makeSelectGetAccountingSetupData(),
 });
 
 function mapDispatchToProps(dispatch) {

@@ -14,6 +14,7 @@ export const initialState = {
   currencies: [],
   taxes: [],
   assets: [],
+  assetById: null,
   assetTypes: [],
   accountPeriodDialog: {
     type: 'new',
@@ -811,6 +812,30 @@ const settingsReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
+      // Case to get asset by id
+      case Constants.GET_ASSET_BY_ID: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_ASSET_BY_ID_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          assetById: action.payload,
+        };
+      }
+      case Constants.GET_ASSET_BY_ID_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+
       // Case to create asset
       case Constants.CREATE_ASSET: {
         return {

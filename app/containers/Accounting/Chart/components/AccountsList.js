@@ -234,7 +234,7 @@ const AccountChart = props => {
         <MenuItem onClick={handleView}>View details</MenuItem>
         <MenuItem
           onClick={() => { }}
-          disabled={selectedAccount && !Boolean(selectedAccount.entries.length)}
+          disabled={selectedAccount && Boolean(selectedAccount.status)}
         >
           Mark as active
         </MenuItem>

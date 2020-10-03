@@ -31,9 +31,7 @@ export function* getAccountingPeriods() {
 export function* getCurrencies() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetCurrencyByOrgIdApi}?orgId=${
-    currentUser.organisation.orgId
-    }`;
+  const requestURL = `${Endpoints.GetCurrencyByOrgIdApi}?orgId=${currentUser.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -129,9 +127,7 @@ export function* updateBankAccount({ payload }) {
 export function* getAllBankAccounts() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllBankAccount}/${
-    currentUser.organisation.orgId
-    }`;
+  const requestURL = `${Endpoints.GetAllBankAccount}/${currentUser.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {
