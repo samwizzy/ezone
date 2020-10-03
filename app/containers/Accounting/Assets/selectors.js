@@ -115,6 +115,12 @@ const makeSelectAssets = () =>
     substate => substate.assets,
   );
 
+const makeSelectAssetById = () =>
+  createSelector(
+    selectFixedAssetsDomain,
+    substate => substate.assetById,
+  );
+
 const makeSelectAssetTypes = () =>
   createSelector(
     selectFixedAssetsDomain,
@@ -142,5 +148,6 @@ export {
   makeSelectCurrencies,
   makeSelectTaxes,
   makeSelectAssets,
+  makeSelectAssetById,
   makeSelectAssetTypes,
 };

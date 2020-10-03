@@ -37,7 +37,7 @@ export function* getAccountingSetup() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetAccountingSetupApi}/${
     currentUser.organisation.orgId
-  }`;
+    }`;
 
   console.log('We never goit to you account setup geyt');
 
@@ -63,7 +63,7 @@ export function* getAllAccountingPeriod() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetAllAccountingPeriodApi}/${
     currentUser.organisation.orgId
-  }`;
+    }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -85,7 +85,7 @@ export function* getDefaultChartOfAccounts() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetAllChartOfAccountApi}/${
     currentUser.organisation.orgId
-  }`; // API for the default charts pending
+    }`; // API for the default charts pending
 
   try {
     const response = yield call(request, requestURL, {
@@ -107,7 +107,7 @@ export function* getDepreciationArea() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetDepreciationAreaByOrgIdApi}?orgId=${
     currentUser.organisation.orgId
-  }`;
+    }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -153,7 +153,7 @@ export function* getDepreciationTypes() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetDepreciationTypeByOrgIdApi}?orgId=${
     currentUser.organisation.orgId
-  }`;
+    }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -199,7 +199,7 @@ export function* getChartOfAccounts() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetAllChartOfAccountApi}/${
     currentUser.organisation.orgId
-  }`;
+    }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -242,7 +242,7 @@ export function* getCurrencies() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetCurrencyByOrgIdApi}?orgId=${
     currentUser.organisation.orgId
-  }`;
+    }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -290,7 +290,7 @@ export function* getTaxes() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetTaxTypeByOrgIdApi}?orgId=${
     currentUser.organisation.orgId
-  }`;
+    }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -340,7 +340,7 @@ export function* getAssets() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetAssetByOrgIdApi}?orgId=${
     currentUser.organisation.orgId
-  }`;
+    }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -356,6 +356,28 @@ export function* getAssets() {
     yield put(Actions.getAssetsSuccess(response));
   } catch (err) {
     yield put(Actions.getAssetsError(err));
+  }
+}
+
+export function* getAssetById({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAssetByIdApi}/${payload.id}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'response getCurrencies');
+
+    yield put(Actions.getAssetByIdSuccess(response));
+  } catch (err) {
+    yield put(Actions.getAssetByIdError(err));
   }
 }
 
@@ -412,7 +434,7 @@ export function* getAssetTypes() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetAssetTypeByOrgIdApi}?orgId=${
     currentUser.organisation.orgId
-  }`;
+    }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -485,7 +507,7 @@ export function* updateAccountPeriod({ type, payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.UpdateAccountPeriodStatusApi}?id=${
     payload.id
-  }&status=false`;
+    }&status=false`;
   delete payload.id;
 
   try {
@@ -512,7 +534,7 @@ export function* updateAccountPeriodStatus({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.UpdateAccountPeriodStatusApi}?id=${
     payload.id
-  }&status=${payload.status}`;
+    }&status=${payload.status}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -537,7 +559,7 @@ export function* setAccountPeriodAsActive({ payload }) {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.SetAccountPeriodAsActiveApi}?id=${
     payload.id
-  }&orgId=${currentUser.organisation.orgId}&year=true`;
+    }&orgId=${currentUser.organisation.orgId}&year=true`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -584,6 +606,7 @@ export default function* SettingsSaga() {
   yield takeLatest(Constants.GET_TAXES, getTaxes);
   yield takeLatest(Constants.CREATE_TAX, createTax);
   yield takeLatest(Constants.GET_ASSETS, getAssets);
+  yield takeLatest(Constants.GET_ASSET_BY_ID, getAssetById);
   yield takeLatest(Constants.CREATE_ASSET, createAsset);
   yield takeLatest(Constants.UPDATE_ASSET, updateAsset);
   yield takeLatest(Constants.GET_ASSET_TYPES, getAssetTypes);

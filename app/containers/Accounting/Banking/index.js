@@ -37,7 +37,7 @@ export function Banking(props) {
   useEffect(() => {
     getBankAccounts();
     getAccountingPeriods();
-    getCurrencies();
+    // getCurrencies();
     getAccountTypes();
     getTransfersByOrgId();
   }, []);
