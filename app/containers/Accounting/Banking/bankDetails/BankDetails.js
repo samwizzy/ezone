@@ -108,6 +108,7 @@ const AccountDetails = props => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { history, match, accountSetupData, accountingPeriods, openAccountTransferDialog, backAccount, getBankAccountById } = props;
 
+  const { currency } = accountSetupData
   const activePeriod = _.find(accountingPeriods, { activeYear: true, status: true })
 
   const handleClick = event => {
@@ -183,7 +184,7 @@ const AccountDetails = props => {
                 <TableRow>
                   <TableCell>Bank Balance</TableCell>
                   <TableCell>
-                    {new Intl.NumberFormat("en-NG", { style: 'currency', currency: 'NGN' }).format(backAccount.bankBalance)}
+                    {new Intl.NumberFormat("en-US", { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(backAccount.bankBalance)}
                   </TableCell>
                 </TableRow>
               </TableFooter>
@@ -236,10 +237,14 @@ const AccountDetails = props => {
                       <Typography variant="h6">Total</Typography>
                     </TableCell>
                     <TableCell>
-                      <div className={classes.total}>{backAccount.transfers.reduce((a, b) => a + Number(b.amount), 0)}</div>
+                      <div className={classes.total}>
+                        {new Intl.NumberFormat("en-NG", { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(backAccount.transfers.reduce((a, b) => a + Number(b.amount), 0))}
+                      </div>
                     </TableCell>
                     <TableCell>
-                      <div className={classes.total}>{backAccount.transfers.reduce((a, b) => a + Number(b.credit), 0)}</div>
+                      <div className={classes.total}>
+                        {new Intl.NumberFormat("en-NG", { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(backAccount.transfers.reduce((a, b) => a + Number(b.credit), 0))}
+                      </div>
                     </TableCell>
                     <TableCell />
                   </TableRow>

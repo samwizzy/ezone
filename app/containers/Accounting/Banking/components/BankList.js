@@ -176,7 +176,7 @@ const BankList = props => {
         sort: false,
         customBodyRender: value => {
           const bankAccount = bankAccounts.find(account => account.id === value)
-          return new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency.code }).format(bankAccount.bankBalance)
+          return new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(bankAccount.bankBalance)
         }
       },
     },

@@ -153,12 +153,13 @@ const NewJournal = props => {
   }, [dialog.data]);
 
   const canBeSubmitted = () => {
-    const { transactionDate, entries, periodId, reference, total, taxApplicable, taxTotal } = values;
+    const { transactionDate, entries, periodId, currencyId, exchangeRate, reference, total, taxApplicable, taxTotal } = values;
     return (
       reference.length > 0 &&
       transactionDate && entries.length > 0 &&
       total && periodId &&
       (taxApplicable ? taxTotal : true) &&
+      (currencyId ? exchangeRate : true) &&
       handleBalanceCheck()
     );
   };
@@ -325,6 +326,8 @@ const NewJournal = props => {
                       shrink: true,
                     }}
                     placeholder="Currencies"
+                    error={values.currencyId && !values.exchangeRate}
+                    helperText={(values.currencyId && !values.exchangeRate) ? 'Please select an exchange rate' : ''}
                   />
                 )}
               />
@@ -381,6 +384,7 @@ const NewJournal = props => {
               <TextField
                 id="exchange-rate"
                 size="small"
+                required={Boolean(values.currencyId)}
                 name="exchangeRate"
                 label="Exchange Rate"
                 placeholder="Exchange Rate"
@@ -494,7 +498,7 @@ const NewJournal = props => {
                               variant="outlined"
                               name="debit"
                               onChange={handleItemChange(i)}
-                              value={row.debit ? row.debit : ""}
+                              value={row.debit ? new Intl.NumberFormat('en-NG', {}).format(row.debit) : ""}
                               disabled={Boolean(Number(row.credit))}
                             />
                           </TableCell>
@@ -506,7 +510,7 @@ const NewJournal = props => {
                               label="Credit"
                               name="credit"
                               onChange={handleItemChange(i)}
-                              value={row.credit ? row.credit : ""}
+                              value={row.credit ? new Intl.NumberFormat('en-NG', {}).format(row.credit) : ""}
                               disabled={Boolean(Number(row.debit))}
                             />
                           </TableCell>
@@ -527,8 +531,16 @@ const NewJournal = props => {
                         <TableCell colSpan={2} align="right">
                           <Typography>Total</Typography>
                         </TableCell>
-                        <TableCell><div className={classes.total}>{values.entries.reduce((curVal, b) => curVal + Number(b.debit), 0)}</div></TableCell>
-                        <TableCell><div className={classes.total}>{values.entries.reduce((curVal, b) => curVal + Number(b.credit), 0)}</div></TableCell>
+                        <TableCell>
+                          <div className={classes.total}>
+                            {new Intl.NumberFormat('en-NG', {}).format(values.entries.reduce((curVal, b) => curVal + Number(b.debit), 0))}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className={classes.total}>
+                            {new Intl.NumberFormat('en-NG', {}).format(values.entries.reduce((curVal, b) => curVal + Number(b.credit), 0))}
+                          </div>
+                        </TableCell>
                         <TableCell />
                       </TableRow>
                       {values.taxApplicable &&

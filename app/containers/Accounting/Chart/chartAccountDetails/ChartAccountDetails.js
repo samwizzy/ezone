@@ -137,11 +137,11 @@ const ChartAccountDetails = props => {
                       chartOfAccount.accountType.accountType === 'Bank'
                       ? new Intl.NumberFormat('en-US', {
                         style: 'currency',
-                        currency: currency && currency.code,
+                        currency: currency ? currency.code : 'NGN',
                       }).format(chartOfAccount.bankBalance)
                       : new Intl.NumberFormat('en-US', {
                         style: 'currency',
-                        currency: currency && currency.code,
+                        currency: currency ? currency.code : 'NGN',
                       }).format(chartOfAccount.openingBalance)}
                   </TableCell>
                 </TableRow>
@@ -174,17 +174,17 @@ const ChartAccountDetails = props => {
                     <TableCell>{moment(entry.dateCreated).format('ll')}</TableCell>
                     <TableCell>{moment(entry.dateCreated).format('ll')}</TableCell>
                     <TableCell>{entry.description}</TableCell>
-                    <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency && currency.code }).format(entry.debit)}</TableCell>
-                    <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency && currency.code }).format(entry.credit)}</TableCell>
-                    <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency && currency.code }).format(Number(entry.debit) + Number(entry.credit))}</TableCell>
+                    <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(entry.debit)}</TableCell>
+                    <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(entry.credit)}</TableCell>
+                    <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(Number(entry.debit) + Number(entry.credit))}</TableCell>
                   </TableRow>
                 )}
                 <TableRow>
                   <TableCell colSpan={2} />
                   <TableCell>Total</TableCell>
-                  <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency && currency.code }).format(chartOfAccount.entries.reduce((curVal, b) => curVal + b.debit, 0))}</TableCell>
-                  <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency && currency.code }).format(chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit, 0))}</TableCell>
-                  <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency && currency.code }).format(chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit + b.debit, 0))}</TableCell>
+                  <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(chartOfAccount.entries.reduce((curVal, b) => curVal + b.debit, 0))}</TableCell>
+                  <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit, 0))}</TableCell>
+                  <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit + b.debit, 0))}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
