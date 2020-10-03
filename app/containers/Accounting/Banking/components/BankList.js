@@ -82,6 +82,8 @@ const BankList = props => {
     bankAccounts,
   } = props;
 
+  const { currency } = accountSetupData;
+
   const handleClick = (event, id) => {
     event.stopPropagation()
     setAnchorEl(event.currentTarget);
@@ -174,7 +176,7 @@ const BankList = props => {
         sort: false,
         customBodyRender: value => {
           const bankAccount = bankAccounts.find(account => account.id === value)
-          return new Intl.NumberFormat('en-NG', { style: 'currency', currency: accountSetupData.currency && accountSetupData.currency.code }).format(bankAccount.bankBalance)
+          return new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency.code }).format(bankAccount.bankBalance)
         }
       },
     },
@@ -286,7 +288,7 @@ const BankList = props => {
         >
           Edit
         </MenuItem>
-        <MenuItem onClick={handleView}>View Details</MenuItem>
+        <MenuItem onClick={handleView}>View details</MenuItem>
       </Menu>
     </div>
   );

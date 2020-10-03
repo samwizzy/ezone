@@ -30,11 +30,13 @@ import {
   TableRow,
   TableCell,
   TextField,
+  Typography,
 } from '@material-ui/core';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import AddIcon from '@material-ui/icons/Add';
 import CancelIcon from '@material-ui/icons/Cancel';
+import DoneIcon from '@material-ui/icons/Done';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
@@ -133,6 +135,7 @@ const NewJournal = props => {
     createJournal,
   } = props;
 
+  const { currency } = accountSetupData;
   const activePeriod = _.find(accountingPeriods, { activeYear: true, status: true })
 
   const classes = useStyles(props);
@@ -152,9 +155,18 @@ const NewJournal = props => {
   const canBeSubmitted = () => {
     const { transactionDate, entries, periodId, reference, total, taxApplicable, taxTotal } = values;
     return (
-      reference.length > 0 && transactionDate && entries.length > 0 && total && periodId && (taxApplicable ? taxTotal : true)
+      reference.length > 0 &&
+      transactionDate && entries.length > 0 &&
+      total && periodId &&
+      (taxApplicable ? taxTotal : true) &&
+      handleBalanceCheck()
     );
   };
+
+  const handleBalanceCheck = () => {
+    const { entries } = values
+    return entries.reduce((curVal, b) => curVal + Number(b.debit), 0) === entries.reduce((curVal, b) => curVal + Number(b.credit), 0)
+  }
 
   const handleItemChange = i => event => {
     const { name, value } = event.target;
@@ -224,6 +236,11 @@ const NewJournal = props => {
     dialog.type === 'new' ? createJournal(values) : '';
   };
 
+  const handleFormCancel = () => {
+    const { periodId, ...rest } = initialState
+    setValues({ ...values, ...rest })
+  };
+
   console.log(journals, 'journals');
   console.log(accountingPeriods, 'accountingPeriods');
   console.log(chartOfAccounts, 'chartOfAccounts');
@@ -288,7 +305,7 @@ const NewJournal = props => {
               <Autocomplete
                 id="journal-currency"
                 size="small"
-                options={accountSetupData ? currencies.filter(currency => currency.code !== accountSetupData.currency.code) : []}
+                options={currency ? currencies.filter(ccy => ccy.code !== currency.code) : []}
                 getOptionLabel={option => `${option.name} ( ${option.symbol} )`}
                 renderOption={option => (
                   <React.Fragment>
@@ -507,7 +524,9 @@ const NewJournal = props => {
                     </TableBody>
                     <TableFooter>
                       <TableRow>
-                        <TableCell colSpan={2} align="right">Total</TableCell>
+                        <TableCell colSpan={2} align="right">
+                          <Typography>Total</Typography>
+                        </TableCell>
                         <TableCell><div className={classes.total}>{values.entries.reduce((curVal, b) => curVal + Number(b.debit), 0)}</div></TableCell>
                         <TableCell><div className={classes.total}>{values.entries.reduce((curVal, b) => curVal + Number(b.credit), 0)}</div></TableCell>
                         <TableCell />
@@ -573,6 +592,7 @@ const NewJournal = props => {
         </CardContent>
 
         <CardActions>
+          <FormHelperText>{handleBalanceCheck() ? <span><DoneIcon /> Balanced</span> : 'Entries must be balance'}</FormHelperText>
           <Button
             onClick={handleSubmit}
             color="primary"
@@ -583,7 +603,7 @@ const NewJournal = props => {
             {dialog.type === 'new' ? 'Save' : 'Update'}
           </Button>
           <Button
-            onClick={() => { }}
+            onClick={handleFormCancel}
             color="primary"
             variant="outlined"
             disableElevation

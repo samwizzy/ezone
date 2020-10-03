@@ -19,11 +19,12 @@ const key = 'fixedAssets';
 export function AssetsSettings(props) {
 	useInjectReducer({ key, reducer });
 	useInjectSaga({ key, saga });
-	const { getAssets } = props
+	const { getAssets, getAssetTypes } = props
 	const { path } = useRouteMatch()
 
 	useEffect(() => {
 		getAssets()
+		getAssetTypes()
 	}, [])
 
 	return (
@@ -52,6 +53,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
 	return {
 		getAssets: () => dispatch(Actions.getAssets()),
+		getAssetTypes: () => dispatch(Actions.getAssetTypes()),
 	};
 }
 

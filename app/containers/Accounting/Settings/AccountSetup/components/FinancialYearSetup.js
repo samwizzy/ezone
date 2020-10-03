@@ -222,6 +222,7 @@ const FinancialYearSetup = props => {
           options={businessTypes}
           getOptionLabel={option => option.name}
           onChange={handleSelectChange('businessType')}
+          value={form.businessType}
           style={{ width: 300 }}
           renderInput={params => (
             <TextField

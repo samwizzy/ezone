@@ -233,7 +233,6 @@ const DepreciationTypes = props => {
         onClose={handleClose}
       >
         <MenuItem onClick={handleEditClick}>Edit</MenuItem>
-        <MenuItem onClick={handleViewClick}>View Details</MenuItem>
       </Menu>
     </div>
   );

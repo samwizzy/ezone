@@ -72,6 +72,8 @@ const AccountChart = props => {
     getChartOfAccountById,
   } = props;
 
+  const { currency } = accountSetupData;
+
   const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
     setSelectedAccount(_.find(chartOfAccounts, { id }));
@@ -144,7 +146,10 @@ const AccountChart = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => new Intl.NumberFormat("en-NG", { style: 'currency', currency: accountSetupData.currency && accountSetupData.currency.code }).format(value)
+        customBodyRender: value =>
+          new Intl.NumberFormat("en-NG", {
+            style: 'currency', currency: currency && currency.code
+          }).format(value)
       },
     },
     {
@@ -226,7 +231,7 @@ const AccountChart = props => {
         onClose={handleClose}
       >
         <MenuItem onClick={handleEditClick}>Edit</MenuItem>
-        <MenuItem onClick={handleView}>View Details</MenuItem>
+        <MenuItem onClick={handleView}>View details</MenuItem>
         <MenuItem
           onClick={() => { }}
           disabled={selectedAccount && !Boolean(selectedAccount.entries.length)}

@@ -14,3 +14,8 @@ export const methods = [
   { value: 'DOUBLE_DECLINING', label: 'Double Declining' },
   { value: 'REDUCING_BALANCE', label: 'Reducing Balance' }
 ]
+
+export const assetClasses = [
+  { label: 'Tangible', value: 'TANGIBLE' },
+  { label: 'Intangible', value: 'INTANGIBLE' },
+];
