@@ -8,6 +8,7 @@ import {
   makeStyles,
   Icon,
   IconButton,
+  Button,
   Toolbar,
   Typography,
 } from '@material-ui/core';
@@ -19,15 +20,16 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
-  title: { flexGrow: 1 },
+  title: { flexGrow: 1, textTransform: 'uppercase' },
   iconPaper: {
     boxShadow: theme.shadows[1],
+    '& button:first-child': { marginRight: theme.spacing(1) }
   },
 }));
 
 const ControlledButtons = props => {
   const classes = useStyles();
-  const { history, assetById, openEditAssetDialog } = props;
+  const { history, assetById, openEditAssetDialog, openAssetDisposalDialog } = props;
 
   const handleBack = () => {
     history.goBack();
@@ -45,12 +47,16 @@ const ControlledButtons = props => {
         <IconButton onClick={handleBack}>
           <ArrowBackIcon />
         </IconButton>
-        <Typography className={classes.title} />
-        <IconButton onClick={() => { }}>
-          <Icon>print</Icon>
-        </IconButton>
+        <Typography className={classes.title}>{assetById.assetName}</Typography>
+
+        <Button onClick={() => openAssetDisposalDialog(assetById)}>
+          <Icon>delete_outline</Icon> dispose
+        </Button>
         <IconButton onClick={handleEditClick}>
           <Icon>edit</Icon>
+        </IconButton>
+        <IconButton onClick={() => { }}>
+          <Icon>print</Icon>
         </IconButton>
       </Toolbar>
     </div>
@@ -66,6 +72,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openEditAssetDialog: data => dispatch(Actions.openEditAssetDialog(data)),
+    openAssetDisposalDialog: data => dispatch(Actions.openAssetDisposalDialog(data)),
   };
 }
 

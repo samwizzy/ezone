@@ -43,27 +43,29 @@ const useStyles = makeStyles(theme => ({
   },
   ribbon: {
     textAlign: "center",
-    padding: theme.spacing(2, 5),
+    padding: theme.spacing(0, 3),
+    height: '52px',
+    '& p': { lineHeight: '52px' },
     position: "absolute",
     '&.pending': {
       backgroundColor: green[500],
-      "&::after": { borderTop: `52.67px solid ${green[500]}` },
-      "&::before": { borderBottom: `52.67px solid ${green[500]}` },
+      "&::after": { borderTop: `52px solid ${green[500]}` },
+      "&::before": { borderBottom: `52px solid ${green[500]}` },
     },
     '&.rejected': {
       backgroundColor: red[500],
-      "&::after": { borderTop: `52.67px solid ${red[500]}` },
-      "&::before": { borderBottom: `52.67px solid ${red[500]}` },
+      "&::after": { borderTop: `52px solid ${red[500]}` },
+      "&::before": { borderBottom: `52px solid ${red[500]}` },
     },
     '&.submitted': {
       backgroundColor: yellow[500],
-      "&::after": { borderTop: `52.67px solid ${yellow[500]}` },
-      "&::before": { borderBottom: `52.67px solid ${yellow[500]}` },
+      "&::after": { borderTop: `52px solid ${yellow[500]}` },
+      "&::before": { borderBottom: `52px solid ${yellow[500]}` },
     },
     '&.drafted': {
       backgroundColor: grey[500],
-      "&::after": { borderTop: `52.67px solid ${grey[500]}` },
-      "&::before": { borderBottom: `52.67px solid ${grey[500]}` },
+      "&::after": { borderTop: `52px solid ${grey[500]}` },
+      "&::before": { borderBottom: `52px solid ${grey[500]}` },
     },
     color: theme.palette.secondary.contrastText,
     top: 0, left: 0,
@@ -71,24 +73,23 @@ const useStyles = makeStyles(theme => ({
       content: "''",
       position: "absolute",
       top: 0,
-      right: "-52.67px",
+      right: "-52px",
       width: 0,
       height: 0,
-      borderRight: "52.67px solid transparent"
+      borderRight: "52px solid transparent"
     },
     "&::before": {
       content: "''",
       position: "absolute",
       top: 0,
-      right: "-52.67px",
+      right: "-52px",
       width: 0,
       height: 0,
-      borderRight: "52.67px solid transparent"
+      borderRight: "52px solid transparent"
     },
   },
   paper: {
     padding: theme.spacing(1),
-    backgroundColor: theme.palette.grey[50],
     border: `1px solid ${theme.palette.divider}`,
   },
   gridItem: { marginBottom: theme.spacing(2) },
@@ -99,11 +100,9 @@ const useStyles = makeStyles(theme => ({
     overflowX: 'hidden',
     "& td, & th": {
       border: 0,
-      ...theme.typography.subtitle1,
+      ...theme.typography.body2,
     },
-    "& th": {
-      paddingLeft: 0,
-    }
+    '& th': { fontWeight: 'bold' }
   },
   datatable: {
     width: '100% !important',
@@ -152,7 +151,7 @@ const JournalDetails = props => {
     <div className={classes.root}>
       <Grid container>
         <Grid item xs={12} className={classNames(classes.gridItem)}>
-          <ControlledButtons />
+          <ControlledButtons journal={journalData} />
         </Grid>
         <Grid item xs={12} className={classNames(classes.gridItem)}>
           <Paper square className={classes.flex}>
@@ -174,7 +173,7 @@ const JournalDetails = props => {
                 </TableRow>
                 <TableRow>
                   <TableCell colSpan={2} component="th">
-                    <Typography gutterBottom>Notes</Typography>
+                    <Typography gutterBottom variant="inherit">Notes</Typography>
                     <Typography color="textSecondary"><em>{journalData.note}</em></Typography>
                   </TableCell>
                 </TableRow>

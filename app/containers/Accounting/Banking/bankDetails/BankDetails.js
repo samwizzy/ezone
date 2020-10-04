@@ -107,7 +107,7 @@ const useStyles = makeStyles(theme => ({
 const AccountDetails = props => {
   const classes = useStyles(props);
   const [anchorEl, setAnchorEl] = useState(null);
-  const { accountSetupData, accountingPeriods, openAccountTransferToDialog, openAccountTransferFromDialog, backAccount } = props;
+  const { accountSetupData, accountingPeriods, openAccountTransferToDialog, openAccountTransferFromDialog, bankAccount } = props;
 
   const { currency } = accountSetupData
   const activePeriod = _.find(accountingPeriods, { activeYear: true, status: true })
@@ -121,20 +121,20 @@ const AccountDetails = props => {
   };
 
   const handleBankTransferTo = () => {
-    openAccountTransferToDialog(backAccount)
+    openAccountTransferToDialog(bankAccount)
     setAnchorEl(null);
   }
 
   const handleBankTransferFrom = () => {
-    openAccountTransferFromDialog(backAccount)
+    openAccountTransferFromDialog(bankAccount)
     setAnchorEl(null);
   }
 
-  console.log(backAccount, "backAccount")
+  console.log(bankAccount, "bankAccount")
   console.log(activePeriod, "activePeriod")
   console.log(accountSetupData, "accountSetupData")
 
-  if (!backAccount) {
+  if (!bankAccount) {
     return <CircleLoader />;
   }
 
@@ -142,7 +142,7 @@ const AccountDetails = props => {
     <div className={classes.root}>
       <Grid container>
         <Grid item xs={12}>
-          <ControlledButtons backAccount={backAccount} />
+          <ControlledButtons bankAccount={bankAccount} />
         </Grid>
         <Grid item xs={12}>
           <Paper square className={classes.paper}>
@@ -150,28 +150,28 @@ const AccountDetails = props => {
               <TableBody>
                 <TableRow>
                   <TableCell component="th">Account Name:</TableCell>
-                  <TableCell>{backAccount.accountName}</TableCell>
+                  <TableCell>{bankAccount.accountName}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Account Code:</TableCell>
-                  <TableCell>{backAccount.accountCode}</TableCell>
+                  <TableCell>{bankAccount.accountCode}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Account Type:</TableCell>
-                  <TableCell>{backAccount.accountType}</TableCell>
+                  <TableCell>{bankAccount.accountType}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Bank Name:</TableCell>
-                  <TableCell>{backAccount.bankName}</TableCell>
+                  <TableCell>{bankAccount.bankName}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Description:</TableCell>
-                  <TableCell>{backAccount.description}</TableCell>
+                  <TableCell>{bankAccount.description}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Date Created:</TableCell>
                   <TableCell>
-                    {moment(backAccount.dateCreated).format('ll')}
+                    {moment(bankAccount.dateCreated).format('ll')}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -185,7 +185,7 @@ const AccountDetails = props => {
                 <TableRow>
                   <TableCell>Bank Balance</TableCell>
                   <TableCell>
-                    {EzoneUtils.formatCurrency(backAccount.bankBalance, currency && currency.code)}
+                    {EzoneUtils.formatCurrency(bankAccount.bankBalance, currency && currency.code)}
                   </TableCell>
                 </TableRow>
               </TableFooter>
@@ -194,7 +194,7 @@ const AccountDetails = props => {
         </Grid>
       </Grid>
 
-      {backAccount.transfers.length
+      {bankAccount.transfers.length
         ? (
           <Grid container>
             <Grid item xs={12}>
@@ -221,9 +221,9 @@ const AccountDetails = props => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {backAccount.transfers.map((entry, id) => (
+                  {bankAccount.transfers.map((entry, id) => (
                     <TableRow key={id}>
-                      <TableCell>{backAccount.accountNumber}</TableCell>
+                      <TableCell>{bankAccount.accountNumber}</TableCell>
                       <TableCell>{entry.description}</TableCell>
                       <TableCell>{entry.referenceNumber}</TableCell>
                       <TableCell>{entry.transferType}</TableCell>
@@ -238,7 +238,7 @@ const AccountDetails = props => {
                     </TableCell>
                     <TableCell>
                       <div className={classes.total}>
-                        {EzoneUtils.formatCurrency(backAccount.transfers.reduce((a, b) => a + Number(b.amount), 0), currency && currency.code)}
+                        {EzoneUtils.formatCurrency(bankAccount.transfers.reduce((a, b) => a + Number(b.amount), 0), currency && currency.code)}
                       </div>
                     </TableCell>
                   </TableRow>
@@ -270,7 +270,7 @@ const AccountDetails = props => {
                   onClick={handleClick}
                   color="primary"
                   variant="contained"
-                  disabled={!backAccount.status}
+                  disabled={!bankAccount.status}
                 >
                   Add Transaction
                 </Button>
@@ -299,7 +299,7 @@ const AccountDetails = props => {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  backAccount: Selectors.makeSelectBankAccountByIdData(),
+  bankAccount: Selectors.makeSelectBankAccountByIdData(),
   accountingPeriods: Selectors.makeSelectAccountingPeriods(),
   accountSetupData: AccSelectors.makeSelectGetAccountingSetupData(),
 });
