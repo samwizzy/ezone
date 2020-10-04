@@ -244,10 +244,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewDepreciationTypeDialog: () =>
-      dispatch(Actions.openNewDepreciationTypeDialog()),
-    openEditDepreciationTypeDialog: data =>
-      dispatch(Actions.openEditDepreciationTypeDialog(data)),
+    openNewDepreciationTypeDialog: () => dispatch(Actions.openNewDepreciationTypeDialog()),
+    openEditDepreciationTypeDialog: data => dispatch(Actions.openEditDepreciationTypeDialog(data)),
   };
 }
 
