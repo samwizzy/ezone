@@ -42,10 +42,7 @@ const useStyles = makeStyles((theme) => ({
 const Widget2 = ({ accounts, accData }) => {
 	const classes = useStyles()
 	const { currency } = accData
-
-	console.log(accounts, "accounts from widget 1")
 	const payablesAccounts = _.filter(accounts, (account) => account.accountType && account.accountType.id === 7)
-	console.log(payablesAccounts, "payablesAccounts")
 
 	if (!payablesAccounts && !accData) {
 		return <Typography>There are currently no Payables</Typography>

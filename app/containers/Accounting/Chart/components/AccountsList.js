@@ -138,7 +138,7 @@ const AccountChart = props => {
       },
     },
     {
-      name: 'accountClass',
+      name: 'accountType.accountingClass',
       label: 'Class',
       options: {
         filter: true,

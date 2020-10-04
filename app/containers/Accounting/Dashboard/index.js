@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ModuleLayout from './ModuleLayout'
 import { Helmet } from 'react-helmet';
@@ -11,7 +11,7 @@ import { useInjectReducer } from 'utils/injectReducer';
 import * as Actions from './actions';
 import saga from './saga';
 import reducer from './reducer';
-import * as Selectors from './selectors';
+import makeSelectDashboard, * as Selectors from './selectors';
 import * as AccSelectors from './../selectors';
 import AccountDashboard from './components/AccountDashboard'
 
@@ -19,7 +19,11 @@ const key = "dashboard";
 const DashBoard = (props) => {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
-  const { accountSetupData, chartofAccounts } = props
+  const { accountSetupData, chartofAccounts, getAccountsRange } = props
+
+  useEffect(() => {
+    getAccountsRange({ startDate: '2020/09/03', endDate: '2020/09/10' })
+  }, [])
 
   return (
     <div>
@@ -40,13 +44,16 @@ DashBoard.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  dashboard: makeSelectDashboard(),
   loading: Selectors.makeSelectLoading(),
   chartofAccounts: AccSelectors.makeSelectChartOfAccounts(),
   accountSetupData: AccSelectors.makeSelectGetAccountingSetupData(),
 });
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    getAccountsRange: data => dispatch(Actions.getAccountsRange(data)),
+  };
 }
 
 const withConnect = connect(

@@ -8,9 +8,11 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 
 
-export function* getDashBoardDataSaga() {
+export function* getChartofAccountsRange({ payload }) {
+  const { startDate, endDate } = payload
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${Endpoints.GetAllAccountTypeApi}`;
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetChatsOfAccountApi}?orgId=${currentUser.organisation.orgId}&startDate=${startDate}&endDate=${endDate}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -21,16 +23,17 @@ export function* getDashBoardDataSaga() {
       }),
     });
 
-    yield put(Actions.getAllAccountTypeSuccessAction(response));
+    console.log("getting the chart of acccounts in range response", response)
+
+    yield put(Actions.getAccountsRangeSuccess(response));
 
   } catch (err) {
-    yield put(Actions.getAllAccountTypeErrorAction(err));
+    yield put(Actions.getAccountsRangeError(err));
   }
 }
 
 
 // Individual exports for testing
 export default function* AccDashboardSaga() {
-  // See example in containers/HomePage/saga.js
-  yield takeLatest(Constants.DEFAULT_ACTION, getDashBoardDataSaga);
+  yield takeLatest(Constants.GET_CHART_OF_ACCOUNTS_RANGE, getChartofAccountsRange);
 }
