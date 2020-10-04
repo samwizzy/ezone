@@ -133,7 +133,6 @@ const AccountDialog = props => {
       accountName,
       accountTypeId,
       openingBalance,
-      description,
       type,
     } = values;
     return (
@@ -141,7 +140,6 @@ const AccountDialog = props => {
       accountName.length > 0 &&
       accountTypeId &&
       openingBalance &&
-      (description && description.length > 0) &&
       type
     );
   };

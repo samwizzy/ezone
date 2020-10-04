@@ -4,7 +4,7 @@ import { makeStyles, Grid } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-// import * as Actions from '../../actions';
+import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import Widget1 from './widgets/Widget1'
 import Widget2 from './widgets/Widget2'
@@ -21,8 +21,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AccountDashBoard = props => {
-    const classes = useStyles();
-    const { accData, accounts } = props;
+    const classes = useStyles(props);
+    const { accData, accounts, accountsInTens } = props;
+
+    console.log(accountsInTens, "accounts In Tens")
 
     return (
         <div className={classes.root}>
@@ -58,6 +60,7 @@ AccountDashBoard.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
     loading: Selectors.makeSelectLoading(),
+    accountsInTens: Selectors.makeSelectChartofAccountsRange(),
 });
 
 function mapDispatchToProps(dispatch) {
