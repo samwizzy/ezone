@@ -332,7 +332,7 @@ const NewJournal = props => {
                       shrink: true,
                     }}
                     placeholder="Currencies"
-                    error={values.currencyId && !values.exchangeRate}
+                    error={values.currencyId && !Boolean(values.exchangeRate)}
                     helperText={(values.currencyId && !values.exchangeRate) ? 'Please select an exchange rate' : ''}
                   />
                 )}

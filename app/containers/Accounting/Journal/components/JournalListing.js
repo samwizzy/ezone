@@ -143,7 +143,7 @@ const JournalListing = props => {
         sort: false,
         customBodyRender: value => {
           const journal = journals.find(journal => journal.id === value)
-          return EzoneUtils.formatCurrency(journal.total, journal.currency ? journal.currency.code : currency.code, 'en-US')
+          return EzoneUtils.formatCurrency(journal.total, journal.currency ? journal.currency.code : currency && currency.code)
         }
       },
     },

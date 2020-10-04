@@ -185,7 +185,7 @@ const AccountDetails = props => {
                 <TableRow>
                   <TableCell>Bank Balance</TableCell>
                   <TableCell>
-                    {EzoneUtils.formatCurrency(backAccount.bankBalance, currency.code)}
+                    {EzoneUtils.formatCurrency(backAccount.bankBalance, currency && currency.code)}
                   </TableCell>
                 </TableRow>
               </TableFooter>
@@ -238,7 +238,7 @@ const AccountDetails = props => {
                     </TableCell>
                     <TableCell>
                       <div className={classes.total}>
-                        {EzoneUtils.formatCurrency(backAccount.transfers.reduce((a, b) => a + Number(b.amount), 0), currency.code)}
+                        {EzoneUtils.formatCurrency(backAccount.transfers.reduce((a, b) => a + Number(b.amount), 0), currency && currency.code)}
                       </div>
                     </TableCell>
                   </TableRow>

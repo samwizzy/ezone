@@ -151,7 +151,7 @@ const AccountChart = props => {
       options: {
         filter: true,
         sort: true,
-        customBodyRender: value => EzoneUtils.formatCurrency(value, currency.code)
+        customBodyRender: value => EzoneUtils.formatCurrency(value, currency && currency.code)
       },
     },
     {

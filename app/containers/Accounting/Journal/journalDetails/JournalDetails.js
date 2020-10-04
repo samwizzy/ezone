@@ -202,10 +202,10 @@ const JournalDetails = props => {
                   <TableCell>{_.find(chartOfAccounts, { id: entry.accountId }) && _.find(chartOfAccounts, { id: entry.accountId }).accountName}</TableCell>
                   <TableCell>{entry.description}</TableCell>
                   <TableCell>
-                    {EzoneUtils.formatCurrency(entry.debit, journalData.currency ? journalData.currency.code : currency.code, 'en-US')}
+                    {EzoneUtils.formatCurrency(entry.debit, journalData.currency ? journalData.currency.code : currency && currency.code, 'en-US')}
                   </TableCell>
                   <TableCell>
-                    {EzoneUtils.formatCurrency(entry.credit, journalData.currency ? journalData.currency.code : currency.code, 'en-US')}
+                    {EzoneUtils.formatCurrency(entry.credit, journalData.currency ? journalData.currency.code : currency && currency.code, 'en-US')}
                   </TableCell>
                 </TableRow>
               ))}
@@ -215,12 +215,12 @@ const JournalDetails = props => {
                 <TableCell colSpan={2} align="right">Total</TableCell>
                 <TableCell>
                   <Paper elevation={0} className={classes.paper}>
-                    {EzoneUtils.formatCurrency(journalData.entries.reduce((a, b) => a + Number(b.debit), 0), journalData.currency ? journalData.currency.code : currency.code, 'en-US')}
+                    {EzoneUtils.formatCurrency(journalData.entries.reduce((a, b) => a + Number(b.debit), 0), journalData.currency ? journalData.currency.code : currency && currency.code, 'en-US')}
                   </Paper>
                 </TableCell>
                 <TableCell>
                   <Paper elevation={0} className={classes.paper}>
-                    {EzoneUtils.formatCurrency(journalData.entries.reduce((a, b) => a + Number(b.credit), 0), journalData.currency ? journalData.currency.code : currency.code, 'en-US')}
+                    {EzoneUtils.formatCurrency(journalData.entries.reduce((a, b) => a + Number(b.credit), 0), journalData.currency ? journalData.currency.code : currency && currency.code, 'en-US')}
                   </Paper>
                 </TableCell>
                 <TableCell />
@@ -229,7 +229,7 @@ const JournalDetails = props => {
                 <TableCell colSpan={2} align="right">Tax amount</TableCell>
                 <TableCell>
                   <Paper className={classes.paper}>
-                    {EzoneUtils.formatCurrency(journalData.taxtTotal, journalData.currency ? journalData.currency.code : currency.code, 'en-US')}
+                    {EzoneUtils.formatCurrency(journalData.taxtTotal, journalData.currency ? journalData.currency.code : currency && currency.code, 'en-US')}
                   </Paper>
                 </TableCell>
                 <TableCell colSpan={2} />

@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import EzoneUtils from '../../../../utils/EzoneUtils';
 import {
   makeStyles,
   Card, CardContent, CardMedia, CardActionArea,
@@ -144,7 +145,7 @@ const ChartAccountDetails = props => {
                 <TableRow>
                   <TableCell>Acquisition Cost</TableCell>
                   <TableCell>
-                    {new Intl.NumberFormat('en-US', { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(assetById.aquisitionValue)}
+                    {EzoneUtils.formatCurrency(assetById.aquisitionValue, currency && currency.code)}
                   </TableCell>
                 </TableRow>
               </TableFooter>
@@ -182,7 +183,7 @@ const ChartAccountDetails = props => {
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Acquisition value</TableCell>
-                  <TableCell>{assetById.aquisitionValue}</TableCell>
+                  <TableCell>{EzoneUtils.formatCurrency(assetById.aquisitionValue, currency && currency.code)}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>

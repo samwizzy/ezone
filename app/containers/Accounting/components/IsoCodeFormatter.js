@@ -3,6 +3,8 @@ import UsaFlag from '../../../images/flag/usa.png';
 import EnglandFlag from '../../../images/flag/great-britain.png';
 import CanadaFlag from '../../../images/flag/canada.png';
 import SpainFlag from '../../../images/flag/spain.png';
+import AngolaFlag from '../../../images/flag/angola.png';
+import JapanFlag from '../../../images/flag/japan.png';
 
 export function IsoCodeToFlag(isoCode) {
     switch (isoCode) {
@@ -16,5 +18,9 @@ export function IsoCodeToFlag(isoCode) {
             return CanadaFlag;
         case 'GBP':
             return EnglandFlag;
+        case 'JPY':
+            return JapanFlag;
+        case 'AOA':
+            return AngolaFlag;
     }
 }

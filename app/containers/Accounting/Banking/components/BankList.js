@@ -177,7 +177,7 @@ const BankList = props => {
         sort: false,
         customBodyRender: value => {
           const bankAccount = bankAccounts.find(account => account.id === value)
-          return EzoneUtils.formatCurrency(bankAccount.bankBalance, currency.code)
+          return EzoneUtils.formatCurrency(bankAccount.bankBalance, currency && currency.code)
         }
       },
     },
