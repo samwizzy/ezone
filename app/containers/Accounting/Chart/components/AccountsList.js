@@ -138,6 +138,14 @@ const AccountChart = props => {
       },
     },
     {
+      name: 'accountClass',
+      label: 'Class',
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
       name: 'accountType.accountType',
       label: 'Account Type',
       options: {
