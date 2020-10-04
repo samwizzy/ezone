@@ -100,7 +100,7 @@ export function* createAsset({ payload }) {
 export function* disposeAsset({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.AddAssetApi}`;
+  const requestURL = `${Endpoints.CreateDisposalApi}`;
   payload.orgId = currentUser.organisation.orgId;
 
   try {

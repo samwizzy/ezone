@@ -25,7 +25,7 @@ export const initialState = {
   bankAccount: null,
   bankTransferByOrgIdData: [],
   transactionTransferDialog: {
-    type: 'new',
+    type: 'to',
     props: {
       open: false,
     },
@@ -377,12 +377,12 @@ const bankingReducer = (state = initialState, action) =>
         };
       }
 
-      // Open transaction transfer dialog
-      case Constants.OPEN_ACCOUNT_TRANSFER_DIALOG: {
+      // Open transaction transfer to dialog
+      case Constants.OPEN_ACCOUNT_TRANSFER_TO_DIALOG: {
         return {
           ...state,
           transactionTransferDialog: {
-            type: 'new',
+            type: 'to',
             props: {
               open: true,
             },
@@ -390,11 +390,36 @@ const bankingReducer = (state = initialState, action) =>
           },
         };
       }
-      case Constants.CLOSE_ACCOUNT_TRANSFER_DIALOG: {
+      case Constants.CLOSE_ACCOUNT_TRANSFER_TO_DIALOG: {
         return {
           ...state,
           transactionTransferDialog: {
-            type: 'new',
+            type: 'to',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
+      }
+      // Open transaction transfer from dialog
+      case Constants.OPEN_ACCOUNT_TRANSFER_FROM_DIALOG: {
+        return {
+          ...state,
+          transactionTransferDialog: {
+            type: 'from',
+            props: {
+              open: true,
+            },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_ACCOUNT_TRANSFER_FROM_DIALOG: {
+        return {
+          ...state,
+          transactionTransferDialog: {
+            type: 'from',
             props: {
               open: false,
             },

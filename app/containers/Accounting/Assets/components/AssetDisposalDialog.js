@@ -31,9 +31,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const initialState = {
+  asset: null,
   disposalDate: moment().format('YYYY-MM-DDTHH:mm:ss'),
   reason: '',
-  amount: '',
+  disposalAmount: '',
 };
 
 const AssetDisposalDialog = props => {
@@ -46,7 +47,7 @@ const AssetDisposalDialog = props => {
     if (dialog.type === 'edit' && dialog.data) {
       setForm({ ...dialog.data });
     } else {
-      setForm({ ...initialState });
+      setForm({ ...initialState, asset: dialog.data });
     }
   }, [dialog.data]);
 
@@ -65,13 +66,13 @@ const AssetDisposalDialog = props => {
   };
 
   const handleSubmit = () => {
-    dialog.type === 'new' ? '' : '';
+    dialog.type === 'new' ? disposeAsset(form) : '';
   };
 
   const canSubmitForm = () => {
-    const { disposalDate, amount, reason } = form;
+    const { disposalDate, disposalAmount, reason } = form;
     return (
-      disposalDate && amount && (reason && reason.length > 0)
+      disposalDate && disposalAmount && (reason && reason.length > 0)
     );
   };
 
@@ -96,7 +97,7 @@ const AssetDisposalDialog = props => {
         <DialogContent dividers>
           <TextField
             id="asset-disposal-amount"
-            name="amount"
+            name="disposalAmount"
             label="Disposal Amount"
             variant="outlined"
             onChange={handleChange}

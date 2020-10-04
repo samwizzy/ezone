@@ -65,7 +65,7 @@ const TransactionTransferDialog = props => {
     currencies,
     accountTypes,
     dialog,
-    closeAccountTransferDialog,
+    closeAccountTransferToDialog,
     createBankTransfer,
   } = props;
   const { currency } = accountSetupData
@@ -84,7 +84,7 @@ const TransactionTransferDialog = props => {
   });
 
   useEffect(() => {
-    if (dialog.type === 'new' && dialog.data) {
+    if ((dialog.type === 'to' || dialog.type === 'from') && dialog.data) {
       setValues({ ...values, currentBankId: dialog.data.id });
     }
   }, [dialog.data]);
@@ -157,13 +157,15 @@ const TransactionTransferDialog = props => {
     <div>
       <Dialog
         {...dialog.props}
-        onClose={closeAccountTransferDialog}
+        onClose={closeAccountTransferToDialog}
         keepMounted
         TransitionComponent={Transition}
         maxWidth="xs"
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="alert-dialog-slide-title">Bank Transfer</DialogTitle>
+        <DialogTitle id="alert-dialog-slide-title">
+          {dialog.type === 'to' ? 'Transfer to Another Account' : 'Transfer from Another Account'}
+        </DialogTitle>
 
         <DialogContent dividers>
           <Grid container spacing={1}>
@@ -368,7 +370,7 @@ const TransactionTransferDialog = props => {
             Save
           </Button>
           <Button
-            onClick={closeAccountTransferDialog}
+            onClick={closeAccountTransferToDialog}
             color="inherit"
             variant="contained"
             disableElevation
@@ -397,7 +399,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeAccountTransferDialog: () => dispatch(Actions.closeAccountTransferDialog()),
+    closeAccountTransferToDialog: () => dispatch(Actions.closeAccountTransferToDialog()),
     createBankTransfer: data => dispatch(Actions.createBankTransfer(data)),
   };
 }

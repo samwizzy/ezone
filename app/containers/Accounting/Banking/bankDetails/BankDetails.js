@@ -107,7 +107,7 @@ const useStyles = makeStyles(theme => ({
 const AccountDetails = props => {
   const classes = useStyles(props);
   const [anchorEl, setAnchorEl] = useState(null);
-  const { history, match, accountSetupData, accountingPeriods, openAccountTransferDialog, backAccount, getBankAccountById } = props;
+  const { accountSetupData, accountingPeriods, openAccountTransferToDialog, openAccountTransferFromDialog, backAccount } = props;
 
   const { currency } = accountSetupData
   const activePeriod = _.find(accountingPeriods, { activeYear: true, status: true })
@@ -121,12 +121,12 @@ const AccountDetails = props => {
   };
 
   const handleBankTransferTo = () => {
-    openAccountTransferDialog(backAccount)
+    openAccountTransferToDialog(backAccount)
     setAnchorEl(null);
   }
 
   const handleBankTransferFrom = () => {
-    openAccountTransferDialog(backAccount)
+    openAccountTransferFromDialog(backAccount)
     setAnchorEl(null);
   }
 
@@ -306,7 +306,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openAccountTransferDialog: data => dispatch(Actions.openAccountTransferDialog(data)),
+    openAccountTransferToDialog: data => dispatch(Actions.openAccountTransferToDialog(data)),
+    openAccountTransferFromDialog: data => dispatch(Actions.openAccountTransferFromDialog(data)),
     getBankAccountById: data => dispatch(Actions.getBankAccountById(data)),
   };
 }

@@ -206,9 +206,10 @@ export function closeEditAssetDialog() {
 }
 
 // Open asset disposal dialog
-export function openAssetDisposalDialog() {
+export function openAssetDisposalDialog(data) {
   return {
     type: Constants.OPEN_ASSET_DISPOSAL_DIALOG,
+    payload: data
   }
 }
 

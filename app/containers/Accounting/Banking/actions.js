@@ -239,16 +239,29 @@ export function getTransfersByOrgIdError(data) {
 }
 
 // Transaction transfer dialog
-export function openAccountTransferDialog(data) {
+export function openAccountTransferToDialog(data) {
   return {
-    type: Constants.OPEN_ACCOUNT_TRANSFER_DIALOG,
+    type: Constants.OPEN_ACCOUNT_TRANSFER_TO_DIALOG,
     payload: data,
   };
 }
 
-export function closeAccountTransferDialog() {
+export function closeAccountTransferToDialog() {
   return {
-    type: Constants.CLOSE_ACCOUNT_TRANSFER_DIALOG,
+    type: Constants.CLOSE_ACCOUNT_TRANSFER_TO_DIALOG,
+  };
+}
+// Transaction transfer dialog
+export function openAccountTransferFromDialog(data) {
+  return {
+    type: Constants.OPEN_ACCOUNT_TRANSFER_FROM_DIALOG,
+    payload: data,
+  };
+}
+
+export function closeAccountTransferFromDialog() {
+  return {
+    type: Constants.CLOSE_ACCOUNT_TRANSFER_FROM_DIALOG,
   };
 }
 
