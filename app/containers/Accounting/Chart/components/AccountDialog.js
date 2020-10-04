@@ -83,13 +83,10 @@ const AccountDialog = props => {
   const [values, setValues] = useState({ ...initialState });
 
   const handleChange = event => {
-    setValues({
-      ...values,
-      [event.target.name]:
-        event.target.type === 'checkbox'
-          ? event.target.checked
-          : event.target.value,
-    });
+    const { name, value, type, checked } = event.target
+    name === 'openingBalance'
+      ? setValues({ ...values, [name]: value.replace(/[^0-9]/g, '') })
+      : setValues({ ...values, [name]: type === 'checkbox' ? checked : value })
   };
 
   const handleSelectChange = name => (event, object) => {
