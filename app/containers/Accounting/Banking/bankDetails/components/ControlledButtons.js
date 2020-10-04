@@ -19,15 +19,16 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
-  title: { flexGrow: 1 },
+  title: { flexGrow: 1, textTransform: 'uppercase' },
   iconPaper: {
     boxShadow: theme.shadows[1],
+    '& button:first-child': { marginRight: theme.spacing(1) }
   },
 }));
 
 const ControlledButtons = props => {
   const classes = useStyles();
-  const { history, match, backAccount, openEditBankAccountDialog, openDeleteBankAccountDialog } = props;
+  const { history, match, bankAccount, openEditBankAccountDialog, openDeleteBankAccountDialog } = props;
 
   const handleBack = () => {
     history.goBack();
@@ -39,14 +40,15 @@ const ControlledButtons = props => {
         <IconButton onClick={handleBack}>
           <ArrowBackIcon />
         </IconButton>
-        <Typography className={classes.title} />
+        <Typography className={classes.title}>{bankAccount.accountName}</Typography>
+
         <IconButton>
           <Icon>print</Icon>
         </IconButton>
-        <IconButton onClick={() => openEditBankAccountDialog(backAccount)}>
+        <IconButton onClick={() => openEditBankAccountDialog(bankAccount)}>
           <Icon>edit</Icon>
         </IconButton>
-        <IconButton onClick={() => openDeleteBankAccountDialog(backAccount)}>
+        <IconButton onClick={() => openDeleteBankAccountDialog(bankAccount)}>
           <Icon>delete</Icon>
         </IconButton>
       </Toolbar>

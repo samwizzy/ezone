@@ -13,15 +13,16 @@ const useStyles = makeStyles(theme => ({
 	root: {
 		flexGrow: 1,
 	},
-	title: { flexGrow: 1 },
+	title: { flexGrow: 1, textTransform: 'uppercase' },
 	iconPaper: {
 		boxShadow: theme.shadows[1],
+		'& button:first-child': { marginRight: theme.spacing(1) }
 	},
 }));
 
 const ControlledButtons = props => {
-	const classes = useStyles();
-	const { history, match } = props;
+	const classes = useStyles(props);
+	const { history, match, journal } = props;
 
 	const handleBack = () => {
 		history.goBack();
@@ -33,8 +34,8 @@ const ControlledButtons = props => {
 				<IconButton onClick={handleBack}>
 					<ArrowBackIcon />
 				</IconButton>
-				<Typography>Back</Typography>
-				<Typography className={classes.title} />
+				<Typography className={classes.title}><code>#{journal.reference}</code></Typography>
+
 				<IconButton>
 					<Icon>print</Icon>
 				</IconButton>

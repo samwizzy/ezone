@@ -19,9 +19,10 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
-  title: { flexGrow: 1 },
+  title: { flexGrow: 1, textTransform: 'uppercase' },
   iconPaper: {
     boxShadow: theme.shadows[1],
+    '& button:first-child': { marginRight: theme.spacing(1) }
   },
 }));
 
@@ -39,7 +40,8 @@ const ControlledButtons = props => {
         <IconButton onClick={handleBack}>
           <ArrowBackIcon />
         </IconButton>
-        <Typography className={classes.title} />
+        <Typography className={classes.title}>{chartOfAccount.accountName}</Typography>
+
         <IconButton onClick={() => { }}>
           <Icon>print</Icon>
         </IconButton>
