@@ -16,8 +16,8 @@ export const initialState = {
     },
     data: null,
   },
-  budgetData: [],
-  budgetingPostData: {},
+  budgets: [],
+  budgetById: null,
   accountingPeriodData: [],
 };
 
@@ -25,7 +25,7 @@ export const initialState = {
 const budgetReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
-      
+
       // Open dialog for adding new bank account 
       case Constants.OPEN_NEW_BUDGETING_DIALOG: {
         return {
@@ -83,7 +83,6 @@ const budgetReducer = (state = initialState, action) =>
           ...state,
           loading: true,
           error: false,
-          budgetingPostData: action.payload
         };
       }
       case Constants.CREATE_BUDGETING_SUCCESS: {
@@ -91,7 +90,6 @@ const budgetReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: false,
-          budgetingPostData: action.payload
         };
       }
       case Constants.CREATE_BUDGETING_ERR: {

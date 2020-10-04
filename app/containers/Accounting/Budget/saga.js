@@ -22,10 +22,10 @@ export function* getBudgetingSaga() {
       }),
     });
 
-    yield put(Actions.getAllAccountingPeriodAction(allAccountTypeResponse));
+    yield put(Actions.getAccountingPeriods(allAccountTypeResponse));
   } catch (err) {
     alert('Something went wrong getAllAccountTypeSaga');
-    yield put(Actions.getAllAccountingPeriodErrorAction(err));
+    yield put(Actions.getAccountingPeriodsError(err));
   }
 }
 

@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AccountDashBoard = props => {
     const classes = useStyles();
-    const { } = props;
+    const { accData, accounts } = props;
 
     return (
         <div className={classes.root}>
@@ -30,11 +30,11 @@ const AccountDashBoard = props => {
                 <Grid item xs={12}>
                     <Grid container spacing={4} className={classes.grid}>
                         <Grid item xs={6}>
-                            <Widget1 />
+                            <Widget1 accData={accData} accounts={accounts} />
                         </Grid>
 
                         <Grid item xs={6}>
-                            <Widget2 />
+                            <Widget2 accData={accData} accounts={accounts} />
                         </Grid>
 
                         <Grid item xs={8}>
@@ -42,7 +42,7 @@ const AccountDashBoard = props => {
                         </Grid>
 
                         <Grid item xs={4}>
-                            <Widget4 />
+                            <Widget4 accData={accData} accounts={accounts} />
                         </Grid>
                     </Grid>
                 </Grid>

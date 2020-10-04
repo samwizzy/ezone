@@ -1,5 +1,6 @@
-import React, { Fragment, memo, useState, useRef } from 'react';
+import React, { memo, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
+import EzoneUtils from '../../../../utils/EzoneUtils'
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -30,7 +31,7 @@ const useStyles = makeStyles(theme => ({
       margin: '4px auto',
     },
     whiteSpace: 'nowrap',
-    '& .MuiTableRow-root:hover': {
+    '& tr:hover': {
       cursor: 'pointer',
     },
     '& tbody': {
@@ -95,10 +96,14 @@ const AccountChart = props => {
     handleClose();
   };
 
+  const handleDeleteClick = () => {
+    openDeleteAccountDialog(selectedAccount);
+    handleClose();
+  };
+
   const orderedAccounts = _.orderBy(chartOfAccounts, 'dateCreated', 'desc');
 
   console.log(orderedAccounts, 'orderedAccounts');
-  console.log(accountSetupData, 'accountSetupData');
 
   const fileInput = useRef();
 
@@ -121,7 +126,7 @@ const AccountChart = props => {
       label: 'Account Code',
       options: {
         filter: true,
-        sort: false,
+        sort: true,
       },
     },
     {
@@ -129,7 +134,7 @@ const AccountChart = props => {
       label: 'Account Name',
       options: {
         filter: true,
-        sort: false,
+        sort: true,
       },
     },
     {
@@ -137,7 +142,7 @@ const AccountChart = props => {
       label: 'Account Type',
       options: {
         filter: true,
-        sort: false,
+        sort: true,
       },
     },
     {
@@ -145,11 +150,8 @@ const AccountChart = props => {
       label: 'Balance',
       options: {
         filter: true,
-        sort: false,
-        customBodyRender: value =>
-          new Intl.NumberFormat("en-NG", {
-            style: 'currency', currency: currency ? currency.code : 'NGN'
-          }).format(value)
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value, currency.code)
       },
     },
     {
@@ -157,7 +159,7 @@ const AccountChart = props => {
       label: 'Debit / Credit',
       options: {
         filter: true,
-        sort: false,
+        sort: true,
       },
     },
     {
@@ -165,7 +167,7 @@ const AccountChart = props => {
       label: 'Status',
       options: {
         filter: true,
-        sort: false,
+        sort: true,
         customBodyRender: value => {
           return value
             ? <Chip label="Active" variant="outlined" icon={<CheckCircleIcon className={classNames(classes.status, { active: value })} />} />
@@ -239,7 +241,7 @@ const AccountChart = props => {
           Mark as active
         </MenuItem>
         <MenuItem
-          onClick={() => openDeleteAccountDialog(selectedAccount)}
+          onClick={handleDeleteClick}
           disabled={selectedAccount && Boolean(selectedAccount.entries.length)}
         >
           Delete

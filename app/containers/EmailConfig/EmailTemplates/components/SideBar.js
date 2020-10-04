@@ -56,14 +56,14 @@ const useStyles = makeStyles(theme => ({
     },
   },
   toolbar: {
-      ...theme.mixins.toolbar,
-      justifyContent: 'flex-end'
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end'
   },
   toolbar2: {
-      ...theme.mixins.toolbar,
-      [theme.breakpoints.up('sm')]: {
-          minHeight: 20
-      },
+    ...theme.mixins.toolbar,
+    [theme.breakpoints.up('sm')]: {
+      minHeight: 20
+    },
   },
   drawerPaper: {
     width: drawerWidth,
@@ -72,17 +72,17 @@ const useStyles = makeStyles(theme => ({
     width: 14,
     height: 14,
     color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.done': { color: green[500]},
+    '&.approved': { color: theme.palette.primary.main },
+    '&.inProgress': { color: orange[500] },
+    '&.done': { color: green[500] },
   },
 }));
 
 const menus = [
-  {id: 1, name: "Password Reset", url: "password", icon: 'vpn_key'},
-  {id: 2, name: "New User Welcome Message", url: "welcome", icon: 'person_add'}, 
-  {id: 2, name: "Signature Approval", url: "signature", icon: 'fingerprint'},
-  {id: 4, name: "Invoice", url: "invoice", icon: 'receipt'},
+  { id: 1, name: "Password Reset", url: "password", icon: 'vpn_key' },
+  { id: 2, name: "New User Welcome Message", url: "welcome", icon: 'person_add' },
+  { id: 3, name: "Signature Approval", url: "signature", icon: 'fingerprint' },
+  { id: 4, name: "Invoice", url: "invoice", icon: 'receipt' },
 ];
 
 const SideBar = props => {
@@ -95,50 +95,50 @@ const SideBar = props => {
 
   const handleSelectedById = url => {
     setSelectedIndex(url)
-    props.history.push({pathname: '/settings/email/template/' + url})
+    props.history.push({ pathname: '/settings/email/template/' + url })
   }
 
   const drawer = (
     <div>
-        <AppBar position='relative' color="inherit" elevation={0}>
-            <Toolbar className={classes.toolbar}>
-                <Typography variant="h6" color="primary">
-                    <PaletteOutlinedIcon /> Email Template
-                </Typography>
-            </Toolbar>
-        </AppBar>
-        <Divider />
-        <Toolbar className={classes.toolbar2} />
-        <List
-            component="nav"
-            subheader={
-            <ListSubheader component="div" id="nested-list-subheader">
-              <Typography variant="h6">
-                  Choose Template 
+      <AppBar position='relative' color="inherit" elevation={0}>
+        <Toolbar className={classes.toolbar}>
+          <Typography variant="h6" color="primary">
+            <PaletteOutlinedIcon /> Email Template
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Divider />
+      <Toolbar className={classes.toolbar2} />
+      <List
+        component="nav"
+        subheader={
+          <ListSubheader component="div" id="nested-list-subheader">
+            <Typography variant="h6">
+              Choose Template
               </Typography>
-            </ListSubheader>
-            }
-        >
-            {menus && menus.map(menu => (
-            <ListItem disableRipple button selected={selectedIndex == menu.url} key={menu.id} onClick={() => handleSelectedById(menu.url)}>
-                <ListItemIcon><Icon>{menu.icon}</Icon></ListItemIcon>
-                <ListItemText primary={menu.name} />
-            </ListItem>
-            ))}
-        </List>
+          </ListSubheader>
+        }
+      >
+        {menus && menus.map(menu => (
+          <ListItem disableRipple button selected={selectedIndex == menu.url} key={menu.id} onClick={() => handleSelectedById(menu.url)}>
+            <ListItemIcon><Icon>{menu.icon}</Icon></ListItemIcon>
+            <ListItemText primary={menu.name} />
+          </ListItem>
+        ))}
+      </List>
     </div>
   );
 
 
   return (
     <div className={classes.root}>
-        <nav className={classes.drawer} aria-label="mailbox folders">
-          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-          <Hidden smUp implementation="css"></Hidden>
-          <div className={classes.drawerPaper}>
-            {drawer}
-          </div>
-        </nav>
+      <nav className={classes.drawer} aria-label="mailbox folders">
+        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+        <Hidden smUp implementation="css"></Hidden>
+        <div className={classes.drawerPaper}>
+          {drawer}
+        </div>
+      </nav>
     </div>
   );
 };
@@ -165,4 +165,4 @@ export default withRouter(
   compose(
     withConnect,
     memo,
-)(SideBar));
+  )(SideBar));

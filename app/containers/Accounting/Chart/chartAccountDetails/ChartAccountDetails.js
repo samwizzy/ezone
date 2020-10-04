@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import EzoneUtils from '../../../../utils/EzoneUtils';
 import {
   makeStyles,
   Paper,
@@ -135,14 +136,8 @@ const ChartAccountDetails = props => {
                   <TableCell>
                     {chartOfAccount.accountType &&
                       chartOfAccount.accountType.accountType === 'Bank'
-                      ? new Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        currency: currency ? currency.code : 'NGN',
-                      }).format(chartOfAccount.bankBalance)
-                      : new Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        currency: currency ? currency.code : 'NGN',
-                      }).format(chartOfAccount.openingBalance)}
+                      ? EzoneUtils.formatCurrency(chartOfAccount.bankBalance, currency.code)
+                      : EzoneUtils.formatCurrency(chartOfAccount.openingBalance, currency.code)}
                   </TableCell>
                 </TableRow>
               </TableFooter>
@@ -174,17 +169,17 @@ const ChartAccountDetails = props => {
                     <TableCell>{moment(entry.dateCreated).format('ll')}</TableCell>
                     <TableCell>{moment(entry.dateCreated).format('ll')}</TableCell>
                     <TableCell>{entry.description}</TableCell>
-                    <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(entry.debit)}</TableCell>
-                    <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(entry.credit)}</TableCell>
-                    <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(Number(entry.debit) + Number(entry.credit))}</TableCell>
+                    <TableCell>{EzoneUtils.formatCurrency(entry.debit, currency.code)}</TableCell>
+                    <TableCell>{EzoneUtils.formatCurrency(entry.credit, currency.code)}</TableCell>
+                    <TableCell>{EzoneUtils.formatCurrency(Number(entry.debit) + Number(entry.credit), currency.code)}</TableCell>
                   </TableRow>
                 )}
                 <TableRow>
                   <TableCell colSpan={2} />
                   <TableCell>Total</TableCell>
-                  <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(chartOfAccount.entries.reduce((curVal, b) => curVal + b.debit, 0))}</TableCell>
-                  <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit, 0))}</TableCell>
-                  <TableCell>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit + b.debit, 0))}</TableCell>
+                  <TableCell>{EzoneUtils.formatCurrency(chartOfAccount.entries.reduce((curVal, b) => curVal + b.debit, 0), currency.code)}</TableCell>
+                  <TableCell>{EzoneUtils.formatCurrency(chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit, 0), currency.code)}</TableCell>
+                  <TableCell>{EzoneUtils.formatCurrency(chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit + b.debit, 0), currency.code)}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>

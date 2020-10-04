@@ -45,6 +45,8 @@ const AddBankAccountDialog = props => {
     deleteBankAccount,
   } = props;
 
+  const { data } = dialog
+
   const [values, setValues] = React.useState({ ...initialState });
 
   const canSubmitValues = () => {
@@ -95,7 +97,7 @@ const AddBankAccountDialog = props => {
 
         <DialogContent dividers>
           <DialogContentText id="alert-dialog-slide-description" variant="h6">
-            Are you sure you want to delete this Bank Account?
+            Are you sure you want to delete this <strong><code>{data && data.bankName}</code></strong> Bank Account?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

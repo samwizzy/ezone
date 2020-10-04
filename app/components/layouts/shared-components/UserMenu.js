@@ -46,14 +46,12 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     marginRight: theme.spacing(1),
+    background: theme.palette.background.paper
   },
 }));
 
 const options = [
-  'Show some love to Material-UI',
-  'Show all notification content',
-  'Hide sensitive notification content',
-  'Hide all notification content',
+  'No messages',
 ];
 
 const UserMenu = props => {

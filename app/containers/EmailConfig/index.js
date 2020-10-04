@@ -1,9 +1,3 @@
-/**
- *
- * EmailConfig
- *
- */
-
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -45,7 +39,7 @@ export function EmailConfig(props) {
         <title>EmailConfig</title>
         <meta name="description" content="Description of EmailConfig" />
       </Helmet>
-      
+
       <ModuleLayout>
         <EmailHome />
       </ModuleLayout>

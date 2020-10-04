@@ -1,76 +1,86 @@
-import React from "react"
+import React from 'react'
+import { Link } from 'react-router-dom'
 import {
-    makeStyles,
-    Box,
-    Button,
-    Card, CardHeader,
-    Table,
-    TableHead,
-    TableBody,
-    TableFooter,
-    TableRow,
-    TableCell,
-    Typography
+	makeStyles,
+	Button,
+	Card, CardHeader,
+	Table,
+	TableBody,
+	TableFooter,
+	TableRow,
+	TableCell,
+	Typography
 } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-    },
-    card: {
-        overflowX: 'hidden'
-    },
-    table: {
-        minWidth: 400,
-        "& .MuiTableFooter-root": {
-            borderTop: `1px solid ${theme.palette.divider} !important`
-        },
-        "& .MuiTableCell-root": {
-            borderBottom: "none !important"
-        },
-        '& .MuiTableCell-body': {
-            color: theme.palette.text.secondary,
-            fontSize: theme.typography.fontSize
-        },
-    }
+	root: {
+		flexGrow: 1,
+	},
+	card: {
+		overflowX: 'hidden'
+	},
+	table: {
+		minWidth: 400,
+		"& .MuiTableFooter-root": {
+			borderTop: `1px solid ${theme.palette.divider} !important`
+		},
+		"& .MuiTableCell-root": {
+			borderBottom: "none !important"
+		},
+		'& .MuiTableCell-body': {
+			color: theme.palette.text.secondary,
+			fontSize: theme.typography.fontSize
+		},
+	}
 }));
 
 
-const Widget4 = () => {
-    const classes = useStyles()
+const Widget4 = ({ accounts, accData }) => {
+	const classes = useStyles()
+	const { currency } = accData
 
-    return (
-        <div>
-            <Card>
-                <CardHeader
-                    title="Account"
-                />
-                <Table className={classes.table} size="small">
-                    <TableBody>
-                        <TableRow>
-                            <TableCell component="th" scope="row">Cash at Hand</TableCell>
-                            <TableCell align="right">NGN 200.00</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell component="th" scope="row">Bank</TableCell>
-                            <TableCell align="right">NGN 200.00</TableCell>
-                        </TableRow>
-                    </TableBody>
+	if (!accounts.length > 0 && !accData) {
+		return <Typography>No account is currently available</Typography>
+	}
 
-                    <TableFooter>
-                        <TableRow>
-                            <TableCell align="left">
-                                <Typography variant="subtitle1" color="textSecondary">Total</Typography>
-                            </TableCell>
-                            <TableCell align="right">
-                                <Typography variant="subtitle1" color="textSecondary">NGN 100000.00</Typography>
-                            </TableCell>
-                        </TableRow>
-                    </TableFooter>
-                </Table>
-            </Card>
-        </div>
-    )
+	return (
+		<div>
+			<Card>
+				<CardHeader
+					title="Accounts"
+					action={<Button size="small" component={Link} to="/account/charts">View all</Button>}
+				/>
+				<Table className={classes.table} size="small">
+					<TableBody>
+						{accounts.slice(0, 4).map((acc, i) =>
+							<TableRow key={i}>
+								<TableCell component="th" scope="row">{acc.accountName}</TableCell>
+								<TableCell align="right">{new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(acc.openingBalance)}</TableCell>
+							</TableRow>
+						)}
+						<TableRow>
+							<TableCell colSpan={2}>
+								<Button component={Link} to="/account/charts">{`${accounts.length - 4} more`}</Button>
+							</TableCell>
+						</TableRow>
+					</TableBody>
+
+					<TableFooter>
+						<TableRow>
+							<TableCell>
+								<Typography variant="subtitle1" color="textSecondary">Total</Typography>
+							</TableCell>
+							<TableCell align="right">
+								<Typography variant="subtitle1" color="textSecondary">
+									{new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(accounts.reduce((curVal, b) => curVal + b.openingBalance, 0))}
+								</Typography>
+							</TableCell>
+						</TableRow>
+					</TableFooter>
+				</Table>
+			</Card>
+		</div>
+	)
 }
 
 export default Widget4

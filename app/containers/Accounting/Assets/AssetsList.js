@@ -55,7 +55,7 @@ const useStyles = makeStyles(theme => ({
 
 const AssetsList = props => {
   const classes = useStyles(props);
-  const { loading, history, match, assets, openNewAssetDialog, openEditAssetDialog } = props
+  const { loading, history, match, assets, openNewAssetDialog, openAssetDisposalDialog, openEditAssetDialog } = props
   const [anchorEl, setAnchorEl] = useState(null)
   const [selectedAsset, setSelectedAsset] = useState(null)
 
@@ -78,6 +78,16 @@ const AssetsList = props => {
   const handleViewClick = () => {
     const { id } = selectedAsset
     history.push(`${match.url}/view/${id}`)
+    handleClose()
+  }
+
+  const handleNewClick = () => {
+    openNewAssetDialog()
+    history.push(`${match.url}/new`)
+  }
+
+  const handleDisposeClick = () => {
+    openAssetDisposalDialog(selectedAsset)
     handleClose()
   }
 
@@ -182,7 +192,7 @@ const AssetsList = props => {
           variant="contained"
           color="primary"
           startIcon={<AddIcon />}
-          onClick={() => history.push(`${match.url}/new`)}
+          onClick={handleNewClick}
         >
           New Asset
         </Button>
@@ -211,8 +221,11 @@ const AssetsList = props => {
         <MenuItem onClick={handleEditClick}>
           Edit
         </MenuItem>
+        <MenuItem onClick={handleDisposeClick}>
+          Dispose
+        </MenuItem>
         <MenuItem onClick={handleViewClick}>
-          View Details
+          View details
         </MenuItem>
       </Menu>
     </div>
@@ -228,6 +241,7 @@ function mapDispatchToProps(dispatch) {
   return {
     openNewAssetDialog: () => dispatch(Actions.openNewAssetDialog()),
     openEditAssetDialog: data => dispatch(Actions.openEditAssetDialog(data)),
+    openAssetDisposalDialog: data => dispatch(Actions.openAssetDisposalDialog(data)),
   };
 }
 

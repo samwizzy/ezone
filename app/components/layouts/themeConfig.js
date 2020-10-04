@@ -36,7 +36,12 @@ const themesConfig = {
         root: {
           // backgroundColor: "#FFFFFF"
         }
-      }
+      },
+      MuiTable: {
+        root: {
+          width: '100% !important'
+        }
+      },
     },
     // MUIDataTable: {
     //   root: {

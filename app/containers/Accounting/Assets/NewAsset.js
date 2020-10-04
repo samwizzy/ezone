@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import EzoneUtils from '../../../utils/EzoneUtils'
 import moment from 'moment';
 import _ from 'lodash';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -14,6 +15,7 @@ import {
 } from '@material-ui/pickers';
 import {
   makeStyles,
+  InputAdornment,
   Button,
   CircularProgress,
   Card,
@@ -27,7 +29,6 @@ import {
   TextField,
 } from '@material-ui/core';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
-import EzoneUtils from '../../../utils/EzoneUtils';
 import * as AppSelectors from '../../App/selectors';
 import * as Selectors from './selectors';
 import * as Actions from './actions';
@@ -104,11 +105,14 @@ const NewAsset = props => {
 
   useEffect(() => {
     if (dialog.type === 'edit' && dialog.data) {
-      setForm({ ...dialog.data });
+      const { taxAccount, assetType } = dialog.data
+      const newData = EzoneUtils.matchWithPairs(initialState, dialog.data)
+      console.log(newData, "newData")
+      setForm({ ...newData, taxAccountId: taxAccount.id, assetTypeId: assetType.id });
     } else {
       setForm({ ...initialState });
     }
-  }, []);
+  }, [dialog.data]);
 
   const handleChange = event => {
     setForm({
@@ -140,6 +144,10 @@ const NewAsset = props => {
     dialog.type === 'new' ? createAsset(form) : updateAsset(form);
   };
 
+  const handleFormReset = () => {
+    setForm({ ...initialState })
+  };
+
   const canSubmitForm = () => {
     const { assetName, assetStatus, description } = form;
     return (
@@ -148,6 +156,7 @@ const NewAsset = props => {
   };
 
   console.log(loading, 'loading');
+  console.log(chartOfAccounts, 'chartOfAccounts');
   console.log(form, 'form');
   console.log(dialog, 'form dialog');
 
@@ -381,6 +390,9 @@ const NewAsset = props => {
                       InputLabelProps={{
                         shrink: true,
                       }}
+                      InputProps={{
+                        endAdornment: <InputAdornment position="end">{form.measurement}</InputAdornment>
+                      }}
                       margin="normal"
                       size="small"
                       fullWidth
@@ -397,6 +409,9 @@ const NewAsset = props => {
                       InputLabelProps={{
                         shrink: true,
                       }}
+                      InputProps={{
+                        endAdornment: <InputAdornment position="end">{form.measurement}</InputAdornment>
+                      }}
                       margin="normal"
                       size="small"
                       fullWidth
@@ -407,13 +422,16 @@ const NewAsset = props => {
                 <TextField
                   id="weigth"
                   name="weigth"
-                  label="Weigth"
+                  label="Weight"
                   required
                   variant="outlined"
-                  value={form.weight}
+                  value={form.weigth}
                   onChange={handleChange}
                   InputLabelProps={{
                     shrink: true,
+                  }}
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end">{form.measurement}</InputAdornment>
                   }}
                   margin="normal"
                   size="small"
@@ -567,7 +585,7 @@ const NewAsset = props => {
             {dialog.type === 'edit' ? 'Update' : 'Save'}
           </Button>
 
-          <Button variant="contained" onClick={() => { }} disableElevation>
+          <Button variant="contained" onClick={handleFormReset} disableElevation>
             Cancel
           </Button>
         </CardActions>

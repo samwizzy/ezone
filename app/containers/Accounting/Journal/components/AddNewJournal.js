@@ -2,6 +2,7 @@
 import React, { memo, useEffect } from 'react';
 import _ from 'lodash';
 import moment from 'moment';
+import EzoneUtils from '../../../../utils/EzoneUtils';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -41,7 +42,6 @@ import AttachFileIcon from '@material-ui/icons/AttachFile';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
-import EzoneUtils from '../../../../utils/EzoneUtils';
 import * as Selectors from '../selectors';
 import * as AccSelectors from '../../selectors';
 import * as Actions from '../actions';
@@ -164,6 +164,10 @@ const NewJournal = props => {
     );
   };
 
+  const formatNumber = (value, ccy = 'NGN') => {
+    return new Intl.NumberFormat('en-NG', { maximumSignificantDigits: 3 }).format(Number(value))
+  }
+
   const handleBalanceCheck = () => {
     const { entries } = values
     return entries.reduce((curVal, b) => curVal + Number(b.debit), 0) === entries.reduce((curVal, b) => curVal + Number(b.credit), 0)
@@ -172,7 +176,9 @@ const NewJournal = props => {
   const handleItemChange = i => event => {
     const { name, value } = event.target;
     const entries = [...values.entries];
-    entries[i][name] = value;
+    name === 'debit' || name === 'credit'
+      ? entries[i][name] = value.replace(/[^0-9]/g, '')
+      : entries[i][name] = value;
     setValues({ ...values, entries, total: entries.reduce((curVal, b) => curVal + Number(b.debit), 0) });
   };
 
@@ -237,7 +243,7 @@ const NewJournal = props => {
     dialog.type === 'new' ? createJournal(values) : '';
   };
 
-  const handleFormCancel = () => {
+  const handleFormReset = () => {
     const { periodId, ...rest } = initialState
     setValues({ ...values, ...rest })
   };
@@ -306,7 +312,7 @@ const NewJournal = props => {
               <Autocomplete
                 id="journal-currency"
                 size="small"
-                options={currency ? currencies.filter(ccy => ccy.code !== currency.code) : []}
+                options={currency ? currencies.filter(ccy => ccy.code !== currency.code) : currencies}
                 getOptionLabel={option => `${option.name} ( ${option.symbol} )`}
                 renderOption={option => (
                   <React.Fragment>
@@ -498,7 +504,7 @@ const NewJournal = props => {
                               variant="outlined"
                               name="debit"
                               onChange={handleItemChange(i)}
-                              value={row.debit ? new Intl.NumberFormat('en-NG', {}).format(row.debit) : ""}
+                              value={row.debit ? formatNumber(row.debit) : ""}
                               disabled={Boolean(Number(row.credit))}
                             />
                           </TableCell>
@@ -510,7 +516,7 @@ const NewJournal = props => {
                               label="Credit"
                               name="credit"
                               onChange={handleItemChange(i)}
-                              value={row.credit ? new Intl.NumberFormat('en-NG', {}).format(row.credit) : ""}
+                              value={row.credit ? formatNumber(row.credit) : ""}
                               disabled={Boolean(Number(row.debit))}
                             />
                           </TableCell>
@@ -533,12 +539,12 @@ const NewJournal = props => {
                         </TableCell>
                         <TableCell>
                           <div className={classes.total}>
-                            {new Intl.NumberFormat('en-NG', {}).format(values.entries.reduce((curVal, b) => curVal + Number(b.debit), 0))}
+                            {formatNumber(values.entries.reduce((curVal, b) => curVal + Number(b.debit), 0))}
                           </div>
                         </TableCell>
                         <TableCell>
                           <div className={classes.total}>
-                            {new Intl.NumberFormat('en-NG', {}).format(values.entries.reduce((curVal, b) => curVal + Number(b.credit), 0))}
+                            {formatNumber(values.entries.reduce((curVal, b) => curVal + Number(b.credit), 0))}
                           </div>
                         </TableCell>
                         <TableCell />
@@ -615,7 +621,7 @@ const NewJournal = props => {
             {dialog.type === 'new' ? 'Save' : 'Update'}
           </Button>
           <Button
-            onClick={handleFormCancel}
+            onClick={handleFormReset}
             color="primary"
             variant="outlined"
             disableElevation

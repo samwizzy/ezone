@@ -9,7 +9,7 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 
 // Get accounting setup
-export function* getAccountingSetupSaga() {
+export function* getAccountingSetup() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetAccountingSetupApi}/${currentUser.organisation.orgId}`;
@@ -30,8 +30,29 @@ export function* getAccountingSetupSaga() {
   }
 }
 
+// Get list of chart of account
+export function* getChartOfAccounts() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAllChartOfAccountApi}/${currentUser.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getChartOfAccountsSuccess(response));
+  } catch (err) {
+    yield put(Actions.getChartOfAccountsError(err));
+  }
+}
 
 // Individual exports for testing
 export default function* AccountingSaga() {
-  yield takeLatest(Constants.GET_ACCOUNTING_SETUP, getAccountingSetupSaga);
+  yield takeLatest(Constants.GET_ACCOUNTING_SETUP, getAccountingSetup);
+  yield takeLatest(Constants.GET_CHART_OF_ACCOUNTS, getChartOfAccounts);
 }

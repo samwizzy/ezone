@@ -33,6 +33,12 @@ const ControlledButtons = props => {
     history.goBack();
   };
 
+  const handleEditClick = () => {
+    const { id } = assetById
+    openEditAssetDialog(assetById)
+    history.push(`/account/fixedassets/edit/${id}`)
+  }
+
   return (
     <div className={classes.root}>
       <Toolbar className={classes.iconPaper} variant="dense">
@@ -43,12 +49,9 @@ const ControlledButtons = props => {
         <IconButton onClick={() => { }}>
           <Icon>print</Icon>
         </IconButton>
-        <IconButton onClick={() => openEditAssetDialog(assetById)}>
+        <IconButton onClick={handleEditClick}>
           <Icon>edit</Icon>
         </IconButton>
-        {/* <IconButton onClick={() => openDeleteAccountDialog(assetById)}>
-          <Icon>delete</Icon>
-        </IconButton> */}
       </Toolbar>
     </div>
   );
@@ -62,7 +65,6 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    // openDeleteAccountDialog: data => dispatch(Actions.openDeleteAccountDialog(data)),
     openEditAssetDialog: data => dispatch(Actions.openEditAssetDialog(data)),
   };
 }

@@ -15,14 +15,11 @@ export function AssetDetailsPage(props) {
   const { assetId } = params;
   console.log(params, 'paramss');
 
-  useEffect(
-    () => () => {
-      if (assetId) {
-        getAssetById(assetId);
-      }
-    },
-    [],
-  );
+  useEffect(() => {
+    if (assetId) {
+      getAssetById(assetId);
+    }
+  }, []);
 
   return (
     <div>

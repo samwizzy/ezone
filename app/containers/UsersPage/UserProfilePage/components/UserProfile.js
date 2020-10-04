@@ -126,7 +126,7 @@ const UserProfile = props => {
                           variant="body2"
                           color="inherit"
                         >
-                          UI/UX Designer
+                          {currentUser.jobDesc ? currentUser.jobDesc : "UI/UX Designer"}
                         </Typography>
                       }
                     />

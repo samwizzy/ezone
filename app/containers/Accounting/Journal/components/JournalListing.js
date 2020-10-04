@@ -1,5 +1,6 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import EzoneUtils from '../../../../utils/EzoneUtils';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import classNames from 'classnames';
@@ -69,7 +70,7 @@ const useStyles = makeStyles(theme => ({
 
 const JournalListing = props => {
   const classes = useStyles();
-  const { history, match, accountSetupData, journals, getJournalById, openEditJournalDialog } = props;
+  const { history, match, accountSetupData, journals, getJournalById, openNewJournalDialog, openEditJournalDialog } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedJournal, setSelectedJournal] = React.useState(null);
   const { currency } = accountSetupData
@@ -89,6 +90,11 @@ const JournalListing = props => {
     const { id } = selectedJournal
     openEditJournalDialog(selectedJournal)
     history.push(`${match.url}/edit/${id}`)
+  }
+
+  const handleNewClick = () => {
+    openNewJournalDialog()
+    history.push(`${match.url}/add`)
   }
 
   const handleViewClick = () => {
@@ -137,11 +143,10 @@ const JournalListing = props => {
         sort: false,
         customBodyRender: value => {
           const journal = journals.find(journal => journal.id === value)
-          return new Intl.NumberFormat('en-US', { style: 'currency', currency: journal.currency ? journal.currency.code : currency ? currency.code : 'NGN' }).format(journal.total)
+          return EzoneUtils.formatCurrency(journal.total, journal.currency ? journal.currency.code : currency.code, 'en-US')
         }
       },
     },
-
     {
       name: 'entryByName',
       label: 'Created by',
@@ -199,7 +204,7 @@ const JournalListing = props => {
           variant="contained"
           color="primary"
           startIcon={<AddIcon />}
-          onClick={() => history.push('/account/journal/add')}
+          onClick={handleNewClick}
         >
           New Entry
         </Button>
@@ -246,6 +251,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getJournalById: (data) => dispatch(Actions.getJournalById(data)),
+    openNewJournalDialog: () => dispatch(Actions.openNewJournalDialog()),
     openEditJournalDialog: (data) => dispatch(Actions.openEditJournalDialog(data)),
   }
 }
