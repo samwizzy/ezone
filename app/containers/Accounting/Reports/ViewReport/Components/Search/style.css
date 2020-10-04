@@ -1,7 +1,7 @@
 .daterange {
   background: white;
   height: 40px;
-  width: 220px;
+  width: 240px;
   margin-left: 15px;
   border: 1px solid #ced4da;
   border-radius: 6px;
@@ -9,6 +9,15 @@
 
 .search-wrap {
   position: absolute !important;
-  min-width: 700px;
+  min-width: 500px;
   overflow-x: auto;
+}
+.input-search {
+  height: 40px;
+  width: 180px;
+  margin-left: 15px;
+  margin-top: 15px;
+  padding-left: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
 }

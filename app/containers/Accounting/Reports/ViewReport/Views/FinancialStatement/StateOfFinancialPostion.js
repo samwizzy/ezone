@@ -1,17 +1,47 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, memo, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+// import { Helmet } from 'react-helmet';
+// import { FormattedMessage } from 'react-intl';
+import { compose } from 'redux';
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
+import { createStructuredSelector } from 'reselect';
+import makeSelectReports from '../../selectors';
+import * as Selectors from '../../selectors';
+import * as Actions from '../../actions';
+import viewReportReducer from '../../reducers';
+import ReportSaga from '../../saga';
 import './style.css';
 import Table from '../../Components/Table';
-import Logo from '../../Assets/firstMarine.png';
+// import Logo from '../../Assets/firstMarine.png';
 import TopMenu from '../../Components/TopMenu';
 import Company from '../../Components/CompanyLogo';
+// import formatDate from '../../Helpers';
+import moment from 'moment';
 
-const StatementOfFinancialPosition = () => {
+import * as Select from '../../../../../App/selectors';
+
+const StatementOfFinancialPostion = ({ time, user, dispatchCleanUpAction }) => {
   const componentRef = useRef();
   const tableRef = useRef();
   const [print, setPrint] = useState(false);
+  const [display, setDisplay] = useState(false);
+  const { organisation } = user;
+  const { startDate, endDate } = time;
+  // dispatchGetGeneralLedgerTimeAction
+  useInjectReducer({ key: 'reports', reducer: viewReportReducer });
+  useInjectSaga({ key: 'reports', saga: ReportSaga });
+
+  useEffect(() => {
+    return async () => await dispatchCleanUpAction();
+  }, []);
+
   const handleData = () => {
-    // setDisplay(true);
+    // dispatchGetAllGeneralLedgerTypeAction();
+    // console.log('=============================================>');
+    setDisplay(true);
   };
+  const TableHeadData = ['Account', '', '', '', '', 'Total'];
 
   return (
     <React.Fragment>
@@ -19,14 +49,53 @@ const StatementOfFinancialPosition = () => {
         componentRef={componentRef}
         print={print}
         setPrint={setPrint}
-        // tableData={tableData}
+        singleDate={true}
         handleFetch={handleData}
       />
       <div ref={componentRef}>
-        <Company Logo={Logo} name="Statement of Financial Position" date="" />
+        <Company
+          ComLogo={organisation.logo}
+          name="Statement of Financial Position"
+          date={display && `As at ${moment(endDate).format('MMM Do YYYY')}`}
+        />
+
+        {display && (
+          <Table
+            ref={tableRef}
+            // data={tableData}
+            TableHeadData={TableHeadData}
+            // TableFooterData={TableFooterData}
+          />
+        )}
       </div>
     </React.Fragment>
   );
 };
 
-export default StatementOfFinancialPosition;
+const mapStateToProps = createStructuredSelector({
+  time: Selectors.makeSelectTime(),
+  user: Select.makeSelectCurrentUser(),
+});
+
+const mapDispatchToProps = dispatch => ({
+  dispatchCleanUpAction: () => dispatch(Actions.cleanUpGeneralJournalAction()),
+  dispatch,
+});
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+export default compose(
+  withConnect,
+  memo,
+)(StatementOfFinancialPostion);
+// {display && (
+//   <Table
+//     ref={tableRef}
+//     // data={tableData}
+//     // TableHeadData={TableHeadData}
+//     // TableFooterData={TableFooterData}
+//   />
+// )}

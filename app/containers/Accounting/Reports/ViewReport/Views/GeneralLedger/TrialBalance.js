@@ -39,42 +39,40 @@ const TrialBalance = ({
   useInjectReducer({ key: 'reports', reducer: viewReportReducer });
   useInjectSaga({ key: 'reports', saga: ReportSaga });
 
-  useEffect(() => async () => await dispatchCleanUpAction(), []);
+  useEffect(() => {
+    return async () => await dispatchCleanUpAction();
+  }, []);
 
   const formatDate = dateTime => moment(dateTime).format('DD-MM-YYYY');
 
   const { trialBalances } = trialBalance;
   const { organisation } = user;
-
+  console.log('=======>', trialBalance);
   const tableData =
     error === false && trialBalances
-      ? trialBalances.map(balance => ({
-        'Account ID': `${balance.accountId}`,
-          'Account Desc': `${balance.accountDescription}`,
-        'Debit Amt': `${balance.debitAmount}`,
-          'Credit Amt': `${balance.creditAmount}`,
-        }))
+      ? trialBalances.map(balance => {
+          return {
+            'Account ID': `${balance.accountId}`,
+            'Account Desc': `${balance.accountDescription}`,
+            'Debit Amt': `${balance.debitAmount}`,
+            'Credit Amt': `${balance.creditAmount}`,
+          };
+        })
       : '';
-  console.log(
-    '============================>',
-    reports,
-    ';;;;;;;;',
-    trialBalances,
-  );
   const TableHeadData = [
     'Account Code',
     'Account Desc',
     'Debit Amt',
     'Credit Amt',
   ];
-  //   const TableFooterData = [
-  //     {
-  //       'Account ID': '',
-  //       'Account Desc': 'Total',
-  //       'Debit Amt': `${ledger.debitAmount}`,
-  //       'Credit Amt': `${ledger.creditAmount}`,
-  //     },
-  //   ];
+  const TableFooterData = [
+    {
+      'Account ID': '',
+      'Account Desc': 'Total',
+      'Debit Amt': '',
+      'Credit Amt': `${trialBalance && trialBalance.total}`,
+    },
+  ];
 
   const handleData = () => {
     // dispatchGetAllGeneralJournalTypeAction();
@@ -107,7 +105,7 @@ const TrialBalance = ({
             ref={tableRef}
             data={tableData}
             TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
+            TableFooterData={TableFooterData}
           />
         )}
       </div>

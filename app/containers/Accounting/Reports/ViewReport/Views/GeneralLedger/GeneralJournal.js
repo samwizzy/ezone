@@ -41,20 +41,24 @@ const GeneralJournal = ({
   useInjectReducer({ key: 'reports', reducer: viewReportReducer });
   useInjectSaga({ key: 'reports', saga: ReportSaga });
 
-  useEffect(() => async () => await dispatchCleanUpAction(), [time]);
+  useEffect(() => {
+    return async () => await dispatchCleanUpAction();
+  }, []);
   const { journalEntries, debitTotal, creditTotal } = generalJournal;
   const { organisation } = user;
 
   const tableData =
     error === false && journalEntries
-      ? journalEntries.map(journal => ({
-        Date: `${formatDate(journal.dateCreated)}`,
-          'Account Code': `${journal.accountCode}`,
-        Reference: `${journal.reference}`,
-        'Trans Description': `${journal.description}`,
-        'Debit Amt': `${journal.debit}`,
-        'Credit Amt': `${journal.credit}`,
-        }))
+      ? journalEntries.map(journal => {
+          return {
+            Date: `${formatDate(journal.dateCreated)}`,
+            'Account Code': `${journal.accountCode}`,
+            Reference: `${journal.reference}`,
+            'Trans Description': `${journal.description}`,
+            'Debit Amt': `${journal.debit}`,
+            'Credit Amt': `${journal.credit}`,
+          };
+        })
       : '';
 
   const TableHeadData = [
@@ -80,7 +84,11 @@ const GeneralJournal = ({
 
     setDisplay(true);
   };
-
+  const setDate = startDate
+    ? `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
+        'MMM Do YYYY',
+      )}`
+    : '';
   return (
     <React.Fragment>
       <TopMenu
@@ -90,7 +98,7 @@ const GeneralJournal = ({
         tableData={tableData}
         handleFetch={handleData}
       />
-      <div ref={componentRef}>
+      <div style={{ width: '100%', height: '100%' }} ref={componentRef}>
         <Company
           ComLogo={organisation.logo}
           name="General Journal"
@@ -101,6 +109,7 @@ const GeneralJournal = ({
             ).format('MMM Do YYYY')}`
           }
         />
+
         {display && (
           <Table
             ref={tableRef}
