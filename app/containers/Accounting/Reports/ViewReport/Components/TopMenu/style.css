@@ -6,6 +6,9 @@
   padding: 10px 10px 0px 10px;
 }
 
+.flex-b h6 {
+  padding-top: 10px;
+}
 .view-main {
   display: flex;
   flex-direction: column;

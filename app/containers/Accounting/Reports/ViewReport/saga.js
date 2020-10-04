@@ -3,7 +3,7 @@ import * as AppSelectors from '../../../App/selectors';
 // import * as AppActions from '../../App/actions';
 import * as Selectors from './selectors';
 import request from '../../../../utils/request';
-// import swal from 'sweetalert';
+import swal from 'sweetalert';
 import * as Endpoints from '../../../../components/Endpoints';
 import * as Actions from './actions';
 import * as Constants from './constants';
@@ -15,9 +15,9 @@ export function* getGeneralJournalSaga() {
 
   const requestURL = `${
     Endpoints.GetGeneralJournalApi
-    }?endDate=${endDate}&startDate=${startDate}&orgId=${
+  }?endDate=${endDate}&startDate=${startDate}&orgId=${
     currentUser.organisation.orgId
-    }`;
+  }`;
   console.log('requestURL', requestURL);
 
   try {
@@ -30,10 +30,11 @@ export function* getGeneralJournalSaga() {
     });
     yield put(Actions.getGeneralJournalSuccesAction(generalJournalResponse));
   } catch (err) {
+    swal('Error', 'Something went wrong', 'error');
     yield put(Actions.getGeneralJournalErrorAction(err));
   }
 }
-/* General chats of accounts */
+/*General chats of accounts*/
 export function* getChatOfAccountSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
@@ -41,7 +42,7 @@ export function* getChatOfAccountSaga() {
 
   const requestURL = `${Endpoints.GetChatsOfAccountApi}/${
     currentUser.organisation.orgId
-    }?endDate=${endDate}&startDate=${startDate}}`;
+  }?endDate=${endDate}&startDate=${startDate}}`;
 
   try {
     const getChatsOfAccountResponse = yield call(request, requestURL, {
@@ -55,12 +56,11 @@ export function* getChatOfAccountSaga() {
     });
     yield put(Actions.getChatsOfAccountSuccesAction(getChatsOfAccountResponse));
   } catch (err) {
-    console.log('Something went wrong at fetch reports saga', err);
-
+    swal('Error', 'Something went wrong', 'error');
     yield put(Actions.getChatsOfAccountErrorAction(err));
   }
 }
-/** General Ledger */
+/**General Ledger */
 
 export function* getGeneralLedgerSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
@@ -69,9 +69,9 @@ export function* getGeneralLedgerSaga() {
 
   const requestURL = `${
     Endpoints.GetGeneralLedgerApi
-    }?endDate=${endDate}&startDate=${startDate}&orgId=${
+  }?endDate=${endDate}&startDate=${startDate}&orgId=${
     currentUser.organisation.orgId
-    }`;
+  }`;
   console.log('requestURL', requestURL);
 
   try {
@@ -84,8 +84,7 @@ export function* getGeneralLedgerSaga() {
     });
     yield put(Actions.getGeneralLedgerSuccesAction(generalLedgerResponse));
   } catch (err) {
-    console.log('Something went wrong at fetch reports saga');
-
+    swal('Error', 'Something went wrong', 'error');
     yield put(Actions.getGeneralLedgerErrorAction(err));
   }
 }
@@ -97,9 +96,9 @@ export function* getTrialBalanceSaga() {
 
   const requestURL = `${
     Endpoints.GetTrialBalanceApi
-    }?endDate=${endDate}&startDate=${startDate}&orgId=${
+  }?endDate=${endDate}&startDate=${startDate}&orgId=${
     currentUser.organisation.orgId
-    }`;
+  }`;
   console.log('requestURL', requestURL);
 
   try {
@@ -113,8 +112,7 @@ export function* getTrialBalanceSaga() {
     yield put(Actions.getTrialBalanceSuccesAction(trialBalanceResponse));
     console.log('ttttttttttttttttttttt', trialBalanceResponse);
   } catch (err) {
-    console.log('Something went wrong at fetch reports saga');
-
+    swal('Error', 'Something went wrong', 'error');
     yield put(Actions.getTrialBalanceErrorAction(err));
   }
 }

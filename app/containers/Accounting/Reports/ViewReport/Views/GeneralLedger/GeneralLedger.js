@@ -41,24 +41,33 @@ const GeneralLedger = ({
   useInjectReducer({ key: 'reports', reducer: viewReportReducer });
   useInjectSaga({ key: 'reports', saga: ReportSaga });
 
-  useEffect(() => async () => await dispatchCleanUpAction(), [generalLedger]);
+  useEffect(() => {
+    return async () => await dispatchCleanUpAction();
+  }, []);
 
   const formatDate = dateTime => moment(dateTime).format('DD-MM-YYYY');
   const { organisation } = user;
+  // console.log('generalLedger.mapvvvvvvvvvvvvvvvvvvv', generalLedger);
+  const ArraysOfArray = Object.keys(generalLedger).map(
+    key => generalLedger[key],
+  );
 
-  const tableData =
-    error === false && generalLedger
-      ? generalLedger.map(ledger => ({
+  let arr = [];
+  let tableData = [];
+  ArraysOfArray.forEach(element => {
+    element.forEach(ledger => {
+      tableData.push({
         'Account ID': `${ledger.accountId}`,
-          'Account Desc': `${ledger.accountDescription}`,
-          Date: `${formatDate(ledger.date)}`,
+        'Account Desc': `${ledger.accountDescription}`,
+        Date: `${formatDate(ledger.date)}`,
         Reference: `${ledger.reference}`,
-          'Transaction Desc': `${ledger.transactionDescription}`,
+        'Transaction Desc': `${ledger.transactionDescription}`,
         'Debit Amt': `${ledger.debitAmount}`,
-          'Credit Amt': `${ledger.creditAmount}`,
-          Balance: `${ledger.balance}`,
-        }))
-      : '';
+        'Credit Amt': `${ledger.creditAmount}`,
+        Balance: `${ledger.balance}`,
+      });
+    });
+  });
 
   const TableHeadData = [
     'Account Code',
@@ -96,7 +105,12 @@ const GeneralLedger = ({
         <Company
           ComLogo={organisation.logo}
           name="General Ledger"
-          date={setDate}
+          date={
+            display &&
+            `${moment(startDate).format('MMM Do YYYY')} - ${moment(
+              endDate,
+            ).format('MMM Do YYYY')}`
+          }
         />
 
         {display && (
@@ -126,7 +140,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(Actions.getGeneralLedgerSuccesAction()),
   dispatchGetAllGeneralLedgerTypeAction: () =>
     dispatch(Actions.getAllGeneralLedgerAction()),
-  dispatchCleanUpAction: () => dispatch(Actions.cleanUpGeneralLedgerAction()),
+  dispatchCleanUpAction: () => dispatch(Actions.cleanUpGeneralJournalAction()),
   dispatchGetGeneralLedgerTimeAction: () =>
     dispatch(Actions.getGeneralLedgerTimeAction()),
   dispatch,
@@ -141,3 +155,79 @@ export default compose(
   withConnect,
   memo,
 )(GeneralLedger);
+// {
+//   "School fees": [
+//       {
+//           "accountId": 816,
+//           "accountDescription": "School fees",
+//           "debitAmount": 10000.0,
+//           "creditAmount": 0.0,
+//           "date": "2020-09-17T14:13:14.000+0000",
+//           "reference": "2020-1600351993530",
+//           "accountCode": null,
+//           "transactionDescription": "",
+//           "balance": null
+//       }
+//   ],
+//   "Ubisoft Salary Account": [
+//       {
+//           "accountId": 818,
+//           "accountDescription": "Ubisoft Salary Account",
+//           "debitAmount": 0.0,
+//           "creditAmount": 10000.0,
+//           "date": "2020-09-17T14:13:14.000+0000",
+//           "reference": "2020-1600351993530",
+//           "accountCode": null,
+//           "transactionDescription": "",
+//           "balance": null
+//       }
+//   ],
+//   "Fixed Deposit": [
+//       {
+//           "accountId": 815,
+//           "accountDescription": "Fixed Deposit",
+//           "debitAmount": 5000.0,
+//           "creditAmount": 0.0,
+//           "date": "2020-08-04T11:10:33.000+0000",
+//           "reference": null,
+//           "accountCode": null,
+//           "transactionDescription": "table",
+//           "balance": null
+//       },
+//       {
+//           "accountId": 815,
+//           "accountDescription": "Fixed Deposit",
+//           "debitAmount": 10000.0,
+//           "creditAmount": 0.0,
+//           "date": "2020-09-24T13:11:09.000+0000",
+//           "reference": "2016-1600953069263",
+//           "accountCode": null,
+//           "transactionDescription": "",
+//           "balance": null
+//       }
+//   ],
+//   "Ubisoft Account": [
+//       {
+//           "accountId": 817,
+//           "accountDescription": "Ubisoft Account",
+//           "debitAmount": 0.0,
+//           "creditAmount": 5000.0,
+//           "date": "2020-08-04T11:10:33.000+0000",
+//           "reference": null,
+//           "accountCode": null,
+//           "transactionDescription": "plate",
+//           "balance": null
+//       },
+//       {
+//           "accountId": 817,
+//           "accountDescription": "Ubisoft Account",
+//           "debitAmount": 0.0,
+//           "creditAmount": 10000.0,
+//           "date": "2020-09-24T13:11:09.000+0000",
+//           "reference": "2016-1600953069263",
+//           "accountCode": null,
+//           "transactionDescription": "",
+//           "balance": null
+//       }
+//   ]
+// }
