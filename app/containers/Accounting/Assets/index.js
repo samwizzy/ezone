@@ -11,21 +11,24 @@ import * as Actions from './actions';
 import reducer from './reducer';
 import saga from './saga';
 import makeSelectFixedAssets, * as Selectors from './selectors';
+import ModuleLayout from '../components/ModuleLayout';
 import AssetsList from './AssetsList'
 import AssetDetails from './assetDetails'
 import NewAsset from './NewAsset'
 import AssetDialog from './components/AssetDialog'
+import AssetDisposalDialog from './components/AssetDisposalDialog'
 
 const key = 'fixedAssets';
 export function FixedAssetsPage(props) {
 	useInjectReducer({ key, reducer });
 	useInjectSaga({ key, saga });
-	const { getAssets, getAssetTypes } = props
+	const { getAssets, getAssetTypes, getChartOfAccounts } = props
 	const { path } = useRouteMatch()
 
 	useEffect(() => {
 		getAssets()
 		getAssetTypes()
+		getChartOfAccounts()
 	}, [])
 
 	return (
@@ -35,12 +38,14 @@ export function FixedAssetsPage(props) {
 				<meta name="description" content="Description of Fixed Assets" />
 			</Helmet>
 
-			<Route exact path={path} component={AssetsList} />
-			<Route path={`${path}/new`} component={NewAsset} />
-			<Route path={`${path}/edit/:assetId`} component={NewAsset} />
-			<Route path={`${path}/view/:assetId`} component={AssetDetails} />
+			<ModuleLayout>
+				<Route exact path={path} component={AssetsList} />
+				<Route path={`${path}/new`} component={NewAsset} />
+				<Route path={`${path}/edit/:assetId`} component={NewAsset} />
+				<Route path={`${path}/view/:assetId`} component={AssetDetails} />
+			</ModuleLayout>
 
-			<AssetDialog />
+			<AssetDisposalDialog />
 		</div>
 	);
 }
@@ -56,6 +61,7 @@ function mapDispatchToProps(dispatch) {
 	return {
 		getAssets: () => dispatch(Actions.getAssets()),
 		getAssetTypes: () => dispatch(Actions.getAssetTypes()),
+		getChartOfAccounts: () => dispatch(Actions.getChartOfAccounts()),
 	};
 }
 

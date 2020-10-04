@@ -12,26 +12,21 @@ import {
   Grid,
   Tooltip
 } from '@material-ui/core';
-
 import AddIcon from '@material-ui/icons/Add';
 import MUIDataTable from 'mui-datatables';
+import _ from 'lodash';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
+import { CircleLoader } from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
-  flex: {
-    display: "flex",
-    alignItems: "center",
-    alignContent: "center",
-  }, 
   table: {
     marginTop: theme.spacing(2),
     '& .MuiTableCell-body': {
@@ -72,28 +67,32 @@ const useStyles = makeStyles(theme => ({
 const BudgetingList = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [account, setAccount] = React.useState('');
+  const [selectedBudget, setSelectedBudget] = React.useState(null);
 
   const {
     loading,
     history,
-		openNewBankAccountDialogAction,
-		editOpenBankAccountDialogAction,
-    bankAccountData,
+    openNewBankAccountDialogAction,
+    editOpenBankAccountDialogAction,
+    budgets,
   } = props;
 
   const handleClick = (event, id) => {
-    console.log("id value -> ", id);
     setAnchorEl(event.currentTarget);
-    const selectedAccount = bankAccountData && bankAccountData.find(acc => id === acc.id);
-    setAccount(selectedAccount);
+    setSelectedBudget(_.find(budgets, { id }));
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  
+  const handleViewClick = () => {
+    const { id } = selectedBudget
+    history.push('/account/budgeting/view/' + id)
+    setAnchorEl(null);
+  };
+
+
   const columns = [
     {
       name: 'budgetName',
@@ -128,54 +127,28 @@ const BudgetingList = props => {
       },
     },
     {
-			name: 'lastUpdated',
-			label: 'Last Updated',
-			options: {
-				filter: true,
-				sort: false,
-			},
-		},
+      name: 'lastUpdated',
+      label: 'Last Updated',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
     {
       name: 'id',
-      label: '.',
+      label: ' ',
       options: {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          if (value === '') {
-            return '';
-          }
           return (
-            <div>
-              <Button
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={event => handleClick(event, value)}
-              >
-                Options
-              </Button>
-              <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={() => {
-                  editOpenBankAccountDialogAction(account);
-                }}>
-                  Edit
-                </MenuItem>
-                <MenuItem onClick={() => {
-                  history.push({
-                    pathname: '/account/budgeting/add',
-                    accountDetailsData: account,
-                  });
-                }}>
-                  View Details
-                </MenuItem>
-              </Menu>
-            </div>
+            <Button
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={event => handleClick(event, value)}
+            >
+              Options
+            </Button>
           );
         },
       },
@@ -184,44 +157,52 @@ const BudgetingList = props => {
 
   const options = {
     filterType: 'checkbox',
-    responsive: 'scrollMaxHeight',
+    responsive: 'stacked',
     selectableRows: 'none',
     customToolbar: () => (
-      <Tooltip title="Create New Chart">
+      <Tooltip title="Create new budget">
         <Button
           variant="contained"
           color="primary"
-          size="small"
-          className={classes.button}
           startIcon={<AddIcon />}
-          onClick={() => history.push('/account/budgeting/add')}
+          onClick={() => history.push('/account/budgeting/new')}
         >
           New Budget
         </Button>
       </Tooltip>
     ),
     onRowClick: (rowData, rowState) => {
-      props.history.push('/account/budgeting/' + rowData[0])
+      props.history.push('/account/budgeting/view/' + rowData[0])
     },
     elevation: 0
   };
 
   return (
-    <React.Fragment>
-      <div className={classes.root}>
-        <Grid container>
-          <Grid item xs={12}>
-            <MUIDataTable
-              className={classes.datatable}
-              title="Budgeting"
-              data={bankAccountData}
-              columns={columns}
-              options={options}
-            />
-          </Grid>
-        </Grid>
-      </div>
-    </React.Fragment>
+    <div className={classes.root}>
+      <MUIDataTable
+        className={classes.datatable}
+        title="Budgeting"
+        data={budgets}
+        columns={columns}
+        options={options}
+      />
+
+
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={() => editOpenBankAccountDialogAction(selectedBudget)}>
+          Edit
+        </MenuItem>
+        <MenuItem onClick={() => { }}>
+          View details
+        </MenuItem>
+      </Menu>
+    </div>
   );
 };
 
@@ -232,6 +213,7 @@ BudgetingList.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   budgetDialog: Selectors.makeSelectBudgetingDialog(),
+  budgets: Selectors.makeSelectBudgetsData(),
 });
 
 function mapDispatchToProps(dispatch) {

@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import EzoneUtils from '../../../../utils/EzoneUtils';
 import { withRouter } from 'react-router-dom';
 import {
   makeStyles,
@@ -26,6 +27,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
+import * as AccSelectors from './../../selectors';
 import moment from 'moment';
 import _ from 'lodash';
 import ControlledButtons from './components/ControlledButtons'
@@ -137,7 +139,8 @@ const useStyles = makeStyles(theme => ({
 
 const JournalDetails = props => {
   const classes = useStyles();
-  const { history, journalData, chartOfAccounts } = props;
+  const { history, journalData, chartOfAccounts, accountSetupData } = props;
+  const { currency } = accountSetupData
 
   console.log("Selected journal data ", journalData);
 
@@ -199,10 +202,10 @@ const JournalDetails = props => {
                   <TableCell>{_.find(chartOfAccounts, { id: entry.accountId }) && _.find(chartOfAccounts, { id: entry.accountId }).accountName}</TableCell>
                   <TableCell>{entry.description}</TableCell>
                   <TableCell>
-                    {new Intl.NumberFormat('en-US', { style: 'currency', currency: journalData.currency && journalData.currency.code }).format(entry.debit)}
+                    {EzoneUtils.formatCurrency(entry.debit, journalData.currency ? journalData.currency.code : currency.code, 'en-US')}
                   </TableCell>
                   <TableCell>
-                    {new Intl.NumberFormat('en-US', { style: 'currency', currency: journalData.currency && journalData.currency.code }).format(entry.credit)}
+                    {EzoneUtils.formatCurrency(entry.credit, journalData.currency ? journalData.currency.code : currency.code, 'en-US')}
                   </TableCell>
                 </TableRow>
               ))}
@@ -212,16 +215,12 @@ const JournalDetails = props => {
                 <TableCell colSpan={2} align="right">Total</TableCell>
                 <TableCell>
                   <Paper elevation={0} className={classes.paper}>
-                    {new Intl.NumberFormat('en-US', { style: 'currency', currency: journalData.currency && journalData.currency.code })
-                      .format(journalData.entries.reduce((a, b) => a + Number(b.debit), 0))
-                    }
+                    {EzoneUtils.formatCurrency(journalData.entries.reduce((a, b) => a + Number(b.debit), 0), journalData.currency ? journalData.currency.code : currency.code, 'en-US')}
                   </Paper>
                 </TableCell>
                 <TableCell>
                   <Paper elevation={0} className={classes.paper}>
-                    {new Intl.NumberFormat('en-US', { style: 'currency', currency: journalData.currency && journalData.currency.code })
-                      .format(journalData.entries.reduce((a, b) => a + Number(b.credit), 0))
-                    }
+                    {EzoneUtils.formatCurrency(journalData.entries.reduce((a, b) => a + Number(b.credit), 0), journalData.currency ? journalData.currency.code : currency.code, 'en-US')}
                   </Paper>
                 </TableCell>
                 <TableCell />
@@ -229,7 +228,9 @@ const JournalDetails = props => {
               <TableRow>
                 <TableCell colSpan={2} align="right">Tax amount</TableCell>
                 <TableCell>
-                  <Paper className={classes.paper}>{new Intl.NumberFormat('en-US', { style: 'currency', currency: journalData.currency && journalData.currency.code }).format(journalData.taxtTotal)}</Paper>
+                  <Paper className={classes.paper}>
+                    {EzoneUtils.formatCurrency(journalData.taxtTotal, journalData.currency ? journalData.currency.code : currency.code, 'en-US')}
+                  </Paper>
                 </TableCell>
                 <TableCell colSpan={2} />
               </TableRow>
@@ -256,6 +257,7 @@ const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   journalData: Selectors.makeSelectJournalData(),
   chartOfAccounts: Selectors.makeSelectGetChartOfAccountData(),
+  accountSetupData: AccSelectors.makeSelectGetAccountingSetupData(),
 });
 
 function mapDispatchToProps(dispatch) {

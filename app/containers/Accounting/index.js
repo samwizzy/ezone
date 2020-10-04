@@ -6,12 +6,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import {
-  withRouter,
-  Route,
-  useRouteMatch,
-  useLocation,
-} from 'react-router-dom';
+import { withRouter, Route, useRouteMatch } from 'react-router-dom';
 import reducer from './reducer';
 import saga from './saga';
 import * as Actions from './actions';
@@ -22,11 +17,8 @@ import Reports from './Reports';
 import Dashboard from './Dashboard';
 import Journal from './Journal';
 import Budget from './Budget';
-import BudgetingDetails from './Budget/components/BudgetingDetails';
-import NewBudgeting from './Budget/components/NewBudgeting';
 import Banking from './Banking';
 import FixedAssets from './Assets';
-import ViewReport from './Reports/ViewReport/ViewReport';
 import Settings from './Settings';
 
 const key = 'accounting';
@@ -34,13 +26,14 @@ const key = 'accounting';
 export function Accounting(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
-  const { loading, accSetUpData, getAccountingSetup, accounting } = props;
+  const { loading, accSetUpData, getAccountingSetup, getChartOfAccounts } = props;
 
   useEffect(() => {
     getAccountingSetup();
+    getChartOfAccounts();
   }, []);
 
-  useEffect(() => {}, [accSetUpData]);
+  useEffect(() => { }, [accSetUpData]);
 
   const { path } = useRouteMatch();
 
@@ -84,6 +77,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
   getAccountingSetup: () => dispatch(Actions.getAccountingSetupAction()),
+  getChartOfAccounts: () => dispatch(Actions.getChartOfAccounts()),
 });
 
 const withConnect = connect(

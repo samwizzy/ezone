@@ -5,6 +5,7 @@ export const initialState = {
   loading: false,
   error: false,
   accountingSetupData: null,
+  chartOfAccounts: [],
 }
 
 /* eslint-disable default-case, no-param-reassign */
@@ -28,6 +29,29 @@ const accountingReducer = (state = initialState, action) =>
           loading: false,
           error: action.payload,
         }
+      }
+      // Case to get all chart of accounts
+      case Constants.GET_CHART_OF_ACCOUNTS: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_CHART_OF_ACCOUNTS_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          chartOfAccounts: action.payload,
+        };
+      }
+      case Constants.GET_CHART_OF_ACCOUNTS_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
       }
     }
   });

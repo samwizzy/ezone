@@ -87,12 +87,7 @@ export function* createChartOfAccount({ payload }) {
       }),
     });
 
-    console.log('chartOfAccountResponse -> ', response);
-    swal(
-      'Success',
-      `Account Name: ${response.accountName} was saved successfully!`,
-      'success',
-    );
+    swal('Success', `Account Name: ${response.accountName} was saved successfully!`, 'success');
     yield put(Actions.createChartOfAccountSuccess(response));
     yield put(Actions.getChartOfAccounts());
     yield put(Actions.closeNewAccountDialog());
@@ -106,9 +101,7 @@ export function* createChartOfAccount({ payload }) {
 export function* getChartOfAccounts() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllChartOfAccountApi}/${
-    currentUser.organisation.orgId
-    }`;
+  const requestURL = `${Endpoints.GetAllChartOfAccountApi}/${currentUser.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {

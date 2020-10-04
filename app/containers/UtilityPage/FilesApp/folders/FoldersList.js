@@ -56,11 +56,9 @@ const useStyles = makeStyles(theme => ({
       },
       '& .MuiTableCell-root:nth-child(odd)': {
         backgroundColor: theme.palette.primary.main,
-        // backgroundImage: `linear-gradient(to left, ${theme.palette.primary.main}, ${darken(theme.palette.primary.main, 0.3)})`
       },
       '& .MuiTableCell-root:nth-child(even)': {
         backgroundColor: darken(theme.palette.primary.main, 0.1),
-        // backgroundImage: `linear-gradient(to right, ${theme.palette.primary.main}, ${darken(theme.palette.primary.main, 0.3)})`
       },
     },
   },
@@ -328,11 +326,11 @@ const FilesList = props => {
 
   return (
     <div className={classes.root}>
-      <Grid container justify='space-between'>
-        <Grid item xs={2} md={2}>
+      <Grid container spacing={1}>
+        <Grid item xs={2}>
           <FolderSideBar />
         </Grid>
-        <Grid item xs={10} md={7}>
+        <Grid item xs={7}>
           <Backdrop className={classes.backdrop} open={loading}>
             <CircularProgress color="inherit" />
           </Backdrop>
@@ -349,8 +347,8 @@ const FilesList = props => {
             options={options}
           />
         </Grid>
-        <Grid item md={3}>
-          <Box px={1}>
+        <Grid item xs={3}>
+          <Box>
             <Toolbar>
               <Typography variant="subtitle1" color="textSecondary">Document Details</Typography>
             </Toolbar>

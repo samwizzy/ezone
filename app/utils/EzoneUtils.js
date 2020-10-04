@@ -46,6 +46,11 @@ class EzoneUtils {
 
   toTitleCase = str => (str ? str[0].toUpperCase() + str.slice(1) : '');
 
+  formatCurrency = (value, code = 'NGN', locale = 'en-NG') => {
+    if (!code) code = 'NGN';
+    return new Intl.NumberFormat(locale, { style: 'currency', currency: code, maximumSignificantDigits: 3 }).format(Number(value))
+  }
+
   formatFileName = fileName => {
     const fName = fileName.split('.')[0];
     return `${fName
@@ -65,10 +70,10 @@ class EzoneUtils {
   getBase64 = (file, cb) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = function() {
+    reader.onload = function () {
       return cb(reader.result.split(',')[1]);
     };
-    reader.onerror = function(error) {
+    reader.onerror = function (error) {
       console.log('Error: ', error);
     };
   };

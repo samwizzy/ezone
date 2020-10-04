@@ -1,5 +1,6 @@
 import React, { useEffect, useState, memo } from 'react';
 import PropTypes from 'prop-types';
+import EzoneUtils from '../../../../utils/EzoneUtils';
 import { withRouter } from 'react-router-dom';
 import {
   makeStyles,
@@ -184,7 +185,7 @@ const AccountDetails = props => {
                 <TableRow>
                   <TableCell>Bank Balance</TableCell>
                   <TableCell>
-                    {new Intl.NumberFormat("en-US", { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(backAccount.bankBalance)}
+                    {EzoneUtils.formatCurrency(backAccount.bankBalance, currency.code)}
                   </TableCell>
                 </TableRow>
               </TableFooter>
@@ -217,7 +218,6 @@ const AccountDetails = props => {
                     <TableCell component="th">Reference</TableCell>
                     <TableCell component="th">Transfer Type</TableCell>
                     <TableCell component="th">Amount</TableCell>
-                    <TableCell component="th" />
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -233,20 +233,14 @@ const AccountDetails = props => {
                 </TableBody>
                 <TableFooter>
                   <TableRow>
-                    <TableCell colSpan={3} align="right">
+                    <TableCell colSpan={4} align="right">
                       <Typography variant="h6">Total</Typography>
                     </TableCell>
                     <TableCell>
                       <div className={classes.total}>
-                        {new Intl.NumberFormat("en-NG", { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(backAccount.transfers.reduce((a, b) => a + Number(b.amount), 0))}
+                        {EzoneUtils.formatCurrency(backAccount.transfers.reduce((a, b) => a + Number(b.amount), 0), currency.code)}
                       </div>
                     </TableCell>
-                    <TableCell>
-                      <div className={classes.total}>
-                        {new Intl.NumberFormat("en-NG", { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(backAccount.transfers.reduce((a, b) => a + Number(b.credit), 0))}
-                      </div>
-                    </TableCell>
-                    <TableCell />
                   </TableRow>
                 </TableFooter>
               </Table>

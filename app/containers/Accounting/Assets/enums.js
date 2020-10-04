@@ -13,3 +13,17 @@ export const methods = [
   { value: 'Expenses', label: 'Expenses' },
   { value: 'Expense (Depreciation)', label: 'Expense (Depreciation)' },
 ]
+
+export const assetStatuses = [
+  { label: 'Good', value: 'GOOD', id: 'GOOD' },
+  { label: 'Bad', value: 'BAD', id: 'BAD' },
+  { label: 'MAINTAINANCE', value: 'MAINTAINANCE', id: 'MAINTAINANCE' },
+  { label: 'Lost', value: 'LOST', id: 'LOST' },
+];
+
+export const measurements = [
+  { label: 'cm', value: 'CM', id: 'CM' },
+  { label: 'mm', value: 'MM', id: 'MM' },
+  { label: 'km', value: 'KM', id: 'KM' },
+  { label: 'm', value: 'M', id: 'M' },
+];

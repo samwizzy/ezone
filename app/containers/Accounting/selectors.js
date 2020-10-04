@@ -21,10 +21,10 @@ const makeSelectGetAccountingSetupData = () =>
     substate => substate.accountingSetupData,
   );
 
-const makeSelectAccountJournal = () =>
+const makeSelectChartOfAccounts = () =>
   createSelector(
     selectAccountingDomain,
-    subState => subState.accountJournal,
+    subState => subState.chartOfAccounts,
   );
 
 
@@ -34,5 +34,5 @@ export {
   selectAccountingDomain,
   makeSelectLoading,
   makeSelectGetAccountingSetupData,
-  makeSelectAccountJournal
+  makeSelectChartOfAccounts,
 };

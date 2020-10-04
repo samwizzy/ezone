@@ -10,8 +10,8 @@ import {
 	Button,
 	Card,
 	CardHeader,
-  CardContent,
-  CardActions,
+	CardContent,
+	CardActions,
 	IconButton,
 	Typography,
 	Paper,
@@ -21,12 +21,12 @@ import * as AppSelectors from './../../../App/selectors'
 import subscriptionIcon from '../../../../images/subscriptionIcon.svg'
 
 const useStyles = makeStyles(theme => ({
-  root: {
+	root: {
 		flexGrow: 1,
 		display: "flex",
 		margin: theme.spacing(2)
-  },
-  card: {
+	},
+	card: {
 		width: 275,
 		color: "#fff",
 		margin: theme.spacing(2),
@@ -57,58 +57,58 @@ const SubscriptionList = props => {
 	const classes = useStyles();
 	const { loading, currentUser } = props;
 
-  return (
-    <div className={classes.root}>
-      <Card className={clsx(classes.card, {"basic": true})}>
+	return (
+		<div className={classes.root}>
+			<Card className={clsx(classes.card, { "basic": true })}>
 				<CardHeader
 					title="Basic License"
 				/>
 				<Paper className={classes.paper}>
-					<Typography variant="h6" component="subtitle2" color="primary">
+					<Typography variant="h6" color="primary">
 						N5000
-					</Typography>	
+					</Typography>
 					<Typography variant="overline" component="h6" color="primary">
 						Per Year / Monthly
-					</Typography>	
+					</Typography>
 				</Paper>
-        <CardContent>
-					<Typography variant="body2" component="subtitle1">
+				<CardContent>
+					<Typography variant="body2">
 						Full access to the application without support.
-          </Typography>
-        </CardContent>
+					</Typography>
+				</CardContent>
 				<CardActions>
 					<Button color="inherit">Subscribe</Button>
 				</CardActions>
-      </Card>
+			</Card>
 
-      <Card className={clsx(classes.card, {"full": true})}>
+			<Card className={clsx(classes.card, { "full": true })}>
 				<CardHeader
 					title="Full License"
 				/>
 				<Paper className={classes.paper}>
-					<Typography variant="h6" component="subtitle2" color="primary">
+					<Typography variant="h6" color="primary">
 						N10000
-					</Typography>	
+					</Typography>
 					<Typography variant="overline" component="h6" color="primary">
 						Per Year / Monthly
-					</Typography>	
+					</Typography>
 				</Paper>
-        <CardContent>
-					<Typography variant="body2" component="subtitle1">
+				<CardContent>
+					<Typography variant="body2">
 						Full access to the application with support inclusive.
-          </Typography>
-        </CardContent>
+					</Typography>
+				</CardContent>
 				<CardActions>
 					<Button color="inherit">Subscribe</Button>
 				</CardActions>
-      </Card>
-    </div>
-  );
+			</Card>
+		</div>
+	);
 };
 
 SubscriptionList.prototypes = {
-  classes: PropTypes.object.isRequired,
-  currentUser: PropTypes.object,
+	classes: PropTypes.object.isRequired,
+	currentUser: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -116,17 +116,17 @@ const mapStateToProps = createStructuredSelector({
 });
 
 function mapDispatchToProps(dispatch) {
-  return {
-    openSignatureDialog: evt =>  dispatch(Actions.openSignatureDialog(evt)),
-  };
+	return {
+		openSignatureDialog: evt => dispatch(Actions.openSignatureDialog(evt)),
+	};
 }
 
 const withConnect = connect(
-  mapStateToProps,
-  mapDispatchToProps,
+	mapStateToProps,
+	mapDispatchToProps,
 );
 
 export default compose(
-  withConnect,
-  memo,
+	withConnect,
+	memo,
 )(SubscriptionList);

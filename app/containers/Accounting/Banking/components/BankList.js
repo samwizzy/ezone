@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import EzoneUtils from '../../../../utils/EzoneUtils';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import {
@@ -176,7 +177,7 @@ const BankList = props => {
         sort: false,
         customBodyRender: value => {
           const bankAccount = bankAccounts.find(account => account.id === value)
-          return new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency ? currency.code : 'NGN' }).format(bankAccount.bankBalance)
+          return EzoneUtils.formatCurrency(bankAccount.bankBalance, currency.code)
         }
       },
     },

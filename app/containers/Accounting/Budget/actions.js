@@ -1,12 +1,5 @@
-/*
- *
- * Budget actions
- *
- */
-
 import * as Constants from './constants';
 
-// New bank budget dialog
 export function openNewBudgetingDialog() {
   return {
     type: Constants.OPEN_NEW_BUDGETING_DIALOG,
@@ -31,7 +24,7 @@ export function editCloseBudgetingDialog() {
   };
 }
 
-// Create new bank
+// Create new budget
 export function createNewBudgeting(data) {
   return {
     type: Constants.CREATE_BUDGETING,
@@ -53,22 +46,21 @@ export function createNewBudgetingError(data) {
   };
 }
 
-
 // Get account periods
-export function getAllAccountingPeriodAction() {
+export function getAccountingPeriods() {
   return {
     type: Constants.GET_ALL_ACCOUNTING_PERIOD,
   };
 }
 
-export function getAllAccountingPeriodSuccessAction(data) {
+export function getAccountingPeriodsSuccess(data) {
   return {
     type: Constants.GET_ALL_ACCOUNTING_PERIOD_SUCCESS,
     payload: data,
   };
 }
 
-export function getAllAccountingPeriodErrorAction(data) {
+export function getAccountingPeriodsError(data) {
   return {
     type: Constants.GET_ALL_ACCOUNTING_PERIOD_ERR,
     payload: data,

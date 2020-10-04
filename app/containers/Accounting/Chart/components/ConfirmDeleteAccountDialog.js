@@ -35,6 +35,8 @@ const ConfirmDeleteAccountDialog = props => {
     deleteChartOfAccount,
   } = props;
 
+  const { data } = dialog
+
   return (
     <div>
       <Dialog
@@ -49,7 +51,7 @@ const ConfirmDeleteAccountDialog = props => {
 
         <DialogContent dividers>
           <DialogContentText variant="h6">
-            Are you sure you want to delete this Chart of Account?
+            Are you sure you want to delete this <strong><code>{data && data.accountName}</code></strong> account?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

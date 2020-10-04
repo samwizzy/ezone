@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
+  Card, CardContent, CardMedia, CardActionArea,
   Paper,
   Grid,
   Table,
@@ -17,6 +18,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import { darken } from '@material-ui/core/styles/colorManipulator';
 import { CircleLoader } from '../../../../components/LoadingIndicator';
+import PanoramaIcon from '@material-ui/icons/Panorama';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -34,6 +36,17 @@ const useStyles = makeStyles(theme => ({
   toolbar: {
     ...theme.mixins.toolbar,
     border: `1px dotted ${theme.palette.divider}`
+  },
+  card: {
+    margin: theme.spacing(2, 0),
+    maxWidth: '100%',
+    '& .MuiCardMedia-root': {
+      height: 180,
+      backgroundSize: 'contain'
+    }
+  },
+  media: {
+    height: 140,
   },
   table: {
     width: '100% !important',
@@ -76,11 +89,31 @@ const ChartAccountDetails = props => {
 
   return (
     <div className={classes.root}>
-      <Grid container>
+      <Grid container spacing={1}>
         <Grid item xs={12}>
           <ControlledButtons assetById={assetById} />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={4}>
+          <Card className={classes.card} square>
+            <CardMedia
+              className={classes.media}
+              image={!assetById.image ? assetById.image.fileUrl : "https://www.flaticon.com/svg/static/icons/svg/3004/3004662.svg"}
+              title={assetById.image ? assetById.image.fileName : ""}
+            />
+            <CardContent>
+              {assetById.image ?
+                <Typography variant="subtitle1" component="h2">
+                  {assetById.image ? assetById.image.fileName : ""}
+                </Typography>
+                :
+                <Typography variant="subtitle1" component="h2">
+                  This asset does not have an attachment
+              </Typography>
+              }
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={8}>
           <Paper square className={classes.paper}>
             <Table className={classes.table}>
               <TableBody>
@@ -125,31 +158,31 @@ const ChartAccountDetails = props => {
               <TableBody>
                 <TableRow>
                   <TableCell component="th">Manufacturer</TableCell>
-                  <TableCell></TableCell>
+                  <TableCell>{assetById.manufacturer}</TableCell>
                   <TableCell component="th">Barcode</TableCell>
-                  <TableCell></TableCell>
+                  <TableCell>{assetById.barcode}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Measurement</TableCell>
-                  <TableCell></TableCell>
+                  <TableCell>{assetById.measurement}</TableCell>
                   <TableCell component="th">Dimension</TableCell>
-                  <TableCell></TableCell>
+                  <TableCell>{assetById.width}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Weight</TableCell>
-                  <TableCell></TableCell>
+                  <TableCell>{assetById.weigth}</TableCell>
                   <TableCell component="th">Quantity</TableCell>
-                  <TableCell></TableCell>
+                  <TableCell>{assetById.quantity}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Condition</TableCell>
-                  <TableCell></TableCell>
+                  <TableCell>{assetById.assetCondition}</TableCell>
                   <TableCell component="th">Location</TableCell>
-                  <TableCell></TableCell>
+                  <TableCell>{assetById.location}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th">Acquisition value</TableCell>
-                  <TableCell></TableCell>
+                  <TableCell>{assetById.aquisitionValue}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>

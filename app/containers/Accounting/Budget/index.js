@@ -1,18 +1,10 @@
-/**
- *
- * Budget
- *
- */
-
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectBudgeting from './selectors';
@@ -22,8 +14,7 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import ModuleLayout from '../components/ModuleLayout';
-import LoadingIndicator from './../../../components/LoadingIndicator';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { CircleLoader } from './../../../components/LoadingIndicator';
 import BudgetingList from './components/BudgetingList';
 import BudgetingDetails from './components/BudgetingDetails';
 import NewBudgeting from './components/NewBudgeting';
@@ -31,25 +22,14 @@ import NewBudgeting from './components/NewBudgeting';
 export function Budgeting(props) {
   useInjectReducer({ key: 'budgeting', reducer });
   useInjectSaga({ key: 'budgeting', saga });
+  const { loading, match, getAccountingPeriods } = props;
 
-  const { 
-    loading, 
-    match,
-    dispatchGetAllAccountingPeriodAction 
-  } = props;
-
-  const { params } = match
+  const { params, path } = match
   console.log(params, "params budgeting")
 
-  // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    dispatchGetAllAccountingPeriodAction();
+    getAccountingPeriods();
   }, []);
-
-
-  /*if (loading) {
-    return <div style={{textAlign:'center'}}><div style={{margin:'2px auto'}}><CircularProgress /></div></div>;
-  }*/
 
   return (
     <div>
@@ -59,17 +39,15 @@ export function Budgeting(props) {
       </Helmet>
 
       <ModuleLayout>
-        { params.status == 'new'?
-          <NewBudgeting /> : 
-          params.status? <BudgetingDetails /> : <BudgetingList />
-        }
+        <Route exact path={path} component={BudgetingList} />
+        <Route path={`${path}/new`} component={NewBudgeting} />
+        <Route path={`${path}/view/:budgetId`} component={BudgetingDetails} />
       </ModuleLayout>
     </div>
   );
 }
 
 Budgeting.propTypes = {
-  // dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -79,8 +57,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchGetAllAccountingPeriodAction: () => dispatch(Actions.getAllAccountingPeriodAction()),
-    dispatch,
+    getAccountingPeriods: () => dispatch(Actions.getAccountingPeriods()),
   };
 }
 

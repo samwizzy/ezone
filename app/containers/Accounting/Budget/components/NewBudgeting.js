@@ -6,23 +6,23 @@ import { compose } from 'redux';
 import { Autocomplete } from '@material-ui/lab';
 
 import {
-  Card, 
-  CardContent, 
+  Card,
+  CardContent,
   CardActions,
   TextField,
   Typography,
   makeStyles,
   Button,
-  MenuItem, 
+  MenuItem,
   Divider,
   Grid,
-  Paper, 
-  TableContainer, 
-  Table, 
-  TableBody, 
-  TableHead, 
-  TableRow, 
-  TableCell, 
+  Paper,
+  TableContainer,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  TableCell,
   TableFooter
 } from '@material-ui/core';
 
@@ -73,7 +73,7 @@ const useStyles = makeStyles(theme => ({
         "& th.MuiTableCell-root:first-child": {
           backgroundColor: theme.palette.grey[200],
           fontWeight: theme.typography.fontWeightBold,
-          fontSize: theme.typography.fontSize + 2,
+          fontSize: theme.typography.fontSize,
         },
       }
     },
@@ -112,10 +112,10 @@ const useStyles = makeStyles(theme => ({
 const NewBudgeting = props => {
   const classes = useStyles();
 
-  const { 
+  const {
     loading,
-    currentUser, 
-    budgetDialog, 
+    currentUser,
+    budgetDialog,
   } = props;
 
   const budgetPeriodMonthList = [
@@ -183,7 +183,7 @@ const NewBudgeting = props => {
       label: '12',
     }
   ];
-  
+
   var monthArray = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
   let chartOfAccount = ["Sales"];
 
@@ -197,7 +197,7 @@ const NewBudgeting = props => {
     financialYear: "",
     orgId: currentUser.organisation.orgId,
   });
-  
+
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
@@ -227,26 +227,26 @@ const NewBudgeting = props => {
   }
 
 
-  function chunkArray(myArray, chunk_size){
+  function chunkArray(myArray, chunk_size) {
     var results = [];
 
     while (myArray.length) {
-        results.push(myArray.splice(0, chunk_size));
+      results.push(myArray.splice(0, chunk_size));
     }
     return results;
-}
+  }
 
   var newCopyArray = monthArray.slice(monthArray.indexOf(values["financialYear"])).concat(monthArray.slice(0, monthArray.indexOf(values["financialYear"])));
 
   if (values["budgetPeriod"] == "MONTHLY") {
     console.log("selected MONTHLY");
-  } 
+  }
   else if (values["budgetPeriod"] == "QUATERLY") {
     newCopyArray = chunkArray(newCopyArray, 3);
-  } 
+  }
   else {
     newCopyArray = chunkArray(newCopyArray, 12);
-  } 
+  }
 
   console.log("newCopyArray state -> ", newCopyArray);
   console.log("values --> ", values);
@@ -275,7 +275,7 @@ const NewBudgeting = props => {
                 fullWidth
               />
             </Grid>
-            <Grid item xs={6} style={{textAlign: "right"}}>
+            <Grid item xs={6} style={{ textAlign: "right" }}>
               <Autocomplete
                 id="combo-box-demo"
                 size="small"
@@ -315,33 +315,33 @@ const NewBudgeting = props => {
                 )}
               />
             </Grid>
-            <Grid item xs={6} style={{textAlign: "right"}}>
+            <Grid item xs={6} style={{ textAlign: "right" }}>
               <Button variant="contained" color="primary" startIcon={<CloudDownloadIcon />}>Generate from previous year</Button>
             </Grid>
             <Grid item xs={12}>
-              <TableContainer component={Paper} elevation={0} className={classes.tableContainer}> 
+              <TableContainer component={Paper} elevation={0} className={classes.tableContainer}>
                 <Table className={classes.table}>
                   <TableHead>
                     <TableRow>
                       <TableCell component="th" scope="row">Accounts</TableCell>
-                      {newCopyArray.map((item, i) => <TableCell key={i} align="center">{ item }</TableCell>)}
+                      {newCopyArray.map((item, i) => <TableCell key={i} align="center">{item}</TableCell>)}
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     <TableRow>
                       <TableCell component="th" scope="row" colSpan={13}>Income</TableCell>
                     </TableRow>
-                    {chartOfAccount.map((chart, ci) => (     
+                    {chartOfAccount.map((chart, ci) => (
                       <TableRow key={ci}>
                         <TableCell>{chart}</TableCell>
-                        {newCopyArray.map((m, mi) => 
+                        {newCopyArray.map((m, mi) =>
                           <TableCell>
-                            <TextField 
-                              id="outlined-basic" 
-                              size="small" 
-                              label="Outlined" 
-                              variant="outlined" 
-                              className={classes.textField} 
+                            <TextField
+                              id="outlined-basic"
+                              size="small"
+                              label="Outlined"
+                              variant="outlined"
+                              className={classes.textField}
                               name="amount"
                               value={values.account[ci].value[mi].amount}
                               onChange={(event) => handleRowChange(event, chart, m, ci, mi)}
@@ -358,11 +358,11 @@ const NewBudgeting = props => {
                     <TableRow>
                       <TableCell component="th" scope="row" colSpan={13}>Expense</TableCell>
                     </TableRow>
-                    {[0,1,2,3].map(row => (     
+                    {[0, 1, 2, 3].map(row => (
                       <TableRow>
                         <TableCell>Expense</TableCell>
-                        { newCopyArray.map((item, i) => 
-                        <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>) }
+                        {newCopyArray.map((item, i) =>
+                          <TableCell><TextField id="outlined-basic" size="small" label="Outlined" variant="outlined" className={classes.textField} /></TableCell>)}
                       </TableRow>
                     ))}
                     <TableRow>
@@ -384,15 +384,15 @@ const NewBudgeting = props => {
           {loading ? (
             <LoadingIndicator />
           ) : (
-            <Button
-              onClick={() => {}}
-              color="primary"
-              variant="contained"
+              <Button
+                onClick={() => { }}
+                color="primary"
+                variant="contained"
               // disabled={!canSubmitValues()}
-            >
-              Save
-            </Button>
-          )}
+              >
+                Save
+              </Button>
+            )}
           <Button
             color="primary"
             variant="outlined"

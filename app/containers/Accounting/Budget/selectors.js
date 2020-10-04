@@ -7,14 +7,6 @@ import { initialState } from './reducer';
 
 const selectBudgetingDomain = state => state.budgeting || initialState;
 
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by Banking
- */
-
 const makeSelectBudgeting = () =>
   createSelector(
     selectBudgetingDomain,
@@ -33,16 +25,10 @@ const makeSelectBudgetingDialog = () =>
     substate => substate.budgetDialog,
   );
 
-const makeSelectBudgetingPostData = () =>
+const makeSelectBudgetsData = () =>
   createSelector(
     selectBudgetingDomain,
-    substate => substate.budgetingPostData,
-  );
-
-const makeSelectBudgetingData = () =>
-  createSelector(
-    selectBudgetingDomain,
-    substate => substate.budgetData,
+    substate => substate.budgets,
   );
 
 const makeSelectGetAllAccountingPeriodData = () =>
@@ -53,11 +39,10 @@ const makeSelectGetAllAccountingPeriodData = () =>
 
 export default makeSelectBudgeting;
 
-export { 
-  selectBudgetingDomain, 
+export {
+  selectBudgetingDomain,
   makeSelectLoading,
   makeSelectBudgetingDialog,
-  makeSelectBudgetingPostData,
-  makeSelectBudgetingData,
+  makeSelectBudgetsData,
   makeSelectGetAllAccountingPeriodData
 };
