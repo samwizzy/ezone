@@ -1,41 +1,61 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, memo, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+// import { Helmet } from 'react-helmet';
+// import { FormattedMessage } from 'react-intl';
+import { compose } from 'redux';
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
+import { createStructuredSelector } from 'reselect';
+import makeSelectReports from '../../selectors';
+import * as Selectors from '../../selectors';
+import * as Actions from '../../actions';
+import viewReportReducer from '../../reducers';
+import ReportSaga from '../../saga';
 import './style.css';
 import Table from '../../Components/Table';
-import Logo from '../../Assets/firstMarine.png';
+// import Logo from '../../Assets/firstMarine.png';
 import TopMenu from '../../Components/TopMenu';
 import Company from '../../Components/CompanyLogo';
+import formatDate from '../../Helpers';
+import moment from 'moment';
 
-// const tableData = [
-//   { a: 'Beginning GL Balance', b: '', c: '', d: '209,434.54' },
-//   { a: 'Beginning GL Balance', b: '', c: '', d: '209,434.54' },
-//   { a: 'Add: Cash Receipts', b: '', c: '', d: '207,434.54' },
-//   { a: 'Less: Cash Disbursements', b: '', c: '', d: '' },
-//   { a: 'Add(Less) Other', b: '', c: '', d: '(100,000.00)' },
-//   { a: 'Ending Balance', b: '', c: '', d: '109,434.54' },
-//   { a: '', b: '', c: '', d: '' },
-//   { a: 'Ending Bank Balance', b: '', c: '', d: '' },
-//   { a: 'Add back deposits in transit', b: '', c: '', d: '' },
-//   { a: '', b: 'May 15, 2020', c: '200,000.00', d: '' },
-//   { a: '', b: 'May 15, 2020', c: '200,000.00', d: '' },
-//   { a: 'Total deposits in transits', b: '', c: '', d: '515,000.00' },
-//   { a: '(Less outstanding checks)', b: '', c: '', d: '' },
-//   { a: '', b: 'May 27, 2020', c: '(79,585.46)', d: '' },
-//   { a: '', b: 'May 28, 2020', c: '(11,980.6)', d: '' },
-//   { a: 'Total outstanding checks', b: '', c: '', d: '(91,565.46)' },
-//   { a: 'Total other', b: '', c: '', d: '314,000.00' },
-//   { a: 'Unreconciled difference', b: '', c: '', d: '0.00' },
-//   { a: 'Ending GL Balance', b: '', c: '', d: '109,434.54' },
-// ];
-// const TableHeadData = ['Account Reconciliation', '', '', ''];
+import * as Select from '../../../../../App/selectors';
 
-const BankReconciliation = () => {
+const BankReconciliation = ({ time, user, dispatchCleanUpAction }) => {
   const componentRef = useRef();
   const tableRef = useRef();
   const [print, setPrint] = useState(false);
+  const [display, setDisplay] = useState(false);
+  const { organisation } = user;
+  const { startDate, endDate } = time;
+  // dispatchGetGeneralLedgerTimeAction
+  useInjectReducer({ key: 'reports', reducer: viewReportReducer });
+  useInjectSaga({ key: 'reports', saga: ReportSaga });
+
+  useEffect(() => {
+    return async () => await dispatchCleanUpAction();
+  }, []);
 
   const handleData = () => {
-    // setDisplay(true);
+    // dispatchGetAllGeneralLedgerTypeAction();
+    // console.log('=============================================>');
+    setDisplay(true);
   };
+  const TableHeadData = [
+    'Item ID',
+    'Item Description',
+    'Date',
+    'Qty Received',
+    'Item Cost',
+    'Actual Cost',
+    'Assembly ($)',
+    'Adjust Qty',
+    'Adjust ($)',
+    'Quantity Sold',
+    'Cost of Sales',
+    'Remaining Qty',
+    'Remain Value',
+  ];
 
   return (
     <React.Fragment>
@@ -44,19 +64,50 @@ const BankReconciliation = () => {
         print={print}
         setPrint={setPrint}
         // tableData={tableData}
+        // search={dispatchGetGeneralLedgerTimeAction}
         handleFetch={handleData}
       />
       <div ref={componentRef}>
-        <Company Logo={Logo} name="Bank Reconciliation" date="" />
+        <Company
+          ComLogo={organisation.logo}
+          name="Bank Reconciliation"
+          date={
+            display &&
+            `${moment(startDate).format('MMM Do YYYY')} - ${moment(
+              endDate,
+            ).format('MMM Do YYYY')}`
+          }
+        />
+
+        {display && (
+          <Table
+            ref={tableRef}
+            // data={tableData}
+            // TableHeadData={TableHeadData}
+            // TableFooterData={TableFooterData}
+          />
+        )}
       </div>
     </React.Fragment>
   );
 };
 
-export default BankReconciliation;
-// <Table
-//   ref={tableRef}
-//   data={tableData}
-//   // TableFooterData={TableFooterData}
-//   TableHeadData={TableHeadData}
-// />
+const mapStateToProps = createStructuredSelector({
+  time: Selectors.makeSelectTime(),
+  user: Select.makeSelectCurrentUser(),
+});
+
+const mapDispatchToProps = dispatch => ({
+  dispatchCleanUpAction: () => dispatch(Actions.cleanUpGeneralJournalAction()),
+  dispatch,
+});
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+export default compose(
+  withConnect,
+  memo,
+)(BankReconciliation);

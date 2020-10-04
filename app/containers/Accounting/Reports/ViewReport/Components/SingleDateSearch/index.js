@@ -8,7 +8,7 @@ import * as Actions from '../../actions';
 import './style.css';
 import formatDate from '../../Helpers';
 
-const Search = ({
+const SearchSingleDate = ({
   dispatchGetGeneralJournalTimeAction,
   handleFetch,
   time,
@@ -16,16 +16,16 @@ const Search = ({
 }) => {
   const { startDate, endDate } = time;
   const [open, setOpen] = useState(false);
-  const [dateRange, setDateRange] = useState();
+  const [endDateRange, setEndDateRange] = useState({ chatEndDate: '' });
   const [date, setDate] = useState('Select date range');
   const toggle = () => setOpen(!open);
 
-  useEffect(() => {
-    if (!dateRange) return;
-    setDate(
-      `${formatDate(dateRange.startDate)} -  ${formatDate(dateRange.endDate)}`,
-    );
-  }, [dateRange]);
+  // useEffect(() => {
+  //   if (!dateRange) return;
+  //   setDate(
+  //     `${formatDate(dateRange.startDate)} -  ${formatDate(dateRange.endDate)}`,
+  //   );
+  // }, [dateRange]);
 
   const formatDateYear = date => {
     const day = new Date(date).getDate();
@@ -34,37 +34,22 @@ const Search = ({
     return `${year}/${month + 1}/${day}`;
   };
 
-  // handleOpen = e => {}
+  const handleClick = e => {
+    dispatchGetGeneralJournalTimeAction({
+      startDate: '2000/02/22',
+      endDate: e.target.value.split('-').join('/'),
+    });
+    handleFetch();
+  };
 
   return (
     <div style={{ disply: 'flex', flexDirection: 'column' }}>
-      {!searchField ? (
-        <button className="daterange" onClick={() => setOpen(true)}>
-          {date}
-        </button>
-      ) : (
-        <input type="text" placeholder={searchField} className="input-search" />
-      )}
-      {!searchField ? (
-        <div className="search-wrap">
-          <DateRangePicker
-            open={open}
-            toggle={toggle}
-            style={{ display: 'none' }}
-            onChange={range => {
-              setDateRange(range);
-              setOpen(false);
-              dispatchGetGeneralJournalTimeAction({
-                startDate: formatDateYear(range.startDate),
-                endDate: formatDateYear(range.endDate),
-              });
-              handleFetch();
-            }}
-          />
-        </div>
-      ) : (
-        ''
-      )}
+      <input
+        name="chatEndDate"
+        type="date"
+        onChange={handleClick}
+        className="input-search in"
+      />
     </div>
   );
 };
@@ -87,4 +72,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(Search);
+)(SearchSingleDate);

@@ -47,12 +47,12 @@ import BudgetVsReport from './Views/Budget/BudgetVsReport';
 import BudgeVsActual from './Views/Budget/BudgetVsActuals';
 import CashFlow from './Views/FinancialStatement/CashFlow';
 import ComprehensiveIncomeStatement from './Views/FinancialStatement/ComprehensiveIncome';
-import IncomeStatement from './Views/FinancialStatement/IncomeStatement';
+// import IncomeStatement from './Views/FinancialStatement/IncomeStatement';
 import StatementOfFinancialPosition from './Views/FinancialStatement/StateOfFinancialPostion';
+import ModuleLayout from '../ModuleLayout';
 
 import './style.css';
 const componentObject = {
-  'income Statement': IncomeStatement,
   'Comprehensive Income Statement': ComprehensiveIncomeStatement,
   'Statement of financial position': StatementOfFinancialPosition,
   Cashflow: CashFlow,
@@ -107,7 +107,11 @@ const componentObject = {
 
 const ViewReport = ({ reportId }) => {
   const Comp = componentObject[reportId];
-  return <Comp />;
+  return (
+    <ModuleLayout>
+      <Comp />
+    </ModuleLayout>
+  );
 };
 
 export default ViewReport;
