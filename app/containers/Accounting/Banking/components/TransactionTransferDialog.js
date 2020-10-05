@@ -80,24 +80,24 @@ const TransactionTransferDialog = props => {
     description: '',
     referenceNumber: '',
     transferDate: moment().format('YYYY-MM-DDTHH:mm:ss'),
-    transferType: 'TRANSFERIN', // TRANSFEROUT
+    transferType: 'TRANSFERIN',
   });
 
   useEffect(() => {
-    if ((dialog.type === 'to' || dialog.type === 'from') && dialog.data) {
-      setValues({ ...values, currentBankId: dialog.data.id });
+    if (dialog.type === 'to' && dialog.data) {
+      setValues({ ...values, currentBankId: dialog.data.id, transferType: 'TRANSFEROUT' });
+    } else if (dialog.type === 'from' && dialog.data) {
+      setValues({ ...values, currentBankId: dialog.data.id, transferType: 'TRANSFERIN' });
     }
   }, [dialog.data]);
 
   const flag = src => <img className={classes.flag} src={src} />;
 
   const handleChange = event => {
-    event.target.name === 'amount'
-      ? setValues({
-        ...values,
-        [event.target.name]: event.target.value.replace(/[^0-9]/g, ''),
-      })
-      : setValues({ ...values, [event.target.name]: event.target.value });
+    const { name, value } = event.target
+    name === 'amount'
+      ? setValues({ ...values, [name]: value.replace(/[^0-9]/g, '') })
+      : setValues({ ...values, [name]: value });
   };
 
   const handleSelectChange = name => (event, object) => {
@@ -128,23 +128,8 @@ const TransactionTransferDialog = props => {
   };
 
   const canSubmitForm = () => {
-    const {
-      amount,
-      attachments,
-      bankId,
-      currentBankId,
-      referenceNumber,
-      transferType,
-      description,
-    } = values;
-    return (
-      amount &&
-      attachments.length > 0 &&
-      bankId &&
-      currentBankId &&
-      referenceNumber.length > 0 &&
-      description.length > 0
-    );
+    const { amount, bankId, currentBankId, referenceNumber, transferType } = values;
+    return (amount && bankId && transferType && currentBankId && referenceNumber.length > 0);
   };
 
   console.log('values before submit ', values);
@@ -176,6 +161,7 @@ const TransactionTransferDialog = props => {
                 options={bankAccounts}
                 getOptionLabel={option => option.accountName}
                 onChange={handleSelectChange('bankId')}
+                value={values.bankId ? _.find(bankAccounts, { id: values.bankId }) : null}
                 renderInput={params => (
                   <TextField
                     {...params}
@@ -192,9 +178,11 @@ const TransactionTransferDialog = props => {
               <Autocomplete
                 id="transfer-type"
                 size="small"
+                disabled
                 options={transferTypes}
                 getOptionLabel={option => option.label}
                 onChange={handleSelectChange('transferType')}
+                value={values.transferType ? _.find(transferTypes, { id: values.transferType }) : null}
                 renderInput={params => (
                   <TextField
                     {...params}
@@ -211,14 +199,10 @@ const TransactionTransferDialog = props => {
               <Autocomplete
                 id="transfer-currency"
                 size="small"
-                options={currency ? currencies.filter(ccy => ccy.code !== currency.code) : []}
+                options={currency ? currencies.filter(ccy => ccy.code !== currency.code) : currencies}
                 getOptionLabel={option => `${option.name} ( ${option.symbol} )`}
                 onChange={handleSelectChange('currencyId')}
-                value={
-                  values.currencyId
-                    ? _.find(currencies, { id: values.currencyId })
-                    : null
-                }
+                value={values.currencyId ? _.find(currencies, { id: values.currencyId }) : null}
                 renderOption={option => (
                   <React.Fragment>
                     <span>{flag(IsoCodeToFlag(option.code))}</span> {option.name}
@@ -240,7 +224,7 @@ const TransactionTransferDialog = props => {
               <TextField
                 id="exchange-rate"
                 size="small"
-                name="exchangeRate"
+                name="rate"
                 label="Exchange Rate"
                 placeholder="Exchange Rate"
                 value={values.rate}
@@ -269,7 +253,7 @@ const TransactionTransferDialog = props => {
                   inputVariant="outlined"
                   size="small"
                   id="transfer-date-dialog"
-                  label="Transfer Date"
+                  label="Transfer date"
                   format="dd/MM/yyyy"
                   value={values.transferDate}
                   onChange={handleDateChange('transferDate')}
@@ -295,7 +279,7 @@ const TransactionTransferDialog = props => {
             <Grid item xs={12}>
               <TextField
                 id="standard-reference-number"
-                label="Reference Number"
+                label="Reference number"
                 name="referenceNumber"
                 onBlur={() => { }}
                 error={
@@ -340,9 +324,10 @@ const TransactionTransferDialog = props => {
                   startIcon={<AttachFileIcon />}
                   className={classes.label}
                 >
-                  Attach a file
+                  Attach image
                   <input
                     name="attachments"
+                    accept="image/*"
                     type="file"
                     style={{ display: 'none' }}
                     onChange={handleImageChange}

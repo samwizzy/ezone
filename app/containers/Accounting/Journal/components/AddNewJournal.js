@@ -593,6 +593,7 @@ const NewJournal = props => {
                       <input
                         type="file"
                         name="attachments"
+                        accept="image/*"
                         multiple
                         style={{ display: "none" }}
                         onChange={handleImageChange}

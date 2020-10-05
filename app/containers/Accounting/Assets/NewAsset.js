@@ -551,6 +551,7 @@ const NewAsset = props => {
                     <input
                       type="file"
                       name="image"
+                      accept="image/*"
                       style={{ display: 'none' }}
                       onChange={handleImageChange}
                     />

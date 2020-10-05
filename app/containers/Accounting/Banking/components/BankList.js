@@ -263,21 +263,13 @@ const BankList = props => {
       >
         <MenuItem
           onClick={handleActivateDeactivateBankAccount}
-          disabled={selectedBankAccount && selectedBankAccount.status}
+          disabled={selectedBankAccount && !Boolean(selectedBankAccount.transfers.length)}
         >
-          Activate
-        </MenuItem>
-        <MenuItem
-          onClick={handleActivateDeactivateBankAccount}
-          disabled={selectedBankAccount && !selectedBankAccount.status}
-        >
-          Deactivate
+          {selectedBankAccount && selectedBankAccount.status ? 'Deactivate' : 'Activate'}
         </MenuItem>
         <MenuItem
           onClick={() => openDeleteBankAccountDialog(selectedBankAccount)}
-          disabled={
-            selectedBankAccount && Boolean(selectedBankAccount.transfers.length)
-          }
+          disabled={selectedBankAccount && Boolean(selectedBankAccount.transfers.length)}
         >
           Delete
         </MenuItem>
