@@ -89,7 +89,7 @@ const Widget2 = ({ accounts, accData }) => {
 
 					<TableFooter>
 						<TableRow>
-							<TableCell align="left" colSpan={2}>
+							<TableCell colSpan={2}>
 								<Typography variant="subtitle1" component="h2" color="textSecondary">Total</Typography>
 							</TableCell>
 							<TableCell align="right">
