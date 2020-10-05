@@ -25,6 +25,12 @@ const makeSelectGetChartOfAccounts = () =>
     substate => substate.chartOfAccounts,
   );
 
+const makeSelectGetBranches = () =>
+  createSelector(
+    selectFixedAssetsDomain,
+    substate => substate.branches,
+  );
+
 const makeSelectAssetDialog = () =>
   createSelector(
     selectFixedAssetsDomain,
@@ -67,6 +73,7 @@ export {
   selectFixedAssetsDomain,
   makeSelectLoading,
   makeSelectGetChartOfAccounts,
+  makeSelectGetBranches,
   makeSelectAssetDialog,
   makeSelectAssetDisposalDialog,
   makeSelectAssetTypeDialog,

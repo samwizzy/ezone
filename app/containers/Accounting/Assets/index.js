@@ -22,13 +22,14 @@ const key = 'fixedAssets';
 export function FixedAssetsPage(props) {
 	useInjectReducer({ key, reducer });
 	useInjectSaga({ key, saga });
-	const { getAssets, getAssetTypes, getChartOfAccounts } = props
+	const { getAssets, getAssetTypes, getChartOfAccounts, getBranches } = props
 	const { path } = useRouteMatch()
 
 	useEffect(() => {
 		getAssets()
 		getAssetTypes()
 		getChartOfAccounts()
+		getBranches()
 	}, [])
 
 	return (
@@ -62,6 +63,7 @@ function mapDispatchToProps(dispatch) {
 		getAssets: () => dispatch(Actions.getAssets()),
 		getAssetTypes: () => dispatch(Actions.getAssetTypes()),
 		getChartOfAccounts: () => dispatch(Actions.getChartOfAccounts()),
+		getBranches: () => dispatch(Actions.getBranches()),
 	};
 }
 

@@ -32,6 +32,7 @@ import AttachFileIcon from '@material-ui/icons/AttachFile';
 import * as AppSelectors from '../../App/selectors';
 import * as Selectors from './selectors';
 import * as Actions from './actions';
+import { GET_BRANCHES_SUCCESS } from '../../HRPage/constants';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -98,12 +99,14 @@ const NewAsset = props => {
     loading,
     dialog,
     chartOfAccounts,
+    branches,
     assetTypes,
     createAsset,
     updateAsset,
   } = props;
 
   useEffect(() => {
+    console.log(moment().format('x'), "moment().format('x')")
     if (dialog.type === 'edit' && dialog.data) {
       const { taxAccount, assetType } = dialog.data
       const newData = EzoneUtils.matchWithPairs(initialState, dialog.data)
@@ -115,17 +118,14 @@ const NewAsset = props => {
   }, [dialog.data]);
 
   const handleChange = event => {
-    setForm({
-      ...form,
-      [event.target.name]:
-        event.target.type === 'checkbox'
-          ? event.target.checked
-          : event.target.value,
-    });
+    const { name, value, type, checked } = event.target
+    setForm({ ...form, [name]: type === 'checkbox' ? checked : value });
   };
 
   const handleSelectChange = name => (event, object) => {
-    setForm({ ...form, [name]: object ? object.id : object });
+    name === 'location'
+      ? setForm({ ...form, [name]: object ? object.name : object })
+      : setForm({ ...form, [name]: object ? object.id : object });
   };
 
   const handleDateChange = name => date => {
@@ -157,6 +157,7 @@ const NewAsset = props => {
 
   console.log(loading, 'loading');
   console.log(chartOfAccounts, 'chartOfAccounts');
+  console.log(branches, 'branches');
   console.log(form, 'form');
   console.log(dialog, 'form dialog');
 
@@ -224,11 +225,7 @@ const NewAsset = props => {
                   options={assetTypes}
                   getOptionLabel={option => option.name}
                   onChange={handleSelectChange('assetTypeId')}
-                  value={
-                    form.assetTypeId
-                      ? _.find(assetTypes, { id: form.assetTypeId })
-                      : null
-                  }
+                  value={form.assetTypeId ? _.find(assetTypes, { id: form.assetTypeId }) : null}
                   renderInput={params => (
                     <TextField
                       {...params}
@@ -332,8 +329,8 @@ const NewAsset = props => {
                   size="small"
                   variant="outlined"
                   multiline
-                  rows={3}
-                  rowsMax={4}
+                  rows={1}
+                  rowsMax={3}
                   value={form.description}
                   onChange={handleChange}
                   InputLabelProps={{
@@ -443,11 +440,7 @@ const NewAsset = props => {
                   options={measurements}
                   getOptionLabel={option => option.label}
                   onChange={handleSelectChange('measurement')}
-                  value={
-                    form.measurement
-                      ? _.find(measurements, { id: form.measurement })
-                      : null
-                  }
+                  value={form.measurement ? _.find(measurements, { id: form.measurement }) : null}
                   renderInput={params => (
                     <TextField
                       {...params}
@@ -470,11 +463,7 @@ const NewAsset = props => {
                   options={chartOfAccounts}
                   getOptionLabel={option => option.accountName}
                   onChange={handleSelectChange('taxAccountId')}
-                  value={
-                    form.taxAccountId
-                      ? _.find(chartOfAccounts, { id: form.taxAccountId })
-                      : null
-                  }
+                  value={form.taxAccountId ? _.find(chartOfAccounts, { id: form.taxAccountId }) : null}
                   renderInput={params => (
                     <TextField
                       {...params}
@@ -524,23 +513,27 @@ const NewAsset = props => {
                   fullWidth
                 />
 
-                <TextField
+                <Autocomplete
                   id="location"
-                  name="location"
-                  label="Location"
-                  required
-                  variant="outlined"
-                  value={form.location}
-                  onChange={handleChange}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  margin="normal"
-                  size="small"
-                  multiline
-                  rows={3}
-                  rowsMax={4}
-                  fullWidth
+                  options={branches}
+                  getOptionLabel={option => option.name}
+                  onChange={handleSelectChange('location')}
+                  value={form.location ? _.find(branches, { name: form.location }) : null}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label="Select location"
+                      required
+                      variant="outlined"
+                      margin="normal"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      size="small"
+                      placeholder="Location"
+                      fullWidth
+                    />
+                  )}
                 />
               </Paper>
             </Grid>
@@ -554,7 +547,7 @@ const NewAsset = props => {
                     disableElevation
                     startIcon={<AttachFileIcon />}
                   >
-                    Upload File
+                    Upload Image
                     <input
                       type="file"
                       name="image"
@@ -564,9 +557,7 @@ const NewAsset = props => {
                   </Button>
 
                   <FormHelperText>
-                    {form.image && form.image.fileName.length > 0
-                      ? `${form.image.fileName} selected`
-                      : ''}
+                    {form.image && form.image.fileName.length > 0 ? `${form.image.fileName} selected` : ''}
                   </FormHelperText>
                 </FormControl>
               </Paper>
@@ -603,6 +594,7 @@ const mapStateToProps = createStructuredSelector({
   dialog: Selectors.makeSelectAssetDialog(),
   assetTypes: Selectors.makeSelectAssetTypes(),
   chartOfAccounts: Selectors.makeSelectGetChartOfAccounts(),
+  branches: Selectors.makeSelectGetBranches(),
 });
 
 function mapDispatchToProps(dispatch) {

@@ -1,5 +1,12 @@
 export const DEFAULT_ACTION = 'app/Settings/DEFAULT_ACTION';
 
+export const GET_CHART_OF_ACCOUNTS = 'app/Settings/GET_CHART_OF_ACCOUNTS';
+export const GET_CHART_OF_ACCOUNTS_SUCCESS = 'app/Settings/GET_CHART_OF_ACCOUNTS_SUCCESS';
+export const GET_CHART_OF_ACCOUNTS_ERROR = 'app/Settings/GET_CHART_OF_ACCOUNTS_ERROR';
+
+export const GET_BRANCHES = 'app/Settings/GET_BRANCHES';
+export const GET_BRANCHES_SUCCESS = 'app/Settings/GET_BRANCHES_SUCCESS';
+export const GET_BRANCHES_ERROR = 'app/Settings/GET_BRANCHES_ERROR';
 
 export const CREATE_ASSET = 'app/Settings/CREATE_ASSET';
 export const CREATE_ASSET_SUCCESS = 'app/Settings/CREATE_ASSET_SUCCESS';
@@ -28,10 +35,6 @@ export const CREATE_ASSET_TYPE_ERROR = 'app/Settings/CREATE_ASSET_TYPE_ERROR';
 export const GET_ASSET_TYPES = 'app/Settings/GET_ASSET_TYPES';
 export const GET_ASSET_TYPES_SUCCESS = 'app/Settings/GET_ASSET_TYPES_SUCCESS';
 export const GET_ASSET_TYPES_ERROR = 'app/Settings/GET_ASSET_TYPES_ERROR';
-
-export const GET_CHART_OF_ACCOUNTS = 'app/Settings/GET_CHART_OF_ACCOUNTS';
-export const GET_CHART_OF_ACCOUNTS_SUCCESS = 'app/Settings/GET_CHART_OF_ACCOUNTS_SUCCESS';
-export const GET_CHART_OF_ACCOUNTS_ERROR = 'app/Settings/GET_CHART_OF_ACCOUNTS_ERROR';
 
 export const OPEN_NEW_ASSET_DIALOG = 'app/Settings/OPEN_NEW_ASSET_DIALOG';
 export const CLOSE_NEW_ASSET_DIALOG = 'app/Settings/CLOSE_NEW_ASSET_DIALOG';

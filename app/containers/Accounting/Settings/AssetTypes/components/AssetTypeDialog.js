@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import _ from 'lodash';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {
   makeStyles,

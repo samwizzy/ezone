@@ -58,33 +58,8 @@ export function* createNewEmployee() {
     yield put(Actions.createNewEmployeeSuccess(createNewEmployeeResponse));
     yield put(Actions.getAllEmployees());
     yield put(Actions.closeNewEmployeeDialog());
-
-    // if (createNewEmployeeResponse.success === true) {
-    //   yield put(
-    //     AppActions.openSnackBar({
-    //       open: true,
-    //       message: createNewEmployeeResponse.message,
-    //       status: 'success',
-    //     }),
-    //   );
-    // } else {
-    //   yield put(
-    //     AppActions.openSnackBar({
-    //       open: true,
-    //       message: createNewEmployeeResponse.message,
-    //       status: 'warning',
-    //     }),
-    //   );
-    // }
   } catch (err) {
     yield put(Actions.createNewEmployeeError(err));
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: `${err}`,
-    //     status: 'error',
-    //   }),
-    // );
   }
 }
 
@@ -113,33 +88,9 @@ export function* updateUserProfile({ payload }) {
     yield put(AppActions.getUserProfileAction());
 
     yield put(AppActions.openSnackBar({ open: true, message: response.message, status: 'success' }));
-    // if (createNewEmployeeResponse.success === true) {
-    //   yield put(
-    //     AppActions.openSnackBar({
-    //       open: true,
-    //       message: createNewEmployeeResponse.message,
-    //       status: 'success',
-    //     }),
-    //   );
-    // } else {
-    //   yield put(
-    //     AppActions.openSnackBar({
-    //       open: true,
-    //       message: createNewEmployeeResponse.message,
-    //       status: 'warning',
-    //     }),
-    //   );
-    // }
   } catch (err) {
     console.log(err, 'errr');
     yield put(Actions.updateUserProfileError(err));
-    // yield put(
-    //   AppActions.openSnackBar({
-    //     open: true,
-    //     message: `${err}`,
-    //     status: 'error',
-    //   }),
-    // );
   }
 }
 
