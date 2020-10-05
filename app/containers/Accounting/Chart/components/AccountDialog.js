@@ -1,5 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import EzoneUtils from '../../../../utils/EzoneUtils';
 import { connect } from 'react-redux';
 import * as Actions from '../actions';
 import { createStructuredSelector } from 'reselect';
@@ -22,6 +23,7 @@ import {
 } from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
 import * as Selectors from '../selectors';
+import * as AccSelectors from '../../selectors';
 import _ from 'lodash';
 import { financialStatements } from './../enums'
 
@@ -48,7 +50,7 @@ const types = [
   { label: 'Debit', id: 'DEBIT' },
 ];
 
-const initialState = {
+export const initialState = {
   id: '',
   accountCode: '',
   accountName: '',
@@ -72,20 +74,22 @@ const AccountDialog = props => {
     loading,
     dialog,
     closeNewAccountDialog,
+    accountSetupData,
     chartOfAccounts,
     accountTypes,
     createChartOfAccount,
     updateChartOfAccount,
   } = props;
 
+  const { currency } = accountSetupData
   const [options, setOptions] = useState({ makeSubAccount: false });
-
+  const [errors, setErrors] = useState({ accountCode: '' });
   const [values, setValues] = useState({ ...initialState });
 
   const handleChange = event => {
     const { name, value, type, checked } = event.target
     name === 'openingBalance'
-      ? setValues({ ...values, [name]: value.replace(/[^0-9]/g, '') })
+      ? setValues({ ...values, [name]: value.replace(/[^0-9\.]/g, '') })
       : setValues({ ...values, [name]: type === 'checkbox' ? checked : value })
   };
 
@@ -102,6 +106,15 @@ const AccountDialog = props => {
       ? createChartOfAccount(values)
       : updateChartOfAccount(values);
   };
+
+  const handleCodeValidateOnBlur = (event) => {
+    const { name, value } = event.target
+    if (_.some(chartOfAccounts, { [name]: value })) {
+      setErrors({ [name]: `${value} already exist` })
+    } else {
+      setErrors({ [name]: '' })
+    }
+  }
 
   useEffect(() => {
     if (dialog.type === 'edit' && dialog.data) {
@@ -164,7 +177,7 @@ const AccountDialog = props => {
             <Grid item xs={12}>
               <TextField
                 id="standard-account-name"
-                label="Account Name"
+                label="Account name"
                 name="accountName"
                 variant="outlined"
                 size="small"
@@ -177,20 +190,12 @@ const AccountDialog = props => {
             <Grid item xs={6}>
               <TextField
                 id="standard-account-code"
-                label="Account Code"
+                label="Account code"
                 name="accountCode"
                 variant="outlined"
-                onBlur={() => { }}
-                error={
-                  !/^[a-z0-9]+$/i.test(values.accountCode) &&
-                  values.accountCode.length > 0
-                }
-                helperText={
-                  !/^[a-z0-9]+$/i.test(values.accountCode) &&
-                    values.accountCode.length > 0
-                    ? 'Account Code must be alphanumeric'
-                    : ''
-                }
+                onBlur={handleCodeValidateOnBlur}
+                error={Boolean(errors.accountCode)}
+                helperText={errors.accountCode}
                 size="small"
                 value={values.accountCode}
                 onChange={handleChange}
@@ -209,7 +214,7 @@ const AccountDialog = props => {
                 renderInput={params => (
                   <TextField
                     {...params}
-                    label="Select Debit/Credit"
+                    label="Select debit/credit"
                     variant="outlined"
                     placeholder="DEBIT/CREDIT"
                     margin="dense"
@@ -221,7 +226,7 @@ const AccountDialog = props => {
             <Grid item xs={12}>
               <TextField
                 id="standard-opening-balance"
-                label='Opening Balance'
+                label='Opening balance'
                 name="openingBalance"
                 variant="outlined"
                 size="small"
@@ -263,7 +268,7 @@ const AccountDialog = props => {
                 <Grid item xs={6}>
                   <TextField
                     id="standard-bank-name"
-                    label="Bank Name"
+                    label="Bank name"
                     name="bankName"
                     variant="outlined"
                     size="small"
@@ -276,7 +281,7 @@ const AccountDialog = props => {
                 <Grid item xs={6}>
                   <TextField
                     id="standard-account-number"
-                    label="Account Number"
+                    label="Account number"
                     name="accountNumber"
                     type="number"
                     variant="outlined"
@@ -322,7 +327,7 @@ const AccountDialog = props => {
                   renderInput={params => (
                     <TextField
                       {...params}
-                      label="Select Parent Account"
+                      label="Select parent account"
                       variant="outlined"
                       placeholder="Search"
                       margin="dense"
@@ -412,6 +417,7 @@ const mapStateToProps = createStructuredSelector({
   dialog: Selectors.makeSelectNewAccountDialog(),
   accountTypes: Selectors.makeSelectAccountTypeData(),
   chartOfAccounts: Selectors.makeSelectGetChartOfAccounts(),
+  accountSetupData: AccSelectors.makeSelectGetAccountingSetupData(),
 });
 
 function mapDispatchToProps(dispatch) {

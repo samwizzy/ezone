@@ -30,6 +30,26 @@ export function* getChartOfAccounts() {
   }
 }
 
+export function* getBranches() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetBranches}?orgId=${currentUser && currentUser.organisation.id}&tagId=1`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getBranchesSuccess(response));
+  } catch (err) {
+    yield put(Actions.getBranchesError(err));
+  }
+}
+
 export function* getAssets() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
@@ -200,6 +220,7 @@ export function* createAssetType({ payload }) {
 // Individual exports for testing
 export default function* SettingsSaga() {
   yield takeLatest(Constants.GET_CHART_OF_ACCOUNTS, getChartOfAccounts);
+  yield takeLatest(Constants.GET_BRANCHES, getBranches);
   yield takeLatest(Constants.GET_ASSETS, getAssets);
   yield takeLatest(Constants.GET_ASSET_BY_ID, getAssetById);
   yield takeLatest(Constants.CREATE_ASSET, createAsset);

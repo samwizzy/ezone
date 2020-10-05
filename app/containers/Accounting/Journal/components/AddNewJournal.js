@@ -36,6 +36,7 @@ import {
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import AddIcon from '@material-ui/icons/Add';
+import DraftsIcon from '@material-ui/icons/Drafts';
 import CancelIcon from '@material-ui/icons/Cancel';
 import DoneIcon from '@material-ui/icons/Done';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
@@ -332,7 +333,7 @@ const NewJournal = props => {
                       shrink: true,
                     }}
                     placeholder="Currencies"
-                    error={values.currencyId && !Boolean(values.exchangeRate)}
+                    error={(values.currencyId && !Boolean(values.exchangeRate))}
                     helperText={(values.currencyId && !values.exchangeRate) ? 'Please select an exchange rate' : ''}
                   />
                 )}
@@ -431,7 +432,6 @@ const NewJournal = props => {
               />
             </Grid>
           </Grid>
-
 
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -611,6 +611,15 @@ const NewJournal = props => {
 
         <CardActions>
           <FormHelperText>{handleBalanceCheck() ? <span><DoneIcon /> Balanced</span> : 'Entries must be balance'}</FormHelperText>
+          <Button
+            onClick={() => { }}
+            color="primary"
+            variant="contained"
+            disabled={loading}
+            startIcon={<DraftsIcon />}
+          >
+            Draft
+          </Button>
           <Button
             onClick={handleSubmit}
             color="primary"

@@ -20,6 +20,7 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AccSelectors from '../../selectors';
 import ImportControl from './ImportControl';
+import { initialState } from './AccountDialog'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -66,6 +67,7 @@ const AccountChart = props => {
     history,
     match,
     openNewAccountDialog,
+    updateChartOfAccount,
     openDeleteAccountDialog,
     editOpenAccountDialog,
     chartOfAccounts,
@@ -93,6 +95,21 @@ const AccountChart = props => {
 
   const handleEditClick = () => {
     editOpenAccountDialog(selectedAccount);
+    handleClose();
+  };
+
+  const handleStatusUpdate = () => {
+    const { parentAccount, accountType } = selectedAccount
+    const newData = EzoneUtils.matchWithPairs(initialState, selectedAccount)
+    console.log(newData, "newData")
+    const data = {
+      ...newData,
+      status: !selectedAccount.status,
+      parentId: parentAccount && parentAccount.id,
+      accountTypeId: accountType && accountType.id, // bankName: '',
+    }
+    console.log(data, "data")
+    updateChartOfAccount(data);
     handleClose();
   };
 
@@ -243,10 +260,10 @@ const AccountChart = props => {
         <MenuItem onClick={handleEditClick}>Edit</MenuItem>
         <MenuItem onClick={handleView}>View details</MenuItem>
         <MenuItem
-          onClick={() => { }}
-          disabled={selectedAccount && Boolean(selectedAccount.status)}
+          onClick={handleStatusUpdate}
+          disabled={selectedAccount && Boolean(selectedAccount.entries.length)}
         >
-          Mark as active
+          Mark as {selectedAccount && selectedAccount.status ? 'inactive' : 'active'}
         </MenuItem>
         <MenuItem
           onClick={handleDeleteClick}
@@ -275,6 +292,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewAccountDialog: () => dispatch(Actions.openNewAccountDialog()),
+    updateChartOfAccount: data => dispatch(Actions.updateChartOfAccount(data)),
     openDeleteAccountDialog: data => dispatch(Actions.openDeleteAccountDialog(data)),
     editOpenAccountDialog: data => dispatch(Actions.editOpenAccountDialog(data)),
     getChartOfAccountById: data => dispatch(Actions.getChartOfAccountById(data)),

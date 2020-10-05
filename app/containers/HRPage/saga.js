@@ -11,9 +11,7 @@ import * as Endpoints from '../../components/Endpoints';
 function errorHandler(promise) {
   return promise
 }
-/**
- * Github repos request/response handler
- */
+
 export function* getEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());

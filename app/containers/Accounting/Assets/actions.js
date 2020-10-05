@@ -239,3 +239,23 @@ export function getChartOfAccountsError(data) {
     payload: data,
   }
 }
+// Get branches
+export function getBranches() {
+  return {
+    type: Constants.GET_BRANCHES,
+  }
+}
+
+export function getBranchesSuccess(data) {
+  return {
+    type: Constants.GET_BRANCHES_SUCCESS,
+    payload: data,
+  }
+}
+
+export function getBranchesError(data) {
+  return {
+    type: Constants.GET_BRANCHES_ERROR,
+    payload: data,
+  }
+}

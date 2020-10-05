@@ -5,6 +5,7 @@ export const initialState = {
   loading: false,
   error: false,
   chartOfAccounts: [],
+  branches: [],
   assets: [],
   assetById: null,
   assetTypes: [],
@@ -182,6 +183,29 @@ const settingsReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_CHART_OF_ACCOUNTS_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      // Case to get all branches
+      case Constants.GET_BRANCHES: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.GET_BRANCHES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          branches: action.payload,
+        };
+      }
+      case Constants.GET_BRANCHES_ERROR: {
         return {
           ...state,
           loading: false,

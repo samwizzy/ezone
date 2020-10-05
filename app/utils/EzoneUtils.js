@@ -48,14 +48,14 @@ class EzoneUtils {
 
   formatCurrency = (value, code = 'NGN', locale = 'en-NG') => {
     if (!code) code = 'NGN';
-    return new Intl.NumberFormat(locale, { style: 'currency', currency: code, maximumSignificantDigits: 3 }).format(Number(value))
+    return new Intl.NumberFormat(locale, { style: 'currency', currency: code }).format(Number(value))
   }
 
   formatFileName = fileName => {
     const fName = fileName.split('.')[0];
     return `${fName
       .substr(0, Math.ceil(fName.length / 2))
-      .trim()}-${moment().format('YYYY-MM-DDTHH:mm:ss')}`;
+      .trim()}-${moment().format('x')}`;
   };
 
   toBase64(file) {

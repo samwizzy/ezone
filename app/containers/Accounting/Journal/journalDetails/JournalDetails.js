@@ -201,10 +201,10 @@ const JournalDetails = props => {
                   <TableCell>{_.find(chartOfAccounts, { id: entry.accountId }) && _.find(chartOfAccounts, { id: entry.accountId }).accountName}</TableCell>
                   <TableCell>{entry.description}</TableCell>
                   <TableCell>
-                    {EzoneUtils.formatCurrency(entry.debit, journalData.currency ? journalData.currency.code : currency && currency.code, 'en-US')}
+                    {EzoneUtils.formatCurrency(entry.debit * entry.exchangeRate, journalData.currency ? journalData.currency.code : currency && currency.code, 'en-US')}
                   </TableCell>
                   <TableCell>
-                    {EzoneUtils.formatCurrency(entry.credit, journalData.currency ? journalData.currency.code : currency && currency.code, 'en-US')}
+                    {EzoneUtils.formatCurrency(entry.credit * entry.exchangeRate, journalData.currency ? journalData.currency.code : currency && currency.code, 'en-US')}
                   </TableCell>
                 </TableRow>
               ))}
