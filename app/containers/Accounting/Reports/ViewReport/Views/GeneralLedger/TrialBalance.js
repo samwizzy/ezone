@@ -77,7 +77,6 @@ const TrialBalance = ({
   ];
 
   const handleData = () => {
-    // dispatchGetAllGeneralJournalTypeAction();
     dispatchGetAllTrialBalanceAction();
     setDisplay(true);
   };
