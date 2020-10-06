@@ -4,11 +4,13 @@ import './style.css';
 const Table = React.forwardRef(
   ({ data, TableHeadData, TableFooterData = '' }, ref) => (
     <div style={{ overflowX: 'auto' }}>
-      <table ref={ref} className="table">
+      <table ref={ref} className="table my-table">
         <thead>
           <tr>
             {TableHeadData.map((row, index) => (
-              <td key={`${index}_${row}`}>{row}</td>
+              <td className="my-table" key={`${index}_${row}`}>
+                {row}
+              </td>
             ))}
           </tr>
         </thead>
@@ -17,7 +19,9 @@ const Table = React.forwardRef(
             ? data.map((eachRow, index) => (
                 <tr key={index}>
                   {Object.keys(eachRow).map((row, index) => (
-                    <td key={`${index}_${eachRow[row]}`}>{eachRow[row]}</td>
+                    <td className="my-table" key={`${index}_${eachRow[row]}`}>
+                      {eachRow[row]}
+                    </td>
                   ))}
                 </tr>
               ))
@@ -27,7 +31,9 @@ const Table = React.forwardRef(
           <tfoot>
             <tr>
               {Object.values(TableFooterData[0]).map((row, index) => (
-                <td key={`${index}_${row} unique`}>{row}</td>
+                <td className="my-table" key={`${index}_${row} unique`}>
+                  {row}
+                </td>
               ))}
             </tr>
           </tfoot>

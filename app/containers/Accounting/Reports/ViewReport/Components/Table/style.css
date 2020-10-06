@@ -11,25 +11,19 @@ table {
   margin: 1px auto;
   overflow-x: scroll;
   min-width: 760px;
-  /* min-width: 400px; */
 }
 
-table,
-td,
-th {
+.my-table{
   border-top: none !important;
   text-align: left;
-  /* padding: 8px; */
+  padding: 8px !important;;
 }
 
 .table tr {
   padding: 20px;
-  /* font-weight: 600; */
   background: white;
   color: #656565;
-  /* font-family: Montserrat; */
   font-size: 0.7777777777777778rem;
-  /* text-align: left; */
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-weight: 400;
   line-height: 1.43;
@@ -38,9 +32,7 @@ th {
 .table thead tr {
   background: #eef4f9;
   color: black;
-  /* font-family: Montserrat; */
   font-size: 0.7777777777777778rem;
-  /* text-align: left; */
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-weight: 400;
   line-height: 1.43;
@@ -48,10 +40,7 @@ th {
 .table tfoot tr {
   background: black;
   color: white;
-  /* font-family: Montserrat;
-   */
   font-size: 0.7777777777777778rem;
-  /* text-align: left; */
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-weight: 400;
   line-height: 1.43;
