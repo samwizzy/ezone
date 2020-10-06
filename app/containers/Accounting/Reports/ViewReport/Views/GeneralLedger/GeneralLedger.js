@@ -1,7 +1,7 @@
 import React, { useRef, memo, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-// import { Helmet } from 'react-helmet';
-// import { FormattedMessage } from 'react-intl';
+import moment from 'moment';
+import { useLocation } from 'react-router-dom';
 import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -11,14 +11,12 @@ import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import viewReportReducer from '../../reducers';
 import ReportSaga from '../../saga';
-import './style.css';
 import Table from '../../Components/Table';
-import Logo from '../../Assets/firstMarine.png';
 import TopMenu from '../../Components/TopMenu';
 import Company from '../../Components/CompanyLogo';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import moment from 'moment';
+import formatDate from '../../Helpers';
 import * as Select from '../../../../../App/selectors';
+import './style.css';
 
 const GeneralLedger = ({
   reports,
@@ -35,6 +33,7 @@ const GeneralLedger = ({
 
   const componentRef = useRef();
   const tableRef = useRef();
+  const companyRef = useRef();
   const [print, setPrint] = useState(false);
   const [display, setDisplay] = useState(false);
 
@@ -71,7 +70,7 @@ const GeneralLedger = ({
 
   const TableHeadData = [
     'Account Code',
-    'Account Desc',
+    'Account Name',
     'Date',
     'Reference',
     'Transaction Desc',
@@ -79,18 +78,17 @@ const GeneralLedger = ({
     'Credit Amt',
     'Balance',
   ];
-
-  const setDate = startDate
-    ? `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
-        'MMM Do YYYY',
-      )}`
-    : '';
-
   const handleData = () => {
     dispatchGetAllGeneralLedgerTypeAction();
     setDisplay(true);
   };
-
+  const Location = useLocation();
+  const fileName = Location.pathname.split('/')[3];
+  const setDate =
+    display &&
+    `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
+      'MMM Do YYYY',
+    )}`;
   return (
     <React.Fragment>
       <TopMenu
@@ -98,19 +96,18 @@ const GeneralLedger = ({
         print={print}
         setPrint={setPrint}
         tableData={tableData}
-        search={dispatchGetGeneralLedgerTimeAction}
         handleFetch={handleData}
+        pdflogo={organisation.logo}
+        tableRef={tableRef}
+        companyRef={companyRef}
+        daterange={setDate}
       />
       <div ref={componentRef}>
         <Company
+          ref={companyRef}
           ComLogo={organisation.logo}
-          name="General Ledger"
-          date={
-            display &&
-            `${moment(startDate).format('MMM Do YYYY')} - ${moment(
-              endDate,
-            ).format('MMM Do YYYY')}`
-          }
+          name={`${fileName}`}
+          date={setDate}
         />
 
         {display && (
@@ -155,79 +152,62 @@ export default compose(
   withConnect,
   memo,
 )(GeneralLedger);
-// {
-//   "School fees": [
-//       {
-//           "accountId": 816,
-//           "accountDescription": "School fees",
-//           "debitAmount": 10000.0,
-//           "creditAmount": 0.0,
-//           "date": "2020-09-17T14:13:14.000+0000",
-//           "reference": "2020-1600351993530",
-//           "accountCode": null,
-//           "transactionDescription": "",
-//           "balance": null
-//       }
-//   ],
-//   "Ubisoft Salary Account": [
-//       {
-//           "accountId": 818,
-//           "accountDescription": "Ubisoft Salary Account",
-//           "debitAmount": 0.0,
-//           "creditAmount": 10000.0,
-//           "date": "2020-09-17T14:13:14.000+0000",
-//           "reference": "2020-1600351993530",
-//           "accountCode": null,
-//           "transactionDescription": "",
-//           "balance": null
-//       }
-//   ],
-//   "Fixed Deposit": [
-//       {
-//           "accountId": 815,
-//           "accountDescription": "Fixed Deposit",
-//           "debitAmount": 5000.0,
-//           "creditAmount": 0.0,
-//           "date": "2020-08-04T11:10:33.000+0000",
-//           "reference": null,
-//           "accountCode": null,
-//           "transactionDescription": "table",
-//           "balance": null
-//       },
-//       {
-//           "accountId": 815,
-//           "accountDescription": "Fixed Deposit",
-//           "debitAmount": 10000.0,
-//           "creditAmount": 0.0,
-//           "date": "2020-09-24T13:11:09.000+0000",
-//           "reference": "2016-1600953069263",
-//           "accountCode": null,
-//           "transactionDescription": "",
-//           "balance": null
-//       }
-//   ],
-//   "Ubisoft Account": [
-//       {
-//           "accountId": 817,
-//           "accountDescription": "Ubisoft Account",
-//           "debitAmount": 0.0,
-//           "creditAmount": 5000.0,
-//           "date": "2020-08-04T11:10:33.000+0000",
-//           "reference": null,
-//           "accountCode": null,
-//           "transactionDescription": "plate",
-//           "balance": null
-//       },
-//       {
-//           "accountId": 817,
-//           "accountDescription": "Ubisoft Account",
-//           "debitAmount": 0.0,
-//           "creditAmount": 10000.0,
-//           "date": "2020-09-24T13:11:09.000+0000",
-//           "reference": "2016-1600953069263",
-//           "accountCode": null,
-//           "transactionDescription": "",
-//           "balance": null
-//       }
-//   ]
-// }
+/** imports 
+ import React, { useRef, memo, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import moment from 'moment';
+import { useLocation } from 'react-router-dom';
+import { compose } from 'redux';
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
+import { createStructuredSelector } from 'reselect';
+import makeSelectReports from '../../selectors';
+import * as Selectors from '../../selectors';
+import * as Actions from '../../actions';
+import viewReportReducer from '../../reducers';
+import ReportSaga from '../../saga';
+import Table from '../../Components/Table';
+import TopMenu from '../../Components/TopMenu';
+import Company from '../../Components/CompanyLogo';
+import formatDate from '../../Helpers';
+import * as Select from '../../../../../App/selectors';
+import './style.css';
+ */
+
+/**Refs declaration
+ const componentRef = useRef();
+  const tableRef = useRef();
+  const companyRef = useRef();
+  const [print, setPrint] = useState(false);
+  const [display, setDisplay] = useState(false);
+ */
+
+/**Set date
+  const Location = useLocation();
+  const fileName = Location.pathname.split('/')[3];
+  const setDate =
+    display &&
+    `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
+      'MMM Do YYYY',
+    )}`;
+
+ */
+
+/**TopMenu
+  componentRef={componentRef}
+        print={print}
+        setPrint={setPrint}
+        tableData={tableData}
+        handleFetch={handleData}
+        pdflogo={organisation.logo}
+        tableRef={tableRef}
+        companyRef={companyRef}
+        daterange={setDate}
+ */
+
+/** Company
+  *  ref={companyRef}
+          ComLogo={organisation.logo}
+          name={`${fileName}`}
+          date={setDate}
+  */

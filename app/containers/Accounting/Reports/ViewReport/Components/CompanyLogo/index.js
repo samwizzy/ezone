@@ -1,17 +1,17 @@
 import React from 'react';
 import './style.css';
 
-const Company = ({ Logo, name, date, ComLogo }) => {
+const Company = React.forwardRef(({ Logo, name, date, ComLogo }, ref) => {
   return (
-    <div className="view-main">
+    <div ref={ref} className="view-main">
       <img
         src={Logo ? Logo : `data:image/png;base64,${ComLogo}`}
         alt=""
         className="imgProf"
       />
-      <h5>{name}</h5>
-      <h6>{date}</h6>
+      <h5 id="companyName">{name}</h5>
+      <h6 id="companyDate">{date}</h6>
     </div>
   );
-};
+});
 export default Company;

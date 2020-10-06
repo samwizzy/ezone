@@ -18,7 +18,7 @@ import TopMenu from '../../Components/TopMenu';
 import Company from '../../Components/CompanyLogo';
 import formatDate from '../../Helpers';
 import moment from 'moment';
-
+import { useLocation } from 'react-router-dom';
 import * as Select from '../../../../../App/selectors';
 
 const GeneralJournal = ({
@@ -35,6 +35,7 @@ const GeneralJournal = ({
 
   const componentRef = useRef();
   const tableRef = useRef();
+  const companyRef = useRef();
   const [print, setPrint] = useState(false);
   const [display, setDisplay] = useState(false);
 
@@ -84,11 +85,15 @@ const GeneralJournal = ({
 
     setDisplay(true);
   };
-  const setDate = startDate
-    ? `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
-        'MMM Do YYYY',
-      )}`
-    : '';
+  const Location = useLocation();
+
+  const fileName = Location.pathname.split('/')[3];
+  const setDate =
+    display &&
+    `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
+      'MMM Do YYYY',
+    )}`;
+
   return (
     <React.Fragment>
       <TopMenu
@@ -97,17 +102,17 @@ const GeneralJournal = ({
         setPrint={setPrint}
         tableData={tableData}
         handleFetch={handleData}
+        pdflogo={organisation.logo}
+        tableRef={tableRef}
+        companyRef={companyRef}
+        daterange={setDate}
       />
       <div style={{ width: '100%', height: '100%' }} ref={componentRef}>
         <Company
+          ref={companyRef}
           ComLogo={organisation.logo}
-          name="General Journal"
-          date={
-            display &&
-            `${moment(startDate).format('MMM Do YYYY')} - ${moment(
-              endDate,
-            ).format('MMM Do YYYY')}`
-          }
+          name={`${fileName}`}
+          date={setDate}
         />
 
         {display && (
