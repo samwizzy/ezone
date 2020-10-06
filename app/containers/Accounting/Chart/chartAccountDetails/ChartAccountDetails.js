@@ -52,9 +52,14 @@ const useStyles = makeStyles(theme => ({
     '& tfoot': {
       '& td': {
         ...theme.typography.subtitle1,
-        color: theme.palette.secondary.contrastText,
       },
-      background: theme.palette.primary.main,
+      '& tr:first-child': {
+        background: theme.palette.grey[100],
+      },
+      '& tr:not(:first-child)': {
+        background: theme.palette.primary.main,
+        '& td': { color: theme.palette.secondary.contrastText },
+      },
     },
     '& td:not(:last-child)': {
       borderRight: `1px solid ${theme.palette.divider}`,
@@ -132,13 +137,31 @@ const ChartAccountDetails = props => {
               </TableBody>
               <TableFooter>
                 <TableRow>
-                  <TableCell>Closing Balance</TableCell>
+                  <TableCell>Opening Balance</TableCell>
                   <TableCell>
                     {chartOfAccount.accountType &&
                       chartOfAccount.accountType.accountType === 'Bank'
                       ? EzoneUtils.formatCurrency(chartOfAccount.bankBalance, currency && currency.code)
                       : EzoneUtils.formatCurrency(chartOfAccount.openingBalance, currency && currency.code)}
                   </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Closing Balance</TableCell>
+                  {chartOfAccount.type === 'CREDIT' ?
+                    <TableCell>
+                      {chartOfAccount.accountType &&
+                        chartOfAccount.accountType.accountType === 'Bank'
+                        ? EzoneUtils.formatCurrency(chartOfAccount.bankBalance, currency && currency.code)
+                        : EzoneUtils.formatCurrency(chartOfAccount.openingBalance - (chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit, 0) - chartOfAccount.entries.reduce((curVal, b) => curVal + b.debit, 0)), currency && currency.code)}
+                    </TableCell>
+                    :
+                    <TableCell>
+                      {chartOfAccount.accountType &&
+                        chartOfAccount.accountType.accountType === 'Bank'
+                        ? EzoneUtils.formatCurrency(chartOfAccount.bankBalance, currency && currency.code)
+                        : EzoneUtils.formatCurrency(chartOfAccount.openingBalance - (chartOfAccount.entries.reduce((curVal, b) => curVal + b.debit, 0) - chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit, 0)), currency && currency.code)}
+                    </TableCell>
+                  }
                 </TableRow>
               </TableFooter>
             </Table>
@@ -171,7 +194,7 @@ const ChartAccountDetails = props => {
                     <TableCell>{entry.description}</TableCell>
                     <TableCell>{EzoneUtils.formatCurrency(entry.debit, currency && currency.code)}</TableCell>
                     <TableCell>{EzoneUtils.formatCurrency(entry.credit, currency && currency.code)}</TableCell>
-                    <TableCell>{EzoneUtils.formatCurrency(Number(entry.debit) + Number(entry.credit), currency && currency.code)}</TableCell>
+                    <TableCell>{EzoneUtils.formatCurrency(Number(entry.debit) - Number(entry.credit), currency && currency.code)}</TableCell>
                   </TableRow>
                 )}
                 <TableRow>
@@ -179,7 +202,10 @@ const ChartAccountDetails = props => {
                   <TableCell>Total</TableCell>
                   <TableCell>{EzoneUtils.formatCurrency(chartOfAccount.entries.reduce((curVal, b) => curVal + b.debit, 0), currency && currency.code)}</TableCell>
                   <TableCell>{EzoneUtils.formatCurrency(chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit, 0), currency && currency.code)}</TableCell>
-                  <TableCell>{EzoneUtils.formatCurrency(chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit + b.debit, 0), currency && currency.code)}</TableCell>
+                  {chartOfAccount.type === 'CREDIT'
+                    ? <TableCell>{EzoneUtils.formatCurrency(chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit, 0) - chartOfAccount.entries.reduce((curVal, b) => curVal + b.debit, 0), currency && currency.code)}</TableCell>
+                    : <TableCell>{EzoneUtils.formatCurrency(chartOfAccount.entries.reduce((curVal, b) => curVal + b.debit, 0) - chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit, 0), currency && currency.code)}</TableCell>
+                  }
                 </TableRow>
               </TableBody>
             </Table>

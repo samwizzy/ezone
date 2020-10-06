@@ -9,6 +9,10 @@ import * as Endpoints from '../../../components/Endpoints';
 import * as Actions from './actions';
 import * as Constants from './constants';
 
+function errorHandler(promise) {
+  return promise;
+}
+
 export function* getDashBoardData() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const requestURL = `${Endpoints.GetAllAccountTypeApi}`;
@@ -152,11 +156,15 @@ export function* deleteChartOfAccount({ payload }) {
       }),
     });
 
+    console.log(response, 'response deleteChartOfAccountSuccess');
+
     swal('Success', 'Account deleted successfully', 'success');
     yield put(Actions.deleteChartOfAccountSuccess(response));
     yield put(Actions.getChartOfAccounts());
     yield put(Actions.closeDeleteAccountDialog());
   } catch (err) {
+    const error = yield call(errorHandler, err.response.json());
+    swal('Error', 'Something went wrong', 'error');
     yield put(Actions.deleteChartOfAccountError(err));
   }
 }

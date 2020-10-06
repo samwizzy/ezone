@@ -259,10 +259,7 @@ const AccountChart = props => {
       >
         <MenuItem onClick={handleEditClick}>Edit</MenuItem>
         <MenuItem onClick={handleView}>View details</MenuItem>
-        <MenuItem
-          onClick={handleStatusUpdate}
-          disabled={selectedAccount && Boolean(selectedAccount.entries.length)}
-        >
+        <MenuItem onClick={handleStatusUpdate}>
           Mark as {selectedAccount && selectedAccount.status ? 'inactive' : 'active'}
         </MenuItem>
         <MenuItem

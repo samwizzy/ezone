@@ -19,3 +19,9 @@ export const assetClasses = [
   { label: 'Tangible', value: 'TANGIBLE' },
   { label: 'Intangible', value: 'INTANGIBLE' },
 ];
+
+export const defaultCurrencies = [
+  { code: "NGN", description: "Naira", name: "Naira", symbol: "₦" },
+  { code: "USD", description: "US Dollar", name: "Dollar", symbol: "$" },
+  { code: "GBP", description: "Pound Sterling", name: "Pounds", symbol: "£" },
+];

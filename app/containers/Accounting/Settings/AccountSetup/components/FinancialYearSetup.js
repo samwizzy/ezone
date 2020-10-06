@@ -36,6 +36,7 @@ import UsaFlag from '../../images/flag/usa.png';
 import EnglandFlag from '../../images/flag/great-britain.png';
 import CanadaFlag from '../../images/flag/canada.png';
 import SpainFlag from '../../images/flag/spain.png';
+import { defaultCurrencies } from '../../enums';
 
 const useStyles = makeStyles(theme => ({
   table: {
@@ -238,7 +239,7 @@ const FinancialYearSetup = props => {
         <Autocomplete
           id="currency"
           style={{ width: 300 }}
-          options={currencies}
+          options={defaultCurrencies}
           onChange={handleSelectChange('currency')}
           value={form.currency}
           autoHighlight

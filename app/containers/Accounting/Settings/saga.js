@@ -293,9 +293,7 @@ export function* getAllBusinessTypes() {
 export function* getCurrencies() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetCurrencyByOrgIdApi}?orgId=${
-    currentUser.organisation.orgId
-    }`;
+  const requestURL = `${Endpoints.GetCurrencyByOrgIdApi}?orgId=${currentUser.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {

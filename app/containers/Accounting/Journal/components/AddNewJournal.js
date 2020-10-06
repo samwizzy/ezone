@@ -141,7 +141,6 @@ const NewJournal = props => {
 
   const classes = useStyles(props);
   const [values, setValues] = React.useState({ ...initialState })
-  const [metrics, setMetrics] = React.useState({ taxTotal: 0 })
 
   const flag = src => <img className={classes.flag} src={src} />;
 
@@ -201,11 +200,6 @@ const NewJournal = props => {
     });
   };
 
-  const handleMetricChange = event => {
-    setMetrics({ ...metrics, [event.target.name]: event.target.value })
-    setValues({ ...values, [event.target.name]: Math.ceil(metrics.taxTotal * (values.taxRate / 100)) })
-  }
-
   const handleChange = event => {
     if (event.target.name === 'taxTotal')
       setValues({ ...values, [event.target.name]: event.target.value });
@@ -215,7 +209,7 @@ const NewJournal = props => {
 
   const handleSelectChange = name => (event, object) => {
     if (name === 'taxRate') {
-      setValues({ ...values, [name]: object ? object.rate : object, taxTotal: object && Math.ceil(metrics.taxTotal * (object.rate / 100)) })
+      setValues({ ...values, [name]: object ? object.rate : object, taxTotal: object && Math.ceil(values.total * (object.rate / 100)) })
     } else {
       setValues({ ...values, [name]: object ? object.id : object });
     }
@@ -241,7 +235,9 @@ const NewJournal = props => {
   };
 
   const handleSubmit = () => {
-    dialog.type === 'new' ? createJournal(values) : '';
+    dialog.type === 'new'
+      ? createJournal(values)
+      : '';
   };
 
   const handleFormReset = () => {
@@ -258,7 +254,6 @@ const NewJournal = props => {
 
   console.log(values, 'values');
   console.log(dialog, 'new journal form');
-  console.log(metrics, 'new journal metrics');
   return (
     <div>
       <Card elevation={0} className={classes.card}>
@@ -555,16 +550,16 @@ const NewJournal = props => {
                           <TableCell>
                             <TextField
                               id="outlined-tax-amount"
-                              required
+                              disabled
                               size="small"
                               name="taxTotal"
                               label="Tax Amount"
                               placeholder="taxTotal"
-                              value={metrics.taxTotal}
-                              onChange={handleMetricChange}
+                              value={values.taxTotal}
+                              onChange={handleChange}
                               variant="outlined"
                             />
-                            <FormHelperText>{values.taxTotal && `${values.taxRate}% of ${metrics.taxTotal} = ${values.taxTotal}`}</FormHelperText>
+                            <FormHelperText>{values.taxTotal && `${values.taxRate}% of ${values.total} = ${values.taxTotal}`}</FormHelperText>
                           </TableCell>
                           <TableCell colSpan={2} />
                         </TableRow>
@@ -583,10 +578,7 @@ const NewJournal = props => {
                     </Button>
 
                     <Button
-                      variant="outlined"
                       component="label"
-                      color="secondary"
-                      disableElevation
                       startIcon={<AttachFileIcon />}
                     >
                       Upload File
@@ -616,7 +608,7 @@ const NewJournal = props => {
             onClick={() => { }}
             color="primary"
             variant="contained"
-            disabled={loading}
+            disabled={loading || !canBeSubmitted()}
             startIcon={<DraftsIcon />}
           >
             Draft

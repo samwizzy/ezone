@@ -191,6 +191,8 @@ const JournalListing = props => {
     filterType: 'checkbox',
     responsive: 'stacked',
     selectableRows: 'none',
+    filter: false,
+    viewColumns: false,
     textLabels: {
       body: {
         noMatch: 'Sorry, no journals found',
