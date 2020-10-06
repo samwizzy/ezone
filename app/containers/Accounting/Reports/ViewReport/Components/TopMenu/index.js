@@ -14,8 +14,10 @@ const index = ({
   tableData,
   searchField,
   singleDate = '',
-  ComLogo,
-  date,
+  tableRef,
+  daterange,
+  pdflogo,
+  companyRef,
 }) => (
   <div className="flex-b md">
     <div className="flex-b">
@@ -32,6 +34,10 @@ const index = ({
         className="bell"
         print={print}
         setPrint={setPrint}
+        tableRef={tableRef}
+        pdflogo={pdflogo}
+        daterange={daterange}
+        companyRef={companyRef}
       />
 
       <PrintIcon

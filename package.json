@@ -115,6 +115,7 @@
     "ip": "1.1.5",
     "jodit-react": "^1.0.37",
     "jspdf": "^2.1.1",
+    "jspdf-autotable": "^3.5.13",
     "material-ui-color-picker": "^3.4.0",
     "material-ui-dropzone": "^2.4.7",
     "materialui-daterange-picker": "^1.1.92",

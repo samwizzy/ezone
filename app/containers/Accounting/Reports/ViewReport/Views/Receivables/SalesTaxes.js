@@ -1,7 +1,7 @@
 import React, { useRef, memo, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-// import { Helmet } from 'react-helmet';
-// import { FormattedMessage } from 'react-intl';
+import moment from 'moment';
+import { useLocation } from 'react-router-dom';
 import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -11,21 +11,20 @@ import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import viewReportReducer from '../../reducers';
 import ReportSaga from '../../saga';
-import './style.css';
 import Table from '../../Components/Table';
-// import Logo from '../../Assets/firstMarine.png';
 import TopMenu from '../../Components/TopMenu';
 import Company from '../../Components/CompanyLogo';
 import formatDate from '../../Helpers';
-import moment from 'moment';
-
 import * as Select from '../../../../../App/selectors';
+import './style.css';
 
 const SalesTaxes = ({ time, user, dispatchCleanUpAction }) => {
   const componentRef = useRef();
   const tableRef = useRef();
+  const companyRef = useRef();
   const [print, setPrint] = useState(false);
   const [display, setDisplay] = useState(false);
+
   const { organisation } = user;
   const { startDate, endDate } = time;
   // dispatchGetGeneralLedgerTimeAction
@@ -53,6 +52,14 @@ const SalesTaxes = ({ time, user, dispatchCleanUpAction }) => {
     'Vendor name',
     'Tax Freight',
   ];
+  const Location = useLocation();
+  const fileName = Location.pathname.split('/')[3];
+
+  const setDate =
+    display &&
+    `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
+      'MMM Do YYYY',
+    )}`;
   return (
     <React.Fragment>
       <TopMenu
@@ -60,19 +67,18 @@ const SalesTaxes = ({ time, user, dispatchCleanUpAction }) => {
         print={print}
         setPrint={setPrint}
         // tableData={tableData}
-        // search={dispatchGetGeneralLedgerTimeAction}
+        tableRef={tableRef}
         handleFetch={handleData}
+        pdflogo={organisation.logo}
+        companyRef={companyRef}
+        daterange={setDate}
       />
       <div ref={componentRef}>
         <Company
+          ref={companyRef}
           ComLogo={organisation.logo}
-          name="Sales Taxes"
-          date={
-            display &&
-            `${moment(startDate).format('MMM Do YYYY')} - ${moment(
-              endDate,
-            ).format('MMM Do YYYY')}`
-          }
+          name={`${fileName}`}
+          date={setDate}
         />
 
         {display && (
