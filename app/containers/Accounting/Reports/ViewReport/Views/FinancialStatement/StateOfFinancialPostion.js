@@ -69,14 +69,12 @@ const StatementOfFinancialPostion = ({ time, user, dispatchCleanUpAction }) => {
           date={display && `As at ${moment(endDate).format('MMM Do YYYY')}`}
         />
 
-        {display && (
           <Table
             ref={tableRef}
             // data={tableData}
             TableHeadData={TableHeadData}
             // TableFooterData={TableFooterData}
           />
-        )}
       </div>
     </React.Fragment>
   );

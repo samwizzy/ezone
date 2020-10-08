@@ -107,11 +107,7 @@ const componentObject = {
 
 const ViewReport = ({ reportId }) => {
   const Comp = componentObject[reportId];
-  return (
-    <ModuleLayout>
-      <Comp />
-    </ModuleLayout>
-  );
+  return <Comp />;
 };
 
 export default ViewReport;
