@@ -86,14 +86,12 @@ const CustomerMasterFile = ({ time, user, dispatchCleanUpAction }) => {
           
         />
 
-        {display && (
           <Table
             ref={tableRef}
             // data={tableData}
             TableHeadData={TableHeadData}
             // TableFooterData={TableFooterData}
           />
-        )}
       </div>
     </React.Fragment>
   );

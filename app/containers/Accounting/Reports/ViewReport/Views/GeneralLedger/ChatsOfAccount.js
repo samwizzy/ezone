@@ -63,6 +63,8 @@ const ChatsOfAccount = ({
     Status: account.status,
   }));
 
+  console.log('ggggggggggggggggggggggg', chatsOfAccount);
+
   return (
     <React.Fragment>
       <TopMenu
@@ -72,7 +74,7 @@ const ChatsOfAccount = ({
         tableData={tableData}
         handleFetch={handleData}
         pdflogo={organisation.logo}
-        singleDate={singleDate}
+        singleDate={true}
         tableRef={tableRef}
         companyRef={companyRef}
         daterange={display && `As at ${moment(endDate).format('MMM Do YYYY')}`}
@@ -85,14 +87,12 @@ const ChatsOfAccount = ({
           date={display && `As at ${moment(endDate).format('MMM Do YYYY')}`}
         />
 
-        {display && (
-          <Table
-            ref={tableRef}
-            data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
-        )}
+        <Table
+          ref={tableRef}
+          data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );
