@@ -69,9 +69,9 @@ const TrialBalance = ({
   ];
   const TableFooterData = [
     {
-      'Account Code': '',
-      'Account Desc': 'Total',
-      'Debit Amt': '',
+      'Account Code': 'Total',
+      'Account Desc': '',
+      'Debit Amt': `${trialBalance && trialBalance.total}`,
       'Credit Amt': `${trialBalance && trialBalance.total}`,
     },
   ];
@@ -110,12 +110,12 @@ const TrialBalance = ({
           name={`${fileName}`}
           date={setDate}
         />
-          <Table
-            ref={tableRef}
-            data={tableData}
-            TableHeadData={TableHeadData}
-            TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          data={tableData}
+          TableHeadData={TableHeadData}
+          TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );
