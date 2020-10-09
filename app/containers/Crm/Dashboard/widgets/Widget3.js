@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   card: {
-    borderRadius: theme.shape.borderRadius * 4,
+    borderRadius: theme.shape.borderRadius,
     "& .MuiCardHeader-root": {
       textAlign: "center",
       borderBottom: `1px solid ${theme.palette.divider}`,
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
       fontSize: theme.typography.subtitle1.fontSize
     },
     "& .MuiCardContent-root": {
-      minHeight: `calc(180px - 53.09px)`,
+      minHeight: `calc(180px - 51.4px)`,
     }
   },
   table: {
@@ -59,48 +59,46 @@ const Widget3 = ({ user, schedules }) => {
   const userSchedules = todaySchedules && todaySchedules.filter(schedule => schedule.hostId === user.id)
 
   return (
-    <div>
-      <Card className={classes.card}>
-        <CardHeader
-          title="Today's Schedule"
-          disableTypography
-        />
-        <CardContent>
-          <Table className={classes.table} size="small">
-            <TableBody>
-              {userSchedules && userSchedules.length > 0 ?
-                <React.Fragment>
-                  {userSchedules.slice(0, 4).map((schedule, i) =>
-                    <TableRow key={i}>
-                      <TableCell component="th">
-                        <Typography>{schedule.title}</Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography>{moment(schedule.startDate).format('HH:mm')}</Typography>
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </React.Fragment>
-                :
-                <TableRow>
-                  <TableCell align="center">
-                    <Typography>No Schedule Found</Typography>
-                  </TableCell>
-                </TableRow>
-              }
-            </TableBody>
-          </Table>
-        </CardContent>
+    <Card className={classes.card}>
+      <CardHeader
+        title="Today's Schedule"
+        disableTypography
+      />
+      <CardContent>
+        <Table className={classes.table} size="small">
+          <TableBody>
+            {userSchedules && userSchedules.length > 0 ?
+              <React.Fragment>
+                {userSchedules.slice(0, 4).map((schedule, i) =>
+                  <TableRow key={i}>
+                    <TableCell component="th">
+                      <Typography>{schedule.title}</Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography>{moment(schedule.startDate).format('HH:mm')}</Typography>
+                    </TableCell>
+                  </TableRow>
+                )}
+              </React.Fragment>
+              :
+              <TableRow>
+                <TableCell align="center">
+                  <Typography>No Schedule Found</Typography>
+                </TableCell>
+              </TableRow>
+            }
+          </TableBody>
+        </Table>
+      </CardContent>
 
-        <Divider />
+      <Divider />
 
-        <CardActions>
-          <Button component={Link} to='/crm/schedules/list'>
-            View All Schedules
-					</Button>
-        </CardActions>
-      </Card>
-    </div>
+      <CardActions>
+        <Button component={Link} to='/crm/schedules/list'>
+          View All Schedules
+        </Button>
+      </CardActions>
+    </Card>
   )
 }
 

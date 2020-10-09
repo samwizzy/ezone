@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     textAlign: 'center',
-    height: '100vh',
+    // height: '100vh',
   },
   button: {
     borderRadius: '20px',

@@ -14,6 +14,7 @@ import ModuleLayout from '../components/ModuleLayout';
 import JournalListing from './components/JournalListing';
 import JournalDetails from './journalDetails';
 import AddNewJournal from './components/AddNewJournal';
+import TaxDialog from './components/TaxDialog';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
 
@@ -46,6 +47,8 @@ export function Journal(props) {
         <Route path={`${path}/edit/:journalId`} component={JournalListing} />
         <Route path={`${path}/view/:journalId`} component={JournalDetails} />
       </ModuleLayout>
+
+      <TaxDialog />
     </div>
   );
 }

@@ -233,7 +233,7 @@ const JournalListing = props => {
         onClose={handleClose}
       >
         <MenuItem onClick={handleViewClick}>
-          View details
+          View
         </MenuItem>
       </Menu>
     </React.Fragment>

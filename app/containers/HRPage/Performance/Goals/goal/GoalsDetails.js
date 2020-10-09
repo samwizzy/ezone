@@ -119,7 +119,7 @@ const GoalsDetails = props => {
 
                   <div className={classes.customCheck}>
                     <FormControlLabel
-                      control={<Checkbox checked={state.text} onChange={handleChange} name="text" />}
+                      control={<Checkbox checked={Boolean(state.text)} onChange={handleChange} name="text" />}
                       label="Text"
                     />
                     <AvatarGroup max={3}>
@@ -132,7 +132,7 @@ const GoalsDetails = props => {
                   </div>
                   <div className={classes.customCheck}>
                     <FormControlLabel
-                      control={<Checkbox checked={state.call} onChange={handleChange} name="call" />}
+                      control={<Checkbox checked={Boolean(state.call)} onChange={handleChange} name="call" />}
                       label="Call"
                     />
                     <AvatarGroup max={3}>
@@ -145,7 +145,7 @@ const GoalsDetails = props => {
                   </div>
                   <div className={classes.customCheck}>
                     <FormControlLabel
-                      control={<Checkbox checked={state.email} onChange={handleChange} name="email" />}
+                      control={<Checkbox checked={Boolean(state.email)} onChange={handleChange} name="email" />}
                       label="Email"
                     />
                     <AvatarGroup max={3}>

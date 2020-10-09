@@ -16,7 +16,7 @@ const themesConfig = {
       secondary: {
         light: lightBlue[600],
         main: '#1702FF',
-        dark: lightBlue[700],
+        dark: '#250943',
         contrastText: '#fff',
       },
       error: red,

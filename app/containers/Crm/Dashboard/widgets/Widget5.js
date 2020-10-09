@@ -36,13 +36,9 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   card: {
-    borderRadius: theme.shape.borderRadius * 4,
+    borderRadius: theme.shape.borderRadius,
     "& .MuiCardHeader-root": {
-      padding: theme.spacing(2),
       borderBottom: `1px solid ${theme.palette.divider}`,
-      "& .MuiTypography-root": {
-        fontSize: theme.typography.subtitle1.fontSize
-      }
     }
   },
   table: {
@@ -54,8 +50,7 @@ const useStyles = makeStyles((theme) => ({
     },
     '& .MuiTableCell-body': {
       border: 0,
-      color: theme.palette.text.secondary,
-      // fontSize: theme.typography.subtitle1.fontSize
+      fontSize: theme.typography.h6.fontSize
     },
     '& .MuiTableCell-body:last-child': {
       display: "flex",
@@ -80,41 +75,40 @@ const Widget5 = ({ tasks }) => {
   const orderedTasks = _.orderBy(tasks, ['dateCreated'], ['desc'])
 
   return (
-    <div>
-      <Card className={classes.card}>
-        <CardHeader
-          title="Tasks"
-        />
-        <CardContent>
-          {orderedTasks && orderedTasks.length > 0 ?
-            <Table className={classes.table}>
-              <TableHead>
-                <TableRow>
-                  <TableCell component="th" scope="row">Name</TableCell>
-                  <TableCell align="right">Created</TableCell>
-                  <TableCell>Status</TableCell>
+    <Card className={classes.card}>
+      <CardHeader
+        titleTypographyProps={{ variant: 'h5' }}
+        title="Tasks"
+      />
+      <CardContent>
+        {orderedTasks && orderedTasks.length > 0 ?
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <TableCell component="th" scope="row">Name</TableCell>
+                <TableCell align="right">Created</TableCell>
+                <TableCell>Status</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {orderedTasks && orderedTasks.slice(0, 3).map((task, i) =>
+                <TableRow key={i}>
+                  <TableCell component="th" scope="row">{task.title}</TableCell>
+                  <TableCell align="right">{moment(task.dateCreated).format('DD/MM/YYYY')}</TableCell>
+                  <TableCell>
+                    <LensSharp className={classNames(classes.status, { [task.status]: true })} /> {task.status}
+                  </TableCell>
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                {orderedTasks && orderedTasks.slice(0, 3).map((task, i) =>
-                  <TableRow key={i}>
-                    <TableCell component="th" scope="row">{task.title}</TableCell>
-                    <TableCell align="right">{moment(task.dateCreated).format('DD/MM/YYYY')}</TableCell>
-                    <TableCell>
-                      <LensSharp className={classNames(classes.status, { [task.status]: true })} /> {task.status}
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-            :
-            <Typography variant="subtitle1" color="textSecondary" align="center">
-              No Tasks Available
+              )}
+            </TableBody>
+          </Table>
+          :
+          <Typography variant="subtitle1" color="textSecondary" align="center">
+            No Tasks Available
           </Typography>
-          }
-        </CardContent>
-      </Card>
-    </div>
+        }
+      </CardContent>
+    </Card>
   )
 }
 

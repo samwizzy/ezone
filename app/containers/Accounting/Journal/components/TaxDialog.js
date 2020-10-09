@@ -15,9 +15,9 @@ import {
   TextField,
   Slide,
 } from '@material-ui/core';
-import * as AppSelectors from '../../../../App/selectors';
-import * as Selectors from '../../selectors';
-import * as Actions from '../../actions';
+import * as AppSelectors from '../../../App/selectors';
+import * as Selectors from '../selectors';
+import * as Actions from '../actions';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -38,7 +38,7 @@ const TaxDialog = props => {
   const classes = useStyles(props);
   const [form, setForm] = React.useState({ ...initialState });
 
-  const { loading, dialog, closeNewTaxDialog, createTax, updateTax } = props;
+  const { loading, dialog, closeNewTaxDialog, createTax } = props;
 
   useEffect(() => {
     if (dialog.type === 'edit' && dialog.data) {
@@ -59,7 +59,7 @@ const TaxDialog = props => {
   };
 
   const handleSubmit = () => {
-    dialog.type === 'new' ? createTax(form) : updateTax(form);
+    dialog.type === 'new' ? createTax(form) : '';
   };
 
   const canSubmitForm = () => {
@@ -180,7 +180,6 @@ function mapDispatchToProps(dispatch) {
   return {
     closeNewTaxDialog: () => dispatch(Actions.closeNewTaxDialog()),
     createTax: data => dispatch(Actions.createTax(data)),
-    updateTax: data => dispatch(Actions.updateTax(data)),
   };
 }
 

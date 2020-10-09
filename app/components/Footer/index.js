@@ -3,47 +3,32 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Container, Grid, Typography, Paper } from '@material-ui/core';
 import Wrapper from './Wrapper';
 
-const drawerWidth = 240;
-
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.grey[300],
-    color: theme.palette.text.secondary,
-    [theme.breakpoints.up('sm')]: {
-    },
+    backgroundColor: theme.palette.secondary.dark,
+    [theme.breakpoints.up('sm')]: {},
   },
   footer: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(3),
     marginTop: 'auto',
+    '& p': {
+      color: theme.palette.secondary.contrastText
+    }
   },
-  paper: {
-    padding: theme.spacing(2),
-    boxShadow: theme.shadows[0],
-    background: 'none',
-  }
 }));
 
 function Footer() {
   const classes = useStyles();
 
   return (
-    <React.Fragment>
-      <div className={classes.root}>
-        <Container component="main" maxWidth="md">
-          <Grid item xs={12} className={classes.footer}>
-            <Paper className={classes.paper}>
-              <Typography
-                variant="body2"
-                align="center"
-              >
-                Copyright © 2020 Ezone
-              </Typography>
-            </Paper>
-          </Grid>
-        </Container>
+    <div className={classes.root}>
+      <div className={classes.footer}>
+        <Typography variant="body2" align="center">
+          Copyright © 2020 Ezone
+        </Typography>
       </div>
-    </React.Fragment>
+    </div>
   );
 }
 

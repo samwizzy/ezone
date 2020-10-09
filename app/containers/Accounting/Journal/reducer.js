@@ -19,6 +19,13 @@ export const initialState = {
     },
     data: null,
   },
+  taxDialog: {
+    type: 'new',
+    props: {
+      open: true,
+    },
+    data: null,
+  },
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -123,6 +130,55 @@ const journalReducer = (state = initialState, action) =>
           loading: false,
           error: action.payload,
         }
+      }
+
+      // Case to create tax
+      case Constants.CREATE_TAX: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        }
+      }
+      case Constants.CREATE_TAX_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        }
+      }
+      case Constants.CREATE_TAX_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        }
+      }
+
+      // Open tax dialog
+      case Constants.OPEN_NEW_TAX_DIALOG: {
+        return {
+          ...state,
+          taxDialog: {
+            type: 'new',
+            props: {
+              open: true,
+            },
+            data: null,
+          },
+        };
+      }
+      case Constants.CLOSE_NEW_TAX_DIALOG: {
+        return {
+          ...state,
+          taxDialog: {
+            type: 'new',
+            props: {
+              open: false,
+            },
+            data: null,
+          },
+        };
       }
 
       // Case to get all chart of accounts

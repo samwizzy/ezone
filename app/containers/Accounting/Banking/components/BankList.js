@@ -281,7 +281,7 @@ const BankList = props => {
         >
           Edit
         </MenuItem>
-        <MenuItem onClick={handleView}>View details</MenuItem>
+        <MenuItem onClick={handleView}>View</MenuItem>
       </Menu>
     </div>
   );

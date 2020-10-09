@@ -57,12 +57,10 @@ const EmployeeList = props => {
   const {
     loading,
     getAllEmployees,
-    openNewEmployeeDialogAction,
-    openEditEmployeeDialogAction,
-    openViewEmployeeDialogAction,
+    openNewEmployeeDialog,
+    openEditEmployeeDialog,
+    openViewEmployeeDialog,
   } = props;
-
-  // console.log(getAllEmployees, 'getAllEmployees');
 
   const columns = [
     {
@@ -71,9 +69,6 @@ const EmployeeList = props => {
       options: {
         filter: true,
         customBodyRender: (value, tableMeta) => {
-          if (value === '') {
-            return '';
-          }
           return (
             <FormControlLabel
               label={tableMeta.rowIndex + 1}
@@ -113,23 +108,6 @@ const EmployeeList = props => {
       options: {
         filter: true,
         sort: false,
-        // customBodyRender: value => {
-        //   const Post = getAllPosts.find(post => value === post.id);
-
-        //   if (value === '') {
-        //     return '';
-        //   }
-        //   return (
-        //     <FormControlLabel
-        //       label="Edit"
-        //       control={<Icon>create</Icon>}
-        //       onClick={evt => {
-        //         evt.stopPropagation();
-        //         openEditPostDialog(Post);
-        //       }}
-        //     />
-        //   );
-        // },
       },
     },
     {
@@ -140,56 +118,16 @@ const EmployeeList = props => {
         sort: false,
       },
     },
-    // {
-    //   name: 'id',
-    //   label: '',
-    //   options: {
-    //     filter: true,
-    //     sort: false,
-    //     customBodyRender: value => {
-    //       const Post = datas.find(post => value === post.id);
-    //       if (value === '') {
-    //         return '';
-    //       }
-    //       return (
-    //         <div>
-    //           <Button
-    //             aria-controls="simple-menu"
-    //             aria-haspopup="true"
-    //             onClick={handleClick}
-    //           >
-    //             Options
-    //           </Button>
-    //           <Menu
-    //             id="simple-menu"
-    //             anchorEl={anchorEl}
-    //             keepMounted
-    //             open={Boolean(anchorEl)}
-    //             onClose={handleClose}
-    //           >
-    //             <MenuItem onClick={handleClose}>Assign Role</MenuItem>
-    //             <MenuItem onClick={handleClose}>Assign Apps</MenuItem>
-    //             <MenuItem onClick={() => openEditEmployeeDialogAction(Post)}>
-    //               Edit
-    //             </MenuItem>
-    //             <MenuItem onClick={() => openViewEmployeeDialogAction(Post)}>
-    //               View Details
-    //             </MenuItem>
-    //             <MenuItem onClick={handleClose}>Deactivate</MenuItem>
-    //           </Menu>
-    //         </div>
-    //       );
-    //     },
-    //   },
-    // },
   ];
 
   const options = {
     filterType: 'checkbox',
-    responsive: 'scrollMaxHeight',
+    responsive: 'stacked',
     selectableRows: 'none',
+    filter: false,
+    viewColumns: false,
     customToolbar: () => (
-      <AddButton openNewEmployeeDialogAction={openNewEmployeeDialogAction} />
+      <AddButton openNewEmployeeDialog={openNewEmployeeDialog} />
     ),
     elevation: 0
   };
@@ -214,9 +152,9 @@ const EmployeeList = props => {
 EmployeeList.propTypes = {
   loading: PropTypes.bool,
   getAllEmployees: PropTypes.array,
-  openNewEmployeeDialogAction: PropTypes.func,
-  openEditEmployeeDialogAction: PropTypes.func,
-  openViewEmployeeDialogAction: PropTypes.func,
+  openNewEmployeeDialog: PropTypes.func,
+  openEditEmployeeDialog: PropTypes.func,
+  openViewEmployeeDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -226,12 +164,9 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewEmployeeDialogAction: () =>
-      dispatch(Actions.openNewEmployeeDialog()),
-    openEditEmployeeDialogAction: evt =>
-      dispatch(Actions.openEditEmployeeDialog(evt)),
-    openViewEmployeeDialogAction: evt =>
-      dispatch(Actions.openViewEmployeeDialog(evt)),
+    openNewEmployeeDialog: () => dispatch(Actions.openNewEmployeeDialog()),
+    openEditEmployeeDialog: data => dispatch(Actions.openEditEmployeeDialog(data)),
+    openViewEmployeeDialog: data => dispatch(Actions.openViewEmployeeDialog(data)),
   };
 }
 

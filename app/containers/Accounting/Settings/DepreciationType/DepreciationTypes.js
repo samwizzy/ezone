@@ -6,15 +6,16 @@ import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import {
   makeStyles,
-  IconButton,
   Button,
-  Menu,
-  MenuItem,
+  IconButton,
+  Card, CardHeader, CardContent, CardActions,
+  Grid,
+  Paper,
+  Typography,
+  Toolbar,
   Tooltip,
 } from '@material-ui/core';
-import MUIDataTable from 'mui-datatables';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit'
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import moment from 'moment';
@@ -24,217 +25,99 @@ import { methods } from './components/DepreciationTypeDialog';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
+    '& .MuiCardHeader-root': {
+      borderBottom: `1px solid ${theme.palette.divider}`
+    },
+    '& .MuiCardHeader-action': {
+      margin: 0
+    },
   },
-  datatable: {
-    whiteSpace: 'nowrap',
-    '& tr:hover': {
-      cursor: 'pointer',
-    },
-    '& td': {
-      padding: theme.spacing(1, 2),
-    },
+  toolbar: {
+    padding: theme.spacing(0, 2),
+    borderBottom: `1px dotted ${theme.palette.divider}`
+  },
+  paper: {
+    padding: theme.spacing(2),
+    margin: theme.spacing(1, 0),
+    borderRadius: 0,
+    boxShadow: theme.shadows[0]
   },
 }));
 
 const DepreciationTypes = props => {
   const classes = useStyles(props);
-  const {
-    history,
-    match,
-    depreciationTypes,
-    openNewDepreciationTypeDialog,
-    openEditDepreciationTypeDialog,
-  } = props;
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedDepreciationType, setSelectedDepreciationType] = useState(
-    null,
-  );
-
-  const handleClick = (event, id) => {
-    setAnchorEl(event.currentTarget);
-    setSelectedDepreciationType(_.find(depreciationTypes, { id }));
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleEditClick = () => {
-    openEditDepreciationTypeDialog(selectedDepreciationType);
-    handleClose();
-  };
-
-  const handleViewClick = () => {
-    const { id } = selectedDepreciationType;
-    history.push(`${match.url}/${id}`);
-    handleClose();
-  };
-
-  const orderedDepreciationTypes = _.orderBy(
-    depreciationTypes,
-    'dateCreated',
-    'desc',
-  );
+  const { history, match, depreciationTypes, openEditDepreciationTypeDialog } = props;
 
   console.log(depreciationTypes, 'DepreciationTypes');
-
-  const columns = [
-    {
-      name: 'id',
-      label: ' ',
-      options: {
-        filter: true,
-        display: 'excluded',
-      },
-    },
-    {
-      name: 'code',
-      label: 'Code',
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: 'method',
-      label: 'Method',
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: value =>
-          value ? _.find(methods, { value }).label : null,
-      },
-    },
-    {
-      name: 'description',
-      label: 'Description',
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: 'calculationBase',
-      label: 'Calculation Base',
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: 'depreciatedValue',
-      label: 'Depreciated Value',
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: value =>
-          new Intl.NumberFormat('en-US', {}).format(value),
-      },
-    },
-    {
-      name: 'depreciationRate',
-      label: 'Depreciation Rate',
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: value =>
-          new Intl.NumberFormat('en-US', {}).format(value),
-      },
-    },
-    {
-      name: 'percentageValue',
-      label: 'Percentage Value',
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: value =>
-          new Intl.NumberFormat('en-US', {}).format(value),
-      },
-    },
-    {
-      name: 'validFrom',
-      label: 'Valid From',
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: date => (date ? moment(date).format('ll') : ''),
-      },
-    },
-    {
-      name: 'validTo',
-      label: 'Valid To',
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: date => (date ? moment(date).format('ll') : ''),
-      },
-    },
-    {
-      name: 'id',
-      label: ' ',
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: value => (
-          <IconButton
-            aria-controls="simple-menu"
-            aria-haspopup="true"
-            onClick={event => handleClick(event, value)}
-          >
-            <MoreVertIcon />
-          </IconButton>
-        ),
-      },
-    },
-  ];
-
-  const options = {
-    filterType: 'checkbox',
-    responsive: 'stacked',
-    selectableRows: 'none',
-    textLabels: {
-      body: {
-        noMatch: 'Sorry, no depreciation types found',
-        toolTip: 'Sort',
-        columnHeaderTooltip: column => `Sort for ${column.label}`,
-      },
-    },
-    customToolbar: () => (
-      <Tooltip title="New Depreciation Type">
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<AddIcon />}
-          onClick={openNewDepreciationTypeDialog}
-        >
-          New Depreciation Type
-        </Button>
-      </Tooltip>
-    ),
-    elevation: 0,
-  };
+  const depreciatedType = depreciationTypes[0];
 
   return (
-    <div className={classes.root}>
-      <MUIDataTable
-        className={classes.datatable}
-        title="Depreciation types"
-        data={orderedDepreciationTypes}
-        columns={columns}
-        options={options}
+    <Card className={classes.root}>
+      <CardHeader
+        titleTypographyProps={{ variant: 'h6' }}
+        title="Depreciation Type Setup"
+        action={
+          <IconButton onClick={() => openEditDepreciationTypeDialog(depreciatedType)}>
+            <EditIcon />
+          </IconButton>
+        }
       />
 
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <MenuItem onClick={handleEditClick}>Edit</MenuItem>
-      </Menu>
-    </div>
+      <CardContent>
+        <Grid container spacing={1}>
+          <Grid item xs={6}>
+            <Paper className={classes.paper}>
+              <Typography variant="subtitle2">Code</Typography>
+              <Typography>{depreciatedType.code}</Typography>
+            </Paper>
+
+            <Paper className={classes.paper}>
+              <Typography variant="subtitle2">Description</Typography>
+              <Typography>{depreciatedType.description}</Typography>
+            </Paper>
+
+            <Paper className={classes.paper}>
+              <Typography variant="subtitle2">Minimum Depreciated value ( Residual value )</Typography>
+              <Typography>{depreciatedType.depreciatedValue}</Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={6}>
+            <Paper className={classes.paper}>
+              <Typography variant="subtitle2">Method</Typography>
+              <Typography>{depreciatedType.method}</Typography>
+            </Paper>
+
+            <Paper className={classes.paper}>
+              <Typography variant="subtitle2">Calculation Base</Typography>
+              <Typography>{depreciatedType.calculationBase}</Typography>
+            </Paper>
+            <Paper className={classes.paper}>
+              <Typography variant="subtitle2">Salvage value percentage</Typography>
+              <Typography>{depreciatedType.percentageValue}</Typography>
+            </Paper>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Toolbar variant="dense" className={classes.toolbar}>
+              <Typography variant="button">Estimated Useful life</Typography>
+            </Toolbar>
+          </Grid>
+
+          <Grid item xs={6}>
+            <Paper className={classes.paper}>
+              <Typography variant="subtitle2">From</Typography>
+              <Typography>{moment(depreciatedType.validFrom).format('lll')}</Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={6}>
+            <Paper className={classes.paper}>
+              <Typography variant="subtitle2">To</Typography>
+              <Typography>{moment(depreciatedType.validTo).format('lll')}</Typography>
+            </Paper>
+          </Grid>
+        </Grid>
+      </CardContent>
+    </Card>
   );
 };
 

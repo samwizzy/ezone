@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import EzoneUtils from '../../../../utils/EzoneUtils';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Button, ButtonGroup, TableContainer, Table, TableRow, TableCell, TableBody, TextField, Grid, Paper, Typography } from '@material-ui/core';
@@ -22,8 +23,7 @@ import LeaveRequestDialog from './components/LeaveRequestDialog'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
-    backgroundColor: theme.palette.common.white
+    flexGrow: 1
   },
   datatable: {
     '& tr:hover': {
@@ -94,6 +94,7 @@ const LeaveRequestList = props => {
       options: {
         filter: true,
         sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value)
       },
     },
     {
@@ -125,7 +126,7 @@ const LeaveRequestList = props => {
 
   const options = {
     filterType: 'checkbox',
-    responsive: 'scrollMaxHeight',
+    responsive: 'stacked',
     selectableRows: 'none',
     print: false,
     download: true,
@@ -142,20 +143,13 @@ const LeaveRequestList = props => {
 
   return (
     <div className={classes.root}>
-      <Grid
-        container
-        justify='space-around'
-      >
-        <Grid item md={12}>
-          <MUIDataTable
-            className={classes.datatable}
-            title="Leave Requests"
-            data={leaveRequests}
-            columns={columns}
-            options={options}
-          />
-        </Grid>
-      </Grid>
+      <MUIDataTable
+        className={classes.datatable}
+        title="Leave Requests"
+        data={leaveRequests}
+        columns={columns}
+        options={options}
+      />
 
       <LeaveRequestDialog />
     </div>

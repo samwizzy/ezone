@@ -19,8 +19,7 @@ import LeaveTypeDialog from './components/LeaveTypeDialog'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
-    backgroundColor: theme.palette.common.white
+    flexGrow: 1
   },
   datatable: {
     '& .MuiTableRow-root:hover': {
@@ -47,18 +46,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const shifts = [
-  { id: 1, name: 'General', startTime: '2010-01-01T05:06:07', endTime: '2010-01-01T05:06:07', endDate: '2010-01-01T05:06:07' }
-]
-
 const LeaveTypeList = props => {
   const classes = useStyles();
   const { loading, openNewLeaveTypeDialog, getLeaveType, getLeaveTypeById, leaveTypes } = props;
 
   console.log(leaveTypes, "leaveTypes")
-
-  React.useEffect(() => {
-  }, []);
 
   const columns = [
     {
@@ -99,7 +91,7 @@ const LeaveTypeList = props => {
     },
     {
       name: 'leaveAllowancePercent',
-      label: 'Leave Allowance(%)',
+      label: 'Leave Allowance ( % )',
       options: {
         filter: true,
         sort: true,
@@ -153,10 +145,8 @@ const LeaveTypeList = props => {
 
   const options = {
     filterType: 'checkbox',
-    responsive: 'scrollMaxHeight',
+    responsive: 'stacked',
     selectableRows: 'none',
-    print: false,
-    download: true,
     viewColumns: false,
     filter: false,
     customToolbar: () => <AddLeaveType openDialog={openNewLeaveTypeDialog} />,
@@ -170,20 +160,13 @@ const LeaveTypeList = props => {
 
   return (
     <div className={classes.root}>
-      <Grid
-        container
-        justify='space-around'
-      >
-        <Grid item md={12}>
-          <MUIDataTable
-            className={classes.datatable}
-            title="Leave Types"
-            data={leaveTypes}
-            columns={columns}
-            options={options}
-          />
-        </Grid>
-      </Grid>
+      <MUIDataTable
+        className={classes.datatable}
+        title="Leave Types"
+        data={leaveTypes}
+        columns={columns}
+        options={options}
+      />
 
       <LeaveTypeDialog />
     </div>

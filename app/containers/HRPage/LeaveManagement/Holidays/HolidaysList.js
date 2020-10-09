@@ -19,21 +19,20 @@ import HolidayDialog from './components/HolidayDialog'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
-    backgroundColor: theme.palette.common.white
+    flexGrow: 1
   },
   datatable: {
-    '& .MuiTableRow-root:hover': {
+    '& tr:hover': {
       cursor: 'pointer'
     },
-    '& .MuiTableHead-root': {
-      '& .MuiTableCell-head': {
+    '& thead': {
+      '& th': {
         color: theme.palette.common.white,
       },
-      '& .MuiTableCell-root:nth-child(odd)': {
+      '& th:nth-child(odd)': {
         backgroundColor: theme.palette.primary.main,
       },
-      '& .MuiTableCell-root:nth-child(even)': {
+      '& th:nth-child(even)': {
         backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
@@ -47,16 +46,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const employeeShifts = [
-  { id: 1, avi: '', employee: 'Samuel', shift: 'Night', duration: '6:00pm - 6:00am' }
-]
 
 const HolidaysList = props => {
   const classes = useStyles();
   const { loading, openNewHolidayDialog, getHolidays, getHolidayById, holidays } = props;
-
-  React.useEffect(() => {
-  }, []);
 
   const columns = [
     {
@@ -95,10 +88,8 @@ const HolidaysList = props => {
 
   const options = {
     filterType: 'checkbox',
-    responsive: 'scrollMaxHeight',
+    responsive: 'stacked',
     selectableRows: 'none',
-    print: false,
-    download: true,
     viewColumns: false,
     filter: false,
     customToolbar: () => <AddHoliday openDialog={openNewHolidayDialog} />,
@@ -112,20 +103,13 @@ const HolidaysList = props => {
 
   return (
     <div className={classes.root}>
-      <Grid
-        container
-        justify='space-around'
-      >
-        <Grid item md={12}>
-          <MUIDataTable
-            className={classes.datatable}
-            title="Holidays"
-            data={holidays}
-            columns={columns}
-            options={options}
-          />
-        </Grid>
-      </Grid>
+      <MUIDataTable
+        className={classes.datatable}
+        title="Holidays"
+        data={holidays}
+        columns={columns}
+        options={options}
+      />
 
       <HolidayDialog />
     </div>

@@ -62,6 +62,11 @@ const useStyles = makeStyles(theme => ({
       borderBottom: `1px solid ${theme.palette.divider}`
     }
   },
+  flex: {
+    display: 'flex',
+    alignItems: 'center',
+    '& .MuiAutocomplete-root': { marginRight: theme.spacing(1) }
+  },
   table: {
     width: '100% !important',
     whiteSpace: 'nowrap',
@@ -98,6 +103,7 @@ const useStyles = makeStyles(theme => ({
   flag: {
     width: 20,
     marginRight: theme.spacing(1),
+    verticalAlign: 'middle'
   },
 }));
 
@@ -134,6 +140,7 @@ const NewJournal = props => {
     currencies,
     taxes,
     createJournal,
+    openNewTaxDialog,
   } = props;
 
   const { currency } = accountSetupData;
@@ -160,6 +167,7 @@ const NewJournal = props => {
       total && periodId &&
       (taxApplicable ? taxTotal : true) &&
       (currencyId ? exchangeRate : true) &&
+      (exchangeRate ? currencyId : true) &&
       handleBalanceCheck()
     );
   };
@@ -177,9 +185,14 @@ const NewJournal = props => {
     const { name, value } = event.target;
     const entries = [...values.entries];
     name === 'debit' || name === 'credit'
-      ? entries[i][name] = value.replace(/[^0-9]/g, '')
+      ? entries[i][name] = value.replace(/[^0-9\.]/g, '')
       : entries[i][name] = value;
-    setValues({ ...values, entries, total: entries.reduce((curVal, b) => curVal + Number(b.debit), 0) });
+    setValues({
+      ...values,
+      entries,
+      total: entries.reduce((curVal, b) => curVal + Number(b.debit), 0),
+      taxTotal: values.taxRate ? Math.ceil(entries.reduce((curVal, b) => curVal + Number(b.debit), 0) * (values.taxRate / 100)) : 0
+    });
   };
 
   const handleSelectEntryChange = i => (event, object) => {
@@ -201,10 +214,13 @@ const NewJournal = props => {
   };
 
   const handleChange = event => {
-    if (event.target.name === 'taxTotal')
-      setValues({ ...values, [event.target.name]: event.target.value });
+    const { name, value, type, checked } = event.target
+    if (name === 'taxTotal')
+      setValues({ ...values, [name]: value });
+    else if (name === 'taxRate')
+      setValues({ ...values, [name]: value, taxTotal: Math.ceil(values.total * (value / 100)) });
     else
-      setValues({ ...values, [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value });
+      setValues({ ...values, [name]: type === 'checkbox' ? checked : value });
   }
 
   const handleSelectChange = name => (event, object) => {
@@ -328,7 +344,7 @@ const NewJournal = props => {
                       shrink: true,
                     }}
                     placeholder="Currencies"
-                    error={(values.currencyId && !Boolean(values.exchangeRate))}
+                    error={Boolean(values.currencyId && !values.exchangeRate)}
                     helperText={(values.currencyId && !values.exchangeRate) ? 'Please select an exchange rate' : ''}
                   />
                 )}
@@ -342,26 +358,45 @@ const NewJournal = props => {
               </FormControl>
 
               {values.taxApplicable &&
-                <Autocomplete
-                  id="journal-taxes"
-                  size="small"
-                  options={taxes}
-                  getOptionLabel={option => `${option.name} ( ${option.rate}% )`}
-                  onChange={handleSelectChange('taxRate')}
-                  style={{ width: 300 }}
-                  renderInput={params => (
+                <div className={classes.flex}>
+                  <IconButton onClick={openNewTaxDialog}><AddIcon /></IconButton>
+                  <Autocomplete
+                    id="journal-taxes"
+                    size="small"
+                    options={taxes}
+                    getOptionLabel={option => `${option.name} ( ${option.rate}% )`}
+                    onChange={handleSelectChange('taxRate')}
+                    style={{ width: 220 }}
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        label="Applicable rates"
+                        variant="outlined"
+                        margin="normal"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        placeholder="Rates"
+                      />
+                    )}
+                  />
+                  {Boolean(values.taxRate) &&
                     <TextField
-                      {...params}
-                      label="Applicable rates"
-                      variant="outlined"
-                      margin="normal"
-                      InputLabelProps={{
-                        shrink: true,
+                      id="outlined-tax-rate"
+                      required
+                      size="small"
+                      name="taxRate"
+                      value={values.taxRate}
+                      onChange={handleChange}
+                      style={{ width: 70 }}
+                      InputProps={{
+                        endAdornment: <InputAdornment position="end">%</InputAdornment>
                       }}
-                      placeholder="Rates"
+                      margin="normal"
+                      variant="outlined"
                     />
-                  )}
-                />
+                  }
+                </div>
               }
 
             </Grid>
@@ -401,13 +436,15 @@ const NewJournal = props => {
                     </InputAdornment>
                   ),
                   endAdornment: (
-                    <InputAdornment position="end">NGN</InputAdornment>
+                    <InputAdornment position="end">{currency ? currency.code : 'NGN'}</InputAdornment>
                   )
                 }}
                 InputLabelProps={{
                   shrink: true,
                 }}
                 style={{ width: 300 }}
+                error={Boolean(values.exchangeRate && !values.currencyId)}
+                helperText={(values.exchangeRate && !values.currencyId) ? 'Please select a currency for this rate' : ''}
               />
             </Grid>
             <Grid item xs={12} sm={12}>
@@ -457,7 +494,7 @@ const NewJournal = props => {
                             <Autocomplete
                               id={`entry-account-${i}`}
                               size="small"
-                              options={chartOfAccounts}
+                              options={_.filter(chartOfAccounts, { status: true })}
                               getOptionLabel={option => option.accountName}
                               onChange={handleSelectEntryChange(i)}
                               value={
@@ -499,7 +536,7 @@ const NewJournal = props => {
                               variant="outlined"
                               name="debit"
                               onChange={handleItemChange(i)}
-                              value={row.debit ? formatNumber(row.debit) : ""}
+                              value={row.debit ? row.debit : ""}
                               disabled={Boolean(Number(row.credit))}
                             />
                           </TableCell>
@@ -511,7 +548,7 @@ const NewJournal = props => {
                               label="Credit"
                               name="credit"
                               onChange={handleItemChange(i)}
-                              value={row.credit ? formatNumber(row.credit) : ""}
+                              value={row.credit ? row.credit : ""}
                               disabled={Boolean(Number(row.debit))}
                             />
                           </TableCell>
@@ -655,6 +692,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     createJournal: data => dispatch(Actions.createJournal(data)),
+    openNewTaxDialog: () => dispatch(Actions.openNewTaxDialog()),
   };
 }
 

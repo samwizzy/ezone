@@ -258,9 +258,9 @@ const AccountChart = props => {
         onClose={handleClose}
       >
         <MenuItem onClick={handleEditClick}>Edit</MenuItem>
-        <MenuItem onClick={handleView}>View details</MenuItem>
+        <MenuItem onClick={handleView}>View</MenuItem>
         <MenuItem onClick={handleStatusUpdate}>
-          Mark as {selectedAccount && selectedAccount.status ? 'inactive' : 'active'}
+          Mark as {selectedAccount && selectedAccount.status ? 'Inactive' : 'Active'}
         </MenuItem>
         <MenuItem
           onClick={handleDeleteClick}

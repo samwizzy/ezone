@@ -49,6 +49,12 @@ const makeSelectJournalDialog = () =>
     subState => subState.journalDialog,
   );
 
+const makeSelectTaxDialog = () =>
+  createSelector(
+    selectJournalDomain,
+    subState => subState.taxDialog,
+  );
+
 const makeSelectJournalListData = () =>
   createSelector(
     selectJournalDomain,
@@ -77,6 +83,7 @@ export {
   makeSelectGetChartOfAccountData,
   makeSelectGetAccountPeriodData,
   makeSelectJournalDialog,
+  makeSelectTaxDialog,
   makeSelectJournalListData,
   makeSelectJournalData,
   makeSelectCurrencies,

@@ -153,6 +153,7 @@ const DepreciationTypeDialog = props => {
             onChange={handleChange}
             value={form.code}
             margin="normal"
+            size="small"
             fullWidth
           />
 
@@ -164,6 +165,7 @@ const DepreciationTypeDialog = props => {
             onChange={handleChange}
             value={form.depreciatedValue ? form.depreciatedValue : ''}
             margin="normal"
+            size="small"
             fullWidth
           />
 
@@ -175,6 +177,7 @@ const DepreciationTypeDialog = props => {
             onChange={handleChange}
             value={form.depreciationRate ? form.depreciationRate : ''}
             margin="normal"
+            size="small"
             fullWidth
           />
 
@@ -189,6 +192,7 @@ const DepreciationTypeDialog = props => {
             onChange={handleChange}
             value={form.percentageValue ? form.percentageValue : ''}
             margin="normal"
+            size="small"
             fullWidth
           />
 
@@ -209,6 +213,7 @@ const DepreciationTypeDialog = props => {
                 label="Select Calculation Base"
                 variant="outlined"
                 margin="normal"
+                size="small"
                 placeholder="Calculation Base"
                 fullWidth
               />
@@ -228,6 +233,7 @@ const DepreciationTypeDialog = props => {
                 label="Select method"
                 variant="outlined"
                 margin="normal"
+                size="small"
                 placeholder="Method"
                 fullWidth
               />
@@ -242,6 +248,7 @@ const DepreciationTypeDialog = props => {
               format="dd/MM/yyyy"
               fullWidth
               margin="normal"
+              size="small"
               label="Valid From"
               value={form.validFrom}
               onChange={handleDateChange('validFrom')}
@@ -259,6 +266,7 @@ const DepreciationTypeDialog = props => {
               format="dd/MM/yyyy"
               fullWidth
               margin="normal"
+              size="small"
               label="Valid To"
               value={form.validTo}
               onChange={handleDateChange('validTo')}
