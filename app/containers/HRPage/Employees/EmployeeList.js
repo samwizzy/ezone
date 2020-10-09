@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Avatar, Grid, Typography } from '@material-ui/core';
+import { Avatar, Chip } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -22,11 +22,11 @@ import { AddEmployee } from '../../Accounting/components/AddButton';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
+    // display: 'flex',
     backgroundColor: theme.palette.common.white,
   },
   datatable: {
-    '& .MuiTableRow-root:hover': {
+    '& tr:hover': {
       cursor: 'pointer',
     },
     '& .MuiTableBody-root': {
@@ -137,19 +137,15 @@ const EmployeesApp = props => {
     },
     {
       name: 'enabled',
-      label: 'Active',
+      label: 'Status',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: enabled => (
-          <span className={classNames(classes.status, { active: enabled })}>
-            {enabled ? (
-              <CheckCircleOutlineIcon />
-            ) : (
-              <RadioButtonUncheckedIcon />
-            )}
-          </span>
-        ),
+        customBodyRender: enabled => {
+          return enabled
+            ? <Chip label="Active" variant="outlined" icon={<CheckCircleOutlineIcon className={classNames(classes.status, { active: enabled })} />} />
+            : <Chip label="Inactive" variant="outlined" icon={<RadioButtonUncheckedIcon />} />
+        }
       },
     },
   ];

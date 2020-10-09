@@ -32,6 +32,7 @@ const useStyles = makeStyles(theme => ({
   status: {
     position: "absolute",
     backgroundColor: '#6DCC4C',
+    height: 38.41,
     color: theme.palette.common.white,
     top: 0, right: 0,
     "&::after": {

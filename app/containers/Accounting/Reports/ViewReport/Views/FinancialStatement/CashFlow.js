@@ -50,7 +50,14 @@ const CashFlow = ({ time, user, dispatchCleanUpAction }) => {
     'Credit Amt',
     'Balance',
   ];
+  const Location = useLocation();
+  const fileName = Location.pathname.split('/')[3];
 
+  const setDate =
+    display &&
+    `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
+      'MMM Do YYYY',
+    )}`;
   return (
     <React.Fragment>
       <TopMenu

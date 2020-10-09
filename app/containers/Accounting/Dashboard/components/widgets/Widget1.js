@@ -67,7 +67,7 @@ const Widget1 = ({ accounts, accData }) => {
 					</TableHead>
 					<TableBody>
 						<TableRow>
-							<TableCell component="th" scope="row">{receivablesAccounts.length}</TableCell>
+							<TableCell component="th" scope="row">{0}</TableCell>
 							<TableCell align="left">1 - 10 days</TableCell>
 							<TableCell align="right">NGN 0.00</TableCell>
 						</TableRow>
@@ -82,7 +82,7 @@ const Widget1 = ({ accounts, accData }) => {
 					</TableHead>
 					<TableBody>
 						<TableRow>
-							<TableCell component="th" scope="row">{receivablesAccounts.length}</TableCell>
+							<TableCell component="th" scope="row">{0}</TableCell>
 							<TableCell align="left">1 - 30 days</TableCell>
 							<TableCell align="right">NGN 0.00</TableCell>
 						</TableRow>

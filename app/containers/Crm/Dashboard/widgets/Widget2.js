@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   card: {
-    borderRadius: theme.shape.borderRadius * 4,
+    borderRadius: theme.shape.borderRadius,
     backgroundImage: `url(${CrmDashImage2})`,
     backgroundRepeat: `no-repeat`,
     backgroundPosition: `center bottom`,
@@ -70,40 +70,38 @@ const Widget2 = ({ companies }) => {
   const subscriberCompanies = companies && companies.filter(company => company.lifeStage === 'SUBSCRIBER')
 
   return (
-    <div>
-      <Card className={classes.card}>
-        <CardContent>
-          <Table className={classes.table} size="small">
-            <TableBody>
-              <TableRow>
-                <TableCell component="th" align="center">
-                  <Typography variant="h2">{companies.length}</Typography>
-                  <Typography variant="h5">Companies</Typography>
-                </TableCell>
-                <TableCell align="right">
-                  <Table size="small" align="right">
-                    <TableBody>
-                      <TableRow><TableCell align="left">{contactCompanies.length} Contacts</TableCell></TableRow>
-                      <TableRow><TableCell align="left">{leadCompanies.length} Leads</TableCell></TableRow>
-                      <TableRow><TableCell align="left">{opportunityCompanies.length} Opportunity</TableCell></TableRow>
-                      <TableRow><TableCell align="left">{subscriberCompanies.length} Subscribers</TableCell></TableRow>
-                    </TableBody>
-                  </Table>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </CardContent>
+    <Card className={classes.card}>
+      <CardContent>
+        <Table className={classes.table} size="small">
+          <TableBody>
+            <TableRow>
+              <TableCell component="th" align="center">
+                <Typography variant="h2">{companies.length}</Typography>
+                <Typography variant="h5">Companies</Typography>
+              </TableCell>
+              <TableCell align="right">
+                <Table size="small" align="right">
+                  <TableBody>
+                    <TableRow><TableCell align="left">{contactCompanies.length} Contacts</TableCell></TableRow>
+                    <TableRow><TableCell align="left">{leadCompanies.length} Leads</TableCell></TableRow>
+                    <TableRow><TableCell align="left">{opportunityCompanies.length} Opportunity</TableCell></TableRow>
+                    <TableRow><TableCell align="left">{subscriberCompanies.length} Subscribers</TableCell></TableRow>
+                  </TableBody>
+                </Table>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </CardContent>
 
-        <Divider />
+      <Divider />
 
-        <CardActions>
-          <Button component={Link} to='/crm/companies'>
-            View All Companies
+      <CardActions>
+        <Button component={Link} to='/crm/companies'>
+          View All Companies
 					</Button>
-        </CardActions>
-      </Card>
-    </div>
+      </CardActions>
+    </Card>
   )
 }
 

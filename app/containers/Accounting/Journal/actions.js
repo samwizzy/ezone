@@ -47,6 +47,41 @@ export function getTaxesError(data) {
   }
 }
 
+// create tax action
+export function createTax(data) {
+  return {
+    type: Constants.CREATE_TAX,
+    payload: data,
+  };
+}
+
+export function createTaxSuccess(data) {
+  return {
+    type: Constants.CREATE_TAX_SUCCESS,
+    payload: data,
+  };
+}
+
+export function createTaxError(data) {
+  return {
+    type: Constants.CREATE_TAX_ERROR,
+    payload: data,
+  };
+}
+
+// Open tax dialog
+export function openNewTaxDialog() {
+  return {
+    type: Constants.OPEN_NEW_TAX_DIALOG,
+  };
+}
+
+export function closeNewTaxDialog() {
+  return {
+    type: Constants.CLOSE_NEW_TAX_DIALOG,
+  };
+}
+
 export function openNewJournalDialog() {
   return {
     type: Constants.OPEN_NEW_JOURNAL_DIALOG,

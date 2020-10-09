@@ -142,8 +142,10 @@ const ContactGroupsList = props => {
 
   const options = {
     filterType: 'checkbox',
-    responsive: 'scrollMaxHeight',
+    responsive: 'stacked',
     selectableRows: 'multiple',
+    filter: false,
+    viewColumns: false,
     customToolbar: () => (
       <Button
         variant="contained"

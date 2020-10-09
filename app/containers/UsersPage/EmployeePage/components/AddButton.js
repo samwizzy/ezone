@@ -15,7 +15,7 @@ const defaultToolbarStyles = {
 
 // eslint-disable-next-line react/prop-types
 export function AddButton(props) {
-  const { classes, openNewEmployeeDialogAction } = props;
+  const { classes, openNewEmployeeDialog } = props;
 
   return (
     <React.Fragment>
@@ -23,7 +23,7 @@ export function AddButton(props) {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => openNewEmployeeDialogAction()}
+          onClick={openNewEmployeeDialog}
           startIcon={<Add />}
         >
           Add User
@@ -35,15 +35,14 @@ export function AddButton(props) {
 
 AddButton.prototypes = {
   classes: PropTypes.object.isRequired,
-  openNewEmployeeDialogAction: PropTypes.func,
+  openNewEmployeeDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewBranchDialogAction: () => dispatch(Actions.openNewEmployeeDialog()),
-    dispatch,
+    openNewEmployeeDialog: () => dispatch(Actions.openNewEmployeeDialog()),
   };
 }
 

@@ -1,5 +1,6 @@
 import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
+import EzoneUtils from '../../../utils/EzoneUtils';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -130,6 +131,7 @@ const AssetsList = props => {
       options: {
         filter: true,
         sort: false,
+        customBodyRender: value => EzoneUtils.formatCurrency(value)
       },
     },
     {
@@ -225,7 +227,7 @@ const AssetsList = props => {
           Dispose
         </MenuItem>
         <MenuItem onClick={handleViewClick}>
-          View details
+          View
         </MenuItem>
       </Menu>
     </div>

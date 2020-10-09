@@ -26,22 +26,19 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
   },
-  button: {
-    margin: "auto",
-  },
   datatable: {
     whiteSpace: "nowrap",
-    '& .MuiTableRow-root:hover': {
+    '& tr:hover': {
       cursor: 'pointer'
     },
-    '& .MuiTableHead-root': {
-      '& .MuiTableCell-head': {
+    '& thead': {
+      '& th': {
         color: theme.palette.common.white,
       },
-      '& .MuiTableCell-root:nth-child(odd)': {
+      '& th:nth-child(odd)': {
         backgroundColor: theme.palette.primary.main,
       },
-      '& .MuiTableCell-root:nth-child(even)': {
+      '& th:nth-child(even)': {
         backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
@@ -132,16 +129,17 @@ const CampaignList = props => {
 
   const options = {
     filterType: 'checkbox',
-    responsive: 'scrollMaxHeight',
+    responsive: 'stacked',
     selectableRows: 'single',
+    filter: false,
+    viewColumns: false,
     customToolbar: () => (
       <Button
         variant="contained"
         color="primary"
         size="small"
-        className={classes.button}
         startIcon={<Add />}
-        onClick={() => openNewCampaignDialog()}
+        onClick={openNewCampaignDialog}
       >
         New
       </Button>

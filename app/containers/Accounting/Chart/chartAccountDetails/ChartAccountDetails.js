@@ -180,7 +180,7 @@ const ChartAccountDetails = props => {
                 <TableRow>
                   <TableCell component="th">Transaction Date</TableCell>
                   <TableCell component="th">Created at</TableCell>
-                  <TableCell component="th">Description</TableCell>
+                  <TableCell component="th">Ref. No</TableCell>
                   <TableCell component="th">Debit</TableCell>
                   <TableCell component="th">Credit</TableCell>
                   <TableCell component="th">Balance</TableCell>
@@ -191,7 +191,7 @@ const ChartAccountDetails = props => {
                   <TableRow key={i}>
                     <TableCell>{moment(entry.dateCreated).format('ll')}</TableCell>
                     <TableCell>{moment(entry.dateCreated).format('ll')}</TableCell>
-                    <TableCell>{entry.description}</TableCell>
+                    <TableCell>{entry.reference}</TableCell>
                     <TableCell>{EzoneUtils.formatCurrency(entry.debit, currency && currency.code)}</TableCell>
                     <TableCell>{EzoneUtils.formatCurrency(entry.credit, currency && currency.code)}</TableCell>
                     <TableCell>{EzoneUtils.formatCurrency(Number(entry.debit) - Number(entry.credit), currency && currency.code)}</TableCell>

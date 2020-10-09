@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   card: {
-    borderRadius: theme.shape.borderRadius * 4,
+    borderRadius: theme.shape.borderRadius,
     backgroundImage: `url(${CrmDashImage1})`,
     backgroundRepeat: `no-repeat`,
     backgroundPosition: `center bottom`,
@@ -70,40 +70,38 @@ const Widget1 = ({ contacts }) => {
   const subscriberContacts = contacts && contacts.filter(contact => contact.lifeStage === 'SUBSCRIBER')
 
   return (
-    <div>
-      <Card className={classes.card}>
-        <CardContent>
-          <Table className={classes.table} size="small">
-            <TableBody>
-              <TableRow>
-                <TableCell component="th" align="center">
-                  <Typography variant="h2">{contacts.length}</Typography>
-                  <Typography variant="h5">Contacts</Typography>
-                </TableCell>
-                <TableCell align="right">
-                  <Table size="small" align="right">
-                    <TableBody>
-                      <TableRow><TableCell align="left">{contactContacts.length} Contacts</TableCell></TableRow>
-                      <TableRow><TableCell align="left">{leadContacts.length} Leads</TableCell></TableRow>
-                      <TableRow><TableCell align="left">{opportunityContacts.length} Opportunity</TableCell></TableRow>
-                      <TableRow><TableCell align="left">{subscriberContacts.length} Subscribers</TableCell></TableRow>
-                    </TableBody>
-                  </Table>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </CardContent>
+    <Card className={classes.card}>
+      <CardContent>
+        <Table className={classes.table} size="small">
+          <TableBody>
+            <TableRow>
+              <TableCell component="th" align="center">
+                <Typography variant="h2">{contacts.length}</Typography>
+                <Typography variant="h5">Contacts</Typography>
+              </TableCell>
+              <TableCell align="right">
+                <Table size="small" align="right">
+                  <TableBody>
+                    <TableRow><TableCell align="left">{contactContacts.length} Contacts</TableCell></TableRow>
+                    <TableRow><TableCell align="left">{leadContacts.length} Leads</TableCell></TableRow>
+                    <TableRow><TableCell align="left">{opportunityContacts.length} Opportunity</TableCell></TableRow>
+                    <TableRow><TableCell align="left">{subscriberContacts.length} Subscribers</TableCell></TableRow>
+                  </TableBody>
+                </Table>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </CardContent>
 
-        <Divider />
+      <Divider />
 
-        <CardActions>
-          <Button component={Link} to='/crm/contacts'>
-            View All Contacts
+      <CardActions>
+        <Button component={Link} to='/crm/contacts'>
+          View All Contacts
 					</Button>
-        </CardActions>
-      </Card>
-    </div>
+      </CardActions>
+    </Card>
   )
 }
 

@@ -36,8 +36,6 @@ const TaxSummary = ({ time, user, dispatchCleanUpAction }) => {
   }, []);
 
   const handleData = () => {
-    // dispatchGetAllGeneralLedgerTypeAction();
-    // console.log('=============================================>');
     setDisplay(true);
   };
   const TableHeadData = [
@@ -50,6 +48,7 @@ const TaxSummary = ({ time, user, dispatchCleanUpAction }) => {
     'Credit Amt',
     'Balance',
   ];
+
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
 
@@ -101,12 +100,3 @@ export default compose(
   withConnect,
   memo,
 )(TaxSummary);
-
-// {display && (
-//   <Table
-//     ref={tableRef}
-//     // data={tableData}
-//     // TableHeadData={TableHeadData}
-//     // TableFooterData={TableFooterData}
-//   />
-// )}

@@ -146,7 +146,7 @@ const AccountDialog = props => {
       type,
     } = values;
     return (
-      accountCode.length > 0 &&
+      (!errors.accountCode && accountCode.length > 0) &&
       accountName.length > 0 &&
       accountTypeId &&
       openingBalance &&
@@ -374,7 +374,8 @@ const AccountDialog = props => {
                 onChange={handleChange}
                 margin="dense"
                 fullWidth
-                rows={3}
+                rows={2}
+                rowsMax={3}
                 multiline
               />
             </Grid>

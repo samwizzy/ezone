@@ -80,14 +80,12 @@ const EmployeeEarningsReport = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-        {display && (
           <Table
             ref={tableRef}
             // data={tableData}
             TableHeadData={TableHeadData}
             // TableFooterData={TableFooterData}
           />
-        )}
       </div>
     </React.Fragment>
   );

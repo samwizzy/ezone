@@ -7,6 +7,7 @@ import { compose } from 'redux';
 
 import {
   withStyles,
+  CircularProgress,
   TextField,
   makeStyles,
   Button,
@@ -34,30 +35,14 @@ import * as Actions from '../../actions';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    margin: theme.spacing(1.5, 0),
-  },
-  dense: {
-    marginTop: 19,
-  },
-  menu: {
-    width: 200,
+  root: {
+    flexGrow: 1
   },
 }));
 
 const gender = [
-  {
-    value: 'Male',
-    label: 'Male',
-  },
-  {
-    value: 'Female',
-    label: 'Female',
-  },
+  { value: 'Male', label: 'Male' },
+  { value: 'Female', label: 'Female' },
 ];
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -117,144 +102,137 @@ const EmployeeDialog = props => {
   };
 
   return (
-    <div>
-      <Dialog
-        {...employeeDialog.props}
-        onClose={closeNewEmployeeDialogAction}
-        keepMounted
-        TransitionComponent={Transition}
-        aria-labelledby="form-dialog-title"
-      >
-        <DialogTitle id="alert-dialog-slide-title">
-          {employeeDialog.type === 'new' ? 'New Employee' : 'Edit Employee'}
-        </DialogTitle>
+    <Dialog
+      {...employeeDialog.props}
+      onClose={closeNewEmployeeDialogAction}
+      keepMounted
+      TransitionComponent={Transition}
+      aria-labelledby="form-dialog-title"
+    >
+      <DialogTitle id="alert-dialog-slide-title">
+        {employeeDialog.type === 'new' ? 'New Employee' : 'Edit Employee'}
+      </DialogTitle>
 
-        <Divider />
+      <DialogContent dividers>
+        <TextField
+          id="standard-first-name"
+          label="First Name"
+          variant="outlined"
+          size="small"
+          value={values.firstName}
+          onChange={handleChange('firstName')}
+          margin="normal"
+          fullWidth
+        />
+        <TextField
+          id="standard-Last-Name"
+          label="Last Name"
+          variant="outlined"
+          size="small"
+          value={values.lastName}
+          onChange={handleChange('lastName')}
+          margin="normal"
+          fullWidth
+        />
 
-        <DialogContent>
-          {employeeDialog.type === 'new' ? (
-            <div>
-              <TextField
-                id="standard-First-Name"
-                label="First Name"
-                variant="outlined"
-                className={classes.textField}
-                value={values.firstName}
-                onChange={handleChange('firstName')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-Last-Name"
-                label="Last Name"
-                variant="outlined"
-                className={classes.textField}
-                value={values.lastName}
-                onChange={handleChange('lastName')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-email"
-                label="Email"
-                type="email"
-                variant="outlined"
-                className={classes.textField}
-                value={values.emailAddress}
-                onChange={handleChange('emailAddress')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-phone-number"
-                label="Phone Number"
-                type="number"
-                variant="outlined"
-                className={classes.textField}
-                value={values.phoneNumber}
-                onChange={handleChange('phoneNumber')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-employeeID"
-                label="Employee ID"
-                variant="outlined"
-                className={classes.textField}
-                value={values.employeeId}
-                onChange={handleChange('employeeId')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-password"
-                label="Password"
-                variant="outlined"
-                className={classes.textField}
-                value={values.password}
-                type="password"
-                onChange={handleChange('password')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-select-gender"
-                label="Select Gender"
-                variant="outlined"
-                className={classes.textField}
-                margin="normal"
-                value={values.gender ? values.gender : ''}
-                onChange={handleSelectChange('gender')}
-                select
-                fullWidth
-              >
-                {gender.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                id="standard-address"
-                label="Address"
-                variant="outlined"
-                className={classes.textField}
-                value={values.address}
-                onChange={handleChange('address')}
-                margin="normal"
-                fullWidth
-                rows={2}
-                multiline
-              />
-            </div>
-          ) : null}
-        </DialogContent>
+        <TextField
+          id="standard-email"
+          label="Email"
+          type="email"
+          variant="outlined"
+          size="small"
+          value={values.emailAddress}
+          onChange={handleChange('emailAddress')}
+          margin="normal"
+          fullWidth
+        />
 
-        <DialogActions>
-          {loading ? (
-            <LoadingIndicator />
-          ) : (
-            <Button
-              onClick={() => {
-                dispatchCreateNewEmployeeAction(values);
-              }}
-              color="primary"
-              variant="contained"
-              disabled={!canBeSubmitted()}
-            >
-              Save
-            </Button>
-          )}
-          <Button
-            onClick={() => closeNewEmployeeDialogAction()}
-            color="primary"
-            variant="contained"
-          >
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+        <TextField
+          id="standard-phone-number"
+          label="Phone Number"
+          type="number"
+          variant="outlined"
+          size="small"
+          value={values.phoneNumber}
+          onChange={handleChange('phoneNumber')}
+          margin="normal"
+          fullWidth
+        />
+
+        <TextField
+          id="standard-employeeID"
+          label="Employee ID"
+          variant="outlined"
+          size="small"
+          value={values.employeeId}
+          onChange={handleChange('employeeId')}
+          margin="normal"
+          fullWidth
+        />
+
+        <TextField
+          id="standard-password"
+          label="Password"
+          variant="outlined"
+          size="small"
+          value={values.password}
+          type="password"
+          onChange={handleChange('password')}
+          margin="normal"
+          fullWidth
+        />
+
+        <TextField
+          id="standard-select-gender"
+          label="Select Gender"
+          variant="outlined"
+          size="small"
+          margin="normal"
+          value={values.gender ? values.gender : ''}
+          onChange={handleSelectChange('gender')}
+          select
+          fullWidth
+        >
+          {gender.map(option => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+
+        <TextField
+          id="standard-address"
+          label="Address"
+          variant="outlined"
+          size="small"
+          value={values.address}
+          onChange={handleChange('address')}
+          margin="normal"
+          fullWidth
+          rows={2}
+          multiline
+        />
+      </DialogContent>
+
+      <DialogActions>
+        <Button
+          onClick={() => dispatchCreateNewEmployeeAction(values)}
+          color="primary"
+          variant="contained"
+          disabled={loading ? loading : !canBeSubmitted()}
+          endIcon={loading && <CircularProgress size={20} />}
+        >
+          Save
+        </Button>
+        <Button
+          onClick={closeNewEmployeeDialogAction}
+          variant="contained"
+          disableElevation
+        >
+          Cancel
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

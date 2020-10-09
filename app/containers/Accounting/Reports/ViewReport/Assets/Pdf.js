@@ -21,7 +21,7 @@ const CreatePdf = ({
   const printDocument = e => {
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();
-    const ImageWidthPosition = 0.5 * pageWidth - 22.5;
+
     const dateRangeRef = companyRef.current.lastElementChild;
     const nameRef = dateRangeRef.previousElementSibling;
     const dateRangeWidth = dateRangeRef.getBoundingClientRect().width;
@@ -29,7 +29,11 @@ const CreatePdf = ({
     const dateRangeWidthPosition =
       0.5 * pageWidth - dateRangeWidth * 0.2645833333 * 0.5;
     const nameWithPosition = 0.5 * pageWidth - nameWith * 0.2645833333 * 0.5;
-    
+    const ImageWidthPosition =
+      0.5 * pageWidth -
+      companyRef.current.firstElementChild.getBoundingClientRect().width *
+        0.2645833333 *
+        0.5;
     const base64Img = `data:image/png;base64,${pdflogo}`;
     doc.autoTable({
       didDrawPage: data => {

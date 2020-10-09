@@ -205,6 +205,8 @@ const ContactsList = props => {
     filterType: 'checkbox',
     responsive: 'scrollMaxHeight',
     selectableRows: 'none',
+    filter: false,
+    viewColumns: false,
     customToolbar: () => (
       <Button
         variant="contained"
