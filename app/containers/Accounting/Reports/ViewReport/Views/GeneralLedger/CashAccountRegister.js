@@ -25,7 +25,7 @@ const CashAccountRegister = ({ time, user, dispatchCleanUpAction }) => {
   const [print, setPrint] = useState(false);
   const [display, setDisplay] = useState(false);
 
-  // const { organisation } = user;
+  const { organisation } = user;
   const { startDate, endDate } = time;
   const handleData = () => {
     // setDisplay(true);

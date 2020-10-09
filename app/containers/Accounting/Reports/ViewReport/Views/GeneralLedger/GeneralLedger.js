@@ -46,7 +46,7 @@ const GeneralLedger = ({
 
   const formatDate = dateTime => moment(dateTime).format('DD-MM-YYYY');
   const { organisation } = user;
-  // console.log('generalLedger.mapvvvvvvvvvvvvvvvvvvv', generalLedger);
+  console.log('generalLedger.mapvvvvvvvvvvvvvvvvvvv', generalLedger);
   const ArraysOfArray = Object.keys(generalLedger).map(
     key => generalLedger[key],
   );
@@ -56,7 +56,7 @@ const GeneralLedger = ({
   ArraysOfArray.forEach(element => {
     element.forEach(ledger => {
       tableData.push({
-        'Account ID': `${ledger.accountId}`,
+        'Account ID': `${ledger.accountCode}`,
         'Account Desc': `${ledger.accountDescription}`,
         Date: `${formatDate(ledger.date)}`,
         Reference: `${ledger.reference}`,
@@ -110,14 +110,12 @@ const GeneralLedger = ({
           date={setDate}
         />
 
-        {display && (
-          <Table
-            ref={tableRef}
-            data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
-        )}
+        <Table
+          ref={tableRef}
+          data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );

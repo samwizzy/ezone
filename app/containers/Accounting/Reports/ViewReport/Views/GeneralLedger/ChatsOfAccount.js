@@ -59,7 +59,7 @@ const ChatsOfAccount = ({
     'Account Code': account.accountCode,
     'Account Name': account.accountName,
     'Account Type': account.accountType && account.accountType.accountType,
-    'Debit / Credit': '',
+    'Debit / Credit': account.type,
     Status: account.status,
   }));
 
@@ -72,7 +72,7 @@ const ChatsOfAccount = ({
         tableData={tableData}
         handleFetch={handleData}
         pdflogo={organisation.logo}
-        singleDate={singleDate}
+        singleDate={true}
         tableRef={tableRef}
         companyRef={companyRef}
         daterange={display && `As at ${moment(endDate).format('MMM Do YYYY')}`}
@@ -85,14 +85,12 @@ const ChatsOfAccount = ({
           date={display && `As at ${moment(endDate).format('MMM Do YYYY')}`}
         />
 
-        {display && (
-          <Table
-            ref={tableRef}
-            data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
-        )}
+        <Table
+          ref={tableRef}
+          data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );
