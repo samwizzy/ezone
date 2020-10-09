@@ -59,11 +59,9 @@ const ChatsOfAccount = ({
     'Account Code': account.accountCode,
     'Account Name': account.accountName,
     'Account Type': account.accountType && account.accountType.accountType,
-    'Debit / Credit': '',
+    'Debit / Credit': account.type,
     Status: account.status,
   }));
-
-  console.log('ggggggggggggggggggggggg', chatsOfAccount);
 
   return (
     <React.Fragment>
