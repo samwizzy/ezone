@@ -141,7 +141,7 @@ function MiniDrawer(props) {
         <Divider />
       </Drawer>
       <main className={clsx(classes.content, { 'full': !open })}>
-        <div style={{ minHeight: `calc(100vh - 140px)` }}>
+        <div style={{ minHeight: `calc(100vh - 80px)` }}>
           {props.content}
         </div>
         <Footer />
