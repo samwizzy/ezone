@@ -88,10 +88,7 @@ const DepreciationTypeDialog = props => {
       name === 'depreciationRate' ||
       name === 'percentageValue'
     ) {
-      setForm({
-        ...form,
-        [name]: type === 'checkbox' ? checked : value.replace(/[^0-9]/g, ''),
-      });
+      setForm({ ...form, [name]: type === 'checkbox' ? checked : value.replace(/[^0-9\.]/g, '') });
     } else {
       setForm({ ...form, [name]: type === 'checkbox' ? checked : value });
     }
