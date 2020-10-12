@@ -29,6 +29,7 @@ import { Add, Visibility } from '@material-ui/icons';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import _ from 'lodash';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
@@ -136,7 +137,7 @@ const QuizzesList = props => {
                   />
                 </MuiPickersUtilsProvider>
               </div>
-              <Button size="small" variant="contained" color="primary" onClick={() => history.push(`${match.url}/new`)} disableElevation>
+              <Button variant="contained" color="primary" onClick={() => history.push(`${match.url}/new`)} disableElevation>
                 Add Quiz
               </Button>
             </Toolbar>
