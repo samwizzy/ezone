@@ -1,13 +1,8 @@
-/*
- * HRPage
- *
- * This is the first thing users see of our App, at the '/' route
- */
 import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
+import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-// import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
@@ -114,6 +109,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(HRPage);

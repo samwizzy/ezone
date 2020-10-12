@@ -1,9 +1,3 @@
-/**
- *
- * Crm
- *
- */
-
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -17,107 +11,103 @@ import * as AppSelectors from '../../App/selectors';
 import { Widget1, Widget2, Widget3, Widget4, Widget5, Widget6, Widget7, Widget8, Widget9, Widget10, Widget11, Widget12, Widget13 } from './widgets'
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        flexGrow: 1
-    }
+  root: {
+    flexGrow: 1
+  }
 }))
 
 export function DashBoard(props) {
-    const classes = useStyles()
-    const { employees, attendances, announcements, jobOpenings } = props
+  const classes = useStyles()
+  const { employees, attendances, announcements, jobOpenings } = props
 
-    console.log(attendances, "attendances")
-    console.log(announcements, "announcements fro dashboard")
+  console.log(attendances, "attendances")
+  console.log(announcements, "announcements from dashboard")
 
-    return (
-        <div className={classes.root}>
-            <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    <Grid container className={classes.grid} spacing={3}>
-                        <Grid item xs={3}>
-                            <Widget1 />
-                        </Grid>
-                        <Grid item xs={3}>
-                            <Widget2 />
-                        </Grid>
-                        <Grid item xs={3}>
-                            <Widget3 />
-                        </Grid>
-                        <Grid item xs={3}>
-                            <Widget4 />
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                    <Grid container className={classes.grid} spacing={3}>
-                        <Grid item xs={4}>
-                            <Widget5 employees={employees} />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Widget6 />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Widget7 />
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                    <Grid container className={classes.grid} spacing={3}>
-                        <Grid item xs={6}>
-                            <Widget11 />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Widget12 employees={employees} />
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                    <Grid container className={classes.grid} spacing={3}>
-                        <Grid item xs={6}>
-                            <Widget8 attendances={attendances} />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Widget10 />
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                    <Grid container className={classes.grid} spacing={3}>
-                        <Grid item xs={12}>
-                            <Widget13 announcements={announcements} />
-                        </Grid>
-                    </Grid>
-                </Grid>
+  return (
+    <div className={classes.root}>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Grid container className={classes.grid} spacing={3}>
+            <Grid item xs={3}>
+              <Widget1 />
             </Grid>
-        </div>
-    );
+            <Grid item xs={3}>
+              <Widget2 />
+            </Grid>
+            <Grid item xs={3}>
+              <Widget3 />
+            </Grid>
+            <Grid item xs={3}>
+              <Widget4 />
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container className={classes.grid} spacing={3}>
+            <Grid item xs={4}>
+              <Widget5 employees={employees} />
+            </Grid>
+            <Grid item xs={4}>
+              <Widget6 />
+            </Grid>
+            <Grid item xs={4}>
+              <Widget7 />
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container className={classes.grid} spacing={3}>
+            <Grid item xs={6}>
+              <Widget11 />
+            </Grid>
+            <Grid item xs={6}>
+              <Widget12 employees={employees} />
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container className={classes.grid} spacing={3}>
+            <Grid item xs={6}>
+              <Widget8 attendances={attendances} />
+            </Grid>
+            <Grid item xs={6}>
+              <Widget10 />
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container className={classes.grid} spacing={3}>
+            <Grid item xs={12}>
+              <Widget13 announcements={announcements} />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </div>
+  );
 }
 
-DashBoard.propTypes = {
-    dispatch: PropTypes.func.isRequired,
-};
+DashBoard.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
-    employees: Selectors.makeSelectEmployees(),
-    user: AppSelectors.makeSelectCurrentUser(),
-    departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
-    attendances: Selectors.makeSelectAttendances(),
-    announcements: Selectors.makeSelectAnnouncements(),
-    jobOpenings: Selectors.makeSelectJobOpenings(),
+  employees: Selectors.makeSelectEmployees(),
+  user: AppSelectors.makeSelectCurrentUser(),
+  departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
+  attendances: Selectors.makeSelectAttendances(),
+  announcements: Selectors.makeSelectAnnouncements(),
+  jobOpenings: Selectors.makeSelectJobOpenings(),
 });
 
 function mapDispatchToProps(dispatch) {
-    return {
-        dispatch,
-    };
+  return {};
 }
 
 const withConnect = connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  mapStateToProps,
+  mapDispatchToProps,
 );
 
 export default compose(
-    withConnect,
-    memo,
+  withConnect,
+  memo,
 )(DashBoard);
