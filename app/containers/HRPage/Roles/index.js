@@ -1,8 +1,3 @@
-/*
- * HRPage Roles
- *
- * This is the first thing users see of our App, at the '/' route
- */
 import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
@@ -10,34 +5,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import { useInjectReducer } from 'utils/injectReducer';
-import { useInjectSaga } from 'utils/injectSaga';
 import * as AppSelectors from '../../App/selectors';
 import * as AppActions from '../../App/actions';
 import * as Actions from './../actions';
-import makeSelectHRPage from './../selectors';
-import reducer from './../reducer';
-import saga from './../saga';
+import * as Selectors from './../selectors';
 import ModuleLayout from './ModuleLayout';
 import RoleList from './RoleList';
 
-const key = 'hrPage';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-}));
-
 export function RolePage(props) {
-  const { getEmployees } = props;
-  useInjectReducer({ key, reducer });
-  useInjectSaga({ key, saga });
-
-  React.useEffect(() => {
-    getEmployees();
-  }, []);
-
   return (
     <React.Fragment>
       <Helmet>
@@ -52,19 +27,12 @@ export function RolePage(props) {
   );
 }
 
-RolePage.propTypes = {
-  token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-};
+RolePage.propTypes = {};
 
-const mapStateToProps = createStructuredSelector({
-  hrPage: makeSelectHRPage(),
-  token: AppSelectors.makeSelectAccessToken(),
-});
+const mapStateToProps = createStructuredSelector({});
 
 export function mapDispatchToProps(dispatch) {
-  return {
-    getEmployees: () => dispatch(Actions.getEmployees()),
-  };
+  return {};
 }
 
 const withConnect = connect(

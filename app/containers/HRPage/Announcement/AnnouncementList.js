@@ -1,18 +1,14 @@
-import React, { Fragment, memo } from 'react';
+import React, { Fragment, memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { AppBar, Button, Grid, MenuItem, Paper, TextField, Toolbar, Typography } from '@material-ui/core';
-import {
-  MuiPickersUtilsProvider,
-  DatePicker,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { CircleLoader } from '../../../components/LoadingIndicator'
 import moment from 'moment'
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
@@ -53,6 +49,13 @@ const Announcement = props => {
     year: moment().format('YYYY')
   })
 
+  useEffect(() => {
+    setState((state) => ({ ...state, announcements }))
+    // return () => {
+    //   setState((state) => ({ ...state, announcements }))
+    // }
+  }, [announcements])
+
   const handleChange = event => {
     const { name, value } = event.target
     setState({ ...state, [name]: value })
@@ -82,22 +85,20 @@ const Announcement = props => {
   console.log(announcements, "announcements")
   console.log(state, "state")
 
-  if (!announcements) {
-    return ''
+  if (!announcements.length > 0) {
+    return <CircleLoader />
   }
 
   return (
     <div className={classes.root}>
-      <Grid
-        container
-      >
+      <Grid container>
         <Grid item xs={12}>
           <AppBar position="static" color="inherit" elevation={1}>
             <Toolbar variant="dense">
               <Typography variant="h6" className={classes.title}>
                 Announcements
               </Typography>
-              <Button variant="contained" color="primary" onClick={openNewAnnouncementDialog}>Add Announcement</Button>
+              <Button variant="contained" disableElevation color="primary" onClick={openNewAnnouncementDialog}>Add Announcement</Button>
             </Toolbar>
           </AppBar>
 
@@ -192,24 +193,17 @@ const Announcement = props => {
 
 Announcement.propTypes = {
   loading: PropTypes.bool,
-  getEmployees: PropTypes.func,
   openNewAnnouncementDialog: PropTypes.func,
   openAnnouncementViewDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  employees: Selectors.makeSelectEmployees(),
-  employee: Selectors.makeSelectEmployee(),
   announcements: Selectors.makeSelectAnnouncements(),
-  user: AppSelectors.makeSelectCurrentUser(),
-  roles: Selectors.makeSelectRoles(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getEmployees: () => dispatch(Actions.getEmployees()),
-    getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
     openNewAnnouncementDialog: () => dispatch(Actions.openNewAnnouncementDialog()),
     openAnnouncementViewDialog: (data) => dispatch(Actions.openAnnouncementViewDialog(data)),
   };

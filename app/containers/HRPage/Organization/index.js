@@ -1,8 +1,3 @@
-/*
- * HRPage Employee
- *
- * This is the first thing users see of our App, at the '/' route
- */
 import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
@@ -21,23 +16,7 @@ import saga from './../saga';
 import ModuleLayout from './ModuleLayout'
 import EmployeeList from './EmployeeList';
 
-const key = 'hrPage';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-}));
-
 export function EmployeePage(props) {
-  const { getEmployees } = props;
-  useInjectReducer({ key, reducer });
-  useInjectSaga({ key, saga });
-
-  React.useEffect(() => {
-    getEmployees();
-  }, []);
-
   return (
     <React.Fragment>
       <Helmet>
@@ -52,19 +31,12 @@ export function EmployeePage(props) {
   );
 }
 
-EmployeePage.propTypes = {
-  token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-};
+EmployeePage.propTypes = {};
 
-const mapStateToProps = createStructuredSelector({
-  hrPage: makeSelectHRPage(),
-  token: AppSelectors.makeSelectAccessToken(),
-});
+const mapStateToProps = createStructuredSelector({});
 
 export function mapDispatchToProps(dispatch) {
-  return {
-    getEmployees: () => dispatch(Actions.getEmployees()),
-  };
+  return {};
 }
 
 const withConnect = connect(

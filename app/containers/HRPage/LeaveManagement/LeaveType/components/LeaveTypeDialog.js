@@ -6,14 +6,9 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import ScheduleIcon from '@material-ui/icons/Schedule';
-import { withStyles, AppBar, Avatar, Box, Button, Checkbox, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormGroup, FormControl, FormLabel, FormControlLabel, Grid, MenuItem, Radio, RadioGroup, Popover, Slide, Tabs, Tab, Typography, TextField, Toolbar } from '@material-ui/core';
+import { withStyles, InputAdornment, AppBar, Avatar, Box, Button, Checkbox, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormGroup, FormControl, FormLabel, FormControlLabel, Grid, MenuItem, Radio, RadioGroup, Popover, Slide, Tabs, Tab, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
@@ -117,8 +112,8 @@ const model = {
 
 function AddShiftDialog(props) {
   const classes = useStyles();
-  const { closeNewShiftDialog, dialog, employees, departments, branches, roles, createLeaveType } = props;
-  const [option, setOption] = React.useState({ policy: false, validity: false })
+  const { closeNewLeaveTypeDialog, dialog, employees, departments, branches, roles, createLeaveType } = props;
+  const [option, setOption] = React.useState({ policy: false, validity: false, duration: 'Days', maritalStatus: 'Single' })
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
@@ -195,7 +190,7 @@ function AddShiftDialog(props) {
         {...dialog.props}
         TransitionComponent={Transition}
         keepMounted
-        onClose={closeNewShiftDialog}
+        onClose={closeNewLeaveTypeDialog}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
@@ -235,6 +230,9 @@ function AddShiftDialog(props) {
                 label="Leave Allowance Percent"
                 value={form.leaveAllowancePercent}
                 onChange={handleChange}
+                InputProps={{
+                  endAdornment: <InputAdornment position="end">%</InputAdornment>
+                }}
               />
             </Grid>
             <Grid item xs={6}>
@@ -355,18 +353,18 @@ function AddShiftDialog(props) {
             {option.policy &&
               <React.Fragment>
                 <Grid item xs={12}>
-                  <Typography variant="subtitle1">Entitlement</Typography>
+                  <Typography variant="subtitle1" gutterBottom>Entitlement</Typography>
                   <FormLabel component="legend">Based on Date After Hiring</FormLabel>
                   <TextField
                     id="numberOfDaysFromHire"
                     name="numberOfDaysFromHire"
-                    placeholder="0"
-                    margin="dense"
+                    margin="normal"
                     variant="outlined"
                     size="small"
                     label="From"
                     value={form.numberOfDaysFromHire}
                     onChange={handleChange}
+                    style={{ marginRight: 8 }}
                   />
                   <TextField
                     id="duration"
@@ -375,10 +373,10 @@ function AddShiftDialog(props) {
                     select
                     style={{ minWidth: 100 }}
                     variant="outlined"
-                    margin="dense"
+                    margin="normal"
                     size="small"
                     label="Days"
-                  // value={form.duration}
+                    value={option.duration}
                   // onChange={handleChange}
                   >
                     {durations.map((duration, i) =>
@@ -424,7 +422,7 @@ function AddShiftDialog(props) {
                     fullWidth
                     size="small"
                     label="Marital Status"
-                    // value={form.maritalStatus}
+                    value={option.maritalStatus}
                     onChange={handleChange}
                   >
                     {['Single', 'Married', 'Divorced'].map((status, i) =>
@@ -443,7 +441,7 @@ function AddShiftDialog(props) {
                     variant="outlined"
                     margin="normal"
                     size="small"
-                    label="Employee"
+                    label="Employee, Department, Branch.."
                     value={form.employee}
                     onClick={handleClick}
                   />
@@ -610,7 +608,7 @@ function AddShiftDialog(props) {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={() => (closeNewShiftDialog, setForm({ ...model }))} color="primary">
+          <Button onClick={() => { closeNewLeaveTypeDialog(), setForm({ ...model }) }} color="primary">
             Cancel
           </Button>
           <Button onClick={handleSubmit} disabled={!canSubmitForm()} color="primary">
@@ -637,7 +635,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeNewShiftDialog: () => dispatch(Actions.closeNewLeaveTypeDialog()),
+    closeNewLeaveTypeDialog: () => dispatch(Actions.closeNewLeaveTypeDialog()),
     createLeaveType: (data) => dispatch(Actions.createLeaveType(data)),
   };
 }

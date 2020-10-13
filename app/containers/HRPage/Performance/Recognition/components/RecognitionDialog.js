@@ -192,7 +192,7 @@ function RecognitionDialog(props) {
                 name="title"
                 placeholder="Title"
                 fullWidth
-                margin="normal"
+                margin="dense"
                 variant="outlined"
                 size="small"
                 label="Title"
@@ -206,7 +206,7 @@ function RecognitionDialog(props) {
                 name="description"
                 placeholder="Description"
                 fullWidth
-                margin="normal"
+                margin="dense"
                 variant="outlined"
                 multiline
                 rows={4}
@@ -224,7 +224,7 @@ function RecognitionDialog(props) {
                 placeholder="Employee"
                 fullWidth
                 variant="outlined"
-                margin="normal"
+                margin="dense"
                 size="small"
                 label="Employee"
                 value={form.employee}
@@ -413,7 +413,7 @@ function RecognitionDialog(props) {
                 select
                 fullWidth
                 variant="outlined"
-                margin="normal"
+                margin="dense"
                 size="small"
                 label="Core Values"
                 value={form.values}

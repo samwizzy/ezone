@@ -18,10 +18,8 @@ export function AddLeaveRequest(props) {
     <React.Fragment>
       <Tooltip title="New Leave Request">
         <Button
-          size="small"
           color="primary"
           variant="contained"
-          className={classes.button}
           onClick={openDialog}
           startIcon={<Add className={classes.icon} />}
           disableElevation
@@ -40,10 +38,8 @@ export function AddLeaveType(props) {
     <React.Fragment>
       <Tooltip title="New Leave Type">
         <Button
-          size="small"
           color="primary"
           variant="contained"
-          className={classes.button}
           onClick={openDialog}
           startIcon={<Add className={classes.icon} />}
           disableElevation
@@ -62,10 +58,8 @@ export function AddHoliday(props) {
     <React.Fragment>
       <Tooltip title="New Holiday">
         <Button
-          size="small"
           color="primary"
           variant="contained"
-          className={classes.button}
           onClick={openDialog}
           startIcon={<Add className={classes.icon} />}
           disableElevation

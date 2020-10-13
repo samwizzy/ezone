@@ -15,14 +15,14 @@ export const initialState = {
   journalDialog: {
     type: 'new',
     props: {
-      open: true,
+      open: false,
     },
     data: null,
   },
   taxDialog: {
     type: 'new',
     props: {
-      open: true,
+      open: false,
     },
     data: null,
   },

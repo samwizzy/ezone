@@ -17,10 +17,11 @@ import saga from './saga';
 import HumanResourcePage from './HumanResourcePage';
 
 const key = 'hrPage';
+export function HumanResourceApp(props) {
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
 
-export function HRPage(props) {
   const {
-    dialog,
     getEmployees,
     getDepartmentsByOrgIdApi,
     getEnrollmentTypes,
@@ -37,10 +38,8 @@ export function HRPage(props) {
     getBranches,
     getPartyGroups,
   } = props;
-  useInjectReducer({ key, reducer });
-  useInjectSaga({ key, saga });
 
-  React.useEffect(() => {
+  useEffect(() => {
     getEmployees();
     getDepartmentsByOrgIdApi();
     getEmployeeTypes();
@@ -51,14 +50,12 @@ export function HRPage(props) {
     getBranches();
     getEnrollmentTypes();
     getLocations();
-    getAnnouncements();
     getJobOpenings();
     getApplicants();
     getAttendances();
     getPartyGroups();
+    getAnnouncements();
   }, []);
-
-  console.log(dialog, "dialog from human root")
 
   return (
     <React.Fragment>
@@ -73,14 +70,10 @@ export function HRPage(props) {
   );
 }
 
-HRPage.propTypes = {
-  token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-};
+HumanResourceApp.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
   hrPage: makeSelectHRPage(),
-  token: AppSelectors.makeSelectAccessToken(),
-  dialog: Selectors.makeSelectDeptDialog(),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -112,4 +105,4 @@ export default compose(
   withRouter,
   withConnect,
   memo,
-)(HRPage);
+)(HumanResourceApp);

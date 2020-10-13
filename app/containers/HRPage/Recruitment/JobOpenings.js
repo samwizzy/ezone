@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, ButtonGroup, Icon, IconButton, TableContainer, Table, TableRow, TableCell, TableBody, TextField, Grid, Paper, Typography } from '@material-ui/core';
+import { Button, Icon } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -19,21 +19,24 @@ import Assignment from '@material-ui/icons/Assignment';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
-    backgroundColor: theme.palette.common.white
+    flexGrow: 1
   },
   datatable: {
-    '& .MuiTableRow-root:hover': {
+    '& table': {
+      width: '96% !important',
+      margin: '4px auto',
+    },
+    '& tr:hover': {
       cursor: 'pointer'
     },
-    '& .MuiTableHead-root': {
-      '& .MuiTableCell-head': {
+    '& thead': {
+      '& th': {
         color: theme.palette.common.white,
       },
-      '& .MuiTableCell-root:nth-child(odd)': {
+      '& th:nth-child(odd)': {
         backgroundColor: theme.palette.primary.main,
       },
-      '& .MuiTableCell-root:nth-child(even)': {
+      '& th:nth-child(even)': {
         backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
@@ -69,16 +72,7 @@ const useStyles = makeStyles(theme => ({
 
 const JobOpening = props => {
   const classes = useStyles();
-  const { loading, openNewEmployeeDialog, getEmployee, employees, employee, getJobOpenings, jobOpenings, history } = props;
-
-  React.useEffect(() => {
-  }, [employee]);
-
-  console.log(employee, "employee")
-
-  const toTitleCase = (str) => {
-    return str ? str[0].toUpperCase() + str.slice(1) : "";
-  }
+  const { loading, match, jobOpenings, history } = props;
 
   const columns = [
     {
@@ -113,35 +107,13 @@ const JobOpening = props => {
         sort: true,
       },
     },
-
-
-    /*
-    {
-      name: 'enabled',
-      label: 'Status',
-      options: {
-        filter: true,
-        sort: true,
-        customBodyRender: enabled => {
-          return (
-            <span>{enabled?"Active":"Inactive"}</span>
-          )
-        }
-      },
-    },*/
     {
       name: 'dateCreated',
       label: 'Published on',
       options: {
         filter: true,
         sort: false,
-        customBodyRender: day => {
-          return (
-            <Typography variant="inherit" color="textSecondary">
-              {moment(day).format('lll')}
-            </Typography>
-          )
-        }
+        customBodyRender: day => day ? moment(day).format('lll') : ''
       },
     },
     {
@@ -150,37 +122,23 @@ const JobOpening = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: day => {
-          return (
-            <Typography variant="inherit" color="textSecondary">
-              {moment(day).format('lll')}
-            </Typography>
-          )
-        }
+        customBodyRender: day => day ? moment(day).format('lll') : ''
       },
     },
-    /*
     {
       name: 'dateCreated',
-      label: 'Publish Date',
+      label: 'Date Published',
       options: {
         filter: true,
         sort: false,
-        customBodyRender: day => {
-          return (
-            <Typography variant="inherit" color="textSecondary">
-                {moment(day).format('lll')}
-            </Typography>
-          )
-        }
+        customBodyRender: day => day ? moment(day).format('lll') : ''
       },
     },
-    */
   ];
 
   const options = {
     filterType: 'checkbox',
-    responsive: 'scrollMaxHeight',
+    responsive: 'stacked',
     selectableRows: 'none',
     print: false,
     download: true,
@@ -192,51 +150,36 @@ const JobOpening = props => {
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
-      history.push(`/hr/recruitment/${rowData[0]}`);
+      history.push(`${match.url}/view/${rowData[0]}`);
     },
     elevation: 0
   };
 
   return (
     <div className={classes.root}>
-      <Grid
-        container
-        justify='space-around'
-      >
-        <Grid item xs={12}>
-          <MUIDataTable
-            className={classes.datatable}
-            title="Recruitment"
-            data={jobOpenings}
-            columns={columns}
-            options={options}
-          />
-        </Grid>
-      </Grid>
+      <MUIDataTable
+        className={classes.datatable}
+        title="Recruitment"
+        data={jobOpenings}
+        columns={columns}
+        options={options}
+      />
     </div>
   );
 };
 
 JobOpening.propTypes = {
   loading: PropTypes.bool,
-  getEmployees: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  employees: Selectors.makeSelectEmployees(),
-  employee: Selectors.makeSelectEmployee(),
   user: AppSelectors.makeSelectCurrentUser(),
   jobOpenings: Selectors.makeSelectJobOpenings(),
 });
 
 function mapDispatchToProps(dispatch) {
-  return {
-    openNewEmployeeDialog: () => dispatch(Actions.openNewEmployeeDialog()),
-    openEditEmployeeDialog: () => dispatch(Actions.openEditEmployeeDialog()),
-    getEmployees: () => dispatch(Actions.getEmployees()),
-    getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
-  };
+  return {};
 }
 
 const withConnect = connect(
@@ -244,8 +187,8 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(
-  compose(
-    withConnect,
-    memo,
-  )(JobOpening));
+export default compose(
+  withRouter,
+  withConnect,
+  memo,
+)(JobOpening);

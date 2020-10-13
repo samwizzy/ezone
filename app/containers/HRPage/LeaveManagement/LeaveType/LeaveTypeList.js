@@ -22,17 +22,22 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   datatable: {
-    '& .MuiTableRow-root:hover': {
+    '& table': {
+      width: '96% !important',
+      margin: '4px auto',
+    },
+    '& tr:hover': {
       cursor: 'pointer'
     },
-    '& .MuiTableHead-root': {
-      '& .MuiTableCell-head': {
+    '& thead': {
+      '& th': {
         color: theme.palette.common.white,
+        textTransform: 'capitalize'
       },
-      '& .MuiTableCell-root:nth-child(odd)': {
+      '& th:nth-child(odd)': {
         backgroundColor: theme.palette.primary.main,
       },
-      '& .MuiTableCell-root:nth-child(even)': {
+      '& th:nth-child(even)': {
         backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },

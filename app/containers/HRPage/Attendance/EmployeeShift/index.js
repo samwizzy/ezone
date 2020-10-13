@@ -1,8 +1,3 @@
-/*
- * HRPage
- *
- * This is the first thing users see of our App, at the '/' route
- */
 import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
@@ -40,13 +35,9 @@ export function EmployeeShiftPage(props) {
   );
 }
 
-EmployeeShiftPage.propTypes = {
-  token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-};
+EmployeeShiftPage.propTypes = {};
 
-const mapStateToProps = createStructuredSelector({
-  token: AppSelectors.makeSelectAccessToken(),
-});
+const mapStateToProps = createStructuredSelector({});
 
 export function mapDispatchToProps(dispatch) {
   return {

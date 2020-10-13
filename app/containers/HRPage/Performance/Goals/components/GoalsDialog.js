@@ -6,14 +6,10 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
-import { withStyles, AppBar, Avatar, Box, Button, IconButton, Checkbox, Chip, Dialog, DialogActions, DialogContent, Divider, DialogContentText, DialogTitle, FormControl, FormControlLabel, Radio, RadioGroup, Grid, MenuItem, Popover, Slide, Tabs, Tab, Typography, TextField, Toolbar } from '@material-ui/core';
+import { withStyles, AppBar, Avatar, Box, Button, IconButton, Checkbox, Chip, Dialog, DialogActions, DialogContent, Divider, FormControl, FormControlLabel, Radio, RadioGroup, Grid, MenuItem, Popover, Slide, Tabs, Tab, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
@@ -247,7 +243,7 @@ function GoalsDialog(props) {
                 name="title"
                 placeholder="Title"
                 fullWidth
-                margin="normal"
+                margin="dense"
                 variant="outlined"
                 size="small"
                 label="Title"
@@ -261,7 +257,7 @@ function GoalsDialog(props) {
                 name="description"
                 placeholder="Description"
                 fullWidth
-                margin="normal"
+                margin="dense"
                 variant="outlined"
                 multiline
                 rows={2}
@@ -280,7 +276,7 @@ function GoalsDialog(props) {
                 select
                 fullWidth
                 variant="outlined"
-                margin="normal"
+                margin="dense"
                 size="small"
                 label="Priority Level"
                 value={form.level}
@@ -303,7 +299,7 @@ function GoalsDialog(props) {
                   disablePast
                   inputVariant="outlined"
                   format="dd/MM/yyyy"
-                  margin="normal"
+                  margin="dense"
                   fullWidth
                   size="small"
                   name="dueDate"

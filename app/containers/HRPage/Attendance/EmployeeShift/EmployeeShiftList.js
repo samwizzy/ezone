@@ -1,15 +1,14 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import EzoneUtils from '../../../../utils/EzoneUtils'
-import { Avatar, Button, TextField, Grid, Paper, Typography } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors'
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
+import { darken } from '@material-ui/core/styles/colorManipulator';
 import moment from 'moment'
 import MUIDataTable from 'mui-datatables'
 import * as Actions from './../actions';
@@ -19,21 +18,24 @@ import { AssignShift } from '../components/AddButton'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
-    backgroundColor: theme.palette.common.white
+    flexGrow: 1
   },
   datatable: {
-    '& .MuiTableRow-root:hover': {
+    '& table': {
+      width: '96% !important',
+      margin: '4px auto',
+    },
+    '& tr:hover': {
       cursor: 'pointer'
     },
-    '& .MuiTableHead-root': {
-      '& .MuiTableCell-head': {
+    '& thead': {
+      '& th': {
         color: theme.palette.common.white,
       },
-      '& .MuiTableCell-root:nth-child(odd)': {
+      '& th:nth-child(odd)': {
         backgroundColor: theme.palette.primary.main,
       },
-      '& .MuiTableCell-root:nth-child(even)': {
+      '& th:nth-child(even)': {
         backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
@@ -52,9 +54,6 @@ const EmployeeShiftList = props => {
   const classes = useStyles();
   const { loading, employees, shifts, employeeShifts, openNewEmployeeShiftDialog, getUsersByShift } = props;
   const [shift, setShift] = React.useState('')
-
-  React.useEffect(() => {
-  }, []);
 
   const selectUsersByShift = (event, obj) => {
     setShift(obj.id)
@@ -85,7 +84,7 @@ const EmployeeShiftList = props => {
           return (
             <span>
               {
-                `${EzoneUtils.toTitleCase(emp.firstName)} 
+                `${EzoneUtils.toTitleCase(emp.firstName)}
                 ${EzoneUtils.toTitleCase(emp.lastName)}`
               }
             </span>
@@ -109,7 +108,7 @@ const EmployeeShiftList = props => {
     },
     {
       name: 'id',
-      label: 'End date',
+      label: 'Duration',
       options: {
         filter: true,
         sort: true,
@@ -125,7 +124,7 @@ const EmployeeShiftList = props => {
 
   const options = {
     filterType: 'checkbox',
-    responsive: 'scrollMaxHeight',
+    responsive: 'stacked',
     selectableRows: 'none',
     print: false,
     download: true,
@@ -141,26 +140,19 @@ const EmployeeShiftList = props => {
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
-      // getAttendanceById(rowData[0])
     },
     elevation: 0
   };
 
   return (
     <div className={classes.root}>
-      <Grid
-        container
-      >
-        <Grid item md={12}>
-          <MUIDataTable
-            className={classes.datatable}
-            title="Employee Shifts"
-            data={usersOnShifts}
-            columns={columns}
-            options={options}
-          />
-        </Grid>
-      </Grid>
+      <MUIDataTable
+        className={classes.datatable}
+        title="Employee Shifts"
+        data={employeeShifts}
+        columns={columns}
+        options={options}
+      />
     </div>
   );
 };

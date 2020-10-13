@@ -2,8 +2,8 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Box, Breadcrumbs, Button, Divider, Table, TableRow, TableCell, TableBody, Grid, Link, Paper, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Box, Breadcrumbs, Table, TableRow, TableCell, TableBody, Grid, Link, Typography } from '@material-ui/core';
 import TodayIcon from '@material-ui/icons/Today';
 import { green } from '@material-ui/core/colors';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
@@ -11,7 +11,6 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import moment from 'moment'
 import * as Actions from '../../../actions';
 import * as Selectors from '../../../selectors';
@@ -23,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   },
   table: {
     "& .MuiTableCell-root": {
-      border: "none !important"
+      // border: 0
     },
     "& .MuiTableRow-root:first-child": {
       "& .MuiTableCell-root": {
@@ -34,10 +33,10 @@ const useStyles = makeStyles(theme => ({
   tableRoot: {
     backgroundColor: theme.palette.background.paper,
     marginBottom: theme.spacing(7),
-    padding: theme.spacing(0, 4)
   },
   box: {
-    backgroundColor: theme.palette.grey[50]
+    backgroundColor: theme.palette.grey[50],
+    borderLeft: `4px solid ${green[500]}`
   },
   icon: {
     "&.active": {
@@ -83,27 +82,21 @@ const DescriptionTab = props => {
                     <TableCell align="right">
                       <div className={classes.dateline}>
                         <Typography variant="subtitle1"><TodayIcon /> Published {moment(jobOpeningDetails.dateCreated).format('lll')}</Typography>
-                        {/* <Typography variant="subtitle1"><TodayIcon/> Expires {jobOpeningDetails.department.name}</Typography> */}
+                        <Typography variant="subtitle1"><TodayIcon /> Expires {moment(jobOpeningDetails.submissionDeadline).format('lll')}</Typography>
                       </div>
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell component="th" scope="row" colSpan={3}>Job Title</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell colSpan={2}><Box p={1} className={classes.box}>{jobOpeningDetails.jobTitle}</Box></TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell component="th" scope="row" colSpan={3}>Job Description</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell colSpan={2}>
-                      <Box p={1} className={classes.box}>
-                        {jobOpeningDetails.jobDescription}
-                      </Box>
+                    <TableCell component="th" scope="row" colSpan={3}>
+                      <Typography>Job Title</Typography>
+                      <Box p={1} className={classes.box}>{jobOpeningDetails.jobTitle}</Box>
                     </TableCell>
-                    <TableCell></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell component="th" scope="row" colSpan={3}>
+                      <Typography>Job Description</Typography>
+                      <Box p={1} className={classes.box}> {jobOpeningDetails.jobDescription}</Box>
+                    </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>

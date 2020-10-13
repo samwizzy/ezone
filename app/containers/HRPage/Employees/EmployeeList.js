@@ -22,26 +22,30 @@ import { AddEmployee } from '../../Accounting/components/AddButton';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    // display: 'flex',
+    flexGrow: 1,
     backgroundColor: theme.palette.common.white,
   },
   datatable: {
+    '& table': {
+      width: '96% !important',
+      margin: '4px auto',
+    },
     '& tr:hover': {
       cursor: 'pointer',
     },
-    '& .MuiTableBody-root': {
-      '& .MuiTableCell-root': {
+    '& tbody': {
+      '& td': {
         padding: theme.spacing(1),
       },
     },
-    '& .MuiTableHead-root': {
-      '& .MuiTableCell-head': {
+    '& thead': {
+      '& th': {
         color: theme.palette.common.white,
       },
-      '& .MuiTableCell-root:nth-child(odd)': {
+      '& th:nth-child(odd)': {
         backgroundColor: theme.palette.primary.main,
       },
-      '& .MuiTableCell-root:nth-child(even)': {
+      '& th:nth-child(even)': {
         backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
@@ -155,7 +159,6 @@ const EmployeesApp = props => {
     responsive: 'stacked',
     selectableRows: 'none',
     print: false,
-    download: true,
     viewColumns: false,
     customToolbar: () => <AddEmployee openDialog={openNewEmployeeDialog} />,
     rowsPerPage: 10,

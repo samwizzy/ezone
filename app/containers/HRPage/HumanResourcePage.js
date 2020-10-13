@@ -1,15 +1,10 @@
-/*
- * HumanResourcePage
- *
- * This is the first thing users see of our App, at the '/' route
- */
-import React, { useEffect, memo } from 'react';
+import React, { Fragment, useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import { withRouter } from 'react-router-dom'
+import { withRouter, Route } from 'react-router-dom'
 import DashboardApp from './Dashboard'
 import EmployeesApp from './Employees'
 import RolesApp from './Roles'
@@ -20,35 +15,49 @@ import AnnouncementApp from './Announcement'
 
 const HumanResourcePage = props => {
   const { match } = props
-  const { params } = match
+  const { params, path } = match
 
   console.log(params, "params tired")
+  console.log(path, "path tired")
 
-  switch (params.section) {
-    case 'dashboard':
-      return <DashboardApp />
-      break;
-    case 'employees':
-      return <EmployeesApp />
-      break;
-    case 'departments':
-      return <DepartmentsApp />
-      break;
-    case 'roles':
-      return <RolesApp />
-      break;
-    case 'branches':
-      return <BranchesApp />
-      break;
-    case 'recruitment':
-      return <RecruitmentApp />
-      break;
-    case 'announcement':
-      return <AnnouncementApp />
-      break;
-    default:
-      return <DashboardApp />
-  }
+  return (
+    <Fragment>
+      <Route exact path={path} component={DashboardApp} />
+      <Route path={`${path}/dashboard`} component={DashboardApp} />
+      <Route path={`${path}/employees`} component={EmployeesApp} />
+      <Route path={`${path}/departments`} component={DepartmentsApp} />
+      <Route path={`${path}/roles`} component={RolesApp} />
+      <Route path={`${path}/branches`} component={BranchesApp} />
+      <Route path={`${path}/recruitment`} component={RecruitmentApp} />
+      <Route path={`${path}/announcement`} component={AnnouncementApp} />
+    </Fragment>
+  )
+
+  // switch (params.section) {
+  //   case 'dashboard':
+  //     return <DashboardApp />
+  //     break;
+  //   case 'employees':
+  //     return <EmployeesApp />
+  //     break;
+  //   case 'departments':
+  //     return <DepartmentsApp />
+  //     break;
+  //   case 'roles':
+  //     return <RolesApp />
+  //     break;
+  //   case 'branches':
+  //     return <BranchesApp />
+  //     break;
+  //   case 'recruitment':
+  //     return <RecruitmentApp />
+  //     break;
+  //   case 'announcement':
+  //     return <AnnouncementApp />
+  //     break;
+  //   default:
+  //     return <DashboardApp />
+  // }
 }
 
 HumanResourcePage.propTypes = {};

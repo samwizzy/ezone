@@ -2,24 +2,17 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Route } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { useInjectSaga } from 'utils/injectSaga';
-import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectHRPage from './../selectors';
-import reducer from './../reducer';
-import saga from './../saga';
+import * as Selectors from './../selectors';
 import Dashboard from './Dashboard'
 import ModuleLayout from './components/ModuleLayout'
 import AgeProfileReport from './AgeProfileReport/AgeProfileReport'
 import GenderProfileReport from './GenderProfileReport/GenderProfileReport'
 
-const key = 'hrPage';
 export function DashboardPage({ match }) {
-  useInjectReducer({ key, reducer });
-  useInjectSaga({ key, saga });
-  const { params } = match
+  const { path } = match
 
   return (
     <div>
@@ -29,12 +22,9 @@ export function DashboardPage({ match }) {
       </Helmet>
 
       <ModuleLayout>
-        {params.status === 'age-report' ?
-          <AgeProfileReport /> :
-          params.status === 'gender-report' ?
-            <GenderProfileReport /> :
-            <Dashboard />
-        }
+        <Route exact path={path} component={Dashboard} />
+        <Route path={`${path}/age-report`} component={AgeProfileReport} />
+        <Route path={`${path}/gender-report`} component={GenderProfileReport} />
       </ModuleLayout>
     </div>
   );
@@ -42,9 +32,7 @@ export function DashboardPage({ match }) {
 
 DashboardPage.propTypes = {};
 
-const mapStateToProps = createStructuredSelector({
-  hrPage: makeSelectHRPage(),
-});
+const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
   return {};

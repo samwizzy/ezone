@@ -22,10 +22,13 @@ import AddAttendanceDialog from './components/AddAttendanceDialog'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
-    backgroundColor: theme.palette.common.white
+    flexGrow: 1
   },
   datatable: {
+    '& table': {
+      width: '96% !important',
+      margin: '4px auto',
+    },
     '& tr:hover': {
       cursor: 'pointer'
     },
@@ -55,9 +58,6 @@ const AttendanceList = props => {
   const classes = useStyles();
   const { loading, openNewAttendanceDialog, getAttendances, attendances, getAttendanceById } = props;
   console.log(attendances, "attendances")
-
-  React.useEffect(() => {
-  }, []);
 
   const columns = [
     {
@@ -118,7 +118,7 @@ const AttendanceList = props => {
 
   const options = {
     filterType: 'checkbox',
-    responsive: 'scrollMaxHeight',
+    responsive: 'stacked',
     selectableRows: 'none',
     print: false,
     download: true,
@@ -151,21 +151,13 @@ const AttendanceList = props => {
 
   return (
     <div className={classes.root}>
-      <Grid
-        container
-        justify='space-around'
-      >
-        <Grid item md={12}>
-          <MUIDataTable
-            className={classes.datatable}
-            title="Attendance List"
-            data={attendances}
-            columns={columns}
-            options={options}
-          />
-        </Grid>
-      </Grid>
-
+      <MUIDataTable
+        className={classes.datatable}
+        title="Attendance List"
+        data={attendances}
+        columns={columns}
+        options={options}
+      />
       <AddAttendanceDialog />
     </div>
   );

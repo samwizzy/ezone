@@ -1,33 +1,24 @@
 import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import * as Selectors from './../selectors';
-import { useInjectReducer } from 'utils/injectReducer';
-import { useInjectSaga } from 'utils/injectSaga';
 import * as AppSelectors from '../../App/selectors';
 import * as AppActions from '../../App/actions';
 import * as Actions from './../actions';
-import makeSelectHRPage from './../selectors';
-import reducer from './../reducer';
-import saga from './../saga';
+import * as Selectors from './../selectors';
 import ModuleLayout from './ModuleLayout'
 import AnnouncementList from './AnnouncementList';
 import AddAnnouncementDialog from './components/AddAnnouncementDialog';
 import AnnouncementViewDialog from './components/AnnouncementViewDialog';
 
-const key = 'hrPage';
-
 export const AnnouncementPage = props => {
-  useInjectReducer({ key, reducer });
-  useInjectSaga({ key, saga });
   const { loading } = props;
 
   return (
-    <React.Fragment>
+    <div>
       <Helmet>
         <title>Announcement Page</title>
         <meta name="description" content="ezone application announcement page" />
@@ -39,18 +30,13 @@ export const AnnouncementPage = props => {
 
       <AnnouncementViewDialog />
       <AddAnnouncementDialog />
-
-    </React.Fragment>
+    </div>
   );
 }
 
-AnnouncementPage.propTypes = {
-  token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-};
+AnnouncementPage.propTypes = {};
 
-const mapStateToProps = createStructuredSelector({
-  hrPage: makeSelectHRPage(),
-});
+const mapStateToProps = createStructuredSelector({});
 
 export function mapDispatchToProps(dispatch) {
   return {
@@ -65,6 +51,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(AnnouncementPage);

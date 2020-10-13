@@ -1,7 +1,3 @@
-/**
- * Gets the repositories of the user from Github
- */
-
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import request from '../../../utils/request';
 import * as AppActions from '../../App/actions';
@@ -219,7 +215,6 @@ export function* createShift({ type, payload }) {
 }
 
 export function* assignShift({ payload }) {
-  console.log(payload, "payload first in saga");
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.AssignShift}/${payload.shiftId}`;
@@ -234,11 +229,12 @@ export function* assignShift({ payload }) {
       }),
     });
 
-    console.log(response, 'ASSIGN SHIFT RESPONSE');
+    console.log(response, 'ASSIGN SHIFT RESPONSE for checks');
 
     yield put(AppActions.openSnackBar({ message: "Shift assigned successfully", status: 'success' }));
     yield put({ type: Constants.CLOSE_NEW_EMPLOYEE_SHIFT_DIALOG });
     yield put({ type: Constants.GET_EMPLOYEES });
+    yield put(Actions.getUsersByShift(payload.shiftId));
   } catch (err) {
     yield put(AppActions.openSnackBar({ message: 'Internal Server Error', status: 'error' }));
     console.log(err.message, "assign shift err message")

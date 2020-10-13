@@ -21,13 +21,9 @@ import AddEmployeeDialog from './components/AddEmployeeDialog';
 import WorkExperienceDialog from './components/WorkExperienceDialog';
 import EducationBackgroundDialog from './components/EducationBackgroundDialog';
 
-const key = 'hrPage';
-
 export function EmployeePage(props) {
-  const { getEmployees, match } = props;
+  const { match } = props;
   const { params } = match
-  useInjectReducer({ key, reducer });
-  useInjectSaga({ key, saga });
 
   return (
     <React.Fragment>
@@ -49,19 +45,12 @@ export function EmployeePage(props) {
   );
 }
 
-EmployeePage.propTypes = {
-  token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-};
+EmployeePage.propTypes = {};
 
-const mapStateToProps = createStructuredSelector({
-  hrPage: makeSelectHRPage(),
-  token: AppSelectors.makeSelectAccessToken(),
-});
+const mapStateToProps = createStructuredSelector({});
 
 export function mapDispatchToProps(dispatch) {
-  return {
-    getEmployees: () => dispatch(Actions.getEmployees()),
-  };
+  return {};
 }
 
 const withConnect = connect(

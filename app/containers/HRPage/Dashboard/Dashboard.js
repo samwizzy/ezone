@@ -2,7 +2,6 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { makeStyles, Grid } from '@material-ui/core';
@@ -78,7 +77,7 @@ export function DashBoard(props) {
         <Grid item xs={12}>
           <Grid container className={classes.grid} spacing={3}>
             <Grid item xs={12}>
-              <Widget13 announcements={announcements} />
+              <Widget13 />
             </Grid>
           </Grid>
         </Grid>
@@ -91,8 +90,6 @@ DashBoard.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
   employees: Selectors.makeSelectEmployees(),
-  user: AppSelectors.makeSelectCurrentUser(),
-  departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
   attendances: Selectors.makeSelectAttendances(),
   announcements: Selectors.makeSelectAnnouncements(),
   jobOpenings: Selectors.makeSelectJobOpenings(),

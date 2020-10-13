@@ -29,14 +29,6 @@ export function* getEmployees() {
 
     yield put(Actions.getEmployeesSuccess(response));
   } catch (err) {
-    if (err.message) {
-      // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
-    } else {
-      const error = yield call(errorHandler, err.response.json())
-      if (error.status === 500 || error.status === 400) {
-        yield put(AppActions.openSnackBar({ message: error.message, status: 'error' }));
-      }
-    }
     // yield put(Actions.getEmployeesError(err));
   }
 }

@@ -16,31 +16,34 @@ import * as Selectors from '../selectors';
 import * as AppSelectors from '../../App/selectors';
 import EditSharp from '@material-ui/icons/EditSharp';
 import Assignment from '@material-ui/icons/Assignment';
-import {AddEmployee} from '../../Accounting/components/AddButton'
+import { AddEmployee } from '../../Accounting/components/AddButton'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
-    backgroundColor: theme.palette.common.white
+    flexGrow: 1
   },
   datatable: {
-    '& .MuiTableRow-root:hover': {
+    '& table': {
+      width: '96% !important',
+      margin: '4px auto',
+    },
+    '& tr:hover': {
       cursor: 'pointer'
     },
-    '& .MuiTableHead-root': {
-      '& .MuiTableCell-head': {
+    '& thead': {
+      '& th': {
         color: theme.palette.common.white,
       },
-      '& .MuiTableCell-root:nth-child(odd)': {
+      '& th:nth-child(odd)': {
         backgroundColor: theme.palette.primary.main,
       },
-      '& .MuiTableCell-root:nth-child(even)': {
+      '& th:nth-child(even)': {
         backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
   },
-  table: { 
-    border: 0, 
+  table: {
+    border: 0,
     whiteSpace: 'nowrap',
     overflowX: 'auto',
   },
@@ -59,9 +62,9 @@ const useStyles = makeStyles(theme => ({
     width: 14,
     height: 14,
     color: theme.palette.grey[800],
-    '&.approved': { color: theme.palette.primary.main},
-    '&.inProgress': { color: orange[500]},
-    '&.done': { color: green[500]},
+    '&.approved': { color: theme.palette.primary.main },
+    '&.inProgress': { color: orange[500] },
+    '&.done': { color: green[500] },
   },
   buttonGroup: {
     marginBottom: theme.spacing(1),
@@ -77,8 +80,8 @@ const RecruitmentList = props => {
 
   console.log(employee, "employee")
 
-  const toTitleCase = (str) => { 
-    return str? str[0].toUpperCase() + str.slice(1) : ""; 
+  const toTitleCase = (str) => {
+    return str ? str[0].toUpperCase() + str.slice(1) : "";
   }
 
   const columns = [
@@ -94,29 +97,29 @@ const RecruitmentList = props => {
       name: 'id',
       label: 'Job Title',
       options: {
-      filter: true,
-      sort: true,
+        filter: true,
+        sort: true,
       },
     },
     {
       name: 'id',
       label: 'Applicant',
       options: {
-      filter: true,
-      sort: true,
+        filter: true,
+        sort: true,
       },
     },
     {
       name: 'enabled',
       label: 'Status',
       options: {
-      filter: true,
-      sort: true,
-      customBodyRender: enabled => {
-        return (
-          <span>{enabled?"Active":"Inactive"}</span>
-        )
-      }
+        filter: true,
+        sort: true,
+        customBodyRender: enabled => {
+          return (
+            <span>{enabled ? "Active" : "Inactive"}</span>
+          )
+        }
       },
     },
     {
@@ -128,7 +131,7 @@ const RecruitmentList = props => {
         customBodyRender: day => {
           return (
             <Typography variant="inherit" color="textSecondary">
-                {moment(day).format('lll')}
+              {moment(day).format('lll')}
             </Typography>
           )
         }
@@ -143,7 +146,7 @@ const RecruitmentList = props => {
         customBodyRender: day => {
           return (
             <Typography variant="inherit" color="textSecondary">
-                {moment(day).format('lll')}
+              {moment(day).format('lll')}
             </Typography>
           )
         }
@@ -158,7 +161,7 @@ const RecruitmentList = props => {
         customBodyRender: day => {
           return (
             <Typography variant="inherit" color="textSecondary">
-                {moment(day).format('lll')}
+              {moment(day).format('lll')}
             </Typography>
           )
         }
@@ -176,7 +179,7 @@ const RecruitmentList = props => {
     filter: false,
     customToolbar: () => <IconButton component={Link} to="/hr/recruitment/new"><Icon color="primary">add_circle</Icon></IconButton>,
     rowsPerPage: 10,
-    rowsPerPageOptions: [10,25,50,100],
+    rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
       console.log(rowData[0], "rowData[0]")
       getEmployee(rowData[0])
@@ -192,13 +195,13 @@ const RecruitmentList = props => {
       >
         <Grid item md={9}>
           <div className={classes.content}>
-        
+
             <MUIDataTable
-                className={classes.datatable}
-                title="Recruitment"
-                data={employees}
-                columns={columns}
-                options={options}
+              className={classes.datatable}
+              title="Recruitment"
+              data={employees}
+              columns={columns}
+              options={options}
             />
 
           </div>
@@ -207,57 +210,57 @@ const RecruitmentList = props => {
           <div className={classes.gridRoot}>
             <div className={classes.buttonGroup}>
               <ButtonGroup size="small" aria-label="small outlined button group">
-                <Button onClick={()=>{}}><EditSharp className={classes.icon} />Edit</Button>
-                <Button onClick={()=>{}}><Assignment className={classes.icon} />Assign</Button>
+                <Button onClick={() => { }}><EditSharp className={classes.icon} />Edit</Button>
+                <Button onClick={() => { }}><Assignment className={classes.icon} />Assign</Button>
               </ButtonGroup>
             </div>
 
             <TableContainer component={Paper} square>
-                <Table className={classes.table} size="small" aria-label="a dense table">
+              <Table className={classes.table} size="small" aria-label="a dense table">
                 <TableBody>
-                    {employee && Object.keys(employee).length > 0 && (
-                    <React.Fragment>  
+                  {employee && Object.keys(employee).length > 0 && (
+                    <React.Fragment>
                       <TableRow key='0'>
-                          <TableCell component="th" scope="row">
-                              Name
+                        <TableCell component="th" scope="row">
+                          Name
                           </TableCell>
-                          <TableCell align="right">
-                            {`${toTitleCase(employee.firstName)} ${toTitleCase(employee.lastName)}`}
-                          </TableCell>
+                        <TableCell align="right">
+                          {`${toTitleCase(employee.firstName)} ${toTitleCase(employee.lastName)}`}
+                        </TableCell>
                       </TableRow>
                       <TableRow key='1'>
-                          <TableCell component="th" scope="row">
-                              Email Address
+                        <TableCell component="th" scope="row">
+                          Email Address
                           </TableCell>
-                          <TableCell align="right">{employee.emailAddress}</TableCell>
+                        <TableCell align="right">{employee.emailAddress}</TableCell>
                       </TableRow>
                       <TableRow key='2'>
-                          <TableCell component="th" scope="row">
-                              Phone Number
+                        <TableCell component="th" scope="row">
+                          Phone Number
                           </TableCell>
-                          <TableCell align="right">{employee.phoneNumber}</TableCell>
+                        <TableCell align="right">{employee.phoneNumber}</TableCell>
                       </TableRow>
                       <TableRow key='3'>
-                          <TableCell component="th" scope="row">
-                              Gender
+                        <TableCell component="th" scope="row">
+                          Gender
                           </TableCell>
-                          <TableCell align="right">{employee.gender}</TableCell>
+                        <TableCell align="right">{employee.gender}</TableCell>
                       </TableRow>
                       <TableRow key='4'>
-                          <TableCell component="th" scope="row">
-                              Address
+                        <TableCell component="th" scope="row">
+                          Address
                           </TableCell>
-                          <TableCell align="right">{`${employee.city?employee.city:""} ${employee.state?employee.state:""} ${employee.country}`}</TableCell>
+                        <TableCell align="right">{`${employee.city ? employee.city : ""} ${employee.state ? employee.state : ""} ${employee.country}`}</TableCell>
                       </TableRow>
                       <TableRow key='5'>
-                          <TableCell component="th" scope="row">
-                              Created On                          </TableCell>
-                          <TableCell align="right">{moment(employee.dateCreated).format('ll')}</TableCell>
+                        <TableCell component="th" scope="row">
+                          Created On                          </TableCell>
+                        <TableCell align="right">{moment(employee.dateCreated).format('ll')}</TableCell>
                       </TableRow>
                     </React.Fragment>
-                    )}
+                  )}
                 </TableBody>
-                </Table>
+              </Table>
             </TableContainer>
           </div>
         </Grid>
@@ -274,7 +277,7 @@ RecruitmentList.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   employees: Selectors.makeSelectEmployees(),
-  employee : Selectors.makeSelectEmployee(),
+  employee: Selectors.makeSelectEmployee(),
   user: AppSelectors.makeSelectCurrentUser(),
 });
 
@@ -296,4 +299,4 @@ export default withRouter(
   compose(
     withConnect,
     memo,
-)(RecruitmentList));
+  )(RecruitmentList));

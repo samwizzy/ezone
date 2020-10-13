@@ -1,8 +1,3 @@
-/*
- * HRPage
- *
- * This is the first thing users see of our App, at the '/' route
- */
 import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
@@ -16,12 +11,6 @@ import * as Actions from './../actions';
 import * as Selectors from './../selectors';
 import ReviewsList from './ReviewsList'
 import ReviewDialog from './components/ReviewDialog'
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-}));
 
 export function HolidaysPage(props) {
   const { getReviews } = props;
@@ -45,13 +34,9 @@ export function HolidaysPage(props) {
   );
 }
 
-HolidaysPage.propTypes = {
-  token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-};
+HolidaysPage.propTypes = {};
 
-const mapStateToProps = createStructuredSelector({
-  token: AppSelectors.makeSelectAccessToken(),
-});
+const mapStateToProps = createStructuredSelector({});
 
 export function mapDispatchToProps(dispatch) {
   return {

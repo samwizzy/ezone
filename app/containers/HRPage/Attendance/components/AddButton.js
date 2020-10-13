@@ -21,7 +21,6 @@ export function AddAttendance(props) {
     <React.Fragment>
       <Tooltip title="New Attendance">
         <Button
-          size="small"
           color="primary"
           variant="contained"
           className={classes.button}
@@ -43,7 +42,6 @@ export function AddShift(props) {
     <React.Fragment>
       <Tooltip title="New Shift">
         <Button
-          size="small"
           color="primary"
           variant="contained"
           className={classes.button}
@@ -66,7 +64,6 @@ export function AssignShift(props) {
     <React.Fragment>
       <Tooltip title="Assign Shift">
         <Button
-          size="small"
           color="primary"
           variant="contained"
           className={classes.button}

@@ -6,11 +6,7 @@ import _ from 'lodash';
 import { AppBar, Box, Button, Card, Container, Divider, FormGroup, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, Checkbox, MenuItem, TextField, Toolbar, Typography, CardActions, Paper } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1, 0)
-    },
-  },
+  root: {},
   radio: {
     '&:hover': {
       backgroundColor: 'transparent',
@@ -121,12 +117,9 @@ export const HiringWorkFlowForm = props => {
         <Box p={3} className={classes.root}>
           <Grid container spacing={1}>
             <Grid item xs={12} style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Button onClick={addNewForm}>
-                Add
-              </Button>
+              <Button onClick={addNewForm}>Add</Button>
             </Grid>
             <Grid item xs={12}>
-
               {open &&
                 <React.Fragment>
                   <FormGroup row style={{ alignItems: 'center' }}>
@@ -148,8 +141,9 @@ export const HiringWorkFlowForm = props => {
                   </FormGroup>
                 </React.Fragment>
               }
-
-              <FormLabel component="legend">Hiring Steps (In the order you want them applied)</FormLabel>
+              <FormControl margin="normal">
+                <FormLabel component="legend">Hiring Steps (In the order you want them applied)</FormLabel>
+              </FormControl>
               <FormGroup defaultValue="screening" aria-label="hiringSteps" onClick={handleStepChange}>
                 {steps.map((step, i) =>
                   <FormControlLabel key={i} name="hiringSteps" value={step.value} control={<StyledRadio />} label={step.label} />

@@ -1,8 +1,3 @@
-/*
- * HRPage
- *
- * This is the first thing users see of our App, at the '/' route
- */
 import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
@@ -45,13 +40,10 @@ export function PerformancePage(props) {
   );
 }
 
-PerformancePage.propTypes = {
-  token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-};
+PerformancePage.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
   performance: makeSelectPerformancePage(),
-  token: AppSelectors.makeSelectAccessToken(),
 });
 
 export function mapDispatchToProps(dispatch) {

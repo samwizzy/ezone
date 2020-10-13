@@ -13,6 +13,7 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../../App/selectors';
 import RecognitionItem from './recognitions/RecognitionItem'
+import DataMessage from '../../components/DataMessage';
 
 const useStyles = makeStyles(theme => ({
   root: {

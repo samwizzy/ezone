@@ -152,14 +152,14 @@ const ChartAccountDetails = props => {
                       {chartOfAccount.accountType &&
                         chartOfAccount.accountType.accountType === 'Bank'
                         ? EzoneUtils.formatCurrency(chartOfAccount.bankBalance, currency && currency.code)
-                        : EzoneUtils.formatCurrency(chartOfAccount.openingBalance - (chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit, 0) - chartOfAccount.entries.reduce((curVal, b) => curVal + b.debit, 0)), currency && currency.code)}
+                        : EzoneUtils.formatCurrency(chartOfAccount.openingBalance + (chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit, 0) - chartOfAccount.entries.reduce((curVal, b) => curVal + b.debit, 0)), currency && currency.code)}
                     </TableCell>
                     :
                     <TableCell>
                       {chartOfAccount.accountType &&
                         chartOfAccount.accountType.accountType === 'Bank'
                         ? EzoneUtils.formatCurrency(chartOfAccount.bankBalance, currency && currency.code)
-                        : EzoneUtils.formatCurrency(chartOfAccount.openingBalance - (chartOfAccount.entries.reduce((curVal, b) => curVal + b.debit, 0) - chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit, 0)), currency && currency.code)}
+                        : EzoneUtils.formatCurrency(chartOfAccount.openingBalance + (chartOfAccount.entries.reduce((curVal, b) => curVal + b.debit, 0) - chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit, 0)), currency && currency.code)}
                     </TableCell>
                   }
                 </TableRow>
@@ -187,6 +187,29 @@ const ChartAccountDetails = props => {
                 </TableRow>
               </TableHead>
               <TableBody>
+                <TableRow>
+                  <TableCell>{moment(chartOfAccount.dateCreated).format('ll')}</TableCell>
+                  <TableCell>{moment(chartOfAccount.dateCreated).format('ll')}</TableCell>
+                  <TableCell />
+                  <TableCell>
+                    {chartOfAccount.type === 'DEBIT'
+                      ? EzoneUtils.formatCurrency(chartOfAccount.openingBalance, currency && currency.code)
+                      : EzoneUtils.formatCurrency(0, currency && currency.code)
+                    }
+                  </TableCell>
+                  <TableCell>
+                    {chartOfAccount.type === 'CREDIT'
+                      ? EzoneUtils.formatCurrency(chartOfAccount.openingBalance, currency && currency.code)
+                      : EzoneUtils.formatCurrency(0, currency && currency.code)
+                    }
+                  </TableCell>
+                  <TableCell>
+                    {chartOfAccount.type === 'CREDIT'
+                      ? EzoneUtils.formatCurrency(-chartOfAccount.openingBalance, currency && currency.code)
+                      : EzoneUtils.formatCurrency(chartOfAccount.openingBalance, currency && currency.code)
+                    }
+                  </TableCell>
+                </TableRow>
                 {chartOfAccount.entries.map((entry, i) =>
                   <TableRow key={i}>
                     <TableCell>{moment(entry.dateCreated).format('ll')}</TableCell>
@@ -194,7 +217,7 @@ const ChartAccountDetails = props => {
                     <TableCell>{entry.reference}</TableCell>
                     <TableCell>{EzoneUtils.formatCurrency(entry.debit, currency && currency.code)}</TableCell>
                     <TableCell>{EzoneUtils.formatCurrency(entry.credit, currency && currency.code)}</TableCell>
-                    <TableCell>{EzoneUtils.formatCurrency(Number(entry.debit) - Number(entry.credit), currency && currency.code)}</TableCell>
+                    <TableCell>{EzoneUtils.formatCurrency(chartOfAccount.entries.slice(0, i + 1).reduce((curVal, b) => (curVal + b.debit - b.credit), chartOfAccount.openingBalance), currency && currency.code)}</TableCell>
                   </TableRow>
                 )}
                 <TableRow>
@@ -204,7 +227,7 @@ const ChartAccountDetails = props => {
                   <TableCell>{EzoneUtils.formatCurrency(chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit, 0), currency && currency.code)}</TableCell>
                   {chartOfAccount.type === 'CREDIT'
                     ? <TableCell>{EzoneUtils.formatCurrency(chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit, 0) - chartOfAccount.entries.reduce((curVal, b) => curVal + b.debit, 0), currency && currency.code)}</TableCell>
-                    : <TableCell>{EzoneUtils.formatCurrency(chartOfAccount.entries.reduce((curVal, b) => curVal + b.debit, 0) - chartOfAccount.entries.reduce((curVal, b) => curVal + b.credit, 0), currency && currency.code)}</TableCell>
+                    : <TableCell>{EzoneUtils.formatCurrency(chartOfAccount.entries.reduce((curVal, b) => (curVal + b.debit - b.credit), chartOfAccount.openingBalance), currency && currency.code)}</TableCell>
                   }
                 </TableRow>
               </TableBody>

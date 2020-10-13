@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Route } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -23,22 +23,20 @@ const useStyles = makeStyles(theme => ({
 const RecruitmentApp = props => {
   const classes = useStyles();
   const { loading, match, getJobOpenings, jobOpenings, } = props;
-  const { params } = match
+  const { path } = match
   console.log(jobOpenings, "Job openings")
 
   return (
     <React.Fragment>
       <Helmet>
-        <title>Employee Page</title>
-        <meta name="description" content="ezone application employee page" />
+        <title>Recruitment</title>
+        <meta name="description" content="ezone application recruitment" />
       </Helmet>
 
       <ModuleLayout>
-        {
-          params.status === 'new' ?
-            <AddRecruitment /> :
-            params.status ? <JobOpeningDetails /> : <JobOpenings />
-        }
+        <Route exact path={path} component={JobOpenings} />
+        <Route path={`${path}/new`} component={AddRecruitment} />
+        <Route path={`${path}/view/:recruitmentId`} component={JobOpeningDetails} />
       </ModuleLayout>
     </React.Fragment>
   );

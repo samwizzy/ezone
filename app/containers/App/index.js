@@ -164,11 +164,8 @@ const App = props => (
                 path="/human-resource/attendance"
                 component={AttendancePage}
               />
-              <PrivateRoute
-                exact
-                path="/hr/:section?/:status?"
-                component={HRPage}
-              />
+              {/* <PrivateRoute exact path="/hr/:section?/:status?"  component={HRPage} /> */}
+              <PrivateRoute path="/hr" component={HRPage} />
 
               <PrivateRoute
                 exact

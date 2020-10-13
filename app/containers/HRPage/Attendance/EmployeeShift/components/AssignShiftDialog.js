@@ -160,7 +160,7 @@ function AssignShiftDialog(props) {
   const selected = employees && _.filter(employees, (employee) => {
     return _.some(form.usersId, { 'id': employee.id });
   })
-  const selectedDept = departments && _.find(departments, { 'id': form.partyId })
+  const selectedDept = departments ? _.find(departments, { 'id': form.partyId }) : null;
 
   console.log(selectedDept, "selectedDept")
 
@@ -186,7 +186,7 @@ function AssignShiftDialog(props) {
 
         <DialogContent dividers>
           <Autocomplete
-            id="combo-box-demo"
+            id="employee-shift-id"
             size="small"
             options={shifts ? shifts : []}
             getOptionLabel={option => option.shiftName}

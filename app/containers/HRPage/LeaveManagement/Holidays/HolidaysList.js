@@ -15,13 +15,16 @@ import * as Actions from './../actions';
 import * as Selectors from './../selectors';
 import * as AppSelectors from '../../../App/selectors';
 import { AddHoliday } from '../components/AddButton'
-import HolidayDialog from './components/HolidayDialog'
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
   },
   datatable: {
+    '& table': {
+      width: '96% !important',
+      margin: '4px auto',
+    },
     '& tr:hover': {
       cursor: 'pointer'
     },
@@ -110,8 +113,6 @@ const HolidaysList = props => {
         columns={columns}
         options={options}
       />
-
-      <HolidayDialog />
     </div>
   );
 };

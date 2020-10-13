@@ -95,15 +95,9 @@ function AddRecruitment(props) {
 
   const handleStepChange = (event) => {
     const { name, value } = event.target
-    form.hiringSteps.some(data => data.title === value) ?
-      setForm({ ...form, [name]: form.hiringSteps.filter(step => step.title !== value) }) :
-      setForm({
-        ...form,
-        [name]: [
-          ...form.hiringSteps,
-          Object.assign({}, { title: value })
-        ]
-      })
+    form.hiringSteps.some(data => data.title === value)
+      ? setForm({ ...form, [name]: form.hiringSteps.filter(step => step.title !== value) })
+      : setForm({ ...form, [name]: [...form.hiringSteps, Object.assign({}, { title: value })] })
   }
 
   const handleSubmit = () => {

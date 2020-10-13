@@ -1,6 +1,6 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Route } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -20,19 +20,17 @@ const useStyles = makeStyles(theme => ({
 
 const JobOpeningDetailsApp = props => {
   const classes = useStyles();
-  const { loading, match, getJobOpenings, jobOpenings, getJobOpeningDetails } = props;
-  const { params } = match
+  const { loading, match, getJobOpeningDetails } = props;
+  const { params, path } = match
 
-  React.useEffect(() => {
-    getJobOpeningDetails(params.status);
+  useEffect(() => {
+    getJobOpeningDetails(params.recruitmentId);
   }, []);
 
   return (
     <div className={classes.root}>
-      {
-        params.applicantId ?
-          <ApplicantDetails /> : <JobOpeningDetails />
-      }
+      <Route path={path} component={JobOpeningDetails} />
+      <Route path={`${path}/applicant`} component={ApplicantDetails} />
 
       <ApplicantDialog />
     </div>
@@ -41,12 +39,10 @@ const JobOpeningDetailsApp = props => {
 
 JobOpeningDetailsApp.propTypes = {
   loading: PropTypes.bool,
-  getEmployees: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  jobOpenings: Selectors.makeSelectJobOpenings(),
   //jobOpeningDetails : Selectors.makeSelectJobOpeningDetails(),
 });
 

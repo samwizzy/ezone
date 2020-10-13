@@ -22,21 +22,24 @@ import AddBranchDialog from './components/AddBranchDialog'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
-    backgroundColor: theme.palette.common.white
+    flexGrow: 1
   },
   datatable: {
-    '& .MuiTableRow-root:hover': {
+    '& table': {
+      width: '96% !important',
+      margin: '4px auto',
+    },
+    '& tr:hover': {
       cursor: 'pointer'
     },
-    '& .MuiTableHead-root': {
-      '& .MuiTableCell-head': {
+    '& thead': {
+      '& th': {
         color: theme.palette.common.white,
       },
-      '& .MuiTableCell-root:nth-child(odd)': {
+      '& th:nth-child(odd)': {
         backgroundColor: theme.palette.primary.main,
       },
-      '& .MuiTableCell-root:nth-child(even)': {
+      '& th:nth-child(even)': {
         backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
@@ -73,9 +76,6 @@ const useStyles = makeStyles(theme => ({
 const BranchesApp = props => {
   const classes = useStyles();
   const { loading, openNewBranchDialog, getEmployee, employees, getEmployees, employee, getBranches, branches } = props;
-
-  React.useEffect(() => {
-  }, [employee]);
 
   console.log(branches, "branches")
 

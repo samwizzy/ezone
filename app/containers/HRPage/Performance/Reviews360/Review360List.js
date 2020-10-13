@@ -62,7 +62,7 @@ const Review360List = props => {
               )}
             </Fragment>
             :
-            <DataMessage message="No recognition has been recorded yet" />
+            <DataMessage message="No reviews has been recorded yet" />
           }
         </Grid>
       </Grid>
