@@ -1,7 +1,3 @@
-/**
- * Homepage selectors
- */
-
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
@@ -18,7 +14,14 @@ const makeSelectLoading = () =>
     selectAttendance,
     subState => subState.loading,
   );
-const makeSelectAttendance = () =>
+
+const makeSelectAttendances = () =>
+  createSelector(
+    selectAttendance,
+    subState => subState.attendances,
+  );
+
+const makeSelectAttendanceById = () =>
   createSelector(
     selectAttendance,
     subState => subState.attendance,
@@ -86,7 +89,8 @@ export {
   makeSelectBranches,
   makeSelectRoles,
   makeSelectLoading,
-  makeSelectAttendance,
+  makeSelectAttendances,
+  makeSelectAttendanceById,
   makeSelectAttendanceDialog,
   makeSelectShiftDialog,
   makeSelectEmployeeShiftDialog,

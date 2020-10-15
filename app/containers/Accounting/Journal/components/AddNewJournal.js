@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import _ from 'lodash';
 import moment from 'moment';
 import EzoneUtils from '../../../../utils/EzoneUtils';
@@ -147,7 +147,8 @@ const NewJournal = props => {
   const activePeriod = _.find(accountingPeriods, { activeYear: true, status: true })
 
   const classes = useStyles(props);
-  const [values, setValues] = React.useState({ ...initialState })
+  const [values, setValues] = useState({ ...initialState })
+  const [option, setOption] = useState(false)
 
   const flag = src => <img className={classes.flag} src={src} />;
 
@@ -300,7 +301,7 @@ const NewJournal = props => {
         />
 
         <CardContent>
-          <Grid container spacing={3}>
+          <Grid container spacing={1}>
             <Grid item xs={12} sm={6}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
@@ -321,39 +322,77 @@ const NewJournal = props => {
                 />
               </MuiPickersUtilsProvider>
 
-              <Autocomplete
-                id="journal-currency"
-                size="small"
-                options={currency ? currencies.filter(ccy => ccy.code !== currency.code) : currencies}
-                getOptionLabel={option => `${option.name} ( ${option.symbol} )`}
-                renderOption={option => (
-                  <React.Fragment>
-                    <span>{flag(IsoCodeToFlag(option.code))}</span> {option.name}
-                  </React.Fragment>
-                )}
-                onChange={handleSelectChange('currencyId')}
-                value={values.currencyId ? _.find(currencies, { id: values.currencyId }) : null}
-                style={{ width: 300 }}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label="Currency"
-                    variant="outlined"
-                    margin="normal"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    placeholder="Currencies"
-                    error={Boolean(values.currencyId && !values.exchangeRate)}
-                    helperText={(values.currencyId && !values.exchangeRate) ? 'Please select an exchange rate' : ''}
-                  />
-                )}
-              />
+              <FormControl component="fieldset" fullWidth>
+                <FormControlLabel
+                  control={<Checkbox checked={option} onChange={() => setOption(!option)} name="option" />}
+                  label="Use other currency"
+                />
+              </FormControl>
 
-              <FormControl component="fieldset">
+              {option &&
+                <Autocomplete
+                  id="journal-currency"
+                  size="small"
+                  options={currency ? currencies.filter(ccy => ccy.code !== currency.code) : currencies}
+                  getOptionLabel={option => `${option.name} ( ${option.symbol} )`}
+                  renderOption={option => (
+                    <React.Fragment>
+                      <span>{flag(IsoCodeToFlag(option.code))}</span> {option.name}
+                    </React.Fragment>
+                  )}
+                  onChange={handleSelectChange('currencyId')}
+                  value={values.currencyId ? _.find(currencies, { id: values.currencyId }) : null}
+                  style={{ width: 300 }}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label="Currency"
+                      variant="outlined"
+                      margin="normal"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      placeholder="Currencies"
+                    />
+                  )}
+                />
+              }
+
+              {Boolean(values.currencyId) &&
+                <TextField
+                  id="exchange-rate"
+                  size="small"
+                  required={Boolean(values.currencyId)}
+                  name="exchangeRate"
+                  label="Exchange Rate"
+                  placeholder="Exchange Rate"
+                  value={values.exchangeRate}
+                  onChange={handleChange}
+                  variant="outlined"
+                  margin="normal"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        {values.currencyId ? `1 ${_.find(currencies, { id: values.currencyId }).name} =` : ""}
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">{currency ? currency.code : 'NGN'}</InputAdornment>
+                    )
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  style={{ width: 300 }}
+                  error={Boolean(values.currencyId && !values.exchangeRate)}
+                  helperText={(values.currencyId && !values.exchangeRate) ? 'Please select an exchange rate' : ''}
+                />
+              }
+
+              <FormControl component="fieldset" fullWidth>
                 <FormControlLabel
                   control={<Checkbox checked={values.taxApplicable} onChange={handleChange} name="taxApplicable" />}
-                  label="Tax Applicable"
+                  label="Tax applicable"
                 />
               </FormControl>
 
@@ -416,35 +455,6 @@ const NewJournal = props => {
                 InputLabelProps={{
                   shrink: true,
                 }}
-              />
-
-              <TextField
-                id="exchange-rate"
-                size="small"
-                required={Boolean(values.currencyId)}
-                name="exchangeRate"
-                label="Exchange Rate"
-                placeholder="Exchange Rate"
-                value={values.exchangeRate}
-                onChange={handleChange}
-                variant="outlined"
-                margin="normal"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      {values.currencyId ? `1 ${_.find(currencies, { id: values.currencyId }).name} =` : ""}
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">{currency ? currency.code : 'NGN'}</InputAdornment>
-                  )
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                style={{ width: 300 }}
-                error={Boolean(values.exchangeRate && !values.currencyId)}
-                helperText={(values.exchangeRate && !values.currencyId) ? 'Please select a currency for this rate' : ''}
               />
             </Grid>
             <Grid item xs={12} sm={12}>

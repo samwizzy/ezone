@@ -4,14 +4,7 @@ import EzoneUtils from '../../../../utils/EzoneUtils';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import classNames from 'classnames';
-import {
-  makeStyles,
-  IconButton,
-  Button,
-  Menu,
-  MenuItem,
-  Tooltip,
-} from '@material-ui/core';
+import { makeStyles, IconButton, Button, Menu, MenuItem, Tooltip } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import MUIDataTable from 'mui-datatables';

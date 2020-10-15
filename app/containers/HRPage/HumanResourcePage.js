@@ -15,9 +15,7 @@ import AnnouncementApp from './Announcement'
 
 const HumanResourcePage = props => {
   const { match } = props
-  const { params, path } = match
-
-  console.log(params, "params tired")
+  const { path } = match
   console.log(path, "path tired")
 
   return (

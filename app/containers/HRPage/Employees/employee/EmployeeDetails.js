@@ -14,6 +14,7 @@ import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import * as AppSelectors from '../../../App/selectors';
 import { fade, darken, lighten } from '@material-ui/core/styles/colorManipulator';
+import { CircleLoader } from '../../../../components/LoadingIndicator';
 import EditOutlined from '@material-ui/icons/EditOutlined';
 import DeleteOutlined from '@material-ui/icons/DeleteOutlined';
 import RefreshSharp from '@material-ui/icons/RefreshSharp';
@@ -121,7 +122,7 @@ const EmployeeDetails = props => {
     employee
   } = props;
   const { params } = match
-  const emp = employee ? employee : employees && employees.find(emp => emp.uuId === params.status)
+  const emp = employee ? employee : employees && employees.find(emp => emp.uuId === params.empId)
 
   const [form, setForm] = React.useState({ ...emp })
 
@@ -136,7 +137,7 @@ const EmployeeDetails = props => {
   console.log(form, "get details form")
 
   if (!emp) {
-    return ''
+    return <CircleLoader />
   }
 
   return (

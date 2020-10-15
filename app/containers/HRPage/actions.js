@@ -326,7 +326,12 @@ export function getAnnouncementsSuccess(data) {
     payload: data
   };
 }
-
+export function getAnnouncementsError(data) {
+  return {
+    type: Constants.GET_ANNOUNCEMENTS_ERROR,
+    payload: data
+  };
+}
 
 export function getDepartment(id) {
   return {

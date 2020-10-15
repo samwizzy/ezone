@@ -1,12 +1,3 @@
-/*
- * HRReducer
- *
- * The reducer takes care of our data. Using actions, we can
- * update our application state. To add a new action,
- * add it to the switch statement in the reducer function
- *
- */
-
 import produce from 'immer';
 import * as Constants from './constants';
 
@@ -148,6 +139,13 @@ const hrReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           announcements: action.payload
+        };
+        break;
+      case Constants.GET_ANNOUNCEMENTS_ERROR:
+        return {
+          ...state,
+          loading: false,
+          error: action.payload
         };
         break;
       case Constants.GET_PARTYGROUPS_SUCCESS:

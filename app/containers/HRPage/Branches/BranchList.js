@@ -90,21 +90,19 @@ const BranchesApp = props => {
     },
     {
       name: 'name',
-      label: 'Department Name',
+      label: 'Branch Name',
       options: {
         filter: true,
         sort: true,
       },
     },
     {
-      name: 'employees',
+      name: 'branchEmployees',
       label: 'Employee count',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: employees => {
-          return <span>{employees && employees.length}</span>
-        }
+        customBodyRender: employees => employees && employees.length
       },
     },
     {
@@ -113,7 +111,7 @@ const BranchesApp = props => {
       options: {
         filter: true,
         sort: true,
-        customBodyRender: value => moment(value).format('lll')
+        customBodyRender: value => value ? moment(value).format('lll') : ""
       },
     },
   ];

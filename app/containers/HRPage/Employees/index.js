@@ -1,19 +1,12 @@
 import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { withRouter } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import { withRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import { useInjectReducer } from 'utils/injectReducer';
-import { useInjectSaga } from 'utils/injectSaga';
-import * as AppSelectors from '../../App/selectors';
-import * as AppActions from '../../App/actions';
 import * as Actions from './../actions';
-import makeSelectHRPage from './../selectors';
-import reducer from './../reducer';
-import saga from './../saga';
+import * as Selectors from './../selectors';
 import ModuleLayout from './ModuleLayout'
 import EmployeeList from './EmployeeList';
 import EmployeeDetails from './employee';
@@ -23,7 +16,9 @@ import EducationBackgroundDialog from './components/EducationBackgroundDialog';
 
 export function EmployeePage(props) {
   const { match } = props;
-  const { params } = match
+  const { path } = match
+
+  console.log(path, "path employee")
 
   return (
     <React.Fragment>
@@ -33,9 +28,11 @@ export function EmployeePage(props) {
       </Helmet>
 
       <ModuleLayout>
-        {params.status ?
+        <Route exact path={path} component={EmployeeList} />
+        <Route path={`${path}/:empId`} component={EmployeeDetails} />
+        {/* {params.status ?
           <EmployeeDetails /> : <EmployeeList />
-        }
+        } */}
       </ModuleLayout>
 
       <AddEmployeeDialog />

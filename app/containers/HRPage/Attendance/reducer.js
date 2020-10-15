@@ -1,12 +1,3 @@
-/*
- * HRReducer
- *
- * The reducer takes care of our data. Using actions, we can
- * update our application state. To add a new action,
- * add it to the switch statement in the reducer function
- *
- */
-
 import produce from 'immer';
 import * as Constants from './constants';
 
@@ -18,7 +9,8 @@ export const initialState = {
   departments: [],
   branches: [],
   roles: [],
-  attendance: [],
+  attendances: [],
+  attendance: null,
   shifts: [],
   employeeShifts: [],
   attdDialog: {
@@ -65,9 +57,17 @@ const attdReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: false,
-          attendance: action.payload
+          attendances: action.payload
         }
       };
+      case Constants.GET_ATTENDANCES_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload
+        }
+      };
+
       case Constants.GET_EMPLOYEES: {
         return {
           ...state,
@@ -81,6 +81,7 @@ const attdReducer = (state = initialState, action) =>
           employees: action.payload
         }
       };
+
       case Constants.GET_USERS_BY_SHIFT: {
         return {
           ...state,
@@ -94,6 +95,7 @@ const attdReducer = (state = initialState, action) =>
           employeeShifts: action.payload
         }
       };
+
       case Constants.GET_DEPARTMENTS: {
         return {
           ...state,
@@ -107,6 +109,7 @@ const attdReducer = (state = initialState, action) =>
           departments: action.payload
         }
       };
+
       case Constants.GET_BRANCHES: {
         return {
           ...state,
@@ -120,6 +123,7 @@ const attdReducer = (state = initialState, action) =>
           branches: action.payload
         }
       };
+
       case Constants.GET_ROLES: {
         return {
           ...state,
@@ -133,17 +137,24 @@ const attdReducer = (state = initialState, action) =>
           roles: action.payload
         }
       };
-      case Constants.GET_ATTENDANCE: {
+
+      case Constants.GET_ATTENDANCE_BY_ID: {
         return {
           ...state,
           loading: true
         }
       };
-      case Constants.GET_ATTENDANCE_SUCCESS: {
+      case Constants.GET_ATTENDANCE_BY_ID_SUCCESS: {
         return {
           ...state,
           loading: false,
           attendance: action.payload
+        }
+      };
+      case Constants.GET_ATTENDANCE_BY_ID_ERROR: {
+        return {
+          ...state,
+          loading: false,
         }
       };
       case Constants.CREATE_ATTENDANCE: {

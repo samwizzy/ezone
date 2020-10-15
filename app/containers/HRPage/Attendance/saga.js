@@ -10,9 +10,7 @@ import * as Endpoints from '../../../components/Endpoints';
 function errorHandler(promise) {
   return promise
 }
-/**
- * Github repos request/response handler
- */
+
 export function* getAttendances() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
@@ -30,6 +28,28 @@ export function* getAttendances() {
     yield put(Actions.getAttendancesSuccess(response));
   } catch (err) {
     console.log(err, "attd error")
+  }
+}
+
+export function* getAttendanceById({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAttendanceById}/${payload}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "Attendance By Id response")
+    yield put(Actions.getAttendanceByIdSuccess(response));
+  } catch (err) {
+    console.log(err, "attd error")
+    yield put(Actions.getAttendanceByIdError(err));
   }
 }
 
@@ -299,6 +319,7 @@ export default function* AttendanceRootSaga() {
   yield takeLatest(Constants.GET_ROLES, getRoles);
 
   yield takeLatest(Constants.GET_ATTENDANCES, getAttendances);
+  yield takeLatest(Constants.GET_ATTENDANCE_BY_ID, getAttendanceById);
   yield takeLatest(Constants.CREATE_ATTENDANCE, createAttendance);
   yield takeLatest(Constants.GET_SHIFTS, getShifts);
   yield takeLatest(Constants.GET_DAYS, getDays);

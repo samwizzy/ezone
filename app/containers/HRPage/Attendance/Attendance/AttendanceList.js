@@ -56,8 +56,13 @@ const useStyles = makeStyles(theme => ({
 
 const AttendanceList = props => {
   const classes = useStyles();
-  const { loading, openNewAttendanceDialog, getAttendances, attendances, getAttendanceById } = props;
+  const { loading, history, match, openNewAttendanceDialog, attendances, getAttendanceById } = props;
   console.log(attendances, "attendances")
+
+  const handleRoute = id => {
+    history.push(`${match.url}/${id}`);
+    getAttendanceById(id);
+  }
 
   const columns = [
     {
@@ -83,11 +88,6 @@ const AttendanceList = props => {
       options: {
         filter: true,
         sort: true,
-        // customHeadRender: (columnMeta, updateDirection) => (
-        //   <th key={2} onClick={() => updateDirection(2)} style={{ cursor: 'pointer' }}>
-        //     {columnMeta.name}
-        //   </th>
-        // )
       },
     },
     {
@@ -99,7 +99,7 @@ const AttendanceList = props => {
       },
     },
     {
-      name: 'logInTime',
+      name: 'loginTime',
       label: 'Log in time',
       options: {
         filter: true,
@@ -128,24 +128,8 @@ const AttendanceList = props => {
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
-      getAttendanceById(rowData[0])
+      handleRoute(rowData[0])
     },
-    // customRowRender: data => {
-    //   const [ id, createdAt, attended, absent, present ] = data;
-
-    //   return (
-    //     <tr key={createdAt.props.children}>
-    //       <td colSpan={4} style={{ paddingTop: "10px"}}>
-    //         <YourCustomRowComponent
-    //           createdAt={createdAt}
-    //           attended={attended}
-    //           absent={absent}
-    //           present={present}
-    //         />
-    //       </td>
-    //     </tr>
-    //   );
-    // },
     elevation: 0
   };
 
@@ -170,13 +154,11 @@ AttendanceList.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  user: AppSelectors.makeSelectCurrentUser(),
-  attendances: Selectors.makeSelectAttendance(),
+  attendances: Selectors.makeSelectAttendances(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAttendances: () => dispatch(Actions.getAttendances()),
     getAttendanceById: (id) => dispatch(Actions.getAttendanceById(id)),
     openNewAttendanceDialog: () => dispatch(Actions.openNewAttendanceDialog()),
   };

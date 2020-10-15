@@ -129,7 +129,7 @@ const ChartAccountDetails = props => {
                   <TableCell>{chartOfAccount.description}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>Transaction Period</TableCell>
+                  <TableCell>Financial Year</TableCell>
                   <TableCell>
                     {activePeriod && `${moment(activePeriod.startDate).format('ll')} to ${moment(activePeriod.endDate).format('ll')}`}
                   </TableCell>
@@ -192,22 +192,19 @@ const ChartAccountDetails = props => {
                   <TableCell>{moment(chartOfAccount.dateCreated).format('ll')}</TableCell>
                   <TableCell />
                   <TableCell>
-                    {chartOfAccount.type === 'DEBIT'
+                    {Math.sign(chartOfAccount.openingBalance) > 0
                       ? EzoneUtils.formatCurrency(chartOfAccount.openingBalance, currency && currency.code)
                       : EzoneUtils.formatCurrency(0, currency && currency.code)
                     }
                   </TableCell>
                   <TableCell>
-                    {chartOfAccount.type === 'CREDIT'
+                    {Math.sign(chartOfAccount.openingBalance) < 0
                       ? EzoneUtils.formatCurrency(chartOfAccount.openingBalance, currency && currency.code)
                       : EzoneUtils.formatCurrency(0, currency && currency.code)
                     }
                   </TableCell>
                   <TableCell>
-                    {chartOfAccount.type === 'CREDIT'
-                      ? EzoneUtils.formatCurrency(-chartOfAccount.openingBalance, currency && currency.code)
-                      : EzoneUtils.formatCurrency(chartOfAccount.openingBalance, currency && currency.code)
-                    }
+                    {EzoneUtils.formatCurrency(chartOfAccount.openingBalance, currency && currency.code)}
                   </TableCell>
                 </TableRow>
                 {chartOfAccount.entries.map((entry, i) =>

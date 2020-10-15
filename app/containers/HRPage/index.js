@@ -1,20 +1,23 @@
-import React, { useEffect, memo } from 'react';
+import React, { Fragment, useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { withRouter } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import { withRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
-import * as AppSelectors from '../App/selectors';
-import * as AppActions from '../App/actions';
 import * as Actions from './actions';
-import makeSelectHRPage, * as Selectors from './selectors';
+import makeSelectHRPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import HumanResourcePage from './HumanResourcePage';
+import DashboardApp from './Dashboard'
+import EmployeesApp from './Employees'
+import RolesApp from './Roles'
+import DepartmentsApp from './Departments'
+import BranchesApp from './Branches'
+import RecruitmentApp from './Recruitment'
+import AnnouncementApp from './Announcement'
 
 const key = 'hrPage';
 export function HumanResourceApp(props) {
@@ -22,6 +25,7 @@ export function HumanResourceApp(props) {
   useInjectSaga({ key, saga });
 
   const {
+    match,
     getEmployees,
     getDepartmentsByOrgIdApi,
     getEnrollmentTypes,
@@ -38,6 +42,8 @@ export function HumanResourceApp(props) {
     getBranches,
     getPartyGroups,
   } = props;
+
+  const { path } = match
 
   useEffect(() => {
     getEmployees();
@@ -58,15 +64,24 @@ export function HumanResourceApp(props) {
   }, []);
 
   return (
-    <React.Fragment>
+    <div>
       <Helmet>
         <title>Human Resource Page</title>
         <meta name="description" content="ezone application human resource" />
       </Helmet>
 
-      <HumanResourcePage />
+      <Fragment>
+        <Route exact path={path} component={DashboardApp} />
+        <Route path={`${path}/dashboard`} component={DashboardApp} />
+        <Route path={`${path}/employees`} component={EmployeesApp} />
+        <Route path={`${path}/departments`} component={DepartmentsApp} />
+        <Route path={`${path}/roles`} component={RolesApp} />
+        <Route path={`${path}/branches`} component={BranchesApp} />
+        <Route path={`${path}/recruitment`} component={RecruitmentApp} />
+        <Route path={`${path}/announcement`} component={AnnouncementApp} />
+      </Fragment>
 
-    </React.Fragment>
+    </div>
   );
 }
 

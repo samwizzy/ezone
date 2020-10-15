@@ -195,7 +195,7 @@ const AccountingPeriods = props => {
 
         <Grid item xs={12}>
           <Toolbar variant="dense">
-            <Chip label="Current Accounting Year" variant="outlined" icon={<EventAvailableIcon />} />
+            <Chip label="Current Financial Year" variant="outlined" icon={<EventAvailableIcon />} />
             <Typography variant="h6" className={classes.title} />
           </Toolbar>
 
@@ -219,7 +219,7 @@ const AccountingPeriods = props => {
           <Paper square className={classes.paper}>
             <Toolbar variant="dense">
               <Typography variant="h6" className={classes.title}>
-                Accounting Years
+                Financial Years
               </Typography>
               <Button
                 variant="contained"

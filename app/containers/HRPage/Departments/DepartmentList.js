@@ -99,12 +99,12 @@ const DepartmentsApp = props => {
       },
     },
     {
-      name: 'employeeCount',
+      name: 'departmentEmployees',
       label: 'Employee count',
       options: {
         filter: true,
         sort: true,
-        // customBodyRender: id => ()
+        customBodyRender: employees => employees.length
       },
     },
     {

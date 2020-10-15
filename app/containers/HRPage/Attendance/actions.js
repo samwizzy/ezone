@@ -23,15 +23,31 @@ export function getAttendancesSuccess(data) {
     payload: data
   };
 }
-export function getAttendanceById() {
+
+export function getAttendancesError(data) {
   return {
-    type: Constants.GET_ATTENDANCE_,
+    type: Constants.GET_ATTENDANCES_ERROR,
+    payload: data
+  };
+}
+
+export function getAttendanceById(data) {
+  return {
+    type: Constants.GET_ATTENDANCE_BY_ID,
+    payload: data
   };
 }
 
 export function getAttendanceByIdSuccess(data) {
   return {
-    type: Constants.GET_ATTENDANCES_SUCCESS,
+    type: Constants.GET_ATTENDANCE_BY_ID_SUCCESS,
+    payload: data
+  };
+}
+
+export function getAttendanceByIdError(data) {
+  return {
+    type: Constants.GET_ATTENDANCE_BY_ID_ERROR,
     payload: data
   };
 }

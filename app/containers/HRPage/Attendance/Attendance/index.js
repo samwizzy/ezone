@@ -1,62 +1,44 @@
-/*
- * HRPage
- *
- * This is the first thing users see of our App, at the '/' route
- */
-import React, { useEffect, memo } from 'react';
+import React, { Fragment, useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { withRouter } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import { withRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import * as AppSelectors from '../../../App/selectors';
-import * as AppActions from '../../../App/actions';
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
 import AttendanceList from './AttendanceList'
-import AttendanceDetails from './AttendanceDetails'
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-}));
+import AttendanceDetails from './attendanceDetails'
 
 export function AttendancePage(props) {
-  const { getAttendances } = props;
+  const { getAttendances, match } = props;
+  const { path } = match
 
-  React.useEffect(() => {
-    getAttendances();  
+  console.log(path, "path attendance")
+
+  useEffect(() => {
+    getAttendances();
   }, []);
 
   return (
-    <React.Fragment>
+    <div>
       <Helmet>
         <title>Attendance Page</title>
         <meta name="description" content="ezone application attendance page" />
       </Helmet>
-      {/*
-      { params.attendanceId?
-        <AttendanceDetails /> :
-      */}
-        <AttendanceList />
-      {/*
-        } 
-      */}
 
-    </React.Fragment>
+      <Fragment>
+        <Route exact path={path} component={AttendanceList} />
+        <Route path={`${path}/:attendanceId`} component={AttendanceDetails} />
+      </Fragment>
+
+    </div>
   );
 }
 
-AttendancePage.propTypes = {
-  token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-};
+AttendancePage.propTypes = {};
 
-const mapStateToProps = createStructuredSelector({
-  token: AppSelectors.makeSelectAccessToken(),
-});
+const mapStateToProps = createStructuredSelector({});
 
 export function mapDispatchToProps(dispatch) {
   return {

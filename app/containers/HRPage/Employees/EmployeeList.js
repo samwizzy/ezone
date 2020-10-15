@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     },
     '& tbody': {
       '& td': {
-        padding: theme.spacing(1),
+        padding: theme.spacing(1, 2),
       },
     },
     '& thead': {
@@ -51,7 +51,9 @@ const useStyles = makeStyles(theme => ({
     },
   },
   avatar: {
-    boxShadow: theme.shadows[2],
+    background: 'transparent',
+    color: theme.palette.divider,
+    border: `1px solid ${theme.palette.divider}`
   },
   toolbar: theme.mixins.toolbar,
   status: {
@@ -65,18 +67,15 @@ const EmployeesApp = props => {
   const {
     loading,
     history,
+    match,
     openNewEmployeeDialog,
     getEmployee,
     employees,
-    departments,
-    employeeTypes,
-    roles,
-    employee,
   } = props;
 
   const handleRoute = id => {
     getEmployee(id);
-    history.push(`/hr/employees/${id}`);
+    history.push(`${match.url}/${id}`);
   };
 
   const columns = [
@@ -189,11 +188,7 @@ EmployeesApp.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  departments: Selectors.makeSelectDepartments(),
   employees: Selectors.makeSelectEmployees(),
-  employee: Selectors.makeSelectEmployee(),
-  user: AppSelectors.makeSelectCurrentUser(),
-  departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -202,7 +197,6 @@ function mapDispatchToProps(dispatch) {
     openEditEmployeeDialog: () => dispatch(Actions.openEditEmployeeDialog()),
     getEmployees: () => dispatch(Actions.getEmployees()),
     getEmployee: uuid => dispatch(Actions.getEmployee(uuid)),
-    getPartyTags: () => dispatch(Actions.getPartyTags()),
   };
 }
 

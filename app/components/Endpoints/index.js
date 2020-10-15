@@ -204,6 +204,7 @@ export const AnnouncementComment = `${BaseUrl}/authserv/api/v1/announcement/comm
 
 // HR:Attendance API
 export const GetAttendances = `${BaseUrl}/authserv/api/v1/find_attendance_by_orgid`;
+export const GetAttendanceById = `${BaseUrl}/authserv/api/v1/find_attendance_by_id`;
 export const CreateAttendanceApi = `${BaseUrl}/authserv/api/v1/add_attendance`;
 export const GetDays = `${BaseUrl}/authserv/api/v1/all_days`;
 export const CreateShift = `${BaseUrl}/authserv/api/v1/add_shift`;

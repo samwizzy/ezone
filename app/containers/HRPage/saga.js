@@ -201,7 +201,6 @@ export function* createRole({ type, payload }) {
       }),
     });
 
-
     yield put(AppActions.openSnackBar({ message: "Role created", status: 'success' }));
     yield put({ type: Constants.GET_ROLES });
     yield put({ type: Constants.CLOSE_NEW_ROLE_DIALOG });
@@ -816,8 +815,7 @@ export function* getAnnouncements() {
     yield put(Actions.getAnnouncementsSuccess(response));
   } catch (err) {
     const error = yield call(errorHandler, err.response.json())
-    console.log(err.message, "Announcements err message")
-    console.log(error, "Announcements error message")
+    yield put(Actions.getAnnouncementsError(err));
   }
 }
 
