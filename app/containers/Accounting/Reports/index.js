@@ -97,7 +97,12 @@ const Reports = () => {
   ];
   const { reportId } = useParams();
 
-  if (reportId) return <ViewReports reportId={reportId} />;
+  if (reportId)
+    return (
+      <ModuleLayout>
+        <ViewReports reportId={reportId} />{' '}
+      </ModuleLayout>
+    );
 
   return (
     <ModuleLayout>
@@ -187,18 +192,6 @@ const Reports = () => {
                       <Paper elevation={3}>
                         <Paper elevation={1}>
                           <ListBoard
-                            bar={'purple'}
-                            title={'Budget'}
-                            contents={['Budget report', 'Budget Vs Actuals']}
-                          />
-                        </Paper>
-                      </Paper>
-                    </Grid>
-
-                    <Grid item xs={12}>
-                      <Paper elevation={3}>
-                        <Paper elevation={1}>
-                          <ListBoard
                             bar={'green'}
                             title={'Inventory'}
                             contents={inventory}
@@ -258,3 +251,14 @@ const Reports = () => {
 };
 
 export default Reports;
+// <Grid item xs={12}>
+//   <Paper elevation={3}>
+//     <Paper elevation={1}>
+//       <ListBoard
+//         bar={'purple'}
+//         title={'Budget'}
+//         contents={['Budget report', 'Budget Vs Actuals']}
+//       />
+//     </Paper>
+//   </Paper>
+// </Grid>

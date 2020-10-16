@@ -1,0 +1,32 @@
+.serComp {
+  position: relative;
+  /* width: 80px; */
+}
+.serComp .selectDate {
+  width: 150px;
+  min-width: 10px;
+  /* position: absolute; */
+  border: none;
+  padding-left: 10px;
+  margin-right: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  height: 38px;
+}
+.flex-bc {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+input[type='date']::before {
+  position: absolute;
+  background: inherit;
+  width: 60%;
+  content: attr(placeholder);
+}
+input[type='date']:focus::before {
+  content: '' !important;
+  background: none;
+  outline: none;
+}

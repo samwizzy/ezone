@@ -1,11 +1,3 @@
-.flex-b {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding: 10px 10px 0px 10px;
-}
-
 .flex-b h6 {
   padding-top: 10px;
 }
@@ -22,12 +14,7 @@
   width: 170px;
   margin: 10px auto;
 }
-.flex-r {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding: 20px;
-}
+
 .bell {
   margin: 5px;
 }

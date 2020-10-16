@@ -14,6 +14,8 @@ const CreatePdf = ({
   tableRef,
   daterange,
   companyRef,
+  head,
+  body,
 }) => {
   const Location = useLocation();
 
@@ -48,6 +50,8 @@ const CreatePdf = ({
         }
       },
       html: tableRef ? tableRef.current : '',
+      body: body ? body : '',
+      head: head ? head : '',
       headStyles: {
         fillColor: '#eef4f9',
         textColor: 'black',
