@@ -2,21 +2,16 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Button, ButtonGroup, TableContainer, Table, TableRow, TableCell, TableBody, TextField, Grid, Paper, Typography } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors'
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
+import { darken } from '@material-ui/core/styles/colorManipulator';
 import moment from 'moment'
+import _ from 'lodash'
 import MUIDataTable from 'mui-datatables'
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
-import * as AppSelectors from '../../../App/selectors';
-import EditSharp from '@material-ui/icons/EditSharp';
-import Assignment from '@material-ui/icons/Assignment';
-import Person from '@material-ui/icons/Person';
 import { AddAttendance } from '../components/AddButton'
 import AddAttendanceDialog from './components/AddAttendanceDialog'
 
@@ -57,6 +52,7 @@ const useStyles = makeStyles(theme => ({
 const AttendanceList = props => {
   const classes = useStyles();
   const { loading, history, match, openNewAttendanceDialog, attendances, getAttendanceById } = props;
+  const orderedAttendances = _.orderBy(attendances, 'dateCreated', 'desc');
   console.log(attendances, "attendances")
 
   const handleRoute = id => {
@@ -128,7 +124,7 @@ const AttendanceList = props => {
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
-      handleRoute(rowData[0])
+      // handleRoute(rowData[0])
     },
     elevation: 0
   };
@@ -138,7 +134,7 @@ const AttendanceList = props => {
       <MUIDataTable
         className={classes.datatable}
         title="Attendance List"
-        data={attendances}
+        data={orderedAttendances}
         columns={columns}
         options={options}
       />

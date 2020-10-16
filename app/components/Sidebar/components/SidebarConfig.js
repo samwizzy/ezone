@@ -124,12 +124,12 @@ const SidebarConfig = [
         url: '/account/reports',
         icon: 'local_library',
       },
-      {
-        id: 7,
-        name: 'Budgeting',
-        url: '/account/budgeting',
-        icon: 'account_balance_wallet',
-      },
+      // {
+      //   id: 7,
+      //   name: 'Budgeting',
+      //   url: '/account/budgeting',
+      //   icon: 'account_balance_wallet',
+      // },
       {
         id: 8,
         name: 'Settings',

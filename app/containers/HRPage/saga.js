@@ -913,8 +913,61 @@ export function* createAnnouncement({ type, payload }) {
     yield put({ type: Constants.GET_ANNOUNCEMENTS });
   } catch (err) {
     const error = yield call(errorHandler, err.response.json())
-    console.log(err.message, "err message")
-    console.log(error, "error create announcement")
+  }
+}
+
+export function* updateAnnouncement({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.EditAnnouncementApi}`;
+  payload.orgId = user && user.organisation.orgId
+
+  console.log(payload, "update announcement")
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "Announcement UPDATED response")
+
+    yield put(AppActions.openSnackBar({ message: "Announcement updated successfully", status: 'success' }));
+    yield put(Actions.editAnnouncementSuccess(response))
+    yield put({ type: Constants.CLOSE_NEW_ANNOUNCEMENT_DIALOG });
+    yield put({ type: Constants.GET_ANNOUNCEMENTS });
+  } catch (err) {
+    const error = yield call(errorHandler, err.response.json())
+    yield put(Actions.editAnnouncementError(err))
+  }
+}
+
+export function* deleteAnnouncement({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const requestURL = `${Endpoints.DeleteAnnouncementApi}?announcementId=${payload.id}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'PUT',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "Announcement deleted response")
+
+    yield put(AppActions.openSnackBar({ message: "Announcement deleted successfully", status: 'success' }));
+    yield put(Actions.deleteAnnouncementSuccess(response))
+    yield put({ type: Constants.CLOSE_NEW_ANNOUNCEMENT_DIALOG });
+    yield put({ type: Constants.GET_ANNOUNCEMENTS });
+  } catch (err) {
+    const error = yield call(errorHandler, err.response.json())
+    yield put(Actions.deleteAnnouncementError(err))
   }
 }
 
@@ -1016,4 +1069,6 @@ export default function* HRRootSaga() {
   yield takeLatest(Constants.GET_PARTY_TAGS, getPartyTags);
   yield takeLatest(Constants.CREATE_JOBOPENING, createJobOpening);
   yield takeLatest(Constants.CREATE_ANNOUNCEMENT, createAnnouncement);
+  yield takeLatest(Constants.EDIT_ANNOUNCEMENT, updateAnnouncement);
+  yield takeLatest(Constants.DELETE_ANNOUNCEMENT, deleteAnnouncement);
 }

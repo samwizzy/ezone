@@ -5,14 +5,13 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import * as AppSelectors from '../../App/selectors';
-import * as AppActions from '../../App/actions';
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
 import ModuleLayout from './ModuleLayout'
 import AnnouncementList from './AnnouncementList';
 import AddAnnouncementDialog from './components/AddAnnouncementDialog';
 import AnnouncementViewDialog from './components/AnnouncementViewDialog';
+import ConfirmDeleteAnnouncementDialog from './components/ConfirmDeleteAnnouncementDialog';
 
 export const AnnouncementPage = props => {
   const { loading } = props;
@@ -20,7 +19,7 @@ export const AnnouncementPage = props => {
   return (
     <div>
       <Helmet>
-        <title>Announcement Page</title>
+        <title>Announcement</title>
         <meta name="description" content="ezone application announcement page" />
       </Helmet>
 
@@ -30,6 +29,7 @@ export const AnnouncementPage = props => {
 
       <AnnouncementViewDialog />
       <AddAnnouncementDialog />
+      <ConfirmDeleteAnnouncementDialog />
     </div>
   );
 }

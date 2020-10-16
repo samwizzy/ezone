@@ -16,7 +16,7 @@ export function DepartmentPage(props) {
   return (
     <React.Fragment>
       <Helmet>
-        <title>Department Page</title>
+        <title>Department</title>
         <meta name="description" content="ezone application department page" />
       </Helmet>
 

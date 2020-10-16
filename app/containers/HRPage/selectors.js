@@ -187,6 +187,12 @@ const makeSelectAnnouncementDialog = () =>
     hrState => hrState.announcementDialog,
   );
 
+const makeSelectConfirmAnnouncementDialog = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.confirmAnnouncementDialog,
+  );
+
 const makeSelectWorkExperienceDialog = () =>
   createSelector(
     selectHR,
@@ -304,6 +310,7 @@ export {
   makeSelectPayrollDialog,
   makeSelectAnnouncements,
   makeSelectAnnouncementDialog,
+  makeSelectConfirmAnnouncementDialog,
   makeSelectAnnouncementViewDialog,
   makeSelectJobOpeningDetails,
   makeSelectWorkExperienceDialog,

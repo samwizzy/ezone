@@ -23,16 +23,13 @@ export function EmployeePage(props) {
   return (
     <React.Fragment>
       <Helmet>
-        <title>Employee Page</title>
+        <title>Employee</title>
         <meta name="description" content="ezone application employee page" />
       </Helmet>
 
       <ModuleLayout>
         <Route exact path={path} component={EmployeeList} />
         <Route path={`${path}/:empId`} component={EmployeeDetails} />
-        {/* {params.status ?
-          <EmployeeDetails /> : <EmployeeList />
-        } */}
       </ModuleLayout>
 
       <AddEmployeeDialog />

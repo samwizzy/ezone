@@ -1,20 +1,16 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, Link as NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { Breadcrumbs, Box, Button, Divider, IconButton, Link, List, ListItem, ListItemText, ListItemSecondaryAction, Paper, Typography } from '@material-ui/core';
+import { Breadcrumbs, IconButton, Menu, MenuItem, Link, List, ListItem, ListItemText, ListItemSecondaryAction, Paper, Typography } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import clsx from 'clsx';
 import moment from 'moment';
-import { green, orange } from '@material-ui/core/colors'
+import { green } from '@material-ui/core/colors'
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
-import * as AppSelectors from '../../../App/selectors';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import LensIcon from '@material-ui/icons/Lens';
 import TodayIcon from '@material-ui/icons/Today';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -45,12 +41,25 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-
 const AnnouncementItem = props => {
   const classes = useStyles();
-  const { loading, match, openAnnouncementViewDialog, announcement } = props;
+  const { loading, match, openEditAnnouncementDialog, openConfirmAnnouncementDialog, openAnnouncementViewDialog, announcement } = props;
+  const [anchorEl, setAnchorEl] = useState(null)
 
-  const handleClick = () => { }
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  }
+  const handleClose = () => {
+    setAnchorEl(null);
+  }
+  const handleEditClick = () => {
+    openEditAnnouncementDialog(announcement)
+    setAnchorEl(null);
+  }
+  const handleDeleteClick = () => {
+    openConfirmAnnouncementDialog(announcement)
+    setAnchorEl(null);
+  }
 
   if (!announcement) {
     return ''
@@ -89,7 +98,7 @@ const AnnouncementItem = props => {
                   <Breadcrumbs aria-label="breadcrumb" separator="">
                     <Typography color="textPrimary" className={classes.link}>
                       Sent to: &nbsp;
-											<Link color="textSecondary" href="/" onClick={handleClick} className={classes.link}>
+											<Link color="textSecondary" href="/" className={classes.link}>
                         View employees
 											</Link>
                     </Typography>
@@ -98,13 +107,29 @@ const AnnouncementItem = props => {
               }
             />
             <ListItemSecondaryAction>
-              <IconButton edge="end" aria-label="delete">
+              <IconButton edge="end" aria-label="delete" onClick={handleClick}>
                 <MoreVertIcon />
               </IconButton>
             </ListItemSecondaryAction>
           </ListItem>
         </List>
       </Paper>
+
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleEditClick}>Edit</MenuItem>
+        <MenuItem
+          onClick={handleDeleteClick}
+          disabled={false}
+        >
+          Delete
+        </MenuItem>
+      </Menu>
     </div>
   );
 };
@@ -119,6 +144,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    openEditAnnouncementDialog: (data) => dispatch(Actions.openEditAnnouncementDialog(data)),
+    openConfirmAnnouncementDialog: (data) => dispatch(Actions.openConfirmAnnouncementDialog(data)),
     openAnnouncementViewDialog: (data) => dispatch(Actions.openAnnouncementViewDialog(data)),
   };
 }

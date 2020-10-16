@@ -405,6 +405,51 @@ export function createAnnouncementSuccess(data) {
     payload: data
   };
 }
+export function createAnnouncementError(data) {
+  return {
+    type: Constants.CREATE_ANNOUNCEMENT_ERROR,
+    payload: data
+  };
+}
+
+export function editAnnouncement(data) {
+  return {
+    type: Constants.EDIT_ANNOUNCEMENT,
+    payload: data
+  };
+}
+export function editAnnouncementSuccess(data) {
+  return {
+    type: Constants.EDIT_ANNOUNCEMENT_SUCCESS,
+    payload: data
+  };
+}
+export function editAnnouncementError(data) {
+  return {
+    type: Constants.EDIT_ANNOUNCEMENT_ERROR,
+    payload: data
+  };
+}
+
+export function deleteAnnouncement(data) {
+  return {
+    type: Constants.DELETE_ANNOUNCEMENT,
+    payload: data
+  };
+}
+export function deleteAnnouncementSuccess(data) {
+  return {
+    type: Constants.DELETE_ANNOUNCEMENT_SUCCESS,
+    payload: data
+  };
+}
+export function deleteAnnouncementError(data) {
+  return {
+    type: Constants.DELETE_ANNOUNCEMENT_ERROR,
+    payload: data
+  };
+}
+
 export function commentAnnouncement(data) {
   return {
     type: Constants.COMMENT_ANNOUNCEMENT,
@@ -609,6 +654,7 @@ export function closeNewPayrollDialog() {
     type: Constants.CLOSE_NEW_PAYROLL_DIALOG,
   };
 }
+
 export function openNewAnnouncementDialog() {
   return {
     type: Constants.OPEN_NEW_ANNOUNCEMENT_DIALOG,
@@ -619,6 +665,29 @@ export function closeNewAnnouncementDialog() {
     type: Constants.CLOSE_NEW_ANNOUNCEMENT_DIALOG,
   };
 }
+export function openEditAnnouncementDialog(data) {
+  return {
+    type: Constants.OPEN_EDIT_ANNOUNCEMENT_DIALOG,
+    payload: data
+  };
+}
+export function closeEditAnnouncementDialog() {
+  return {
+    type: Constants.CLOSE_EDIT_ANNOUNCEMENT_DIALOG,
+  };
+}
+export function openConfirmAnnouncementDialog(data) {
+  return {
+    type: Constants.OPEN_CONFIRM_ANNOUNCEMENT_DIALOG,
+    payload: data
+  };
+}
+export function closeConfirmAnnouncementDialog() {
+  return {
+    type: Constants.CLOSE_CONFIRM_ANNOUNCEMENT_DIALOG,
+  };
+}
+
 export function openAnnouncementViewDialog(data) {
   return {
     type: Constants.OPEN_ANNOUNCEMENT_VIEW_DIALOG,

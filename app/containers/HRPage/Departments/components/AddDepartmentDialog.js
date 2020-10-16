@@ -1,15 +1,13 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
-import { AppBar, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, MenuItem, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
+import { AppBar, Button, CircularProgress, Dialog, DialogActions, DialogContent, Grid, MenuItem, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
-
 import * as Actions from '../../actions';
-import moment from 'moment'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,15 +30,15 @@ const initialState = {
 
 function AddDepartmentDialog(props) {
   const classes = useStyles();
-  const { loading, closeNewDepartmentDialog, createDepartment, partyGroups, getEmployees, party_tags, PartyTags, employees, employee, getBranches, branches, departments, dialog } = props;
-  const [form, setForm] = React.useState({ ...initialState });
+  const { loading, closeNewDepartmentDialog, createDepartment, partyGroups, employees, dialog } = props;
+  const [form, setForm] = useState({ ...initialState });
 
   console.log(dialog, "dialog checking")
 
 
-  React.useEffect(() => {
-    if (dialog.type === 'edit') {
-      setForm({ ...form })
+  useEffect(() => {
+    if (dialog.type === 'edit' && dialog.data) {
+      setForm({ ...dialog.data })
     } else {
       setForm({ ...initialState })
     }
@@ -93,7 +91,7 @@ function AddDepartmentDialog(props) {
                 label="Department Name"
                 id="department-name"
                 fullWidth
-                margin="normal"
+                margin="dense"
                 variant="outlined"
                 size="small"
                 value={form.name}
@@ -107,7 +105,7 @@ function AddDepartmentDialog(props) {
                 placeholder="Party group"
                 select
                 fullWidth
-                margin="normal"
+                margin="dense"
                 variant="outlined"
                 size="small"
                 label="Party group"
@@ -132,7 +130,7 @@ function AddDepartmentDialog(props) {
                 label="Description"
                 id="department-description"
                 fullWidth
-                margin="normal"
+                margin="dense"
                 variant="outlined"
                 size="small"
                 value={form.description}
@@ -146,7 +144,7 @@ function AddDepartmentDialog(props) {
                 placeholder="Department Lead"
                 select
                 fullWidth
-                margin="normal"
+                margin="dense"
                 variant="outlined"
                 size="small"
                 label="Department Lead"
@@ -172,7 +170,7 @@ function AddDepartmentDialog(props) {
                 placeholder="Assistant Department Lead"
                 select
                 fullWidth
-                margin="normal"
+                margin="dense"
                 variant="outlined"
                 size="small"
                 label="Assistant Department Lead"
@@ -195,10 +193,19 @@ function AddDepartmentDialog(props) {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={closeNewDepartmentDialog} color="primary">
+          <Button
+            onClick={closeNewDepartmentDialog}
+            variant="contained"
+          >
             Cancel
           </Button>
-          <Button onClick={handleSubmit} variant="contained" disabled={loading ? loading : !canSubmitForm()} color="primary" endIcon={loading && <CircularProgress size={20} />}>
+          <Button
+            onClick={handleSubmit}
+            variant="contained"
+            disabled={loading ? loading : !canSubmitForm()}
+            color="primary"
+            endIcon={loading && <CircularProgress size={20} />}
+          >
             Save
           </Button>
         </DialogActions>
@@ -215,10 +222,6 @@ const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   dialog: Selectors.makeSelectDeptDialog(),
   employees: Selectors.makeSelectEmployees(),
-  employee: Selectors.makeSelectEmployee(),
-  departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
-  branches: Selectors.makeSelectBranches(),
-  party_tags: Selectors.makeSelectPartyTags(),
   partyGroups: Selectors.makeSelectPartyGroups(),
 });
 

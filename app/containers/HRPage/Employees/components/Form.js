@@ -5,13 +5,10 @@ import {
   AppBar,
   Button,
   Grid,
-  MenuItem,
   TextField,
   Typography,
-  DialogTitle,
   DialogContent,
   DialogActions,
-  Divider,
   Toolbar,
 } from '@material-ui/core';
 
@@ -53,7 +50,7 @@ export const Form = props => {
               label="Firstname"
               id="outlined-firstname"
               fullWidth
-              margin="normal"
+              margin="dense"
               variant="outlined"
               size="small"
               value={form.firstName}
@@ -66,7 +63,7 @@ export const Form = props => {
               label="Lastname"
               id="outlined-lastname"
               fullWidth
-              margin="normal"
+              margin="dense"
               variant="outlined"
               size="small"
               value={form.lastName}
@@ -79,7 +76,7 @@ export const Form = props => {
               label="Phone Number"
               id="outlined-phonenumber"
               fullWidth
-              margin="normal"
+              margin="dense"
               variant="outlined"
               size="small"
               value={form.phoneNumber}
@@ -92,7 +89,7 @@ export const Form = props => {
               label="Company Email"
               id="outlined-email-address"
               fullWidth
-              margin="normal"
+              margin="dense"
               variant="outlined"
               size="small"
               value={form.emailAddress}
@@ -106,7 +103,7 @@ export const Form = props => {
               label="Nickname"
               multiline
               fullWidth
-              margin="normal"
+              margin="dense"
               size="small"
               value={form.nickName}
               onChange={handleChange}

@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
@@ -11,35 +11,35 @@ import * as Actions from '../../actions';
 import moment from 'moment'
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1, 0)
-    },
-  },
+  root: {},
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const initialState = {
+  name: '',
+  description: '',
+  partyHead: { id: '' },
+  assistantPartyHead: { id: '' },
+  partyGroupId: '',
+  tagId: 1
+}
+
 function AddBranchDialog(props) {
   const classes = useStyles();
-  const { loading, closeNewBranchDialog, createBranch, getEmployees, partyGroups, employees, employee, getBranches, branches, departments, dialog } = props;
-  const [form, setForm] = React.useState({
-    name: '',
-    description: '',
-    partyHead: { id: '' },
-    assistantPartyHead: { id: '' },
-    partyGroupId: '',
-    tagId: 1
-  });
+  const { loading, closeNewBranchDialog, createBranch, partyGroups, employees, dialog } = props;
+  const [form, setForm] = useState({ ...initialState });
 
   console.log(dialog, "dialog checking")
   console.log(partyGroups, "partyGroups inside department dialogue");
 
-  React.useEffect(() => {
-    if (dialog.type == 'edit') {
-      setForm({ ...form })
+  useEffect(() => {
+    if (dialog.type === 'edit' && dialog.data) {
+      setForm({ ...dialog.data })
+    } else {
+      setForm({ ...initialState })
     }
   }, [dialog])
 
@@ -83,12 +83,12 @@ function AddBranchDialog(props) {
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <TextField
-                id="partyGroupId"
+                id="party-group-id"
                 name="partyGroupId"
                 placeholder="Party group"
                 select
                 fullWidth
-                margin="normal"
+                margin="dense"
                 variant="outlined"
                 size="small"
                 label="Party group"
@@ -113,7 +113,7 @@ function AddBranchDialog(props) {
                 label="Branch Name"
                 id="branch-name"
                 fullWidth
-                margin="normal"
+                margin="dense"
                 variant="outlined"
                 size="small"
                 value={form.name}
@@ -126,7 +126,7 @@ function AddBranchDialog(props) {
                 label="Description"
                 id="branch-description"
                 fullWidth
-                margin="normal"
+                margin="dense"
                 variant="outlined"
                 size="small"
                 value={form.description}
@@ -135,12 +135,12 @@ function AddBranchDialog(props) {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                id="partyHead"
+                id="party-head"
                 name="partyHead"
                 placeholder="Branch Lead"
                 select
                 fullWidth
-                margin="normal"
+                margin="dense"
                 variant="outlined"
                 size="small"
                 label="Branch Lead"
@@ -161,12 +161,12 @@ function AddBranchDialog(props) {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                id="assistantPartyHead"
+                id="assistant-party-head"
                 name="assistantPartyHead"
                 placeholder="Assistant Branch Lead"
                 select
                 fullWidth
-                margin="normal"
+                margin="dense"
                 variant="outlined"
                 size="small"
                 label="Assistant Branch Lead"
@@ -194,8 +194,8 @@ function AddBranchDialog(props) {
                 placeholder="Branch Lead"
                 select
                 fullWidth
-                className={classes.textField}
                 variant="outlined"
+                margin="dense"
                 size="small"
                 label="Branch Lead"
                 value={form.partyHead.id}
@@ -215,7 +215,7 @@ function AddBranchDialog(props) {
                 placeholder="Assistant Branch Lead"
                 select
                 fullWidth
-                className={classes.textField}
+                margin="dense"
                 variant="outlined"
                 size="small"
                 label="Assistant Branch Lead"
@@ -233,10 +233,20 @@ function AddBranchDialog(props) {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={closeNewBranchDialog} color="primary">
+          <Button
+            onClick={closeNewBranchDialog}
+            color="primary"
+            variant="contained"
+          >
             Cancel
           </Button>
-          <Button variant="contained" onClick={handleSubmit} disabled={loading ? loading : !canSubmitForm()} color="primary" endIcon={loading && <CircularProgress size={20} />}>
+          <Button
+            variant="contained"
+            onClick={handleSubmit}
+            disabled={loading ? loading : !canSubmitForm()}
+            color="primary"
+            endIcon={loading && <CircularProgress size={20} />}
+          >
             Save
           </Button>
         </DialogActions>
@@ -254,9 +264,6 @@ const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   dialog: Selectors.makeSelectBranchDialog(),
   employees: Selectors.makeSelectEmployees(),
-  employee: Selectors.makeSelectEmployee(),
-  departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
-  branches: Selectors.makeSelectBranches(),
   partyGroups: Selectors.makeSelectPartyGroups(),
 });
 

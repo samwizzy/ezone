@@ -1,4 +1,4 @@
-import React, { Fragment, memo, useEffect } from 'react';
+import React, { Fragment, memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { CircleLoader } from '../../../components/LoadingIndicator'
 import moment from 'moment'
+import _ from 'lodash'
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../App/selectors';
@@ -18,8 +19,7 @@ import DataMessage from '../components/DataMessage'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
-    backgroundColor: theme.palette.common.white
+    flexGrow: 1
   },
   toolbar: {
     justifyContent: "space-between",
@@ -41,7 +41,9 @@ const Announcement = props => {
   const classes = useStyles();
   const { loading, openNewAnnouncementDialog, openAnnouncementViewDialog, announcements } = props;
 
-  const [state, setState] = React.useState({
+  const orderedAnnouncements = _.orderBy(announcements, 'dateCreated', 'desc')
+
+  const [state, setState] = useState({
     announcements,
     search: '',
     severity: '',
@@ -50,10 +52,7 @@ const Announcement = props => {
   })
 
   useEffect(() => {
-    setState((state) => ({ ...state, announcements }))
-    // return () => {
-    //   setState((state) => ({ ...state, announcements }))
-    // }
+    setState((state) => ({ ...state, announcements: orderedAnnouncements }))
   }, [announcements])
 
   const handleChange = event => {
@@ -70,9 +69,9 @@ const Announcement = props => {
     let filteredAnnouncements = [];
     if (value.length > 0) {
       const regex = new RegExp(`^${value}`, 'i');
-      filteredAnnouncements = announcements && announcements.sort().filter(v => regex.test(v.title))
+      filteredAnnouncements = orderedAnnouncements && orderedAnnouncements.sort().filter(v => regex.test(v.title))
     } else {
-      filteredAnnouncements = [...announcements]
+      filteredAnnouncements = [...orderedAnnouncements]
     }
 
     setState((state) => ({

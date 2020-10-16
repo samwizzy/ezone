@@ -44,22 +44,18 @@ export const PersonalForm = props => {
               placeholder="Select marital status"
               select
               fullWidth
-              margin="normal"
+              margin="dense"
               variant="outlined"
               size="small"
               label="Marital Status"
               value={form.maritalStatus ? form.maritalStatus : ''}
               onChange={handleChange}
             >
-              <MenuItem key={0} value="Single">
-                Single
-              </MenuItem>
-              <MenuItem key={1} value="Married">
-                Married
-              </MenuItem>
-              <MenuItem key={2} value="Divorced">
-                Divorced
-              </MenuItem>
+              {['Single', 'Married', 'Divorced'].map((status, i) =>
+                <MenuItem key={i} value={status}>
+                  {status}
+                </MenuItem>
+              )}
             </TextField>
           </Grid>
           <Grid item xs={6}>
@@ -69,7 +65,7 @@ export const PersonalForm = props => {
               placeholder="Select your gender"
               select
               fullWidth
-              margin="normal"
+              margin="dense"
               variant="outlined"
               size="small"
               label="Gender"
@@ -91,7 +87,7 @@ export const PersonalForm = props => {
                 disableFuture
                 format="dd/MM/yyyy"
                 inputVariant="outlined"
-                margin="normal"
+                margin="dense"
                 size="small"
                 fullWidth
                 name="dateOfBirth"
@@ -112,7 +108,7 @@ export const PersonalForm = props => {
               label="Mobile Number"
               id="outlined-mobile-no"
               fullWidth
-              margin="normal"
+              margin="dense"
               variant="outlined"
               size="small"
               value={form.mobileNo}
@@ -135,7 +131,7 @@ export const PersonalForm = props => {
                   label="Countries"
                   variant="outlined"
                   placeholder="Search"
-                  margin="normal"
+                  margin="dense"
                   fullWidth
                 />
               )}
@@ -155,7 +151,7 @@ export const PersonalForm = props => {
                   label="State"
                   variant="outlined"
                   placeholder="Search"
-                  margin="normal"
+                  margin="dense"
                   fullWidth
                 />
               )}
@@ -168,7 +164,7 @@ export const PersonalForm = props => {
               label="City"
               id="outlined-city"
               fullWidth
-              margin="normal"
+              margin="dense"
               variant="outlined"
               size="small"
               value={form.city}
@@ -183,7 +179,7 @@ export const PersonalForm = props => {
               label="Address"
               multiline
               fullWidth
-              margin="normal"
+              margin="dense"
               rows="2"
               rowsMax="3"
               value={form.address}

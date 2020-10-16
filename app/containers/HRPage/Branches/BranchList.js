@@ -2,22 +2,16 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Avatar, Button, ButtonGroup, TableContainer, Table, TableRow, TableCell, TableBody, TextField, Grid, Paper, Typography } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors'
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
+import { darken } from '@material-ui/core/styles/colorManipulator';
 import moment from 'moment'
 import MUIDataTable from 'mui-datatables'
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import * as AppSelectors from '../../App/selectors';
-import EditSharp from '@material-ui/icons/EditSharp';
-import Assignment from '@material-ui/icons/Assignment';
-import Person from '@material-ui/icons/Person';
-import { AddBranch } from '../../Accounting/components/AddButton'
+import { AddBranch } from '../components/AddButton'
 import AddBranchDialog from './components/AddBranchDialog'
 
 const useStyles = makeStyles(theme => ({
@@ -75,13 +69,13 @@ const useStyles = makeStyles(theme => ({
 
 const BranchesApp = props => {
   const classes = useStyles();
-  const { loading, openNewBranchDialog, getEmployee, employees, getEmployees, employee, getBranches, branches } = props;
+  const { loading, openNewBranchDialog, branches } = props;
 
   console.log(branches, "branches")
 
   const columns = [
     {
-      name: 'uuId',
+      name: 'id',
       label: 'Id',
       options: {
         display: 'excluded',
@@ -118,8 +112,8 @@ const BranchesApp = props => {
 
   const options = {
     filterType: 'checkbox',
-    responsive: 'scrollMaxHeight',
-    selectableRows: 'none', // single, multiple
+    responsive: 'stacked',
+    selectableRows: 'none',
     print: false,
     download: true,
     viewColumns: false,
@@ -129,31 +123,19 @@ const BranchesApp = props => {
     rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
       console.log(rowData[0], "rowData[0]")
-      getEmployee(rowData[0])
     },
     elevation: 0
   };
 
   return (
     <div className={classes.root}>
-      <Grid
-        container
-        justify='space-around'
-      >
-        <Grid item md={12}>
-          <div className={classes.content}>
-
-            <MUIDataTable
-              className={classes.datatable}
-              title="Branch List"
-              data={branches}
-              columns={columns}
-              options={options}
-            />
-
-          </div>
-        </Grid>
-      </Grid>
+      <MUIDataTable
+        className={classes.datatable}
+        title="Branch List"
+        data={branches}
+        columns={columns}
+        options={options}
+      />
 
       <AddBranchDialog />
     </div>
@@ -162,22 +144,16 @@ const BranchesApp = props => {
 
 BranchesApp.propTypes = {
   loading: PropTypes.bool,
-  getEmployees: PropTypes.func,
   openNewBranchDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  employees: Selectors.makeSelectEmployees(),
-  employee: Selectors.makeSelectEmployee(),
-  user: AppSelectors.makeSelectCurrentUser(),
   branches: Selectors.makeSelectBranches(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getEmployees: () => dispatch(Actions.getEmployees()),
-    getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
     openNewBranchDialog: () => dispatch(Actions.openNewBranchDialog()),
   };
 }

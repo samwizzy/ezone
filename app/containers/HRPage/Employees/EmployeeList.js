@@ -18,7 +18,8 @@ import Person from '@material-ui/icons/Person';
 import * as AppSelectors from '../../App/selectors';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
-import { AddEmployee } from '../../Accounting/components/AddButton';
+// import { AddEmployee } from '../../Accounting/components/AddButton';
+import { AddEmployee } from '../components/AddButton';
 
 const useStyles = makeStyles(theme => ({
   root: {

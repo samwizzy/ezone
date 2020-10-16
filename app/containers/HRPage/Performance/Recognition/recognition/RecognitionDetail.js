@@ -7,10 +7,8 @@ import AvatarGroup from '@material-ui/lab/AvatarGroup'
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import clsx from 'clsx';
+import _ from 'lodash';
 import moment from 'moment';
-import classNames from 'classnames'
-import { green, orange } from '@material-ui/core/colors'
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import * as AppSelectors from '../../../../App/selectors';

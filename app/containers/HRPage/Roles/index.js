@@ -16,7 +16,7 @@ export function RolePage(props) {
   return (
     <React.Fragment>
       <Helmet>
-        <title>Role Page</title>
+        <title>Role</title>
         <meta name="description" content="ezone application role page" />
       </Helmet>
 

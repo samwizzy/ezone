@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, IconButton, Tooltip } from '@material-ui/core';
+import { Button, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Add } from '@material-ui/icons';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 import AssignmentInd from '@material-ui/icons/AssignmentInd';
 import GroupAdd from '@material-ui/icons/GroupAdd';
-import AddBox from '@material-ui/icons/AddBox';
+import AddIcon from '@material-ui/icons/Add';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 const useStyles = makeStyles(theme => ({
@@ -14,7 +13,6 @@ const useStyles = makeStyles(theme => ({
   button: { marginLeft: theme.spacing(1) },
   icon: {}
 }));
-
 
 export function AddDepartment(props) {
   const { openDialog } = props;
@@ -24,10 +22,8 @@ export function AddDepartment(props) {
     <React.Fragment>
       <Tooltip title="New Department">
         <Button
-          size="small"
           color="primary"
           variant="contained"
-          className={classes.button}
           onClick={openDialog}
           startIcon={<GroupAdd className={classes.icon} />}
           disableElevation
@@ -46,10 +42,8 @@ export function AddRole(props) {
     <React.Fragment>
       <Tooltip title="New Role">
         <Button
-          size="small"
           color="primary"
           variant="contained"
-          className={classes.button}
           onClick={openDialog}
           startIcon={<AssignmentInd className={classes.icon} />}
           disableElevation
@@ -69,12 +63,10 @@ export function AddBranch(props) {
     <React.Fragment>
       <Tooltip title="New Branch">
         <Button
-          size="small"
           color="primary"
           variant="contained"
-          className={classes.button}
           onClick={openDialog}
-          startIcon={<AddBox className={classes.icon} />}
+          startIcon={<AddIcon className={classes.icon} />}
           disableElevation
         >
           Add Branch
@@ -92,10 +84,8 @@ export function AddEmployee(props) {
     <React.Fragment>
       <Tooltip title="New Employee">
         <Button
-          size="small"
           color="primary"
           variant="contained"
-          className={classes.button}
           onClick={openDialog}
           startIcon={<PersonAdd className={classes.icon} />}
           disableElevation
@@ -105,7 +95,6 @@ export function AddEmployee(props) {
       </Tooltip>
       <Tooltip title="Upload CSV">
         <Button
-          size="small"
           color="primary"
           variant="contained"
           className={classes.button}
@@ -128,10 +117,8 @@ export function AddAttendance(props) {
     <React.Fragment>
       <Tooltip title="New Attendance">
         <Button
-          size="small"
           color="primary"
           variant="contained"
-          className={classes.button}
           onClick={openDialog}
           startIcon={<PersonAdd className={classes.icon} />}
           disableElevation
@@ -151,10 +138,8 @@ export function AddPayroll(props) {
     <React.Fragment>
       <Tooltip title="New Payroll">
         <Button
-          size="small"
           color="primary"
           variant="contained"
-          className={classes.button}
           onClick={openDialog}
           startIcon={<PersonAdd className={classes.icon} />}
           disableElevation
@@ -174,12 +159,10 @@ export function AddAnnouncement(props) {
     <React.Fragment>
       <Tooltip title="New Announcement">
         <Button
-          size="small"
           color="primary"
           variant="contained"
-          className={classes.button}
           onClick={openDialog}
-          startIcon={<Add className={classes.icon} />}
+          startIcon={<AddIcon className={classes.icon} />}
           disableElevation
         >
           New

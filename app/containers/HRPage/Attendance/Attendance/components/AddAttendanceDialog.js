@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
@@ -15,9 +15,7 @@ import * as Actions from '../../actions';
 import moment from 'moment'
 
 const useStyles = makeStyles(theme => ({
-  root: {
-
-  },
+  root: {},
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -25,15 +23,19 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const status = [
-  { id: 1, label: "PRESENT" },
-  { id: 2, label: "ABSENT" },
-  { id: 3, label: "LATE" },
+  { id: 1, value: "PRESENT", label: "Present" },
+  { id: 2, value: "ABSENT", label: "Absent" },
+  { id: 3, value: "WEEKEND", label: "Weekend" },
+  { id: 4, value: "HOLIDAY", label: "Holiday" },
+  { id: 5, value: "SICK LEAVE", label: "Sick Leave" },
+  { id: 6, value: "PAID LEAVE", label: "Paid Leave" },
+  { id: 7, value: "UNPAID LEAVE", label: "Unpaid Leave" },
 ]
 
 function AddAttendanceDialog(props) {
   const classes = useStyles();
   const { loading, createAttendance, employees, closeNewAttendanceDialog, dialog } = props;
-  const [form, setForm] = React.useState({
+  const [form, setForm] = useState({
     userId: '',
     date: moment.utc(new Date).format(),
     status: 'PRESENT',
@@ -149,7 +151,7 @@ function AddAttendanceDialog(props) {
                 onChange={handleChange}
               >
                 {status.map((option, i) =>
-                  <MenuItem key={i} value={option.label}>
+                  <MenuItem key={i} value={option.value}>
                     {option.label}
                   </MenuItem>
                 )}
@@ -204,7 +206,8 @@ function AddAttendanceDialog(props) {
                 margin="normal"
                 variant="outlined"
                 multiline
-                rows={3}
+                rows={2}
+                rowsMax={3}
                 size="small"
                 label="Comment"
                 value={form.comment}

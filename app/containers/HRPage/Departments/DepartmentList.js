@@ -2,22 +2,16 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Button, ButtonGroup, TableContainer, Table, TableRow, TableCell, TableBody, TextField, Grid, Paper, Typography } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors'
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
+import { darken } from '@material-ui/core/styles/colorManipulator';
 import moment from 'moment'
 import MUIDataTable from 'mui-datatables'
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import * as AppSelectors from '../../App/selectors';
-import EditSharp from '@material-ui/icons/EditSharp';
-import Assignment from '@material-ui/icons/Assignment';
-import Person from '@material-ui/icons/Person';
-import { AddDepartment } from '../../Accounting/components/AddButton'
+import { AddDepartment } from '../components/AddButton'
 import AddDepartmentDialog from './components/AddDepartmentDialog'
 
 const useStyles = makeStyles(theme => ({
@@ -74,10 +68,7 @@ const useStyles = makeStyles(theme => ({
 
 const DepartmentsApp = props => {
   const classes = useStyles();
-  const { loading, openNewDepartmentDialog, getDepartment, employees, employee, getBranches, branches, departments } = props;
-
-  React.useEffect(() => {
-  }, [employee, departments, employees]);
+  const { loading, openNewDepartmentDialog, getDepartment, departments } = props;
 
   console.log(departments, "departments")
 
@@ -116,22 +107,12 @@ const DepartmentsApp = props => {
         customBodyRender: value => moment(value).format('lll')
       },
     },
-    /*
-    {
-      name: 'id',
-      label: 'Employee Count',
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    */
   ];
 
   const options = {
     filterType: 'checkbox',
-    responsive: 'scrollMaxHeight',
-    selectableRows: 'none', // single, multiple
+    responsive: 'stacked',
+    selectableRows: 'none',
     print: false,
     download: true,
     viewColumns: false,
@@ -147,20 +128,13 @@ const DepartmentsApp = props => {
 
   return (
     <div className={classes.root}>
-      <Grid
-        container
-      >
-        <Grid item md={12}>
-          <MUIDataTable
-            className={classes.datatable}
-            title="Departments List"
-            data={departments}
-            columns={columns}
-            options={options}
-          />
-        </Grid>
-      </Grid>
-
+      <MUIDataTable
+        className={classes.datatable}
+        title="Departments List"
+        data={departments}
+        columns={columns}
+        options={options}
+      />
       <AddDepartmentDialog />
     </div>
   );
@@ -173,17 +147,12 @@ DepartmentsApp.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  employees: Selectors.makeSelectEmployees(),
-  employee: Selectors.makeSelectEmployee(),
-  user: AppSelectors.makeSelectCurrentUser(),
   departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
-  branches: Selectors.makeSelectBranches(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openNewDepartmentDialog: () => dispatch(Actions.openNewDepartmentDialog()),
-    getBranches: () => dispatch(Actions.getBranches()),
     getDepartment: (id) => dispatch(Actions.getDepartment(id)),
   };
 }

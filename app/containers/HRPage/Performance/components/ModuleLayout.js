@@ -47,7 +47,7 @@ function ModuleLayout(props) {
               Recognitions
             </NavLink>
             <NavLink to="/human-resource/performance/feedbacks" activeClassName={classes.active}>
-              360<sup>o</sup> &nbsp;Reviews
+              360<small><sup>0</sup></small> &nbsp;Reviews
             </NavLink>
             <NavLink to="/human-resource/performance/reviews" activeClassName={classes.active}>
               Feedback

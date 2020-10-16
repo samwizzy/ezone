@@ -1,15 +1,11 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, MenuItem, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
@@ -19,14 +15,10 @@ import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1, 0)
-    },
-  },
+  root: {},
   table: {
     "& .MuiTableCell-root": {
-      border: "0 !important",
+      border: 0,
       padding: 0,
       display: "inline-block"
     },
@@ -37,29 +29,33 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const initialState = {
+  title: '',
+  message: '',
+  expiryDate: moment().format("YYYY-MM-DDTHH:mm:ss.SSS"),
+  notifyAllLocations: true,
+  notifyOthers: 'true',
+  announcementType: '',
+}
+
 function AddAnnouncementDialog(props) {
   const classes = useStyles();
   const { closeNewAnnouncementDialog, dialog, createAnnouncement } = props;
-  const [form, setForm] = React.useState({
-    title: '',
-    message: '',
-    expiryDate: moment().format("YYYY-MM-DDTHH:mm:ss.SSS"),
-    notifyAllLocations: true,
-    notifyOthers: 'true',
-    announcementType: '',
-  });
+  const [form, setForm] = useState({ ...initialState });
 
   console.log(dialog, "dialog checking")
 
-  React.useEffect(() => {
-    if (dialog.type == 'edit') {
+  useEffect(() => {
+    if (dialog.type === 'edit' && dialog.data) {
+      setForm({ ...dialog.data })
+    } else {
       setForm({ ...form })
     }
   }, [dialog])
 
   const canSubmitForm = () => {
     const { title, message, announcementType } = form
-    return title.length > 0 && message.length > 0 && announcementType.length > 0
+    return title.length > 0 && message.length > 0 && announcementType
   }
 
   const handleChange = (event) => {
@@ -68,7 +64,7 @@ function AddAnnouncementDialog(props) {
   }
 
   const handleDateChange = name => date => {
-    setForm({ ...form, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss.SSS') })
+    setForm({ ...form, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss') })
   }
 
   const handleSubmit = () => {
@@ -76,6 +72,7 @@ function AddAnnouncementDialog(props) {
   }
 
   console.log(form, "form")
+  console.log(dialog, "dialog")
 
   return (
     <div className={classes.root}>
@@ -90,7 +87,7 @@ function AddAnnouncementDialog(props) {
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
-              Add announcement
+              {dialog.type === 'new' ? 'Add announcement' : 'Edit Announcement'}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -115,7 +112,8 @@ function AddAnnouncementDialog(props) {
             margin="normal"
             variant="outlined"
             multiline
-            rows={10}
+            rows={2}
+            rowsMax={3}
             size="small"
             value={form.message}
             onChange={handleChange}
@@ -209,7 +207,6 @@ function AddAnnouncementDialog(props) {
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               autoOk
-              disablePast
               inputVariant="outlined"
               format="dd/MM/yyyy"
               margin="normal"
@@ -232,7 +229,7 @@ function AddAnnouncementDialog(props) {
             Cancel
           </Button>
           <Button onClick={handleSubmit} disabled={!canSubmitForm()} color="primary">
-            Save
+            {dialog.type === 'new' ? 'Save' : 'Update'}
           </Button>
         </DialogActions>
       </Dialog>
