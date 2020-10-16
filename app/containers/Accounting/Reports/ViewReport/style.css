@@ -1,10 +1,3 @@
-.flex-b {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 10px 0px 10px;
-}
-
 .view-main {
   display: flex;
   flex-direction: column;
@@ -18,11 +11,13 @@
   width: 170px;
   margin: 10px auto;
 }
-.flex-r {
+.flex-btn {
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  padding: 20px;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+  /* padding: 20px; */
 }
 .bell {
   margin: 5px;

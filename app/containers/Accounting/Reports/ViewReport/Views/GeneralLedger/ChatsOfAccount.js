@@ -11,12 +11,56 @@ import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import viewReportReducer from '../../reducers';
 import ReportSaga from '../../saga';
-import Table from '../../Components/Table';
-import TopMenu from '../../Components/TopMenu';
 import Company from '../../Components/CompanyLogo';
 import formatDate from '../../Helpers';
 import * as Select from '../../../../../App/selectors';
+import { makeStyles } from '@material-ui/core';
+import { darken } from '@material-ui/core/styles/colorManipulator';
+import {
+  TableFooter,
+  TablePagination,
+  TableRow,
+  TableCell,
+} from '@material-ui/core';
+import MUIDataTable from 'mui-datatables';
+import classNames from 'classnames';
+import ControlledButtons from '../../Components/BackButton';
 import './style.css';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+    padding: ' 0px 24px 24px 24px',
+  },
+  flex: {
+    position: 'relative',
+    padding: theme.spacing(8, 2),
+  },
+  tableFoot: {
+    backgroundColor: darken(theme.palette.primary.main, 0.1),
+  },
+  datatable: {
+    width: '100% !important',
+    '& thead': {
+      '& th': {
+        color: theme.palette.secondary.contrastText,
+        backgroundColor: theme.palette.primary.main,
+        padding: '8px !important',
+      },
+    },
+    '& tbody': {
+      '& td': {
+        padding: '8px !important',
+      },
+    },
+    '& tfoot': {
+      '& td': {
+        padding: '8px !important',
+      },
+    },
+  },
+}));
 
 const ChatsOfAccount = ({
   time,
@@ -24,12 +68,15 @@ const ChatsOfAccount = ({
   dispatchCleanUpAction,
   chatsOfAccount,
   dispatchGetAllChatsOfAccountTypeAction,
+  dispatchGetGeneralJournalTimeAction,
 }) => {
   const componentRef = useRef();
   const tableRef = useRef();
   const companyRef = useRef();
   const [print, setPrint] = useState(false);
   const [display, setDisplay] = useState(false);
+
+  const classes = useStyles();
 
   const { organisation } = user;
   const { startDate, endDate } = time;
@@ -48,34 +95,59 @@ const ChatsOfAccount = ({
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
 
-  const TableHeadData = [
+  const columns = [
     'Account Code',
     'Account Name',
     'Account Type',
-    'Debit / Credit',
+    'Closing Balance',
     'Status',
   ];
-  const tableData = chatsOfAccount.map(account => ({
-    'Account Code': account.accountCode,
-    'Account Name': account.accountName,
-    'Account Type': account.accountType && account.accountType.accountType,
-    'Debit / Credit': account.type,
-    Status: account.status,
-  }));
+  console.log('dddddddddddddddddddddddd,', chatsOfAccount);
+  const data = chatsOfAccount.map(account => [
+    account.accountCode,
+    account.accountName,
+    account.accountType && account.accountType.accountType,
+    account.closingBalance,
+    account.status ? 'Active' : 'Inactive',
+  ]);
+
+  const options = {
+    filterType: 'checkbox',
+    responsive: 'stacked',
+    selectableRows: 'none',
+    elevation: 0,
+    download: false,
+    print: false,
+    pagination: true,
+    viewColumns: false,
+  };
+  const dateValue = ({ target }) => {
+    dispatchGetGeneralJournalTimeAction({
+      startDate: '01/01/2000',
+      endDate: target.value.split('-').join('/'),
+    });
+    handleData();
+  };
 
   return (
     <React.Fragment>
-      <TopMenu
+      <ControlledButtons
         componentRef={componentRef}
         print={print}
         setPrint={setPrint}
-        tableData={tableData}
+        tableData={data}
+        printCsc={[columns, data ? { ...data } : '']}
         handleFetch={handleData}
         pdflogo={organisation.logo}
-        singleDate={true}
         tableRef={tableRef}
         companyRef={companyRef}
+        // daterange={setDate}
         daterange={display && `As at ${moment(endDate).format('MMM Do YYYY')}`}
+        singleDate={true}
+        dateValue={dateValue}
+        head={[columns]}
+        body={data}
+        toDay="End Date"
       />
       <div ref={componentRef}>
         <Company
@@ -85,11 +157,11 @@ const ChatsOfAccount = ({
           date={display && `As at ${moment(endDate).format('MMM Do YYYY')}`}
         />
 
-        <Table
-          ref={tableRef}
-          data={tableData}
-          TableHeadData={TableHeadData}
-          // TableFooterData={TableFooterData}
+        <MUIDataTable
+          className={classes.datatable}
+          data={data}
+          columns={columns}
+          options={options}
         />
       </div>
     </React.Fragment>
@@ -109,8 +181,8 @@ const mapDispatchToProps = dispatch => ({
   dispatchGetAllChatsOfAccountTypeAction: () =>
     dispatch(Actions.getAllChatsOfAccountTypeAction()),
   dispatchCleanUpAction: () => dispatch(Actions.cleanUpGeneralJournalAction()),
-  dispatchGetGeneralJournalTimeAction: () =>
-    dispatch(Actions.getGeneralJournalTimeAction()),
+  dispatchGetGeneralJournalTimeAction: data =>
+    dispatch(Actions.getGeneralJournalTimeAction(data)),
   dispatch,
 });
 
@@ -123,3 +195,17 @@ export default compose(
   withConnect,
   memo,
 )(ChatsOfAccount);
+/**
+ *    <TopMenu
+        componentRef={componentRef}
+        print={print}
+        setPrint={setPrint}
+        tableData={tableData}
+        handleFetch={handleData}
+        pdflogo={organisation.logo}
+        singleDate={true}
+        tableRef={tableRef}
+        companyRef={companyRef}
+        daterange={display && `As at ${moment(endDate).format('MMM Do YYYY')}`}
+      />
+ */
