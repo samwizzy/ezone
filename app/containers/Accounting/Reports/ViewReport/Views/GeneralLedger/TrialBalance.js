@@ -11,12 +11,56 @@ import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import viewReportReducer from '../../reducers';
 import ReportSaga from '../../saga';
-import Table from '../../Components/Table';
-import TopMenu from '../../Components/TopMenu';
 import Company from '../../Components/CompanyLogo';
 import formatDate from '../../Helpers';
 import * as Select from '../../../../../App/selectors';
+import { makeStyles } from '@material-ui/core';
+import { darken } from '@material-ui/core/styles/colorManipulator';
+import {
+  TableFooter,
+  TablePagination,
+  TableRow,
+  TableCell,
+} from '@material-ui/core';
+import MUIDataTable from 'mui-datatables';
+import classNames from 'classnames';
+import ControlledButtons from '../../Components/BackButton';
 import './style.css';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+    padding: ' 0px 24px 24px 24px',
+  },
+  flex: {
+    position: 'relative',
+    padding: theme.spacing(8, 2),
+  },
+  tableFoot: {
+    backgroundColor: darken(theme.palette.primary.main, 0.1),
+  },
+  datatable: {
+    width: '100% !important',
+    '& thead': {
+      '& th': {
+        color: theme.palette.secondary.contrastText,
+        backgroundColor: theme.palette.primary.main,
+        padding: '8px !important',
+      },
+    },
+    '& tbody': {
+      '& td': {
+        padding: '8px !important',
+      },
+    },
+    '& tfoot': {
+      '& td': {
+        padding: '8px !important',
+      },
+    },
+  },
+}));
 
 const TrialBalance = ({
   reports,
@@ -36,6 +80,9 @@ const TrialBalance = ({
   const companyRef = useRef();
   const [print, setPrint] = useState(false);
   const [display, setDisplay] = useState(false);
+  const [period, setPeriod] = useState({ firstDate: '', lastDate: '' });
+
+  const classes = useStyles();
 
   useInjectReducer({ key: 'reports', reducer: viewReportReducer });
   useInjectSaga({ key: 'reports', saga: ReportSaga });
@@ -49,38 +96,44 @@ const TrialBalance = ({
   const { trialBalances } = trialBalance;
   const { organisation } = user;
 
-  console.log('=======>', trialBalance);
-  const tableData =
-    error === false && trialBalances
-      ? trialBalances.map(balance => {
-          return {
-            'Account Code': `${balance.accountCode}`,
-            'Account Name': `${balance.accountDescription}`,
-            'Debit Amt': `${balance.debitAmount}`,
-            'Credit Amt': `${balance.creditAmount}`,
-          };
-        })
-      : '';
-  const TableHeadData = [
-    'Account Code',
-    'Account Desc',
-    'Debit Amt',
-    'Credit Amt',
-  ];
+  const data =
+    trialBalances &&
+    trialBalances.map(balance => [
+      `${balance.accountCode}`,
+      `${balance.accountDescription}`,
+      `${balance.debitAmount === 0.0 ? '' : balance.debitAmount}`,
+      `${balance.creditAmount === 0.0 ? '' : balance.creditAmount}`,
+    ]);
+  const columns = ['Account Code', 'Account Name', 'Debit Amt', 'Credit Amt'];
   const TableFooterData = [
-    {
-      'Account Code': 'Total',
-      'Account Desc': '',
-      'Debit Amt': `${trialBalance && trialBalance.total}`,
-      'Credit Amt': `${trialBalance && trialBalance.total}`,
-    },
+    '   ',
+    ' TOTAL',
+    `${trialBalance && trialBalance.total}`,
+    `${trialBalance && trialBalance.total}`,
   ];
+  console.log('YEEEEEEEEEEEEESSSSSSSSSSSSSS', trialBalances);
+  const options = {
+    filterType: 'checkbox',
+    responsive: 'stacked',
+    selectableRows: 'none',
+    elevation: 0,
+    download: false,
+    print: false,
+    pagination: true,
+    viewColumns: false,
+  };
 
   const handleData = () => {
     dispatchGetAllTrialBalanceAction();
     setDisplay(true);
   };
-
+  const dateValue = ({ target }) => {
+    dispatchGetGeneralTimeAction({
+      startDate: '01/01/2000',
+      endDate: target.value.split('-').join('/'),
+    });
+    handleData();
+  };
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
 
@@ -89,35 +142,41 @@ const TrialBalance = ({
     `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
       'MMM Do YYYY',
     )}`;
-
   return (
-    <React.Fragment>
-      <TopMenu
+    <div className={classes.root}>
+      <ControlledButtons
         componentRef={componentRef}
         print={print}
         setPrint={setPrint}
-        tableData={tableData}
+        tableData={data}
+        printCsc={[columns, data ? { ...data } : '']}
         handleFetch={handleData}
         pdflogo={organisation.logo}
         tableRef={tableRef}
         companyRef={companyRef}
         daterange={setDate}
+        dateValue={dateValue}
+        head={[columns]}
+        body={data}
+        toDay="End Date"
+        singleDate={true}
       />
+
       <div ref={componentRef}>
         <Company
           ref={companyRef}
           ComLogo={organisation.logo}
           name={`${fileName}`}
-          date={setDate}
+          date={display && `As at ${moment(endDate).format('MMM Do YYYY')}`}
         />
-        <Table
-          ref={tableRef}
-          data={tableData}
-          TableHeadData={TableHeadData}
-          TableFooterData={TableFooterData}
+        <MUIDataTable
+          className={classes.datatable}
+          data={data && data.concat([TableFooterData])}
+          columns={columns}
+          options={options}
         />
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 
@@ -136,8 +195,8 @@ const mapDispatchToProps = dispatch => ({
   dispatchGetAllTrialBalanceAction: () =>
     dispatch(Actions.getAllTrialBalanceAction()),
   dispatchCleanUpAction: () => dispatch(Actions.cleanUpGeneralJournalAction()),
-  dispatchGetGeneralTimeAction: () =>
-    dispatch(Actions.getGeneralJournalTimeAction()),
+  dispatchGetGeneralTimeAction: data =>
+    dispatch(Actions.getGeneralJournalTimeAction(data)),
   dispatch,
 });
 
@@ -150,3 +209,28 @@ export default compose(
   withConnect,
   memo,
 )(TrialBalance);
+// customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
+//   <TableFooter>
+//     <TableRow>
+//       <TableCell
+//         style={{ backgroundColor: 'black', color: 'white' }}
+//         colSpan={9}
+//       >
+//         {'Total                ;'}
+//       </TableCell>
+
+//       <TableCell
+//         style={{ backgroundColor: 'black', color: 'white' }}
+//         colSpan={1}
+//       >
+//         {`${trialBalance ? trialBalance.total : ''}`}
+//       </TableCell>
+//       <TableCell
+//         style={{ backgroundColor: 'black', color: 'white' }}
+//         colSpan={1}
+//       >
+//         {`${trialBalance ? trialBalance.total : ''}`}
+//       </TableCell>
+//     </TableRow>
+//   </TableFooter>
+// ),

@@ -11,20 +11,61 @@ import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import viewReportReducer from '../../reducers';
 import ReportSaga from '../../saga';
-import Table from '../../Components/Table';
-import TopMenu from '../../Components/TopMenu';
 import Company from '../../Components/CompanyLogo';
 import formatDate from '../../Helpers';
 import * as Select from '../../../../../App/selectors';
+import { makeStyles } from '@material-ui/core';
+import { darken } from '@material-ui/core/styles/colorManipulator';
+import {
+  TableFooter,
+  TablePagination,
+  TableRow,
+  TableCell,
+} from '@material-ui/core';
+import MUIDataTable from 'mui-datatables';
+import classNames from 'classnames';
+import ControlledButtons from '../../Components/BackButton';
 import './style.css';
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+    padding: ' 0px 24px 24px 24px',
+  },
+  flex: {
+    position: 'relative',
+    padding: theme.spacing(8, 2),
+  },
+  tableFoot: {
+    backgroundColor: darken(theme.palette.primary.main, 0.1),
+  },
+  datatable: {
+    width: '100% !important',
+    '& thead': {
+      '& th': {
+        color: theme.palette.secondary.contrastText,
+        backgroundColor: theme.palette.primary.main,
+        padding: '8px !important',
+      },
+    },
+    '& tbody': {
+      '& td': {
+        padding: '8px !important',
+      },
+    },
+    '& tfoot': {
+      '& td': {
+        padding: '8px !important',
+      },
+    },
+  },
+}));
+
 const GeneralLedger = ({
-  reports,
-  error,
-  loading,
   generalLedger,
   dispatchGetAllGeneralLedgerTypeAction,
-  dispatchGetGeneralLedgerTimeAction,
+  dispatchGetGeneralJournalTimeAction,
   dispatchCleanUpAction,
   time,
   user,
@@ -36,6 +77,9 @@ const GeneralLedger = ({
   const companyRef = useRef();
   const [print, setPrint] = useState(false);
   const [display, setDisplay] = useState(false);
+  const [period, setPeriod] = useState({ firstDate: '', lastDate: '' });
+
+  const classes = useStyles();
 
   useInjectReducer({ key: 'reports', reducer: viewReportReducer });
   useInjectSaga({ key: 'reports', saga: ReportSaga });
@@ -46,29 +90,11 @@ const GeneralLedger = ({
 
   const formatDate = dateTime => moment(dateTime).format('DD-MM-YYYY');
   const { organisation } = user;
-  console.log('generalLedger.mapvvvvvvvvvvvvvvvvvvv', generalLedger);
   const ArraysOfArray = Object.keys(generalLedger).map(
     key => generalLedger[key],
   );
 
-  let arr = [];
-  let tableData = [];
-  ArraysOfArray.forEach(element => {
-    element.forEach(ledger => {
-      tableData.push({
-        'Account ID': `${ledger.accountCode}`,
-        'Account Desc': `${ledger.accountDescription}`,
-        Date: `${formatDate(ledger.date)}`,
-        Reference: `${ledger.reference}`,
-        'Transaction Desc': `${ledger.transactionDescription}`,
-        'Debit Amt': `${ledger.debitAmount}`,
-        'Credit Amt': `${ledger.creditAmount}`,
-        Balance: `${ledger.balance}`,
-      });
-    });
-  });
-
-  const TableHeadData = [
+  const columns = [
     'Account Code',
     'Account Name',
     'Date',
@@ -77,11 +103,59 @@ const GeneralLedger = ({
     'Debit Amt',
     'Credit Amt',
     'Balance',
+    'Ending Balance',
   ];
+
+  const data = ArraysOfArray.reduce(
+    (accumulator, value) => accumulator.concat(value),
+    [],
+  ).map(ledger => [
+    `${ledger.accountCode}`,
+    `${ledger.accountDescription}`,
+    `${formatDate(ledger.date)}`,
+    `${ledger.reference}`,
+    `${ledger.transactionDescription}`,
+    `${ledger.creditAmount}`,
+    `${ledger.balance}`,
+  ]);
+
+  const options = {
+    filterType: 'checkbox',
+    responsive: 'stacked',
+    selectableRows: 'none',
+    elevation: 0,
+    download: false,
+    print: false,
+    pagination: true,
+    rowsPerPage: 20,
+    count: 15,
+    page: 0,
+    viewColumns: false,
+  };
+
   const handleData = () => {
     dispatchGetAllGeneralLedgerTypeAction();
     setDisplay(true);
   };
+  const dateValue = ({ target }) => {
+    if (target.name === 'Start Date') {
+      setPeriod({ ...period, firstDate: target.value.split('-').join('/') });
+    }
+    if (target.name === 'End Date') {
+      setPeriod({ ...period, lastDate: target.value.split('-').join('/') });
+    }
+  };
+
+  useEffect(() => {
+    if (period.lastDate && period.firstDate) {
+      dispatchGetGeneralJournalTimeAction({
+        startDate: period.firstDate,
+        endDate: period.lastDate,
+      });
+      handleData();
+    }
+  }, [period]);
+
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
   const setDate =
@@ -89,19 +163,27 @@ const GeneralLedger = ({
     `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
       'MMM Do YYYY',
     )}`;
+
   return (
-    <React.Fragment>
-      <TopMenu
+    <div className={classes.root}>
+      <ControlledButtons
         componentRef={componentRef}
         print={print}
         setPrint={setPrint}
-        tableData={tableData}
+        tableData={data}
+        printCsc={[columns, data ? { ...data } : '']}
         handleFetch={handleData}
         pdflogo={organisation.logo}
         tableRef={tableRef}
         companyRef={companyRef}
         daterange={setDate}
+        dateValue={dateValue}
+        head={[columns]}
+        body={data}
+        fromDay="Start Date"
+        toDay="End Date"
       />
+
       <div ref={componentRef}>
         <Company
           ref={companyRef}
@@ -109,15 +191,14 @@ const GeneralLedger = ({
           name={`${fileName}`}
           date={setDate}
         />
-
-        <Table
-          ref={tableRef}
-          data={tableData}
-          TableHeadData={TableHeadData}
-          // TableFooterData={TableFooterData}
+        <MUIDataTable
+          className={classes.datatable}
+          data={data}
+          columns={columns}
+          options={options}
         />
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 
@@ -136,8 +217,8 @@ const mapDispatchToProps = dispatch => ({
   dispatchGetAllGeneralLedgerTypeAction: () =>
     dispatch(Actions.getAllGeneralLedgerAction()),
   dispatchCleanUpAction: () => dispatch(Actions.cleanUpGeneralJournalAction()),
-  dispatchGetGeneralLedgerTimeAction: () =>
-    dispatch(Actions.getGeneralLedgerTimeAction()),
+  dispatchGetGeneralJournalTimeAction: data =>
+    dispatch(Actions.getGeneralJournalTimeAction(data)),
   dispatch,
 });
 
@@ -150,8 +231,8 @@ export default compose(
   withConnect,
   memo,
 )(GeneralLedger);
-/** imports 
- import React, { useRef, memo, useEffect, useState } from 'react';
+/*
+import React, { useRef, memo, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { useLocation } from 'react-router-dom';
@@ -164,20 +245,72 @@ import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import viewReportReducer from '../../reducers';
 import ReportSaga from '../../saga';
-import Table from '../../Components/Table';
-import TopMenu from '../../Components/TopMenu';
 import Company from '../../Components/CompanyLogo';
 import formatDate from '../../Helpers';
 import * as Select from '../../../../../App/selectors';
+import { makeStyles } from '@material-ui/core';
+import { darken } from '@material-ui/core/styles/colorManipulator';
+import {
+  TableFooter,
+  TablePagination,
+  TableRow,
+  TableCell,
+} from '@material-ui/core';
+import MUIDataTable from 'mui-datatables';
+import classNames from 'classnames';
+import ControlledButtons from '../../Components/BackButton';
 import './style.css';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+    padding: ' 0px 24px 24px 24px',
+  },
+  flex: {
+    position: 'relative',
+    padding: theme.spacing(8, 2),
+  },
+  tableFoot: {
+    backgroundColor: darken(theme.palette.primary.main, 0.1),
+  },
+  datatable: {
+    width: '100% !important',
+    '& thead': {
+      '& th': {
+        color: theme.palette.secondary.contrastText,
+        backgroundColor: theme.palette.primary.main,
+        padding: '8px !important',
+      },
+    },
+    '& tbody': {
+      '& td': {
+        padding: '8px !important',
+      },
+    },
+    '& tfoot': {
+      '& td': {
+        padding: '8px !important',
+      },
+    },
+  },
+}));
+
  */
 
 /**Refs declaration
- const componentRef = useRef();
+  
+ const { startDate, endDate } = time;
+
+  const componentRef = useRef();
   const tableRef = useRef();
   const companyRef = useRef();
   const [print, setPrint] = useState(false);
   const [display, setDisplay] = useState(false);
+  const [period, setPeriod] = useState({ firstDate: '', lastDate: '' });
+
+  const classes = useStyles();
+
  */
 
 /**Set date
