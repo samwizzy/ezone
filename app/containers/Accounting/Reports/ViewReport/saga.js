@@ -13,11 +13,9 @@ export function* getGeneralJournalSaga() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const { startDate, endDate } = yield select(Selectors.makeSelectTime());
 
-  const requestURL = `${
-    Endpoints.GetGeneralJournalApi
-  }?endDate=${endDate}&startDate=${startDate}&orgId=${
-    currentUser.organisation.orgId
-  }`;
+  const requestURL = `${Endpoints.GetGeneralJournalApi
+    }?endDate=${endDate}&startDate=${startDate}&orgId=${currentUser.organisation.orgId
+    }`;
   console.log('requestURL', requestURL);
 
   try {
@@ -39,12 +37,9 @@ export function* getChatOfAccountSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const { startDate, endDate } = yield select(Selectors.makeSelectTime());
+  const { pageFrom, pageTo } = { pageFrom: 0, pageTo: 100 };
 
-  const requestURL = `${
-    Endpoints.GetChatsOfAccountApi
-  }?endDate=${endDate}&startDate=${startDate}&orgId=${
-    currentUser.organisation.orgId
-  }`;
+  const requestURL = `${Endpoints.GetChatsOfAccountApi}?endDate=${endDate}&startDate=${startDate}&pageFrom=${pageFrom}&pageTo=${pageTo}&orgId=${currentUser.organisation.orgId}`;
 
   try {
     const getChatsOfAccountResponse = yield call(request, requestURL, {
@@ -69,11 +64,9 @@ export function* getGeneralLedgerSaga() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const { startDate, endDate } = yield select(Selectors.makeSelectTime());
 
-  const requestURL = `${
-    Endpoints.GetGeneralLedgerApi
-  }?endDate=${endDate}&startDate=${startDate}&orgId=${
-    currentUser.organisation.orgId
-  }`;
+  const requestURL = `${Endpoints.GetGeneralLedgerApi
+    }?endDate=${endDate}&startDate=${startDate}&orgId=${currentUser.organisation.orgId
+    }`;
   console.log('requestURL', requestURL);
 
   try {
@@ -96,11 +89,9 @@ export function* getTrialBalanceSaga() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const { startDate, endDate } = yield select(Selectors.makeSelectTime());
 
-  const requestURL = `${
-    Endpoints.GetTrialBalanceApi
-  }?endDate=${endDate}&startDate=${startDate}&orgId=${
-    currentUser.organisation.orgId
-  }`;
+  const requestURL = `${Endpoints.GetTrialBalanceApi
+    }?endDate=${endDate}&startDate=${startDate}&orgId=${currentUser.organisation.orgId
+    }`;
   console.log('requestURL', requestURL);
 
   try {

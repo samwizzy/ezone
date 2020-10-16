@@ -104,7 +104,7 @@ const GeneralJournal = ({
       `${journal.description}`,
       `${journal.debit === 0 ? '' : journal.debit}`,
       `${journal.credit === 0 ? '' : journal.credit}`,
-      `${journal.currency ? journal.currency : ''}`,
+      `${journal.currency ? (journal.currency && journal.currency.code) : ''}`,
       `${journal.exchangeRate ? journal.exchangeRate : ''}`,
     ]);
 
