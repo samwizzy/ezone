@@ -23,10 +23,18 @@ input[type='date']::before {
   position: absolute;
   background: inherit;
   width: 60%;
+  height: 50%;
   content: attr(placeholder);
 }
 input[type='date']:focus::before {
   content: '' !important;
   background: none;
   outline: none;
+}
+.flex-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
 }
