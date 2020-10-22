@@ -2,26 +2,18 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Button, ButtonGroup, TableContainer, Table, TableRow, TableCell, TableBody, TextField, Grid, Paper, Typography } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors'
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
+import { darken } from '@material-ui/core/styles/colorManipulator';
 import moment from 'moment'
 import MUIDataTable from 'mui-datatables'
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../App/selectors';
-import EditSharp from '@material-ui/icons/EditSharp';
-import Assignment from '@material-ui/icons/Assignment';
-import AssignmentInd from '@material-ui/icons/AssignmentInd';
-import Person from '@material-ui/icons/Person';
-import { AddRole } from '../../Accounting/components/AddButton'
-import AddRoleDialog from './components/AddRoleDialog'
-
-const drawerWidth = '100%';
+import { AddPosition } from '../components/AddButton'
+import PositionDialog from './components/PositionDialog'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -75,12 +67,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const HumanResource = props => {
+const PositionList = props => {
   const classes = useStyles();
-  const { loading, openNewRoleDialog, getEmployees, roles, getEmployee, employees, employee } = props;
-
-  React.useEffect(() => {
-  }, [employee]);
+  const { loading, openNewPositionDialog, positions } = props;
 
   const columns = [
     {
@@ -93,7 +82,7 @@ const HumanResource = props => {
     },
     {
       name: 'name',
-      label: 'Role Name',
+      label: 'Name',
       options: {
         filter: true,
         sort: true,
@@ -108,88 +97,69 @@ const HumanResource = props => {
         customBodyRender: value => moment(value).format('lll')
       },
     },
-    /*
     {
-        name: 'description',
-        label: 'Description',
-        options: {
-          filter: true,
-          sort: true
-        },
+      name: 'description',
+      label: 'Description',
+      options: {
+        filter: true,
+        sort: true
+      },
     },
     {
-        name: 'employeesCount',
-        label: 'Employees',
-        options: {
-            filter: true,
-            sort: true,
-        },
+      name: 'employeesCount',
+      label: 'Employees',
+      options: {
+        filter: true,
+        sort: true,
+      },
     },
-    */
   ];
 
   const options = {
     filterType: 'checkbox',
-    responsive: 'scrollMaxHeight',
-    selectableRows: 'single', // none, multiple
+    responsive: 'stacked',
+    selectableRows: 'single',
     print: false,
     download: true,
     viewColumns: false,
     filter: false,
-    customToolbar: () => <AddRole openDialog={openNewRoleDialog} />,
+    customToolbar: () => <AddPosition openDialog={openNewPositionDialog} />,
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
-      getEmployee(rowData[0])
     },
     elevation: 0
   };
 
   return (
     <div className={classes.root}>
-      <Grid
-        container
-        justify='space-around'
-      >
-        <Grid item md={12}>
-          <div className={classes.content}>
+      <MUIDataTable
+        className={classes.datatable}
+        title="Positions List"
+        data={positions}
+        columns={columns}
+        options={options}
+      />
 
-            <MUIDataTable
-              className={classes.datatable}
-              title="Roles List"
-              data={roles}
-              columns={columns}
-              options={options}
-            />
-
-          </div>
-        </Grid>
-      </Grid>
-
-      <AddRoleDialog />
+      <PositionDialog />
     </div>
   );
 };
 
-HumanResource.propTypes = {
+PositionList.propTypes = {
   loading: PropTypes.bool,
-  getEmployees: PropTypes.func,
-  openNewRoleDialog: PropTypes.func,
+  openNewPositionDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   employees: Selectors.makeSelectEmployees(),
-  employee: Selectors.makeSelectEmployee(),
-  user: AppSelectors.makeSelectCurrentUser(),
-  roles: Selectors.makeSelectRoles(),
+  positions: Selectors.makeSelectPositions(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getEmployees: () => dispatch(Actions.getEmployees()),
-    getEmployee: (uuid) => dispatch(Actions.getEmployee(uuid)),
-    openNewRoleDialog: () => dispatch(Actions.openNewRoleDialog()),
+    openNewPositionDialog: () => dispatch(Actions.openNewPositionDialog()),
   };
 }
 
@@ -202,4 +172,4 @@ export default compose(
   withRouter,
   withConnect,
   memo
-)(HumanResource)
+)(PositionList)

@@ -6,13 +6,14 @@ import { AppBar, Breadcrumbs, IconButton, Link, TextField, MenuItem, Grid, Typog
 import MUIDataTable from 'mui-datatables'
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import moment from 'moment'
+import _ from 'lodash'
 import { createStructuredSelector } from 'reselect';
 import { darken } from '@material-ui/core/styles/colorManipulator';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { Widget11_Report } from './../widgets'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,14 +42,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const groups = ['Department', 'Branch', 'Roles', 'Location'];
-
-const GenderProfileReport = props => {
+const EmployeeBirthdaysReport = props => {
   const classes = useStyles();
   const { loading, history, employees } = props;
-  const [group, setGroup] = React.useState('')
 
-  const handleChange = event => setGroup(event.target.value)
+  const birthdayEmps = employees.length > 0 && employees.filter(emp => moment(emp.dob).format('MMM') === moment().format('MMM'));
+  const birthdays = _.orderBy(birthdayEmps, 'dob', 'desc');
 
   const columns = [
     {
@@ -60,29 +59,41 @@ const GenderProfileReport = props => {
       },
     },
     {
-      name: 'name',
-      label: 'Department name',
+      name: 'id',
+      label: 'Name',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: id => {
+          const emp = employees.find(emp => emp.id === id)
+          return emp.firstName + ' ' + emp.lastName
+        }
+      },
+    },
+    {
+      name: 'phoneNumber',
+      label: 'Phone Number',
       options: {
         filter: true,
         sort: true,
       },
     },
     {
-      name: 'employees',
-      label: 'Employee count',
+      name: 'dob',
+      label: 'Birth Date',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: employees => employees && employees.length
+        customBodyRender: date => date ? moment(date).format('ll') : ""
       },
     },
     {
       name: 'dateCreated',
-      label: 'Created',
+      label: 'Date Created',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: value => value ? moment(value).format('lll') : ''
+        customBodyRender: value => value ? moment(value).format('ll') : ''
       },
     },
   ];
@@ -95,24 +106,6 @@ const GenderProfileReport = props => {
     download: true,
     viewColumns: false,
     filter: false,
-    customToolbar: () =>
-      <TextField
-        id="group-select"
-        size="small"
-        select
-        label="Filter By"
-        name="group"
-        value={group}
-        variant="outlined"
-        onChange={handleChange}
-        style={{ width: 250 }}
-      >
-        {groups.map((group, i) =>
-          <MenuItem key={i} value={group}>
-            {group}
-          </MenuItem>
-        )}
-      </TextField>,
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
     elevation: 0
@@ -131,20 +124,17 @@ const GenderProfileReport = props => {
                   </IconButton>
                 </Link>
                 <Typography variant="subtitle1" color="textPrimary" className={classes.title}>
-                  Gender Profile Report
+                  Employee Birthdays
                 </Typography>
               </Breadcrumbs>
             </Toolbar>
           </AppBar>
         </Grid>
         <Grid item md={12}>
-          <Widget11_Report employees={employees} />
-        </Grid>
-        <Grid item md={12}>
           <MUIDataTable
             className={classes.datatable}
-            title=" "
-            data={[]}
+            title="Birthday List"
+            data={birthdays}
             columns={columns}
             options={options}
           />
@@ -154,7 +144,7 @@ const GenderProfileReport = props => {
   );
 };
 
-GenderProfileReport.propTypes = {
+EmployeeBirthdaysReport.propTypes = {
   loading: PropTypes.bool,
 };
 
@@ -176,4 +166,4 @@ export default compose(
   withRouter,
   withConnect,
   memo,
-)(GenderProfileReport);
+)(EmployeeBirthdaysReport);

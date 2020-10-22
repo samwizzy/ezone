@@ -39,7 +39,13 @@ const severity = [
 
 const Announcement = props => {
   const classes = useStyles();
-  const { loading, openNewAnnouncementDialog, openAnnouncementViewDialog, announcements } = props;
+  const {
+    loading,
+    openNewAnnouncementDialog,
+    openAnnouncementViewDialog,
+    announcements,
+    getAnnouncementById,
+  } = props;
 
   const orderedAnnouncements = _.orderBy(announcements, 'dateCreated', 'desc')
 
@@ -52,6 +58,7 @@ const Announcement = props => {
   })
 
   useEffect(() => {
+    console.log(moment('2020-10-20').diff(moment()), "moment diff")
     setState((state) => ({ ...state, announcements: orderedAnnouncements }))
   }, [announcements])
 
@@ -178,7 +185,10 @@ const Announcement = props => {
           {state.announcements && state.announcements.length ?
             <Fragment>
               {state.announcements.map((announcement, i) =>
-                <AnnouncementItem key={i} announcement={announcement} />
+                <AnnouncementItem
+                  key={i} announcement={announcement}
+                  getAnnouncementById={getAnnouncementById}
+                />
               )}
             </Fragment>
             :
@@ -203,6 +213,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    getAnnouncementById: (id) => dispatch(Actions.getAnnouncementById(id)),
     openNewAnnouncementDialog: () => dispatch(Actions.openNewAnnouncementDialog()),
     openAnnouncementViewDialog: (data) => dispatch(Actions.openAnnouncementViewDialog(data)),
   };

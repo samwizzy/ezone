@@ -203,11 +203,19 @@ export const GET_ROLES = 'boilerplate/HRPage/GET ROLES';
 export const GET_ROLES_SUCCESS = 'boilerplate/HRPage/GET ROLES SUCCESS';
 export const GET_ROLES_ERROR = 'boilerplate/HRPage/GET ROLES ERROR';
 
+export const GET_POSITIONS = 'boilerplate/HRPage/GET POSITIONS';
+export const GET_POSITIONS_SUCCESS = 'boilerplate/HRPage/GET POSITIONS SUCCESS';
+export const GET_POSITIONS_ERROR = 'boilerplate/HRPage/GET POSITIONS ERROR';
+
 export const GET_ROLE = 'boilerplate/HRPage/GET ROLE';
 
 export const CREATE_ROLE = 'boilerplate/HRPage/CREATE ROLE';
 export const CREATE_ROLE_SUCCESS = 'boilerplate/HRPage/CREATE ROLE SUCCESS';
 export const CREATE_ROLE_ERROR = 'boilerplate/HRPage/CREATE ROLE ERROR';
+
+export const CREATE_POSITION = 'boilerplate/HRPage/CREATE POSITION';
+export const CREATE_POSITION_SUCCESS = 'boilerplate/HRPage/CREATE POSITION SUCCESS';
+export const CREATE_POSITION_ERROR = 'boilerplate/HRPage/CREATE POSITION ERROR';
 
 export const EDIT_ROLE = 'boilerplate/HRPage/EDIT ROLE';
 export const EDIT_ROLE_SUCCESS = 'boilerplate/HRPage/EDIT ROLE SUCCESS';
@@ -239,7 +247,10 @@ export const EDIT_BRANCH_ERROR = 'boilerplate/HRPage/EDIT BRANCH ERROR';
 export const GET_ANNOUNCEMENTS = 'boilerplate/HRPage/GET ANNOUNCEMENTS';
 export const GET_ANNOUNCEMENTS_SUCCESS = 'boilerplate/HRPage/GET ANNOUNCEMENTS SUCCESS';
 export const GET_ANNOUNCEMENTS_ERROR = 'boilerplate/HRPage/GET ANNOUNCEMENTS ERROR';
-export const GET_ANNOUNCEMENT = 'boilerplate/HRPage/GET ANNOUNCEMENT';
+
+export const GET_ANNOUNCEMENT_BY_ID = 'boilerplate/HRPage/GET ANNOUNCEMENT BY ID';
+export const GET_ANNOUNCEMENT_BY_ID_SUCCESS = 'boilerplate/HRPage/GET ANNOUNCEMENT BY ID SUCCESS';
+export const GET_ANNOUNCEMENT_BY_ID_ERROR = 'boilerplate/HRPage/GET ANNOUNCEMENT BY ID ERROR';
 
 export const CREATE_ANNOUNCEMENT = 'boilerplate/HRPage/CREATE ANNOUNCEMENT';
 export const CREATE_ANNOUNCEMENT_SUCCESS = 'boilerplate/HRPage/CREATE ANNOUNCEMENT SUCCESS';

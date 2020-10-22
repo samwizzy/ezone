@@ -236,6 +236,26 @@ export function getRolesSuccess(data) {
   };
 }
 
+export function getPositions() {
+  return {
+    type: Constants.GET_POSITIONS,
+  };
+}
+
+export function getPositionsSuccess(data) {
+  return {
+    type: Constants.GET_POSITIONS_SUCCESS,
+    payload: data
+  };
+}
+
+export function getPositionsError(data) {
+  return {
+    type: Constants.GET_POSITIONS_ERROR,
+    payload: data
+  };
+}
+
 export function getEmployee(uuid) {
   console.log("you just hit the getEmployee action", uuid)
   return {
@@ -329,6 +349,25 @@ export function getAnnouncementsSuccess(data) {
 export function getAnnouncementsError(data) {
   return {
     type: Constants.GET_ANNOUNCEMENTS_ERROR,
+    payload: data
+  };
+}
+
+export function getAnnouncementById(id) {
+  return {
+    type: Constants.GET_ANNOUNCEMENT_BY_ID,
+    payload: { id }
+  };
+}
+export function getAnnouncementByIdSuccess(data) {
+  return {
+    type: Constants.GET_ANNOUNCEMENT_BY_ID_SUCCESS,
+    payload: data
+  };
+}
+export function getAnnouncementByIdError(data) {
+  return {
+    type: Constants.GET_ANNOUNCEMENT_BY_ID_ERROR,
     payload: data
   };
 }
@@ -513,6 +552,7 @@ export function createApplicantSuccess(data) {
     payload: data
   };
 }
+
 export function createRole(data) {
   return {
     type: Constants.CREATE_ROLE,
@@ -525,6 +565,26 @@ export function createRoleSuccess(data) {
     payload: data
   };
 }
+
+export function createPosition(data) {
+  return {
+    type: Constants.CREATE_POSITION,
+    payload: data
+  };
+}
+export function createPositionSuccess(data) {
+  return {
+    type: Constants.CREATE_POSITION_SUCCESS,
+    payload: data
+  };
+}
+export function createPositionError(data) {
+  return {
+    type: Constants.CREATE_POSITION_SUCCESS,
+    payload: data
+  };
+}
+
 export function createDepartment(data) {
   return {
     type: Constants.CREATE_DEPARTMENT,
@@ -633,12 +693,12 @@ export function closeNewBranchDialog() {
   };
 }
 
-export function openNewRoleDialog() {
+export function openNewPositionDialog() {
   return {
     type: Constants.OPEN_NEW_ROLE_DIALOG,
   };
 }
-export function closeNewRoleDialog() {
+export function closeNewPositionDialog() {
   return {
     type: Constants.CLOSE_NEW_ROLE_DIALOG,
   };

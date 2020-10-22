@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
@@ -22,19 +22,20 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const initialState = {
   name: '',
-  type: 'ROLE'
+  description: '',
+  party_id: ''
 }
 
-function AddRoleDialog(props) {
+function PositionDialog(props) {
   const classes = useStyles();
-  const { closeNewRoleDialog, dialog, createRole } = props;
-  const [form, setForm] = React.useState({ ...initialState });
+  const { closeNewPositionDialog, dialog, createPosition } = props;
+  const [form, setForm] = useState({ ...initialState });
 
   console.log(dialog, "dialog checking")
 
-  React.useEffect(() => {
-    dialog.type == 'edit' ?
-      setForm({ ...form }) :
+  useEffect(() => {
+    dialog.type === 'edit' && dialog.data ?
+      setForm({ ...dialog.data }) :
       setForm({ ...initialState })
   }, [dialog])
 
@@ -51,7 +52,7 @@ function AddRoleDialog(props) {
   const handleReset = () => setForm({ ...initialState })
 
   const handleSubmit = () => {
-    createRole(form)
+    createPosition(form)
     handleReset()
   }
 
@@ -63,14 +64,14 @@ function AddRoleDialog(props) {
         {...dialog.props}
         TransitionComponent={Transition}
         keepMounted
-        onClose={closeNewRoleDialog}
+        onClose={closeNewPositionDialog}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
-              Add role
+              Add position
             </Typography>
           </Toolbar>
         </AppBar>
@@ -78,7 +79,7 @@ function AddRoleDialog(props) {
         <DialogContent dividers>
           <TextField
             name="name"
-            label="Role name"
+            label="Name"
             id="outlined-title"
             fullWidth
             margin="normal"
@@ -87,10 +88,22 @@ function AddRoleDialog(props) {
             value={form.name}
             onChange={handleChange}
           />
+
+          <TextField
+            name="description"
+            label="Description"
+            id="outlined-description"
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            size="small"
+            value={form.description}
+            onChange={handleChange}
+          />
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={closeNewRoleDialog} color="primary">
+          <Button onClick={closeNewPositionDialog} color="primary">
             Cancel
           </Button>
           <Button onClick={handleSubmit} variant="contained" disabled={!canSubmitForm()} color="primary">
@@ -103,19 +116,18 @@ function AddRoleDialog(props) {
 }
 
 
-AddRoleDialog.propTypes = {
-  closeNewRoleDialog: PropTypes.func,
+PositionDialog.propTypes = {
+  closeNewPositionDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  dialog: Selectors.makeSelectRoleDialog(),
+  dialog: Selectors.makeSelectPositionDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeNewRoleDialog: () => dispatch(Actions.closeNewRoleDialog()),
-    createRole: (data) => dispatch(Actions.createRole(data)),
-    dispatch,
+    closeNewPositionDialog: () => dispatch(Actions.closeNewPositionDialog()),
+    createPosition: (data) => dispatch(Actions.createPosition(data)),
   };
 }
 
@@ -127,4 +139,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(AddRoleDialog);
+)(PositionDialog);
