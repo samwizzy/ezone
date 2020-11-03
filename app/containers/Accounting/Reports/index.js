@@ -51,20 +51,12 @@ import BudgetVsReport from './ViewReport/Views/Budget/BudgetVsReport';
 import BudgeVsActual from './ViewReport/Views/Budget/BudgetVsActuals';
 import CashFlow from './ViewReport/Views/FinancialStatement/CashFlow';
 import ComprehensiveIncomeStatement from './ViewReport/Views/FinancialStatement/ComprehensiveIncome';
-// import IncomeStatement from './ViewReport/Views/FinancialStatement/IncomeStatement';
 import StatementOfFinancialPosition from './ViewReport/Views/FinancialStatement/StateOfFinancialPostion';
 import ModuleLayout from './ModuleLayout';
 
 const Reports = () => {
   const { path } = useRouteMatch();
-  console.log(
-    'vinventory-status-reportCostOfGoodSold',
-    PhysicalInventoryList,
-    'Payroll Check Register',
-    PayrollJournal,
-    'Payroll Check Register',
-    ValuationReports,
-  );
+  
   return (
     <Router>
       <ModuleLayout>
@@ -112,7 +104,7 @@ const Reports = () => {
           <Route
             path={`${path}/fixed-asset-register`}
             component={AssetRegister}
-          />{' '}
+          />
           <Route path={`${path}/cash-journal-report`} component={CashJournal} />
           <Route
             path={`${path}/fixed-asset-schedule`}
