@@ -37,14 +37,13 @@ const ListBoard = props => {
         return 'color_purple_bar';
     }
   }
-
   const listcontents = props.contents.map(content => (
-    <Typography key={content} variant="subtitle1" color="textSecondary">
+    <Typography key={content.link} variant="subtitle1" color="textSecondary">
       <Link
         style={{ textDecoration: 'none' }}
-        to={`/account/reports/${content}`}
+        to={`/account/reports/${content.link}`}
       >
-        {content}
+        {content.name}
       </Link>
     </Typography>
   ));

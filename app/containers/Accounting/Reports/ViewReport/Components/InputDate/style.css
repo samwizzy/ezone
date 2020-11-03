@@ -30,3 +30,10 @@ input[type='date']:focus::before {
   background: none;
   outline: none;
 }
+.flex-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+}

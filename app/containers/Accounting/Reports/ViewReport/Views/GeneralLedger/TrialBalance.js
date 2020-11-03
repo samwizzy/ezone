@@ -108,9 +108,10 @@ const TrialBalance = ({
   const TableFooterData = [
     '   ',
     ' TOTAL',
-    `${trialBalance && trialBalance.total}`,
-    `${trialBalance && trialBalance.total}`,
+    `${trialBalance && trialBalance.totalDebit}`,
+    `${trialBalance && trialBalance.totalcCredit}`,
   ];
+
   console.log('YEEEEEEEEEEEEESSSSSSSSSSSSSS', trialBalances);
   const options = {
     filterType: 'checkbox',
