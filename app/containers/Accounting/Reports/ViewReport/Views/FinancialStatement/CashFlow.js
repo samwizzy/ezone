@@ -78,6 +78,120 @@ const CashFlow = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
       </div>
+      <div className="cashflow">
+        <table ref={tableRef} className="table_id">
+          <thead className="myTableHeader">
+            <tr className="throw">
+              <th>DESCRIPTION</th>
+              <th>AMOUNT</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="head1" colspan={'2'}>
+                CASH FLOWS FROM OPERATING ACTIVITIES
+              </td>
+            </tr>
+
+            <tr>
+              <td>Profit/(loss) before Tax </td>
+              <td />{' '}
+            </tr>
+            <tr>
+              <td>Depreciation </td>
+              <td />{' '}
+            </tr>
+            <tr>
+              <td>Net Cash flows before changes in working capital </td>
+              <td />{' '}
+            </tr>
+            <tr>
+              <td>(Increase)/Decrease in Inventories </td>
+              <td />{' '}
+            </tr>
+            <tr>
+              <td>(Increase)/Decrease in Trade and Other Receivables</td>
+              <td />{' '}
+            </tr>
+            <tr>
+              <td>(Increase)/Decrease in Trade and Other Payables</td>
+              <td />{' '}
+            </tr>
+            <tr>
+              <td>Net Cash outflows/Inflows from Operating Activities</td>
+              <td />{' '}
+            </tr>
+            <tr>
+              <td>Tax expense</td>
+              <td />{' '}
+            </tr>
+            <tr>
+              <td colspan={'3'} style={{ height: '30px' }} />
+            </tr>
+            <tr>
+              <td className="head1" colspan={'2'}>
+                CASH FLOWS FROM INVESTING ACTIVITIES
+              </td>
+            </tr>
+            <tr>
+              <td>Acquisition of property, Plant and Equipment </td>
+              <td />{' '}
+            </tr>
+            <tr>
+              <td>Disposal of Property, Plant and Equipment </td>
+              <td />{' '}
+            </tr>
+            <tr>
+              <td>Capital Work in Progress</td>
+              <td />{' '}
+            </tr>
+            <tr>
+              <td>Net Cash Outflow from Investing Activities </td>
+              <td />{' '}
+            </tr>
+            <tr>
+              <td colspan={'3'} style={{ height: '30px' }} />
+            </tr>
+            <tr>
+              <td className="head1" colspan={'2'}>
+                CASH FLOWS FINANCIAL ACTIVITIES
+              </td>
+            </tr>
+            <tr>
+              <td>Long Term Loan</td>
+              <td />{' '}
+            </tr>
+            <tr>
+              <td>Short Term Loan</td>
+              <td />{' '}
+            </tr>
+            <tr>
+              <td>Deposit for Shares</td>
+              <td />{' '}
+            </tr>
+            <tr>
+              <td>Shares Capital</td>
+              <td />{' '}
+            </tr>
+            <tr>
+              <td>Net Cash flows from Financial Activities</td>
+              <td />{' '}
+            </tr>
+            <tr>
+              <td>Net increase in Cash and Cash Equivalent</td>
+              <td />{' '}
+            </tr>
+            <tr>
+              <td>Cash and Cash Equivalents as at 1st January</td>
+              <td />{' '}
+            </tr>
+            <tr>
+              <td>Cash and Cash Equivalents as at 31st December</td>
+              <td />{' '}
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </React.Fragment>
   );
 };

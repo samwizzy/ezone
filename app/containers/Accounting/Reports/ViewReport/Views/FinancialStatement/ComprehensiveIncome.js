@@ -78,6 +78,74 @@ const ComprehensiveIncome = ({ time, user, dispatchCleanUpAction }) => {
           name={`${fileName}`}
           date={setDate}
         />
+        <div className="comprehensiveIncomeStatement">
+          <table className="table_id" ref={tableRef}>
+            <thead className="myTableHeader">
+              <tr className="throw">
+                <th>DESCRIPTION</th>
+                <th>AMOUNT</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Income Revenue </td>
+                <td />
+              </tr>
+              <tr>
+                <td colspan={'3'} style={{ height: '30px' }} />
+              </tr>
+              <tr>
+                <td>Cost of Goods Sold</td>
+                <td />
+              </tr>
+              <tr>
+                <td>Gross Profit</td>
+                <td />
+              </tr>
+
+              <tr>
+                <td>Other Operating Income</td>
+                <td />
+              </tr>
+              <tr>
+                <td>Other Operating expenses</td>
+                <td />
+              </tr>
+              <tr>
+                <td>Operating Profit/(Loss)</td>
+                <td />
+              </tr>
+              <tr>
+                <td>Finance cost</td>
+                <td />
+              </tr>
+              <tr>
+                <td>Profit/(Loss) before tax</td>
+                <td />
+              </tr>
+              <tr>
+                <td>Tax expense</td>
+                <td />
+              </tr>
+              <tr>
+                <td>Net Income for the Financial Year</td>
+                <td />
+              </tr>
+              <tr>
+                <td>Other Comprehensive Income</td>
+                <td />
+              </tr>
+              <tr>
+                <td>Total Comprehensive Income</td>
+                <td />
+              </tr>
+              <tr>
+                <td>EPS(Kobo)</td>
+                <td />
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </React.Fragment>
   );

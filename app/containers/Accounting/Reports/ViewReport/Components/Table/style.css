@@ -13,10 +13,10 @@ table {
   min-width: 760px;
 }
 
-.my-table{
+.my-table {
   border-top: none !important;
   text-align: left;
-  padding: 8px !important;;
+  padding: 8px !important;
 }
 
 .table tr {
