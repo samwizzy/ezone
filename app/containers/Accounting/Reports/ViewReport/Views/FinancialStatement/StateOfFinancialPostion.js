@@ -68,13 +68,153 @@ const StatementOfFinancialPostion = ({ time, user, dispatchCleanUpAction }) => {
           name={`${fileName}`}
           date={display && `As at ${moment(endDate).format('MMM Do YYYY')}`}
         />
+        <div className="financialTable">
+          <table ref={tableRef} className="table_id">
+            <thead className="myTableHeader">
+              <tr className="throw">
+                <th>DESCRIPTION</th>
+                <th>AMOUNT</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="head1" colspan={'2'}>
+                  ASSETS
+                </td>
+              </tr>
+              <tr>
+                <td className="head2" colspan={'2'}>
+                  NON-CURRENT ASSETS:
+                </td>
+              </tr>
+              <tr>
+                <td>Property, Plant and Equipment </td>
+                <td />{' '}
+              </tr>
+              <tr>
+                <td>Capital Work in Progress</td>
+                <td />{' '}
+              </tr>
+              <tr className="head2">
+                <td>TOTAL NON-CURRENT ASSETS </td>
+                <td />{' '}
+              </tr>
+              <tr>
+                <td colspan={'3'} style={{ height: '30px' }} />
+              </tr>
+              <tr className="head2">
+                <td className="head2">CURRENT ASSETS:</td>
+                <td />{' '}
+              </tr>
+              <tr>
+                <td>Inventories</td>
+                <td />{' '}
+              </tr>
+              <tr>
+                <td>Trade & Other receivables</td>
+                <td />{' '}
+              </tr>
+              <tr>
+                <td>Cash and cash equivalent</td>
+                <td />{' '}
+              </tr>
+              <tr>
+                <td className="head2">TOTAL CURRENT ASSETS </td>
+                <td />{' '}
+              </tr>
+              <tr>
+                <td colspan={'3'} style={{ height: '30px' }} />
+              </tr>
+              <tr>
+                <td className="head2">TOTAL ASSETS</td>
+                <td />{' '}
+              </tr>{' '}
+              <tr>
+                <td colspan={'3'} style={{ height: '30px' }} />
+              </tr>
+              <tr>
+                <td className="head2" colspan={'2'}>
+                  EQUITY AND LIABILITIES
+                </td>
+              </tr>
+              <tr>
+                <td className="head2" colspan={'2'}>
+                  CAPITAL AND RESERVES:
+                </td>
+              </tr>
+              <tr>
+                <td>Share Capital</td>
+                <td />{' '}
+              </tr>
+              <tr>
+                <td>Revaluation Reserves</td>
+                <td />{' '}
+              </tr>
+              <tr>
+                <td>Retained earnings</td>
+                <td />{' '}
+              </tr>
+              <tr>
+                <td className="head2">TOTAL EQUITY</td> <td />
+              </tr>{' '}
+              <tr>
+                <td colspan={'3'} style={{ height: '30px' }} />
+              </tr>
+              <tr>
+                <td className="head2" colspan={'2'}>
+                  NON-CURRENT LIABILITIES:
+                </td>
+              </tr>
+              <tr>
+                <td>Long Term Borrowings</td>
+                <td />{' '}
+              </tr>
+              <tr>
+                <td>Deposit for Shares</td>
+                <td />{' '}
+              </tr>
+              <tr>
+                <td className="head2">TOTAL NON-CURRENT LIABILITIES </td> <td />
+              </tr>{' '}
+              <tr>
+                <td colspan={'3'} style={{ height: '30px' }} />
+              </tr>
+              <tr>
+                <td className="head2" colspan={'2'}>
+                  CURRENT LIABILITIES:
+                </td>
+              </tr>
+              <tr>
+                <td>Trade and other payables</td>
+                <td />{' '}
+              </tr>
+              <tr>
+                <td>Short-term Loan</td>
+                <td />{' '}
+              </tr>
+              <tr>
+                <td>Current tax Payable</td>
+                <td />{' '}
+              </tr>{' '}
+              <tr>
+                <td colspan={'3'} style={{ height: '30px' }} />
+              </tr>
+              <tr>
+                <td className="head2">TOTAL CURRENT LIABILITIES:</td>
+                <td />
+              </tr>{' '}
+              <tr>
+                <td colspan={'3'} style={{ height: '30px' }} />
+              </tr>
+              <tr>
+                <td>TOTAL EQUITY AND LIABILITIES:</td>
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+                <td />
+              </tr>
+              <tr />
+            </tbody>
+          </table>
+        </div>
       </div>
     </React.Fragment>
   );
