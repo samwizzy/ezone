@@ -7,13 +7,6 @@ const SidebarConfig = [
     ],
   },
   {
-    module: ['payroll'],
-    menus: [
-      { id: 1, name: 'Home', url: '/', icon: 'home' },
-      { id: 2, name: 'Dashboard', url: '/dashboard', icon: 'build' },
-    ],
-  },
-  {
     module: ['utility', 'folders', 'tasks'],
     menus: [
       { id: 1, name: 'Home', url: '/', icon: 'home' },
@@ -89,6 +82,25 @@ const SidebarConfig = [
         name: 'Leave Management',
         url: '/human-resource/leave-management/leave-request',
         icon: 'single_bed',
+      },
+    ],
+  },
+  {
+    module: ['payroll'],
+    menus: [
+      { id: 1, name: 'Dashboard', url: '/payroll/dashboard', icon: 'dashboard' },
+      { id: 2, name: 'Employee Salary', url: '/payroll/employee-salary', icon: 'business_center' },
+      { id: 3, name: 'Pay Runs', url: '/payroll/pay-runs', icon: 'find_in_page' },
+      { id: 4, name: 'Payroll Items', url: '/payroll/payroll-items', icon: 'person' },
+      { id: 5, name: 'Salary Advance', url: '/payroll/salary-advance', icon: 'announcement' },
+      { id: 6, name: 'Reports', url: '/payroll/reports', icon: 'thumb_up' },
+      {
+        id: 7, name: 'Settings', url: '#', icon: 'single_bed',
+        submenus: [
+          { id: 1, name: 'Payroll Set Up', url: '/payroll/settings', icon: '' },
+          { id: 2, name: 'Pay Run', url: '/payroll/settings/pay-run', icon: '' },
+          { id: 3, name: 'Tax Setting', url: '/payroll/settings/tax', icon: '' },
+        ],
       },
     ],
   },

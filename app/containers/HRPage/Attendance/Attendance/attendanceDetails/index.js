@@ -27,7 +27,6 @@ export function AttendanceDetailsPage(props) {
       <Fragment>
         <AttendanceDetails />
       </Fragment>
-
     </div>
   );
 }

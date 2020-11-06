@@ -52,6 +52,27 @@ export function getAttendanceByIdError(data) {
   };
 }
 
+export function getEmployeesByShift(data) {
+  return {
+    type: Constants.GET_EMPLOYEES_BY_SHIFT,
+    payload: data
+  };
+}
+
+export function getEmployeesByShiftSuccess(data) {
+  return {
+    type: Constants.GET_EMPLOYEES_BY_SHIFT_SUCCESS,
+    payload: data
+  };
+}
+
+export function getEmployeesByShiftError(data) {
+  return {
+    type: Constants.GET_EMPLOYEES_BY_SHIFT_ERROR,
+    payload: data
+  };
+}
+
 export function getEmployees() {
   return {
     type: Constants.GET_EMPLOYEES,

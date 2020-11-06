@@ -10,7 +10,7 @@ export const initialState = {
   branches: [],
   roles: [],
   attendances: [],
-  attendance: null,
+  attendance: { attendance: null, employees: [] },
   shifts: [],
   employeeShifts: [],
   attdDialog: {
@@ -148,7 +148,7 @@ const attdReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: false,
-          attendance: action.payload
+          attendance: { ...state.attendance, attendance: action.payload }
         }
       };
       case Constants.GET_ATTENDANCE_BY_ID_ERROR: {
@@ -157,6 +157,27 @@ const attdReducer = (state = initialState, action) =>
           loading: false,
         }
       };
+
+      case Constants.GET_EMPLOYEES_BY_SHIFT: {
+        return {
+          ...state,
+          loading: true
+        }
+      };
+      case Constants.GET_EMPLOYEES_BY_SHIFT_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          attendance: { ...state.attendance, employees: action.payload }
+        }
+      };
+      case Constants.GET_EMPLOYEES_BY_SHIFT_ERROR: {
+        return {
+          ...state,
+          loading: false,
+        }
+      };
+
       case Constants.CREATE_ATTENDANCE: {
         return {
           ...state,
