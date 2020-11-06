@@ -61,6 +61,12 @@ const makeSelectRoles = () =>
     hrState => hrState.roles,
   );
 
+const makeSelectPositions = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.positions,
+  );
+
 const makeSelectEmployee = () =>
   createSelector(
     selectHR,
@@ -145,6 +151,12 @@ const makeSelectAnnouncements = () =>
     hrState => hrState.announcements,
   );
 
+const makeSelectAnnouncementById = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.announcement,
+  );
+
 const makeSelectPartyGroups = () =>
   createSelector(
     selectHR,
@@ -169,10 +181,10 @@ const makeSelectBranchDialog = () =>
     hrState => hrState.branchDialog,
   );
 
-const makeSelectRoleDialog = () =>
+const makeSelectPositionDialog = () =>
   createSelector(
     selectHR,
-    hrState => hrState.roleDialog,
+    hrState => hrState.positionDialog,
   );
 
 const makeSelectPayrollDialog = () =>
@@ -302,13 +314,15 @@ export {
   makeSelectBranches,
   makeSelectPartyTags,
   makeSelectRoles,
+  makeSelectPositions,
   makeSelectEmployee,
   makeSelectEmpDialog,
   makeSelectDeptDialog,
   makeSelectBranchDialog,
-  makeSelectRoleDialog,
+  makeSelectPositionDialog,
   makeSelectPayrollDialog,
   makeSelectAnnouncements,
+  makeSelectAnnouncementById,
   makeSelectAnnouncementDialog,
   makeSelectConfirmAnnouncementDialog,
   makeSelectAnnouncementViewDialog,

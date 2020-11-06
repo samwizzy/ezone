@@ -1,8 +1,10 @@
-import React, { Fragment, memo } from 'react';
+import React, { Fragment, memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, Grid, Typography } from '@material-ui/core';
+import { AppBar, Button, IconButton, Grid, Toolbar, Typography } from '@material-ui/core';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -17,6 +19,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
   },
+  title: { flexGrow: 1 },
   toolbar: theme.mixins.toolbar,
   icon: {
     color: theme.palette.grey[800],
@@ -28,19 +31,32 @@ const useStyles = makeStyles(theme => ({
 
 const AttendanceDetails = props => {
   const classes = useStyles();
-  const { loading, attendance } = props;
+  const { loading, attendance, openEditAttendanceDialog, getEmployeesByShift } = props;
   console.log(attendance, "attendance by id")
+  useEffect(() => {
+    if (attendance.attendance) {
+      getEmployeesByShift(attendance.attendance.id)
+    }
+  }, [attendance.attendance])
 
   return (
     <div className={classes.root}>
-
+      <AppBar position="static" color="inherit" elevation={1}>
+        <Toolbar variant="dense">
+          <Typography variant="h6" className={classes.title}>
+            Attendance Details
+          </Typography>
+          <IconButton onClick={() => { }}><DeleteOutlineIcon /></IconButton>
+          <IconButton onClick={() => { }}><EditOutlinedIcon /></IconButton>
+        </Toolbar>
+      </AppBar>
     </div>
   );
 };
 
 AttendanceDetails.propTypes = {
   loading: PropTypes.bool,
-  openNewAttendanceDialog: PropTypes.func,
+  openEditAttendanceDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -51,7 +67,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getAttendanceById: (id) => dispatch(Actions.getAttendanceById(id)),
-    openNewAttendanceDialog: () => dispatch(Actions.openNewAttendanceDialog()),
+    getEmployeesByShift: (id) => dispatch(Actions.getEmployeesByShift(id)),
+    openEditAttendanceDialog: () => dispatch(Actions.openEditAttendanceDialog()),
   };
 }
 

@@ -117,7 +117,6 @@ const AttendanceList = props => {
     responsive: 'stacked',
     selectableRows: 'none',
     print: false,
-    download: true,
     viewColumns: false,
     filter: false,
     customToolbar: () => <AddAttendance openDialog={openNewAttendanceDialog} />,
@@ -138,6 +137,7 @@ const AttendanceList = props => {
         columns={columns}
         options={options}
       />
+
       <AddAttendanceDialog />
     </div>
   );

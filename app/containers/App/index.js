@@ -170,7 +170,7 @@ const App = props => (
 
               <PrivateRoute path="/account" component={AccountPage} />
 
-              <PrivateRoute exact path="/payroll" component={Payroll} />
+              <PrivateRoute path="/payroll" component={Payroll} />
 
               <PrivateRoute path="/inventory" component={InventoryPage} />
 

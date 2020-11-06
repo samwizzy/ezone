@@ -7,12 +7,16 @@ import { compose } from 'redux';
 import _ from 'lodash';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, MenuItem, Slide, Table, TableBody, TableRow, TableCell, Typography, TextField, Toolbar } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import { AppBar, Button, Checkbox, Dialog, DialogActions, DialogContent, FormControl, FormControlLabel, MenuItem, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
-import moment from 'moment'
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
-import AddCircleIcon from '@material-ui/icons/AddCircle'
+import moment from 'moment';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -32,15 +36,18 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const initialState = {
   title: '',
   message: '',
+  category: null,
+  employees: [],
   expiryDate: moment().format("YYYY-MM-DDTHH:mm:ss.SSS"),
   notifyAllLocations: true,
-  notifyOthers: 'true',
-  announcementType: '',
+  notifyOthers: true,
+  disableComments: true,
+  type: '',
 }
 
 function AddAnnouncementDialog(props) {
   const classes = useStyles();
-  const { closeNewAnnouncementDialog, dialog, createAnnouncement } = props;
+  const { closeNewAnnouncementDialog, employees, sourcesOfHire, locations, dialog, createAnnouncement } = props;
   const [form, setForm] = useState({ ...initialState });
 
   console.log(dialog, "dialog checking")
@@ -49,18 +56,22 @@ function AddAnnouncementDialog(props) {
     if (dialog.type === 'edit' && dialog.data) {
       setForm({ ...dialog.data })
     } else {
-      setForm({ ...form })
+      setForm({ ...initialState })
     }
   }, [dialog])
 
   const canSubmitForm = () => {
-    const { title, message, announcementType } = form
-    return title.length > 0 && message.length > 0 && announcementType
+    const { title, message, type } = form
+    return title.length > 0 && message.length > 0 && type
   }
 
   const handleChange = (event) => {
-    const { name, value } = event.target
-    setForm({ ...form, [name]: value });
+    const { name, value, type, checked } = event.target
+    setForm({ ...form, [name]: type === 'checkbox' ? checked : value });
+  }
+
+  const handleSelectChange = name => (event, arr) => {
+    setForm({ ...form, [name]: arr })
   }
 
   const handleDateChange = name => date => {
@@ -73,6 +84,7 @@ function AddAnnouncementDialog(props) {
 
   console.log(form, "form")
   console.log(dialog, "dialog")
+  console.log(sourcesOfHire, "sourcesOfHire")
 
   return (
     <div className={classes.root}>
@@ -104,6 +116,7 @@ function AddAnnouncementDialog(props) {
             value={form.title}
             onChange={handleChange}
           />
+
           <TextField
             name="message"
             label="Message"
@@ -118,83 +131,78 @@ function AddAnnouncementDialog(props) {
             value={form.message}
             onChange={handleChange}
           />
-          {/*
-            <Grid item xs={12}>
-              <Toolbar style={{paddingLeft: 0}}>
-                <Typography variant="h6">Announcement Settings</Typography></Toolbar>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="send-to"
-                name="SendTo"
-                placeholder="Select Employee"
-                select
-                margin="normal"
-                variant="outlined"
-                size="small"
-                label="Send to"
-                helperText="Please select an employee to send to"
-                value={form.sendTo}
-                onChange={handleChange}
-              >
-                <MenuItem key={0} value="3">
-                  No record
-                </MenuItem>
-              </TextField>
-            </Grid>
-            <Grid item xs={12}>
-              <Table className={classes.table}>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>
-                      <TextField
-                      name="message"
-                      label="Add Employee"
-                      id="outlined-title"
-                      variant="outlined"
-                      size="small"
-                      value={form.employee}
-                      onChange={handleChange}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <IconButton><DeleteOutlinedIcon /></IconButton>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <TextField
-                      name="message"
-                      label="Add Employee"
-                      id="outlined-title"
-                      variant="outlined"
-                      size="small"
-                      value={form.employee}
-                      onChange={handleChange}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <IconButton><AddCircleIcon /></IconButton>
-                    </TableCell>
-                    <TableCell>
-                      <IconButton><DeleteOutlinedIcon /></IconButton>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </Grid>
-            */}
+
+          <Autocomplete
+            multiple
+            id="employees"
+            size="small"
+            options={employees}
+            disableCloseOnSelect
+            getOptionLabel={(option) => option.firstName + ' ' + option.lastName}
+            onChange={handleSelectChange('employees')}
+            renderOption={(option, { selected }) => (
+              <React.Fragment>
+                <Checkbox
+                  icon={icon}
+                  checkedIcon={checkedIcon}
+                  style={{ marginRight: 8 }}
+                  checked={selected}
+                />
+                {option.firstName + ' ' + option.lastName}
+              </React.Fragment>
+            )}
+            renderInput={(params) => (
+              <TextField {...params} variant="outlined" label="Employees" placeholder="Employees" margin="normal" />
+            )}
+          />
+
+          <Autocomplete
+            multiple
+            id="locations"
+            size="small"
+            options={locations}
+            disableCloseOnSelect
+            getOptionLabel={(option) => option.name}
+            onChange={handleSelectChange('locations')}
+            renderOption={(option, { selected }) => (
+              <React.Fragment>
+                <Checkbox
+                  icon={icon}
+                  checkedIcon={checkedIcon}
+                  style={{ marginRight: 8 }}
+                  checked={selected}
+                />
+                {option.name}
+              </React.Fragment>
+            )}
+            renderInput={(params) => (
+              <TextField {...params} variant="outlined" label="Locations" placeholder="Locations" margin="normal" />
+            )}
+          />
+
+          <Autocomplete
+            id="announcement-category"
+            size="small"
+            options={sourcesOfHire}
+            disableCloseOnSelect
+            getOptionLabel={(option) => option.name}
+            onChange={handleSelectChange('category')}
+            renderInput={(params) => (
+              <TextField {...params} variant="outlined" label="Category" placeholder="Category" margin="normal" />
+            )}
+          />
+
           <TextField
             id="type"
-            name="announcementType"
+            name="type"
             placeholder="Message Type"
             select
             margin="normal"
             variant="outlined"
             size="small"
             label="Announcement Type"
-            helperText={!form.announcementType && "Please select a message type"}
-            value={form.announcementType}
+            helperText={!form.type && "Please select a message type"}
+            value={form.type}
             onChange={handleChange}
             fullWidth
           >
@@ -222,6 +230,13 @@ function AddAnnouncementDialog(props) {
               }}
             />
           </MuiPickersUtilsProvider>
+
+          <FormControl component="fieldset" fullWidth>
+            <FormControlLabel
+              control={<Checkbox checked={form.disableComments} onChange={handleChange} name="disableComments" />}
+              label="Disable Comments"
+            />
+          </FormControl>
         </DialogContent>
 
         <DialogActions>
@@ -244,13 +259,15 @@ AddAnnouncementDialog.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   dialog: Selectors.makeSelectAnnouncementDialog(),
+  employees: Selectors.makeSelectEmployees(),
+  sourcesOfHire: Selectors.makeSelectSourcesOfHire(),
+  locations: Selectors.makeSelectLocations(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     closeNewAnnouncementDialog: () => dispatch(Actions.closeNewAnnouncementDialog()),
     createAnnouncement: (data) => dispatch(Actions.createAnnouncement(data)),
-    dispatch,
   };
 }
 

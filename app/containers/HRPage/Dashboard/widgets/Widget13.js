@@ -1,12 +1,12 @@
 import React, { memo, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { withStyles, Card, CardHeader, CardContent, Icon, Link, List, ListItem, ListItemText, ListItemSecondaryAction, Typography } from '@material-ui/core'
 import LensIcon from '@material-ui/icons/Lens'
 import * as Selectors from '../../selectors';
 import moment from 'moment'
+import _ from 'lodash'
 
 const styles = theme => ({
   root: {
@@ -27,6 +27,7 @@ const styles = theme => ({
 class Widget13 extends React.Component {
   render() {
     const { classes, announcements } = this.props
+    const orderedAnnouncements = _.orderBy(announcements, 'dateCreated', 'desc')
 
     console.log(announcements, "announcements widget 13")
 
@@ -34,7 +35,7 @@ class Widget13 extends React.Component {
       <div>
         {announcements.length > 0 ?
           <Fragment>
-            {announcements && announcements.splice(0, 1).map((announcement, i) => (
+            {announcements && orderedAnnouncements.splice(0, 1).map((announcement, i) => (
               <Card className={classes.root} key={i}>
                 <CardHeader
                   titleTypographyProps={{ variant: 'subtitle1' }}

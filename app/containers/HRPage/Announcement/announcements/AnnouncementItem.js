@@ -43,7 +43,18 @@ const useStyles = makeStyles(theme => ({
 
 const AnnouncementItem = props => {
   const classes = useStyles();
-  const { loading, match, openEditAnnouncementDialog, openConfirmAnnouncementDialog, openAnnouncementViewDialog, announcement } = props;
+  const {
+    loading,
+    history,
+    match,
+    openEditAnnouncementDialog,
+    openConfirmAnnouncementDialog,
+    openAnnouncementViewDialog,
+    announcement,
+    getAnnouncementById,
+  } = props;
+  const { params } = match
+
   const [anchorEl, setAnchorEl] = useState(null)
 
   const handleClick = (event) => {
@@ -54,6 +65,11 @@ const AnnouncementItem = props => {
   }
   const handleEditClick = () => {
     openEditAnnouncementDialog(announcement)
+    setAnchorEl(null);
+  }
+  const handleViewClick = () => {
+    getAnnouncementById(announcement.id)
+    history.push(`${match.url}/${announcement.id}`)
     setAnchorEl(null);
   }
   const handleDeleteClick = () => {
@@ -75,7 +91,12 @@ const AnnouncementItem = props => {
               primary={
                 <React.Fragment>
                   <Typography variant="h6">
-                    <NavLink to={`${match.url}/${announcement.id}`}>{announcement.title}</NavLink>
+                    <NavLink
+                      to={`${match.url}/${announcement.id}`}
+                      onClick={() => getAnnouncementById(announcement.id)}
+                    >
+                      {announcement.title}
+                    </NavLink>
                   </Typography>
                   <Typography variant="subtitle2" color="textPrimary">
                     {announcement.message}
@@ -98,7 +119,7 @@ const AnnouncementItem = props => {
                   <Breadcrumbs aria-label="breadcrumb" separator="">
                     <Typography color="textPrimary" className={classes.link}>
                       Sent to: &nbsp;
-											<Link color="textSecondary" href="/" className={classes.link}>
+											<Link color="textSecondary" onClick={handleViewClick} className={classes.link}>
                         View employees
 											</Link>
                     </Typography>
@@ -122,10 +143,16 @@ const AnnouncementItem = props => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleEditClick}>Edit</MenuItem>
+        <MenuItem onClick={handleViewClick}>View</MenuItem>
+        <MenuItem
+          onClick={handleEditClick}
+          disabled={!moment(announcement.expiryDate).diff(moment()) > 0}
+        >
+          Edit
+        </MenuItem>
         <MenuItem
           onClick={handleDeleteClick}
-          disabled={false}
+          disabled={!moment(announcement.expiryDate).diff(moment()) > 0}
         >
           Delete
         </MenuItem>

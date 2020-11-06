@@ -10,6 +10,7 @@ import Dashboard from './Dashboard'
 import ModuleLayout from './components/ModuleLayout'
 import AgeProfileReport from './AgeProfileReport/AgeProfileReport'
 import GenderProfileReport from './GenderProfileReport/GenderProfileReport'
+import EmployeeBirthdaysReport from './EmployeeBirthdaysReport/EmployeeBirthdaysReport'
 
 export function DashboardPage({ match }) {
   const { path } = match
@@ -25,6 +26,7 @@ export function DashboardPage({ match }) {
         <Route exact path={path} component={Dashboard} />
         <Route path={`${path}/age-report`} component={AgeProfileReport} />
         <Route path={`${path}/gender-report`} component={GenderProfileReport} />
+        <Route path={`${path}/birthdays`} component={EmployeeBirthdaysReport} />
       </ModuleLayout>
     </div>
   );

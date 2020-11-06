@@ -13,7 +13,7 @@ import reducer from './reducer';
 import saga from './saga';
 import DashboardApp from './Dashboard'
 import EmployeesApp from './Employees'
-import RolesApp from './Roles'
+import PositionsApp from './Positions'
 import DepartmentsApp from './Departments'
 import BranchesApp from './Branches'
 import RecruitmentApp from './Recruitment'
@@ -39,6 +39,7 @@ export function HumanResourceApp(props) {
     getPayRates,
     getPayTypes,
     getRoles,
+    getPositions,
     getBranches,
     getPartyGroups,
   } = props;
@@ -53,6 +54,7 @@ export function HumanResourceApp(props) {
     getPayRates();
     getPayTypes();
     getRoles();
+    getPositions();
     getBranches();
     getEnrollmentTypes();
     getLocations();
@@ -75,7 +77,7 @@ export function HumanResourceApp(props) {
         <Route path={`${path}/dashboard`} component={DashboardApp} />
         <Route path={`${path}/employees`} component={EmployeesApp} />
         <Route path={`${path}/departments`} component={DepartmentsApp} />
-        <Route path={`${path}/roles`} component={RolesApp} />
+        <Route path={`${path}/positions`} component={PositionsApp} />
         <Route path={`${path}/branches`} component={BranchesApp} />
         <Route path={`${path}/recruitment`} component={RecruitmentApp} />
         <Route path={`${path}/announcement`} component={AnnouncementApp} />
@@ -100,6 +102,7 @@ export function mapDispatchToProps(dispatch) {
     getPayRates: () => dispatch(Actions.getPayRates()),
     getPayTypes: () => dispatch(Actions.getPayTypes()),
     getRoles: () => dispatch(Actions.getRoles()),
+    getPositions: () => dispatch(Actions.getPositions()),
     getBranches: () => dispatch(Actions.getBranches()),
     getEnrollmentTypes: () => dispatch(Actions.getEnrollmentTypes()),
     getLocations: () => dispatch(Actions.getLocations()),

@@ -185,6 +185,10 @@ export const UpdateLeaveTypeApi = `${BaseUrl}/authserv/api/api/v1/update_leave_t
 export const GetRoles = `${BaseUrl}/authserv/api/v1/generic_entities/for_organinisation`;
 export const CreateRole = `${BaseUrl}/authserv/api/v1/generic_entity/add`;
 
+// Positions
+export const GetPositionsApi = `${BaseUrl}/authserv/api/v1/position/get_position_by_orgId`;
+export const CreatePositionApi = `${BaseUrl}/authserv/api/v1/position`;
+
 // Department
 export const DepartmentApi = `${BaseUrl}/hrserv/api/v1/department`;
 export const DepartmentsApi = `${BaseUrl}/hrserv/api/v1/departments`;
@@ -197,11 +201,11 @@ export const GetBranches = `${BaseUrl}/authserv/api/v1/organisation_and_tag/part
 export const CreateDepartment = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_group`;
 export const CreateBranch = `${BaseUrl}/authserv/api/v1/party/create_and_add_to_group`;
 
+export const GetAnnouncements = `${BaseUrl}/authserv/api/v1/announcements/for_organization`;
+export const GetAnnouncementById = `${BaseUrl}/authserv/api/v1/announcements`;
 export const CreateAnnouncement = `${BaseUrl}/authserv/api/v1/announcement`;
 export const EditAnnouncementApi = `${BaseUrl}/authserv/api/v1/announcement/update`;
 export const DeleteAnnouncementApi = `${BaseUrl}/authserv/api/v1/announcement/delete`;
-
-export const GetAnnouncements = `${BaseUrl}/authserv/api/v1/announcements/for_organization`;
 export const AnnouncementComment = `${BaseUrl}/authserv/api/v1/announcement/comment`;
 
 // HR:Attendance API
