@@ -24,6 +24,7 @@ const StatementOfFinancialPostion = ({ time, user, dispatchCleanUpAction }) => {
   const companyRef = useRef();
   const [print, setPrint] = useState(false);
   const [display, setDisplay] = useState(false);
+  const [tabledata, setTabledata] = useState([]);
 
   const { organisation } = user;
   const { startDate, endDate } = time;
@@ -40,6 +41,27 @@ const StatementOfFinancialPostion = ({ time, user, dispatchCleanUpAction }) => {
     // console.log('=============================================>');
     setDisplay(true);
   };
+
+  useEffect(() => {
+    function table_to_array() {
+      const myData = document.getElementById('financialTable_data').rows;
+      const my_liste = [];
+      for (var i = 0; i < myData.length; i++) {
+        const el = myData[i].children;
+        const my_el = [];
+        for (var j = 0; j < el.length; j++) {
+          my_el.push(el[j].innerText);
+        }
+        my_liste.push(my_el);
+      }
+      setTabledata(state => my_liste);
+    }
+    window.addEventListener('DOMContentLoaded', table_to_array());
+    return () => {
+      window.removeEventListener('DOMContentLoaded', table_to_array());
+    };
+  });
+
   const TableHeadData = ['Account', '', '', '', '', 'Total'];
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
@@ -60,6 +82,7 @@ const StatementOfFinancialPostion = ({ time, user, dispatchCleanUpAction }) => {
         tableRef={tableRef}
         companyRef={companyRef}
         daterange={setDate}
+        tableData={tabledata}
       />
       <div ref={componentRef}>
         <Company
@@ -69,7 +92,7 @@ const StatementOfFinancialPostion = ({ time, user, dispatchCleanUpAction }) => {
           date={display && `As at ${moment(endDate).format('MMM Do YYYY')}`}
         />
         <div className="financialTable">
-          <table ref={tableRef} className="table_id">
+          <table ref={tableRef} id="financialTable_data">
             <thead className="myTableHeader">
               <tr className="throw">
                 <th>DESCRIPTION</th>
@@ -78,133 +101,133 @@ const StatementOfFinancialPostion = ({ time, user, dispatchCleanUpAction }) => {
             </thead>
             <tbody>
               <tr>
-                <td className="head1" colspan={'2'}>
+                <td className="head1" colSpan={2}>
                   ASSETS
                 </td>
               </tr>
               <tr>
-                <td className="head2" colspan={'2'}>
+                <td className="head2" colSpan={2}>
                   NON-CURRENT ASSETS:
                 </td>
               </tr>
               <tr>
                 <td>Property, Plant and Equipment </td>
-                <td />{' '}
+                <td />
               </tr>
               <tr>
                 <td>Capital Work in Progress</td>
-                <td />{' '}
+                <td />
               </tr>
               <tr className="head2">
                 <td>TOTAL NON-CURRENT ASSETS </td>
-                <td />{' '}
+                <td />
               </tr>
               <tr>
-                <td colspan={'3'} style={{ height: '30px' }} />
+                <td colSpan={2} style={{ height: '30px' }} />
               </tr>
               <tr className="head2">
                 <td className="head2">CURRENT ASSETS:</td>
-                <td />{' '}
+                <td />
               </tr>
               <tr>
                 <td>Inventories</td>
-                <td />{' '}
+                <td />
               </tr>
               <tr>
                 <td>Trade & Other receivables</td>
-                <td />{' '}
+                <td />
               </tr>
               <tr>
                 <td>Cash and cash equivalent</td>
-                <td />{' '}
+                <td />
               </tr>
               <tr>
                 <td className="head2">TOTAL CURRENT ASSETS </td>
-                <td />{' '}
+                <td />
               </tr>
               <tr>
-                <td colspan={'3'} style={{ height: '30px' }} />
+                <td colSpan={2} style={{ height: '30px' }} />
               </tr>
               <tr>
                 <td className="head2">TOTAL ASSETS</td>
-                <td />{' '}
-              </tr>{' '}
-              <tr>
-                <td colspan={'3'} style={{ height: '30px' }} />
+                <td />
               </tr>
               <tr>
-                <td className="head2" colspan={'2'}>
+                <td colSpan={2} style={{ height: '30px' }} />
+              </tr>
+              <tr>
+                <td className="head2" colSpan={2}>
                   EQUITY AND LIABILITIES
                 </td>
               </tr>
               <tr>
-                <td className="head2" colspan={'2'}>
+                <td className="head2" colSpan={2}>
                   CAPITAL AND RESERVES:
                 </td>
               </tr>
               <tr>
                 <td>Share Capital</td>
-                <td />{' '}
+                <td />
               </tr>
               <tr>
                 <td>Revaluation Reserves</td>
-                <td />{' '}
+                <td />
               </tr>
               <tr>
                 <td>Retained earnings</td>
-                <td />{' '}
+                <td />
               </tr>
               <tr>
                 <td className="head2">TOTAL EQUITY</td> <td />
-              </tr>{' '}
-              <tr>
-                <td colspan={'3'} style={{ height: '30px' }} />
               </tr>
               <tr>
-                <td className="head2" colspan={'2'}>
+                <td colSpan={2} style={{ height: '30px' }} />
+              </tr>
+              <tr>
+                <td className="head2" colSpan={2}>
                   NON-CURRENT LIABILITIES:
                 </td>
               </tr>
               <tr>
                 <td>Long Term Borrowings</td>
-                <td />{' '}
+                <td />
               </tr>
               <tr>
                 <td>Deposit for Shares</td>
-                <td />{' '}
+                <td />
               </tr>
               <tr>
                 <td className="head2">TOTAL NON-CURRENT LIABILITIES </td> <td />
-              </tr>{' '}
-              <tr>
-                <td colspan={'3'} style={{ height: '30px' }} />
               </tr>
               <tr>
-                <td className="head2" colspan={'2'}>
+                <td colSpan={3} style={{ height: '30px' }} />
+              </tr>
+              <tr>
+                <td className="head2" colSpan={2}>
                   CURRENT LIABILITIES:
                 </td>
               </tr>
               <tr>
                 <td>Trade and other payables</td>
-                <td />{' '}
+                <td />
               </tr>
               <tr>
                 <td>Short-term Loan</td>
-                <td />{' '}
+                <td />
               </tr>
               <tr>
                 <td>Current tax Payable</td>
-                <td />{' '}
-              </tr>{' '}
+                <td />
+              </tr>
               <tr>
-                <td colspan={'3'} style={{ height: '30px' }} />
+                <td colSpan={2} style={{ height: '30px' }} />
               </tr>
               <tr>
                 <td className="head2">TOTAL CURRENT LIABILITIES:</td>
                 <td />
-              </tr>{' '}
+              </tr>
               <tr>
-                <td colspan={'3'} style={{ height: '30px' }} />
+                <td colSpan={2} style={{ height: '30px' }} />
               </tr>
               <tr>
                 <td>TOTAL EQUITY AND LIABILITIES:</td>

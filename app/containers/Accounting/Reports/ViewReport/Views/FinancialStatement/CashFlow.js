@@ -24,6 +24,7 @@ const CashFlow = ({ time, user, dispatchCleanUpAction }) => {
   const companyRef = useRef();
   const [print, setPrint] = useState(false);
   const [display, setDisplay] = useState(false);
+  const [tabledata, setTabledata] = useState([]);
 
   const { organisation } = user;
   const { startDate, endDate } = time;
@@ -40,16 +41,25 @@ const CashFlow = ({ time, user, dispatchCleanUpAction }) => {
     // console.log('=============================================>');
     setDisplay(true);
   };
-  const TableHeadData = [
-    'Account Code',
-    'Account Desc',
-    'Date',
-    'Reference',
-    'Transaction Desc',
-    'Debit Amt',
-    'Credit Amt',
-    'Balance',
-  ];
+  useEffect(() => {
+    function table_to_array() {
+      const myData = document.getElementById('cash-flow').rows;
+      const my_liste = [];
+      for (var i = 0; i < myData.length; i++) {
+        const el = myData[i].children;
+        const my_el = [];
+        for (var j = 0; j < el.length; j++) {
+          my_el.push(el[j].innerText);
+        }
+        my_liste.push(my_el);
+      }
+      setTabledata(state => my_liste);
+    }
+    window.addEventListener('DOMContentLoaded', table_to_array());
+    return () => {
+      window.removeEventListener('DOMContentLoaded', table_to_array());
+    };
+  });
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
 
@@ -69,6 +79,7 @@ const CashFlow = ({ time, user, dispatchCleanUpAction }) => {
         tableRef={tableRef}
         companyRef={companyRef}
         daterange={setDate}
+        tableData={tabledata}
       />
       <div ref={componentRef}>
         <Company
@@ -79,7 +90,7 @@ const CashFlow = ({ time, user, dispatchCleanUpAction }) => {
         />
       </div>
       <div className="cashflow">
-        <table ref={tableRef} className="table_id">
+        <table id="cash-flow" ref={tableRef}>
           <thead className="myTableHeader">
             <tr className="throw">
               <th>DESCRIPTION</th>
@@ -88,7 +99,7 @@ const CashFlow = ({ time, user, dispatchCleanUpAction }) => {
           </thead>
           <tbody>
             <tr>
-              <td className="head1" colspan={'2'}>
+              <td className="head1" colSpan={2}>
                 CASH FLOWS FROM OPERATING ACTIVITIES
               </td>
             </tr>
@@ -126,10 +137,10 @@ const CashFlow = ({ time, user, dispatchCleanUpAction }) => {
               <td />{' '}
             </tr>
             <tr>
-              <td colspan={'3'} style={{ height: '30px' }} />
+              <td colSpan={3} style={{ height: '30px' }} />
             </tr>
             <tr>
-              <td className="head1" colspan={'2'}>
+              <td className="head1" colSpan={2}>
                 CASH FLOWS FROM INVESTING ACTIVITIES
               </td>
             </tr>
@@ -150,10 +161,10 @@ const CashFlow = ({ time, user, dispatchCleanUpAction }) => {
               <td />{' '}
             </tr>
             <tr>
-              <td colspan={'3'} style={{ height: '30px' }} />
+              <td colSpan={3} style={{ height: '30px' }} />
             </tr>
             <tr>
-              <td className="head1" colspan={'2'}>
+              <td className="head1" colSpan={2}>
                 CASH FLOWS FINANCIAL ACTIVITIES
               </td>
             </tr>

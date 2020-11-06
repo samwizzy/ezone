@@ -26,6 +26,8 @@ const ComprehensiveIncome = ({ time, user, dispatchCleanUpAction }) => {
   const [display, setDisplay] = useState(false);
   const { organisation } = user;
   const { startDate, endDate } = time;
+  const [tabledata, setTabledata] = useState([]);
+
   // dispatchGetGeneralLedgerTimeAction
   useInjectReducer({ key: 'reports', reducer: viewReportReducer });
   useInjectSaga({ key: 'reports', saga: ReportSaga });
@@ -39,16 +41,26 @@ const ComprehensiveIncome = ({ time, user, dispatchCleanUpAction }) => {
     // console.log('=============================================>');
     setDisplay(true);
   };
-  const TableHeadData = [
-    'Account Code',
-    'Account Desc',
-    'Date',
-    'Reference',
-    'Transaction Desc',
-    'Debit Amt',
-    'Credit Amt',
-    'Balance',
-  ];
+  useEffect(() => {
+    function table_to_array() {
+      const myData = document.getElementById('comprehensive-IncomeStatement')
+        .rows;
+      const my_liste = [];
+      for (var i = 0; i < myData.length; i++) {
+        const el = myData[i].children;
+        const my_el = [];
+        for (var j = 0; j < el.length; j++) {
+          my_el.push(el[j].innerText);
+        }
+        my_liste.push(my_el);
+      }
+      setTabledata(state => my_liste);
+    }
+    window.addEventListener('DOMContentLoaded', table_to_array());
+    return () => {
+      window.removeEventListener('DOMContentLoaded', table_to_array());
+    };
+  });
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
 
@@ -57,7 +69,6 @@ const ComprehensiveIncome = ({ time, user, dispatchCleanUpAction }) => {
     `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
       'MMM Do YYYY',
     )}`;
-  console.log('=============================================>', setDate);
 
   return (
     <React.Fragment>
@@ -70,6 +81,7 @@ const ComprehensiveIncome = ({ time, user, dispatchCleanUpAction }) => {
         tableRef={tableRef}
         companyRef={companyRef}
         daterange={setDate}
+        tableData={tabledata}
       />
       <div ref={componentRef}>
         <Company
@@ -79,7 +91,7 @@ const ComprehensiveIncome = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
         <div className="comprehensiveIncomeStatement">
-          <table className="table_id" ref={tableRef}>
+          <table id="comprehensive-IncomeStatement" ref={tableRef}>
             <thead className="myTableHeader">
               <tr className="throw">
                 <th>DESCRIPTION</th>
@@ -92,7 +104,7 @@ const ComprehensiveIncome = ({ time, user, dispatchCleanUpAction }) => {
                 <td />
               </tr>
               <tr>
-                <td colspan={'3'} style={{ height: '30px' }} />
+                <td colSpan={3} style={{ height: '30px' }} />
               </tr>
               <tr>
                 <td>Cost of Goods Sold</td>
