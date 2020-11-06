@@ -26,14 +26,19 @@ const key = 'accounting';
 export function Accounting(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
-  const { loading, accSetUpData, getAccountingSetup, getChartOfAccounts } = props;
+  const {
+    loading,
+    accSetUpData,
+    getAccountingSetup,
+    getChartOfAccounts,
+  } = props;
 
   useEffect(() => {
     getAccountingSetup();
     getChartOfAccounts();
   }, []);
 
-  useEffect(() => { }, [accSetUpData]);
+  useEffect(() => {}, [accSetUpData]);
 
   const { path } = useRouteMatch();
 
@@ -60,7 +65,7 @@ export function Accounting(props) {
         <Route path={`${path}/journal`} component={Journal} />
         <Route path={`${path}/budgeting`} component={Budget} />
         <Route path={`${path}/fixedassets`} component={FixedAssets} />
-        <Route path={`${path}/reports/:reportId?`} component={Reports} />
+        <Route path={`${path}/reports`} component={Reports} />
         <Route path={`${path}/settings`} component={Settings} />
       </Fragment>
     </div>

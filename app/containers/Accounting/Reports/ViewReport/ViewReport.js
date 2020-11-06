@@ -65,7 +65,7 @@ const componentObject = {
   'Invoice Register': InvoiceRegister,
   'Sales Order Details': SalesOrderDetails,
   'Sales Journal': SalesJournal,
-  'Sales taxes': SalesJournal,
+  // 'Sales taxes': SalesJournal,
   'Taxes Exempt Sales': TaxesExemptSales,
   'Aged Payables': AgedPayableReports,
   'Cash Journal report': CashJournal,

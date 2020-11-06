@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Search from '../Search';
 import SingleDate from '../SingleDateSearch';
 import { useHistory } from 'react-router-dom';
@@ -42,6 +42,23 @@ const index = ({
   const history = useHistory();
   const classes = useStyles();
   const handleBack = () => history.goBack();
+
+  useEffect(() => {
+    function table_to_array() {
+      const myData = document.getElementsByClassName('table_id').rows;
+      const my_liste = [];
+      for (var i = 0; i < myData.length; i++) {
+        el = myData[i].children;
+        my_el = [];
+        for (var j = 0; j < el.length; j++) {
+          my_el.push(el[j].innerText);
+        }
+        my_liste.push(my_el);
+      }
+      return my_liste;
+    }
+  });
+
   return (
     <div className="flex-b md">
       <div className="flex-b">

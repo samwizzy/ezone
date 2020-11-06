@@ -195,17 +195,23 @@ export default compose(
   withConnect,
   memo,
 )(ChatsOfAccount);
-/**
- *    <TopMenu
-        componentRef={componentRef}
-        print={print}
-        setPrint={setPrint}
-        tableData={tableData}
-        handleFetch={handleData}
-        pdflogo={organisation.logo}
-        singleDate={true}
-        tableRef={tableRef}
-        companyRef={companyRef}
-        daterange={display && `As at ${moment(endDate).format('MMM Do YYYY')}`}
-      />
- */
+// /**
+//  *    <TopMenu
+//         componentRef={componentRef}
+//         print={print}
+//         setPrint={setPrint}
+//         tableData={tableData}
+//         handleFetch={handleData}
+//         pdflogo={organisation.logo}
+//         singleDate={true}
+//         tableRef={tableRef}
+//         companyRef={companyRef}
+//         daterange={display && `As at ${moment(endDate).format('MMM Do YYYY')}`}
+//       />
+//  */
+
+// import React from 'react';
+// const Charts = () => {
+//   return <div>Welcome</div>;
+// };
+// export default Charts;

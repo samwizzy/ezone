@@ -1,264 +1,218 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import { Grid } from '@material-ui/core';
+import { useRouteMatch } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import ViewMain from './ViewMain';
+import ChatsOfAccount from './ViewReport/Views/GeneralLedger/ChatsOfAccount';
+import CustomerLedger from './ViewReport/Views/Receivables/CustomerLedgers';
+import GeneralLedger from './ViewReport/Views/GeneralLedger/GeneralLedger';
+import GeneralJournal from './ViewReport/Views/GeneralLedger/GeneralJournal';
+import TrialBalance from './ViewReport/Views/GeneralLedger/TrialBalance';
+import CashAccountRegister from './ViewReport/Views/GeneralLedger/CashAccountRegister';
+import CustomerMasterFile from './ViewReport/Views/Receivables/CustomerMasterFile';
+import QuoteRegister from './ViewReport/Views/Receivables/QuoteRegister';
+import TaxesExemptSales from './ViewReport/Views/Receivables/TaxesExemptSales';
+import AssetSchedule from './ViewReport/Views/FixedAsset/FixedAssetSchedule';
+import AssetRegister from './ViewReport/Views/FixedAsset/FixedAssetRegister';
+import VendorLedgers from './ViewReport/Views/Payables/VendorLedgers';
+import VendoMasterLife from './ViewReport/Views/Payables/VendorMasterlife';
+import BankReconciliation from './ViewReport/Views/AccountReconciliation/BankReconcilliation';
+import BankDepositReport from './ViewReport/Views/AccountReconciliation/BankDepositReport';
+import DepositIntransit from './ViewReport/Views/AccountReconciliation/DepositInTransit';
+import OtherOustandingItem from './ViewReport/Views/AccountReconciliation/OtherOutstandingItems';
+import OutstandingChecks from './ViewReport/Views/AccountReconciliation/OutstandingChecks';
+import CostOfGoodSold from './ViewReport/Views/Inventory/CostOfGoodsSold';
+import InventoryStatusReport from './ViewReport/Views/Inventory/InventoryStatusReport';
+import ItemList from './ViewReport/Views/Inventory/ItemList';
+import PhysicalInventoryList from './ViewReport/Views/Inventory/PhysicalInventoryList';
+import ValuationReports from './ViewReport/Views/Inventory/ValuationReports';
+import EmployeeCompensationReports from './ViewReport/Views/Payroll/EmployeeCompensationReport';
+import EmployeeEarningReports from './ViewReport/Views/Payroll/EmployeeEarningsReport';
+import EmployeeList from './ViewReport/Views/Payroll/EmployeeList';
+import PayrollCheckRegister from './ViewReport/Views/Payroll/PayrollCheckRegister';
+import PayrollJournal from './ViewReport/Views/Payroll/PayrollJournals';
+import PayrolltaxReport from './ViewReport/Views/Payroll/PayrollTaxReport';
+import TaxLiabilityReport from './ViewReport/Views/Payroll/TaxLiabilityReport';
+import AgedPayableReports from './ViewReport/Views/Payables/AgedPayables';
+import BillReports from './ViewReport/Views/Payables/BillReports';
+import CashJournal from './ViewReport/Views/Payables/CashJournalReport';
+import PaymentsReport from './ViewReport/Views/Payables/PaymentsReports';
+import PurchaseJournal from './ViewReport/Views/Payables/PurchaseJournal';
+import PurchaseOrderRegister from './ViewReport/Views/Payables/PurchaseOrderRegister';
+import PurchaseOrderReports from './ViewReport/Views/Payables/PurchaseOrderReport';
+import QuotationReports from './ViewReport/Views/Payables/QuotationReports';
+import AgedReceivables from './ViewReport/Views/Receivables/AgedReceivables';
+import CashReceiptJornals from './ViewReport/Views/Receivables/CashReceiptJornals';
+import InvoiceRegister from './ViewReport/Views/Receivables/InvoiceRegister';
+import SalesOrderDetails from './ViewReport/Views/Receivables/SalesOrderDetails';
+import SalesJournal from './ViewReport/Views/Receivables/SalesJournal';
+import SalesTaxes from './ViewReport/Views/Receivables/SalesTaxes';
+import TaxSummary from './ViewReport/Views/Taxes/TaxSummary';
+import BudgetVsReport from './ViewReport/Views/Budget/BudgetVsReport';
+import BudgeVsActual from './ViewReport/Views/Budget/BudgetVsActuals';
+import CashFlow from './ViewReport/Views/FinancialStatement/CashFlow';
+import ComprehensiveIncomeStatement from './ViewReport/Views/FinancialStatement/ComprehensiveIncome';
+import StatementOfFinancialPosition from './ViewReport/Views/FinancialStatement/StateOfFinancialPostion';
 import ModuleLayout from './ModuleLayout';
-import ListBoard from '../Reports/ListBoard';
-import ViewReports from './ViewReport/ViewReport';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    '& > *': {
-      margin: theme.spacing(1),
-      width: theme.spacing(16),
-      height: theme.spacing(16),
-    },
-  },
-  paperBase: {
-    padding: '15px',
-  },
-  base: {
-    paddingTop: '5px',
-    paddingLeft: '5px',
-    paddingRight: '5px',
-    marginBottom: '20px',
-  },
-  pap: {
-    padding: '8px',
-    marginBottom: '15px',
-  },
-}));
 
 const Reports = () => {
-  const classes = useStyles();
-  const receivables = [
-    'Customer Ledgers',
-    'Aged Receivables',
-    'Customer master file',
-    'Cash Receipt Jornals',
-    'Invoice Register',
-    'Sales Order Details',
-    'Sales Journal',
-    'Sales taxes',
-    'Taxes Exempt Sales',
-    'Quote register',
-  ];
-  const fixedAsset = ['Fixed Asset Register', 'Fixed Asset Schedule'];
-  const payables = [
-    'Vendor Ledgers',
-    'Aged Payables',
-    'Cash Journal report',
-    'Purchase order register',
-    'Bill reports',
-    'Payments reports',
-    'Quotation reports',
-    'Purchase journal',
-    'vendor master life',
-    'Purchase order report',
-  ];
-  const ledger = [
-    'Cash account register',
-    'Charts of Accounts',
-    'General Journal',
-    'General ledger',
-    'Trial Balance',
-  ];
-  const financialStatement = [
-    'Comprehensive Income Statement',
-    'Statement of financial position',
-    'Cashflow',
-  ];
-  const inventory = [
-    'Cost of goods sold',
-    'Inventory status report',
-    'Inv.valuation report',
-    'Item list',
-    'Physical Inventory list',
-  ];
-  const payroll = [
-    'Payroll Journals',
-    'Payroll Check Register',
-    'Payroll Tax report',
-    'Tax liability Report',
-    'Employee Earnings Report',
-    'Employee Compensation Report',
-    'Employee List',
-  ];
-  const accountReconcilation = [
-    'Bank Reconcilation',
-    'Bank deposit report',
-    'Deposit in Transit',
-    'Other outstanding items',
-    'Outstanding checks',
-  ];
-  const { reportId } = useParams();
-
-  if (reportId)
-    return (
-      <ModuleLayout>
-        <ViewReports reportId={reportId} />{' '}
-      </ModuleLayout>
-    );
-
+  const { path } = useRouteMatch();
+  
   return (
-    <ModuleLayout>
-      <div className={classes.base}>
-        <Paper className={classes.paperBase} elevation={1}>
-          <Grid container>
-            <Grid item xs={12}>
-              <Paper className={classes.pap} elevation={3}>
-                <Typography gutterBottom variant="h6" component="h1">
-                  Reports
-                </Typography>
-              </Paper>
-            </Grid>
-
-            <Grid item xs={12}>
-              <Grid container spacing={2}>
-                <Grid item xs={3}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <Paper elevation={3}>
-                        <Paper elevation={1}>
-                          <ListBoard
-                            bar={'blue'}
-                            title={'Receivables'}
-                            contents={receivables}
-                          />
-                        </Paper>
-                      </Paper>
-                    </Grid>
-
-                    <Grid item xs={12}>
-                      <Paper elevation={3}>
-                        <Paper elevation={1}>
-                          <ListBoard
-                            bar={'orchild'}
-                            title={'Fixed Asset'}
-                            contents={fixedAsset}
-                          />
-                        </Paper>
-                      </Paper>
-                    </Grid>
-                  </Grid>
-                </Grid>
-
-                <Grid item xs={3}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <Paper elevation={3}>
-                        <Paper elevation={1}>
-                          <ListBoard
-                            bar={'green'}
-                            title={'Payables'}
-                            contents={payables}
-                          />
-                        </Paper>
-                      </Paper>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Paper elevation={3}>
-                        <Paper elevation={1}>
-                          <ListBoard
-                            bar={'322F7C'}
-                            title={'Account Reconcilation'}
-                            contents={accountReconcilation}
-                          />
-                        </Paper>
-                      </Paper>
-                    </Grid>
-                  </Grid>
-                </Grid>
-
-                <Grid item xs={3}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <Paper elevation={3}>
-                        <Paper elevation={1}>
-                          <ListBoard
-                            bar={'yellow'}
-                            title={'General Ledger'}
-                            contents={ledger}
-                          />
-                        </Paper>
-                      </Paper>
-                    </Grid>
-
-                    <Grid item xs={12}>
-                      <Paper elevation={3}>
-                        <Paper elevation={1}>
-                          <ListBoard
-                            bar={'green'}
-                            title={'Inventory'}
-                            contents={inventory}
-                          />
-                        </Paper>
-                      </Paper>
-                    </Grid>
-                  </Grid>
-                </Grid>
-
-                <Grid item xs={3}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <Paper elevation={3}>
-                        <Paper elevation={1}>
-                          <ListBoard
-                            bar={'pink'}
-                            title={'Financial Statement'}
-                            contents={financialStatement}
-                          />
-                        </Paper>
-                      </Paper>
-                    </Grid>
-
-                    <Grid item xs={12}>
-                      <Paper elevation={3}>
-                        <Paper elevation={1}>
-                          <ListBoard
-                            bar={'purple'}
-                            title={'Payroll'}
-                            contents={payroll}
-                          />
-                        </Paper>
-                      </Paper>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Paper elevation={3}>
-                        <Paper elevation={1}>
-                          <ListBoard
-                            bar={'orchild'}
-                            title={'Taxes'}
-                            contents={['Tax Summary']}
-                          />
-                        </Paper>
-                      </Paper>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Paper>
-      </div>
-      )
-    </ModuleLayout>
+    <Router>
+      <ModuleLayout>
+        <Switch>
+          <Route exact path={`${path}`} component={ViewMain} />
+          <Route
+            path={`${path}/charts-of-accounts`}
+            component={ChatsOfAccount}
+          />
+          <Route
+            path={`${path}/cash-account-register`}
+            component={CashAccountRegister}
+          />
+          <Route path={`${path}/general-journal`} component={GeneralJournal} />
+          <Route path={`${path}/general-ledger`} component={GeneralLedger} />
+          <Route path={`${path}/customer-ledgers`} component={CustomerLedger} />
+          <Route path={`${path}/trial-balance`} component={TrialBalance} />
+          <Route
+            path={`${path}/aged-receivables`}
+            component={AgedReceivables}
+          />
+          <Route
+            path={`${path}/customer-master-file`}
+            component={CustomerMasterFile}
+          />
+          <Route
+            path={`${path}/cash-receipt-jornals`}
+            component={CashReceiptJornals}
+          />
+          <Route
+            path={`${path}/invoice-register`}
+            component={InvoiceRegister}
+          />
+          <Route
+            path={`${path}/sales-order-details`}
+            component={SalesOrderDetails}
+          />
+          <Route path={`${path}/sales-journal`} component={SalesJournal} />
+          <Route path={`${path}/sales-taxes`} component={SalesTaxes} />
+          <Route
+            path={`${path}/taxes-exempt-sales`}
+            component={TaxesExemptSales}
+          />
+          <Route path={`${path}/quote-register`} component={QuoteRegister} />
+          <Route
+            path={`${path}/fixed-asset-register`}
+            component={AssetRegister}
+          />
+          <Route path={`${path}/cash-journal-report`} component={CashJournal} />
+          <Route
+            path={`${path}/fixed-asset-schedule`}
+            component={AssetSchedule}
+          />
+          <Route path={`${path}/vendor-ledgers`} component={VendorLedgers} />
+          <Route
+            path={`${path}/aged-payables`}
+            component={AgedPayableReports}
+          />
+          <Route
+            path={`${path}/purchase-order-register`}
+            component={PurchaseOrderRegister}
+          />
+          <Route path={`${path}/bill-reports`} component={BillReports} />
+          <Route
+            path={`${path}/quotation-reports`}
+            component={QuotationReports}
+          />
+          <Route
+            path={`${path}/vendor-master-life`}
+            component={VendoMasterLife}
+          />
+          <Route
+            path={`${path}/purchase-order-report`}
+            component={PurchaseOrderReports}
+          />
+          <Route path={`${path}/payments-reports`} component={PaymentsReport} />
+          <Route
+            path={`${path}/quotation-reports`}
+            component={QuotationReports}
+          />
+          <Route
+            path={`${path}/purchase-journal`}
+            component={PurchaseJournal}
+          />
+          <Route
+            path={`${path}/bank-reconcillation`}
+            component={BankReconciliation}
+          />
+          <Route
+            path={`${path}/bank-deposit-report`}
+            component={BankDepositReport}
+          />
+          <Route
+            path={`${path}/deposit-in-transit`}
+            component={DepositIntransit}
+          />
+          <Route
+            path={`${path}/other-outstanding-items`}
+            component={OtherOustandingItem}
+          />
+          <Route
+            path={`${path}/outstanding-checks`}
+            component={OutstandingChecks}
+          />
+          <Route
+            path={`${path}/cost-of-goods-sold`}
+            component={CostOfGoodSold}
+          />
+          <Route
+            path={`${path}/inventory-status-report`}
+            component={InventoryStatusReport}
+          />
+          <Route
+            path={`${path}/inv-valuation-report`}
+            component={ValuationReports}
+          />
+          <Route path={`${path}/Item-list`} component={ItemList} />
+          <Route
+            path={`${path}/physical-Inventory-list`}
+            component={PhysicalInventoryList}
+          />
+          <Route path={`${path}/payroll-journals`} component={PayrollJournal} />
+          <Route
+            path={`${path}/payroll-check-register`}
+            component={PayrollCheckRegister}
+          />
+          <Route
+            path={`${path}/payroll-tax-report`}
+            component={PayrolltaxReport}
+          />
+          <Route
+            path={`${path}/tax-liability-report`}
+            component={TaxLiabilityReport}
+          />
+          <Route
+            path={`${path}/employee-earnings-report`}
+            component={EmployeeEarningReports}
+          />
+          <Route
+            path={`${path}/employee-compensation-report`}
+            component={EmployeeCompensationReports}
+          />{' '}
+          <Route path={`${path}/employee-list`} component={EmployeeList} />
+          <Route
+            path={`${path}/comprehensive-income-statement`}
+            component={ComprehensiveIncomeStatement}
+          />
+          <Route
+            path={`${path}/statement-of-financial-position`}
+            component={StatementOfFinancialPosition}
+          />
+          <Route path={`${path}/cashflow`} component={CashFlow} />
+          <Route path={`${path}/tax-summary`} component={TaxSummary} />
+        </Switch>
+      </ModuleLayout>
+    </Router>
   );
 };
-
 export default Reports;
-// <Grid item xs={12}>
-//   <Paper elevation={3}>
-//     <Paper elevation={1}>
-//       <ListBoard
-//         bar={'purple'}
-//         title={'Budget'}
-//         contents={['Budget report', 'Budget Vs Actuals']}
-//       />
-//     </Paper>
-//   </Paper>
-// </Grid>

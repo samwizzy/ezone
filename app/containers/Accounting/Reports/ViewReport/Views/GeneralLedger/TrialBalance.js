@@ -108,9 +108,10 @@ const TrialBalance = ({
   const TableFooterData = [
     '   ',
     ' TOTAL',
-    `${trialBalance && trialBalance.total}`,
-    `${trialBalance && trialBalance.total}`,
+    `${trialBalance && trialBalance.totalDebit}`,
+    `${trialBalance && trialBalance.totalcCredit}`,
   ];
+
   console.log('YEEEEEEEEEEEEESSSSSSSSSSSSSS', trialBalances);
   const options = {
     filterType: 'checkbox',
@@ -119,7 +120,7 @@ const TrialBalance = ({
     elevation: 0,
     download: false,
     print: false,
-    pagination: true,
+    pagination: false,
     viewColumns: false,
   };
 
@@ -234,3 +235,5 @@ export default compose(
 //     </TableRow>
 //   </TableFooter>
 // ),
+// https://dev.ezoneapps.com/gateway/accountingserv/api/v1/report/get_trial_balance?endDate=2020/11/17&startDate=01/01/2000&orgId=ORG-1593451692921
+// https://app.ezoneerp.com/gateway/accountingserv/api/v1/report/get_trial_balance?endDate=2020/11/05&startDate=01/01/2000&orgId=ORG-1593512567642

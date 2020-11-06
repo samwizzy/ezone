@@ -13,12 +13,6 @@
   justify-self: center;
   text-align: center;
 }
-.view-main img {
-  height: 70px;
-  /* width: 170px; */
-  object-fit: contain;
-  margin: 10px auto;
-}
 .flex-r {
   display: flex;
   align-items: center;
@@ -31,4 +25,10 @@
 .view-main h5,
 h4 {
   margin: 10px 0px;
+}
+.view-main img {
+  height: 70px;
+  width: auto;
+  margin: 10px auto;
+  object-fit: contain;
 }
