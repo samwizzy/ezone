@@ -41,7 +41,7 @@ const CreatePdf = ({
       didDrawPage: data => {
         if (data.pageNumber === 1) {
           if (base64Img) {
-            doc.addImage(base64Img, 'JPEG', ImageWidthPosition, 15, 45, 19);
+            doc.addImage(base64Img, 'JPEG', ImageWidthPosition, 15, 19, 19);
           }
           doc.text(`${fileName}`, nameWithPosition, 44);
           if (daterange) {
@@ -53,14 +53,20 @@ const CreatePdf = ({
       body: body ? body : '',
       head: head ? head : '',
       headStyles: {
-        fillColor: '#eef4f9',
-        textColor: 'black',
+        fillColor: '#1a88e1',
+        textColor: 'white',
+        cellPadding: '5px',
+        border: '1px solid rgba(224, 224, 224, 1)',
       },
       footStyles: {
         fillColor: 'black',
         textColor: 'white',
       },
-      theme: 'striped',
+      bodyStyles: {
+        cellPadding: '5px',
+        border: '1px solid rgba(224, 224, 224, 1)',
+      },
+      // theme: 'striped',
       startY: 60,
     });
     doc.save(`${fileName}.pdf`);

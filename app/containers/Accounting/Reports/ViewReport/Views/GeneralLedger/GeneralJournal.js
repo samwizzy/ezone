@@ -104,7 +104,7 @@ const GeneralJournal = ({
       `${journal.description}`,
       `${journal.debit === 0 ? '' : journal.debit}`,
       `${journal.credit === 0 ? '' : journal.credit}`,
-      `${journal.currency ? (journal.currency && journal.currency.code) : ''}`,
+      `${journal.currency ? journal.currency && journal.currency.code : ''}`,
       `${journal.exchangeRate ? journal.exchangeRate : ''}`,
     ]);
 
@@ -115,7 +115,7 @@ const GeneralJournal = ({
     elevation: 0,
     download: false,
     print: false,
-    pagination: true,
+    pagination: false,
     viewColumns: false,
   };
 

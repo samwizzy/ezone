@@ -126,7 +126,7 @@ const GeneralLedger = ({
     elevation: 0,
     download: false,
     print: false,
-    pagination: true,
+    pagination: false,
     rowsPerPage: 20,
     count: 15,
     page: 0,
