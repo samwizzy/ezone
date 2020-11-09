@@ -38,6 +38,19 @@ const FixedAssetRegister = ({ time, user, dispatchCleanUpAction }) => {
     // console.log('=============================================>');
     setDisplay(true);
   };
+  const TableHeadData = [
+    'Date',
+    'Asset Code',
+    'Location of asset',
+    'Description',
+    'Specification',
+    'Qty',
+    'Condition',
+    'Acquisition date',
+    'Cost at Acquisition',
+    'Additions during the year',
+    'Disposals/Transfer',
+  ];
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
 
@@ -55,7 +68,7 @@ const FixedAssetRegister = ({ time, user, dispatchCleanUpAction }) => {
         setPrint={setPrint}
         handleFetch={handleData}
         pdflogo={organisation.logo}
-        // tableRef={tableRef}
+        tableRef={tableRef}
         companyRef={companyRef}
         daterange={setDate}
       />
@@ -65,6 +78,12 @@ const FixedAssetRegister = ({ time, user, dispatchCleanUpAction }) => {
           ComLogo={organisation.logo}
           name={`${fileName}`}
           date={setDate}
+        />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
         />
       </div>
     </React.Fragment>
