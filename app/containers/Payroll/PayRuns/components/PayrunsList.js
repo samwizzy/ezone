@@ -1,16 +1,14 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import EzoneUtils from '../../../../utils/EzoneUtils';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import {
   makeStyles,
-  IconButton,
   Button,
   Chip,
   Menu,
   MenuItem,
-  Grid,
   Tooltip,
 } from '@material-ui/core';
 import classNames from 'classnames';
@@ -65,63 +63,67 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const BankList = props => {
+const payrunsData = [
+  { id: 1, payPeriod: '2020', refCode: '#AD9730BG', payment: '200000', paymentDate: '2020-10-23', employees: 'Samuel', status: true },
+]
+
+const PayrunsList = props => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedBankAccount, setSelectedBankAccount] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedPayrun, setSelectedPayrun] = useState(null);
 
   const {
     loading,
     history,
     match,
-    accountSetupData,
-    getBankAccountById,
-    openNewBankAccountDialog,
-    openEditBankAccountDialog,
-    openDeleteBankAccountDialog,
-    activateDeactivateBankAccount,
-    bankAccounts,
+    payrollSetupData,
+    getPayrunById,
+    openNewPayrunDialog,
+    openEditPayrunDialog,
+    openDeletePayrunDialog,
+    activateDeactivatePayrun,
+    payruns,
   } = props;
 
   const handleClick = (event, id) => {
     event.stopPropagation()
     setAnchorEl(event.currentTarget);
-    setSelectedBankAccount(_.find(bankAccounts, { id }));
+    setSelectedPayrun(_.find(payruns, { id }));
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleActivateDeactivateBankAccount = () => {
+  const handleActivateDeactivatePayrun = () => {
     const data = {
-      id: selectedBankAccount.id,
-      status: !selectedBankAccount.status,
+      id: selectedPayrun.id,
+      status: !selectedPayrun.status,
     };
-    activateDeactivateBankAccount(data);
+    activateDeactivatePayrun(data);
     setAnchorEl(null);
   };
 
   const handleView = () => {
-    const { id } = selectedBankAccount;
-    getBankAccountById(id);
-    history.push(`${match.url}/${id}`);
+    const { id } = selectedPayrun;
+    getPayrunById(id);
+    history.push(`${match.url}/view/${id}`);
     setAnchorEl(null);
   };
 
   const handleEditClick = () => {
-    openEditBankAccountDialog(selectedBankAccount)
+    openEditPayrunDialog(selectedPayrun)
     setAnchorEl(null);
   };
 
   const handleRoute = id => {
-    getBankAccountById(id);
-    history.push(`${match.url}/${id}`);
+    getPayrunById(id);
+    history.push(`${match.url}/view/${id}`);
   };
 
-  const orderedBankAccounts = _.orderBy(bankAccounts, 'dateCreated', 'desc')
+  const orderedPayruns = _.orderBy(payruns, 'dateCreated', 'desc')
 
-  if (!bankAccounts.length > 0) {
+  if (loading) {
     return <CircleLoader />
   }
 
@@ -136,7 +138,7 @@ const BankList = props => {
       },
     },
     {
-      name: 'accountName',
+      name: 'payPeriod',
       label: 'Pay Period',
       options: {
         filter: true,
@@ -144,7 +146,7 @@ const BankList = props => {
       },
     },
     {
-      name: 'accountCode',
+      name: 'refCode',
       label: 'Ref Code',
       options: {
         filter: true,
@@ -152,7 +154,7 @@ const BankList = props => {
       },
     },
     {
-      name: 'accountNumber',
+      name: 'paymentDate',
       label: 'Payment date',
       options: {
         filter: true,
@@ -160,7 +162,7 @@ const BankList = props => {
       },
     },
     {
-      name: 'bankName',
+      name: 'employees',
       label: 'Employees',
       options: {
         filter: true,
@@ -174,8 +176,8 @@ const BankList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const bankAccount = bankAccounts.find(account => account.id === value)
-          return EzoneUtils.formatCurrency(bankAccount.bankBalance, 'NGN')
+          const payrun = payrunsData.find(payrun => payrun.id === value)
+          return EzoneUtils.formatCurrency(payrun.payment, 'NGN')
         }
       },
     },
@@ -213,18 +215,18 @@ const BankList = props => {
     selectableRows: 'none',
     textLabels: {
       body: {
-        noMatch: 'Sorry, no bank accounts found',
+        noMatch: 'Sorry, no payruns found',
         toolTip: 'Sort',
         columnHeaderTooltip: column => `Sort for ${column.label}`,
       },
     },
     customToolbar: () => (
-      <Tooltip title="Create New Bank Account">
+      <Tooltip title="Create New Payrun">
         <Button
           variant="contained"
           color="primary"
           startIcon={<AddIcon />}
-          onClick={() => openNewBankAccountDialog()}
+          onClick={() => history.push(`${match.url}/new`)}
         >
           Add Pay Run
         </Button>
@@ -241,7 +243,7 @@ const BankList = props => {
       <MUIDataTable
         className={classes.datatable}
         title="Pay Run List"
-        data={[]}
+        data={payrunsData}
         columns={columns}
         options={options}
       />
@@ -254,21 +256,21 @@ const BankList = props => {
         onClose={handleClose}
       >
         <MenuItem
-          onClick={handleActivateDeactivateBankAccount}
-          disabled={selectedBankAccount && !Boolean(selectedBankAccount.transfers.length)}
+          onClick={handleActivateDeactivatePayrun}
+          disabled={selectedPayrun && !Boolean(selectedPayrun.transfers.length)}
         >
-          {selectedBankAccount && selectedBankAccount.status ? 'Deactivate' : 'Activate'}
+          {selectedPayrun && selectedPayrun.status ? 'Deactivate' : 'Activate'}
         </MenuItem>
         <MenuItem
-          onClick={() => openDeleteBankAccountDialog(selectedBankAccount)}
-          disabled={selectedBankAccount && Boolean(selectedBankAccount.transfers.length)}
+          onClick={() => openDeletePayrunDialog(selectedPayrun)}
+          disabled={selectedPayrun && Boolean(selectedPayrun.transfers.length)}
         >
           Delete
         </MenuItem>
         <MenuItem
           onClick={handleEditClick}
           disabled={
-            selectedBankAccount && Boolean(selectedBankAccount.transfers.length)
+            selectedPayrun && Boolean(selectedPayrun.transfers.length)
           }
         >
           Edit
@@ -279,23 +281,23 @@ const BankList = props => {
   );
 };
 
-BankList.propTypes = {
+PayrunsList.propTypes = {
   loading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  bankAccounts: Selectors.makeSelectBankAccountData(),
-  accountSetupData: PayrollSelectors.makeSelectGetPayrollSetupData(),
+  payruns: Selectors.makeSelectPayrunData(),
+  payrollSetupData: PayrollSelectors.makeSelectGetPayrollSetupData(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getBankAccountById: data => dispatch(Actions.getBankAccountById(data)),
-    openNewBankAccountDialog: () => dispatch(Actions.openNewBankAccountDialog()),
-    openEditBankAccountDialog: data => dispatch(Actions.openEditBankAccountDialog(data)),
-    openDeleteBankAccountDialog: data => dispatch(Actions.openDeleteBankAccountDialog(data)),
-    activateDeactivateBankAccount: data => dispatch(Actions.activateDeactivateBankAccount(data)),
+    getPayrunById: data => dispatch(Actions.getPayrunById(data)),
+    openNewPayrunDialog: () => dispatch(Actions.openNewPayrunDialog()),
+    openEditPayrunDialog: data => dispatch(Actions.openEditPayrunDialog(data)),
+    openDeletePayrunDialog: data => dispatch(Actions.openDeletePayrunDialog(data)),
+    activateDeactivatePayrun: data => dispatch(Actions.activateDeactivatePayrun(data)),
   };
 }
 
@@ -308,4 +310,4 @@ export default compose(
   withRouter,
   withConnect,
   memo,
-)(BankList);
+)(PayrunsList);

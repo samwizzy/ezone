@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
       borderTop: `1px solid ${theme.palette.divider} !important`
     },
     "& .MuiTableCell-root": {
-      borderBottom: "none !important"
+      border: 0
     },
     '& .MuiTableCell-body': {
       color: theme.palette.text.secondary,

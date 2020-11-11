@@ -2,96 +2,54 @@ import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
 /**
- * Direct selector to the banking state domain
+ * Direct selector to the payrun state domain
  */
 
-const selectBankingDomain = state => state.banking || initialState;
+const selectPayrunDomain = state => state.payrun || initialState;
 
-const makeSelectBanking = () =>
+const makeSelectPayrun = () =>
   createSelector(
-    selectBankingDomain,
+    selectPayrunDomain,
     substate => substate,
   );
 
 const makeSelectLoading = () =>
   createSelector(
-    selectBankingDomain,
+    selectPayrunDomain,
     subState => subState.loading,
   );
 
-const makeSelectBankAccountDialog = () =>
+const makeSelectPayrunDialog = () =>
   createSelector(
-    selectBankingDomain,
-    substate => substate.bankAccountDialog,
+    selectPayrunDomain,
+    substate => substate.payrunDialog,
   );
 
-const makeSelectBankAccountConfirmDialog = () =>
+const makeSelectPayrunConfirmDialog = () =>
   createSelector(
-    selectBankingDomain,
-    substate => substate.bankAccountConfirmDialog,
+    selectPayrunDomain,
+    substate => substate.payrunConfirmDialog,
   );
 
-const makeSelectAccountTypes = () =>
+const makeSelectPayrunData = () =>
   createSelector(
-    selectBankingDomain,
-    substate => substate.accountTypes,
+    selectPayrunDomain,
+    substate => substate.payruns,
   );
 
-const makeSelectBankAccountData = () =>
+const makeSelectPayrunByIdData = () =>
   createSelector(
-    selectBankingDomain,
-    substate => substate.bankAccounts,
+    selectPayrunDomain,
+    substate => substate.payrun,
   );
 
-const makeSelectBankAccountByIdData = () =>
-  createSelector(
-    selectBankingDomain,
-    substate => substate.bankAccount,
-  );
-
-const makeSelectBankTransferByOrgIdData = () =>
-  createSelector(
-    selectBankingDomain,
-    substate => substate.bankTransferByOrgIdData,
-  );
-
-const makeSelectTransactionTransferDialog = () =>
-  createSelector(
-    selectBankingDomain,
-    substate => substate.transactionTransferDialog,
-  );
-
-const makeSelectTransferByAccountIdData = () =>
-  createSelector(
-    selectBankingDomain,
-    substate => substate.transferByAccountIdData,
-  );
-
-const makeSelectAccountingPeriods = () =>
-  createSelector(
-    selectBankingDomain,
-    subState => subState.accountingPeriods,
-  );
-
-const makeSelectCurrencies = () =>
-  createSelector(
-    selectBankingDomain,
-    subState => subState.currencies,
-  );
-
-export default makeSelectBanking;
+export default makeSelectPayrun;
 
 export {
-  selectBankingDomain,
+  selectPayrunDomain,
   makeSelectLoading,
-  makeSelectBankAccountDialog,
-  makeSelectBankAccountConfirmDialog,
-  makeSelectAccountingPeriods,
-  makeSelectCurrencies,
-  makeSelectAccountTypes,
-  makeSelectBankAccountData,
-  makeSelectBankAccountByIdData,
-  makeSelectBankTransferByOrgIdData,
-  makeSelectTransactionTransferDialog,
-  makeSelectTransferByAccountIdData,
+  makeSelectPayrunDialog,
+  makeSelectPayrunConfirmDialog,
+  makeSelectPayrunData,
+  makeSelectPayrunByIdData,
 };

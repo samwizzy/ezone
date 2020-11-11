@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 400,
     "& .MuiTableCell-root": {
-      borderBottom: 0
+      border: 0
     },
     '& .MuiTableCell-body': {
       color: theme.palette.text.secondary,

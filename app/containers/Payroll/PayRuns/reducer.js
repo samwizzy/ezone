@@ -4,45 +4,33 @@ import * as Constants from './constants';
 export const initialState = {
   loading: false,
   error: false,
-  bankAccountDialog: {
+  payrunDialog: {
     type: 'new',
     props: {
       open: false,
     },
     data: null,
   },
-  bankAccountConfirmDialog: {
+  payrunConfirmDialog: {
     type: 'new',
     props: {
       open: false,
     },
     data: null,
   },
-  accountingPeriods: [],
-  currencies: [],
-  accountTypes: [],
-  bankAccounts: [],
-  bankAccount: null,
-  bankTransferByOrgIdData: [],
-  transactionTransferDialog: {
-    type: 'to',
-    props: {
-      open: false,
-    },
-    data: null,
-  },
-  transferByAccountIdData: null,
+  Payruns: [],
+  Payrun: null,
 };
 
 /* eslint-disable default-case, no-param-reassign */
-const bankingReducer = (state = initialState, action) =>
+const payrunReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
-      // Open dialog for adding new bank account
-      case Constants.OPEN_NEW_BANK_ACCOUNT_DIALOG: {
+      // Open dialog for adding new payrun
+      case Constants.OPEN_NEW_PAYRUN_DIALOG: {
         return {
           ...state,
-          bankAccountDialog: {
+          payrunDialog: {
             type: 'new',
             props: {
               open: true,
@@ -51,10 +39,10 @@ const bankingReducer = (state = initialState, action) =>
           },
         };
       }
-      case Constants.CLOSE_NEW_BANK_ACCOUNT_DIALOG: {
+      case Constants.CLOSE_NEW_PAYRUN_DIALOG: {
         return {
           ...state,
-          bankAccountDialog: {
+          payrunDialog: {
             type: 'new',
             props: {
               open: false,
@@ -64,10 +52,10 @@ const bankingReducer = (state = initialState, action) =>
         };
       }
 
-      case Constants.EDIT_OPEN_ACCOUNT_DIALOG: {
+      case Constants.OPEN_EDIT_PAYRUN_DIALOG: {
         return {
           ...state,
-          bankAccountDialog: {
+          payrunDialog: {
             type: 'edit',
             props: {
               open: true,
@@ -76,10 +64,10 @@ const bankingReducer = (state = initialState, action) =>
           },
         };
       }
-      case Constants.EDIT_CLOSE_ACCOUNT_DIALOG: {
+      case Constants.CLOSE_EDIT_PAYRUN_DIALOG: {
         return {
           ...state,
-          bankAccountDialog: {
+          payrunDialog: {
             type: 'edit',
             props: {
               open: false,
@@ -89,10 +77,10 @@ const bankingReducer = (state = initialState, action) =>
         };
       }
 
-      case Constants.OPEN_DELETE_BANK_ACCOUNT_DIALOG: {
+      case Constants.OPEN_DELETE_PAYRUN_DIALOG: {
         return {
           ...state,
-          bankAccountConfirmDialog: {
+          payrunConfirmDialog: {
             type: 'delete',
             props: {
               open: true,
@@ -101,10 +89,10 @@ const bankingReducer = (state = initialState, action) =>
           },
         };
       }
-      case Constants.CLOSE_DELETE_BANK_ACCOUNT_DIALOG: {
+      case Constants.CLOSE_DELETE_PAYRUN_DIALOG: {
         return {
           ...state,
-          bankAccountConfirmDialog: {
+          payrunConfirmDialog: {
             type: 'delete',
             props: {
               open: false,
@@ -114,10 +102,10 @@ const bankingReducer = (state = initialState, action) =>
         };
       }
 
-      case Constants.OPEN_ACTIVATE_BANK_ACCOUNT_DIALOG: {
+      case Constants.OPEN_ACTIVATE_PAYRUN_DIALOG: {
         return {
           ...state,
-          bankAccountDialog: {
+          payrunDialog: {
             type: 'activate',
             props: {
               open: true,
@@ -126,10 +114,10 @@ const bankingReducer = (state = initialState, action) =>
           },
         };
       }
-      case Constants.CLOSE_ACTIVATE_BANK_ACCOUNT_DIALOG: {
+      case Constants.CLOSE_ACTIVATE_PAYRUN_DIALOG: {
         return {
           ...state,
-          bankAccountDialog: {
+          payrunDialog: {
             type: 'activate',
             props: {
               open: false,
@@ -139,10 +127,10 @@ const bankingReducer = (state = initialState, action) =>
         };
       }
 
-      case Constants.OPEN_DEACTIVATE_BANK_ACCOUNT_DIALOG: {
+      case Constants.OPEN_DEACTIVATE_PAYRUN_DIALOG: {
         return {
           ...state,
-          bankAccountDialog: {
+          payrunDialog: {
             type: 'deactivate',
             props: {
               open: true,
@@ -151,10 +139,10 @@ const bankingReducer = (state = initialState, action) =>
           },
         };
       }
-      case Constants.CLOSE_DEACTIVATE_BANK_ACCOUNT_DIALOG: {
+      case Constants.CLOSE_DEACTIVATE_PAYRUN_DIALOG: {
         return {
           ...state,
-          bankAccountDialog: {
+          payrunDialog: {
             type: 'deactivate',
             props: {
               open: false,
@@ -163,24 +151,22 @@ const bankingReducer = (state = initialState, action) =>
           },
         };
       }
-
-      // Case to get accounting periods
-      case Constants.GET_ACCOUNTING_PERIODS: {
+      // Case to create new payrun
+      case Constants.CREATE_PAYRUN: {
         return {
           ...state,
           loading: true,
           error: false,
         };
       }
-      case Constants.GET_ACCOUNTING_PERIODS_SUCCESS: {
+      case Constants.CREATE_PAYRUN_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-          accountingPeriods: action.payload,
         };
       }
-      case Constants.GET_ACCOUNTING_PERIODS_ERROR: {
+      case Constants.CREATE_PAYRUN_ERROR: {
         return {
           ...state,
           loading: false,
@@ -188,23 +174,23 @@ const bankingReducer = (state = initialState, action) =>
         };
       }
 
-      // Case to get currencies
-      case Constants.GET_CURRENCIES: {
+      // Case to get all payruns
+      case Constants.GET_PAYRUNS: {
         return {
           ...state,
           loading: true,
           error: false,
         };
       }
-      case Constants.GET_CURRENCIES_SUCCESS: {
+      case Constants.GET_PAYRUNS_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-          currencies: action.payload,
+          Payruns: action.payload,
         };
       }
-      case Constants.GET_CURRENCIES_ERROR: {
+      case Constants.GET_PAYRUNS_ERROR: {
         return {
           ...state,
           loading: false,
@@ -212,23 +198,23 @@ const bankingReducer = (state = initialState, action) =>
         };
       }
 
-      // Case to get account type data
-      case Constants.GET_ALL_ACCOUNT_TYPES: {
+      // Case to get payrun by id
+      case Constants.GET_PAYRUN_BY_ID: {
         return {
           ...state,
           loading: true,
           error: false,
         };
       }
-      case Constants.GET_ALL_ACCOUNT_TYPES_SUCCESS: {
+      case Constants.GET_PAYRUN_BY_ID_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-          accountTypes: action.payload,
+          Payrun: action.payload,
         };
       }
-      case Constants.GET_ALL_ACCOUNT_TYPES_ERR: {
+      case Constants.GET_PAYRUN_BY_ID_ERROR: {
         return {
           ...state,
           loading: false,
@@ -236,22 +222,22 @@ const bankingReducer = (state = initialState, action) =>
         };
       }
 
-      // Case to create new bank
-      case Constants.CREATE_NEW_BANK: {
+      // Case to update/edit payrun
+      case Constants.UPDATE_PAYRUN: {
         return {
           ...state,
           loading: true,
           error: false,
         };
       }
-      case Constants.CREATE_NEW_BANK_SUCCESS: {
+      case Constants.UPDATE_PAYRUN_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
         };
       }
-      case Constants.CREATE_NEW_BANK_ERR: {
+      case Constants.UPDATE_PAYRUN_ERROR: {
         return {
           ...state,
           loading: false,
@@ -259,261 +245,22 @@ const bankingReducer = (state = initialState, action) =>
         };
       }
 
-      // Case to get all bank accounts
-      case Constants.GET_ALL_BANK_ACCOUNT: {
+      // Case to delete payrun
+      case Constants.DELETE_PAYRUN: {
         return {
           ...state,
           loading: true,
           error: false,
         };
       }
-      case Constants.GET_ALL_BANK_ACCOUNT_SUCCESS: {
-        return {
-          ...state,
-          loading: false,
-          error: false,
-          bankAccounts: action.payload,
-        };
-      }
-      case Constants.GET_ALL_BANK_ACCOUNT_ERR: {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload,
-        };
-      }
-
-      // Case to get bank account by id
-      case Constants.GET_BANK_ACCOUNT_BY_ID: {
-        return {
-          ...state,
-          loading: true,
-          error: false,
-        };
-      }
-      case Constants.GET_BANK_ACCOUNT_BY_ID_SUCCESS: {
-        return {
-          ...state,
-          loading: false,
-          error: false,
-          bankAccount: action.payload,
-        };
-      }
-      case Constants.GET_BANK_ACCOUNT_BY_ID_ERROR: {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload,
-        };
-      }
-
-      // Case to update/edit bank account
-      case Constants.UPDATE_BANK_ACCOUNT: {
-        return {
-          ...state,
-          loading: true,
-          error: false,
-        };
-      }
-      case Constants.UPDATE_BANK_ACCOUNT_SUCCESS: {
+      case Constants.DELETE_PAYRUN_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
         };
       }
-      case Constants.UPDATE_BANK_ACCOUNT_ERR: {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload,
-        };
-      }
-
-      // Case to delete bank account
-      case Constants.DELETE_BANK_ACCOUNT: {
-        return {
-          ...state,
-          loading: true,
-          error: false,
-        };
-      }
-      case Constants.DELETE_BANK_ACCOUNT_SUCCESS: {
-        return {
-          ...state,
-          loading: false,
-          error: false,
-        };
-      }
-      case Constants.DELETE_BANK_ACCOUNT_ERR: {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload,
-        };
-      }
-
-      // Case to get all bank accounts
-      case Constants.GET_ALL_TRANSFER_BY_ORGID: {
-        return {
-          ...state,
-          loading: true,
-          error: false,
-        };
-      }
-      case Constants.GET_ALL_TRANSFER_BY_ORGID_SUCCESS: {
-        return {
-          ...state,
-          loading: false,
-          error: false,
-          bankTransferByOrgIdData: action.payload,
-        };
-      }
-      case Constants.GET_ALL_TRANSFER_BY_ORGID_ERR: {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload,
-        };
-      }
-
-      // Open transaction transfer to dialog
-      case Constants.OPEN_ACCOUNT_TRANSFER_TO_DIALOG: {
-        return {
-          ...state,
-          transactionTransferDialog: {
-            type: 'to',
-            props: {
-              open: true,
-            },
-            data: action.payload,
-          },
-        };
-      }
-      case Constants.CLOSE_ACCOUNT_TRANSFER_TO_DIALOG: {
-        return {
-          ...state,
-          transactionTransferDialog: {
-            type: 'to',
-            props: {
-              open: false,
-            },
-            data: null,
-          },
-        };
-      }
-      // Open transaction transfer from dialog
-      case Constants.OPEN_ACCOUNT_TRANSFER_FROM_DIALOG: {
-        return {
-          ...state,
-          transactionTransferDialog: {
-            type: 'from',
-            props: {
-              open: true,
-            },
-            data: action.payload,
-          },
-        };
-      }
-      case Constants.CLOSE_ACCOUNT_TRANSFER_FROM_DIALOG: {
-        return {
-          ...state,
-          transactionTransferDialog: {
-            type: 'from',
-            props: {
-              open: false,
-            },
-            data: null,
-          },
-        };
-      }
-
-      // Case to create bank transfer
-      case Constants.CREATE_BANK_TRANSFER: {
-        return {
-          ...state,
-          loading: true,
-          error: false,
-        };
-      }
-      case Constants.CREATE_BANK_TRANSFER_SUCCESS: {
-        return {
-          ...state,
-          loading: false,
-          error: false,
-        };
-      }
-      case Constants.CREATE_BANK_TRANSFER_ERR: {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload,
-        };
-      }
-
-      // Get transfers by account
-      case Constants.GET_TRANSFERS_BY_ACCOUNT_ID: {
-        return {
-          ...state,
-          loading: true,
-          error: false,
-        };
-      }
-      case Constants.GET_TRANSFERS_BY_ACCOUNT_ID_SUCCESS: {
-        return {
-          ...state,
-          loading: false,
-          error: false,
-          transferByAccountIdData: action.payload,
-        };
-      }
-      case Constants.GET_TRANSFERS_BY_ACCOUNT_ID_ERR: {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload,
-        };
-      }
-
-      // Activate bank account (query params request)
-      case Constants.ACTIVATE_BANK_ACCOUNT: {
-        return {
-          ...state,
-          loading: true,
-          error: false,
-        };
-      }
-      case Constants.ACTIVATE_BANK_ACCOUNT_SUCCESS: {
-        return {
-          ...state,
-          loading: false,
-          error: false,
-        };
-      }
-      case Constants.ACTIVATE_BANK_ACCOUNT_ERR: {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload,
-        };
-      }
-
-      // Deactivate bank account (query params request)
-      case Constants.DEACTIVATE_BANK_ACCOUNT: {
-        return {
-          ...state,
-          loading: true,
-          error: false,
-        };
-      }
-      case Constants.DEACTIVATE_BANK_ACCOUNT_SUCCESS: {
-        return {
-          ...state,
-          loading: false,
-          error: false,
-        };
-      }
-      case Constants.DEACTIVATE_BANK_ACCOUNT_ERR: {
+      case Constants.DELETE_PAYRUN_ERROR: {
         return {
           ...state,
           loading: false,
@@ -523,4 +270,4 @@ const bankingReducer = (state = initialState, action) =>
     }
   });
 
-export default bankingReducer;
+export default payrunReducer;

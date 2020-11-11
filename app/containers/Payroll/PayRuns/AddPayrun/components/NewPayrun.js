@@ -9,11 +9,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import {
   makeStyles,
   Card, CardHeader, CardContent, CardActions,
-  Collapse,
-  Checkbox,
   Grid,
-  Icon, IconButton,
-  FormGroup,
   FormLabel,
   FormControlLabel,
   FormControl,
@@ -26,8 +22,8 @@ import {
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import * as Actions from '../actions';
-import * as Selectors from '../selectors';
+import * as Actions from '../../actions';
+import * as Selectors from '../../selectors';
 import _ from 'lodash';
 import moment from 'moment';
 
@@ -67,42 +63,16 @@ const currencies = [
   { value: 'EUR', label: 'EUR' },
 ]
 
-const AddPayrun = props => {
+const NewPayrun = props => {
   const classes = useStyles(props);
-  const { loading } = props;
-
-  const [form, setForm] = useState({
-    payrunName: '',
-    payrunType: null,
-    paymentDate: moment().format('YYYY-MM-DDTHH:mm:ss'),
-    fromDate: moment().format('YYYY-MM-DDTHH:mm:ss'),
-    toDate: moment().format('YYYY-MM-DDTHH:mm:ss'),
-  });
-
-  const handleChange = event => {
-    const { name, value, type, checked } = event.target
-    setForm({ ...form, [name]: type === 'checkbox' ? checked : value })
-  }
-
-  const handleDateChange = name => (date, value) => {
-    setForm({ ...values, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss') });
-  }
-
-  const handleSelectChange = name => (event, obj) => {
-    setForm({ ...form, [name]: obj })
-  }
+  const { loading, form, handleChange, handleDateChange, handleSelectChange } = props;
 
   return (
-    <Card className={classes.root}>
-      <CardHeader
-        titleTypographyProps={{ variant: 'h6' }}
-        title="New Employee Salary"
-      />
-
+    <Card className={classes.root} elevation={0}>
       <CardContent>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <FormlLabel>Pay Run schedule</FormlLabel>
+            <FormLabel>Pay Run schedule</FormLabel>
           </Grid>
           <Grid item xs={12}>
             <Grid container spacing={3}>
@@ -132,7 +102,7 @@ const AddPayrun = props => {
                     size="small"
                     format="dd/MM/yyyy"
                     name="fromDate"
-                    value={values.fromDate}
+                    value={form.fromDate}
                     onChange={handleDateChange('fromDate')}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
@@ -150,7 +120,7 @@ const AddPayrun = props => {
                     size="small"
                     format="dd/MM/yyyy"
                     name="paymentDate"
-                    value={values.fromDate}
+                    value={form.fromDate}
                     onChange={handleDateChange('paymentDate')}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
@@ -188,7 +158,7 @@ const AddPayrun = props => {
                     size="small"
                     format="dd/MM/yyyy"
                     name="toDate"
-                    value={values.toDate}
+                    value={form.toDate}
                     onChange={handleDateChange('toDate')}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
@@ -219,4 +189,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(AddPayrun);
+)(NewPayrun);

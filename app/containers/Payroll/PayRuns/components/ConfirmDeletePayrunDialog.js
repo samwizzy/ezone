@@ -35,19 +35,19 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const initialState = {};
 
-const AddBankAccountDialog = props => {
+const ConfirmDeletePayrunDialog = props => {
   const classes = useStyles();
 
   const {
     loading,
     dialog,
-    closeDeleteBankAccountDialog,
-    deleteBankAccount,
+    closeDeletePayrunDialog,
+    deletePayrun,
   } = props;
 
   const { data } = dialog
 
-  const [values, setValues] = React.useState({ ...initialState });
+  const [values, setValues] = useState({ ...initialState });
 
   const canSubmitValues = () => {
     const {
@@ -75,7 +75,7 @@ const AddBankAccountDialog = props => {
   }, [dialog]);
 
   const handleSubmit = () => {
-    dialog.type === 'delete' ? deleteBankAccount(values) : '';
+    dialog.type === 'delete' ? deletePayrun(values) : '';
   };
 
   console.log('values is: ', values);
@@ -85,7 +85,7 @@ const AddBankAccountDialog = props => {
     <div>
       <Dialog
         {...dialog.props}
-        onClose={closeDeleteBankAccountDialog}
+        onClose={closeDeletePayrunDialog}
         keepMounted
         TransitionComponent={Transition}
         maxWidth="xs"
@@ -113,7 +113,7 @@ const AddBankAccountDialog = props => {
           </Button>
 
           <Button
-            onClick={closeDeleteBankAccountDialog}
+            onClick={closeDeletePayrunDialog}
             color="inherit"
             variant="contained"
             disableElevation
@@ -126,22 +126,20 @@ const AddBankAccountDialog = props => {
   );
 };
 
-AddBankAccountDialog.propTypes = {
+ConfirmDeletePayrunDialog.propTypes = {
   loading: PropTypes.bool,
   dialog: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  dialog: Selectors.makeSelectBankAccountConfirmDialog(),
-  accountTypes: Selectors.makeSelectAccountTypes(),
+  dialog: Selectors.makeSelectPayrunConfirmDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeDeleteBankAccountDialog: () =>
-      dispatch(Actions.closeDeleteBankAccountDialog()),
-    deleteBankAccount: data => dispatch(Actions.deleteBankAccount(data)),
+    closeDeletePayrunDialog: () => dispatch(Actions.closeDeletePayrunDialog()),
+    deletePayrun: data => dispatch(Actions.deletePayrun(data)),
   };
 }
 
@@ -153,4 +151,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(AddBankAccountDialog);
+)(ConfirmDeletePayrunDialog);
