@@ -43,7 +43,7 @@ const CashReceiptJournal = ({ time, user, dispatchCleanUpAction }) => {
   const TableHeadData = [
     'Date',
     'Account Code',
-    'Transaction Ref',
+    'Transaction No',
     'Line Description',
     'Debit Ammnt',
     'Credit Amnt',
@@ -64,7 +64,6 @@ const CashReceiptJournal = ({ time, user, dispatchCleanUpAction }) => {
         setPrint={setPrint}
         // tableData={tableData}
         tableRef={tableRef}
-
         handleFetch={handleData}
         pdflogo={organisation.logo}
         companyRef={companyRef}
@@ -78,12 +77,12 @@ const CashReceiptJournal = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );

@@ -42,15 +42,16 @@ const AgedReceivables = ({ time, user, dispatchCleanUpAction }) => {
   };
   const TableHeadData = [
     'Customer Code',
-    'Customer',
-    'Bill To Contact',
+    'Contractors Name',
+    'Cost center ID',
     'Telephone 1',
-    'Invoice/CM No',
+    'Trans No',
     '0 - 30',
     '31 - 60',
     '61 - 90',
     'Over 90 days',
     'Amount Due',
+    'Aging as per FMES',
   ];
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
@@ -69,7 +70,6 @@ const AgedReceivables = ({ time, user, dispatchCleanUpAction }) => {
         setPrint={setPrint}
         // tableData={tableData}
         tableRef={tableRef}
-
         handleFetch={handleData}
         pdflogo={organisation.logo}
         companyRef={companyRef}
@@ -83,12 +83,12 @@ const AgedReceivables = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );

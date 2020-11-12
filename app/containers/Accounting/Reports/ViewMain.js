@@ -95,8 +95,9 @@ const Report = () => {
 
     { name: 'Cashflow', link: 'cashflow' },
   ];
+  // { name: 'Cost of goods sold', link: 'cost-of-goods-sold' },
   const inventory = [
-    { name: 'Cost of goods sold', link: 'cost-of-goods-sold' },
+    { name: 'Direct Cost Report', link: 'direct-cost-report' },
     { name: 'Inventory status report', link: 'inventory-status-report' },
     { name: 'Inv.valuation report', link: 'inv-valuation-report' },
     { name: 'Item list', link: 'Item-list' },

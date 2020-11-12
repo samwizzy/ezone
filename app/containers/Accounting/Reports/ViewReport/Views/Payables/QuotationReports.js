@@ -40,7 +40,16 @@ const QuotationReports = ({ time, user, dispatchCleanUpAction }) => {
     // console.log('=============================================>');
     setDisplay(true);
   };
-  const TableHeadData = ['Quote Code', 'Date', 'Good Thru', 'Name', 'Amount'];
+  const TableHeadData = [
+    'Quotation No.',
+    'Quotation Date',
+    'Party Name',
+    'Party Address',
+    'Enquiry Date',
+    'Email ID',
+    'Follow',
+    'Status',
+  ];
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
 
@@ -62,7 +71,6 @@ const QuotationReports = ({ time, user, dispatchCleanUpAction }) => {
         companyRef={companyRef}
         daterange={setDate}
         tableRef={tableRef}
-
       />
       <div ref={componentRef}>
         <Company
@@ -72,12 +80,12 @@ const QuotationReports = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );

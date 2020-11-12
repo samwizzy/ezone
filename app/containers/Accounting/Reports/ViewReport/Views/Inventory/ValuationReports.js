@@ -44,6 +44,7 @@ const ValuationReports = ({ time, user, dispatchCleanUpAction }) => {
     'Item ID',
     'Item Class',
     'Item Description',
+    'Cost Center ID',
     'Stocking U/M',
     'Cost Method',
     'Qty on Hand',
@@ -81,12 +82,12 @@ const ValuationReports = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );

@@ -40,7 +40,7 @@ const InvoiceRegister = ({ time, user, dispatchCleanUpAction }) => {
     // console.log('=============================================>');
     setDisplay(true);
   };
-  const TableHeadData = ['Invoice/CM No', 'Date', 'Quote', 'Name', 'Amount'];
+  const TableHeadData = ['Trans No', 'Date', 'Quote', 'Name', 'Amount'];
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
 
@@ -61,7 +61,7 @@ const InvoiceRegister = ({ time, user, dispatchCleanUpAction }) => {
         companyRef={companyRef}
         daterange={setDate}
         tableRef={tableRef}
-        // 
+        //
       />
       <div ref={componentRef}>
         <Company
@@ -71,12 +71,12 @@ const InvoiceRegister = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );

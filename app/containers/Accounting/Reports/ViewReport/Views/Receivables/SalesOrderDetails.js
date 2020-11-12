@@ -41,18 +41,16 @@ const SalesOrderReport = ({ time, user, dispatchCleanUpAction }) => {
     setDisplay(true);
   };
   const TableHeadData = [
-    'SO No',
-    'SO State',
-    'SO Date',
-    'Ship By',
-    'Customer ID',
-    'Customer ID',
-    'Customer Name',
-    'Item ID',
-    'Line Desc',
-    'Qty Ordered',
-    'Qty Shipped',
-    'Qty Remaining',
+    'Sales Order Date',
+    'Cost center ID',
+    'Trans No',
+    'Ref Doc Name',
+    'Contractors Name',
+    'Supply Status',
+    'Total Amount',
+    'Currency',
+    'Exch Rate',
+    'Supply Date',
   ];
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
@@ -70,7 +68,6 @@ const SalesOrderReport = ({ time, user, dispatchCleanUpAction }) => {
         setPrint={setPrint}
         // tableData={tableData}
         tableRef={tableRef}
-
         handleFetch={handleData}
         pdflogo={organisation.logo}
         companyRef={companyRef}
@@ -84,12 +81,12 @@ const SalesOrderReport = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );

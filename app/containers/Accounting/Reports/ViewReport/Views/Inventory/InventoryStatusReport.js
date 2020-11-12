@@ -48,7 +48,7 @@ const InventoryStatusReport = ({ time, user, dispatchCleanUpAction }) => {
     'Qty on Hand',
     'Min Stock',
     'Reorder Qty',
-    'Location',
+    'Cost Center ID',
   ];
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
@@ -79,12 +79,12 @@ const InventoryStatusReport = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );

@@ -42,18 +42,18 @@ const CustomerMasterFile = ({ time, user, dispatchCleanUpAction }) => {
   };
   const TableHeadData = [
     'Customer Code',
-    'Customer',
+    'Contractors Name',
     'Address Line 1',
     'Address Line 2',
     'City ST ZIP',
-    'Bill To Contact',
+    'Cost center ID',
     'Telephone 1',
     'Telephone 2',
-    'Fax Number',
+    'Email address',
     'Tax ID',
-    'Resale No',
     'Terms',
     'Cust Since',
+    'Sign up Date',
   ];
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
@@ -71,7 +71,6 @@ const CustomerMasterFile = ({ time, user, dispatchCleanUpAction }) => {
         setPrint={setPrint}
         // tableData={tableData}
         tableRef={tableRef}
-
         handleFetch={handleData}
         pdflogo={organisation.logo}
         companyRef={companyRef}
@@ -83,15 +82,14 @@ const CustomerMasterFile = ({ time, user, dispatchCleanUpAction }) => {
           ComLogo={organisation.logo}
           name={`${fileName}`}
           date={setDate}
-          
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );
