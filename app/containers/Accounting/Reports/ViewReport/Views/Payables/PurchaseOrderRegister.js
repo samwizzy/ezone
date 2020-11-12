@@ -49,13 +49,15 @@ const PurchaseOrderJournal = ({ time, user, dispatchCleanUpAction }) => {
       'MMM Do YYYY',
     )}`;
   const TableHeadData = [
-    'Date',
-    'Account',
-    'Account Desc',
-    'PO No',
-    'Line Description',
-    'Debit Amount',
-    'Credit Amount',
+    'Purchase Date',
+    'Purchase No',
+    'Reference No',
+    'Ref Doc Name',
+    'Supplier Name',
+    'Purchase Status',
+    'Total Amount',
+    'Currency',
+    'Delivery Date',
   ];
 
   return (
@@ -70,7 +72,6 @@ const PurchaseOrderJournal = ({ time, user, dispatchCleanUpAction }) => {
         companyRef={companyRef}
         daterange={setDate}
         tableRef={tableRef}
-
       />
       <div ref={componentRef}>
         <Company
@@ -80,12 +81,12 @@ const PurchaseOrderJournal = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );

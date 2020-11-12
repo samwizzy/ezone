@@ -41,7 +41,7 @@ const TaxesExemptSales = ({ time, user, dispatchCleanUpAction }) => {
     setDisplay(true);
   };
   const TableHeadData = [
-    'Sales Tax Agency',
+    'Sales Tax Agency ID',
     'Sales tax Agency Name',
     'Tax Rate',
     'Taxable Sale',
@@ -65,7 +65,6 @@ const TaxesExemptSales = ({ time, user, dispatchCleanUpAction }) => {
         setPrint={setPrint}
         // tableData={tableData}
         tableRef={tableRef}
-
         handleFetch={handleData}
         pdflogo={organisation.logo}
         companyRef={companyRef}
@@ -79,12 +78,12 @@ const TaxesExemptSales = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );

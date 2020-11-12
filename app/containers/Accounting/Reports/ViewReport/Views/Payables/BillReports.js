@@ -50,12 +50,12 @@ const BillReports = ({ time, user, dispatchCleanUpAction }) => {
     )}`;
 
   const TableHeadData = [
-    'Date',
-    'Check No',
-    'Account Code',
-    'Line Description',
-    'Debit Amount',
-    'Credit Amount',
+    'Issue Date',
+    'Due Date',
+    'Description',
+    'Reference',
+    'Type',
+    'Total',
   ];
 
   return (
@@ -79,12 +79,12 @@ const BillReports = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );

@@ -43,8 +43,8 @@ const PhysicalInventroyList = ({ time, user, dispatchCleanUpAction }) => {
   const TableHeadData = [
     'Item ID',
     'Item Description',
+    'Cost Center ID',
     'Stocking U/M',
-    'Location',
     'Count',
     'By',
   ];
@@ -77,12 +77,12 @@ const PhysicalInventroyList = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );

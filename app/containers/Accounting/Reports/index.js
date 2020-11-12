@@ -52,11 +52,12 @@ import BudgeVsActual from './ViewReport/Views/Budget/BudgetVsActuals';
 import CashFlow from './ViewReport/Views/FinancialStatement/CashFlow';
 import ComprehensiveIncomeStatement from './ViewReport/Views/FinancialStatement/ComprehensiveIncome';
 import StatementOfFinancialPosition from './ViewReport/Views/FinancialStatement/StateOfFinancialPostion';
+import DirectCostReport from './ViewReport/Views/Inventory/DirectCostReport';
 import ModuleLayout from './ModuleLayout';
 
 const Reports = () => {
   const { path } = useRouteMatch();
-  
+
   return (
     <Router>
       <ModuleLayout>
@@ -210,6 +211,10 @@ const Reports = () => {
           />
           <Route path={`${path}/cashflow`} component={CashFlow} />
           <Route path={`${path}/tax-summary`} component={TaxSummary} />
+          <Route
+            path={`${path}/direct-cost-report`}
+            component={DirectCostReport}
+          />
         </Switch>
       </ModuleLayout>
     </Router>

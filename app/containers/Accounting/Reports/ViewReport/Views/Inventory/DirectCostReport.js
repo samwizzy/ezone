@@ -18,7 +18,7 @@ import formatDate from '../../Helpers';
 import * as Select from '../../../../../App/selectors';
 import './style.css';
 
-const PaymentReport = ({ time, user, dispatchCleanUpAction }) => {
+const DirectCostReport = ({ time, user, dispatchCleanUpAction }) => {
   const componentRef = useRef();
   const tableRef = useRef();
   const companyRef = useRef();
@@ -27,7 +27,6 @@ const PaymentReport = ({ time, user, dispatchCleanUpAction }) => {
 
   const { organisation } = user;
   const { startDate, endDate } = time;
-  // dispatchGetGeneralLedgerTimeAction
   useInjectReducer({ key: 'reports', reducer: viewReportReducer });
   useInjectSaga({ key: 'reports', saga: ReportSaga });
 
@@ -36,21 +35,24 @@ const PaymentReport = ({ time, user, dispatchCleanUpAction }) => {
   }, []);
 
   const handleData = () => {
-    // dispatchGetAllGeneralLedgerTypeAction();
-    // console.log('=============================================>');
     setDisplay(true);
   };
   const TableHeadData = [
-    'Date',
-    'Account Code',
-    'Trans No',
-    'Line Description',
-    'Currency',
-    'Exch Rate',
-    'Debit Amount',
-    'Credit Amount',
+    'Opening Qty',
+    'Unit Cost ',
+    'Amount',
+    'Qty Received',
+    'Unit Cost',
+    'Amount',
+    'Additional Cost',
+    'Qty Used',
+    'Unit Cost',
+    'Amount',
+    'Used Cost',
+    'Remaining Qty',
+    'Remain Value',
+    'Closing Cost',
   ];
-
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
 
@@ -59,6 +61,7 @@ const PaymentReport = ({ time, user, dispatchCleanUpAction }) => {
     `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
       'MMM Do YYYY',
     )}`;
+
   return (
     <React.Fragment>
       <TopMenu
@@ -68,9 +71,9 @@ const PaymentReport = ({ time, user, dispatchCleanUpAction }) => {
         // tableData={tableData}
         handleFetch={handleData}
         pdflogo={organisation.logo}
+        tableRef={tableRef}
         companyRef={companyRef}
         daterange={setDate}
-        tableRef={tableRef}
       />
       <div ref={componentRef}>
         <Company
@@ -109,4 +112,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(PaymentReport);
+)(DirectCostReport);

@@ -43,14 +43,13 @@ const SalesTaxes = ({ time, user, dispatchCleanUpAction }) => {
   const TableHeadData = [
     'Tax ID',
     'Sales Tax Name',
+    'Sales Tax Agency ID',
     'Sales Tax Agency Name',
     'Tax Rate',
-    'Additional Tax Rate',
     'Account ID',
     'Account Description',
-    'Vendor ID',
-    'Vendor name',
-    'Tax Freight',
+    'Cost center ID',
+    'Contractors Name',
   ];
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
@@ -81,12 +80,12 @@ const SalesTaxes = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );

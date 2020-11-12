@@ -42,8 +42,8 @@ const CashdisbursementJr = ({ time, user, dispatchCleanUpAction }) => {
   };
   const TableHeadData = [
     'Date',
-    'Check No',
     'Account Code',
+    'Trans No',
     'Line Description',
     'Debit Amount',
     'Credit Amount',
@@ -78,12 +78,12 @@ const CashdisbursementJr = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );

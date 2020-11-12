@@ -40,7 +40,7 @@ const QuoteRegister = ({ time, user, dispatchCleanUpAction }) => {
     // console.log('=============================================>');
     setDisplay(true);
   };
-  const TableHeadData = ['Quote No', 'Date', 'Good Thru', 'Name', 'Amount'];
+  const TableHeadData = ['Date', 'Quote No', 'Name', 'Amount', 'Delivered By'];
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
 
@@ -57,7 +57,6 @@ const QuoteRegister = ({ time, user, dispatchCleanUpAction }) => {
         setPrint={setPrint}
         // tableData={tableData}
         tableRef={tableRef}
-
         handleFetch={handleData}
         pdflogo={organisation.logo}
         companyRef={companyRef}
@@ -71,12 +70,12 @@ const QuoteRegister = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );
