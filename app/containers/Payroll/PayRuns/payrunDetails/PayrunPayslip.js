@@ -185,101 +185,101 @@ const PayrunPayslip = props => {
                     </TableCell>
                     <TableCell>
                       <Typography variant="caption" gutterBottom>Amount</Typography>
-                      <Typography variant="subtitle1" gutterBottom>N 60,000</Typography>
+                      <Typography variant="subtitle1">N 60,000</Typography>
                     </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
 
               <Toolbar>
-                <Typography variant="h6" gutterBottom>Benefit Summary</Typography>
+                <Typography variant="h6">Benefit Summary</Typography>
               </Toolbar>
               <Table className={classes.table}>
                 <TableBody>
                   <TableRow>
                     <TableCell>
-                      <Typography variant="caption" gutterBottom>Pension</Typography>
-                      <Typography variant="subtitle1" gutterBottom>Pension</Typography>
+                      <Typography variant="caption">Pension</Typography>
+                      <Typography variant="subtitle1">Pension</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="caption" gutterBottom>Amount</Typography>
-                      <Typography variant="subtitle1" gutterBottom>N 60,000</Typography>
+                      <Typography variant="caption">Amount</Typography>
+                      <Typography variant="subtitle1">N 60,000</Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>
-                      <Typography variant="subtitle1" gutterBottom><strong>Total</strong></Typography>
+                      <Typography variant="subtitle1"><strong>Total</strong></Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="subtitle1" gutterBottom>N 60,000</Typography>
+                      <Typography variant="subtitle1">N 60,000</Typography>
                     </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
 
               <Toolbar>
-                <Typography variant="h6" gutterBottom>Earnings Summary</Typography>
+                <Typography variant="h6">Earnings Summary</Typography>
               </Toolbar>
               <Table className={classes.table}>
                 <TableBody>
                   <TableRow>
                     <TableCell>
-                      <Typography variant="caption" gutterBottom></Typography>
-                      <Typography variant="subtitle1" gutterBottom>Overtime</Typography>
+                      <Typography variant="caption"></Typography>
+                      <Typography variant="subtitle1">Overtime</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="caption" gutterBottom>Amount</Typography>
-                      <Typography variant="subtitle1" gutterBottom>N 60,000</Typography>
+                      <Typography variant="caption">Amount</Typography>
+                      <Typography variant="subtitle1">N 60,000</Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>
-                      <Typography variant="subtitle1" gutterBottom><strong>Total</strong></Typography>
+                      <Typography variant="subtitle1"><strong>Total</strong></Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="subtitle1" gutterBottom>N 60,000</Typography>
+                      <Typography variant="subtitle1">N 60,000</Typography>
                     </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
 
               <Toolbar>
-                <Typography variant="h6" gutterBottom>Deductions Summary</Typography>
+                <Typography variant="h6">Deductions Summary</Typography>
               </Toolbar>
               <Table className={classes.table}>
                 <TableBody>
                   <TableRow>
                     <TableCell>
-                      <Typography variant="caption" gutterBottom></Typography>
-                      <Typography variant="subtitle1" gutterBottom>Loan</Typography>
+                      <Typography variant="caption"></Typography>
+                      <Typography variant="subtitle1">Loan</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="caption" gutterBottom>Amount</Typography>
-                      <Typography variant="subtitle1" gutterBottom>N 60,000</Typography>
+                      <Typography variant="caption">Amount</Typography>
+                      <Typography variant="subtitle1">N 60,000</Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>
-                      <Typography variant="subtitle1" gutterBottom><strong>Total</strong></Typography>
+                      <Typography variant="subtitle1"><strong>Total</strong></Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="subtitle1" gutterBottom>N 60,000</Typography>
+                      <Typography variant="subtitle1">N 60,000</Typography>
                     </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
 
               <Toolbar>
-                <Typography variant="h6" gutterBottom>Tax Summary</Typography>
+                <Typography variant="h6">Tax Summary</Typography>
               </Toolbar>
               <Table className={classes.table}>
                 <TableBody>
                   <TableRow>
                     <TableCell>
-                      <Typography variant="subtitle1" gutterBottom>Total Tax</Typography>
+                      <Typography variant="subtitle1">Total Tax</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="subtitle1" gutterBottom>N 60,000</Typography>
+                      <Typography variant="subtitle1">N 60,000</Typography>
                     </TableCell>
                   </TableRow>
                 </TableBody>
@@ -292,10 +292,10 @@ const PayrunPayslip = props => {
                 <TableBody>
                   <TableRow>
                     <TableCell>
-                      <Typography variant="subtitle1" gutterBottom>Total PAYE</Typography>
+                      <Typography variant="subtitle1">Total PAYE</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="subtitle1" gutterBottom>N 60,000</Typography>
+                      <Typography variant="subtitle1">N 60,000</Typography>
                     </TableCell>
                   </TableRow>
                 </TableBody>
