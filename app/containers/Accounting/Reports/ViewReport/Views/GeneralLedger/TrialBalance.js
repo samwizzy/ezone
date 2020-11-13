@@ -16,6 +16,7 @@ import formatDate from '../../Helpers';
 import * as Select from '../../../../../App/selectors';
 import { makeStyles } from '@material-ui/core';
 import { darken } from '@material-ui/core/styles/colorManipulator';
+import EzoneUtils from '../../../../../../utils/EzoneUtils';
 import {
   TableFooter,
   TablePagination,
@@ -100,11 +101,32 @@ const TrialBalance = ({
     trialBalances &&
     trialBalances.map(balance => [
       `${balance.accountCode}`,
-      `${balance.accountDescription}`,
+      `${balance.accountName}`,
       `${balance.debitAmount === 0.0 ? '' : balance.debitAmount}`,
       `${balance.creditAmount === 0.0 ? '' : balance.creditAmount}`,
     ]);
-  const columns = ['Account Code', 'Account Name', 'Debit Amt', 'Credit Amt'];
+  const columns = [
+    'Account Code',
+    'Account Name',
+    {
+      name: 'Debit Amt',
+      label: 'Debit Amt',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
+    {
+      name: 'Credit Amt',
+      label: 'Credit Amt',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
+  ];
   const TableFooterData = [
     '   ',
     ' TOTAL',
@@ -112,7 +134,6 @@ const TrialBalance = ({
     `${trialBalance && trialBalance.totalcCredit}`,
   ];
 
-  console.log('YEEEEEEEEEEEEESSSSSSSSSSSSSS', trialBalances);
   const options = {
     filterType: 'checkbox',
     responsive: 'stacked',
@@ -210,30 +231,3 @@ export default compose(
   withConnect,
   memo,
 )(TrialBalance);
-// customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
-//   <TableFooter>
-//     <TableRow>
-//       <TableCell
-//         style={{ backgroundColor: 'black', color: 'white' }}
-//         colSpan={9}
-//       >
-//         {'Total                ;'}
-//       </TableCell>
-
-//       <TableCell
-//         style={{ backgroundColor: 'black', color: 'white' }}
-//         colSpan={1}
-//       >
-//         {`${trialBalance ? trialBalance.total : ''}`}
-//       </TableCell>
-//       <TableCell
-//         style={{ backgroundColor: 'black', color: 'white' }}
-//         colSpan={1}
-//       >
-//         {`${trialBalance ? trialBalance.total : ''}`}
-//       </TableCell>
-//     </TableRow>
-//   </TableFooter>
-// ),
-// https://dev.ezoneapps.com/gateway/accountingserv/api/v1/report/get_trial_balance?endDate=2020/11/17&startDate=01/01/2000&orgId=ORG-1593451692921
-// https://app.ezoneerp.com/gateway/accountingserv/api/v1/report/get_trial_balance?endDate=2020/11/05&startDate=01/01/2000&orgId=ORG-1593512567642

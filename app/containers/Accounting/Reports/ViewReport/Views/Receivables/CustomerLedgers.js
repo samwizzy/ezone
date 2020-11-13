@@ -42,12 +42,12 @@ const CustomerLedgers = ({ time, user, dispatchCleanUpAction }) => {
   };
   const TableHeadData = [
     'Customer Code',
-    'Customer',
+    'Customer Name',
     'Date',
+    'Cost center ID',
     'Trans No',
-    'Type',
-    'Debit Amnt',
-    'Credit Amnt',
+    'Debit Amt',
+    'Credit Amt',
     'Balance',
   ];
   const Location = useLocation();
@@ -80,12 +80,12 @@ const CustomerLedgers = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );

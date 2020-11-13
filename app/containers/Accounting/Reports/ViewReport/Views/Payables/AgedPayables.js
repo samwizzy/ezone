@@ -50,15 +50,16 @@ const AgedReports = ({ time, user, dispatchCleanUpAction }) => {
     )}`;
   const TableHeadData = [
     'Vendor Code',
-    'Vendor',
-    'Contact',
-    'Telephone',
-    'Invoice/CM No',
+    'Vendor Name',
+    'Coost centre ID',
+    'Telephone 1',
+    'Trans No',
     '0 - 30',
     '31 - 60',
-    '64 - 90',
+    '61 - 90',
     'Over 90 days',
     'Amount Due',
+    'Aging as per FMES',
   ];
 
   return (
@@ -82,12 +83,12 @@ const AgedReports = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );

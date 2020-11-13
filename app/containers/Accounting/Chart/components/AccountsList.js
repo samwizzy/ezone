@@ -1,12 +1,20 @@
 import React, { memo, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import EzoneUtils from '../../../../utils/EzoneUtils'
+import EzoneUtils from '../../../../utils/EzoneUtils';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
-import { makeStyles, IconButton, Button, Chip, Menu, MenuItem, Tooltip } from '@material-ui/core';
+import {
+  makeStyles,
+  IconButton,
+  Button,
+  Chip,
+  Menu,
+  MenuItem,
+  Tooltip,
+} from '@material-ui/core';
 import { CircleLoader } from '../../../../components/LoadingIndicator';
 import AddIcon from '@material-ui/icons/Add';
 import classNames from 'classnames';
@@ -20,7 +28,7 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AccSelectors from '../../selectors';
 import ImportControl from './ImportControl';
-import { initialState } from './AccountDialog'
+import { initialState } from './AccountDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -99,16 +107,16 @@ const AccountChart = props => {
   };
 
   const handleStatusUpdate = () => {
-    const { parentAccount, accountType } = selectedAccount
-    const newData = EzoneUtils.matchWithPairs(initialState, selectedAccount)
-    console.log(newData, "newData")
+    const { parentAccount, accountType } = selectedAccount;
+    const newData = EzoneUtils.matchWithPairs(initialState, selectedAccount);
+    console.log(newData, 'newData');
     const data = {
       ...newData,
       status: !selectedAccount.status,
       parentId: parentAccount && parentAccount.id,
       accountTypeId: accountType && accountType.id, // bankName: '',
-    }
-    console.log(data, "data")
+    };
+    console.log(data, 'data');
     updateChartOfAccount(data);
     handleClose();
   };
@@ -176,7 +184,8 @@ const AccountChart = props => {
       options: {
         filter: true,
         sort: true,
-        customBodyRender: value => EzoneUtils.formatCurrency(value, currency && currency.code)
+        customBodyRender: value =>
+          EzoneUtils.formatCurrency(value, currency && currency.code),
       },
     },
     {
@@ -194,9 +203,23 @@ const AccountChart = props => {
         filter: true,
         sort: true,
         customBodyRender: value => {
-          return value
-            ? <Chip label="Active" variant="outlined" icon={<CheckCircleIcon className={classNames(classes.status, { active: value })} />} />
-            : <Chip label="Inactive" variant="outlined" icon={<RadioButtonUncheckedIcon />} />
+          return value ? (
+            <Chip
+              label="Active"
+              variant="outlined"
+              icon={
+                <CheckCircleIcon
+                  className={classNames(classes.status, { active: value })}
+                />
+              }
+            />
+          ) : (
+            <Chip
+              label="Inactive"
+              variant="outlined"
+              icon={<RadioButtonUncheckedIcon />}
+            />
+          );
         },
       },
     },
@@ -260,7 +283,8 @@ const AccountChart = props => {
         <MenuItem onClick={handleEditClick}>Edit</MenuItem>
         <MenuItem onClick={handleView}>View</MenuItem>
         <MenuItem onClick={handleStatusUpdate}>
-          Mark as {selectedAccount && selectedAccount.status ? 'Inactive' : 'Active'}
+          Mark as{' '}
+          {selectedAccount && selectedAccount.status ? 'Inactive' : 'Active'}
         </MenuItem>
         <MenuItem
           onClick={handleDeleteClick}
@@ -290,9 +314,12 @@ function mapDispatchToProps(dispatch) {
   return {
     openNewAccountDialog: () => dispatch(Actions.openNewAccountDialog()),
     updateChartOfAccount: data => dispatch(Actions.updateChartOfAccount(data)),
-    openDeleteAccountDialog: data => dispatch(Actions.openDeleteAccountDialog(data)),
-    editOpenAccountDialog: data => dispatch(Actions.editOpenAccountDialog(data)),
-    getChartOfAccountById: data => dispatch(Actions.getChartOfAccountById(data)),
+    openDeleteAccountDialog: data =>
+      dispatch(Actions.openDeleteAccountDialog(data)),
+    editOpenAccountDialog: data =>
+      dispatch(Actions.editOpenAccountDialog(data)),
+    getChartOfAccountById: data =>
+      dispatch(Actions.getChartOfAccountById(data)),
   };
 }
 

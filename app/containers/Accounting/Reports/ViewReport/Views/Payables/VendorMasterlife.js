@@ -42,18 +42,19 @@ const VendorMasterFile = ({ time, user, dispatchCleanUpAction }) => {
   };
   const TableHeadData = [
     'Vendor Code',
-    'Vendor',
+    'Vendor Name',
     'Address line 1',
     'Address line 2',
     'City ST ZIP',
-    'Contact',
+    'Cost center ID',
     'Telephone 1',
     'Telephone 2',
-    'Fax number',
-    '1099 Type',
+    'Email address',
     'Tax Id No',
     'Terms',
-    'Vend Since',
+    'Banks',
+    'Account No',
+    'Sign up Date',
   ];
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
@@ -75,7 +76,6 @@ const VendorMasterFile = ({ time, user, dispatchCleanUpAction }) => {
         companyRef={companyRef}
         daterange={setDate}
         tableRef={tableRef}
-
       />
       <div ref={componentRef}>
         <Company
@@ -85,12 +85,12 @@ const VendorMasterFile = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );

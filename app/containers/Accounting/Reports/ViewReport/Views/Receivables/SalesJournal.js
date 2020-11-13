@@ -41,12 +41,15 @@ const SalesJournal = ({ time, user, dispatchCleanUpAction }) => {
   };
   const TableHeadData = [
     'Date',
-    ' Account ID',
-    'Account Description',
-    'SO/Proposal No',
-    'Line Description',
-    'Debit Amount',
-    'Credit Amount',
+    'Contractors Name',
+    'Trans No',
+    'Ref Doc Name',
+    'Currency',
+    'Exch rate',
+    'Total Amount',
+    'VAT',
+    'WHT',
+    'Net Amount',
   ];
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
@@ -77,12 +80,12 @@ const SalesJournal = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );

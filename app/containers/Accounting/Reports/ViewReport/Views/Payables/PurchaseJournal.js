@@ -42,12 +42,15 @@ const PurchaseJournal = ({ time, user, dispatchCleanUpAction }) => {
   };
   const TableHeadData = [
     'Date',
-    'Account',
-    'Account Desc',
-    'Invoice/CM #',
-    'Line Description',
-    'Debit Amount',
-    'Credit Amount',
+    'Vendors Name',
+    'Trans No',
+    'Ref Doc Name',
+    'Currency',
+    'Exch Rate',
+    'Total Amount',
+    'VAT',
+    'WHT',
+    'Net Amount',
   ];
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
@@ -70,7 +73,6 @@ const PurchaseJournal = ({ time, user, dispatchCleanUpAction }) => {
         companyRef={companyRef}
         daterange={setDate}
         tableRef={tableRef}
-
       />
       <div ref={componentRef}>
         <Company
@@ -80,12 +82,12 @@ const PurchaseJournal = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );

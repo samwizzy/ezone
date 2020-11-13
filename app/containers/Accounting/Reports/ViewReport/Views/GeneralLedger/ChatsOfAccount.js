@@ -16,6 +16,7 @@ import formatDate from '../../Helpers';
 import * as Select from '../../../../../App/selectors';
 import { makeStyles } from '@material-ui/core';
 import { darken } from '@material-ui/core/styles/colorManipulator';
+import EzoneUtils from '../../../../../../utils/EzoneUtils';
 import {
   TableFooter,
   TablePagination,
@@ -99,10 +100,18 @@ const ChatsOfAccount = ({
     'Account Code',
     'Account Name',
     'Account Type',
-    'Closing Balance',
+
+    {
+      name: 'Closing Balance',
+      label: 'Closing Balance',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
     'Status',
   ];
-  console.log('dddddddddddddddddddddddd,', chatsOfAccount);
   const data = chatsOfAccount.map(account => [
     account.accountCode,
     account.accountName,
@@ -141,7 +150,6 @@ const ChatsOfAccount = ({
         pdflogo={organisation.logo}
         tableRef={tableRef}
         companyRef={companyRef}
-        // daterange={setDate}
         daterange={display && `As at ${moment(endDate).format('MMM Do YYYY')}`}
         singleDate={true}
         dateValue={dateValue}
@@ -195,23 +203,3 @@ export default compose(
   withConnect,
   memo,
 )(ChatsOfAccount);
-// /**
-//  *    <TopMenu
-//         componentRef={componentRef}
-//         print={print}
-//         setPrint={setPrint}
-//         tableData={tableData}
-//         handleFetch={handleData}
-//         pdflogo={organisation.logo}
-//         singleDate={true}
-//         tableRef={tableRef}
-//         companyRef={companyRef}
-//         daterange={display && `As at ${moment(endDate).format('MMM Do YYYY')}`}
-//       />
-//  */
-
-// import React from 'react';
-// const Charts = () => {
-//   return <div>Welcome</div>;
-// };
-// export default Charts;

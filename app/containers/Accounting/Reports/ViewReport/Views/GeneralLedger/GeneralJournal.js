@@ -25,6 +25,8 @@ import {
 import MUIDataTable from 'mui-datatables';
 import classNames from 'classnames';
 import ControlledButtons from '../../Components/BackButton';
+import EzoneUtils from '../../../../../../utils/EzoneUtils';
+
 import './style.css';
 
 const useStyles = makeStyles(theme => ({
@@ -91,10 +93,6 @@ const GeneralJournal = ({
   }, []);
   const { journalEntries, debitTotal, creditTotal } = generalJournal;
   const { organisation } = user;
-  console.log(
-    'ppppppppppppppppppppppppppppppppppppppppppppjjjjjjj',
-    generalJournal,
-  );
   const data =
     journalEntries &&
     journalEntries.map(journal => [
@@ -102,10 +100,20 @@ const GeneralJournal = ({
       `${journal.accountCode}`,
       `${journal.reference}`,
       `${journal.description}`,
+      `${
+        journal.currency
+          ? journal.currency &&
+            journal.exchangeRate &&
+            journal.currency.symbol.concat(
+              Math.ceil(
+                Math.max(journal.debit, journal.credit) / journal.exchangeRate,
+              ),
+            )
+          : ''
+      }`,
+      `${journal.exchangeRate ? journal.exchangeRate : ''}`,
       `${journal.debit === 0 ? '' : journal.debit}`,
       `${journal.credit === 0 ? '' : journal.credit}`,
-      `${journal.currency ? journal.currency && journal.currency.code : ''}`,
-      `${journal.exchangeRate ? journal.exchangeRate : ''}`,
     ]);
 
   const options = {
@@ -124,12 +132,30 @@ const GeneralJournal = ({
     'Account Code',
     'Reference',
     'Trans Description',
-    'Debit Amt',
-    'Credit Amt',
     'Currency',
     'Exchange Rate',
+    {
+      name: 'Debit Amt',
+      label: 'Debit Amt',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
+    {
+      name: 'Credit Amt',
+      label: 'Credit Amt',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
   ];
   const TableFooterData = [
+    '',
+    '',
     '',
     '',
     'TOTAL',
