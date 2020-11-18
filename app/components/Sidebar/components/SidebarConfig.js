@@ -381,32 +381,32 @@ const SidebarConfig = [
         url: '/project-manager/dashboard',
         icon: 'dashboard',
       },
-      {
-        id: 2,
-        name: 'Work order',
-        url: '#',
-        icon: 'label',
-        submenus: [
-          {
-            id: 1,
-            name: 'Dashboard',
-            url: '/project-manager/dashboard',
-            icon: '',
-          },
-          {
-            id: 2,
-            name: 'Work orders',
-            url: '/project-manager/work-orders',
-            icon: '',
-          },
-          {
-            id: 3,
-            name: 'Vendors',
-            url: '/project-manager/work-orders',
-            icon: '',
-          },
-        ],
-      },
+      // {
+      //   id: 2,
+      //   name: 'Work order',
+      //   url: '#',
+      //   icon: 'label',
+      //   submenus: [
+      //     {
+      //       id: 1,
+      //       name: 'Dashboard',
+      //       url: '/project-manager/dashboard',
+      //       icon: '',
+      //     },
+      //     {
+      //       id: 2,
+      //       name: 'Work orders',
+      //       url: '/project-manager/work-orders',
+      //       icon: '',
+      //     },
+      //     {
+      //       id: 3,
+      //       name: 'Vendors',
+      //       url: '/project-manager/work-orders',
+      //       icon: '',
+      //     },
+      //   ],
+      // },
       {
         id: 4,
         name: 'Jobs',

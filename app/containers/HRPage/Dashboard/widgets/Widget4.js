@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     overflowX: 'hidden',
     display: 'flex',
     "& td, & th": {
-      borderBottom: 0,
+      border: 0,
       color: theme.palette.common.white,
     },
   }

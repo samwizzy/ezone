@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
     minWidth: 280,
     "& td, & th": {
-      borderBottom: 0,
+      border: 0,
       color: theme.palette.common.white,
     },
   },
