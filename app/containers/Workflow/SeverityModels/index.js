@@ -9,53 +9,51 @@ import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectProjectMgtJobs from './selectors';
+import makeSelectSeverityModels from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import * as Actions from './actions';
-import JobsList from './components/JobsList';
-import JobForm from './components/JobForm';
+import SeverityModelsList from './components/SeverityModelsList';
+import SeverityModelForm from './components/SeverityModelForm';
 import ModuleLayout from '../components/ModuleLayout';
 
-export function JobsApp(props) {
-  useInjectReducer({ key: 'projectMgtJobs', reducer });
-  useInjectSaga({ key: 'projectMgtJobs', saga });
+export function SeverityModelsApp(props) {
+  useInjectReducer({ key: 'severityModels', reducer });
+  useInjectSaga({ key: 'severityModels', saga });
 
-  const { match, getJobs, getCustomers } = props;
+  const { match, getJobs } = props;
   const { path, url } = match
 
   useEffect(() => {
     getJobs();
-    getCustomers();
   }, []);
 
   return (
     <div>
       <Helmet>
-        <title>Jobs</title>
-        <meta name="description" content="Description of project mgt jobs" />
+        <title>Severity Models</title>
+        <meta name="description" content="Description of Severity Models" />
       </Helmet>
 
       <ModuleLayout>
-        <Route exact path={path} component={JobsList} />
-        <Route path={`${path}/new`} component={JobForm} />
+        <Route exact path={path} component={SeverityModelsList} />
+        <Route path={`${path}/new`} component={SeverityModelForm} />
       </ModuleLayout>
     </div>
   );
 }
 
-JobsApp.propTypes = {
+SeverityModelsApp.propTypes = {
   getJobs: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  projectMgtJobs: makeSelectProjectMgtJobs(),
+  severityModels: makeSelectSeverityModels(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     getJobs: () => dispatch(Actions.getJobs()),
-    getCustomers: () => dispatch(Actions.getCustomers()),
   }
 }
 
@@ -68,4 +66,4 @@ export default compose(
   withRouter,
   withConnect,
   memo,
-)(JobsApp);
+)(SeverityModelsApp);

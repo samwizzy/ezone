@@ -28,26 +28,6 @@ export function* getJobs() {
   }
 }
 
-export function* getCustomers() {
-  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllContactsApi}/${currentUser && currentUser.organisation.orgId}`;
-
-  try {
-    const response = yield call(request, requestURL, {
-      method: 'GET',
-      headers: new Headers({
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      }),
-    });
-
-    yield put(Actions.getCustomersSuccess(response));
-  } catch (err) {
-    yield put(Actions.getCustomersError(err));
-  }
-}
-
 export function* createJob({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
@@ -99,5 +79,4 @@ export default function* jobsSaga() {
   yield takeLatest(Constants.UPDATE_JOB, updateJob);
   yield takeLatest(Constants.CREATE_JOB, createJob);
   yield takeLatest(Constants.GET_JOBS, getJobs);
-  yield takeLatest(Constants.GET_CUSTOMERS, getCustomers);
 }

@@ -1,6 +1,6 @@
 /*
  *
- * Jobs actions
+ * severity model actions
  *
  */
 
@@ -89,26 +89,6 @@ export function getJobsSuccess(data) {
 export function getJobsError(data) {
   return {
     type: Constants.GET_JOBS_ERROR,
-    payload: data,
-  };
-}
-
-export function getCustomers() {
-  return {
-    type: Constants.GET_CUSTOMERS,
-  };
-}
-
-export function getCustomersSuccess(data) {
-  return {
-    type: Constants.GET_CUSTOMERS_SUCCESS,
-    payload: data,
-  };
-}
-
-export function getCustomersError(data) {
-  return {
-    type: Constants.GET_CUSTOMERS_ERROR,
     payload: data,
   };
 }

@@ -1,33 +1,27 @@
-/*
- *
- * Jobs actions
- *
- */
-
 import * as Constants from './constants';
 
-export function openNewJobDialog() {
+export function openNewStepDialog() {
   return {
-    type: Constants.OPEN_NEW_JOB_DIALOG,
+    type: Constants.OPEN_NEW_STEP_DIALOG,
   };
 }
 
-export function closeNewJobDialog() {
+export function closeNewStepDialog() {
   return {
-    type: Constants.CLOSE_NEW_JOB_DIALOG,
+    type: Constants.CLOSE_NEW_STEP_DIALOG,
   };
 }
 
-export function openEditJobDialog(data) {
+export function openEditStepDialog(data) {
   return {
-    type: Constants.OPEN_EDIT_JOB_DIALOG,
+    type: Constants.OPEN_EDIT_STEP_DIALOG,
     payload: data,
   };
 }
 
-export function closeEditJobDialog() {
+export function closeEditStepDialog() {
   return {
-    type: Constants.CLOSE_EDIT_JOB_DIALOG,
+    type: Constants.CLOSE_EDIT_STEP_DIALOG,
   };
 }
 
@@ -89,26 +83,6 @@ export function getJobsSuccess(data) {
 export function getJobsError(data) {
   return {
     type: Constants.GET_JOBS_ERROR,
-    payload: data,
-  };
-}
-
-export function getCustomers() {
-  return {
-    type: Constants.GET_CUSTOMERS,
-  };
-}
-
-export function getCustomersSuccess(data) {
-  return {
-    type: Constants.GET_CUSTOMERS_SUCCESS,
-    payload: data,
-  };
-}
-
-export function getCustomersError(data) {
-  return {
-    type: Constants.GET_CUSTOMERS_ERROR,
     payload: data,
   };
 }

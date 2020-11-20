@@ -56,16 +56,22 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const JobsList = props => {
+const data = [
+  { id: 1, groupName: 'Repository', dateCreated: '2020-11-23T20:43:54', dateModified: '2020-11-23T19:29:54' },
+  { id: 2, groupName: 'Invention', dateCreated: '2020-11-23T20:43:54', dateModified: '2020-11-23T19:29:54' },
+]
+
+const ProcessOwnersList = props => {
   const classes = useStyles();
 
   const {
     loading,
     history,
     match,
+    processOwners,
     getJobs,
     openNewJobDialog,
-    openEditJobDialog,
+    openEditEdJobDialog,
   } = props;
 
   useEffect(() => {
@@ -89,54 +95,54 @@ const JobsList = props => {
       },
     },
     {
-      name: 'title',
-      label: 'Title',
+      name: 'groupName',
+      label: 'Group Name',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'customer',
-      label: 'Customer',
+      name: 'dateCreated',
+      label: 'Date Created',
       options: {
         filter: true,
         sort: false,
-      },
-    },
-    {
-      name: 'supervisor',
-      label: 'Supervisor',
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: 'startDate',
-      label: 'Start Date',
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: value => value ? moment(value).format('lll') : ""
-      },
-    },
-    {
-      name: 'estimatedDate',
-      label: 'Estimated Date',
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: value => value ? moment(value).format('lll') : ""
+        customBodyRender: value => {
+          return moment(value).format('lll')
+        }
       }
     },
     {
-      name: 'Status',
-      label: 'Status',
+      name: 'dateModified',
+      label: 'Date Modified',
       options: {
         filter: true,
         sort: false,
+        customBodyRender: value => {
+          return moment(value).format('lll')
+        }
       }
+    },
+    {
+      name: 'id',
+      label: 'Action',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: value => {
+          const data = processOwners.find(company => value === company.id);
+
+          return (
+            <Button
+              variant="outlined" size="small" color="primary"
+              onClick={() => openEditJobDialog(data)}
+            >
+              Edit
+            </Button>
+          );
+        },
+      },
     },
   ];
 
@@ -144,9 +150,6 @@ const JobsList = props => {
     filterType: 'checkbox',
     responsive: 'scrollMaxHeight',
     selectableRows: 'none',
-    print: false,
-    viewColumns: false,
-    filter: false,
     customToolbar: () => (
       <Button
         variant="contained"
@@ -156,7 +159,7 @@ const JobsList = props => {
         startIcon={<Add />}
         onClick={() => history.push(`${match.url}/new`)}
       >
-        Add Job
+        Add Group
       </Button>
     ),
     elevation: 0
@@ -173,8 +176,8 @@ const JobsList = props => {
       </Backdrop>
       <MUIDataTable
         className={classes.datatable}
-        title="All Jobs"
-        data={[]}
+        title="Process Owners"
+        data={data}
         columns={columns}
         options={options}
       />
@@ -182,17 +185,17 @@ const JobsList = props => {
   );
 };
 
-JobsList.propTypes = {
+ProcessOwnersList.propTypes = {
   loading: PropTypes.bool,
   getJobs: PropTypes.func,
   openNewJobDialog: PropTypes.func,
   openEditJobDialog: PropTypes.func,
-  jobs: PropTypes.array,
+  processOwners: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  jobs: Selectors.makeSelectAllJobs(),
+  processOwners: Selectors.makeSelectAllProcessOwners(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -212,4 +215,4 @@ export default compose(
   withRouter,
   withConnect,
   memo,
-)(JobsList);
+)(ProcessOwnersList);

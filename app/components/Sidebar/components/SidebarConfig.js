@@ -436,6 +436,29 @@ const SidebarConfig = [
       },
     ],
   },
+  {
+    module: ['workflow'],
+    menus: [
+      {
+        id: 1,
+        name: 'Process Owners',
+        url: '/workflow/process-owners',
+        icon: 'dashboard',
+      },
+      {
+        id: 2,
+        name: 'Workflow Rules',
+        url: '/workflow/rules',
+        icon: 'assessment',
+      },
+      {
+        id: 3,
+        name: 'Severity Models',
+        url: '/workflow/severity-models',
+        icon: 'assessment',
+      },
+    ],
+  },
 ];
 
 export default SidebarConfig;

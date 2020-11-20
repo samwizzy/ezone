@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { memo, useEffect } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import {
@@ -56,16 +56,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const JobsList = props => {
+const WorkflowRulesList = props => {
   const classes = useStyles();
 
   const {
     loading,
     history,
     match,
+    workflowRules,
     getJobs,
     openNewJobDialog,
-    openEditJobDialog,
+    openEditEdJobDialog,
   } = props;
 
   useEffect(() => {
@@ -89,54 +90,54 @@ const JobsList = props => {
       },
     },
     {
-      name: 'title',
-      label: 'Title',
+      name: 'groupName',
+      label: 'Group Name',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'customer',
-      label: 'Customer',
+      name: 'dateCreated',
+      label: 'Date Created',
       options: {
         filter: true,
         sort: false,
-      },
-    },
-    {
-      name: 'supervisor',
-      label: 'Supervisor',
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: 'startDate',
-      label: 'Start Date',
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: value => value ? moment(value).format('lll') : ""
-      },
-    },
-    {
-      name: 'estimatedDate',
-      label: 'Estimated Date',
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: value => value ? moment(value).format('lll') : ""
+        customBodyRender: value => {
+          return moment(value).format('lll')
+        }
       }
     },
     {
-      name: 'Status',
-      label: 'Status',
+      name: 'dateCreated',
+      label: 'Date Modified',
       options: {
         filter: true,
         sort: false,
+        customBodyRender: value => {
+          return moment(value).format('lll')
+        }
       }
+    },
+    {
+      name: 'id',
+      label: 'Action',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: value => {
+          const data = workflowRules.find(rule => value === rule.id);
+
+          return (
+            <Button
+              variant="outlined" size="small" color="primary"
+              onClick={() => openEditJobDialog(data)}
+            >
+              Edit
+            </Button>
+          );
+        },
+      },
     },
   ];
 
@@ -144,9 +145,6 @@ const JobsList = props => {
     filterType: 'checkbox',
     responsive: 'scrollMaxHeight',
     selectableRows: 'none',
-    print: false,
-    viewColumns: false,
-    filter: false,
     customToolbar: () => (
       <Button
         variant="contained"
@@ -156,7 +154,7 @@ const JobsList = props => {
         startIcon={<Add />}
         onClick={() => history.push(`${match.url}/new`)}
       >
-        Add Job
+        Add Workflow
       </Button>
     ),
     elevation: 0
@@ -171,9 +169,10 @@ const JobsList = props => {
       <Backdrop className={classes.backdrop} open={loading}>
         <CircularProgress color="inherit" />
       </Backdrop>
+
       <MUIDataTable
         className={classes.datatable}
-        title="All Jobs"
+        title="Process Definitions"
         data={[]}
         columns={columns}
         options={options}
@@ -182,17 +181,17 @@ const JobsList = props => {
   );
 };
 
-JobsList.propTypes = {
+WorkflowRulesList.propTypes = {
   loading: PropTypes.bool,
   getJobs: PropTypes.func,
   openNewJobDialog: PropTypes.func,
   openEditJobDialog: PropTypes.func,
-  jobs: PropTypes.array,
+  workflowRules: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  jobs: Selectors.makeSelectAllJobs(),
+  workflowRules: Selectors.makeSelectAllWorkflowRules(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -212,4 +211,4 @@ export default compose(
   withRouter,
   withConnect,
   memo,
-)(JobsList);
+)(WorkflowRulesList);
