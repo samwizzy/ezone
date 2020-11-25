@@ -149,6 +149,7 @@ const AccountSetup = props => {
                 form={form}
                 handleChange={handleChange}
                 handlePrev={handlePrev}
+                handleSubmit={handleSubmit}
               />
             )}
           </Grid>

@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Widget1 = ({ accounts, accData }) => {
   const classes = useStyles()
-  const { currency } = accData
+  const currency = accData ? accData.currency : null;
 
   const receivablesAccounts = _.filter(accounts, (account) => account.accountType && account.accountType.id === 3)
 

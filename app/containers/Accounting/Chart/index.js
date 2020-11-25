@@ -11,6 +11,7 @@ import saga from './saga';
 import reducer from './reducer';
 import * as Actions from './actions';
 import makeSelectAccountChart, * as Selectors from './selectors';
+import * as AccSelectors from './../selectors';
 import ModuleLayout from '../components/ModuleLayout';
 import AccountsList from './components/AccountsList';
 import ChartAccountDetails from './chartAccountDetails';
@@ -22,7 +23,15 @@ const ChartOfAccounts = props => {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
-  const { loading, getChartOfAccounts, getAccountTypes, getAccountingPeriods, match } = props;
+  const {
+    loading,
+    accSetUpData,
+    getChartOfAccounts,
+    getAccountTypes,
+    getAccountingPeriods,
+    match,
+    history,
+  } = props;
   const { path } = match
 
   useEffect(() => {
@@ -30,6 +39,10 @@ const ChartOfAccounts = props => {
     getAccountTypes();
     getAccountingPeriods();
   }, []);
+
+  if(!accSetUpData){
+    history.push('/account/settings');
+  }
 
   return (
     <div>
@@ -56,6 +69,7 @@ ChartOfAccounts.propTypes = {
 const mapStateToProps = createStructuredSelector({
   chart: makeSelectAccountChart(),
   loading: Selectors.makeSelectLoading(),
+  accSetUpData: AccSelectors.makeSelectGetAccountingSetupData(),
 });
 
 function mapDispatchToProps(dispatch) {

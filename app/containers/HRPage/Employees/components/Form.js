@@ -25,10 +25,7 @@ export const Form = props => {
   const canSubmitForm = () => {
     const { firstName, lastName, phoneNumber, emailAddress, nickName } = form;
     return (
-      firstName.length > 0 &&
-      lastName.length > 0 &&
-      phoneNumber.length > 0 &&
-      emailAddress.length > 0
+      firstName && lastName && phoneNumber && emailAddress
     );
   };
 

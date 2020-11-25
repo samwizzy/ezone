@@ -7,14 +7,6 @@ import { initialState } from './reducer';
 
 const selectJobsDomain = state => state.projectMgtJobs || initialState;
 
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by Companies
- */
-
 const makeSelectProjectMgtJobs = () =>
   createSelector(
     selectJobsDomain,
@@ -51,6 +43,12 @@ const makeSelectEmployees = () =>
     subState => subState.employees,
   );
 
+const makeSelectCustomers = () =>
+  createSelector(
+    selectJobsDomain,
+    subState => subState.customers,
+  );
+
 export default makeSelectProjectMgtJobs;
 export {
   selectJobsDomain,
@@ -58,5 +56,6 @@ export {
   makeSelectError,
   makeSelectJobsDialog,
   makeSelectAllJobs,
+  makeSelectCustomers,
   makeSelectEmployees,
 };

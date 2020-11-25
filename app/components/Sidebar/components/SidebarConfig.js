@@ -413,15 +413,9 @@ const SidebarConfig = [
         url: '#',
         icon: 'group_work',
         submenus: [
+          { id: 1, name: 'Jobs list', url: '/project-manager/jobs', icon: '' },
           {
-            id: 1,
-            name: 'Dashboard',
-            url: '/project-manager/dashboard',
-            icon: '',
-          },
-          { id: 2, name: 'Jobs list', url: '/project-manager/jobs', icon: '' },
-          {
-            id: 3,
+            id: 2,
             name: 'Add Job',
             url: '/project-manager/jobs/new',
             icon: '',
@@ -432,6 +426,29 @@ const SidebarConfig = [
         id: 5,
         name: 'Reports',
         url: '/project-manager/reports',
+        icon: 'assessment',
+      },
+    ],
+  },
+  {
+    module: ['workflow'],
+    menus: [
+      {
+        id: 1,
+        name: 'Process Owners',
+        url: '/workflow/process-owners',
+        icon: 'dashboard',
+      },
+      {
+        id: 2,
+        name: 'Workflow Rules',
+        url: '/workflow/rules',
+        icon: 'assessment',
+      },
+      {
+        id: 3,
+        name: 'Severity Models',
+        url: '/workflow/severity-models',
         icon: 'assessment',
       },
     ],

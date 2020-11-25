@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     height: '52px',
     '& p': { lineHeight: '52px' },
     position: "absolute",
-    '&.pending': {
+    '&.posted': {
       backgroundColor: green[500],
       "&::after": { borderTop: `52px solid ${green[500]}` },
       "&::before": { borderBottom: `52px solid ${green[500]}` },

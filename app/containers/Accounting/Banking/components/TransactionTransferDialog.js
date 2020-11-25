@@ -68,7 +68,8 @@ const TransactionTransferDialog = props => {
     closeAccountTransferToDialog,
     createBankTransfer,
   } = props;
-  const { currency } = accountSetupData
+
+  const currency = accountSetupData ? accountSetupData.currency : null;
 
   const [values, setValues] = useState({
     amount: '',

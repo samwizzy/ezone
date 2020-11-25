@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Widget4 = ({ accounts, accData }) => {
   const classes = useStyles()
-  const { currency } = accData
+  const currency = accData ? accData.currency : null;
 
   if (!accounts.length > 0 && !accData) {
     return <Typography>No account is currently available</Typography>

@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import {
   Backdrop,
   CircularProgress,
@@ -45,6 +46,9 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
+    '& .MuiToolbar-root': {
+      padding: theme.spacing(1)
+    }
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -57,9 +61,12 @@ const JobsList = props => {
 
   const {
     loading,
+    history,
+    match,
     getJobs,
+    jobs,
     openNewJobDialog,
-    openEditEdJobDialog,
+    openEditJobDialog,
   } = props;
 
   useEffect(() => {
@@ -73,9 +80,6 @@ const JobsList = props => {
       options: {
         filter: true,
         customBodyRender: (value, tableMeta) => {
-          if (value === '') {
-            return '';
-          }
           return (
             <FormControlLabel
               label={tableMeta.rowIndex + 1}
@@ -86,75 +90,54 @@ const JobsList = props => {
       },
     },
     {
-      name: 'firstName',
-      label: 'Company Name',
+      name: 'title',
+      label: 'Title',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'phoneNumber',
-      label: 'Phone Number',
+      name: 'customer',
+      label: 'Customer',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'emailAddress',
-      label: 'Email',
+      name: 'supervisor',
+      label: 'Supervisor',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'lifeStage',
-      label: 'Life Stage',
+      name: 'startDate',
+      label: 'Start Date',
       options: {
         filter: true,
         sort: false,
+        customBodyRender: value => value ? moment(value).format('lll') : ""
       },
     },
     {
-      name: 'ownerName',
-      label: 'Owner',
+      name: 'estimatedDate',
+      label: 'Estimated Date',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: value => value ? moment(value).format('lll') : ""
+      }
+    },
+    {
+      name: 'Status',
+      label: 'Status',
       options: {
         filter: true,
         sort: false,
       }
-    },
-    {
-      name: 'dateCreated',
-      label: 'Created At',
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: value => {
-          return moment(value).format('lll')
-        }
-      }
-    },
-    {
-      name: 'id',
-      label: 'Action',
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: value => {
-          const data = jobs.find(company => value === company.id);
-
-          return (
-            <Button
-              variant="outlined" size="small" color="primary"
-              onClick={() => openEditJobDialog(data)}
-            >
-              Edit
-            </Button>
-          );
-        },
-      },
     },
   ];
 
@@ -162,6 +145,9 @@ const JobsList = props => {
     filterType: 'checkbox',
     responsive: 'scrollMaxHeight',
     selectableRows: 'none',
+    print: false,
+    viewColumns: false,
+    filter: false,
     customToolbar: () => (
       <Button
         variant="contained"
@@ -169,7 +155,7 @@ const JobsList = props => {
         size="small"
         className={classes.button}
         startIcon={<Add />}
-        onClick={() => openNewJobDialog()}
+        onClick={() => history.push(`${match.url}/new`)}
       >
         Add Job
       </Button>
@@ -189,7 +175,7 @@ const JobsList = props => {
       <MUIDataTable
         className={classes.datatable}
         title="All Jobs"
-        data={[]}
+        data={jobs.entities}
         columns={columns}
         options={options}
       />
@@ -224,6 +210,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(JobsList);
