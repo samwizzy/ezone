@@ -39,13 +39,12 @@ export function* getChatOfAccountSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const { startDate, endDate } = yield select(Selectors.makeSelectTime());
-  const { pageFrom, pageTo } = { pageFrom: 0, pageTo: 100 };
 
   const requestURL = `${
     Endpoints.GetChatsOfAccountApi
-  }?endDate=${endDate}&startDate=${startDate}&pageFrom=${pageFrom}&pageTo=${pageTo}&orgId=${
+  }?endDate=${endDate}&startDate=${startDate}&orgId=${
     currentUser.organisation.orgId
-  }`;
+  }&pageFrom=0&pageTo=0`;
 
   try {
     const getChatsOfAccountResponse = yield call(request, requestURL, {

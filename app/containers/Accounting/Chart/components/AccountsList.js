@@ -83,7 +83,7 @@ const AccountChart = props => {
     getChartOfAccountById,
   } = props;
 
-  const { currency } = accountSetupData;
+  const currency = accountSetupData ? accountSetupData.currency : null;
 
   const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
@@ -132,7 +132,7 @@ const AccountChart = props => {
 
   const fileInput = useRef();
 
-  if (!chartOfAccounts.length > 0) {
+  if (loading) {
     return <CircleLoader />;
   }
 

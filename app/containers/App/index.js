@@ -46,6 +46,7 @@ import CrmApp from '../Crm/Loadable';
 import CalendarPage from '../CalendarPage/Loadable';
 import LMSApp from '../LMS/Loadable';
 import ProjectManagementModule from '../ProjectManagement/Loadable';
+import WorkflowModule from '../Workflow/Loadable';
 
 // import { messaging } from '../../utils/firebase-notification';
 
@@ -143,6 +144,8 @@ const App = props => (
 
               <PrivateRoute path="/lms" component={LMSApp} />
 
+              <PrivateRoute path="/workflow" component={WorkflowModule} />
+
               <PrivateRoute
                 exact
                 path="/work-order"
@@ -170,18 +173,10 @@ const App = props => (
 
               <PrivateRoute path="/account" component={AccountPage} />
 
-              <PrivateRoute exact path="/payroll" component={Payroll} />
+              <PrivateRoute path="/payroll" component={Payroll} />
 
               <PrivateRoute path="/inventory" component={InventoryPage} />
 
-              {/* <PrivateRoute path="/inventory/warehouses" component={WarehousePage} />
-                <PrivateRoute path="/inventory/items" component={ItemPage} />
-                <PrivateRoute path="/inventory/item" component={ItemPage} />
-
-                <PrivateRoute path="/inventory/transfers" component={TransferOrdersApp} />
-                <PrivateRoute path="/inventory/transfer" component={TransferOrdersApp} />
-
-                <PrivateRoute exact path="/inventory/adjustments/:statusId?" component={InventoryAdjustmentApp} /> */}
               <PrivateRoute path="/crm" component={CrmApp} />
             </Layout3>
             <Route path="" component={NotFoundPage} />

@@ -1,9 +1,3 @@
-/**
- *
- * Companies
- *
- */
-
 import React, { Fragment, memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -27,11 +21,13 @@ export function JobsApp(props) {
   useInjectReducer({ key: 'projectMgtJobs', reducer });
   useInjectSaga({ key: 'projectMgtJobs', saga });
 
-  const { match, getJobs } = props;
+  const { match, getJobs, getCustomers, getEmployees } = props;
   const { path, url } = match
 
   useEffect(() => {
     getJobs();
+    getCustomers();
+    getEmployees();
   }, []);
 
   return (
@@ -60,6 +56,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getJobs: () => dispatch(Actions.getJobs()),
+    getCustomers: () => dispatch(Actions.getCustomers()),
+    getEmployees: () => dispatch(Actions.getEmployees()),
   }
 }
 

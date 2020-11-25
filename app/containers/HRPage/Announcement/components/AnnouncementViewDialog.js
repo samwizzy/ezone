@@ -16,6 +16,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
   },
+  dialogContent: { minWidth: 400 },
   closeButton: {
     position: 'absolute',
     right: theme.spacing(1),
@@ -52,7 +53,7 @@ function AnnouncementViewDialog(props) {
           <IconButton aria-label="close" className={classes.closeButton} onClick={closeAnnouncementViewDialog}><CloseIcon /></IconButton>
         </DialogTitle>
 
-        <DialogContent dividers>
+        <DialogContent dividers classes={{ root: classes.dialogContent }}>
           <Grid container>
             <Grid item xs={12}>
               <DialogContentText>

@@ -11,7 +11,7 @@ import * as Endpoints from '../../../components/Endpoints';
 export function* getJobs() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllCompaniesApi}/${currentUser && currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.JobApi}/${currentUser && currentUser.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -28,10 +28,50 @@ export function* getJobs() {
   }
 }
 
+export function* getCustomers() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAllContactsApi}/${currentUser && currentUser.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getCustomersSuccess(response));
+  } catch (err) {
+    yield put(Actions.getCustomersError(err));
+  }
+}
+
+export function* getEmployees() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}?orgId=${currentUser && currentUser.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getEmployeesSuccess(response));
+  } catch (err) {
+    yield put(Actions.getEmployeesError(err));
+  }
+}
+
 export function* createJob({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.CreateNewContactApi}`;
+  const requestURL = `${Endpoints.JobApi}`;
   payload.orgId = currentUser && currentUser.organisation.orgId;
 
   try {
@@ -46,7 +86,6 @@ export function* createJob({ payload }) {
 
     yield put(Actions.createJobSuccess(response));
     yield put(Actions.getJobs());
-    yield put(Actions.closeNewCompanyDialog());
   } catch (err) {
     yield put(Actions.createJobError(err));
   }
@@ -54,7 +93,7 @@ export function* createJob({ payload }) {
 
 export function* updateJob({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${Endpoints.UpdateContactApi}/${payload.id}`;
+  const requestURL = `${Endpoints.JobApi}/${payload.id}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -68,7 +107,6 @@ export function* updateJob({ payload }) {
 
     yield put(Actions.updateJobSuccess(response));
     yield put(Actions.getJobs());
-    yield put(Actions.closeNewJobDialog());
   } catch (err) {
     yield put(Actions.updateJobError(err));
   }
@@ -79,4 +117,6 @@ export default function* jobsSaga() {
   yield takeLatest(Constants.UPDATE_JOB, updateJob);
   yield takeLatest(Constants.CREATE_JOB, createJob);
   yield takeLatest(Constants.GET_JOBS, getJobs);
+  yield takeLatest(Constants.GET_CUSTOMERS, getCustomers);
+  yield takeLatest(Constants.GET_EMPLOYEES, getEmployees);
 }

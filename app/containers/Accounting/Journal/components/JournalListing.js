@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import EzoneUtils from '../../../../utils/EzoneUtils';
 import { withRouter } from 'react-router-dom';
@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(1),
   },
   status: {
-    '&.pending': { color: green[500] },
+    '&.posted': { color: green[500] },
     '&.rejected': { color: red[500] },
     '&.submitted': { color: yellow[500] },
     '&.drafted': { color: grey[500] },
@@ -63,10 +63,10 @@ const useStyles = makeStyles(theme => ({
 
 const JournalListing = props => {
   const classes = useStyles();
-  const { history, match, accountSetupData, journals, getJournalById, openNewJournalDialog, openEditJournalDialog } = props;
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedJournal, setSelectedJournal] = React.useState(null);
-  const { currency } = accountSetupData
+  const { loading, history, match, accountSetupData, journals, getJournalById, openNewJournalDialog, openEditJournalDialog } = props;
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedJournal, setSelectedJournal] = useState(null);
+  const currency = accountSetupData ? accountSetupData.currency : null
 
   console.log('journals -> ', journals);
 
@@ -98,7 +98,7 @@ const JournalListing = props => {
 
   const orderedJournals = _.orderBy(journals, 'dateCreated', 'desc');
 
-  if (!journals.length > 0) {
+  if (loading) {
     return <CircleLoader />
   }
 
@@ -136,7 +136,7 @@ const JournalListing = props => {
         sort: false,
         customBodyRender: value => {
           const journal = journals.find(journal => journal.id === value)
-          return EzoneUtils.formatCurrency(journal.total * (journal.exchangeRate || 1), journal.currency ? journal.currency.code : currency && currency.code)
+          return EzoneUtils.formatCurrency(journal.total * (journal.exchangeRate || 1), currency && currency.code)
         }
       },
     },

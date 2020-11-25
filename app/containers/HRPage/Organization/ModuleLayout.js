@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   active: {
-    backgroundColor: theme.palette.common.white,  
+    backgroundColor: theme.palette.common.white,
     color: `${darken(theme.palette.primary.main, 0.1)} !important`,
   },
 }));
@@ -39,7 +39,7 @@ function ModuleLayout(props) {
               Branches
             </NavLink>
             <NavLink to="/hr/roles" activeClassName={classes.active}>
-              Roles
+              Positions
             </NavLink>
           </React.Fragment>
         }

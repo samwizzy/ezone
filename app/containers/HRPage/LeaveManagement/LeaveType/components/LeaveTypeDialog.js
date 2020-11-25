@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
@@ -6,9 +6,9 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { withStyles, InputAdornment, AppBar, Avatar, Box, Button, Checkbox, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormGroup, FormControl, FormLabel, FormControlLabel, Grid, MenuItem, Radio, RadioGroup, Popover, Slide, Tabs, Tab, Typography, TextField, Toolbar } from '@material-ui/core';
+import { withStyles, InputAdornment, AppBar, Avatar, Box, Button, Checkbox, Chip, Dialog, DialogActions, DialogContent, FormControl, FormLabel, FormControlLabel, Grid, MenuItem, Popover, Slide, Tabs, Tab, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
@@ -113,16 +113,18 @@ const model = {
 function AddShiftDialog(props) {
   const classes = useStyles();
   const { closeNewLeaveTypeDialog, dialog, employees, departments, branches, roles, createLeaveType } = props;
-  const [option, setOption] = React.useState({ policy: false, validity: false, duration: 'Days', maritalStatus: 'Single' })
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [option, setOption] = useState({ policy: false, validity: false, duration: 'Days', maritalStatus: 'Single' })
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
-  const [value, setValue] = React.useState(0);
-  const [form, setForm] = React.useState({ ...model });
+  const [value, setValue] = useState(0);
+  const [form, setForm] = useState({ ...model });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (dialog.type === 'edit') {
       setForm({ ...dialog.data })
+    } else {
+      setForm({ ...model })
     }
   }, [dialog])
 

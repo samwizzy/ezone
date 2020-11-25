@@ -34,13 +34,13 @@ export function AddDepartment(props) {
     </React.Fragment>
   );
 }
-export function AddRole(props) {
+export function AddPosition(props) {
   const { openDialog } = props;
   const classes = useStyles()
 
   return (
     <React.Fragment>
-      <Tooltip title="New Role">
+      <Tooltip title="New Position">
         <Button
           color="primary"
           variant="contained"
@@ -48,7 +48,7 @@ export function AddRole(props) {
           startIcon={<AssignmentInd className={classes.icon} />}
           disableElevation
         >
-          Add Role
+          Add Position
         </Button>
       </Tooltip>
     </React.Fragment>
@@ -172,7 +172,7 @@ export function AddAnnouncement(props) {
   );
 }
 
-AddRole.prototypes = {
+AddPosition.prototypes = {
   classes: PropTypes.object.isRequired,
   openNewBranchDialogAction: PropTypes.func,
 };

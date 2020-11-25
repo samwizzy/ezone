@@ -10,6 +10,7 @@ export const initialState = {
   loading: false,
   error: false,
   employees: [],
+  customers: [],
   jobs: [],
   jobDialog: {
     type: 'new',
@@ -128,6 +129,49 @@ const jobsReducer = (state = initialState, action) =>
         };
       }
       case Constants.GET_JOBS_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          messages: action.payload,
+        };
+      }
+      case Constants.GET_CUSTOMERS: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.GET_CUSTOMERS_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          customers: action.payload,
+        };
+      }
+      case Constants.GET_CUSTOMERS_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          messages: action.payload,
+        };
+      }
+
+      case Constants.GET_EMPLOYEES: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.GET_EMPLOYEES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          employees: action.payload,
+        };
+      }
+      case Constants.GET_EMPLOYEES_ERROR: {
         return {
           ...state,
           loading: false,

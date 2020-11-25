@@ -45,7 +45,7 @@ const groups = ['Department', 'Branch', 'Roles', 'Location'];
 
 const GenderProfileReport = props => {
   const classes = useStyles();
-  const { loading, history } = props;
+  const { loading, history, employees } = props;
   const [group, setGroup] = React.useState('')
 
   const handleChange = event => setGroup(event.target.value)
@@ -138,7 +138,7 @@ const GenderProfileReport = props => {
           </AppBar>
         </Grid>
         <Grid item md={12}>
-          <Widget11_Report />
+          <Widget11_Report employees={employees} />
         </Grid>
         <Grid item md={12}>
           <MUIDataTable
@@ -160,6 +160,7 @@ GenderProfileReport.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
+  employees: Selectors.makeSelectEmployees(),
 });
 
 function mapDispatchToProps(dispatch) {

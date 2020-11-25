@@ -83,7 +83,7 @@ const BankList = props => {
     bankAccounts,
   } = props;
 
-  const { currency } = accountSetupData;
+  const currency = accountSetupData ? accountSetupData.currency : null;
 
   const handleClick = (event, id) => {
     event.stopPropagation()

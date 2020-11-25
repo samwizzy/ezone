@@ -209,6 +209,51 @@ export function* createRole({ type, payload }) {
   }
 }
 
+export function* getPositions() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetPositionsApi}/${user && user.organisation.orgId}`;
+  payload.orgId = user && user.organisation.orgId;
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(AppActions.openSnackBar({ message: "Role created", status: 'success' }));
+    yield put({ type: Constants.GET_ROLES });
+    yield put({ type: Constants.CLOSE_NEW_ROLE_DIALOG });
+  } catch (err) {
+    console.log(err, "err message")
+  }
+}
+
+export function* createPosition({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.CreatePositionApi}`;
+  payload.orgId = user && user.organisation.orgId;
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(AppActions.openSnackBar({ message: "Role created", status: 'success' }));
+    yield put({ type: Constants.GET_ROLES });
+    yield put({ type: Constants.CLOSE_NEW_ROLE_DIALOG });
+  } catch (err) {
+    console.log(err, "err message")
+  }
+}
+
 export function* getDepartments() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
@@ -819,6 +864,29 @@ export function* getAnnouncements() {
   }
 }
 
+export function* getAnnouncementById({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetAnnouncementById}/${payload.id}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, "get announcement by id response")
+
+    yield put(Actions.getAnnouncementByIdSuccess(response));
+  } catch (err) {
+    const error = yield call(errorHandler, err.response.json())
+    yield put(Actions.getAnnouncementByIdError(err));
+  }
+}
+
 export function* getAttendances() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
@@ -1061,6 +1129,7 @@ export default function* HRRootSaga() {
   yield takeLatest(Constants.GET_ATTENDANCES, getAttendances);
   yield takeLatest(Constants.GET_ROLES, getRoles);
   yield takeLatest(Constants.GET_ANNOUNCEMENTS, getAnnouncements);
+  yield takeLatest(Constants.GET_ANNOUNCEMENT_BY_ID, getAnnouncementById);
   yield takeLatest(Constants.CREATE_EMPLOYEE, createEmployee);
   yield takeLatest(Constants.UPDATE_EMPLOYEE, updateEmployee);
   yield takeLatest(Constants.GET_BRANCHES, getBranches);

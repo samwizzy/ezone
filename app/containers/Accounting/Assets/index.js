@@ -1,7 +1,7 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Route, useRouteMatch } from 'react-router-dom';
+import { Route, useRouteMatch, withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -11,6 +11,7 @@ import * as Actions from './actions';
 import reducer from './reducer';
 import saga from './saga';
 import makeSelectFixedAssets, * as Selectors from './selectors';
+import * as AccSelectors from './../selectors';
 import ModuleLayout from '../components/ModuleLayout';
 import AssetsList from './AssetsList'
 import AssetDetails from './assetDetails'
@@ -22,7 +23,7 @@ const key = 'fixedAssets';
 export function FixedAssetsPage(props) {
 	useInjectReducer({ key, reducer });
 	useInjectSaga({ key, saga });
-	const { getAssets, getAssetTypes, getChartOfAccounts, getBranches } = props
+	const { loading, history, accSetUpData, getAssets, getAssetTypes, getChartOfAccounts, getBranches } = props
 	const { path } = useRouteMatch()
 
 	useEffect(() => {
@@ -30,7 +31,11 @@ export function FixedAssetsPage(props) {
 		getAssetTypes()
 		getChartOfAccounts()
 		getBranches()
-	}, [])
+  }, [])
+
+  if(!accSetUpData){
+    history.push('/account/settings');
+  }
 
 	return (
 		<div>
@@ -55,7 +60,8 @@ FixedAssetsPage.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
 	fixedAssets: makeSelectFixedAssets(),
-	loading: Selectors.makeSelectLoading(),
+  loading: Selectors.makeSelectLoading(),
+  accSetUpData: AccSelectors.makeSelectGetAccountingSetupData(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -73,6 +79,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
 	withConnect,
 	memo,
 )(FixedAssetsPage);

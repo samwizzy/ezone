@@ -44,9 +44,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const initialState = {
   activeYear: false,
-  endDate: moment().format('YYYY-MM-DDTHH:mm:ss'),
-  journals: [],
-  startDate: moment().format('YYYY-MM-DDTHH:mm:ss'),
+  // endDate: moment().format('YYYY-MM-DDTHH:mm:ss'),
+  // startDate: moment().format('YYYY-MM-DDTHH:mm:ss'),
   status: false,
   year: moment().format('YYYY'),
 };
@@ -113,8 +112,7 @@ const AccountingPeriodDialog = props => {
       >
         <DialogTitle id="alert-dialog-slide-title">
           {accountPeriodDialog.type === 'new' && 'Add Accounting Period'}
-          {accountPeriodDialog.type === 'edit' &&
-            'Mark Accounting Period As Active'}
+          {accountPeriodDialog.type === 'edit' && 'Mark Accounting Period As Active'}
           {accountPeriodDialog.type === 'close' && 'Close Accounting Period'}
         </DialogTitle>
 
@@ -137,7 +135,7 @@ const AccountingPeriodDialog = props => {
               }}
             />
           </MuiPickersUtilsProvider>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               autoOk
               id="start-date"
@@ -168,7 +166,7 @@ const AccountingPeriodDialog = props => {
                 'aria-label': 'change date',
               }}
             />
-          </MuiPickersUtilsProvider>
+          </MuiPickersUtilsProvider> */}
 
           <FormControl component="fieldset" className={classes.formControl}>
             <FormLabel component="legend">Preferences</FormLabel>

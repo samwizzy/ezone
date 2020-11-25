@@ -53,6 +53,27 @@ export function* getAttendanceById({ payload }) {
   }
 }
 
+export function* getEmployeesByShift({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetUserByShift}/${payload}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'GET EMPLOYEES BY SHIFT RESPONSE');
+    yield put(Actions.getEmployeesByShiftSuccess(response));
+  } catch (err) {
+    yield put(Actions.getEmployeesByShiftError(err));
+  }
+}
+
 export function* getDays() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
@@ -320,6 +341,7 @@ export default function* AttendanceRootSaga() {
 
   yield takeLatest(Constants.GET_ATTENDANCES, getAttendances);
   yield takeLatest(Constants.GET_ATTENDANCE_BY_ID, getAttendanceById);
+  yield takeLatest(Constants.GET_EMPLOYEES_BY_SHIFT, getEmployeesByShift);
   yield takeLatest(Constants.CREATE_ATTENDANCE, createAttendance);
   yield takeLatest(Constants.GET_SHIFTS, getShifts);
   yield takeLatest(Constants.GET_DAYS, getDays);

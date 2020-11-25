@@ -19,11 +19,13 @@ export const initialState = {
   departments: [],
   department: null,
   roles: [],
+  positions: [],
   role: null,
   branches: [],
   branch: {},
   attendances: [],
   announcements: [],
+  announcement: null,
   applicants: [],
   jobOpenings: [],
   jobOpeningDetails: null,
@@ -48,7 +50,7 @@ export const initialState = {
     },
     data: null,
   },
-  roleDialog: {
+  positionDialog: {
     type: 'new',
     props: {
       open: false,
@@ -135,6 +137,7 @@ const hrReducer = (state = initialState, action) =>
           branches: action.payload
         };
       }
+
       case Constants.GET_ANNOUNCEMENTS: {
         return {
           ...state,
@@ -155,6 +158,28 @@ const hrReducer = (state = initialState, action) =>
           error: action.payload
         };
       }
+
+      case Constants.GET_ANNOUNCEMENT_BY_ID: {
+        return {
+          ...state,
+          loading: true
+        };
+      }
+      case Constants.GET_ANNOUNCEMENT_BY_ID_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          announcement: action.payload
+        };
+      }
+      case Constants.GET_ANNOUNCEMENT_BY_ID_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload
+        };
+      }
+
       case Constants.GET_PARTYGROUPS_SUCCESS: {
         return {
           ...state,
@@ -439,19 +464,67 @@ const hrReducer = (state = initialState, action) =>
           jobOpeningDetails: action.payload
         };
       }
-      case Constants.GET_ROLES_SUCCESS: {
+
+      case Constants.GET_ROLES: {
         return {
           ...state,
-          roles: action.payload
+          loading: true
         };
       }
 
       case Constants.GET_ROLES_SUCCESS: {
         return {
           ...state,
-          roles: action.payload
+          roles: action.payload,
+          loading: false
         };
       }
+
+      case Constants.GET_POSITIONS: {
+        return {
+          ...state,
+          loading: true
+        };
+      }
+
+      case Constants.GET_POSITIONS_SUCCESS: {
+        return {
+          ...state,
+          positions: action.payload,
+          loading: false
+        };
+      }
+
+      case Constants.GET_POSITIONS_ERROR: {
+        return {
+          ...state,
+          error: action.payload,
+          loading: false
+        };
+      }
+
+      case Constants.CREATE_POSITION: {
+        return {
+          ...state,
+          loading: true
+        };
+      }
+
+      case Constants.CREATE_POSITION_SUCCESS: {
+        return {
+          ...state,
+          loading: false
+        };
+      }
+
+      case Constants.CREATE_POSITION_ERROR: {
+        return {
+          ...state,
+          error: action.payload,
+          loading: false
+        };
+      }
+
       case Constants.GET_EMPLOYEES: {
         return {
           ...state,
@@ -600,7 +673,7 @@ const hrReducer = (state = initialState, action) =>
       case Constants.OPEN_NEW_ROLE_DIALOG: {
         return {
           ...state,
-          roleDialog: {
+          positionDialog: {
             type: 'new',
             props: { open: true },
             data: null
@@ -610,7 +683,7 @@ const hrReducer = (state = initialState, action) =>
       case Constants.CLOSE_NEW_ROLE_DIALOG: {
         return {
           ...state,
-          roleDialog: {
+          positionDialog: {
             type: 'new',
             props: { open: false },
             data: null

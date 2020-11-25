@@ -46,9 +46,9 @@ export function Accounting(props) {
     return <CircleLoader />;
   }
 
-  if (!accSetUpData && !loading) {
-    return <Settings />;
-  }
+  // if (!accSetUpData && !loading) {
+  //   return <Settings />;
+  // }
 
   return (
     <div>

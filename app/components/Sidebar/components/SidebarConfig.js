@@ -7,13 +7,6 @@ const SidebarConfig = [
     ],
   },
   {
-    module: ['payroll'],
-    menus: [
-      { id: 1, name: 'Home', url: '/', icon: 'home' },
-      { id: 2, name: 'Dashboard', url: '/dashboard', icon: 'build' },
-    ],
-  },
-  {
     module: ['utility', 'folders', 'tasks'],
     menus: [
       { id: 1, name: 'Home', url: '/', icon: 'home' },
@@ -89,6 +82,25 @@ const SidebarConfig = [
         name: 'Leave Management',
         url: '/human-resource/leave-management/leave-request',
         icon: 'single_bed',
+      },
+    ],
+  },
+  {
+    module: ['payroll'],
+    menus: [
+      { id: 1, name: 'Dashboard', url: '/payroll/dashboard', icon: 'dashboard' },
+      { id: 2, name: 'Employee Salary', url: '/payroll/employee-salary', icon: 'business_center' },
+      { id: 3, name: 'Pay Runs', url: '/payroll/pay-runs', icon: 'find_in_page' },
+      { id: 4, name: 'Payroll Items', url: '/payroll/payroll-items', icon: 'person' },
+      { id: 5, name: 'Salary Advance', url: '/payroll/salary-advance', icon: 'announcement' },
+      { id: 6, name: 'Reports', url: '/payroll/reports', icon: 'thumb_up' },
+      {
+        id: 7, name: 'Settings', url: '#', icon: 'single_bed',
+        submenus: [
+          { id: 1, name: 'Payroll Set Up', url: '/payroll/settings', icon: '' },
+          { id: 2, name: 'Pay Run', url: '/payroll/settings/pay-run', icon: '' },
+          { id: 3, name: 'Tax Setting', url: '/payroll/settings/tax', icon: '' },
+        ],
       },
     ],
   },
@@ -369,47 +381,41 @@ const SidebarConfig = [
         url: '/project-manager/dashboard',
         icon: 'dashboard',
       },
-      {
-        id: 2,
-        name: 'Work order',
-        url: '#',
-        icon: 'label',
-        submenus: [
-          {
-            id: 1,
-            name: 'Dashboard',
-            url: '/project-manager/dashboard',
-            icon: '',
-          },
-          {
-            id: 2,
-            name: 'Work orders',
-            url: '/project-manager/work-orders',
-            icon: '',
-          },
-          {
-            id: 3,
-            name: 'Vendors',
-            url: '/project-manager/work-orders',
-            icon: '',
-          },
-        ],
-      },
+      // {
+      //   id: 2,
+      //   name: 'Work order',
+      //   url: '#',
+      //   icon: 'label',
+      //   submenus: [
+      //     {
+      //       id: 1,
+      //       name: 'Dashboard',
+      //       url: '/project-manager/dashboard',
+      //       icon: '',
+      //     },
+      //     {
+      //       id: 2,
+      //       name: 'Work orders',
+      //       url: '/project-manager/work-orders',
+      //       icon: '',
+      //     },
+      //     {
+      //       id: 3,
+      //       name: 'Vendors',
+      //       url: '/project-manager/work-orders',
+      //       icon: '',
+      //     },
+      //   ],
+      // },
       {
         id: 4,
         name: 'Jobs',
         url: '#',
         icon: 'group_work',
         submenus: [
+          { id: 1, name: 'Jobs list', url: '/project-manager/jobs', icon: '' },
           {
-            id: 1,
-            name: 'Dashboard',
-            url: '/project-manager/dashboard',
-            icon: '',
-          },
-          { id: 2, name: 'Jobs list', url: '/project-manager/jobs', icon: '' },
-          {
-            id: 3,
+            id: 2,
             name: 'Add Job',
             url: '/project-manager/jobs/new',
             icon: '',
@@ -420,6 +426,29 @@ const SidebarConfig = [
         id: 5,
         name: 'Reports',
         url: '/project-manager/reports',
+        icon: 'assessment',
+      },
+    ],
+  },
+  {
+    module: ['workflow'],
+    menus: [
+      {
+        id: 1,
+        name: 'Process Owners',
+        url: '/workflow/process-owners',
+        icon: 'dashboard',
+      },
+      {
+        id: 2,
+        name: 'Workflow Rules',
+        url: '/workflow/rules',
+        icon: 'assessment',
+      },
+      {
+        id: 3,
+        name: 'Severity Models',
+        url: '/workflow/severity-models',
         icon: 'assessment',
       },
     ],

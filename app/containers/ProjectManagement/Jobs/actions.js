@@ -92,3 +92,43 @@ export function getJobsError(data) {
     payload: data,
   };
 }
+
+export function getCustomers() {
+  return {
+    type: Constants.GET_CUSTOMERS,
+  };
+}
+
+export function getCustomersSuccess(data) {
+  return {
+    type: Constants.GET_CUSTOMERS_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getCustomersError(data) {
+  return {
+    type: Constants.GET_CUSTOMERS_ERROR,
+    payload: data,
+  };
+}
+
+export function getEmployees() {
+  return {
+    type: Constants.GET_EMPLOYEES,
+  };
+}
+
+export function getEmployeesSuccess(data) {
+  return {
+    type: Constants.GET_EMPLOYEES_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getEmployeesError(data) {
+  return {
+    type: Constants.GET_EMPLOYEES_ERROR,
+    payload: data,
+  };
+}

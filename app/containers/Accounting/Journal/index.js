@@ -17,12 +17,13 @@ import AddNewJournal from './components/AddNewJournal';
 import TaxDialog from './components/TaxDialog';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
+import * as AccSelectors from './../selectors';
 
 export function Journal(props) {
   useInjectReducer({ key: 'journal', reducer });
   useInjectSaga({ key: 'journal', saga });
 
-  const { loading, match, getAccountingSetup, getJournalList, getCurrencies, getChartOfAccounts, getTaxes, getAccountingPeriods } = props;
+  const { loading, history, match, accSetUpData, getAccountingSetup, getJournalList, getCurrencies, getChartOfAccounts, getTaxes, getAccountingPeriods } = props;
   const { path } = match
 
   useEffect(() => {
@@ -33,6 +34,10 @@ export function Journal(props) {
     getTaxes();
     getAccountingPeriods();
   }, []);
+
+  if(!accSetUpData){
+    history.push('/account/settings');
+  }
 
   return (
     <div>
@@ -60,6 +65,7 @@ Journal.propTypes = {
 const mapStateToProps = createStructuredSelector({
   journal: makeSelectJournal(),
   loading: Selectors.makeSelectLoading(),
+  accSetUpData: AccSelectors.makeSelectGetAccountingSetupData(),
 });
 
 function mapDispatchToProps(dispatch) {

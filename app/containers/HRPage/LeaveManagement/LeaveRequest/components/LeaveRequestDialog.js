@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
@@ -7,15 +7,11 @@ import { compose } from 'redux';
 import _ from 'lodash';
 import EzoneUtils from '../../../../../utils/EzoneUtils'
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import ScheduleIcon from '@material-ui/icons/Schedule'
 import AttachFileIcon from '@material-ui/icons/AttachFile'
-import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, FormLabel, MenuItem, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete'
+import { AppBar, Box, Button, IconButton, Dialog, DialogActions, DialogContent, Divider, Grid, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
@@ -30,6 +26,9 @@ const useStyles = makeStyles(theme => ({
   input: {
     display: 'none',
   },
+  divider: {
+    margin: theme.spacing(1, 0)
+  }
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -45,8 +44,8 @@ const model = {
 function LeaveRequestDialog(props) {
   const classes = useStyles();
   const { closeNewLeaveRequestDialog, dialog, leaveTypes, employees, createLeaveRequest } = props;
-  const [leaveType, setLeaveType] = React.useState({})
-  const [form, setForm] = React.useState({
+  const [leaveType, setLeaveType] = useState({})
+  const [form, setForm] = useState({
     leaveTypeId: '',
     base64doc: '',
     description: '',
@@ -66,9 +65,11 @@ function LeaveRequestDialog(props) {
     till: moment().format('YYYY-MM-DDTHH:mm:ss.SSS')
   });
 
-  React.useEffect(() => {
-    if (dialog.type == 'edit') {
+  useEffect(() => {
+    if (dialog.type === 'edit' && dialog.data) {
       setForm({ ...dialog.data })
+    } else {
+      setForm({ ...form })
     }
   }, [dialog])
 
@@ -76,8 +77,9 @@ function LeaveRequestDialog(props) {
     setForm({ ...form, leaveSchedules: [...form.leaveSchedules, model] })
   }
   const removeRow = index => {
-    form.leaveSchedules.splice(index, 1)
-    setForm(form)
+    const { leaveSchedules } = form
+    leaveSchedules.splice(index, 1);
+    setForm({ ...form, leaveSchedules });
   }
 
   console.log(employees, "employees leave request")
@@ -94,9 +96,9 @@ function LeaveRequestDialog(props) {
 
   const handleSelectChange = name => (event, obj) => {
     name === 'employeeId' &&
-      setForm({ ...form, [name]: obj.id });
+      setForm({ ...form, [name]: obj ? obj.id : obj });
     name === 'leaveTypeId' && (
-      setForm({ ...form, [name]: obj.id }),
+      setForm({ ...form, [name]: obj ? obj.id : obj }),
       setLeaveType(obj)
     )
   }
@@ -146,7 +148,7 @@ function LeaveRequestDialog(props) {
         </AppBar>
 
         <DialogContent dividers>
-          <Grid container spacing={1}>
+          <Grid container alignItems="center" spacing={1}>
             <Grid item xs={12}>
               <Autocomplete
                 id="leave-type-id"
@@ -161,7 +163,7 @@ function LeaveRequestDialog(props) {
                     label="Leave Type"
                     variant="outlined"
                     placeholder="Search"
-                    margin="normal"
+                    margin="dense"
                     fullWidth
                     helperText={
                       form.leaveTypeId ? 'You have selected a ' + moment(leaveType.validTill).
@@ -185,7 +187,7 @@ function LeaveRequestDialog(props) {
                     label="Employee"
                     variant="outlined"
                     placeholder="Search"
-                    margin="normal"
+                    margin="dense"
                     fullWidth
                   />
                 )}
@@ -196,7 +198,7 @@ function LeaveRequestDialog(props) {
                 id="leave-allowance"
                 name="leaveAllowance"
                 placeholder="Leave Allowance"
-                margin="normal"
+                margin="dense"
                 variant="outlined"
                 size="small"
                 label="Leave Allowance"
@@ -209,7 +211,7 @@ function LeaveRequestDialog(props) {
                 id="no-of-days"
                 name="noOfDays"
                 placeholder="Number of Days"
-                margin="normal"
+                margin="dense"
                 variant="outlined"
                 size="small"
                 label="Number of Days"
@@ -223,7 +225,7 @@ function LeaveRequestDialog(props) {
                   autoOk
                   inputVariant="outlined"
                   format="dd/MM/yyyy"
-                  margin="normal"
+                  margin="dense"
                   fullWidth
                   size="small"
                   name="from"
@@ -243,7 +245,7 @@ function LeaveRequestDialog(props) {
                   autoOk
                   inputVariant="outlined"
                   format="dd/MM/yyyy"
-                  margin="normal"
+                  margin="dense"
                   fullWidth
                   size="small"
                   name="till"
@@ -263,7 +265,7 @@ function LeaveRequestDialog(props) {
               </MuiPickersUtilsProvider>
             </Grid>
             <Grid item xs={12}>
-              <Divider />
+              <Divider className={classes.divider} />
             </Grid>
             <Grid item xs={12}>
               <Typography color="textPrimary" variant="subtitle1">
@@ -273,13 +275,12 @@ function LeaveRequestDialog(props) {
 
             {form.leaveSchedules.map((row, i) => (
               <React.Fragment key={i}>
-                <Grid item xs={6}>
+                <Grid item xs={5}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
                       autoOk
                       inputVariant="outlined"
                       format="dd/MM/yyyy"
-                      margin="normal"
                       fullWidth
                       size="small"
                       name="fromDate"
@@ -293,13 +294,12 @@ function LeaveRequestDialog(props) {
                     />
                   </MuiPickersUtilsProvider>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={5}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
                       autoOk
                       inputVariant="outlined"
                       format="dd/MM/yyyy"
-                      margin="normal"
                       fullWidth
                       size="small"
                       name="tillDate"
@@ -313,7 +313,9 @@ function LeaveRequestDialog(props) {
                     />
                   </MuiPickersUtilsProvider>
                 </Grid>
-                <Grid item xs={12}><Divider /></Grid>
+                <Grid item xs={2}>
+                  <IconButton color="primary" onClick={() => removeRow(i)}><DeleteIcon /></IconButton>
+                </Grid>
               </React.Fragment>
             ))}
             <Grid item xs={12}>
@@ -326,10 +328,11 @@ function LeaveRequestDialog(props) {
                 name="description"
                 placeholder="Description"
                 fullWidth
-                margin="normal"
+                margin="dense"
                 variant="outlined"
                 multiline
-                rows={4}
+                rows={2}
+                rowsMax={3}
                 size="small"
                 label="Reason"
                 value={form.description}
@@ -356,15 +359,16 @@ function LeaveRequestDialog(props) {
                 />
                 Attach a file
               </Button>
+              {form.base64doc && <Box my={1}><img height='120px' src={`data:image/jpg;base64, ${form.base64doc}`} /></Box>}
             </Grid>
           </Grid>
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={closeNewLeaveRequestDialog} color="primary">
+          <Button onClick={closeNewLeaveRequestDialog} variant="contained" disableElevation>
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={!canSubmitForm()} color="primary">
+          <Button onClick={handleSubmit} disabled={!canSubmitForm()} variant="contained" color="primary" disableElevation>
             Submit
           </Button>
         </DialogActions>

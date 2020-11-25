@@ -42,9 +42,10 @@ const apps = [
   { id: 8, name: 'Process Workflow', url: '/workflow', icon: ProjectsIcon, img: 'all_inclusive' },
   { id: 9, name: 'Store Management', url: '/inventory/dashboard', icon: StoreIcon, img: 'store' },
   { id: 10, name: 'Project Management', url: '/project-manager/dashboard', icon: StoreIcon, img: 'store' },
-  { id: 11, name: 'Task Management', url: '/task-manager/tasks', icon: TaskIcon, img: 'list_alt' },
-  { id: 12, name: 'Work Order', url: '/work-order', icon: ProjectsIcon, img: 'ballot' },
-  { id: 13, name: 'LMS', url: '/lms/dashboard', icon: ProjectsIcon, img: 'library_books' },
+  { id: 11, name: 'Payroll', url: '/payroll', icon: AcctIcon, img: 'menu_book' },
+  { id: 12, name: 'Task Management', url: '/task-manager/tasks', icon: TaskIcon, img: 'list_alt' },
+  { id: 13, name: 'Work Order', url: '/work-order', icon: ProjectsIcon, img: 'ballot' },
+  { id: 14, name: 'LMS', url: '/lms/dashboard', icon: ProjectsIcon, img: 'library_books' },
 ];
 
 export default apps;

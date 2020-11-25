@@ -116,7 +116,7 @@ const initialEntry = {
 
 const initialState = {
   attachments: [],
-  currencyId: 0,
+  currencyId: '',
   entries: [],
   exchangeRate: 0,
   note: '',
@@ -143,7 +143,7 @@ const NewJournal = props => {
     openNewTaxDialog,
   } = props;
 
-  const { currency } = accountSetupData;
+  const currency = accountSetupData ? accountSetupData.currency : null
   const activePeriod = _.find(accountingPeriods, { activeYear: true, status: true })
 
   const classes = useStyles(props);
@@ -270,7 +270,6 @@ const NewJournal = props => {
   console.log(accountSetupData, 'accountSetupData');
 
   console.log(values, 'values');
-  console.log(dialog, 'new journal form');
   return (
     <div>
       <Card elevation={0} className={classes.card}>
@@ -283,7 +282,11 @@ const NewJournal = props => {
               id="period-id"
               size="small"
               options={accountingPeriods.filter(period => period.status)}
-              getOptionLabel={option => `FY: ${moment(option.startDate).format('ll')} - ${moment(option.endDate).format('ll')}`}
+              getOptionLabel={option => (
+                option.activeYear
+                ? `FY: ${moment(option.startDate).format('ll')} — ${moment(option.endDate).format('ll')}*`
+                : `FY: ${moment(option.startDate).format('ll')} — ${moment(option.endDate).format('ll')}`
+                )}
               onChange={handleSelectChange('periodId')}
               value={values.periodId ? _.find(accountingPeriods, { id: values.periodId }) : null}
               style={{ width: 300 }}
@@ -322,7 +325,7 @@ const NewJournal = props => {
                 />
               </MuiPickersUtilsProvider>
 
-              <FormControl component="fieldset" fullWidth>
+              <FormControl component="fieldset" fullWidth disabled={!(accountSetupData && accountSetupData.multiCurrency)}>
                 <FormControlLabel
                   control={<Checkbox checked={option} onChange={() => setOption(!option)} name="option" />}
                   label="Use other currency"
