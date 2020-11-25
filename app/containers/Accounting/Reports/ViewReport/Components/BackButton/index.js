@@ -91,7 +91,7 @@ const ControlledButtons = ({
               printRef={componentRef}
               className="bell"
             />
-            <ExportAs data={printCsc} setPrint={setPrint} />
+            <ExportAs data={printCsc || tableData} setPrint={setPrint} />
           </div>
         </div>
       </Toolbar>

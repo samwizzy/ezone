@@ -12,7 +12,7 @@ const selectReportsDomain = state => state.reports || initialState;
  */
 
 /**
- * Default selector used by Banking
+ * Default selector used by Reports
  */
 
 const makeSelectReports = () =>
@@ -58,6 +58,39 @@ const makeSelectTrialBalance = () =>
     substate => substate.trialBalance,
   );
 
+const makeSelectFixedAssetRegister = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.fixedAssetRegister,
+  );
+
+const makeSelectFixedAssetRegisterTimeRange = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.fixedAssetRegisterTimeRange,
+  );
+const makeSelectFixedAssetSchedule = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.fixedAssetSchedule,
+  );
+
+const makeSelectFixedAssetScheduleTimeRange = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.fixedAssetScheduleTimeRange,
+  );
+const makeSelectIncomeStatement = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.incomeStatement,
+  );
+
+const makeSelectIncomeStatementTimeRange = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.incomeStatementTimeRange,
+  );
 export default makeSelectReports;
 
 export {
@@ -69,4 +102,10 @@ export {
   makeSelectChatsOfAccount,
   makeSelectGeneralLedger,
   makeSelectTrialBalance,
+  makeSelectFixedAssetRegister,
+  makeSelectFixedAssetRegisterTimeRange,
+  makeSelectFixedAssetSchedule,
+  makeSelectFixedAssetScheduleTimeRange,
+  makeSelectIncomeStatement,
+  makeSelectIncomeStatementTimeRange,
 };

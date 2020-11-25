@@ -85,6 +85,8 @@ const GeneralJournal = ({
 
   const classes = useStyles();
 
+  console.log('rRRRRRRRRR', generalJournal);
+
   useInjectReducer({ key: 'reports', reducer: viewReportReducer });
   useInjectSaga({ key: 'reports', saga: ReportSaga });
 
