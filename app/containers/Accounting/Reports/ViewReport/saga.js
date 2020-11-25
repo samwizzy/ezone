@@ -13,9 +13,11 @@ export function* getGeneralJournalSaga() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const { startDate, endDate } = yield select(Selectors.makeSelectTime());
 
-  const requestURL = `${Endpoints.GetGeneralJournalApi
-    }?endDate=${endDate}&startDate=${startDate}&orgId=${currentUser.organisation.orgId
-    }`;
+  const requestURL = `${
+    Endpoints.GetGeneralJournalApi
+  }?endDate=${endDate}&startDate=${startDate}&orgId=${
+    currentUser.organisation.orgId
+  }`;
   console.log('requestURL', requestURL);
 
   try {
@@ -38,7 +40,11 @@ export function* getChatOfAccountSaga() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const { startDate, endDate } = yield select(Selectors.makeSelectTime());
 
-  const requestURL = `${Endpoints.GetChatsOfAccountApi}?endDate=${endDate}&startDate=${startDate}&orgId=${currentUser.organisation.orgId}&pageFrom=0&pageTo=0`;
+  const requestURL = `${
+    Endpoints.GetChatsOfAccountApi
+  }?endDate=${endDate}&startDate=${startDate}&orgId=${
+    currentUser.organisation.orgId
+  }&pageFrom=0&pageTo=0`;
 
   try {
     const getChatsOfAccountResponse = yield call(request, requestURL, {
@@ -63,9 +69,11 @@ export function* getGeneralLedgerSaga() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const { startDate, endDate } = yield select(Selectors.makeSelectTime());
 
-  const requestURL = `${Endpoints.GetGeneralLedgerApi
-    }?endDate=${endDate}&startDate=${startDate}&orgId=${currentUser.organisation.orgId
-    }`;
+  const requestURL = `${
+    Endpoints.GetGeneralLedgerApi
+  }?endDate=${endDate}&startDate=${startDate}&orgId=${
+    currentUser.organisation.orgId
+  }`;
   console.log('requestURL', requestURL);
 
   try {
@@ -82,15 +90,109 @@ export function* getGeneralLedgerSaga() {
     yield put(Actions.getGeneralLedgerErrorAction(err));
   }
 }
+/** Get Fixed Asset Register saga */
+
+export function* getFixedAssetRegisterSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const { startDate, endDate } = yield select(Selectors.makeSelectTime());
+
+  const requestURL = `${
+    Endpoints.GetFixedAssetRegisterApi
+  }?endDate=${endDate}&startDate=${startDate}&orgId=${
+    currentUser.organisation.orgId
+  }`;
+  console.log('requestURL', requestURL);
+
+  try {
+    const fixedAssetRegisterResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+    yield put(
+      Actions.getFixedAssetRegisterSuccesAction(fixedAssetRegisterResponse),
+    );
+  } catch (err) {
+    swal('Error', 'Something went wrong', 'error');
+    yield put(Actions.getFixedAssetRegisterErrorAction(err));
+  }
+}
+
+/** Get Fixed Asset Schedule saga */
+
+export function* getFixedAssetScheduleSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const { startDate, endDate } = yield select(Selectors.makeSelectTime());
+
+  const requestURL = `${
+    Endpoints.GetFixedAssetScheduleApi
+  }?endDate=${endDate}&startDate=${startDate}&orgId=${
+    currentUser.organisation.orgId
+  }`;
+  console.log('requestURL', requestURL);
+
+  try {
+    const fixedAssetScheduleResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+    yield put(
+      Actions.getFixedAssetScheduleSuccesAction(fixedAssetScheduleResponse),
+    );
+  } catch (err) {
+    swal('Error', 'Something went wrong', 'error');
+    yield put(Actions.getFixedAssetScheduleErrorAction(err));
+  }
+}
+
+/** Get Income statement API */
+
+export function* getIncomeStatementSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const { startDate, endDate } = yield select(Selectors.makeSelectTime());
+
+  const requestURL = `${
+    Endpoints.GetIncomeStatementReportApi
+  }?endDate=${endDate}&startDate=${startDate}&orgId=${
+    currentUser.organisation.orgId
+  }`;
+  console.log('requestURL', requestURL);
+
+  try {
+    const incomeStatementResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+    yield put(Actions.getIncomeStatementSuccesAction(incomeStatementResponse));
+  } catch (err) {
+    swal('Error', 'Something went wrong', 'error');
+    yield put(Actions.getIncomeStatementErrorAction(err));
+  }
+}
+
+/** Get trial balance saga */
 
 export function* getTrialBalanceSaga() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const { startDate, endDate } = yield select(Selectors.makeSelectTime());
 
-  const requestURL = `${Endpoints.GetTrialBalanceApi
-    }?endDate=${endDate}&startDate=${startDate}&orgId=${currentUser.organisation.orgId
-    }`;
+  const requestURL = `${
+    Endpoints.GetTrialBalanceApi
+  }?endDate=${endDate}&startDate=${startDate}&orgId=${
+    currentUser.organisation.orgId
+  }`;
   console.log('requestURL', requestURL);
 
   try {
@@ -102,7 +204,6 @@ export function* getTrialBalanceSaga() {
       }),
     });
     yield put(Actions.getTrialBalanceSuccesAction(trialBalanceResponse));
-    console.log('ttttttttttttttttttttt', trialBalanceResponse);
   } catch (err) {
     swal('Error', 'Something went wrong', 'error');
     yield put(Actions.getTrialBalanceErrorAction(err));
@@ -125,4 +226,16 @@ export default function* ReportSaga() {
     getGeneralLedgerSaga,
   );
   yield takeLatest(Constants.GET_ALL_TRIAL_BALANCE_TYPES, getTrialBalanceSaga);
+  yield takeLatest(
+    Constants.GET_ALL_FIXED_ASSET_REGISTER_TYPES,
+    getFixedAssetRegisterSaga,
+  );
+  yield takeLatest(
+    Constants.GET_ALL_FIXED_ASSET_SCHEDULE_TYPES,
+    getFixedAssetScheduleSaga,
+  );
+  yield takeLatest(
+    Constants.GET_ALL_INCOME_STATEMENT_TYPES,
+    getIncomeStatementSaga,
+  );
 }

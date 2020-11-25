@@ -100,3 +100,84 @@ export function getTrialBalanceErrorAction(data) {
     payload: data,
   };
 }
+
+/**Get FIxed Asset Register */
+export function getAllFixedAssetRegisterAction() {
+  return {
+    type: Constants.GET_ALL_FIXED_ASSET_REGISTER_TYPES,
+  };
+}
+export function getFixedAssetRegisterSuccesAction(data) {
+  return {
+    type: Constants.GET_FIXED_ASSET_REGISTER_SUCCES_ACTION,
+    payload: data,
+  };
+}
+
+export function getFixedAssetRegisterErrorAction(data) {
+  return {
+    type: Constants.GET_FIXED_ASSET_REGISTER_ERR,
+    payload: data,
+  };
+}
+
+export function getFixedAssetRegisterRangeAction(data) {
+  return {
+    type: Constants.GET_FIXED_ASSET_REGISTER_RANGE,
+    payload: data,
+  };
+}
+
+/**Get FIxed Asset Shedules */
+export function getAllFixedAssetScheduleAction() {
+  return {
+    type: Constants.GET_ALL_FIXED_ASSET_SCHEDULE_TYPES,
+  };
+}
+export function getFixedAssetScheduleSuccesAction(data) {
+  return {
+    type: Constants.GET_FIXED_ASSET_SCHEDULE_SUCCES_ACTION,
+    payload: data,
+  };
+}
+
+export function getFixedAssetScheduleErrorAction(data) {
+  return {
+    type: Constants.GET_FIXED_ASSET_SCHEDULE_ERR,
+    payload: data,
+  };
+}
+
+export function getFixedAssetScheduleRangeAction(data) {
+  return {
+    type: Constants.GET_FIXED_ASSET_SCHEDULE_RANGE,
+    payload: data,
+  };
+}
+
+/**Get Income Statement */
+export function getAllIncomeStatementAction() {
+  return {
+    type: Constants.GET_ALL_INCOME_STATEMENT_TYPES,
+  };
+}
+export function getIncomeStatementSuccesAction(data) {
+  return {
+    type: Constants.GET_INCOME_STATEMENT_SUCCES_ACTION,
+    payload: data,
+  };
+}
+
+export function getIncomeStatementErrorAction(data) {
+  return {
+    type: Constants.GET_INCOME_STATEMENT_ERR,
+    payload: data,
+  };
+}
+
+export function getIncomeStatementRangeAction(data) {
+  return {
+    type: Constants.GET_INCOME_STATEMENT_RANGE,
+    payload: data,
+  };
+}

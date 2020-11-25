@@ -15,30 +15,55 @@ import Table from '../../Components/Table';
 import TopMenu from '../../Components/TopMenu';
 import Company from '../../Components/CompanyLogo';
 import formatDate from '../../Helpers';
+import ControlledButtons from '../../Components/BackButton';
 import * as Select from '../../../../../App/selectors';
 import './style.css';
 
-const ComprehensiveIncome = ({ time, user, dispatchCleanUpAction }) => {
+const ComprehensiveIncome = ({
+  time,
+  user,
+  incomeStatement,
+  incomeStatementRange,
+  dispatchGetAllIncomeStatementAction,
+  dispatchGetGeneralJournalTimeAction,
+  dispatchCleanUpAction,
+  dispatchGetIncomeStatementRangeAction,
+}) => {
   const componentRef = useRef();
   const tableRef = useRef();
   const companyRef = useRef();
   const [print, setPrint] = useState(false);
   const [display, setDisplay] = useState(false);
-  const { organisation } = user;
-  const { startDate, endDate } = time;
   const [tabledata, setTabledata] = useState([]);
 
-  // dispatchGetGeneralLedgerTimeAction
+  const { organisation } = user;
+  const { startDate, endDate } = time;
+  const [period, setPeriod] = useState({ firstDate: '', lastDate: '' });
+
   useInjectReducer({ key: 'reports', reducer: viewReportReducer });
   useInjectSaga({ key: 'reports', saga: ReportSaga });
 
   useEffect(() => {
+    if (period.lastDate && period.firstDate) {
+      dispatchGetGeneralJournalTimeAction({
+        startDate: period.firstDate,
+        endDate: period.lastDate,
+      });
+      handleData();
+    }
     return async () => await dispatchCleanUpAction();
-  }, []);
+  }, [period]);
+  console.log(
+    'ggggggggggggggggggggggggggggggggggggggggg',
+    incomeStatement,
+    incomeStatementRange,
+  );
+  useEffect(() => {
+    dispatchGetIncomeStatementRangeAction({ selectedRange: setDate });
+  }, [display]);
 
   const handleData = () => {
-    // dispatchGetAllGeneralLedgerTypeAction();
-    // console.log('=============================================>');
+    dispatchGetAllIncomeStatementAction();
     setDisplay(true);
   };
   useEffect(() => {
@@ -70,18 +95,48 @@ const ComprehensiveIncome = ({ time, user, dispatchCleanUpAction }) => {
       'MMM Do YYYY',
     )}`;
 
+  const dateValue = ({ target }) => {
+    if (target.name === 'Start Date') {
+      setPeriod({ ...period, firstDate: target.value.split('-').join('/') });
+    }
+    if (target.name === 'End Date') {
+      setPeriod({ ...period, lastDate: target.value.split('-').join('/') });
+    }
+  };
+
+  useEffect(() => {
+    if (period.lastDate && period.firstDate) {
+      dispatchGetGeneralJournalTimeAction({
+        startDate: period.firstDate,
+        endDate: period.lastDate,
+      });
+      handleData();
+    }
+  }, [period]);
+
+  useEffect(() => {
+    console.log('===========================================>>>>');
+    dispatchGetIncomeStatementRangeAction({ selectedRange: setDate });
+  }, [display]);
+
   return (
     <React.Fragment>
-      <TopMenu
+      <ControlledButtons
         componentRef={componentRef}
         print={print}
         setPrint={setPrint}
+        tableData={tabledata}
+        // printCsc={[columns, data ? { ...data } : '']}
         handleFetch={handleData}
         pdflogo={organisation.logo}
         tableRef={tableRef}
         companyRef={companyRef}
         daterange={setDate}
-        tableData={tabledata}
+        dateValue={dateValue}
+        // head={[columns]}
+        // body={data}
+        fromDay="Start Date"
+        toDay="End Date"
       />
       <div ref={componentRef}>
         <Company
@@ -100,21 +155,18 @@ const ComprehensiveIncome = ({ time, user, dispatchCleanUpAction }) => {
             </thead>
             <tbody>
               <tr>
-                <td>Income Revenue </td>
+                <td>Revenue </td>
                 <td />
               </tr>
+
               <tr>
-                <td colSpan={3} style={{ height: '30px' }} />
-              </tr>
-              <tr>
-                <td>Cost of Goods Sold</td>
+                <td>Direct Cost</td>
                 <td />
               </tr>
               <tr>
                 <td>Gross Profit</td>
                 <td />
               </tr>
-
               <tr>
                 <td>Other Operating Income</td>
                 <td />
@@ -166,13 +218,20 @@ const ComprehensiveIncome = ({ time, user, dispatchCleanUpAction }) => {
 const mapStateToProps = createStructuredSelector({
   time: Selectors.makeSelectTime(),
   user: Select.makeSelectCurrentUser(),
+  incomeStatement: Selectors.makeSelectIncomeStatement(),
+  incomeStatementRange: Selectors.makeSelectIncomeStatementTimeRange(),
 });
 
 const mapDispatchToProps = dispatch => ({
+  dispatchGetGeneralJournalTimeAction: data =>
+    dispatch(Actions.getGeneralJournalTimeAction(data)),
+  dispatchGetIncomeStatementRangeAction: data =>
+    dispatch(Actions.getIncomeStatementRangeAction(data)),
+  dispatchGetAllIncomeStatementAction: () =>
+    dispatch(Actions.getAllIncomeStatementAction()),
   dispatchCleanUpAction: () => dispatch(Actions.cleanUpGeneralJournalAction()),
   dispatch,
 });
-
 const withConnect = connect(
   mapStateToProps,
   mapDispatchToProps,
@@ -183,11 +242,16 @@ export default compose(
   memo,
 )(ComprehensiveIncome);
 
-// {display && (
-//   <Table
-//     ref={tableRef}
-//     // data={tableData}
-//     // TableHeadData={TableHeadData}
-//     // TableFooterData={TableFooterData}
-//   />
-// )}
+/**
+ * <TopMenu
+        componentRef={componentRef}
+        print={print}
+        setPrint={setPrint}
+        handleFetch={handleData}
+        pdflogo={organisation.logo}
+        tableRef={tableRef}
+        companyRef={companyRef}
+        daterange={setDate}
+        tableData={tabledata}
+      />
+ */

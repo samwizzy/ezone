@@ -7,6 +7,7 @@
   min-width: 10px;
   /* position: absolute; */
   border: none;
+  outline: none;
   padding-left: 10px;
   margin-right: 10px;
   border: 1px solid #ced4da;
@@ -30,17 +31,6 @@ input[type='date']:focus::before {
   background: none;
   outline: none;
 }
-/* input[type='date']::before {
-  position: absolute;
-  background: inherit;
-  width: 60%;
-  content: attr(placeholder);
-}
-input[type='date']:focus::before,
-input:not([value=''])::before {
-  content: '' !important;
-  background: none;
-} */
 .flex-btn {
   display: flex;
   align-items: center;

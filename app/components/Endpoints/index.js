@@ -402,5 +402,8 @@ export const GetGeneralJournalApi = `${BaseUrl}/accountingserv/api/v1/report/get
 export const GetGeneralLedgerApi = `${BaseUrl}/accountingserv/api/v1/report/get_general_ledger`;
 export const GetChatsOfAccountApi = `${BaseUrl}/accountingserv/api/v1/report/get_chart_of_account`;
 export const GetTrialBalanceApi = `${BaseUrl}/accountingserv/api/v1/report/get_trial_balance`;
+export const GetFixedAssetRegisterApi = `${BaseUrl}/accountingserv/api/v1/report/get_fixed_asset_register`;
+export const GetFixedAssetScheduleApi = `${BaseUrl}/accountingserv/api/v1/report/get_fixed_asset_schedule`;
+export const GetIncomeStatementReportApi = `${BaseUrl}/accountingserv/api/v1/report/get_income_statement`;
 // STUDENT API
 export const RegisterStudentApi = `${BaseUrl}/lmsserv/lms/v1/register_student`;

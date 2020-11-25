@@ -5,10 +5,16 @@ export const initialState = {
   loading: true,
   error: false,
   time: { startDate: '', endDate: '' },
+  fixedAssetRegisterTimeRange: { selectedRange: '' },
+  fixedAssetScheduleTimeRange: { selectedRange: '' },
+  incomeStatementTimeRange: { selectedRange: '' },
   generaljournal: [],
   chatsOfAccount: [],
   generalLedger: [],
   trialBalance: [],
+  fixedAssetRegister: [],
+  fixedAssetSchedule: [],
+  incomeStatement: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -128,6 +134,99 @@ const viewReportReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: action.payload,
+        };
+      }
+      // Case to get Fixed asset register
+      case Constants.GET_ALL_FIXED_ASSET_REGISTER_TYPES: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      // Case to get Fixed asset register success
+      case Constants.GET_FIXED_ASSET_REGISTER_SUCCES_ACTION: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          fixedAssetRegister: action.payload,
+        };
+      }
+      //error
+      case Constants.GET_FIXED_ASSET_REGISTER_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_FIXED_ASSET_REGISTER_RANGE: {
+        return {
+          ...state,
+          fixedAssetRegisterTimeRange: action.payload,
+        };
+      }
+      // Case to get Fixed asset schedule
+      case Constants.GET_ALL_FIXED_ASSET_SCHEDULE_TYPES: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      // Case to get Fixed asset schedule success
+      case Constants.GET_FIXED_ASSET_SCHEDULE_SUCCES_ACTION: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          fixedAssetSchedule: action.payload,
+        };
+      }
+      //error
+      case Constants.GET_FIXED_ASSET_SCHEDULE_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_FIXED_ASSET_SCHEDULE_RANGE: {
+        return {
+          ...state,
+          fixedAssetScheduleTimeRange: action.payload,
+        };
+      }
+      // Case to get income statement
+      case Constants.GET_ALL_INCOME_STATEMENT_TYPES: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      // Case to get income statement success
+      case Constants.GET_INCOME_STATEMENT_SUCCES_ACTION: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          incomeStatement: action.payload,
+        };
+      }
+      //error
+      case Constants.GET_INCOME_STATEMENT_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_INCOME_STATEMENT_RANGE: {
+        return {
+          ...state,
+          incomeStatementTimeRange: action.payload,
         };
       }
     }
