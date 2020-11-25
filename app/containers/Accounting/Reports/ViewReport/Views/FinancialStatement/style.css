@@ -8,29 +8,35 @@
 .cashflow {
   overflow-x: auto;
 }
+
 .comprehensiveIncomeStatement td,
 th {
   padding: 5px 0;
   border: 1px solid rgba(224, 224, 224, 1);
 }
+
 .financialTable th {
   background-color: #1a88e1;
   color: white;
 }
+
 .financialTable td,
 th {
   padding: 5px 0;
   border: 1px solid rgba(224, 224, 224, 1);
 }
+
 .cashflow th {
   background-color: #1a88e1;
   color: white;
 }
+
 .cashflow td,
 th {
   padding: 5px 0;
   border: 1px solid rgba(224, 224, 224, 1);
 }
+
 .financialTable,
 .comprehensiveIncomeStatement,
 .cashflow table {
@@ -43,44 +49,57 @@ th {
   padding-left: 10px;
   font-weight: bold;
 }
+
 .comprehensiveIncomeStatement table tr:nth-of-type(2) td {
   padding-left: 30px;
 }
+
 .comprehensiveIncomeStatement table tr:nth-of-type(3) td {
   padding-left: 30px;
 }
+
 .comprehensiveIncomeStatement table tr:nth-of-type(4) td {
   padding-left: 30px;
 }
+
 .comprehensiveIncomeStatement table tr:nth-of-type(5) td {
   padding-left: 30px;
 }
+
 .comprehensiveIncomeStatement table tr:nth-of-type(6) td {
   padding-left: 30px;
 }
+
 .comprehensiveIncomeStatement table tr:nth-of-type(7) td {
   padding-left: 30px;
 }
+
 .comprehensiveIncomeStatement table tr:nth-of-type(8) td {
   padding-left: 30px;
 }
+
 .comprehensiveIncomeStatement table tr:nth-of-type(9) td {
   padding-left: 30px;
 }
+
 .comprehensiveIncomeStatement table tr:nth-of-type(10) td {
   padding-left: 30px;
 }
+
 .comprehensiveIncomeStatement table tr:nth-of-type(11) td {
   padding-left: 30px;
   font-weight: bold;
 }
+
 .comprehensiveIncomeStatement table tr:nth-of-type(12) td {
   padding-left: 30px;
 }
+
 .comprehensiveIncomeStatement table tr:nth-of-type(13) td {
   padding-left: 30px;
   font-weight: bold;
 }
+
 .comprehensiveIncomeStatement table tr:nth-of-type(14) td {
   padding-left: 30px;
   font-weight: bold;
@@ -90,6 +109,7 @@ th {
   padding-left: 10px;
   font-weight: bold;
 }
+
 .financialTable table tr:nth-of-type(2) td {
   padding-left: 30px;
   font-weight: bold;
@@ -98,189 +118,243 @@ th {
 .financialTable table tr:nth-of-type(3) td {
   padding-left: 40px;
 }
+
 .financialTable table tr:nth-of-type(4) td {
   padding-left: 40px;
 }
+
 .financialTable table tr:nth-of-type(5) td {
   padding-left: 30px;
   font-weight: bold;
 }
+
 .financialTable table tr:nth-of-type(6) td {
   padding-left: 30px;
   font-weight: bold;
 }
+
 .financialTable table tr:nth-of-type(7) td {
   padding-left: 30px;
   font-weight: bold;
 }
+
 .financialTable table tr:nth-of-type(8) td {
   padding-left: 40px;
 }
+
 .financialTable table tr:nth-of-type(9) td {
   padding-left: 40px;
 }
+
 .financialTable table tr:nth-of-type(10) td {
   padding-left: 40px;
 }
+
 .financialTable table tr:nth-of-type(11) td {
   padding-left: 30px;
   font-weight: bold;
 }
+
 .financialTable table tr:nth-of-type(12) td {
   padding-left: 10px;
   font-weight: bold;
 }
+
 .financialTable table tr:nth-of-type(13) td {
   padding-left: 10px;
   font-weight: bold;
 }
+
 .financialTable table tr:nth-of-type(14) td {
   padding-left: 10px;
   font-weight: bold;
 }
+
 .financialTable table tr:nth-of-type(15) td {
   padding-left: 10px;
   font-weight: bold;
 }
+
 .financialTable table tr:nth-of-type(16) td {
   padding-left: 30px;
   font-weight: bold;
 }
+
 .financialTable table tr:nth-of-type(17) td {
   padding-left: 40px;
 }
+
 .financialTable table tr:nth-of-type(18) td {
   padding-left: 40px;
 }
+
 .financialTable table tr:nth-of-type(19) td {
   padding-left: 40px;
 }
+
 .financialTable table tr:nth-of-type(20) td {
   padding-left: 10px;
   font-weight: bold;
 }
+
 .financialTable table tr:nth-of-type(21) td {
   padding-left: 40px;
   font-weight: bold;
 }
+
 .financialTable table tr:nth-of-type(22) td {
   padding-left: 30px;
   font-weight: bold;
 }
+
 .financialTable table tr:nth-of-type(23) td {
   padding-left: 40px;
 }
+
 .financialTable table tr:nth-of-type(24) td {
   padding-left: 40px;
 }
+
 .financialTable table tr:nth-of-type(25) td {
   padding-left: 30px;
   font-weight: bold;
 }
+
 .financialTable table tr:nth-of-type(26) td {
   padding-left: 30px;
   font-weight: bold;
 }
+
 .financialTable table tr:nth-of-type(27) td {
   padding-left: 30px;
   font-weight: bold;
 }
+
 .financialTable table tr:nth-of-type(28) td {
   padding-left: 40px;
 }
+
 .financialTable table tr:nth-of-type(29) td {
   padding-left: 40px;
 }
+
 .financialTable table tr:nth-of-type(30) td {
   padding-left: 40px;
 }
+
 .financialTable table tr:nth-of-type(31) td {
   padding-left: 40px;
 }
+
 .financialTable table tr:nth-of-type(32) td {
   padding-left: 30px;
   font-weight: bold;
 }
+
 .financialTable table tr:nth-of-type(34) td {
   padding-left: 10px;
   font-weight: bold;
 }
 
-.cashflow table tr:nth-of-type(1) td {
+.cashflow #cash-flow table tr:nth-of-type(1) td {
   padding-left: 10px;
   font-weight: bold;
 }
-.cashflow table tr:nth-of-type(2) td {
+
+.cashflow #cash-flow tr:nth-of-type(2) td {
   padding-left: 30px;
 }
-.cashflow table tr:nth-of-type(3) td {
+
+.cashflow #cash-flow tr:nth-of-type(3) td {
   padding-left: 30px;
 }
-.cashflow table tr:nth-of-type(4) td {
+
+.cashflow #cash-flow tr:nth-of-type(4) td {
   padding-left: 30px;
 }
-.cashflow table tr:nth-of-type(5) td {
+
+.cashflow #cash-flow tr:nth-of-type(5) td {
   padding-left: 30px;
 }
-.cashflow table tr:nth-of-type(6) td {
+
+.cashflow #cash-flow tr:nth-of-type(6) td {
   padding-left: 30px;
 }
-.cashflow table tr:nth-of-type(7) td {
+
+.cashflow #cash-flow tr:nth-of-type(7) td {
   padding-left: 30px;
 }
-.cashflow table tr:nth-of-type(8) td {
+
+.cashflow #cash-flow tr:nth-of-type(8) td {
   padding-left: 30px;
 }
-.cashflow table tr:nth-of-type(9) td {
+
+.cashflow #cash-flow tr:nth-of-type(9) td {
   padding-left: 30px;
 }
-.cashflow table tr:nth-of-type(10) td {
+
+.cashflow #cash-flow tr:nth-of-type(10) td {
   padding-left: 30px;
 }
-.cashflow table tr:nth-of-type(11) td {
+
+.cashflow #cash-flow tr:nth-of-type(11) td {
   padding-left: 10px;
   font-weight: bold;
 }
-.cashflow table tr:nth-of-type(12) td {
+
+.cashflow #cash-flow tr:nth-of-type(12) td {
   padding-left: 30px;
 }
-.cashflow table tr:nth-of-type(13) td {
+
+.cashflow #cash-flow tr:nth-of-type(13) td {
   padding-left: 30px;
 }
-.cashflow table tr:nth-of-type(14) td {
+
+.cashflow #cash-flow tr:nth-of-type(14) td {
   padding-left: 30px;
 }
-.cashflow table tr:nth-of-type(15) td {
+
+.cashflow #cash-flow tr:nth-of-type(15) td {
   padding-left: 30px;
 }
-.cashflow table tr:nth-of-type(16) td {
+
+.cashflow #cash-flow tr:nth-of-type(16) td {
   padding-left: 30px;
 }
-.cashflow table tr:nth-of-type(17) td {
+
+.cashflow #cash-flow tr:nth-of-type(17) td {
   padding-left: 10px;
   font-weight: bold;
 }
-.cashflow table tr:nth-of-type(18) td {
+
+.cashflow #cash-flow tr:nth-of-type(18) td {
   padding-left: 30px;
 }
-.cashflow table tr:nth-of-type(19) td {
+
+.cashflow #cash-flow tr:nth-of-type(19) td {
   padding-left: 30px;
 }
-.cashflow table tr:nth-of-type(20) td {
+
+.cashflow #cash-flow tr:nth-of-type(20) td {
   padding-left: 30px;
 }
-.cashflow table tr:nth-of-type(21) td {
+
+.cashflow #cash-flow tr:nth-of-type(21) td {
   padding-left: 30px;
 }
-.cashflow table tr:nth-of-type(22) td {
+
+.cashflow #cash-flow tr:nth-of-type(22) td {
   padding-left: 30px;
 }
-.cashflow table tr:nth-of-type(23) td {
+
+.cashflow #cash-flow tr:nth-of-type(23) td {
   padding-left: 30px;
 }
-.cashflow table tr:nth-of-type(24) td {
+
+.cashflow #cash-flow tr:nth-of-type(24) td {
   padding-left: 30px;
 }
-.cashflow table tr:nth-of-type(25) td {
+
+.cashflow #cash-flow tr:nth-of-type(25) td {
   padding-left: 30px;
 }

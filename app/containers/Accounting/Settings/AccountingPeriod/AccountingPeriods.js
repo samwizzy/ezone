@@ -4,11 +4,13 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import classNames from 'classnames';
+import Alert from '@material-ui/lab/Alert';
 import {
   makeStyles,
   AppBar,
   Avatar,
   Button,
+  Card, CardContent,
   Chip,
   IconButton,
   Menu,
@@ -39,6 +41,7 @@ import { CircleLoader } from '../../../../components/LoadingIndicator';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+    borderRadius: 0,
   },
   paper: {
     marginBottom: theme.spacing(1),
@@ -93,6 +96,7 @@ const AccountingPeriods = props => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const {
+    loading,
     accountingSetupData,
     accountingPeriods,
     openAccountPeriodDialog,
@@ -134,8 +138,28 @@ const AccountingPeriods = props => {
     handleClose();
   };
 
-  if (!accountingSetupData || !accountingPeriods) {
+  if (loading) {
     return <CircleLoader />;
+  }
+
+  if(!accountingPeriods.length){
+    return (
+      <Card className={classes.root} elevation={0}>
+        <CardContent>
+          <Alert severity="info">
+            <Typography variant="subtitle2">You currently have no accounting periods — &nbsp;
+            <Button
+              size="small"
+              color="primary"
+              onClick={openAccountPeriodDialog}
+            >
+              Add Period
+            </Button>
+            </Typography>
+          </Alert>
+        </CardContent>
+      </Card>
+    )
   }
 
   const currentAccountingPeriod = _.find(accountingPeriods, { activeYear: true })
@@ -144,157 +168,159 @@ const AccountingPeriods = props => {
   console.log(accountingPeriods, 'accountingPeriods');
 
   return (
-    <div>
-      <Grid container>
-        <Grid item xs={12}>
-          <AppBar color="inherit" position="static" elevation={1}>
-            <Toolbar variant="dense" className={classes.toolbarHead}>
-              <Avatar><SettingsIcon /></Avatar>
-              <Typography variant="h5">Settings</Typography>
-            </Toolbar>
-          </AppBar>
+    <Card className={classes.root} elevation={0}>
+      <CardContent>
+        <Grid container>
+          <Grid item xs={12}>
+            <AppBar color="inherit" position="static" elevation={1}>
+              <Toolbar variant="dense" className={classes.toolbarHead}>
+                <Avatar><SettingsIcon /></Avatar>
+                <Typography variant="h5">Settings</Typography>
+              </Toolbar>
+            </AppBar>
 
-          <Toolbar variant="dense" className={classes.toolbar}>
-            <Typography variant="h6" className={classes.title}>
-              Accounting Period
-            </Typography>
-          </Toolbar>
-
-          <Paper square className={classes.paper}>
-            <Table className={classes.table}>
-              <TableBody>
-                <TableRow>
-                  <TableCell component="th">Financial Year Start</TableCell>
-                  <TableCell>
-                    {moment(currentAccountingPeriod.startDate).format('Do, MMM')}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th">Accounting Method</TableCell>
-                  <TableCell>
-                    {accountingSetupData && accountingSetupData.accountMethod}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th">Tax Year Start</TableCell>
-                  <TableCell>
-                    {accountingSetupData && accountingSetupData.taxDay}
-                    {accountingSetupData && accountingSetupData.taxMonth}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th">Tax Type</TableCell>
-                  <TableCell>
-                    {accountingSetupData && accountingSetupData.taxType}
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </Paper>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Toolbar variant="dense">
-            <Chip label="Current Financial Year" variant="outlined" icon={<EventAvailableIcon />} />
-            <Typography variant="h6" className={classes.title} />
-          </Toolbar>
-
-          <Paper square className={classes.paper}>
-            <Table className={classes.table}>
-              <TableBody>
-                <TableRow>
-                  <TableCell component="th">Start Date</TableCell>
-                  <TableCell>
-                    {moment(currentAccountingPeriod.startDate).format('ll')}
-                  </TableCell>
-                  <TableCell component="th">End Date</TableCell>
-                  <TableCell>
-                    {moment(currentAccountingPeriod.endDate).format('ll')}
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </Paper>
-
-          <Paper square className={classes.paper}>
-            <Toolbar variant="dense">
+            <Toolbar variant="dense" className={classes.toolbar}>
               <Typography variant="h6" className={classes.title}>
-                Financial Years
+                Accounting Period
               </Typography>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={openAccountPeriodDialog}
-                startIcon={<AddIcon />}
-              >
-                Add Period
-              </Button>
             </Toolbar>
 
-            <Table size="small" className={classes.table}>
-              <TableBody>
-                {accountingPeriods &&
-                  accountingPeriods.map((item, i) => (
-                    <TableRow key={i}>
-                      <TableCell component="th">Account Year</TableCell>
-                      <TableCell>{item.year}</TableCell>
-                      <TableCell component="th">Start Date</TableCell>
-                      <TableCell>
-                        {moment(item.startDate).format('ll')}
-                      </TableCell>
-                      <TableCell component="th">End Date</TableCell>
-                      <TableCell>{moment(item.endDate).format('ll')}</TableCell>
-                      <TableCell>{item.status ? 'Open' : 'Closed'}</TableCell>
-                      <TableCell>
-                        {item.activeYear
-                          ? <CheckCircleIcon className={classNames(classes.status, { active: item.activeYear })} />
-                          : <RadioButtonUncheckedIcon />
-                        }
-                      </TableCell>
-                      <TableCell component="th">
-                        <IconButton
-                          aria-controls="simple-menu"
-                          aria-haspopup="true"
-                          onClick={event => handleClick(event, item.id)}
-                        >
-                          <MoreVertIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </Paper>
-        </Grid>
-      </Grid>
+            <Paper square className={classes.paper}>
+              <Table className={classes.table}>
+                <TableBody>
+                  <TableRow>
+                    <TableCell component="th">Financial Year Start</TableCell>
+                    <TableCell>
+                      {currentAccountingPeriod && moment(currentAccountingPeriod.startDate).format('Do, MMM')}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell component="th">Accounting Method</TableCell>
+                    <TableCell>
+                      {accountingSetupData && accountingSetupData.accountMethod}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell component="th">Tax Year Start</TableCell>
+                    <TableCell>
+                      {accountingSetupData && (accountingSetupData.taxDay ? accountingSetupData.taxDay : '')}
+                      {accountingSetupData && (accountingSetupData.taxMonth ? accountingSetupData.taxMonth : '')}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell component="th">Tax Type</TableCell>
+                    <TableCell>
+                      {accountingSetupData && accountingSetupData.taxType}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </Paper>
+          </Grid>
 
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <MenuItem
-          onClick={handleChangeStatus}
-          disabled={selectedPeriod && selectedPeriod.status}
+          <Grid item xs={12}>
+            <Toolbar variant="dense">
+              <Chip label="Current Financial Year" variant="outlined" icon={<EventAvailableIcon />} />
+              <Typography variant="h6" className={classes.title} />
+            </Toolbar>
+
+            <Paper square className={classes.paper}>
+              <Table className={classes.table}>
+                <TableBody>
+                  <TableRow>
+                    <TableCell component="th">Start Date</TableCell>
+                    <TableCell>
+                      {currentAccountingPeriod && moment(currentAccountingPeriod.startDate).format('ll')}
+                    </TableCell>
+                    <TableCell component="th">End Date</TableCell>
+                    <TableCell>
+                      {currentAccountingPeriod && moment(currentAccountingPeriod.endDate).format('ll')}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </Paper>
+
+            <Paper square className={classes.paper}>
+              <Toolbar variant="dense">
+                <Typography variant="h6" className={classes.title}>
+                  Financial Years
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={openAccountPeriodDialog}
+                  startIcon={<AddIcon />}
+                >
+                  Add Period
+                </Button>
+              </Toolbar>
+
+              <Table size="small" className={classes.table}>
+                <TableBody>
+                  {accountingPeriods &&
+                    accountingPeriods.map((item, i) => (
+                      <TableRow key={i}>
+                        <TableCell component="th">Account Year</TableCell>
+                        <TableCell>{item.year}</TableCell>
+                        <TableCell component="th">Start Date</TableCell>
+                        <TableCell>
+                          {moment(item.startDate).format('ll')}
+                        </TableCell>
+                        <TableCell component="th">End Date</TableCell>
+                        <TableCell>{moment(item.endDate).format('ll')}</TableCell>
+                        <TableCell>{item.status ? 'Open' : 'Closed'}</TableCell>
+                        <TableCell>
+                          {item.activeYear
+                            ? <CheckCircleIcon className={classNames(classes.status, { active: item.activeYear })} />
+                            : <RadioButtonUncheckedIcon />
+                          }
+                        </TableCell>
+                        <TableCell component="th">
+                          <IconButton
+                            aria-controls="simple-menu"
+                            aria-haspopup="true"
+                            onClick={event => handleClick(event, item.id)}
+                          >
+                            <MoreVertIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </Paper>
+          </Grid>
+        </Grid>
+
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
         >
-          Open
-        </MenuItem>
-        <MenuItem
-          onClick={handleActivatePeriod}
-          disabled={selectedPeriod && selectedPeriod.activeYear}
-        >
-          Set as active
-        </MenuItem>
-        <MenuItem
-          onClick={handleChangeStatus}
-          disabled={selectedPeriod && !selectedPeriod.status}
-        >
-          Close
-        </MenuItem>
-      </Menu>
-    </div>
+          <MenuItem
+            onClick={handleChangeStatus}
+            disabled={selectedPeriod && selectedPeriod.status}
+          >
+            Open
+          </MenuItem>
+          <MenuItem
+            onClick={handleActivatePeriod}
+            disabled={selectedPeriod && selectedPeriod.activeYear}
+          >
+            Set as active
+          </MenuItem>
+          <MenuItem
+            onClick={handleChangeStatus}
+            disabled={selectedPeriod && !selectedPeriod.status}
+          >
+            Close
+          </MenuItem>
+        </Menu>
+      </CardContent>
+    </Card>
   );
 };
 

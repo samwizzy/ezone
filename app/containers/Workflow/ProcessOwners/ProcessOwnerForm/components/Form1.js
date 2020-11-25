@@ -5,9 +5,11 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import {
   makeStyles,
   AppBar,
+  Box,
   Button,
   IconButton,
   Grid,
@@ -31,7 +33,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   paper: {
-    padding: theme.spacing(3),
     boxShadow: theme.shadows[0]
   },
   backdrop: {
@@ -42,23 +43,24 @@ const useStyles = makeStyles(theme => ({
 
 const Form1 = props => {
   const classes = useStyles();
-  const { loading, form, handleChange, handleRowChange, addMore, removeMore } = props;
+  const { loading, employees, form, handleChange, handleSelectChange, handleRowChange, addMore, removeMore } = props;
 
   return (
     <Grid container spacing={2}>
-      <Grid item md={6}>
+      <Grid item md={8}>
         <Paper className={classes.paper}>
+          <Box mb={2}>
           <TextField
             name="groupName"
             label="Group Name"
             id="group-name"
             margin="normal"
             variant="outlined"
-            fullWidth
             size="small"
             value={form.groupName}
             onChange={handleChange}
           />
+          </Box>
 
           <FormLabel>
             <Typography variant="subtitle1">Process Owners</Typography>
@@ -66,30 +68,40 @@ const Form1 = props => {
 
           {form.phases && form.phases.map((phase, i) =>
             <Grid container spacing={1} alignItems="center" key={i}>
-              <Grid item xs>
-                <TextField
-                  name="unit"
-                  label="Unit"
-                  id={`outlined-phase-unit-${i}`}
-                  fullWidth
-                  margin="dense"
-                  variant="outlined"
-                  size="small"
-                  value={phase.unit}
-                  onChange={handleRowChange(i)}
+              <Grid item xs={5}>
+                <Autocomplete
+                  id={`group-owner-name-${i}`}
+                  options={employees}
+                  getOptionLabel={option => option.fullName}
+                  onChange={handleRowChange('name', i)}
+                  value={form.phases[i].name}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      fullWidth
+                      size="small"
+                      placeholder="Name"
+                    />
+                  )}
                 />
               </Grid>
-              <Grid item xs>
-                <TextField
-                  name="revenue"
-                  label="Revenue"
-                  id={`outlined-phase-revenue-${i}`}
-                  fullWidth
-                  margin="dense"
-                  variant="outlined"
-                  size="small"
-                  value={phase.revenue}
-                  onChange={handleRowChange(i)}
+              <Grid item xs={5}>
+                <Autocomplete
+                  id={`group-owner-email-${i}`}
+                  options={employees}
+                  getOptionLabel={option => option.emailAddress}
+                  onChange={handleRowChange('email', i)}
+                  value={form.phases[i].email}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                      placeholder="Email"
+                    />
+                  )}
                 />
               </Grid>
 
@@ -106,7 +118,6 @@ const Form1 = props => {
             id="group-email"
             margin="normal"
             variant="outlined"
-            fullWidth
             size="small"
             value={form.email}
             onChange={handleChange}

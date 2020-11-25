@@ -5,15 +5,18 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import ScheduleIcon from '@material-ui/icons/Schedule';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
+  KeyboardTimePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   makeStyles,
   Button,
   Checkbox,
+  Divider,
   FormLabel,
   FormControl,
   FormGroup,
@@ -40,16 +43,30 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     '& p': {
       marginRight: theme.spacing(2)
+    },
+    '& hr': {
+      margin: theme.spacing(0, 0.5)
     }
   }
 }));
+
+const stepTypes = [
+  {value: 'approve/reject', label: 'Approve/Reject'},
+  {value: 'approve/reject', label: 'Approve/Reject'},
+];
+
+const escalations = [
+  {value: 'low', label: 'Low'},
+  {value: 'high', label: 'High'},
+  {value: 'critical', label: 'Critical'},
+]
 
 const Form1 = props => {
   const classes = useStyles(props);
   const { loading, dialog, form, handleChange, handleSelectChange, handleDateChange, closeNewStepDialog } = props;
 
   const canSubmitForm = () => {
-    const { name, value, inputType } = form;
+    const { stepName, stepType, processOwner } = form;
     return (
       stepName.length > 0 && stepType && processOwner
     );
@@ -76,7 +93,7 @@ const Form1 = props => {
         <Autocomplete
           id="step-type"
           size="small"
-          options={[]}
+          options={stepTypes}
           getOptionLabel={option => option.label}
           onChange={handleSelectChange('stepType')}
           value={form.stepType}
@@ -133,22 +150,41 @@ const Form1 = props => {
             <TableRow>
               <TableCell><Icon>calendar_today</Icon></TableCell>
               <TableCell>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <KeyboardDatePicker
-                    autoOk
-                    margin="normal"
-                    inputVariant="outlined"
-                    id="action-time"
-                    label="Action Time"
-                    size="small"
-                    format="dd/MM/yyyy"
-                    value={form.actionTime}
-                    onChange={handleDateChange('actionTime')}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date',
-                    }}
-                  />
-                </MuiPickersUtilsProvider>
+                <div className={classes.flex}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      autoOk
+                      inputVariant="outlined"
+                      id="action-time-date"
+                      label="Action Time"
+                      size="small"
+                      format="dd/MM/yyyy"
+                      value={form.actionTime}
+                      onChange={handleDateChange('actionTime')}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
+
+                  <Divider orientation="vertical" flexItem />
+
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardTimePicker
+                      inputVariant="outlined"
+                      id="action-time-time"
+                      label="Time"
+                      size="small"
+                      style={{width: 120 }}
+                      value={form.actionTime}
+                      onChange={handleDateChange('actionTime')}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change time',
+                      }}
+                      keyboardIcon={<ScheduleIcon />}
+                    />
+                  </MuiPickersUtilsProvider>
+                </div>
               </TableCell>
             </TableRow>
             <TableRow>
@@ -242,7 +278,7 @@ const Form1 = props => {
                       label={
                         <div className={classes.flex}>
                           <Typography>Email Alert</Typography>
-                          <Typography component={Link}>Change message</Typography>
+                          <Typography component={Link} to="#">Change message</Typography>
                         </div>
                       }
                     />
@@ -312,7 +348,7 @@ const Form1 = props => {
         <Autocomplete
           id="escalation"
           size="small"
-          options={[]}
+          options={escalations}
           getOptionLabel={option => option.label}
           onChange={handleSelectChange('escalation')}
           value={form.escalation}

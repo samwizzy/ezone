@@ -4,6 +4,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
+import Alert from '@material-ui/lab/Alert';
 import {
   makeStyles,
   Button,
@@ -48,8 +49,21 @@ const DepreciationTypes = props => {
   const classes = useStyles(props);
   const { history, match, depreciationTypes, openEditDepreciationTypeDialog } = props;
 
-  console.log(depreciationTypes, 'DepreciationTypes');
   const depreciatedType = depreciationTypes[0];
+
+  if(!depreciatedType){
+    return (
+      <Card className={classes.root} elevation={0}>
+        <CardContent>
+          <Alert severity="info">
+            <Typography variant="subtitle2">
+              You currently have no depreciation type — try it out!
+            </Typography>
+          </Alert>
+        </CardContent>
+      </Card>
+    )
+  }
 
   return (
     <Card className={classes.root}>

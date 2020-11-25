@@ -135,6 +135,27 @@ const processOwnersReducer = (state = initialState, action) =>
           messages: action.payload,
         };
       }
+      case Constants.GET_EMPLOYEES: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.GET_EMPLOYEES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          employees: action.payload,
+        };
+      }
+      case Constants.GET_EMPLOYEES_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          messages: action.payload,
+        };
+      }
     }
   });
 

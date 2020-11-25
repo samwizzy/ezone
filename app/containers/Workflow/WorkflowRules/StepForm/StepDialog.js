@@ -91,7 +91,7 @@ const StepDialog = props => {
   };
 
   const handleDateChange = name => date => {
-    setForm({ ...form, [name]: moment(date).format('YYYY-MM-DD') })
+    setForm({ ...form, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss') })
   }
 
   const handleSubmit = () => {

@@ -375,6 +375,11 @@ export const GetFacebookTokenApi = `${BaseUrl}/crmserv/api/v1/facebook`;
 export const GenerateFacebookAuthoriseUrlApi = `${BaseUrl}/crmserv/api/v1/generateFacebookAuthoriseUrl`;
 export const GetUserDataApi = `${BaseUrl}/crmserv/api/v1/get_user_data`;
 
+/** ********************************* PM MODULE ***********************************
+ **********************************************************************************/
+export const JobApi = `${BaseUrl}/pm-service/api/jobs`;
+
+
 /** ********************************* LMS MODULE ***********************************
  ********************************************************************************* */
 export const GetCategoriesApi = `${BaseUrl}/lmsserv/api/v1/lms/get_category_by_orgid`;

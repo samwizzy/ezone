@@ -8,8 +8,6 @@ import _ from 'lodash';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {
   makeStyles,
-  AppBar,
-  Toolbar,
   Button,
   Card, CardHeader, CardContent, CardActions,
   Checkbox,
@@ -19,7 +17,6 @@ import {
   FormControlLabel,
   MenuItem,
   Typography,
-  Paper,
   TextField,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
@@ -49,6 +46,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const types = [
+  { label: "Manufacturing", value: "manufacturing" },
+  { label: "Production", value: "production" },
+  { label: "Business", value: "business" },
+]
+
 const phaseInitialState = {
   description: "",
   expense: 0,
@@ -58,20 +61,20 @@ const phaseInitialState = {
 }
 
 const initialState = {
-  actualEndDate: moment().format("YYYY-MM-DDTHH:mm:ss"),
-  actualStartDate: moment().format("YYYY-MM-DDTHH:mm:ss"),
+  actualEndDate: moment().format("YYYY-MM-DD"),
+  actualStartDate: moment().format("YYYY-MM-DD"),
   country: "",
   customer: "",
   description: "",
-  endDate: moment().format("YYYY-MM-DDTHH:mm:ss"),
-  estimatedDate: moment().format("YYYY-MM-DDTHH:mm:ss"),
+  endDate: moment().format("YYYY-MM-DD"),
+  estimatedDate: moment().format("YYYY-MM-DD"),
   expense: 0,
   location: "",
   name: "",
   orgId: "",
   phases: [{ ...phaseInitialState }],
   revenue: 0,
-  startDate: moment().format("YYYY-MM-DDTHH:mm:ss"),
+  startDate: moment().format("YYYY-MM-DD"),
   supervisor: "",
   type: ""
 }
@@ -112,7 +115,7 @@ const JobForm = props => {
       setForm({ ...form, [name]: obj ? obj.name : obj });
     } else if (name === "state") {
       setForm({ ...form, [name]: obj });
-    } else if (name === "customer") {
+    } else if (name === "customer" || name === "supervisor") {
       setForm({ ...form, [name]: obj ? obj.fullName : obj });
     } else {
       setForm({ ...form, [name]: obj ? obj.name : obj });
@@ -130,19 +133,16 @@ const JobForm = props => {
   console.log(form, 'form');
   console.log(options, 'options');
   console.log(customers, 'customers');
+  console.log(employees, 'employees');
   console.log(countries_states, 'countries_states');
 
   return (
     <Card className={classes.root}>
       <CardHeader
         title={
-          <AppBar position="static" color="inherit" elevation={1}>
-            <Toolbar variant="dense">
-              <Typography variant="h6" className={classes.title}>
-                New Job
-              </Typography>
-            </Toolbar>
-          </AppBar>
+          <Typography variant="h6" className={classes.title}>
+            New Job
+          </Typography>
         }
       />
 
@@ -165,8 +165,8 @@ const JobForm = props => {
               id="job-supervisor"
               name="supervisor"
               size="small"
-              options={[]}
-              getOptionLabel={option => option.name}
+              options={employees}
+              getOptionLabel={option => option.firstName + ' ' + option.lastName}
               onChange={handleSelectChange('supervisor')}
               renderInput={params => (
                 <TextField
@@ -447,8 +447,8 @@ const JobForm = props => {
               value={form.type}
               onChange={handleChange}
             >
-              {[].map((option, i) =>
-                <MenuItem key={i} value={option.label}>
+              {types.map((option, i) =>
+                <MenuItem key={i} value={option.value}>
                   {option.label}
                 </MenuItem>
               )}
@@ -502,7 +502,7 @@ const JobForm = props => {
           Cancel
         </Button>
         <Button
-          onClick={() => { }}
+          onClick={handleSubmit}
           color="primary"
           variant="contained"
           disableElevation

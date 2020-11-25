@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
       },
     },
     '& .MuiToolbar-root': {
-      padding: theme.spacing(1, 0)
+      padding: theme.spacing(1)
     }
   },
   backdrop: {
@@ -65,8 +65,8 @@ const WorkflowRulesList = props => {
     match,
     workflowRules,
     getJobs,
-    openNewJobDialog,
-    openEditEdJobDialog,
+    openNewStepDialog,
+    openEditStepDialog,
   } = props;
 
   useEffect(() => {
@@ -131,7 +131,7 @@ const WorkflowRulesList = props => {
           return (
             <Button
               variant="outlined" size="small" color="primary"
-              onClick={() => openEditJobDialog(data)}
+              onClick={() => openEditStepDialog(data)}
             >
               Edit
             </Button>
@@ -184,8 +184,8 @@ const WorkflowRulesList = props => {
 WorkflowRulesList.propTypes = {
   loading: PropTypes.bool,
   getJobs: PropTypes.func,
-  openNewJobDialog: PropTypes.func,
-  openEditJobDialog: PropTypes.func,
+  openNewStepDialog: PropTypes.func,
+  openEditStepDialog: PropTypes.func,
   workflowRules: PropTypes.array,
 };
 
@@ -196,8 +196,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewJobDialog: () => dispatch(Actions.openNewJobDialog()),
-    openEditJobDialog: data => dispatch(Actions.openEditJobDialog(data)),
+    openNewStepDialog: () => dispatch(Actions.openNewStepDialog()),
+    openEditStepDialog: data => dispatch(Actions.openEditStepDialog(data)),
     getJobs: () => dispatch(Actions.getJobs()),
   };
 }

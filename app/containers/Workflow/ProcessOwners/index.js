@@ -13,7 +13,6 @@ import reducer from './reducer';
 import saga from './saga';
 import * as Actions from './actions';
 import ProcessOwnersList from './components/ProcessOwnersList';
-// import ProcessOwnerForm from './components/ProcessOwnerForm';
 import ProcessOwnerForm from './ProcessOwnerForm/ProcessOwnerForm';
 import ModuleLayout from '../components/ModuleLayout';
 
@@ -21,11 +20,12 @@ export function ProcessOwnersApp(props) {
   useInjectReducer({ key: 'processOwners', reducer });
   useInjectSaga({ key: 'processOwners', saga });
 
-  const { match, getJobs } = props;
+  const { match, getJobs, getEmployees } = props;
   const { path, url } = match
 
   useEffect(() => {
     getJobs();
+    getEmployees();
   }, []);
 
   return (
@@ -45,6 +45,7 @@ export function ProcessOwnersApp(props) {
 
 ProcessOwnersApp.propTypes = {
   getJobs: PropTypes.func,
+  getEmployees: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -54,6 +55,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getJobs: () => dispatch(Actions.getJobs()),
+    getEmployees: () => dispatch(Actions.getEmployees()),
   }
 }
 

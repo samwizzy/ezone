@@ -106,13 +106,9 @@ const WorkflowRuleForm = props => {
     <Card className={classes.root}>
       <CardHeader
         title={
-          <AppBar position="static" color="inherit" elevation={1}>
-            <Toolbar variant="dense">
-              <Typography variant="h6" className={classes.title}>
-                New Workflow
-              </Typography>
-            </Toolbar>
-          </AppBar>
+          <Typography variant="h6" className={classes.title}>
+            New Workflow
+          </Typography>
         }
       />
       <CardContent>
@@ -132,16 +128,21 @@ const WorkflowRuleForm = props => {
                   onChange={handleChange}
                 />
 
-                <TextField
-                  name="module"
-                  label="Module"
+                <Autocomplete
                   id="module"
-                  margin="normal"
-                  variant="outlined"
-                  fullWidth
-                  size="small"
+                  options={[]}
+                  getOptionLabel={option => option.label}
+                  onChange={handleSelectChange('module')}
                   value={form.module}
-                  onChange={handleChange}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      margin="normal"
+                      size="small"
+                      placeholder="Module"
+                    />
+                  )}
                 />
               </Grid>
 

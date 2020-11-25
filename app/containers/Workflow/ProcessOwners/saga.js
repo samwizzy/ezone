@@ -8,6 +8,26 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 import * as Endpoints from '../../../components/Endpoints';
 
+export function* getEmployees() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}?orgId=${currentUser && currentUser.organisation.orgId}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getEmployeesSuccess(response));
+  } catch (err) {
+    yield put(Actions.getEmployeesError(err));
+  }
+}
+
 export function* getJobs() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
@@ -79,4 +99,5 @@ export default function* jobsSaga() {
   yield takeLatest(Constants.UPDATE_JOB, updateJob);
   yield takeLatest(Constants.CREATE_JOB, createJob);
   yield takeLatest(Constants.GET_JOBS, getJobs);
+  yield takeLatest(Constants.GET_EMPLOYEES, getEmployees);
 }

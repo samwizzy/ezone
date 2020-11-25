@@ -21,12 +21,13 @@ export function JobsApp(props) {
   useInjectReducer({ key: 'projectMgtJobs', reducer });
   useInjectSaga({ key: 'projectMgtJobs', saga });
 
-  const { match, getJobs, getCustomers } = props;
+  const { match, getJobs, getCustomers, getEmployees } = props;
   const { path, url } = match
 
   useEffect(() => {
     getJobs();
     getCustomers();
+    getEmployees();
   }, []);
 
   return (
@@ -56,6 +57,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getJobs: () => dispatch(Actions.getJobs()),
     getCustomers: () => dispatch(Actions.getCustomers()),
+    getEmployees: () => dispatch(Actions.getEmployees()),
   }
 }
 

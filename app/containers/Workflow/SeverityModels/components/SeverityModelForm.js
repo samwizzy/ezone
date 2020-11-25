@@ -8,7 +8,6 @@ import _ from 'lodash';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {
   makeStyles,
-  AppBar,
   Card, CardHeader, CardContent, CardActions,
   Checkbox,
   Toolbar,
@@ -108,13 +107,9 @@ const SeverityModelForm = props => {
     <Card className={classes.root}>
       <CardHeader
         title={
-          <AppBar position="static" color="inherit" elevation={1}>
-            <Toolbar variant="dense">
-              <Typography variant="h6" className={classes.title}>
-                New Model
-              </Typography>
-            </Toolbar>
-          </AppBar>
+          <Typography variant="h6" className={classes.title}>
+            New Model
+          </Typography>
         }
       />
       <CardContent>
@@ -153,7 +148,7 @@ const SeverityModelForm = props => {
               <Grid item xs={6}>
                 <Autocomplete
                   id="risk"
-                  options={[]}
+                  options={_.range(0, 4)}
                   getOptionLabel={option => option.label}
                   onChange={handleSelectChange('risk')}
                   value={form.application}
@@ -205,7 +200,7 @@ const SeverityModelForm = props => {
               renderInput={params => (
                 <TextField
                   {...params}
-                  label="Base Process owner"
+                  label="Base process owner"
                   variant="outlined"
                   margin="normal"
                   size="small"
@@ -222,7 +217,7 @@ const SeverityModelForm = props => {
               renderInput={params => (
                 <TextField
                   {...params}
-                  label="Process Owner"
+                  label="Process owner"
                   variant="outlined"
                   margin="normal"
                   size="small"

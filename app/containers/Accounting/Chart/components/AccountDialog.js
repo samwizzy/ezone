@@ -81,7 +81,7 @@ const AccountDialog = props => {
     updateChartOfAccount,
   } = props;
 
-  const { currency } = accountSetupData
+  const currency = accountSetupData ? accountSetupData.currency : null;
   const [options, setOptions] = useState({ makeSubAccount: false });
   const [errors, setErrors] = useState({ accountCode: '' });
   const [values, setValues] = useState({ ...initialState });

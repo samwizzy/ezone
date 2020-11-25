@@ -4,15 +4,15 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { Route, useRouteMatch } from 'react-router-dom';
+import { Route, useRouteMatch, withRouter } from 'react-router-dom';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectBanking from './selectors';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
+import * as AccSelectors from './../selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
 import ModuleLayout from '../components/ModuleLayout';
 import BankList from './components/BankList';
 import BankDetails from './bankDetails';
@@ -27,6 +27,8 @@ export function Banking(props) {
 
   const {
     loading,
+    history,
+    accSetUpData,
     getBankAccounts,
     getCurrencies,
     getAccountingPeriods,
@@ -41,6 +43,10 @@ export function Banking(props) {
     getAccountTypes();
     getTransfersByOrgId();
   }, []);
+
+  if(!accSetUpData){
+    history.push('/account/settings');
+  }
 
   return (
     <div>
@@ -66,6 +72,7 @@ Banking.propTypes = {};
 const mapStateToProps = createStructuredSelector({
   banking: makeSelectBanking(),
   loading: Selectors.makeSelectLoading(),
+  accSetUpData: AccSelectors.makeSelectGetAccountingSetupData(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -84,6 +91,7 @@ const withConnect = connect(
 );
 
 export default compose(
+  withRouter,
   withConnect,
   memo,
 )(Banking);

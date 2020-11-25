@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
       },
     },
     '& .MuiToolbar-root': {
-      padding: theme.spacing(1, 0)
+      padding: theme.spacing(1)
     }
   },
   backdrop: {
@@ -159,7 +159,7 @@ const SeverityModelsList = props => {
         startIcon={<Add />}
         onClick={() => history.push(`${match.url}/new`)}
       >
-        Add Group
+        Add Model
       </Button>
     ),
     elevation: 0

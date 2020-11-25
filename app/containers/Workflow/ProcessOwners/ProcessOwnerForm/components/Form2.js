@@ -30,7 +30,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   paper: {
-    padding: theme.spacing(3),
     boxShadow: theme.shadows[0]
   },
   backdrop: {

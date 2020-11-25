@@ -112,3 +112,23 @@ export function getCustomersError(data) {
     payload: data,
   };
 }
+
+export function getEmployees() {
+  return {
+    type: Constants.GET_EMPLOYEES,
+  };
+}
+
+export function getEmployeesSuccess(data) {
+  return {
+    type: Constants.GET_EMPLOYEES_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getEmployeesError(data) {
+  return {
+    type: Constants.GET_EMPLOYEES_ERROR,
+    payload: data,
+  };
+}

@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
       },
     },
     '& .MuiToolbar-root': {
-      padding: theme.spacing(1, 0)
+      padding: theme.spacing(1)
     }
   },
   backdrop: {
@@ -64,6 +64,7 @@ const JobsList = props => {
     history,
     match,
     getJobs,
+    jobs,
     openNewJobDialog,
     openEditJobDialog,
   } = props;
@@ -174,7 +175,7 @@ const JobsList = props => {
       <MUIDataTable
         className={classes.datatable}
         title="All Jobs"
-        data={[]}
+        data={jobs.entities}
         columns={columns}
         options={options}
       />

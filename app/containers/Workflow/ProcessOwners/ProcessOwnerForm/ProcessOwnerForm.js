@@ -39,12 +39,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const phaseInitialState = {
-  phase: '',
-  unit: '',
-  description: '',
-  expense: '',
-  revenue: ''
+const ownerInitialState = {
+  name: '',
+  email: '',
 }
 
 const ProcessOwnerForm = props => {
@@ -62,7 +59,7 @@ const ProcessOwnerForm = props => {
     description: '',
     processOwner: null,
     comment: '',
-    phases: [{ ...phaseInitialState }],
+    phases: [{ ...ownerInitialState }],
     status: true
   });
 
@@ -82,7 +79,7 @@ const ProcessOwnerForm = props => {
   };
 
   const addMore = event => {
-    setForm({ ...form, phases: [...form.phases, phaseInitialState] });
+    setForm({ ...form, phases: [...form.phases, ownerInitialState] });
   };
 
   const removeMore = (i) => (event) => {
@@ -94,9 +91,9 @@ const ProcessOwnerForm = props => {
     setForm({ ...form, [event.target.name]: type === 'checkbox' ? checked : event.target.value });
   };
 
-  const handleRowChange = index => event => {
+  const handleRowChange = (name, i) => (event, obj) => {
     const { phases } = form
-    phases[index][event.target.name] = event.target.value
+    name === "name" ? phases[i][name] = obj.fullName : phases[i][name] = obj.email;
     setForm({ ...form, phases });
   };
 
@@ -122,13 +119,9 @@ const ProcessOwnerForm = props => {
     <Card className={classes.root}>
       <CardHeader
         title={
-          <AppBar position="static" color="inherit" elevation={2}>
-            <Toolbar variant="dense">
               <Typography variant="h6" className={classes.title}>
                 New Group
               </Typography>
-            </Toolbar>
-          </AppBar>
         }
       />
       <CardContent>

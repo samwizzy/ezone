@@ -10,8 +10,6 @@ import {
   FormControlLabel,
   Icon,
   Button,
-  Menu,
-  MenuItem,
 } from '@material-ui/core';
 import { Add, Visibility } from '@material-ui/icons';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
@@ -47,7 +45,7 @@ const useStyles = makeStyles(theme => ({
       },
     },
     '& .MuiToolbar-root': {
-      padding: theme.spacing(1, 0)
+      padding: theme.spacing(1)
     }
   },
   backdrop: {
