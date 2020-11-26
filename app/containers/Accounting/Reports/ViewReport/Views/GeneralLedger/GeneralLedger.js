@@ -204,13 +204,24 @@ const GeneralLedger = ({
     );
   }
 
+  const csvPrint = data.reduce((accumulator, ele) => {
+    let obj = {
+      'Account Code': ele[0],
+      'Account Name': ele[1],
+      'Credit Amt': ele[2],
+      'Debit Amt': ele[3],
+    };
+    accumulator.push(obj);
+    return accumulator;
+  }, []);
+
   return (
     <div className={classes.root}>
       <ControlledButtons
         componentRef={componentRef}
         print={print}
         setPrint={setPrint}
-        tableData={data}
+        tableData={csvPrint}
         printCsc={[columns, data ? { ...data } : '']}
         handleFetch={handleData}
         pdflogo={organisation.logo}

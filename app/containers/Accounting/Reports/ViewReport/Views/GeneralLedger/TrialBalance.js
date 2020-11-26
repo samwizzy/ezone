@@ -164,13 +164,26 @@ const TrialBalance = ({
     `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
       'MMM Do YYYY',
     )}`;
+  const csvPrint =
+    data &&
+    data.concat([TableFooterData]).reduce((accumulator, ele) => {
+      let obj = {
+        'Account Code': ele[0],
+        'Account Name': ele[1],
+        'Debit Amt': ele[2],
+        'Credit Amt': ele[3],
+      };
+      accumulator.push(obj);
+      return accumulator;
+    }, []);
+
   return (
     <div className={classes.root}>
       <ControlledButtons
         componentRef={componentRef}
         print={print}
         setPrint={setPrint}
-        tableData={data}
+        tableData={csvPrint}
         printCsc={[columns, data ? { ...data } : '']}
         handleFetch={handleData}
         pdflogo={organisation.logo}

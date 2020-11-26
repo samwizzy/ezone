@@ -129,7 +129,22 @@ const FixedAssetRegister = ({
     'Additions during the year',
     'Disposals/Transfer',
   ];
-
+  const csvPrint = data.reduce((accumulator, ele) => {
+    let obj = {
+      'Asset Code': ele[0],
+      'Location of asset': ele[1],
+      Description: ele[2],
+      Specification: ele[3],
+      Qty: ele[4],
+      Condition: ele[5],
+      'Acquisition date': ele[6],
+      'Cost at Acquisition': ele[7],
+      'Additions during the year': ele[8],
+      'Disposals/Transfer': ele[9],
+    };
+    accumulator.push(obj);
+    return accumulator;
+  }, []);
   const setDate =
     startDate !== ''
       ? `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
@@ -175,7 +190,7 @@ const FixedAssetRegister = ({
         componentRef={componentRef}
         print={print}
         setPrint={setPrint}
-        tableData={data}
+        tableData={csvPrint}
         printCsc={[columns, data ? { ...data } : '']}
         handleFetch={handleData}
         pdflogo={organisation.logo}

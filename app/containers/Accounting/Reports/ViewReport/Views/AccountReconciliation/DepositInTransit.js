@@ -45,8 +45,6 @@ const DepositInTransit = ({ time, user, dispatchCleanUpAction }) => {
     'Date',
     'reference',
     'Trans Desc',
-    'Trans Desc',
-    'Trans Amt',
     'Deposit Amt',
   ];
   const Location = useLocation();
@@ -78,12 +76,12 @@ const DepositInTransit = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );

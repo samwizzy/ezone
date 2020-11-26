@@ -39,13 +39,7 @@ const OutstandingChecks = ({ time, user, dispatchCleanUpAction }) => {
     // console.log('=============================================>');
     setDisplay(true);
   };
-  const TableHeadData = [
-    'Trans No',
-    'Date',
-    'Trans Desc',
-    'Trans Amt',
-    'Balance',
-  ];
+  const TableHeadData = ['Trans No', 'Date', 'Trans Desc', 'Trans Amt'];
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
 
@@ -75,12 +69,12 @@ const OutstandingChecks = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );
