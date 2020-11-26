@@ -91,6 +91,29 @@ const makeSelectIncomeStatementTimeRange = () =>
     selectReportsDomain,
     substate => substate.incomeStatementTimeRange,
   );
+const makeSelectCashFlow = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.cashFlow,
+  );
+
+const makeSelectCashFlowTimeRange = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.cashFlowTimeRange,
+  );
+const makeSelectFinancialPosition = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.financialPosition,
+  );
+
+const makeSelectFinancialPositionTimeRange = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.financialPositionTimeRange,
+  );
+
 export default makeSelectReports;
 
 export {
@@ -108,4 +131,8 @@ export {
   makeSelectFixedAssetScheduleTimeRange,
   makeSelectIncomeStatement,
   makeSelectIncomeStatementTimeRange,
+  makeSelectCashFlow,
+  makeSelectCashFlowTimeRange,
+  makeSelectFinancialPosition,
+  makeSelectFinancialPositionTimeRange,
 };

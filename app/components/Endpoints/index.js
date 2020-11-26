@@ -379,7 +379,6 @@ export const GetUserDataApi = `${BaseUrl}/crmserv/api/v1/get_user_data`;
  **********************************************************************************/
 export const JobApi = `${BaseUrl}/pm-service/api/jobs`;
 
-
 /** ********************************* LMS MODULE ***********************************
  ********************************************************************************* */
 export const GetCategoriesApi = `${BaseUrl}/lmsserv/api/v1/lms/get_category_by_orgid`;
@@ -405,5 +404,7 @@ export const GetTrialBalanceApi = `${BaseUrl}/accountingserv/api/v1/report/get_t
 export const GetFixedAssetRegisterApi = `${BaseUrl}/accountingserv/api/v1/report/get_fixed_asset_register`;
 export const GetFixedAssetScheduleApi = `${BaseUrl}/accountingserv/api/v1/report/get_fixed_asset_schedule`;
 export const GetIncomeStatementReportApi = `${BaseUrl}/accountingserv/api/v1/report/get_income_statement`;
+export const GetCashFlowReportApi = `${BaseUrl}/accountingserv/api/v1/report/get_cashflow_statement`;
+export const GetFinancialPositionReportApi = `${BaseUrl}/accountingserv/api/v1/report/get_statement_of_financial_positioning`;
 // STUDENT API
 export const RegisterStudentApi = `${BaseUrl}/lmsserv/lms/v1/register_student`;

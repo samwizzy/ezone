@@ -15,34 +15,44 @@ import Table from '../../Components/Table';
 import TopMenu from '../../Components/TopMenu';
 import Company from '../../Components/CompanyLogo';
 import formatDate from '../../Helpers';
+import ControlledButtons from '../../Components/BackButton';
 import * as Select from '../../../../../App/selectors';
 import './style.css';
 
-const StatementOfFinancialPostion = ({ time, user, dispatchCleanUpAction }) => {
+const StatementOfFinancialPostion = ({
+  time,
+  user,
+  financialPosition,
+  financialPositionRange,
+  dispatchGetAllFinancialPositionAction,
+  dispatchGetGeneralJournalTimeAction,
+  dispatchCleanUpAction,
+  dispatchGetFinancialPositionRangeAction,
+}) => {
   const componentRef = useRef();
   const tableRef = useRef();
   const companyRef = useRef();
   const [print, setPrint] = useState(false);
   const [display, setDisplay] = useState(false);
   const [tabledata, setTabledata] = useState([]);
+  const [show, setShow] = useState('');
 
   const { organisation } = user;
   const { startDate, endDate } = time;
-  // dispatchGetGeneralLedgerTimeAction
+  const [period, setPeriod] = useState({ firstDate: '', lastDate: '' });
+
   useInjectReducer({ key: 'reports', reducer: viewReportReducer });
   useInjectSaga({ key: 'reports', saga: ReportSaga });
 
-  useEffect(() => {
-    return async () => await dispatchCleanUpAction();
-  }, []);
-
   const handleData = () => {
-    // dispatchGetAllGeneralLedgerTypeAction();
-    // console.log('=============================================>');
+    dispatchGetAllFinancialPositionAction();
+    dispatchGetFinancialPositionRangeAction({ selectedRange: setDate });
     setDisplay(true);
   };
 
-  useEffect(() => {
+  window.addEventListener(
+    'DOMContentLoaded',
+
     function table_to_array() {
       const myData = document.getElementById('financialTable_data').rows;
       const my_liste = [];
@@ -55,41 +65,106 @@ const StatementOfFinancialPostion = ({ time, user, dispatchCleanUpAction }) => {
         my_liste.push(my_el);
       }
       setTabledata(state => my_liste);
-    }
-    window.addEventListener('DOMContentLoaded', table_to_array());
-    return () => {
-      window.removeEventListener('DOMContentLoaded', table_to_array());
-    };
-  });
+    },
+  );
+  window.removeEventListener(
+    'DOMContentLoaded',
 
-  const TableHeadData = ['Account', '', '', '', '', 'Total'];
+    function table_to_array() {
+      const myData = document.getElementById('financialTable_data').rows;
+      const my_liste = [];
+      for (var i = 0; i < myData.length; i++) {
+        const el = myData[i].children;
+        const my_el = [];
+        for (var j = 0; j < el.length; j++) {
+          my_el.push(el[j].innerText);
+        }
+        my_liste.push(my_el);
+      }
+      setTabledata(state => my_liste);
+    },
+  );
+
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
 
+  console.log(
+    'oooooooooooooooooooooooooo',
+    financialPosition,
+    financialPositionRange,
+  );
+
   const setDate =
-    display &&
-    `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
-      'MMM Do YYYY',
-    )}`;
+    startDate !== ''
+      ? `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
+          'MMM Do YYYY',
+        )}`
+      : '';
+
+  const dateValue = ({ target }) => {
+    if (target.name === 'Start Date') {
+      setPeriod({ ...period, firstDate: target.value.split('-').join('/') });
+    }
+    if (target.name === 'End Date') {
+      setPeriod({ ...period, lastDate: target.value.split('-').join('/') });
+    }
+  };
+
+  useEffect(() => {
+    if (period.lastDate && period.firstDate) {
+      dispatchGetGeneralJournalTimeAction({
+        startDate: period.firstDate,
+        endDate: period.lastDate,
+      });
+      handleData();
+    }
+    return async () => await dispatchCleanUpAction();
+  }, [period]);
+
+  useEffect(() => {
+    const { selectedRange } = financialPositionRange;
+    setShow(selectedRange);
+  }, [display, time]);
+  const csvPrint = tabledata.slice(1).reduce((accumulator, ele) => {
+    let obj = {
+      DESCRIPTION: ele[0],
+      AMOUNT: ele[1],
+    };
+    accumulator.push(obj);
+    return accumulator;
+  }, []);
+
+  const {
+    nonCurrentAsset,
+    currentAsset,
+    capitalAndReserves,
+    totalEquityAndLiabilities,
+    nonCurrentLiabilities,
+    currentLiabilities,
+  } = financialPosition;
+
   return (
     <React.Fragment>
-      <TopMenu
+      <ControlledButtons
         componentRef={componentRef}
         print={print}
         setPrint={setPrint}
+        tableData={csvPrint}
         handleFetch={handleData}
         pdflogo={organisation.logo}
         tableRef={tableRef}
         companyRef={companyRef}
-        daterange={setDate}
-        tableData={tabledata}
+        daterange={setDate || show}
+        dateValue={dateValue}
+        fromDay="Start Date"
+        toDay="End Date"
       />
       <div ref={componentRef}>
         <Company
           ref={companyRef}
           ComLogo={organisation.logo}
           name={`${fileName}`}
-          date={display && `As at ${moment(endDate).format('MMM Do YYYY')}`}
+          date={setDate || show}
         />
         <div className="financialTable">
           <table ref={tableRef} id="financialTable_data">
@@ -112,15 +187,23 @@ const StatementOfFinancialPostion = ({ time, user, dispatchCleanUpAction }) => {
               </tr>
               <tr>
                 <td>Property, Plant and Equipment </td>
-                <td />
+                <td>
+                  {nonCurrentAsset && nonCurrentAsset.propertyPlantAndEquipment}{' '}
+                </td>
               </tr>
               <tr>
                 <td>Capital Work in Progress</td>
-                <td />
+                <td>
+                  {nonCurrentAsset && nonCurrentAsset.capitalWorkInProgress}
+                </td>
               </tr>
               <tr className="head2">
                 <td>TOTAL NON-CURRENT ASSETS </td>
-                <td />
+                <td>
+                  {nonCurrentAsset &&
+                    nonCurrentAsset.capitalWorkInProgress +
+                      nonCurrentAsset.propertyPlantAndEquipment}
+                </td>
               </tr>
               <tr>
                 <td colSpan={2} style={{ height: '30px' }} />
@@ -131,26 +214,40 @@ const StatementOfFinancialPostion = ({ time, user, dispatchCleanUpAction }) => {
               </tr>
               <tr>
                 <td>Inventories</td>
-                <td />
+                <td>{currentAsset && currentAsset.inventories}</td>
               </tr>
               <tr>
                 <td>Trade & Other receivables</td>
-                <td />
+                <td>{currentAsset && currentAsset.tradeAndOtherReceivables}</td>
               </tr>
               <tr>
                 <td>Cash and cash equivalent</td>
-                <td />
+                <td> {currentAsset && currentAsset.cashAndCashEquivalent}</td>
               </tr>
               <tr>
                 <td className="head2">TOTAL CURRENT ASSETS </td>
-                <td />
+                <td>
+                  {' '}
+                  {currentAsset &&
+                    currentAsset.cashAndCashEquivalent +
+                      currentAsset.inventories +
+                      currentAsset.tradeAndOtherReceivables}
+                </td>
               </tr>
               <tr>
                 <td colSpan={2} style={{ height: '30px' }} />
               </tr>
               <tr>
                 <td className="head2">TOTAL ASSETS</td>
-                <td />
+                <td>
+                  {' '}
+                  {currentAsset &&
+                    nonCurrentAsset.capitalWorkInProgress +
+                      nonCurrentAsset.propertyPlantAndEquipment +
+                      currentAsset.cashAndCashEquivalent +
+                      currentAsset.inventories +
+                      currentAsset.tradeAndOtherReceivables}
+                </td>
               </tr>
               <tr>
                 <td colSpan={2} style={{ height: '30px' }} />
@@ -167,15 +264,20 @@ const StatementOfFinancialPostion = ({ time, user, dispatchCleanUpAction }) => {
               </tr>
               <tr>
                 <td>Share Capital</td>
-                <td />
+                <td>{capitalAndReserves && capitalAndReserves.shareCapital}</td>
               </tr>
               <tr>
                 <td>Revaluation Reserves</td>
-                <td />
+                <td>
+                  {capitalAndReserves && capitalAndReserves.revaluationReserves}
+                  ,
+                </td>
               </tr>
               <tr>
                 <td>Retained earnings</td>
-                <td />
+                <td>
+                  {capitalAndReserves && capitalAndReserves.retainedEarnings}
+                </td>
               </tr>
               <tr>
                 <td className="head2">TOTAL EQUITY</td> <td />
@@ -190,14 +292,27 @@ const StatementOfFinancialPostion = ({ time, user, dispatchCleanUpAction }) => {
               </tr>
               <tr>
                 <td>Long Term Borrowings</td>
-                <td />
+                <td>
+                  {nonCurrentLiabilities &&
+                    nonCurrentLiabilities.longTermBorrowings}
+                </td>
               </tr>
               <tr>
                 <td>Deposit for Shares</td>
-                <td />
+                <td>
+                  {' '}
+                  {nonCurrentLiabilities &&
+                    nonCurrentLiabilities.depositForShares}
+                </td>
               </tr>
               <tr>
-                <td className="head2">TOTAL NON-CURRENT LIABILITIES </td> <td />
+                <td className="head2">TOTAL NON-CURRENT LIABILITIES </td>
+
+                <td>
+                  {nonCurrentLiabilities &&
+                    nonCurrentLiabilities.depositForShares +
+                      nonCurrentLiabilities.longTermBorrowings}
+                </td>
               </tr>
               <tr>
                 <td colSpan={3} style={{ height: '30px' }} />
@@ -209,30 +324,43 @@ const StatementOfFinancialPostion = ({ time, user, dispatchCleanUpAction }) => {
               </tr>
               <tr>
                 <td>Trade and other payables</td>
-                <td />
+                <td>
+                  {currentLiabilities &&
+                    currentLiabilities.tradeAndOtherPayables}
+                </td>
               </tr>
               <tr>
                 <td>Short-term Loan</td>
-                <td />
+                <td>
+                  {currentLiabilities && currentLiabilities.shortTermLoan}
+                </td>
               </tr>
               <tr>
                 <td>Current tax Payable</td>
-                <td />
+                <td>
+                  {currentLiabilities && currentLiabilities.currentTaxPayable}
+                </td>
               </tr>
               <tr>
                 <td colSpan={2} style={{ height: '30px' }} />
               </tr>
               <tr>
                 <td className="head2">TOTAL CURRENT LIABILITIES:</td>
-                <td />
+                <td>
+                  {currentLiabilities &&
+                    currentLiabilities.currentTaxPayable +
+                      currentLiabilities.shortTermLoan +
+                      currentLiabilities.tradeAndOtherPayables}
+                </td>
               </tr>
               <tr>
                 <td colSpan={2} style={{ height: '30px' }} />
               </tr>
               <tr>
                 <td>TOTAL EQUITY AND LIABILITIES:</td>
-
-                <td />
+                <td>
+                  {totalEquityAndLiabilities && totalEquityAndLiabilities}
+                </td>
               </tr>
               <tr />
             </tbody>
@@ -246,13 +374,20 @@ const StatementOfFinancialPostion = ({ time, user, dispatchCleanUpAction }) => {
 const mapStateToProps = createStructuredSelector({
   time: Selectors.makeSelectTime(),
   user: Select.makeSelectCurrentUser(),
+  financialPosition: Selectors.makeSelectFinancialPosition(),
+  financialPositionRange: Selectors.makeSelectFinancialPositionTimeRange(),
 });
 
 const mapDispatchToProps = dispatch => ({
+  dispatchGetGeneralJournalTimeAction: data =>
+    dispatch(Actions.getGeneralJournalTimeAction(data)),
+  dispatchGetFinancialPositionRangeAction: data =>
+    dispatch(Actions.getFinancialPositionRangeAction(data)),
+  dispatchGetAllFinancialPositionAction: () =>
+    dispatch(Actions.getAllFinancialPositionAction()),
   dispatchCleanUpAction: () => dispatch(Actions.cleanUpGeneralJournalAction()),
   dispatch,
 });
-
 const withConnect = connect(
   mapStateToProps,
   mapDispatchToProps,
@@ -262,11 +397,3 @@ export default compose(
   withConnect,
   memo,
 )(StatementOfFinancialPostion);
-// {display && (
-//   <Table
-//     ref={tableRef}
-//     // data={tableData}
-//     // TableHeadData={TableHeadData}
-//     // TableFooterData={TableFooterData}
-//   />
-// )}

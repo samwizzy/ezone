@@ -8,6 +8,8 @@ export const initialState = {
   fixedAssetRegisterTimeRange: { selectedRange: '' },
   fixedAssetScheduleTimeRange: { selectedRange: '' },
   incomeStatementTimeRange: { selectedRange: '' },
+  financialPositionTimeRange: { selectedRange: '' },
+  cashFlowTimeRange: { selectedRange: '' },
   generaljournal: [],
   chatsOfAccount: [],
   generalLedger: [],
@@ -15,6 +17,8 @@ export const initialState = {
   fixedAssetRegister: [],
   fixedAssetSchedule: [],
   incomeStatement: [],
+  cashFlow: [],
+  financialPosition: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -227,6 +231,68 @@ const viewReportReducer = (state = initialState, action) =>
         return {
           ...state,
           incomeStatementTimeRange: action.payload,
+        };
+      }
+      // Case to get cash flow
+      case Constants.GET_ALL_CASH_FLOW_TYPES: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      // Case to get cash flow success
+      case Constants.GET_CASH_FLOW_SUCCES_ACTION: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          cashFlow: action.payload,
+        };
+      }
+      //error cash flow
+      case Constants.GET_CASH_FLOW_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_CASH_FLOW_RANGE: {
+        return {
+          ...state,
+          cashFlowTimeRange: action.payload,
+        };
+      }
+      // Case to get Financial position
+      case Constants.GET_ALL_FINANCIAL_POSITION_TYPES: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      // Case to get Financial position success
+      case Constants.GET_FINANCIAL_POSITION_SUCCES_ACTION: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          financialPosition: action.payload,
+        };
+      }
+      //error Financial position
+      case Constants.GET_FINANCIAL_POSITION_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_FINANCIAL_POSITION_RANGE: {
+        return {
+          ...state,
+          financialPositionTimeRange: action.payload,
         };
       }
     }

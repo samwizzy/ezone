@@ -82,3 +82,28 @@ export const GET_INCOME_STATEMENT_ERR =
 
 export const GET_INCOME_STATEMENT_RANGE =
   'app/Reports/ViewReport/GET_ALL_INCOME_STATEMENT_RANGE';
+
+/**Cash flow */
+export const GET_ALL_CASH_FLOW_TYPES =
+  'app/Reports/ViewReport/GET_ALL_CASH_FLOW_TYPES';
+
+export const GET_CASH_FLOW_SUCCES_ACTION =
+  'app/Reports/ViewReport/GET_ALL_CASH_FLOW_SUCCES_ACTION';
+
+export const GET_CASH_FLOW_ERR = 'app/Reports/ViewReport/GET_ALL_CASH_FLOW_ERR';
+
+export const GET_CASH_FLOW_RANGE =
+  'app/Reports/ViewReport/GET_ALL_CASH_FLOW_RANGE';
+
+/**Financial Position*/
+export const GET_ALL_FINANCIAL_POSITION_TYPES =
+  'app/Reports/ViewReport/GET_ALL_FINANCIAL_POSITION_TYPES';
+
+export const GET_FINANCIAL_POSITION_SUCCES_ACTION =
+  'app/Reports/ViewReport/GET_ALL_FINANCIAL_POSITION_SUCCES_ACTION';
+
+export const GET_FINANCIAL_POSITION_ERR =
+  'app/Reports/ViewReport/GET_ALL_FINANCIAL_POSITION_ERR';
+
+export const GET_FINANCIAL_POSITION_RANGE =
+  'app/Reports/ViewReport/GET_ALL_FINANCIAL_POSITION_RANGE';

@@ -102,7 +102,15 @@ const GeneralLedger = ({
   const columns = [
     'Account Code',
     'Account Name',
-
+    {
+      name: 'Balance',
+      label: 'Balance',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
     {
       name: 'Credit Amt',
       label: 'Credit Amt',
@@ -133,12 +141,28 @@ const GeneralLedger = ({
     return accumulator;
   },
   []);
+  const Account = ledger => {
+    let AccountType;
+    ledger.forEach(a => {
+      if (a.financialType === 'CREDIT') {
+        AccountType = a.financialType;
+      }
+    });
+    return AccountType;
+  };
   const data = filteredData.map((ledger, index) => {
     return [
       `${ledger[0].accountCode}`,
       `${Object.keys(generalLedger)[index]}`,
       `${ledger.reduce((a, b) => a + b.creditAmount, 0)}`,
       `${ledger.reduce((a, b) => a + b.debitAmount, 0)}`,
+      `${
+        Account(ledger) === 'CREDIT'
+          ? ledger.reduce((a, b) => a + b.creditAmount, 0) -
+            ledger.reduce((a, b) => a + b.debitAmount, 0)
+          : ledger.reduce((a, b) => a + b.debitAmount, 0) -
+            ledger.reduce((a, b) => a + b.creditAmount, 0)
+      }`,
     ];
   });
 
@@ -208,8 +232,9 @@ const GeneralLedger = ({
     let obj = {
       'Account Code': ele[0],
       'Account Name': ele[1],
-      'Credit Amt': ele[2],
-      'Debit Amt': ele[3],
+      Balance: ele[2],
+      'Credit Amt': ele[3],
+      'Debit Amt': ele[4],
     };
     accumulator.push(obj);
     return accumulator;
@@ -222,14 +247,31 @@ const GeneralLedger = ({
         print={print}
         setPrint={setPrint}
         tableData={csvPrint}
-        printCsc={[columns, data ? { ...data } : '']}
+        printCsc={[
+          [
+            'Account Code',
+            'Account Name',
+            'Balance',
+            'Credit Amt',
+            'Debit Amt',
+          ],
+          data ? { ...data } : '',
+        ]}
         handleFetch={handleData}
         pdflogo={organisation.logo}
         tableRef={tableRef}
         companyRef={companyRef}
         daterange={setDate}
         dateValue={dateValue}
-        head={[columns]}
+        head={[
+          [
+            'Account Code',
+            'Account Name',
+            'Balance',
+            'Credit Amt',
+            'Debit Amt',
+          ],
+        ]}
         body={data}
         fromDay="Start Date"
         toDay="End Date"

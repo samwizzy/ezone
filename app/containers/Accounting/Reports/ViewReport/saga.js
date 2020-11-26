@@ -181,6 +181,65 @@ export function* getIncomeStatementSaga() {
   }
 }
 
+/** Get Cash Flow API */
+
+export function* getCashFlowSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const { startDate, endDate } = yield select(Selectors.makeSelectTime());
+
+  const requestURL = `${
+    Endpoints.GetCashFlowReportApi
+  }?endDate=${endDate}&startDate=${startDate}&orgId=${
+    currentUser.organisation.orgId
+  }`;
+  console.log('requestURL', requestURL);
+
+  try {
+    const cashFlowResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+    yield put(Actions.getCashFlowSuccesAction(cashFlowResponse));
+  } catch (err) {
+    swal('Error', 'Something went wrong', 'error');
+    yield put(Actions.getCashFlowErrorAction(err));
+  }
+}
+
+/** Get Financial Position API */
+
+export function* getFinancialPositionSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const { startDate, endDate } = yield select(Selectors.makeSelectTime());
+
+  const requestURL = `${
+    Endpoints.GetFinancialPositionReportApi
+  }?endDate=${endDate}&startDate=${startDate}&orgId=${
+    currentUser.organisation.orgId
+  }`;
+  console.log('requestURL', requestURL);
+
+  try {
+    const financialPositionResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+    yield put(
+      Actions.getFinancialPositionSuccesAction(financialPositionResponse),
+    );
+  } catch (err) {
+    swal('Error', 'Something went wrong', 'error');
+    yield put(Actions.getFinancialPositionErrorAction(err));
+  }
+}
 /** Get trial balance saga */
 
 export function* getTrialBalanceSaga() {
@@ -237,5 +296,10 @@ export default function* ReportSaga() {
   yield takeLatest(
     Constants.GET_ALL_INCOME_STATEMENT_TYPES,
     getIncomeStatementSaga,
+  );
+  yield takeLatest(Constants.GET_ALL_CASH_FLOW_TYPES, getCashFlowSaga);
+  yield takeLatest(
+    Constants.GET_ALL_FINANCIAL_POSITION_TYPES,
+    getFinancialPositionSaga,
   );
 }

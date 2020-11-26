@@ -44,23 +44,14 @@ const ComprehensiveIncome = ({
   useInjectReducer({ key: 'reports', reducer: viewReportReducer });
   useInjectSaga({ key: 'reports', saga: ReportSaga });
 
-  useEffect(() => {
-    if (period.lastDate && period.firstDate) {
-      dispatchGetGeneralJournalTimeAction({
-        startDate: period.firstDate,
-        endDate: period.lastDate,
-      });
-      handleData();
-    }
-    return async () => await dispatchCleanUpAction();
-  }, [period]);
-
   const handleData = () => {
     dispatchGetAllIncomeStatementAction();
     dispatchGetIncomeStatementRangeAction({ selectedRange: setDate });
     setDisplay(true);
   };
-  useEffect(() => {
+  window.addEventListener(
+    'DOMContentLoaded',
+
     function table_to_array() {
       const myData = document.getElementById('comprehensive-IncomeStatement')
         .rows;
@@ -74,12 +65,27 @@ const ComprehensiveIncome = ({
         my_liste.push(my_el);
       }
       setTabledata(state => my_liste);
-    }
-    window.addEventListener('DOMContentLoaded', table_to_array());
-    return () => {
-      window.removeEventListener('DOMContentLoaded', table_to_array());
-    };
-  });
+    },
+  );
+  window.removeEventListener(
+    'DOMContentLoaded',
+
+    function table_to_array() {
+      const myData = document.getElementById('comprehensive-IncomeStatement')
+        .rows;
+      const my_liste = [];
+      for (var i = 0; i < myData.length; i++) {
+        const el = myData[i].children;
+        const my_el = [];
+        for (var j = 0; j < el.length; j++) {
+          my_el.push(el[j].innerText);
+        }
+        my_liste.push(my_el);
+      }
+      setTabledata(state => my_liste);
+    },
+  );
+
   const Location = useLocation();
   const fileName = Location.pathname.split('/')[3];
 
@@ -107,6 +113,7 @@ const ComprehensiveIncome = ({
       });
       handleData();
     }
+    return async () => await dispatchCleanUpAction();
   }, [period]);
 
   useEffect(() => {
@@ -121,6 +128,9 @@ const ComprehensiveIncome = ({
     accumulator.push(obj);
     return accumulator;
   }, []);
+
+  const { date, totalRevenueBalance, values } = incomeStatement;
+
   return (
     <React.Fragment>
       <ControlledButtons
@@ -155,7 +165,7 @@ const ComprehensiveIncome = ({
             <tbody>
               <tr>
                 <td>Revenue </td>
-                <td />
+                <td>{values && totalRevenueBalance}</td>
               </tr>
 
               <tr>
@@ -164,7 +174,7 @@ const ComprehensiveIncome = ({
               </tr>
               <tr>
                 <td>Gross Profit</td>
-                <td />
+                <td>{values && values.grossProfit}</td>
               </tr>
               <tr>
                 <td>Other Operating Income</td>
@@ -176,7 +186,7 @@ const ComprehensiveIncome = ({
               </tr>
               <tr>
                 <td>Operating Profit/(Loss)</td>
-                <td />
+                <td>{values && values.operatingProfitAndLoss}</td>
               </tr>
               <tr>
                 <td>Finance cost</td>
@@ -184,7 +194,7 @@ const ComprehensiveIncome = ({
               </tr>
               <tr>
                 <td>Profit/(Loss) before tax</td>
-                <td />
+                <td>{values && values.profitAndLossBeforeTax}</td>
               </tr>
               <tr>
                 <td>Tax expense</td>
@@ -192,7 +202,7 @@ const ComprehensiveIncome = ({
               </tr>
               <tr>
                 <td>Net Income for the Financial Year</td>
-                <td />
+                <td>{values && values.netIncomeForTheFinancialYear}</td>
               </tr>
               <tr>
                 <td>Other Comprehensive Income</td>
@@ -200,11 +210,11 @@ const ComprehensiveIncome = ({
               </tr>
               <tr>
                 <td>Total Comprehensive Income</td>
-                <td />
+                <td>{values && values.totalComprehensiveIncome}</td>
               </tr>
               <tr>
                 <td>EPS(Kobo)</td>
-                <td />
+                <td>{values && values.epsInKobo}</td>
               </tr>
             </tbody>
           </table>
@@ -240,17 +250,3 @@ export default compose(
   withConnect,
   memo,
 )(ComprehensiveIncome);
-
-/**
- * <TopMenu
-        componentRef={componentRef}
-        print={print}
-        setPrint={setPrint}
-        handleFetch={handleData}
-        pdflogo={organisation.logo}
-        tableRef={tableRef}
-        companyRef={companyRef}
-        daterange={setDate}
-        tableData={tabledata}
-      />
- */
