@@ -163,7 +163,15 @@ const ChatsOfAccount = ({
         daterange={display && `As at ${moment(endDate).format('MMM Do YYYY')}`}
         singleDate={true}
         dateValue={dateValue}
-        head={[columns]}
+        head={[
+          [
+            'Account Code',
+            'Account Name',
+            'Account Type',
+            'Closing Balance',
+            'Status',
+          ],
+        ]}
         body={data}
         toDay="End Date"
       />

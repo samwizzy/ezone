@@ -59,7 +59,7 @@ const Modal = ({ showmodal, setShowmodal, rowInfo, general, DatePeriod }) => {
     responsive: 'stacked',
     selectableRows: 'none',
     elevation: 0,
-    download: false,
+    download: true,
     print: false,
     pagination: false,
     rowsPerPage: 20,
@@ -97,8 +97,13 @@ const Modal = ({ showmodal, setShowmodal, rowInfo, general, DatePeriod }) => {
     `${detail.transactionDescription}`,
     `${detail.debitAmount === 0 ? '' : detail.debitAmount}`,
     `${detail.creditAmount === 0 ? '' : detail.creditAmount}`,
-    `${detail.debitAmount - detail.creditAmount}`,
+    `${
+      detail.financialType === 'CREDIT'
+        ? detail.creditAmount - detail.debitAmount
+        : detail.debitAmount - detail.creditAmount
+    }`,
   ]);
+
   useEffect(() => {
     if (showmodal === true) {
       modalRef.current.style.display = 'block';

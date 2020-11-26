@@ -181,3 +181,57 @@ export function getIncomeStatementRangeAction(data) {
     payload: data,
   };
 }
+
+//Cash flow
+export function getAllCashFlowAction() {
+  return {
+    type: Constants.GET_ALL_CASH_FLOW_TYPES,
+  };
+}
+export function getCashFlowSuccesAction(data) {
+  return {
+    type: Constants.GET_CASH_FLOW_SUCCES_ACTION,
+    payload: data,
+  };
+}
+
+export function getCashFlowErrorAction(data) {
+  return {
+    type: Constants.GET_CASH_FLOW_ERR,
+    payload: data,
+  };
+}
+
+export function getCashFlowRangeAction(data) {
+  return {
+    type: Constants.GET_CASH_FLOW_RANGE,
+    payload: data,
+  };
+}
+
+//Financial Position
+export function getAllFinancialPositionAction() {
+  return {
+    type: Constants.GET_ALL_FINANCIAL_POSITION_TYPES,
+  };
+}
+export function getFinancialPositionSuccesAction(data) {
+  return {
+    type: Constants.GET_FINANCIAL_POSITION_SUCCES_ACTION,
+    payload: data,
+  };
+}
+
+export function getFinancialPositionErrorAction(data) {
+  return {
+    type: Constants.GET_FINANCIAL_POSITION_ERR,
+    payload: data,
+  };
+}
+
+export function getFinancialPositionRangeAction(data) {
+  return {
+    type: Constants.GET_FINANCIAL_POSITION_RANGE,
+    payload: data,
+  };
+}
