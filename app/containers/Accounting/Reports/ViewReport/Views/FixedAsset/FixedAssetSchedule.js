@@ -130,6 +130,24 @@ const FixedAssetSchedule = ({
     schedule.netBookValue,
   ]);
 
+  const csvPrint = data.reduce((accumulator, ele) => {
+    let obj = {
+      Date: ele[0],
+      'Asset Code': ele[1],
+      Description: ele[2],
+      'Cost Bfwd': ele[3],
+      Addition: ele[4],
+      Disposal: ele[5],
+      'Cost Cfwd': ele[6],
+      'Depriciation Bfwd': ele[7],
+      Addition: ele[8],
+      Disposal: ele[9],
+      'Depriciation Cfwd': ele[10],
+      'Net Book Value': ele[11],
+    };
+    accumulator.push(obj);
+    return accumulator;
+  }, []);
   const setDate =
     startDate !== ''
       ? `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
@@ -141,8 +159,6 @@ const FixedAssetSchedule = ({
     const { selectedRange } = fixedAssetScheduleRange;
     setShow(selectedRange);
   }, [display, time]);
-
-  // const { selectedRange } = fixedAssetScheduleRange;
 
   const handleData = () => {
     dispatchGetAllFixedAssetScheduleAction();
@@ -178,7 +194,7 @@ const FixedAssetSchedule = ({
         componentRef={componentRef}
         print={print}
         setPrint={setPrint}
-        tableData={data}
+        tableData={csvPrint}
         printCsc={[columns, data ? { ...data } : '']}
         handleFetch={handleData}
         pdflogo={organisation.logo}

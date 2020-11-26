@@ -198,13 +198,27 @@ const GeneralJournal = ({
       'MMM Do YYYY',
     )}`;
 
+  const csvPrint = data.concat([TableFooterData]).reduce((accumulator, ele) => {
+    let obj = {
+      Date: ele[0],
+      'Account Code': ele[1],
+      Reference: ele[2],
+      'Trans Description': ele[3],
+      Currency: ele[4],
+      'Exchange Rate': ele[5],
+      'Debit Amt': ele[6],
+      'Credit Amt': ele[7],
+    };
+    accumulator.push(obj);
+    return accumulator;
+  }, []);
   return (
     <React.Fragment>
       <ControlledButtons
         componentRef={componentRef}
         print={print}
         setPrint={setPrint}
-        tableData={data}
+        tableData={csvPrint}
         printCsc={[columns, data ? { ...data } : '']}
         handleFetch={handleData}
         pdflogo={organisation.logo}

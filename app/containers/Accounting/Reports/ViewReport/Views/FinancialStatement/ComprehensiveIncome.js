@@ -35,6 +35,7 @@ const ComprehensiveIncome = ({
   const [print, setPrint] = useState(false);
   const [display, setDisplay] = useState(false);
   const [tabledata, setTabledata] = useState([]);
+  const [show, setShow] = useState('');
 
   const { organisation } = user;
   const { startDate, endDate } = time;
@@ -53,17 +54,10 @@ const ComprehensiveIncome = ({
     }
     return async () => await dispatchCleanUpAction();
   }, [period]);
-  console.log(
-    'ggggggggggggggggggggggggggggggggggggggggg',
-    incomeStatement,
-    incomeStatementRange,
-  );
-  useEffect(() => {
-    dispatchGetIncomeStatementRangeAction({ selectedRange: setDate });
-  }, [display]);
 
   const handleData = () => {
     dispatchGetAllIncomeStatementAction();
+    dispatchGetIncomeStatementRangeAction({ selectedRange: setDate });
     setDisplay(true);
   };
   useEffect(() => {
@@ -90,10 +84,11 @@ const ComprehensiveIncome = ({
   const fileName = Location.pathname.split('/')[3];
 
   const setDate =
-    display &&
-    `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
-      'MMM Do YYYY',
-    )}`;
+    startDate !== ''
+      ? `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
+          'MMM Do YYYY',
+        )}`
+      : '';
 
   const dateValue = ({ target }) => {
     if (target.name === 'Start Date') {
@@ -115,26 +110,30 @@ const ComprehensiveIncome = ({
   }, [period]);
 
   useEffect(() => {
-    console.log('===========================================>>>>');
-    dispatchGetIncomeStatementRangeAction({ selectedRange: setDate });
-  }, [display]);
-
+    const { selectedRange } = incomeStatementRange;
+    setShow(selectedRange);
+  }, [display, time]);
+  const csvPrint = tabledata.slice(1).reduce((accumulator, ele) => {
+    let obj = {
+      DESCRIPTION: ele[0],
+      AMOUNT: ele[1],
+    };
+    accumulator.push(obj);
+    return accumulator;
+  }, []);
   return (
     <React.Fragment>
       <ControlledButtons
         componentRef={componentRef}
         print={print}
         setPrint={setPrint}
-        tableData={tabledata}
-        // printCsc={[columns, data ? { ...data } : '']}
+        tableData={csvPrint}
         handleFetch={handleData}
         pdflogo={organisation.logo}
         tableRef={tableRef}
         companyRef={companyRef}
-        daterange={setDate}
+        daterange={setDate || show}
         dateValue={dateValue}
-        // head={[columns]}
-        // body={data}
         fromDay="Start Date"
         toDay="End Date"
       />
@@ -143,7 +142,7 @@ const ComprehensiveIncome = ({
           ref={companyRef}
           ComLogo={organisation.logo}
           name={`${fileName}`}
-          date={setDate}
+          date={setDate || show}
         />
         <div className="comprehensiveIncomeStatement">
           <table id="comprehensive-IncomeStatement" ref={tableRef}>

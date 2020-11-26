@@ -137,14 +137,24 @@ const ChatsOfAccount = ({
     });
     handleData();
   };
-
+  const csvPrint = data.reduce((accumulator, ele) => {
+    let obj = {
+      'Account Code': ele[0],
+      'Account Name': ele[1],
+      'Account Type': ele[2],
+      'Closing Balance': ele[3],
+      Status: ele[4],
+    };
+    accumulator.push(obj);
+    return accumulator;
+  }, []);
   return (
     <React.Fragment>
       <ControlledButtons
         componentRef={componentRef}
         print={print}
         setPrint={setPrint}
-        tableData={data}
+        tableData={csvPrint}
         printCsc={[columns, data ? { ...data } : '']}
         handleFetch={handleData}
         pdflogo={organisation.logo}

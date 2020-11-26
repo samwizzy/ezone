@@ -64,8 +64,8 @@ export default function CustomizedSelects({ data, setPrint }) {
       setPrint(true);
     }
     if (Number(event.target.value) === 30) {
-      const mm = '[{"foo":"foo"},{"bar":"bar"}]';
-      downloadCSV({ fileName, exportType: 'csv', data: mm });
+      console.log('================>', data);
+      downloadCSV({ fileName, exportType: 'csv', data });
     }
     if (Number(event.target.value) === 40) {
       downloadCSV({ fileName, exportType: 'xls', data });
