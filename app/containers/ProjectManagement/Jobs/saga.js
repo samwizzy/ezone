@@ -53,6 +53,12 @@ export function* getEmployees() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}?orgId=${currentUser && currentUser.organisation.orgId}`;
 
+  const header = new Headers({
+    Authorization: `Bearer ${accessToken}`,
+    'Content-Type': 'application/json',
+  });
+
+  console.log(header, "header employees");
   try {
     const response = yield call(request, requestURL, {
       method: 'GET',
@@ -73,6 +79,14 @@ export function* createJob({ payload }) {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.JobApi}`;
   payload.orgId = currentUser && currentUser.organisation.orgId;
+
+  const header = new Headers({
+    Authorization: `Bearer ${accessToken}`,
+    'Content-Type': 'application/json',
+  });
+
+  console.log(header, "header job")
+  console.log(payload, "payload job")
 
   try {
     const response = yield call(request, requestURL, {
