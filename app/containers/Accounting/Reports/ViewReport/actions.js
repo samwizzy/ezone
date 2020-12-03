@@ -235,3 +235,30 @@ export function getFinancialPositionRangeAction(data) {
     payload: data,
   };
 }
+
+//Cash account register
+export function getAllCashAccountRegisterAction() {
+  return {
+    type: Constants.GET_ALL_CASH_ACCOUNT_REGISTER_TYPES,
+  };
+}
+export function getCashAccountRegisterSuccesAction(data) {
+  return {
+    type: Constants.GET_CASH_ACCOUNT_REGISTER_SUCCES_ACTION,
+    payload: data,
+  };
+}
+
+export function getCashAccountRegisterErrorAction(data) {
+  return {
+    type: Constants.GET_CASH_ACCOUNT_REGISTER_ERR,
+    payload: data,
+  };
+}
+
+export function getCashAccountRegisterRangeAction(data) {
+  return {
+    type: Constants.GET_CASH_ACCOUNT_REGISTER_RANGE,
+    payload: data,
+  };
+}
