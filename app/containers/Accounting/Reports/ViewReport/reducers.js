@@ -10,6 +10,7 @@ export const initialState = {
   incomeStatementTimeRange: { selectedRange: '' },
   financialPositionTimeRange: { selectedRange: '' },
   cashFlowTimeRange: { selectedRange: '' },
+  cashAccountRegisterTimeRange: { selectedRange: '' },
   generaljournal: [],
   chatsOfAccount: [],
   generalLedger: [],
@@ -19,6 +20,8 @@ export const initialState = {
   incomeStatement: [],
   cashFlow: [],
   financialPosition: [],
+  financialPosition: [],
+  cashAccountRegister: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -293,6 +296,37 @@ const viewReportReducer = (state = initialState, action) =>
         return {
           ...state,
           financialPositionTimeRange: action.payload,
+        };
+      }
+      // Case to get Cash Account Register
+      case Constants.GET_ALL_CASH_ACCOUNT_REGISTER_TYPES: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      // Case to get Cash Account Register success
+      case Constants.GET_CASH_ACCOUNT_REGISTER_SUCCES_ACTION: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          cashAccountRegister: action.payload,
+        };
+      }
+      //error Cash Account Register
+      case Constants.GET_CASH_ACCOUNT_REGISTER_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_CASH_ACCOUNT_REGISTER_RANGE: {
+        return {
+          ...state,
+          cashAccountRegisterTimeRange: action.payload,
         };
       }
     }

@@ -125,9 +125,25 @@ const FixedAssetRegister = ({
     'Qty',
     'Condition',
     'Acquisition date',
-    'Cost at Acquisition',
+    {
+      name: 'Cost at Acquisition',
+      label: 'Cost at Acquisition',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
     'Additions during the year',
-    'Disposals/Transfer',
+    {
+      name: 'Disposals/Transfer',
+      label: 'Disposals/Transfer',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
   ];
   const csvPrint = data.reduce((accumulator, ele) => {
     let obj = {
@@ -198,7 +214,20 @@ const FixedAssetRegister = ({
         companyRef={companyRef}
         daterange={setDate || show}
         dateValue={dateValue}
-        head={[columns]}
+        head={[
+          [
+            'Asset Code',
+            'Location of asset',
+            'Description',
+            'Specification',
+            'Qty',
+            'Condition',
+            'Acquisition date',
+            'Cost at Acquisition',
+            'Additions during the year',
+            'Disposals/Transfer',
+          ],
+        ]}
         body={data}
         fromDay="Start Date"
         toDay="End Date"

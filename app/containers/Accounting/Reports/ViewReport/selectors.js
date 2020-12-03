@@ -114,6 +114,18 @@ const makeSelectFinancialPositionTimeRange = () =>
     substate => substate.financialPositionTimeRange,
   );
 
+const makeSelectCashAccountRegister = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.cashAccountRegister,
+  );
+
+const makeSelectCashAccountRegisterTimeRange = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.cashAccountRegisterTimeRange,
+  );
+
 export default makeSelectReports;
 
 export {
@@ -135,4 +147,6 @@ export {
   makeSelectCashFlowTimeRange,
   makeSelectFinancialPosition,
   makeSelectFinancialPositionTimeRange,
+  makeSelectCashAccountRegister,
+  makeSelectCashAccountRegisterTimeRange,
 };
