@@ -99,12 +99,17 @@ const TrialBalance = ({
 
   const data =
     trialBalances &&
-    trialBalances.map(balance => [
-      `${balance.accountCode}`,
-      `${balance.accountName}`,
-      `${balance.debitAmount === 0.0 ? '' : balance.debitAmount}`,
-      `${balance.creditAmount === 0.0 ? '' : balance.creditAmount}`,
-    ]);
+    trialBalances.reduce((accumulator, balance) => {
+      if (balance.accountCode !== null) {
+        accumulator.push([
+          `${balance.accountCode}`,
+          `${balance.accountName}`,
+          `${balance.debitAmount === 0.0 ? '' : balance.debitAmount}`,
+          `${balance.creditAmount === 0.0 ? '' : balance.creditAmount}`,
+        ]);
+      }
+      return accumulator;
+    }, []);
   const columns = [
     'Account Code',
     'Account Name',
@@ -130,8 +135,8 @@ const TrialBalance = ({
   const TableFooterData = [
     '   ',
     ' TOTAL',
-    `${trialBalance && trialBalance.totalDebit}`,
-    `${trialBalance && trialBalance.totalcCredit}`,
+    `${trialBalance && data.length > 0 ? trialBalance.total : ''}`,
+    `${trialBalance && data.length > 0 ? trialBalance.total : ''}`,
   ];
 
   const options = {
@@ -164,6 +169,7 @@ const TrialBalance = ({
     `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
       'MMM Do YYYY',
     )}`;
+
   const csvPrint =
     data &&
     data.concat([TableFooterData]).reduce((accumulator, ele) => {

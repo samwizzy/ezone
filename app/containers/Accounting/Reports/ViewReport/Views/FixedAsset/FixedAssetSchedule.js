@@ -105,15 +105,87 @@ const FixedAssetSchedule = ({
     'Date',
     'Asset Code',
     'Description',
-    'Cost Bfwd',
-    'Addition',
-    'Disposal',
-    'Cost Cfwd',
-    'Depriciation Bfwd',
-    'Addition',
-    'Disposal',
-    'Depriciation Cfwd',
-    'Net Book Value',
+    {
+      name: 'Cost Bfwd',
+      label: 'Cost Bfwd',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
+    {
+      name: 'Addition',
+      label: 'Addition',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
+    {
+      name: 'Disposal',
+      label: 'Disposal',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
+    {
+      name: 'Cost Cfwd',
+      label: 'Cost Cfwd',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
+    {
+      name: 'Depriciation Bfwd',
+      label: 'Depriciation Bfwd',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
+    {
+      name: 'Addition',
+      label: 'Addition',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
+    {
+      name: 'Disposal',
+      label: 'Disposal',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
+    {
+      name: 'Depriciation Cfwd',
+      label: 'Depriciation Cfwd',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
+    {
+      name: 'Net Book Value',
+      label: 'Net Book Value',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
   ];
   const data = fixedAssetSchedule.map(schedule => [
     formatDate(schedule.date),
@@ -202,7 +274,22 @@ const FixedAssetSchedule = ({
         companyRef={companyRef}
         daterange={setDate || show}
         dateValue={dateValue}
-        head={[columns]}
+        head={[
+          [
+            'Date',
+            'Asset Code',
+            'Description',
+            'Cost Bfwd',
+            'Addition',
+            'Disposal',
+            'Cost Cfwd',
+            'Depriciation Bfwd',
+            'Addition',
+            'Disposal',
+            'Depriciation Cfwd',
+            'Net Book Value',
+          ],
+        ]}
         body={data}
         fromDay="Start Date"
         toDay="End Date"

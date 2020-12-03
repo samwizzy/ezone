@@ -269,6 +269,37 @@ export function* getTrialBalanceSaga() {
   }
 }
 
+/** Get Cash account register*/
+
+export function* getCashAccountRegisterSaga() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const { startDate, endDate } = yield select(Selectors.makeSelectTime());
+
+  const requestURL = `${
+    Endpoints.GetCashAccountRegisterApi
+  }?endDate=${endDate}&startDate=${startDate}&orgId=${
+    currentUser.organisation.orgId
+  }`;
+  console.log('requestURL', requestURL);
+
+  try {
+    const cashAccountRegisterResponse = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+    yield put(
+      Actions.getCashAccountRegisterSuccesAction(cashAccountRegisterResponse),
+    );
+  } catch (err) {
+    swal('Error', 'Something went wrong', 'error');
+    yield put(Actions.getCashAccountRegisterErrorAction(err));
+  }
+}
+
 // Individual exports for testing
 export default function* ReportSaga() {
   // See example in containers/HomePage/saga.js
@@ -301,5 +332,9 @@ export default function* ReportSaga() {
   yield takeLatest(
     Constants.GET_ALL_FINANCIAL_POSITION_TYPES,
     getFinancialPositionSaga,
+  );
+  yield takeLatest(
+    Constants.GET_ALL_CASH_ACCOUNT_REGISTER_TYPES,
+    getCashAccountRegisterSaga,
   );
 }
