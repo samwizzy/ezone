@@ -15,7 +15,6 @@ import {
   DialogContent,
   DialogActions,
   Divider,
-  MenuItem,
   Slide,
   AppBar,
   Toolbar,
@@ -24,7 +23,7 @@ import {
   FormControl,
   Grid,
 } from '@material-ui/core';
-import PaperDropzone from './PaperDropzone'
+import PaperDropzone from './PaperDropzone';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { Close } from '@material-ui/icons';
@@ -58,7 +57,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const CategoryDialog = props => {
+const CertificateDialog = props => {
   const classes = useStyles();
   const {
     loading,
@@ -101,7 +100,7 @@ const CategoryDialog = props => {
         </Backdrop>
         <AppBar position="relative">
           <Toolbar>
-            <Typography variant="h6">New Category</Typography>
+            <Typography variant="h6">New Certificate</Typography>
           </Toolbar>
         </AppBar>
         <Divider />
@@ -127,7 +126,9 @@ const CategoryDialog = props => {
                 size="small"
                 options={[]}
                 getOptionLabel={option => option.name}
-                getOptionSelected={option => option.name === form.parentCategory}
+                getOptionSelected={option =>
+                  option.name === form.parentCategory
+                }
                 value={form.parentCategory}
                 onChange={handleSelectChange('parentCategory')}
                 renderInput={params => (
@@ -181,7 +182,7 @@ const CategoryDialog = props => {
   );
 };
 
-CategoryDialog.propTypes = {
+CertificateDialog.propTypes = {
   loading: PropTypes.bool,
   dialog: PropTypes.object,
   closeNewCategoryDialog: PropTypes.func,
@@ -196,7 +197,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     closeNewCategoryDialog: () => dispatch(Actions.closeNewCategoryDialog()),
-    createCategory: evt => dispatch(Actions.createCategory(evt)),
+    createCategory: data => dispatch(Actions.createCategory(data)),
   };
 }
 
@@ -208,4 +209,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(CategoryDialog);
+)(CertificateDialog);

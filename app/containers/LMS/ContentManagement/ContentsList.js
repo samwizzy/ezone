@@ -33,19 +33,19 @@ import moment from 'moment';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
-import PdfFile from '../../../images/pdfFile.svg'
+import PdfFile from '../../../images/pdfFile.svg';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   list: {
-    "& .MuiListItemAvatar-root": {
-      marginRight: theme.spacing(2)
-    }
+    '& .MuiListItemAvatar-root': {
+      marginRight: theme.spacing(2),
+    },
   },
   flex: {
     display: 'flex',
@@ -57,7 +57,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CoursesList = props => {
+const ContentList = props => {
   const classes = useStyles();
 
   const {
@@ -82,12 +82,12 @@ const CoursesList = props => {
   const data = [
     {
       id: 1,
-      title: 'Statistics for Beginners',
-      category: 'Architecture',
-      stats: { sections: 20, lectures: 15 },
-      enrollment: 'Enrollment',
-      dateCreated: '2020-06-30T15:24:16.000+0000'
-    }
+      title: 'Introduction to statistics — YouTube',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam sagittis, placerat metus in risus.',
+      course: 'Course — Beginner’s guide to Statistics',
+      dateCreated: '2020-06-30T15:24:16.000+0000',
+    },
   ];
 
   return (
@@ -98,10 +98,20 @@ const CoursesList = props => {
 
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          <AppBar color="inherit" position="static">
+          <AppBar color="inherit" position="static" elevation={1}>
             <Toolbar variant="dense">
-              <Typography variant="h6" className={classes.title}>Resources</Typography>
-              <Button size="small" color="primary" variant="contained" disableElevation onClick={() => { }}>Upload</Button>
+              <Typography variant="h6" className={classes.title}>
+                Resources
+              </Typography>
+              <Button
+                size="small"
+                color="primary"
+                variant="contained"
+                disableElevation
+                onClick={() => {}}
+              >
+                Upload
+              </Button>
             </Toolbar>
           </AppBar>
         </Grid>
@@ -109,48 +119,48 @@ const CoursesList = props => {
         <Grid item xs={12}>
           <Paper className={classes.paper}>
             <List dense={true} className={classes.list}>
-              <ListItem>
-                <ListItemAvatar>
-                  <img src={PdfFile} alt="" />
-                </ListItemAvatar>
-                <ListItemText
-                  disableTypography
-                  primary={
-                    <React.Fragment>
-                      <Typography variant="h6">
-                        Intoduction to statistics  - YouTube
-                      </Typography>
-                    </React.Fragment>
-                  }
-                  secondary={
-                    <div className={classes.flex}>
-                      <Typography color="textPrimary" className={classes.link}>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam sagittis, placerat metus in risus.
-                      </Typography>
+              {data.map((item, i) => (
+                <ListItem key={i}>
+                  <ListItemAvatar>
+                    <img src={PdfFile} alt="" />
+                  </ListItemAvatar>
+                  <ListItemText
+                    disableTypography
+                    primary={<Typography variant="h6">{item.title}</Typography>}
+                    secondary={
+                      <div className={classes.flex}>
+                        <Typography
+                          color="textPrimary"
+                          className={classes.link}
+                        >
+                          {item.description}
+                        </Typography>
 
-                      <Typography color="textPrimary" className={classes.link}>
-                        Course  - Beginner’s guide to Statistics
-                      </Typography>
-                    </div>
-                  }
-                />
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete">
-                    <MoreVertIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
+                        <Typography
+                          color="textPrimary"
+                          className={classes.link}
+                        >
+                          {item.course}
+                        </Typography>
+                      </div>
+                    }
+                  />
+                  <ListItemSecondaryAction>
+                    <IconButton edge="end" aria-label="delete">
+                      <MoreVertIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))}
             </List>
           </Paper>
         </Grid>
       </Grid>
-
-
     </React.Fragment>
   );
 };
 
-CoursesList.propTypes = {
+ContentList.propTypes = {
   loading: PropTypes.bool,
   openNewContentDialog: PropTypes.func,
   openEditContentDialog: PropTypes.func,
@@ -177,4 +187,4 @@ export default compose(
   withRouter,
   withConnect,
   memo,
-)(CoursesList);
+)(ContentList);

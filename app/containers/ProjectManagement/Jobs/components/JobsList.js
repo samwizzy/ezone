@@ -25,15 +25,15 @@ import * as Selectors from '../selectors';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   button: {
-    margin: "auto",
+    margin: 'auto',
   },
   datatable: {
-    whiteSpace: "nowrap",
+    whiteSpace: 'nowrap',
     '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
@@ -47,8 +47,8 @@ const useStyles = makeStyles(theme => ({
       },
     },
     '& .MuiToolbar-root': {
-      padding: theme.spacing(1)
-    }
+      padding: theme.spacing(1),
+    },
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -63,15 +63,14 @@ const JobsList = props => {
     loading,
     history,
     match,
-    getJobs,
     jobs,
     openNewJobDialog,
     openEditJobDialog,
   } = props;
 
-  useEffect(() => {
-    getJobs();
-  }, []);
+  console.log(jobs, 'jobs list');
+
+  useEffect(() => {}, []);
 
   const columns = [
     {
@@ -90,7 +89,7 @@ const JobsList = props => {
       },
     },
     {
-      name: 'title',
+      name: 'name',
       label: 'Title',
       options: {
         filter: true,
@@ -119,7 +118,7 @@ const JobsList = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => value ? moment(value).format('lll') : ""
+        customBodyRender: value => (value ? moment(value).format('lll') : ''),
       },
     },
     {
@@ -128,8 +127,8 @@ const JobsList = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => value ? moment(value).format('lll') : ""
-      }
+        customBodyRender: value => (value ? moment(value).format('lll') : ''),
+      },
     },
     {
       name: 'Status',
@@ -137,7 +136,7 @@ const JobsList = props => {
       options: {
         filter: true,
         sort: false,
-      }
+      },
     },
   ];
 
@@ -160,7 +159,7 @@ const JobsList = props => {
         Add Job
       </Button>
     ),
-    elevation: 0
+    elevation: 0,
   };
 
   // if (loading) {
@@ -188,7 +187,7 @@ JobsList.propTypes = {
   getJobs: PropTypes.func,
   openNewJobDialog: PropTypes.func,
   openEditJobDialog: PropTypes.func,
-  jobs: PropTypes.array,
+  jobs: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({

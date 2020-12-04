@@ -2,30 +2,36 @@ import React, { Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { withStyles, Tabs, Tab, Grid, Paper, TextField, Toolbar, Typography } from '@material-ui/core';
+import {
+  withStyles,
+  Tabs,
+  Tab,
+  Grid,
+  Paper,
+  Typography,
+} from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import _ from 'lodash'
+import _ from 'lodash';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import * as AppSelectors from '../../../App/selectors';
-import General from './tabs/General'
-import Questions from './tabs/Questions'
+import General from './tabs/General';
+import Questions from './tabs/Questions';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
   paper: {
-    // boxShadow: theme.shadows[1],
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
   },
   toolbar: {
     ...theme.mixins.toolbar,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     padding: theme.spacing(1, 0),
-  }
+  },
 }));
 
 const AntTabs = withStyles({
@@ -82,12 +88,8 @@ const AddQuiz = props => {
       </Grid>
 
       <Grid item xs={12}>
-        {value === 'general' &&
-          <General />
-        }
-        {value === 'questions' &&
-          <Questions />
-        }
+        {value === 'general' && <General />}
+        {value === 'questions' && <Questions />}
       </Grid>
     </Grid>
   );
@@ -102,8 +104,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 function mapDispatchToProps(dispatch) {
-  return {
-  };
+  return {};
 }
 
 const withConnect = connect(

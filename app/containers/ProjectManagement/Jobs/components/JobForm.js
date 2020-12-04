@@ -9,7 +9,10 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import {
   makeStyles,
   Button,
-  Card, CardHeader, CardContent, CardActions,
+  Card,
+  CardHeader,
+  CardContent,
+  CardActions,
   Checkbox,
   IconButton,
   Grid,
@@ -34,8 +37,8 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     '& .MuiCardActions-root': {
-      justifyContent: "flex-end"
-    }
+      justifyContent: 'flex-end',
+    },
   },
   title: {
     flexGrow: 1,
@@ -47,37 +50,37 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const types = [
-  { label: "Manufacturing", value: "manufacturing" },
-  { label: "Production", value: "production" },
-  { label: "Business", value: "business" },
-]
+  { label: 'Manufacturing', value: 'manufacturing' },
+  { label: 'Production', value: 'production' },
+  { label: 'Business', value: 'business' },
+];
 
 const phaseInitialState = {
-  description: "",
+  description: '',
   expense: 0,
-  phase: "",
+  phase: '',
   revenue: 0,
-  unit: ""
-}
+  unit: '',
+};
 
 const initialState = {
-  actualEndDate: moment().format("YYYY-MM-DD"),
-  actualStartDate: moment().format("YYYY-MM-DD"),
-  country: "",
-  customer: "",
-  description: "",
-  endDate: moment().format("YYYY-MM-DD"),
-  estimatedDate: moment().format("YYYY-MM-DD"),
+  actualEndDate: moment().format('YYYY-MM-DD'),
+  actualStartDate: moment().format('YYYY-MM-DD'),
+  country: '',
+  customer: '',
+  description: '',
+  endDate: moment().format('YYYY-MM-DD'),
+  estimatedDate: moment().format('YYYY-MM-DD'),
   expense: 0,
-  location: "",
-  name: "",
-  orgId: "",
+  location: '',
+  name: '',
+  orgId: '',
   phases: [{ ...phaseInitialState }],
   revenue: 0,
-  startDate: moment().format("YYYY-MM-DD"),
-  supervisor: "",
-  type: ""
-}
+  startDate: moment().format('YYYY-MM-DD'),
+  supervisor: '',
+  type: '',
+};
 
 const JobForm = props => {
   const classes = useStyles();
@@ -95,27 +98,27 @@ const JobForm = props => {
   };
 
   const handleChange = event => {
-    const { name, value, type, checked } = event.target
+    const { name, value, type, checked } = event.target;
     setForm({ ...form, [name]: type === 'checkbox' ? checked : value });
   };
 
   const handleRowChange = index => event => {
-    const { phases } = form
-    phases[index][event.target.name] = event.target.value
+    const { phases } = form;
+    phases[index][event.target.name] = event.target.value;
     setForm({ ...form, phases });
   };
 
   const handleOptionsChange = event => {
-    const { name, value, type, checked } = event.target
+    const { name, value, type, checked } = event.target;
     setOptions({ ...options, [name]: type === 'checkbox' ? checked : value });
   };
 
   const handleSelectChange = name => (event, obj) => {
-    if (name === "country") {
+    if (name === 'country') {
       setForm({ ...form, [name]: obj ? obj.name : obj });
-    } else if (name === "state") {
+    } else if (name === 'state') {
       setForm({ ...form, [name]: obj });
-    } else if (name === "customer" || name === "supervisor") {
+    } else if (name === 'customer' || name === 'supervisor') {
       setForm({ ...form, [name]: obj ? obj.fullName : obj });
     } else {
       setForm({ ...form, [name]: obj ? obj.name : obj });
@@ -127,8 +130,8 @@ const JobForm = props => {
   };
 
   const handleSubmit = () => {
-    createJob(form)
-  }
+    createJob(form);
+  };
 
   console.log(form, 'form');
   console.log(options, 'options');
@@ -166,7 +169,9 @@ const JobForm = props => {
               name="supervisor"
               size="small"
               options={employees}
-              getOptionLabel={option => option.firstName + ' ' + option.lastName}
+              getOptionLabel={option =>
+                option.firstName + ' ' + option.lastName
+              }
               onChange={handleSelectChange('supervisor')}
               renderInput={params => (
                 <TextField
@@ -232,7 +237,9 @@ const JobForm = props => {
               name="customer"
               size="small"
               options={customers}
-              getOptionLabel={option => option.firstName + ' ' + option.lastName}
+              getOptionLabel={option =>
+                option.firstName + ' ' + option.lastName
+              }
               onChange={handleSelectChange('customer')}
               renderInput={params => (
                 <TextField
@@ -265,7 +272,12 @@ const JobForm = props => {
             </MuiPickersUtilsProvider>
 
             <FormControl margin="normal">
-              <Button size="small" color="primary" variant="contained" disableElevation>
+              <Button
+                size="small"
+                color="primary"
+                variant="contained"
+                disableElevation
+              >
                 Next
               </Button>
             </FormControl>
@@ -273,86 +285,99 @@ const JobForm = props => {
 
           <Grid item md={12}>
             <FormControlLabel
-              control={<Checkbox checked={options.phases} onChange={handleOptionsChange} name="phases" />}
+              control={
+                <Checkbox
+                  checked={options.phases}
+                  onChange={handleOptionsChange}
+                  name="phases"
+                />
+              }
               label="Phases"
             />
           </Grid>
 
-          {options.phases ?
+          {options.phases ? (
             <Grid item xs={12}>
-              {form.phases && form.phases.map((phase, i) =>
-                <Grid container spacing={2} key={i} alignItems="center">
-                  <Grid item xs={3}>
-                    <TextField
-                      name="phase"
-                      label="Phase"
-                      id={`outlined-phase-${i}`}
-                      fullWidth
-                      variant="outlined"
-                      size="small"
-                      value={phase.phase}
-                      onChange={handleRowChange(i)}
-                    />
+              {form.phases &&
+                form.phases.map((phase, i) => (
+                  <Grid container spacing={2} key={i} alignItems="center">
+                    <Grid item xs={3}>
+                      <TextField
+                        name="phase"
+                        label="Phase"
+                        id={`outlined-phase-${i}`}
+                        fullWidth
+                        variant="outlined"
+                        size="small"
+                        value={phase.phase}
+                        onChange={handleRowChange(i)}
+                      />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <TextField
+                        name="description"
+                        label="Description"
+                        id={`outlined-phase-description-${i}`}
+                        fullWidth
+                        variant="outlined"
+                        size="small"
+                        value={phase.description}
+                        onChange={handleRowChange(i)}
+                      />
+                    </Grid>
+                    <Grid item xs>
+                      <TextField
+                        name="unit"
+                        label="Unit"
+                        id={`outlined-phase-unit-${i}`}
+                        fullWidth
+                        variant="outlined"
+                        size="small"
+                        value={phase.unit}
+                        onChange={handleRowChange(i)}
+                      />
+                    </Grid>
+                    <Grid item xs>
+                      <TextField
+                        name="expense"
+                        label="Expense"
+                        id={`outlined-phase-expense-${i}`}
+                        fullWidth
+                        variant="outlined"
+                        size="small"
+                        value={phase.expense}
+                        onChange={handleRowChange(i)}
+                      />
+                    </Grid>
+                    <Grid item xs>
+                      <TextField
+                        name="revenue"
+                        label="Revenue"
+                        id={`outlined-phase-revenue-${i}`}
+                        fullWidth
+                        variant="outlined"
+                        size="small"
+                        value={phase.revenue}
+                        onChange={handleRowChange(i)}
+                      />
+                    </Grid>
+                    <Grid item xs={1}>
+                      {i !== 0 && (
+                        <IconButton onClick={removeMore(i)}>
+                          <CloseIcon />
+                        </IconButton>
+                      )}
+                    </Grid>
                   </Grid>
-                  <Grid item xs={3}>
-                    <TextField
-                      name="description"
-                      label="Description"
-                      id={`outlined-phase-description-${i}`}
-                      fullWidth
-                      variant="outlined"
-                      size="small"
-                      value={phase.description}
-                      onChange={handleRowChange(i)}
-                    />
-                  </Grid>
-                  <Grid item xs>
-                    <TextField
-                      name="unit"
-                      label="Unit"
-                      id={`outlined-phase-unit-${i}`}
-                      fullWidth
-                      variant="outlined"
-                      size="small"
-                      value={phase.unit}
-                      onChange={handleRowChange(i)}
-                    />
-                  </Grid>
-                  <Grid item xs>
-                    <TextField
-                      name="expense"
-                      label="Expense"
-                      id={`outlined-phase-expense-${i}`}
-                      fullWidth
-                      variant="outlined"
-                      size="small"
-                      value={phase.expense}
-                      onChange={handleRowChange(i)}
-                    />
-                  </Grid>
-                  <Grid item xs>
-                    <TextField
-                      name="revenue"
-                      label="Revenue"
-                      id={`outlined-phase-revenue-${i}`}
-                      fullWidth
-                      variant="outlined"
-                      size="small"
-                      value={phase.revenue}
-                      onChange={handleRowChange(i)}
-                    />
-                  </Grid>
-                  <Grid item xs={1}>
-                    {i !== 0 && <IconButton onClick={removeMore(i)}><CloseIcon /></IconButton>}
-                  </Grid>
-                </Grid>
-              )}
+                ))}
 
               <FormControl margin="normal">
-                <Button size="small" color="primary" onClick={addMore}>Add more</Button>
+                <Button size="small" color="primary" onClick={addMore}>
+                  Add more
+                </Button>
               </FormControl>
             </Grid>
-            :
+          ) : (
             <Fragment>
               <Grid item xs={6}>
                 <TextField
@@ -381,7 +406,7 @@ const JobForm = props => {
                 />
               </Grid>
             </Fragment>
-          }
+          )}
 
           <Grid item md={6}>
             <TextField
@@ -419,7 +444,13 @@ const JobForm = props => {
               id="combo-box-state"
               name="state"
               size="small"
-              options={form.country ? countries_states.find(country => country.name === form.country).states : []}
+              options={
+                form.country
+                  ? countries_states.find(
+                      country => country.name === form.country,
+                    ).states
+                  : []
+              }
               getOptionLabel={option => option}
               onChange={handleSelectChange('state')}
               renderInput={params => (
@@ -447,11 +478,11 @@ const JobForm = props => {
               value={form.type}
               onChange={handleChange}
             >
-              {types.map((option, i) =>
+              {types.map((option, i) => (
                 <MenuItem key={i} value={option.value}>
                   {option.label}
                 </MenuItem>
-              )}
+              ))}
             </TextField>
 
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -494,11 +525,7 @@ const JobForm = props => {
       </CardContent>
 
       <CardActions>
-        <Button
-          onClick={() => { }}
-          variant="contained"
-          disableElevation
-        >
+        <Button onClick={() => {}} variant="contained" disableElevation>
           Cancel
         </Button>
         <Button
@@ -510,7 +537,7 @@ const JobForm = props => {
           Save
         </Button>
       </CardActions>
-    </Card >
+    </Card>
   );
 };
 
@@ -528,8 +555,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    createJob: evt => dispatch(Actions.createJob(evt)),
-    updateJob: evt => dispatch(Actions.updateJob(evt)),
+    createJob: data => dispatch(Actions.createJob(data)),
+    updateJob: data => dispatch(Actions.updateJob(data)),
     closeNewJobDialog: () => dispatch(Actions.closeNewJobDialog()),
   };
 }

@@ -7,13 +7,20 @@ import {
   CircularProgress,
   makeStyles,
   Button,
-  Card, CardActionArea, CardHeader, CardMedia, CardContent,
+  Card,
+  CardActionArea,
+  CardHeader,
+  CardMedia,
+  CardContent,
   Grid,
   Paper,
-  Table, TableBody, TableRow, TableCell,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
   TextField,
   Toolbar,
-  Typography
+  Typography,
 } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
@@ -22,39 +29,38 @@ import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-import AssignContactDialog from './CategoryDialog';
-import CertificateImage from '../../../../images/certificate.svg'
+import CertificateImage from '../../../../images/certificate.svg';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   appBar: {
     position: 'static',
     marginBottom: theme.spacing(1),
-    boxShadow: theme.shadows[1]
+    boxShadow: theme.shadows[1],
   },
   button: {
-    marginLeft: theme.spacing(1)
+    marginLeft: theme.spacing(1),
   },
   card: {
-    "& .MuiCardContent-root": {
+    '& .MuiCardContent-root': {
       textAlign: 'center',
-      "& button": {
+      '& button': {
         borderRadius: theme.spacing(3),
         textTransform: 'none',
-        fontSize: 14
-      }
+        fontSize: 14,
+      },
     },
-    "& .MuiCardMedia-root": {
+    '& .MuiCardMedia-root': {
       width: '100%',
       minHeight: 220,
-      backgroundSize: "contain"
-    }
+      backgroundSize: 'contain',
+    },
   },
   toolbar: {
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -62,14 +68,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CategoryList = props => {
+const CertificateList = props => {
   const classes = useStyles();
   const { loading, openNewCategoryDialog } = props;
-  const [form, setForm] = React.useState({ search: '' })
+  const [form, setForm] = React.useState({ search: '' });
 
   const handleChange = ({ target }) => {
-    setForm({ ...form, [target.name]: target.value })
-  }
+    setForm({ ...form, [target.name]: target.value });
+  };
 
   return (
     <React.Fragment>
@@ -78,7 +84,9 @@ const CategoryList = props => {
       </Backdrop>
 
       <AppBar color="inherit" className={classes.appBar}>
-        <Toolbar variant="dense"><Typography variant="h6">Certification</Typography></Toolbar>
+        <Toolbar variant="dense">
+          <Typography variant="h6">Certification</Typography>
+        </Toolbar>
       </AppBar>
       <AppBar color="inherit" className={classes.appBar}>
         <Toolbar className={classes.toolbar}>
@@ -93,14 +101,20 @@ const CategoryList = props => {
             value={form.search}
             onChange={handleChange}
           />
-          <Button size="small" variant="contained" color="primary" onClick={openNewCategoryDialog} disableElevation>
+          <Button
+            size="small"
+            variant="contained"
+            color="primary"
+            onClick={openNewCategoryDialog}
+            disableElevation
+          >
             New Certificate
           </Button>
         </Toolbar>
       </AppBar>
 
       <Grid container spacing={3}>
-        {[0, 1, 2].map((row, i) =>
+        {[0, 1, 2].map((row, i) => (
           <Grid key={i} item xs={4}>
             <Card className={classes.card}>
               <CardActionArea>
@@ -111,18 +125,20 @@ const CategoryList = props => {
                 />
 
                 <CardContent>
-                  <Button disableElevation variant="contained" color="primary">Use this</Button>
+                  <Button disableElevation variant="contained" color="primary">
+                    Use this
+                  </Button>
                 </CardContent>
               </CardActionArea>
             </Card>
           </Grid>
-        )}
+        ))}
       </Grid>
     </React.Fragment>
   );
 };
 
-CategoryList.propTypes = {
+CertificateList.propTypes = {
   loading: PropTypes.bool,
 };
 
@@ -132,7 +148,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewCategoryDialog: () => dispatch(Actions.openNewCategoryDialog())
+    openNewCategoryDialog: () => dispatch(Actions.openNewCategoryDialog()),
   };
 }
 
@@ -145,4 +161,4 @@ export default compose(
   withRouter,
   withConnect,
   memo,
-)(CategoryList);
+)(CertificateList);

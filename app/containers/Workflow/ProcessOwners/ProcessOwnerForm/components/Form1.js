@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   paper: {
-    boxShadow: theme.shadows[0]
+    boxShadow: theme.shadows[0],
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -43,73 +43,84 @@ const useStyles = makeStyles(theme => ({
 
 const Form1 = props => {
   const classes = useStyles();
-  const { loading, employees, form, handleChange, handleSelectChange, handleRowChange, addMore, removeMore } = props;
+  const {
+    loading,
+    employees,
+    form,
+    handleChange,
+    handleSelectChange,
+    handleRowChange,
+    addMore,
+    removeMore,
+  } = props;
 
   return (
     <Grid container spacing={2}>
       <Grid item md={8}>
         <Paper className={classes.paper}>
           <Box mb={2}>
-          <TextField
-            name="groupName"
-            label="Group Name"
-            id="group-name"
-            margin="normal"
-            variant="outlined"
-            size="small"
-            value={form.groupName}
-            onChange={handleChange}
-          />
+            <TextField
+              name="groupName"
+              label="Group Name"
+              id="group-name"
+              margin="normal"
+              variant="outlined"
+              size="small"
+              value={form.groupName}
+              onChange={handleChange}
+            />
           </Box>
 
           <FormLabel>
             <Typography variant="subtitle1">Process Owners</Typography>
           </FormLabel>
 
-          {form.phases && form.phases.map((phase, i) =>
-            <Grid container spacing={1} alignItems="center" key={i}>
-              <Grid item xs={5}>
-                <Autocomplete
-                  id={`group-owner-name-${i}`}
-                  options={employees}
-                  getOptionLabel={option => option.fullName}
-                  onChange={handleRowChange('name', i)}
-                  value={form.phases[i].name}
-                  renderInput={params => (
-                    <TextField
-                      {...params}
-                      variant="outlined"
-                      fullWidth
-                      size="small"
-                      placeholder="Name"
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={5}>
-                <Autocomplete
-                  id={`group-owner-email-${i}`}
-                  options={employees}
-                  getOptionLabel={option => option.emailAddress}
-                  onChange={handleRowChange('email', i)}
-                  value={form.phases[i].email}
-                  renderInput={params => (
-                    <TextField
-                      {...params}
-                      variant="outlined"
-                      size="small"
-                      fullWidth
-                      placeholder="Email"
-                    />
-                  )}
-                />
-              </Grid>
+          {form.phases &&
+            form.phases.map((phase, i) => (
+              <Grid container spacing={1} alignItems="center" key={i}>
+                <Grid item xs={5}>
+                  <Autocomplete
+                    id={`group-owner-name-${i}`}
+                    options={employees}
+                    getOptionLabel={option => option.fullName}
+                    onChange={handleRowChange('name', i)}
+                    value={form.phases[i].name}
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        variant="outlined"
+                        fullWidth
+                        size="small"
+                        placeholder="Name"
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={5}>
+                  <TextField
+                    name="ownerEmail"
+                    label="Email"
+                    id={`group-owner-email-${i}`}
+                    margin="normal"
+                    variant="outlined"
+                    size="small"
+                    value={form.phases[i].emailAddress}
+                  />
+                </Grid>
 
-              <Grid item xs>{i !== 0 && <IconButton onClick={removeMore(i)}><CloseIcon /></IconButton>}</Grid>
-            </Grid>
-          )}
+                <Grid item xs>
+                  {i !== 0 && (
+                    <IconButton onClick={removeMore(i)}>
+                      <CloseIcon />
+                    </IconButton>
+                  )}
+                </Grid>
+              </Grid>
+            ))}
           <div className={classes.fle}>
-            <Button size="small" color="primary" onClick={addMore}>Add more</Button>
+            <Button size="small" color="primary" onClick={addMore}>
+              Add more
+            </Button>
           </div>
 
           <TextField
@@ -124,13 +135,12 @@ const Form1 = props => {
           />
         </Paper>
       </Grid>
-
     </Grid>
   );
 };
 
 Form1.propTypes = {
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
