@@ -69,12 +69,18 @@ const TrialBalance = ({
 
   const data =
     trialBalances &&
-    trialBalances.map(balance => [
-      `${balance.accountCode}`,
-      `${balance.accountName}`,
-      `${balance.debitAmount === 0.0 ? '' : balance.debitAmount}`,
-      `${balance.creditAmount === 0.0 ? '' : balance.creditAmount}`,
-    ]);
+    trialBalances.reduce((accumulator, balance) => {
+      if (balance.accountCode !== null) {
+        accumulator.push([
+          `${balance.accountCode}`,
+          `${balance.accountName}`,
+          `${balance.debitAmount === 0.0 ? '' : balance.debitAmount}`,
+          `${balance.creditAmount === 0.0 ? '' : balance.creditAmount}`,
+        ]);
+      }
+      return accumulator;
+    }, []);
+  
   const columns = [
     'Account Code',
     'Account Name',
