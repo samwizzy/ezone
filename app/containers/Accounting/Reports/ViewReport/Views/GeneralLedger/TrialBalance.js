@@ -1,6 +1,5 @@
 import React, { memo, useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -13,7 +12,6 @@ import saga from '../../saga';
 import Company from '../../Components/CompanyLogo';
 import * as Select from '../../../../../App/selectors';
 import { makeStyles, Grid } from '@material-ui/core';
-import { darken } from '@material-ui/core/styles/colorManipulator';
 import EzoneUtils from '../../../../../../utils/EzoneUtils';
 import MUIDataTable from 'mui-datatables';
 import ControlledButtons from '../../Components/BackButton';

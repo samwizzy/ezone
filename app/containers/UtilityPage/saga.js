@@ -9,7 +9,7 @@ import * as Constants from './constants';
 import * as Endpoints from '../../components/Endpoints';
 
 function errorHandler(promise) {
-  return promise
+  return promise;
 }
 
 export function* addUtilityFile({ type, payload }) {
@@ -57,22 +57,22 @@ export function* addDocToFolder({ type, payload }) {
 
     payload.folderId === 1
       ? yield put(
-        Actions.getAllFoldersAndDocs({
-          folderId: payload.folderId,
-          type: 'ROOT',
-        }),
-      )
+          Actions.getAllFoldersAndDocs({
+            folderId: payload.folderId,
+            type: 'ROOT',
+          }),
+        )
       : yield put(
-        Actions.getAllFoldersAndDocs({
-          folderId: payload.folderId,
-          type: 'FOLDER',
-        }),
-      );
+          Actions.getAllFoldersAndDocs({
+            folderId: payload.folderId,
+            type: 'FOLDER',
+          }),
+        );
   } catch (err) {
-    const error = yield call(errorHandler, err.response.json())
+    const error = yield call(errorHandler, err.response.json());
     yield put(Actions.getUtilityFilesError(err));
-    console.log(error, "error error")
-    console.log(err, "error err")
+    console.log(error, 'error error');
+    console.log(err, 'error err');
   }
 }
 
@@ -81,7 +81,7 @@ export function* getAllFoldersAndDoc({ type, payload }) {
   const { uuId } = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetAllFoldersAndDocApi}/${uuId}/${
     payload.folderId
-    }/${payload.type}`;
+  }/${payload.type}`;
 
   console.log(payload, 'All folder and doc payload');
 
@@ -105,7 +105,7 @@ export function* getNestedFoldersAndDoc({ type, payload }) {
   const { uuId } = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetAllFoldersAndDocApi}/${uuId}/${
     payload.folderId
-    }/${payload.type}`;
+  }/${payload.type}`;
 
   console.log(payload, 'All folder and doc payload');
 
@@ -143,11 +143,11 @@ export function* addFolderToFolder({ type, payload }) {
     payload.folderId === 1
       ? yield put(Actions.getAllFoldersAndDocs({ folderId: 0, type: 'ROOT' }))
       : yield put(
-        Actions.getAllFoldersAndDocs({
-          folderId: payload.folderId,
-          type: 'FOLDER',
-        }),
-      );
+          Actions.getAllFoldersAndDocs({
+            folderId: payload.folderId,
+            type: 'FOLDER',
+          }),
+        );
     yield put(Actions.closeNewFolderDialog());
   } catch (err) {
     // yield put(Actions.getUtilityFilesError(err));
@@ -172,10 +172,15 @@ export function* addUtilityTasks({ type, payload }) {
     yield put({ type: Constants.GET_UTILITY_TASKS });
     yield put(Actions.createUtilityTaskSuccess());
     yield put(Actions.closeNewTaskDialog());
-    yield put(AppActions.openSnackBar({ message: `${response.title} has been created successfully`, status: 'success' }));
+    yield put(
+      AppActions.openSnackBar({
+        message: `${response.title} has been created successfully`,
+        status: 'success',
+      }),
+    );
   } catch (err) {
-    const error = yield call(errorHandler, err.response.json())
-    console.log(error, "error handled create tasks")
+    const error = yield call(errorHandler, err.response.json());
+    console.log(error, 'error handled create tasks');
     yield put(Actions.getUtilityTasksError(err.message));
   }
 }
@@ -277,7 +282,9 @@ export function* commentUtilityTask({ type, payload }) {
 
     console.log(response, 'comment response');
 
-    yield put(AppActions.openSnackBar({ message: `Comment Posted`, status: 'success' }));
+    yield put(
+      AppActions.openSnackBar({ message: `Comment Posted`, status: 'success' }),
+    );
     yield put(Actions.getTaskComments(response.task.id));
     // yield put(Actions.commentTaskSuccess(response));
   } catch (err) {
@@ -438,17 +445,17 @@ export function* deleteUtilityFile({ type, payload }) {
 
     payload.parentId === 1
       ? yield put(
-        Actions.getAllFoldersAndDocs({
-          folderId: payload.folderId,
-          type: 'ROOT',
-        }),
-      )
+          Actions.getAllFoldersAndDocs({
+            folderId: payload.folderId,
+            type: 'ROOT',
+          }),
+        )
       : yield put(
-        Actions.getAllFoldersAndDocs({
-          folderId: payload.folderId,
-          type: 'FOLDER',
-        }),
-      );
+          Actions.getAllFoldersAndDocs({
+            folderId: payload.folderId,
+            type: 'FOLDER',
+          }),
+        );
     // yield put(Actions.deleteDocumentSuccess(response));
   } catch (err) {
     // yield put(Actions.getUtilityFileError(err));
@@ -475,17 +482,17 @@ export function* restoreDocument({ type, payload }) {
 
     payload.id === 1
       ? yield put(
-        Actions.getAllFoldersAndDocs({
-          folderId: payload.folderId,
-          type: 'ROOT',
-        }),
-      )
+          Actions.getAllFoldersAndDocs({
+            folderId: payload.folderId,
+            type: 'ROOT',
+          }),
+        )
       : yield put(
-        Actions.getAllFoldersAndDocs({
-          folderId: payload.folderId,
-          type: 'FOLDER',
-        }),
-      );
+          Actions.getAllFoldersAndDocs({
+            folderId: payload.folderId,
+            type: 'FOLDER',
+          }),
+        );
   } catch (err) {
     // yield put(Actions.getUtilityFileError(err));
   }
@@ -530,7 +537,12 @@ export function* shareUtilityFiles({ type, payload }) {
     console.log(response, 'response');
 
     yield put(Actions.closeShareFileDialog());
-    yield put(AppActions.openSnackBar({ message: `${response.document.docName} has been shared successfully`, status: 'success' }));
+    yield put(
+      AppActions.openSnackBar({
+        message: `${response.document.docName} has been shared successfully`,
+        status: 'success',
+      }),
+    );
     // yield put(Actions.shareDocumentSuccess(response));
   } catch (err) {
     // yield put(Actions.sharedDocumentsError(err));
@@ -628,7 +640,6 @@ export function* getAllUsers() {
 
     yield put(Actions.getAllUsersSuccess(getAllUsersResponse));
   } catch (err) {
-    console.log(err, 'errrrrrrrrrrrrr');
     yield put(Actions.getAllUsersError(err));
   }
 }
@@ -663,7 +674,8 @@ export function* getUserChat() {
 export function* getEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}?orgId=${user && user.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}?orgId=${user &&
+    user.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -686,7 +698,7 @@ export function* getUserChatData() {
   const userChatDetails = yield select(Selectors.makeSelectGetUserChatData());
   const requestURL = `${Endpoints.GetUserChatDataApi}?chatId=${
     userChatDetails.chatId
-    }&limit=${10}&start=${0}`;
+  }&limit=${10}&start=${0}`;
 
   // console.log(userChatDetails, 'userChatDetails');
   try {
@@ -782,7 +794,10 @@ export function* postFcmToken() {
 export default function* UtilityPageSaga() {
   yield takeLatest(Constants.GET_EMPLOYEES, getEmployees);
   yield takeLatest(Constants.GET_USER_BY_UUID, getUserByUUID);
-  yield takeLatest(Constants.GET_UTILITY_TASKS_BY_STATUS, getUtilityTasksByStatus);
+  yield takeLatest(
+    Constants.GET_UTILITY_TASKS_BY_STATUS,
+    getUtilityTasksByStatus,
+  );
   yield takeLatest(Constants.GET_UTILITY_TASKS, getUtilityTasks);
   yield takeLatest(Constants.GET_UTILITY_TASK, getUtilityTask);
   yield takeLatest(Constants.UPDATE_UTILITY_TASK, updateUtilityTask);
@@ -797,9 +812,18 @@ export default function* UtilityPageSaga() {
   yield takeLatest(Constants.GET_UTILITY_FILES, getUtilityFiles);
   yield takeLatest(Constants.ADD_FOLDER_TO_FOLDER, addFolderToFolder);
   yield takeLatest(Constants.GET_FOLDERS_AND_DOC, getAllFoldersAndDoc);
-  yield takeLatest(Constants.GET_NESTED_FOLDERS_AND_DOC, getNestedFoldersAndDoc);
-  yield takeLatest(Constants.GET_FAVORITE_DOCS_BY_UUID, getFavoriteUtilityFiles);
-  yield takeLatest(Constants.GET_FAVORITE_DOCS_BY_UUID, getFavoriteUtilityFiles);
+  yield takeLatest(
+    Constants.GET_NESTED_FOLDERS_AND_DOC,
+    getNestedFoldersAndDoc,
+  );
+  yield takeLatest(
+    Constants.GET_FAVORITE_DOCS_BY_UUID,
+    getFavoriteUtilityFiles,
+  );
+  yield takeLatest(
+    Constants.GET_FAVORITE_DOCS_BY_UUID,
+    getFavoriteUtilityFiles,
+  );
   yield takeLatest(Constants.FAVORITE_FILE_BY_DOC_ID, favoriteUtilityFile);
   yield takeLatest(Constants.CREATE_UTILITY_TASKS, addUtilityTasks);
   yield takeLatest(Constants.ADD_DOC_TO_FOLDER, addDocToFolder);

@@ -9,7 +9,6 @@ import {
   TableRow,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import { darken } from '@material-ui/core/styles/colorManipulator';
 import MUIDataTable from 'mui-datatables';
 import moment from 'moment';
 import EzoneUtils from '../../../../../../utils/EzoneUtils';

@@ -1,6 +1,5 @@
 import React, { Fragment, memo, useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import _ from 'lodash';
 import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -14,7 +13,6 @@ import saga from '../../saga';
 import Company from '../../Components/CompanyLogo';
 import * as Select from '../../../../../App/selectors';
 import { makeStyles, Grid } from '@material-ui/core';
-import { darken } from '@material-ui/core/styles/colorManipulator';
 import EzoneUtils from '../../../../../../utils/EzoneUtils';
 import MUIDataTable from 'mui-datatables';
 import ControlledButtons from '../../Components/BackButton';
@@ -87,6 +85,13 @@ const GeneralLedger = ({ date, generalLedger, getGeneralLedgers, user }) => {
       `${Object.keys(generalLedger)[index]}`,
       `${ledger.reduce((a, b) => a + b.creditAmount, 0)}`,
       `${ledger.reduce((a, b) => a + b.debitAmount, 0)}`,
+      `${
+        Account(ledger) === 'CREDIT'
+          ? ledger.reduce((a, b) => a + b.creditAmount, 0) -
+            ledger.reduce((a, b) => a + b.debitAmount, 0)
+          : ledger.reduce((a, b) => a + b.debitAmount, 0) -
+            ledger.reduce((a, b) => a + b.creditAmount, 0)
+      }`,
     ];
   });
 
@@ -130,6 +135,18 @@ const GeneralLedger = ({ date, generalLedger, getGeneralLedgers, user }) => {
     setInfodata(rowInfo);
     console.log('who touched me');
   };
+
+  const csvPrint = data.reduce((accumulator, ele) => {
+    let obj = {
+      'Account Code': ele[0],
+      'Account Name': ele[1],
+      Balance: ele[2],
+      'Credit Amt': ele[3],
+      'Debit Amt': ele[4],
+    };
+    accumulator.push(obj);
+    return accumulator;
+  }, []);
 
   return (
     <Fragment>

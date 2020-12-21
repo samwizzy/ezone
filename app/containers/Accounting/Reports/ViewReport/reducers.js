@@ -9,6 +9,20 @@ export const initialState = {
   chartOfAccounts: [],
   generalLedgers: [],
   trialBalances: [],
+  time: { startDate: null, endDate: null },
+  fixedAssetRegisterTimeRange: { selectedRange: '' },
+  fixedAssetScheduleTimeRange: { selectedRange: '' },
+  incomeStatementTimeRange: { selectedRange: '' },
+  financialPositionTimeRange: { selectedRange: '' },
+  cashFlowTimeRange: { selectedRange: '' },
+  cashAccountRegisterTimeRange: { selectedRange: '' },
+  fixedAssetRegister: [],
+  fixedAssetSchedule: [],
+  incomeStatement: [],
+  cashFlow: [],
+  financialPosition: [],
+  financialPosition: [],
+  cashAccountRegister: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -139,6 +153,192 @@ const reportsReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: action.payload,
+        };
+      }
+      // Case to get Fixed asset register
+      case Constants.GET_ALL_FIXED_ASSET_REGISTER_TYPES: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      // Case to get Fixed asset register success
+      case Constants.GET_FIXED_ASSET_REGISTER_SUCCES_ACTION: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          fixedAssetRegister: action.payload,
+        };
+      }
+      //error
+      case Constants.GET_FIXED_ASSET_REGISTER_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_FIXED_ASSET_REGISTER_RANGE: {
+        return {
+          ...state,
+          fixedAssetRegisterTimeRange: action.payload,
+        };
+      }
+      // Case to get Fixed asset schedule
+      case Constants.GET_ALL_FIXED_ASSET_SCHEDULE_TYPES: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      // Case to get Fixed asset schedule success
+      case Constants.GET_FIXED_ASSET_SCHEDULE_SUCCES_ACTION: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          fixedAssetSchedule: action.payload,
+        };
+      }
+      //error
+      case Constants.GET_FIXED_ASSET_SCHEDULE_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_FIXED_ASSET_SCHEDULE_RANGE: {
+        return {
+          ...state,
+          fixedAssetScheduleTimeRange: action.payload,
+        };
+      }
+      // Case to get income statement
+      case Constants.GET_ALL_INCOME_STATEMENT_TYPES: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      // Case to get income statement success
+      case Constants.GET_INCOME_STATEMENT_SUCCES_ACTION: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          incomeStatement: action.payload,
+        };
+      }
+      //error
+      case Constants.GET_INCOME_STATEMENT_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_INCOME_STATEMENT_RANGE: {
+        return {
+          ...state,
+          incomeStatementTimeRange: action.payload,
+        };
+      }
+      // Case to get cash flow
+      case Constants.GET_ALL_CASH_FLOW_TYPES: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      // Case to get cash flow success
+      case Constants.GET_CASH_FLOW_SUCCES_ACTION: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          cashFlow: action.payload,
+        };
+      }
+      //error cash flow
+      case Constants.GET_CASH_FLOW_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_CASH_FLOW_RANGE: {
+        return {
+          ...state,
+          cashFlowTimeRange: action.payload,
+        };
+      }
+      // Case to get Financial position
+      case Constants.GET_ALL_FINANCIAL_POSITION_TYPES: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      // Case to get Financial position success
+      case Constants.GET_FINANCIAL_POSITION_SUCCES_ACTION: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          financialPosition: action.payload,
+        };
+      }
+      //error Financial position
+      case Constants.GET_FINANCIAL_POSITION_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_FINANCIAL_POSITION_RANGE: {
+        return {
+          ...state,
+          financialPositionTimeRange: action.payload,
+        };
+      }
+      // Case to get Cash Account Register
+      case Constants.GET_ALL_CASH_ACCOUNT_REGISTER_TYPES: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      // Case to get Cash Account Register success
+      case Constants.GET_CASH_ACCOUNT_REGISTER_SUCCES_ACTION: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+          cashAccountRegister: action.payload,
+        };
+      }
+      //error Cash Account Register
+      case Constants.GET_CASH_ACCOUNT_REGISTER_ERR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.GET_CASH_ACCOUNT_REGISTER_RANGE: {
+        return {
+          ...state,
+          cashAccountRegisterTimeRange: action.payload,
         };
       }
     }

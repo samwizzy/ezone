@@ -14,6 +14,7 @@ import saga from '../../saga';
 import Company from '../../Components/CompanyLogo';
 import * as Select from '../../../../../App/selectors';
 import { makeStyles } from '@material-ui/core';
+import EzoneUtils from '../../../../../../utils/EzoneUtils';
 import { darken } from '@material-ui/core/styles/colorManipulator';
 import MUIDataTable from 'mui-datatables';
 import ControlledButtons from '../../Components/BackButton';
@@ -45,29 +46,45 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const CashAccountRegister = ({
-  error,
-  loading,
-  dispatchGetGeneralJournalTimeAction,
-  dispatchCleanUpAction,
   time,
   user,
+  cashAccountRegister,
+  cashAccountRegisterRange,
+  dispatchGetAllCashAccountRegisterAction,
+  dispatchGetCashAccountRegisterRangeAction,
 }) => {
-  const { startDate, endDate } = time;
-
+  const componentRef = useRef();
+  const tableRef = useRef();
+  const companyRef = useRef();
   const [print, setPrint] = useState(false);
   const [display, setDisplay] = useState(false);
-  const [period, setPeriod] = useState({ firstDate: '', lastDate: '' });
+  const [tabledata, setTabledata] = useState([]);
+  const [show, setShow] = useState('');
 
   const classes = useStyles();
 
-  useInjectReducer({ key: 'reports', reducer });
-  useInjectSaga({ key: 'reports', saga });
-
-  useEffect(() => {
-    return async () => {};
-  }, []);
-
   const { organisation } = user;
+  const { startDate, endDate } = time;
+  const [period, setPeriod] = useState({ firstDate: '', lastDate: '' });
+
+  useInjectReducer({ key: 'reports', reducer: viewReportReducer });
+  useInjectSaga({ key: 'reports', saga: ReportSaga });
+
+  const handleData = () => {
+    dispatchGetAllCashAccountRegisterAction();
+    dispatchGetCashAccountRegisterRangeAction({ selectedRange: setDate });
+    setDisplay(true);
+  };
+  const data = cashAccountRegister.map(account => [
+    formatDate(account.date),
+    account.reference,
+    account.type ? account.type : '',
+    account.payee ? account.payee : '',
+    account.memo ? account.memo : '',
+    account.paymentAmount ? account.paymentAmount : '',
+    account.receiptAmount ? account.receiptAmount : '',
+    account.balance ? account.balance : '',
+  ]);
 
   const options = {
     filterType: 'checkbox',
@@ -86,15 +103,45 @@ const CashAccountRegister = ({
     'Type',
     'Payee/Paid By',
     'Memo',
-    'Payment Amt',
-    'Receipt Amt',
-    'Balance',
+    {
+      name: 'Payment Amt',
+      label: 'Payment Amt',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
+    {
+      name: 'Receipt Amt',
+      label: 'Receipt Amt',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
+    {
+      name: 'Balance',
+      label: 'Balance',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
   ];
 
-  const handleData = () => {
-    // dispatchGetAllGeneralJournalTypeAction();
-    setDisplay(true);
-  };
+  const Location = useLocation();
+  const fileName = Location.pathname.split('/')[3];
+
+  const setDate =
+    startDate !== ''
+      ? `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
+          'MMM Do YYYY',
+        )}`
+      : '';
+
   const dateValue = ({ target }) => {
     if (target.name === 'Start Date') {
       setPeriod({ ...period, firstDate: target.value.split('-').join('/') });
@@ -106,34 +153,55 @@ const CashAccountRegister = ({
 
   useEffect(() => {
     if (period.lastDate && period.firstDate) {
-      // dispatchGetGeneralJournalTimeAction({
-      //   startDate: period.firstDate,
-      //   endDate: period.lastDate,
-      // });
-
-      handleData();
     }
   }, [period]);
 
-  const setDate =
-    display &&
-    `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
-      'MMM Do YYYY',
-    )}`;
+  useEffect(() => {
+    const { selectedRange } = cashAccountRegisterRange;
+    setShow(selectedRange);
+  }, [display, time]);
+
+  const csvPrint =
+    data &&
+    data.reduce((accumulator, ele) => {
+      let obj = {
+        Date: ele[0],
+        Reference: ele[1],
+        Type: ele[2],
+        'Payee/Paid By': ele[3],
+        Memo: ele[4],
+        'Payment Amt': ele[5],
+        'Receipt Amt': ele[6],
+        Balance: ele[7],
+      };
+      accumulator.push(obj);
+      return accumulator;
+    }, []);
 
   return (
     <React.Fragment>
       <ControlledButtons
         print={print}
         setPrint={setPrint}
-        // tableData={data}
-        // printCsc={[columns, data ? { ...data } : '']}
+        tableData={csvPrint}
+        printCsc={[columns, data ? { ...data } : '']}
         handleFetch={handleData}
         pdflogo={organisation.logo}
         daterange={setDate}
         dateValue={dateValue}
-        head={[columns]}
-        // body={data}
+        head={[
+          [
+            'Date',
+            'Reference',
+            'Type',
+            'Payee/Paid By',
+            'Memo',
+            'Payment Amt',
+            'Receipt Amt',
+            'Balance',
+          ],
+        ]}
+        body={data}
         fromDay="Start Date"
         toDay="End Date"
       />
@@ -147,7 +215,7 @@ const CashAccountRegister = ({
 
         <MUIDataTable
           className={classes.datatable}
-          // data={data && data.concat([TableFooterData])}
+          data={data}
           columns={columns}
           options={options}
         />
@@ -159,9 +227,15 @@ const CashAccountRegister = ({
 const mapStateToProps = createStructuredSelector({
   time: Selectors.makeSelectDate(),
   user: Select.makeSelectCurrentUser(),
+  cashAccountRegister: Selectors.makeSelectCashAccountRegister(),
+  cashAccountRegisterRange: Selectors.makeSelectCashAccountRegisterTimeRange(),
 });
 
 const mapDispatchToProps = dispatch => ({
+  dispatchGetCashAccountRegisterRangeAction: data =>
+    dispatch(Actions.getCashAccountRegisterRangeAction(data)),
+  dispatchGetAllCashAccountRegisterAction: () =>
+    dispatch(Actions.getAllCashAccountRegisterAction()),
   dispatch,
 });
 

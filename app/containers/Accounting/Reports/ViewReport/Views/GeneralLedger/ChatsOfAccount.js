@@ -16,6 +16,7 @@ import formatDate from '../../Helpers';
 import * as Select from '../../../../../App/selectors';
 import { makeStyles } from '@material-ui/core';
 import { darken } from '@material-ui/core/styles/colorManipulator';
+import EzoneUtils from '../../../../../../utils/EzoneUtils';
 import {
   TableFooter,
   TablePagination,
@@ -25,8 +26,6 @@ import {
 import MUIDataTable from 'mui-datatables';
 import classNames from 'classnames';
 import ControlledButtons from '../../Components/BackButton';
-import EzoneUtils from '../../../../../../utils/EzoneUtils';
-
 import './style.css';
 
 const useStyles = makeStyles(theme => ({
@@ -64,28 +63,24 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const FixedAssetRegister = ({
+const ChatsOfAccount = ({
   time,
   user,
-  fixedAssetRegister,
-  fixedAssetRegisterRange,
-  dispatchGetAllFixedAssetRegisterAction,
-  dispatchGetGeneralJournalTimeAction,
   dispatchCleanUpAction,
-  dispatchGetFixedAssetRegisterRangeAction,
+  chatsOfAccount,
+  dispatchGetAllChatsOfAccountTypeAction,
+  dispatchGetGeneralJournalTimeAction,
 }) => {
   const componentRef = useRef();
   const tableRef = useRef();
   const companyRef = useRef();
   const [print, setPrint] = useState(false);
   const [display, setDisplay] = useState(false);
-  const [period, setPeriod] = useState({ firstDate: '', lastDate: '' });
-  const [show, setShow] = useState('');
 
   const classes = useStyles();
+
   const { organisation } = user;
   const { startDate, endDate } = time;
-
   useInjectReducer({ key: 'reports', reducer: viewReportReducer });
   useInjectSaga({ key: 'reports', saga: ReportSaga });
 
@@ -93,17 +88,36 @@ const FixedAssetRegister = ({
     return async () => await dispatchCleanUpAction();
   }, []);
 
-  const data = fixedAssetRegister.map(register => [
-    register.serialNumber,
-    register.assetLocation,
-    register.assetDescription,
-    register.assetSpecification,
-    register.assetQuantity,
-    register.condition,
-    formatDate(register.acquisitionDate),
-    register.acquisitionCost,
-    register.additionalDuringTheYear,
-    register.disposal,
+  const handleData = () => {
+    dispatchGetAllChatsOfAccountTypeAction();
+    setDisplay(true);
+  };
+
+  const Location = useLocation();
+  const fileName = Location.pathname.split('/')[3];
+
+  const columns = [
+    'Account Code',
+    'Account Name',
+    'Account Type',
+
+    {
+      name: 'Closing Balance',
+      label: 'Closing Balance',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
+    'Status',
+  ];
+  const data = chatsOfAccount.map(account => [
+    account.accountCode,
+    account.accountName,
+    account.accountType && account.accountType.accountType,
+    account.closingBalance,
+    account.status ? 'Active' : 'Inactive',
   ]);
 
   const options = {
@@ -113,93 +127,27 @@ const FixedAssetRegister = ({
     elevation: 0,
     download: false,
     print: false,
-    pagination: false,
+    pagination: true,
     viewColumns: false,
   };
-
-  const columns = [
-    'Asset Code',
-    'Location of asset',
-    'Description',
-    'Specification',
-    'Qty',
-    'Condition',
-    'Acquisition date',
-    {
-      name: 'Cost at Acquisition',
-      label: 'Cost at Acquisition',
-      options: {
-        filter: true,
-        sort: true,
-        customBodyRender: value => EzoneUtils.formatCurrency(value),
-      },
-    },
-    'Additions during the year',
-    {
-      name: 'Disposals/Transfer',
-      label: 'Disposals/Transfer',
-      options: {
-        filter: true,
-        sort: true,
-        customBodyRender: value => EzoneUtils.formatCurrency(value),
-      },
-    },
-  ];
+  const dateValue = ({ target }) => {
+    dispatchGetGeneralJournalTimeAction({
+      startDate: '01/01/2000',
+      endDate: target.value.split('-').join('/'),
+    });
+    handleData();
+  };
   const csvPrint = data.reduce((accumulator, ele) => {
     let obj = {
-      'Asset Code': ele[0],
-      'Location of asset': ele[1],
-      Description: ele[2],
-      Specification: ele[3],
-      Qty: ele[4],
-      Condition: ele[5],
-      'Acquisition date': ele[6],
-      'Cost at Acquisition': ele[7],
-      'Additions during the year': ele[8],
-      'Disposals/Transfer': ele[9],
+      'Account Code': ele[0],
+      'Account Name': ele[1],
+      'Account Type': ele[2],
+      'Closing Balance': ele[3],
+      Status: ele[4],
     };
     accumulator.push(obj);
     return accumulator;
   }, []);
-  const setDate =
-    startDate !== ''
-      ? `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
-          'MMM Do YYYY',
-        )}`
-      : '';
-
-  const handleData = () => {
-    dispatchGetAllFixedAssetRegisterAction();
-    dispatchGetFixedAssetRegisterRangeAction({ selectedRange: setDate });
-    setDisplay(true);
-  };
-  useEffect(() => {
-    const { selectedRange } = fixedAssetRegisterRange;
-    setShow(selectedRange);
-  }, [display, time]);
-
-  const dateValue = ({ target }) => {
-    if (target.name === 'Start Date') {
-      setPeriod({ ...period, firstDate: target.value.split('-').join('/') });
-    }
-    if (target.name === 'End Date') {
-      setPeriod({ ...period, lastDate: target.value.split('-').join('/') });
-    }
-  };
-
-  useEffect(() => {
-    if (period.lastDate && period.firstDate) {
-      dispatchGetGeneralJournalTimeAction({
-        startDate: period.firstDate,
-        endDate: period.lastDate,
-      });
-      handleData();
-    }
-  }, [period]);
-
-  const Location = useLocation();
-  const fileName = Location.pathname.split('/')[3];
-
   return (
     <React.Fragment>
       <ControlledButtons
@@ -212,32 +160,27 @@ const FixedAssetRegister = ({
         pdflogo={organisation.logo}
         tableRef={tableRef}
         companyRef={companyRef}
-        daterange={setDate || show}
+        daterange={display && `As at ${moment(endDate).format('MMM Do YYYY')}`}
+        singleDate={true}
         dateValue={dateValue}
         head={[
           [
-            'Asset Code',
-            'Location of asset',
-            'Description',
-            'Specification',
-            'Qty',
-            'Condition',
-            'Acquisition date',
-            'Cost at Acquisition',
-            'Additions during the year',
-            'Disposals/Transfer',
+            'Account Code',
+            'Account Name',
+            'Account Type',
+            'Closing Balance',
+            'Status',
           ],
         ]}
         body={data}
-        fromDay="Start Date"
         toDay="End Date"
       />
-      <div style={{ width: '100%', height: '100%' }} ref={componentRef}>
+      <div ref={componentRef}>
         <Company
           ref={companyRef}
           ComLogo={organisation.logo}
           name={`${fileName}`}
-          date={setDate || show}
+          date={display && `As at ${moment(endDate).format('MMM Do YYYY')}`}
         />
 
         <MUIDataTable
@@ -251,23 +194,21 @@ const FixedAssetRegister = ({
   );
 };
 
-// export default FixedAssetRegister;
-
 const mapStateToProps = createStructuredSelector({
-  time: Selectors.makeSelectDate(),
+  reports: makeSelectReports(),
+  loading: Selectors.makeSelectLoading(),
+  error: Selectors.makeSelectError(),
+  time: Selectors.makeSelectTime(),
+  chatsOfAccount: Selectors.makeSelectChatsOfAccount(),
   user: Select.makeSelectCurrentUser(),
-  fixedAssetRegister: Selectors.makeSelectFixedAssetRegister(),
-  fixedAssetRegisterRange: Selectors.makeSelectFixedAssetRegisterTimeRange(),
 });
 
 const mapDispatchToProps = dispatch => ({
+  dispatchGetAllChatsOfAccountTypeAction: () =>
+    dispatch(Actions.getAllChatsOfAccountTypeAction()),
+  dispatchCleanUpAction: () => dispatch(Actions.cleanUpGeneralJournalAction()),
   dispatchGetGeneralJournalTimeAction: data =>
     dispatch(Actions.getGeneralJournalTimeAction(data)),
-  dispatchGetFixedAssetRegisterRangeAction: data =>
-    dispatch(Actions.getFixedAssetRegisterRangeAction(data)),
-  dispatchGetAllFixedAssetRegisterAction: () =>
-    dispatch(Actions.getAllFixedAssetRegisterAction()),
-  dispatchCleanUpAction: () => dispatch(Actions.cleanUpGeneralJournalAction()),
   dispatch,
 });
 
@@ -279,4 +220,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(FixedAssetRegister);
+)(ChatsOfAccount);

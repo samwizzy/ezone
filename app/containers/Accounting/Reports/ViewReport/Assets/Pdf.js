@@ -45,8 +45,10 @@ const CreatePdf = ({
           if (base64Img) {
             doc.addImage(base64Img, 'JPEG', ImageWidthPosition, 15, 19, 19);
           }
+          doc.setFontSize(8);
           doc.text(`${fileName}`, nameWithPosition, 44);
           if (daterange) {
+            doc.setFontSize(8);
             doc.text(`${daterange}`, dateRangeWidthPosition, 50);
           }
         }
@@ -57,18 +59,19 @@ const CreatePdf = ({
       headStyles: {
         fillColor: '#1a88e1',
         textColor: 'white',
-        cellPadding: '5px',
         border: '1px solid rgba(224, 224, 224, 1)',
+        fontSize: 6,
       },
       footStyles: {
         fillColor: 'black',
         textColor: 'white',
+        fontSize: 6,
       },
       bodyStyles: {
-        cellPadding: '5px',
         border: '1px solid rgba(224, 224, 224, 1)',
+        fontSize: 6,
       },
-      // theme: 'striped',
+      theme: 'grid',
       startY: 60,
     });
     doc.save(`${fileName}.pdf`);

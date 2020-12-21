@@ -12,14 +12,7 @@ import reducer from '../../reducers';
 import saga from '../../saga';
 import Company from '../../Components/CompanyLogo';
 import * as Select from '../../../../../App/selectors';
-import {
-  makeStyles,
-  Grid,
-  TableFooter,
-  TableRow,
-  TableCell,
-  Typography,
-} from '@material-ui/core';
+import { makeStyles, Grid } from '@material-ui/core';
 import { darken } from '@material-ui/core/styles/colorManipulator';
 import MUIDataTable from 'mui-datatables';
 import ControlledButtons from '../../Components/BackButton';
@@ -192,6 +185,22 @@ const GeneralJournal = ({
     },
   ];
 
+  const csvPrint =
+    data &&
+    data.concat(TableFooterData).reduce((accumulator, ele) => {
+      let obj = {
+        Date: ele[0],
+        'Account Code': ele[1],
+        Reference: ele[2],
+        'Trans Description': ele[3],
+        Currency: ele[4],
+        'Exchange Rate': ele[5],
+        'Debit Amt': ele[6],
+        'Credit Amt': ele[7],
+      };
+      accumulator.push(obj);
+      return accumulator;
+    }, []);
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>

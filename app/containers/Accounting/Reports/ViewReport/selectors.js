@@ -7,14 +7,6 @@ import { initialState } from './reducers';
 
 const selectReportsDomain = state => state.reports || initialState;
 
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by Banking
- */
-
 const makeSelectReports = () =>
   createSelector(
     selectReportsDomain,
@@ -58,6 +50,74 @@ const makeSelectAllTrialBalance = () =>
     substate => substate.trialBalances,
   );
 
+const makeSelectFixedAssetRegister = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.fixedAssetRegister,
+  );
+
+const makeSelectFixedAssetRegisterTimeRange = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.fixedAssetRegisterTimeRange,
+  );
+const makeSelectFixedAssetSchedule = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.fixedAssetSchedule,
+  );
+
+const makeSelectFixedAssetScheduleTimeRange = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.fixedAssetScheduleTimeRange,
+  );
+const makeSelectIncomeStatement = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.incomeStatement,
+  );
+
+const makeSelectIncomeStatementTimeRange = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.incomeStatementTimeRange,
+  );
+const makeSelectCashFlow = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.cashFlow,
+  );
+
+const makeSelectCashFlowTimeRange = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.cashFlowTimeRange,
+  );
+const makeSelectFinancialPosition = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.financialPosition,
+  );
+
+const makeSelectFinancialPositionTimeRange = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.financialPositionTimeRange,
+  );
+
+const makeSelectCashAccountRegister = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.cashAccountRegister,
+  );
+
+const makeSelectCashAccountRegisterTimeRange = () =>
+  createSelector(
+    selectReportsDomain,
+    substate => substate.cashAccountRegisterTimeRange,
+  );
+
 export default makeSelectReports;
 
 export {
@@ -69,4 +129,16 @@ export {
   makeSelectChartOfAccounts,
   makeSelectGeneralLedgers,
   makeSelectAllTrialBalance,
+  makeSelectFixedAssetRegister,
+  makeSelectFixedAssetRegisterTimeRange,
+  makeSelectFixedAssetSchedule,
+  makeSelectFixedAssetScheduleTimeRange,
+  makeSelectIncomeStatement,
+  makeSelectIncomeStatementTimeRange,
+  makeSelectCashFlow,
+  makeSelectCashFlowTimeRange,
+  makeSelectFinancialPosition,
+  makeSelectFinancialPositionTimeRange,
+  makeSelectCashAccountRegister,
+  makeSelectCashAccountRegisterTimeRange,
 };

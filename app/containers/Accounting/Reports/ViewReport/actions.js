@@ -97,3 +97,165 @@ export function getAllTrialBalanceError(data) {
     payload: data,
   };
 }
+
+/**Get FIxed Asset Register */
+export function getAllFixedAssetRegisterAction() {
+  return {
+    type: Constants.GET_ALL_FIXED_ASSET_REGISTER_TYPES,
+  };
+}
+export function getFixedAssetRegisterSuccesAction(data) {
+  return {
+    type: Constants.GET_FIXED_ASSET_REGISTER_SUCCES_ACTION,
+    payload: data,
+  };
+}
+
+export function getFixedAssetRegisterErrorAction(data) {
+  return {
+    type: Constants.GET_FIXED_ASSET_REGISTER_ERR,
+    payload: data,
+  };
+}
+
+export function getFixedAssetRegisterRangeAction(data) {
+  return {
+    type: Constants.GET_FIXED_ASSET_REGISTER_RANGE,
+    payload: data,
+  };
+}
+
+/**Get FIxed Asset Shedules */
+export function getAllFixedAssetScheduleAction() {
+  return {
+    type: Constants.GET_ALL_FIXED_ASSET_SCHEDULE_TYPES,
+  };
+}
+export function getFixedAssetScheduleSuccesAction(data) {
+  return {
+    type: Constants.GET_FIXED_ASSET_SCHEDULE_SUCCES_ACTION,
+    payload: data,
+  };
+}
+
+export function getFixedAssetScheduleErrorAction(data) {
+  return {
+    type: Constants.GET_FIXED_ASSET_SCHEDULE_ERR,
+    payload: data,
+  };
+}
+
+export function getFixedAssetScheduleRangeAction(data) {
+  return {
+    type: Constants.GET_FIXED_ASSET_SCHEDULE_RANGE,
+    payload: data,
+  };
+}
+
+/**Get Income Statement */
+export function getAllIncomeStatementAction() {
+  return {
+    type: Constants.GET_ALL_INCOME_STATEMENT_TYPES,
+  };
+}
+export function getIncomeStatementSuccesAction(data) {
+  return {
+    type: Constants.GET_INCOME_STATEMENT_SUCCES_ACTION,
+    payload: data,
+  };
+}
+
+export function getIncomeStatementErrorAction(data) {
+  return {
+    type: Constants.GET_INCOME_STATEMENT_ERR,
+    payload: data,
+  };
+}
+
+export function getIncomeStatementRangeAction(data) {
+  return {
+    type: Constants.GET_INCOME_STATEMENT_RANGE,
+    payload: data,
+  };
+}
+
+//Cash flow
+export function getAllCashFlowAction() {
+  return {
+    type: Constants.GET_ALL_CASH_FLOW_TYPES,
+  };
+}
+export function getCashFlowSuccesAction(data) {
+  return {
+    type: Constants.GET_CASH_FLOW_SUCCES_ACTION,
+    payload: data,
+  };
+}
+
+export function getCashFlowErrorAction(data) {
+  return {
+    type: Constants.GET_CASH_FLOW_ERR,
+    payload: data,
+  };
+}
+
+export function getCashFlowRangeAction(data) {
+  return {
+    type: Constants.GET_CASH_FLOW_RANGE,
+    payload: data,
+  };
+}
+
+//Financial Position
+export function getAllFinancialPositionAction() {
+  return {
+    type: Constants.GET_ALL_FINANCIAL_POSITION_TYPES,
+  };
+}
+export function getFinancialPositionSuccesAction(data) {
+  return {
+    type: Constants.GET_FINANCIAL_POSITION_SUCCES_ACTION,
+    payload: data,
+  };
+}
+
+export function getFinancialPositionErrorAction(data) {
+  return {
+    type: Constants.GET_FINANCIAL_POSITION_ERR,
+    payload: data,
+  };
+}
+
+export function getFinancialPositionRangeAction(data) {
+  return {
+    type: Constants.GET_FINANCIAL_POSITION_RANGE,
+    payload: data,
+  };
+}
+
+//Cash account register
+export function getAllCashAccountRegisterAction() {
+  return {
+    type: Constants.GET_ALL_CASH_ACCOUNT_REGISTER_TYPES,
+  };
+}
+export function getCashAccountRegisterSuccesAction(data) {
+  return {
+    type: Constants.GET_CASH_ACCOUNT_REGISTER_SUCCES_ACTION,
+    payload: data,
+  };
+}
+
+export function getCashAccountRegisterErrorAction(data) {
+  return {
+    type: Constants.GET_CASH_ACCOUNT_REGISTER_ERR,
+    payload: data,
+  };
+}
+
+export function getCashAccountRegisterRangeAction(data) {
+  return {
+    type: Constants.GET_CASH_ACCOUNT_REGISTER_RANGE,
+    payload: data,
+  };
+}

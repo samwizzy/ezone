@@ -30,8 +30,8 @@ table {
   border: none !important;
 }
 .table thead tr {
-  background: #eef4f9;
-  color: black;
+  background: #1a88e1;
+  color: white;
   font-size: 0.7777777777777778rem;
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-weight: 400;

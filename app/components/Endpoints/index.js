@@ -402,5 +402,11 @@ export const GetGeneralLedgerApi = `${BaseUrl}/accountingserv/api/v1/report/get_
 export const GetChartOfAccountApi = `${BaseUrl}/accountingserv/api/v1/report/get_chart_of_account`;
 export const GetTrialBalanceApi = `${BaseUrl}/accountingserv/api/v1/report/get_trial_balance`;
 
+export const GetFixedAssetRegisterApi = `${BaseUrl}/accountingserv/api/v1/report/get_fixed_asset_register`;
+export const GetFixedAssetScheduleApi = `${BaseUrl}/accountingserv/api/v1/report/get_fixed_asset_schedule`;
+export const GetIncomeStatementReportApi = `${BaseUrl}/accountingserv/api/v1/report/get_income_statement`;
+export const GetCashFlowReportApi = `${BaseUrl}/accountingserv/api/v1/report/get_cashflow_statement`;
+export const GetFinancialPositionReportApi = `${BaseUrl}/accountingserv/api/v1/report/get_statement_of_financial_positioning`;
+export const GetCashAccountRegisterApi = `${BaseUrl}/accountingserv/api/v1/report/get_cash_account_register`;
 // STUDENT API
 export const RegisterStudentApi = `${BaseUrl}/lmsserv/lms/v1/register_student`;

@@ -45,8 +45,6 @@ const DepositInTransit = ({ time, user, dispatchCleanUpAction }) => {
     'Date',
     'reference',
     'Trans Desc',
-    'Trans Desc',
-    'Trans Amt',
     'Deposit Amt',
   ];
   const Location = useLocation();
