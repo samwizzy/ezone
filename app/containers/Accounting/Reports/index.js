@@ -1,8 +1,16 @@
-import React from 'react';
-import { useRouteMatch } from 'react-router-dom';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import React, { memo } from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { useRouteMatch, Route, withRouter } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
+import { createStructuredSelector } from 'reselect';
+import reducer from './ViewReport/reducers';
+import saga from './ViewReport/saga';
+import makeSelectReports from './ViewReport/selectors';
 import ViewMain from './ViewMain';
-import ChatsOfAccount from './ViewReport/Views/GeneralLedger/ChatsOfAccount';
+import ChartOfAccount from './ViewReport/Views/GeneralLedger/ChartOfAccount';
 import CustomerLedger from './ViewReport/Views/Receivables/CustomerLedgers';
 import GeneralLedger from './ViewReport/Views/GeneralLedger/GeneralLedger';
 import GeneralJournal from './ViewReport/Views/GeneralLedger/GeneralJournal';
@@ -56,168 +64,173 @@ import DirectCostReport from './ViewReport/Views/Inventory/DirectCostReport';
 import ModuleLayout from './ModuleLayout';
 
 const Reports = () => {
+  useInjectReducer({ key: 'reports', reducer });
+  useInjectSaga({ key: 'reports', saga });
   const { path } = useRouteMatch();
 
+  console.log(path, 'path');
+
   return (
-    <Router>
+    <div>
+      <Helmet>
+        <title>Reports</title>
+        <meta name="description" content="Description of Accounting reports" />
+      </Helmet>
+
       <ModuleLayout>
-        <Switch>
-          <Route exact path={`${path}`} component={ViewMain} />
-          <Route
-            path={`${path}/charts-of-accounts`}
-            component={ChatsOfAccount}
-          />
-          <Route
-            path={`${path}/cash-account-register`}
-            component={CashAccountRegister}
-          />
-          <Route path={`${path}/general-journal`} component={GeneralJournal} />
-          <Route path={`${path}/general-ledger`} component={GeneralLedger} />
-          <Route path={`${path}/customer-ledgers`} component={CustomerLedger} />
-          <Route path={`${path}/trial-balance`} component={TrialBalance} />
-          <Route
-            path={`${path}/aged-receivables`}
-            component={AgedReceivables}
-          />
-          <Route
-            path={`${path}/customer-master-file`}
-            component={CustomerMasterFile}
-          />
-          <Route
-            path={`${path}/cash-receipt-jornals`}
-            component={CashReceiptJornals}
-          />
-          <Route
-            path={`${path}/invoice-register`}
-            component={InvoiceRegister}
-          />
-          <Route
-            path={`${path}/sales-order-details`}
-            component={SalesOrderDetails}
-          />
-          <Route path={`${path}/sales-journal`} component={SalesJournal} />
-          <Route path={`${path}/sales-taxes`} component={SalesTaxes} />
-          <Route
-            path={`${path}/taxes-exempt-sales`}
-            component={TaxesExemptSales}
-          />
-          <Route path={`${path}/quote-register`} component={QuoteRegister} />
-          <Route
-            path={`${path}/fixed-asset-register`}
-            component={AssetRegister}
-          />
-          <Route path={`${path}/cash-journal-report`} component={CashJournal} />
-          <Route
-            path={`${path}/fixed-asset-schedule`}
-            component={AssetSchedule}
-          />
-          <Route path={`${path}/vendor-ledgers`} component={VendorLedgers} />
-          <Route
-            path={`${path}/aged-payables`}
-            component={AgedPayableReports}
-          />
-          <Route
-            path={`${path}/purchase-order-register`}
-            component={PurchaseOrderRegister}
-          />
-          <Route path={`${path}/bill-reports`} component={BillReports} />
-          <Route
-            path={`${path}/quotation-reports`}
-            component={QuotationReports}
-          />
-          <Route
-            path={`${path}/vendor-master-life`}
-            component={VendoMasterLife}
-          />
-          <Route
-            path={`${path}/purchase-order-report`}
-            component={PurchaseOrderReports}
-          />
-          <Route path={`${path}/payments-reports`} component={PaymentsReport} />
-          <Route
-            path={`${path}/quotation-reports`}
-            component={QuotationReports}
-          />
-          <Route
-            path={`${path}/purchase-journal`}
-            component={PurchaseJournal}
-          />
-          <Route
-            path={`${path}/bank-reconcillation`}
-            component={BankReconciliation}
-          />
-          <Route
-            path={`${path}/bank-deposit-report`}
-            component={BankDepositReport}
-          />
-          <Route
-            path={`${path}/deposit-in-transit`}
-            component={DepositIntransit}
-          />
-          <Route
-            path={`${path}/other-outstanding-items`}
-            component={OtherOustandingItem}
-          />
-          <Route
-            path={`${path}/outstanding-checks`}
-            component={OutstandingChecks}
-          />
-          <Route
-            path={`${path}/cost-of-goods-sold`}
-            component={CostOfGoodSold}
-          />
-          <Route
-            path={`${path}/inventory-status-report`}
-            component={InventoryStatusReport}
-          />
-          <Route
-            path={`${path}/inv-valuation-report`}
-            component={ValuationReports}
-          />
-          <Route path={`${path}/Item-list`} component={ItemList} />
-          <Route
-            path={`${path}/physical-Inventory-list`}
-            component={PhysicalInventoryList}
-          />
-          <Route path={`${path}/payroll-journals`} component={PayrollJournal} />
-          <Route
-            path={`${path}/payroll-check-register`}
-            component={PayrollCheckRegister}
-          />
-          <Route
-            path={`${path}/payroll-tax-report`}
-            component={PayrolltaxReport}
-          />
-          <Route
-            path={`${path}/tax-liability-report`}
-            component={TaxLiabilityReport}
-          />
-          <Route
-            path={`${path}/employee-earnings-report`}
-            component={EmployeeEarningReports}
-          />
-          <Route
-            path={`${path}/employee-compensation-report`}
-            component={EmployeeCompensationReports}
-          />{' '}
-          <Route path={`${path}/employee-list`} component={EmployeeList} />
-          <Route
-            path={`${path}/comprehensive-income-statement`}
-            component={ComprehensiveIncomeStatement}
-          />
-          <Route
-            path={`${path}/statement-of-financial-position`}
-            component={StatementOfFinancialPosition}
-          />
-          <Route path={`${path}/cashflow`} component={CashFlow} />
-          <Route path={`${path}/tax-summary`} component={TaxSummary} />
-          <Route
-            path={`${path}/direct-cost-report`}
-            component={DirectCostReport}
-          />
-        </Switch>
+        <Route exact path={path} component={ViewMain} />
+        <Route path={`${path}/chart-of-accounts`} component={ChartOfAccount} />
+        <Route
+          path={`${path}/cash-account-register`}
+          component={CashAccountRegister}
+        />
+        <Route path={`${path}/general-journal`} component={GeneralJournal} />
+        <Route path={`${path}/general-ledger`} component={GeneralLedger} />
+        <Route path={`${path}/customer-ledgers`} component={CustomerLedger} />
+        <Route path={`${path}/trial-balance`} component={TrialBalance} />
+        <Route path={`${path}/aged-receivables`} component={AgedReceivables} />
+        <Route
+          path={`${path}/customer-master-file`}
+          component={CustomerMasterFile}
+        />
+        <Route
+          path={`${path}/cash-receipt-jornals`}
+          component={CashReceiptJornals}
+        />
+        <Route path={`${path}/invoice-register`} component={InvoiceRegister} />
+        <Route
+          path={`${path}/sales-order-details`}
+          component={SalesOrderDetails}
+        />
+        <Route path={`${path}/sales-journal`} component={SalesJournal} />
+        <Route path={`${path}/sales-taxes`} component={SalesTaxes} />
+        <Route
+          path={`${path}/taxes-exempt-sales`}
+          component={TaxesExemptSales}
+        />
+        <Route path={`${path}/quote-register`} component={QuoteRegister} />
+        <Route
+          path={`${path}/fixed-asset-register`}
+          component={AssetRegister}
+        />
+        <Route path={`${path}/cash-journal-report`} component={CashJournal} />
+        <Route
+          path={`${path}/fixed-asset-schedule`}
+          component={AssetSchedule}
+        />
+        <Route path={`${path}/vendor-ledgers`} component={VendorLedgers} />
+        <Route path={`${path}/aged-payables`} component={AgedPayableReports} />
+        <Route
+          path={`${path}/purchase-order-register`}
+          component={PurchaseOrderRegister}
+        />
+        <Route path={`${path}/bill-reports`} component={BillReports} />
+        <Route
+          path={`${path}/quotation-reports`}
+          component={QuotationReports}
+        />
+        <Route
+          path={`${path}/vendor-master-life`}
+          component={VendoMasterLife}
+        />
+        <Route
+          path={`${path}/purchase-order-report`}
+          component={PurchaseOrderReports}
+        />
+        <Route path={`${path}/payments-reports`} component={PaymentsReport} />
+        <Route
+          path={`${path}/quotation-reports`}
+          component={QuotationReports}
+        />
+        <Route path={`${path}/purchase-journal`} component={PurchaseJournal} />
+        <Route
+          path={`${path}/bank-reconcillation`}
+          component={BankReconciliation}
+        />
+        <Route
+          path={`${path}/bank-deposit-report`}
+          component={BankDepositReport}
+        />
+        <Route
+          path={`${path}/deposit-in-transit`}
+          component={DepositIntransit}
+        />
+        <Route
+          path={`${path}/other-outstanding-items`}
+          component={OtherOustandingItem}
+        />
+        <Route
+          path={`${path}/outstanding-checks`}
+          component={OutstandingChecks}
+        />
+        <Route path={`${path}/cost-of-goods-sold`} component={CostOfGoodSold} />
+        <Route
+          path={`${path}/inventory-status-report`}
+          component={InventoryStatusReport}
+        />
+        <Route
+          path={`${path}/inv-valuation-report`}
+          component={ValuationReports}
+        />
+        <Route path={`${path}/Item-list`} component={ItemList} />
+        <Route
+          path={`${path}/physical-Inventory-list`}
+          component={PhysicalInventoryList}
+        />
+        <Route path={`${path}/payroll-journals`} component={PayrollJournal} />
+        <Route
+          path={`${path}/payroll-check-register`}
+          component={PayrollCheckRegister}
+        />
+        <Route
+          path={`${path}/payroll-tax-report`}
+          component={PayrolltaxReport}
+        />
+        <Route
+          path={`${path}/tax-liability-report`}
+          component={TaxLiabilityReport}
+        />
+        <Route
+          path={`${path}/employee-earnings-report`}
+          component={EmployeeEarningReports}
+        />
+        <Route
+          path={`${path}/employee-compensation-report`}
+          component={EmployeeCompensationReports}
+        />{' '}
+        <Route path={`${path}/employee-list`} component={EmployeeList} />
+        <Route
+          path={`${path}/comprehensive-income-statement`}
+          component={ComprehensiveIncomeStatement}
+        />
+        <Route
+          path={`${path}/statement-of-financial-position`}
+          component={StatementOfFinancialPosition}
+        />
+        <Route path={`${path}/cashflow`} component={CashFlow} />
+        <Route path={`${path}/tax-summary`} component={TaxSummary} />
+        <Route
+          path={`${path}/direct-cost-report`}
+          component={DirectCostReport}
+        />
       </ModuleLayout>
-    </Router>
+    </div>
   );
 };
-export default Reports;
+
+const mapStateToProps = createStructuredSelector({
+  reports: makeSelectReports(),
+});
+
+const mapDispatchToProps = dispatch => ({});
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+export default compose(
+  withRouter,
+  withConnect,
+  memo,
+)(Reports);

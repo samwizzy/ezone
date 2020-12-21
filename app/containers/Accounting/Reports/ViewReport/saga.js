@@ -8,40 +8,47 @@ import * as Endpoints from '../../../../components/Endpoints';
 import * as Actions from './actions';
 import * as Constants from './constants';
 
-export function* getGeneralJournalSaga() {
+export function* getGeneralJournal({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const { startDate, endDate } = yield select(Selectors.makeSelectTime());
+  const { startDate, endDate } = payload;
 
-  const requestURL = `${Endpoints.GetGeneralJournalApi
-    }?endDate=${endDate}&startDate=${startDate}&orgId=${currentUser.organisation.orgId
-    }`;
+  const requestURL = `${
+    Endpoints.GetGeneralJournalApi
+  }?endDate=${endDate}&startDate=${startDate}&orgId=${
+    currentUser.organisation.orgId
+  }`;
   console.log('requestURL', requestURL);
 
   try {
-    const generalJournalResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
-    yield put(Actions.getGeneralJournalSuccesAction(generalJournalResponse));
+    yield put(Actions.getGeneralJournalsSuccess(response));
   } catch (err) {
     swal('Error', 'Something went wrong', 'error');
-    yield put(Actions.getGeneralJournalErrorAction(err));
+    yield put(Actions.getGeneralJournalsError(err));
   }
 }
-/*General chats of accounts*/
-export function* getChatOfAccountSaga() {
+
+/** General chart of accounts */
+export function* getChartOfAccount({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const { startDate, endDate } = yield select(Selectors.makeSelectTime());
+  const { startDate, endDate } = payload;
 
-  const requestURL = `${Endpoints.GetChatsOfAccountApi}?endDate=${endDate}&startDate=${startDate}&orgId=${currentUser.organisation.orgId}&pageFrom=0&pageTo=0`;
+  const requestURL = `${
+    Endpoints.GetChartOfAccountApi
+  }?endDate=${endDate}&startDate=${startDate}&orgId=${
+    currentUser.organisation.orgId
+  }&pageFrom=0&pageTo=0`;
 
   try {
-    const getChatsOfAccountResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -50,79 +57,75 @@ export function* getChatOfAccountSaga() {
         'Access-Control-Allow-Origin': '*',
       }),
     });
-    yield put(Actions.getChatsOfAccountSuccesAction(getChatsOfAccountResponse));
+    yield put(Actions.getChartOfAccountsSuccess(response));
   } catch (err) {
     swal('Error', 'Something went wrong', 'error');
-    yield put(Actions.getChatsOfAccountErrorAction(err));
+    yield put(Actions.getChartOfAccountsError(err));
   }
 }
-/**General Ledger */
 
-export function* getGeneralLedgerSaga() {
+/** General Ledger */
+export function* getGeneralLedger({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const { startDate, endDate } = yield select(Selectors.makeSelectTime());
+  const { startDate, endDate } = payload;
+  console.log(payload, 'get ledgers payload');
 
-  const requestURL = `${Endpoints.GetGeneralLedgerApi
-    }?endDate=${endDate}&startDate=${startDate}&orgId=${currentUser.organisation.orgId
-    }`;
+  const requestURL = `${
+    Endpoints.GetGeneralLedgerApi
+  }?endDate=${endDate}&startDate=${startDate}&orgId=${
+    currentUser.organisation.orgId
+  }`;
   console.log('requestURL', requestURL);
 
   try {
-    const generalLedgerResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
-    yield put(Actions.getGeneralLedgerSuccesAction(generalLedgerResponse));
+    console.log(response, 'response');
+    yield put(Actions.getGeneralLedgersSuccess(response));
   } catch (err) {
     swal('Error', 'Something went wrong', 'error');
-    yield put(Actions.getGeneralLedgerErrorAction(err));
+    yield put(Actions.getGeneralLedgersError(err));
   }
 }
 
-export function* getTrialBalanceSaga() {
+export function* getTrialBalance({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const { startDate, endDate } = yield select(Selectors.makeSelectTime());
+  const { startDate, endDate } = payload;
 
-  const requestURL = `${Endpoints.GetTrialBalanceApi
-    }?endDate=${endDate}&startDate=${startDate}&orgId=${currentUser.organisation.orgId
-    }`;
+  const requestURL = `${
+    Endpoints.GetTrialBalanceApi
+  }?endDate=${endDate}&startDate=${startDate}&orgId=${
+    currentUser.organisation.orgId
+  }`;
   console.log('requestURL', requestURL);
 
   try {
-    const trialBalanceResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
-    yield put(Actions.getTrialBalanceSuccesAction(trialBalanceResponse));
-    console.log('ttttttttttttttttttttt', trialBalanceResponse);
+    yield put(Actions.getAllTrialBalanceSuccess(response));
+    console.log('ttttttttttttttttttttt', response);
   } catch (err) {
     swal('Error', 'Something went wrong', 'error');
-    yield put(Actions.getTrialBalanceErrorAction(err));
+    yield put(Actions.getAllTrialBalanceError(err));
   }
 }
 
 // Individual exports for testing
 export default function* ReportSaga() {
-  // See example in containers/HomePage/saga.js
-  yield takeLatest(
-    Constants.GET_ALL_GENERAL_JOURNAL_TYPES,
-    getGeneralJournalSaga,
-  );
-  yield takeLatest(
-    Constants.GET_ALL_CHATS_OF_ACCOUNT_TYPES,
-    getChatOfAccountSaga,
-  );
-  yield takeLatest(
-    Constants.GET_ALL_GENERAL_LEDGER_TYPES,
-    getGeneralLedgerSaga,
-  );
-  yield takeLatest(Constants.GET_ALL_TRIAL_BALANCE_TYPES, getTrialBalanceSaga);
+  yield takeLatest(Constants.GET_GENERAL_JOURNALS, getGeneralJournal);
+  yield takeLatest(Constants.GET_CHART_OF_ACCOUNTS, getChartOfAccount);
+  yield takeLatest(Constants.GET_GENERAL_LEDGERS, getGeneralLedger);
+  yield takeLatest(Constants.GET_ALL_TRIAL_BALANCE, getTrialBalance);
 }

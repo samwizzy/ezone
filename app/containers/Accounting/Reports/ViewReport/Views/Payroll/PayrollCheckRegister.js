@@ -61,7 +61,6 @@ const PayrollCheckRegister = ({ time, user, dispatchCleanUpAction }) => {
         companyRef={companyRef}
         daterange={setDate}
         tableRef={tableRef}
-
       />
       <div ref={componentRef}>
         <Company
@@ -71,19 +70,19 @@ const PayrollCheckRegister = ({ time, user, dispatchCleanUpAction }) => {
           date={setDate}
         />
 
-          <Table
-            ref={tableRef}
-            // data={tableData}
-            TableHeadData={TableHeadData}
-            // TableFooterData={TableFooterData}
-          />
+        <Table
+          ref={tableRef}
+          // data={tableData}
+          TableHeadData={TableHeadData}
+          // TableFooterData={TableFooterData}
+        />
       </div>
     </React.Fragment>
   );
 };
 
 const mapStateToProps = createStructuredSelector({
-  time: Selectors.makeSelectTime(),
+  time: Selectors.makeSelectDate(),
   user: Select.makeSelectCurrentUser(),
 });
 

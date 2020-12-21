@@ -1,0 +1,105 @@
+[
+  {
+    "title": "Receivables",
+    "color": "recievables",
+    "data": [
+      { "name": "Customer Ledgers", "link": "customer-ledgers" },
+      { "name": "Aged Receivables", "link": "aged-receivables" },
+      { "name": "Customer master file", "link": "customer-master-file" },
+      { "name": "Cash Receipt Jornals", "link": "cash-receipt-jornals" },
+      { "name": "Invoice Register", "link": "invoice-register" },
+      { "name": "Sales Order Details", "link": "sales-order-details" },
+      { "name": "Sales Journal", "link": "sales-journal" },
+      { "name": "Sales taxes", "link": "sales-taxes" },
+      { "name": "Taxes Exempt Sales", "link": "taxes-exempt-sales" },
+      { "name": "Quote register", "link": "quote-register" }
+    ]
+  },
+  {
+    "title": "Fixed Asset",
+    "color": "fixed",
+    "data": [
+      { "name": "Fixed Asset Register", "link": "fixed-asset-register" },
+      { "name": "Fixed Asset Schedule", "link": "fixed-asset-schedule" }
+    ]
+  },
+  {
+    "title": "Payables",
+    "color": "payables",
+    "data": [
+      { "name": "Vendor Ledgers", "link": "vendor-ledgers" },
+      { "name": "Aged Payables", "link": "aged-payables" },
+      { "name": "Cash Journal report", "link": "cash-journal-report" },
+      { "name": "Purchase order register", "link": "purchase-order-register" },
+      { "name": "Bill reports", "link": "bill-reports" },
+      { "name": "Payments reports", "link": "payments-reports" },
+      { "name": "Quotation reports", "link": "quotation-reports" },
+      { "name": "Purchase journal", "link": "purchase-journal" },
+      { "name": "Vendor master life", "link": "vendor-master-life" },
+      { "name": "Purchase order report", "link": "purchase-order-report" }
+    ]
+  },
+  {
+    "title": "Account Reconcilation",
+    "color": "reconciliation",
+    "data": [
+      { "name": "Bank Reconcilation", "link": "bank-reconcillation" },
+      { "name": "Bank deposit report", "link": "bank-deposit-report" },
+      { "name": "Deposit in Transit", "link": "deposit-in-transit" },
+      { "name": "Other outstanding items", "link": "other-outstanding-items" },
+      { "name": "Outstanding checks", "link": "outstanding-checks" }
+    ]
+  },
+  {
+    "title": "Ledger",
+    "color": "ledger",
+    "data": [
+      { "name": "Cash account register", "link": "cash-account-register" },
+      { "name": "Chart of Accounts", "link": "chart-of-accounts" },
+      { "name": "General Journal", "link": "general-journal" },
+      { "name": "General Ledger", "link": "general-ledger" },
+      { "name": "Trial Balance", "link": "trial-balance" }
+    ]
+  },
+  {
+    "title": "Inventory",
+    "color": "inv",
+    "data": [
+      { "name": "Direct Cost Report", "link": "direct-cost-report" },
+      { "name": "Inventory status report", "link": "inventory-status-report" },
+      { "name": "Inv.valuation report", "link": "inv-valuation-report" },
+      { "name": "Item list", "link": "Item-list" },
+      { "name": "Physical Inventory list", "link": "physical-Inventory-list" }
+    ]
+  },
+  {
+    "title": "Financial Statement",
+    "color": "fs",
+    "data": [
+      { "name": "Comprehensive Income Statement", "link": "comprehensive-income-statement"},
+      { "name": "Statement of financial position", "link": "statement-of-financial-position"},
+      { "name": "Cashflow", "link": "cashflow" }
+    ]
+  },
+  {
+    "title": "Payroll",
+    "color": "payroll",
+    "data": [
+      { "name": "Payroll Journals", "link": "payroll-journals" },
+      { "name": "Payroll Check Register", "link": "payroll-check-register" },
+      { "name": "Payroll Tax report", "link": "payroll-tax-report" },
+      { "name": "Tax liability Report", "link": "tax-liability-report" },
+      { "name": "Employee Earnings Report", "link": "employee-earnings-report" },
+      { "name": "Employee Compensation Report", "link": "employee-compensation-report"},
+      { "link": "employee-list", "name": "Employee List" }
+    ]
+  },
+  {
+    "title": "Taxes",
+    "color": "taxes",
+    "data": [
+      { "name": "Tax Summary", "link": "tax-summary" }
+    ]
+  }
+]
+

@@ -25,7 +25,7 @@ import { green } from '@material-ui/core/colors';
 import * as Selectors from '../selectors';
 import * as AccSelectors from '../../selectors';
 import _ from 'lodash';
-import { financialStatements } from './../enums'
+import { financialStatements } from './../enums';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -51,7 +51,6 @@ const types = [
 ];
 
 export const initialState = {
-  id: '',
   accountCode: '',
   accountName: '',
   accountNumber: '',
@@ -87,10 +86,10 @@ const AccountDialog = props => {
   const [values, setValues] = useState({ ...initialState });
 
   const handleChange = event => {
-    const { name, value, type, checked } = event.target
+    const { name, value, type, checked } = event.target;
     name === 'openingBalance'
       ? setValues({ ...values, [name]: value.replace(/[^0-9\.]/g, '') })
-      : setValues({ ...values, [name]: type === 'checkbox' ? checked : value })
+      : setValues({ ...values, [name]: type === 'checkbox' ? checked : value });
   };
 
   const handleSelectChange = name => (event, object) => {
@@ -107,18 +106,29 @@ const AccountDialog = props => {
       : updateChartOfAccount(values);
   };
 
-  const handleCodeValidateOnBlur = (event) => {
-    const { name, value } = event.target
+  const handleCodeValidateOnBlur = event => {
+    const { name, value } = event.target;
     if (_.some(chartOfAccounts, { [name]: value })) {
-      setErrors({ [name]: `${value} already exist` })
+      setErrors({ [name]: `${value} already exist` });
     } else {
-      setErrors({ [name]: '' })
+      setErrors({ [name]: '' });
     }
-  }
+  };
 
   useEffect(() => {
     if (dialog.type === 'edit' && dialog.data) {
-      const { accountCode, accountName, accountNumber, accountType, bankBalance, financialStatement, description, openingBalance, id, type } = dialog.data;
+      const {
+        accountCode,
+        accountName,
+        accountNumber,
+        accountType,
+        bankBalance,
+        financialStatement,
+        description,
+        openingBalance,
+        id,
+        type,
+      } = dialog.data;
       setValues({
         ...values,
         accountCode,
@@ -146,7 +156,8 @@ const AccountDialog = props => {
       type,
     } = values;
     return (
-      (!errors.accountCode && accountCode.length > 0) &&
+      !errors.accountCode &&
+      accountCode.length > 0 &&
       accountName.length > 0 &&
       accountTypeId &&
       openingBalance &&
@@ -226,11 +237,11 @@ const AccountDialog = props => {
             <Grid item xs={12}>
               <TextField
                 id="standard-opening-balance"
-                label='Opening balance'
+                label="Opening balance"
                 name="openingBalance"
                 variant="outlined"
                 size="small"
-                value={values.openingBalance ? values.openingBalance : ""}
+                value={values.openingBalance ? values.openingBalance : ''}
                 onChange={handleChange}
                 margin="dense"
                 fullWidth
@@ -261,39 +272,41 @@ const AccountDialog = props => {
               />
             </Grid>
 
-            {(_.find(accountTypes, { id: values.accountTypeId }) &&
-              _.find(accountTypes, { id: values.accountTypeId }).accountType.toLowerCase() === 'bank') &&
-              _.find(accountTypes, { id: values.accountTypeId }).subAccount &&
-              <>
-                <Grid item xs={6}>
-                  <TextField
-                    id="standard-bank-name"
-                    label="Bank name"
-                    name="bankName"
-                    variant="outlined"
-                    size="small"
-                    value={values.bankName}
-                    onChange={handleChange}
-                    margin="dense"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="standard-account-number"
-                    label="Account number"
-                    name="accountNumber"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    value={values.accountNumber}
-                    onChange={handleChange}
-                    margin="dense"
-                    fullWidth
-                  />
-                </Grid>
-              </>
-            }
+            {_.find(accountTypes, { id: values.accountTypeId }) &&
+              _.find(accountTypes, {
+                id: values.accountTypeId,
+              }).accountType.toLowerCase() === 'bank' &&
+              _.find(accountTypes, { id: values.accountTypeId }).subAccount && (
+                <>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="standard-bank-name"
+                      label="Bank name"
+                      name="bankName"
+                      variant="outlined"
+                      size="small"
+                      value={values.bankName}
+                      onChange={handleChange}
+                      margin="dense"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="standard-account-number"
+                      label="Account number"
+                      name="accountNumber"
+                      type="number"
+                      variant="outlined"
+                      size="small"
+                      value={values.accountNumber}
+                      onChange={handleChange}
+                      margin="dense"
+                      fullWidth
+                    />
+                  </Grid>
+                </>
+              )}
 
             {_.find(accountTypes, { id: values.accountTypeId }) &&
               _.find(accountTypes, { id: values.accountTypeId }).subAccount && (
@@ -311,12 +324,16 @@ const AccountDialog = props => {
                 </Grid>
               )}
 
-            {options.makeSubAccount &&
+            {options.makeSubAccount && (
               <Grid item xs={12}>
                 <Autocomplete
                   id="combo-account-chart"
                   size="small"
-                  options={chartOfAccounts.filter(account => account.accountType && account.accountType.id === values.accountTypeId)}
+                  options={chartOfAccounts.filter(
+                    account =>
+                      account.accountType &&
+                      account.accountType.id === values.accountTypeId,
+                  )}
                   getOptionLabel={option => option.accountName}
                   onChange={handleSelectChange('parentId')}
                   value={
@@ -336,7 +353,7 @@ const AccountDialog = props => {
                   )}
                 />
               </Grid>
-            }
+            )}
 
             <Grid item xs={12}>
               <Autocomplete
@@ -347,7 +364,9 @@ const AccountDialog = props => {
                 onChange={handleSelectChange('financialStatement')}
                 value={
                   values.financialStatement
-                    ? _.find(financialStatements, { id: values.financialStatement })
+                    ? _.find(financialStatements, {
+                        id: values.financialStatement,
+                      })
                     : null
                 }
                 renderInput={params => (
@@ -370,7 +389,7 @@ const AccountDialog = props => {
                 name="description"
                 variant="outlined"
                 size="small"
-                value={values.description ? values.description : ""}
+                value={values.description ? values.description : ''}
                 onChange={handleChange}
                 margin="dense"
                 fullWidth

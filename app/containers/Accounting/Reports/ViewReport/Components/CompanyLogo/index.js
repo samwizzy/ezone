@@ -1,24 +1,45 @@
 import React from 'react';
-import './style.css';
+import moment from 'moment';
+import EzoneUtils from '../../../../../../utils/EzoneUtils';
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
+import OfficeLogo from '../../../../../../images/office.svg';
 
-const Company = React.forwardRef(({ Logo, name, date, ComLogo }, ref) => {
-  const CapitalizeFirstWord = str => {
-    str = str.split('-');
-    for (let i = 0, x = str.length; i < x; i++) {
-      str[i] = str[i][0].toUpperCase() + str[i].substr(1);
-    }
-    return str.join(' ');
-  };
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    textAlign: 'center',
+    '& img': {
+      height: '52px',
+      marginBottom: theme.spacing(1),
+      borderRadius: theme.shape.borderRadius,
+    },
+  },
+}));
+
+const Company = ({ logo, name, date }) => {
+  const classes = useStyles();
+
   return (
-    <div ref={ref} className="view-main">
+    <div className={classes.root}>
       <img
-        src={Logo ? Logo : `data:image/png;base64,${ComLogo}`}
-        alt=""
-        className="imgProf"
+        src={logo ? `data:image/png;base64,${logo}` : OfficeLogo}
+        alt="logo"
       />
-      <h5 id="companyName">{CapitalizeFirstWord(name)}</h5>
-      <h5 id="companyDate">{date}</h5>
+      <Typography variant="subtitle1" gutterBottom>
+        {EzoneUtils.toTitleCase(name)}
+      </Typography>
+      {date.startDate && (
+        <Typography variant="subtitle2">
+          {moment(date.startDate).format('ll')}{' '}
+          {date.endDate && `— ${moment(date.endDate).format('ll')}`}
+        </Typography>
+      )}
     </div>
   );
-});
+};
+
 export default Company;

@@ -11,11 +11,11 @@ import { CircleLoader } from '../../../../components/LoadingIndicator';
 import CurrenciesList from './CurrenciesList';
 import CurrencyDialog from './components/CurrencyDialog';
 
-export function CurrenciesSettings({history, accSetupData}) {
+export function CurrenciesSettings({ history, accSetupData }) {
   const { path } = useRouteMatch();
 
-  if(!accSetupData){
-    history.push('/account/settings');
+  if (!accSetupData) {
+    // history.push('/account/settings');
   }
 
   return (

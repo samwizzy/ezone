@@ -1,7 +1,7 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
 import swal from 'sweetalert';
 import { push } from 'connected-react-router';
-import history from './../../../utils/history'
+import history from './../../../utils/history';
 import * as AppSelectors from '../../App/selectors';
 import * as AppActions from '../../App/actions';
 import * as Selectors from './selectors';
@@ -17,7 +17,9 @@ function errorHandler(promise) {
 export function* getAccountingSetup() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAccountingSetupApi}/${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetAccountingSetupApi}/${
+    currentUser.organisation.orgId
+  }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -37,7 +39,9 @@ export function* getAccountingSetup() {
 export function* getTaxes() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetTaxesByOrgIdApi}?orgId=${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetTaxesByOrgIdApi}?orgId=${
+    currentUser.organisation.orgId
+  }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -54,13 +58,39 @@ export function* getTaxes() {
   }
 }
 
+export function* createTax({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.AddTaxApi}`;
+  payload.orgId = currentUser.organisation.orgId;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    swal('Success', 'Tax created successfully', 'success');
+    yield put(Actions.createTaxSuccess(response));
+    yield put(Actions.getTaxes());
+    yield put(Actions.closeNewTaxDialog());
+  } catch (err) {
+    swal('Error', 'Something went wrong', 'error');
+    yield put(Actions.createTaxError(err));
+  }
+}
+
 // Get list of chart of account
 export function* getChartOfAccounts() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetAllChartOfAccountApi}/${
     currentUser.organisation.orgId
-    }`;
+  }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -82,7 +112,7 @@ export function* getAccountingPeriods() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetAccountPeriodApi}/${
     currentUser.organisation.orgId
-    }`;
+  }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -121,7 +151,7 @@ export function* createAccountJournal({ payload }) {
     swal('Success', 'Account journal posted successfully', 'success');
     yield put(Actions.createJournalSuccess(response));
     yield put(Actions.getJournalList());
-    yield put(push('/account/journal'))
+    yield put(push('/account/journal'));
   } catch (err) {
     const error = yield call(errorHandler, err.response.json());
     console.log(error, 'error createJournalSuccess');
@@ -133,7 +163,9 @@ export function* createAccountJournal({ payload }) {
 export function* getJournalList() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetJournalListApi}?orgId=${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetJournalListApi}?orgId=${
+    currentUser.organisation.orgId
+  }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -164,7 +196,7 @@ export function* getJournalById({ payload }) {
       }),
     });
 
-    console.log("Get the gadman journal by id", response)
+    console.log('Get the gadman journal by id', response);
 
     yield put(Actions.getJournalByIdSuccess(response));
   } catch (err) {
@@ -177,7 +209,7 @@ export function* getCurrencies() {
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
   const requestURL = `${Endpoints.GetCurrencyByOrgIdApi}?orgId=${
     currentUser.organisation.orgId
-    }`;
+  }`;
 
   try {
     const response = yield call(request, requestURL, {

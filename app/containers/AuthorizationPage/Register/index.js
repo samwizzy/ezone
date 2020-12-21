@@ -26,8 +26,8 @@ export function RegistrationPage() {
   return (
     <div>
       <Helmet>
-        <title>RegistrationPage</title>
-        <meta name="description" content="Description of RegistrationPage" />
+        <title>Registration</title>
+        <meta name="description" content="Description of Registration" />
       </Helmet>
       <RegistrationForm />
       <Snackbar />

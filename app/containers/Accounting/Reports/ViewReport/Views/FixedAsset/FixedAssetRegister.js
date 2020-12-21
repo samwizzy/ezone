@@ -93,7 +93,7 @@ const FixedAssetRegister = ({ time, user, dispatchCleanUpAction }) => {
 // export default FixedAssetRegister;
 
 const mapStateToProps = createStructuredSelector({
-  time: Selectors.makeSelectTime(),
+  time: Selectors.makeSelectDate(),
   user: Select.makeSelectCurrentUser(),
 });
 

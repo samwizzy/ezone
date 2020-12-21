@@ -4,109 +4,120 @@ import * as Constants from './constants';
 export const initialState = {
   loading: true,
   error: false,
-  time: { startDate: '', endDate: '' },
-  generaljournal: [],
-  chatsOfAccount: [],
-  generalLedger: [],
-  trialBalance: [],
+  date: { startDate: null, endDate: null },
+  generalJournals: [],
+  chartOfAccounts: [],
+  generalLedgers: [],
+  trialBalances: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
-const viewReportReducer = (state = initialState, action) =>
+const reportsReducer = (state = initialState, action) =>
   produce(state, (/* draft */) => {
     switch (action.type) {
-      // Case to get company journal
-      case Constants.GET_GENERAL_JOURNAL_SUCCES_ACTION: {
+      // Case to set start date
+      case Constants.SET_START_DATE: {
+        return {
+          ...state,
+          loading: false,
+          date: {
+            ...state.date,
+            startDate: action.payload,
+          },
+        };
+      }
+      // Case to set end date
+      case Constants.SET_END_DATE: {
+        return {
+          ...state,
+          loading: false,
+          date: {
+            ...state.date,
+            endDate: action.payload,
+          },
+        };
+      }
+
+      // Case to get general journals
+      case Constants.GET_GENERAL_JOURNALS: {
         return {
           ...state,
           loading: false,
           error: false,
-          generaljournal: action.payload,
         };
       }
-      // Case to get account type data
-      case Constants.GET_ALL_GENERAL_JOURNAL_TYPES: {
+      // Case to get general journals
+      case Constants.GET_GENERAL_JOURNALS_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
+          generalJournals: action.payload,
         };
       }
-      //Time case
-      case Constants.GET_GENERAL_JOURNAL_TIME: {
-        return {
-          ...state,
-          time: action.payload,
-        };
-      }
-      // error case
-      case Constants.GET_GENERAL_JOURNAL_ERR: {
+      // Case to get general journals error
+      case Constants.GET_GENERAL_JOURNALS_ERR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
         };
       }
-      case Constants.CLEAN_UP_GENERAL_JOURNAL_TYPES: {
-        return {
-          ...state,
-          loading: true,
-          error: false,
-          time: { startDate: '', endDate: '' },
-        };
-      }
-      // Case to get chats of account type
-      case Constants.GET_ALL_CHATS_OF_ACCOUNT_TYPES: {
+
+      // Case to get chart of accounts
+      case Constants.GET_CHART_OF_ACCOUNTS: {
         return {
           ...state,
           loading: false,
           error: false,
         };
       }
-      // Case to get chats of account succes
-      case Constants.GET_CHATS_OF_ACCOUNTS_SUCCES_ACTION: {
+      // Case to get chart of accounts success
+      case Constants.GET_CHART_OF_ACCOUNTS_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-          chatsOfAccount: action.payload,
+          chartOfAccounts: action.payload,
         };
       }
       //error
-      case Constants.GET_CHATS_OF_ACCOUNTS_ERR: {
+      case Constants.GET_CHART_OF_ACCOUNTS_ERR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
         };
       }
-      // Case to get general ledger type
-      case Constants.GET_ALL_GENERAL_LEDGER_TYPES: {
+
+      // Case to get general ledger
+      case Constants.GET_GENERAL_LEDGERS: {
         return {
           ...state,
           loading: false,
           error: false,
         };
       }
-      // Case to get chats of account succes
-      case Constants.GET_GENERAL_LEDGER_SUCCES_ACTION: {
+      // Case to get general ledgers success
+      case Constants.GET_GENERAL_LEDGERS_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-          generalLedger: action.payload,
+          generalLedgers: action.payload,
         };
       }
-      //error
-      case Constants.GET_GENERAL_LEDGER_ERR: {
+      // Case to get general ledgers error
+      case Constants.GET_GENERAL_LEDGERS_ERR: {
         return {
           ...state,
           loading: false,
           error: action.payload,
         };
       }
+
       // Case to get trial balance
-      case Constants.GET_ALL_TRIAL_BALANCE_TYPES: {
+      case Constants.GET_ALL_TRIAL_BALANCE: {
         return {
           ...state,
           loading: false,
@@ -114,16 +125,16 @@ const viewReportReducer = (state = initialState, action) =>
         };
       }
       // Case to get trial balance success
-      case Constants.GET_TRIAL_BALANCE_SUCCES_ACTION: {
+      case Constants.GET_ALL_TRIAL_BALANCE_SUCCESS: {
         return {
           ...state,
           loading: false,
           error: false,
-          trialBalance: action.payload,
+          trialBalances: action.payload,
         };
       }
-      //error
-      case Constants.GET_TRIAL_BALANCE_ERR: {
+      // Case to get trial balance error
+      case Constants.GET_ALL_TRIAL_BALANCE_ERR: {
         return {
           ...state,
           loading: false,
@@ -132,4 +143,4 @@ const viewReportReducer = (state = initialState, action) =>
       }
     }
   });
-export default viewReportReducer;
+export default reportsReducer;
