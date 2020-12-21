@@ -372,7 +372,7 @@ const StatementOfFinancialPostion = ({
 };
 
 const mapStateToProps = createStructuredSelector({
-  time: Selectors.makeSelectTime(),
+  time: Selectors.makeSelectDate(),
   user: Select.makeSelectCurrentUser(),
   financialPosition: Selectors.makeSelectFinancialPosition(),
   financialPositionRange: Selectors.makeSelectFinancialPositionTimeRange(),

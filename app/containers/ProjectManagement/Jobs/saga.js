@@ -11,7 +11,8 @@ import * as Endpoints from '../../../components/Endpoints';
 export function* getJobs() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.JobApi}/${currentUser && currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.JobApi}/${currentUser &&
+    currentUser.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -31,7 +32,8 @@ export function* getJobs() {
 export function* getCustomers() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllContactsApi}/${currentUser && currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetAllContactsApi}/${currentUser &&
+    currentUser.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -51,8 +53,15 @@ export function* getCustomers() {
 export function* getEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}?orgId=${currentUser && currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}?orgId=${currentUser &&
+    currentUser.organisation.orgId}`;
 
+  const header = new Headers({
+    Authorization: `Bearer ${accessToken}`,
+    'Content-Type': 'application/json',
+  });
+
+  console.log(header, 'header employees');
   try {
     const response = yield call(request, requestURL, {
       method: 'GET',
@@ -74,6 +83,15 @@ export function* createJob({ payload }) {
   const requestURL = `${Endpoints.JobApi}`;
   payload.orgId = currentUser && currentUser.organisation.orgId;
 
+  const header = new Headers({
+    method: 'POST',
+    Authorization: `Bearer ${accessToken}`,
+    'Content-Type': 'application/json',
+  });
+
+  console.log(header, 'header job');
+  console.log(payload, 'payload job');
+
   try {
     const response = yield call(request, requestURL, {
       method: 'POST',
@@ -84,6 +102,12 @@ export function* createJob({ payload }) {
       }),
     });
 
+    yield put(
+      AppActions.openSnackBar({
+        message: `${response.name} job created successfully`,
+        status: 'success',
+      }),
+    );
     yield put(Actions.createJobSuccess(response));
     yield put(Actions.getJobs());
   } catch (err) {
@@ -105,6 +129,12 @@ export function* updateJob({ payload }) {
       }),
     });
 
+    yield put(
+      AppActions.openSnackBar({
+        message: `${response.name} job updated successfully`,
+        status: 'success',
+      }),
+    );
     yield put(Actions.updateJobSuccess(response));
     yield put(Actions.getJobs());
   } catch (err) {

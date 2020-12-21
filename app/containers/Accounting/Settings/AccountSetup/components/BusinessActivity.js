@@ -2,6 +2,7 @@ import React, { Fragment, memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { Alert, AlertTitle } from '@material-ui/lab';
 import {
   makeStyles,
   Box,
@@ -88,6 +89,13 @@ const BusinessActivity = props => {
     print: false,
     viewColumns: false,
     search: false,
+    textLabels: {
+      body: {
+        noMatch: 'No default chart of accounts found',
+        toolTip: 'Sort',
+        columnHeaderTooltip: column => `Sort for ${column.label}`,
+      },
+    },
     elevation: 0,
   };
 
@@ -138,15 +146,26 @@ const BusinessActivity = props => {
           )}
         </div>
 
-        <MUIDataTable
-          className={classes.datatable}
-          data={chartOfAccounts}
-          columns={columns}
-          options={options}
-        />
+        {form.accountChart === 'DEFAULT' ? (
+          <MUIDataTable
+            className={classes.datatable}
+            data={chartOfAccounts}
+            columns={columns}
+            options={options}
+          />
+        ) : (
+          <Alert severity="info">
+            <AlertTitle>Heads up</AlertTitle>
+            You have selected an option to create custom chart of accounts —{' '}
+            <strong>You are almost there!</strong>
+          </Alert>
+        )}
 
-        <Box m={4}>
-          <FormHelperText>NB: You can edit account after setup</FormHelperText>
+        <Box mt={4}>
+          <Typography variant="caption">
+            <strong>NB:</strong> You can always edit your account under settings
+            after setup
+          </Typography>
         </Box>
       </Grid>
 

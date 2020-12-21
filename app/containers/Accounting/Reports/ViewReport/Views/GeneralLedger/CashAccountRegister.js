@@ -9,37 +9,19 @@ import { createStructuredSelector } from 'reselect';
 import makeSelectReports from '../../selectors';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
-import viewReportReducer from '../../reducers';
-import ReportSaga from '../../saga';
+import reducer from '../../reducers';
+import saga from '../../saga';
 import Company from '../../Components/CompanyLogo';
-import formatDate from '../../Helpers';
 import * as Select from '../../../../../App/selectors';
 import { makeStyles } from '@material-ui/core';
 import EzoneUtils from '../../../../../../utils/EzoneUtils';
 import { darken } from '@material-ui/core/styles/colorManipulator';
-import {
-  TableFooter,
-  TablePagination,
-  TableRow,
-  TableCell,
-} from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
-import classNames from 'classnames';
 import ControlledButtons from '../../Components/BackButton';
-import './style.css';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    padding: ' 0px 24px 24px 24px',
-  },
-  flex: {
-    position: 'relative',
-    padding: theme.spacing(8, 2),
-  },
-  tableFoot: {
-    backgroundColor: darken(theme.palette.primary.main, 0.1),
   },
   datatable: {
     width: '100% !important',
@@ -69,8 +51,6 @@ const CashAccountRegister = ({
   cashAccountRegister,
   cashAccountRegisterRange,
   dispatchGetAllCashAccountRegisterAction,
-  dispatchGetGeneralJournalTimeAction,
-  dispatchCleanUpAction,
   dispatchGetCashAccountRegisterRangeAction,
 }) => {
   const componentRef = useRef();
@@ -173,13 +153,7 @@ const CashAccountRegister = ({
 
   useEffect(() => {
     if (period.lastDate && period.firstDate) {
-      dispatchGetGeneralJournalTimeAction({
-        startDate: period.firstDate,
-        endDate: period.lastDate,
-      });
-      handleData();
     }
-    return async () => await dispatchCleanUpAction();
   }, [period]);
 
   useEffect(() => {
@@ -207,15 +181,12 @@ const CashAccountRegister = ({
   return (
     <React.Fragment>
       <ControlledButtons
-        componentRef={componentRef}
         print={print}
         setPrint={setPrint}
         tableData={csvPrint}
         printCsc={[columns, data ? { ...data } : '']}
         handleFetch={handleData}
         pdflogo={organisation.logo}
-        tableRef={tableRef}
-        companyRef={companyRef}
         daterange={setDate}
         dateValue={dateValue}
         head={[
@@ -234,11 +205,11 @@ const CashAccountRegister = ({
         fromDay="Start Date"
         toDay="End Date"
       />
-      <div style={{ width: '100%', height: '100%' }} ref={componentRef}>
+
+      <div style={{ width: '100%', height: '100%' }}>
         <Company
-          ref={companyRef}
           ComLogo={organisation.logo}
-          name={`${fileName}`}
+          name="Cash Account Register"
           date={setDate}
         />
 
@@ -254,20 +225,17 @@ const CashAccountRegister = ({
 };
 
 const mapStateToProps = createStructuredSelector({
-  time: Selectors.makeSelectTime(),
+  time: Selectors.makeSelectDate(),
   user: Select.makeSelectCurrentUser(),
   cashAccountRegister: Selectors.makeSelectCashAccountRegister(),
   cashAccountRegisterRange: Selectors.makeSelectCashAccountRegisterTimeRange(),
 });
 
 const mapDispatchToProps = dispatch => ({
-  dispatchGetGeneralJournalTimeAction: data =>
-    dispatch(Actions.getGeneralJournalTimeAction(data)),
   dispatchGetCashAccountRegisterRangeAction: data =>
     dispatch(Actions.getCashAccountRegisterRangeAction(data)),
   dispatchGetAllCashAccountRegisterAction: () =>
     dispatch(Actions.getAllCashAccountRegisterAction()),
-  dispatchCleanUpAction: () => dispatch(Actions.cleanUpGeneralJournalAction()),
   dispatch,
 });
 

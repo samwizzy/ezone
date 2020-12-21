@@ -29,10 +29,6 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
   },
   datatable: {
-    '& table': {
-      width: '96% !important',
-      margin: '4px auto',
-    },
     whiteSpace: 'nowrap',
     '& tr:hover': {
       cursor: 'pointer',
@@ -56,49 +52,57 @@ const useStyles = makeStyles(theme => ({
 
 const AssetsList = props => {
   const classes = useStyles(props);
-  const { loading, history, match, assets, openNewAssetDialog, openAssetDisposalDialog, openEditAssetDialog } = props
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [selectedAsset, setSelectedAsset] = useState(null)
+  const {
+    loading,
+    history,
+    match,
+    assets,
+    openNewAssetDialog,
+    openAssetDisposalDialog,
+    openEditAssetDialog,
+  } = props;
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedAsset, setSelectedAsset] = useState(null);
 
   const handleClick = (event, id) => {
-    setAnchorEl(event.currentTarget)
-    setSelectedAsset(_.find(assets, { id }))
-  }
+    setAnchorEl(event.currentTarget);
+    setSelectedAsset(_.find(assets, { id }));
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const handleEditClick = () => {
-    const { id } = selectedAsset
-    openEditAssetDialog(selectedAsset)
-    history.push(`${match.url}/edit/${id}`)
-    handleClose()
-  }
+    const { id } = selectedAsset;
+    openEditAssetDialog(selectedAsset);
+    history.push(`${match.url}/edit/${id}`);
+    handleClose();
+  };
 
   const handleViewClick = () => {
-    const { id } = selectedAsset
-    history.push(`${match.url}/view/${id}`)
-    handleClose()
-  }
+    const { id } = selectedAsset;
+    history.push(`${match.url}/view/${id}`);
+    handleClose();
+  };
 
   const handleNewClick = () => {
-    openNewAssetDialog()
-    history.push(`${match.url}/new`)
-  }
+    openNewAssetDialog();
+    history.push(`${match.url}/new`);
+  };
 
   const handleDisposeClick = () => {
-    openAssetDisposalDialog(selectedAsset)
-    handleClose()
-  }
+    openAssetDisposalDialog(selectedAsset);
+    handleClose();
+  };
 
-  const orderedAssets = _.orderBy(assets, 'dateCreated', 'desc')
+  const orderedAssets = _.orderBy(assets, 'dateCreated', 'desc');
 
   if (loading) {
-    return <CircleLoader />
+    return <CircleLoader />;
   }
 
-  console.log(assets, "assets")
+  console.log(assets, 'assets');
 
   const columns = [
     {
@@ -131,7 +135,7 @@ const AssetsList = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => EzoneUtils.formatCurrency(value)
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
       },
     },
     {
@@ -220,15 +224,9 @@ const AssetsList = props => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleEditClick}>
-          Edit
-        </MenuItem>
-        <MenuItem onClick={handleDisposeClick}>
-          Dispose
-        </MenuItem>
-        <MenuItem onClick={handleViewClick}>
-          View
-        </MenuItem>
+        <MenuItem onClick={handleEditClick}>Edit</MenuItem>
+        <MenuItem onClick={handleDisposeClick}>Dispose</MenuItem>
+        <MenuItem onClick={handleViewClick}>View</MenuItem>
       </Menu>
     </div>
   );
@@ -243,7 +241,8 @@ function mapDispatchToProps(dispatch) {
   return {
     openNewAssetDialog: () => dispatch(Actions.openNewAssetDialog()),
     openEditAssetDialog: data => dispatch(Actions.openEditAssetDialog(data)),
-    openAssetDisposalDialog: data => dispatch(Actions.openAssetDisposalDialog(data)),
+    openAssetDisposalDialog: data =>
+      dispatch(Actions.openAssetDisposalDialog(data)),
   };
 }
 

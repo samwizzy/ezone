@@ -1,101 +1,67 @@
 import React, { memo } from 'react';
 import { useHistory } from 'react-router-dom';
-import TopMenu from '../TopMenu';
 import ExportAs from '../PrintSelect';
-import PrintIcon from '../../Assets/Print';
-import PdfIcon from '../../Assets/Pdf';
-import Search from '../Search';
-import InputDate from '../InputDate';
-
-import {
-  makeStyles,
-  Icon,
-  IconButton,
-  Toolbar,
-  Typography,
-} from '@material-ui/core';
+import PrintIcon from '../Print';
+import PdfIcon from '../PdfButton';
+import { makeStyles, AppBar, IconButton, Toolbar } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { toDate } from 'date-fns';
+import DatePicker from './../DatePicker';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    flexWrap: 'wrap',
   },
-  title: { flexGrow: 1 },
-  iconPaper: {
-    boxShadow: theme.shadows[1],
-  },
+  flexGrow: { flexGrow: 1 },
 }));
 
 const ControlledButtons = ({
-  componentRef,
-  print,
-  setPrint,
-  tableData,
-  handleFetch,
   printCsc,
   pdflogo,
-  tableRef,
-  companyRef,
   daterange,
+  tableRef,
   dateValue,
-  head,
   singleDate,
+  head,
   body,
-  fromDay,
-  toDay,
 }) => {
   const history = useHistory();
   const classes = useStyles();
+
   const handleBack = () => {
     history.goBack();
   };
 
   return (
-    <div className={classes.root}>
-      <Toolbar className={classes.iconPaper} variant="dense">
-        <div className="flex-btn">
-          <div className="flex-bc">
-            <IconButton onClick={handleBack}>
-              <ArrowBackIcon />
-            </IconButton>
-            {singleDate ? (
-              <InputDate dateValue={dateValue} day={toDay} />
-            ) : (
-              <React.Fragment>
-                <InputDate dateValue={dateValue} day={fromDay} />
-                <InputDate dateValue={dateValue} day={toDay} />
-              </React.Fragment>
-            )}
-          </div>
-          <div className="flex-bc">
-            <PdfIcon
-              componentRef={componentRef}
-              height="20px"
-              width="20px"
-              className="bell"
-              print={print}
-              setPrint={setPrint}
-              tableRef={tableRef}
-              pdflogo={pdflogo}
-              daterange={daterange}
-              companyRef={companyRef}
-              head={head}
-              body={body}
-            />
+    <AppBar
+      position="static"
+      elevation={1}
+      color="inherit"
+      className={classes.root}
+    >
+      <Toolbar variant="dense">
+        <IconButton onClick={handleBack}>
+          <ArrowBackIcon />
+        </IconButton>
 
-            <PrintIcon
-              height="20px"
-              width="20px"
-              printRef={componentRef}
-              className="bell"
-            />
-            <ExportAs data={tableData || printCsc} setPrint={setPrint} />
-          </div>
+        <div className={classes.flexGrow}>
+          <React.Fragment>
+            <DatePicker />
+          </React.Fragment>
         </div>
+
+        <PdfIcon
+          height="20px"
+          pdflogo={pdflogo}
+          daterange={daterange}
+          tableRef={tableRef}
+          head={head}
+          body={body}
+        />
+
+        <PrintIcon height="20px" />
+        <ExportAs data={printCsc} />
       </Toolbar>
-    </div>
+    </AppBar>
   );
 };
 

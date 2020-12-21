@@ -218,7 +218,7 @@ export const GetShifts = `${BaseUrl}/authserv/api/v1/find_shift_by_orgid`;
 export const AssignShift = `${BaseUrl}/authserv/api/v1/assign_shift_to_users`;
 export const AssignPartyToShift = `${BaseUrl}/authserv/api/v1/assign_shift_to_branch_or_dept`;
 export const GetUserByShift = `${BaseUrl}/authserv/api/v1/get_user_by_shift`;
-//
+
 // App Api
 export const GetOrgAppsApi = `${BaseUrl}/utilityserv/api/v1/organisation/orgApps`;
 
@@ -399,8 +399,9 @@ export const AddCourseVideoApi = `${BaseUrl}/lmsserv/api/v1/lms/add_course_video
  ************************************************************** */
 export const GetGeneralJournalApi = `${BaseUrl}/accountingserv/api/v1/report/get_general_journal`;
 export const GetGeneralLedgerApi = `${BaseUrl}/accountingserv/api/v1/report/get_general_ledger`;
-export const GetChatsOfAccountApi = `${BaseUrl}/accountingserv/api/v1/report/get_chart_of_account`;
+export const GetChartOfAccountApi = `${BaseUrl}/accountingserv/api/v1/report/get_chart_of_account`;
 export const GetTrialBalanceApi = `${BaseUrl}/accountingserv/api/v1/report/get_trial_balance`;
+
 export const GetFixedAssetRegisterApi = `${BaseUrl}/accountingserv/api/v1/report/get_fixed_asset_register`;
 export const GetFixedAssetScheduleApi = `${BaseUrl}/accountingserv/api/v1/report/get_fixed_asset_schedule`;
 export const GetIncomeStatementReportApi = `${BaseUrl}/accountingserv/api/v1/report/get_income_statement`;

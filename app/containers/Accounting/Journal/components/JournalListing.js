@@ -4,7 +4,14 @@ import EzoneUtils from '../../../../utils/EzoneUtils';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import classNames from 'classnames';
-import { makeStyles, IconButton, Button, Menu, MenuItem, Tooltip } from '@material-ui/core';
+import {
+  makeStyles,
+  IconButton,
+  Button,
+  Menu,
+  MenuItem,
+  Tooltip,
+} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import MUIDataTable from 'mui-datatables';
@@ -18,17 +25,13 @@ import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AccSelectors from '../../selectors';
 import moment from 'moment';
-import { statuses } from './../enums'
+import { statuses } from './../enums';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
   datatable: {
-    '& table': {
-      width: '96% !important',
-      margin: '4px auto',
-    },
     whiteSpace: 'nowrap',
     '& tr:hover': {
       cursor: 'pointer',
@@ -63,43 +66,52 @@ const useStyles = makeStyles(theme => ({
 
 const JournalListing = props => {
   const classes = useStyles();
-  const { loading, history, match, accountSetupData, journals, getJournalById, openNewJournalDialog, openEditJournalDialog } = props;
+  const {
+    loading,
+    history,
+    match,
+    accountSetupData,
+    journals,
+    getJournalById,
+    openNewJournalDialog,
+    openEditJournalDialog,
+  } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedJournal, setSelectedJournal] = useState(null);
-  const currency = accountSetupData ? accountSetupData.currency : null
+  const currency = accountSetupData ? accountSetupData.currency : null;
 
   console.log('journals -> ', journals);
 
   const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
     setSelectedJournal(_.find(journals, { id }));
-  }
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const handleEditClick = () => {
-    const { id } = selectedJournal
-    openEditJournalDialog(selectedJournal)
-    history.push(`${match.url}/edit/${id}`)
-  }
+    const { id } = selectedJournal;
+    openEditJournalDialog(selectedJournal);
+    history.push(`${match.url}/edit/${id}`);
+  };
 
   const handleNewClick = () => {
-    openNewJournalDialog()
-    history.push(`${match.url}/add`)
-  }
+    openNewJournalDialog();
+    history.push(`${match.url}/add`);
+  };
 
   const handleViewClick = () => {
-    const { id } = selectedJournal
-    getJournalById(id)
-    history.push(`${match.url}/view/${id}`)
-  }
+    const { id } = selectedJournal;
+    getJournalById(id);
+    history.push(`${match.url}/view/${id}`);
+  };
 
   const orderedJournals = _.orderBy(journals, 'dateCreated', 'desc');
 
   if (loading) {
-    return <CircleLoader />
+    return <CircleLoader />;
   }
 
   const columns = [
@@ -117,7 +129,7 @@ const JournalListing = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => value ? moment(value).format('ll') : ""
+        customBodyRender: value => (value ? moment(value).format('ll') : ''),
       },
     },
     {
@@ -135,9 +147,12 @@ const JournalListing = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const journal = journals.find(journal => journal.id === value)
-          return EzoneUtils.formatCurrency(journal.total * (journal.exchangeRate || 1), currency && currency.code)
-        }
+          const journal = journals.find(journal => journal.id === value);
+          return EzoneUtils.formatCurrency(
+            journal.total * (journal.exchangeRate || 1),
+            currency && currency.code,
+          );
+        },
       },
     },
     {
@@ -155,10 +170,16 @@ const JournalListing = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          return value
-            ? <strong className={classNames(classes.status, { [value.toLowerCase()]: true })}>{_.find(statuses, { value }).label}</strong>
-            : null
-        }
+          return value ? (
+            <strong
+              className={classNames(classes.status, {
+                [value.toLowerCase()]: true,
+              })}
+            >
+              {_.find(statuses, { value }).label}
+            </strong>
+          ) : null;
+        },
       },
     },
     {
@@ -225,9 +246,7 @@ const JournalListing = props => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleViewClick}>
-          View
-        </MenuItem>
+        <MenuItem onClick={handleViewClick}>View</MenuItem>
       </Menu>
     </React.Fragment>
   );
@@ -245,10 +264,11 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getJournalById: (data) => dispatch(Actions.getJournalById(data)),
+    getJournalById: data => dispatch(Actions.getJournalById(data)),
     openNewJournalDialog: () => dispatch(Actions.openNewJournalDialog()),
-    openEditJournalDialog: (data) => dispatch(Actions.openEditJournalDialog(data)),
-  }
+    openEditJournalDialog: data =>
+      dispatch(Actions.openEditJournalDialog(data)),
+  };
 }
 
 const withConnect = connect(

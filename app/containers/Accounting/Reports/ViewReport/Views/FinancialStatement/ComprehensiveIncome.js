@@ -225,7 +225,7 @@ const ComprehensiveIncome = ({
 };
 
 const mapStateToProps = createStructuredSelector({
-  time: Selectors.makeSelectTime(),
+  time: Selectors.makeSelectDate(),
   user: Select.makeSelectCurrentUser(),
   incomeStatement: Selectors.makeSelectIncomeStatement(),
   incomeStatementRange: Selectors.makeSelectIncomeStatementTimeRange(),

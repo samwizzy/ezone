@@ -1,7 +1,6 @@
-import React, { useRef, memo, useEffect, useState } from 'react';
+import React, { Fragment, memo, useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
-import { useLocation } from 'react-router-dom';
+import _ from 'lodash';
 import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -9,39 +8,19 @@ import { createStructuredSelector } from 'reselect';
 import makeSelectReports from '../../selectors';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
-import viewReportReducer from '../../reducers';
-import ReportSaga from '../../saga';
+import reducer from '../../reducers';
+import saga from '../../saga';
 import Company from '../../Components/CompanyLogo';
-import formatDate from '../../Helpers';
 import * as Select from '../../../../../App/selectors';
-import { makeStyles } from '@material-ui/core';
-import { darken } from '@material-ui/core/styles/colorManipulator';
+import { makeStyles, Grid } from '@material-ui/core';
 import EzoneUtils from '../../../../../../utils/EzoneUtils';
-import {
-  TableFooter,
-  TablePagination,
-  TableRow,
-  TableCell,
-} from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
-import classNames from 'classnames';
 import ControlledButtons from '../../Components/BackButton';
 import Modal from './Modal';
-
-import './style.css';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    padding: ' 0px 24px 24px 24px',
-  },
-  flex: {
-    position: 'relative',
-    padding: theme.spacing(8, 2),
-  },
-  tableFoot: {
-    backgroundColor: darken(theme.palette.primary.main, 0.1),
   },
   datatable: {
     width: '100% !important',
@@ -49,62 +28,40 @@ const useStyles = makeStyles(theme => ({
       '& th': {
         color: theme.palette.secondary.contrastText,
         backgroundColor: theme.palette.primary.main,
-        padding: '8px !important',
+        padding: theme.spacing(1),
       },
     },
-    '& tbody': {
-      '& td': {
-        padding: '8px !important',
-      },
-    },
-    '& tfoot': {
-      '& td': {
-        padding: '8px !important',
-      },
+    '& td': {
+      cursor: 'pointer',
+      padding: theme.spacing(1),
     },
   },
 }));
 
-const GeneralLedger = ({
-  generalLedger,
-  dispatchGetAllGeneralLedgerTypeAction,
-  dispatchGetGeneralJournalTimeAction,
-  dispatchCleanUpAction,
-  time,
-  user,
-}) => {
-  const { startDate, endDate } = time;
-
-  const componentRef = useRef();
+const GeneralLedger = ({ date, generalLedger, getGeneralLedgers, user }) => {
+  useInjectReducer({ key: 'reports', reducer });
+  useInjectSaga({ key: 'reports', saga });
   const tableRef = useRef();
-  const companyRef = useRef();
+
   const [print, setPrint] = useState(false);
-  const [display, setDisplay] = useState(false);
-  const [period, setPeriod] = useState({ firstDate: '', lastDate: '' });
-  const [showmodal, setShowmodal] = useState(false);
+  const [open, setOpen] = useState(false);
   const [infodata, setInfodata] = useState([]);
   const classes = useStyles();
 
-  useInjectReducer({ key: 'reports', reducer: viewReportReducer });
-  useInjectSaga({ key: 'reports', saga: ReportSaga });
-
   useEffect(() => {
-    return async () => await dispatchCleanUpAction();
+    return () => {};
   }, []);
 
-  const formatDate = dateTime => moment(dateTime).format('DD-MM-YYYY');
   const { organisation } = user;
 
-  const ArraysOfArray = Object.keys(generalLedger).map(
-    key => generalLedger[key],
-  );
+  const gl_values = _.values(generalLedger);
 
   const columns = [
     'Account Code',
     'Account Name',
     {
-      name: 'Balance',
-      label: 'Balance',
+      name: 'Credit Amount',
+      label: 'Credit Amount',
       options: {
         filter: true,
         sort: true,
@@ -112,17 +69,8 @@ const GeneralLedger = ({
       },
     },
     {
-      name: 'Credit Amt',
-      label: 'Credit Amt',
-      options: {
-        filter: true,
-        sort: true,
-        customBodyRender: value => EzoneUtils.formatCurrency(value),
-      },
-    },
-    {
-      name: 'Debit Amt',
-      label: 'Debit Amt',
+      name: 'Debit Amount',
+      label: 'Debit Amount',
       options: {
         filter: true,
         sort: true,
@@ -131,26 +79,7 @@ const GeneralLedger = ({
     },
   ];
 
-  const filteredData = ArraysOfArray.reduce(function(
-    accumulator,
-    currentValue,
-  ) {
-    if (accumulator.indexOf(currentValue) === -1) {
-      accumulator.push(currentValue);
-    }
-    return accumulator;
-  },
-  []);
-  const Account = ledger => {
-    let AccountType;
-    ledger.forEach(a => {
-      if (a.financialType === 'CREDIT') {
-        AccountType = a.financialType;
-      }
-    });
-    return AccountType;
-  };
-  const data = filteredData.map((ledger, index) => {
+  const data = gl_values.map((ledger, index) => {
     return [
       `${ledger[0].accountCode}`,
       `${Object.keys(generalLedger)[index]}`,
@@ -166,67 +95,46 @@ const GeneralLedger = ({
     ];
   });
 
+  console.log(generalLedger, 'generalLedger');
+  console.log(gl_values, 'GL_values');
+  console.log(data, 'data');
+
   const options = {
     filterType: 'checkbox',
     responsive: 'stacked',
     selectableRows: 'none',
-    elevation: 0,
     download: false,
     print: false,
+    filter: false,
     pagination: false,
     rowsPerPage: 20,
     count: 15,
     page: 0,
     viewColumns: false,
-    onRowClick: rowData => handleRow(rowData),
+    onRowClick: rowData => handleRowClick(rowData),
+    elevation: 0,
   };
 
-  const handleData = () => {
-    dispatchGetAllGeneralLedgerTypeAction();
-    setDisplay(true);
+  const handleOpen = () => {
+    setOpen(true);
   };
-  const dateValue = ({ target }) => {
-    if (target.name === 'Start Date') {
-      setPeriod({ ...period, firstDate: target.value.split('-').join('/') });
-    }
-    if (target.name === 'End Date') {
-      setPeriod({ ...period, lastDate: target.value.split('-').join('/') });
-    }
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   useEffect(() => {
-    if (period.lastDate && period.firstDate) {
-      dispatchGetGeneralJournalTimeAction({
-        startDate: period.firstDate,
-        endDate: period.lastDate,
-      });
-      handleData();
+    if (date.startDate && date.endDate) {
+      getGeneralLedgers(date);
     }
-  }, [period]);
+    console.log('date has been updated');
+  }, [date]);
 
-  const Location = useLocation();
-  const fileName = Location.pathname.split('/')[3];
-  const setDate =
-    display &&
-    `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
-      'MMM Do YYYY',
-    )}`;
-
-  const handleRow = rowInfo => {
-    setShowmodal(true);
+  const handleRowClick = rowInfo => {
+    handleOpen();
     setInfodata(rowInfo);
+    console.log('who touched me');
   };
-  if (showmodal) {
-    return (
-      <Modal
-        showmodal={showmodal}
-        setShowmodal={setShowmodal}
-        rowInfo={infodata}
-        general={generalLedger}
-        DatePeriod={setDate}
-      />
-    );
-  }
 
   const csvPrint = data.reduce((accumulator, ele) => {
     let obj = {
@@ -241,57 +149,45 @@ const GeneralLedger = ({
   }, []);
 
   return (
-    <div className={classes.root}>
-      <ControlledButtons
-        componentRef={componentRef}
-        print={print}
-        setPrint={setPrint}
-        tableData={csvPrint}
-        printCsc={[
-          [
-            'Account Code',
-            'Account Name',
-            'Balance',
-            'Credit Amt',
-            'Debit Amt',
-          ],
-          data ? { ...data } : '',
-        ]}
-        handleFetch={handleData}
-        pdflogo={organisation.logo}
-        tableRef={tableRef}
-        companyRef={companyRef}
-        daterange={setDate}
-        dateValue={dateValue}
-        head={[
-          [
-            'Account Code',
-            'Account Name',
-            'Balance',
-            'Credit Amt',
-            'Debit Amt',
-          ],
-        ]}
-        body={data}
-        fromDay="Start Date"
-        toDay="End Date"
-      />
+    <Fragment>
+      <Grid container spacing={2} className={classes.root}>
+        <Grid item xs={12}>
+          <ControlledButtons
+            print={print}
+            setPrint={setPrint}
+            tableData={data}
+            printCsc={[columns, data ? { ...data } : '']}
+            date={date}
+            pdflogo={organisation.logo}
+            daterange={`${date.startDate} — ${date.endDate}`}
+            tableRef={tableRef}
+            head={[columns]}
+            body={data}
+          />
+        </Grid>
 
-      <div ref={componentRef}>
-        <Company
-          ref={companyRef}
-          ComLogo={organisation.logo}
-          name={`${fileName}`}
-          date={setDate}
-        />
-        <MUIDataTable
-          className={classes.datatable}
-          data={data}
-          columns={columns}
-          options={options}
-        />
-      </div>
-    </div>
+        <Grid item xs={12}>
+          <Company logo={organisation.logo} name="General Ledger" date={date} />
+
+          <MUIDataTable
+            className={classes.datatable}
+            title="General Ledger Report"
+            data={data}
+            columns={columns}
+            options={options}
+            ref={tableRef}
+          />
+        </Grid>
+      </Grid>
+
+      <Modal
+        open={open}
+        handleClose={handleClose}
+        rowInfo={infodata}
+        generalLedgers={generalLedger}
+        date={date}
+      />
+    </Fragment>
   );
 };
 
@@ -299,19 +195,13 @@ const mapStateToProps = createStructuredSelector({
   reports: makeSelectReports(),
   loading: Selectors.makeSelectLoading(),
   error: Selectors.makeSelectError(),
-  time: Selectors.makeSelectTime(),
-  generalLedger: Selectors.makeSelectGeneralLedger(),
+  date: Selectors.makeSelectDate(),
+  generalLedger: Selectors.makeSelectGeneralLedgers(),
   user: Select.makeSelectCurrentUser(),
 });
 
 const mapDispatchToProps = dispatch => ({
-  dispatchGetGeneralLedgerSuccesAction: () =>
-    dispatch(Actions.getGeneralLedgerSuccesAction()),
-  dispatchGetAllGeneralLedgerTypeAction: () =>
-    dispatch(Actions.getAllGeneralLedgerAction()),
-  dispatchCleanUpAction: () => dispatch(Actions.cleanUpGeneralJournalAction()),
-  dispatchGetGeneralJournalTimeAction: data =>
-    dispatch(Actions.getGeneralJournalTimeAction(data)),
+  getGeneralLedgers: data => dispatch(Actions.getGeneralLedgers(data)),
   dispatch,
 });
 

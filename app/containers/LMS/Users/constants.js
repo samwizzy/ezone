@@ -1,6 +1,6 @@
 /*
  *
- * LMS Students constants
+ * LMS Students & Lecturers constants
  *
  */
 

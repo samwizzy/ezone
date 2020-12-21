@@ -40,20 +40,18 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const initialState = {
-  accountChart: 'DEFAULT',
+  accountChart: 'CREATE',
   accountMethod: 'ACCURAL',
-  businessType: null,
-  currency: null,
-  multiCurrency: false,
-  startDay: '01',
-  startMonth: '01',
-  taxDay: 0,
-  taxMonth: 0,
-  taxType: '',
+  businessTypeId: null,
+  currencyId: null,
+  multiCurrency: true,
+  orgId: '',
+  startDay: 1,
+  startMonth: 1,
 };
 
 const AccountSetup = props => {
-  const { businessTypes, createAccountingSetup } = props;
+  const { createAccountingSetup } = props;
   const [form, setForm] = useState({ ...initialState });
   const [step, setStep] = useState(0);
   const classes = useStyles(props);
@@ -64,7 +62,7 @@ const AccountSetup = props => {
   };
 
   const handleSelectChange = name => (event, object) => {
-    setForm({ ...form, [name]: object });
+    setForm({ ...form, [name]: object ? object.id : object });
   };
 
   const handleDateChange = name => date => {
@@ -90,7 +88,6 @@ const AccountSetup = props => {
   };
 
   console.log(form, 'form accouting setup');
-  console.log(businessTypes, 'businessTypes accounting setup');
 
   return (
     <Card className={classes.root}>
@@ -161,7 +158,6 @@ const AccountSetup = props => {
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  businessTypes: Selectors.makeSelectBusinessTypes(),
 });
 
 const mapDispatchToProps = dispatch => ({

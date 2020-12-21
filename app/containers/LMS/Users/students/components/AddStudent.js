@@ -1,4 +1,4 @@
-import React, { Fragment, memo } from 'react';
+import React, { Fragment, memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -8,24 +8,56 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import { Avatar, Box, Button, Card, CardHeader, CardContent, CardActions, Divider, IconButton, FormControl, FormControlLabel, FormLabel, List, ListSubheader, ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction, ListItemAvatar, Menu, MenuItem, Grid, Paper, TextField, Toolbar, Typography } from '@material-ui/core';
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardHeader,
+  CardContent,
+  CardActions,
+  Divider,
+  IconButton,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  List,
+  ListSubheader,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  ListItemSecondaryAction,
+  ListItemAvatar,
+  Menu,
+  MenuItem,
+  Grid,
+  Paper,
+  TextField,
+  Toolbar,
+  Typography,
+} from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import MUIRichTextEditor from "mui-rte";
-import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js'
+import MUIRichTextEditor from 'mui-rte';
+import {
+  EditorState,
+  ContentState,
+  convertToRaw,
+  convertFromHTML,
+} from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
-import InvertColorsIcon from '@material-ui/icons/InvertColors'
-import CloseIcon from '@material-ui/icons/Close'
-import AddIcon from '@material-ui/icons/Add'
-import moment from 'moment'
-import _ from 'lodash'
+import InvertColorsIcon from '@material-ui/icons/InvertColors';
+import CloseIcon from '@material-ui/icons/Close';
+import AddIcon from '@material-ui/icons/Add';
+import moment from 'moment';
+import _ from 'lodash';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import * as AppSelectors from '../../../../App/selectors';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import PaperDropzone from './PaperDropzone'
+import PaperDropzone from './PaperDropzone';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,19 +66,19 @@ const useStyles = makeStyles(theme => ({
   card: {
     boxShadow: theme.shadows[1],
     borderRadius: 0,
-    "& .MuiCardActions-root": {
-      justifyContent: 'flex-end'
-    }
+    '& .MuiCardActions-root': {
+      justifyContent: 'flex-end',
+    },
   },
   paper: {
     boxShadow: theme.shadows[1],
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
   },
   ml: { marginLeft: theme.spacing(1) },
   content: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(3)
+    padding: theme.spacing(3),
   },
   title: { flexGrow: 1 },
   icon: {
@@ -54,9 +86,9 @@ const useStyles = makeStyles(theme => ({
   },
   toolbar: {
     ...theme.mixins.toolbar,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     padding: theme.spacing(1, 0),
-  }
+  },
 }));
 
 const content = { title: '' };
@@ -64,11 +96,11 @@ const content = { title: '' };
 const AddStudent = props => {
   const classes = useStyles();
   const { loading, history, createStudent } = props;
-  const [form, setForm] = React.useState({
-    about: "",
-    address: "",
-    dob: moment().format("YYYY-MM-DDTHH:mm:ss"),
-    phoneNumber: "",
+  const [form, setForm] = useState({
+    about: '',
+    address: '',
+    dob: moment().format('YYYY-MM-DDTHH:mm:ss'),
+    phoneNumber: '',
     studentImage: null,
     email: '',
     firstName: '',
@@ -82,41 +114,47 @@ const AddStudent = props => {
     // socials: []
   });
 
-  React.useEffect(() => { }, [])
+  useEffect(() => {}, []);
 
   const handleChange = ({ target }) => {
     setForm({ ...form, [target.name]: target.value });
   };
 
   const handleDateChange = name => date => {
-    setForm({ ...form, [name]: moment(date).format("YYYY-MM-DDTHH:mm:ss") });
+    setForm({ ...form, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss') });
   };
 
   const addSocial = event => {
-    setForm({ ...form, socials: [...form.socials, content] });
+    // setForm({ ...form, socials: [...form.socials, content] });
   };
   const removeSocial = index => event => {
-    setForm({ ...form, socials: form.socials.filter((social, i) => index !== i) });
+    setForm({
+      ...form,
+      socials: form.socials.filter((social, i) => index !== i),
+    });
   };
 
-  const HtmlToRaw = (html) => {
-    const contentHTML = convertFromHTML(html)
-    const state = ContentState.createFromBlockArray(contentHTML.contentBlocks, contentHTML.entityMap)
-    const content = JSON.stringify(convertToRaw(state))
-    return content
-  }
+  const HtmlToRaw = html => {
+    const contentHTML = convertFromHTML(html);
+    const state = ContentState.createFromBlockArray(
+      contentHTML.contentBlocks,
+      contentHTML.entityMap,
+    );
+    const content = JSON.stringify(convertToRaw(state));
+    return content;
+  };
 
-  const change = (state) => {
-    const rawContent = JSON.stringify(convertToRaw(state.getCurrentContent()))
-    const html = stateToHTML(state.getCurrentContent())
-    const text = state.getCurrentContent().getPlainText()
+  const change = state => {
+    const rawContent = JSON.stringify(convertToRaw(state.getCurrentContent()));
+    const html = stateToHTML(state.getCurrentContent());
+    const text = state.getCurrentContent().getPlainText();
 
-    setForm({ ...form, about: html })
+    setForm({ ...form, about: html });
 
     if (!state.getCurrentContent().hasText()) {
-      console.log("empty")
+      console.log('empty');
     }
-  }
+  };
 
   const canSubmitForm = () => {
     const { firstName, lastName } = form;
@@ -124,34 +162,36 @@ const AddStudent = props => {
   };
 
   const handleImageUpload = image => {
-    console.log(image, "image")
-    setForm({ ...form, studentImage: image });
+    console.log(image, 'image');
+    setForm({ ...form, studentImage: image.file });
   };
 
   const focus = () => {
     console.log('Focus on MUIRichTextEditor');
-  }
+  };
 
   const blur = () => {
     console.log('Blur, focus lost on MUIRichTextEditor');
-  }
+  };
 
   const save = data => {
-    console.log(JSON.parse(data))
+    console.log(JSON.parse(data));
   };
 
   const handleSubmit = () => {
-    createStudent(form)
+    createStudent(form);
   };
 
-  console.log(form, "form")
+  console.log(form, 'form');
 
   return (
     <Grid container>
       <Grid item xs={12}>
         <Paper className={classes.paper} square elevation={1}>
           <Toolbar variant="dense">
-            <Typography className={classes.title} variant="h6">New Student</Typography>
+            <Typography className={classes.title} variant="h6">
+              New Student
+            </Typography>
           </Toolbar>
         </Paper>
       </Grid>
@@ -232,7 +272,12 @@ const AddStudent = props => {
                   />
 
                   <Box mb={4} mt={1}>
-                    <FormControl variant="outlined" fullWidth margin="normal" component="fieldset">
+                    <FormControl
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                      component="fieldset"
+                    >
                       <FormLabel component="legend">Biography</FormLabel>
                       <MUIRichTextEditor
                         label="Type something here..."
@@ -242,14 +287,26 @@ const AddStudent = props => {
                         onFocus={focus}
                         onBlur={blur}
                         inlineToolbar={true}
-                        controls={["title", "media", "link", "bulletList", "my-style", "clear"]}
+                        controls={[
+                          'title',
+                          'media',
+                          'link',
+                          'bulletList',
+                          'my-style',
+                          'clear',
+                        ]}
                       />
                     </FormControl>
                   </Box>
 
                   <Divider />
 
-                  <FormControl variant="outlined" component="fieldset" margin="normal" fullWidth>
+                  <FormControl
+                    variant="outlined"
+                    component="fieldset"
+                    margin="normal"
+                    fullWidth
+                  >
                     <FormLabel component="legend">Login Credentials</FormLabel>
 
                     <TextField
@@ -276,12 +333,23 @@ const AddStudent = props => {
                     />
                   </FormControl>
 
-                  <FormControl variant="outlined" component="fieldset" margin="normal" fullWidth>
+                  <FormControl
+                    variant="outlined"
+                    component="fieldset"
+                    margin="normal"
+                    fullWidth
+                  >
                     <FormLabel component="legend">Social Information</FormLabel>
 
-                    <Button onClick={addSocial} color="primary" startIcon={<AddIcon />}>Add Social</Button>
+                    <Button
+                      onClick={addSocial}
+                      color="primary"
+                      startIcon={<AddIcon />}
+                    >
+                      Add Social
+                    </Button>
 
-                    {[].map((social, i) =>
+                    {[].map((social, i) => (
                       <Toolbar key={i} className={classes.toolbar}>
                         <TextField
                           name="socials"
@@ -293,15 +361,19 @@ const AddStudent = props => {
                           value={social.title}
                           onChange={handleChange}
                         />
-                        <IconButton onClick={addSocial}><AddIcon /></IconButton>
-                        <IconButton onClick={removeSocial(i)}><CloseIcon /></IconButton>
+                        <IconButton onClick={addSocial}>
+                          <AddIcon />
+                        </IconButton>
+                        <IconButton onClick={removeSocial(i)}>
+                          <CloseIcon />
+                        </IconButton>
                       </Toolbar>
-                    )}
+                    ))}
                   </FormControl>
                 </div>
               </CardContent>
               <CardActions>
-                <Button onClick={() => { }} color="primary" variant="outlined">
+                <Button onClick={() => {}} color="primary" variant="outlined">
                   Cancel
                 </Button>
                 <Button
@@ -332,7 +404,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    createStudent: data => dispatch(Actions.createStudent(data))
+    createStudent: data => dispatch(Actions.createStudent(data)),
   };
 }
 

@@ -1,102 +1,99 @@
-/*********************************************** */ AuthenticatorAssertionResponse;
-/*
- *
- * Reports actions
- *
- */
-
 import * as Constants from './constants';
 
-// Get bank account
-export function getGeneralJournalSuccesAction(data) {
+// set date
+export function setStartDate(payload) {
   return {
-    type: Constants.GET_GENERAL_JOURNAL_SUCCES_ACTION,
-    payload: data,
+    type: Constants.SET_START_DATE,
+    payload,
   };
 }
-export function getGeneralJournalErrorAction(data) {
+export function setEndDate(payload) {
   return {
-    type: Constants.GET_GENERAL_JOURNAL_ERR,
-    payload: data,
-  };
-}
-// Get account types
-export function getAllGeneralJournalTypeAction() {
-  return {
-    type: Constants.GET_ALL_GENERAL_JOURNAL_TYPES,
+    type: Constants.SET_END_DATE,
+    payload,
   };
 }
 
-export function cleanUpGeneralJournalAction() {
+// Get general journals
+export function getGeneralJournals(payload) {
   return {
-    type: Constants.CLEAN_UP_GENERAL_JOURNAL_TYPES,
+    type: Constants.GET_GENERAL_JOURNALS,
+    payload,
   };
 }
-
-export function getGeneralJournalTimeAction(data) {
+export function getGeneralJournalsSuccess(data) {
   return {
-    type: Constants.GET_GENERAL_JOURNAL_TIME,
+    type: Constants.GET_GENERAL_JOURNALS_SUCCESS,
     payload: data,
   };
 }
-// Get all chats of account types
-export function getAllChatsOfAccountTypeAction() {
+export function getGeneralJournalsError(data) {
   return {
-    type: Constants.GET_ALL_CHATS_OF_ACCOUNT_TYPES,
-  };
-}
-
-export function getChatsOfAccountSuccesAction(data) {
-  return {
-    type: Constants.GET_CHATS_OF_ACCOUNTS_SUCCES_ACTION,
+    type: Constants.GET_GENERAL_JOURNALS_ERR,
     payload: data,
   };
 }
 
-export function getChatsOfAccountErrorAction(data) {
+// Get all chart of accounts
+export function getChartOfAccounts(payload) {
   return {
-    type: Constants.GET_CHATS_OF_ACCOUNTS_ERR,
+    type: Constants.GET_CHART_OF_ACCOUNTS,
+    payload,
+  };
+}
+
+export function getChartOfAccountsSuccess(data) {
+  return {
+    type: Constants.GET_CHART_OF_ACCOUNTS_SUCCESS,
     payload: data,
   };
 }
 
-// Get all general ledger actions
-export function getAllGeneralLedgerAction() {
+export function getChartOfAccountsError(data) {
   return {
-    type: Constants.GET_ALL_GENERAL_LEDGER_TYPES,
-  };
-}
-export function getGeneralLedgerSuccesAction(data) {
-  return {
-    type: Constants.GET_GENERAL_LEDGER_SUCCES_ACTION,
+    type: Constants.GET_CHART_OF_ACCOUNTS_ERR,
     payload: data,
   };
 }
 
-export function getGeneralLedgerErrorAction(data) {
+// Get general ledgers actions
+export function getGeneralLedgers(data) {
   return {
-    type: Constants.GET_GENERAL_LEDGER_ERR,
+    type: Constants.GET_GENERAL_LEDGERS,
+    payload: data,
+  };
+}
+export function getGeneralLedgersSuccess(data) {
+  return {
+    type: Constants.GET_GENERAL_LEDGERS_SUCCESS,
     payload: data,
   };
 }
 
-/**Get Trial balance */
-
-export function getAllTrialBalanceAction() {
+export function getGeneralLedgersError(data) {
   return {
-    type: Constants.GET_ALL_TRIAL_BALANCE_TYPES,
-  };
-}
-export function getTrialBalanceSuccesAction(data) {
-  return {
-    type: Constants.GET_TRIAL_BALANCE_SUCCES_ACTION,
+    type: Constants.GET_GENERAL_LEDGERS_ERR,
     payload: data,
   };
 }
 
-export function getTrialBalanceErrorAction(data) {
+/** Get Trial balance */
+export function getAllTrialBalance(payload) {
   return {
-    type: Constants.GET_TRIAL_BALANCE_ERR,
+    type: Constants.GET_ALL_TRIAL_BALANCE,
+    payload,
+  };
+}
+export function getAllTrialBalanceSuccess(data) {
+  return {
+    type: Constants.GET_ALL_TRIAL_BALANCE_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getAllTrialBalanceError(data) {
+  return {
+    type: Constants.GET_ALL_TRIAL_BALANCE_ERR,
     payload: data,
   };
 }

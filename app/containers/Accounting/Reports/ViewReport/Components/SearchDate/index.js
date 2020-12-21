@@ -55,7 +55,7 @@ const SearchDate = ({
 };
 // 0107629596
 const mapStateToProps = createStructuredSelector({
-  time: Selectors.makeSelectTime(),
+  time: Selectors.makeSelectDate(),
 });
 
 const mapDispatchToProps = dispatch => ({

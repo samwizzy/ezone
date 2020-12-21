@@ -55,7 +55,7 @@ const SearchSingleDate = ({
 };
 
 const mapStateToProps = createStructuredSelector({
-  time: Selectors.makeSelectTime(),
+  time: Selectors.makeSelectDate(),
 });
 
 const mapDispatchToProps = dispatch => ({

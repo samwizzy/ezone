@@ -35,7 +35,9 @@ export function* getDashBoardData() {
 export function* getAccountingPeriods() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllAccountingPeriodApi}/${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetAllAccountingPeriodApi}/${
+    currentUser.organisation.orgId
+  }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -76,9 +78,10 @@ export function* getAccountTypes() {
 export function* createChartOfAccount({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  delete payload.subAccount;
 
   payload.orgId = currentUser.organisation.orgId;
+  console.log(payload, 'payload create account');
+
   const requestURL = `${Endpoints.CreateChartOfAccountApi}`;
 
   try {
@@ -91,7 +94,11 @@ export function* createChartOfAccount({ payload }) {
       }),
     });
 
-    swal('Success', `Account Name: ${response.accountName} was saved successfully!`, 'success');
+    swal(
+      'Success',
+      `Account Name: ${response.accountName} was saved successfully!`,
+      'success',
+    );
     yield put(Actions.createChartOfAccountSuccess(response));
     yield put(Actions.getChartOfAccounts());
     yield put(Actions.closeNewAccountDialog());
@@ -105,7 +112,9 @@ export function* createChartOfAccount({ payload }) {
 export function* getChartOfAccounts() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllChartOfAccountApi}/${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetAllChartOfAccountApi}/${
+    currentUser.organisation.orgId
+  }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -187,12 +196,12 @@ export function* updateChartOfAccount({ payload }) {
       }),
     });
 
-    swal("Success", "Account updated successfully", "success");
+    swal('Success', 'Account updated successfully', 'success');
     yield put(Actions.updateChartOfAccountSuccess(response));
     yield put(Actions.getChartOfAccounts());
     yield put(Actions.closeNewAccountDialog());
   } catch (err) {
-    swal("Error", "Something went wrong", "error");
+    swal('Error', 'Something went wrong', 'error');
     yield put(Actions.updateChartOfAccountError(err));
   }
 }

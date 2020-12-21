@@ -34,10 +34,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   datatable: {
-    '& table': {
-      width: '96% !important',
-      margin: '4px auto',
-    },
     whiteSpace: 'nowrap',
     '& tr:hover': {
       cursor: 'pointer',
@@ -86,7 +82,7 @@ const BankList = props => {
   const currency = accountSetupData ? accountSetupData.currency : null;
 
   const handleClick = (event, id) => {
-    event.stopPropagation()
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
     setSelectedBankAccount(_.find(bankAccounts, { id }));
   };
@@ -112,7 +108,7 @@ const BankList = props => {
   };
 
   const handleEditClick = () => {
-    openEditBankAccountDialog(selectedBankAccount)
+    openEditBankAccountDialog(selectedBankAccount);
     setAnchorEl(null);
   };
 
@@ -121,10 +117,10 @@ const BankList = props => {
     history.push(`${match.url}/${id}`);
   };
 
-  const orderedBankAccounts = _.orderBy(bankAccounts, 'dateCreated', 'desc')
+  const orderedBankAccounts = _.orderBy(bankAccounts, 'dateCreated', 'desc');
 
   if (!bankAccounts.length > 0) {
-    return <CircleLoader />
+    return <CircleLoader />;
   }
 
   const columns = [
@@ -176,9 +172,14 @@ const BankList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const bankAccount = bankAccounts.find(account => account.id === value)
-          return EzoneUtils.formatCurrency(bankAccount.bankBalance, currency && currency.code)
-        }
+          const bankAccount = bankAccounts.find(
+            account => account.id === value,
+          );
+          return EzoneUtils.formatCurrency(
+            bankAccount.bankBalance,
+            currency && currency.code,
+          );
+        },
       },
     },
     {
@@ -188,9 +189,23 @@ const BankList = props => {
         filter: true,
         sort: true,
         customBodyRender: status => {
-          return status
-            ? <Chip label="Active" variant="outlined" icon={<CheckCircleIcon className={classNames(classes.status, { active: status })} />} />
-            : <Chip label="Inactive" variant="outlined" icon={<RadioButtonUncheckedIcon />} />
+          return status ? (
+            <Chip
+              label="Active"
+              variant="outlined"
+              icon={
+                <CheckCircleIcon
+                  className={classNames(classes.status, { active: status })}
+                />
+              }
+            />
+          ) : (
+            <Chip
+              label="Inactive"
+              variant="outlined"
+              icon={<RadioButtonUncheckedIcon />}
+            />
+          );
         },
       },
     },
@@ -263,13 +278,20 @@ const BankList = props => {
       >
         <MenuItem
           onClick={handleActivateDeactivateBankAccount}
-          disabled={selectedBankAccount && !Boolean(selectedBankAccount.transfers.length)}
+          disabled={
+            selectedBankAccount &&
+            !Boolean(selectedBankAccount.transfers.length)
+          }
         >
-          {selectedBankAccount && selectedBankAccount.status ? 'Deactivate' : 'Activate'}
+          {selectedBankAccount && selectedBankAccount.status
+            ? 'Deactivate'
+            : 'Activate'}
         </MenuItem>
         <MenuItem
           onClick={() => openDeleteBankAccountDialog(selectedBankAccount)}
-          disabled={selectedBankAccount && Boolean(selectedBankAccount.transfers.length)}
+          disabled={
+            selectedBankAccount && Boolean(selectedBankAccount.transfers.length)
+          }
         >
           Delete
         </MenuItem>
@@ -300,10 +322,14 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getBankAccountById: data => dispatch(Actions.getBankAccountById(data)),
-    openNewBankAccountDialog: () => dispatch(Actions.openNewBankAccountDialog()),
-    openEditBankAccountDialog: data => dispatch(Actions.openEditBankAccountDialog(data)),
-    openDeleteBankAccountDialog: data => dispatch(Actions.openDeleteBankAccountDialog(data)),
-    activateDeactivateBankAccount: data => dispatch(Actions.activateDeactivateBankAccount(data)),
+    openNewBankAccountDialog: () =>
+      dispatch(Actions.openNewBankAccountDialog()),
+    openEditBankAccountDialog: data =>
+      dispatch(Actions.openEditBankAccountDialog(data)),
+    openDeleteBankAccountDialog: data =>
+      dispatch(Actions.openDeleteBankAccountDialog(data)),
+    activateDeactivateBankAccount: data =>
+      dispatch(Actions.activateDeactivateBankAccount(data)),
   };
 }
 

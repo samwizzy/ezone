@@ -1,4 +1,5 @@
 import { useLocation } from 'react-router-dom';
+import { IconButton } from '@material-ui/core';
 import PdfIcon from './PdfSvg';
 import React from 'react';
 import jsPDF from 'jspdf';
@@ -12,6 +13,7 @@ const CreatePdf = ({
   setPrint,
   pdflogo,
   tableRef,
+  dateRangeRef,
   daterange,
   companyRef,
   head,
@@ -78,9 +80,9 @@ const CreatePdf = ({
   print && printDocument();
   print && setPrint(false);
   return (
-    <div onClick={printDocument}>
+    <IconButton onClick={printDocument}>
       <PdfIcon height={height} width={width} className={className} />
-    </div>
+    </IconButton>
   );
 };
 

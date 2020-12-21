@@ -37,7 +37,7 @@ export function LoginPage(props) {
   return (
     <div>
       <Helmet>
-        <title>LoginPage</title>
+        <title>Login</title>
         <meta name="description" content="Description of LoginPage" />
       </Helmet>
       <LoginForm />

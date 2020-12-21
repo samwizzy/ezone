@@ -7,14 +7,6 @@ import { initialState } from './reducers';
 
 const selectReportsDomain = state => state.reports || initialState;
 
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by Reports
- */
-
 const makeSelectReports = () =>
   createSelector(
     selectReportsDomain,
@@ -31,31 +23,31 @@ const makeSelectError = () =>
     selectReportsDomain,
     substate => substate.error,
   );
-const makeSelectTime = () =>
+const makeSelectDate = () =>
   createSelector(
     selectReportsDomain,
-    substate => substate.time,
+    substate => substate.date,
   );
-const makeSelectGeneralJournal = () =>
+const makeSelectGeneralJournals = () =>
   createSelector(
     selectReportsDomain,
-    substate => substate.generaljournal,
+    substate => substate.generalJournals,
   );
-const makeSelectChatsOfAccount = () =>
+const makeSelectChartOfAccounts = () =>
   createSelector(
     selectReportsDomain,
-    substate => substate.chatsOfAccount,
+    substate => substate.chartOfAccounts,
   );
-const makeSelectGeneralLedger = () =>
+const makeSelectGeneralLedgers = () =>
   createSelector(
     selectReportsDomain,
-    substate => substate.generalLedger,
+    substate => substate.generalLedgers,
   );
 
-const makeSelectTrialBalance = () =>
+const makeSelectAllTrialBalance = () =>
   createSelector(
     selectReportsDomain,
-    substate => substate.trialBalance,
+    substate => substate.trialBalances,
   );
 
 const makeSelectFixedAssetRegister = () =>
@@ -132,11 +124,11 @@ export {
   selectReportsDomain,
   makeSelectLoading,
   makeSelectError,
-  makeSelectGeneralJournal,
-  makeSelectTime,
-  makeSelectChatsOfAccount,
-  makeSelectGeneralLedger,
-  makeSelectTrialBalance,
+  makeSelectGeneralJournals,
+  makeSelectDate,
+  makeSelectChartOfAccounts,
+  makeSelectGeneralLedgers,
+  makeSelectAllTrialBalance,
   makeSelectFixedAssetRegister,
   makeSelectFixedAssetRegisterTimeRange,
   makeSelectFixedAssetSchedule,

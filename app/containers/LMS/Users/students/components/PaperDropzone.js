@@ -113,10 +113,10 @@ function PaperDropzone(props) {
   const getBase64 = (file, cb) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = function () {
+    reader.onload = function() {
       return cb(reader.result.split(',')[1]);
     };
-    reader.onerror = function (error) {
+    reader.onerror = function(error) {
       console.log('Error: ', error);
     };
   };
@@ -151,7 +151,7 @@ function PaperDropzone(props) {
           })}
         >
           <input {...getInputProps()} multiple={false} />
-          <p>Drag 'n' drop some files here, or Upload a Thumbnail</p>
+          <p>Drag 'n' drop some files here, or click to upload your picture</p>
           <IconButton onClick={open}>
             <CloudUploadIcon fontSize="large" />
           </IconButton>

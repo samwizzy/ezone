@@ -23,7 +23,6 @@ import {
 import _ from 'lodash';
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -101,9 +100,9 @@ const FinancialYearSetup = props => {
 
   const canSubmitValues = () =>
     form.accountMethod &&
-    form.businessType &&
+    form.businessTypeId &&
     form.startDay > 0 &&
-    form.currency &&
+    form.currencyId &&
     form.startMonth > 0;
 
   return (
@@ -219,11 +218,15 @@ const FinancialYearSetup = props => {
         </Toolbar>
 
         <Autocomplete
-          id="business-type"
+          id="business-type-id"
           options={businessTypes}
           getOptionLabel={option => option.name}
-          onChange={handleSelectChange('businessType')}
-          value={form.businessType}
+          onChange={handleSelectChange('businessTypeId')}
+          value={
+            form.businessTypeId
+              ? businessTypes.find(bt => bt.id === form.businessTypeId)
+              : null
+          }
           style={{ width: 300 }}
           renderInput={params => (
             <TextField
@@ -237,14 +240,18 @@ const FinancialYearSetup = props => {
         />
 
         <Autocomplete
-          id="currency"
+          id="currency-id"
           style={{ width: 300 }}
-          options={defaultCurrencies}
-          onChange={handleSelectChange('currency')}
-          value={form.currency}
+          options={currencies}
+          onChange={handleSelectChange('currencyId')}
+          value={
+            form.currencyId
+              ? currencies.find(currency => currency.id === form.currencyId)
+              : null
+          }
           autoHighlight
           getOptionLabel={option =>
-            option ? `${option.code} - ${option.name}` : ''
+            option ? `${option.code} — ${option.name}` : ''
           }
           renderOption={option => (
             <React.Fragment>

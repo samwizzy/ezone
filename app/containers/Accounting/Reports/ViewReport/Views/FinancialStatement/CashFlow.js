@@ -303,7 +303,7 @@ const CashFlow = ({
 };
 
 const mapStateToProps = createStructuredSelector({
-  time: Selectors.makeSelectTime(),
+  time: Selectors.makeSelectDate(),
   user: Select.makeSelectCurrentUser(),
   cashFlow: Selectors.makeSelectCashFlow(),
   cashFlowRange: Selectors.makeSelectCashFlowTimeRange(),

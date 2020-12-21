@@ -9,37 +9,37 @@ import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import * as Actions from './actions';
-import makeSelectCrm from './selectors';
+import makeSelectCertificate from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import CategoryList from './components/CategoryList';
-import CategoryDialog from './components/CategoryDialog'
+import CertificateList from './components/CertificateList';
+import CertificateDialog from './components/CertificateDialog';
 import ModuleLayout from '../components/ModuleLayout';
 
-export function CategoryApp(props) {
-  useInjectReducer({ key: 'crmContactGroups', reducer });
-  useInjectSaga({ key: 'crmContactGroups', saga });
+export function CertificateApp(props) {
+  useInjectReducer({ key: 'lmsCertificate', reducer });
+  useInjectSaga({ key: 'lmsCertificate', saga });
 
   return (
     <div>
       <Helmet>
-        <title>LMS - Category</title>
-        <meta name="description" content="Description of LMS Category" />
+        <title>LMS - Certificate</title>
+        <meta name="description" content="Description of LMS Certificates" />
       </Helmet>
 
       <ModuleLayout>
-        <CategoryList />
+        <CertificateList />
       </ModuleLayout>
 
-      <CategoryDialog />
+      <CertificateDialog />
     </div>
   );
 }
 
-CategoryApp.propTypes = {
-};
+CertificateApp.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
+  lmsCertificate: makeSelectCertificate(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -54,4 +54,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(CategoryApp);
+)(CertificateApp);

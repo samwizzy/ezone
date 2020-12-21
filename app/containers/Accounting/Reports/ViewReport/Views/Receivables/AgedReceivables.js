@@ -95,7 +95,7 @@ const AgedReceivables = ({ time, user, dispatchCleanUpAction }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-  time: Selectors.makeSelectTime(),
+  time: Selectors.makeSelectDate(),
   user: Select.makeSelectCurrentUser(),
 });
 

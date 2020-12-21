@@ -11,37 +11,19 @@ import downloadCSV from '../index';
 
 const BootstrapInput = withStyles(theme => ({
   root: {
-    'label + &': {
-      marginTop: theme.spacing(3),
+    '& svg': {
+      right: 5,
     },
   },
   input: {
-    borderRadius: 4,
+    borderRadius: theme.shape.borderRadius,
     position: 'relative',
     backgroundColor: theme.palette.background.paper,
-    border: '1px solid #ced4da',
-    fontSize: 16,
-    width: 100,
-    height: 15,
-    padding: '10px 26px 10px 12px',
+    border: `1px solid ${theme.palette.divider}`,
+    padding: theme.spacing(1, 2),
     transition: theme.transitions.create(['border-color', 'box-shadow']),
-    // Use the system font instead of the default Roboto font.
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(','),
     '&:focus': {
-      borderRadius: 4,
       borderColor: '#80bdff',
-      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
     },
   },
 }))(InputBase);
@@ -58,7 +40,6 @@ export default function CustomizedSelects({ data, setPrint }) {
   const fileName = Location.pathname.split('/')[3];
 
   const classes = useStyles();
-  const [age, setAge] = React.useState('');
   const handleChange = event => {
     if (Number(event.target.value) === 20) {
       setPrint(true);
@@ -71,32 +52,30 @@ export default function CustomizedSelects({ data, setPrint }) {
     }
   };
   return (
-    <div>
-      <FormControl className={classes.margin}>
-        {data ? (
-          <NativeSelect
-            id="demo-customized-select-native"
-            value={age}
-            onChange={handleChange}
-            input={<BootstrapInput />}
-          >
-            <option value=" Export As"> Export As</option>
-            <option value={20}>PDF</option>
-            <option value={30}>CSV</option>
-            <option value={40}>XLS</option>
-          </NativeSelect>
-        ) : (
-          <NativeSelect
-            id="demo-customized-select-native"
-            value={age}
-            onChange={handleChange}
-            input={<BootstrapInput />}
-          >
-            <option value=" Export As"> Export As</option>
-            <option value={20}>PDF</option>
-          </NativeSelect>
-        )}
-      </FormControl>
-    </div>
+    <FormControl className={classes.margin}>
+      {data ? (
+        <NativeSelect
+          id="demo-customized-select-native"
+          value=""
+          onChange={handleChange}
+          input={<BootstrapInput />}
+        >
+          <option value=" Export As"> Export As</option>
+          <option value={20}>PDF</option>
+          <option value={30}>CSV</option>
+          <option value={40}>XLS</option>
+        </NativeSelect>
+      ) : (
+        <NativeSelect
+          id="demo-customized-select-native"
+          value=""
+          onChange={handleChange}
+          input={<BootstrapInput />}
+        >
+          <option value="Export As"> Export As</option>
+          <option value={20}>PDF</option>
+        </NativeSelect>
+      )}
+    </FormControl>
   );
 }

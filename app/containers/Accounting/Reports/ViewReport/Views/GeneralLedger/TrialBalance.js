@@ -1,7 +1,5 @@
-import React, { useRef, memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
-import { useLocation } from 'react-router-dom';
 import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -9,37 +7,18 @@ import { createStructuredSelector } from 'reselect';
 import makeSelectReports from '../../selectors';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
-import viewReportReducer from '../../reducers';
-import ReportSaga from '../../saga';
+import reducer from '../../reducers';
+import saga from '../../saga';
 import Company from '../../Components/CompanyLogo';
-import formatDate from '../../Helpers';
 import * as Select from '../../../../../App/selectors';
-import { makeStyles } from '@material-ui/core';
-import { darken } from '@material-ui/core/styles/colorManipulator';
+import { makeStyles, Grid } from '@material-ui/core';
 import EzoneUtils from '../../../../../../utils/EzoneUtils';
-import {
-  TableFooter,
-  TablePagination,
-  TableRow,
-  TableCell,
-} from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
-import classNames from 'classnames';
 import ControlledButtons from '../../Components/BackButton';
-import './style.css';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    padding: ' 0px 24px 24px 24px',
-  },
-  flex: {
-    position: 'relative',
-    padding: theme.spacing(8, 2),
-  },
-  tableFoot: {
-    backgroundColor: darken(theme.palette.primary.main, 0.1),
   },
   datatable: {
     width: '100% !important',
@@ -47,54 +26,45 @@ const useStyles = makeStyles(theme => ({
       '& th': {
         color: theme.palette.secondary.contrastText,
         backgroundColor: theme.palette.primary.main,
-        padding: '8px !important',
+        padding: theme.spacing(1),
       },
     },
     '& tbody': {
       '& td': {
-        padding: '8px !important',
+        padding: theme.spacing(1),
       },
     },
     '& tfoot': {
       '& td': {
-        padding: '8px !important',
+        padding: theme.spacing(1),
       },
     },
   },
 }));
 
 const TrialBalance = ({
-  reports,
-  error,
   loading,
-  trialBalance,
-  dispatchGetAllTrialBalanceAction,
-  dispatchGetGeneralTimeAction,
-  dispatchCleanUpAction,
-  time,
+  allTrialBalance,
+  getAllTrialBalance,
+  date,
   user,
 }) => {
-  const { startDate, endDate } = time;
-
-  const componentRef = useRef();
-  const tableRef = useRef();
-  const companyRef = useRef();
-  const [print, setPrint] = useState(false);
-  const [display, setDisplay] = useState(false);
-  const [period, setPeriod] = useState({ firstDate: '', lastDate: '' });
-
+  useInjectReducer({ key: 'reports', reducer });
+  useInjectSaga({ key: 'reports', saga });
   const classes = useStyles();
-
-  useInjectReducer({ key: 'reports', reducer: viewReportReducer });
-  useInjectSaga({ key: 'reports', saga: ReportSaga });
+  const tableRef = useRef();
 
   useEffect(() => {
-    return async () => await dispatchCleanUpAction();
+    if (date.startDate && date.endDate) {
+      getAllTrialBalance(date);
+    }
+  }, [date]);
+
+  useEffect(() => {
+    return async () => {};
   }, []);
 
-  const formatDate = dateTime => moment(dateTime).format('DD-MM-YYYY');
-
-  const { trialBalances } = trialBalance;
+  const { trialBalances } = allTrialBalance;
   const { organisation } = user;
 
   const data =
@@ -110,12 +80,13 @@ const TrialBalance = ({
       }
       return accumulator;
     }, []);
+  
   const columns = [
     'Account Code',
     'Account Name',
     {
       name: 'Debit Amt',
-      label: 'Debit Amt',
+      label: 'Debit Amount',
       options: {
         filter: true,
         sort: true,
@@ -124,7 +95,7 @@ const TrialBalance = ({
     },
     {
       name: 'Credit Amt',
-      label: 'Credit Amt',
+      label: 'Credit Amount',
       options: {
         filter: true,
         sort: true,
@@ -132,11 +103,12 @@ const TrialBalance = ({
       },
     },
   ];
+
   const TableFooterData = [
     '   ',
     ' TOTAL',
-    `${trialBalance && data.length > 0 ? trialBalance.total : ''}`,
-    `${trialBalance && data.length > 0 ? trialBalance.total : ''}`,
+    `${allTrialBalance && allTrialBalance.totalDebit}`,
+    `${allTrialBalance && allTrialBalance.totalcCredit}`,
   ];
 
   const options = {
@@ -145,79 +117,39 @@ const TrialBalance = ({
     selectableRows: 'none',
     elevation: 0,
     download: false,
+    filter: false,
     print: false,
     pagination: false,
     viewColumns: false,
   };
 
-  const handleData = () => {
-    dispatchGetAllTrialBalanceAction();
-    setDisplay(true);
-  };
-  const dateValue = ({ target }) => {
-    dispatchGetGeneralTimeAction({
-      startDate: '01/01/2000',
-      endDate: target.value.split('-').join('/'),
-    });
-    handleData();
-  };
-  const Location = useLocation();
-  const fileName = Location.pathname.split('/')[3];
-
-  const setDate =
-    display &&
-    `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
-      'MMM Do YYYY',
-    )}`;
-
-  const csvPrint =
-    data &&
-    data.concat([TableFooterData]).reduce((accumulator, ele) => {
-      let obj = {
-        'Account Code': ele[0],
-        'Account Name': ele[1],
-        'Debit Amt': ele[2],
-        'Credit Amt': ele[3],
-      };
-      accumulator.push(obj);
-      return accumulator;
-    }, []);
-
   return (
-    <div className={classes.root}>
-      <ControlledButtons
-        componentRef={componentRef}
-        print={print}
-        setPrint={setPrint}
-        tableData={csvPrint}
-        printCsc={[columns, data ? { ...data } : '']}
-        handleFetch={handleData}
-        pdflogo={organisation.logo}
-        tableRef={tableRef}
-        companyRef={companyRef}
-        daterange={setDate}
-        dateValue={dateValue}
-        head={[['Account Code', 'Account Name', 'Debit Amt', 'Credit Amt']]}
-        body={data}
-        toDay="End Date"
-        singleDate={true}
-      />
-
-      <div ref={componentRef}>
-        <Company
-          ref={companyRef}
-          ComLogo={organisation.logo}
-          name={`${fileName}`}
-          date={display && `As at ${moment(endDate).format('MMM Do YYYY')}`}
+    <Grid container spacing={2} className={classes.root}>
+      <Grid item xs={12}>
+        <ControlledButtons
+          tableData={data}
+          printCsc={[columns, data ? { ...data } : '']}
+          pdflogo={organisation.logo}
+          daterange={`${date.startDate} — ${date.endDate}`}
+          date={date}
+          tableRef={tableRef}
+          head={[columns]}
+          body={data}
+          singleDate={true}
         />
+      </Grid>
+
+      <Grid item xs={12}>
+        <Company logo={organisation.logo} name="Trial Balance" date={date} />
+
         <MUIDataTable
           className={classes.datatable}
           data={data && data.concat([TableFooterData])}
           columns={columns}
           options={options}
         />
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   );
 };
 
@@ -225,19 +157,13 @@ const mapStateToProps = createStructuredSelector({
   reports: makeSelectReports(),
   loading: Selectors.makeSelectLoading(),
   error: Selectors.makeSelectError(),
-  time: Selectors.makeSelectTime(),
-  trialBalance: Selectors.makeSelectTrialBalance(),
+  date: Selectors.makeSelectDate(),
+  allTrialBalance: Selectors.makeSelectAllTrialBalance(),
   user: Select.makeSelectCurrentUser(),
 });
 
 const mapDispatchToProps = dispatch => ({
-  dispatchGetTrialBalanceSuccesAction: () =>
-    dispatch(Actions.getTrialBalanceSuccesAction()),
-  dispatchGetAllTrialBalanceAction: () =>
-    dispatch(Actions.getAllTrialBalanceAction()),
-  dispatchCleanUpAction: () => dispatch(Actions.cleanUpGeneralJournalAction()),
-  dispatchGetGeneralTimeAction: data =>
-    dispatch(Actions.getGeneralJournalTimeAction(data)),
+  getAllTrialBalance: date => dispatch(Actions.getAllTrialBalance(date)),
   dispatch,
 });
 
