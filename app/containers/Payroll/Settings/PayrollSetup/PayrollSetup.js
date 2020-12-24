@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import TaxSetup from './components/TaxSetup';
 import AccountSetup from './components/AccountSetup';
-import Logo from '../../../../images/Logo.svg';
+// import Logo from '../../../../images/Logo.svg';
 import payrollBg from '../../../../images/payrollSettingImage.svg';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';

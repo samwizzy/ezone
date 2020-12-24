@@ -14,7 +14,7 @@ import moment from 'moment';
 import FinancialYearSetup from './components/FinancialYearSetup';
 import BusinessActivity from './components/BusinessActivity';
 import SetChartOfAccount from './components/SetChartOfAccount';
-import Logo from '../../../../images/Logo.svg';
+// import Logo from '../../../../images/Logo.svg';
 import accSettingDemo2 from '../../../../images/accSettingDemo2.svg';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
