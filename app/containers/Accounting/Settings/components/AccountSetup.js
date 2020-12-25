@@ -1,15 +1,15 @@
 import React, { memo, useState } from 'react';
-import { compose } from 'redux'
-import { connect } from 'react-redux'
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect'
 import { makeStyles, Card, CardHeader, CardContent, CardActions, Grid, Typography } from '@material-ui/core'
 import FinancialYearSetup from '../../Settings/components/FinancialYearSetup';
 import BusinessActivity from '../../Settings/components/BusinessActivity';
 import SetChartOfAccount from "../../Settings/components/SetChartOfAccount";
-import Logo from '../images/Logo.svg';
+import Logo from '../images/logo.svg';
 import accSettingDemo2 from '../images/accSettingDemo2.svg';
 import * as Enums from '../enums';
-import moment from 'moment'
+import moment from 'moment';
 import * as Selectors from './../selectors';
 import * as Actions from './../actions';
 

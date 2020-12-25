@@ -28,7 +28,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { Autocomplete } from '@material-ui/lab';
 import SendIcon from '@material-ui/icons/ArrowForward';
 import Radio from '@material-ui/core/Radio';
-import Logo from '../images/Logo.svg';
+import Logo from '../images/logo.svg';
 import accSettingDemo2 from '../images/accSettingDemo2.svg';
 import NigeriaFlag from '../images/flag/nigeria.png';
 import UsaFlag from '../images/flag/usa.png';
