@@ -102,7 +102,8 @@ const PayrollSetup = props => {
             align="center"
             gutterBottom
           >
-            Welcome To <img src={Logo} height="30" /> Payroll
+            {/*Welcome To <img src={Logo} height="30" /> Payroll*/}
+            Welcome To Payroll
           </Typography>
         }
         subheader={
