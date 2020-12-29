@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import TaxSetup from './components/TaxSetup';
 import AccountSetup from './components/AccountSetup';
-// import Logo from '../../../../images/Logo.svg';
+import Logo from '../../../../images/logo.svg';
 import payrollBg from '../../../../images/payrollSettingImage.svg';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
@@ -102,8 +102,7 @@ const PayrollSetup = props => {
             align="center"
             gutterBottom
           >
-            {/*Welcome To <img src={Logo} height="30" /> Payroll*/}
-            Welcome To Payroll
+            Welcome To <img src={Logo} height="30" /> Payroll
           </Typography>
         }
         subheader={
