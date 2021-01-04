@@ -25,11 +25,11 @@ import CRMIcon from '../../../../images/crmIcon.svg';
 import FileIcon from '../../../../images/FileIcon.svg';
 import BudgetingIcon from '../../../../images/BudgetingIcon.svg';
 import TaskIcon from '../../../../images/TaskIcon.svg';
-import InventoryIcon from '../../../../images/taskIcon.svg';
-import LmsIcon from '../../../../images/lms.svg';
+// import InventoryIcon from '../../../../images/taskIcon.svg';
+// import LmsIcon from '../../../../images/lms.svg';
 import ProjectsIcon from '../../../../images/ProjectsIcon.svg';
 import ChatIcon from '../../../../images/chatIcon.svg';
-import ChatIcon2 from '../../../../images/chatIcon2.svg';
+// import ChatIcon2 from '../../../../images/chatIcon2.svg';
 
 const apps = [
   { id: 1, name: 'Home', url: '/home', icon: ProjectsIcon, img: 'home' },

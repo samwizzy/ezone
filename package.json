@@ -153,7 +153,7 @@
     "redux-saga": "1.0.2",
     "reselect": "4.0.0",
     "sanitize.css": "8.0.0",
-    "soap": "^0.30.0",
+    "soap": "^0.35.0",
     "sockjs-client": "^1.4.0",
     "style-loader": "0.23.1",
     "styled-components": "^5.1.1",
@@ -236,7 +236,7 @@
     "webpack-cli": "^3.3.12",
     "webpack-dev-middleware": "3.6.2",
     "webpack-hot-middleware": "2.24.3",
-    "webpack-pwa-manifest": "^4.2.0",
+    "webpack-pwa-manifest": "^4.3.0",
     "whatwg-fetch": "3.0.0"
   }
 }

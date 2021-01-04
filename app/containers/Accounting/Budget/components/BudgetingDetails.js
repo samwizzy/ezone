@@ -27,7 +27,7 @@ import * as AppSelectors from '../../../App/selectors';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-import TaskIcon from '../../../../images/TaskIcon.svg';
+// import TaskIcon from '../../../../images/TaskIcon.svg';
 import BudgetIcon from '../../../../images/budgetIcon.svg';
 import BudgetIcon2 from '../../../../images/budgetIcon2.svg';
 
