@@ -185,22 +185,6 @@ const GeneralJournal = ({
     },
   ];
 
-  const csvPrint =
-    data &&
-    data.concat(TableFooterData).reduce((accumulator, ele) => {
-      let obj = {
-        Date: ele[0],
-        'Account Code': ele[1],
-        Reference: ele[2],
-        'Trans Description': ele[3],
-        Currency: ele[4],
-        'Exchange Rate': ele[5],
-        'Debit Amt': ele[6],
-        'Credit Amt': ele[7],
-      };
-      accumulator.push(obj);
-      return accumulator;
-    }, []);
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>

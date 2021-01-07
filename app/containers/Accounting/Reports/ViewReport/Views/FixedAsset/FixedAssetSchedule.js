@@ -1,46 +1,26 @@
 import React, { useRef, memo, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { useLocation } from 'react-router-dom';
 import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import { createStructuredSelector } from 'reselect';
-import makeSelectReports from '../../selectors';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
-import viewReportReducer from '../../reducers';
-import ReportSaga from '../../saga';
+import reducer from '../../reducers';
+import saga from '../../saga';
 import Company from '../../Components/CompanyLogo';
-import formatDate from '../../Helpers';
 import * as Select from '../../../../../App/selectors';
 import { makeStyles } from '@material-ui/core';
 import { darken } from '@material-ui/core/styles/colorManipulator';
-import {
-  TableFooter,
-  TablePagination,
-  TableRow,
-  TableCell,
-} from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
-import classNames from 'classnames';
 import ControlledButtons from '../../Components/BackButton';
 import EzoneUtils from '../../../../../../utils/EzoneUtils';
-
-import './style.css';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    padding: ' 0px 24px 24px 24px',
-  },
-  flex: {
-    position: 'relative',
-    padding: theme.spacing(8, 2),
-  },
-  tableFoot: {
-    backgroundColor: darken(theme.palette.primary.main, 0.1),
   },
   datatable: {
     width: '100% !important',
@@ -48,49 +28,38 @@ const useStyles = makeStyles(theme => ({
       '& th': {
         color: theme.palette.secondary.contrastText,
         backgroundColor: theme.palette.primary.main,
-        padding: '8px !important',
+        padding: theme.spacing(1),
       },
     },
     '& tbody': {
       '& td': {
-        padding: '8px !important',
+        padding: theme.spacing(1),
       },
     },
     '& tfoot': {
       '& td': {
-        padding: '8px !important',
+        padding: theme.spacing(1),
       },
     },
   },
 }));
 
 const FixedAssetSchedule = ({
-  time,
+  date,
   user,
   fixedAssetSchedule,
-  fixedAssetScheduleRange,
-  dispatchGetAllFixedAssetScheduleAction,
-  dispatchGetGeneralJournalTimeAction,
-  dispatchCleanUpAction,
-  dispatchGetFixedAssetScheduleRangeAction,
+  getFixedAssetSchedule,
 }) => {
-  const componentRef = useRef();
+  useInjectReducer({ key: 'reports', reducer });
+  useInjectSaga({ key: 'reports', saga });
+
+  // const componentRef = useRef();
   const tableRef = useRef();
   const companyRef = useRef();
-  const [print, setPrint] = useState(false);
-  const [display, setDisplay] = useState(false);
-  const [period, setPeriod] = useState({ firstDate: '', lastDate: '' });
-  const [show, setShow] = useState('');
 
   const classes = useStyles();
   const { organisation } = user;
-  const { startDate, endDate } = time;
-  useInjectReducer({ key: 'reports', reducer: viewReportReducer });
-  useInjectSaga({ key: 'reports', saga: ReportSaga });
 
-  useEffect(() => {
-    return async () => await dispatchCleanUpAction();
-  }, []);
   const options = {
     filterType: 'checkbox',
     responsive: 'stacked',
@@ -101,6 +70,7 @@ const FixedAssetSchedule = ({
     pagination: false,
     viewColumns: false,
   };
+
   const columns = [
     'Date',
     'Asset Code',
@@ -142,8 +112,8 @@ const FixedAssetSchedule = ({
       },
     },
     {
-      name: 'Depriciation Bfwd',
-      label: 'Depriciation Bfwd',
+      name: 'Depreciation Bfwd',
+      label: 'Depreciation Bfwd',
       options: {
         filter: true,
         sort: true,
@@ -151,7 +121,7 @@ const FixedAssetSchedule = ({
       },
     },
     {
-      name: 'Addition',
+      name: 'addition',
       label: 'Addition',
       options: {
         filter: true,
@@ -188,7 +158,7 @@ const FixedAssetSchedule = ({
     },
   ];
   const data = fixedAssetSchedule.map(schedule => [
-    formatDate(schedule.date),
+    moment(schedule.date).format('ll'),
     schedule.assetId,
     schedule.assetDescription,
     schedule.costBroughtForward,
@@ -220,86 +190,52 @@ const FixedAssetSchedule = ({
     accumulator.push(obj);
     return accumulator;
   }, []);
-  const setDate =
-    startDate !== ''
-      ? `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
-          'MMM Do YYYY',
-        )}`
-      : '';
 
   useEffect(() => {
-    const { selectedRange } = fixedAssetScheduleRange;
-    setShow(selectedRange);
-  }, [display, time]);
-
-  const handleData = () => {
-    dispatchGetAllFixedAssetScheduleAction();
-    dispatchGetFixedAssetScheduleRangeAction({ selectedRange: setDate });
-    setDisplay(true);
-  };
-  const dateValue = ({ target }) => {
-    if (target.name === 'Start Date') {
-      setPeriod({ ...period, firstDate: target.value.split('-').join('/') });
+    if (date.startDate && date.endDate) {
+      getFixedAssetSchedule(date);
     }
-    if (target.name === 'End Date') {
-      setPeriod({ ...period, lastDate: target.value.split('-').join('/') });
-    }
-  };
+  }, [date]);
 
   useEffect(() => {
-    if (period.lastDate && period.firstDate) {
-      dispatchGetGeneralJournalTimeAction({
-        startDate: period.firstDate,
-        endDate: period.lastDate,
-      });
-
-      handleData();
-    }
-  }, [period]);
-
-  const Location = useLocation();
-  const fileName = Location.pathname.split('/')[3];
+    return async () => {};
+  }, []);
 
   return (
-    <React.Fragment>
-      <ControlledButtons
-        componentRef={componentRef}
-        print={print}
-        setPrint={setPrint}
-        tableData={csvPrint}
-        printCsc={[columns, data ? { ...data } : '']}
-        handleFetch={handleData}
-        pdflogo={organisation.logo}
-        tableRef={tableRef}
-        companyRef={companyRef}
-        daterange={setDate || show}
-        dateValue={dateValue}
-        head={[
-          [
-            'Date',
-            'Asset Code',
-            'Description',
-            'Cost Bfwd',
-            'Addition',
-            'Disposal',
-            'Cost Cfwd',
-            'Depriciation Bfwd',
-            'Addition',
-            'Disposal',
-            'Depriciation Cfwd',
-            'Net Book Value',
-          ],
-        ]}
-        body={data}
-        fromDay="Start Date"
-        toDay="End Date"
-      />
-      <div style={{ width: '100%', height: '100%' }} ref={componentRef}>
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <ControlledButtons
+          tableData={csvPrint}
+          printCsc={[columns, data ? { ...data } : '']}
+          pdflogo={organisation.logo}
+          tableRef={tableRef}
+          companyRef={companyRef}
+          daterange={`${date.startDate} — ${date.endDate}`}
+          dateValue={date.endDate}
+          head={[
+            [
+              'Date',
+              'Asset Code',
+              'Description',
+              'Cost Bfwd',
+              'Addition',
+              'Disposal',
+              'Cost Cfwd',
+              'Depriciation Bfwd',
+              'Addition',
+              'Disposal',
+              'Depriciation Cfwd',
+              'Net Book Value',
+            ],
+          ]}
+          body={data}
+        />
+      </Grid>
+      <Grid item xs={12}>
         <Company
-          ref={companyRef}
-          ComLogo={organisation.logo}
-          name={`${fileName}`}
-          date={setDate || show}
+          logo={organisation.logo}
+          name="Fixed Asset Schedule"
+          date={date}
         />
 
         <MUIDataTable
@@ -308,27 +244,19 @@ const FixedAssetSchedule = ({
           columns={columns}
           options={options}
         />
-      </div>
-    </React.Fragment>
+      </Grid>
+    </Grid>
   );
 };
 
 const mapStateToProps = createStructuredSelector({
-  time: Selectors.makeSelectDate(),
+  date: Selectors.makeSelectDate(),
   user: Select.makeSelectCurrentUser(),
   fixedAssetSchedule: Selectors.makeSelectFixedAssetSchedule(),
-  fixedAssetScheduleRange: Selectors.makeSelectFixedAssetScheduleTimeRange(),
-  report: Selectors.makeSelectFixedAssetScheduleTimeRange(),
 });
 
 const mapDispatchToProps = dispatch => ({
-  dispatchGetGeneralJournalTimeAction: data =>
-    dispatch(Actions.getGeneralJournalTimeAction(data)),
-  dispatchGetFixedAssetScheduleRangeAction: data =>
-    dispatch(Actions.getFixedAssetScheduleRangeAction(data)),
-  dispatchGetAllFixedAssetScheduleAction: () =>
-    dispatch(Actions.getAllFixedAssetScheduleAction()),
-  dispatchCleanUpAction: () => dispatch(Actions.cleanUpGeneralJournalAction()),
+  getFixedAssetSchedule: data => dispatch(Actions.getFixedAssetSchedule(data)),
   dispatch,
 });
 

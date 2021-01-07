@@ -1,94 +1,102 @@
 import React, { useRef, memo, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { useLocation } from 'react-router-dom';
 import { compose } from 'redux';
-import { useInjectSaga } from 'utils/injectSaga';
-import { useInjectReducer } from 'utils/injectReducer';
 import { createStructuredSelector } from 'reselect';
-import makeSelectReports from '../../selectors';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
-import viewReportReducer from '../../reducers';
-import ReportSaga from '../../saga';
-import Table from '../../Components/Table';
-import TopMenu from '../../Components/TopMenu';
+import MUIDataTable from 'mui-datatables';
+import { makeStyles, Grid } from '@material-ui/core';
+import ControlledButtons from '../../Components/BackButton';
 import Company from '../../Components/CompanyLogo';
-import formatDate from '../../Helpers';
 import * as Select from '../../../../../App/selectors';
-import './style.css';
 
-const InvoiceRegister = ({ time, user, dispatchCleanUpAction }) => {
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  datatable: {
+    width: '100% !important',
+    '& thead': {
+      '& th': {
+        color: theme.palette.secondary.contrastText,
+        backgroundColor: theme.palette.primary.main,
+        padding: theme.spacing(1),
+      },
+    },
+    '& td': {
+      cursor: 'pointer',
+      padding: theme.spacing(1),
+    },
+  },
+}));
+
+const InvoiceRegister = ({ date, user, dispatchCleanUpAction }) => {
+  const classes = useStyles();
   const componentRef = useRef();
   const tableRef = useRef();
   const companyRef = useRef();
-  const [print, setPrint] = useState(false);
-  const [display, setDisplay] = useState(false);
 
   const { organisation } = user;
-  const { startDate, endDate } = time;
-  // dispatchGetGeneralLedgerTimeAction
-  useInjectReducer({ key: 'reports', reducer: viewReportReducer });
-  useInjectSaga({ key: 'reports', saga: ReportSaga });
 
-  useEffect(() => {
-    return async () => await dispatchCleanUpAction();
-  }, []);
+  useEffect(() => {}, []);
 
-  const handleData = () => {
-    // dispatchGetAllGeneralLedgerTypeAction();
-    // console.log('=============================================>');
-    setDisplay(true);
+  const columns = ['Trans No', 'Date', 'Quote', 'Name', 'Amount'];
+
+  const options = {
+    filterType: 'checkbox',
+    responsive: 'stacked',
+    selectableRows: 'none',
+    download: false,
+    filter: false,
+    print: false,
+    pagination: false,
+    viewColumns: false,
+    elevation: 0,
   };
-  const TableHeadData = ['Trans No', 'Date', 'Quote', 'Name', 'Amount'];
-  const Location = useLocation();
-  const fileName = Location.pathname.split('/')[3];
 
-  const setDate =
-    display &&
-    `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
-      'MMM Do YYYY',
-    )}`;
   return (
-    <React.Fragment>
-      <TopMenu
-        componentRef={componentRef}
-        print={print}
-        setPrint={setPrint}
-        // tableData={tableData}
-        handleFetch={handleData}
-        pdflogo={organisation.logo}
-        companyRef={companyRef}
-        daterange={setDate}
-        tableRef={tableRef}
-        //
-      />
-      <div ref={componentRef}>
-        <Company
-          ref={companyRef}
-          ComLogo={organisation.logo}
-          name={`${fileName}`}
-          date={setDate}
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <ControlledButtons
+          tableData={[]}
+          printCsc={[columns, [] ? { ...[] } : '']}
+          date={date}
+          pdflogo={organisation.logo}
+          daterange={`${date.startDate} — ${date.endDate}`}
+          tableRef={tableRef}
+          head={[columns]}
+          body={[]}
         />
+      </Grid>
+      <Grid item xs={12}>
+        <div ref={componentRef}>
+          <Company
+            logo={organisation.logo}
+            name="Invoice Register"
+            date={date}
+          />
 
-        <Table
-          ref={tableRef}
-          // data={tableData}
-          TableHeadData={TableHeadData}
-          // TableFooterData={TableFooterData}
-        />
-      </div>
-    </React.Fragment>
+          <MUIDataTable
+            className={classes.datatable}
+            title="Invoice Register Report"
+            data={[]}
+            columns={columns}
+            options={options}
+          />
+        </div>
+      </Grid>
+    </Grid>
   );
 };
 
 const mapStateToProps = createStructuredSelector({
-  time: Selectors.makeSelectDate(),
+  date: Selectors.makeSelectDate(),
   user: Select.makeSelectCurrentUser(),
 });
 
 const mapDispatchToProps = dispatch => ({
-  dispatchCleanUpAction: () => dispatch(Actions.cleanUpGeneralJournalAction()),
+  getInvoiceRegister: () => dispatch(() => {}),
   dispatch,
 });
 

@@ -13,7 +13,6 @@ import saga from '../../saga';
 import Company from '../../Components/CompanyLogo';
 import * as Select from '../../../../../App/selectors';
 import { makeStyles, Grid } from '@material-ui/core';
-import { darken } from '@material-ui/core/styles/colorManipulator';
 import EzoneUtils from '../../../../../../utils/EzoneUtils';
 import MUIDataTable from 'mui-datatables';
 import ControlledButtons from '../../Components/BackButton';
@@ -55,6 +54,8 @@ const ChartOfAccount = ({
   const classes = useStyles();
   const { organisation } = user;
   const tableRef = useRef();
+
+  console.log(moment('2020/06/10', 'YYYY/MM/DD').format('ll'), 'testing');
 
   useEffect(() => {
     if (date.endDate) {
@@ -109,7 +110,7 @@ const ChartOfAccount = ({
           tableData={data}
           printCsc={[columns, data ? { ...data } : '']}
           pdflogo={organisation.logo}
-          daterange={`As at ${moment(date.endDate).format('MMM Do YYYY')}`}
+          daterange={`As at ${date.endDate}`}
           singleDate={true}
           dateValue={date.endDate}
           head={[columns]}

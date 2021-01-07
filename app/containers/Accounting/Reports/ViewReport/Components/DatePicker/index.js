@@ -14,14 +14,14 @@ import moment from 'moment';
 const DatePicker = props => {
   const { date, setStartDate, setEndDate } = props;
 
-  const handleDateChange = name => value => {
+  const handleDateChange = name => (value, date) => {
     // const formattedDate = _.mapValues(date, function(value) {
     //   return moment(value).format('DD/MM/YYYY');
     // });
 
     if (name === 'startDate') {
-      setStartDate(moment(value).format('YYYY/MM/DD'));
-    } else {
+      setStartDate(moment(value, 'YYYY/MM/DD').format('YYYY/MM/DD'));
+    } else if (name === 'endDate') {
       setEndDate(moment(value).format('YYYY/MM/DD'));
     }
   };
