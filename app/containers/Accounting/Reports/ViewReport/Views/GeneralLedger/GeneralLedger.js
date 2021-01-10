@@ -2,14 +2,14 @@ import React, { Fragment, memo, useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { compose } from 'redux';
-import { useInjectSaga } from 'utils/injectSaga';
-import { useInjectReducer } from 'utils/injectReducer';
+// import { useInjectSaga } from 'utils/injectSaga';
+// import { useInjectReducer } from 'utils/injectReducer';
 import { createStructuredSelector } from 'reselect';
 import makeSelectReports from '../../selectors';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
-import reducer from '../../reducers';
-import saga from '../../saga';
+// import reducer from '../../reducers';
+// import saga from '../../saga';
 import Company from '../../Components/CompanyLogo';
 import * as Select from '../../../../../App/selectors';
 import { makeStyles, Grid } from '@material-ui/core';
@@ -39,14 +39,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const GeneralLedger = ({ date, generalLedger, getGeneralLedgers, user }) => {
-  useInjectReducer({ key: 'reports', reducer });
-  useInjectSaga({ key: 'reports', saga });
+  // useInjectReducer({ key: 'reports', reducer });
+  // useInjectSaga({ key: 'reports', saga });
   const tableRef = useRef();
 
   const [print, setPrint] = useState(false);
   const [open, setOpen] = useState(false);
   const [infodata, setInfodata] = useState([]);
   const classes = useStyles();
+
+  console.log(generalLedger, 'Vendor payment');
 
   useEffect(() => {
     return () => {};
@@ -86,7 +88,7 @@ const GeneralLedger = ({ date, generalLedger, getGeneralLedgers, user }) => {
       `${ledger.reduce((a, b) => a + b.creditAmount, 0)}`,
       `${ledger.reduce((a, b) => a + b.debitAmount, 0)}`,
       `${
-        Account(ledger) === 'CREDIT'
+        ledger[0].financialType === 'CREDIT'
           ? ledger.reduce((a, b) => a + b.creditAmount, 0) -
             ledger.reduce((a, b) => a + b.debitAmount, 0)
           : ledger.reduce((a, b) => a + b.debitAmount, 0) -

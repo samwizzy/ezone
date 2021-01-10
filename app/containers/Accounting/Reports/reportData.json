@@ -43,7 +43,7 @@
     "title": "Account Reconcilation",
     "color": "reconciliation",
     "data": [
-      { "name": "Bank Reconcilation", "link": "bank-reconcillation" },
+      { "name": "Bank Reconcilation", "link": "bank-reconciliation" },
       { "name": "Bank deposit report", "link": "bank-deposit-report" },
       { "name": "Deposit in Transit", "link": "deposit-in-transit" },
       { "name": "Other outstanding items", "link": "other-outstanding-items" },
@@ -68,8 +68,8 @@
       { "name": "Direct Cost Report", "link": "direct-cost-report" },
       { "name": "Inventory status report", "link": "inventory-status-report" },
       { "name": "Inv.valuation report", "link": "inv-valuation-report" },
-      { "name": "Item list", "link": "Item-list" },
-      { "name": "Physical Inventory list", "link": "physical-Inventory-list" }
+      { "name": "Item list", "link": "item-list" },
+      { "name": "Physical Inventory list", "link": "physical-inventory-list" }
     ]
   },
   {

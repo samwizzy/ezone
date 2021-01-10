@@ -34,8 +34,9 @@ const Company = ({ logo, name, date }) => {
       </Typography>
       {date.startDate && (
         <Typography variant="subtitle2">
-          {moment(date.startDate).format('ll')}{' '}
-          {date.endDate && `— ${moment(date.endDate).format('ll')}`}
+          {moment(date.startDate, 'YYYY/MM/DD').format('ll')}{' '}
+          {date.endDate &&
+            `— ${moment(date.endDate, 'YYYY/MM/DD').format('ll')}`}
         </Typography>
       )}
     </div>

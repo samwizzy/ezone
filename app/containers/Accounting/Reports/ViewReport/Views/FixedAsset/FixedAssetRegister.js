@@ -1,7 +1,6 @@
 import React, { useRef, memo, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { useLocation } from 'react-router-dom';
 import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -9,38 +8,20 @@ import { createStructuredSelector } from 'reselect';
 import makeSelectReports from '../../selectors';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
-import viewReportReducer from '../../reducers';
-import ReportSaga from '../../saga';
+import reducer from '../../reducers';
+import saga from '../../saga';
 import Company from '../../Components/CompanyLogo';
-import formatDate from '../../Helpers';
 import * as Select from '../../../../../App/selectors';
 import { makeStyles } from '@material-ui/core';
 import { darken } from '@material-ui/core/styles/colorManipulator';
-import {
-  TableFooter,
-  TablePagination,
-  TableRow,
-  TableCell,
-} from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
-import classNames from 'classnames';
 import ControlledButtons from '../../Components/BackButton';
 import EzoneUtils from '../../../../../../utils/EzoneUtils';
-
-import './style.css';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    padding: ' 0px 24px 24px 24px',
-  },
-  flex: {
-    position: 'relative',
-    padding: theme.spacing(8, 2),
-  },
-  tableFoot: {
-    backgroundColor: darken(theme.palette.primary.main, 0.1),
   },
   datatable: {
     width: '100% !important',
@@ -48,49 +29,43 @@ const useStyles = makeStyles(theme => ({
       '& th': {
         color: theme.palette.secondary.contrastText,
         backgroundColor: theme.palette.primary.main,
-        padding: '8px !important',
+        padding: theme.spacing(1),
       },
     },
     '& tbody': {
       '& td': {
-        padding: '8px !important',
+        padding: theme.spacing(1),
       },
     },
     '& tfoot': {
       '& td': {
-        padding: '8px !important',
+        padding: theme.spacing(1),
       },
     },
   },
 }));
 
 const FixedAssetRegister = ({
-  time,
+  date,
   user,
   fixedAssetRegister,
-  fixedAssetRegisterRange,
-  dispatchGetAllFixedAssetRegisterAction,
-  dispatchGetGeneralJournalTimeAction,
-  dispatchCleanUpAction,
-  dispatchGetFixedAssetRegisterRangeAction,
+  getFixedAssetRegister,
 }) => {
-  const componentRef = useRef();
-  const tableRef = useRef();
-  const companyRef = useRef();
-  const [print, setPrint] = useState(false);
-  const [display, setDisplay] = useState(false);
-  const [period, setPeriod] = useState({ firstDate: '', lastDate: '' });
-  const [show, setShow] = useState('');
+  useInjectReducer({ key: 'reports', reducer });
+  useInjectSaga({ key: 'reports', saga });
 
   const classes = useStyles();
+  const tableRef = useRef();
   const { organisation } = user;
-  const { startDate, endDate } = time;
-
-  useInjectReducer({ key: 'reports', reducer: viewReportReducer });
-  useInjectSaga({ key: 'reports', saga: ReportSaga });
 
   useEffect(() => {
-    return async () => await dispatchCleanUpAction();
+    if (date.startDate && date.endDate) {
+      getFixedAssetRegister(date);
+    }
+  }, [date]);
+
+  useEffect(() => {
+    return async () => {};
   }, []);
 
   const data = fixedAssetRegister.map(register => [
@@ -100,7 +75,7 @@ const FixedAssetRegister = ({
     register.assetSpecification,
     register.assetQuantity,
     register.condition,
-    formatDate(register.acquisitionDate),
+    moment(register.acquisitionDate).format('ll'),
     register.acquisitionCost,
     register.additionalDuringTheYear,
     register.disposal,
@@ -145,6 +120,7 @@ const FixedAssetRegister = ({
       },
     },
   ];
+
   const csvPrint = data.reduce((accumulator, ele) => {
     let obj = {
       'Asset Code': ele[0],
@@ -161,83 +137,39 @@ const FixedAssetRegister = ({
     accumulator.push(obj);
     return accumulator;
   }, []);
-  const setDate =
-    startDate !== ''
-      ? `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
-          'MMM Do YYYY',
-        )}`
-      : '';
-
-  const handleData = () => {
-    dispatchGetAllFixedAssetRegisterAction();
-    dispatchGetFixedAssetRegisterRangeAction({ selectedRange: setDate });
-    setDisplay(true);
-  };
-  useEffect(() => {
-    const { selectedRange } = fixedAssetRegisterRange;
-    setShow(selectedRange);
-  }, [display, time]);
-
-  const dateValue = ({ target }) => {
-    if (target.name === 'Start Date') {
-      setPeriod({ ...period, firstDate: target.value.split('-').join('/') });
-    }
-    if (target.name === 'End Date') {
-      setPeriod({ ...period, lastDate: target.value.split('-').join('/') });
-    }
-  };
-
-  useEffect(() => {
-    if (period.lastDate && period.firstDate) {
-      dispatchGetGeneralJournalTimeAction({
-        startDate: period.firstDate,
-        endDate: period.lastDate,
-      });
-      handleData();
-    }
-  }, [period]);
-
-  const Location = useLocation();
-  const fileName = Location.pathname.split('/')[3];
 
   return (
-    <React.Fragment>
-      <ControlledButtons
-        componentRef={componentRef}
-        print={print}
-        setPrint={setPrint}
-        tableData={csvPrint}
-        printCsc={[columns, data ? { ...data } : '']}
-        handleFetch={handleData}
-        pdflogo={organisation.logo}
-        tableRef={tableRef}
-        companyRef={companyRef}
-        daterange={setDate || show}
-        dateValue={dateValue}
-        head={[
-          [
-            'Asset Code',
-            'Location of asset',
-            'Description',
-            'Specification',
-            'Qty',
-            'Condition',
-            'Acquisition date',
-            'Cost at Acquisition',
-            'Additions during the year',
-            'Disposals/Transfer',
-          ],
-        ]}
-        body={data}
-        fromDay="Start Date"
-        toDay="End Date"
-      />
-      <div style={{ width: '100%', height: '100%' }} ref={componentRef}>
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <ControlledButtons
+          tableData={csvPrint}
+          printCsc={[columns, data ? { ...data } : '']}
+          pdflogo={organisation.logo}
+          tableRef={tableRef}
+          daterange={`${date.startDate} — ${date.endDate}`}
+          dateValue={date.endDate}
+          head={[
+            [
+              'Asset Code',
+              'Location of asset',
+              'Description',
+              'Specification',
+              'Qty',
+              'Condition',
+              'Acquisition date',
+              'Cost at Acquisition',
+              'Additions during the year',
+              'Disposals/Transfer',
+            ],
+          ]}
+          body={data}
+        />
+      </Grid>
+      <Grid item xs={12}>
         <Company
-          ref={companyRef}
-          ComLogo={organisation.logo}
-          name={`${fileName}`}
-          date={setDate || show}
+          logo={organisation.logo}
+          name="Fixed Asset Register"
+          date={date}
         />
 
         <MUIDataTable
@@ -246,28 +178,20 @@ const FixedAssetRegister = ({
           columns={columns}
           options={options}
         />
-      </div>
-    </React.Fragment>
+      </Grid>
+    </Grid>
   );
 };
 
-// export default FixedAssetRegister;
-
 const mapStateToProps = createStructuredSelector({
-  time: Selectors.makeSelectDate(),
+  reports: makeSelectReports(),
+  date: Selectors.makeSelectDate(),
   user: Select.makeSelectCurrentUser(),
   fixedAssetRegister: Selectors.makeSelectFixedAssetRegister(),
-  fixedAssetRegisterRange: Selectors.makeSelectFixedAssetRegisterTimeRange(),
 });
 
 const mapDispatchToProps = dispatch => ({
-  dispatchGetGeneralJournalTimeAction: data =>
-    dispatch(Actions.getGeneralJournalTimeAction(data)),
-  dispatchGetFixedAssetRegisterRangeAction: data =>
-    dispatch(Actions.getFixedAssetRegisterRangeAction(data)),
-  dispatchGetAllFixedAssetRegisterAction: () =>
-    dispatch(Actions.getAllFixedAssetRegisterAction()),
-  dispatchCleanUpAction: () => dispatch(Actions.cleanUpGeneralJournalAction()),
+  getFixedAssetRegister: data => dispatch(Actions.getFixedAssetRegister(data)),
   dispatch,
 });
 

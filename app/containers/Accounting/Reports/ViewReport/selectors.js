@@ -56,22 +56,12 @@ const makeSelectFixedAssetRegister = () =>
     substate => substate.fixedAssetRegister,
   );
 
-const makeSelectFixedAssetRegisterTimeRange = () =>
-  createSelector(
-    selectReportsDomain,
-    substate => substate.fixedAssetRegisterTimeRange,
-  );
 const makeSelectFixedAssetSchedule = () =>
   createSelector(
     selectReportsDomain,
     substate => substate.fixedAssetSchedule,
   );
 
-const makeSelectFixedAssetScheduleTimeRange = () =>
-  createSelector(
-    selectReportsDomain,
-    substate => substate.fixedAssetScheduleTimeRange,
-  );
 const makeSelectIncomeStatement = () =>
   createSelector(
     selectReportsDomain,
@@ -112,12 +102,6 @@ const makeSelectCashAccountRegister = () =>
     substate => substate.cashAccountRegister,
   );
 
-const makeSelectCashAccountRegisterTimeRange = () =>
-  createSelector(
-    selectReportsDomain,
-    substate => substate.cashAccountRegisterTimeRange,
-  );
-
 export default makeSelectReports;
 
 export {
@@ -130,9 +114,7 @@ export {
   makeSelectGeneralLedgers,
   makeSelectAllTrialBalance,
   makeSelectFixedAssetRegister,
-  makeSelectFixedAssetRegisterTimeRange,
   makeSelectFixedAssetSchedule,
-  makeSelectFixedAssetScheduleTimeRange,
   makeSelectIncomeStatement,
   makeSelectIncomeStatementTimeRange,
   makeSelectCashFlow,
@@ -140,5 +122,4 @@ export {
   makeSelectFinancialPosition,
   makeSelectFinancialPositionTimeRange,
   makeSelectCashAccountRegister,
-  makeSelectCashAccountRegisterTimeRange,
 };

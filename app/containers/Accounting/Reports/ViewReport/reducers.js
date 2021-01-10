@@ -10,12 +10,10 @@ export const initialState = {
   generalLedgers: [],
   trialBalances: [],
   time: { startDate: null, endDate: null },
-  fixedAssetRegisterTimeRange: { selectedRange: '' },
   fixedAssetScheduleTimeRange: { selectedRange: '' },
   incomeStatementTimeRange: { selectedRange: '' },
   financialPositionTimeRange: { selectedRange: '' },
   cashFlowTimeRange: { selectedRange: '' },
-  cashAccountRegisterTimeRange: { selectedRange: '' },
   fixedAssetRegister: [],
   fixedAssetSchedule: [],
   incomeStatement: [],
@@ -156,7 +154,7 @@ const reportsReducer = (state = initialState, action) =>
         };
       }
       // Case to get Fixed asset register
-      case Constants.GET_ALL_FIXED_ASSET_REGISTER_TYPES: {
+      case Constants.GET_FIXED_ASSET_REGISTER: {
         return {
           ...state,
           loading: false,
@@ -164,7 +162,7 @@ const reportsReducer = (state = initialState, action) =>
         };
       }
       // Case to get Fixed asset register success
-      case Constants.GET_FIXED_ASSET_REGISTER_SUCCES_ACTION: {
+      case Constants.GET_FIXED_ASSET_REGISTER_SUCCESS: {
         return {
           ...state,
           loading: false,
@@ -180,14 +178,9 @@ const reportsReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
-      case Constants.GET_FIXED_ASSET_REGISTER_RANGE: {
-        return {
-          ...state,
-          fixedAssetRegisterTimeRange: action.payload,
-        };
-      }
+
       // Case to get Fixed asset schedule
-      case Constants.GET_ALL_FIXED_ASSET_SCHEDULE_TYPES: {
+      case Constants.GET_FIXED_ASSET_SCHEDULE: {
         return {
           ...state,
           loading: false,
@@ -195,7 +188,7 @@ const reportsReducer = (state = initialState, action) =>
         };
       }
       // Case to get Fixed asset schedule success
-      case Constants.GET_FIXED_ASSET_SCHEDULE_SUCCES_ACTION: {
+      case Constants.GET_FIXED_ASSET_SCHEDULE_SUCCESS: {
         return {
           ...state,
           loading: false,
@@ -311,7 +304,7 @@ const reportsReducer = (state = initialState, action) =>
         };
       }
       // Case to get Cash Account Register
-      case Constants.GET_ALL_CASH_ACCOUNT_REGISTER_TYPES: {
+      case Constants.GET_CASH_ACCOUNT_REGISTER: {
         return {
           ...state,
           loading: false,
@@ -319,7 +312,7 @@ const reportsReducer = (state = initialState, action) =>
         };
       }
       // Case to get Cash Account Register success
-      case Constants.GET_CASH_ACCOUNT_REGISTER_SUCCES_ACTION: {
+      case Constants.GET_CASH_ACCOUNT_REGISTER_SUCCESS: {
         return {
           ...state,
           loading: false,
@@ -333,12 +326,6 @@ const reportsReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: action.payload,
-        };
-      }
-      case Constants.GET_CASH_ACCOUNT_REGISTER_RANGE: {
-        return {
-          ...state,
-          cashAccountRegisterTimeRange: action.payload,
         };
       }
     }

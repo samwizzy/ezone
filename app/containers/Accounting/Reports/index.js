@@ -22,7 +22,7 @@ import TaxesExemptSales from './ViewReport/Views/Receivables/TaxesExemptSales';
 import AssetSchedule from './ViewReport/Views/FixedAsset/FixedAssetSchedule';
 import AssetRegister from './ViewReport/Views/FixedAsset/FixedAssetRegister';
 import VendorLedgers from './ViewReport/Views/Payables/VendorLedgers';
-import VendoMasterLife from './ViewReport/Views/Payables/VendorMasterlife';
+import VendoMasterLife from './ViewReport/Views/Payables/VendorMasterLife';
 import BankReconciliation from './ViewReport/Views/AccountReconciliation/BankReconcilliation';
 import BankDepositReport from './ViewReport/Views/AccountReconciliation/BankDepositReport';
 import DepositIntransit from './ViewReport/Views/AccountReconciliation/DepositInTransit';
@@ -126,10 +126,6 @@ const Reports = () => {
         />
         <Route path={`${path}/bill-reports`} component={BillReports} />
         <Route
-          path={`${path}/quotation-reports`}
-          component={QuotationReports}
-        />
-        <Route
           path={`${path}/vendor-master-life`}
           component={VendoMasterLife}
         />
@@ -144,7 +140,7 @@ const Reports = () => {
         />
         <Route path={`${path}/purchase-journal`} component={PurchaseJournal} />
         <Route
-          path={`${path}/bank-reconcillation`}
+          path={`${path}/bank-reconciliation`}
           component={BankReconciliation}
         />
         <Route
@@ -172,9 +168,9 @@ const Reports = () => {
           path={`${path}/inv-valuation-report`}
           component={ValuationReports}
         />
-        <Route path={`${path}/Item-list`} component={ItemList} />
+        <Route path={`${path}/item-list`} component={ItemList} />
         <Route
-          path={`${path}/physical-Inventory-list`}
+          path={`${path}/physical-inventory-list`}
           component={PhysicalInventoryList}
         />
         <Route path={`${path}/payroll-journals`} component={PayrollJournal} />

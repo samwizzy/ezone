@@ -99,19 +99,20 @@ export function getAllTrialBalanceError(data) {
 }
 
 /**Get FIxed Asset Register */
-export function getAllFixedAssetRegisterAction() {
+export function getFixedAssetRegister(payload) {
   return {
-    type: Constants.GET_ALL_FIXED_ASSET_REGISTER_TYPES,
+    type: Constants.GET_FIXED_ASSET_REGISTER,
+    payload,
   };
 }
-export function getFixedAssetRegisterSuccesAction(data) {
+export function getFixedAssetRegisterSuccess(data) {
   return {
-    type: Constants.GET_FIXED_ASSET_REGISTER_SUCCES_ACTION,
+    type: Constants.GET_FIXED_ASSET_REGISTER_SUCCESS,
     payload: data,
   };
 }
 
-export function getFixedAssetRegisterErrorAction(data) {
+export function getFixedAssetRegisterError(data) {
   return {
     type: Constants.GET_FIXED_ASSET_REGISTER_ERR,
     payload: data,
@@ -125,29 +126,24 @@ export function getFixedAssetRegisterRangeAction(data) {
   };
 }
 
-/**Get FIxed Asset Shedules */
-export function getAllFixedAssetScheduleAction() {
+/**Get FIxed Asset Schedules */
+export function getFixedAssetSchedule(payload) {
   return {
-    type: Constants.GET_ALL_FIXED_ASSET_SCHEDULE_TYPES,
+    type: Constants.GET_FIXED_ASSET_SCHEDULE,
+    payload,
   };
 }
-export function getFixedAssetScheduleSuccesAction(data) {
+
+export function getFixedAssetScheduleSuccess(data) {
   return {
-    type: Constants.GET_FIXED_ASSET_SCHEDULE_SUCCES_ACTION,
+    type: Constants.GET_FIXED_ASSET_SCHEDULE_SUCCESS,
     payload: data,
   };
 }
 
-export function getFixedAssetScheduleErrorAction(data) {
+export function getFixedAssetScheduleError(data) {
   return {
     type: Constants.GET_FIXED_ASSET_SCHEDULE_ERR,
-    payload: data,
-  };
-}
-
-export function getFixedAssetScheduleRangeAction(data) {
-  return {
-    type: Constants.GET_FIXED_ASSET_SCHEDULE_RANGE,
     payload: data,
   };
 }
@@ -180,19 +176,19 @@ export function getIncomeStatementRangeAction(data) {
 }
 
 //Cash flow
-export function getAllCashFlowAction() {
+export function getCashFlow() {
   return {
-    type: Constants.GET_ALL_CASH_FLOW_TYPES,
+    type: Constants.GET_CASH_FLOW,
   };
 }
-export function getCashFlowSuccesAction(data) {
+export function getCashFlowSuccess(data) {
   return {
-    type: Constants.GET_CASH_FLOW_SUCCES_ACTION,
+    type: Constants.GET_CASH_FLOW_SUCCESS,
     payload: data,
   };
 }
 
-export function getCashFlowErrorAction(data) {
+export function getCashFlowError(data) {
   return {
     type: Constants.GET_CASH_FLOW_ERR,
     payload: data,
@@ -206,56 +202,43 @@ export function getCashFlowRangeAction(data) {
   };
 }
 
-//Financial Position
-export function getAllFinancialPositionAction() {
+/** Financial Position */
+export function getFinancialPosition() {
   return {
-    type: Constants.GET_ALL_FINANCIAL_POSITION_TYPES,
+    type: Constants.GET_FINANCIAL_POSITION,
   };
 }
-export function getFinancialPositionSuccesAction(data) {
+export function getFinancialPositionSuccess(data) {
   return {
-    type: Constants.GET_FINANCIAL_POSITION_SUCCES_ACTION,
+    type: Constants.GET_FINANCIAL_POSITION_SUCCESS,
     payload: data,
   };
 }
 
-export function getFinancialPositionErrorAction(data) {
+export function getFinancialPositionError(data) {
   return {
     type: Constants.GET_FINANCIAL_POSITION_ERR,
     payload: data,
   };
 }
 
-export function getFinancialPositionRangeAction(data) {
-  return {
-    type: Constants.GET_FINANCIAL_POSITION_RANGE,
-    payload: data,
-  };
-}
-
 //Cash account register
-export function getAllCashAccountRegisterAction() {
+export function getCashAccountRegister(payload) {
   return {
-    type: Constants.GET_ALL_CASH_ACCOUNT_REGISTER_TYPES,
+    type: Constants.GET_CASH_ACCOUNT_REGISTER,
+    payload,
   };
 }
-export function getCashAccountRegisterSuccesAction(data) {
+export function getCashAccountRegisterSuccess(data) {
   return {
-    type: Constants.GET_CASH_ACCOUNT_REGISTER_SUCCES_ACTION,
+    type: Constants.GET_CASH_ACCOUNT_REGISTER_SUCCESS,
     payload: data,
   };
 }
 
-export function getCashAccountRegisterErrorAction(data) {
+export function getCashAccountRegisterError(data) {
   return {
     type: Constants.GET_CASH_ACCOUNT_REGISTER_ERR,
-    payload: data,
-  };
-}
-
-export function getCashAccountRegisterRangeAction(data) {
-  return {
-    type: Constants.GET_CASH_ACCOUNT_REGISTER_RANGE,
     payload: data,
   };
 }

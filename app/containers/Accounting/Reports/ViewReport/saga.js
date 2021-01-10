@@ -95,63 +95,59 @@ export function* getGeneralLedger({ payload }) {
 }
 /** Get Fixed Asset Register saga */
 
-export function* getFixedAssetRegisterSaga() {
+export function* getFixedAssetRegister({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const { startDate, endDate } = yield select(Selectors.makeSelectTime());
+  const { startDate, endDate } = payload;
 
   const requestURL = `${
     Endpoints.GetFixedAssetRegisterApi
   }?endDate=${endDate}&startDate=${startDate}&orgId=${
     currentUser.organisation.orgId
   }`;
-  console.log('requestURL', requestURL);
+  console.log('getFixedAssetRegister payload', payload);
 
   try {
-    const fixedAssetRegisterResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
-    yield put(
-      Actions.getFixedAssetRegisterSuccesAction(fixedAssetRegisterResponse),
-    );
+    yield put(Actions.getFixedAssetRegisterSuccess(response));
   } catch (err) {
     swal('Error', 'Something went wrong', 'error');
-    yield put(Actions.getFixedAssetRegisterErrorAction(err));
+    yield put(Actions.getFixedAssetRegisterError(err));
   }
 }
 
 /** Get Fixed Asset Schedule saga */
 
-export function* getFixedAssetScheduleSaga() {
+export function* getFixedAssetSchedule({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const { startDate, endDate } = yield select(Selectors.makeSelectTime());
+  const { startDate, endDate } = payload;
 
   const requestURL = `${
     Endpoints.GetFixedAssetScheduleApi
   }?endDate=${endDate}&startDate=${startDate}&orgId=${
     currentUser.organisation.orgId
   }`;
-  console.log('requestURL', requestURL);
+  console.log('getFixedAssetSchedule payload', payload);
 
   try {
-    const fixedAssetScheduleResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
-    yield put(
-      Actions.getFixedAssetScheduleSuccesAction(fixedAssetScheduleResponse),
-    );
+    yield put(Actions.getFixedAssetScheduleSuccess(response));
   } catch (err) {
     swal('Error', 'Something went wrong', 'error');
-    yield put(Actions.getFixedAssetScheduleErrorAction(err));
+    yield put(Actions.getFixedAssetScheduleError(err));
   }
 }
 
@@ -170,14 +166,14 @@ export function* getIncomeStatementSaga() {
   console.log('requestURL', requestURL);
 
   try {
-    const incomeStatementResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
-    yield put(Actions.getIncomeStatementSuccesAction(incomeStatementResponse));
+    yield put(Actions.getIncomeStatementSuccesAction(response));
   } catch (err) {
     swal('Error', 'Something went wrong', 'error');
     yield put(Actions.getIncomeStatementErrorAction(err));
@@ -186,10 +182,10 @@ export function* getIncomeStatementSaga() {
 
 /** Get Cash Flow API */
 
-export function* getCashFlowSaga() {
+export function* getCashFlow({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const { startDate, endDate } = yield select(Selectors.makeSelectTime());
+  const { startDate, endDate } = payload;
 
   const requestURL = `${
     Endpoints.GetCashFlowReportApi
@@ -199,26 +195,26 @@ export function* getCashFlowSaga() {
   console.log('requestURL', requestURL);
 
   try {
-    const cashFlowResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
-    yield put(Actions.getCashFlowSuccesAction(cashFlowResponse));
+    yield put(Actions.getCashFlowSuccess(response));
   } catch (err) {
     swal('Error', 'Something went wrong', 'error');
-    yield put(Actions.getCashFlowErrorAction(err));
+    yield put(Actions.getCashFlowError(err));
   }
 }
 
 /** Get Financial Position API */
 
-export function* getFinancialPositionSaga() {
+export function* getFinancialPosition({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const { startDate, endDate } = yield select(Selectors.makeSelectTime());
+  const { startDate, endDate } = payload;
 
   const requestURL = `${
     Endpoints.GetFinancialPositionReportApi
@@ -228,23 +224,21 @@ export function* getFinancialPositionSaga() {
   console.log('requestURL', requestURL);
 
   try {
-    const financialPositionResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
-    yield put(
-      Actions.getFinancialPositionSuccesAction(financialPositionResponse),
-    );
+    yield put(Actions.getFinancialPositionSuccess(response));
   } catch (err) {
     swal('Error', 'Something went wrong', 'error');
-    yield put(Actions.getFinancialPositionErrorAction(err));
+    yield put(Actions.getFinancialPositionError(err));
   }
 }
-/** Get trial balance saga */
 
+/** Get trial balance saga */
 export function* getTrialBalance({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
@@ -273,34 +267,32 @@ export function* getTrialBalance({ payload }) {
   }
 }
 
-/** Get Cash account register*/
-
-export function* getCashAccountRegisterSaga() {
+/** Get Cash account register */
+export function* getCashAccountRegister({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const { startDate, endDate } = yield select(Selectors.makeSelectTime());
+  const { startDate, endDate } = payload;
+
+  console.log(payload, 'getCashAccountRegister payload');
 
   const requestURL = `${
     Endpoints.GetCashAccountRegisterApi
   }?endDate=${endDate}&startDate=${startDate}&orgId=${
     currentUser.organisation.orgId
   }`;
-  console.log('requestURL', requestURL);
 
   try {
-    const cashAccountRegisterResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
-    yield put(
-      Actions.getCashAccountRegisterSuccesAction(cashAccountRegisterResponse),
-    );
+    yield put(Actions.getCashAccountRegisterSuccess(response));
   } catch (err) {
     swal('Error', 'Something went wrong', 'error');
-    yield put(Actions.getCashAccountRegisterErrorAction(err));
+    yield put(Actions.getCashAccountRegisterError(err));
   }
 }
 
@@ -310,25 +302,13 @@ export default function* ReportSaga() {
   yield takeLatest(Constants.GET_CHART_OF_ACCOUNTS, getChartOfAccount);
   yield takeLatest(Constants.GET_GENERAL_LEDGERS, getGeneralLedger);
   yield takeLatest(Constants.GET_ALL_TRIAL_BALANCE, getTrialBalance);
-  yield takeLatest(
-    Constants.GET_ALL_FIXED_ASSET_REGISTER_TYPES,
-    getFixedAssetRegisterSaga,
-  );
-  yield takeLatest(
-    Constants.GET_ALL_FIXED_ASSET_SCHEDULE_TYPES,
-    getFixedAssetScheduleSaga,
-  );
+  yield takeLatest(Constants.GET_FIXED_ASSET_REGISTER, getFixedAssetRegister);
+  yield takeLatest(Constants.GET_FIXED_ASSET_SCHEDULE, getFixedAssetSchedule);
   yield takeLatest(
     Constants.GET_ALL_INCOME_STATEMENT_TYPES,
     getIncomeStatementSaga,
   );
-  yield takeLatest(Constants.GET_ALL_CASH_FLOW_TYPES, getCashFlowSaga);
-  yield takeLatest(
-    Constants.GET_ALL_FINANCIAL_POSITION_TYPES,
-    getFinancialPositionSaga,
-  );
-  yield takeLatest(
-    Constants.GET_ALL_CASH_ACCOUNT_REGISTER_TYPES,
-    getCashAccountRegisterSaga,
-  );
+  yield takeLatest(Constants.GET_CASH_FLOW, getCashFlow);
+  yield takeLatest(Constants.GET_FINANCIAL_POSITION, getFinancialPosition);
+  yield takeLatest(Constants.GET_CASH_ACCOUNT_REGISTER, getCashAccountRegister);
 }

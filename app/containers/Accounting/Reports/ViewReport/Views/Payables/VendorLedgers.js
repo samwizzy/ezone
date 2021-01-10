@@ -1,102 +1,170 @@
 import React, { useRef, memo, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { useLocation } from 'react-router-dom';
 import { compose } from 'redux';
-import { useInjectSaga } from 'utils/injectSaga';
-import { useInjectReducer } from 'utils/injectReducer';
 import { createStructuredSelector } from 'reselect';
-import makeSelectReports from '../../selectors';
+import EzoneUtils from '../../../../../../utils/EzoneUtils';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
-import viewReportReducer from '../../reducers';
-import ReportSaga from '../../saga';
-import Table from '../../Components/Table';
-import TopMenu from '../../Components/TopMenu';
+import { makeStyles, Grid } from '@material-ui/core';
+import MUIDataTable from 'mui-datatables';
+import ControlledButtons from '../../Components/BackButton';
 import Company from '../../Components/CompanyLogo';
-import formatDate from '../../Helpers';
 import * as Select from '../../../../../App/selectors';
-import './style.css';
 
-const VendorLedger = ({ time, user, dispatchCleanUpAction }) => {
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  datatable: {
+    width: '100% !important',
+    '& thead': {
+      '& th': {
+        color: theme.palette.secondary.contrastText,
+        backgroundColor: theme.palette.primary.main,
+        padding: theme.spacing(1),
+      },
+    },
+    '& td': {
+      cursor: 'pointer',
+      padding: theme.spacing(1),
+    },
+  },
+}));
+
+const VendorLedger = ({ date, user }) => {
+  const classes = useStyles();
   const componentRef = useRef();
   const tableRef = useRef();
   const companyRef = useRef();
-  const [print, setPrint] = useState(false);
-  const [display, setDisplay] = useState(false);
-
   const { organisation } = user;
-  const { startDate, endDate } = time;
-  // dispatchGetGeneralLedgerTimeAction
-  useInjectReducer({ key: 'reports', reducer: viewReportReducer });
-  useInjectSaga({ key: 'reports', saga: ReportSaga });
 
-  useEffect(() => {
-    return async () => await dispatchCleanUpAction();
-  }, []);
-
-  const handleData = () => {
-    // dispatchGetAllGeneralLedgerTypeAction();
-    // console.log('=============================================>');
-    setDisplay(true);
-  };
-  const TableHeadData = [
-    'Vendor Code',
-    'Vendor Name',
-    'Date',
-    'Cost centre ID',
-    'Trans No',
-    'Debit Amt',
-    'Credit Amt',
-    'Balance',
+  const columns = [
+    {
+      name: 'VendorCode',
+      label: 'Vendor Code',
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: 'vendorName',
+      label: 'Vendor Name',
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: 'date',
+      label: 'Date',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => (value ? moment(value).format('ll') : ''),
+      },
+    },
+    {
+      name: 'costCenterId',
+      label: 'Cost centre ID',
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: 'transactionNumber',
+      label: 'Trans no.',
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: 'debitAmount',
+      label: 'Debit Amount',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
+    {
+      name: 'creditAmount',
+      label: 'Credit Amount',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
+    {
+      name: 'balance',
+      label: 'Balance',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
+      },
+    },
   ];
-  const Location = useLocation();
-  const fileName = Location.pathname.split('/')[3];
 
-  const setDate =
-    display &&
-    `${moment(startDate).format('MMM Do YYYY')} - ${moment(endDate).format(
-      'MMM Do YYYY',
-    )}`;
+  const options = {
+    filterType: 'checkbox',
+    responsive: 'stacked',
+    selectableRows: 'none',
+    download: false,
+    filter: false,
+    print: false,
+    pagination: false,
+    viewColumns: false,
+    elevation: 0,
+  };
+
   return (
-    <React.Fragment>
-      <TopMenu
-        componentRef={componentRef}
-        print={print}
-        setPrint={setPrint}
-        // tableData={tableData}
-        handleFetch={handleData}
-        pdflogo={organisation.logo}
-        companyRef={companyRef}
-        daterange={setDate}
-        tableRef={tableRef}
-      />
-      <div ref={componentRef}>
-        <Company
-          ref={companyRef}
-          ComLogo={organisation.logo}
-          name={`${fileName}`}
-          date={setDate}
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <ControlledButtons
+          tableData={[]}
+          printCsc={[columns, [] ? { ...[] } : '']}
+          date={date}
+          pdflogo={organisation.logo}
+          daterange={`${date.startDate} — ${date.endDate}`}
+          tableRef={tableRef}
+          head={[columns]}
+          body={[]}
         />
+      </Grid>
+      <Grid item xs={12}>
+        <div ref={componentRef}>
+          <Company
+            // ref={companyRef}
+            logo={organisation.logo}
+            name="Vendor Ledgers"
+            date={date}
+          />
 
-        <Table
-          ref={tableRef}
-          // data={tableData}
-          TableHeadData={TableHeadData}
-          // TableFooterData={TableFooterData}
-        />
-      </div>
-    </React.Fragment>
+          <MUIDataTable
+            className={classes.datatable}
+            title="Vendor Ledger"
+            data={[]}
+            columns={columns}
+            options={options}
+          />
+        </div>
+      </Grid>
+    </Grid>
   );
 };
 
 const mapStateToProps = createStructuredSelector({
-  time: Selectors.makeSelectDate(),
+  date: Selectors.makeSelectDate(),
   user: Select.makeSelectCurrentUser(),
 });
 
 const mapDispatchToProps = dispatch => ({
-  dispatchCleanUpAction: () => dispatch(Actions.cleanUpGeneralJournalAction()),
+  getVendorLedger: () => dispatch(() => {}),
   dispatch,
 });
 
