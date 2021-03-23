@@ -25,15 +25,15 @@ import * as Selectors from '../selectors';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   button: {
-    margin: "auto",
+    margin: 'auto',
   },
   datatable: {
-    whiteSpace: "nowrap",
+    whiteSpace: 'nowrap',
     '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
@@ -47,8 +47,8 @@ const useStyles = makeStyles(theme => ({
       },
     },
     '& .MuiToolbar-root': {
-      padding: theme.spacing(1)
-    }
+      padding: theme.spacing(1),
+    },
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -57,9 +57,19 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const data = [
-  { id: 1, groupName: 'Building', dateCreated: '2020-11-23T20:43:54', dateModified: '2020-11-23T19:29:54' },
-  { id: 2, groupName: 'Building', dateCreated: '2020-11-23T20:43:54', dateModified: '2020-11-23T19:29:54' },
-]
+  {
+    id: 1,
+    groupName: 'Building',
+    dateCreated: '2020-11-23T20:43:54',
+    dateModified: '2020-11-23T19:29:54',
+  },
+  {
+    id: 2,
+    groupName: 'Building',
+    dateCreated: '2020-11-23T20:43:54',
+    dateModified: '2020-11-23T19:29:54',
+  },
+];
 
 const SeverityModelsList = props => {
   const classes = useStyles();
@@ -109,9 +119,9 @@ const SeverityModelsList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          return moment(value).format('lll')
-        }
-      }
+          return moment(value).format('lll');
+        },
+      },
     },
     {
       name: 'dateModified',
@@ -120,9 +130,9 @@ const SeverityModelsList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          return moment(value).format('lll')
-        }
-      }
+          return moment(value).format('lll');
+        },
+      },
     },
     {
       name: 'id',
@@ -135,7 +145,9 @@ const SeverityModelsList = props => {
 
           return (
             <Button
-              variant="outlined" size="small" color="primary"
+              variant="outlined"
+              size="small"
+              color="primary"
               onClick={() => openEditJobDialog(data)}
             >
               Edit
@@ -162,7 +174,7 @@ const SeverityModelsList = props => {
         Add Model
       </Button>
     ),
-    elevation: 0
+    elevation: 0,
   };
 
   // if (loading) {

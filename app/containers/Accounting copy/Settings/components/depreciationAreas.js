@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {
   makeStyles,
-  IconButton,
   Button,
   Menu,
   MenuItem,
@@ -16,9 +15,9 @@ import MUIDataTable from 'mui-datatables';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import AddIcon from '@material-ui/icons/Add';
 import { Euro, AttachMoney, Delete, Check } from '@material-ui/icons';
-import _ from 'lodash';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
+import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,37 +25,31 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
   },
   datatable: {
-    whiteSpace: 'nowrap',
-    '& tr:hover': {
+    '& .MuiTableRow-root:hover': {
       cursor: 'pointer',
     },
-    '& td': {
-      padding: theme.spacing(1, 2),
+    '& tbody': {
+      '& td': {
+        padding: theme.spacing(1),
+      },
     },
   },
 }));
 
-const CurrenciesList = props => {
+const DepreciationAreas = props => {
   const classes = useStyles(props);
-  const { currencies, openNewCurrencyDialog, openEditCurrencyDialog } = props;
+  const { depreciationAreas } = -props;
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedCurrency, setSelectedCurrency] = useState(null);
 
   const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
-    setSelectedCurrency(_.find(currencies, { id }));
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleEditClick = () => {
-    openEditCurrencyDialog(selectedCurrency);
-    handleClose();
-  };
-
-  console.log(currencies, 'currencies');
+  console.log(depreciationAreas, 'depreciationAreas');
 
   const columns = [
     {
@@ -76,8 +69,8 @@ const CurrenciesList = props => {
       },
     },
     {
-      name: 'name',
-      label: 'Name',
+      name: 'type',
+      label: 'Type',
       options: {
         filter: true,
         sort: false,
@@ -92,8 +85,8 @@ const CurrenciesList = props => {
       },
     },
     {
-      name: 'symbol',
-      label: 'Symbol',
+      name: 'default',
+      label: 'Default',
       options: {
         filter: true,
         sort: false,
@@ -105,15 +98,17 @@ const CurrenciesList = props => {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: value => (
-          <IconButton
-            aria-controls="simple-menu"
-            aria-haspopup="true"
-            onClick={event => handleClick(event, value)}
-          >
-            <MoreVertIcon />
-          </IconButton>
-        ),
+        customBodyRender: value => {
+          return (
+            <IconButton
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={event => handleClick(event, value)}
+            >
+              <MoreVertIcon />
+            </IconButton>
+          );
+        },
       },
     },
   ];
@@ -124,20 +119,20 @@ const CurrenciesList = props => {
     selectableRows: 'none',
     textLabels: {
       body: {
-        noMatch: 'Sorry, no currencies areas found',
+        noMatch: 'Sorry, no depreciation areas found',
         toolTip: 'Sort',
         columnHeaderTooltip: column => `Sort for ${column.label}`,
       },
     },
     customToolbar: () => (
-      <Tooltip title="New Currency">
+      <Tooltip title="Post New Journal">
         <Button
           variant="contained"
           color="primary"
           startIcon={<AddIcon />}
-          onClick={openNewCurrencyDialog}
+          onClick={() => history.push('/account/depreciation-area/add')}
         >
-          New Currency
+          New Depreciation Area
         </Button>
       </Tooltip>
     ),
@@ -148,8 +143,8 @@ const CurrenciesList = props => {
     <div className={classes.root}>
       <MUIDataTable
         className={classes.datatable}
-        title="Currencies List"
-        data={currencies}
+        title="Depreciation Areas"
+        data={depreciationAreas}
         columns={columns}
         options={options}
       />
@@ -161,22 +156,23 @@ const CurrenciesList = props => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleEditClick}>Edit</MenuItem>
+        <MenuItem onClick={() => {}}>Edit</MenuItem>
+        <MenuItem
+          onClick={() => history.push({ pathname: '/account/journal/details' })}
+        >
+          View Details
+        </MenuItem>
       </Menu>
     </div>
   );
 };
 
 const mapStateToProps = createStructuredSelector({
-  currencies: Selectors.makeSelectCurrencies(),
+  depreciationAreas: Selectors.makeSelectDepreciationArea(),
 });
 
 function mapDispatchToProps(dispatch) {
-  return {
-    openNewCurrencyDialog: () => dispatch(Actions.openNewCurrencyDialog()),
-    openEditCurrencyDialog: data =>
-      dispatch(Actions.openEditCurrencyDialog(data)),
-  };
+  return {};
 }
 
 const withConnect = connect(
@@ -187,4 +183,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(CurrenciesList);
+)(DepreciationAreas);

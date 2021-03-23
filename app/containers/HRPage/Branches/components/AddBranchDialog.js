@@ -1,14 +1,30 @@
 import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
-import { AppBar, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, MenuItem, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
+import {
+  AppBar,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+  Grid,
+  MenuItem,
+  Slide,
+  Typography,
+  TextField,
+  Toolbar,
+} from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
-import moment from 'moment'
+import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -24,42 +40,56 @@ const initialState = {
   partyHead: { id: '' },
   assistantPartyHead: { id: '' },
   partyGroupId: '',
-  tagId: 1
-}
+  tagId: 1,
+};
 
 function AddBranchDialog(props) {
   const classes = useStyles();
-  const { loading, closeNewBranchDialog, createBranch, partyGroups, employees, dialog } = props;
+  const {
+    loading,
+    closeNewBranchDialog,
+    createBranch,
+    partyGroups,
+    employees,
+    dialog,
+  } = props;
   const [form, setForm] = useState({ ...initialState });
 
-  console.log(dialog, "dialog checking")
-  console.log(partyGroups, "partyGroups inside department dialogue");
+  console.log(dialog, 'dialog checking');
+  console.log(partyGroups, 'partyGroups inside department dialogue');
 
   useEffect(() => {
     if (dialog.type === 'edit' && dialog.data) {
-      setForm({ ...dialog.data })
+      setForm({ ...dialog.data });
     } else {
-      setForm({ ...initialState })
+      setForm({ ...initialState });
     }
-  }, [dialog])
+  }, [dialog]);
 
   const canSubmitForm = () => {
-    const { name, description, partyGroupId, partyHead, assistantPartyHead, tag } = form
-    return name.length > 0 && partyHead && partyGroupId && assistantPartyHead
-  }
+    const {
+      name,
+      description,
+      partyGroupId,
+      partyHead,
+      assistantPartyHead,
+      tag,
+    } = form;
+    return name.length > 0 && partyHead && partyGroupId && assistantPartyHead;
+  };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target
+  const handleChange = event => {
+    const { name, value } = event.target;
     setForm({ ...form, [name]: value });
-  }
+  };
 
-  const handleSelectChange = (event) => {
+  const handleSelectChange = event => {
     setForm({ ...form, [event.target.name]: { id: event.target.value } });
-  }
+  };
 
   const handleSubmit = event => {
-    createBranch(form)
-  }
+    createBranch(form);
+  };
 
   return (
     <div>
@@ -95,16 +125,18 @@ function AddBranchDialog(props) {
                 value={form.partyGroupId}
                 onChange={handleChange}
               >
-                {partyGroups && partyGroups.length === 0 &&
+                {partyGroups && partyGroups.length === 0 && (
                   <MenuItem key="" value="">
                     No Party Group Record
                   </MenuItem>
-                }
-                {partyGroups && partyGroups.map((partyGroup) => (
-                  <MenuItem key={partyGroup.id} value={partyGroup.id}>
-                    {partyGroup.name}
-                  </MenuItem>
-                ))};
+                )}
+                {partyGroups &&
+                  partyGroups.map(partyGroup => (
+                    <MenuItem key={partyGroup.id} value={partyGroup.id}>
+                      {partyGroup.name}
+                    </MenuItem>
+                  ))}
+                ;
               </TextField>
             </Grid>
             <Grid item xs={12}>
@@ -147,16 +179,17 @@ function AddBranchDialog(props) {
                 value={form.partyHead.id}
                 onChange={handleSelectChange}
               >
-                {employees && employees.length === 0 &&
+                {employees && employees.length === 0 && (
                   <MenuItem key="" value="">
                     No Employee Record
                   </MenuItem>
-                }
-                {employees && employees.map((employee) => (
-                  <MenuItem key={employee.id} value={employee.id}>
-                    {employee.firstName} {employee.lastName}
-                  </MenuItem>
-                ))}
+                )}
+                {employees &&
+                  employees.map(employee => (
+                    <MenuItem key={employee.id} value={employee.id}>
+                      {employee.firstName} {employee.lastName}
+                    </MenuItem>
+                  ))}
               </TextField>
             </Grid>
             <Grid item xs={12}>
@@ -173,16 +206,17 @@ function AddBranchDialog(props) {
                 value={form.assistantPartyHead.id}
                 onChange={handleSelectChange}
               >
-                {employees && employees.length === 0 &&
+                {employees && employees.length === 0 && (
                   <MenuItem key="" value="">
                     No Employee Record
                   </MenuItem>
-                }
-                {employees && employees.map((employee) => (
-                  <MenuItem key={employee.id} value={employee.id}>
-                    {employee.firstName} {employee.lastName}
-                  </MenuItem>
-                ))}
+                )}
+                {employees &&
+                  employees.map(employee => (
+                    <MenuItem key={employee.id} value={employee.id}>
+                      {employee.firstName} {employee.lastName}
+                    </MenuItem>
+                  ))}
               </TextField>
             </Grid>
           </Grid>
@@ -255,7 +289,6 @@ function AddBranchDialog(props) {
   );
 }
 
-
 AddBranchDialog.propTypes = {
   closeNewBranchDialog: PropTypes.func,
 };
@@ -265,12 +298,13 @@ const mapStateToProps = createStructuredSelector({
   dialog: Selectors.makeSelectBranchDialog(),
   employees: Selectors.makeSelectEmployees(),
   partyGroups: Selectors.makeSelectPartyGroups(),
+  partyTags: Selectors.makeSelectPartyTags(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     closeNewBranchDialog: () => dispatch(Actions.closeNewBranchDialog()),
-    createBranch: (data) => dispatch(Actions.createBranch(data)),
+    createBranch: data => dispatch(Actions.createBranch(data)),
   };
 }
 

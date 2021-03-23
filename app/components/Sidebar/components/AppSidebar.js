@@ -75,7 +75,7 @@ function AppSidebar(props) {
           sideMenu && sideMenu.menus.length > 0
             ? sideMenu.menus
             : sideBarconfig.find(sidebar => sidebar.module.includes('home'))
-              .menus;
+                .menus;
 
         return (
           <div className={classes.root}>
@@ -128,6 +128,7 @@ function AppSidebar(props) {
                     <React.Fragment>
                       <ListItem
                         button
+                        disabled={menu.disabled}
                         key={index}
                         selected={menu.url.toLowerCase() === location.pathname}
                         component={Link}

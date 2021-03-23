@@ -126,7 +126,7 @@ const AddPayrun = props => {
       </CardContent>
 
       <CardActions>
-        {step != 0 && (
+        {step !== 0 && (
           <Button
             onClick={handlePrev}
             color="primary"

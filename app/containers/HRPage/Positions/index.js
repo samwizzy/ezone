@@ -4,8 +4,8 @@ import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import * as Actions from './../actions';
-import * as Selectors from './../selectors';
+import * as Actions from '../actions';
+import * as Selectors from '../selectors';
 import ModuleLayout from './ModuleLayout';
 import PositionList from './PositionList';
 

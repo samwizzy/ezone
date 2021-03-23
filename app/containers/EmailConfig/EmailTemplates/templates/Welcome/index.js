@@ -13,7 +13,6 @@ import {
   Card,
   CardContent,
   CardActionArea,
-  
   CardActions,
   Typography,
   TextField,
@@ -36,7 +35,7 @@ import * as Actions from './../../actions';
 import TextEditor from './../../components/TextEditor';
 import PaletteOutlinedIcon from '@material-ui/icons/PaletteOutlined';
 import AddIcon from '@material-ui/icons/Add';
-import Welcome from './WelcomeDemo'
+import Welcome from './WelcomeDemo';
 
 const AntTabs = withStyles({
   root: {
@@ -83,30 +82,30 @@ const useStyles = makeStyles(theme => ({
   },
   cardRoot: {
     display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   card: {
-    position: "relative",
+    position: 'relative',
     flex: 1,
     background: theme.palette.common.white,
     maxWidth: 345,
     margin: theme.spacing(2),
-    "& .MuiCardActions-root": {
-      display: "flex",
-      justifyContent: "center",
+    '& .MuiCardActions-root': {
+      display: 'flex',
+      justifyContent: 'center',
       backgroundColor: theme.palette.grey[500],
-      position: "absolute",
+      position: 'absolute',
       padding: theme.spacing(2, 0),
       bottom: 0,
       left: 0,
       right: 0,
       opacity: 0,
-      textAlign: "center",
+      textAlign: 'center',
     },
-    "&:hover > .MuiCardActions-root": {
+    '&:hover > .MuiCardActions-root': {
       opacity: 0.9,
-      "-webkit-transition": "background-color 1s ease-in, opacity 1s ease-in", 
-      transition: "background-color 1s ease-in, opacity 1s ease-in",
+      '-webkit-transition': 'background-color 1s ease-in, opacity 1s ease-in',
+      transition: 'background-color 1s ease-in, opacity 1s ease-in',
     },
   },
   resetButton: {
@@ -114,7 +113,7 @@ const useStyles = makeStyles(theme => ({
   },
   toolbar: {
     ...theme.mixins.toolbar,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
 }));
 
@@ -127,10 +126,10 @@ const WelcomeTemplate = props => {
   const anchorRef = React.useRef(null);
 
   const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
+    setOpen(prevOpen => !prevOpen);
   };
 
-  const handleClose = (event) => {
+  const handleClose = event => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
@@ -159,7 +158,7 @@ const WelcomeTemplate = props => {
     setValue(newValue);
   };
 
-  const handleChangeIndex = (index) => {
+  const handleChangeIndex = index => {
     setValue(index);
   };
 
@@ -169,16 +168,28 @@ const WelcomeTemplate = props => {
     <React.Fragment>
       <Grid container className={classes.root}>
         <Grid item xs={12}>
-          <AppBar position='relative' color="inherit" elevation={0}>
-              <Toolbar className={classes.toolbar}>
-                  <Typography variant="h6" color="primary">Password Reset Template</Typography>
-                  <ButtonGroup size="small" aria-label="small outlined button group">
-                    <Button variant="outlined" className={classes.resetButton}>
-                      Reset Default Template
-                    </Button>
-                    <Button size="small" variant="outlined" color="primary" startIcon={<AddIcon />}>New</Button>
-                  </ButtonGroup>
-              </Toolbar>
+          <AppBar position="relative" color="inherit" elevation={0}>
+            <Toolbar className={classes.toolbar}>
+              <Typography variant="h6" color="primary">
+                Password Reset Template
+              </Typography>
+              <ButtonGroup
+                size="small"
+                aria-label="small outlined button group"
+              >
+                <Button variant="outlined" className={classes.resetButton}>
+                  Reset Default Template
+                </Button>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  color="primary"
+                  startIcon={<AddIcon />}
+                >
+                  New
+                </Button>
+              </ButtonGroup>
+            </Toolbar>
           </AppBar>
           <Divider />
 
@@ -204,47 +215,72 @@ const WelcomeTemplate = props => {
               <TabPanel value={value} index={0} dir={theme.direction}>
                 <div className={classes.cardRoot}>
                   {[1].map(card => (
-                  <Card className={classes.card}>
-                    <CardActionArea>
-                      <CardContent>
-                        <Welcome />
-                      </CardContent>
-                    </CardActionArea>
-                    <CardActions>
-                      <Button size="small" variant="contained" color="primary">
-                        Edit
-                      </Button>
-                      <Button
-                        size="small"
-                        color="primary"
-                        variant="contained"
-                        ref={anchorRef}
-                        aria-controls={open ? 'menu-list-grow' : undefined}
-                        aria-haspopup="true"
-                        onClick={handleToggle}
-                      >
-                        <Icon>settings</Icon>
-                      </Button>
-                      <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
-                        {({ TransitionProps, placement }) => (
-                          <Grow
-                            {...TransitionProps}
-                            style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-                          >
-                            <Paper>
-                              <ClickAwayListener onClickAway={handleClose}>
-                                <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                                  <MenuItem onClick={handleClose}>Profile</MenuItem>
-                                  <MenuItem onClick={handleClose}>My account</MenuItem>
-                                  <MenuItem onClick={handleClose}>Logout</MenuItem>
-                                </MenuList>
-                              </ClickAwayListener>
-                            </Paper>
-                          </Grow>
-                        )}
-                      </Popper>
-                    </CardActions>
-                  </Card>
+                    <Card className={classes.card}>
+                      <CardActionArea>
+                        <CardContent>
+                          <Welcome />
+                        </CardContent>
+                      </CardActionArea>
+                      <CardActions>
+                        <Button
+                          size="small"
+                          variant="contained"
+                          color="primary"
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          size="small"
+                          color="primary"
+                          variant="contained"
+                          ref={anchorRef}
+                          aria-controls={open ? 'menu-list-grow' : undefined}
+                          aria-haspopup="true"
+                          onClick={handleToggle}
+                        >
+                          <Icon>settings</Icon>
+                        </Button>
+                        <Popper
+                          open={open}
+                          anchorEl={anchorRef.current}
+                          role={undefined}
+                          transition
+                          disablePortal
+                        >
+                          {({ TransitionProps, placement }) => (
+                            <Grow
+                              {...TransitionProps}
+                              style={{
+                                transformOrigin:
+                                  placement === 'bottom'
+                                    ? 'center top'
+                                    : 'center bottom',
+                              }}
+                            >
+                              <Paper>
+                                <ClickAwayListener onClickAway={handleClose}>
+                                  <MenuList
+                                    autoFocusItem={open}
+                                    id="menu-list-grow"
+                                    onKeyDown={handleListKeyDown}
+                                  >
+                                    <MenuItem onClick={handleClose}>
+                                      Profile
+                                    </MenuItem>
+                                    <MenuItem onClick={handleClose}>
+                                      My account
+                                    </MenuItem>
+                                    <MenuItem onClick={handleClose}>
+                                      Logout
+                                    </MenuItem>
+                                  </MenuList>
+                                </ClickAwayListener>
+                              </Paper>
+                            </Grow>
+                          )}
+                        </Popper>
+                      </CardActions>
+                    </Card>
                   ))}
                 </div>
               </TabPanel>

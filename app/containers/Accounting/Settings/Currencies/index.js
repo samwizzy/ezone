@@ -7,7 +7,6 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import * as Selectors from '../selectors';
 import * as AccSelectors from '../../selectors';
-import { CircleLoader } from '../../../../components/LoadingIndicator';
 import CurrenciesList from './CurrenciesList';
 import CurrencyDialog from './components/CurrencyDialog';
 

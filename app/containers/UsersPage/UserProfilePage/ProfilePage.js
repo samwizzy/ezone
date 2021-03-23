@@ -12,8 +12,8 @@ import * as AppSelectors from '../../App/selectors';
 import Vector from '../../../images/Vector.svg';
 import Vector1 from '../../../images/Vector1.svg';
 import UserProfile from './components/UserProfile';
-import SubscriptionDetails from './subscription/SubscriptionDetails'
-import SubscriptionList from './subscription/SubscriptionList'
+import SubscriptionDetails from './subscription/SubscriptionDetails';
+import SubscriptionList from './subscription/SubscriptionList';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   tabs: {
     borderLeft: `1px solid ${theme.palette.divider}`,
     borderRight: `1px solid ${theme.palette.divider}`,
-  }
+  },
 }));
 
 function TabPanel(props) {
@@ -39,11 +39,7 @@ function TabPanel(props) {
       aria-labelledby={`vertical-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box>{children}</Box>}
     </div>
   );
 }
@@ -94,16 +90,16 @@ const AntTab = withStyles(theme => ({
     },
   },
   wrapper: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    "& img:first-child": {
+    '& img:first-child': {
       marginRight: 10,
     },
   },
   labelIcon: {
-    minHeight: "48px",
-    "& .MuiTab-wrapper > *:first-child": { marginBottom: 0 },
+    minHeight: '48px',
+    '& .MuiTab-wrapper > *:first-child': { marginBottom: 0 },
   },
   selected: {},
 }))(props => <Tab disableRipple {...props} />);
@@ -127,9 +123,23 @@ const ProfilePage = props => {
         aria-label="ant example"
         className={classes.tabs}
       >
-        <AntTab label="My Account" icon={<img alt="" src={Vector} />} {...a11yProps(0)} />
-        <AntTab label="Subscription" icon={<img alt="" src={Vector1} />} {...a11yProps(1)} />
-        <AntTab label="Settings" icon={<img alt="" src={Vector1} />} {...a11yProps(2)} />
+        <AntTab
+          label="My Account"
+          icon={<img alt="" src={Vector} />}
+          {...a11yProps(0)}
+        />
+        <AntTab
+          label="Subscription"
+          disabled
+          icon={<img alt="" src={Vector1} />}
+          {...a11yProps(1)}
+        />
+        <AntTab
+          label="Settings"
+          disabled
+          icon={<img alt="" src={Vector1} />}
+          {...a11yProps(2)}
+        />
       </AntTabs>
       <TabPanel value={value} index={0}>
         <UserProfile />

@@ -143,17 +143,17 @@ const Invoice = () => {
                     <Autocomplete
                       id="sales"
                       options={sales}
-                      size="small"
+                      size={'small'}
                       getOptionLabel={option => option.label}
                       onChange={(event, value) => {
-                        // accContext.accDispatch({type:'PAYLOAD',payload:{label:'startDay',value:value.value}})
+                        //accContext.accDispatch({type:'PAYLOAD',payload:{label:'startDay',value:value.value}})
                         // setFinancialYearDate();
                       }}
                       style={{ width: 200 }}
                       renderInput={params => (
                         <TextField
                           {...params}
-                          label=""
+                          label={''}
                           variant="outlined"
                           inputProps={{
                             ...params.inputProps,
@@ -172,7 +172,7 @@ const Invoice = () => {
                       <Grid item xs={12}>
                         <div className={classes.divContent}>
                           <Button
-                            size="small"
+                            size={'small'}
                             variant="contained"
                             color="primary"
                           >
@@ -188,7 +188,7 @@ const Invoice = () => {
                               <div>
                                 <Button
                                   startIcon={<ImportIcon />}
-                                  size="small"
+                                  size={'small'}
                                   variant="contained"
                                 >
                                   Import
@@ -199,7 +199,7 @@ const Invoice = () => {
                               <div>
                                 <Button
                                   startIcon={<ExportIcon />}
-                                  size="small"
+                                  size={'small'}
                                   variant="contained"
                                 >
                                   Export

@@ -6,18 +6,18 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
-import { green, orange } from '@material-ui/core/colors'
+import { green, orange } from '@material-ui/core/colors';
 import { darken } from '@material-ui/core/styles/colorManipulator';
-import moment from 'moment'
-import MUIDataTable from 'mui-datatables'
+import moment from 'moment';
+import MUIDataTable from 'mui-datatables';
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
 import * as AppSelectors from '../../../App/selectors';
-import { AddReview } from '../components/AddButton'
+import { AddReview } from '../components/AddButton';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   datatable: {
     '& table': {
@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
       margin: '4px auto',
     },
     '& tr:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& thead': {
       '& th': {
@@ -45,15 +45,18 @@ const useStyles = makeStyles(theme => ({
     '&.approved': { color: theme.palette.primary.main },
     '&.inProgress': { color: orange[500] },
     '&.done': { color: green[500] },
-  }
+  },
 }));
 
 const FeedbacksList = props => {
   const classes = useStyles();
-  const { loading, openNewReviewDialog, getReviews, getReviewById, reviews } = props;
-
-  React.useEffect(() => {
-  }, []);
+  const {
+    loading,
+    openNewReviewDialog,
+    getReviews,
+    getReviewById,
+    reviews,
+  } = props;
 
   const columns = [
     {
@@ -87,7 +90,7 @@ const FeedbacksList = props => {
         filter: true,
         sort: true,
       },
-    }
+    },
   ];
 
   const options = {
@@ -102,9 +105,9 @@ const FeedbacksList = props => {
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
-      getHolidayById(rowData[0])
+      getHolidayById(rowData[0]);
     },
-    elevation: 0
+    elevation: 0,
   };
 
   return (
@@ -134,7 +137,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getReviews: () => dispatch(Actions.getRecognitions()),
-    getReviewById: (id) => dispatch(Actions.getRecognitionById(id)),
+    getReviewById: id => dispatch(Actions.getRecognitionById(id)),
     openNewReviewDialog: () => dispatch(Actions.openNewRecognitionDialog()),
   };
 }

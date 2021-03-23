@@ -1,9 +1,3 @@
-/**
- *
- * EmployeePage
- *
- */
-
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -37,9 +31,9 @@ export function EmployeePage(props) {
     <div>
       <Helmet>
         <title>User Profile</title>
-        <meta name="description" content="Description of EmployeePage" />
+        <meta name="description" content="Description of User Profile" />
       </Helmet>
-      
+
       <ModuleLayout>
         <ProfilePage />
       </ModuleLayout>

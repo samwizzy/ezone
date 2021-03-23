@@ -3,14 +3,18 @@ import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import classNames from 'classnames'
+import classNames from 'classnames';
 import {
   makeStyles,
-  Card, CardHeader, CardContent, CardActions,
+  Card,
+  CardHeader,
+  CardContent,
+  CardActions,
   Collapse,
   Checkbox,
   Grid,
-  Icon, IconButton,
+  Icon,
+  IconButton,
   FormGroup,
   FormLabel,
   FormControlLabel,
@@ -40,7 +44,7 @@ const useStyles = makeStyles(theme => ({
     },
     '& .MuiCardActions-root': {
       padding: theme.spacing(1, 2),
-    }
+    },
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -54,15 +58,15 @@ const useStyles = makeStyles(theme => ({
   },
   title: { flexGrow: 1 },
   toolbar: {
-    border: `1px solid ${theme.palette.divider}`
-  }
+    border: `1px solid ${theme.palette.divider}`,
+  },
 }));
 
 const currencies = [
   { value: 'NGN', label: 'NGN' },
   { value: 'USD', label: 'USD' },
   { value: 'EUR', label: 'EUR' },
-]
+];
 
 const AddEmployeeSalary = props => {
   const classes = useStyles(props);
@@ -126,18 +130,18 @@ const AddEmployeeSalary = props => {
   };
 
   const handleChange = event => {
-    const { name, value, type, checked } = event.target
-    setForm({ ...form, [name]: type === 'checkbox' ? checked : value })
-  }
+    const { name, value, type, checked } = event.target;
+    setForm({ ...form, [name]: type === 'checkbox' ? checked : value });
+  };
 
   const handleOptionsChange = event => {
-    const { name, value, type, checked } = event.target
-    setOptions({ ...options, [name]: type === 'checkbox' ? checked : value })
-  }
+    const { name, value, type, checked } = event.target;
+    setOptions({ ...options, [name]: type === 'checkbox' ? checked : value });
+  };
 
   const handleSelectChange = name => (event, obj) => {
-    setForm({ ...form, [name]: obj })
-  }
+    setForm({ ...form, [name]: obj });
+  };
 
   return (
     <Card className={classes.root}>
@@ -149,9 +153,23 @@ const AddEmployeeSalary = props => {
       <CardContent>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <RadioGroup aria-label="employee-type" name="employee" value={options.employee} onChange={handleOptionsChange} row>
-              <FormControlLabel value="EXISTING" control={<Radio color="primary" />} label="Exiting Employee" />
-              <FormControlLabel value="NEW" control={<Radio color="primary" />} label="New Employee" />
+            <RadioGroup
+              aria-label="employee-type"
+              name="employee"
+              value={options.employee}
+              onChange={handleOptionsChange}
+              row
+            >
+              <FormControlLabel
+                value="EXISTING"
+                control={<Radio color="primary" />}
+                label="Exiting Employee"
+              />
+              <FormControlLabel
+                value="NEW"
+                control={<Radio color="primary" />}
+                label="New Employee"
+              />
             </RadioGroup>
           </Grid>
           <Grid item xs={12}>
@@ -319,14 +337,16 @@ const AddEmployeeSalary = props => {
                   )}
                 />
               </Grid>
-              <Grid item xs></Grid>
+              <Grid item xs />
             </Grid>
           </Grid>
         </Grid>
       </CardContent>
 
       <CardActions>
-        <Typography variant="button" className={classes.title}>Bank Details</Typography>
+        <Typography variant="button" className={classes.title}>
+          Bank Details
+        </Typography>
 
         <IconButton
           className={classNames(classes.expand, {
@@ -344,12 +364,11 @@ const AddEmployeeSalary = props => {
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-
               <Grid container spacing={2}>
                 <Grid item>
                   <TextField
-                    id="amount"
-                    name="amount"
+                    id="bank-name"
+                    name="bankName"
                     label="Bank Name"
                     variant="outlined"
                     size="small"
@@ -363,8 +382,8 @@ const AddEmployeeSalary = props => {
                 </Grid>
                 <Grid item>
                   <TextField
-                    id="amount"
-                    name="amount"
+                    id="account-name"
+                    name="accountName"
                     label="Account Name"
                     variant="outlined"
                     size="small"
@@ -378,7 +397,7 @@ const AddEmployeeSalary = props => {
                 </Grid>
                 <Grid item>
                   <TextField
-                    id="amount"
+                    id="account-number"
                     name="accountNumber"
                     label="Account Number"
                     variant="outlined"
@@ -398,7 +417,9 @@ const AddEmployeeSalary = props => {
       </Collapse>
 
       <CardActions>
-        <Typography variant="button" className={classes.title}>Gross Salary</Typography>
+        <Typography variant="button" className={classes.title}>
+          Gross Salary
+        </Typography>
 
         <IconButton
           className={classNames(classes.expand, {
@@ -416,7 +437,6 @@ const AddEmployeeSalary = props => {
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-
               <Grid container spacing={2}>
                 <Grid item>
                   <TextField
@@ -487,7 +507,9 @@ const AddEmployeeSalary = props => {
       </Collapse>
 
       <CardActions>
-        <Typography variant="button" className={classes.title}>Taxation</Typography>
+        <Typography variant="button" className={classes.title}>
+          Taxation
+        </Typography>
         <IconButton
           className={classNames(classes.expand, {
             [classes.expandOpen]: expanded.taxation,
@@ -517,9 +539,23 @@ const AddEmployeeSalary = props => {
               />
             </Grid>
             <Grid item xs={12}>
-              <RadioGroup aria-label="tax-type" name="taxType" value={form.taxType} onChange={handleChange} row>
-                <FormControlLabel value="PAYE_AMOUNT" control={<Radio color="primary" />} label="PAYE Amount" />
-                <FormControlLabel value="WITHHOLDING_TAX" control={<Radio color="primary" />} label="Withholding Tax" />
+              <RadioGroup
+                aria-label="tax-type"
+                name="taxType"
+                value={form.taxType}
+                onChange={handleChange}
+                row
+              >
+                <FormControlLabel
+                  value="PAYE_AMOUNT"
+                  control={<Radio color="primary" />}
+                  label="PAYE Amount"
+                />
+                <FormControlLabel
+                  value="WITHHOLDING_TAX"
+                  control={<Radio color="primary" />}
+                  label="Withholding Tax"
+                />
               </RadioGroup>
             </Grid>
             <Grid item xs={12}>
@@ -595,9 +631,8 @@ const AddEmployeeSalary = props => {
                       </Grid>
                     </Grid>
                   </FormControl>
-
                 </Grid>
-                <Grid item xs></Grid>
+                <Grid item xs />
               </Grid>
             </Grid>
           </Grid>
@@ -605,7 +640,9 @@ const AddEmployeeSalary = props => {
       </Collapse>
 
       <CardActions>
-        <Typography variant="button" className={classes.title}>Employee Pension</Typography>
+        <Typography variant="button" className={classes.title}>
+          Employee Pension
+        </Typography>
         <IconButton
           className={classNames(classes.expand, {
             [classes.expandOpen]: expanded.pension,
@@ -652,9 +689,23 @@ const AddEmployeeSalary = props => {
             <Grid item xs={12}>
               <FormControl component="fieldset" className={classes.formControl}>
                 <FormLabel component="legend">Fund type</FormLabel>
-                <RadioGroup aria-label="fund-type" name="fundType" value={form.fundType} onChange={handleChange} row>
-                  <FormControlLabel value="COMPANY_PENSION_FUND" control={<Radio color="primary" />} label="Company Pension Fund only" />
-                  <FormControlLabel value="EMPLOYEE_COMPANY_PENSION_FUND" control={<Radio color="primary" />} label="Employee and Company Pension Fund" />
+                <RadioGroup
+                  aria-label="fund-type"
+                  name="fundType"
+                  value={form.fundType}
+                  onChange={handleChange}
+                  row
+                >
+                  <FormControlLabel
+                    value="COMPANY_PENSION_FUND"
+                    control={<Radio color="primary" />}
+                    label="Company Pension Fund only"
+                  />
+                  <FormControlLabel
+                    value="EMPLOYEE_COMPANY_PENSION_FUND"
+                    control={<Radio color="primary" />}
+                    label="Employee and Company Pension Fund"
+                  />
                 </RadioGroup>
               </FormControl>
             </Grid>
@@ -771,7 +822,9 @@ const AddEmployeeSalary = props => {
       </Collapse>
 
       <CardActions>
-        <Typography variant="button" className={classes.title}>Medical Allowance</Typography>
+        <Typography variant="button" className={classes.title}>
+          Medical Allowance
+        </Typography>
         <IconButton
           className={classNames(classes.expand, {
             [classes.expandOpen]: expanded.medical,
@@ -817,10 +870,28 @@ const AddEmployeeSalary = props => {
             </Grid>
             <Grid item xs={12}>
               <FormControl component="fieldset" className={classes.formControl}>
-                <RadioGroup aria-label="medical-allowance-type" name="medicalAllowanceType" value={form.medicalAllowanceType} onChange={handleChange} row>
-                  <FormControlLabel value="COMPANY_MEDICAL_ALLOWANCE" control={<Radio color="primary" />} label="Company Medical Allowance only" />
-                  <FormControlLabel value="EMPLOYEE_COMPANY_MEDICAL_ALLOWANCE" control={<Radio color="primary" />} label="Employee and Company Medical Allowance" />
-                  <FormControlLabel value="EMPLOYEE_MEDICAL_ALLOWANCE" control={<Radio color="primary" />} label="Employee Medical Allowance only" />
+                <RadioGroup
+                  aria-label="medical-allowance-type"
+                  name="medicalAllowanceType"
+                  value={form.medicalAllowanceType}
+                  onChange={handleChange}
+                  row
+                >
+                  <FormControlLabel
+                    value="COMPANY_MEDICAL_ALLOWANCE"
+                    control={<Radio color="primary" />}
+                    label="Company Medical Allowance only"
+                  />
+                  <FormControlLabel
+                    value="EMPLOYEE_COMPANY_MEDICAL_ALLOWANCE"
+                    control={<Radio color="primary" />}
+                    label="Employee and Company Medical Allowance"
+                  />
+                  <FormControlLabel
+                    value="EMPLOYEE_MEDICAL_ALLOWANCE"
+                    control={<Radio color="primary" />}
+                    label="Employee Medical Allowance only"
+                  />
                 </RadioGroup>
               </FormControl>
             </Grid>
@@ -904,7 +975,7 @@ const AddEmployeeSalary = props => {
                     onChange={handleChange}
                   />
                 </Grid>
-                <Grid item xs></Grid>
+                <Grid item xs />
               </Grid>
             </Grid>
           </Grid>
@@ -912,7 +983,9 @@ const AddEmployeeSalary = props => {
       </Collapse>
 
       <CardActions>
-        <Typography variant="button" className={classes.title}>Leave</Typography>
+        <Typography variant="button" className={classes.title}>
+          Leave
+        </Typography>
         <IconButton
           className={classNames(classes.expand, {
             [classes.expandOpen]: expanded.leave,

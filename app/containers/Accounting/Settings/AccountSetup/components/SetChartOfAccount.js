@@ -37,7 +37,7 @@ const SetChartOfAccount = props => {
       <Paper square elevation={0} className={classes.paper}>
         <Grid item xs={12}>
           <FormControl component="fieldset">
-            <FormLabel component="legend">Chart Of Account</FormLabel>
+            <FormLabel component="legend">Chart of account</FormLabel>
             <RadioGroup
               aria-label="account-chart"
               name="accountChart"

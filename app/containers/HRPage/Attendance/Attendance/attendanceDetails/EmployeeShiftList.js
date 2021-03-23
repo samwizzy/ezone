@@ -2,23 +2,22 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import EzoneUtils from '../../../../utils/EzoneUtils'
+import EzoneUtils from '../../../../utils/EzoneUtils';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
-import { green, orange } from '@material-ui/core/colors'
+import { green, orange } from '@material-ui/core/colors';
 import { darken } from '@material-ui/core/styles/colorManipulator';
-import moment from 'moment'
-import MUIDataTable from 'mui-datatables'
-import * as Actions from './../actions';
-import * as Selectors from './../selectors';
-import * as AppSelectors from '../../../App/selectors';
-import { AssignShift } from '../components/AddButton'
+import moment from 'moment';
+import MUIDataTable from 'mui-datatables';
+import * as Actions from './../../actions';
+import * as Selectors from './../../selectors';
+import * as AppSelectors from '../../../../App/selectors';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   datatable: {
     '& table': {
@@ -26,7 +25,7 @@ const useStyles = makeStyles(theme => ({
       margin: '4px auto',
     },
     '& tr:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& thead': {
       '& th': {
@@ -46,23 +45,30 @@ const useStyles = makeStyles(theme => ({
     '&.approved': { color: theme.palette.primary.main },
     '&.inProgress': { color: orange[500] },
     '&.done': { color: green[500] },
-  }
+  },
 }));
-
 
 const EmployeeShiftList = props => {
   const classes = useStyles();
-  const { loading, employees, shifts, employeeShifts, openNewEmployeeShiftDialog, getUsersByShift } = props;
-  const [shift, setShift] = React.useState('')
+  const {
+    loading,
+    employees,
+    shifts,
+    employeeShifts,
+    openNewEmployeeShiftDialog,
+    getUsersByShift,
+  } = props;
+  const [shift, setShift] = React.useState('');
 
   const selectUsersByShift = (event, obj) => {
-    setShift(obj.id)
-    getUsersByShift(obj.id)
-  }
+    setShift(obj.id);
+    getUsersByShift(obj.id);
+  };
 
-  console.log(employeeShifts, "employeeShifts")
+  console.log(employeeShifts, 'employeeShifts');
 
-  const usersOnShifts = employeeShifts && employeeShifts.length > 0 ? employeeShifts : employees
+  const usersOnShifts =
+    employeeShifts && employeeShifts.length > 0 ? employeeShifts : employees;
 
   const columns = [
     {
@@ -83,10 +89,8 @@ const EmployeeShiftList = props => {
           const emp = employees && employees.find(e => e.id == id);
           return (
             <span>
-              {
-                `${EzoneUtils.toTitleCase(emp.firstName)}
-                ${EzoneUtils.toTitleCase(emp.lastName)}`
-              }
+              {`${EzoneUtils.toTitleCase(emp.firstName)}
+                ${EzoneUtils.toTitleCase(emp.lastName)}`}
             </span>
           );
         },
@@ -101,7 +105,11 @@ const EmployeeShiftList = props => {
         customBodyRender: id => {
           const emp = employees && employees.find(e => e.id == id);
           return (
-            emp.workShift && <span>{`${EzoneUtils.toTitleCase(emp.workShift.shiftName)}`}</span>
+            emp.workShift && (
+              <span>{`${EzoneUtils.toTitleCase(
+                emp.workShift.shiftName,
+              )}`}</span>
+            )
           );
         },
       },
@@ -115,11 +123,13 @@ const EmployeeShiftList = props => {
         customBodyRender: id => {
           const emp = employees && employees.find(e => e.id == id);
           return (
-            emp.workShift && <span>{`${EzoneUtils.toTitleCase(emp.workShift.endDate)}`}</span>
+            emp.workShift && (
+              <span>{`${EzoneUtils.toTitleCase(emp.workShift.endDate)}`}</span>
+            )
           );
         },
       },
-    }
+    },
   ];
 
   const options = {
@@ -130,18 +140,10 @@ const EmployeeShiftList = props => {
     download: true,
     viewColumns: false,
     filter: false,
-    customToolbar: () =>
-      <AssignShift
-        openDialog={openNewEmployeeShiftDialog}
-        shifts={shifts}
-        shift={shift}
-        selectUsersByShift={selectUsersByShift}
-      />,
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
-    onRowClick: (rowData, rowState) => {
-    },
-    elevation: 0
+    onRowClick: (rowData, rowState) => {},
+    elevation: 0,
   };
 
   return (
@@ -172,8 +174,9 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewEmployeeShiftDialog: () => dispatch(Actions.openNewEmployeeShiftDialog()),
-    getUsersByShift: (id) => dispatch(Actions.getUsersByShift(id)),
+    openNewEmployeeShiftDialog: () =>
+      dispatch(Actions.openNewEmployeeShiftDialog()),
+    getUsersByShift: id => dispatch(Actions.getUsersByShift(id)),
   };
 }
 

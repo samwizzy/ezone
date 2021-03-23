@@ -8,7 +8,7 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 
 function errorHandler(promise) {
-  return promise
+  return promise;
 }
 
 export function* getPartyGroupSaga() {
@@ -17,7 +17,7 @@ export function* getPartyGroupSaga() {
 
   const requestURL = `${Endpoints.GetPartyGroup}?orgId=${
     currentUser.organisation.orgId
-    }`;
+  }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -51,13 +51,18 @@ export function* createNewPartyGroupSaga({ payload }) {
     yield put(Actions.createNewPartyGroupSuccessAction(response));
     yield put(Actions.getPartyGroupAction());
     yield put(Actions.closeNewPartyGroupDialog());
-    yield put(AppActions.openSnackBar({ message: 'Party Group Created Successfully', status: 'success' }));
+    yield put(
+      AppActions.openSnackBar({
+        message: 'Party Group Created Successfully',
+        status: 'success',
+      }),
+    );
   } catch (err) {
     if (err.message) {
       //
     } else {
-      const error = yield call(errorHandler, err.response.json())
-      console.log(error, "error party group")
+      const error = yield call(errorHandler, err.response.json());
+      console.log(error, 'error party group');
     }
     yield put(Actions.createNewPartyError(err));
     // yield put(AppActions.openSnackBar({message: `${err} Failed To Create Party Group`, status: 'error'}));
@@ -96,8 +101,9 @@ export function* updatePartyGroupSaga() {
 export function* getAllUsers() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-
-  const requestURL = `${Endpoints.GetAllUsersApi}?orgId=${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetAllUsersApi}?orgId=${
+    currentUser.organisation.orgId
+  }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -116,7 +122,6 @@ export function* getAllUsers() {
 
 export function* getAllTags() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-
   const requestURL = `${Endpoints.GetAllTagsApi}`;
 
   try {
@@ -155,10 +160,20 @@ export function* createNewParty() {
     yield put(Actions.createNewPartySuccess(response));
     yield put(Actions.getPartyGroupAction());
     yield put(Actions.closeNewPartyDialog());
-    yield put(AppActions.openSnackBar({ message: 'Party Created Successfully', status: 'success' }));
+    yield put(
+      AppActions.openSnackBar({
+        message: 'Party Created Successfully',
+        status: 'success',
+      }),
+    );
   } catch (err) {
     yield put(Actions.createNewPartyError(err));
-    yield put(AppActions.openSnackBar({ message: `${err} Party Failed`, status: 'error' }));
+    yield put(
+      AppActions.openSnackBar({
+        message: `${err} Party Failed`,
+        status: 'error',
+      }),
+    );
   }
 }
 
@@ -177,7 +192,7 @@ export function* getPartyById() {
       }),
     });
 
-    console.log(response, "getPartyByIdResponse")
+    console.log(response, 'getPartyByIdResponse');
 
     yield put(Actions.getPartyByIdSuccess(response));
   } catch (err) {
@@ -203,7 +218,12 @@ export function* updatePartySaga() {
 
     yield put(Actions.getPartyGroupAction());
     yield put(Actions.closeEditPartyDialog());
-    yield put(AppActions.openSnackBar({ message: 'Party Updated Successfully', status: 'success' }));
+    yield put(
+      AppActions.openSnackBar({
+        message: 'Party Updated Successfully',
+        status: 'success',
+      }),
+    );
   } catch (err) {
     console.log(err, 'updatePartyError');
     yield put(Actions.updatePartyError(err));
@@ -230,7 +250,12 @@ export function* createNewParties() {
 
     yield put(Actions.getPartyById(createNewPartiesData.partyId));
     yield put(Actions.closeNewPartiesDialog());
-    yield put(AppActions.openSnackBar({ message: 'Party Created Successfully', status: 'success' }));
+    yield put(
+      AppActions.openSnackBar({
+        message: 'Party Created Successfully',
+        status: 'success',
+      }),
+    );
   } catch (err) {
     yield put(Actions.createNewPartiesError(err));
     // yield put(AppActions.openSnackBar({message: `${err}`, status: 'error'}));
@@ -279,7 +304,12 @@ export function* createNewPosition({ payload }) {
 
     yield put(Actions.getPartyById(payload.party_id));
     yield put(Actions.closeNewPositionDialog());
-    yield put(AppActions.openSnackBar({ message: 'Position Created Successfully', status: 'success' }));
+    yield put(
+      AppActions.openSnackBar({
+        message: 'Position Created Successfully',
+        status: 'success',
+      }),
+    );
   } catch (err) {
     yield put(Actions.createNewPositionError(err));
     // yield put(AppActions.openSnackBar({message: `${err}`, status: 'error'}));
@@ -288,9 +318,7 @@ export function* createNewPosition({ payload }) {
 
 export function* updatePositionSaga({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const getPartyById = yield select(
-    Selectors.makeSelectGetPartyById(),
-  );
+  const getPartyById = yield select(Selectors.makeSelectGetPartyById());
   const requestURL = `${Endpoints.UpdatePositionApi}`;
 
   try {
@@ -316,7 +344,9 @@ export function* updatePositionSaga({ payload }) {
 export function* getAllPosition() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllPositionsApi}/${currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetAllPositionsApi}/${
+    currentUser.organisation.orgId
+  }`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -328,7 +358,12 @@ export function* getAllPosition() {
     });
 
     yield put(Actions.getAllPositionsSuccess(response));
-    yield put(AppActions.openSnackBar({ message: 'Position Created Successfully', status: 'success' }));
+    yield put(
+      AppActions.openSnackBar({
+        message: 'Position Created Successfully',
+        status: 'success',
+      }),
+    );
   } catch (err) {
     yield put(Actions.getAllPositionsError(err));
     // yield put(AppActions.openSnackBar({message: `${err}`, status: 'error'}));
@@ -352,7 +387,12 @@ export function* AddEmployeeToPosition({ payload }) {
     yield put(Actions.addEmployeeToPositionSuccess(response));
     yield put(Actions.getPartyGroupAction());
     yield put(Actions.closeAddEmployeeToPositionDialog());
-    yield put(AppActions.openSnackBar({ message: 'Employee Add Successfully', status: 'success' }));
+    yield put(
+      AppActions.openSnackBar({
+        message: 'Employee Add Successfully',
+        status: 'success',
+      }),
+    );
   } catch (err) {
     yield put(Actions.addEmployeeToPositionError(err));
     // yield put(AppActions.openSnackBar({ message: `${err}`, status: 'error' }));
@@ -367,7 +407,8 @@ export function* AddEmployeeToPosition({ payload }) {
 export function* companyDetail() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.CompanyInfoUrl}/${currentUser && currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.CompanyInfoUrl}/${currentUser &&
+    currentUser.organisation.orgId}`;
 
   try {
     const response = yield call(request, requestURL, {
@@ -378,13 +419,15 @@ export function* companyDetail() {
       }),
     });
 
-    console.log(response, "response getting organization info")
+    console.log(response, 'response getting organization info');
 
     yield put(Actions.getCompanyInfoSuccess(response));
   } catch (err) {
     yield put(Actions.getCompanyInfoError(err.message));
-    yield put(AppActions.openSnackBar({ message: err.message, status: 'warning' }));
-    console.log(err.message, "getting comany info")
+    yield put(
+      AppActions.openSnackBar({ message: err.message, status: 'warning' }),
+    );
+    console.log(err.message, 'getting comany info');
   }
 }
 
@@ -408,14 +451,29 @@ export function* updateCompanyDetail() {
     yield put(Actions.getCompanyInfo());
     yield put(Actions.updateCompanyInfoSuccess(response));
     yield put(Actions.closeEditCompanyDialog());
-    yield put(AppActions.openSnackBar({ message: 'Company Profile Update Successfully', status: 'success' }));
+    yield put(
+      AppActions.openSnackBar({
+        message: 'Company Profile Update Successfully',
+        status: 'success',
+      }),
+    );
   } catch (err) {
     if (err.response.status === 500) {
       yield put(Actions.updateCompanyInfoError(err));
-      yield put(AppActions.openSnackBar({ message: 'Interval Server Error', status: 'error' }));
+      yield put(
+        AppActions.openSnackBar({
+          message: 'Interval Server Error',
+          status: 'error',
+        }),
+      );
     } else if (err.response.status === 400) {
       yield put(Actions.updateCompanyInfoError(err));
-      yield put(AppActions.openSnackBar({ message: 'Something Went Wrong', status: 'warning' }));
+      yield put(
+        AppActions.openSnackBar({
+          message: 'Something Went Wrong',
+          status: 'warning',
+        }),
+      );
     }
   }
 }

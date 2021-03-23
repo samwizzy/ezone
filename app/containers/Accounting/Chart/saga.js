@@ -94,6 +94,8 @@ export function* createChartOfAccount({ payload }) {
       }),
     });
 
+    console.dir(response);
+
     swal(
       'Success',
       `Account Name: ${response.accountName} was saved successfully!`,
@@ -103,6 +105,7 @@ export function* createChartOfAccount({ payload }) {
     yield put(Actions.getChartOfAccounts());
     yield put(Actions.closeNewAccountDialog());
   } catch (err) {
+    console.dir(err, 'create chart of account');
     swal('Error', 'Something went wrong', 'error');
     yield put(Actions.createChartOfAccountError(err));
   }

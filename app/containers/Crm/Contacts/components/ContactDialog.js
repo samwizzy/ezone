@@ -68,7 +68,7 @@ const initialState = {
   noOfEmployees: '',
   type: 'INDIVIDUAL',
   website: '',
-}
+};
 
 const ContactDialog = props => {
   const classes = useStyles();
@@ -82,20 +82,21 @@ const ContactDialog = props => {
     createNewContact,
     updateContact,
     closeNewContactDialog,
-    contactGroups
+    contactGroups,
   } = props;
 
   React.useEffect(() => {
     if (dialog.type === 'edit') {
-      const { ownerName, ownerEmail, ...rest } = dialog.data
+      const { ownerName, ownerEmail, ...rest } = dialog.data;
       if (ownerName && ownerEmail && employees.length > 0) {
-        const emp = employees && _.find(employees, { emailAddress: ownerEmail })
-        console.log(emp, "emp ids check")
+        const emp =
+          employees && _.find(employees, { emailAddress: ownerEmail });
+        console.log(emp, 'emp ids check');
         setForm({ ...rest, ownerId: emp ? emp.id : null, image: null });
       }
     } else {
-      setForm({ ...initialState })
-      setStep(0)
+      setForm({ ...initialState });
+      setStep(0);
     }
   }, [dialog.data]);
 
@@ -122,22 +123,21 @@ const ContactDialog = props => {
     }
   };
 
-  const handleDateChange = name => date => {
-    name === 'regYear' ?
-      setForm({ ...form, [name]: moment(date).format('YYYY') }) :
-      setForm({ ...form, [name]: moment(date).format('YYYY-MM-DD') });
-  };
-
   const handlePrev = () => {
     if (step => 1 && step <= 3) {
       setStep(step - 1);
     }
   };
 
+  const handleDateChange = name => date => {
+    name === 'regYear'
+      ? setForm({ ...form, [name]: moment(date).format('YYYY') })
+      : setForm({ ...form, [name]: moment(date).format('YYYY-MM-DD') });
+  };
+
   const handleSubmit = () => {
     dialog.type === 'new' ? createNewContact(form) : updateContact(form);
-    // setForm({ ...initialState })
-  }
+  };
 
   // console.log(dialog, 'dialog');
   console.log(form, 'form');

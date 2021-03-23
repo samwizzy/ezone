@@ -1,9 +1,3 @@
-/**
- *
- * UsersPage
- *
- */
-
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -19,7 +13,6 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import ModuleLayout from './components/ModuleLayout';
-
 export function UsersPage() {
   useInjectReducer({ key: 'usersPage', reducer });
   useInjectSaga({ key: 'usersPage', saga });
@@ -27,8 +20,8 @@ export function UsersPage() {
   return (
     <div>
       <Helmet>
-        <title>UsersPage</title>
-        <meta name="description" content="Description of UsersPage" />
+        <title>User Profile</title>
+        <meta name="description" content="Description of User Profile" />
       </Helmet>
 
       <ModuleLayout>

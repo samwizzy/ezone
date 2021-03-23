@@ -7,14 +7,6 @@ import { initialState } from './reducer';
 
 const selectInventoryPageDomain = state => state.inventoryPage || initialState;
 
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by InventoryPage
- */
-
 const makeSelectInventoryPage = () =>
   createSelector(
     selectInventoryPageDomain,

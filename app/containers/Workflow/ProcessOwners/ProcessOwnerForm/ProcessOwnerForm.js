@@ -20,15 +20,15 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
-import Form1 from './components/Form1'
-import Form2 from './components/Form2'
+import Form1 from './components/Form1';
+import Form2 from './components/Form2';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     '& .MuiCardActions-root': {
-      justifyContent: 'flex-end'
-    }
+      justifyContent: 'flex-end',
+    },
   },
   title: {
     flexGrow: 1,
@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
 const ownerInitialState = {
   name: '',
   email: '',
-}
+};
 
 const ProcessOwnerForm = props => {
   const classes = useStyles();
@@ -60,11 +60,10 @@ const ProcessOwnerForm = props => {
     processOwner: null,
     comment: '',
     phases: [{ ...ownerInitialState }],
-    status: true
+    status: true,
   });
 
-  useEffect(() => {
-  }, []);
+  useEffect(() => {}, []);
 
   const handleNext = () => {
     if (step > -1 && step <= 1) {
@@ -82,23 +81,34 @@ const ProcessOwnerForm = props => {
     setForm({ ...form, phases: [...form.phases, ownerInitialState] });
   };
 
-  const removeMore = (i) => (event) => {
+  const removeMore = i => event => {
     setForm({ ...form, phases: form.phases.filter((phase, x) => x !== i) });
   };
 
   const handleChange = event => {
-    const { type, checked } = event.target
-    setForm({ ...form, [event.target.name]: type === 'checkbox' ? checked : event.target.value });
+    const { type, checked } = event.target;
+    setForm({
+      ...form,
+      [event.target.name]: type === 'checkbox' ? checked : event.target.value,
+    });
   };
 
   const handleRowChange = (name, i) => (event, obj) => {
-    const { phases } = form
-    name === "name" ? phases[i][name] = obj.fullName : phases[i][name] = obj.email;
+    const { phases } = form;
+    name === 'name'
+      ? (phases[i][name] = obj.fullName)
+      : (phases[i][name] = obj.email);
     setForm({ ...form, phases });
   };
 
   const handleOptionsChange = event => {
-    setOptions({ ...options, [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value });
+    setOptions({
+      ...options,
+      [event.target.name]:
+        event.target.type === 'checkbox'
+          ? event.target.checked
+          : event.target.value,
+    });
   };
 
   const handleSelectChange = name => (event, obj) => {
@@ -106,12 +116,12 @@ const ProcessOwnerForm = props => {
   };
 
   const canSubmitForm = () => {
-    return true
-  }
+    return true;
+  };
 
   const handleSubmit = () => {
-    createJob(form)
-  }
+    createJob(form);
+  };
 
   console.log(form, 'form');
 
@@ -119,9 +129,9 @@ const ProcessOwnerForm = props => {
     <Card className={classes.root}>
       <CardHeader
         title={
-              <Typography variant="h6" className={classes.title}>
-                New Group
-              </Typography>
+          <Typography variant="h6" className={classes.title}>
+            New Group
+          </Typography>
         }
       />
       <CardContent>
@@ -153,11 +163,7 @@ const ProcessOwnerForm = props => {
       </CardContent>
 
       <CardActions>
-        <Button
-          onClick={() => { }}
-          variant="contained"
-          disableElevation
-        >
+        <Button onClick={() => {}} variant="contained" disableElevation>
           Cancel
         </Button>
         <Button
@@ -177,7 +183,7 @@ const ProcessOwnerForm = props => {
           disableElevation
           endIcon={<ArrowForwardIcon />}
         >
-          {step > 0 ? "Finish" : "Next"}
+          {step > 0 ? 'Finish' : 'Next'}
         </Button>
       </CardActions>
     </Card>
