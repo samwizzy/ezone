@@ -3,7 +3,7 @@ const SidebarConfig = [
     module: ['home'],
     menus: [
       { id: 1, name: 'Home', url: '/', icon: 'home' },
-      { id: 2, name: 'Dashboard', url: '/dashboard', icon: 'build' },
+      { id: 2, name: 'Admin Panel', url: '/dashboard', icon: 'build' },
     ],
   },
   {
