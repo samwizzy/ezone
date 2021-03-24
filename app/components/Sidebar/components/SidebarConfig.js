@@ -35,7 +35,7 @@ const SidebarConfig = [
         url: '/organization',
         icon: 'business_center',
       },
-      { id: 3, name: 'Applications', url: '/home', icon: 'apps' },
+      { id: 3, name: 'Applications', url: '/applications', icon: 'apps' },
       { id: 4, name: 'Employees', url: '/users', icon: 'group' },
       { id: 5, name: 'User Profile', url: '/user-profile', icon: 'person' },
       { id: 6, name: 'Roles', url: '/roles', icon: 'person', disabled: true },

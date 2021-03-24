@@ -20,9 +20,7 @@ export function* getApplications() {
       }),
     });
 
-    console.log(response, 'response get modules');
-
-    // yield put();
+    yield put(Actions.getApplicationsSuccess(response));
   } catch (err) {
     yield put();
   }

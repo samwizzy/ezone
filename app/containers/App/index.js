@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import { compose } from 'redux';
 // import HomePage from '../HomePage/Loadable';
 import Home from '../Home/Loadable';
+import Applications from '../Applications/Loadable';
 import Dashboard from '../Dashboard/Loadable';
 import NotFoundPage from '../NotFoundPage/Loadable';
 import Registration from '../AuthorizationPage/Register/Loadable';
@@ -70,6 +71,11 @@ const App = props => (
 
             <Layout3>
               <PrivateRoute exact path="/home" component={Home} />
+              <PrivateRoute
+                exact
+                path="/applications"
+                component={Applications}
+              />
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
               <PrivateRoute exact path="/calendar" component={CalendarPage} />
               <PrivateRoute
@@ -162,7 +168,10 @@ const App = props => (
                 component={PerformancePage}
               />
 
-              <PrivateRoute path="/human-resource/attendance" component={AttendancePage} />
+              <PrivateRoute
+                path="/human-resource/attendance"
+                component={AttendancePage}
+              />
               <PrivateRoute path="/hr" component={HRPage} />
 
               <PrivateRoute

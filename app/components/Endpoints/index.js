@@ -10,6 +10,9 @@ export const LoginUrl = `${BaseUrl}/authserv/oauth/token`;
 export const UserProfileUrl = `${BaseUrl}/authserv/api/v1/users/profile`;
 export const ForgotPasswordApi = `${BaseUrl}/authserv/api/v1/user/password/forgot`;
 
+// Modules Apis
+export const ModulesApi = `${BaseUrl}/authserv/api/v1/modules`;
+
 /** *****************************************************************
  * Organization and Company structure endpoint
  ******************************************************************* */

@@ -141,10 +141,9 @@ const ProjectsList = () => {
                       type="button"
                       variant="contained"
                       color="primary"
-                      disabled
                       className={classes.button}
                     >
-                      Request App Access
+                      Buy Application
                     </Button>
                   </Grid>
                 </Grid>
