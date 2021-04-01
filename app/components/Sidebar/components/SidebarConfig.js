@@ -16,6 +16,7 @@ const SidebarConfig = [
   {
     module: [
       'dashboard',
+      'applications',
       'employees',
       'users',
       'user',

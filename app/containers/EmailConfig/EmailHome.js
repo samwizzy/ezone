@@ -29,15 +29,15 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   grid: {
-    justifyContent: "space-between",
-    alignItems: "center",
+    justifyContent: 'space-between',
+    alignItems: 'center',
     '& .MuiGrid-item': {
       flex: 1,
-      margin: theme.spacing(2)
-    }
+      margin: theme.spacing(2),
+    },
   },
   list: {
-    "& .MuiListItemAvatar-root": {
+    '& .MuiListItemAvatar-root': {
       marginRight: `20px !important`,
     },
   },
@@ -47,12 +47,11 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     border: `1px solid ${theme.palette.grey[200]}`,
     '& a': {
-      display: "flex",
-      textDecoration: 'none'
-    }
-  }
+      display: 'flex',
+      textDecoration: 'none',
+    },
+  },
 }));
-
 
 const EmailHome = props => {
   const classes = useStyles();
@@ -61,51 +60,67 @@ const EmailHome = props => {
     <div className={classes.root}>
       <Grid container className={classes.grid}>
         <Grid item xs={4}>
-          <Card
-            className={classes.card}
-            variant="outlined"
-          >
-            <CardContent component={RouterLink} to="/settings/email/configuration">
+          <Card className={classes.card} variant="outlined">
+            <CardContent /*component={RouterLink} to="/settings/email/configuration"*/
+            >
               <List className={classes.list}>
                 <ListItem>
                   <ListItemAvatar>
                     <img alt="" src={envelope} className={classes.cardIcon} />
                   </ListItemAvatar>
-                  <ListItemText primary={<Typography variant="h6">Email / SMS Configuration</Typography>} secondary="Configure settings" />
+                  <ListItemText
+                    primary={
+                      <Typography variant="h6">
+                        Email / SMS Configuration
+                      </Typography>
+                    }
+                    secondary="Configure settings"
+                  />
                 </ListItem>
               </List>
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={4}>
-          <Card
-            className={classes.card}
-            variant="outlined"
-          >
-            <CardContent component={RouterLink} to="/settings/email">
+          <Card className={classes.card} variant="outlined">
+            <CardContent /*component={RouterLink} to="/settings/email"*/>
               <List className={classes.list}>
                 <ListItem>
                   <ListItemAvatar>
                     <img alt="" src={directory} className={classes.cardIcon} />
                   </ListItemAvatar>
-                  <ListItemText primary={<Typography variant="h6">AD <br />Configuration</Typography>} secondary="Configure settings" />
+                  <ListItemText
+                    primary={
+                      <Typography variant="h6">
+                        AD <br />
+                        Configuration
+                      </Typography>
+                    }
+                    secondary="Configure settings"
+                  />
                 </ListItem>
               </List>
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={4}>
-          <Card
-            className={classes.card}
-            variant="outlined"
-          >
-            <CardContent component={RouterLink} to="/settings/email/template">
+          <Card className={classes.card} variant="outlined">
+            <CardContent /*component={RouterLink} to="/settings/email/template"*/
+            >
               <List className={classes.list}>
                 <ListItem>
                   <ListItemAvatar>
                     <img alt="" src={mail} className={classes.cardIcon} />
                   </ListItemAvatar>
-                  <ListItemText primary={<Typography variant="h6">Email <br />Templates</Typography>} secondary="Configure settings" />
+                  <ListItemText
+                    primary={
+                      <Typography variant="h6">
+                        Email <br />
+                        Templates
+                      </Typography>
+                    }
+                    secondary="Configure settings"
+                  />
                 </ListItem>
               </List>
             </CardContent>
