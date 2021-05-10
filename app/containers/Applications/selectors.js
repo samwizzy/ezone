@@ -22,8 +22,40 @@ const makeSelectLoading = () =>
 const makeSelectModules = () =>
   createSelector(
     selectApplicationsDomain,
-    subState => subState.applications,
+    subState => subState.modules,
+  );
+
+const makeSelectModulesByAccessOffers = () =>
+  createSelector(
+    selectApplicationsDomain,
+    subState => subState.modulesByAccessOffers,
+  );
+
+const makeSelectRegModsDetails = () =>
+  createSelector(
+    selectApplicationsDomain,
+    subState => subState.regModsDetails,
+  );
+
+const makeSelectPaymentGateways = () =>
+  createSelector(
+    selectApplicationsDomain,
+    subState => subState.paymentGateways,
+  );
+
+const makeSelectPaymentVerified = () =>
+  createSelector(
+    selectApplicationsDomain,
+    subState => subState.paymentVerified,
   );
 
 export default makeSelectApplicationsPage;
-export { selectApplicationsDomain, makeSelectLoading, makeSelectModules };
+export {
+  selectApplicationsDomain,
+  makeSelectLoading,
+  makeSelectModules,
+  makeSelectModulesByAccessOffers,
+  makeSelectRegModsDetails,
+  makeSelectPaymentGateways,
+  makeSelectPaymentVerified,
+};

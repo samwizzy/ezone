@@ -1,4 +1,5 @@
-import React, { memo } from 'react';
+import React, { Fragment, memo } from 'react';
+import { Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
@@ -8,19 +9,26 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import reducer from './reducer';
 import saga from './saga';
-import makeSelectHome from './selectors';
+import makeSelectApplicationsPage from './selectors';
 import * as Actions from './actions';
 import ProjectsApp from './ProjectsApp';
+import AccessOffers from './AccessOffers';
+import PaymentSummary from './ProcessPayment';
 
 export function Home(props) {
   useInjectReducer({ key: 'applications', reducer });
   useInjectSaga({ key: 'applications', saga });
 
-  const { getApplications } = props;
+  const { match, getModules, getModulesByAccessOffers, getPaystackGateways } = props;
+  const { path, url } = match;
 
   React.useEffect(() => {
-    getApplications();
+    getModules();
+    getModulesByAccessOffers();
+    getPaystackGateways();
   }, []);
+
+  console.log(path, 'path');
 
   return (
     <div>
@@ -28,18 +36,25 @@ export function Home(props) {
         <title>Applications</title>
         <meta name="description" content="applications" />
       </Helmet>
-      <ProjectsApp />
+
+      <Fragment>
+        <Route exact path={path} component={ProjectsApp} />
+        <Route exact path={`${path}/access-offers`} component={AccessOffers} />
+        <Route exact path={`${path}/payment-summary`} component={PaymentSummary} />
+      </Fragment>
     </div>
   );
 }
 
 const mapStateToProps = createStructuredSelector({
-  applications: makeSelectHome(),
+  applications: makeSelectApplicationsPage(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getApplications: () => dispatch(Actions.getApplications()),
+    getModules: () => dispatch(Actions.getModules()),
+    getModulesByAccessOffers: () => dispatch(Actions.getModulesByAccessOffers()),
+    getPaystackGateways: () => dispatch(Actions.getPaystackGateways()),
   };
 }
 
@@ -50,5 +65,6 @@ const withConnect = connect(
 
 export default compose(
   withConnect,
+  withRouter,
   memo,
 )(Home);

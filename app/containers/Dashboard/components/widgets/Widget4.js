@@ -52,8 +52,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Widget4 = () => {
-    const classes = useStyles()
+const Widget4 = (props) => {
+    const classes = useStyles();
+    const { pendingModuleCount } = props
 
     return (
         <div>
@@ -63,8 +64,8 @@ const Widget4 = () => {
                         <TableBody>
                             <TableRow>
                                 <TableCell align="center">
-                                    <Typography variant="h2" color="primary">0</Typography>
-                                    <Typography variant="subtitle1">Qty</Typography>
+                                    <Typography variant="h2" color="primary">{pendingModuleCount || 0}</Typography>
+                                    <Typography variant="subtitle1">Modules</Typography>
                                 </TableCell>
                             </TableRow>
                         </TableBody>
@@ -75,7 +76,7 @@ const Widget4 = () => {
 
                 <CardActions>
                     <Typography variant="button" className={classes.title} color="textPrimary">
-                        To be Shipped
+                        Pending Modules
                     </Typography>
                 </CardActions>
             </Card>

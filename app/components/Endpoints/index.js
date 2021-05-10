@@ -12,6 +12,14 @@ export const ForgotPasswordApi = `${BaseUrl}/authserv/api/v1/user/password/forgo
 
 // Modules Apis
 export const ModulesApi = `${BaseUrl}/authserv/api/v1/modules`;
+export const ModulesByOrgApi = `${BaseUrl}/authserv/api/v1/modules/by-organisation-access`;
+export const ModulesByAccessOffersApi = `${BaseUrl}/authserv/api/v1/modules/access-offers`;
+export const PaymentGatewaysApi = `${BaseUrl}/authserv/api/payment-gateways`;
+export const RegisterModuleBeforePaymentApi = `${BaseUrl}/authserv/api/v1/module/register-module-access-before-payment`;
+export const VerifyPaymentApi = `${BaseUrl}/authserv/api/payment-verification`;
+
+// Dashboard APIs
+export const DashboardStatsApi = `${BaseUrl}/authserv/api/v1/users/dashboard-stats`;
 
 /** *****************************************************************
  * Organization and Company structure endpoint

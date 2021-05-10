@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import ProjectsList from './ProjectsList';
+import PaymentDetails from './PaymentDetails';
 import ModuleLayout from '../components/ModuleLayout';
 
 const useStyles = makeStyles(theme => ({
@@ -16,30 +16,33 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ProjectsApp = props => {
+const PaymentSummary = props => {
   const classes = useStyles();
-  const { applications } = props;
+  const { loading, modulesByAccessOffers, paymentGateways, regModsDetails } = props;
+
+  console.log(paymentGateways, "paymentGateways");
+  console.log(regModsDetails, "regModsDetails");
 
   return (
     <ModuleLayout>
-      <ProjectsList applications={applications} />
+      <PaymentDetails paymentDetails={regModsDetails} paymentGateways={paymentGateways} />
     </ModuleLayout>
   );
 };
 
-ProjectsApp.propTypes = {
+PaymentSummary.propTypes = {
   loading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  applications: Selectors.makeSelectApplications(),
+  modulesByAccessOffers: Selectors.makeSelectModulesByAccessOffers(),
+  paymentGateways: Selectors.makeSelectPaymentGateways(),
+  regModsDetails: Selectors.makeSelectRegModsDetails(),
 });
 
 function mapDispatchToProps(dispatch) {
-  return {
-    getApplications: () => dispatch(Actions.getApplications()),
-  };
+  return {};
 }
 
 const withConnect = connect(
@@ -51,4 +54,4 @@ export default compose(
   withRouter,
   withConnect,
   memo,
-)(ProjectsApp);
+)(PaymentSummary);

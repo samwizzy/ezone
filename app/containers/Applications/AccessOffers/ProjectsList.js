@@ -1,15 +1,20 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
+import { Link, withRouter } from 'react-router-dom';
+import clsx from 'clsx';
 import {
   makeStyles,
+  CircularProgress,
+  Checkbox,
   Grid,
   Typography,
   Paper,
   Button,
   TextField,
-  Link,
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import * as Actions from "./../actions"
+import * as Selectors from "./../selectors"
 import { createStructuredSelector } from 'reselect';
 import apps from './components/apps.db';
 import AppIcon from '../../../images/app-2.svg';
@@ -47,8 +52,8 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     padding: theme.spacing(1, 4),
-    background: theme.palette.primary.main,
-    borderRadius: '20px',
+    borderRadius: '50px',
+    marginLeft: theme.spacing(1),
   },
   grid: {
     margin: theme.spacing(1, 0),
@@ -60,6 +65,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: theme.spacing(4),
   },
   box: {
+    position: 'relative',
     width: theme.spacing(20),
     height: theme.spacing(20),
     flex: '1 1 10em', // flex-grow flex-shrink flex-basis
@@ -71,16 +77,65 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
+    '&.color': {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.primary.contrastText,
+    },
     '& img': {
       height: '70px',
+      marginBottom: theme.spacing(1),
+    },
+    '& p': {
+      marginBottom: theme.spacing(2),
+    },
+    '& .MuiCheckbox-root': {
+      opacity: '0',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      bottom: 0,
+      width: '100%',
+      height: '100%',
     },
   },
 }));
 
-const ProjectsList = (props) => {
-  const { applications } = props
+const ProjectsList = props => {
+  const {loading, modules, history, registerModules, regModsDetails } = props;
   const classes = useStyles();
-  const [state, setState] = React.useState({ apps, text: '' });
+  const [state, setState] = useState({ apps: [], text: '' });
+  const [selected, setSelected] = useState({
+    moduleOfferIds: [],
+  });
+
+  console.log(loading, "loading")
+  console.log(regModsDetails, "regModsDetails")
+
+  // useEffect(() => {
+  //   if(regModsDetails){
+  //     history.push("/applications/payment-summary")
+  //   }
+  // }, [regModsDetails]);
+
+  useEffect(() => {
+    setState(prevState => ({ ...prevState, apps: modules }));
+  }, [modules]);
+
+  const handleCheck = event => {
+    const { value } = event.target;
+    selected.moduleOfferIds.includes(value)
+      ? setSelected({
+          moduleOfferIds: selected.moduleOfferIds.filter(id => value !== id),
+        })
+      : setSelected({
+          moduleOfferIds: [...selected.moduleOfferIds, value],
+        });
+  };
+
+  const handleRegister = () => {
+    registerModules(selected);
+    history.push("/applications/payment-summary")
+  }
 
   const handleTextChange = e => {
     const value = e.target.value;
@@ -97,6 +152,8 @@ const ProjectsList = (props) => {
       text: value,
     }));
   };
+
+  console.log(selected, "selected")
 
   return (
     <React.Fragment>
@@ -129,7 +186,10 @@ const ProjectsList = (props) => {
                 >
                   <Grid item xs={6} md={6}>
                     <Typography variant="h6" component="h3">
-                      My Apps
+                      Access Offers
+                    </Typography>
+                    <Typography variant="caption" component="h3">
+                      Select from the applications below
                     </Typography>
                   </Grid>
                   <Grid
@@ -139,13 +199,22 @@ const ProjectsList = (props) => {
                     style={{ display: 'flex', justifyContent: 'flex-end' }}
                   >
                     <Button
-                      type="button"
-                      variant="contained"
+                      variant="outlined"
                       color="primary"
-                      disabled
+                      onClick={() => history.goBack()}
                       className={classes.button}
                     >
-                      Request App Access
+                      Go back
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      onClick={handleRegister}
+                      disabled={!selected.moduleOfferIds.length}
+                      startIcon={loading && <CircularProgress color="inherit" size={20} />}
+                    >
+                      Register modules
                     </Button>
                   </Grid>
                 </Grid>
@@ -153,15 +222,20 @@ const ProjectsList = (props) => {
                 <Grid container justify="space-between">
                   <Grid item sm={12} md={12} lg={12}>
                     <Paper square className={classes.paper} elevation={0}>
-                      {applications.map((app, i) => (
+                      {state.apps.map(app => (
                         <Paper
-                          key={i}
-                          component={Link}
-                          href={app.url}
-                          className={classes.box}
+                          key={app.id}
+                          className={clsx(classes.box, {
+                            color: selected.moduleOfferIds.includes(
+                              app.id.toString(),
+                            ),
+                          })}
                         >
                           <img src={AppIcon} alt={app.moduleName} />
-                          <Typography variant="body2">{app.moduleName.replace("_", " ")}</Typography>
+                          <Typography variant="body2">
+                            {app.moduleName}
+                          </Typography>
+                          <Checkbox value={app.id} onClick={handleCheck} />
                         </Paper>
                       ))}
                     </Paper>
@@ -180,10 +254,15 @@ const ProjectsList = (props) => {
 
 ProjectsList.propTypes = {};
 
-const mapStateToProps = createStructuredSelector({});
+const mapStateToProps = createStructuredSelector({
+  loading: Selectors.makeSelectLoading(),
+  regModsDetails: Selectors.makeSelectRegModsDetails(),
+});
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    registerModules: (data) => dispatch(Actions.registerModules(data))
+  };
 }
 
 const withConnect = connect(
@@ -193,5 +272,6 @@ const withConnect = connect(
 
 export default compose(
   withConnect,
+  withRouter,
   memo,
 )(ProjectsList);

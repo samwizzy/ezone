@@ -64,7 +64,7 @@ export default withRouter(function MenuListComposition({ history }) {
   }
 
   const handleRoute = url => event => {
-    history.push(url);
+    // history.push({pathname: url});
     handleClose(event);
   };
 
@@ -118,9 +118,11 @@ export default withRouter(function MenuListComposition({ history }) {
                           disableRipple
                           key={app.id}
                           onClick={handleRoute(app.url)}
+                          component={Link}
+                          to={{pathname: app.url}}
+                          target={app.target}
                         >
                           <ListItemIcon>
-                            {/* <img height="30px" alt={app.name} src={app.icon} /> */}
                             <Icon>{app.img}</Icon>
                           </ListItemIcon>
                           <ListItemText primary={app.name} />

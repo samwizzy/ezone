@@ -1,7 +1,3 @@
-/*
- *
- * Dashboard constants
- *
- */
-
-export const GET_DASHBOARD_ANALYTICS = 'app/Dashboard/GET_DASHBOARD_ANALYTICS';
+export const GET_DASHBOARD_STATS = 'app/Dashboard/GET_DASHBOARD_STATS';
+export const GET_DASHBOARD_STATS_SUCCESS = 'app/Dashboard/GET_DASHBOARD_STATS_SUCCESS';
+export const GET_DASHBOARD_STATS_ERROR = 'app/Dashboard/GET_DASHBOARD_STATS_ERROR';

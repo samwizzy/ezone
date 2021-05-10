@@ -7,14 +7,6 @@ import { initialState } from './reducer';
 
 const selectHomeDomain = state => state.home || initialState;
 
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by home
- */
-
 const makeSelectHomePage = () =>
   createSelector(
     selectHomeDomain,
@@ -27,8 +19,11 @@ const makeSelectLoading = () =>
     subState => subState.loading,
   );
 
+const makeSelectApplications = () =>
+  createSelector(
+    selectHomeDomain,
+    subState => subState.applications,
+  );
+
 export default makeSelectHomePage;
-export {
-  selectHomeDomain,
-  makeSelectLoading,
-};
+export { selectHomeDomain, makeSelectLoading, makeSelectApplications };

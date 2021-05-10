@@ -7,26 +7,28 @@ import * as Actions from './actions';
 import * as Constants from './constants';
 import * as Endpoints from '../../components/Endpoints';
 
-export function* getDashboardAnalytics({ type, payload }) {
+export function* getDashboardStats() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.DashboardStatsApi}`;
   try {
     const response = yield call(request, requestURL, {
-      method: 'POST',
-      body: JSON.stringify(payload),
+      method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
-    yield put();
+    console.log(response, "response get stats");
+
+    yield put(Actions.getDashboardStatsSuccess(response));
   } catch (err) {
-    yield put();
+    yield put(Actions.getDashboardStatsError(err));
   }
 }
 
+
 // Individual exports for testing
 export default function* DashboardSaga() {
-  yield takeLatest(Constants.GET_DASHBOARD_ANALYTICS, getDashboardAnalytics);
+  yield takeLatest(Constants.GET_DASHBOARD_STATS, getDashboardStats);
 }

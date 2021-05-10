@@ -16,30 +16,31 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ProjectsApp = props => {
+const AccessOffersApp = props => {
   const classes = useStyles();
-  const { applications } = props;
+  const { modulesByAccessOffers, paymentGateways } = props;
+
+  console.log(paymentGateways, "paymentGateways");
 
   return (
     <ModuleLayout>
-      <ProjectsList applications={applications} />
+      <ProjectsList modules={modulesByAccessOffers} />
     </ModuleLayout>
   );
 };
 
-ProjectsApp.propTypes = {
+AccessOffersApp.propTypes = {
   loading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
-  applications: Selectors.makeSelectApplications(),
+  modulesByAccessOffers: Selectors.makeSelectModulesByAccessOffers(),
+  paymentGateways: Selectors.makeSelectPaymentGateways(),
 });
 
 function mapDispatchToProps(dispatch) {
-  return {
-    getApplications: () => dispatch(Actions.getApplications()),
-  };
+  return {};
 }
 
 const withConnect = connect(
@@ -51,4 +52,4 @@ export default compose(
   withRouter,
   withConnect,
   memo,
-)(ProjectsApp);
+)(AccessOffersApp);

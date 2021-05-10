@@ -71,11 +71,7 @@ const App = props => (
 
             <Layout3>
               <PrivateRoute exact path="/home" component={Home} />
-              <PrivateRoute
-                exact
-                path="/applications"
-                component={Applications}
-              />
+              <PrivateRoute path="/applications" component={Applications} />
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
               <PrivateRoute exact path="/calendar" component={CalendarPage} />
               <PrivateRoute

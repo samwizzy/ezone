@@ -1,9 +1,3 @@
-/**
- *
- * Home
- *
- */
-
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -14,6 +8,7 @@ import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import reducer from './reducer';
+import * as Selectors from './selectors';
 import saga from './saga';
 import makeSelectHome from './selectors';
 import * as Actions from './actions';
@@ -23,10 +18,13 @@ export function Home(props) {
   useInjectReducer({ key: 'home', reducer });
   useInjectSaga({ key: 'home', saga });
 
-  const {} = props;
+  const { applications, getApplications } = props;
 
   React.useEffect(() => {
+    getApplications();
   }, []);
+
+  console.log(applications, 'applications');
 
   return (
     <div>
@@ -39,16 +37,16 @@ export function Home(props) {
   );
 }
 
-Home.propTypes = {
-};
+Home.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
   home: makeSelectHome(),
+  applications: Selectors.makeSelectApplications(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    getApplications: () => dispatch(Actions.getApplications()),
   };
 }
 

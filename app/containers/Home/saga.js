@@ -10,7 +10,7 @@ import * as Endpoints from '../../components/Endpoints';
 export function* getApplications() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.ModulesApi}`;
+  const requestURL = `${Endpoints.ModulesByOrgApi}`;
   try {
     const response = yield call(request, requestURL, {
       method: 'GET',
@@ -22,9 +22,9 @@ export function* getApplications() {
 
     console.log(response, 'response get modules');
 
-    // yield put();
+    yield put(Actions.getApplicationsSuccess(response));
   } catch (err) {
-    yield put();
+    yield put(Actions.getApplicationsError(err));
   }
 }
 

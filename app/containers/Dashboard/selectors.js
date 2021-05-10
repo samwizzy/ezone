@@ -7,14 +7,6 @@ import { initialState } from './reducer';
 
 const selectDashboardDomain = state => state.dashboard || initialState;
 
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by dashboard
- */
-
 const makeSelectDashboardPage = () =>
   createSelector(
     selectDashboardDomain,
@@ -27,8 +19,15 @@ const makeSelectLoading = () =>
     subState => subState.loading,
   );
 
+const makeSelectStats = () =>
+  createSelector(
+    selectDashboardDomain,
+    subState => subState.stats,
+  );
+
 export default makeSelectDashboardPage;
 export {
   selectDashboardDomain,
   makeSelectLoading,
+  makeSelectStats
 };

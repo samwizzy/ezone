@@ -20,11 +20,9 @@ const ProjectsApp = props => {
   const classes = useStyles();
   const { loading, modules } = props;
 
-  console.log(modules, 'modules gotten');
-
   return (
     <ModuleLayout>
-      <ProjectsList />
+      <ProjectsList modules={modules} />
     </ModuleLayout>
   );
 };

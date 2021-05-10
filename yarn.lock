@@ -13406,6 +13406,11 @@ react-player@^2.6.0:
     prop-types "^15.7.2"
     react-fast-compare "^3.0.1"
 
+react-ravepayment@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/react-ravepayment/-/react-ravepayment-3.0.1.tgz#fe5c7afaeebb423fd461ef9fa7b0de4bc6dc3a94"
+  integrity sha512-2CTru1sgYCyQGa8phYZQkrUh2lYwDO8lJTO4C1XJBGOpgdnznCY6asZLhfzY2bSqfPEvBK69JzDNACppFl0PYA==
+
 react-redux@7.0.2:
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.0.2.tgz#34b280a3482aaf60e7d4a504b1295165cbe6b86a"

@@ -1,18 +1,18 @@
 import React, { memo } from 'react';
+import { Link, withRouter } from 'react-router-dom';
 import {
   makeStyles,
-  Box,
   Grid,
   Typography,
   Paper,
   Button,
   TextField,
-  Link,
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import apps from './components/apps.db';
+import AppIcon from '../../../images/app-2.svg';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -73,13 +73,19 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     '& img': {
       height: '70px',
+      marginBottom: theme.spacing(1),
     },
   },
 }));
 
-const ProjectsList = () => {
+const ProjectsList = props => {
+  const { modules, match } = props;
   const classes = useStyles();
-  const [state, setState] = React.useState({ apps, text: '' });
+  const [state, setState] = React.useState({ apps: [], text: '' });
+
+  React.useEffect(() => {
+    setState(prevState => ({ ...prevState, apps: apps }));
+  }, []);
 
   const handleTextChange = e => {
     const value = e.target.value;
@@ -140,6 +146,8 @@ const ProjectsList = () => {
                     <Button
                       type="button"
                       variant="contained"
+                      component={Link}
+                      to="/applications/access-offers"
                       color="primary"
                       className={classes.button}
                     >
@@ -151,15 +159,17 @@ const ProjectsList = () => {
                 <Grid container justify="space-between">
                   <Grid item sm={12} md={12} lg={12}>
                     <Paper square className={classes.paper} elevation={0}>
-                      {state.apps.map(app => (
+                      {state.apps.map((app, i) => (
                         <Paper
-                          key={app.id}
+                          key={i}
                           component={Link}
-                          href={app.url}
+                          to={{pathname: app.url}}
                           className={classes.box}
                         >
                           <img src={app.icon} alt={app.name} />
-                          <Typography variant="body2">{app.name}</Typography>
+                          <Typography variant="body2">
+                            {app.name.replace("_", " ")}
+                          </Typography>
                         </Paper>
                       ))}
                     </Paper>
@@ -191,5 +201,6 @@ const withConnect = connect(
 
 export default compose(
   withConnect,
+  withRouter,
   memo,
 )(ProjectsList);

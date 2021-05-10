@@ -52,8 +52,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Widget2 = () => {
+const Widget2 = (props) => {
     const classes = useStyles()
+    const {activeUsersCount} = props
 
     return (
         <div>
@@ -63,8 +64,8 @@ const Widget2 = () => {
                         <TableBody>
                             <TableRow>
                                 <TableCell align="center">
-                                    <Typography variant="h2" color="primary">0</Typography>
-                                    <Typography variant="subtitle1">Qty</Typography>
+                                    <Typography variant="h2" color="primary">{activeUsersCount || 0}</Typography>
+                                    <Typography variant="subtitle1">Users</Typography>
                                 </TableCell>
                             </TableRow>
                         </TableBody>
@@ -75,7 +76,7 @@ const Widget2 = () => {
 
                 <CardActions>
                     <Typography variant="button" className={classes.title} color="textPrimary">
-                        To be Shipped
+                        Active Users
                     </Typography>
                 </CardActions>
             </Card>
