@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { Link } from "react-router-dom";
 import {
   makeStyles,
   Grid,
@@ -6,7 +7,6 @@ import {
   Paper,
   Button,
   TextField,
-  Link,
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -157,7 +157,7 @@ const ProjectsList = (props) => {
                         <Paper
                           key={i}
                           component={Link}
-                          href={app.url}
+                          to="/"
                           className={classes.box}
                         >
                           <img src={AppIcon} alt={app.moduleName} />

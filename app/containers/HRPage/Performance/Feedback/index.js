@@ -1,7 +1,5 @@
-import React, { useEffect, memo } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, memo, Fragment } from 'react';
 import { Helmet } from 'react-helmet';
-import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
@@ -15,26 +13,24 @@ import ReviewDialog from './components/ReviewDialog'
 export function HolidaysPage(props) {
   const { getReviews } = props;
 
-  React.useEffect(() => {
+  useEffect(() => {
     getReviews();
   }, []);
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Helmet>
-        <title>Holidays Page</title>
-        <meta name="description" content="ezone application employee holidays page" />
+        <title>Feedback Page</title>
+        <meta name="description" content="ezone application feedback page" />
       </Helmet>
 
       <ReviewsList />
 
       <ReviewDialog />
 
-    </React.Fragment>
+    </Fragment>
   );
 }
-
-HolidaysPage.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({});
 

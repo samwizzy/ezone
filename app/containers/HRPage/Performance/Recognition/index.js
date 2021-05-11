@@ -1,19 +1,13 @@
-/*
- * HRPage
- *
- * This is the first thing users see of our App, at the '/' route
- */
-// import React, { useEffect, memo } from 'react';
+import React, { useEffect, memo, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { withRouter } from 'react-router-dom';
-// import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import * as AppSelectors from '../../../App/selectors';
 // import * as AppActions from '../../../App/actions';
-// import * as Actions from './../actions';
+import * as Actions from './../actions';
 // import * as Selectors from './../selectors';
 import RecognitionList from './RecognitionList';
 // import RecognitionDetails from './Recognition'
@@ -23,12 +17,12 @@ export function RecognitionPage(props) {
   const { getRecognitions, match } = props;
   const { params } = match
 
-  React.useEffect(() => {
+  useEffect(() => {
     getRecognitions();
   }, []);
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Helmet>
         <title>Recognition Page</title>
         <meta name="description" content="ezone application recognition page" />
@@ -37,7 +31,7 @@ export function RecognitionPage(props) {
       <RecognitionList />
 
       <RecognitionDialog />
-    </React.Fragment>
+    </Fragment>
   );
 }
 

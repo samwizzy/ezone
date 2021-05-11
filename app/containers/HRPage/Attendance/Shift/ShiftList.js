@@ -1,22 +1,17 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Button, TextField, Grid, Paper, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Grid } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors'
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
-import moment from 'moment'
+import { darken } from '@material-ui/core/styles/colorManipulator';
 import MUIDataTable from 'mui-datatables'
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
 import * as AppSelectors from '../../../App/selectors';
-import EditSharp from '@material-ui/icons/EditSharp';
-import Assignment from '@material-ui/icons/Assignment';
-import Person from '@material-ui/icons/Person';
 import { AddShift } from '../components/AddButton'
 import AddShiftDialog from './components/AddShiftDialog'
 
@@ -26,10 +21,6 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.common.white
   },
   datatable: {
-    '& table': {
-      width: '96% !important',
-      margin: '4px auto',
-    },
     '& tr:hover': {
       cursor: 'pointer'
     },
@@ -54,16 +45,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const shifts = [
-  { id: 1, name: 'General', startTime: '2010-01-01T05:06:07', endTime: '2010-01-01T05:06:07', endDate: '2010-01-01T05:06:07' }
-]
+// const shifts = [
+//   { id: 1, name: 'General', startTime: '2010-01-01T05:06:07', endTime: '2010-01-01T05:06:07', endDate: '2010-01-01T05:06:07' }
+// ]
 
 const ShiftList = props => {
   const classes = useStyles();
   const { loading, getShifts, shifts, openNewShiftDialog } = props;
   console.log(shifts, "shifts in list");
-  React.useEffect(() => {
-  }, []);
 
   const columns = [
     {

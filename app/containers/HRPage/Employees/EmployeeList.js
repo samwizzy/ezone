@@ -1,24 +1,21 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Chip } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
-import { green, red, orange } from '@material-ui/core/colors';
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
-import moment from 'moment';
+import { green, red } from '@material-ui/core/colors';
+import { darken } from '@material-ui/core/styles/colorManipulator';
 import MUIDataTable from 'mui-datatables';
 import EditSharp from '@material-ui/icons/EditSharp';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
-import Person from '@material-ui/icons/Person';
 import * as AppSelectors from '../../App/selectors';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
-// import { AddEmployee } from '../../Accounting/components/AddButton';
 import { AddEmployee } from '../components/AddButton';
 
 const useStyles = makeStyles(theme => ({
@@ -27,10 +24,6 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.common.white,
   },
   datatable: {
-    '& table': {
-      width: '96% !important',
-      margin: '4px auto',
-    },
     '& tr:hover': {
       cursor: 'pointer',
     },
@@ -66,7 +59,6 @@ const useStyles = makeStyles(theme => ({
 const EmployeesApp = props => {
   const classes = useStyles();
   const {
-    loading,
     history,
     match,
     openNewEmployeeDialog,
@@ -78,6 +70,8 @@ const EmployeesApp = props => {
     getEmployee(id);
     history.push(`${match.url}/${id}`);
   };
+
+  console.log(employees, "employees")
 
   const columns = [
     {

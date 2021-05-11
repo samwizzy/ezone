@@ -104,7 +104,7 @@ const Widget6 = ({ history, match, employees }) => {
               </Menu>
             </React.Fragment>
           }
-          title="Uploading Birthdays"
+          title="Upcoming Birthdays"
         />
         <CardContent>
           {birthdayEmps.length > 0 ?

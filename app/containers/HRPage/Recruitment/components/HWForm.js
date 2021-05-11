@@ -8,21 +8,17 @@ import {
   Box,
   Button,
   Card,
+  Chip,
   Container,
   FormGroup,
   FormControl,
   FormControlLabel,
   FormLabel,
   Grid,
-  Radio,
-  RadioGroup,
   Checkbox,
-  MenuItem,
   TextField,
   Toolbar,
   Typography,
-  CardActions,
-  Paper,
 } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
@@ -192,6 +188,7 @@ export const HiringWorkFlowForm = props => {
                 onClick={handleStepChange}
               >
                 {steps.map((step, i) => (
+                  <>
                   <FormControlLabel
                     key={i}
                     name="hiringSteps"
@@ -199,6 +196,8 @@ export const HiringWorkFlowForm = props => {
                     control={<StyledRadio />}
                     label={step.label}
                   />
+                  <Chip label={form.hiringSteps.findIndex(step => step.title === step.value)} variant="outlined" />
+                  </>
                 ))}
               </FormGroup>
             </Grid>

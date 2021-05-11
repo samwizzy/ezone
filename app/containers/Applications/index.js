@@ -20,15 +20,13 @@ export function Home(props) {
   useInjectSaga({ key: 'applications', saga });
 
   const { match, getModules, getModulesByAccessOffers, getPaystackGateways } = props;
-  const { path, url } = match;
+  const { path } = match;
 
   React.useEffect(() => {
     getModules();
     getModulesByAccessOffers();
     getPaystackGateways();
   }, []);
-
-  console.log(path, 'path');
 
   return (
     <div>

@@ -1,14 +1,12 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
 import { green, orange } from '@material-ui/core/colors';
 import { darken } from '@material-ui/core/styles/colorManipulator';
-import moment from 'moment';
 import MUIDataTable from 'mui-datatables';
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
@@ -20,10 +18,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   datatable: {
-    '& table': {
-      width: '96% !important',
-      margin: '4px auto',
-    },
     '& tr:hover': {
       cursor: 'pointer',
     },
