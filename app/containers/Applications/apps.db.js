@@ -46,7 +46,7 @@ const apps = [
   { id: 12, name: 'Task Management', url: '/task-manager/tasks', icon: TaskIcon, img: 'list_alt' },
   { id: 13, name: 'Work Order', url: '/work-order', icon: ProjectsIcon, img: 'ballot' },
   { id: 14, name: 'LMS', url: '/lms/dashboard', icon: ProjectsIcon, img: 'library_books' },
-  { id: 15, name: 'Mortuary', url: 'http://dev-mortuary.ezoneerp.com.s3-website.us-east-2.amazonaws.com/', icon: ProjectsIcon, img: 'library_books', target: "_blank" },
+  { id: 15, name: 'Mortuary', url: 'https://dev-mortuary.ezoneerp.com/', icon: ProjectsIcon, img: 'library_books', target: "_blank" },
 ];
 
 export default apps;

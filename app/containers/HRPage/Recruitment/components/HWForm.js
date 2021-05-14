@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import EzoneUtils from '../../../../utils/EzoneUtils';
 import clsx from 'clsx';
@@ -27,6 +27,11 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: 'transparent',
     },
+  },
+  steps: {
+    display: "flex",
+    justifyContent: "flex-start",
+    alignItems: "center"
   },
   icon: {
     borderRadius: '50%',
@@ -103,7 +108,7 @@ function StyledRadio(props) {
 }
 
 export const HiringWorkFlowForm = props => {
-  const { handleChange, handleStepChange, form } = props;
+  const { handleStepChange, form } = props;
   const classes = useStyles();
   const [state, setState] = React.useState({ value: '', label: '' });
   const [open, setOpen] = React.useState(false);
@@ -187,18 +192,22 @@ export const HiringWorkFlowForm = props => {
                 aria-label="hiringSteps"
                 onClick={handleStepChange}
               >
-                {steps.map((step, i) => (
-                  <>
-                  <FormControlLabel
-                    key={i}
-                    name="hiringSteps"
-                    value={step.value}
-                    control={<StyledRadio />}
-                    label={step.label}
-                  />
-                  <Chip label={form.hiringSteps.findIndex(step => step.title === step.value)} variant="outlined" />
-                  </>
-                ))}
+                {steps.map((step, i) => {
+                  let pos = form.hiringSteps.findIndex(s => s.title === step.value)
+                  return (
+                    <div key={i} className={classes.steps}>
+                      <FormControlLabel
+                        name="hiringSteps"
+                        checked={form.hiringSteps.some(s => s.title === step.value)}
+                        value={step.value}
+                        control={<StyledRadio />}
+                        label={step.label}
+                      />
+                      {/* <Chip label={form.hiringSteps.findIndex(step => step.title === step.value)} variant="outlined" /> */}
+                      <span>{pos !== -1? pos + 1 : 0}</span>
+                    </div>
+                  )
+                })}
               </FormGroup>
             </Grid>
           </Grid>

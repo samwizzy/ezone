@@ -95,9 +95,9 @@ export function* registerModules({ payload }) {
 }
 
 export function* verifyPayment({ payload }) {
-  const { paymentGateway, transactionRef } = payload;
+  const { paymentGateway, txRef } = payload;
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  const requestURL = `${Endpoints.VerifyPaymentApi}/${paymentGateway}/${transactionRef}`;
+  const requestURL = `${Endpoints.VerifyPaymentApi}/${paymentGateway}/${txRef}`;
   
   try {
     const response = yield call(request, requestURL, {

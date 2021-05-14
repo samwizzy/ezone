@@ -73,3 +73,22 @@ export function getPaystackGatewaysError(payload) {
     payload,
   };
 }
+
+export function verifyPayment(payload) {
+  return {
+    type: Constants.VERIFY_PAYMENT,
+    payload
+  };
+}
+export function verifyPaymentSuccess(payload) {
+  return {
+    type: Constants.VERIFY_PAYMENT_SUCCESS,
+    payload,
+  };
+}
+export function verifyPaymentError(payload) {
+  return {
+    type: Constants.VERIFY_PAYMENT_ERROR,
+    payload,
+  };
+}

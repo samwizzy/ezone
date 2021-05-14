@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 import * as Actions from "./../actions"
 import * as Selectors from "./../selectors"
 import { createStructuredSelector } from 'reselect';
-import apps from './components/apps.db';
+import apps from './../apps.db';
 import AppIcon from '../../../images/app-2.svg';
 
 const useStyles = makeStyles(theme => ({

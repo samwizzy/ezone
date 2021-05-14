@@ -15,6 +15,7 @@ import { AppBar, Box, Button, IconButton, Dialog, DialogActions, DialogContent, 
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import moment from 'moment'
+import momentBD from "moment-business-days";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -65,6 +66,16 @@ function LeaveRequestDialog(props) {
     till: moment().format('YYYY-MM-DDTHH:mm:ss.SSS')
   });
 
+  function dateDifference(date2, date1) {
+    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+    // Discard the time and time-zone information.
+    const utc1 = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());
+    const utc2 = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate());
+
+    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+  }
+
   useEffect(() => {
     if (dialog.type === 'edit' && dialog.data) {
       setForm({ ...dialog.data })
@@ -72,6 +83,17 @@ function LeaveRequestDialog(props) {
       setForm({ ...form })
     }
   }, [dialog])
+
+  console.log(moment().isoWeekday(6)._d, "moment().isoWeekday(7)")
+
+  useEffect(() => {
+    // var diff = momentBD('05-15-2017', 'MM-DD-YYYY').businessDiff(momentBD('05-08-2017','MM-DD-YYYY'));
+    console.log(dateDifference(momentBD('05-15-2017').format(), momentBD('05-08-2017').format()))
+  
+    if(form.leaveTypeId){
+      setForm(state => ({...state, noOfDays: moment(leaveType.validTill).diff(leaveType.validFrom, 'days', true)}))
+    }
+  }, [form.leaveTypeId])
 
   const addRow = () => {
     setForm({ ...form, leaveSchedules: [...form.leaveSchedules, model] })
@@ -148,7 +170,7 @@ function LeaveRequestDialog(props) {
         </AppBar>
 
         <DialogContent dividers>
-          <Grid container alignItems="center" spacing={1}>
+          <Grid container alignItems="center" justify="flex-start" spacing={1}>
             <Grid item xs={12}>
               <Autocomplete
                 id="leave-type-id"

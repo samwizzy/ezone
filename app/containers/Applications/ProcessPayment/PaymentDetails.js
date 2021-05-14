@@ -1,6 +1,5 @@
 import React, { Fragment, memo, useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
-import clsx from 'clsx';
 import {
   makeStyles,
   Grid,
@@ -91,7 +90,7 @@ const initialConfig = {
 };
 
 const PaymentDetails = props => {
-  const { history, user, paymentDetails, paymentGateways } = props;
+  const { history, user, paymentDetails, paymentGateways, verifyPayment } = props;
   const classes = useStyles();
 
   const [config, setConfig] = useState({ ...initialConfig });
@@ -111,7 +110,10 @@ const PaymentDetails = props => {
     }
   }, [paymentGateways, paymentDetails]);
 
-  const onSuccess = ({ reference }) => {
+  const onSuccess = ({tx: { txRef }}) => {
+    console.log(txRef, "reference");
+    verifyPayment({ txRef, paymentGateway: paymentGateways[0].name })
+    history.push("/applications");
   };
 
   // you can call this function anything
@@ -128,7 +130,7 @@ const PaymentDetails = props => {
           variant="contained"
           color="primary"
           disabled={!paymentGateways.length}
-          onClick={() => initializePayment()}
+          onClick={() => initializePayment(onSuccess, onClose)}
         >
           Pay {paymentGateways.length && `with ${paymentGateways[0].name}`}
         </Button>
@@ -232,7 +234,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    verifyPayment: (data) => dispatch(Actions.verifyPayment(data))
+  };
 }
 
 const withConnect = connect(
