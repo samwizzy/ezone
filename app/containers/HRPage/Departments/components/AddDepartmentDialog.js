@@ -1,17 +1,30 @@
 import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
-import { AppBar, Button, CircularProgress, Dialog, DialogActions, DialogContent, Grid, MenuItem, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
+import {
+  AppBar,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  Grid,
+  MenuItem,
+  Slide,
+  Typography,
+  TextField,
+  Toolbar,
+} from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
 }));
 
@@ -25,45 +38,57 @@ const initialState = {
   partyHead: { id: '' },
   assistantPartyHead: { id: '' },
   partyGroupId: '',
-  tagId: 5
-}
+  tagId: 5,
+};
 
 function AddDepartmentDialog(props) {
   const classes = useStyles();
-  const { loading, closeNewDepartmentDialog, createDepartment, partyGroups, employees, dialog } = props;
+  const {
+    loading,
+    closeNewDepartmentDialog,
+    createDepartment,
+    partyGroups,
+    employees,
+    dialog,
+  } = props;
   const [form, setForm] = useState({ ...initialState });
 
-  console.log(dialog, "dialog checking")
-
+  console.log(dialog, 'dialog checking');
 
   useEffect(() => {
     if (dialog.type === 'edit' && dialog.data) {
-      setForm({ ...dialog.data })
+      setForm({ ...dialog.data });
     } else {
-      setForm({ ...initialState })
+      setForm({ ...initialState });
     }
-  }, [dialog])
+  }, [dialog]);
 
   const canSubmitForm = () => {
-    const { name, description, partyGroupId, partyHead, assistantPartyHead, tag } = form
-    return name.length > 0 && partyHead && partyGroupId && assistantPartyHead
-  }
+    const {
+      name,
+      description,
+      partyGroupId,
+      partyHead,
+      assistantPartyHead,
+      tag,
+    } = form;
+    return name.length > 0 && partyHead && partyGroupId && assistantPartyHead;
+  };
 
-
-  const handleChange = (event) => {
-    const { name, value } = event.target
+  const handleChange = event => {
+    const { name, value } = event.target;
     setForm({ ...form, [name]: value });
-  }
+  };
 
-  const handleSelectChange = (event) => {
+  const handleSelectChange = event => {
     setForm({ ...form, [event.target.name]: { id: event.target.value } });
-  }
+  };
 
   const handleSubmit = event => {
-    createDepartment(form)
-  }
+    createDepartment(form);
+  };
 
-  console.log(form, 'checking form dept...')
+  console.log(form, 'checking form dept...');
 
   return (
     <div>
@@ -88,7 +113,7 @@ function AddDepartmentDialog(props) {
             <Grid item xs={12}>
               <TextField
                 name="name"
-                label="Department Name"
+                label="Department name"
                 id="department-name"
                 fullWidth
                 margin="dense"
@@ -112,17 +137,15 @@ function AddDepartmentDialog(props) {
                 value={form.partyGroupId}
                 onChange={handleChange}
               >
-                {partyGroups && partyGroups.length === 0 &&
-                  <MenuItem key="" value="">
-                    No Party Group Record
-                  </MenuItem>
-                }
-                {partyGroups && partyGroups.map((partyGroup) => (
-                  <MenuItem key={partyGroup.id} value={partyGroup.id}>
-                    {partyGroup.name}
-                  </MenuItem>
-                ))};
-            </TextField>
+                <MenuItem value="">Select party group</MenuItem>
+                {partyGroups &&
+                  partyGroups.map(partyGroup => (
+                    <MenuItem key={partyGroup.id} value={partyGroup.id}>
+                      {partyGroup.name}
+                    </MenuItem>
+                  ))}
+                ;
+              </TextField>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -141,52 +164,54 @@ function AddDepartmentDialog(props) {
               <TextField
                 id="department-partyhead"
                 name="partyHead"
-                placeholder="Department Lead"
+                placeholder="Department lead"
                 select
                 fullWidth
                 margin="dense"
                 variant="outlined"
                 size="small"
-                label="Department Lead"
+                label="Department lead"
                 value={form.partyHead.id}
                 onChange={handleSelectChange}
               >
-                {employees && employees.length === 0 &&
+                {employees && employees.length === 0 && (
                   <MenuItem key="" value="">
                     No Employees Record
-                </MenuItem>
-                }
-                {employees && employees.map((employee) => (
-                  <MenuItem key={employee.id} value={employee.id}>
-                    {employee.firstName} {employee.lastName}
                   </MenuItem>
-                ))}
+                )}
+                {employees &&
+                  employees.map(employee => (
+                    <MenuItem key={employee.id} value={employee.id}>
+                      {employee.firstName} {employee.lastName}
+                    </MenuItem>
+                  ))}
               </TextField>
             </Grid>
             <Grid item xs={12}>
               <TextField
                 id="department-assistant-partyhead"
                 name="assistantPartyHead"
-                placeholder="Assistant Department Lead"
+                placeholder="Assistant department lead"
                 select
                 fullWidth
                 margin="dense"
                 variant="outlined"
                 size="small"
-                label="Assistant Department Lead"
+                label="Assistant department lead"
                 value={form.assistantPartyHead.id}
                 onChange={handleSelectChange}
               >
-                {employees && employees.length === 0 &&
+                {employees && employees.length === 0 && (
                   <MenuItem key="" value="">
                     No Employees Record
-                </MenuItem>
-                }
-                {employees && employees.map((employee) => (
-                  <MenuItem key={employee.id} value={employee.id}>
-                    {employee.firstName} {employee.lastName}
                   </MenuItem>
-                ))}
+                )}
+                {employees &&
+                  employees.map(employee => (
+                    <MenuItem key={employee.id} value={employee.id}>
+                      {employee.firstName} {employee.lastName}
+                    </MenuItem>
+                  ))}
               </TextField>
             </Grid>
           </Grid>
@@ -196,6 +221,7 @@ function AddDepartmentDialog(props) {
           <Button
             onClick={closeNewDepartmentDialog}
             variant="contained"
+            disableElevation
           >
             Cancel
           </Button>
@@ -227,8 +253,9 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeNewDepartmentDialog: () => dispatch(Actions.closeNewDepartmentDialog()),
-    createDepartment: (data) => dispatch(Actions.createDepartment(data)),
+    closeNewDepartmentDialog: () =>
+      dispatch(Actions.closeNewDepartmentDialog()),
+    createDepartment: data => dispatch(Actions.createDepartment(data)),
   };
 }
 

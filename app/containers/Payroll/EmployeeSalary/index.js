@@ -24,7 +24,7 @@ const EmployeeSalaryPage = props => {
   useInjectSaga({ key, saga });
 
   const { loading, getEmployeeSalaries, match } = props;
-  const { path } = match
+  const { path } = match;
 
   useEffect(() => {
     // getEmployeeSalaries();
@@ -33,13 +33,16 @@ const EmployeeSalaryPage = props => {
   return (
     <div>
       <Helmet>
-        <title>Employee Salary</title>
+        <title>Payroll — Employee Salary</title>
         <meta name="description" content="Description of Employee Salary" />
       </Helmet>
 
       <ModuleLayout>
         <Route exact path={path} component={EmployeeSalariesList} />
-        <Route path={`${path}/view/:salaryId`} component={EmployeeSalaryDetails} />
+        <Route
+          path={`${path}/view/:salaryId`}
+          component={EmployeeSalaryDetails}
+        />
         <Route path={`${path}/new`} component={AddEmployeeSalary} />
       </ModuleLayout>
 
@@ -61,7 +64,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getEmployeeSalaries: () => dispatch(Actions.getEmployeeSalaries()),
-  }
+  };
 }
 
 const withConnect = connect(

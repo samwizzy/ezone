@@ -5,22 +5,22 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { green, orange } from '@material-ui/core/colors'
+import { green, orange } from '@material-ui/core/colors';
 import { darken } from '@material-ui/core/styles/colorManipulator';
-import moment from 'moment'
-import MUIDataTable from 'mui-datatables'
+import moment from 'moment';
+import MUIDataTable from 'mui-datatables';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import { AddDepartment } from '../components/AddButton'
-import AddDepartmentDialog from './components/AddDepartmentDialog'
+import { AddDepartment } from '../components/AddButton';
+import AddDepartmentDialog from './components/AddDepartmentDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   datatable: {
     '& tr:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& thead': {
       '& th': {
@@ -57,16 +57,21 @@ const useStyles = makeStyles(theme => ({
   buttonGroup: {
     marginBottom: theme.spacing(1),
     '& .MuiButtonGroup-root:last-child': {
-      marginLeft: '10px'
-    }
-  }
+      marginLeft: '10px',
+    },
+  },
 }));
 
 const DepartmentsApp = props => {
   const classes = useStyles();
-  const { loading, openNewDepartmentDialog, getDepartment, departments } = props;
+  const {
+    loading,
+    openNewDepartmentDialog,
+    getDepartment,
+    departments,
+  } = props;
 
-  console.log(departments, "departments")
+  console.log(departments, 'departments');
 
   const columns = [
     {
@@ -79,7 +84,7 @@ const DepartmentsApp = props => {
     },
     {
       name: 'name',
-      label: 'Department Name',
+      label: 'Department name',
       options: {
         filter: true,
         sort: true,
@@ -87,11 +92,11 @@ const DepartmentsApp = props => {
     },
     {
       name: 'departmentEmployees',
-      label: 'Employee count',
+      label: 'No. of Employees',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: employees => employees.length
+        customBodyRender: employees => employees.length,
       },
     },
     {
@@ -100,7 +105,7 @@ const DepartmentsApp = props => {
       options: {
         filter: true,
         sort: true,
-        customBodyRender: value => moment(value).format('lll')
+        customBodyRender: value => moment(value).format('lll'),
       },
     },
   ];
@@ -117,16 +122,16 @@ const DepartmentsApp = props => {
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
-      getDepartment(rowData[0])
+      getDepartment(rowData[0]);
     },
-    elevation: 0
+    elevation: 0,
   };
 
   return (
     <div className={classes.root}>
       <MUIDataTable
         className={classes.datatable}
-        title="Departments List"
+        title="Departments"
         data={departments}
         columns={columns}
         options={options}
@@ -149,7 +154,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewDepartmentDialog: () => dispatch(Actions.openNewDepartmentDialog()),
-    getDepartment: (id) => dispatch(Actions.getDepartment(id)),
+    getDepartment: id => dispatch(Actions.getDepartment(id)),
   };
 }
 

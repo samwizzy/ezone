@@ -1,8 +1,8 @@
-import React, { memo } from "react"
+import React, { memo } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { withRouter, Link } from "react-router-dom"
+import { withRouter, Link } from 'react-router-dom';
 import {
   makeStyles,
   Box,
@@ -10,24 +10,18 @@ import {
   Card,
   CardContent,
   CardActions,
-  Divider,
-  List,
-  Paper,
   Grid,
   Table,
-  TableHead,
   TableBody,
-  TableFooter,
   TableRow,
   TableCell,
-  Typography
+  Typography,
 } from '@material-ui/core';
-import hrDash4 from '../../../../images/hrDash4.jpg'
-import crmDash from '../../../../images/crmDash.jpg'
+import crmDash from '../../../../images/crmDash.jpg';
 import * as Selectors from '../../selectors';
 import * as AppSelectors from '../../../App/selectors';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
@@ -37,73 +31,68 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: `no-repeat`,
     backgroundPosition: `center bottom`,
     backgroundSize: 'cover',
-    "& .MuiCardActions-root": {
-      justifyContent: "center",
-      backgroundColor: theme.palette.secondary.contrastText,
+    '& .MuiCardActions-root': {
+      justifyContent: 'center',
+      backgroundColor: theme.palette.common.white,
     },
-    "& .MuiCardContent-root": {
+    '& .MuiCardContent-root': {
       minHeight: 160,
+      padding: theme.spacing(0, 4, 0, 4),
       display: 'flex',
       alignItems: 'center',
-    }
-  },
-  table: {
-    whiteSpace: "nowrap",
-    overflowX: 'hidden',
-    display: 'flex',
-    "& td, & th": {
-      border: 0,
-      color: theme.palette.common.white,
     },
-  }
+  },
+  childTable: {
+    listStyle: 'none',
+    color: theme.palette.primary.contrastText,
+  },
+  grid: {
+    color: theme.palette.primary.contrastText,
+  },
 }));
 
-
-const Widget4 = (props) => {
-  const classes = useStyles()
-  const { roles } = props
+const Widget4 = props => {
+  const classes = useStyles();
+  const { roles } = props;
 
   if (!roles) {
-    return ''
+    return '';
   }
 
-  console.log(roles, "roles")
+  console.log(roles, 'roles');
 
   return (
     <div>
       <Card className={classes.card}>
         <CardContent>
-          <Table className={classes.table} size="small">
-            <TableBody>
-              <TableRow>
-                <TableCell component="th">
-                  <Typography variant="h3">{roles && roles.length}</Typography>
-                </TableCell>
-                <TableCell align="right">
-                  <Table className={classes.childTable} size="small">
-                    <TableBody>
-                      {roles.length > 0 && roles.slice(0, 4).map((role, i) =>
-                        <TableRow key={i}>
-                          <TableCell>{/*role.employees.length*/} {role.name}</TableCell>
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
+          <Grid container alignItems="center" className={classes.grid}>
+            <Grid item xs={3}>
+              <Typography variant="h3" color="initial">
+                {roles && roles.length}
+              </Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <ul className={classes.childTable}>
+                {roles.length > 0 &&
+                  roles.slice(0, 4).map((role, i) => (
+                    <li key={i}>
+                      <Typography variant="subtitle1">{role.name}</Typography>
+                    </li>
+                  ))}
+              </ul>
+            </Grid>
+          </Grid>
         </CardContent>
 
         <CardActions>
-          <Button component={Link} to='/hr/roles'>
-            View All Roles
-					</Button>
+          <Button component={Link} to="/hr/roles">
+            View all roles
+          </Button>
         </CardActions>
       </Card>
     </div>
-  )
-}
+  );
+};
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),

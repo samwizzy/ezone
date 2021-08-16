@@ -1,25 +1,18 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles'
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
 import { Dialog, Slide } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
-import moment from 'moment'
-import { Form } from './Form'
-import { WorkForm } from './WorkForm'
-import { PersonalForm } from './PersonalForm'
-import { AdditionalForm } from './AdditionalForm'
-import { EducationForm } from './EducationForm'
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1
-  },
-}));
+import moment from 'moment';
+import { BasicForm } from './BasicForm';
+import { WorkForm } from './WorkForm';
+import { PersonalForm } from './PersonalForm';
+import { AdditionalForm } from './AdditionalForm';
+import { EducationForm } from './EducationForm';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -33,21 +26,19 @@ const initialState = {
   phoneNumber: '',
   workPhone: '',
   nickName: '',
-  employeeId: '',
-  dateOfJoining: moment(new Date()).format('YYYY-MM-DD'),
-  branch: null,
-  status: '',
-  employeeType: null,
-  sourceOfHire: null,
-  seatingLocation: '',
+  employmentDate: null,
+  branchId: '',
+  employeeStatus: '',
+  employeeType: '',
+  sourceOfHire: '',
+  positionId: '',
   extension: '',
   education: [],
-  department: null,
-  password: 'Ezone123$',
-  reportingTo: null,
-  payRate: null,
-  payType: null,
-  dob: moment(new Date('01-01-1980')).format('YYYY-MM-DD'),
+  departmentId: '',
+  reportingTo: '',
+  payRate: '',
+  payType: '',
+  dob: null,
   maritalStatus: '',
   gender: '',
   country: '',
@@ -57,61 +48,57 @@ const initialState = {
   designation: null,
   jobDesc: '',
   about: '',
-}
+};
 
 function AddEmployeeDialog(props) {
-  const classes = useStyles();
-  const { loading, closeNewEmployeeDialog, openNewEmployeeTypeDialog, createEmployee, updateEmployee, departments, roles, branches, employeeTypes, sourcesOfHire, payRates, payTypes, employees, dialog } = props;
+  const {
+    loading,
+    closeNewEmployeeDialog,
+    openNewEmployeeTypeDialog,
+    createEmployee,
+    updateEmployee,
+    departments,
+    roles,
+    branches,
+    employeeTypes,
+    sourcesOfHire,
+    payRates,
+    payTypes,
+    employees,
+    positions,
+    dialog,
+  } = props;
 
-  const [step, setStep] = React.useState(0)
+  const [step, setStep] = React.useState(0);
   const [form, setForm] = React.useState({ ...initialState });
 
-  console.log(dialog, "dialog")
+  console.log(dialog, 'dialog');
 
   React.useEffect(() => {
     if (dialog.type === 'edit') {
-      setForm({ ...dialog.data })
+      setForm({ ...dialog.data });
     } else {
-      setForm({ ...initialState })
+      setForm({ ...initialState });
     }
-  }, [dialog])
+  }, [dialog]);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target
+  const handleChange = event => {
+    const { name, value } = event.target;
     setForm({ ...form, [name]: value });
-  }
+  };
+
   const handleSelectChange = name => (event, obj) => {
-    name === 'state' ?
-      setForm({ ...form, [name]: obj }) :
-      setForm({ ...form, [name]: obj.name }); // country
+    name === 'state'
+      ? setForm({ ...form, [name]: obj })
+      : setForm({ ...form, [name]: obj.name }); // country
   };
 
-  const handleItemChange = ({ target }) => {
-    const { name, value } = target
-    switch (name) {
-      case 'department':
-        setForm({ ...form, [name]: { id: value } }); break;
-      case 'branch':
-        setForm({ ...form, [name]: { id: value } }); break;
-      case 'employeeType':
-        setForm({ ...form, [name]: _.find(employeeTypes, { id: value }) }); break;
-      case 'sourceOfHire':
-        setForm({ ...form, [name]: _.find(sourcesOfHire, { id: value }) }); break;
-      case 'payRate':
-        setForm({ ...form, [name]: _.find(payRates, { id: value }) }); break;
-      case 'payType':
-        setForm({ ...form, [name]: _.find(payTypes, { id: value }) }); break;
-      case 'reportingTo':
-        setForm({ ...form, [name]: _.find(employees, { id: value }) }); break;
-    }
-  };
-
-  const handleAddRow = (event) => {
+  const handleAddRow = event => {
     const newObj = { degree: '', fieldOfStudy: '' };
-    const { education } = form
-    const newEducation = [...education, newObj]
+    const { education } = form;
+    const newEducation = [...education, newObj];
 
-    setForm({ ...form, 'education': newEducation });
+    setForm({ ...form, education: newEducation });
   };
 
   const handleRemoveRow = index => {
@@ -120,27 +107,26 @@ function AddEmployeeDialog(props) {
   };
 
   const handleDateChange = (date, name) => {
-    setForm(_.set({ ...form }, name, moment(date).format('YYYY-MM-DD')))
-  }
+    setForm(_.set({ ...form }, name, moment(date).format('YYYY-MM-DD')));
+  };
 
   const handleSubmit = () => {
-    dialog.type === 'new' ?
-      createEmployee(form) : updateEmployee(form);
-  }
+    dialog.type === 'new' ? createEmployee(form) : updateEmployee(form);
+  };
 
   const handleNext = () => {
     if (step > -1 && step < 3) {
-      setStep(step + 1)
+      setStep(step + 1);
     }
-  }
+  };
 
   const handlePrev = () => {
     if (step => 1 && step <= 3) {
       setStep(step - 1);
     }
-  }
+  };
 
-  console.log(form, 'checking form employee...')
+  console.log(form, 'checking form employee...');
 
   return (
     <div>
@@ -151,9 +137,11 @@ function AddEmployeeDialog(props) {
         onClose={closeNewEmployeeDialog}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
+        maxWidth="sm"
+        fullWidth
       >
         {step === 0 && (
-          <Form
+          <BasicForm
             handleDateChange={handleDateChange}
             handleChange={handleChange}
             form={form}
@@ -166,7 +154,6 @@ function AddEmployeeDialog(props) {
           <WorkForm
             handleDateChange={handleDateChange}
             handleChange={handleChange}
-            handleItemChange={handleItemChange}
             openNewEmployeeTypeDialog={openNewEmployeeTypeDialog}
             form={form}
             departments={departments}
@@ -177,6 +164,7 @@ function AddEmployeeDialog(props) {
             payRates={payRates}
             payTypes={payTypes}
             employees={employees}
+            positions={positions}
             closeNewEmployeeDialog={closeNewEmployeeDialog}
             handleSubmit={handleSubmit}
             handleNext={handleNext}
@@ -222,7 +210,6 @@ function AddEmployeeDialog(props) {
   );
 }
 
-
 AddEmployeeDialog.propTypes = {
   closeNewEmployeeDialog: PropTypes.func,
 };
@@ -238,15 +225,17 @@ const mapStateToProps = createStructuredSelector({
   payTypes: Selectors.makeSelectPayTypes(),
   roles: Selectors.makeSelectRoles(),
   branches: Selectors.makeSelectBranches(),
+  positions: Selectors.makeSelectPositions(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     closeNewEmployeeDialog: () => dispatch(Actions.closeNewEmployeeDialog()),
-    openNewEmployeeTypeDialog: (data) => dispatch(Actions.openNewEmployeeTypeDialog(data)),
+    openNewEmployeeTypeDialog: data =>
+      dispatch(Actions.openNewEmployeeTypeDialog(data)),
     getEmployees: () => dispatch(Actions.getEmployees()),
-    createEmployee: (data) => dispatch(Actions.createEmployee(data)),
-    updateEmployee: (data) => dispatch(Actions.updateEmployee(data)),
+    createEmployee: data => dispatch(Actions.createEmployee(data)),
+    updateEmployee: data => dispatch(Actions.updateEmployee(data)),
     dispatch,
   };
 }

@@ -8,7 +8,10 @@ import {
   makeStyles,
   Button,
   IconButton,
-  Card, CardHeader, CardContent, CardActions,
+  Card,
+  CardHeader,
+  CardContent,
+  CardActions,
   Grid,
   FormControl,
   FormControlLabel,
@@ -18,7 +21,7 @@ import {
   Typography,
   Toolbar,
 } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit'
+import EditIcon from '@material-ui/icons/Edit';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import moment from 'moment';
@@ -28,18 +31,18 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     '& .MuiCardHeader-root': {
-      borderBottom: `1px solid ${theme.palette.divider}`
+      borderBottom: `1px solid ${theme.palette.divider}`,
     },
   },
   toolbar: {
     padding: theme.spacing(0, 2),
-    borderBottom: `1px dotted ${theme.palette.divider}`
+    borderBottom: `1px dotted ${theme.palette.divider}`,
   },
   paper: {
     padding: theme.spacing(2),
     margin: theme.spacing(1, 0),
     borderRadius: 0,
-    boxShadow: theme.shadows[0]
+    boxShadow: theme.shadows[0],
   },
 }));
 
@@ -48,14 +51,14 @@ const PayrunSettings = props => {
   const { history, match, payrunSettings } = props;
   const [form, setForm] = useState({
     allowPayslip: false,
-    schedule: "",
-    period: 'days'
-  })
+    schedule: '',
+    period: 'days',
+  });
 
   const handleChange = event => {
-    const { name, value, type, checked } = event.target
-    setForm({ ...form, [name]: type === 'checkbox' ? checked : value })
-  }
+    const { name, value, type, checked } = event.target;
+    setForm({ ...form, [name]: type === 'checkbox' ? checked : value });
+  };
 
   if (!payrunSettings) {
     // return "No Setting available";
@@ -64,9 +67,9 @@ const PayrunSettings = props => {
   return (
     <Card className={classes.root}>
       <CardHeader
-        title="Payrun Settings"
+        title="Payrun settings"
         action={
-          <IconButton onClick={() => { }}>
+          <IconButton onClick={() => {}}>
             <EditIcon />
           </IconButton>
         }
@@ -120,7 +123,7 @@ const PayrunSettings = props => {
                   value={form.period}
                   onChange={handleChange}
                 >
-                  {['days', 'weeks', 'months', 'years'].map((option) => (
+                  {['days', 'weeks', 'months', 'years'].map(option => (
                     <MenuItem key={option} value={option}>
                       {option}
                     </MenuItem>

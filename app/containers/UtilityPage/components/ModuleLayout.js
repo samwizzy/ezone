@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import * as Actions from '../actions';
-import MenuBar from '../../../components/MenuBar'
+import MenuBar from '../../../components/MenuBar';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -15,14 +15,12 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(2),
   },
   active: {
     backgroundColor: theme.palette.common.white,
     color: `${darken(theme.palette.primary.main, 0.1)} !important`,
   },
 }));
-
 
 function ModuleLayout(props) {
   const classes = useStyles();
@@ -38,16 +36,15 @@ function ModuleLayout(props) {
             <NavLink to="/task-manager/tasks" activeClassName={classes.active}>
               Tasks
             </NavLink>
-            <NavLink to="/file-manager/folders" activeClassName={classes.active}>
+            <NavLink
+              to="/file-manager/folders"
+              activeClassName={classes.active}
+            >
               Files
             </NavLink>
           </React.Fragment>
         }
-        content={
-          <div className={classes.content}>
-            {props.children}
-          </div>
-        }
+        content={<div className={classes.content}>{props.children}</div>}
       />
     </div>
   );

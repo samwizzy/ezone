@@ -36,7 +36,7 @@ import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
 }));
 
@@ -116,7 +116,7 @@ const EmployeeDialog = props => {
       <DialogContent dividers>
         <TextField
           id="standard-first-name"
-          label="First Name"
+          label="First name"
           variant="outlined"
           size="small"
           value={values.firstName}
@@ -126,7 +126,7 @@ const EmployeeDialog = props => {
         />
         <TextField
           id="standard-Last-Name"
-          label="Last Name"
+          label="Last name"
           variant="outlined"
           size="small"
           value={values.lastName}
@@ -149,7 +149,7 @@ const EmployeeDialog = props => {
 
         <TextField
           id="standard-phone-number"
-          label="Phone Number"
+          label="Phone number"
           type="number"
           variant="outlined"
           size="small"
@@ -184,7 +184,7 @@ const EmployeeDialog = props => {
 
         <TextField
           id="standard-select-gender"
-          label="Select Gender"
+          label="Select gender"
           variant="outlined"
           size="small"
           margin="normal"

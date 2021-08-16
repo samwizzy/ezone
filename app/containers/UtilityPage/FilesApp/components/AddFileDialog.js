@@ -1,26 +1,35 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import DateFnsUtils from '@date-io/date-fns'; // choose your lib
 import {
-  DatePicker,
-  TimePicker,
-  KeyboardTimePicker,
   KeyboardDatePicker,
-  DateTimePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Slide, Typography, TextField } from '@material-ui/core';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+  Grid,
+  Slide,
+  Typography,
+  TextField,
+} from '@material-ui/core';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
+import AttachFileIcon from '@material-ui/icons/AttachFile';
 
 const useStyles = makeStyles(theme => ({
   root: {
     '& .MuiTextField-root': {
-      margin: theme.spacing(1, 0)
+      margin: theme.spacing(1, 0),
     },
   },
 }));
@@ -32,14 +41,20 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function AddFileDialog(props) {
   const classes = useStyles();
   const { closeNewTaskDialog, dialog } = props;
-  const [form, setForm] = React.useState({ task: '', description: '', startTime: new Date(), endTime: new Date(), emails: [] });
+  const [form, setForm] = React.useState({
+    task: '',
+    description: '',
+    startTime: new Date(),
+    endTime: new Date(),
+    emails: [],
+  });
 
-  const handleChange = () => { }
+  const handleChange = () => {};
   const handleDateChange = date => {
-    setForm({ form: { ...form, startTime: date } })
-  }
+    setForm({ form: { ...form, startTime: date } });
+  };
 
-  console.log(dialog, 'checking file dialog...')
+  console.log(dialog, 'checking file dialog...');
 
   return (
     <div>
@@ -148,14 +163,13 @@ function AddFileDialog(props) {
   );
 }
 
-
 AddFileDialog.propTypes = {
   openNewTaskDialog: PropTypes.func,
-  closeNewTaskDialog: PropTypes.func
+  closeNewTaskDialog: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  dialog: Selectors.makeSelectNewFileDialog()
+  dialog: Selectors.makeSelectNewFileDialog(),
 });
 
 function mapDispatchToProps(dispatch) {

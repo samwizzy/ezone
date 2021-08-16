@@ -43,8 +43,12 @@ const legendItemBase = ({ classes, ...restProps }) => (
   <Legend.Item className={classes.item} {...restProps} />
 );
 const Root = withStyles(legendStyles, { name: 'LegendRoot' })(legendRootBase);
-const Label = withStyles(legendLabelStyles, { name: 'LegendLabel' })(legendLabelBase);
-const Item = withStyles(legendItemStyles, { name: 'LegendItem' })(legendItemBase);
+const Label = withStyles(legendLabelStyles, { name: 'LegendLabel' })(
+  legendLabelBase,
+);
+const Item = withStyles(legendItemStyles, { name: 'LegendItem' })(
+  legendItemBase,
+);
 const demoStyles = () => ({
   chart: {
     paddingRight: '20px',
@@ -54,20 +58,15 @@ const demoStyles = () => ({
   },
 });
 
-const ValueLabel = (props) => {
+const ValueLabel = props => {
   const { text } = props;
-  return (
-    <ValueAxis.Label
-      {...props}
-      text={`${text}%`}
-    />
-  );
+  return <ValueAxis.Label {...props} text={`${text}%`} />;
 };
 
 const titleStyles = {
   title: {
     whiteSpace: 'pre',
-    textAlign: 'left !important'
+    textAlign: 'left !important',
   },
 };
 const TitleText = withStyles(titleStyles)(({ classes, ...props }) => (
@@ -89,34 +88,25 @@ class Demo extends React.PureComponent {
 
     return (
       <Paper>
-        <Chart
-          data={chartData}
-          className={classes.chart}
-        >
+        <Chart data={chartData} className={classes.chart}>
           <ArgumentAxis tickFormat={format} />
-          <ValueAxis
-            max={50}
-            labelComponent={ValueLabel}
-          />
+          <ValueAxis max={50} labelComponent={ValueLabel} />
 
-          <LineSeries
-            name="TV news"
-            valueField="tvNews"
-            argumentField="year"
-          />
-          <LineSeries
-            name="Church"
-            valueField="church"
-            argumentField="year"
-          />
+          <LineSeries name="TV news" valueField="tvNews" argumentField="year" />
+          <LineSeries name="Church" valueField="church" argumentField="year" />
           <LineSeries
             name="Military"
             valueField="military"
             argumentField="year"
           />
-          <Legend position="bottom" rootComponent={Root} itemComponent={Item} labelComponent={Label} />
+          <Legend
+            position="bottom"
+            rootComponent={Root}
+            itemComponent={Item}
+            labelComponent={Label}
+          />
           <Title
-            text={`Income and Expenses ${'\n'}`}
+            text={`Income and expenses ${'\n'}`}
             textComponent={TitleText}
           />
           <Animation />

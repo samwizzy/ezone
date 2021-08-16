@@ -1,12 +1,19 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles'
-import { withRouter } from 'react-router-dom'
-import { List, ListItem, ListSubheader, ListItemText, ListItemIcon, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom';
+import {
+  List,
+  ListItem,
+  ListSubheader,
+  ListItemText,
+  ListItemIcon,
+  Typography,
+} from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import Description from '@material-ui/icons/Description'
+import Description from '@material-ui/icons/Description';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
 import * as AppSelectors from './../../App/selectors';
@@ -23,33 +30,40 @@ const useStyles = makeStyles(theme => ({
     overflowY: 'auto',
     // borderRight: `1px solid ${theme.palette.divider}`,
     minHeight: `calc(100vh - 128px)`,
-    // minHeight: '100vh',
-    "& .MuiListSubheader-root": {
+    minHeight: '100vh',
+    '& .MuiListSubheader-root': {
       backgroundColor: theme.palette.background.paper,
       padding: theme.spacing(2),
     },
-    "& .MuiListItem-root": {
-      "& .MuiListItemIcon-root": {
-        minWidth: "40px !important"
+    '& .MuiListItem-root': {
+      '& .MuiListItemIcon-root': {
+        minWidth: '40px !important',
       },
-      "&:hover > .MuiListItemIcon-root": {
-        color: theme.palette.primary.main
-      },
-      "&:hover": {
+      '&:hover > .MuiListItemIcon-root': {
         color: theme.palette.primary.main,
       },
-    }
+      '&:hover': {
+        color: theme.palette.primary.main,
+      },
+    },
   },
 }));
 
 const FolderSideBar = props => {
   const classes = useStyles();
-  const { loading, folders, folder, user, getAllFoldersAndDocs, getFavoriteDocuments } = props
+  const {
+    loading,
+    folders,
+    folder,
+    user,
+    getAllFoldersAndDocs,
+    getFavoriteDocuments,
+  } = props;
 
   const getAllFolders = () => {
-    props.history.push('/file-manager/folders')
-    getAllFoldersAndDocs({ folderId: 0, type: 'ROOT' })
-  }
+    props.history.push('/file-manager/folders');
+    getAllFoldersAndDocs({ folderId: 0, type: 'ROOT' });
+  };
 
   return (
     <div className={classes.root}>
@@ -74,13 +88,19 @@ const FolderSideBar = props => {
           </ListItemIcon>
           <ListItemText primary="Favorite" />
         </ListItem>
-        <ListItem button onClick={() => getAllFoldersAndDocs({ folderId: 3, type: 'SHARED' })}>
+        <ListItem
+          button
+          onClick={() => getAllFoldersAndDocs({ folderId: 3, type: 'SHARED' })}
+        >
           <ListItemIcon>
             <Share />
           </ListItemIcon>
           <ListItemText primary="Shared" />
         </ListItem>
-        <ListItem button onClick={() => getAllFoldersAndDocs({ folderId: 2, type: 'TRASHED' })}>
+        <ListItem
+          button
+          onClick={() => getAllFoldersAndDocs({ folderId: 2, type: 'TRASHED' })}
+        >
           <ListItemIcon>
             <Delete />
           </ListItemIcon>
@@ -106,8 +126,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAllFoldersAndDocs: (data) => dispatch(Actions.getAllFoldersAndDocs(data)),
-    getFavoriteDocuments: (uuid) => dispatch(Actions.getFavoriteDocuments(uuid)),
+    getAllFoldersAndDocs: data => dispatch(Actions.getAllFoldersAndDocs(data)),
+    getFavoriteDocuments: uuid => dispatch(Actions.getFavoriteDocuments(uuid)),
   };
 }
 
@@ -121,4 +141,3 @@ export default compose(
   withConnect,
   memo,
 )(FolderSideBar);
-

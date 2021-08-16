@@ -1,7 +1,5 @@
 import React, { useEffect, memo } from 'react';
-import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
@@ -29,7 +27,7 @@ export function LeaveManagementPage(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
-  React.useEffect(() => {
+  useEffect(() => {
     getAttendance();
     getEmployees();
     getDepartments();
@@ -41,8 +39,8 @@ export function LeaveManagementPage(props) {
   return (
     <React.Fragment>
       <Helmet>
-        <title>Leave Management Page</title>
-        <meta name="description" content="ezone application leave management page" />
+        <title>Human Resource — Leave Management</title>
+        <meta name="description" content="ezone application leave management" />
       </Helmet>
 
       <ModuleLayout />

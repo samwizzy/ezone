@@ -1,6 +1,6 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import ModuleLayout from './ModuleLayout'
+import ModuleLayout from './ModuleLayout';
 import { Helmet } from 'react-helmet';
 import { Route, withRouter } from 'react-router-dom';
 import { compose } from 'redux';
@@ -13,21 +13,19 @@ import saga from './saga';
 import reducer from './reducer';
 import makeSelectDashboard, * as Selectors from './selectors';
 import * as PayrollSelectors from './../selectors';
-import ReportDashboard from './components/ReportDashboard'
+import ReportDashboard from './components/ReportDashboard';
 
-const key = "reports";
-const Reports = (props) => {
+const key = 'reports';
+const Reports = props => {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
-  const { loading } = props
 
-  useEffect(() => {
-  }, [])
+  const { loading } = props;
 
   return (
     <div>
       <Helmet>
-        <title>Reports</title>
+        <title>Payroll — Reports</title>
         <meta name="description" content="Description of Reports" />
       </Helmet>
 

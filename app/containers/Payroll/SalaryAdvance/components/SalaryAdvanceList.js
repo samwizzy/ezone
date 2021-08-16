@@ -34,10 +34,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   datatable: {
-    '& table': {
-      width: '96% !important',
-      margin: '4px auto',
-    },
     whiteSpace: 'nowrap',
     '& tr:hover': {
       cursor: 'pointer',
@@ -68,7 +64,9 @@ const useStyles = makeStyles(theme => ({
 const SalaryAdvanceList = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedSalaryAdvance, setSelectedSalaryAdvance] = React.useState(null);
+  const [selectedSalaryAdvance, setSelectedSalaryAdvance] = React.useState(
+    null,
+  );
 
   const {
     loading,
@@ -83,7 +81,7 @@ const SalaryAdvanceList = props => {
   } = props;
 
   const handleClick = (event, id) => {
-    event.stopPropagation()
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
     setSelectedSalaryAdvance(_.find(salaryAdvances, { id }));
   };
@@ -100,7 +98,7 @@ const SalaryAdvanceList = props => {
   };
 
   const handleEditClick = () => {
-    openEditSalaryAdvanceDialog(selectedSalaryAdvance)
+    openEditSalaryAdvanceDialog(selectedSalaryAdvance);
     setAnchorEl(null);
   };
 
@@ -109,10 +107,14 @@ const SalaryAdvanceList = props => {
     history.push(`${match.url}/${id}`);
   };
 
-  const orderedSalaryAdvances = _.orderBy(salaryAdvances, 'dateCreated', 'desc')
+  const orderedSalaryAdvances = _.orderBy(
+    salaryAdvances,
+    'dateCreated',
+    'desc',
+  );
 
   if (loading) {
-    return <CircleLoader />
+    return <CircleLoader />;
   }
 
   const columns = [
@@ -127,7 +129,7 @@ const SalaryAdvanceList = props => {
     },
     {
       name: 'accountName',
-      label: 'Pay Period',
+      label: 'Pay period',
       options: {
         filter: true,
         sort: false,
@@ -135,7 +137,7 @@ const SalaryAdvanceList = props => {
     },
     {
       name: 'accountCode',
-      label: 'Ref Code',
+      label: 'Ref code',
       options: {
         filter: true,
         sort: false,
@@ -164,9 +166,11 @@ const SalaryAdvanceList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const salaryAdvance = salaryAdvances.find(account => account.id === value)
-          return EzoneUtils.formatCurrency(salaryAdvance.bankBalance, 'NGN')
-        }
+          const salaryAdvance = salaryAdvances.find(
+            account => account.id === value,
+          );
+          return EzoneUtils.formatCurrency(salaryAdvance.bankBalance, 'NGN');
+        },
       },
     },
     {
@@ -176,22 +180,50 @@ const SalaryAdvanceList = props => {
         filter: true,
         sort: true,
         customBodyRender: status => {
-          return status
-            ? <Chip label="Active" variant="outlined" icon={<CheckCircleIcon className={classNames(classes.status, { active: status })} />} />
-            : <Chip label="Inactive" variant="outlined" icon={<RadioButtonUncheckedIcon />} />
+          return status ? (
+            <Chip
+              label="Active"
+              variant="outlined"
+              icon={
+                <CheckCircleIcon
+                  className={classNames(classes.status, { active: status })}
+                />
+              }
+            />
+          ) : (
+            <Chip
+              label="Inactive"
+              variant="outlined"
+              icon={<RadioButtonUncheckedIcon />}
+            />
+          );
         },
       },
     },
     {
       name: 'status',
-      label: 'Payment Status',
+      label: 'Payment status',
       options: {
         filter: true,
         sort: true,
         customBodyRender: status => {
-          return status
-            ? <Chip label="Active" variant="outlined" icon={<CheckCircleIcon className={classNames(classes.status, { active: status })} />} />
-            : <Chip label="Inactive" variant="outlined" icon={<RadioButtonUncheckedIcon />} />
+          return status ? (
+            <Chip
+              label="Active"
+              variant="outlined"
+              icon={
+                <CheckCircleIcon
+                  className={classNames(classes.status, { active: status })}
+                />
+              }
+            />
+          ) : (
+            <Chip
+              label="Inactive"
+              variant="outlined"
+              icon={<RadioButtonUncheckedIcon />}
+            />
+          );
         },
       },
     },
@@ -209,14 +241,14 @@ const SalaryAdvanceList = props => {
       },
     },
     customToolbar: () => (
-      <Tooltip title="Create Salary Advance">
+      <Tooltip title="Create salary advance">
         <Button
           variant="contained"
           color="primary"
           startIcon={<AddIcon />}
           onClick={() => openNewSalaryAdvanceDialog()}
         >
-          Add Salary Advance
+          Add salary advance
         </Button>
       </Tooltip>
     ),
@@ -230,7 +262,7 @@ const SalaryAdvanceList = props => {
     <div className={classes.root}>
       <MUIDataTable
         className={classes.datatable}
-        title="Salary Advances"
+        title="Salary advances"
         data={[]}
         columns={columns}
         options={options}
@@ -245,14 +277,18 @@ const SalaryAdvanceList = props => {
       >
         <MenuItem
           onClick={() => openDeleteSalaryAdvanceDialog(selectedSalaryAdvance)}
-          disabled={selectedSalaryAdvance && Boolean(selectedSalaryAdvance.transfers.length)}
+          disabled={
+            selectedSalaryAdvance &&
+            Boolean(selectedSalaryAdvance.transfers.length)
+          }
         >
           Delete
         </MenuItem>
         <MenuItem
           onClick={handleEditClick}
           disabled={
-            selectedSalaryAdvance && Boolean(selectedSalaryAdvance.transfers.length)
+            selectedSalaryAdvance &&
+            Boolean(selectedSalaryAdvance.transfers.length)
           }
         >
           Edit
@@ -276,9 +312,12 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getSalaryAdvanceById: data => dispatch(Actions.getSalaryAdvanceById(data)),
-    openNewSalaryAdvanceDialog: () => dispatch(Actions.openNewSalaryAdvanceDialog()),
-    openEditSalaryAdvanceDialog: data => dispatch(Actions.openEditSalaryAdvanceDialog(data)),
-    openDeleteSalaryAdvanceDialog: data => dispatch(Actions.openDeleteSalaryAdvanceDialog(data)),
+    openNewSalaryAdvanceDialog: () =>
+      dispatch(Actions.openNewSalaryAdvanceDialog()),
+    openEditSalaryAdvanceDialog: data =>
+      dispatch(Actions.openEditSalaryAdvanceDialog(data)),
+    openDeleteSalaryAdvanceDialog: data =>
+      dispatch(Actions.openDeleteSalaryAdvanceDialog(data)),
   };
 }
 

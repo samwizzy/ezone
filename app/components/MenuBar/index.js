@@ -7,7 +7,7 @@ import {
   makeStyles,
   AppBar,
   Toolbar,
-  Paper
+  Paper,
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { withRouter, NavLink } from 'react-router-dom';
@@ -23,30 +23,33 @@ const drawerHeight = 48;
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    minHeight: `calc(100vh - ${drawerHeight}px)`
+    minHeight: `calc(100vh - ${drawerHeight}px)`,
   },
   appBar: {
-    background: `${theme.palette.primary.main} url(${navBarImage}) no-repeat right top`,
-    backgroundSize: "cover",
+    background: `${
+      theme.palette.primary.main
+    } url(${navBarImage}) no-repeat right top`,
+    backgroundSize: 'cover',
     overflowY: 'hidden',
   },
   content: {
     flexGrow: 1,
-    backgroundColor: "transparent",
-    padding: theme.spacing(2)
+    backgroundColor: '#F3F4F6', // transparent
+    padding: theme.spacing(3, 2),
+    minHeight: '100vh',
   },
   toolbar: {
     display: 'flex',
     justifyContent: 'space-between',
-    "& .MuiIconButton-label": {
+    '& .MuiIconButton-label': {
       color: theme.palette.common.white,
     },
     '& > div:first-child': {
-      // flexGrow: 1, 
+      // flexGrow: 1,
       display: 'flex',
       color: theme.palette.common.white,
       '& a': {
-        display: "flex",
+        display: 'flex',
         color: theme.palette.common.white,
         marginLeft: '20px',
         marginBottom: '-4px',
@@ -71,12 +74,11 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
-  active: { 
-    backgroundColor: theme.palette.common.white,  
+  active: {
+    backgroundColor: theme.palette.common.white,
     color: `${darken(theme.palette.primary.main, 0.1)} !important`,
   },
 }));
-
 
 function MenuBar(props) {
   const classes = useStyles();
@@ -87,9 +89,13 @@ function MenuBar(props) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="relative" elevation={0} color="inherit" className={classes.appBar}>
+      <AppBar
+        position="relative"
+        elevation={0}
+        color="inherit"
+        className={classes.appBar}
+      >
         <Toolbar variant="dense" className={classes.toolbar}>
-
           <div>
             <IconButton aria-label="delete" onClick={refreshPage}>
               <RefreshSharp />
@@ -102,9 +108,7 @@ function MenuBar(props) {
       </AppBar>
 
       <main className={classes.content}>
-        <Paper square elevation={0}>
-          {props.content}
-        </Paper>
+        <React.Fragment>{props.content}</React.Fragment>
       </main>
     </div>
   );

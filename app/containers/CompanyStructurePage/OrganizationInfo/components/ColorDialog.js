@@ -1,18 +1,10 @@
-/**
- *
- * AllPosts
- *
- */
-
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 // import ColorPicker from 'material-ui-color-picker';
 import {
-  TextField,
-  makeStyles,
   Button,
   Dialog,
   DialogContent,
@@ -26,20 +18,13 @@ import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
 import PaperDropzone from './PaperDropzone';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-}));
-
 const ColorDialog = props => {
   const { colorDialog, closeEditColorDialog, updateCompanyInfoAction } = props;
-  const classes = useStyles();
 
   const [values, setValues] = useState({ ...colorDialog.data });
 
   const handleChange = name => color => {
-    console.log(color, "event fr color")
+    console.log(color, 'event fr color');
     setValues({ ...colorDialog.data, [name]: color });
   };
 
@@ -51,11 +36,10 @@ const ColorDialog = props => {
   };
 
   const closeComposeDialog = () => {
-    // eslint-disable-next-line no-unused-expressions
     colorDialog.type === 'new' ? '' : closeEditColorDialog();
   };
 
-  console.log(values, "update values")
+  console.log(values, 'update values');
 
   return (
     <div>
@@ -70,7 +54,7 @@ const ColorDialog = props => {
           <AppBar position="static" elevation={1}>
             <Toolbar>
               <Typography variant="h6">
-                {colorDialog.type === 'new' ? '' : 'Edit Logo And Color'}
+                {colorDialog.type === 'new' ? '' : 'Edit logo & color'}
               </Typography>
             </Toolbar>
           </AppBar>
@@ -79,45 +63,46 @@ const ColorDialog = props => {
             {colorDialog.type === 'new' ? (
               <div />
             ) : (
-                <React.Fragment>
-                  <ColorPicker
-                    name="color"
-                    defaultValue="#000000"
-                    value={values.color || ''}
-                    variant="outlined"
-                    onChange={handleChange('color')}
-                    label="Choose Company Color"
-                    margin="normal"
-                    fullWidth
-                    helperText={`Color selected: ${values.color}`}
-                  />
-                  <PaperDropzone uploadFileAction={uploadFileAction} />
-                </React.Fragment>
-              )}
-          </DialogContent>
-          {colorDialog.type === 'new' ? (
-            <div />
-          ) : (
-              <DialogActions>
-                <Button
-                  onClick={() => {
-                    updateCompanyInfoAction(values);
-                    closeComposeDialog();
-                  }}
-                  color="primary"
-                  variant="contained"
-                >
-                  Upload
-              </Button>
-                <Button
-                  onClick={() => closeComposeDialog()}
-                  color="primary"
+              <React.Fragment>
+                <ColorPicker
+                  name="color"
+                  defaultValue="#000000"
+                  value={values.color || ''}
                   variant="outlined"
-                >
-                  Cancel
-              </Button>
-              </DialogActions>
+                  onChange={handleChange('color')}
+                  label="Choose Company Color"
+                  margin="dense"
+                  fullWidth
+                  helperText={`Color selected: ${values.color || ''}`}
+                />
+                <PaperDropzone uploadFileAction={uploadFileAction} />
+              </React.Fragment>
             )}
+          </DialogContent>
+
+          <DialogActions>
+            {colorDialog.type === 'new' ? (
+              <div />
+            ) : (
+              <Button
+                onClick={() => {
+                  updateCompanyInfoAction(values);
+                  closeComposeDialog();
+                }}
+                color="primary"
+                variant="contained"
+              >
+                Upload
+              </Button>
+            )}
+            <Button
+              onClick={() => closeComposeDialog()}
+              color="primary"
+              variant="outlined"
+            >
+              Cancel
+            </Button>
+          </DialogActions>
         </Dialog>
       )}
     </div>

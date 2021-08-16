@@ -1,32 +1,44 @@
 import React, { Fragment, memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { AppBar, Button, Grid, MenuItem, Paper, TextField, Toolbar, Typography } from '@material-ui/core';
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import { makeStyles } from '@material-ui/core/styles';
+import {
+  AppBar,
+  Button,
+  Grid,
+  MenuItem,
+  Paper,
+  TextField,
+  Toolbar,
+} from '@material-ui/core';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { CircleLoader } from '../../../components/LoadingIndicator'
-import moment from 'moment'
-import _ from 'lodash'
+import { CircleLoader } from '../../../components/LoadingIndicator';
+import moment from 'moment';
+import _ from 'lodash';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import * as AppSelectors from '../../App/selectors';
-import AnnouncementItem from './announcements/AnnouncementItem'
-import DataMessage from '../components/DataMessage'
+import { Title } from '../../../components';
+import AnnouncementItem from './announcements/AnnouncementItem';
+import DataMessage from '../components/DataMessage';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   toolbar: {
-    justifyContent: "space-between",
-    ...theme.mixins.toolbar
+    borderTop: `1px solid ${theme.palette.divider}`,
+    justifyContent: 'space-between',
+    ...theme.mixins.toolbar,
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
   },
 }));
 
@@ -35,7 +47,7 @@ const severity = [
   { label: 'Medium', value: 'MEDIUM' },
   { label: 'High', value: 'HIGH' },
   { label: 'Critical', value: 'CRITICAL' },
-]
+];
 
 const Announcement = props => {
   const classes = useStyles();
@@ -47,68 +59,86 @@ const Announcement = props => {
     getAnnouncementById,
   } = props;
 
-  const orderedAnnouncements = _.orderBy(announcements, 'dateCreated', 'desc')
+  const orderedAnnouncements = _.orderBy(announcements, 'dateCreated', 'desc');
 
   const [state, setState] = useState({
     announcements,
     search: '',
     severity: '',
     month: moment().format('MM'),
-    year: moment().format('YYYY')
-  })
+    year: moment().format('YYYY'),
+  });
 
   useEffect(() => {
-    console.log(moment('2020-10-20').diff(moment()), "moment diff")
-    setState((state) => ({ ...state, announcements: orderedAnnouncements }))
-  }, [announcements])
+    console.log(moment('2020-10-20').diff(moment()), 'moment diff');
+    setState(state => ({ ...state, announcements: orderedAnnouncements }));
+  }, [announcements]);
 
   const handleChange = event => {
-    const { name, value } = event.target
-    setState({ ...state, [name]: value })
-  }
+    const { name, value } = event.target;
+    setState({ ...state, [name]: value });
+  };
 
   const handleDateChange = name => date => {
-    setState({ ...state, [name]: name === 'year' ? moment(date).format('YYYY') : moment(date).format('MM') })
-  }
+    setState({
+      ...state,
+      [name]:
+        name === 'year'
+          ? moment(date).format('YYYY')
+          : moment(date).format('MM'),
+    });
+  };
 
-  const handleTextChange = (e) => {
+  const handleTextChange = e => {
     const value = e.target.value;
     let filteredAnnouncements = [];
     if (value.length > 0) {
       const regex = new RegExp(`^${value}`, 'i');
-      filteredAnnouncements = orderedAnnouncements && orderedAnnouncements.sort().filter(v => regex.test(v.title))
+      filteredAnnouncements =
+        orderedAnnouncements &&
+        orderedAnnouncements.sort().filter(v => regex.test(v.title));
     } else {
-      filteredAnnouncements = [...orderedAnnouncements]
+      filteredAnnouncements = [...orderedAnnouncements];
     }
 
-    setState((state) => ({
+    setState(state => ({
       ...state,
       announcements: filteredAnnouncements,
-      search: value
-    }))
-  }
+      search: value,
+    }));
+  };
 
-  console.log(announcements, "announcements")
-  console.log(state, "state")
+  console.log(announcements, 'announcements');
 
-  if (!announcements.length > 0) {
-    return <CircleLoader />
+  if (loading) {
+    return <CircleLoader />;
   }
 
   return (
     <div className={classes.root}>
       <Grid container>
         <Grid item xs={12}>
-          <AppBar position="static" color="inherit" elevation={1}>
-            <Toolbar variant="dense">
-              <Typography variant="h6" className={classes.title}>
-                Announcements
-              </Typography>
-              <Button variant="contained" disableElevation color="primary" onClick={openNewAnnouncementDialog}>Add Announcement</Button>
+          <AppBar position="static" color="inherit" elevation={0}>
+            <Toolbar variant="regular">
+              <Title className={classes.title}>Announcements</Title>
+              <Button
+                variant="contained"
+                disableElevation
+                color="primary"
+                onClick={openNewAnnouncementDialog}
+              >
+                Add Announcement
+              </Button>
             </Toolbar>
           </AppBar>
 
-          <Toolbar variant="dense" className={classes.toolbar}>
+          <Toolbar
+            variant="dense"
+            className={classes.toolbar}
+            component={Paper}
+            elevation={0}
+            square
+          >
             <TextField
               id="search"
               name="search"
@@ -130,24 +160,24 @@ const Announcement = props => {
                 variant="outlined"
                 size="small"
                 label="Severity"
-                style={{ minWidth: 200, marginRight: 2 }}
+                style={{ minWidth: 200, marginRight: 4 }}
                 value={state.severity}
                 onChange={handleChange}
               >
-                {severity.map((severe, i) =>
+                {severity.map((severe, i) => (
                   <MenuItem key={i} value={severe.value}>
                     {severe.label}
                   </MenuItem>
-                )}
+                ))}
               </TextField>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
                   autoOk
-                  views={["month"]}
+                  views={['month']}
                   inputVariant="outlined"
                   format="MM"
                   margin="normal"
-                  style={{ marginRight: 2 }}
+                  style={{ minWidth: 200, marginRight: 3 }}
                   size="small"
                   name="month"
                   id="month"
@@ -163,10 +193,11 @@ const Announcement = props => {
                 <KeyboardDatePicker
                   autoOk
                   disableFuture
-                  views={["year"]}
+                  views={['year']}
                   inputVariant="outlined"
                   format="yyyy"
                   margin="normal"
+                  style={{ minWidth: 200 }}
                   size="small"
                   name="year"
                   id="year"
@@ -182,18 +213,19 @@ const Announcement = props => {
           </Toolbar>
         </Grid>
         <Grid item xs={12}>
-          {state.announcements && state.announcements.length ?
+          {state.announcements && state.announcements.length ? (
             <Fragment>
-              {state.announcements.map((announcement, i) =>
+              {state.announcements.map((announcement, i) => (
                 <AnnouncementItem
-                  key={i} announcement={announcement}
+                  key={i}
+                  announcement={announcement}
                   getAnnouncementById={getAnnouncementById}
                 />
-              )}
+              ))}
             </Fragment>
-            :
+          ) : (
             <DataMessage message="No announcement has been taken yet" />
-          }
+          )}
         </Grid>
       </Grid>
     </div>
@@ -213,9 +245,11 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAnnouncementById: (id) => dispatch(Actions.getAnnouncementById(id)),
-    openNewAnnouncementDialog: () => dispatch(Actions.openNewAnnouncementDialog()),
-    openAnnouncementViewDialog: (data) => dispatch(Actions.openAnnouncementViewDialog(data)),
+    getAnnouncementById: id => dispatch(Actions.getAnnouncementById(id)),
+    openNewAnnouncementDialog: () =>
+      dispatch(Actions.openNewAnnouncementDialog()),
+    openAnnouncementViewDialog: data =>
+      dispatch(Actions.openAnnouncementViewDialog(data)),
   };
 }
 

@@ -25,10 +25,7 @@ export function Payrun(props) {
   useInjectSaga({ key: 'payrun', saga });
   const { path } = useRouteMatch();
 
-  const {
-    loading,
-    getPayruns,
-  } = props;
+  const { loading, getPayruns } = props;
 
   useEffect(() => {
     getPayruns();
@@ -37,7 +34,7 @@ export function Payrun(props) {
   return (
     <div>
       <Helmet>
-        <title>Payrun</title>
+        <title>Payroll — Payrun</title>
         <meta name="description" content="Description of Payrun" />
       </Helmet>
 

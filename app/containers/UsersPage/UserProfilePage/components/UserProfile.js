@@ -7,14 +7,12 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemIcon,
   ListItemAvatar,
   ListItemSecondaryAction,
   Avatar,
   Typography,
   Button,
   Box,
-  AppBar,
   Tabs,
   Tab,
 } from '@material-ui/core';
@@ -29,7 +27,7 @@ import Group266 from '../../../../images/Group266.svg';
 import UserDetail from './UserDetail';
 import NoSignature from './NoSignature';
 import Signature from './Signature';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -66,11 +64,12 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   list: {
-    color: theme.palette.common.white
+    color: theme.palette.common.white,
   },
   header: {
     padding: theme.spacing(2),
-    backgroundImage: 'linear-gradient(180deg, #1A88E1 30%, rgba(37, 28, 148, 1) 100%)',
+    backgroundImage:
+      'linear-gradient(180deg, #1A88E1 30%, rgba(37, 28, 148, 1) 100%)',
     borderRadius: '0px 10px 10px 10px',
     height: 180,
   },
@@ -122,11 +121,10 @@ const UserProfile = props => {
                         </Typography>
                       }
                       secondary={
-                        <Typography
-                          variant="body2"
-                          color="inherit"
-                        >
-                          {currentUser.jobDesc ? currentUser.jobDesc : "UI/UX Designer"}
+                        <Typography variant="body2" color="inherit">
+                          {currentUser.jobDesc
+                            ? currentUser.jobDesc
+                            : 'UI/UX Designer'}
                         </Typography>
                       }
                     />
@@ -134,9 +132,7 @@ const UserProfile = props => {
                       <Button
                         color="secondary"
                         variant="contained"
-                        onClick={() =>
-                          openEditUserProfileDialog(currentUser)
-                        }
+                        onClick={() => openEditUserProfileDialog(currentUser)}
                         startIcon={<EditOutlinedIcon />}
                       >
                         Edit Profile
@@ -164,8 +160,8 @@ const UserProfile = props => {
                   {currentUser.signature ? (
                     <Signature currentUser={currentUser} />
                   ) : (
-                      <NoSignature currentUser={currentUser} />
-                    )}
+                    <NoSignature currentUser={currentUser} />
+                  )}
                 </TabPanel>
               </div>
             </Paper>

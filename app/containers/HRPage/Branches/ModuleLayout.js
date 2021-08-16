@@ -38,7 +38,7 @@ function ModuleLayout(props) {
             <NavLink to="/hr/branches" activeClassName={classes.active}>
               Branches
             </NavLink>
-            <NavLink to="/hr/roles" activeClassName={classes.active}>
+            <NavLink to="/hr/positions" activeClassName={classes.active}>
               Positions
             </NavLink>
           </React.Fragment>

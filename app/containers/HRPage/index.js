@@ -11,13 +11,13 @@ import * as Actions from './actions';
 import makeSelectHRPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import DashboardApp from './Dashboard'
-import EmployeesApp from './Employees'
-import PositionsApp from './Positions'
-import DepartmentsApp from './Departments'
-import BranchesApp from './Branches'
-import RecruitmentApp from './Recruitment'
-import AnnouncementApp from './Announcement'
+import DashboardApp from './Dashboard';
+import EmployeesApp from './Employees';
+import PositionsApp from './Positions';
+import DepartmentsApp from './Departments';
+import BranchesApp from './Branches';
+import RecruitmentApp from './Recruitment';
+import AnnouncementApp from './Announcement';
 
 const key = 'hrPage';
 export function HumanResourceApp(props) {
@@ -44,7 +44,7 @@ export function HumanResourceApp(props) {
     getPartyGroups,
   } = props;
 
-  const { path } = match
+  const { path } = match;
 
   useEffect(() => {
     getEmployees();
@@ -82,7 +82,6 @@ export function HumanResourceApp(props) {
         <Route path={`${path}/recruitment`} component={RecruitmentApp} />
         <Route path={`${path}/announcement`} component={AnnouncementApp} />
       </Fragment>
-
     </div>
   );
 }
@@ -96,7 +95,8 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
   return {
     getEmployees: () => dispatch(Actions.getEmployees()),
-    getDepartmentsByOrgIdApi: () => dispatch(Actions.getDepartmentsByOrgIdApi()),
+    getDepartmentsByOrgIdApi: () =>
+      dispatch(Actions.getDepartmentsByOrgIdApi()),
     getEmployeeTypes: () => dispatch(Actions.getEmployeeTypes()),
     getSourceOfHire: () => dispatch(Actions.getSourceOfHire()),
     getPayRates: () => dispatch(Actions.getPayRates()),

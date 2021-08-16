@@ -1,9 +1,9 @@
-import React, { memo } from "react"
+import React, { memo } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
-import { withRouter, Link } from "react-router-dom"
+import { withRouter, Link } from 'react-router-dom';
 import {
   makeStyles,
   Box,
@@ -21,13 +21,13 @@ import {
   TableFooter,
   TableRow,
   TableCell,
-  Typography
+  Typography,
 } from '@material-ui/core';
-import hrDash2 from '../../../../images/hrDash2.jpg'
+import hrDash2 from '../../../../images/hrDash2.jpg';
 import * as Selectors from '../../selectors';
 import * as AppSelectors from '../../../App/selectors';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
@@ -37,70 +37,66 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: `no-repeat`,
     backgroundPosition: `center bottom`,
     backgroundSize: 'cover',
-    "& .MuiCardActions-root": {
-      justifyContent: "center",
-      backgroundColor: theme.palette.secondary.contrastText,
+    '& .MuiCardActions-root': {
+      justifyContent: 'center',
+      backgroundColor: theme.palette.common.white,
     },
-    "& .MuiCardContent-root": {
+    '& .MuiCardContent-root': {
       minHeight: 160,
+      padding: theme.spacing(0, 4, 0, 4),
       display: 'flex',
       alignItems: 'center',
-    }
-  },
-  table: {
-    whiteSpace: "nowrap",
-    minWidth: 280,
-    "& td, & th": {
-      border: 0,
-      color: theme.palette.common.white,
     },
-  }
+  },
+  childTable: {
+    listStyle: 'none',
+    color: theme.palette.primary.contrastText,
+  },
+  grid: {
+    color: theme.palette.primary.contrastText,
+  },
 }));
 
-
-const Widget3 = (props) => {
-  const classes = useStyles()
-  const { branches } = props
+const Widget3 = props => {
+  const classes = useStyles();
+  const { branches } = props;
 
   if (!branches) {
-    return ''
+    return '';
   }
 
   return (
     <div>
       <Card className={classes.card}>
         <CardContent>
-          <Table className={classes.table} size="small">
-            <TableBody>
-              <TableRow>
-                <TableCell component="th">
-                  <Typography variant="h3">{branches && branches.length}</Typography>
-                </TableCell>
-                <TableCell>
-                  <Table className={classes.childTable} size="small">
-                    <TableBody>
-                      {branches.length > 0 && branches.slice(0, 4).map((branch, i) =>
-                        <TableRow key={i}>
-                          <TableCell>{/*branch.employees.length*/} {branch.name}</TableCell>
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
+          <Grid container alignItems="center" className={classes.grid}>
+            <Grid item xs={3}>
+              <Typography variant="h3" color="initial">
+                {branches && branches.length}
+              </Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <ul className={classes.childTable}>
+                {branches.length > 0 &&
+                  branches.slice(0, 4).map((branch, i) => (
+                    <li key={i}>
+                      <Typography variant="subtitle1">{branch.name}</Typography>
+                    </li>
+                  ))}
+              </ul>
+            </Grid>
+          </Grid>
         </CardContent>
 
         <CardActions>
-          <Button component={Link} to='/hr/branches'>
-            View All Branches
-					</Button>
+          <Button component={Link} to="/hr/branches">
+            View all branches
+          </Button>
         </CardActions>
       </Card>
     </div>
-  )
-}
+  );
+};
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),

@@ -2,83 +2,78 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import PersonAdd from '@material-ui/icons/PersonAdd';
 import AssignmentInd from '@material-ui/icons/AssignmentInd';
-import GroupAdd from '@material-ui/icons/GroupAdd';
 import AddIcon from '@material-ui/icons/Add';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 const useStyles = makeStyles(theme => ({
   iconButton: {},
   button: { marginLeft: theme.spacing(1) },
-  icon: {}
+  icon: {},
 }));
 
 export function AddDepartment(props) {
   const { openDialog } = props;
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
-    <React.Fragment>
-      <Tooltip title="New Department">
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={openDialog}
-          startIcon={<GroupAdd className={classes.icon} />}
-          disableElevation
-        >
-          New
-        </Button>
-      </Tooltip>
-    </React.Fragment>
+    <Tooltip title="New Department">
+      <Button
+        color="primary"
+        variant="contained"
+        className={classes.button}
+        onClick={openDialog}
+        startIcon={<AddIcon className={classes.icon} />}
+        disableElevation
+      >
+        New
+      </Button>
+    </Tooltip>
   );
 }
 export function AddPosition(props) {
   const { openDialog } = props;
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
-    <React.Fragment>
-      <Tooltip title="New Position">
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={openDialog}
-          startIcon={<AssignmentInd className={classes.icon} />}
-          disableElevation
-        >
-          Add Position
-        </Button>
-      </Tooltip>
-    </React.Fragment>
+    <Tooltip title="New Position">
+      <Button
+        color="primary"
+        variant="contained"
+        className={classes.button}
+        onClick={openDialog}
+        startIcon={<AssignmentInd className={classes.icon} />}
+        disableElevation
+      >
+        Add Position
+      </Button>
+    </Tooltip>
   );
 }
 
 export function AddBranch(props) {
   const { openDialog } = props;
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
-    <React.Fragment>
-      <Tooltip title="New Branch">
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={openDialog}
-          startIcon={<AddIcon className={classes.icon} />}
-          disableElevation
-        >
-          Add Branch
-        </Button>
-      </Tooltip>
-    </React.Fragment>
+    <Tooltip title="New Branch">
+      <Button
+        color="primary"
+        variant="contained"
+        className={classes.button}
+        onClick={openDialog}
+        startIcon={<AddIcon className={classes.icon} />}
+        disableElevation
+      >
+        Add Branch
+      </Button>
+    </Tooltip>
   );
 }
 
 export function AddEmployee(props) {
   const { openDialog } = props;
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <React.Fragment>
@@ -86,8 +81,9 @@ export function AddEmployee(props) {
         <Button
           color="primary"
           variant="contained"
+          className={classes.button}
           onClick={openDialog}
-          startIcon={<PersonAdd className={classes.icon} />}
+          startIcon={<AddIcon className={classes.icon} />}
           disableElevation
         >
           New
@@ -111,7 +107,7 @@ export function AddEmployee(props) {
 
 export function AddAttendance(props) {
   const { openDialog } = props;
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <React.Fragment>
@@ -120,7 +116,7 @@ export function AddAttendance(props) {
           color="primary"
           variant="contained"
           onClick={openDialog}
-          startIcon={<PersonAdd className={classes.icon} />}
+          startIcon={<AddIcon className={classes.icon} />}
           disableElevation
         >
           New
@@ -132,7 +128,7 @@ export function AddAttendance(props) {
 
 export function AddPayroll(props) {
   const { openDialog } = props;
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <React.Fragment>
@@ -141,7 +137,7 @@ export function AddPayroll(props) {
           color="primary"
           variant="contained"
           onClick={openDialog}
-          startIcon={<PersonAdd className={classes.icon} />}
+          startIcon={<AddIcon className={classes.icon} />}
           disableElevation
         >
           New
@@ -153,7 +149,7 @@ export function AddPayroll(props) {
 
 export function AddAnnouncement(props) {
   const { openDialog } = props;
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <React.Fragment>

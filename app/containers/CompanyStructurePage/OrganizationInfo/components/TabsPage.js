@@ -1,18 +1,12 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Typography,
-  Box,
-  makeStyles,
-  Tabs,
-  Tab,
-} from '@material-ui/core';
+import { Typography, Box, makeStyles, Tabs, Tab } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../../../App/actions';
 import OrgInfo from './OrgInfo';
-import MenuBar from '../../../../components/MenuBar'
+import MenuBar from '../../../../components/MenuBar';
 import * as Selectors from '../../selectors';
 
 const useStyles = makeStyles(theme => ({
@@ -39,6 +33,12 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'space-between',
   },
+  truncate: {
+    maxWidth: 250,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
 }));
 
 function TabPanel(props) {
@@ -53,7 +53,7 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <Box p={3}>{children}</Box>}
+      {value === index && <Box p={0}>{children}</Box>}
     </Typography>
   );
 }
@@ -73,7 +73,7 @@ function TabsPage({ companyInfo }) {
     setValue(newValue);
   };
 
-  console.log(companyInfo, "companyInfo")
+  console.log(companyInfo, 'companyInfo');
 
   return (
     <div className={classes.root}>
@@ -84,11 +84,19 @@ function TabsPage({ companyInfo }) {
             value={value}
             onChange={handleChange}
             aria-label="simple tabs example"
-            indicatorColor="primary"
+            // indicatorColor="secondary"
             centered
           >
             <Tab
-              label={`${companyInfo ? companyInfo.companyName : ''} Info`}
+              label={
+                companyInfo ? (
+                  <span className={classes.truncate}>
+                    {companyInfo.companyName} Info
+                  </span>
+                ) : (
+                  ''
+                )
+              }
               {...a11yProps(0)}
             />
           </Tabs>

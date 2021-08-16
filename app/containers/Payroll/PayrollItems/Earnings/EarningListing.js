@@ -2,7 +2,14 @@ import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
-import { makeStyles, IconButton, Button, Menu, MenuItem, Tooltip } from '@material-ui/core';
+import {
+  makeStyles,
+  IconButton,
+  Button,
+  Menu,
+  MenuItem,
+  Tooltip,
+} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import MUIDataTable from 'mui-datatables';
@@ -21,10 +28,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   datatable: {
-    '& table': {
-      width: '96% !important',
-      margin: '4px auto',
-    },
     whiteSpace: 'nowrap',
     '& tr:hover': {
       cursor: 'pointer',
@@ -59,35 +62,44 @@ const useStyles = makeStyles(theme => ({
 
 const EarningListing = props => {
   const classes = useStyles();
-  const { loading, history, match, payrollSetupData, earnings, getEarningById, openNewEarningDialog, openEditEarningDialog } = props;
+  const {
+    loading,
+    history,
+    match,
+    payrollSetupData,
+    earnings,
+    getEarningById,
+    openNewEarningDialog,
+    openEditEarningDialog,
+  } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedEarning, setSelectedEarning] = useState(null);
 
   const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
     setSelectedEarning(_.find(earnings, { id }));
-  }
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const handleEditClick = () => {
-    const { id } = selectedJournal
-    openEditEarningDialog(selectedJournal)
-    history.push(`${match.url}/edit/${id}`)
-  }
+    const { id } = selectedJournal;
+    openEditEarningDialog(selectedJournal);
+    history.push(`${match.url}/edit/${id}`);
+  };
 
   const handleViewClick = () => {
-    const { id } = selectedEarning
-    getEarningById(id)
-    history.push(`${match.url}/view/${id}`)
-  }
+    const { id } = selectedEarning;
+    getEarningById(id);
+    history.push(`${match.url}/view/${id}`);
+  };
 
   const orderedEarnings = _.orderBy(earnings, 'dateCreated', 'desc');
 
   if (loading) {
-    return <CircleLoader />
+    return <CircleLoader />;
   }
 
   const columns = [
@@ -109,7 +121,7 @@ const EarningListing = props => {
     },
     {
       name: 'inputType',
-      label: 'Input Type',
+      label: 'Input type',
       options: {
         filter: true,
         sort: false,
@@ -156,14 +168,14 @@ const EarningListing = props => {
       },
     },
     customToolbar: () => (
-      <Tooltip title="New Earning">
+      <Tooltip title="New earning">
         <Button
           variant="contained"
           color="primary"
           startIcon={<AddIcon />}
           onClick={openNewEarningDialog}
         >
-          New Earning
+          New earning
         </Button>
       </Tooltip>
     ),
@@ -187,9 +199,7 @@ const EarningListing = props => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleViewClick}>
-          View
-        </MenuItem>
+        <MenuItem onClick={handleViewClick}>View</MenuItem>
       </Menu>
     </React.Fragment>
   );
@@ -207,10 +217,11 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getEarningById: (data) => dispatch(Actions.getEarningById(data)),
+    getEarningById: data => dispatch(Actions.getEarningById(data)),
     openNewEarningDialog: () => dispatch(Actions.openNewEarningDialog()),
-    openEditEarningDialog: (data) => dispatch(Actions.openEditEarningDialog(data)),
-  }
+    openEditEarningDialog: data =>
+      dispatch(Actions.openEditEarningDialog(data)),
+  };
 }
 
 const withConnect = connect(

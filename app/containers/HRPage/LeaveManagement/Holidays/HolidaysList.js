@@ -1,28 +1,25 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Avatar, Button, TextField, Grid, Paper, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
-import { green, orange } from '@material-ui/core/colors'
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
-import moment from 'moment'
-import MUIDataTable from 'mui-datatables'
+import { green, orange } from '@material-ui/core/colors';
+import { darken } from '@material-ui/core/styles/colorManipulator';
+import MUIDataTable from 'mui-datatables';
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
 import * as AppSelectors from '../../../App/selectors';
-import { AddHoliday } from '../components/AddButton'
+import { AddHoliday } from '../components/AddButton';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   datatable: {
     '& tr:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& thead': {
       '& th': {
@@ -42,13 +39,18 @@ const useStyles = makeStyles(theme => ({
     '&.approved': { color: theme.palette.primary.main },
     '&.inProgress': { color: orange[500] },
     '&.done': { color: green[500] },
-  }
+  },
 }));
-
 
 const HolidaysList = props => {
   const classes = useStyles();
-  const { loading, openNewHolidayDialog, getHolidays, getHolidayById, holidays } = props;
+  const {
+    loading,
+    openNewHolidayDialog,
+    getHolidays,
+    getHolidayById,
+    holidays,
+  } = props;
 
   const columns = [
     {
@@ -82,7 +84,7 @@ const HolidaysList = props => {
         filter: true,
         sort: true,
       },
-    }
+    },
   ];
 
   const options = {
@@ -95,9 +97,9 @@ const HolidaysList = props => {
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
-      getHolidayById(rowData[0])
+      getHolidayById(rowData[0]);
     },
-    elevation: 0
+    elevation: 0,
   };
 
   return (
@@ -127,7 +129,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getHolidays: () => dispatch(Actions.getLeaveRequest()),
-    getHolidayById: (uuid) => dispatch(Actions.getLeaveRequestById(uuid)),
+    getHolidayById: uuid => dispatch(Actions.getLeaveRequestById(uuid)),
     openNewHolidayDialog: () => dispatch(Actions.openNewHolidayDialog()),
   };
 }

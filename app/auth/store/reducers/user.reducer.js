@@ -1,12 +1,22 @@
 import * as Actions from '../actions';
 
 const initialState = {
-    role: [],//guest
+    role: [], //guest
     data: {
-        'displayName': 'John Doe',
-        'photoURL'   : 'assets/images/avatars/Velazquez.jpg',
-        'email'      : 'johndoe@withinpixels.com',
-        shortcuts    : [
+        firstName   : "",
+        lastName    : "",
+        phoneNumber : "",
+        displayName : 'John Doe',
+        photoURL    : 'assets/images/avatars/Velazquez.jpg',
+        email       : 'johndoe@withinpixels.com',
+        organisation: {
+            orgId: "",
+            companyName: "",
+            emailAddress: "",
+            phoneNumber: "",
+            website: "",
+        },
+        shortcuts   : [
             'calendar',
             'mail',
             'contacts',

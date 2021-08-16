@@ -1,27 +1,24 @@
-import React, { memo } from "react"
+import React, { memo } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
-import { withRouter, Link } from "react-router-dom"
+import { withRouter, Link } from 'react-router-dom';
 import {
   makeStyles,
   Button,
   Card,
   CardContent,
   CardActions,
-  Table,
-  TableBody,
-  TableRow,
-  TableCell,
-  Typography
+  Grid,
+  Typography,
 } from '@material-ui/core';
-import hrDash1 from '../../../../images/hrDash1.jpg'
+import hrDash1 from '../../../../images/hrDash1.jpg';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import * as AppSelectors from '../../../App/selectors';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
@@ -31,59 +28,59 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: `no-repeat`,
     backgroundPosition: `center bottom`,
     backgroundSize: 'cover',
-    "& .MuiCardActions-root": {
-      justifyContent: "center",
-      backgroundColor: theme.palette.secondary.contrastText,
+    '& .MuiCardActions-root': {
+      justifyContent: 'center',
+      backgroundColor: theme.palette.common.white,
     },
-    "& .MuiCardContent-root": {
+    '& .MuiCardContent-root': {
       minHeight: 160,
+      padding: theme.spacing(0, 4, 0, 4),
       display: 'flex',
       alignItems: 'center',
-    }
-  },
-  table: {
-    minWidth: 280,
-    whiteSpace: "nowrap",
-    "& th, & td": {
-      border: 0,
-      color: theme.palette.common.white,
     },
-  }
+  },
+  childTable: {
+    listStyle: 'none',
+    color: theme.palette.primary.contrastText,
+  },
+  grid: {
+    color: theme.palette.primary.contrastText,
+  },
 }));
 
-
-const Widget1 = (props) => {
-  const classes = useStyles()
-  const { employees } = props
+const Widget1 = props => {
+  const classes = useStyles();
+  const { employees } = props;
 
   return (
     <div>
       <Card className={classes.card}>
         <CardContent>
-          <Table className={classes.table} size="small">
-            <TableBody>
-              <TableRow>
-                <TableCell component="th">
-                  <Typography variant="h3">{employees && employees.length}</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography variant="subtitle2">Employees</Typography>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
+          <Grid container alignItems="center" className={classes.grid}>
+            <Grid item xs={3}>
+              <Typography variant="h3" color="initial">
+                {employees && employees.length}
+              </Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <ul className={classes.childTable}>
+                <li>
+                  <Typography variant="subtitle1">Employees</Typography>
+                </li>
+              </ul>
+            </Grid>
+          </Grid>
         </CardContent>
 
         <CardActions>
-          <Button component={Link} to='/hr/employees'>
-            View All Employees
-					</Button>
+          <Button component={Link} to="/hr/employees">
+            View all employees
+          </Button>
         </CardActions>
       </Card>
     </div>
-  )
-}
-
+  );
+};
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),

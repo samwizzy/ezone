@@ -1,6 +1,5 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import {
   makeStyles,
@@ -46,13 +45,12 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     marginRight: theme.spacing(1),
-    background: theme.palette.background.paper
+    background: theme.palette.background.paper,
+    color: theme.palette.primary.main,
   },
 }));
 
-const options = [
-  'No messages',
-];
+const options = ['No messages'];
 
 const UserMenu = props => {
   const classes = useStyles();
@@ -81,10 +79,16 @@ const UserMenu = props => {
     return '';
   }
 
+  console.log(currentUser, 'currentUser');
+
   return (
     <React.Fragment>
       <div className={classes.root}>
-        <IconButton aria-label="show 17 new notifications" color="inherit" onClick={userNotificationClick}>
+        <IconButton
+          aria-label="show 17 new notifications"
+          color="inherit"
+          onClick={userNotificationClick}
+        >
           <Badge badgeContent={1} color="secondary">
             <NotificationsIcon />
           </Badge>
@@ -108,37 +112,30 @@ const UserMenu = props => {
         >
           {currentUser && (
             <React.Fragment>
-              {options.map((option, i) =>
-                <MenuItem
-                  key={i}
-                  component={Link}
-                  to="/user-profile"
-                >
+              {options.map((option, i) => (
+                <MenuItem key={i} component={Link} to="/user-profile">
                   <ListItemIcon>
                     <Icon>notifications</Icon>
                   </ListItemIcon>
                   <ListItemText primary={option} />
                 </MenuItem>
-              )}
+              ))}
             </React.Fragment>
           )}
         </Popover>
 
-        <Button
-          onClick={userMenuClick}
-          endIcon={<KeyboardArrowDownIcon />}
-        >
-          {(currentUser && currentUser.organisation) ? (
+        <Button onClick={userMenuClick} endIcon={<KeyboardArrowDownIcon />}>
+          {currentUser && currentUser.organisation.logo ? (
             <Avatar
               className={classes.avatar}
               alt="user photo"
               src={`data:image/jpg;base64,${currentUser.organisation.logo}`}
             />
           ) : (
-              <Avatar className={classes.avatar}>
-                {currentUser && currentUser.lastName}
-              </Avatar>
-            )}
+            <Avatar className={classes.avatar}>
+              {currentUser && _.upperCase(currentUser.lastName[0])}
+            </Avatar>
+          )}
 
           <div>
             <Typography color="inherit">
@@ -165,36 +162,25 @@ const UserMenu = props => {
         >
           {currentUser && (
             <React.Fragment>
-              <MenuItem
-                component={Link}
-                to="/user-profile"
-              >
+              <MenuItem component={Link} to="/user-profile">
                 <ListItemIcon>
                   <Icon>account_circle</Icon>
                 </ListItemIcon>
-                <ListItemText primary="My Account" />
+                <ListItemText primary="My account" />
               </MenuItem>
-              <MenuItem
-                component={Link}
-                to="/subscriptions"
-              >
+              <MenuItem component={Link} to="/subscriptions">
                 <ListItemIcon>
                   <Icon>subscriptions</Icon>
                 </ListItemIcon>
                 <ListItemText primary="Subscriptions" />
               </MenuItem>
-              <MenuItem
-                component={Link}
-                to="/help"
-              >
+              <MenuItem component={Link} to="/help">
                 <ListItemIcon>
                   <Icon>help_outline</Icon>
                 </ListItemIcon>
                 <ListItemText primary="Help" />
               </MenuItem>
-              <MenuItem
-                onClick={() => logoutAction()}
-              >
+              <MenuItem onClick={() => logoutAction()}>
                 <ListItemIcon>
                   <Icon>exit_to_app</Icon>
                 </ListItemIcon>

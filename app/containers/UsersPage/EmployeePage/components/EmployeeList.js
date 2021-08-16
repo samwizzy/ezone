@@ -10,7 +10,7 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
-import { fade, darken } from '@material-ui/core/styles/colorManipulator'
+import { fade, darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   },
   datatable: {
     '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: darken(theme.palette.primary.main, 0.1),
       },
     },
-  }
+  },
 }));
 
 const EmployeeList = props => {
@@ -80,7 +80,7 @@ const EmployeeList = props => {
     },
     {
       name: 'firstName',
-      label: 'First Name',
+      label: 'First name',
       options: {
         filter: true,
         sort: false,
@@ -88,7 +88,7 @@ const EmployeeList = props => {
     },
     {
       name: 'lastName',
-      label: 'Last Name',
+      label: 'Last name',
       options: {
         filter: true,
         sort: false,
@@ -96,7 +96,7 @@ const EmployeeList = props => {
     },
     {
       name: 'emailAddress',
-      label: 'Email Address',
+      label: 'Email address',
       options: {
         filter: true,
         sort: false,
@@ -104,7 +104,7 @@ const EmployeeList = props => {
     },
     {
       name: 'phoneNumber',
-      label: 'Phone Number',
+      label: 'Phone number',
       options: {
         filter: true,
         sort: false,
@@ -129,7 +129,7 @@ const EmployeeList = props => {
     customToolbar: () => (
       <AddButton openNewEmployeeDialog={openNewEmployeeDialog} />
     ),
-    elevation: 0
+    elevation: 0,
   };
 
   if (loading) {
@@ -140,7 +140,7 @@ const EmployeeList = props => {
     <React.Fragment>
       <MUIDataTable
         className={classes.datatable}
-        title="All Employees"
+        title="Users"
         data={getAllEmployees}
         columns={columns}
         options={options}
@@ -165,8 +165,10 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewEmployeeDialog: () => dispatch(Actions.openNewEmployeeDialog()),
-    openEditEmployeeDialog: data => dispatch(Actions.openEditEmployeeDialog(data)),
-    openViewEmployeeDialog: data => dispatch(Actions.openViewEmployeeDialog(data)),
+    openEditEmployeeDialog: data =>
+      dispatch(Actions.openEditEmployeeDialog(data)),
+    openViewEmployeeDialog: data =>
+      dispatch(Actions.openViewEmployeeDialog(data)),
   };
 }
 

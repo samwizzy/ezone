@@ -1,17 +1,44 @@
 import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { withStyles, InputAdornment, AppBar, Avatar, Box, Button, Checkbox, Chip, Dialog, DialogActions, DialogContent, FormControl, FormLabel, FormControlLabel, Grid, MenuItem, Popover, Slide, Tabs, Tab, Typography, TextField, Toolbar } from '@material-ui/core';
+import {
+  withStyles,
+  InputAdornment,
+  AppBar,
+  Avatar,
+  Box,
+  Button,
+  Checkbox,
+  Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  FormControl,
+  FormLabel,
+  FormControlLabel,
+  Grid,
+  MenuItem,
+  Popover,
+  Slide,
+  Tabs,
+  Tab,
+  Typography,
+  TextField,
+  Toolbar,
+} from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
-import moment from 'moment'
+import moment from 'moment';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 
@@ -20,7 +47,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   chipsRoot: {
     display: 'flex',
@@ -43,7 +70,7 @@ const useStyles = makeStyles(theme => ({
   toolbar: {
     flexGrow: 1,
     borderBottom: `1px solid ${theme.palette.divider}`,
-    ...theme.mixins.toolbar
+    ...theme.mixins.toolbar,
   },
 }));
 
@@ -107,13 +134,26 @@ const model = {
   gender: 'MALE',
   numberOfDaysFromHire: 0,
   validFrom: moment().format('YYYY-MM-DDTHH:mm:ss.SSS'),
-  validTill: moment().format('YYYY-MM-DDTHH:mm:ss.SSS')
-}
+  validTill: moment().format('YYYY-MM-DDTHH:mm:ss.SSS'),
+};
 
 function AddShiftDialog(props) {
   const classes = useStyles();
-  const { closeNewLeaveTypeDialog, dialog, employees, departments, branches, roles, createLeaveType } = props;
-  const [option, setOption] = useState({ policy: false, validity: false, duration: 'Days', maritalStatus: 'Single' })
+  const {
+    closeNewLeaveTypeDialog,
+    dialog,
+    employees,
+    departments,
+    branches,
+    roles,
+    createLeaveType,
+  } = props;
+  const [option, setOption] = useState({
+    policy: false,
+    validity: false,
+    duration: 'Days',
+    maritalStatus: 'Single',
+  });
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
@@ -122,17 +162,17 @@ function AddShiftDialog(props) {
 
   useEffect(() => {
     if (dialog.type === 'edit') {
-      setForm({ ...dialog.data })
+      setForm({ ...dialog.data });
     } else {
-      setForm({ ...model })
+      setForm({ ...model });
     }
-  }, [dialog])
+  }, [dialog]);
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const handleClick = (event) => {
+  const handleClick = event => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -141,50 +181,58 @@ function AddShiftDialog(props) {
   };
 
   const canSubmitForm = () => {
-    const { name, type, validFrom, validTill, description } = form
-    return name.length > 0 && type && validFrom && validTill
-  }
+    const { name, type, validFrom, validTill, description } = form;
+    return name.length > 0 && type && validFrom && validTill;
+  };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target
+  const handleChange = event => {
+    const { name, value } = event.target;
     setForm({ ...form, [name]: value });
-  }
+  };
 
   const handleSelectChange = name => (event, array) => {
-    setForm({ ...form, [name]: array })
-  }
+    setForm({ ...form, [name]: array });
+  };
 
   const handleOptions = ({ target }) => {
-    setOption({ ...option, [target.name]: target.checked })
-  }
+    setOption({ ...option, [target.name]: target.checked });
+  };
 
   const handleDateChange = name => date => {
-    setForm({ ...form, [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss.SSS') })
-  }
+    setForm({
+      ...form,
+      [name]: moment(date).format('YYYY-MM-DDTHH:mm:ss.SSS'),
+    });
+  };
 
   const handlePartyChange = name => (event, obj) => {
-    console.log(name, "name")
-    console.log(obj, "obj")
+    console.log(name, 'name');
+    console.log(obj, 'obj');
     // setForm({ ...form, [name]: obj.id })
-  }
+  };
 
   const handleChipDelete = id => {
-    setForm(form => ({ ...form, usersId: form.usersId.filter(user => user.id !== id) }))
-  }
+    setForm(form => ({
+      ...form,
+      usersId: form.usersId.filter(user => user.id !== id),
+    }));
+  };
 
   const handleSubmit = () => {
-    createLeaveType(form)
-    setForm({ ...model })
-  }
+    createLeaveType(form);
+    setForm({ ...model });
+  };
 
-  const selected = employees && _.filter(employees, (employee) => {
-    return _.some(form.eligibleEmployees, { 'id': employee.id });
-  })
-  const selectedDept = departments && _.find(departments, { 'id': form.partyId })
+  const selected =
+    employees &&
+    _.filter(employees, employee => {
+      return _.some(form.eligibleEmployees, { id: employee.id });
+    });
+  const selectedDept = departments && _.find(departments, { id: form.partyId });
 
-  console.log(form, "leave type form")
-  console.log(option, "leave type option")
-  console.log(departments, "leave type departments")
+  console.log(form, 'leave type form');
+  console.log(option, 'leave type option');
+  console.log(departments, 'leave type departments');
 
   return (
     <div>
@@ -199,7 +247,7 @@ function AddShiftDialog(props) {
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
-              Add Leave Type
+              Add Leave type
             </Typography>
           </Toolbar>
         </AppBar>
@@ -233,7 +281,9 @@ function AddShiftDialog(props) {
                 value={form.leaveAllowancePercent}
                 onChange={handleChange}
                 InputProps={{
-                  endAdornment: <InputAdornment position="end">%</InputAdornment>
+                  endAdornment: (
+                    <InputAdornment position="end">%</InputAdornment>
+                  ),
                 }}
               />
             </Grid>
@@ -254,11 +304,11 @@ function AddShiftDialog(props) {
                 <MenuItem key="" value="" disabled>
                   Select type
                 </MenuItem>
-                {['PAID', 'UNPAID'].map((type, i) =>
+                {['PAID', 'UNPAID'].map((type, i) => (
                   <MenuItem key={i} value={type}>
                     {type}
                   </MenuItem>
-                )}
+                ))}
               </TextField>
             </Grid>
             <Grid item xs={12}>
@@ -277,7 +327,7 @@ function AddShiftDialog(props) {
                 />
               </FormControl>
             </Grid>
-            {option.validity &&
+            {option.validity && (
               <React.Fragment>
                 <Grid item xs={6}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -321,7 +371,7 @@ function AddShiftDialog(props) {
                   </MuiPickersUtilsProvider>
                 </Grid>
               </React.Fragment>
-            }
+            )}
             <Grid item xs={12}>
               <TextField
                 id="description"
@@ -352,11 +402,15 @@ function AddShiftDialog(props) {
               />
             </Grid>
 
-            {option.policy &&
+            {option.policy && (
               <React.Fragment>
                 <Grid item xs={12}>
-                  <Typography variant="subtitle1" gutterBottom>Entitlement</Typography>
-                  <FormLabel component="legend">Based on Date After Hiring</FormLabel>
+                  <Typography variant="subtitle1" gutterBottom>
+                    Entitlement
+                  </Typography>
+                  <FormLabel component="legend">
+                    Based on Date After Hiring
+                  </FormLabel>
                   <TextField
                     id="numberOfDaysFromHire"
                     name="numberOfDaysFromHire"
@@ -379,13 +433,13 @@ function AddShiftDialog(props) {
                     size="small"
                     label="Days"
                     value={option.duration}
-                  // onChange={handleChange}
+                    // onChange={handleChange}
                   >
-                    {durations.map((duration, i) =>
+                    {durations.map((duration, i) => (
                       <MenuItem key={i} value={duration}>
                         {duration}
                       </MenuItem>
-                    )}
+                    ))}
                   </TextField>
                 </Grid>
                 <Grid item xs={12}>
@@ -406,11 +460,11 @@ function AddShiftDialog(props) {
                     value={form.gender}
                     onChange={handleChange}
                   >
-                    {['MALE', 'FEMALE', 'BOTH'].map((gender, i) =>
+                    {['MALE', 'FEMALE', 'BOTH'].map((gender, i) => (
                       <MenuItem key={i} value={gender}>
                         {gender}
                       </MenuItem>
-                    )}
+                    ))}
                   </TextField>
                 </Grid>
                 <Grid item xs={6}>
@@ -427,11 +481,11 @@ function AddShiftDialog(props) {
                     value={option.maritalStatus}
                     onChange={handleChange}
                   >
-                    {['Single', 'Married', 'Divorced'].map((status, i) =>
+                    {['Single', 'Married', 'Divorced'].map((status, i) => (
                       <MenuItem key={i} value={status}>
                         {status}
                       </MenuItem>
-                    )}
+                    ))}
                   </TextField>
                 </Grid>
                 <Grid item xs={12}>
@@ -475,7 +529,7 @@ function AddShiftDialog(props) {
                         <AntTab label="Branch" {...a11yProps(2)} />
                         <AntTab label="Roles" {...a11yProps(3)} />
                       </AntTabs>
-                      {value === 0 &&
+                      {value === 0 && (
                         <Box px={2} className={classes.toolbar}>
                           <Autocomplete
                             multiple
@@ -483,7 +537,9 @@ function AddShiftDialog(props) {
                             size="small"
                             options={employees}
                             disableCloseOnSelect
-                            getOptionLabel={(option) => option.firstName + ' ' + option.lastName}
+                            getOptionLabel={option =>
+                              option.firstName + ' ' + option.lastName
+                            }
                             onChange={handleSelectChange('eligibleEmployees')}
                             value={form.eligibleEmployees}
                             renderOption={(option, { selected }) => (
@@ -497,20 +553,26 @@ function AddShiftDialog(props) {
                                 {option.firstName + ' ' + option.lastName}
                               </React.Fragment>
                             )}
-                            renderInput={(params) => (
-                              <TextField {...params} variant="outlined" label="Employees" placeholder="Employees" margin="normal" />
+                            renderInput={params => (
+                              <TextField
+                                {...params}
+                                variant="outlined"
+                                label="Employees"
+                                placeholder="Employees"
+                                margin="normal"
+                              />
                             )}
                           />
                         </Box>
-                      }
-                      {value === 1 &&
+                      )}
+                      {value === 1 && (
                         <Box px={2} className={classes.toolbar}>
                           <Autocomplete
                             id="checkboxes-tags-demo"
                             size="small"
                             options={departments}
                             disableCloseOnSelect
-                            getOptionLabel={(option) => option.name}
+                            getOptionLabel={option => option.name}
                             onChange={handlePartyChange('partyId')}
                             renderOption={(option, { selected }) => (
                               <React.Fragment>
@@ -523,20 +585,26 @@ function AddShiftDialog(props) {
                                 {option.name}
                               </React.Fragment>
                             )}
-                            renderInput={(params) => (
-                              <TextField {...params} variant="outlined" label="Department" placeholder="Department" margin="normal" />
+                            renderInput={params => (
+                              <TextField
+                                {...params}
+                                variant="outlined"
+                                label="Department"
+                                placeholder="Department"
+                                margin="normal"
+                              />
                             )}
                           />
                         </Box>
-                      }
-                      {value === 2 &&
+                      )}
+                      {value === 2 && (
                         <Box px={2} className={classes.toolbar}>
                           <Autocomplete
                             id="checkboxes-tags-demo"
                             size="small"
                             options={branches}
                             disableCloseOnSelect
-                            getOptionLabel={(option) => option.name}
+                            getOptionLabel={option => option.name}
                             onChange={handlePartyChange('partyId')}
                             renderOption={(option, { selected }) => (
                               <React.Fragment>
@@ -549,20 +617,26 @@ function AddShiftDialog(props) {
                                 {option.name}
                               </React.Fragment>
                             )}
-                            renderInput={(params) => (
-                              <TextField {...params} variant="outlined" label="Branch" placeholder="Branch" margin="normal" />
+                            renderInput={params => (
+                              <TextField
+                                {...params}
+                                variant="outlined"
+                                label="Branch"
+                                placeholder="Branch"
+                                margin="normal"
+                              />
                             )}
                           />
                         </Box>
-                      }
-                      {value === 3 &&
+                      )}
+                      {value === 3 && (
                         <Box px={2} className={classes.toolbar}>
                           <Autocomplete
                             id="checkboxes-tags-demo"
                             size="small"
                             options={roles}
                             disableCloseOnSelect
-                            getOptionLabel={(option) => option.name}
+                            getOptionLabel={option => option.name}
                             onChange={handlePartyChange('partyId')}
                             renderOption={(option, { selected }) => (
                               <React.Fragment>
@@ -575,45 +649,68 @@ function AddShiftDialog(props) {
                                 {option.name}
                               </React.Fragment>
                             )}
-                            renderInput={(params) => (
-                              <TextField {...params} variant="outlined" label="Roles" placeholder="Roles" margin="normal" />
+                            renderInput={params => (
+                              <TextField
+                                {...params}
+                                variant="outlined"
+                                label="Roles"
+                                placeholder="Roles"
+                                margin="normal"
+                              />
                             )}
                           />
                         </Box>
-                      }
+                      )}
                     </div>
                   </Popover>
                   <div className={classes.chipsRoot}>
-                    {selected && selected.map((user, i) =>
-                      <Chip
-                        key={i}
-                        avatar={<Avatar>{user.firstName && user.firstName[0].toUpperCase()}</Avatar>}
-                        label={user.firstName + ' ' + user.lastName}
-                        variant="outlined"
-                        onDelete={() => handleChipDelete(user.id)}
-                      />
-                    )}
-                    {selectedDept &&
+                    {selected &&
+                      selected.map((user, i) => (
+                        <Chip
+                          key={i}
+                          avatar={
+                            <Avatar>
+                              {user.firstName &&
+                                user.firstName[0].toUpperCase()}
+                            </Avatar>
+                          }
+                          label={user.firstName + ' ' + user.lastName}
+                          variant="outlined"
+                          onDelete={() => handleChipDelete(user.id)}
+                        />
+                      ))}
+                    {selectedDept && (
                       <Chip
                         key={selectedDept.id}
-                        avatar={<Avatar>{selectedDept.name[0].toUpperCase()}</Avatar>}
+                        avatar={
+                          <Avatar>{selectedDept.name[0].toUpperCase()}</Avatar>
+                        }
                         label={selectedDept.name}
                         variant="outlined"
                         onDelete={() => handleChipDelete(selectedDept.id)}
                       />
-                    }
+                    )}
                   </div>
                 </Grid>
               </React.Fragment>
-            }
+            )}
           </Grid>
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={() => { closeNewLeaveTypeDialog(), setForm({ ...model }) }} color="primary">
+          <Button
+            onClick={() => {
+              closeNewLeaveTypeDialog(), setForm({ ...model });
+            }}
+            color="primary"
+          >
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={!canSubmitForm()} color="primary">
+          <Button
+            onClick={handleSubmit}
+            disabled={!canSubmitForm()}
+            color="primary"
+          >
             Save
           </Button>
         </DialogActions>
@@ -621,7 +718,6 @@ function AddShiftDialog(props) {
     </div>
   );
 }
-
 
 AddShiftDialog.propTypes = {
   closeNewShiftDialog: PropTypes.func,
@@ -638,7 +734,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     closeNewLeaveTypeDialog: () => dispatch(Actions.closeNewLeaveTypeDialog()),
-    createLeaveType: (data) => dispatch(Actions.createLeaveType(data)),
+    createLeaveType: data => dispatch(Actions.createLeaveType(data)),
   };
 }
 

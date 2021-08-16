@@ -1,21 +1,22 @@
-import React from "react"
-import EzoneUtils from '../../../../../utils/EzoneUtils'
-import { Link } from 'react-router-dom'
-import _ from 'lodash'
+import React from 'react';
+import EzoneUtils from '../../../../../utils/EzoneUtils';
+import { Link } from 'react-router-dom';
+import _ from 'lodash';
 import {
   makeStyles,
   Button,
-  Card, CardHeader,
+  Card,
+  CardHeader,
   Table,
   TableHead,
   TableBody,
   TableFooter,
   TableRow,
   TableCell,
-  Typography
+  Typography,
 } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
@@ -25,23 +26,24 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     minWidth: 400,
-    "& .MuiTableCell-root": {
-      border: 0
+    '& .MuiTableCell-root': {
+      border: 0,
     },
     '& .MuiTableCell-body': {
       color: theme.palette.text.secondary,
-      fontSize: theme.typography.fontSize
     },
-  }
+  },
 }));
 
-
 const Widget2 = ({ accounts, accData }) => {
-  const classes = useStyles()
-  const payablesAccounts = _.filter(accounts, (account) => account.accountType && account.accountType.id === 7)
+  const classes = useStyles();
+  const payablesAccounts = _.filter(
+    accounts,
+    account => account.accountType && account.accountType.id === 7,
+  );
 
   if (!payablesAccounts && !accData) {
-    return <Typography>There are currently no Payables</Typography>
+    return <Typography>There are currently no payables</Typography>;
   }
 
   return (
@@ -49,15 +51,15 @@ const Widget2 = ({ accounts, accData }) => {
       <Card className={classes.card}>
         <CardHeader
           titleTypographyProps={{ variant: 'subtitle1' }}
-          title="Recent Pay Runs"
+          title="Recent pay runs"
           subheader=""
         />
 
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell component="th">Pay Period</TableCell>
-              <TableCell component="th">Ref Code</TableCell>
+              <TableCell component="th">Pay period</TableCell>
+              <TableCell component="th">Ref code</TableCell>
               <TableCell component="th">Payment date</TableCell>
               <TableCell component="th">Employees</TableCell>
               <TableCell component="th">Payment</TableCell>
@@ -65,7 +67,7 @@ const Widget2 = ({ accounts, accData }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {_.range(0, 3).map((item, i) =>
+            {_.range(0, 3).map((item, i) => (
               <TableRow key={i}>
                 <TableCell>1st Jul 2019 - 30th July 2019</TableCell>
                 <TableCell>0900000</TableCell>
@@ -74,12 +76,12 @@ const Widget2 = ({ accounts, accData }) => {
                 <TableCell>N 100,000</TableCell>
                 <TableCell>Approved</TableCell>
               </TableRow>
-            )}
+            ))}
           </TableBody>
         </Table>
       </Card>
     </div>
-  )
-}
+  );
+};
 
-export default Widget2
+export default Widget2;

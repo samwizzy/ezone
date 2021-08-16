@@ -10,7 +10,6 @@ import { createStructuredSelector } from 'reselect';
 import { green, red } from '@material-ui/core/colors';
 import { darken } from '@material-ui/core/styles/colorManipulator';
 import MUIDataTable from 'mui-datatables';
-import EditSharp from '@material-ui/icons/EditSharp';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import * as AppSelectors from '../../App/selectors';
@@ -22,6 +21,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.common.white,
+    color: console.log(theme, 'theme'),
   },
   datatable: {
     '& tr:hover': {
@@ -46,8 +46,8 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     background: 'transparent',
-    color: theme.palette.divider,
-    border: `1px solid ${theme.palette.divider}`
+    color: theme.palette.grey[500],
+    border: `1px solid ${theme.palette.grey[400]}`,
   },
   toolbar: theme.mixins.toolbar,
   status: {
@@ -71,7 +71,7 @@ const EmployeesApp = props => {
     history.push(`${match.url}/${id}`);
   };
 
-  console.log(employees, "employees")
+  console.log(employees, 'employees');
 
   const columns = [
     {
@@ -83,29 +83,25 @@ const EmployeesApp = props => {
       },
     },
     {
-      name: 'employeeImage',
-      label: ' ',
-      options: {
-        filter: true,
-        sort: true,
-        customBodyRender: logo => (
-          <Avatar
-            aria-label="avatar"
-            src={`data:image/jpg;base64,${logo}`}
-            className={classes.avatar}
-          />
-        ),
-      },
-    },
-    {
       name: 'id',
-      label: 'Employee Name',
+      label: 'Name',
       options: {
         filter: true,
         sort: true,
         customBodyRender: id => {
           const emp = employees && employees.find(e => e.id == id);
-          return `${emp.firstName} ${emp.lastName}`;
+          return (
+            <div className="flex items-center">
+              <Avatar
+                aria-label="avatar"
+                src={`data:image/jpg;base64,${emp.employeeImage}`}
+                className={classes.avatar}
+              />
+              <span className="ml-3">
+                {emp.firstName} {emp.lastName}
+              </span>
+            </div>
+          );
         },
       },
     },
@@ -140,10 +136,24 @@ const EmployeesApp = props => {
         filter: true,
         sort: true,
         customBodyRender: enabled => {
-          return enabled
-            ? <Chip label="Active" variant="outlined" icon={<CheckCircleOutlineIcon className={classNames(classes.status, { active: enabled })} />} />
-            : <Chip label="Inactive" variant="outlined" icon={<RadioButtonUncheckedIcon />} />
-        }
+          return enabled ? (
+            <Chip
+              label="Active"
+              variant="outlined"
+              icon={
+                <CheckCircleOutlineIcon
+                  className={classNames(classes.status, { active: enabled })}
+                />
+              }
+            />
+          ) : (
+            <Chip
+              label="Inactive"
+              variant="outlined"
+              icon={<RadioButtonUncheckedIcon />}
+            />
+          );
+        },
       },
     },
   ];
@@ -167,7 +177,7 @@ const EmployeesApp = props => {
     <div className={classes.root}>
       <MUIDataTable
         className={classes.datatable}
-        title="Employee List"
+        title="Employees"
         data={employees && employees}
         columns={columns}
         options={options}

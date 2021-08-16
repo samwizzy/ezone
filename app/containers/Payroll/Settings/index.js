@@ -12,7 +12,7 @@ import reducer from './reducer';
 import makeSelectSettings, * as Selectors from './selectors';
 import saga from './saga';
 import PayrollSetup from './PayrollSetup';
-import PayRunSettings from './PayRunSettings'
+import PayRunSettings from './PayRunSettings';
 import TaxSettings from './TaxSettings';
 import ModuleLayout from '../components/ModuleLayout';
 
@@ -23,10 +23,7 @@ export function Settings(props) {
   useInjectSaga({ key, saga });
   const { path } = useRouteMatch();
 
-  const {
-    loading,
-    getPayrollSetup,
-  } = props;
+  const { loading, getPayrollSetup } = props;
 
   useEffect(() => {
     getPayrollSetup();
@@ -35,7 +32,7 @@ export function Settings(props) {
   return (
     <div>
       <Helmet>
-        <title>Settings</title>
+        <title>Payroll — Settings</title>
         <meta name="description" content="Description of Settings" />
       </Helmet>
 

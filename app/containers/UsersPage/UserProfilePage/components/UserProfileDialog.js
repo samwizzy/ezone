@@ -6,24 +6,18 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import {
   TextField,
-  makeStyles,
   Button,
   CircularProgress,
   Dialog,
   DialogContent,
   DialogActions,
+  Grid,
   MenuItem,
   DialogTitle,
   Slide,
 } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1
-  },
-}));
 
 const gender = [
   {
@@ -48,13 +42,6 @@ const UserProfileDialog = props => {
     updateUserProfile,
   } = props;
 
-  useEffect(() => {
-    setValues({
-      ...updateUserProfileDialog.data,
-    })
-  }, [updateUserProfileDialog.data]);
-
-  const classes = useStyles();
   const [values, setValues] = React.useState({
     firstName: '',
     lastName: '',
@@ -67,25 +54,28 @@ const UserProfileDialog = props => {
     country: '',
   });
 
+  useEffect(() => {
+    if (updateUserProfileDialog.data) {
+      setValues({
+        ...updateUserProfileDialog.data,
+      });
+    }
+  }, [updateUserProfileDialog.data]);
+
   const canBeSubmitted = () => {
     const { firstName, lastName, phoneNumber, address, gender } = values;
-    return (
-      firstName !== '' &&
-      lastName !== '' &&
-      phoneNumber !== '' &&
-      address !== '' &&
-      gender !== ''
-    );
+    return firstName && lastName && phoneNumber && address && gender;
   };
 
-  const handleSelectChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
+  const handleSelectChange = event => {
+    setValues({ ...values, [event.target.name]: event.target.value });
   };
 
-  const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
+  const handleChange = event => {
+    setValues({ ...values, [event.target.name]: event.target.value });
   };
 
+  console.log(values, 'values');
 
   return (
     <div>
@@ -97,68 +87,81 @@ const UserProfileDialog = props => {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {updateUserProfileDialog.type === 'new' ? '' : 'Edit User Profile'}
+          {updateUserProfileDialog.type === 'new' ? '' : 'Edit user profile'}
         </DialogTitle>
 
         <DialogContent dividers>
           {updateUserProfileDialog.type === 'edit' ? (
             <div>
               <TextField
-                id="standard-First-Name"
-                label="First Name"
+                id="standard-first-name"
+                label="First name"
                 variant="outlined"
-                className={classes.textField}
-                value={values.firstName || ''}
-                onChange={handleChange('firstName')}
+                name="firstName"
+                value={values.firstName}
+                onChange={handleChange}
                 margin="normal"
+                size="small"
                 fullWidth
               />
               <TextField
-                id="standard-Last-Name"
-                label="Last Name"
+                id="standard-last-name"
+                label="Last name"
                 variant="outlined"
-                className={classes.textField}
-                value={values.lastName || ''}
-                onChange={handleChange('lastName')}
+                name="lastName"
+                value={values.lastName}
+                onChange={handleChange}
                 margin="normal"
+                size="small"
                 fullWidth
               />
-              <TextField
-                id="standard-phone-number"
-                label="Phone Number"
-                type="number"
-                variant="outlined"
-                className={classes.textField}
-                value={values.phoneNumber || ''}
-                onChange={handleChange('phoneNumber')}
-                margin="normal"
-                fullWidth
-              />
-              <TextField
-                id="standard-select-gender"
-                label="Select Gender"
-                variant="outlined"
-                className={classes.textField}
-                margin="normal"
-                value={values.gender ? values.gender : ''}
-                onChange={handleSelectChange('gender')}
-                select
-                fullWidth
-              >
-                {gender.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
+
+              <Grid container spacing={1}>
+                <Grid item xs={7}>
+                  <TextField
+                    id="standard-phone-number"
+                    label="Phone number"
+                    type="number"
+                    variant="outlined"
+                    name="phoneNumber"
+                    value={values.phoneNumber}
+                    onChange={handleChange}
+                    margin="normal"
+                    size="small"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={5}>
+                  <TextField
+                    id="standard-select-gender"
+                    label="Select gender"
+                    variant="outlined"
+                    margin="normal"
+                    size="small"
+                    name="gender"
+                    value={values.gender}
+                    onChange={handleSelectChange}
+                    select
+                    fullWidth
+                  >
+                    {gender.map(option => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+              </Grid>
+
               <TextField
                 id="standard-address"
                 label="Address"
                 variant="outlined"
-                className={classes.textField}
-                value={values.address || ''}
-                onChange={handleChange('address')}
+                name="address"
+                value={values.address}
+                onChange={handleChange}
                 margin="normal"
+                size="small"
                 fullWidth
                 rows={2}
                 multiline
@@ -205,7 +208,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     updateUserProfile: evt => dispatch(Actions.updateUserProfile(evt)),
-    closeEditUserProfileDialog: () => dispatch(Actions.closeEditUserProfileDialog()),
+    closeEditUserProfileDialog: () =>
+      dispatch(Actions.closeEditUserProfileDialog()),
   };
 }
 

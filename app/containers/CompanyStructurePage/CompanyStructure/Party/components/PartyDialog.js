@@ -48,6 +48,7 @@ const initialState = {
   assistantPartyHead: null,
   name: '',
   description: '',
+  address: '',
   tagId: '',
 }
 
@@ -150,7 +151,21 @@ const PartyDialog = props => {
               variant="outlined"
               fullWidth
               multiline
-              rows="3"
+              rows="2"
+            />
+
+            <TextField
+              id="address"
+              name="address"
+              size="small"
+              label="Address"
+              value={values.address}
+              onChange={handleChange('address')}
+              margin="normal"
+              variant="outlined"
+              fullWidth
+              multiline
+              rows="2"
             />
 
             <Autocomplete

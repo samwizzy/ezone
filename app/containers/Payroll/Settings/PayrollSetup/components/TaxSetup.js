@@ -14,7 +14,7 @@ import {
   FormControlLabel,
   FormControl,
   FormLabel,
-  FormGroup
+  FormGroup,
 } from '@material-ui/core';
 import _ from 'lodash';
 import { Autocomplete } from '@material-ui/lab';
@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2, 2),
     color: theme.palette.text.secondary,
   },
-  formControl: {}
+  formControl: {},
 }));
 
 const taxMethods = [
@@ -59,7 +59,7 @@ const FinancialYearSetup = props => {
           <TextField
             id="tax-payer-number"
             name="taxPayerNumber"
-            label="Company Tax Payer Number"
+            label="Company tax payer number"
             variant="outlined"
             margin="normal"
             fullWidth
@@ -72,7 +72,7 @@ const FinancialYearSetup = props => {
           <TextField
             id="pension-code"
             name="pensionCode"
-            label="Pension Employer’s Code"
+            label="Pension employer’s code"
             variant="outlined"
             margin="normal"
             fullWidth
@@ -83,22 +83,22 @@ const FinancialYearSetup = props => {
 
         <FormControl component="fieldset" margin="normal">
           <FormControlLabel
-            value="NHF Number"
+            value="NHF number"
             name="allowNHFNumber"
             onChange={handleChange}
             checked={Boolean(form.allowNHFNumber)}
             control={<Checkbox color="primary" />}
-            label="NHF Number"
+            label="NHF number"
             labelPlacement="end"
           />
         </FormControl>
 
-        {form.allowNHFNumber &&
+        {form.allowNHFNumber && (
           <Grid item xs>
             <TextField
               id="nhf-number"
               name="nhfNumber"
-              label="NHF Number"
+              label="NHF number"
               variant="outlined"
               margin="normal"
               fullWidth
@@ -109,24 +109,45 @@ const FinancialYearSetup = props => {
             <FormControl component="fieldset" className={classes.formControl}>
               <FormGroup>
                 <FormControlLabel
-                  control={<Checkbox checked={form.nhfOptions.NHIS_Code} onChange={handleCheckChange} value="NHIS_Code" name="nhfOptions" />}
-                  label="NHIS Code"
+                  control={
+                    <Checkbox
+                      checked={form.nhfOptions.NHIS_Code}
+                      onChange={handleCheckChange}
+                      value="NHIS_Code"
+                      name="nhfOptions"
+                    />
+                  }
+                  label="NHIS code"
                 />
                 <FormControlLabel
-                  control={<Checkbox checked={form.nhfOptions.ITF_Number} onChange={handleCheckChange} value="ITF_Number" name="nhfOptions" />}
-                  label="ITF Number"
+                  control={
+                    <Checkbox
+                      checked={form.nhfOptions.ITF_Number}
+                      onChange={handleCheckChange}
+                      value="ITF_Number"
+                      name="nhfOptions"
+                    />
+                  }
+                  label="ITF number"
                 />
                 <FormControlLabel
-                  control={<Checkbox checked={form.nhfOptions.NSITF_Number} onChange={handleCheckChange} value="NSITF_Number" name="nhfOptions" />}
-                  label="NSITF Number"
+                  control={
+                    <Checkbox
+                      checked={form.nhfOptions.NSITF_Number}
+                      onChange={handleCheckChange}
+                      value="NSITF_Number"
+                      name="nhfOptions"
+                    />
+                  }
+                  label="NSITF number"
                 />
               </FormGroup>
             </FormControl>
           </Grid>
-        }
+        )}
 
         <Autocomplete
-          id="Tax Calculation Method"
+          id="tax-calculation-method"
           style={{ width: 300 }}
           options={taxMethods}
           onChange={handleSelectChange('taxMethod')}
@@ -136,7 +157,7 @@ const FinancialYearSetup = props => {
           renderInput={params => (
             <TextField
               {...params}
-              label="Choose a Tax Calculation Method"
+              label="Choose a tax calculation method"
               variant="outlined"
               margin="normal"
             />

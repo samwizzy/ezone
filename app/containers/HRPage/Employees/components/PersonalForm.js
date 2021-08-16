@@ -1,32 +1,50 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 import _ from 'lodash';
-import Autocomplete from '@material-ui/lab/Autocomplete'
-import { AppBar, Button, Grid, MenuItem, TextField, Typography, DialogContent, DialogActions, Toolbar } from '@material-ui/core';
-import Countries from '../../../../utils/countries_states.json'
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import {
+  AppBar,
+  Button,
+  Grid,
+  MenuItem,
+  TextField,
+  Typography,
+  DialogContent,
+  DialogActions,
+  Toolbar,
+} from '@material-ui/core';
+import Countries from '../../../../utils/countries_states.json';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
 }));
 
 export const PersonalForm = props => {
-  const { handleChange, handleDateChange, handleSelectChange, closeNewEmployeeDialog, handleNext, handlePrev, form } = props
-  const classes = useStyles()
+  const {
+    handleChange,
+    handleDateChange,
+    handleSelectChange,
+    closeNewEmployeeDialog,
+    handleNext,
+    handlePrev,
+    form,
+  } = props;
+  const classes = useStyles();
 
   const canSubmitForm = () => {
-    const { maritalStatus, gender, address } = form
-    return maritalStatus && gender.length > 0 && address.length > 0
-  }
+    const { maritalStatus, gender, address } = form;
+    return maritalStatus && gender.length > 0 && address.length > 0;
+  };
 
   return (
-    <div>
+    <React.Fragment>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
@@ -47,15 +65,16 @@ export const PersonalForm = props => {
               margin="dense"
               variant="outlined"
               size="small"
-              label="Marital Status"
-              value={form.maritalStatus ? form.maritalStatus : ''}
+              label="Marital status"
+              value={form.maritalStatus}
               onChange={handleChange}
             >
-              {['Single', 'Married', 'Divorced'].map((status, i) =>
+              <MenuItem value="">Select marital status</MenuItem>
+              {['Single', 'Married', 'Divorced'].map((status, i) => (
                 <MenuItem key={i} value={status}>
                   {status}
                 </MenuItem>
-              )}
+              ))}
             </TextField>
           </Grid>
           <Grid item xs={6}>
@@ -72,12 +91,13 @@ export const PersonalForm = props => {
               value={form.gender}
               onChange={handleChange}
             >
-              <MenuItem key={0} value="Male">
-                Male
-              </MenuItem>
-              <MenuItem key={1} value="Female">
-                Female
-              </MenuItem>
+              <MenuItem value="">Select gender</MenuItem>
+
+              {['Male', 'Female'].map(gender => (
+                <MenuItem key={gender} value={gender}>
+                  {gender}
+                </MenuItem>
+              ))}
             </TextField>
           </Grid>
           <Grid item xs={6}>
@@ -92,9 +112,9 @@ export const PersonalForm = props => {
                 fullWidth
                 name="dateOfBirth"
                 id="date-picker-startDate2"
-                label="Date Of Birth"
+                label="Date of birth"
                 value={form.dob}
-                onChange={(date) => handleDateChange(date, 'dob')}
+                onChange={date => handleDateChange(date, 'dob')}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
                 }}
@@ -105,7 +125,7 @@ export const PersonalForm = props => {
           <Grid item xs={6}>
             <TextField
               name="mobileNo"
-              label="Mobile Number"
+              label="Mobile number"
               id="outlined-mobile-no"
               fullWidth
               margin="dense"
@@ -123,7 +143,9 @@ export const PersonalForm = props => {
               options={Countries}
               getOptionLabel={option => option.name}
               getOptionSelected={option => option.name === form.country}
-              value={form.country ? _.find(Countries, { name: form.country }) : null}
+              value={
+                form.country ? _.find(Countries, { name: form.country }) : null
+              }
               onChange={handleSelectChange('country')}
               renderInput={params => (
                 <TextField
@@ -141,7 +163,11 @@ export const PersonalForm = props => {
             <Autocomplete
               id="combo-box-state"
               size="small"
-              options={form.country ? _.find(Countries, { name: form.country }).states : []}
+              options={
+                form.country
+                  ? _.find(Countries, { name: form.country }).states
+                  : []
+              }
               getOptionLabel={option => option}
               onChange={handleSelectChange('state')}
               value={form.state}
@@ -197,10 +223,14 @@ export const PersonalForm = props => {
         <Button onClick={handlePrev} color="primary">
           Prev
         </Button>
-        <Button onClick={handleNext} disabled={!canSubmitForm()} color="primary">
+        <Button
+          onClick={handleNext}
+          disabled={!canSubmitForm()}
+          color="primary"
+        >
           Next
         </Button>
       </DialogActions>
-    </div>
-  )
-}
+    </React.Fragment>
+  );
+};

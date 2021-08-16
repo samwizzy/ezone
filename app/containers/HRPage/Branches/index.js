@@ -6,15 +6,15 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
-import ModuleLayout from './ModuleLayout'
+import ModuleLayout from './ModuleLayout';
 import BranchList from './BranchList';
 
 export function BranchPage(props) {
   return (
     <React.Fragment>
       <Helmet>
-        <title>Branch</title>
-        <meta name="description" content="ezone application branch page" />
+        <title>Human Resource — Branch</title>
+        <meta name="description" content="ezone application branch" />
       </Helmet>
 
       <ModuleLayout>

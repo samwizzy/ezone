@@ -35,8 +35,8 @@ const useStyles = makeStyles(theme => ({
   editButton: {
     padding: theme.spacing(1, 4),
     background: theme.palette.primary.main,
-    borderRadius: '8px'
-  }
+    borderRadius: '8px',
+  },
 }));
 
 const TopSection = props => {
@@ -45,19 +45,12 @@ const TopSection = props => {
   const { openEditColorDialog, openEditCompanyDialog } = props;
   return (
     <React.Fragment>
-        <Paper className={classes.root}>
-            <Grid
-            justify="space-between"
-            container
-            >
-                <Grid item>
-                    
-                </Grid>
-                <Grid item>
-                    
-                </Grid>
-            </Grid>
-        </Paper>
+      <Paper className={classes.root}>
+        <Grid justify="space-between" container>
+          <Grid item />
+          <Grid item />
+        </Grid>
+      </Paper>
     </React.Fragment>
   );
 };

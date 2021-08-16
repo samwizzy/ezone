@@ -15,11 +15,8 @@ export function PayRunSettingsPage(props) {
   return (
     <div>
       <Helmet>
-        <title>Payrun Settings</title>
-        <meta
-          name="description"
-          content="Description of Payrun Settings"
-        />
+        <title>Payroll — Payrun Settings</title>
+        <meta name="description" content="Description of Payrun Settings" />
       </Helmet>
 
       <PayrunSettings />

@@ -2,37 +2,31 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import EzoneUtils from '../../../../utils/EzoneUtils';
 import { withRouter } from 'react-router-dom';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Button, ButtonGroup, TableContainer, Table, TableRow, TableCell, TableBody, TextField, Grid, Paper, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
-import { green, orange } from '@material-ui/core/colors'
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
-import moment from 'moment'
-import MUIDataTable from 'mui-datatables'
+import { green, orange } from '@material-ui/core/colors';
+import { darken } from '@material-ui/core/styles/colorManipulator';
+import moment from 'moment';
+import MUIDataTable from 'mui-datatables';
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
 import * as AppSelectors from '../../../App/selectors';
-import EditSharp from '@material-ui/icons/EditSharp';
-import Assignment from '@material-ui/icons/Assignment';
-import Person from '@material-ui/icons/Person';
-import { AddLeaveRequest } from '../components/AddButton'
-import LeaveRequestDialog from './components/LeaveRequestDialog'
+import { AddLeaveRequest } from '../components/AddButton';
+import LeaveRequestDialog from './components/LeaveRequestDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   datatable: {
     '& tr:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& thead': {
       '& th': {
         color: theme.palette.common.white,
-        textTransform: 'capitalize'
       },
       '& th:nth-child(odd)': {
         backgroundColor: theme.palette.primary.main,
@@ -48,14 +42,20 @@ const useStyles = makeStyles(theme => ({
     '&.approved': { color: theme.palette.primary.main },
     '&.inProgress': { color: orange[500] },
     '&.done': { color: green[500] },
-  }
+  },
 }));
 
 const LeaveRequestList = props => {
   const classes = useStyles();
-  const { loading, openNewLeaveRequestDialog, getLeaveRequest, getLeaveRequestById, leaveRequests } = props;
+  const {
+    loading,
+    openNewLeaveRequestDialog,
+    getLeaveRequest,
+    getLeaveRequestById,
+    leaveRequests,
+  } = props;
 
-  console.log(leaveRequests, "leaveRequests")
+  console.log(leaveRequests, 'leaveRequests');
 
   const columns = [
     {
@@ -75,26 +75,26 @@ const LeaveRequestList = props => {
     },
     {
       name: 'leaveTypeName',
-      label: 'Leave Type',
+      label: 'Leave type',
       options: {
         filter: true,
       },
     },
     {
       name: 'noOfDays',
-      label: 'No. of Days',
-      options: {
-        filter: true,
-        sort: true
-      }
-    },
-    {
-      name: 'leaveAllowance',
-      label: 'Leave Allowance',
+      label: 'No. of days',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: value => EzoneUtils.formatCurrency(value)
+      },
+    },
+    {
+      name: 'leaveAllowance',
+      label: 'Leave allowance',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: value => EzoneUtils.formatCurrency(value),
       },
     },
     {
@@ -103,24 +103,25 @@ const LeaveRequestList = props => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: 'addedBy',
-      label: 'Added By',
+      label: 'Added by',
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: 'dateAdded',
-      label: 'Date Applied',
+      label: 'Date applied',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: createdAt => createdAt ? moment(createdAt).format('ll') : ''
-      }
+        customBodyRender: createdAt =>
+          createdAt ? moment(createdAt).format('ll') : '',
+      },
     },
   ];
 
@@ -132,20 +133,22 @@ const LeaveRequestList = props => {
     download: true,
     viewColumns: false,
     filter: false,
-    customToolbar: () => <AddLeaveRequest openDialog={openNewLeaveRequestDialog} />,
+    customToolbar: () => (
+      <AddLeaveRequest openDialog={openNewLeaveRequestDialog} />
+    ),
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
-      getLeaveRequestById(rowData[0])
+      getLeaveRequestById(rowData[0]);
     },
-    elevation: 0
+    elevation: 0,
   };
 
   return (
     <div className={classes.root}>
       <MUIDataTable
         className={classes.datatable}
-        title="Leave Requests"
+        title="Leave requests"
         data={leaveRequests}
         columns={columns}
         options={options}
@@ -170,8 +173,9 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getLeaveRequest: () => dispatch(Actions.getLeaveRequest()),
-    getLeaveRequestById: (uuid) => dispatch(Actions.getLeaveRequestById(uuid)),
-    openNewLeaveRequestDialog: () => dispatch(Actions.openNewLeaveRequestDialog()),
+    getLeaveRequestById: uuid => dispatch(Actions.getLeaveRequestById(uuid)),
+    openNewLeaveRequestDialog: () =>
+      dispatch(Actions.openNewLeaveRequestDialog()),
   };
 }
 

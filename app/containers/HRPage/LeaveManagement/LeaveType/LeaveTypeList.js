@@ -5,28 +5,27 @@ import { makeStyles } from '@material-ui/core/styles';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { green, orange } from '@material-ui/core/colors'
+import { green, orange } from '@material-ui/core/colors';
 import { darken } from '@material-ui/core/styles/colorManipulator';
-import moment from 'moment'
-import MUIDataTable from 'mui-datatables'
+import moment from 'moment';
+import MUIDataTable from 'mui-datatables';
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
 import * as AppSelectors from '../../../App/selectors';
-import { AddLeaveType } from '../components/AddButton'
-import LeaveTypeDialog from './components/LeaveTypeDialog'
+import { AddLeaveType } from '../components/AddButton';
+import LeaveTypeDialog from './components/LeaveTypeDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   datatable: {
     '& tr:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& thead': {
       '& th': {
         color: theme.palette.common.white,
-        textTransform: 'capitalize'
       },
       '& th:nth-child(odd)': {
         backgroundColor: theme.palette.primary.main,
@@ -42,14 +41,20 @@ const useStyles = makeStyles(theme => ({
     '&.approved': { color: theme.palette.primary.main },
     '&.inProgress': { color: orange[500] },
     '&.done': { color: green[500] },
-  }
+  },
 }));
 
 const LeaveTypeList = props => {
   const classes = useStyles();
-  const { loading, openNewLeaveTypeDialog, getLeaveType, getLeaveTypeById, leaveTypes } = props;
+  const {
+    loading,
+    openNewLeaveTypeDialog,
+    getLeaveType,
+    getLeaveTypeById,
+    leaveTypes,
+  } = props;
 
-  console.log(leaveTypes, "leaveTypes")
+  console.log(leaveTypes, 'leaveTypes');
 
   const columns = [
     {
@@ -74,58 +79,63 @@ const LeaveTypeList = props => {
         filter: true,
         sort: true,
         customBodyRender: id => {
-          const selected = leaveTypes && leaveTypes.find(type => type.id === id)
-          return moment(selected.validTill).diff(selected.validFrom, 'days', true)
-        }
-      }
+          const selected =
+            leaveTypes && leaveTypes.find(type => type.id === id);
+          return moment(selected.validTill).diff(
+            selected.validFrom,
+            'days',
+            true,
+          );
+        },
+      },
     },
     {
       name: 'numberOfDaysFromHire',
-      label: 'No. of Days From Hire',
+      label: 'No. of days from hire',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: value => `${value} days`
-      }
+        customBodyRender: value => `${value} days`,
+      },
     },
     {
       name: 'leaveAllowancePercent',
-      label: 'Leave Allowance ( % )',
+      label: 'Leave allowance ( % )',
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: 'validFrom',
-      label: 'Valid From',
+      label: 'Valid from',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: date => date ? moment(date).format('ll') : ''
-      }
+        customBodyRender: date => (date ? moment(date).format('ll') : ''),
+      },
     },
     {
       name: 'validTill',
-      label: 'Valid Till',
+      label: 'Valid till',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: date => date ? moment(date).format('ll') : ''
-      }
+        customBodyRender: date => (date ? moment(date).format('ll') : ''),
+      },
     },
     {
       name: 'dateAdded',
-      label: 'Date Applied',
+      label: 'Date applied',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: date => date ? moment(date).format('ll') : ''
-      }
+        customBodyRender: date => (date ? moment(date).format('ll') : ''),
+      },
     },
     {
       name: 'type',
-      label: 'Leave Type',
+      label: 'Leave type',
       options: {
         filter: true,
         sort: true,
@@ -133,11 +143,11 @@ const LeaveTypeList = props => {
     },
     {
       name: 'eligibleEmployees',
-      label: 'Eligility Count',
+      label: 'No. of eligility employees',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: employees => employees ? employees.length : 0
+        customBodyRender: employees => (employees ? employees.length : 0),
       },
     },
   ];
@@ -152,16 +162,16 @@ const LeaveTypeList = props => {
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
-      getLeaveTypeById(rowData[0])
+      getLeaveTypeById(rowData[0]);
     },
-    elevation: 0
+    elevation: 0,
   };
 
   return (
     <div className={classes.root}>
       <MUIDataTable
         className={classes.datatable}
-        title="Leave Types"
+        title="Leave types"
         data={leaveTypes}
         columns={columns}
         options={options}
@@ -185,7 +195,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getLeaveTypeById: (id) => dispatch(Actions.getLeaveTypeById(id)),
+    getLeaveTypeById: id => dispatch(Actions.getLeaveTypeById(id)),
     openNewLeaveTypeDialog: () => dispatch(Actions.openNewLeaveTypeDialog()),
   };
 }

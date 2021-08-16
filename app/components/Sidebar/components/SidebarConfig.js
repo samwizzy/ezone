@@ -3,7 +3,7 @@ const SidebarConfig = [
     module: ['home'],
     menus: [
       { id: 1, name: 'Home', url: '/', icon: 'home' },
-      { id: 2, name: 'Admin Panel', url: '/dashboard', icon: 'build' },
+      { id: 2, name: 'Admin panel', url: '/dashboard', icon: 'build' },
     ],
   },
   {
@@ -38,7 +38,7 @@ const SidebarConfig = [
       },
       { id: 3, name: 'Applications', url: '/applications', icon: 'apps' },
       { id: 4, name: 'Employees', url: '/users', icon: 'group' },
-      { id: 5, name: 'User Profile', url: '/user-profile', icon: 'person' },
+      { id: 5, name: 'User profile', url: '/user-profile', icon: 'person' },
       { id: 6, name: 'Roles', url: '/roles', icon: 'person', disabled: true },
       {
         id: 7,
@@ -86,7 +86,7 @@ const SidebarConfig = [
       },
       {
         id: 7,
-        name: 'Leave Management',
+        name: 'Leave management',
         url: '/human-resource/leave-management/leave-request',
         icon: 'single_bed',
       },
@@ -103,25 +103,25 @@ const SidebarConfig = [
       },
       {
         id: 2,
-        name: 'Employee Salary',
+        name: 'Employee salary',
         url: '/payroll/employee-salary',
         icon: 'business_center',
       },
       {
         id: 3,
-        name: 'Pay Runs',
+        name: 'Pay runs',
         url: '/payroll/pay-runs',
         icon: 'find_in_page',
       },
       {
         id: 4,
-        name: 'Payroll Items',
+        name: 'Payroll items',
         url: '/payroll/payroll-items',
         icon: 'person',
       },
       {
         id: 5,
-        name: 'Salary Advance',
+        name: 'Salary advance',
         url: '/payroll/salary-advance',
         icon: 'announcement',
       },
@@ -132,16 +132,16 @@ const SidebarConfig = [
         url: '#',
         icon: 'single_bed',
         submenus: [
-          { id: 1, name: 'Payroll Set Up', url: '/payroll/settings', icon: '' },
+          { id: 1, name: 'Payroll set-up', url: '/payroll/settings', icon: '' },
           {
             id: 2,
-            name: 'Pay Run',
+            name: 'Pay run',
             url: '/payroll/settings/pay-run',
             icon: '',
           },
           {
             id: 3,
-            name: 'Tax Setting',
+            name: 'Tax setting',
             url: '/payroll/settings/tax',
             icon: '',
           },
@@ -163,12 +163,12 @@ const SidebarConfig = [
       { id: 1, name: 'Dashboard', url: '/account', icon: 'dashboard' },
       {
         id: 2,
-        name: 'Chart of Account',
+        name: 'Chart of account',
         url: '/account/charts',
         icon: 'account_tree',
       },
       { id: 3, name: 'Journal', url: '/account/journal', icon: 'menu_book' },
-      { id: 4, name: 'Fixed Asset', url: '/account/fixedassets', icon: 'note' },
+      { id: 4, name: 'Fixed asset', url: '/account/fixedassets', icon: 'note' },
       {
         id: 5,
         name: 'Banking',
@@ -195,7 +195,7 @@ const SidebarConfig = [
         submenus: [
           {
             id: 1,
-            name: 'Account Settings',
+            name: 'Account settings',
             url: '/account/settings/period',
             icon: '',
           },
@@ -243,7 +243,7 @@ const SidebarConfig = [
       { id: 5, name: 'Schedules', url: '/crm/schedules', icon: 'payment' },
       {
         id: 6,
-        name: 'Contact Groups',
+        name: 'Contact groups',
         url: '/crm/contact-groups',
         icon: 'announcement',
       },
@@ -256,7 +256,7 @@ const SidebarConfig = [
       },
       {
         id: 9,
-        name: 'Social Media',
+        name: 'Social media',
         url: '#',
         icon: 'local_activity',
         submenus: [
@@ -292,20 +292,20 @@ const SidebarConfig = [
       },
       {
         id: 5,
-        name: 'Content Management',
+        name: 'Content management',
         url: '/lms/content-mgt',
         icon: 'library_books',
       },
       { id: 6, name: 'Users', url: '/lms/user', icon: 'person' },
       {
         id: 7,
-        name: 'Course Management',
+        name: 'Course management',
         url: '/lms/courses',
         icon: 'library_books',
       },
       {
         id: 8,
-        name: 'Virtual Classrooms',
+        name: 'Virtual classrooms',
         url: '/lms/virtual-classrooms',
         icon: 'person',
       },
@@ -339,13 +339,13 @@ const SidebarConfig = [
           { id: 3, name: 'Items', url: '/inventory/items', icon: 'label' },
           {
             id: 4,
-            name: 'Items Groups',
+            name: 'Items groups',
             url: '/inventory/items/groups',
             icon: 'group_work',
           },
           {
             id: 5,
-            name: 'Transfer Orders',
+            name: 'Transfer orders',
             url: '/inventory/transfers',
             icon: 'transfer_within_a_station',
           },
@@ -461,7 +461,7 @@ const SidebarConfig = [
           { id: 1, name: 'Jobs list', url: '/project-manager/jobs', icon: '' },
           {
             id: 2,
-            name: 'Add Job',
+            name: 'Add job',
             url: '/project-manager/jobs/new',
             icon: '',
           },
@@ -486,13 +486,13 @@ const SidebarConfig = [
       },
       {
         id: 2,
-        name: 'Workflow Rules',
+        name: 'Workflow rules',
         url: '/workflow/rules',
         icon: 'assessment',
       },
       {
         id: 3,
-        name: 'Severity Models',
+        name: 'Severity models',
         url: '/workflow/severity-models',
         icon: 'assessment',
       },

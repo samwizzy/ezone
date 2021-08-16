@@ -14,19 +14,17 @@ import {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
 }));
 
-export const Form = props => {
+export const BasicForm = props => {
   const { handleChange, closeNewEmployeeDialog, handleNext, form } = props;
   const classes = useStyles();
 
   const canSubmitForm = () => {
-    const { firstName, lastName, phoneNumber, emailAddress, nickName } = form;
-    return (
-      firstName && lastName && phoneNumber && emailAddress
-    );
+    const { firstName, lastName, phoneNumber, emailAddress } = form;
+    return firstName && lastName && phoneNumber && emailAddress;
   };
 
   return (
@@ -45,6 +43,7 @@ export const Form = props => {
             <TextField
               name="firstName"
               label="Firstname"
+              required
               id="outlined-firstname"
               fullWidth
               margin="dense"
@@ -58,6 +57,7 @@ export const Form = props => {
             <TextField
               name="lastName"
               label="Lastname"
+              required
               id="outlined-lastname"
               fullWidth
               margin="dense"
@@ -70,7 +70,8 @@ export const Form = props => {
           <Grid item xs={6}>
             <TextField
               name="phoneNumber"
-              label="Phone Number"
+              label="Phone number"
+              required
               id="outlined-phonenumber"
               fullWidth
               margin="dense"
@@ -83,7 +84,8 @@ export const Form = props => {
           <Grid item xs={6}>
             <TextField
               name="emailAddress"
-              label="Company Email"
+              label="Office email"
+              required
               id="outlined-email-address"
               fullWidth
               margin="dense"

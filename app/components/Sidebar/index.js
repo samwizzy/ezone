@@ -5,7 +5,11 @@ import { withRouter } from 'react-router-dom';
 import Drawer from '@material-ui/core/Drawer';
 import Link from '@material-ui/core/Link';
 import Divider from '@material-ui/core/Divider';
-import { fade, darken, lighten } from '@material-ui/core/styles/colorManipulator';
+import {
+  fade,
+  darken,
+  lighten,
+} from '@material-ui/core/styles/colorManipulator';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -27,8 +31,8 @@ const useStyles = makeStyles(theme => ({
     whiteSpace: 'nowrap',
     marginTop: drawerHeight,
     height: `calc(100vh - ${drawerHeight}px)`,
-    background: `url(${sidebarImage}) no-repeat left top`,
-    backgroundSize: "cover",
+    background: `url(${sidebarImage}) no-repeat left -2px`,
+    backgroundSize: 'cover',
   },
   drawerOpen: {
     width: drawerWidth,
@@ -52,18 +56,18 @@ const useStyles = makeStyles(theme => ({
   },
   toolbar: {
     zIndex: theme.zIndex.drawer + 1,
-    position: "absolute",
+    position: 'absolute',
     boxShadow: theme.shadows[1],
     borderRadius: theme.spacing(0, 20, 20, 0),
-    "&.full": {
+    '&.full': {
       // right: `-${theme.spacing(5) + 3}px`,
       right: `-43.26px`,
     },
-    bottom: "10%",
+    bottom: '10%',
     display: 'flex',
     backgroundColor: fade('#fff', 0.5),
-    "& .MuiSvgIcon-root": {
-      color: theme.palette.primary.main
+    '& .MuiSvgIcon-root': {
+      color: theme.palette.primary.main,
     },
     alignItems: 'center',
     justifyContent: 'flex-end',
@@ -72,9 +76,9 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     width: `calc(100% - ${drawerWidth}px)`,
-    "&.full": {
+    '&.full': {
       width: `calc(100% - ${theme.spacing(7) + 1}px)`,
-    }
+    },
   },
   logo: {
     color: '#1F70C1',
@@ -114,8 +118,7 @@ function MiniDrawer(props) {
           }),
         }}
       >
-
-        <div className={clsx(classes.toolbar, { 'full': open })}>
+        <div className={clsx(classes.toolbar, { full: open })}>
           {/* <Link href="#">
             <img src={Logo} className={classes.logo} alt="" />
           </Link> */}
@@ -124,26 +127,24 @@ function MiniDrawer(props) {
               {theme.direction === 'rtl' ? (
                 <ChevronRightIcon />
               ) : (
-                  <ChevronLeftIcon />
-                )}
+                <ChevronLeftIcon />
+              )}
             </IconButton>
           ) : (
-              <IconButton size="small" onClick={handleDrawerOpen}>
-                {theme.direction === 'rtl' ? (
-                  <ChevronLeftIcon />
-                ) : (
-                    <ChevronRightIcon />
-                  )}
-              </IconButton>
-            )}
+            <IconButton size="small" onClick={handleDrawerOpen}>
+              {theme.direction === 'rtl' ? (
+                <ChevronLeftIcon />
+              ) : (
+                <ChevronRightIcon />
+              )}
+            </IconButton>
+          )}
         </div>
         <AppSidebar />
         <Divider />
       </Drawer>
-      <main className={clsx(classes.content, { 'full': !open })}>
-        <div style={{ minHeight: `calc(100vh - 80px)` }}>
-          {props.content}
-        </div>
+      <main className={clsx(classes.content, { full: !open })}>
+        <div style={{ minHeight: `calc(100vh - 80px)` }}>{props.content}</div>
         <Footer />
       </main>
     </div>

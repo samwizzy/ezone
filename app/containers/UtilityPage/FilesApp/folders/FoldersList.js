@@ -1,34 +1,53 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles'
-import { orange } from '@material-ui/core/colors'
-import { Route, MemoryRouter } from 'react-router';
-import { withRouter, Link as RouterLink } from 'react-router-dom'
-import classNames from 'classnames'
-import { Backdrop, Button, Box, CircularProgress, Card, CardContent, CardActionArea, CardMedia, Grid, Menu, MenuItem, Link, List, ListItem, ListSubheader, ListItemText, ListItemIcon, Collapse, Icon, IconButton, Typography, TableContainer, Table, TableBody, TableRow, TableCell, Tooltip, Toolbar, Paper } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { orange } from '@material-ui/core/colors';
+import { withRouter } from 'react-router-dom';
+import classNames from 'classnames';
+import {
+  Backdrop,
+  Button,
+  Box,
+  CircularProgress,
+  Card,
+  CardMedia,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Collapse,
+  Icon,
+  IconButton,
+  Typography,
+  TableContainer,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  Toolbar,
+} from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
-import Description from '@material-ui/icons/Description'
+import { darken } from '@material-ui/core/styles/colorManipulator';
+import Description from '@material-ui/icons/Description';
 import { AddFile } from './../components/AddButton';
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
 import * as AppSelectors from './../../../App/selectors';
-import AddSignature from './../components/AddSignature'
-import DocWidget from './../components/DocWidget'
-import NoFilesList from './../components/NoFilesList'
-import moment from 'moment'
+import AddSignature from './../components/AddSignature';
+import DocWidget from './../components/DocWidget';
+import NoFilesList from './../components/NoFilesList';
+import moment from 'moment';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import DeleteRounded from '@material-ui/icons/DeleteRounded';
 import InsertDriveFile from '@material-ui/icons/InsertDriveFile';
 import FolderOpen from '@material-ui/icons/FolderOpen';
-import StarBorderOutlined from '@material-ui/icons/StarBorderOutlined';
 import StarOutlined from '@material-ui/icons/StarOutlined';
-import FolderSideBar from './../FolderSideBar'
+import FolderSideBar from './../FolderSideBar';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,17 +57,17 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(2),
     '& .MuiTableCell-body': {
       fontSize: theme.typography.fontSize - 1,
-      whiteSpace: "nowrap",
+      whiteSpace: 'nowrap',
     },
     '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
   },
   datatable: {
     borderRight: `1px solid ${theme.palette.grey[100]}`,
     borderLeft: `1px solid ${theme.palette.grey[100]}`,
     '& .MuiTableRow-root:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& .MuiTableHead-root': {
       '& .MuiTableCell-head': {
@@ -106,75 +125,78 @@ const FilesList = props => {
     openNewFolderDialog,
     openFileUploadDialog,
     openFilePreviewDialog,
-    openShareFileDialog
-  } = props
+    openShareFileDialog,
+  } = props;
 
   const [isOpen, setOpen] = React.useState(true);
 
-  React.useEffect(() => {
-    getAllFoldersAndDocs({ folderId: 0, type: 'ROOT' })
-  }, [])
+  useEffect(() => {
+    getAllFoldersAndDocs({ folderId: 0, type: 'ROOT' });
+  }, []);
 
-  console.log(folders, "folders")
-  console.log(folder, "folder")
-  console.log(file, "file")
-  console.log(loading, "loading")
+  console.log(folders, 'folders');
+  console.log(folder, 'folder');
+  console.log(file, 'file');
+  console.log(loading, 'loading');
 
   const handleCollapseClick = () => {
     setOpen(!isOpen);
   };
 
-  const downloadFile = (fileId) => {
-    const doc = folders && folders.find(file => file.id == fileId)
+  const downloadFile = fileId => {
+    const doc = folders && folders.find(file => file.id == fileId);
     let a = document.createElement('a');
     a.href = doc.fileUrl;
     a.download = doc.name;
     a.click();
-  }
+  };
 
   const handleView = (event, id) => {
-    event.stopPropagation()
-    const selectedDoc = folders && folders.find(folder => folder.id === id)
-    openFilePreviewDialog(selectedDoc)
-  }
+    event.stopPropagation();
+    const selectedDoc = folders && folders.find(folder => folder.id === id);
+    openFilePreviewDialog(selectedDoc);
+  };
 
   const handleShare = (event, id) => {
-    event.stopPropagation()
-    openShareFileDialog(id)
-  }
+    event.stopPropagation();
+    openShareFileDialog(id);
+  };
 
   const handleDownload = (event, id) => {
-    event.stopPropagation()
-    downloadFile(id)
-  }
+    event.stopPropagation();
+    downloadFile(id);
+  };
 
-  const handleDelete = (id) => {
-    const selectedDoc = folders && folders.find(folder => folder.id === id)
-    const file = []
-    const payload = Object.assign({}, { id, type: selectedDoc.type })
-    file.push(payload)
-    const model = Object.assign({}, { folderId: 0, data: { parentId: 1, file } })
-    deleteDocument(model)
-  }
+  const handleDelete = id => {
+    const selectedDoc = folders && folders.find(folder => folder.id === id);
+    const file = [];
+    const payload = Object.assign({}, { id, type: selectedDoc.type });
+    file.push(payload);
+    const model = Object.assign(
+      {},
+      { folderId: 0, data: { parentId: 1, file } },
+    );
+    deleteDocument(model);
+  };
 
   const handleFavorite = (event, id) => {
-    event.stopPropagation()
-    favoriteDocument(id)
-  }
+    event.stopPropagation();
+    favoriteDocument(id);
+  };
 
   const getAllFolders = () => {
-    getAllFoldersAndDocs({ folderId: 0, type: 'ROOT' })
-    props.history.push('/file-manager/folders')
-  }
+    getAllFoldersAndDocs({ folderId: 0, type: 'ROOT' });
+    props.history.push('/file-manager/folders');
+  };
 
   const handleRowClick = folderId => {
-    const selectedDoc = folders && folders.find(folder => folder.id === folderId)
-    selectedDoc.type == 'File' ? getUtilityFile(folderId) :
-      (
-        getAllFoldersAndDocs({ folderId, type: 'FOLDER' }),
-        props.history.push('/file-manager/folder/' + folderId)
-      )
-  }
+    const selectedDoc =
+      folders && folders.find(folder => folder.id === folderId);
+    selectedDoc.type == 'File'
+      ? getUtilityFile(folderId)
+      : (getAllFoldersAndDocs({ folderId, type: 'FOLDER' }),
+        props.history.push('/file-manager/folder/' + folderId));
+  };
 
   const columns = [
     {
@@ -196,8 +218,8 @@ const FilesList = props => {
             <Typography variant="inherit" color="textSecondary">
               {type == 'File' ? <InsertDriveFile /> : <FolderOpen />}
             </Typography>
-          )
-        }
+          );
+        },
       },
     },
     {
@@ -207,13 +229,13 @@ const FilesList = props => {
         filter: true,
         sort: true,
         customBodyRender: name => {
-          if (!name) return ''
+          if (!name) return '';
           return (
             <Typography variant="inherit" color="textSecondary">
               {name}
             </Typography>
-          )
-        }
+          );
+        },
       },
     },
     // {
@@ -233,15 +255,13 @@ const FilesList = props => {
     // },
     {
       name: 'dateCreated',
-      label: 'Last Modified',
+      label: 'Last modified',
       options: {
         filter: true,
         sort: true,
         customBodyRender: dateCreated => {
-          return (
-            moment(dateCreated).format('lll')
-          )
-        }
+          return moment(dateCreated).format('lll');
+        },
       },
     },
     {
@@ -252,11 +272,17 @@ const FilesList = props => {
         sort: true,
         customBodyRender: id => {
           return (
-            <IconButton onClick={(event) => handleShare(event, id)} className={classNames(classes.iconButton)} aria-label="share" color="inherit" size="small">
+            <IconButton
+              onClick={event => handleShare(event, id)}
+              className={classNames(classes.iconButton)}
+              aria-label="share"
+              color="inherit"
+              size="small"
+            >
               <Icon color="primary">share</Icon>
             </IconButton>
-          )
-        }
+          );
+        },
       },
     },
     {
@@ -267,11 +293,17 @@ const FilesList = props => {
         sort: true,
         customBodyRender: id => {
           return (
-            <IconButton onClick={(event) => handleView(event, id)} className={classNames(classes.iconButton)} aria-label="view" color="inherit" size="small">
+            <IconButton
+              onClick={event => handleView(event, id)}
+              className={classNames(classes.iconButton)}
+              aria-label="view"
+              color="inherit"
+              size="small"
+            >
               <Icon color="primary">visibility</Icon>
             </IconButton>
-          )
-        }
+          );
+        },
       },
     },
     {
@@ -282,11 +314,17 @@ const FilesList = props => {
         sort: true,
         customBodyRender: id => {
           return (
-            <IconButton onClick={(event) => handleDownload(event, id)} className={classNames(classes.iconButton)} aria-label="download" color="inherit" size="small">
+            <IconButton
+              onClick={event => handleDownload(event, id)}
+              className={classNames(classes.iconButton)}
+              aria-label="download"
+              color="inherit"
+              size="small"
+            >
               <Icon color="primary">cloud_download</Icon>
             </IconButton>
-          )
-        }
+          );
+        },
       },
     },
   ];
@@ -302,20 +340,25 @@ const FilesList = props => {
     filter: false,
     textLabels: {
       body: {
-        noMatch: "Sorry, no matching documents found",
-        toolTip: "Sort",
+        noMatch: 'Sorry, no matching documents found',
+        toolTip: 'Sort',
       },
       selectedRows: {
-        text: "document(s) selected",
-        delete: "Delete",
-        deleteAria: "Delete Selected Documents",
+        text: 'document(s) selected',
+        delete: 'Delete',
+        deleteAria: 'Delete Selected Documents',
       },
     },
-    customToolbar: () => <AddFile openFileDialog={openFileUploadDialog} openFolderDialog={openNewFolderDialog} />,
+    customToolbar: () => (
+      <AddFile
+        openFileDialog={openFileUploadDialog}
+        openFolderDialog={openNewFolderDialog}
+      />
+    ),
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => handleRowClick(rowData[0]),
-    elevation: 0
+    elevation: 0,
   };
 
   if (folders && folders.length === 0) {
@@ -326,7 +369,7 @@ const FilesList = props => {
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={1}>
+      <Grid container spacing={0}>
         <Grid item xs={2}>
           <FolderSideBar />
         </Grid>
@@ -337,11 +380,7 @@ const FilesList = props => {
 
           <MUIDataTable
             className={classes.datatable}
-            title={
-              <Typography variant="h6">
-                Documents
-              </Typography>
-            }
+            title={<Typography variant="h6">Documents</Typography>}
             data={folders}
             columns={columns}
             options={options}
@@ -350,9 +389,11 @@ const FilesList = props => {
         <Grid item xs={3}>
           <Box>
             <Toolbar>
-              <Typography variant="subtitle1" color="textSecondary">Document Details</Typography>
+              <Typography variant="subtitle1" color="textSecondary">
+                Document details
+              </Typography>
             </Toolbar>
-            {file &&
+            {file && (
               <div>
                 <Card className={classes.cardRoot} elevation={0}>
                   <CardMedia
@@ -363,48 +404,60 @@ const FilesList = props => {
                 </Card>
 
                 <TableContainer component="div">
-                  <Table className={classes.table} size="small" aria-label="a dense table">
+                  <Table
+                    className={classes.table}
+                    size="small"
+                    aria-label="a dense table"
+                  >
                     <TableBody>
                       <TableRow key={file.docName}>
                         <TableCell component="th" scope="row">
                           Name
-                    </TableCell>
+                        </TableCell>
                         <TableCell align="right">{file.docName}</TableCell>
                       </TableRow>
                       <TableRow key={file.format}>
                         <TableCell component="th" scope="row">
                           Format
-                    </TableCell>
+                        </TableCell>
                         <TableCell align="right">{file.format}</TableCell>
                       </TableRow>
                       <TableRow key={file.size}>
                         <TableCell component="th" scope="row">
                           Size
-                    </TableCell>
+                        </TableCell>
                         <TableCell align="right">{file.size}</TableCell>
                       </TableRow>
                       <TableRow key={file.createdBy}>
                         <TableCell component="th" scope="row">
                           Owner
-                    </TableCell>
-                        <TableCell align="right">{file.createdBy ? "" : ""}</TableCell>
+                        </TableCell>
+                        <TableCell align="right">
+                          {file.createdBy ? '' : ''}
+                        </TableCell>
                       </TableRow>
                       <TableRow key={file.modifiedBy}>
                         <TableCell component="th" scope="row">
                           Modified By
-                    </TableCell>
+                        </TableCell>
                         <TableCell align="right">{file.modifiedBy}</TableCell>
                       </TableRow>
                       <TableRow key={file.trash}>
                         <TableCell component="th" scope="row">
                           Trashed
-                    </TableCell>
-                        <TableCell align="right">{file.trash ? <DeleteRounded className={classes.icon} /> : 'No'}</TableCell>
+                        </TableCell>
+                        <TableCell align="right">
+                          {file.trash ? (
+                            <DeleteRounded className={classes.icon} />
+                          ) : (
+                            'No'
+                          )}
+                        </TableCell>
                       </TableRow>
                       <TableRow key={file.dateCreated}>
                         <TableCell component="th" scope="row">
                           Date Created
-                    </TableCell>
+                        </TableCell>
                         <TableCell align="right">
                           <Typography variant="inherit" color="textSecondary">
                             {moment(file.dateCreated).format('lll')}
@@ -412,12 +465,53 @@ const FilesList = props => {
                         </TableCell>
                       </TableRow>
                       <TableRow key="favorite">
-                        <TableCell component="th" scope="row"></TableCell>
+                        <TableCell component="th" scope="row" />
                         <TableCell align="right">
-                          <Button size="small" startIcon={<StarOutlined />} onClick={event => handleFavorite(event, file.id)} className={classNames(classes.button, { 'favorite': false })} color='primary'>Favorite</Button>
-                          <IconButton size="small" onClick={(event) => handleShare(event, file.id)} className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>share</Icon></IconButton>
-                          <IconButton size="small" onClick={(event) => handleDownload(event, file.id)} className={classNames(classes.iconButton, classes.icon)} color='secondary'><Icon>cloud_download</Icon></IconButton>
-                          <IconButton size="small" onClick={(event) => handleDelete(event, file.id)} className={classNames(classes.iconButton, { 'delete': true }, classes.icon)} color='secondary'><Icon>delete</Icon></IconButton>
+                          <Button
+                            size="small"
+                            startIcon={<StarOutlined />}
+                            onClick={event => handleFavorite(event, file.id)}
+                            className={classNames(classes.button, {
+                              favorite: false,
+                            })}
+                            color="primary"
+                          >
+                            Favorite
+                          </Button>
+                          <IconButton
+                            size="small"
+                            onClick={event => handleShare(event, file.id)}
+                            className={classNames(
+                              classes.iconButton,
+                              classes.icon,
+                            )}
+                            color="secondary"
+                          >
+                            <Icon>share</Icon>
+                          </IconButton>
+                          <IconButton
+                            size="small"
+                            onClick={event => handleDownload(event, file.id)}
+                            className={classNames(
+                              classes.iconButton,
+                              classes.icon,
+                            )}
+                            color="secondary"
+                          >
+                            <Icon>cloud_download</Icon>
+                          </IconButton>
+                          <IconButton
+                            size="small"
+                            onClick={event => handleDelete(event, file.id)}
+                            className={classNames(
+                              classes.iconButton,
+                              { delete: true },
+                              classes.icon,
+                            )}
+                            color="secondary"
+                          >
+                            <Icon>delete</Icon>
+                          </IconButton>
                         </TableCell>
                       </TableRow>
                     </TableBody>
@@ -435,18 +529,18 @@ const FilesList = props => {
                   <Collapse in={isOpen} timeout="auto" unmountOnExit>
                     <Box px={2}>
                       <Typography variant="inherit" color="textSecondary">
-                        {file.description ? file.description : "This file has no description yet"}
+                        {file.description
+                          ? file.description
+                          : 'This file has no description yet'}
                       </Typography>
                     </Box>
                   </Collapse>
                 </List>
-
               </div>
-            }
+            )}
           </Box>
         </Grid>
       </Grid>
-
     </div>
   );
 };
@@ -473,15 +567,16 @@ function mapDispatchToProps(dispatch) {
     openFileUploadDialog: () => dispatch(Actions.openFileUploadDialog()),
     openShareFileDialog: ev => dispatch(Actions.openShareFileDialog(ev)),
     openNewFolderDialog: () => dispatch(Actions.openNewFolderDialog()),
-    getAllFoldersAndDocs: (data) => dispatch(Actions.getAllFoldersAndDocs(data)),
-    getFolderById: (data) => dispatch(Actions.getFolderById(data)),
+    getAllFoldersAndDocs: data => dispatch(Actions.getAllFoldersAndDocs(data)),
+    getFolderById: data => dispatch(Actions.getFolderById(data)),
     getUtilityFiles: () => dispatch(Actions.getUtilityFiles()),
     getUtilityFile: id => dispatch(Actions.getUtilityFile(id)),
-    getFavoriteDocuments: (uuid) => dispatch(Actions.getFavoriteDocuments(uuid)),
+    getFavoriteDocuments: uuid => dispatch(Actions.getFavoriteDocuments(uuid)),
     deleteDocument: docId => dispatch(Actions.deleteDocument(docId)),
     shareDocument: docId => dispatch(Actions.shareDocument(docId)),
     favoriteDocument: docId => dispatch(Actions.favoriteDocument(docId)),
-    openFilePreviewDialog: (data) => dispatch(Actions.openFilePreviewDialog(data)),
+    openFilePreviewDialog: data =>
+      dispatch(Actions.openFilePreviewDialog(data)),
   };
 }
 
@@ -495,4 +590,3 @@ export default compose(
   withConnect,
   memo,
 )(FilesList);
-

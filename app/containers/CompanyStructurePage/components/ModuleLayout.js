@@ -1,25 +1,20 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import {
-  makeStyles,
-  Grid,
-} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import { compose } from 'redux';
-import { withRouter, NavLink } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
-import MenuBar from '../../../components/MenuBar'
+import { darken } from '@material-ui/core/styles/colorManipulator';
+import MenuBar from '../../../components/MenuBar';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
-  content: {
-    // padding: theme.spacing(2),
-  },
-  active: { 
-    backgroundColor: theme.palette.common.white,  
+  content: {},
+  active: {
+    backgroundColor: theme.palette.common.white,
     color: `${darken(theme.palette.primary.main, 0.1)} !important`,
   },
 }));
@@ -30,11 +25,7 @@ function ModuleLayout(props) {
   return (
     <div className={classes.root}>
       <MenuBar
-        content={
-          <div className={classes.content}>
-            {props.children}
-          </div>
-        }
+        content={<div className={classes.content}>{props.children}</div>}
       />
     </div>
   );

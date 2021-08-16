@@ -1,5 +1,6 @@
 import React, { Fragment, memo, useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
+import EzoneUtils from "../../../utils/EzoneUtils"
 import {
   makeStyles,
   Grid,
@@ -52,6 +53,14 @@ const useStyles = makeStyles(theme => ({
   grid: {
     margin: theme.spacing(1, 0),
     border: `1px solid ${theme.palette.grey[50]}`,
+  },
+  table: {
+    "& tbody": {
+      "& th": {
+        fontWeight: "bold",
+      }
+    },
+    marginBottom: theme.spacing(2)
   },
   box: {
     position: 'relative',
@@ -181,36 +190,40 @@ const PaymentDetails = props => {
                 <Grid container justify="space-between">
                   <Grid item sm={12} md={12} lg={12}>
                     <div>
-                      <Table>
-                        <TableHead>
-                          <TableRow>  
-                            <TableCell>Amount</TableCell>
-                            <TableCell>{paymentDetails && paymentDetails.totalAmount}</TableCell>
-                          </TableRow>
-                        </TableHead>
+                      <Table className={classes.table}>
                         <TableBody>
-                          {
-                            paymentDetails && paymentDetails.moduleOffers.map(module => (
-                              <Fragment key={module.id}>
-                                <TableRow>
-                                  <TableCell>Module Name</TableCell>
+                          <TableRow> 
+                            <TableCell component="th">Total Amount</TableCell>
+                            <TableCell>{paymentDetails && EzoneUtils.formatCurrency(paymentDetails.totalAmount)}</TableCell>
+                          </TableRow>
+                          <TableRow> 
+                            <TableCell component="th">Reference ID</TableCell>
+                            <TableCell>{paymentDetails && paymentDetails.groupTransactionRef}</TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
+                      <Table className={classes.table}>
+                        <TableBody>
+                          <Table>
+                            <TableHead>
+                              <TableRow>
+                                <TableCell>Module Name</TableCell>
+                                <TableCell>Cost</TableCell>
+                                <TableCell>Duration In Months</TableCell>
+                                <TableCell>Currency</TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              {paymentDetails && paymentDetails.moduleOffers.map(module => (
+                                <TableRow key={module.id}>
                                   <TableCell>{module.moduleName}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                  <TableCell>Cost</TableCell>
                                   <TableCell>{module.cost}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                  <TableCell>Duration In Months</TableCell>
                                   <TableCell>{module.durationInMonths}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                  <TableCell>Currency</TableCell>
                                   <TableCell>{module.currency}</TableCell>
                                 </TableRow>
-                              </Fragment>
-                            ))
-                          }
+                              ))}
+                            </TableBody>
+                          </Table>
                         </TableBody>
                       </Table>
                     </div>

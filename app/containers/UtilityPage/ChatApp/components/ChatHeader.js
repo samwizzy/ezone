@@ -21,6 +21,7 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
+    color: theme.palette.text.secondary,
     marginLeft: theme.spacing(1),
   },
 }));
@@ -29,15 +30,18 @@ const ChatHeader = props => {
   const { userChatData } = props;
   const classes = useStyles();
 
-  console.log(userChatData, 'userChatData')
-  const handleMenu = () => { };
+  console.log(userChatData, 'userChatData');
+  const handleMenu = () => {};
 
   return (
     <React.Fragment>
       <div className={classes.root}>
         <AppBar position="relative" color="inherit" elevation={1}>
           <Toolbar>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+            <Avatar
+              alt={userChatData.responderName}
+              src="/static/images/avatar/1.jpg"
+            />
             <Typography variant="h6" className={classes.title}>
               {userChatData && userChatData.responderName}
             </Typography>
@@ -50,7 +54,7 @@ const ChatHeader = props => {
                 onClick={handleMenu}
                 color="inherit"
               >
-                <VideocamSharp />
+                <VideocamSharp color="primary" />
               </IconButton>
               <IconButton
                 aria-label="account of current user"
@@ -59,7 +63,7 @@ const ChatHeader = props => {
                 onClick={handleMenu}
                 color="inherit"
               >
-                <Phone />
+                <Phone color="primary" />
               </IconButton>
             </div>
           </Toolbar>

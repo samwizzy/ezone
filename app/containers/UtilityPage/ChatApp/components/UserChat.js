@@ -8,7 +8,6 @@ import {
   ListItemAvatar,
   ListItemText,
   Typography,
-  Paper,
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -18,10 +17,9 @@ import * as Actions from './../actions';
 const useStyles = makeStyles(theme => ({
   list: {
     flexGrow: 1,
-    width: '100%',
-    '& .MuiListItem-root': {
-      margin: theme.spacing(1, 0),
-    },
+    padding: theme.spacing(1),
+    '& .MuiListItem-root': {},
+    backgroundColor: theme.palette.background.paper,
   },
   inline: {
     display: 'inline',
@@ -37,23 +35,21 @@ const UserChat = props => {
       {newChat && (
         <ListItem
           alignItems="flex-start"
-          component={Paper}
+          button
           key={newChat.id}
           onClick={() => getUserChatData(newChat)}
         >
           <ListItemAvatar>
-            <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+            <Avatar
+              alt={newChat.responderName}
+              src="/static/images/avatar/3.jpg"
+            />
           </ListItemAvatar>
           <ListItemText
             primary={newChat.responderName}
             secondary={
               <React.Fragment key={newChat.id}>
-                <Typography
-                  component="span"
-                  variant="body2"
-                  className={classes.inline}
-                  color="textPrimary"
-                >
+                <Typography variant="subtitle2" color="textPrimary">
                   {newChat.responderName}
                 </Typography>
               </React.Fragment>
@@ -65,23 +61,21 @@ const UserChat = props => {
         allUsersChat.map(user => (
           <ListItem
             alignItems="flex-start"
-            component={Paper}
+            button
             key={user.id}
             onClick={() => getUserChatData(user)}
           >
             <ListItemAvatar>
-              <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+              <Avatar
+                alt={user.responderName}
+                src="/static/images/avatar/3.jpg"
+              />
             </ListItemAvatar>
             <ListItemText
               primary={user.responderName}
               secondary={
                 <React.Fragment key={user.id}>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
+                  <Typography variant="subtitle2" color="textPrimary">
                     {user.responderName}
                   </Typography>
                 </React.Fragment>
@@ -102,7 +96,7 @@ const mapStateToProps = createStructuredSelector({});
 function mapDispatchToProps(dispatch) {
   return {
     getUserChatData: data => dispatch(Actions.getUserChatData(data)),
-  }
+  };
 }
 
 const withConnect = connect(

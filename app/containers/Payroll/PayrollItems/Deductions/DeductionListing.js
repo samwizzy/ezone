@@ -2,7 +2,14 @@ import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
-import { makeStyles, IconButton, Button, Menu, MenuItem, Tooltip } from '@material-ui/core';
+import {
+  makeStyles,
+  IconButton,
+  Button,
+  Menu,
+  MenuItem,
+  Tooltip,
+} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import MUIDataTable from 'mui-datatables';
@@ -21,10 +28,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   datatable: {
-    '& table': {
-      width: '96% !important',
-      margin: '4px auto',
-    },
     whiteSpace: 'nowrap',
     '& tr:hover': {
       cursor: 'pointer',
@@ -59,35 +62,44 @@ const useStyles = makeStyles(theme => ({
 
 const DeductionListing = props => {
   const classes = useStyles();
-  const { loading, history, match, payrollSetupData, deductions, getDeductionById, openNewDeductionDialog, openEditDeductionDialog } = props;
+  const {
+    loading,
+    history,
+    match,
+    payrollSetupData,
+    deductions,
+    getDeductionById,
+    openNewDeductionDialog,
+    openEditDeductionDialog,
+  } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedDeduction, setSelectedDeduction] = useState(null);
 
   const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
     setSelectedDeduction(_.find(deductions, { id }));
-  }
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const handleEditClick = () => {
-    const { id } = selectedDeduction
-    openEditDeductionDialog(selectedDeduction)
-    history.push(`${match.url}/edit/${id}`)
-  }
+    const { id } = selectedDeduction;
+    openEditDeductionDialog(selectedDeduction);
+    history.push(`${match.url}/edit/${id}`);
+  };
 
   const handleViewClick = () => {
-    const { id } = selectedDeduction
-    getDeductionById(id)
-    history.push(`${match.url}/view/${id}`)
-  }
+    const { id } = selectedDeduction;
+    getDeductionById(id);
+    history.push(`${match.url}/view/${id}`);
+  };
 
   const orderedDeductions = _.orderBy(deductions, 'dateCreated', 'desc');
 
   if (loading) {
-    return <CircleLoader />
+    return <CircleLoader />;
   }
 
   const columns = [
@@ -109,7 +121,7 @@ const DeductionListing = props => {
     },
     {
       name: 'inputType',
-      label: 'Input Type',
+      label: 'Input type',
       options: {
         filter: true,
         sort: false,
@@ -156,14 +168,14 @@ const DeductionListing = props => {
       },
     },
     customToolbar: () => (
-      <Tooltip title="New Deduction">
+      <Tooltip title="New deduction">
         <Button
           variant="contained"
           color="primary"
           startIcon={<AddIcon />}
           onClick={openNewDeductionDialog}
         >
-          New Deduction
+          New deduction
         </Button>
       </Tooltip>
     ),
@@ -187,9 +199,7 @@ const DeductionListing = props => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleViewClick}>
-          View
-        </MenuItem>
+        <MenuItem onClick={handleViewClick}>View</MenuItem>
       </Menu>
     </React.Fragment>
   );
@@ -207,10 +217,11 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getDeductionById: (data) => dispatch(Actions.getDeductionById(data)),
+    getDeductionById: data => dispatch(Actions.getDeductionById(data)),
     openNewDeductionDialog: () => dispatch(Actions.openNewDeductionDialog()),
-    openEditDeductionDialog: (data) => dispatch(Actions.openEditDeductionDialog(data)),
-  }
+    openEditDeductionDialog: data =>
+      dispatch(Actions.openEditDeductionDialog(data)),
+  };
 }
 
 const withConnect = connect(

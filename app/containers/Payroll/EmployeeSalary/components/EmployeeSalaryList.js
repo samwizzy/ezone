@@ -1,12 +1,20 @@
 import React, { memo, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import EzoneUtils from '../../../../utils/EzoneUtils'
+import EzoneUtils from '../../../../utils/EzoneUtils';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
-import { makeStyles, IconButton, Button, Chip, Menu, MenuItem, Tooltip } from '@material-ui/core';
+import {
+  makeStyles,
+  IconButton,
+  Button,
+  Chip,
+  Menu,
+  MenuItem,
+  Tooltip,
+} from '@material-ui/core';
 import { CircleLoader } from '../../../../components/LoadingIndicator';
 import AddIcon from '@material-ui/icons/Add';
 import classNames from 'classnames';
@@ -19,18 +27,14 @@ import { green } from '@material-ui/core/colors';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as PayrollSelectors from '../../selectors';
-import { initialState } from './EmployeeSalaryDialog'
-import { AddSalary } from './AddButton'
+import { initialState } from './EmployeeSalaryDialog';
+import { AddSalary } from './AddButton';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
   datatable: {
-    '& table': {
-      width: '96% !important',
-      margin: '4px auto',
-    },
     whiteSpace: 'nowrap',
     '& tr:hover': {
       cursor: 'pointer',
@@ -58,8 +62,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const defEmployeeSalaries = [
-  { id: 1, employeeName: 'Joy essien', employeeID: '1075087', department: 'UI/UX', amount: 50000, status: true }
-]
+  {
+    id: 1,
+    employeeName: 'Joy essien',
+    employeeID: '1075087',
+    department: 'UI/UX',
+    amount: 50000,
+    status: true,
+  },
+];
 
 const EmployeeSalaryList = props => {
   const classes = useStyles(props);
@@ -110,7 +121,11 @@ const EmployeeSalaryList = props => {
     handleClose();
   };
 
-  const orderedEmployeeSalaries = _.orderBy(employeeSalaries, 'dateCreated', 'desc');
+  const orderedEmployeeSalaries = _.orderBy(
+    employeeSalaries,
+    'dateCreated',
+    'desc',
+  );
 
   if (loading) {
     return <CircleLoader />;
@@ -128,7 +143,7 @@ const EmployeeSalaryList = props => {
     },
     {
       name: 'employeeName',
-      label: 'Employee Name ',
+      label: 'Employee name ',
       options: {
         filter: true,
         sort: true,
@@ -152,7 +167,7 @@ const EmployeeSalaryList = props => {
     },
     {
       name: 'amount',
-      label: 'Salary Amount',
+      label: 'Salary amount',
       options: {
         filter: true,
         sort: true,
@@ -165,9 +180,23 @@ const EmployeeSalaryList = props => {
         filter: true,
         sort: true,
         customBodyRender: value => {
-          return value
-            ? <Chip label="Active" variant="outlined" icon={<CheckCircleIcon className={classNames(classes.status, { active: value })} />} />
-            : <Chip label="Inactive" variant="outlined" icon={<RadioButtonUncheckedIcon />} />
+          return value ? (
+            <Chip
+              label="Active"
+              variant="outlined"
+              icon={
+                <CheckCircleIcon
+                  className={classNames(classes.status, { active: value })}
+                />
+              }
+            />
+          ) : (
+            <Chip
+              label="Inactive"
+              variant="outlined"
+              icon={<RadioButtonUncheckedIcon />}
+            />
+          );
         },
       },
     },
@@ -192,7 +221,9 @@ const EmployeeSalaryList = props => {
     selectableRows: 'none',
     filter: false,
     viewColumns: false,
-    customToolbar: () => <AddSalary openDialog={() => history.push(`${match.url}/new`)} />,
+    customToolbar: () => (
+      <AddSalary openDialog={() => history.push(`${match.url}/new`)} />
+    ),
     elevation: 0,
   };
 
@@ -200,7 +231,7 @@ const EmployeeSalaryList = props => {
     <div className={classes.root}>
       <MUIDataTable
         className={classes.datatable}
-        title="Employee Salary"
+        title="Employee salary"
         data={defEmployeeSalaries}
         columns={columns}
         options={options}
@@ -218,7 +249,10 @@ const EmployeeSalaryList = props => {
         <MenuItem onClick={handleTerminateClick}>Terminate</MenuItem>
         <MenuItem
           onClick={handleDeleteClick}
-          disabled={selectedEmployeeSalary && Boolean(selectedEmployeeSalary.entries.length)}
+          disabled={
+            selectedEmployeeSalary &&
+            Boolean(selectedEmployeeSalary.entries.length)
+          }
         >
           Delete
         </MenuItem>
@@ -241,11 +275,15 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openNewEmployeeSalaryDialog: () => dispatch(Actions.openNewEmployeeSalaryDialog()),
+    openNewEmployeeSalaryDialog: () =>
+      dispatch(Actions.openNewEmployeeSalaryDialog()),
     updateEmployeeSalary: data => dispatch(Actions.updateEmployeeSalary(data)),
-    openDeleteEmployeeSalaryDialog: data => dispatch(Actions.openDeleteEmployeeSalaryDialog(data)),
-    openEditEmployeeSalaryDialog: data => dispatch(Actions.openEditEmployeeSalaryDialog(data)),
-    getEmployeeSalaryById: data => dispatch(Actions.getEmployeeSalaryById(data)),
+    openDeleteEmployeeSalaryDialog: data =>
+      dispatch(Actions.openDeleteEmployeeSalaryDialog(data)),
+    openEditEmployeeSalaryDialog: data =>
+      dispatch(Actions.openEditEmployeeSalaryDialog(data)),
+    getEmployeeSalaryById: data =>
+      dispatch(Actions.getEmployeeSalaryById(data)),
   };
 }
 

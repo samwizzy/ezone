@@ -11,7 +11,7 @@ import {
   Paper,
   Grid,
   TextField,
-  Typography
+  Typography,
 } from '@material-ui/core';
 import * as Selectors from '../../selectors';
 
@@ -24,8 +24,8 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.secondary,
   },
   margin: {
-    marginTop: theme.spacing(2)
-  }
+    marginTop: theme.spacing(2),
+  },
 }));
 
 const SetChartOfAccount = props => {
@@ -36,13 +36,13 @@ const SetChartOfAccount = props => {
     <div className={classes.root}>
       <Paper square elevation={0} className={classes.paper}>
         <Grid item xs>
-          <Typography variant="h6">Accounts Set Up</Typography>
+          <Typography variant="h6">Accounts setup</Typography>
         </Grid>
         <Grid item xs={12}>
           <TextField
             id="salary-reporting"
             name="salaryReporting"
-            label="Account head for Salary Reporting"
+            label="Account head for salary reporting"
             variant="outlined"
             margin="normal"
             fullWidth
@@ -55,7 +55,7 @@ const SetChartOfAccount = props => {
           <TextField
             id="tax-reporting"
             name="taxReporting"
-            label="Account head for Tax Reporting"
+            label="Account head for tax reporting"
             variant="outlined"
             margin="normal"
             fullWidth
@@ -67,7 +67,7 @@ const SetChartOfAccount = props => {
           <TextField
             id="pension-reporting"
             name="pensionReporting"
-            label="Account head for Pension Reporting"
+            label="Account head for pension reporting"
             variant="outlined"
             margin="normal"
             fullWidth
@@ -79,7 +79,7 @@ const SetChartOfAccount = props => {
           <TextField
             id="nhf-reporting"
             name="nhfReporting"
-            label="Account head for NHF Reporting"
+            label="Account head for NHF reporting"
             variant="outlined"
             margin="normal"
             fullWidth

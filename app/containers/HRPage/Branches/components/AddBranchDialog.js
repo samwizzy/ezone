@@ -37,6 +37,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const initialState = {
   name: '',
   description: '',
+  address: '',
   partyHead: { id: '' },
   assistantPartyHead: { id: '' },
   partyGroupId: '',
@@ -125,11 +126,7 @@ function AddBranchDialog(props) {
                 value={form.partyGroupId}
                 onChange={handleChange}
               >
-                {partyGroups && partyGroups.length === 0 && (
-                  <MenuItem key="" value="">
-                    No Party Group Record
-                  </MenuItem>
-                )}
+                <MenuItem value="">Select party group</MenuItem>
                 {partyGroups &&
                   partyGroups.map(partyGroup => (
                     <MenuItem key={partyGroup.id} value={partyGroup.id}>
@@ -142,7 +139,7 @@ function AddBranchDialog(props) {
             <Grid item xs={12}>
               <TextField
                 name="name"
-                label="Branch Name"
+                label="Branch name"
                 id="branch-name"
                 fullWidth
                 margin="dense"
@@ -167,23 +164,32 @@ function AddBranchDialog(props) {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                name="address"
+                label="Address"
+                id="branch-address"
+                fullWidth
+                margin="dense"
+                variant="outlined"
+                size="small"
+                value={form.address}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
                 id="party-head"
                 name="partyHead"
-                placeholder="Branch Lead"
+                placeholder="Branch lead"
                 select
                 fullWidth
                 margin="dense"
                 variant="outlined"
                 size="small"
-                label="Branch Lead"
+                label="Branch lead"
                 value={form.partyHead.id}
                 onChange={handleSelectChange}
               >
-                {employees && employees.length === 0 && (
-                  <MenuItem key="" value="">
-                    No Employee Record
-                  </MenuItem>
-                )}
+                <MenuItem value="">Select branch lead</MenuItem>
                 {employees &&
                   employees.map(employee => (
                     <MenuItem key={employee.id} value={employee.id}>
@@ -202,7 +208,7 @@ function AddBranchDialog(props) {
                 margin="dense"
                 variant="outlined"
                 size="small"
-                label="Assistant Branch Lead"
+                label="Assistant branch lead"
                 value={form.assistantPartyHead.id}
                 onChange={handleSelectChange}
               >
@@ -269,8 +275,8 @@ function AddBranchDialog(props) {
         <DialogActions>
           <Button
             onClick={closeNewBranchDialog}
-            color="primary"
             variant="contained"
+            disableElevation
           >
             Cancel
           </Button>

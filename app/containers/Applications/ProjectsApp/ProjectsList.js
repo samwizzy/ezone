@@ -12,7 +12,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import apps from './../apps.db';
-import AppIcon from '../../../images/app-2.svg';
+import * as AppSelectors from '../../App/selectors';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     flexWrap: 'wrap',
     alignItems: 'center',
     padding: theme.spacing(2),
@@ -44,6 +44,10 @@ const useStyles = makeStyles(theme => ({
       '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.5)',
       backgroundColor: theme.palette.primary.main,
     },
+    '& a': {
+      color: theme.palette.primary.main,
+      textDecoration: "none"
+    },
   },
   button: {
     padding: theme.spacing(1, 4),
@@ -62,7 +66,7 @@ const useStyles = makeStyles(theme => ({
   box: {
     width: theme.spacing(20),
     height: theme.spacing(20),
-    flex: '1 1 10em', // flex-grow flex-shrink flex-basis
+    flex: '0 1 11em', // flex-grow flex-shrink flex-basis
     margin: theme.spacing(1),
     padding: theme.spacing(2),
     borderRadius: '10px',
@@ -79,9 +83,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ProjectsList = props => {
-  const { modules, match } = props;
+  const { modules, match, accessToken, currentUser } = props;
   const classes = useStyles();
   const [state, setState] = React.useState({ apps: [], text: '' });
+
+  console.log(accessToken, "accessToken")
 
   React.useEffect(() => {
     setState(prevState => ({ ...prevState, apps: apps }));
@@ -162,13 +168,11 @@ const ProjectsList = props => {
                       {state.apps.map((app, i) => (
                         <Paper
                           key={i}
-                          component={Link}
-                          to={{pathname: app.url}}
                           className={classes.box}
                         >
                           <img src={app.icon} alt={app.name} />
                           <Typography variant="body2">
-                            {app.name.replace("_", " ")}
+                            <a href={`${app.url}?token=${accessToken}&orgId=${currentUser.organisation.orgId}`}>{app.name.replace("_", " ")}</a>
                           </Typography>
                         </Paper>
                       ))}
@@ -188,7 +192,10 @@ const ProjectsList = props => {
 
 ProjectsList.propTypes = {};
 
-const mapStateToProps = createStructuredSelector({});
+const mapStateToProps = createStructuredSelector({
+  accessToken: AppSelectors.makeSelectAccessToken(),
+  currentUser: AppSelectors.makeSelectCurrentUser(),
+});
 
 function mapDispatchToProps(dispatch) {
   return {};

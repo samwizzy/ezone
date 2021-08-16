@@ -1,31 +1,40 @@
-import React from "react"
-import EzoneUtils from '../../../../../utils/EzoneUtils'
-import { Link } from 'react-router-dom'
-import _ from 'lodash'
-import { makeStyles, List, ListSubheader, ListItem, ListItemText } from '@material-ui/core';
-import { red } from '@material-ui/core/colors'
+import React from 'react';
+import EzoneUtils from '../../../../../utils/EzoneUtils';
+import { Link } from 'react-router-dom';
+import _ from 'lodash';
+import {
+  makeStyles,
+  List,
+  ListSubheader,
+  ListItem,
+  ListItemText,
+} from '@material-ui/core';
+import { red } from '@material-ui/core/colors';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     '& .MuiListSubheader-root': {
-      borderLeft: `3px solid ${red[500]}`
-    }
+      borderLeft: `4px solid ${red[200]}`,
+    },
   },
 }));
 
 const payrollReports = [
-  { name: 'Payroll Journals', label: 'Payroll Journals' },
-  { name: 'Payroll Check Register', label: 'Payroll Check Register' },
-  { name: 'Payroll Tax report', label: 'Payroll Tax report' },
-  { name: 'Tax liability Report', label: 'Tax liability Report' },
-  { name: 'Employee Earnings Report', label: 'Employee Earnings Report' },
-  { name: 'Employee Compensation Report', label: 'Employee Compensation Report' },
-  { name: 'Employee List', label: 'Employee List' },
+  { name: 'Payroll journals', label: 'Payroll journals' },
+  { name: 'Payroll check register', label: 'Payroll check register' },
+  { name: 'Payroll tax report', label: 'Payroll tax report' },
+  { name: 'Tax liability report', label: 'Tax liability report' },
+  { name: 'Employee earnings report', label: 'Employee earnings report' },
+  {
+    name: 'Employee compensation report',
+    label: 'Employee compensation report',
+  },
+  { name: 'Employee list', label: 'Employee list' },
 ];
 
 const Widget1 = ({ accounts, accData }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <div>
@@ -38,14 +47,14 @@ const Widget1 = ({ accounts, accData }) => {
           </ListSubheader>
         }
       >
-        {payrollReports.map((item, i) =>
+        {payrollReports.map((item, i) => (
           <ListItem button key={i}>
-            <ListItemText primary={item.name} secondary={item.label} />
+            <ListItemText primary={item.name} />
           </ListItem>
-        )}
+        ))}
       </List>
     </div>
-  )
-}
+  );
+};
 
-export default Widget1
+export default Widget1;

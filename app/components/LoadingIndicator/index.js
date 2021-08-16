@@ -1,9 +1,8 @@
 import React from 'react';
 import { CircularProgress } from '@material-ui/core';
-import Circle from './Circle';
 import Container from './Container';
+import Circle from './Circle';
 import Wrapper from './Wrapper';
-import DualRing from './DualRing';
 
 const LoadingIndicator = () => (
   <Wrapper>
@@ -24,8 +23,8 @@ const LoadingIndicator = () => (
 
 export const CircleLoader = () => (
   <Container>
-    <CircularProgress />
+    <CircularProgress thickness={2.0} />
   </Container>
 );
 
-export default LoadingIndicator;
+export default CircleLoader;

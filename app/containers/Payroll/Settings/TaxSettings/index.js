@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
@@ -15,7 +15,7 @@ export function TaxSettings(props) {
   return (
     <div>
       <Helmet>
-        <title>Tax Settings</title>
+        <title>Payroll — Tax Settings</title>
         <meta name="description" content="Description of Tax Settings" />
       </Helmet>
 

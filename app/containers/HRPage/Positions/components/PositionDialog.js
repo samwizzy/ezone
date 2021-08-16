@@ -1,19 +1,34 @@
 import React, { useEffect, useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import _ from 'lodash';
-import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, MenuItem, Slide, Typography, TextField, Toolbar } from '@material-ui/core';
+import {
+  AppBar,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+  Grid,
+  MenuItem,
+  Slide,
+  Typography,
+  TextField,
+  Toolbar,
+} from '@material-ui/core';
 import * as Selectors from '../../selectors';
 import * as Actions from '../../actions';
-import moment from 'moment'
+import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -23,40 +38,40 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const initialState = {
   name: '',
   description: '',
-  party_id: ''
-}
+  party_id: '',
+};
 
 function PositionDialog(props) {
   const classes = useStyles();
   const { closeNewPositionDialog, dialog, createPosition } = props;
   const [form, setForm] = useState({ ...initialState });
 
-  console.log(dialog, "dialog checking")
+  console.log(dialog, 'dialog checking');
 
   useEffect(() => {
-    dialog.type === 'edit' && dialog.data ?
-      setForm({ ...dialog.data }) :
-      setForm({ ...initialState })
-  }, [dialog])
+    dialog.type === 'edit' && dialog.data
+      ? setForm({ ...dialog.data })
+      : setForm({ ...initialState });
+  }, [dialog]);
 
   const canSubmitForm = () => {
-    const { name } = form
-    return name.length > 0
-  }
+    const { name } = form;
+    return name.length > 0;
+  };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target
+  const handleChange = event => {
+    const { name, value } = event.target;
     setForm({ ...form, [name]: value });
-  }
+  };
 
-  const handleReset = () => setForm({ ...initialState })
+  const handleReset = () => setForm({ ...initialState });
 
   const handleSubmit = () => {
-    createPosition(form)
-    handleReset()
-  }
+    createPosition(form);
+    handleReset();
+  };
 
-  console.log(form, 'checking form role...')
+  console.log(form, 'checking form role...');
 
   return (
     <div>
@@ -103,10 +118,19 @@ function PositionDialog(props) {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={closeNewPositionDialog} color="primary">
+          <Button
+            onClick={closeNewPositionDialog}
+            variant="contained"
+            disableElevation
+          >
             Cancel
           </Button>
-          <Button onClick={handleSubmit} variant="contained" disabled={!canSubmitForm()} color="primary">
+          <Button
+            onClick={handleSubmit}
+            variant="contained"
+            disabled={!canSubmitForm()}
+            color="primary"
+          >
             Save
           </Button>
         </DialogActions>
@@ -114,7 +138,6 @@ function PositionDialog(props) {
     </div>
   );
 }
-
 
 PositionDialog.propTypes = {
   closeNewPositionDialog: PropTypes.func,
@@ -127,7 +150,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     closeNewPositionDialog: () => dispatch(Actions.closeNewPositionDialog()),
-    createPosition: (data) => dispatch(Actions.createPosition(data)),
+    createPosition: data => dispatch(Actions.createPosition(data)),
   };
 }
 

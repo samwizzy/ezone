@@ -2,13 +2,25 @@ import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, Link as NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { Breadcrumbs, IconButton, Menu, MenuItem, Link, List, ListItem, ListItemText, ListItemSecondaryAction, Paper, Typography } from '@material-ui/core';
+import {
+  Breadcrumbs,
+  IconButton,
+  Menu,
+  MenuItem,
+  Link,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  Paper,
+  Typography,
+} from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import clsx from 'clsx';
 import moment from 'moment';
-import { green } from '@material-ui/core/colors'
+import { green } from '@material-ui/core/colors';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import LensIcon from '@material-ui/icons/Lens';
@@ -20,15 +32,15 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   paper: {
-    position: "relative",
+    position: 'relative',
     padding: theme.spacing(4, 2, 0, 2),
-    margin: theme.spacing(1, 0)
+    margin: theme.spacing(1, 0),
   },
   flex: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    margin: theme.spacing(1, 0)
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    margin: theme.spacing(1, 0),
   },
   icon: {
     width: 20,
@@ -38,7 +50,7 @@ const useStyles = makeStyles(theme => ({
   },
   link: {
     display: 'flex',
-  }
+  },
 }));
 
 const AnnouncementItem = props => {
@@ -53,39 +65,42 @@ const AnnouncementItem = props => {
     announcement,
     getAnnouncementById,
   } = props;
-  const { params } = match
+  const { params } = match;
 
-  const [anchorEl, setAnchorEl] = useState(null)
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleClick = (event) => {
+  const handleClick = event => {
     setAnchorEl(event.currentTarget);
-  }
+  };
   const handleClose = () => {
     setAnchorEl(null);
-  }
+  };
   const handleEditClick = () => {
-    openEditAnnouncementDialog(announcement)
+    openEditAnnouncementDialog(announcement);
     setAnchorEl(null);
-  }
+  };
   const handleViewClick = () => {
-    getAnnouncementById(announcement.id)
-    history.push(`${match.url}/${announcement.id}`)
+    getAnnouncementById(announcement.id);
+    history.push(`${match.url}/${announcement.id}`);
     setAnchorEl(null);
-  }
+  };
   const handleDeleteClick = () => {
-    openConfirmAnnouncementDialog(announcement)
+    openConfirmAnnouncementDialog(announcement);
     setAnchorEl(null);
-  }
+  };
 
   if (!announcement) {
-    return ''
+    return '';
   }
 
   return (
     <div className={classes.root}>
       <Paper square className={classes.paper}>
         <List dense={true}>
-          <ListItem button onClick={() => openAnnouncementViewDialog(announcement)}>
+          <ListItem
+            button
+            onClick={() => openAnnouncementViewDialog(announcement)}
+          >
             <ListItemText
               disableTypography
               primary={
@@ -108,20 +123,29 @@ const AnnouncementItem = props => {
                   <Breadcrumbs aria-label="breadcrumb" separator="">
                     <Typography color="textPrimary" className={classes.link}>
                       Priority : &nbsp;
-											<LensIcon className={clsx(classes.icon, { "active": true })} />
+                      <LensIcon
+                        className={clsx(classes.icon, { active: true })}
+                      />
                       {announcement.priorityLevel}
                     </Typography>
                     <Typography color="textPrimary" className={classes.link}>
                       <TodayIcon className={classes.icon} />
-											Published Date : {announcement.dateCreated ? moment(announcement.dateCreated).format('YYYY/MM/DD') : 'NIL'}
+                      Published Date :{' '}
+                      {announcement.dateCreated
+                        ? moment(announcement.dateCreated).format('YYYY/MM/DD')
+                        : 'NIL'}
                     </Typography>
                   </Breadcrumbs>
                   <Breadcrumbs aria-label="breadcrumb" separator="">
                     <Typography color="textPrimary" className={classes.link}>
                       Sent to: &nbsp;
-											<Link color="textSecondary" onClick={handleViewClick} className={classes.link}>
+                      <Link
+                        color="textSecondary"
+                        onClick={handleViewClick}
+                        className={classes.link}
+                      >
                         View employees
-											</Link>
+                      </Link>
                     </Typography>
                   </Breadcrumbs>
                 </div>
@@ -171,9 +195,12 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    openEditAnnouncementDialog: (data) => dispatch(Actions.openEditAnnouncementDialog(data)),
-    openConfirmAnnouncementDialog: (data) => dispatch(Actions.openConfirmAnnouncementDialog(data)),
-    openAnnouncementViewDialog: (data) => dispatch(Actions.openAnnouncementViewDialog(data)),
+    openEditAnnouncementDialog: data =>
+      dispatch(Actions.openEditAnnouncementDialog(data)),
+    openConfirmAnnouncementDialog: data =>
+      dispatch(Actions.openConfirmAnnouncementDialog(data)),
+    openAnnouncementViewDialog: data =>
+      dispatch(Actions.openAnnouncementViewDialog(data)),
   };
 }
 

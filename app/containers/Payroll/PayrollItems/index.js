@@ -23,7 +23,7 @@ export function PayrollItemsApp(props) {
   useInjectSaga({ key: 'payrollItems', saga });
 
   const { loading, match, getAllowances } = props;
-  const { path } = match
+  const { path } = match;
 
   useEffect(() => {
     // getAllowances();
@@ -32,7 +32,7 @@ export function PayrollItemsApp(props) {
   return (
     <div>
       <Helmet>
-        <title>Payroll Items</title>
+        <title>Payroll — Payroll Items</title>
         <meta name="description" content="Description of Payroll Items" />
       </Helmet>
 
@@ -59,7 +59,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getAllowances: () => dispatch(Actions.getAllowances()),
-  }
+  };
 }
 
 const withConnect = connect(

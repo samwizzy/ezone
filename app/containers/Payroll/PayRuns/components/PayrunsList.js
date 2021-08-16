@@ -32,10 +32,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   datatable: {
-    '& table': {
-      width: '96% !important',
-      margin: '4px auto',
-    },
     whiteSpace: 'nowrap',
     '& tr:hover': {
       cursor: 'pointer',
@@ -64,8 +60,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const payrunsData = [
-  { id: 1, payPeriod: '2020', refCode: '#AD9730BG', payment: '200000', paymentDate: '2020-10-23', employees: 'Samuel', status: true },
-]
+  {
+    id: 1,
+    payPeriod: '2020',
+    refCode: '#AD9730BG',
+    payment: '200000',
+    paymentDate: '2020-10-23',
+    employees: 'Samuel',
+    status: true,
+  },
+];
 
 const PayrunsList = props => {
   const classes = useStyles();
@@ -86,7 +90,7 @@ const PayrunsList = props => {
   } = props;
 
   const handleClick = (event, id) => {
-    event.stopPropagation()
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
     setSelectedPayrun(_.find(payruns, { id }));
   };
@@ -112,7 +116,7 @@ const PayrunsList = props => {
   };
 
   const handleEditClick = () => {
-    openEditPayrunDialog(selectedPayrun)
+    openEditPayrunDialog(selectedPayrun);
     setAnchorEl(null);
   };
 
@@ -121,10 +125,10 @@ const PayrunsList = props => {
     history.push(`${match.url}/view/${id}`);
   };
 
-  const orderedPayruns = _.orderBy(payruns, 'dateCreated', 'desc')
+  const orderedPayruns = _.orderBy(payruns, 'dateCreated', 'desc');
 
   if (loading) {
-    return <CircleLoader />
+    return <CircleLoader />;
   }
 
   const columns = [
@@ -139,7 +143,7 @@ const PayrunsList = props => {
     },
     {
       name: 'payPeriod',
-      label: 'Pay Period',
+      label: 'Pay period',
       options: {
         filter: true,
         sort: false,
@@ -147,7 +151,7 @@ const PayrunsList = props => {
     },
     {
       name: 'refCode',
-      label: 'Ref Code',
+      label: 'Ref code',
       options: {
         filter: true,
         sort: false,
@@ -176,9 +180,9 @@ const PayrunsList = props => {
         filter: true,
         sort: false,
         customBodyRender: value => {
-          const payrun = payrunsData.find(payrun => payrun.id === value)
-          return EzoneUtils.formatCurrency(payrun.payment, 'NGN')
-        }
+          const payrun = payrunsData.find(payrun => payrun.id === value);
+          return EzoneUtils.formatCurrency(payrun.payment, 'NGN');
+        },
       },
     },
     {
@@ -188,22 +192,50 @@ const PayrunsList = props => {
         filter: true,
         sort: true,
         customBodyRender: status => {
-          return status
-            ? <Chip label="Active" variant="outlined" icon={<CheckCircleIcon className={classNames(classes.status, { active: status })} />} />
-            : <Chip label="Inactive" variant="outlined" icon={<RadioButtonUncheckedIcon />} />
+          return status ? (
+            <Chip
+              label="Active"
+              variant="outlined"
+              icon={
+                <CheckCircleIcon
+                  className={classNames(classes.status, { active: status })}
+                />
+              }
+            />
+          ) : (
+            <Chip
+              label="Inactive"
+              variant="outlined"
+              icon={<RadioButtonUncheckedIcon />}
+            />
+          );
         },
       },
     },
     {
       name: 'status',
-      label: 'Payment Status',
+      label: 'Payment status',
       options: {
         filter: true,
         sort: true,
         customBodyRender: status => {
-          return status
-            ? <Chip label="Active" variant="outlined" icon={<CheckCircleIcon className={classNames(classes.status, { active: status })} />} />
-            : <Chip label="Inactive" variant="outlined" icon={<RadioButtonUncheckedIcon />} />
+          return status ? (
+            <Chip
+              label="Active"
+              variant="outlined"
+              icon={
+                <CheckCircleIcon
+                  className={classNames(classes.status, { active: status })}
+                />
+              }
+            />
+          ) : (
+            <Chip
+              label="Inactive"
+              variant="outlined"
+              icon={<RadioButtonUncheckedIcon />}
+            />
+          );
         },
       },
     },
@@ -221,7 +253,7 @@ const PayrunsList = props => {
       },
     },
     customToolbar: () => (
-      <Tooltip title="Create New Payrun">
+      <Tooltip title="Create new payrun">
         <Button
           variant="contained"
           color="primary"
@@ -242,7 +274,7 @@ const PayrunsList = props => {
     <div className={classes.root}>
       <MUIDataTable
         className={classes.datatable}
-        title="Pay Run List"
+        title="Pay runs"
         data={payrunsData}
         columns={columns}
         options={options}
@@ -269,9 +301,7 @@ const PayrunsList = props => {
         </MenuItem>
         <MenuItem
           onClick={handleEditClick}
-          disabled={
-            selectedPayrun && Boolean(selectedPayrun.transfers.length)
-          }
+          disabled={selectedPayrun && Boolean(selectedPayrun.transfers.length)}
         >
           Edit
         </MenuItem>
@@ -296,8 +326,10 @@ function mapDispatchToProps(dispatch) {
     getPayrunById: data => dispatch(Actions.getPayrunById(data)),
     openNewPayrunDialog: () => dispatch(Actions.openNewPayrunDialog()),
     openEditPayrunDialog: data => dispatch(Actions.openEditPayrunDialog(data)),
-    openDeletePayrunDialog: data => dispatch(Actions.openDeletePayrunDialog(data)),
-    activateDeactivatePayrun: data => dispatch(Actions.activateDeactivatePayrun(data)),
+    openDeletePayrunDialog: data =>
+      dispatch(Actions.openDeletePayrunDialog(data)),
+    activateDeactivatePayrun: data =>
+      dispatch(Actions.activateDeactivatePayrun(data)),
   };
 }
 

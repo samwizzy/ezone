@@ -2,7 +2,14 @@ import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
-import { makeStyles, IconButton, Button, Menu, MenuItem, Tooltip } from '@material-ui/core';
+import {
+  makeStyles,
+  IconButton,
+  Button,
+  Menu,
+  MenuItem,
+  Tooltip,
+} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import MUIDataTable from 'mui-datatables';
@@ -21,10 +28,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   datatable: {
-    '& table': {
-      width: '96% !important',
-      margin: '4px auto',
-    },
     whiteSpace: 'nowrap',
     '& tr:hover': {
       cursor: 'pointer',
@@ -59,35 +62,44 @@ const useStyles = makeStyles(theme => ({
 
 const AllowanceListing = props => {
   const classes = useStyles();
-  const { loading, history, match, payrollSetupData, allowances, getAllowanceById, openNewAllowanceDialog, openEditAllowanceDialog } = props;
+  const {
+    loading,
+    history,
+    match,
+    payrollSetupData,
+    allowances,
+    getAllowanceById,
+    openNewAllowanceDialog,
+    openEditAllowanceDialog,
+  } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedAllowance, setSelectedAllowance] = useState(null);
 
   const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
     setSelectedAllowance(_.find(allowances, { id }));
-  }
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const handleEditClick = () => {
-    const { id } = selectedAllowance
-    openEditAllowanceDialog(selectedAllowance)
-    history.push(`${match.url}/edit/${id}`)
-  }
+    const { id } = selectedAllowance;
+    openEditAllowanceDialog(selectedAllowance);
+    history.push(`${match.url}/edit/${id}`);
+  };
 
   const handleViewClick = () => {
-    const { id } = selectedAllowance
-    getAllowanceById(id)
-    history.push(`${match.url}/view/${id}`)
-  }
+    const { id } = selectedAllowance;
+    getAllowanceById(id);
+    history.push(`${match.url}/view/${id}`);
+  };
 
   const orderedAllowances = _.orderBy(allowances, 'dateCreated', 'desc');
 
   if (loading) {
-    return <CircleLoader />
+    return <CircleLoader />;
   }
 
   const columns = [
@@ -109,7 +121,7 @@ const AllowanceListing = props => {
     },
     {
       name: 'inputType',
-      label: 'Input Type',
+      label: 'Input type',
       options: {
         filter: true,
         sort: false,
@@ -156,14 +168,14 @@ const AllowanceListing = props => {
       },
     },
     customToolbar: () => (
-      <Tooltip title="New Allowance">
+      <Tooltip title="New allowance">
         <Button
           variant="contained"
           color="primary"
           startIcon={<AddIcon />}
           onClick={openNewAllowanceDialog}
         >
-          New Allowance
+          New allowance
         </Button>
       </Tooltip>
     ),
@@ -174,7 +186,7 @@ const AllowanceListing = props => {
     <React.Fragment>
       <MUIDataTable
         className={classes.datatable}
-        title="Allowance"
+        title="Allowances"
         data={[]}
         columns={columns}
         options={options}
@@ -187,9 +199,7 @@ const AllowanceListing = props => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleViewClick}>
-          View
-        </MenuItem>
+        <MenuItem onClick={handleViewClick}>View</MenuItem>
       </Menu>
     </React.Fragment>
   );
@@ -207,10 +217,11 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAllowanceById: (data) => dispatch(Actions.getAllowanceById(data)),
+    getAllowanceById: data => dispatch(Actions.getAllowanceById(data)),
     openNewAllowanceDialog: () => dispatch(Actions.openNewAllowanceDialog()),
-    openEditAllowanceDialog: (data) => dispatch(Actions.openEditAllowanceDialog(data)),
-  }
+    openEditAllowanceDialog: data =>
+      dispatch(Actions.openEditAllowanceDialog(data)),
+  };
 }
 
 const withConnect = connect(

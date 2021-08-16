@@ -1,11 +1,23 @@
 import produce from 'immer';
 import history from '../../utils/history'
 import * as Constants from './constants';
-import moment from 'moment';
+
+const defaultUserState = {
+  firstName   : "",
+  lastName    : "",
+  phoneNumber : "",
+  organisation: {
+    orgId: "",
+    companyName: "",
+    emailAddress: "",
+    phoneNumber: "",
+    website: "",
+  },
+}
 
 let currentUser;
 if (!JSON.parse(localStorage.getItem('user'))) {
-  currentUser = null;
+  currentUser = defaultUserState;
 } else {
   currentUser = JSON.parse(localStorage.getItem('user'));
 }
@@ -84,10 +96,11 @@ const appReducer = (state = initialState, action) =>
         };
       }
       case Constants.LOG_OUT: {
+        localStorage.removeItem('user');
         return {
           ...state,
           loading: false,
-          user: false,
+          user: { ...defaultUserState },
           accessToken: false
         };
       }

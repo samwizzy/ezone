@@ -27,7 +27,7 @@ export function PayrollApp(props) {
   useInjectSaga({ key, saga });
   const { loading, payrollSetUpData } = props;
 
-  useEffect(() => { }, [payrollSetUpData]);
+  useEffect(() => {}, [payrollSetUpData]);
 
   const { path } = useRouteMatch();
 

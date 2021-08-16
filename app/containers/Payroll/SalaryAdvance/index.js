@@ -18,16 +18,14 @@ import SalaryAdvanceDetails from './SalaryAdvanceDetails';
 import SalaryAdvanceDialog from './components/SalaryAdvanceDialog';
 import ConfirmDeleteSalaryAdvanceDialog from './components/ConfirmDeleteSalaryAdvanceDialog';
 
-const key = "salaryAdvance";
+const key = 'salaryAdvance';
 export function SalaryAdvancePage(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
+
   const { path } = useRouteMatch();
 
-  const {
-    loading,
-    getSalaryAdvances,
-  } = props;
+  const { loading, getSalaryAdvances } = props;
 
   useEffect(() => {
     // getSalaryAdvances();
@@ -36,7 +34,7 @@ export function SalaryAdvancePage(props) {
   return (
     <div>
       <Helmet>
-        <title>Salary Advance</title>
+        <title>Payroll — Salary Advance</title>
         <meta name="description" content="Description of Salary Advance" />
       </Helmet>
 

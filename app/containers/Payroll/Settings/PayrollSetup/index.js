@@ -15,11 +15,8 @@ export function PayrollSetUpSettings(props) {
   return (
     <div>
       <Helmet>
-        <title>Payroll SetUp Settings</title>
-        <meta
-          name="description"
-          content="Description of Payroll SetUp Settings"
-        />
+        <title>Payroll — Set-up</title>
+        <meta name="description" content="Description of payroll set-up" />
       </Helmet>
 
       <PayrollSetup />

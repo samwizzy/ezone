@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux'
 import deepPurple from '@material-ui/core/colors/deepPurple';
 import lightBlue from '@material-ui/core/colors/lightBlue';
 import red from '@material-ui/core/colors/red';
@@ -9,21 +8,25 @@ const themesConfig = {
     palette: {
       type: 'light',
       primary: {
-        light: lightBlue[600],
+        light: '#479fe7',
         main: '#1A88E1',
-        dark: lightBlue[700],
+        dark: '#125f9d',
       },
       secondary: {
-        light: lightBlue[600],
-        main: '#1702FF',
-        dark: '#250943',
+        light: '#503a68',
+        main: '#250943',
+        dark: '#19062e',
         contrastText: '#fff',
       },
       error: red,
     },
     typography: {
-      fontSize: 14,
+      fontSize: 16, // 14
       htmlFontSize: 18,
+      fontFamily: 'Roboto, Arial',
+      h6: {
+        fontWeight: 600,
+      },
     },
     status: {
       danger: '#FF2700',
@@ -33,25 +36,22 @@ const themesConfig = {
     },
     overrides: {
       MUIDataTableBodyCell: {
-        root: {
-          // backgroundColor: "#FFFFFF"
-        }
+        root: {},
       },
       MuiTable: {
         root: {
-          width: '100% !important'
-        }
+          width: '100% !important',
+        },
       },
     },
-    // MUIDataTable: {
-    //   root: {
-    //     backgroundColor: "#AAF",
-    //   },
-    //   paper: {
-    //     boxShadow: "none",
-    //   }
-    // },
-    // shadows: ["none"]
+    MUIDataTable: {
+      root: {},
+      paper: {},
+    },
+    shadows: [
+      'none',
+      '0px 2px 1px -1px rgba(0,0,0,0.2),0px 0px 0px 0px rgba(0,0,0,0.14),0px 0px 0px 0px rgba(0,0,0,0.12)',
+    ],
   },
   sunset: {
     palette: {

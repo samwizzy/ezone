@@ -1,9 +1,3 @@
-/**
- *
- * OrgPage
- *
- */
-
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -35,10 +29,12 @@ export function OrgPage(props) {
   return (
     <div>
       <Helmet>
-        <title>OrgPage</title>
-        <meta name="description" content="Description of OrgPage" />
+        <title>Organisation Info</title>
+        <meta name="description" content="Description of Organisation Info" />
       </Helmet>
+
       <TabsPage />
+
       <ColorDialog />
       <CompanyDialog />
       <BranchDialog />

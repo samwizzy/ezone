@@ -1,26 +1,26 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { green, orange } from '@material-ui/core/colors'
+import { green, orange } from '@material-ui/core/colors';
 import { darken } from '@material-ui/core/styles/colorManipulator';
-import moment from 'moment'
-import MUIDataTable from 'mui-datatables'
+import moment from 'moment';
+import MUIDataTable from 'mui-datatables';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import { AddBranch } from '../components/AddButton'
-import AddBranchDialog from './components/AddBranchDialog'
+import { AddBranch } from '../components/AddButton';
+import AddBranchDialog from './components/AddBranchDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   datatable: {
     '& tr:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& thead': {
       '& th': {
@@ -60,14 +60,14 @@ const useStyles = makeStyles(theme => ({
   },
   buttonGroup: {
     marginBottom: theme.spacing(1),
-  }
+  },
 }));
 
 const BranchesApp = props => {
   const classes = useStyles();
   const { loading, openNewBranchDialog, branches } = props;
 
-  console.log(branches, "branches")
+  console.log(branches, 'branches');
 
   const columns = [
     {
@@ -80,7 +80,7 @@ const BranchesApp = props => {
     },
     {
       name: 'name',
-      label: 'Branch Name',
+      label: 'Branch name',
       options: {
         filter: true,
         sort: true,
@@ -88,11 +88,11 @@ const BranchesApp = props => {
     },
     {
       name: 'branchEmployees',
-      label: 'Employee count',
+      label: 'No. of Employees',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: employees => employees && employees.length
+        customBodyRender: employees => employees && employees.length,
       },
     },
     {
@@ -101,7 +101,7 @@ const BranchesApp = props => {
       options: {
         filter: true,
         sort: true,
-        customBodyRender: value => value ? moment(value).format('lll') : ""
+        customBodyRender: value => (value ? moment(value).format('lll') : ''),
       },
     },
   ];
@@ -118,16 +118,16 @@ const BranchesApp = props => {
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
     onRowClick: (rowData, rowState) => {
-      console.log(rowData[0], "rowData[0]")
+      console.log(rowData[0], 'rowData[0]');
     },
-    elevation: 0
+    elevation: 0,
   };
 
   return (
     <div className={classes.root}>
       <MUIDataTable
         className={classes.datatable}
-        title="Branch List"
+        title="Branches"
         data={branches}
         columns={columns}
         options={options}

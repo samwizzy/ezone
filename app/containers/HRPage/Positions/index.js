@@ -13,8 +13,8 @@ export function PositionsPage(props) {
   return (
     <React.Fragment>
       <Helmet>
-        <title>Positions</title>
-        <meta name="description" content="ezone application positions page" />
+        <title>Human Resource — Positions</title>
+        <meta name="description" content="ezone application positions" />
       </Helmet>
 
       <ModuleLayout>

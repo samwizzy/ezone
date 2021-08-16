@@ -1,34 +1,44 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import DateFnsUtils from '@date-io/date-fns';
 import {
-  DatePicker,
-  TimePicker,
-  KeyboardTimePicker,
   KeyboardDatePicker,
-  DateTimePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 import _ from 'lodash';
-import { AppBar, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, Grid, MenuItem, Slide, Toolbar, Typography, TextField } from '@material-ui/core';
+import {
+  AppBar,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  FormControl,
+  Grid,
+  MenuItem,
+  Slide,
+  Toolbar,
+  Typography,
+  TextField,
+} from '@material-ui/core';
 import * as Selectors from '../selectors';
 import * as Actions from '../actions';
-import moment from 'moment'
-import AttachFileIcon from '@material-ui/icons/AttachFile';
+import moment from 'moment';
+// import AttachFileIcon from '@material-ui/icons/AttachFile';
 
 const useStyles = makeStyles(theme => ({
   root: {
     '& .MuiTextField-root': {
-      margin: theme.spacing(1, 0)
+      margin: theme.spacing(1, 0),
     },
   },
   title: {
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -38,73 +48,106 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const initialState = {
   title: '',
   description: '',
-  startDate: moment().format('YYYY-MM-DD'),
-  endDate: moment().format('YYYY-MM-DD'),
-  status: "PENDING",
-  assignedTo: "",
-  assignedToName: "",
-  assignedToEmail: "",
-  supervisedBy: "",
-  attachments: []
-}
+  startDate: null,
+  endDate: null,
+  status: 'PENDING',
+  assignedTo: '',
+  assignedToName: '',
+  assignedToEmail: '',
+  supervisedBy: '',
+  attachments: [],
+};
 
 function AddTaskDialog(props) {
   const classes = useStyles();
-  const { loading, closeNewTaskDialog, createUtilityTask, updateUtilityTask, dialog, users, task } = props;
-  const [form, setForm] = React.useState({ ...initialState });
+  const {
+    loading,
+    closeNewTaskDialog,
+    createUtilityTask,
+    updateUtilityTask,
+    dialog,
+    users,
+    task,
+  } = props;
 
-  React.useEffect(() => {
+  const [form, setForm] = useState({ ...initialState });
+
+  useEffect(() => {
     if (task && dialog.type === 'edit') {
-      const { id, title, description, status, startDate, endDate, assignedTo, assignedToName, assignedToEmail, supervisedBy } = task
-      setForm({ ...form, id, title, description, status, startDate: moment(startDate).format('YYYY-MM-DD'), endDate: moment(endDate).format('YYYY-MM-DD'), assignedTo, assignedToName, assignedToEmail, supervisedBy })
-    }else{
-      setForm(initialState)
+      const {
+        id,
+        title,
+        description,
+        status,
+        startDate,
+        endDate,
+        assignedTo,
+        assignedToName,
+        assignedToEmail,
+        supervisedBy,
+      } = task;
+      setForm({
+        ...form,
+        id,
+        title,
+        description,
+        status,
+        startDate: moment(startDate).format('YYYY-MM-DD'),
+        endDate: moment(endDate).format('YYYY-MM-DD'),
+        assignedTo,
+        assignedToName,
+        assignedToEmail,
+        supervisedBy,
+      });
+    } else {
+      setForm(initialState);
     }
   }, []);
 
-  const toBase64 = file => new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result.split(',')[1]);
-    reader.onerror = error => reject(error);
-  });
+  const toBase64 = file =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = error => reject(error);
+    });
 
-  const handleChange = (event) => {
-    const { name, value } = event.target
+  const handleChange = event => {
+    const { name, value } = event.target;
     setForm({ ...form, [name]: value });
-  }
+  };
 
   const canSubmitForm = () => {
-    const { title, description, startDate, endDate } = form
-    return title.length > 0 && description.length > 0
-  }
+    const { title, description, startDate, endDate } = form;
+    return title.length > 0 && description.length > 0;
+  };
 
   const handleDateChange = (date, name) => {
-    setForm(_.set({ ...form }, name, moment(date).format('YYYY-MM-DD')))
-  }
+    setForm(_.set({ ...form }, name, moment(date).format('YYYY-MM-DD')));
+  };
 
-  const handleImageChange = (ev) => {
-    let fileNode = []
+  const handleImageChange = ev => {
+    let fileNode = [];
     Object.keys(ev.target.files).map(index => {
-      const { name, size, type } = ev.target.files[index]
+      const { name, size, type } = ev.target.files[index];
       const result = toBase64(ev.target.files[index]);
       result.then(rs => {
-        const fileName = name.substr(0, 5).concat(moment().format('YYYY-MM-DDTHH:mm:ss.SSS'))
-        const file = Object.assign({}, { fileName, size, format: type, file: rs })
-        fileNode.push(file)
-      })
-    })
-    setForm(_.set({ ...form }, event.target.name, fileNode))
-  }
+        const fileName = name
+          .substr(0, 5)
+          .concat(moment().format('YYYY-MM-DDTHH:mm:ss.SSS'));
+        const file = Object.assign(
+          {},
+          { fileName, size, format: type, file: rs },
+        );
+        fileNode.push(file);
+      });
+    });
+    setForm(_.set({ ...form }, event.target.name, fileNode));
+  };
 
   const handleSubmit = () => {
-    dialog.type === 'new' ?
-      createUtilityTask(form) :
-      updateUtilityTask(form)
-  }
-
-  console.log(dialog, "dialog AddTaskDialog")
-  console.log(form, "form AddTaskDialog")
+    dialog.type === 'new' ? createUtilityTask(form) : updateUtilityTask(form);
+  };
 
   return (
     <div>
@@ -119,7 +162,7 @@ function AddTaskDialog(props) {
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
-              {dialog.type === 'new' ? "Add Task" : "Edit Task"}
+              {dialog.type === 'new' ? 'Add task' : 'Edit task'}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -168,9 +211,9 @@ function AddTaskDialog(props) {
                       size="small"
                       name="startDate"
                       id="date-picker-startDate"
-                      label="Start Date"
+                      label="Start date"
                       value={form.startDate}
-                      onChange={(date) => handleDateChange(date, 'startDate')}
+                      onChange={date => handleDateChange(date, 'startDate')}
                       KeyboardButtonProps={{
                         'aria-label': 'change date',
                       }}
@@ -189,9 +232,9 @@ function AddTaskDialog(props) {
                       margin="normal"
                       name="endDate"
                       id="date-picker-endDate"
-                      label="End Date"
+                      label="End date"
                       value={form.endDate}
-                      onChange={(date) => handleDateChange(date, 'endDate')}
+                      onChange={date => handleDateChange(date, 'endDate')}
                       KeyboardButtonProps={{
                         'aria-label': 'change date',
                       }}
@@ -212,20 +255,25 @@ function AddTaskDialog(props) {
                 margin="normal"
                 variant="outlined"
                 size="small"
-                label="Assigned To"
+                label="Assigned to"
                 value={form.assignedTo ? form.assignedTo : ''}
                 onChange={handleChange}
               >
-                {users && users.map(user => (
-                  <MenuItem key={user.uuId} value={user.uuId}>
-                    {user.emailAddress}
-                  </MenuItem>
-                ))}
+                {users &&
+                  users.map(user => (
+                    <MenuItem key={user.uuId} value={user.uuId}>
+                      {user.emailAddress}
+                    </MenuItem>
+                  ))}
               </TextField>
             </Grid>
 
             <Grid item xs={12}>
-              <FormControl variant="outlined" className={classes.formControl} margin="normal">
+              <FormControl
+                variant="outlined"
+                className={classes.formControl}
+                margin="normal"
+              >
                 <TextField
                   id="outlined-attachments"
                   name="attachments"
@@ -263,7 +311,12 @@ function AddTaskDialog(props) {
           <Button onClick={closeNewTaskDialog} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={loading ? loading : !canSubmitForm()} color="primary" endIcon={loading && <CircularProgress size={20} />}>
+          <Button
+            onClick={handleSubmit}
+            disabled={loading ? loading : !canSubmitForm()}
+            color="primary"
+            endIcon={loading && <CircularProgress size={20} />}
+          >
             Save
           </Button>
         </DialogActions>
@@ -288,7 +341,7 @@ function mapDispatchToProps(dispatch) {
   return {
     openNewTaskDialog: ev => dispatch(Actions.openNewTaskDialog(ev)),
     createUtilityTask: ev => dispatch(Actions.createUtilityTask(ev)),
-    updateUtilityTask: (data) => dispatch(Actions.updateUtilityTask(data)),
+    updateUtilityTask: data => dispatch(Actions.updateUtilityTask(data)),
     closeNewTaskDialog: () => dispatch(Actions.closeNewTaskDialog()),
   };
 }

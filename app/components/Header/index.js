@@ -1,6 +1,9 @@
-import React from 'react';
+import React, {memo} from 'react';
 import { fade } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
 import {
   withStyles,
   AppBar,
@@ -17,6 +20,7 @@ import {
   Link
 } from '@material-ui/core';
 import Menu from '@material-ui/icons/Menu';
+import * as Selectors from './../../containers/Home/selectors';
 import Banner from './banner.jpg';
 import Logo from '../../images/logo.svg';
 import OctivierLogo from '../../images/octivier-logo.svg';
@@ -164,11 +168,13 @@ const styles = theme => ({
 });
 
 function Header(props) {
-  const { classes, location } = props;
+  const { classes, location, applications } = props;
   const pathName = location.pathname.replace(/^\/|\/$/g, '').split('/')[0]
   const title = pathName.replace(/-/g, ' ');
 
   const [state, setState] = React.useState({ open: false });
+
+  console.log(applications, "applications bew")
 
   const toggleDrawer = (open, status) => event => {
     if (
@@ -188,7 +194,7 @@ function Header(props) {
       role="presentation"
       onClick={toggleDrawer(open, false)}
       onKeyDown={toggleDrawer(open, false)}
-    >
+    >-
       {/* <IconButton
         onClick={toggleDrawer('open', true)}
         edge="start"
@@ -267,4 +273,19 @@ function Header(props) {
   );
 }
 
-export default withRouter(withStyles(styles)(Header));
+const mapStateToProps = createStructuredSelector({
+  applications: Selectors.makeSelectApplications(),
+});
+
+const withConnect = connect(
+  mapStateToProps,
+  null,
+);
+
+// export default withRouter(withStyles(styles)(Header));
+export default compose(
+  withConnect,
+  memo,
+  withRouter,
+  withStyles(styles)
+)(Header);

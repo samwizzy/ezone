@@ -5,9 +5,15 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {
   makeStyles,
-  Card, CardHeader, CardContent,
-  Icon, IconButton,
-  Table, TableRow, TableBody, TableCell,
+  Card,
+  CardHeader,
+  CardContent,
+  Icon,
+  IconButton,
+  Table,
+  TableRow,
+  TableBody,
+  TableCell,
   TextField,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
@@ -21,17 +27,17 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     '& .MuiCardHeader-root': {
       borderBottom: `1px solid ${theme.palette.divider}`,
-    }
+    },
   },
   table: {
     whiteSpace: 'nowrap',
     '& tr': {
       '& td:first-child': {
         // width: 80,
-      }
+      },
     },
     '& .MuiTextField-root': {
-      width: 300
+      width: 300,
     },
     '& td': {
       borderBottom: 0,
@@ -56,15 +62,14 @@ const TaxSetUp = props => {
   const [selectedSetting, setSelectedSetting] = useState(null);
 
   const handleChange = event => {
-    const { name, value, type, checked } = event.target
-    setForm({ ...form, [name]: type === 'checkbox' ? checked : value })
-  }
+    const { name, value, type, checked } = event.target;
+    setForm({ ...form, [name]: type === 'checkbox' ? checked : value });
+  };
 
   const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
     setSelectedTax(_.find(taxSettings, { id }));
   };
-
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -77,8 +82,12 @@ const TaxSetUp = props => {
   return (
     <Card className={classes.root}>
       <CardHeader
-        title="Tax Settings"
-        action={<IconButton><Icon>edit</Icon></IconButton>}
+        title="Tax settings"
+        action={
+          <IconButton>
+            <Icon>edit</Icon>
+          </IconButton>
+        }
       />
 
       <CardContent>
@@ -185,7 +194,6 @@ const TaxSetUp = props => {
           </TableBody>
         </Table>
       </CardContent>
-
     </Card>
   );
 };

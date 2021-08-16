@@ -5,27 +5,23 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { green, orange } from '@material-ui/core/colors'
+import { green, orange } from '@material-ui/core/colors';
 import { darken } from '@material-ui/core/styles/colorManipulator';
-import moment from 'moment'
-import MUIDataTable from 'mui-datatables'
+import moment from 'moment';
+import MUIDataTable from 'mui-datatables';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 import * as AppSelectors from '../../App/selectors';
-import { AddPosition } from '../components/AddButton'
-import PositionDialog from './components/PositionDialog'
+import { AddPosition } from '../components/AddButton';
+import PositionDialog from './components/PositionDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   datatable: {
-    '& table': {
-      width: '96% !important',
-      margin: '4px auto',
-    },
     '& tr:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& thead': {
       '& th': {
@@ -62,9 +58,9 @@ const useStyles = makeStyles(theme => ({
   buttonGroup: {
     marginBottom: theme.spacing(1),
     '& .MuiButtonGroup-root:last-child': {
-      marginLeft: '10px'
-    }
-  }
+      marginLeft: '10px',
+    },
+  },
 }));
 
 const PositionList = props => {
@@ -94,7 +90,7 @@ const PositionList = props => {
       options: {
         filter: true,
         sort: true,
-        customBodyRender: value => moment(value).format('lll')
+        customBodyRender: value => moment(value).format('lll'),
       },
     },
     {
@@ -102,15 +98,16 @@ const PositionList = props => {
       label: 'Description',
       options: {
         filter: true,
-        sort: true
+        sort: true,
       },
     },
     {
-      name: 'employeesCount',
+      name: 'employees',
       label: 'Employees',
       options: {
         filter: true,
         sort: true,
+        customBodyRender: value => value && value.length,
       },
     },
   ];
@@ -126,16 +123,17 @@ const PositionList = props => {
     customToolbar: () => <AddPosition openDialog={openNewPositionDialog} />,
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 25, 50, 100],
-    onRowClick: (rowData, rowState) => {
-    },
-    elevation: 0
+    onRowClick: (rowData, rowState) => {},
+    elevation: 0,
   };
+
+  console.log(positions, 'get positions');
 
   return (
     <div className={classes.root}>
       <MUIDataTable
         className={classes.datatable}
-        title="Positions List"
+        title="Positions"
         data={positions}
         columns={columns}
         options={options}
@@ -171,5 +169,5 @@ const withConnect = connect(
 export default compose(
   withRouter,
   withConnect,
-  memo
-)(PositionList)
+  memo,
+)(PositionList);

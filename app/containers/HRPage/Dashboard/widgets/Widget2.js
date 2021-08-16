@@ -1,35 +1,24 @@
-import React, { memo } from "react"
+import React, { memo } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { createStructuredSelector } from 'reselect';
-import { withRouter, Link } from "react-router-dom"
+import { withRouter, Link } from 'react-router-dom';
 import {
   makeStyles,
-  Box,
   Button,
   Card,
   CardContent,
   CardActions,
-  Divider,
-  List,
-  Paper,
   Grid,
-  Table,
-  TableHead,
-  TableBody,
-  TableFooter,
-  TableRow,
-  TableCell,
-  Typography
+  Typography,
 } from '@material-ui/core';
-import CrmDashImage2 from '../../../../images/crmDash2.jpg'
-import hrDash3 from '../../../../images/hrDash3.jpg'
+import hrDash3 from '../../../../images/hrDash3.jpg';
 import * as Actions from '../../actions';
 import * as Selectors from '../../selectors';
 import * as AppSelectors from '../../../App/selectors';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
@@ -39,78 +28,68 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: `no-repeat`,
     backgroundPosition: `center bottom`,
     backgroundSize: 'cover',
-    "& .MuiCardActions-root": {
-      justifyContent: "center",
-      backgroundColor: theme.palette.secondary.contrastText,
+    '& .MuiCardActions-root': {
+      justifyContent: 'center',
+      backgroundColor: theme.palette.common.white,
     },
-    "& .MuiCardContent-root": {
+    '& .MuiCardContent-root': {
       minHeight: 160,
+      padding: theme.spacing(0, 4, 0, 4),
       display: 'flex',
       alignItems: 'center',
-    }
-  },
-  table: {
-    whiteSpace: "nowrap",
-    minWidth: 280,
-    "& td, & th": {
-      border: 0,
-      color: theme.palette.common.white,
     },
   },
   childTable: {
-    minWidth: 200,
-    '& td, & th': {
-      color: theme.palette.common.white,
-    },
-  }
+    listStyle: 'none',
+    color: theme.palette.primary.contrastText,
+  },
+  grid: {
+    color: theme.palette.primary.contrastText,
+  },
 }));
 
-
-const Widget2 = (props) => {
-  const classes = useStyles()
-  const { departments } = props
+const Widget2 = props => {
+  const classes = useStyles();
+  const { departments } = props;
 
   if (!departments) {
-    return ''
+    return '';
   }
 
-  console.log(departments, "departments")
+  console.log(departments, 'departments');
 
   return (
     <div>
       <Card className={classes.card}>
         <CardContent>
-          <Table className={classes.table} size="small">
-            <TableBody>
-              <TableRow>
-                <TableCell>
-                  <Typography variant="h3">{departments && departments.length}</Typography>
-                </TableCell>
-                <TableCell>
-                  <Table className={classes.childTable} size="small">
-                    <TableBody>
-                      {departments.length > 0 && departments.slice(0, 4).map((dept, i) =>
-                        <TableRow key={i}>
-                          <TableCell>{/*dept.employees.length*/} {dept.name}</TableCell>
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
+          <Grid container alignItems="center" className={classes.grid}>
+            <Grid item xs={3}>
+              <Typography variant="h3" color="initial">
+                {departments && departments.length}
+              </Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <ul className={classes.childTable}>
+                {departments.length > 0 &&
+                  departments.slice(0, 4).map((dept, i) => (
+                    <li key={i}>
+                      <Typography variant="subtitle1">{dept.name}</Typography>
+                    </li>
+                  ))}
+              </ul>
+            </Grid>
+          </Grid>
         </CardContent>
 
         <CardActions>
-          <Button component={Link} to='/hr/departments'>
-            View All Departments
-					</Button>
+          <Button component={Link} to="/hr/departments">
+            View all departments
+          </Button>
         </CardActions>
       </Card>
     </div>
-  )
-}
+  );
+};
 
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),

@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { Link } from "react-router-dom";
 import {
   makeStyles,
   Grid,
@@ -10,9 +9,10 @@ import {
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import * as AppSelectors from '../../App/selectors';
 import { createStructuredSelector } from 'reselect';
-import apps from './components/apps.db';
-import AppIcon from '../../../images/app-2.svg';
+import { Title } from '../../../components';
+import SkeletonList from './SkeletonList';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,11 +24,12 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     flexWrap: 'wrap',
     alignItems: 'center',
     padding: theme.spacing(2),
-    backgroundColor: theme.palette.grey[100],
+    backgroundColor: theme.palette.grey[50],
+    borderRadius: theme.spacing(2),
     // height: `calc(100vh - 350px)`,
     overflowY: 'auto',
     '&::-webkit-scrollbar': {
@@ -44,6 +45,13 @@ const useStyles = makeStyles(theme => ({
       '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.5)',
       backgroundColor: theme.palette.primary.main,
     },
+    '& img': {
+      marginBottom: theme.spacing(1),
+    },
+    '& a': {
+      color: theme.palette.primary.main,
+      textDecoration: 'none',
+    },
   },
   button: {
     padding: theme.spacing(1, 4),
@@ -52,7 +60,6 @@ const useStyles = makeStyles(theme => ({
   },
   grid: {
     margin: theme.spacing(1, 0),
-    border: `1px solid ${theme.palette.grey[50]}`,
   },
   textField: {
     width: theme.spacing(50),
@@ -62,7 +69,7 @@ const useStyles = makeStyles(theme => ({
   box: {
     width: theme.spacing(20),
     height: theme.spacing(20),
-    flex: '1 1 10em', // flex-grow flex-shrink flex-basis
+    flex: '0 1 11.1em', // flex-grow flex-shrink flex-basis
     margin: theme.spacing(1),
     padding: theme.spacing(2),
     borderRadius: '10px',
@@ -77,10 +84,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ProjectsList = (props) => {
-  const { applications } = props
+const ProjectsList = props => {
+  const { applications: apps, accessToken, currentUser } = props;
   const classes = useStyles();
   const [state, setState] = React.useState({ apps, text: '' });
+
+  console.log(currentUser, 'currentUser');
 
   const handleTextChange = e => {
     const value = e.target.value;
@@ -108,7 +117,7 @@ const ProjectsList = (props) => {
                 <TextField
                   className={classes.textField}
                   id="outlined-search"
-                  label="Search Apps"
+                  label="Search apps"
                   type="search"
                   variant="outlined"
                   value={state.text}
@@ -125,12 +134,11 @@ const ProjectsList = (props) => {
                 <Grid
                   container
                   justify="space-between"
+                  alignItems="center"
                   className={classes.grid}
                 >
                   <Grid item xs={6} md={6}>
-                    <Typography variant="h6" component="h3">
-                      My Apps
-                    </Typography>
+                    <Title>My apps</Title>
                   </Grid>
                   <Grid
                     item
@@ -152,19 +160,28 @@ const ProjectsList = (props) => {
 
                 <Grid container justify="space-between">
                   <Grid item sm={12} md={12} lg={12}>
-                    <Paper square className={classes.paper} elevation={0}>
-                      {applications.map((app, i) => (
-                        <Paper
-                          key={i}
-                          component={Link}
-                          to="/"
-                          className={classes.box}
-                        >
-                          <img src={AppIcon} alt={app.moduleName} />
-                          <Typography variant="body2">{app.moduleName.replace("_", " ")}</Typography>
-                        </Paper>
-                      ))}
-                    </Paper>
+                    {apps.length > 0 ? (
+                      <Paper square className={classes.paper} elevation={0}>
+                        {apps.map((app, i) => (
+                          <Paper key={i} className={classes.box}>
+                            <img src={app.icon} alt={app.moduleName} />
+                            <Typography variant="body2">
+                              <a
+                                href={`${
+                                  app.urlPath
+                                }?token=${accessToken}&orgId=${
+                                  currentUser.organisation.orgId
+                                }`}
+                              >
+                                {app.moduleName.replace('_', ' ')}
+                              </a>
+                            </Typography>
+                          </Paper>
+                        ))}
+                      </Paper>
+                    ) : (
+                      <SkeletonList />
+                    )}
                   </Grid>
                 </Grid>
               </Grid>
@@ -180,7 +197,10 @@ const ProjectsList = (props) => {
 
 ProjectsList.propTypes = {};
 
-const mapStateToProps = createStructuredSelector({});
+const mapStateToProps = createStructuredSelector({
+  accessToken: AppSelectors.makeSelectAccessToken(),
+  currentUser: AppSelectors.makeSelectCurrentUser(),
+});
 
 function mapDispatchToProps(dispatch) {
   return {};

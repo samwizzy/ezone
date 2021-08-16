@@ -2,7 +2,14 @@ import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
-import { makeStyles, IconButton, Button, Menu, MenuItem, Tooltip } from '@material-ui/core';
+import {
+  makeStyles,
+  IconButton,
+  Button,
+  Menu,
+  MenuItem,
+  Tooltip,
+} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import MUIDataTable from 'mui-datatables';
@@ -21,10 +28,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   datatable: {
-    '& table': {
-      width: '96% !important',
-      margin: '4px auto',
-    },
     whiteSpace: 'nowrap',
     '& tr:hover': {
       cursor: 'pointer',
@@ -59,35 +62,44 @@ const useStyles = makeStyles(theme => ({
 
 const BenefitListing = props => {
   const classes = useStyles();
-  const { loading, history, match, payrollSetupData, benefits, getBenefitById, openNewBenefitDialog, openEditBenefitDialog } = props;
+  const {
+    loading,
+    history,
+    match,
+    payrollSetupData,
+    benefits,
+    getBenefitById,
+    openNewBenefitDialog,
+    openEditBenefitDialog,
+  } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedBenefit, setSelectedBenefit] = useState(null);
 
   const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
     setSelectedBenefit(_.find(benefits, { id }));
-  }
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const handleEditClick = () => {
-    const { id } = selectedBenefit
-    openEditBenefitDialog(selectedBenefit)
-    history.push(`${match.url}/edit/${id}`)
-  }
+    const { id } = selectedBenefit;
+    openEditBenefitDialog(selectedBenefit);
+    history.push(`${match.url}/edit/${id}`);
+  };
 
   const handleViewClick = () => {
-    const { id } = selectedBenefit
-    getBenefitById(id)
-    history.push(`${match.url}/view/${id}`)
-  }
+    const { id } = selectedBenefit;
+    getBenefitById(id);
+    history.push(`${match.url}/view/${id}`);
+  };
 
   const orderedBenefits = _.orderBy(benefits, 'dateCreated', 'desc');
 
   if (loading) {
-    return <CircleLoader />
+    return <CircleLoader />;
   }
 
   const columns = [
@@ -109,7 +121,7 @@ const BenefitListing = props => {
     },
     {
       name: 'inputType',
-      label: 'Input Type',
+      label: 'Input type',
       options: {
         filter: true,
         sort: false,
@@ -156,14 +168,14 @@ const BenefitListing = props => {
       },
     },
     customToolbar: () => (
-      <Tooltip title="New Benefit">
+      <Tooltip title="New benefit">
         <Button
           variant="contained"
           color="primary"
           startIcon={<AddIcon />}
           onClick={openNewBenefitDialog}
         >
-          New Benefit
+          New benefit
         </Button>
       </Tooltip>
     ),
@@ -187,9 +199,7 @@ const BenefitListing = props => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleViewClick}>
-          View
-        </MenuItem>
+        <MenuItem onClick={handleViewClick}>View</MenuItem>
       </Menu>
     </React.Fragment>
   );
@@ -207,10 +217,11 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getBenefitById: (data) => dispatch(Actions.getBenefitById(data)),
+    getBenefitById: data => dispatch(Actions.getBenefitById(data)),
     openNewBenefitDialog: () => dispatch(Actions.openNewBenefitDialog()),
-    openEditBenefitDialog: (data) => dispatch(Actions.openEditBenefitDialog(data)),
-  }
+    openEditBenefitDialog: data =>
+      dispatch(Actions.openEditBenefitDialog(data)),
+  };
 }
 
 const withConnect = connect(

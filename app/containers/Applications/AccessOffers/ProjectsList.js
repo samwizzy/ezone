@@ -1,5 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import EzoneUtils from "../../../utils/EzoneUtils"
 import clsx from 'clsx';
 import {
   makeStyles,
@@ -10,6 +11,7 @@ import {
   Paper,
   Button,
   TextField,
+  Table, TableHead, TableBody, TableRow, TableCell,
 } from '@material-ui/core';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -17,7 +19,6 @@ import * as Actions from "./../actions"
 import * as Selectors from "./../selectors"
 import { createStructuredSelector } from 'reselect';
 import apps from './../apps.db';
-import AppIcon from '../../../images/app-2.svg';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -65,38 +66,18 @@ const useStyles = makeStyles(theme => ({
     borderRadius: theme.spacing(4),
   },
   box: {
-    position: 'relative',
-    width: theme.spacing(20),
-    height: theme.spacing(20),
-    flex: '1 1 10em', // flex-grow flex-shrink flex-basis
-    margin: theme.spacing(1),
-    padding: theme.spacing(2),
-    borderRadius: '10px',
-    display: 'flex',
-    textAlign: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
     '&.color': {
       backgroundColor: theme.palette.primary.main,
       color: theme.palette.primary.contrastText,
     },
     '& img': {
-      height: '70px',
+      height: '40px',
       marginBottom: theme.spacing(1),
     },
     '& p': {
       marginBottom: theme.spacing(2),
     },
-    '& .MuiCheckbox-root': {
-      opacity: '0',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      bottom: 0,
-      width: '100%',
-      height: '100%',
-    },
+    '& .MuiCheckbox-root': { },
   },
 }));
 
@@ -222,22 +203,27 @@ const ProjectsList = props => {
                 <Grid container justify="space-between">
                   <Grid item sm={12} md={12} lg={12}>
                     <Paper square className={classes.paper} elevation={0}>
-                      {state.apps.map(app => (
-                        <Paper
-                          key={app.id}
-                          className={clsx(classes.box, {
-                            color: selected.moduleOfferIds.includes(
-                              app.id.toString(),
-                            ),
-                          })}
-                        >
-                          <img src={AppIcon} alt={app.moduleName} />
-                          <Typography variant="body2">
-                            {app.moduleName}
-                          </Typography>
-                          <Checkbox value={app.id} onClick={handleCheck} />
-                        </Paper>
-                      ))}
+                      <Table>
+                        <TableBody>
+                          {state.apps.map(app => (
+                            <TableRow key={app.id} className={clsx(classes.box, { color: selected.moduleOfferIds.includes(app.id.toString()) })}> 
+                              <TableCell>
+                                <Checkbox value={app.id} checked={selected.moduleOfferIds.includes(app.id.toString())} onClick={handleCheck} />
+                              </TableCell>
+                              <TableCell className={clsx(classes.box, { color: selected.moduleOfferIds.includes(app.id.toString()) })}>
+                                {app.moduleName}
+                              </TableCell>
+                              <TableCell className={clsx(classes.box, { color: selected.moduleOfferIds.includes(app.id.toString()) })}>
+                                {EzoneUtils.formatCurrency(app.cost)}
+                              </TableCell>
+                              <TableCell className={clsx(classes.box, { color: selected.moduleOfferIds.includes(app.id.toString()) })}>
+                                {app.durationInMonths} months
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                      
                     </Paper>
                   </Grid>
                 </Grid>

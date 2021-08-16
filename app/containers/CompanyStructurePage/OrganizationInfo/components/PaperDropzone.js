@@ -6,6 +6,8 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { useDropzone } from 'react-dropzone';
 import RootRef from '@material-ui/core/RootRef';
+import { IconButton } from '@material-ui/core';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import styled from 'styled-components';
 import _ from 'lodash';
 
@@ -76,7 +78,7 @@ const PaperDropzone = props => {
     attachments: [],
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     // setForm(_.set(form, 'taskId', task.id));
   }, []);
 
@@ -158,16 +160,16 @@ const PaperDropzone = props => {
         >
           <input {...getInputProps()} multiple={false} />
           <p>Drag 'n' drop some files here, or click to select files</p>
-          <button type="button" onClick={open}>
-            Open File Dialog
-          </button>
+          <IconButton onClick={open}>
+            <CloudUploadIcon fontSize="large" color="primary" />
+          </IconButton>
         </Container>
 
         <aside style={thumbsContainer}>{thumbs}</aside>
       </div>
     </RootRef>
   );
-}
+};
 
 PaperDropzone.propTypes = {
   uploadFileAction: PropTypes.func,

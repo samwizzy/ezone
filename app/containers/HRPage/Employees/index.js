@@ -1,4 +1,4 @@
-import React, { useEffect, memo } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { withRouter, Route } from 'react-router-dom';
@@ -7,7 +7,7 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from './../actions';
 import * as Selectors from './../selectors';
-import ModuleLayout from './ModuleLayout'
+import ModuleLayout from './ModuleLayout';
 import EmployeeList from './EmployeeList';
 import EmployeeDetails from './employee';
 import AddEmployeeDialog from './components/AddEmployeeDialog';
@@ -16,15 +16,13 @@ import EducationBackgroundDialog from './components/EducationBackgroundDialog';
 
 export function EmployeePage(props) {
   const { match } = props;
-  const { path } = match
-
-  console.log(path, "path employee")
+  const { path } = match;
 
   return (
     <React.Fragment>
       <Helmet>
-        <title>Employee</title>
-        <meta name="description" content="ezone application employee page" />
+        <title>Human Resource — Employee</title>
+        <meta name="description" content="ezone application employee" />
       </Helmet>
 
       <ModuleLayout>

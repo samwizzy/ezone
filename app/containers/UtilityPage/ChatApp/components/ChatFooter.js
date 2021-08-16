@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -13,7 +13,7 @@ import {
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
+import { fade } from '@material-ui/core/styles/colorManipulator';
 import SettingsVoice from '@material-ui/icons/SettingsVoice';
 import AttachFile from '@material-ui/icons/AttachFile';
 import * as Actions from './../actions';
@@ -31,10 +31,8 @@ const useStyles = makeStyles(theme => ({
     top: 'inherit',
     backgroundColor: fade(theme.palette.common.white, 0.5),
   },
-  toolbar: {},
-  grow: {
-    flexGrow: 1,
-  },
+  toolbar: { padding: theme.spacing(1) },
+  grow: { flexGrow: 1 },
   bootstrapFormLabel: {
     color: theme.palette.text.secondary,
   },
@@ -44,7 +42,7 @@ const ChatFooter = props => {
   const classes = useStyles();
   const { postMsg } = props;
 
-  const [values, setValues] = React.useState({
+  const [values, setValues] = useState({
     message: '',
     recipientId: '',
     recipientName: '',
@@ -72,18 +70,22 @@ const ChatFooter = props => {
 
   return (
     <div className={classes.root}>
-      <form
-        onSubmit={onMessageSubmit}
-      >
-        <AppBar className={classes.appBar} position="absolute" color="inherit" elevation={0}>
+      <form onSubmit={onMessageSubmit}>
+        <AppBar
+          className={classes.appBar}
+          position="absolute"
+          color="inherit"
+          elevation={0}
+        >
           <Toolbar className={classes.toolbar}>
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               color="inherit"
+              style={{ marginRight: '4px' }}
             >
-              <AttachFile />
+              <AttachFile color="primary" />
             </IconButton>
             <Paper
               style={{
@@ -94,7 +96,9 @@ const ChatFooter = props => {
                 margin: 0,
                 padding: 0,
                 borderRadius: '50px',
+                marginRight: '4px',
               }}
+              variant="outlined"
             >
               <TextField
                 autoFocus={false}
@@ -125,14 +129,14 @@ const ChatFooter = props => {
               />
             </Paper>
 
-            <div className={classes.grow} />
+            {/* <div className={classes.grow} /> */}
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               color="inherit"
             >
-              <SettingsVoice />
+              <SettingsVoice color="primary" />
             </IconButton>
 
             <IconButton
@@ -143,7 +147,7 @@ const ChatFooter = props => {
               type="submit"
               onClick={() => {}}
             >
-              <Icon color="action">send</Icon>
+              <Icon color="primary">send</Icon>
             </IconButton>
           </Toolbar>
         </AppBar>

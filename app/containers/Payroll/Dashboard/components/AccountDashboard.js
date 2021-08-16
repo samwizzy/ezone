@@ -6,12 +6,12 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import Widget1 from './widgets/Widget1'
-import Widget2 from './widgets/Widget2'
-import Widget3 from './widgets/Widget3'
-import Widget4 from './widgets/Widget4'
+import Widget1 from './widgets/Widget1';
+import Widget2 from './widgets/Widget2';
+import Widget3 from './widgets/Widget3';
+import Widget4 from './widgets/Widget4';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
@@ -21,11 +21,11 @@ const AccountDashBoard = props => {
   const classes = useStyles(props);
   const { accData, accounts, accountsInTens } = props;
 
-  console.log(accountsInTens, "accounts In Tens")
+  console.log(accountsInTens, 'accounts In Tens');
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={4}>
+      <Grid container spacing={2}>
         <Grid item xs={4}>
           <Widget1 accData={accData} accounts={accounts} />
         </Grid>
@@ -43,7 +43,6 @@ const AccountDashBoard = props => {
         </Grid>
       </Grid>
     </div>
-
   );
 };
 
