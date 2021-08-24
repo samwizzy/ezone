@@ -69,6 +69,48 @@ const makeSelectUpdateUserProfileDialog = () =>
     subState => subState.updateUserProfileDialog,
   );
 
+const makeSelectBranches = () =>
+  createSelector(
+    selectUsersPageDomain,
+    subState => subState.branches,
+  );
+
+const makeSelectDepartments = () =>
+  createSelector(
+    selectUsersPageDomain,
+    subState => subState.departments,
+  );
+
+const makeSelectPositions = () =>
+  createSelector(
+    selectUsersPageDomain,
+    subState => subState.positions,
+  );
+
+const makeSelectEmployeeTypes = () =>
+  createSelector(
+    selectUsersPageDomain,
+    subState => subState.employeeTypes,
+  );
+
+const makeSelectSourcesOfHire = () =>
+  createSelector(
+    selectUsersPageDomain,
+    subState => subState.sourcesOfHire,
+  );
+
+const makeSelectPayRates = () =>
+  createSelector(
+    selectUsersPageDomain,
+    subState => subState.payRates,
+  );
+
+const makeSelectPayTypes = () =>
+  createSelector(
+    selectUsersPageDomain,
+    subState => subState.payTypes,
+  );
+
 export default makeSelectUsersPage;
 export {
   selectUsersPageDomain,
@@ -80,4 +122,11 @@ export {
   makeSelectSignatureDialog,
   makeSelectUpdateUserProfileData,
   makeSelectUpdateUserProfileDialog,
+  makeSelectBranches,
+  makeSelectDepartments,
+  makeSelectPositions,
+  makeSelectEmployeeTypes,
+  makeSelectSourcesOfHire,
+  makeSelectPayRates,
+  makeSelectPayTypes,
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, Grid, Typography, Paper } from '@material-ui/core';
-import Wrapper from './Wrapper';
+import { Typography } from '@material-ui/core';
+import CopyrightOutlinedIcon from '@material-ui/icons/CopyrightOutlined';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -13,8 +13,13 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3),
     marginTop: 'auto',
     '& p': {
-      color: theme.palette.secondary.contrastText
-    }
+      color: theme.palette.secondary.contrastText,
+    },
+  },
+  typography: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 }));
 
@@ -24,8 +29,15 @@ function Footer() {
   return (
     <div className={classes.root}>
       <div className={classes.footer}>
-        <Typography variant="body2" align="center">
-          Copyright © 2020 Ezone
+        <Typography
+          variant="body1"
+          align="center"
+          className={classes.typography}
+        >
+          <CopyrightOutlinedIcon color="inherit" fontSize="small" />{' '}
+          <span>
+            Copyright {new Date().getFullYear()} Ezone. All rights reserved.
+          </span>
         </Typography>
       </div>
     </div>

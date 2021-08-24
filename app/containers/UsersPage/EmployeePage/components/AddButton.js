@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
-import { IconButton, Tooltip, Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/styles';
+import { Tooltip, Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import { Add } from '@material-ui/icons';
 import * as Actions from '../../actions';
 
-const defaultToolbarStyles = {
-  iconButton: {},
+const styles = {
+  button: {},
 };
 
 // eslint-disable-next-line react/prop-types
@@ -18,18 +18,17 @@ export function AddButton(props) {
   const { classes, openNewEmployeeDialog } = props;
 
   return (
-    <React.Fragment>
-      <Tooltip title="New User">
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={openNewEmployeeDialog}
-          startIcon={<Add />}
-        >
-          Add User
-        </Button>
-      </Tooltip>
-    </React.Fragment>
+    <Tooltip title="New User">
+      <Button
+        style={{ marginLeft: "8px" }}
+        variant="contained"
+        color="primary"
+        onClick={openNewEmployeeDialog}
+        startIcon={<Add />}
+      >
+        Add User
+      </Button>
+    </Tooltip>
   );
 }
 
@@ -52,7 +51,7 @@ const withConnect = connect(
 );
 
 export default compose(
-  withStyles(defaultToolbarStyles, { name: 'CustomToolbar' }),
+  withStyles(styles),
   withConnect,
   memo,
 )(AddButton);

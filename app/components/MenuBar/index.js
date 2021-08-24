@@ -1,19 +1,15 @@
 import React, { memo } from 'react';
-import PropTypes from 'prop-types';
 import {
-  Container,
   IconButton,
-  Typography,
   makeStyles,
   AppBar,
-  Toolbar,
-  Paper,
+  Toolbar
 } from '@material-ui/core';
 import { compose } from 'redux';
-import { withRouter, NavLink } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
+import { darken } from '@material-ui/core/styles/colorManipulator';
 import RefreshSharp from '@material-ui/icons/RefreshSharp';
 import UserMenu from '../layouts/shared-components/UserMenu';
 import navBarImage from '../../images/navbarImage.jpg';

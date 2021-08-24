@@ -1,8 +1,3 @@
-/*
- *
- * UsersPage reducer
- *
- */
 import produce from 'immer';
 import * as Constants from './constants';
 
@@ -12,6 +7,13 @@ export const initialState = {
   createNewEmployeeData: false,
   loading: false,
   error: false,
+  branches: [],
+  departments: [],
+  positions: [],
+  employeeTypes: [],
+  sourcesOfHire: [],
+  payRates: [],
+  payTypes: [],
   employeeDialog: {
     type: 'new',
     props: {
@@ -59,6 +61,62 @@ const usersPageReducer = (state = initialState, action) =>
           ...state,
           loading: false,
           error: action.payload,
+        };
+      }
+      case Constants.GET_BRANCHES_SUCCESS: {
+        return {
+          ...state,
+          branches: action.payload,
+        };
+      }
+      case Constants.GET_POSITIONS: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.GET_POSITIONS_SUCCESS: {
+        return {
+          ...state,
+          positions: action.payload,
+          loading: false,
+        };
+      }
+      case Constants.GET_POSITIONS_ERROR: {
+        return {
+          ...state,
+          error: action.payload,
+          loading: false,
+        };
+      }
+      case Constants.GET_DEPARTMENTS_SUCCESS: {
+        return {
+          ...state,
+          departments: action.payload,
+        };
+      }
+      case Constants.GET_EMPLOYEETYPES_SUCCESS: {
+        return {
+          ...state,
+          employeeTypes: action.payload
+        };
+      }
+      case Constants.GET_SOURCE_OF_HIRE_SUCCESS: {
+        return {
+          ...state,
+          sourcesOfHire: action.payload
+        };
+      }
+      case Constants.GET_PAY_RATES_SUCCESS: {
+        return {
+          ...state,
+          payRates: action.payload
+        };
+      }
+      case Constants.GET_PAY_TYPES_SUCCESS: {
+        return {
+          ...state,
+          payTypes: action.payload
         };
       }
       case Constants.OPEN_NEW_EMPLOYEE_DIALOG: {
@@ -156,7 +214,6 @@ const usersPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.OPEN_SIGNATURE_DIALOG: {
-        console.log(action.payload, 'come to reducer');
         return {
           ...state,
           signatureDialog: {

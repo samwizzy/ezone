@@ -2,15 +2,11 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
-  List,
   FormControlLabel,
-  Icon,
-  Button,
-  Menu,
-  MenuItem,
+  Icon
 } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
+import { darken } from '@material-ui/core/styles/colorManipulator';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -20,10 +16,7 @@ import LoadingIndicator from '../../../../components/LoadingIndicator';
 import { AddButton } from './AddButton';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(5, 5, 5, 20),
-    marginBottom: theme.spacing(4),
-  },
+  root: {},
   datatable: {
     '& .MuiTableRow-root:hover': {
       cursor: 'pointer',
@@ -44,15 +37,6 @@ const useStyles = makeStyles(theme => ({
 
 const EmployeeList = props => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const {
     loading,
@@ -165,10 +149,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewEmployeeDialog: () => dispatch(Actions.openNewEmployeeDialog()),
-    openEditEmployeeDialog: data =>
-      dispatch(Actions.openEditEmployeeDialog(data)),
-    openViewEmployeeDialog: data =>
-      dispatch(Actions.openViewEmployeeDialog(data)),
+    openEditEmployeeDialog: data => dispatch(Actions.openEditEmployeeDialog(data)),
+    openViewEmployeeDialog: data => dispatch(Actions.openViewEmployeeDialog(data)),
   };
 }
 

@@ -37,7 +37,7 @@ const SidebarConfig = [
         icon: 'business_center',
       },
       { id: 3, name: 'Applications', url: '/applications', icon: 'apps' },
-      { id: 4, name: 'Employees', url: '/users', icon: 'group' },
+      { id: 4, name: 'Users', url: '/users', icon: 'group' },
       { id: 5, name: 'User profile', url: '/user-profile', icon: 'person' },
       { id: 6, name: 'Roles', url: '/roles', icon: 'person', disabled: true },
       {

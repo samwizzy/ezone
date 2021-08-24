@@ -1,4 +1,5 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
+import swal from "sweetalert"
 import request from '../../utils/request';
 import * as Endpoints from '../../components/Endpoints';
 import * as AppSelectors from '../App/selectors';
@@ -11,10 +12,11 @@ export function* getAllEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
-  const requestURL = `${Endpoints.GetAllUsersApi}?orgId=${currentUser && currentUser.organisation.orgId}`;
+  const requestURL = `${Endpoints.GetAllUsersApi}?orgId=${currentUser &&
+    currentUser.organisation.orgId}`;
 
   try {
-    const getAllEmployeesResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -22,43 +24,55 @@ export function* getAllEmployees() {
       }),
     });
 
-    console.log(getAllEmployeesResponse, 'getAllEmployeesResponses');
+    console.log(response, 'getAllEmployeesResponses');
 
-    yield put(Actions.getAllEmployeesSuccess(getAllEmployeesResponse));
+    yield put(Actions.getAllEmployeesSuccess(response));
   } catch (err) {
     if (err.response.status === 500) {
       yield put(Actions.getAllEmployeesError('Interval Server Error'));
-      yield put(AppActions.openSnackBar({ message: 'Interval Server Error', status: 'error' }));
+      yield put(
+        AppActions.openSnackBar({
+          message: 'Interval Server Error',
+          status: 'error',
+        }),
+      );
     } else if (err.response.status === 400) {
-      yield put(Actions.getAllEmployeesError('Something went wrong, please try again'));
-      yield put(AppActions.openSnackBar({ message: 'Something went wrong, please try again', status: 'error' }));
+      yield put(
+        Actions.getAllEmployeesError('Something went wrong, please try again'),
+      );
+      yield put(
+        AppActions.openSnackBar({
+          message: 'Something went wrong, please try again',
+          status: 'error',
+        }),
+      );
     }
   }
 }
 
-export function* createNewEmployee() {
+export function* createNewEmployee({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  // const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const createNewEmployeeData = yield select(
-    Selectors.makeSelectCreateNewEmployeeData(),
-  );
-
-  const requestURL = `${Endpoints.CreateNewEmployeeApi}`;
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.CreateEmployee}`;
+  payload.orgId = user && user.organisation.orgId;
+  console.log(payload, 'payload create new employee');
 
   try {
-    const createNewEmployeeResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
-      body: JSON.stringify(createNewEmployeeData),
+      body: JSON.stringify(payload),
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }),
     });
 
-    yield put(Actions.createNewEmployeeSuccess(createNewEmployeeResponse));
+    swal('Success', 'User has been created successfully', 'success');
+    yield put(Actions.createNewEmployeeSuccess(response));
     yield put(Actions.getAllEmployees());
     yield put(Actions.closeNewEmployeeDialog());
   } catch (err) {
+    console.dir(err.message);
     yield put(Actions.createNewEmployeeError(err));
   }
 }
@@ -69,8 +83,8 @@ export function* updateUserProfile({ payload }) {
     Selectors.makeSelectUpdateUserProfileData(),
   );
 
-  console.log(payload, "payload")
-  console.log(updateUserProfileData, "updateUserProfileData")
+  console.log(payload, 'payload');
+  console.log(updateUserProfileData, 'updateUserProfileData');
   const requestURL = `${Endpoints.UpdateUserProfileApi}`;
 
   try {
@@ -87,10 +101,167 @@ export function* updateUserProfile({ payload }) {
     yield put(Actions.closeEditUserProfileDialog());
     yield put(AppActions.getUserProfileAction());
 
-    yield put(AppActions.openSnackBar({ open: true, message: response.message, status: 'success' }));
+    yield put(
+      AppActions.openSnackBar({
+        open: true,
+        message: response.message,
+        status: 'success',
+      }),
+    );
   } catch (err) {
     console.log(err, 'errr');
     yield put(Actions.updateUserProfileError(err));
+  }
+}
+
+export function* getBranches() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetBranches}?orgId=${user &&
+    user.organisation.id}&tagId=1`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getBranchesSuccess(response));
+  } catch (err) {
+    console.log(err.message, 'Branch error message');
+  }
+}
+
+export function* getPositions() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetPositionsApi}/${user &&
+    user.organisation.id}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getPositionsSuccess(response));
+  } catch (err) {
+    console.log(err, 'err message');
+  }
+}
+
+export function* getDepartments() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetDepartmentsByOrgIdApi}?orgId=${user &&
+    user.organisation.id}&tagId=5`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getDepartmentsSuccess(response));
+  } catch (err) {
+    console.log(err.message, 'err message');
+  }
+}
+
+export function* getEmployeeTypes() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetEmployeeTypes}?orgId=${user &&
+    user.organisation.orgId}&type=EMPLOYEETYPE`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getEmployeeTypesSuccess(response));
+  } catch (err) {
+    // yield put(Actions.getUtilityFilesError(err));
+    console.log(err.message, 'err message');
+  }
+}
+
+export function* getSourcesOfHire() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetEmployeeTypes}?orgId=${user &&
+    user.organisation.orgId}&type=SOURCEOFHIRE`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getSourceOfHireSuccess(response));
+  } catch (err) {
+    // yield put(Actions.getSourceOfHireError(err));
+    console.log(err.message, 'err message');
+  }
+}
+
+export function* getPayRates() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetEmployeeTypes}?orgId=${user &&
+    user.organisation.orgId}&type=PAYRATE`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getPayRatesSuccess(response));
+  } catch (err) {
+    // yield put(Actions.getPayRatesError(err));
+    console.log(err.message, 'err message');
+  }
+}
+
+export function* getPayTypes() {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetEmployeeTypes}?orgId=${user &&
+    user.organisation.orgId}&type=PAYTYPE`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(Actions.getPayTypesSuccess(response));
+  } catch (err) {
+    // yield put(Actions.getPayTypesError(err));
+    console.log(err.message, 'err message');
   }
 }
 
@@ -99,4 +270,11 @@ export default function* usersPageSaga() {
   yield takeLatest(Constants.GET_ALL_EMPLOYEES, getAllEmployees);
   yield takeLatest(Constants.CREATE_NEW_EMPLOYEE, createNewEmployee);
   yield takeLatest(Constants.UPDATE_USER_PROFILE, updateUserProfile);
+  yield takeLatest(Constants.GET_BRANCHES, getBranches);
+  yield takeLatest(Constants.GET_POSITIONS, getPositions);
+  yield takeLatest(Constants.GET_DEPARTMENTS, getDepartments);
+  yield takeLatest(Constants.GET_SOURCE_OF_HIRE, getSourcesOfHire);
+  yield takeLatest(Constants.GET_EMPLOYEETYPES, getEmployeeTypes);
+  yield takeLatest(Constants.GET_PAY_RATES, getPayRates);
+  yield takeLatest(Constants.GET_PAY_TYPES, getPayTypes);
 }

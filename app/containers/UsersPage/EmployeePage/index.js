@@ -26,17 +26,24 @@ export function EmployeePage(props) {
   useInjectReducer({ key: 'usersPage', reducer });
   useInjectSaga({ key: 'usersPage', saga });
 
-  const { dispatchGetAllEmployeesAction } = props;
+  const { getAllEmployees, getBranches, getDepartments, getPositions, getEmployeeTypes, getSourceOfHire, getPayRates, getPayTypes } = props;
 
   useEffect(() => {
-    dispatchGetAllEmployeesAction();
+    getAllEmployees();
+    getBranches();
+    getDepartments();
+    getPositions();
+    getEmployeeTypes();
+    getSourceOfHire();
+    getPayRates();
+    getPayTypes();
   }, []);
 
   return (
     <div>
       <Helmet>
-        <title>Employee Page</title>
-        <meta name="description" content="Description of EmployeePage" />
+        <title>Users</title>
+        <meta name="description" content="Description of Users" />
       </Helmet>
 
       <ModuleLayout>
@@ -48,9 +55,8 @@ export function EmployeePage(props) {
 }
 
 EmployeePage.propTypes = {
-  dispatchGetAllEmployeesAction: PropTypes.func,
+  getAllEmployees: PropTypes.func,
   openNewEmployeeDialogAction: PropTypes.func,
-  dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -59,8 +65,14 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchGetAllEmployeesAction: () => dispatch(Actions.getAllEmployees()),
-    dispatch,
+    getAllEmployees: () => dispatch(Actions.getAllEmployees()),
+    getBranches: () => dispatch(Actions.getBranches()),
+    getDepartments: () => dispatch(Actions.getDepartments()),
+    getPositions: () => dispatch(Actions.getPositions()),
+    getEmployeeTypes: () => dispatch(Actions.getEmployeeTypes()),
+    getSourceOfHire: () => dispatch(Actions.getSourceOfHire()),
+    getPayRates: () => dispatch(Actions.getPayRates()),
+    getPayTypes: () => dispatch(Actions.getPayTypes()),
   };
 }
 

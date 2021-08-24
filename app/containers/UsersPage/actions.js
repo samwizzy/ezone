@@ -1,9 +1,3 @@
-/*
- *
- * UsersPage actions
- *
- */
-
 import * as Constants from './constants';
 
 export function getAllEmployees() {
@@ -81,6 +75,103 @@ export function createNewEmployeeSuccess() {
 export function createNewEmployeeError(data) {
   return {
     type: Constants.CREATE_NEW_EMPLOYEE_ERROR,
+    payload: data,
+  };
+}
+
+export function getBranches() {
+  return {
+    type: Constants.GET_BRANCHES,
+  };
+}
+
+export function getBranchesSuccess(data) {
+  return {
+    type: Constants.GET_BRANCHES_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getPositions() {
+  return {
+    type: Constants.GET_POSITIONS,
+  };
+}
+
+export function getPositionsSuccess(data) {
+  return {
+    type: Constants.GET_POSITIONS_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getPositionsError(data) {
+  return {
+    type: Constants.GET_POSITIONS_ERROR,
+    payload: data,
+  };
+}
+
+export function getDepartments() {
+  return {
+    type: Constants.GET_DEPARTMENTS,
+  };
+}
+export function getDepartmentsSuccess(data) {
+  return {
+    type: Constants.GET_DEPARTMENTS_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getEmployeeTypes() {
+  return {
+    type: Constants.GET_EMPLOYEETYPES,
+  };
+}
+
+export function getEmployeeTypesSuccess(data) {
+  return {
+    type: Constants.GET_EMPLOYEETYPES_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getSourceOfHire() {
+  return {
+    type: Constants.GET_SOURCE_OF_HIRE,
+  };
+}
+
+export function getSourceOfHireSuccess(data) {
+  return {
+    type: Constants.GET_SOURCE_OF_HIRE_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getPayRates() {
+  return {
+    type: Constants.GET_PAY_RATES,
+  };
+}
+
+export function getPayRatesSuccess(data) {
+  return {
+    type: Constants.GET_PAY_RATES_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getPayTypes() {
+  return {
+    type: Constants.GET_PAY_TYPES,
+  };
+}
+
+export function getPayTypesSuccess(data) {
+  return {
+    type: Constants.GET_PAY_TYPES_SUCCESS,
     payload: data,
   };
 }

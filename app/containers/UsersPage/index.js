@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
@@ -13,6 +12,7 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import ModuleLayout from './components/ModuleLayout';
+
 export function UsersPage() {
   useInjectReducer({ key: 'usersPage', reducer });
   useInjectSaga({ key: 'usersPage', saga });
@@ -31,18 +31,12 @@ export function UsersPage() {
   );
 }
 
-UsersPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
-
 const mapStateToProps = createStructuredSelector({
   usersPage: makeSelectUsersPage(),
 });
 
 function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
+  return {};
 }
 
 const withConnect = connect(

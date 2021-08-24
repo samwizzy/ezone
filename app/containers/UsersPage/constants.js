@@ -1,9 +1,3 @@
-/*
- *
- * UsersPage constants
- *
- */
-
 export const GET_ALL_EMPLOYEES = 'app/UsersPage/GET_ALL_EMPLOYEES';
 export const GET_ALL_EMPLOYEES_SUCCESS = 'app/UsersPage/GET_ALL_EMPLOYEES_SUCCESS';
 export const GET_ALL_EMPLOYEES_ERROR = 'app/UsersPage/GET_ALL_EMPLOYEES_ERROR';
@@ -20,6 +14,34 @@ export const CLOSE_VIEW_EMPLOYEE_DIALOG = 'app/UsersPage/CLOSE_VIEW_EMPLOYEE_DIA
 export const CREATE_NEW_EMPLOYEE = 'app/UsersPage/CREATE_NEW_EMPLOYEE';
 export const CREATE_NEW_EMPLOYEE_SUCCESS = 'app/UsersPage/CREATE_NEW_EMPLOYEE_SUCCESS';
 export const CREATE_NEW_EMPLOYEE_ERROR = 'app/UsersPage/CREATE_NEW_EMPLOYEE_ERROR';
+
+export const GET_BRANCHES = 'app/UsersPage/GET_BRANCHES';
+export const GET_BRANCHES_SUCCESS = 'app/UsersPage/GET_BRANCHES_SUCCESS';
+export const GET_BRANCHES_ERROR = 'app/UsersPage/GET_BRANCHES_ERROR';
+
+export const GET_POSITIONS = 'boilerplate/HRPage/GET_POSITIONS';
+export const GET_POSITIONS_SUCCESS = 'boilerplate/HRPage/GET_POSITIONS_SUCCESS';
+export const GET_POSITIONS_ERROR = 'boilerplate/HRPage/GET_POSITIONS_ERROR';
+
+export const GET_DEPARTMENTS = 'boilerplate/HRPage/GET_DEPARTMENTS';
+export const GET_DEPARTMENTS_SUCCESS = 'boilerplate/HRPage/GET_DEPARTMENTS_SUCCESS';
+export const GET_DEPARTMENTS_ERROR = 'boilerplate/HRPage/GET_DEPARTMENTS_ERROR';
+
+export const GET_EMPLOYEETYPES = 'boilerplate/HRPage/GET EMPLOYEETYPES';
+export const GET_EMPLOYEETYPES_SUCCESS = 'boilerplate/HRPage/GET EMPLOYEETYPES SUCCESS';
+export const GET_EMPLOYEETYPES_ERROR = 'boilerplate/HRPage/GET EMPLOYEETYPES ERROR';
+
+export const GET_SOURCE_OF_HIRE = 'boilerplate/HRPage/GET SOURCE OF HIRE';
+export const GET_SOURCE_OF_HIRE_SUCCESS = 'boilerplate/HRPage/GET GET SOURCE OF HIRE SUCCESS';
+export const GET_SOURCE_OF_HIRE_ERROR = 'boilerplate/HRPage/GET GET SOURCE OF HIRE ERROR';
+
+export const GET_PAY_RATES = 'boilerplate/HRPage/GET PAY RATES';
+export const GET_PAY_RATES_SUCCESS = 'boilerplate/HRPage/GET PAY RATES SUCCESS';
+export const GET_PAY_RATES_ERROR = 'boilerplate/HRPage/GET PAY RATES ERROR';
+
+export const GET_PAY_TYPES = 'boilerplate/HRPage/GET PAY TYPES';
+export const GET_PAY_TYPES_SUCCESS = 'boilerplate/HRPage/GET PAY TYPES SUCCESS';
+export const GET_PAY_TYPES_ERROR = 'boilerplate/HRPage/GET PAY TYPES ERROR';
 
 export const OPEN_SIGNATURE_DIALOG = 'app/UsersPage/OPEN_SIGNATURE_DIALOG';
 export const CLOSE_SIGNATURE_DIALOG = 'app/UsersPage/CLOSE_SIGNATURE_DIALOG';
