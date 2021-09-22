@@ -18,6 +18,24 @@ export function getEmployeesSuccess(data) {
     payload: data,
   };
 }
+export function getPagedEmployees(payload = { offset: 0, limit: 10 }) {
+  return {
+    type: Constants.GET_PAGED_EMPLOYEES,
+    payload,
+  };
+}
+export function getPagedEmployeesSuccess(data) {
+  return {
+    type: Constants.GET_PAGED_EMPLOYEES_SUCCESS,
+    payload: data,
+  };
+}
+export function getPagedEmployeesError(data) {
+  return {
+    type: Constants.GET_PAGED_EMPLOYEES_ERROR,
+    payload: data,
+  };
+}
 export function getBranchEmployees() {
   return {
     type: Constants.GET_BRANCH_EMPLOYEES,
@@ -581,6 +599,25 @@ export function createPositionError(data) {
   };
 }
 
+export function updatePosition(data) {
+  return {
+    type: Constants.UPDATE_POSITION,
+    payload: data,
+  };
+}
+export function updatePositionSuccess(data) {
+  return {
+    type: Constants.UPDATE_POSITION_SUCCESS,
+    payload: data,
+  };
+}
+export function updatePositionError(data) {
+  return {
+    type: Constants.UPDATE_POSITION_SUCCESS,
+    payload: data,
+  };
+}
+
 export function createDepartment(data) {
   return {
     type: Constants.CREATE_DEPARTMENT,
@@ -644,6 +681,37 @@ export function updateEmployeeError(data) {
   };
 }
 
+export function deleteEmployee(data) {
+  return {
+    type: Constants.DELETE_EMPLOYEE,
+    payload: data,
+  };
+}
+export function deleteEmployeeSuccess(data) {
+  return {
+    type: Constants.DELETE_EMPLOYEE_SUCCESS,
+    payload: data,
+  };
+}
+export function deleteEmployeeError(data) {
+  return {
+    type: Constants.DELETE_EMPLOYEE_ERROR,
+    payload: data,
+  };
+}
+
+export function openConfirmDeleteEmployeeDialog(data) {
+  return {
+    type: Constants.OPEN_CONFIRM_DELETE_EMPLOYEE_DIALOG,
+    payload: data,
+  };
+}
+export function closeConfirmDeleteEmployeeDialog() {
+  return {
+    type: Constants.CLOSE_CONFIRM_DELETE_EMPLOYEE_DIALOG,
+  };
+}
+
 export function openNewEmployeeDialog() {
   return {
     type: Constants.OPEN_NEW_EMPLOYEE_DIALOG,
@@ -689,14 +757,37 @@ export function closeNewBranchDialog() {
   };
 }
 
-export function openNewPositionDialog() {
+export function openNewRoleDialog() {
   return {
     type: Constants.OPEN_NEW_ROLE_DIALOG,
   };
 }
-export function closeNewPositionDialog() {
+export function closeNewRoleDialog() {
   return {
     type: Constants.CLOSE_NEW_ROLE_DIALOG,
+  };
+}
+
+export function openNewPositionDialog() {
+  return {
+    type: Constants.OPEN_NEW_POSITION_DIALOG,
+  };
+}
+export function closeNewPositionDialog() {
+  return {
+    type: Constants.CLOSE_NEW_POSITION_DIALOG,
+  };
+}
+
+export function openEditPositionDialog(data) {
+  return {
+    type: Constants.OPEN_EDIT_POSITION_DIALOG,
+    payload: data,
+  };
+}
+export function closeEditPositionDialog() {
+  return {
+    type: Constants.CLOSE_EDIT_POSITION_DIALOG,
   };
 }
 

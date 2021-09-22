@@ -20,6 +20,25 @@ export function getAllEmployeesError(data) {
   };
 }
 
+export function getPagedEmployees(payload = { offset: 0, limit: 10 }) {
+  return {
+    type: Constants.GET_PAGED_EMPLOYEES,
+    payload,
+  };
+}
+export function getPagedEmployeesSuccess(data) {
+  return {
+    type: Constants.GET_PAGED_EMPLOYEES_SUCCESS,
+    payload: data,
+  };
+}
+export function getPagedEmployeesError(data) {
+  return {
+    type: Constants.GET_PAGED_EMPLOYEES_ERROR,
+    payload: data,
+  };
+}
+
 export function openNewEmployeeDialog() {
   return {
     type: Constants.OPEN_NEW_EMPLOYEE_DIALOG,
@@ -68,7 +87,6 @@ export function createNewEmployee(data) {
 export function createNewEmployeeSuccess() {
   return {
     type: Constants.CREATE_NEW_EMPLOYEE_SUCCESS,
-    // payload: data,
   };
 }
 
@@ -76,6 +94,57 @@ export function createNewEmployeeError(data) {
   return {
     type: Constants.CREATE_NEW_EMPLOYEE_ERROR,
     payload: data,
+  };
+}
+
+export function updateEmployee(data) {
+  return {
+    type: Constants.UPDATE_EMPLOYEE,
+    payload: data,
+  };
+}
+
+export function updateEmployeeSuccess() {
+  return {
+    type: Constants.UPDATE_EMPLOYEE_SUCCESS,
+  };
+}
+
+export function updateEmployeeError(data) {
+  return {
+    type: Constants.UPDATE_EMPLOYEE_ERROR,
+    payload: data,
+  };
+}
+
+export function deleteEmployee(data) {
+  return {
+    type: Constants.DELETE_EMPLOYEE,
+    payload: data,
+  };
+}
+export function deleteEmployeeSuccess(data) {
+  return {
+    type: Constants.DELETE_EMPLOYEE_SUCCESS,
+    payload: data,
+  };
+}
+export function deleteEmployeeError(data) {
+  return {
+    type: Constants.DELETE_EMPLOYEE_ERROR,
+    payload: data,
+  };
+}
+
+export function openConfirmDeleteEmployeeDialog(data) {
+  return {
+    type: Constants.OPEN_CONFIRM_DELETE_EMPLOYEE_DIALOG,
+    payload: data,
+  };
+}
+export function closeConfirmDeleteEmployeeDialog() {
+  return {
+    type: Constants.CLOSE_CONFIRM_DELETE_EMPLOYEE_DIALOG,
   };
 }
 

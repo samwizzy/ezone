@@ -8,6 +8,7 @@ import _ from 'lodash';
 import {
   AppBar,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -43,10 +44,18 @@ const initialState = {
 
 function PositionDialog(props) {
   const classes = useStyles();
-  const { closeNewPositionDialog, dialog, createPosition } = props;
+  const {
+    loading,
+    closeNewPositionDialog,
+    partyGroups,
+    dialog,
+    createPosition,
+    updatePosition,
+  } = props;
   const [form, setForm] = useState({ ...initialState });
 
   console.log(dialog, 'dialog checking');
+  console.log(partyGroups, 'dialog partyGroups');
 
   useEffect(() => {
     dialog.type === 'edit' && dialog.data
@@ -67,7 +76,8 @@ function PositionDialog(props) {
   const handleReset = () => setForm({ ...initialState });
 
   const handleSubmit = () => {
-    createPosition(form);
+    dialog.type === 'edit' ? updatePosition(form) : createPosition(form);
+
     handleReset();
   };
 
@@ -86,12 +96,34 @@ function PositionDialog(props) {
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
-              Add position
+              {dialog.type === 'edit' ? 'Update position' : 'Add position'}
             </Typography>
           </Toolbar>
         </AppBar>
 
         <DialogContent dividers>
+          {/* <TextField
+            id="party-id"
+            name="party_id"
+            placeholder="Party group"
+            select
+            fullWidth
+            margin="dense"
+            variant="outlined"
+            size="small"
+            label="Party group"
+            value={form.party_id}
+            onChange={handleChange}
+          >
+            <MenuItem value="">Select party group</MenuItem>
+            {partyGroups &&
+              partyGroups.map(partyGroup => (
+                <MenuItem key={partyGroup.id} value={partyGroup.id}>
+                  {partyGroup.name}
+                </MenuItem>
+              ))}
+          </TextField> */}
+
           <TextField
             name="name"
             label="Name"
@@ -128,10 +160,11 @@ function PositionDialog(props) {
           <Button
             onClick={handleSubmit}
             variant="contained"
-            disabled={!canSubmitForm()}
+            disabled={loading ? loading : !canSubmitForm()}
             color="primary"
+            startIcon={loading && <CircularProgress size={14} />}
           >
-            Save
+            {dialog.type === 'edit' ? 'Update' : 'Save'}
           </Button>
         </DialogActions>
       </Dialog>
@@ -144,13 +177,16 @@ PositionDialog.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  loading: Selectors.makeSelectLoading(),
   dialog: Selectors.makeSelectPositionDialog(),
+  partyGroups: Selectors.makeSelectPartyGroups(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     closeNewPositionDialog: () => dispatch(Actions.closeNewPositionDialog()),
     createPosition: data => dispatch(Actions.createPosition(data)),
+    updatePosition: data => dispatch(Actions.updatePosition(data)),
   };
 }
 

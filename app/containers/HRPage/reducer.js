@@ -5,6 +5,12 @@ import * as Constants from './constants';
 export const initialState = {
   loading: false,
   error: null,
+  pagedEmployees: {
+    page: 0,
+    limit: 0,
+    total: 0,
+    entities: [],
+  },
   employees: [],
   branchEmployees: [],
   deptEmployees: [],
@@ -31,6 +37,19 @@ export const initialState = {
   jobOpeningDetails: null,
   empDialog: {
     type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
+  updateEmpDialog: {
+    type: 'edit',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
+  confirmDeleteDialog: {
     props: {
       open: false,
     },
@@ -122,74 +141,74 @@ const hrReducer = (state = initialState, action) =>
       case Constants.GET_DEPARTMENTS_SUCCESS: {
         return {
           ...state,
-          departments: action.payload
+          departments: action.payload,
         };
       }
       case Constants.GET_DEPARTMENTS_BY_ORGID_API_SUCCESS: {
         return {
           ...state,
-          departments: action.payload
+          departments: action.payload,
         };
       }
       case Constants.GET_BRANCHES_SUCCESS: {
         return {
           ...state,
-          branches: action.payload
+          branches: action.payload,
         };
       }
 
       case Constants.GET_ANNOUNCEMENTS: {
         return {
           ...state,
-          loading: true
+          loading: true,
         };
       }
       case Constants.GET_ANNOUNCEMENTS_SUCCESS: {
         return {
           ...state,
           loading: false,
-          announcements: action.payload
+          announcements: action.payload,
         };
       }
       case Constants.GET_ANNOUNCEMENTS_ERROR: {
         return {
           ...state,
           loading: false,
-          error: action.payload
+          error: action.payload,
         };
       }
 
       case Constants.GET_ANNOUNCEMENT_BY_ID: {
         return {
           ...state,
-          loading: true
+          loading: true,
         };
       }
       case Constants.GET_ANNOUNCEMENT_BY_ID_SUCCESS: {
         return {
           ...state,
           loading: false,
-          announcement: action.payload
+          announcement: action.payload,
         };
       }
       case Constants.GET_ANNOUNCEMENT_BY_ID_ERROR: {
         return {
           ...state,
           loading: false,
-          error: action.payload
+          error: action.payload,
         };
       }
 
       case Constants.GET_PARTYGROUPS_SUCCESS: {
         return {
           ...state,
-          partyGroups: action.payload
+          partyGroups: action.payload,
         };
       }
       case Constants.GET_PARTY_TAGS_SUCCESS: {
         return {
           ...state,
-          party_tags: action.payload
+          party_tags: action.payload,
         };
       }
       case Constants.CREATE_EMPLOYEE: {
@@ -229,7 +248,7 @@ const hrReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: false,
-          error: action.payload
+          error: action.payload,
         };
       }
 
@@ -334,29 +353,29 @@ const hrReducer = (state = initialState, action) =>
       case Constants.GET_ATTENDANCES: {
         return {
           ...state,
-          loading: true
-        }
-      };
+          loading: true,
+        };
+      }
       case Constants.GET_ATTENDANCES_SUCCESS: {
         return {
           ...state,
           loading: false,
-          attendances: action.payload
-        }
-      };
+          attendances: action.payload,
+        };
+      }
       case Constants.GET_APPLICANTS: {
         return {
           ...state,
-          loading: true
-        }
-      };
+          loading: true,
+        };
+      }
       case Constants.GET_APPLICANTS_SUCCESS: {
         return {
           ...state,
           loading: false,
-          applicants: action.payload
-        }
-      };
+          applicants: action.payload,
+        };
+      }
       case Constants.CREATE_DEPARTMENT: {
         return {
           ...state,
@@ -376,99 +395,99 @@ const hrReducer = (state = initialState, action) =>
       case Constants.GET_EMPLOYEETYPES_SUCCESS: {
         return {
           ...state,
-          employeeTypes: action.payload
+          employeeTypes: action.payload,
         };
       }
       case Constants.GET_SOURCE_OF_HIRE_SUCCESS: {
         return {
           ...state,
-          sourcesOfHire: action.payload
+          sourcesOfHire: action.payload,
         };
       }
       case Constants.GET_PAY_RATES_SUCCESS: {
         return {
           ...state,
-          payRates: action.payload
+          payRates: action.payload,
         };
       }
       case Constants.GET_PAY_TYPES_SUCCESS: {
         return {
           ...state,
-          payTypes: action.payload
+          payTypes: action.payload,
         };
       }
       case Constants.GET_WORK_EXPERIENCES_SUCCESS: {
         return {
           ...state,
-          workExperiences: action.payload
+          workExperiences: action.payload,
         };
       }
       case Constants.GET_ENROLLMENTTYPES_SUCCESS: {
         return {
           ...state,
-          enrollmentTypes: action.payload
+          enrollmentTypes: action.payload,
         };
       }
 
       case Constants.CREATE_EMPLOYEE_TYPE: {
         return {
           ...state,
-          loading: true
+          loading: true,
         };
       }
       case Constants.CREATE_EMPLOYEE_TYPE_SUCCESS: {
         return {
           ...state,
-          loading: false
+          loading: false,
         };
       }
       case Constants.CREATE_ENROLLMENT_TYPE: {
         return {
           ...state,
-          loading: true
+          loading: true,
         };
       }
       case Constants.CREATE_ENROLLMENT_TYPE_SUCCESS: {
         return {
           ...state,
-          loading: false
+          loading: false,
         };
       }
       case Constants.CREATE_LOCATION: {
         return {
           ...state,
-          loading: true
+          loading: true,
         };
       }
       case Constants.CREATE_LOCATION_SUCCESS: {
         return {
           ...state,
-          loading: false
+          loading: false,
         };
       }
       case Constants.GET_LOCATIONS_SUCCESS: {
         return {
           ...state,
-          locations: action.payload
+          locations: action.payload,
         };
       }
       case Constants.GET_JOBOPENINGS_SUCCESS: {
         return {
           ...state,
-          jobOpenings: action.payload
+          jobOpenings: action.payload,
         };
       }
       case Constants.GET_JOBOPENINGDETAILS_SUCCESS: {
         return {
           ...state,
-          jobOpeningDetails: action.payload
+          jobOpeningDetails: action.payload,
         };
       }
 
       case Constants.GET_ROLES: {
         return {
           ...state,
-          loading: true
+          loading: true,
         };
       }
 
@@ -476,14 +495,14 @@ const hrReducer = (state = initialState, action) =>
         return {
           ...state,
           roles: action.payload,
-          loading: false
+          loading: false,
         };
       }
 
       case Constants.GET_POSITIONS: {
         return {
           ...state,
-          loading: true
+          loading: true,
         };
       }
 
@@ -491,7 +510,7 @@ const hrReducer = (state = initialState, action) =>
         return {
           ...state,
           positions: action.payload,
-          loading: false
+          loading: false,
         };
       }
 
@@ -499,21 +518,21 @@ const hrReducer = (state = initialState, action) =>
         return {
           ...state,
           error: action.payload,
-          loading: false
+          loading: false,
         };
       }
 
       case Constants.CREATE_POSITION: {
         return {
           ...state,
-          loading: true
+          loading: true,
         };
       }
 
       case Constants.CREATE_POSITION_SUCCESS: {
         return {
           ...state,
-          loading: false
+          loading: false,
         };
       }
 
@@ -521,7 +540,29 @@ const hrReducer = (state = initialState, action) =>
         return {
           ...state,
           error: action.payload,
-          loading: false
+          loading: false,
+        };
+      }
+
+      case Constants.UPDATE_POSITION: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+
+      case Constants.UPDATE_POSITION_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+        };
+      }
+
+      case Constants.UPDATE_POSITION_ERROR: {
+        return {
+          ...state,
+          error: action.payload,
+          loading: false,
         };
       }
 
@@ -535,14 +576,35 @@ const hrReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: false,
-          employees: action.payload
+          employees: action.payload,
         };
       }
       case Constants.GET_EMPLOYEES_ERROR: {
         return {
           ...state,
           loading: false,
-          error: action.payload
+          error: action.payload,
+        };
+      }
+
+      case Constants.GET_PAGED_EMPLOYEES: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.GET_PAGED_EMPLOYEES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          pagedEmployees: action.payload,
+        };
+      }
+      case Constants.GET_PAGED_EMPLOYEES_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
         };
       }
       case Constants.GET_BRANCH_EMPLOYEES: {
@@ -555,7 +617,7 @@ const hrReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: false,
-          branchEmployees: action.payload
+          branchEmployees: action.payload,
         };
       }
       case Constants.GET_DEPT_EMPLOYEES: {
@@ -568,7 +630,7 @@ const hrReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: false,
-          deptEmployees: action.payload
+          deptEmployees: action.payload,
         };
       }
       case Constants.GET_EMPLOYEE: {
@@ -581,14 +643,14 @@ const hrReducer = (state = initialState, action) =>
         return {
           ...state,
           loading: false,
-          employee: action.payload
+          employee: action.payload,
         };
       }
       case Constants.GET_EMPLOYEE_ERROR: {
         return {
           ...state,
           loading: false,
-          error: action.payload
+          error: action.payload,
         };
       }
       case Constants.OPEN_NEW_EMPLOYEE_DIALOG: {
@@ -597,27 +659,7 @@ const hrReducer = (state = initialState, action) =>
           empDialog: {
             props: { open: true },
             type: 'new',
-            data: null
-          },
-        };
-      }
-      case Constants.OPEN_EDIT_EMPLOYEE_DIALOG: {
-        return {
-          ...state,
-          empDialog: {
-            props: { open: true },
-            type: 'edit',
-            data: action.payload
-          },
-        };
-      }
-      case Constants.CLOSE_EDIT_EMPLOYEE_DIALOG: {
-        return {
-          ...state,
-          empDialog: {
-            props: { open: false },
-            type: 'edit',
-            data: null
+            data: null,
           },
         };
       }
@@ -626,7 +668,45 @@ const hrReducer = (state = initialState, action) =>
           ...state,
           empDialog: {
             ...state.empDialog,
-            props: { open: false }
+            props: { open: false },
+          },
+        };
+      }
+      case Constants.OPEN_EDIT_EMPLOYEE_DIALOG: {
+        return {
+          ...state,
+          updateEmpDialog: {
+            props: { open: true },
+            type: 'edit',
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_EDIT_EMPLOYEE_DIALOG: {
+        return {
+          ...state,
+          updateEmpDialog: {
+            props: { open: false },
+            type: 'edit',
+            data: null,
+          },
+        };
+      }
+      case Constants.OPEN_CONFIRM_DELETE_EMPLOYEE_DIALOG: {
+        return {
+          ...state,
+          confirmDeleteDialog: {
+            props: { open: true },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_CONFIRM_DELETE_EMPLOYEE_DIALOG: {
+        return {
+          ...state,
+          confirmDeleteDialog: {
+            props: { open: false },
+            data: null,
           },
         };
       }
@@ -636,7 +716,7 @@ const hrReducer = (state = initialState, action) =>
           deptDialog: {
             props: { open: true },
             type: 'new',
-            data: null
+            data: null,
           },
         };
       }
@@ -646,7 +726,7 @@ const hrReducer = (state = initialState, action) =>
           deptDialog: {
             props: { open: false },
             type: 'new',
-            data: null
+            data: null,
           },
         };
       }
@@ -656,7 +736,7 @@ const hrReducer = (state = initialState, action) =>
           branchDialog: {
             type: 'new',
             props: { open: true },
-            data: null
+            data: null,
           },
         };
       }
@@ -666,7 +746,7 @@ const hrReducer = (state = initialState, action) =>
           branchDialog: {
             type: 'new',
             props: { open: false },
-            data: null
+            data: null,
           },
         };
       }
@@ -676,7 +756,7 @@ const hrReducer = (state = initialState, action) =>
           positionDialog: {
             type: 'new',
             props: { open: true },
-            data: null
+            data: null,
           },
         };
       }
@@ -686,7 +766,47 @@ const hrReducer = (state = initialState, action) =>
           positionDialog: {
             type: 'new',
             props: { open: false },
-            data: null
+            data: null,
+          },
+        };
+      }
+      case Constants.OPEN_NEW_POSITION_DIALOG: {
+        return {
+          ...state,
+          positionDialog: {
+            type: 'new',
+            props: { open: true },
+            data: null,
+          },
+        };
+      }
+      case Constants.CLOSE_NEW_POSITION_DIALOG: {
+        return {
+          ...state,
+          positionDialog: {
+            type: 'new',
+            props: { open: false },
+            data: null,
+          },
+        };
+      }
+      case Constants.OPEN_EDIT_POSITION_DIALOG: {
+        return {
+          ...state,
+          positionDialog: {
+            type: 'edit',
+            props: { open: true },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_EDIT_POSITION_DIALOG: {
+        return {
+          ...state,
+          positionDialog: {
+            type: 'edit',
+            props: { open: false },
+            data: null,
           },
         };
       }
@@ -696,7 +816,7 @@ const hrReducer = (state = initialState, action) =>
           payrollDialog: {
             type: 'new',
             props: { open: true },
-            data: null
+            data: null,
           },
         };
       }
@@ -706,7 +826,7 @@ const hrReducer = (state = initialState, action) =>
           payrollDialog: {
             type: 'new',
             props: { open: false },
-            data: null
+            data: null,
           },
         };
       }
@@ -716,7 +836,7 @@ const hrReducer = (state = initialState, action) =>
           announcementDialog: {
             props: { open: true },
             type: 'new',
-            data: null
+            data: null,
           },
         };
       }
@@ -726,7 +846,7 @@ const hrReducer = (state = initialState, action) =>
           announcementDialog: {
             props: { open: false },
             type: 'new',
-            data: null
+            data: null,
           },
         };
       }
@@ -736,7 +856,7 @@ const hrReducer = (state = initialState, action) =>
           announcementDialog: {
             type: 'edit',
             props: { open: true },
-            data: action.payload
+            data: action.payload,
           },
         };
       }
@@ -746,7 +866,7 @@ const hrReducer = (state = initialState, action) =>
           announcementDialog: {
             type: 'edit',
             props: { open: false },
-            data: null
+            data: null,
           },
         };
       }
@@ -756,7 +876,7 @@ const hrReducer = (state = initialState, action) =>
           confirmAnnouncementDialog: {
             type: 'new',
             props: { open: true },
-            data: action.payload
+            data: action.payload,
           },
         };
       }
@@ -766,7 +886,7 @@ const hrReducer = (state = initialState, action) =>
           confirmAnnouncementDialog: {
             type: 'new',
             props: { open: false },
-            data: null
+            data: null,
           },
         };
       }
@@ -776,7 +896,7 @@ const hrReducer = (state = initialState, action) =>
           announcementViewDialog: {
             type: 'new',
             props: { open: true },
-            data: action.payload
+            data: action.payload,
           },
         };
       }
@@ -786,7 +906,7 @@ const hrReducer = (state = initialState, action) =>
           announcementViewDialog: {
             type: 'new',
             props: { open: false },
-            data: null
+            data: null,
           },
         };
       }
@@ -796,32 +916,46 @@ const hrReducer = (state = initialState, action) =>
           workExperienceDialog: {
             ...state.workExperienceDialog,
             props: { open: true },
-            data: action.payload
+            data: action.payload,
           },
         };
       }
       case Constants.CLOSE_WORK_EXPERIENCE_DIALOG: {
         return {
           ...state,
-          workExperienceDialog: { ...state.workExperienceDialog, props: { open: false } },
+          workExperienceDialog: {
+            ...state.workExperienceDialog,
+            props: { open: false },
+          },
         };
       }
       case Constants.OPEN_EDUCATION_BACKGROUND_DIALOG: {
         return {
           ...state,
-          educationBackgroundDialog: { ...state.educationBackgroundDialog, props: { open: true }, data: action.payload },
+          educationBackgroundDialog: {
+            ...state.educationBackgroundDialog,
+            props: { open: true },
+            data: action.payload,
+          },
         };
       }
       case Constants.CLOSE_EDUCATION_BACKGROUND_DIALOG: {
         return {
           ...state,
-          educationBackgroundDialog: { ...state.educationBackgroundDialog, props: { open: false } },
+          educationBackgroundDialog: {
+            ...state.educationBackgroundDialog,
+            props: { open: false },
+          },
         };
       }
       case Constants.OPEN_NEW_APPLICANT_DIALOG: {
         return {
           ...state,
-          applicantDialog: { ...state.applicantDialog, props: { open: true }, data: action.payload },
+          applicantDialog: {
+            ...state.applicantDialog,
+            props: { open: true },
+            data: action.payload,
+          },
         };
       }
       case Constants.CLOSE_NEW_APPLICANT_DIALOG: {
@@ -833,13 +967,20 @@ const hrReducer = (state = initialState, action) =>
       case Constants.OPEN_NEW_EMPLOYEE_TYPE_DIALOG: {
         return {
           ...state,
-          employeeTypeDialog: { ...state.employeeTypeDialog, props: { open: true }, type: action.payload },
+          employeeTypeDialog: {
+            ...state.employeeTypeDialog,
+            props: { open: true },
+            type: action.payload,
+          },
         };
       }
       case Constants.CLOSE_NEW_EMPLOYEE_TYPE_DIALOG: {
         return {
           ...state,
-          employeeTypeDialog: { ...state.employeeTypeDialog, props: { open: false } },
+          employeeTypeDialog: {
+            ...state.employeeTypeDialog,
+            props: { open: false },
+          },
         };
       }
     }

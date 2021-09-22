@@ -143,7 +143,12 @@ export const GetEmployeeByRoleApi = `${BaseUrl}/hrserv/api/v1/employees/by_role`
 export const GetEmployeeTypes = `${BaseUrl}/authserv/api/v1/generic_entities/for_organinisation`;
 export const CreateEmployeeType = `${BaseUrl}/authserv/api/v1/generic_entity/add`;
 export const CreateEmployee = `${BaseUrl}/authserv/api/v1/user`;
+export const DeleteEmployee = `${BaseUrl}/authserv/api/v1/users/org-admin`;
 export const GetEmployeesByOrgIdApi = `${BaseUrl}/authserv/api/v1/users/get_by_orgid`;
+export const GetPagedEmployeesByOrgIdApi = `${BaseUrl}/authserv/api/v1/users/get_by_orgid_paginated`;
+
+// User lite
+export const CreateUserLite = `${BaseUrl}/authserv/api/v1/user-lite`;
 
 export const GetEnrollmentTypes = `${BaseUrl}/authserv/api/v1/generic_entities/for_organinisation`;
 export const GetLocations = `${BaseUrl}/authserv/api/v1/generic_entities/for_organinisation`;

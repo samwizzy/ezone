@@ -63,7 +63,9 @@ const EmployeesApp = props => {
     match,
     openNewEmployeeDialog,
     getEmployee,
+    getPagedEmployees,
     employees,
+    pagedEmployees,
   } = props;
 
   const handleRoute = id => {
@@ -71,11 +73,25 @@ const EmployeesApp = props => {
     history.push(`${match.url}/${id}`);
   };
 
+  const handlePageChange = (page, limit) => {
+    console.log(page, 'page');
+    getPagedEmployees({ limit, offset: page });
+  };
+
   console.log(employees, 'employees');
+  console.log(pagedEmployees, 'pagedEmployees');
 
   const columns = [
     {
       name: 'uuId',
+      label: 'Id',
+      options: {
+        display: 'excluded',
+        filter: true,
+      },
+    },
+    {
+      name: 'fullName',
       label: 'Id',
       options: {
         display: 'excluded',
@@ -165,8 +181,17 @@ const EmployeesApp = props => {
     print: false,
     viewColumns: false,
     customToolbar: () => <AddEmployee openDialog={openNewEmployeeDialog} />,
-    rowsPerPage: 10,
-    rowsPerPageOptions: [10, 25, 50, 100],
+    rowsPerPage: pagedEmployees.limit,
+    rowsPerPageOptions: [10, 15, 20], // 25, 50, 100
+    page: pagedEmployees.page,
+    count: pagedEmployees.total,
+    serverSide: true,
+    onTableChange: (action, tableState) => {
+      if (action === 'changePage') {
+        console.log('Go to page', tableState.page);
+        handlePageChange(tableState.page, tableState.rowsPerPage);
+      }
+    },
     onRowClick: (rowData, rowState) => {
       handleRoute(rowData[0]);
     },
@@ -178,7 +203,7 @@ const EmployeesApp = props => {
       <MUIDataTable
         className={classes.datatable}
         title="Employees"
-        data={employees && employees}
+        data={pagedEmployees.entities}
         columns={columns}
         options={options}
       />
@@ -194,6 +219,7 @@ EmployeesApp.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   employees: Selectors.makeSelectEmployees(),
+  pagedEmployees: Selectors.makeSelectPagedEmployees(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -202,6 +228,7 @@ function mapDispatchToProps(dispatch) {
     openEditEmployeeDialog: () => dispatch(Actions.openEditEmployeeDialog()),
     getEmployees: () => dispatch(Actions.getEmployees()),
     getEmployee: uuid => dispatch(Actions.getEmployee(uuid)),
+    getPagedEmployees: data => dispatch(Actions.getPagedEmployees(data)),
   };
 }
 

@@ -1,7 +1,3 @@
-/**
- * Homepage selectors
- */
-
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
@@ -77,6 +73,12 @@ const makeSelectEmployees = () =>
   createSelector(
     selectHR,
     hrState => hrState.employees,
+  );
+
+const makeSelectPagedEmployees = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.pagedEmployees,
   );
 
 const makeSelectBranchEmployees = () =>
@@ -167,6 +169,18 @@ const makeSelectEmpDialog = () =>
   createSelector(
     selectHR,
     hrState => hrState.empDialog,
+  );
+
+const makeSelectUpdateEmpDialog = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.updateEmpDialog,
+  );
+
+const makeSelectConfirmDeleteDialog = () =>
+  createSelector(
+    selectHR,
+    hrState => hrState.confirmDeleteDialog,
   );
 
 const makeSelectDeptDialog = () =>
@@ -283,7 +297,6 @@ const makeSelectCreateDepartmentSuccess = () =>
     hrState => hrState.getCreateDepartment,
   );
 
-
 export default makeSelectHRPage;
 export {
   selectHR,
@@ -297,6 +310,7 @@ export {
   makeSelectCreateJobOpeningSuccess,
   makeSelectLoading,
   makeSelectEmployees,
+  makeSelectPagedEmployees,
   makeSelectBranchEmployees,
   makeSelectDeptEmployees,
   makeSelectPartyGroups,
@@ -317,6 +331,8 @@ export {
   makeSelectPositions,
   makeSelectEmployee,
   makeSelectEmpDialog,
+  makeSelectUpdateEmpDialog,
+  makeSelectConfirmDeleteDialog,
   makeSelectDeptDialog,
   makeSelectBranchDialog,
   makeSelectPositionDialog,

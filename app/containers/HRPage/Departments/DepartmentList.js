@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   },
   datatable: {
     '& tr:hover': {
-      cursor: 'pointer',
+      cursor: 'auto',
     },
     '& thead': {
       '& th': {
@@ -96,7 +96,7 @@ const DepartmentsApp = props => {
       options: {
         filter: true,
         sort: true,
-        customBodyRender: employees => employees.length,
+        customBodyRender: employees => employees && employees.length,
       },
     },
     {
@@ -105,7 +105,7 @@ const DepartmentsApp = props => {
       options: {
         filter: true,
         sort: true,
-        customBodyRender: value => moment(value).format('lll'),
+        customBodyRender: value => (value ? moment(value).format('lll') : ''),
       },
     },
   ];

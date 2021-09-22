@@ -39,10 +39,22 @@ const makeSelectGetAllEmployees = () =>
     subState => subState.getAllEmployees,
   );
 
+const makeSelectPagedEmployees = () =>
+  createSelector(
+    selectUsersPageDomain,
+    subState => subState.pagedEmployees,
+  );
+
 const makeSelectEmployeeDialog = () =>
   createSelector(
     selectUsersPageDomain,
     subState => subState.employeeDialog,
+  );
+
+const makeSelectConfirmDeleteDialog = () =>
+  createSelector(
+    selectUsersPageDomain,
+    subState => subState.confirmDeleteDialog,
   );
 
 const makeSelectCreateNewEmployeeData = () =>
@@ -115,9 +127,11 @@ export default makeSelectUsersPage;
 export {
   selectUsersPageDomain,
   makeSelectGetAllEmployees,
+  makeSelectPagedEmployees,
   makeSelectLoading,
   makeSelectError,
   makeSelectEmployeeDialog,
+  makeSelectConfirmDeleteDialog,
   makeSelectCreateNewEmployeeData,
   makeSelectSignatureDialog,
   makeSelectUpdateUserProfileData,

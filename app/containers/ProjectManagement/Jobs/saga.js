@@ -53,7 +53,7 @@ export function* getCustomers() {
 export function* getEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}?orgId=${currentUser &&
+  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}/${currentUser &&
     currentUser.organisation.orgId}`;
 
   const header = new Headers({

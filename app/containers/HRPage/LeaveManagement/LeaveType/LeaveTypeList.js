@@ -100,7 +100,7 @@ const LeaveTypeList = props => {
     },
     {
       name: 'leaveAllowancePercent',
-      label: 'Leave allowance ( % )',
+      label: 'Leave allowance(%)',
       options: {
         filter: true,
         sort: true,
@@ -112,7 +112,7 @@ const LeaveTypeList = props => {
       options: {
         filter: true,
         sort: true,
-        customBodyRender: date => (date ? moment(date).format('ll') : ''),
+        customBodyRender: date => (date ? moment(date).format('Do MMM') : ''),
       },
     },
     {
@@ -121,12 +121,12 @@ const LeaveTypeList = props => {
       options: {
         filter: true,
         sort: true,
-        customBodyRender: date => (date ? moment(date).format('ll') : ''),
+        customBodyRender: date => (date ? moment(date).format('Do MMM') : ''),
       },
     },
     {
       name: 'dateAdded',
-      label: 'Date applied',
+      label: 'Date created',
       options: {
         filter: true,
         sort: true,

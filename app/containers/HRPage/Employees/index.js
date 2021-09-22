@@ -11,6 +11,7 @@ import ModuleLayout from './ModuleLayout';
 import EmployeeList from './EmployeeList';
 import EmployeeDetails from './employee';
 import AddEmployeeDialog from './components/AddEmployeeDialog';
+import UpdateEmployeeDialog from './EmployeeDialog';
 import WorkExperienceDialog from './components/WorkExperienceDialog';
 import EducationBackgroundDialog from './components/EducationBackgroundDialog';
 
@@ -31,6 +32,7 @@ export function EmployeePage(props) {
       </ModuleLayout>
 
       <AddEmployeeDialog />
+      <UpdateEmployeeDialog />
       <WorkExperienceDialog />
       <EducationBackgroundDialog />
     </React.Fragment>

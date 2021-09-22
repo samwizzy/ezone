@@ -94,7 +94,7 @@ export const PersonalForm = props => {
               <MenuItem value="">Select gender</MenuItem>
 
               {['Male', 'Female'].map(gender => (
-                <MenuItem key={gender} value={gender}>
+                <MenuItem key={gender} value={gender.toUpperCase()}>
                   {gender}
                 </MenuItem>
               ))}

@@ -4,6 +4,12 @@ import * as Constants from './constants';
 export const initialState = {
   updateUserProfileData: false,
   getAllEmployees: [],
+  pagedEmployees: {
+    page: 0,
+    limit: 0,
+    total: 0,
+    entities: [],
+  },
   createNewEmployeeData: false,
   loading: false,
   error: false,
@@ -16,6 +22,12 @@ export const initialState = {
   payTypes: [],
   employeeDialog: {
     type: 'new',
+    props: {
+      open: false,
+    },
+    data: null,
+  },
+  confirmDeleteDialog: {
     props: {
       open: false,
     },
@@ -63,6 +75,26 @@ const usersPageReducer = (state = initialState, action) =>
           error: action.payload,
         };
       }
+      case Constants.GET_PAGED_EMPLOYEES: {
+        return {
+          ...state,
+          loading: true,
+        };
+      }
+      case Constants.GET_PAGED_EMPLOYEES_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          pagedEmployees: action.payload,
+        };
+      }
+      case Constants.GET_PAGED_EMPLOYEES_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
       case Constants.GET_BRANCHES_SUCCESS: {
         return {
           ...state,
@@ -98,25 +130,25 @@ const usersPageReducer = (state = initialState, action) =>
       case Constants.GET_EMPLOYEETYPES_SUCCESS: {
         return {
           ...state,
-          employeeTypes: action.payload
+          employeeTypes: action.payload,
         };
       }
       case Constants.GET_SOURCE_OF_HIRE_SUCCESS: {
         return {
           ...state,
-          sourcesOfHire: action.payload
+          sourcesOfHire: action.payload,
         };
       }
       case Constants.GET_PAY_RATES_SUCCESS: {
         return {
           ...state,
-          payRates: action.payload
+          payRates: action.payload,
         };
       }
       case Constants.GET_PAY_TYPES_SUCCESS: {
         return {
           ...state,
-          payTypes: action.payload
+          payTypes: action.payload,
         };
       }
       case Constants.OPEN_NEW_EMPLOYEE_DIALOG: {
@@ -179,6 +211,24 @@ const usersPageReducer = (state = initialState, action) =>
           },
         };
       }
+      case Constants.OPEN_CONFIRM_DELETE_EMPLOYEE_DIALOG: {
+        return {
+          ...state,
+          confirmDeleteDialog: {
+            props: { open: true },
+            data: action.payload,
+          },
+        };
+      }
+      case Constants.CLOSE_CONFIRM_DELETE_EMPLOYEE_DIALOG: {
+        return {
+          ...state,
+          confirmDeleteDialog: {
+            props: { open: false },
+            data: null,
+          },
+        };
+      }
       case Constants.CLOSE_VIEW_EMPLOYEE_DIALOG: {
         return {
           ...state,
@@ -207,6 +257,27 @@ const usersPageReducer = (state = initialState, action) =>
         };
       }
       case Constants.CREATE_NEW_EMPLOYEE_ERROR: {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      }
+      case Constants.UPDATE_EMPLOYEE: {
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+      }
+      case Constants.UPDATE_EMPLOYEE_SUCCESS: {
+        return {
+          ...state,
+          loading: false,
+          error: false,
+        };
+      }
+      case Constants.UPDATE_EMPLOYEE_ERROR: {
         return {
           ...state,
           loading: false,

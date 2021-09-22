@@ -53,13 +53,13 @@ const useStyles = makeStyles(theme => ({
 
 const Widget4 = props => {
   const classes = useStyles();
-  const { roles } = props;
+  const { positions } = props;
 
-  if (!roles) {
+  if (!positions) {
     return '';
   }
 
-  console.log(roles, 'roles');
+  console.log(positions, 'positions');
 
   return (
     <div>
@@ -68,13 +68,13 @@ const Widget4 = props => {
           <Grid container alignItems="center" className={classes.grid}>
             <Grid item xs={3}>
               <Typography variant="h3" color="initial">
-                {roles && roles.length}
+                {positions && positions.length}
               </Typography>
             </Grid>
             <Grid item xs={9}>
               <ul className={classes.childTable}>
-                {roles.length > 0 &&
-                  roles.slice(0, 4).map((role, i) => (
+                {positions.length > 0 &&
+                  positions.slice(0, 4).map((role, i) => (
                     <li key={i}>
                       <Typography variant="subtitle1">{role.name}</Typography>
                     </li>
@@ -85,8 +85,8 @@ const Widget4 = props => {
         </CardContent>
 
         <CardActions>
-          <Button component={Link} to="/hr/roles">
-            View all roles
+          <Button component={Link} to="/hr/positions">
+            View all positions
           </Button>
         </CardActions>
       </Card>
@@ -102,7 +102,7 @@ const mapStateToProps = createStructuredSelector({
   user: AppSelectors.makeSelectCurrentUser(),
   departments: Selectors.makeSelectDepartmentsByOrgIdApi(),
   branches: Selectors.makeSelectBranches(),
-  roles: Selectors.makeSelectRoles(),
+  positions: Selectors.makeSelectPositions(),
 });
 
 function mapDispatchToProps(dispatch) {

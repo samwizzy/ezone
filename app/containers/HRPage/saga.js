@@ -15,7 +15,7 @@ function errorHandler(promise) {
 export function* getEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}?orgId=${user &&
+  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}/${user &&
     user.organisation.orgId}`; // ?start=0&limit=10
 
   try {
@@ -31,6 +31,28 @@ export function* getEmployees() {
     yield put(Actions.getEmployeesSuccess(response));
   } catch (err) {
     // yield put(Actions.getEmployeesError(err));
+  }
+}
+
+export function* getPagedEmployees({ payload: { offset = 0, limit = 10 } }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetPagedEmployeesByOrgIdApi}/${user &&
+    user.organisation.orgId}?limit=${limit}&offset=${offset}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+    console.log(response, 'PAGED employees response');
+
+    yield put(Actions.getPagedEmployeesSuccess(response));
+  } catch (err) {
+    yield put(Actions.getPagedEmployeesError(err));
   }
 }
 
@@ -147,6 +169,8 @@ export function* createEmployee({ type, payload }) {
     yield put({ type: Constants.GET_EMPLOYEES });
     yield put({ type: Constants.CLOSE_NEW_EMPLOYEE_DIALOG });
   } catch (err) {
+    console.dir(err);
+    console.log(err.response, 'err response employee create');
     if (err.message) {
       // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
       yield put(Actions.createEmployeeError(err.message));
@@ -200,6 +224,48 @@ export function* updateEmployee({ payload }) {
         }),
       );
     }
+  } catch (err) {
+    if (err.message) {
+      // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
+    } else {
+      const error = yield call(errorHandler, err.response.json());
+      if (error.status === 500 || error.status === 400) {
+        yield put(
+          AppActions.openSnackBar({ message: error.message, status: 'error' }),
+        );
+        yield put(Actions.updateEmployeeError(error.message));
+      }
+    }
+  }
+}
+
+export function* deleteEmployee({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+
+  const requestURL = `${Endpoints.DeleteEmployee}/${user &&
+    user.organisation.orgId}/${payload}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'DELETE',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    console.log(response, 'response delete employee');
+    yield put(
+      AppActions.openSnackBar({
+        message: 'Employee deleted successfully',
+        status: 'success',
+      }),
+    );
+    yield put(Actions.deleteEmployeeSuccess(response));
+    yield put(Actions.closeConfirmDeleteEmployeeDialog());
+    yield put(Actions.getEmployees());
+    yield put(Actions.getPagedEmployees());
   } catch (err) {
     if (err.message) {
       // yield put(AppActions.openSnackBar({ message: err.message, status: 'error' }));
@@ -278,10 +344,42 @@ export function* createPosition({ type, payload }) {
     });
 
     yield put(
-      AppActions.openSnackBar({ message: 'Role created', status: 'success' }),
+      AppActions.openSnackBar({
+        message: 'Position created successfully',
+        status: 'success',
+      }),
     );
-    yield put({ type: Constants.GET_ROLES });
-    yield put({ type: Constants.CLOSE_NEW_ROLE_DIALOG });
+    yield put({ type: Constants.GET_POSITIONS });
+    yield put({ type: Constants.CLOSE_NEW_POSITION_DIALOG });
+  } catch (err) {
+    console.log(err, 'err message');
+  }
+}
+
+export function* updatePosition({ type, payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.UpdatePositionApi}`;
+  payload.orgId = user && user.organisation.orgId;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    yield put(
+      AppActions.openSnackBar({
+        message: 'Position updated successfully',
+        status: 'success',
+      }),
+    );
+    yield put({ type: Constants.GET_POSITIONS });
+    yield put({ type: Constants.CLOSE_EDIT_POSITION_DIALOG });
   } catch (err) {
     console.log(err, 'err message');
   }
@@ -1189,6 +1287,7 @@ export function* createJobOpening({ type, payload }) {
  */
 export default function* HRRootSaga() {
   yield takeLatest(Constants.GET_EMPLOYEES, getEmployees);
+  yield takeLatest(Constants.GET_PAGED_EMPLOYEES, getPagedEmployees);
   yield takeLatest(Constants.GET_EMPLOYEE, getEmployeeByUUID);
   yield takeLatest(Constants.GET_DEPARTMENTS, getDepartments);
   yield takeLatest(Constants.CREATE_DEPARTMENT, createDepartment);
@@ -1222,10 +1321,13 @@ export default function* HRRootSaga() {
   yield takeLatest(Constants.GET_ATTENDANCES, getAttendances);
   yield takeLatest(Constants.GET_ROLES, getRoles);
   yield takeLatest(Constants.GET_POSITIONS, getPositions);
+  yield takeLatest(Constants.CREATE_POSITION, createPosition);
+  yield takeLatest(Constants.UPDATE_POSITION, updatePosition);
   yield takeLatest(Constants.GET_ANNOUNCEMENTS, getAnnouncements);
   yield takeLatest(Constants.GET_ANNOUNCEMENT_BY_ID, getAnnouncementById);
   yield takeLatest(Constants.CREATE_EMPLOYEE, createEmployee);
   yield takeLatest(Constants.UPDATE_EMPLOYEE, updateEmployee);
+  yield takeLatest(Constants.DELETE_EMPLOYEE, deleteEmployee);
   yield takeLatest(Constants.GET_BRANCHES, getBranches);
   yield takeLatest(Constants.CREATE_BRANCH, createBranch);
   yield takeLatest(Constants.CREATE_ROLE, createRole);

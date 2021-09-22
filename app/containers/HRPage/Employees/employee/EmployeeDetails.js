@@ -14,10 +14,6 @@ import {
   ListItemText,
   ListItemAvatar,
   ListItemSecondaryAction,
-  Table,
-  TableRow,
-  TableCell,
-  TableBody,
   Grid,
   Paper,
   Typography,
@@ -136,8 +132,8 @@ const EmployeeDetails = props => {
     openEditEmployeeDialog,
     openWorkExperienceDialog,
     openEducationBackgroundDialog,
-    getEmployee,
     updateEmployee,
+    openConfirmDeleteEmployeeDialog,
     employees,
     employee,
   } = props;
@@ -150,9 +146,15 @@ const EmployeeDetails = props => {
 
   const handleImageChange = ({ target }) => {
     const { name, files } = target;
-    console.log(name, 'name');
     const result = EzoneUtils.toBase64(files[0]);
-    result.then(data => updateEmployee({ ...emp, [name]: data }));
+    result.then(data =>
+      updateEmployee({
+        ...emp,
+        [name]: data,
+        imageChanged: true,
+        signatureChanged: false,
+      }),
+    );
   };
 
   console.log(employee, 'get details gotten employee');
@@ -174,7 +176,9 @@ const EmployeeDetails = props => {
               <IconButton onClick={() => {}}>
                 <RefreshSharp />
               </IconButton>
-              <IconButton onClick={() => {}}>
+              <IconButton
+                onClick={() => openConfirmDeleteEmployeeDialog(emp.id)}
+              >
                 <DeleteOutlined />
               </IconButton>
               <IconButton onClick={() => openEditEmployeeDialog(emp)}>
@@ -183,6 +187,7 @@ const EmployeeDetails = props => {
             </Toolbar>
           </AppBar>
         </Grid>
+
         <Grid item md={12}>
           <Paper square className={classes.header}>
             <Grid container alignItems="center">
@@ -208,7 +213,7 @@ const EmployeeDetails = props => {
                         <label htmlFor="contained-button-file">
                           <Avatar
                             alt={emp.lastName}
-                            src={`data:image/jpg;base64,${emp.employeeImage}`}
+                            src={emp.employeeImage}
                             className={classes.avatar}
                           />
                         </label>
@@ -225,7 +230,7 @@ const EmployeeDetails = props => {
                           {emp.firstName + ' ' + emp.lastName}
                         </Typography>
                       }
-                      secondary={'IT Project Manager' /*'designation'*/}
+                      secondary={emp.position ? emp.position.name : '—'}
                     />
                   </ListItem>
                 </List>
@@ -234,355 +239,416 @@ const EmployeeDetails = props => {
             </Grid>
           </Paper>
         </Grid>
-        <Grid item xs={12}>
-          <Paper square className={classes.paper}>
-            <Toolbar className={classes.toolbar} variant="dense">
-              <Typography variant="h6" color="inherit">
+
+        <Grid item md={12}>
+          <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div className="px-4 py-2 sm:px-6">
+              <h3 className="text-lg leading-6 mb-2 font-bold text-gray-500 uppercase">
+                Employee Information
+              </h3>
+              <hr className="h-0 w-full border-0 border-b border-gray-200 inline-block" />
+            </div>
+
+            <div className="px-4 pb-3 sm:px-6">
+              <h3 className="text-lg leading-6 mb-2 font-bold text-gray-700 uppercase">
                 Basic Information
-              </Typography>
-            </Toolbar>
-            <Table className={classes.table}>
-              <TableBody>
-                <TableRow>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-600">Firstname</span>
-                  </TableCell>
-                  <TableCell>{emp.firstName}</TableCell>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">Lastname</span>
-                  </TableCell>
-                  <TableCell>{emp.lastName}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">Email</span>
-                  </TableCell>
-                  <TableCell>{emp.emailAddress}</TableCell>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">
-                      Phone number
-                    </span>
-                  </TableCell>
-                  <TableCell>{emp.phoneNumber}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">Nickname</span>
-                  </TableCell>
-                  <TableCell>{emp.nickName && emp.nickName}</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </Paper>
-        </Grid>
-        <Grid item xs={12}>
-          <Paper square className={classes.paper}>
-            <Toolbar className={classes.toolbar} variant="dense">
-              <Typography variant="h6" color="inherit">
+              </h3>
+            </div>
+            <div className="border-t border-gray-200">
+              <dl>
+                <div className="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                    First name
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {emp.firstName}
+                  </dd>
+                </div>
+                <div className="bg-white px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                    Last name
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {emp.lastName}
+                  </dd>
+                </div>
+                <div className="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                    Email address
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {emp.emailAddress}
+                  </dd>
+                </div>
+                <div className="bg-white px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                    Phone number
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {emp.phoneNumber}
+                  </dd>
+                </div>
+                <div className="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                    Nick name
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {emp.nickName}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+
+            <div className="px-4 py-2 sm:px-6">
+              <h3 className="text-lg leading-6 mb-2 font-bold text-gray-700 uppercase">
                 Work Information
-              </Typography>
-            </Toolbar>
-            <Table className={classes.table}>
-              <TableBody>
-                <TableRow>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">Employee ID</span>
-                  </TableCell>
-                  <TableCell>{emp.employeeId && emp.employeeId}</TableCell>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">Date hired</span>
-                  </TableCell>
-                  <TableCell>
-                    {emp.employmentDate && emp.employmentDate}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">Branch</span>
-                  </TableCell>
-                  <TableCell>{emp.branch && emp.branch.name}</TableCell>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">
-                      Employment status
+              </h3>
+            </div>
+
+            <div className="border-t border-gray-200">
+              <div className="sm:grid grid-cols-12 gap-8">
+                <ul className="pl-0 md:col-span-6 col-span-12">
+                  <li className="bg-white px-4 py-2 sm:flex flex-col sm:px-6">
+                    <span className="text-sm font-medium text-gray-500">
+                      Employee ID
                     </span>
-                  </TableCell>
-                  <TableCell>{emp.status && emp.status}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">Department</span>
-                  </TableCell>
-                  <TableCell>{emp.department && emp.department.name}</TableCell>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">
-                      Employee type
+                    <span className="text-sm text-gray-900 sm:mt-0">
+                      {emp.employeeId}
                     </span>
-                  </TableCell>
-                  <TableCell>
-                    {emp.employeeType && emp.employeeType.name}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">
+                  </li>
+                  <li className="bg-white px-4 py-2 sm:flex flex-col sm:px-6">
+                    <span className="text-sm font-medium text-gray-500">
+                      Branch
+                    </span>
+                    <span className="text-sm text-gray-900 sm:mt-0">
+                      {emp.branch ? emp.branch.name : '—'}
+                    </span>
+                  </li>
+                  <li className="bg-white px-4 py-2 sm:flex flex-col sm:px-6">
+                    <span className="text-sm font-medium text-gray-500">
+                      Department
+                    </span>
+                    <span className="text-sm text-gray-900 sm:mt-0">
+                      {emp.department ? emp.department.name : '—'}
+                    </span>
+                  </li>
+                  <li className="bg-white px-4 py-2 sm:flex flex-col sm:px-6">
+                    <span className="text-sm font-medium text-gray-500">
                       Reporting to
                     </span>
-                  </TableCell>
-                  <TableCell>
-                    {emp.reportingTo && emp.reportingTo.name}
-                  </TableCell>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">Job role</span>
-                  </TableCell>
-                  <TableCell>{emp.role && emp.role.name}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">Job level</span>
-                  </TableCell>
-                  <TableCell>Beginner</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">
+                    <span className="text-sm text-gray-900 sm:mt-0">
+                      {emp.reportingTo
+                        ? emp.reportingTo.firstName +
+                          ' ' +
+                          emp.reportingTo.lastName
+                        : '—'}
+                    </span>
+                  </li>
+                  <li className="bg-white px-4 py-2 sm:flex flex-col sm:px-6">
+                    <span className="text-sm font-medium text-gray-500">
+                      Job level
+                    </span>
+                    <span className="text-sm text-gray-900 sm:mt-0">—</span>
+                  </li>
+                  <li className="bg-white px-4 py-2 sm:flex flex-col sm:px-6">
+                    <span className="text-sm font-medium text-gray-500">
                       Job description
                     </span>
-                  </TableCell>
-                  <TableCell>{emp.jobDesc && emp.jobDesc}</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </Paper>
-        </Grid>
-        <Grid item xs={12}>
-          <Paper square className={classes.paper}>
-            <Toolbar className={classes.toolbar} variant="dense">
-              <Typography variant="h6" color="inherit">
+                    <span className="text-sm text-gray-900 sm:mt-0">
+                      {emp.jobDesc || '—'}
+                    </span>
+                  </li>
+                </ul>
+                <ul className="pl-0 md:col-span-6 col-span-12">
+                  <li className="bg-white px-4 py-2 sm:flex flex-col sm:px-6">
+                    <span className="text-sm font-medium text-gray-500">
+                      Date hired
+                    </span>
+                    <span className="text-sm text-gray-900 sm:mt-0">
+                      {emp.employmentDate
+                        ? moment(emp.employmentDate).format('ll')
+                        : '—'}
+                    </span>
+                  </li>
+                  <li className="bg-white px-4 py-2 sm:flex flex-col sm:px-6">
+                    <span className="text-sm font-medium text-gray-500">
+                      Employment status
+                    </span>
+                    <span className="text-sm text-gray-900 sm:mt-0">
+                      {emp.status || '—'}
+                    </span>
+                  </li>
+                  <li className="bg-white px-4 py-2 sm:flex flex-col sm:px-6">
+                    <span className="text-sm font-medium text-gray-500">
+                      Employee type
+                    </span>
+                    <span className="text-sm text-gray-900 sm:mt-0">
+                      {emp.employeeType ? emp.employeeType.name : '—'}
+                    </span>
+                  </li>
+                  <li className="bg-white px-4 py-2 sm:flex flex-col sm:px-6">
+                    <span className="text-sm font-medium text-gray-500">
+                      Position
+                    </span>
+                    <span className="text-sm text-gray-900 sm:mt-0">
+                      {emp.position ? emp.position.name : '—'}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="px-4 py-2 sm:px-6">
+              <h3 className="text-lg leading-6 mb-2 font-bold text-gray-700 uppercase">
                 Personal Information
-              </Typography>
-            </Toolbar>
-            <Table className={classes.table}>
-              <TableBody>
-                <TableRow>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">
+              </h3>
+            </div>
+
+            <div className="border-t border-gray-200">
+              <div className="sm:grid grid-cols-12 gap-8">
+                <ul className="pl-0 md:col-span-6 col-span-12">
+                  <li className="bg-white px-4 py-2 sm:flex flex-col sm:px-6">
+                    <span className="text-sm font-medium text-gray-500">
                       Date of birth
                     </span>
-                  </TableCell>
-                  <TableCell>{emp.dob && emp.dob}</TableCell>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">
+                    <span className="text-sm text-gray-900 sm:mt-0">
+                      {emp.dob ? moment(emp.dob).format('Do, MMMM YYYY') : '—'}
+                    </span>
+                  </li>
+                  <li className="bg-white px-4 py-2 sm:flex flex-col sm:px-6">
+                    <span className="text-sm font-medium text-gray-500">
+                      Gender
+                    </span>
+                    <span className="text-sm text-gray-900 sm:mt-0">
+                      {emp.gender || '—'}
+                    </span>
+                  </li>
+                  <li className="bg-white px-4 py-2 sm:flex flex-col sm:px-6">
+                    <span className="text-sm font-medium text-gray-500">
+                      Website
+                    </span>
+                    <span className="text-sm text-gray-900 sm:mt-0">
+                      {emp.website || '—'}
+                    </span>
+                  </li>
+                  <li className="bg-white px-4 py-2 sm:flex flex-col sm:px-6">
+                    <span className="text-sm font-medium text-gray-500">
+                      Country
+                    </span>
+                    <span className="text-sm text-gray-900 sm:mt-0">
+                      {emp.country || '—'}
+                    </span>
+                  </li>
+                  <li className="bg-white px-4 py-2 sm:flex flex-col sm:px-6">
+                    <span className="text-sm font-medium text-gray-500">
+                      Postal code
+                    </span>
+                    <span className="text-sm text-gray-900 sm:mt-0">
+                      {emp.organisation ? emp.organisation.postalCode : '—'}
+                    </span>
+                  </li>
+                  <li className="bg-white px-4 py-2 sm:flex flex-col sm:px-6">
+                    <span className="text-sm font-medium text-gray-500">
+                      About Me
+                    </span>
+                    <span className="text-sm text-gray-900 sm:mt-0">
+                      {emp.about || '—'}
+                    </span>
+                  </li>
+                </ul>
+                <ul className="pl-0 md:col-span-6 col-span-12">
+                  <li className="bg-white px-4 py-2 sm:flex flex-col sm:px-6">
+                    <span className="text-sm font-medium text-gray-500">
                       Marital status
                     </span>
-                  </TableCell>
-                  <TableCell>
-                    {emp.maritalStatus && emp.maritalStatus}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">Gender</span>
-                  </TableCell>
-                  <TableCell>{emp.gender && emp.gender}</TableCell>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">
+                    <span className="text-sm text-gray-900 sm:mt-0">
+                      {emp.maritalStatus || '—'}
+                    </span>
+                  </li>
+                  <li className="bg-white px-4 py-2 sm:flex flex-col sm:px-6">
+                    <span className="text-sm font-medium text-gray-500">
                       State of origin
                     </span>
-                  </TableCell>
-                  <TableCell>{emp.state && emp.state}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">Website</span>
-                  </TableCell>
-                  <TableCell>{emp.website && emp.website}</TableCell>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">Other email</span>
-                  </TableCell>
-                  <TableCell>{emp.emailAddress && emp.emailAddress}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">Country</span>
-                  </TableCell>
-                  <TableCell>{emp.country && emp.country}</TableCell>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">City</span>
-                  </TableCell>
-                  <TableCell>{emp.city && emp.city}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">Postal code</span>
-                  </TableCell>
-                  <TableCell>
-                    {emp.organisation && emp.organisation.postalCode}
-                  </TableCell>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">Location 1</span>
-                  </TableCell>
-                  <TableCell>{emp.address && emp.address}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th">
-                    <span className="font-bold text-gray-500">Bio</span>
-                  </TableCell>
-                  <TableCell>{emp.about && emp.about}</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </Paper>
-        </Grid>
-        <Grid item xs={12}>
-          <Paper square className={classes.paper}>
-            <Toolbar className={classes.toolbar} variant="dense">
-              <Typography
-                variant="h6"
-                color="inherit"
-                className={classes.title}
-              >
+                    <span className="text-sm text-gray-900 sm:mt-0">
+                      {emp.state || '—'}
+                    </span>
+                  </li>
+                  <li className="bg-white px-4 py-2 sm:flex flex-col sm:px-6">
+                    <span className="text-sm font-medium text-gray-500">
+                      Other email
+                    </span>
+                    <span className="text-sm text-gray-900 sm:mt-0">
+                      {emp.emailAddress ? emp.emailAddress : '—'}
+                    </span>
+                  </li>
+                  <li className="bg-white px-4 py-2 sm:flex flex-col sm:px-6">
+                    <span className="text-sm font-medium text-gray-500">
+                      City
+                    </span>
+                    <span className="text-sm text-gray-900 sm:mt-0">
+                      {emp.city || '—'}
+                    </span>
+                  </li>
+                  <li className="bg-white px-4 py-2 sm:flex flex-col sm:px-6">
+                    <span className="text-sm font-medium text-gray-500">
+                      Address
+                    </span>
+                    <span className="text-sm text-gray-900 sm:mt-0">
+                      {emp.address || '—'}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="px-4 py-2 sm:px-6 sm:flex justify-between item-start">
+              <h3 className="text-lg leading-6 mb-2 font-bold text-gray-700 uppercase">
                 Work Experience
-              </Typography>
+              </h3>
               <Button
-                color="primary"
+                size="small"
                 startIcon={<AddIcon />}
                 onClick={() => openWorkExperienceDialog(emp)}
               >
                 Add
               </Button>
-            </Toolbar>
-            {emp.workExperience && emp.workExperience.length > 0 ? (
-              <List dense={false}>
-                {emp.workExperience.map((work, i) => (
-                  <ListItem key={i}>
-                    <ListItemText
-                      primary={
-                        <Typography variant="h6" component="legend">
-                          {work.jobTitle}
-                        </Typography>
-                      }
-                      secondary={
-                        <React.Fragment>
-                          <Typography
-                            variant="subtitle1"
-                            component="legend"
-                            className={classes.inline}
-                            color="textPrimary"
-                          >
-                            {work.companyName}
-                          </Typography>
-                          <Typography
-                            variant="caption"
-                            color="textSecondary"
-                            component="legend"
-                          >
-                            <em>{`${moment(work.fromDate).format(
-                              'MMM YYYY',
-                            )} - ${moment(work.toDate).format(
-                              'MMM YYYY',
-                            )}`}</em>
-                          </Typography>
-                          <Typography component="span">
-                            — Wish I could come, but I'm out of town this…
-                          </Typography>
-                        </React.Fragment>
-                      }
-                    />
-                    <ListItemSecondaryAction>
-                      <IconButton edge="end" aria-label="delete">
-                        <EditOutlined />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                ))}
-              </List>
-            ) : (
-              <Box p={2}>
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  align="center"
-                >
-                  You do not have any work experience yet
-                </Typography>
-              </Box>
-            )}
-          </Paper>
-        </Grid>
-        <Grid item xs={12}>
-          <Paper square className={classes.paper}>
-            <Toolbar className={classes.toolbar} variant="dense">
-              <Typography
-                variant="h6"
-                color="inherit"
-                className={classes.title}
-              >
+            </div>
+
+            <div className="border-t border-gray-200">
+              <div className="sm:grid grid-cols-12 gap-8">
+                {emp.workExperience && emp.workExperience.length > 0 ? (
+                  <List dense={false}>
+                    {emp.workExperience.map((work, i) => (
+                      <ListItem key={i}>
+                        <ListItemText
+                          primary={
+                            <Typography variant="h6" component="legend">
+                              {work.jobTitle}
+                            </Typography>
+                          }
+                          secondary={
+                            <React.Fragment>
+                              <Typography
+                                variant="subtitle1"
+                                component="legend"
+                                className={classes.inline}
+                                color="textPrimary"
+                              >
+                                {work.companyName}
+                              </Typography>
+                              <Typography
+                                variant="caption"
+                                color="textSecondary"
+                                component="legend"
+                              >
+                                <em>{`${moment(work.fromDate).format(
+                                  'MMM YYYY',
+                                )} - ${moment(work.toDate).format(
+                                  'MMM YYYY',
+                                )}`}</em>
+                              </Typography>
+                              <Typography component="span">
+                                — Wish I could come, but I'm out of town this…
+                              </Typography>
+                            </React.Fragment>
+                          }
+                        />
+                        <ListItemSecondaryAction>
+                          <IconButton edge="end" aria-label="delete">
+                            <EditOutlined />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    ))}
+                  </List>
+                ) : (
+                  <Box p={2} className="col-span-12">
+                    <Typography
+                      variant="body2"
+                      color="textSecondary"
+                      align="center"
+                    >
+                      You do not have any work experience yet
+                    </Typography>
+                  </Box>
+                )}
+              </div>
+            </div>
+
+            <div className="px-4 py-2 sm:px-6 sm:flex justify-between item-start">
+              <h3 className="text-lg leading-6 mb-2 font-bold text-gray-700 uppercase">
                 Educational Background
-              </Typography>
+              </h3>
               <Button
-                color="primary"
+                size="small"
                 startIcon={<AddIcon />}
                 onClick={() => openEducationBackgroundDialog(emp)}
               >
                 Add
               </Button>
-            </Toolbar>
-            {emp.education && emp.education.length > 0 ? (
-              <List dense={false}>
-                {emp.education.map((edu, i) => (
-                  <ListItem key={i}>
-                    <ListItemText
-                      primary={
-                        <Typography variant="h6" component="span">
-                          University of Lagos
-                        </Typography>
-                      }
-                      secondary={
-                        <React.Fragment>
-                          <Typography
-                            variant="subtitle1"
-                            className={classes.inline}
-                            color="textPrimary"
-                            component="legend"
-                          >
-                            {`${edu.degree} — ${edu.fieldOfStudy}`}
-                          </Typography>
-                          <Typography
-                            variant="caption"
-                            color="textSecondary"
-                            component="legend"
-                          >
-                            <em>{`Nov 2017 - ${moment(
-                              edu.dateOfCompletion,
-                            ).format('MMM YYYY')}`}</em>
-                          </Typography>
-                          <Typography component="span">
-                            — {edu.note}…
-                          </Typography>
-                        </React.Fragment>
-                      }
-                    />
-                    <ListItemSecondaryAction>
-                      <IconButton edge="end" aria-label="delete">
-                        <EditOutlined />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                ))}
-              </List>
-            ) : (
-              <Box p={2}>
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  align="center"
-                >
-                  You do not have any educational background yet
-                </Typography>
-              </Box>
-            )}
-          </Paper>
+            </div>
+
+            <div className="border-t border-gray-200">
+              <div className="sm:grid grid-cols-12 gap-8">
+                {emp.education && emp.education.length > 0 ? (
+                  <List dense={false}>
+                    {emp.education.map((edu, i) => (
+                      <ListItem key={i}>
+                        <ListItemText
+                          primary={
+                            <Typography variant="h6" component="span">
+                              University of Lagos
+                            </Typography>
+                          }
+                          secondary={
+                            <React.Fragment>
+                              <Typography
+                                variant="subtitle1"
+                                className={classes.inline}
+                                color="textPrimary"
+                                component="legend"
+                              >
+                                {`${edu.degree} — ${edu.fieldOfStudy}`}
+                              </Typography>
+                              <Typography
+                                variant="caption"
+                                color="textSecondary"
+                                component="legend"
+                              >
+                                <em>{`Nov 2017 - ${moment(
+                                  edu.dateOfCompletion,
+                                ).format('MMM YYYY')}`}</em>
+                              </Typography>
+                              <Typography component="span">
+                                — {edu.note}…
+                              </Typography>
+                            </React.Fragment>
+                          }
+                        />
+                        <ListItemSecondaryAction>
+                          <IconButton edge="end" aria-label="delete">
+                            <EditOutlined />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    ))}
+                  </List>
+                ) : (
+                  <Box p={2} className="col-span-12">
+                    <Typography
+                      variant="body2"
+                      color="textSecondary"
+                      align="center"
+                    >
+                      You do not have any educational background yet
+                    </Typography>
+                  </Box>
+                )}
+              </div>
+            </div>
+          </div>
         </Grid>
+
         <Grid item xs={12}>
           <Paper square className={classes.paper} />
         </Grid>
@@ -613,8 +679,9 @@ function mapDispatchToProps(dispatch) {
     openEditEmployeeDialog: data =>
       dispatch(Actions.openEditEmployeeDialog(data)),
     getEmployees: () => dispatch(Actions.getEmployees()),
-    getEmployee: uuid => dispatch(Actions.getEmployee(uuid)),
     updateEmployee: data => dispatch(Actions.updateEmployee(data)),
+    openConfirmDeleteEmployeeDialog: data =>
+      dispatch(Actions.openConfirmDeleteEmployeeDialog(data)),
   };
 }
 

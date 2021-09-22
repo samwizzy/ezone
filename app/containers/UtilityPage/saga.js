@@ -628,7 +628,7 @@ export function* getAllUsers() {
   console.log(requestURL, 'requestURL');
 
   try {
-    const getAllUsersResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -636,9 +636,9 @@ export function* getAllUsers() {
       }),
     });
 
-    console.log(getAllUsersResponse, 'getAllUsersResponse');
+    console.log(response, 'getAllUsersResponse');
 
-    yield put(Actions.getAllUsersSuccess(getAllUsersResponse));
+    yield put(Actions.getAllUsersSuccess(response));
   } catch (err) {
     yield put(Actions.getAllUsersError(err));
   }
@@ -651,9 +651,6 @@ export function* getUserChat() {
   const requestURL = `${Endpoints.GetUserChatApi}/?userUid=${currentUser &&
     currentUser.uuId}`;
 
-  // const requestURL = `${Endpoints.GetUserChatApi}/?userUid=${currentUser &&
-  //   currentUser.uuId}`;
-
   try {
     const response = yield call(request, requestURL, {
       method: 'GET',
@@ -662,8 +659,6 @@ export function* getUserChat() {
         'Content-Type': 'application/json',
       }),
     });
-
-    // console.log(response, 'getUserChatResponse');
 
     yield put(Actions.getAllUsersChatSuccess(response));
   } catch (err) {
@@ -674,7 +669,7 @@ export function* getUserChat() {
 export function* getEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}?orgId=${user &&
+  const requestURL = `${Endpoints.GetEmployeesByOrgIdApi}/${user &&
     user.organisation.orgId}`;
 
   try {

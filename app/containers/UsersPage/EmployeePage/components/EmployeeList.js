@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import {
   makeStyles,
   FormControlLabel,
-  Icon
+  IconButton,
+  Icon,
 } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import { darken } from '@material-ui/core/styles/colorManipulator';
@@ -41,10 +42,20 @@ const EmployeeList = props => {
   const {
     loading,
     getAllEmployees,
+    getPagedEmployees,
+    pagedEmployees,
     openNewEmployeeDialog,
     openEditEmployeeDialog,
     openViewEmployeeDialog,
+    openConfirmDeleteEmployeeDialog,
   } = props;
+
+  const handlePageChange = (page, limit) => {
+    console.log(page, 'page');
+    getPagedEmployees({ limit, offset: page });
+  };
+
+  console.log(pagedEmployees, 'pagedEmployees users');
 
   const columns = [
     {
@@ -102,6 +113,24 @@ const EmployeeList = props => {
         sort: false,
       },
     },
+    {
+      name: 'id',
+      label: ' ',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: id => {
+          return (
+            <IconButton
+              size="small"
+              onClick={() => openConfirmDeleteEmployeeDialog(id)}
+            >
+              <Icon fontSize="small">delete_outline</Icon>
+            </IconButton>
+          );
+        },
+      },
+    },
   ];
 
   const options = {
@@ -113,6 +142,18 @@ const EmployeeList = props => {
     customToolbar: () => (
       <AddButton openNewEmployeeDialog={openNewEmployeeDialog} />
     ),
+    rowsPerPage: pagedEmployees.limit,
+    rowsPerPageOptions: [10, 15, 20], // 25, 50, 100
+    page: pagedEmployees.page,
+    count: pagedEmployees.total,
+    serverSide: true,
+    onTableChange: (action, tableState) => {
+      console.log(action, tableState);
+      if (action === 'changePage') {
+        console.log('Go to page', tableState.page);
+        handlePageChange(tableState.page, tableState.rowsPerPage);
+      }
+    },
     elevation: 0,
   };
 
@@ -125,7 +166,7 @@ const EmployeeList = props => {
       <MUIDataTable
         className={classes.datatable}
         title="Users"
-        data={getAllEmployees}
+        data={pagedEmployees.entities}
         columns={columns}
         options={options}
       />
@@ -144,13 +185,19 @@ EmployeeList.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: Selectors.makeSelectLoading(),
   getAllEmployees: Selectors.makeSelectGetAllEmployees(),
+  pagedEmployees: Selectors.makeSelectPagedEmployees(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     openNewEmployeeDialog: () => dispatch(Actions.openNewEmployeeDialog()),
-    openEditEmployeeDialog: data => dispatch(Actions.openEditEmployeeDialog(data)),
-    openViewEmployeeDialog: data => dispatch(Actions.openViewEmployeeDialog(data)),
+    openEditEmployeeDialog: data =>
+      dispatch(Actions.openEditEmployeeDialog(data)),
+    openViewEmployeeDialog: data =>
+      dispatch(Actions.openViewEmployeeDialog(data)),
+    openConfirmDeleteEmployeeDialog: data =>
+      dispatch(Actions.openConfirmDeleteEmployeeDialog(data)),
+    getPagedEmployees: data => dispatch(Actions.getPagedEmployees(data)),
   };
 }
 

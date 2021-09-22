@@ -8,6 +8,7 @@ import { createStructuredSelector } from 'reselect';
 import * as Actions from './../../actions';
 import * as Selectors from './../../selectors';
 import EmployeeDetails from './EmployeeDetails';
+import ConfirmDeleteEmployeeDialog from './ConfirmDeleteEmployeeDialog';
 
 export function EmployeeDetailsApp(props) {
   const { getEmployee, match } = props;
@@ -27,6 +28,8 @@ export function EmployeeDetailsApp(props) {
       </Helmet>
 
       <EmployeeDetails />
+
+      <ConfirmDeleteEmployeeDialog />
 
     </React.Fragment>
   );

@@ -27,6 +27,7 @@ export function HumanResourceApp(props) {
   const {
     match,
     getEmployees,
+    getPagedEmployees,
     getDepartmentsByOrgIdApi,
     getEnrollmentTypes,
     getLocations,
@@ -48,6 +49,7 @@ export function HumanResourceApp(props) {
 
   useEffect(() => {
     getEmployees();
+    getPagedEmployees();
     getDepartmentsByOrgIdApi();
     getEmployeeTypes();
     getSourceOfHire();
@@ -95,6 +97,7 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
   return {
     getEmployees: () => dispatch(Actions.getEmployees()),
+    getPagedEmployees: () => dispatch(Actions.getPagedEmployees()),
     getDepartmentsByOrgIdApi: () =>
       dispatch(Actions.getDepartmentsByOrgIdApi()),
     getEmployeeTypes: () => dispatch(Actions.getEmployeeTypes()),

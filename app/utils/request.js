@@ -22,10 +22,11 @@ function parseJSON(response) {
  * @return {object|undefined} Returns either the response, or throws an error
  */
 function checkStatus(response) {
-  console.log(`response request ${JSON.stringify(response)}`)
+  console.log(response, "response")
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
+
   if (response.status === 401) {
     history.push('/logout')
   }

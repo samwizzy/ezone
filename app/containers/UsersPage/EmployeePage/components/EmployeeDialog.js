@@ -29,8 +29,8 @@ import * as Actions from '../../actions';
 import Countries from '../../../../utils/countries_states.json';
 
 const gender = [
-  { value: 'Male', label: 'Male' },
-  { value: 'Female', label: 'Female' },
+  { value: 'MALE', label: 'Male' },
+  { value: 'FEMALE', label: 'Female' },
 ];
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -52,7 +52,7 @@ const EmployeeDialog = props => {
     employeeTypes,
     sourcesOfHire,
     payRates,
-    payTypes
+    payTypes,
   } = props;
 
   console.log(branches, 'branches');
@@ -68,32 +68,14 @@ const EmployeeDialog = props => {
     lastName: '',
     emailAddress: '',
     phoneNumber: '',
-    address: '',
     gender: '',
-
-    mobileNo: '',
-    workPhone: '',
-    nickName: '',
-    employmentDate: null,
-    branchId: '',
-    employeeStatus: '',
-    employeeType: '',
-    sourceOfHire: '',
-    positionId: '',
-    extension: '',
-    education: [],
-    departmentId: '',
-    reportingTo: '',
-    payRate: '',
-    payType: '',
-    dob: null,
-    maritalStatus: '',
-    country: '',
     city: '',
     state: '',
-    designation: null,
-    jobDesc: '',
-    about: '',
+    country: '',
+    branchId: '',
+    departmentId: '',
+    imageChanged: false,
+    signatureChanged: false,
   });
 
   const canBeSubmitted = () => {
@@ -102,30 +84,18 @@ const EmployeeDialog = props => {
       lastName,
       emailAddress,
       phoneNumber,
-      address,
       gender,
       departmentId,
       branchId,
-      positionId,
-      employeeType,
-      sourceOfHire,
-      payRate,
-      payType
     } = values;
     return (
       firstName !== '' &&
       lastName !== '' &&
       emailAddress !== '' &&
       phoneNumber !== '' &&
-      address !== '' &&
       gender !== '' &&
       departmentId !== '' &&
-      branchId !== '' &&
-      positionId !== '' &&
-      employeeType !== '' &&
-      sourceOfHire !== '' &&
-      payRate !== '' &&
-      payType !== '' 
+      branchId !== ''
     );
   };
 
@@ -156,15 +126,15 @@ const EmployeeDialog = props => {
       aria-labelledby="form-dialog-title"
     >
       <DialogTitle id="alert-dialog-slide-title">
-        {employeeDialog.type === 'new' ? 'New Employee' : 'Edit Employee'}
+        {employeeDialog.type === 'new' ? 'New user' : 'Edit user'}
       </DialogTitle>
 
       <DialogContent dividers>
         <Grid container spacing={1}>
           <Grid item xs={6}>
             <TextField
-              id="first-name"
               required
+              id="first-name"
               label="First name"
               name="firstName"
               variant="outlined"
@@ -175,10 +145,11 @@ const EmployeeDialog = props => {
               fullWidth
             />
           </Grid>
+
           <Grid item xs={6}>
             <TextField
-              id="Last-Name"
               required
+              id="Last-Name"
               label="Last name"
               name="lastName"
               variant="outlined"
@@ -192,8 +163,8 @@ const EmployeeDialog = props => {
 
           <Grid item xs={6}>
             <TextField
-              id="email-address"
               required
+              id="email-address"
               label="Email"
               name="emailAddress"
               type="email"
@@ -205,10 +176,11 @@ const EmployeeDialog = props => {
               fullWidth
             />
           </Grid>
+
           <Grid item xs={6}>
             <TextField
-              id="phone-number"
               required
+              id="phone-number"
               label="Phone number"
               name="phoneNumber"
               type="number"
@@ -221,7 +193,7 @@ const EmployeeDialog = props => {
             />
           </Grid>
 
-          <Grid item xs={7}>
+          <Grid item xs={6}>
             <TextField
               id="branch"
               name="branchId"
@@ -244,28 +216,8 @@ const EmployeeDialog = props => {
               ))}
             </TextField>
           </Grid>
-          <Grid item xs={5}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                required
-                disablePast
-                format="dd/MM/yyyy"
-                margin="dense"
-                size="small"
-                inputVariant="outlined"
-                fullWidth
-                id="employment-date"
-                label="Employment date"
-                value={values.employmentDate}
-                onChange={date => handleDateChange(date, 'employmentDate')}
-                KeyboardButtonProps={{
-                  'aria-label': 'change date',
-                }}
-              />
-            </MuiPickersUtilsProvider>
-          </Grid>
 
-          <Grid item xs={8}>
+          <Grid item xs={6}>
             <TextField
               id="department"
               name="departmentId"
@@ -288,12 +240,13 @@ const EmployeeDialog = props => {
               ))}
             </TextField>
           </Grid>
-          <Grid item xs={4}>
+
+          <Grid item xs={5}>
             <TextField
               id="select-gender"
-              required
               label="Select gender"
               name="gender"
+              required
               variant="outlined"
               size="small"
               margin="dense"
@@ -310,52 +263,19 @@ const EmployeeDialog = props => {
             </TextField>
           </Grid>
 
-          <Grid item xs={5}>
-            <TextField
-              id="employment-status"
-              name="employeeStatus"
-              required
-              placeholder="Select employment status"
-              select
-              fullWidth
-              margin="dense"
-              variant="outlined"
-              size="small"
-              label="Employment status"
-              value={values.employeeStatus}
-              onChange={handleChange}
-            >
-              <MenuItem value="">Select employment status</MenuItem>
-              {statuses.map((status, i) => (
-                <MenuItem key={i} value={status}>
-                  {status}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-
           <Grid item xs={7}>
             <TextField
-              id="position-id"
+              name="city"
+              label="City"
               required
-              name="positionId"
-              placeholder="Select position"
-              select
+              id="outlined-city"
               fullWidth
               margin="dense"
               variant="outlined"
               size="small"
-              label="Position"
-              value={values.positionId}
+              value={values.city}
               onChange={handleChange}
-            >
-              <MenuItem value="">Select position</MenuItem>
-              {positions.map(position => (
-                <MenuItem key={position.id} value={position.id}>
-                  {position.name}
-                </MenuItem>
-              ))}
-            </TextField>
+            />
           </Grid>
 
           <Grid item xs={6}>
@@ -384,6 +304,7 @@ const EmployeeDialog = props => {
               )}
             />
           </Grid>
+
           <Grid item xs={6}>
             <Autocomplete
               id="combo-box-state"
@@ -407,156 +328,6 @@ const EmployeeDialog = props => {
                   fullWidth
                 />
               )}
-            />
-          </Grid>
-
-          <Grid item xs={6}>
-            <TextField
-              name="city"
-              required
-              label="City"
-              id="outlined-city"
-              fullWidth
-              margin="dense"
-              variant="outlined"
-              size="small"
-              value={values.city}
-              onChange={handleChange}
-            />
-          </Grid>
-
-          <Grid item xs={6}>
-            <TextField
-              id="reporting-to"
-              required
-              name="reportingTo"
-              placeholder="Select employee you report to"
-              select
-              fullWidth
-              margin="dense"
-              variant="outlined"
-              size="small"
-              label="Reporting to"
-              value={values.reportingTo}
-              onChange={handleChange}
-            >
-              <MenuItem value="">Select employee to report to</MenuItem>
-              {employees.map(employee => (
-                  <MenuItem key={employee.id} value={employee.id}>
-                    {employee.firstName} {employee.lastName}
-                  </MenuItem>
-                ))}
-            </TextField>
-          </Grid>
-
-          <Grid item xs={6}>
-            <TextField
-              id="employment-type"
-              required
-              name="employeeType"
-              placeholder="Select employee type"
-              select
-              fullWidth
-              margin="dense"
-              variant="outlined"
-              size="small"
-              label="Employee type"
-              value={values.employeeType}
-              onChange={handleChange}
-            >
-              <MenuItem value="">Select employee type</MenuItem>
-              {employeeTypes.map((empType, i) => (
-                <MenuItem key={i} value={empType.id}>
-                  {empType.name}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              id="source-of-hire"
-              required
-              name="sourceOfHire"
-              placeholder="Select source of hire"
-              select
-              fullWidth
-              margin="dense"
-              variant="outlined"
-              size="small"
-              label="Source of hire"
-              value={values.sourceOfHire}
-              onChange={handleChange}
-            >
-              <MenuItem value="">Select source of hire</MenuItem>
-              {sourcesOfHire.map((source, i) => (
-                <MenuItem key={i} value={source.id}>
-                  {source.name}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-
-          <Grid item xs={6}>
-            <TextField
-              id="pay-rate"
-              name="payRate"
-              placeholder="Enter pay rate"
-              required
-              select
-              fullWidth
-              margin="dense"
-              variant="outlined"
-              size="small"
-              label="Pay rate"
-              value={values.payRate}
-              onChange={handleChange}
-            >
-              <MenuItem value="">Select pay rate</MenuItem>
-              {payRates.map((payType, i) => (
-                <MenuItem key={i} value={payType.id}>
-                  {payType.name}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              id="pay-type"
-              name="payType"
-              required
-              placeholder="Select pay type"
-              select
-              fullWidth
-              margin="dense"
-              variant="outlined"
-              size="small"
-              label="Pay type"
-              value={values.payType}
-              onChange={handleChange}
-            >
-              <MenuItem value="">Select pay type</MenuItem>
-              {payTypes.map((payType, i) => (
-                <MenuItem key={i} value={payType.id}>
-                  {payType.name}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-
-          <Grid item xs={12}>
-            <TextField
-              id="address"
-              required
-              label="Address"
-              name="address"
-              variant="outlined"
-              size="small"
-              value={values.address}
-              onChange={handleChange}
-              margin="dense"
-              fullWidth
-              rows={3}
-              multiline
             />
           </Grid>
         </Grid>

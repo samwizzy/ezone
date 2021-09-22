@@ -48,6 +48,8 @@ const initialState = {
   designation: null,
   jobDesc: '',
   about: '',
+  imageChanged: false,
+  signatureChanged: false,
 };
 
 function AddEmployeeDialog(props) {

@@ -84,7 +84,6 @@ export function* updateContactGroup({ payload }) {
 
 export function* getContactGroup() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
-  // const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
   const getContactGroupById = yield select(
     Selectors.makeSelectContactGroupById(),
@@ -95,7 +94,7 @@ export function* getContactGroup() {
     }/${getContactGroupById}`;
 
   try {
-    const getContactGroupByIdResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -103,7 +102,7 @@ export function* getContactGroup() {
       }),
     });
 
-    yield put(Actions.getContactGroupByIdSuccess(getContactGroupByIdResponse));
+    yield put(Actions.getContactGroupByIdSuccess(response));
   } catch (err) {
     yield put(Actions.getContactGroupByIdError(err));
   }
@@ -118,7 +117,7 @@ export function* getContacts() {
     }`;
 
   try {
-    const getContactsResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'GET',
       headers: new Headers({
         Authorization: `Bearer ${accessToken}`,
@@ -126,7 +125,7 @@ export function* getContacts() {
       }),
     });
 
-    yield put(Actions.getContactsSuccess(getContactsResponse));
+    yield put(Actions.getContactsSuccess(response));
   } catch (err) {
     yield put(Actions.getContactsError(err));
   }
@@ -136,11 +135,10 @@ export function* assignContactToGroup() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const contactDetails = yield select(Selectors.makeSelectContactDetails());
 
-  console.log(contactDetails, 'contactDetails');
   const requestURL = `${Endpoints.UpdateContactGroupApi}/${contactDetails.id}`;
 
   try {
-    const newContactResponse = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'PUT',
       body: JSON.stringify(contactDetails),
       headers: new Headers({
@@ -149,9 +147,9 @@ export function* assignContactToGroup() {
       }),
     });
 
-    console.log(newContactResponse, 'newContactResponse');
+    console.log(response, 'newContactResponse');
 
-    yield put(Actions.assignContactToGroupSuccess(newContactResponse));
+    yield put(Actions.assignContactToGroupSuccess(response));
     yield put(Actions.getContactGroupById(contactDetails.id));
     yield put(Actions.closeNewAssignContactDialog());
   } catch (err) {

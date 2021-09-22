@@ -1,5 +1,6 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
-import swal from "sweetalert"
+import swal from 'sweetalert';
+import axios from 'axios';
 import request from '../../utils/request';
 import * as Endpoints from '../../components/Endpoints';
 import * as AppSelectors from '../App/selectors';
@@ -8,11 +9,15 @@ import * as Selectors from './selectors';
 import * as Actions from './actions';
 import * as Constants from './constants';
 
+function errorHandler(promise) {
+  return promise;
+}
+
 export function* getAllEmployees() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
 
-  const requestURL = `${Endpoints.GetAllUsersApi}?orgId=${currentUser &&
+  const requestURL = `${Endpoints.GetAllUsersApi}/${currentUser &&
     currentUser.organisation.orgId}`;
 
   try {
@@ -50,12 +55,33 @@ export function* getAllEmployees() {
   }
 }
 
+export function* getPagedEmployees({ payload: { offset = 0, limit = 10 } }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+  const requestURL = `${Endpoints.GetPagedEmployeesByOrgIdApi}/${user &&
+    user.organisation.orgId}?limit=${limit}&offset=${offset}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+    console.log(response, 'PAGED employees response');
+
+    yield put(Actions.getPagedEmployeesSuccess(response));
+  } catch (err) {
+    yield put(Actions.getPagedEmployeesError(err));
+  }
+}
+
 export function* createNewEmployee({ payload }) {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const user = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.CreateEmployee}`;
-  payload.orgId = user && user.organisation.orgId;
-  console.log(payload, 'payload create new employee');
+  const requestURL = `${Endpoints.CreateUserLite}`;
+  console.log(payload, 'payload create new user lite');
 
   try {
     const response = yield call(request, requestURL, {
@@ -70,10 +96,52 @@ export function* createNewEmployee({ payload }) {
     swal('Success', 'User has been created successfully', 'success');
     yield put(Actions.createNewEmployeeSuccess(response));
     yield put(Actions.getAllEmployees());
+    yield put(Actions.getPagedEmployees());
     yield put(Actions.closeNewEmployeeDialog());
   } catch (err) {
     console.dir(err.message);
     yield put(Actions.createNewEmployeeError(err));
+  }
+}
+
+export function* deleteEmployee({ payload }) {
+  const accessToken = yield select(AppSelectors.makeSelectAccessToken());
+  const user = yield select(AppSelectors.makeSelectCurrentUser());
+
+  const requestURL = `${Endpoints.DeleteEmployee}/${user &&
+    user.organisation.orgId}/${payload}`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'DELETE',
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json; charset=UTF-8',
+      }),
+    });
+
+    console.log(response, 'response delete employee');
+    yield put(
+      AppActions.openSnackBar({
+        message: 'Employee deleted successfully',
+        status: 'success',
+      }),
+    );
+    yield put(Actions.deleteEmployeeSuccess(response));
+    yield put(Actions.closeConfirmDeleteEmployeeDialog());
+    yield put(Actions.getAllEmployees());
+    yield put(Actions.getPagedEmployees());
+  } catch (err) {
+    console.dir(err, 'err delete employee');
+    if (err.response && err.response.data) {
+      yield put(
+        AppActions.openSnackBar({
+          message: err.response.data.message,
+          status: 'error',
+        }),
+      );
+      yield put(Actions.deleteEmployeeError(err.response.data.message));
+    }
   }
 }
 
@@ -268,8 +336,10 @@ export function* getPayTypes() {
 // Individual exports for testing
 export default function* usersPageSaga() {
   yield takeLatest(Constants.GET_ALL_EMPLOYEES, getAllEmployees);
+  yield takeLatest(Constants.GET_PAGED_EMPLOYEES, getPagedEmployees);
   yield takeLatest(Constants.CREATE_NEW_EMPLOYEE, createNewEmployee);
   yield takeLatest(Constants.UPDATE_USER_PROFILE, updateUserProfile);
+  yield takeLatest(Constants.DELETE_EMPLOYEE, deleteEmployee);
   yield takeLatest(Constants.GET_BRANCHES, getBranches);
   yield takeLatest(Constants.GET_POSITIONS, getPositions);
   yield takeLatest(Constants.GET_DEPARTMENTS, getDepartments);

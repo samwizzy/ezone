@@ -19,17 +19,28 @@ import reducer from '../reducer';
 import saga from '../saga';
 import ModuleLayout from './../components/ModuleLayout';
 import EmployeeDialog from './components/EmployeeDialog';
+import ConfirmDeleteEmployeeDialog from './components/ConfirmDeleteEmployeeDialog';
 import EmployeeList from './components/EmployeeList';
-import AddButton from './components/AddButton';
 
 export function EmployeePage(props) {
   useInjectReducer({ key: 'usersPage', reducer });
   useInjectSaga({ key: 'usersPage', saga });
 
-  const { getAllEmployees, getBranches, getDepartments, getPositions, getEmployeeTypes, getSourceOfHire, getPayRates, getPayTypes } = props;
+  const {
+    getAllEmployees,
+    getPagedEmployees,
+    getBranches,
+    getDepartments,
+    getPositions,
+    getEmployeeTypes,
+    getSourceOfHire,
+    getPayRates,
+    getPayTypes,
+  } = props;
 
   useEffect(() => {
     getAllEmployees();
+    getPagedEmployees();
     getBranches();
     getDepartments();
     getPositions();
@@ -49,14 +60,15 @@ export function EmployeePage(props) {
       <ModuleLayout>
         <EmployeeList />
       </ModuleLayout>
+
       <EmployeeDialog />
+      <ConfirmDeleteEmployeeDialog />
     </div>
   );
 }
 
 EmployeePage.propTypes = {
   getAllEmployees: PropTypes.func,
-  openNewEmployeeDialogAction: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -66,6 +78,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getAllEmployees: () => dispatch(Actions.getAllEmployees()),
+    getPagedEmployees: data => dispatch(Actions.getPagedEmployees(data)),
     getBranches: () => dispatch(Actions.getBranches()),
     getDepartments: () => dispatch(Actions.getDepartments()),
     getPositions: () => dispatch(Actions.getPositions()),

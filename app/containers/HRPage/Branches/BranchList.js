@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   },
   datatable: {
     '& tr:hover': {
-      cursor: 'pointer',
+      cursor: 'auto',
     },
     '& thead': {
       '& th': {

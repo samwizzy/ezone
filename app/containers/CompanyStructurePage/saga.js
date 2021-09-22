@@ -101,7 +101,7 @@ export function* updatePartyGroupSaga() {
 export function* getAllUsers() {
   const accessToken = yield select(AppSelectors.makeSelectAccessToken());
   const currentUser = yield select(AppSelectors.makeSelectCurrentUser());
-  const requestURL = `${Endpoints.GetAllUsersApi}?orgId=${
+  const requestURL = `${Endpoints.GetAllUsersApi}/${
     currentUser.organisation.orgId
   }`;
 

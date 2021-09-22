@@ -1,10 +1,11 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { IconButton, Icon } from '@material-ui/core';
 import { green, orange } from '@material-ui/core/colors';
 import { darken } from '@material-ui/core/styles/colorManipulator';
 import moment from 'moment';
@@ -21,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   },
   datatable: {
     '& tr:hover': {
-      cursor: 'pointer',
+      cursor: 'auto',
     },
     '& thead': {
       '& th': {
@@ -65,7 +66,12 @@ const useStyles = makeStyles(theme => ({
 
 const PositionList = props => {
   const classes = useStyles();
-  const { loading, openNewPositionDialog, positions } = props;
+  const {
+    loading,
+    openNewPositionDialog,
+    openEditPositionDialog,
+    positions,
+  } = props;
 
   const columns = [
     {
@@ -102,12 +108,30 @@ const PositionList = props => {
       },
     },
     {
-      name: 'employees',
+      name: 'employeeCount',
       label: 'Employees',
       options: {
         filter: true,
         sort: true,
-        customBodyRender: value => value && value.length,
+      },
+    },
+    {
+      name: 'id',
+      label: ' ',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: id => {
+          const selectedPosition = positions.find(p => p.id === id);
+          return (
+            <IconButton
+              size="small"
+              onClick={() => openEditPositionDialog(selectedPosition)}
+            >
+              <Icon>edit</Icon>
+            </IconButton>
+          );
+        },
       },
     },
   ];
@@ -158,6 +182,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     openNewPositionDialog: () => dispatch(Actions.openNewPositionDialog()),
+    openEditPositionDialog: data =>
+      dispatch(Actions.openEditPositionDialog(data)),
   };
 }
 
